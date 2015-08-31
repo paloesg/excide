@@ -3,9 +3,10 @@ html lang="en"
   head
     meta charset="utf-8"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
+    link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
 
     title
-      = content_for?(:title) ? yield(:title) : "foundation-rails"
+      = content_for?(:title) ? yield(:title) : "Excide"
 
     = stylesheet_link_tag    "application"
     = javascript_include_tag "vendor/modernizr"
@@ -13,5 +14,6 @@ html lang="en"
     = csrf_meta_tags
 
   body
-
+    = render 'layouts/header'
+    = render 'layouts/messages'
     = yield

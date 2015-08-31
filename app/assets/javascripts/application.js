@@ -12,8 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require foundation
+//= require materialize-sprockets
 //= require turbolinks
 //= require_tree .
-
-$(function(){ $(document).foundation(); });
