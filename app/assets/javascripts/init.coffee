@@ -1,7 +1,8 @@
 window.App ||= {}
 
 App.init = ->
-  $('#fullpage').fullpage()
+  $('#fullpage').fullpage({
+  })
 
 $(document).on "page:change", ->
   App.init()

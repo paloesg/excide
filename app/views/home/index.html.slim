@@ -1,5 +1,94 @@
-#fullpage
-  .section
-    h1 Business Services On Demand
-  .section
-    p Excide is an all-in-one platform to source, hire and engage the best independent consultants in Singapore.
+.landing-page#fullpage
+  .section#hero
+    .container
+      #hero-content
+        .row
+          .col.s12.center
+            h3 Business Services On Demand
+            p Excide is an all-in-one platform to source, hire and engage the best independent consultants in Singapore.
+        .row
+          .input-field.col.s6.offset-s2
+            input id="email" type="text"
+            label for="email" Enter your email
+          .col.s4
+            button.btn-large.green.darken-4.hero-button type="submit" name="action" Get in touch
+  .section#tailored
+    .container
+      .row
+        .col.s6
+          h5.center Tailored Solutions
+          p Excide provides timely and cost-effective solutions tailored to your needs. As our digital platform is able to streamline any unnecessary overheads, we are able to develop bespoke solutions targeted at your specific needs with pinpoint accuracy.
+  .section#on-demand
+    .container
+      .row
+        .col.s6.offset-s6
+          h5.center Talent On Demand
+          p Excide has an extensive network of independent consultants with diverse expertise and experience. Our search for consultants is only a first step. We are committed to understanding and identifying consultants that provides you with the most suitable service. The rigor we apply ensures a positive outcome.
+  .section#seamless
+    .container
+      .row
+        .col.s6
+          h5.center Engage Seamlessly
+          p Excide will manage your engagement process from consultant sourcing and recommendation to invoicing and payments. Due to our market knowledge and feedback from other clients, we will understand the strength of the independent consultants and provide appropriate recommendations. Also, our digital platform will provide a convenient way to track every part of the engagement process.
+  .section#services
+    .container
+      .row
+        .col.s12
+          h3.center Some of our services
+          .row
+            .col.s3
+              .card
+                .card-image
+                  = image_tag "startups.jpg", class: "activator"
+                .card-content
+                  .card-title.activator.grey-text.text-darken-4
+                    | Start-ups
+                .card-reveal
+                  .card-title.activator.grey-text.text-darken-4
+                    | Start-ups
+                  p Raise Capital
+                  p Market and Competition Research
+                  p Analytics and Finance Support
+            .col.s3
+              .card
+                .card-image
+                  = image_tag "local-enterprises.jpg", class: "activator"
+                .card-content
+                  .card-title.activator.grey-text.text-darken-4
+                    | Local Enterprises
+                .card-reveal
+                  .card-title.activator.grey-text.text-darken-4
+                    | Local Enterprises
+                  p Analytics and Finance Support
+                  p Customer Strategy Support
+                  p Market and Competition Research
+                  p Operational Improvement
+                  p Planning and Project Management Support
+                  p Presentations & Reports
+                  p Accounting Services
+            .col.s3
+              .card
+                .card-image
+                  = image_tag "consulting-firms.jpg", class: "activator"
+                .card-content
+                  .card-title.activator.grey-text.text-darken-4
+                    | Consulting Firms
+                .card-reveal
+                  .card-title.activator.grey-text.text-darken-4
+                    | Consulting Firms
+                  p Market Research
+                  p Due Diligence and M&A Support
+            .col.s3
+              .card
+                .card-image
+                  = image_tag "investment-firms.jpg", class: "activator"
+                .card-content
+                  .card-title.activator.grey-text.text-darken-4
+                    | Investment Firms
+                .card-reveal
+                  .card-title.activator.grey-text.text-darken-4
+                    | Investment Firms
+                  p Analytics and Finance Support
+                  p Due Diligence and M&A Support
+                  p Market and Competition Research
+                  p Presentations & Reports

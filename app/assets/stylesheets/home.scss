@@ -1,3 +1,71 @@
-// Place all the styles related to the home controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#hero {
+  background-image: url("hero-image.jpg");
+}
+
+#tailored {
+  background-image: url("tailored-solutions.jpg");
+}
+
+#on-demand {
+  background-image: url("talent-on-demand.jpg");
+}
+
+#seamless {
+  background-image: url("engage-seamlessly.jpg");
+}
+
+#hero, #tailored, #on-demand, #seamless {
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #ffffff;
+  margin-top: -20px;
+}
+
+#hero-content {
+
+  /* label color */
+  .input-field label {
+   color: #f9f9f9;
+   font-size: 20px;
+  }
+  /* label focus color */
+  .input-field input[type=text]:focus + label {
+   color: #ffffff;
+   font-size: inherit;
+  }
+  /* label underline color */
+  .input-field input[type=text] {
+   border-bottom: 1px solid #f9f9f9;
+   box-shadow: none;
+  }
+  /* label underline focus color */
+  .input-field input[type=text]:focus {
+   border-bottom: 1px solid #ffffff;
+   box-shadow: 0 1px 0 0 #ffffff;
+  }
+  /* valid color */
+  .input-field input[type=text].valid {
+   border-bottom: 1px solid #ffffff;
+   box-shadow: 0 1px 0 0 #ffffff;
+  }
+  /* invalid color */
+  .input-field input[type=text].invalid {
+   border-bottom: 1px solid #ffffff;
+   box-shadow: 0 1px 0 0 #ffffff;
+  }
+  /* icon prefix focus color */
+  .input-field .prefix.active {
+   color: #ffffff;
+  }
+
+  .hero-button {
+    width: 60%;
+    margin-top: 8px;
+  }
+}
+
+#services {
+  .card-title {
+    font-size: 20px;
+  }
+}
