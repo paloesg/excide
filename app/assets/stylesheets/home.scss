@@ -59,13 +59,19 @@
   }
 
   .hero-button {
-    width: 60%;
+    width: 100%;
     margin-top: 8px;
   }
 }
 
 #services {
   .card-title {
+    font-size: 20px;
+  }
+}
+
+.landing-page {
+  p {
     font-size: 20px;
   }
 }
