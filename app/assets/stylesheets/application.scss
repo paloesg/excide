@@ -15,10 +15,10 @@
  */
 
 @import "materialize";
-@import "jquery.fullPage.css";
+@import "jquery.fullPage";
 
 nav .brand-logo {
-  background-image: url("logo-light.png");
+  background-image: image-url("logo-light.png");
   background-position: center left;
   background-size: 50px;
   background-repeat: no-repeat;
