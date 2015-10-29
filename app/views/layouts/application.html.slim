@@ -9,11 +9,10 @@ html lang="en"
       = content_for?(:title) ? yield(:title) : "Excide"
 
     = stylesheet_link_tag    "application"
-    = javascript_include_tag "vendor/modernizr"
     = javascript_include_tag "application", 'data-turbolinks-track' => true
     = csrf_meta_tags
 
-  body
+  body[class="#{controller_name} #{action_name}"]
     = render 'layouts/header'
     = render 'layouts/messages'
     .container
