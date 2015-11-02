@@ -36,6 +36,10 @@ gem 'materialize-sass'
 # Authentication
 gem 'devise'
 
+# Analytics
+gem 'mixpanel-ruby'
+
+# Heroku requirement for static asset serving and logging
 gem 'rails_12factor'
 
 group :development, :test do
