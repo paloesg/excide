@@ -1,35 +1,73 @@
-p id="notice"
-  = notice
+.container
+  p id="notice"
+    = notice
 
-.row
-  .col.s3
-    .card
-      .card-image
-        img src="http://placehold.it/200x200"
-        .card-title Han Sheng
-      .card-content
-        | Valuation Expert
-        br
-        | Singapore
-        br
-        strong Industries
-        br
-        | Transportation, IT, Programming
-  .col.s9
-    .card
-      .card-content
-        .card-title.black-text Summary
-        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce molestie nisi ut elementum dignissim. Curabitur fringilla cursus ex ac malesuada. Sed hendrerit tempor dui vel tincidunt. Vestibulum metus quam, molestie eget malesuada eu, auctor quis eros. In id scelerisque magna. In nec nibh in orci porttitor porta. Morbi nec enim ut mauris consectetur congue ac sollicitudin ante. Mauris luctus, eros eu placerat sollicitudin, tortor ex rhoncus urna, ac pellentesque nibh elit quis erat. Vivamus luctus nulla euismod, mattis est id, varius magna. Suspendisse potenti.
-    ul.collapsible data-collapsible="accordion"
-      li
-        .collapsible-header.active Projects
-        .collapsible-body
-          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce molestie nisi ut elementum dignissim. Curabitur fringilla cursus ex ac malesuada. Sed hendrerit tempor dui vel tincidunt. Vestibulum metus quam, molestie eget malesuada eu, auctor quis eros. In id scelerisque magna. In nec nibh in orci porttitor porta. Morbi nec enim ut mauris consectetur congue ac sollicitudin ante. Mauris luctus, eros eu placerat sollicitudin, tortor ex rhoncus urna, ac pellentesque nibh elit quis erat. Vivamus luctus nulla euismod, mattis est id, varius magna. Suspendisse potenti.
-      li
-        .collapsible-header Experience
-        .collapsible-body
-          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce molestie nisi ut elementum dignissim. Curabitur fringilla cursus ex ac malesuada. Sed hendrerit tempor dui vel tincidunt. Vestibulum metus quam, molestie eget malesuada eu, auctor quis eros. In id scelerisque magna. In nec nibh in orci porttitor porta. Morbi nec enim ut mauris consectetur congue ac sollicitudin ante. Mauris luctus, eros eu placerat sollicitudin, tortor ex rhoncus urna, ac pellentesque nibh elit quis erat. Vivamus luctus nulla euismod, mattis est id, varius magna. Suspendisse potenti.
-      li
-        .collapsible-header Education
-        .collapsible-body
-          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce molestie nisi ut elementum dignissim. Curabitur fringilla cursus ex ac malesuada. Sed hendrerit tempor dui vel tincidunt. Vestibulum metus quam, molestie eget malesuada eu, auctor quis eros. In id scelerisque magna. In nec nibh in orci porttitor porta. Morbi nec enim ut mauris consectetur congue ac sollicitudin ante. Mauris luctus, eros eu placerat sollicitudin, tortor ex rhoncus urna, ac pellentesque nibh elit quis erat. Vivamus luctus nulla euismod, mattis est id, varius magna. Suspendisse potenti.
+  .row
+    .col.s4
+      .row
+        .col.s12
+          .card
+            .card-image
+              = image_tag "profile.jpg"
+              .card-title Han Sheng
+              .card-subtitle Valuation Expert
+            .card-content
+              | 3 years of experience
+              br
+              | Singapore
+        .col.s12
+          .card
+            .card-header Expertise
+            .card-content
+              p Financial Modelling
+              p Mergers and Acquisitions
+              p Valuation
+              p Startup Financing
+              p Capital Budgeting
+    .col.s8
+      .row
+        .col.s12
+          .card
+            .card-header Summary
+            .card-content
+              p Experienced financial modeler with working experiences in investment banks, corporate finance houses and corporate in-house M&A team
+        .col.s12
+          .card
+            .card-header Featured Projects
+            .card-content
+              p Financial model for Jasper Offshore to support bank re-financing
+              p Feasibility report to evaluate an opportunity in an Indonesian Offshore Marine Centre
+              p Sell-side advisor to Great Wall Foodstuff in its JV with Wilmar
+              p Sell-side advisor to one of the top 10 travel agents in Singapore
+        .col.s12
+          .card
+            .card-header Experience
+            .card-content
+              p Maersk Group
+              p KPMG M&A Advisory
+              p Standard Chartered
+              p Rothschild
+              p Brand Valuation PLC
+        .col.s12
+          .card
+            .card-header Qualifications
+            .card-content
+              p Bachelor of Business Management, Singapore Management University
+        .col.s12
+          .card
+            .card-header Reviews
+            .card-content
+              p "Worked with Han Sheng on a project and he was very timely and professional in his responses."
+      ul.collapsible data-collapsible="accordion"
+        li
+          .collapsible-header.active Projects
+          .collapsible-body
+            p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce molestie nisi ut elementum dignissim. Curabitur fringilla cursus ex ac malesuada. Sed hendrerit tempor dui vel tincidunt. Vestibulum metus quam, molestie eget malesuada eu, auctor quis eros. In id scelerisque magna. In nec nibh in orci porttitor porta. Morbi nec enim ut mauris consectetur congue ac sollicitudin ante. Mauris luctus, eros eu placerat sollicitudin, tortor ex rhoncus urna, ac pellentesque nibh elit quis erat. Vivamus luctus nulla euismod, mattis est id, varius magna. Suspendisse potenti.
+        li
+          .collapsible-header Experience
+          .collapsible-body
+            p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce molestie nisi ut elementum dignissim. Curabitur fringilla cursus ex ac malesuada. Sed hendrerit tempor dui vel tincidunt. Vestibulum metus quam, molestie eget malesuada eu, auctor quis eros. In id scelerisque magna. In nec nibh in orci porttitor porta. Morbi nec enim ut mauris consectetur congue ac sollicitudin ante. Mauris luctus, eros eu placerat sollicitudin, tortor ex rhoncus urna, ac pellentesque nibh elit quis erat. Vivamus luctus nulla euismod, mattis est id, varius magna. Suspendisse potenti.
+        li
+          .collapsible-header Education
+          .collapsible-body
+            p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce molestie nisi ut elementum dignissim. Curabitur fringilla cursus ex ac malesuada. Sed hendrerit tempor dui vel tincidunt. Vestibulum metus quam, molestie eget malesuada eu, auctor quis eros. In id scelerisque magna. In nec nibh in orci porttitor porta. Morbi nec enim ut mauris consectetur congue ac sollicitudin ante. Mauris luctus, eros eu placerat sollicitudin, tortor ex rhoncus urna, ac pellentesque nibh elit quis erat. Vivamus luctus nulla euismod, mattis est id, varius magna. Suspendisse potenti.
