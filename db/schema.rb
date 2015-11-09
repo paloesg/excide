@@ -11,15 +11,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151026073511) do
+ActiveRecord::Schema.define(version: 20151109092012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "experiences", force: :cascade do |t|
+    t.integer  "profile_id"
+    t.string   "title"
+    t.string   "company"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "experiences", ["profile_id"], name: "index_experiences_on_profile_id", using: :btree
+
   create_table "profiles", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
+    t.string   "summary"
+    t.string   "featured"
   end
+
+  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
+
+  create_table "qualifications", force: :cascade do |t|
+    t.integer  "profile_id"
+    t.string   "institution"
+    t.string   "title"
+    t.integer  "year_obtained"
+    t.text     "description"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "qualifications", ["profile_id"], name: "index_qualifications_on_profile_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",                          null: false
@@ -39,4 +69,7 @@ ActiveRecord::Schema.define(version: 20151026073511) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "experiences", "profiles"
+  add_foreign_key "profiles", "users"
+  add_foreign_key "qualifications", "profiles"
 end
