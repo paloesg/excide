@@ -36,6 +36,9 @@ gem 'materialize-sass'
 # Authentication
 gem 'devise'
 
+# LinkedIn API integration
+gem 'omniauth-linkedin-oauth2'
+
 # Analytics
 gem 'mixpanel-ruby'
 
