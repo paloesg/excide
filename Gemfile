@@ -37,13 +37,15 @@ gem 'materialize-sass'
 gem 'devise'
 
 # LinkedIn API integration
+gem 'omniauth'
+gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-linkedin-oauth2'
 
 # Analytics
 gem 'mixpanel-ruby'
 
 # Heroku requirement for static asset serving and logging
-gem 'rails_12factor'
+gem 'rails_12factor', group: :production
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

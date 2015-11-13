@@ -5,3 +5,8 @@
         a.brand-logo href="/"
           | Excide
           sup  Beta
+        ul.right
+          - if current_user
+            li=link_to "Logout", destroy_user_session_path, method: :delete
+          - else
+            li=link_to "Login", new_user_session_path
