@@ -1,36 +1,30 @@
 .container
-  p id="notice"
-    = notice
-
   .row
     .col.s4
       .row
         .col.s12
           .card
             .card-image
-              = image_tag "profile.jpg"
+              = image_tag @user.profile.image_url
               .card-title Han Sheng
-              .card-subtitle Valuation Expert
+              .card-subtitle = @user.profile.headline
             .card-content
               | 3 years of experience
               br
-              | Singapore
+              = @user.profile.location
         .col.s12
           .card
             .card-header Expertise
             .card-content
-              p Financial Modelling
-              p Mergers and Acquisitions
-              p Valuation
-              p Startup Financing
-              p Capital Budgeting
+              p = @user.profile.industry
+              p = @user.profile.specialties
     .col.s8
       .row
         .col.s12
           .card
             .card-header Summary
             .card-content
-              p Experienced financial modeler with working experiences in investment banks, corporate finance houses and corporate in-house M&A team
+              p = @user.profile.summary
         .col.s12
           .card
             .card-header Featured Projects
