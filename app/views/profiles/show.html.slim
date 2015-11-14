@@ -1,54 +1,53 @@
-.container
-  .row
-    .col.s4
-      .row
-        .col.s12
-          .card
-            .card-image
-              = image_tag @user.profile.image_url
-              .card-title Han Sheng
-              .card-subtitle = @user.profile.headline
-            .card-content
-              | 3 years of experience
-              br
-              = @user.profile.location
-        .col.s12
-          .card
-            .card-header Expertise
-            .card-content
-              p = @user.profile.industry
-              p = @user.profile.specialties
-    .col.s8
-      .row
-        .col.s12
-          .card
-            .card-header Summary
-            .card-content
-              p = @user.profile.summary
-        .col.s12
-          .card
-            .card-header Featured Projects
-            .card-content
-              p Financial model for Jasper Offshore to support bank re-financing
-              p Feasibility report to evaluate an opportunity in an Indonesian Offshore Marine Centre
-              p Sell-side advisor to Great Wall Foodstuff in its JV with Wilmar
-              p Sell-side advisor to one of the top 10 travel agents in Singapore
-        .col.s12
-          .card
-            .card-header Experience
-            .card-content
-              p Maersk Group
-              p KPMG M&A Advisory
-              p Standard Chartered
-              p Rothschild
-              p Brand Valuation PLC
-        .col.s12
-          .card
-            .card-header Qualifications
-            .card-content
-              p Bachelor of Business Management, Singapore Management University
-        .col.s12
-          .card
-            .card-header Reviews
-            .card-content
-              p "Worked with Han Sheng on a project and he was very timely and professional in his responses."
+.row
+  .col.s4
+    .row
+      .col.s12
+        .card
+          .card-image
+            = image_tag @user.profile.image_url
+            .card-title Han Sheng
+            .card-subtitle = @user.profile.headline
+          .card-content
+            | 3 years of experience
+            br
+            = @user.profile.location
+      .col.s12
+        .card
+          .card-header Expertise
+          .card-content
+            p = @user.profile.industry
+            p = @user.profile.specialties
+  .col.s8
+    .row
+      .col.s12
+        .card
+          .card-header Summary
+          .card-content
+            p = @user.profile.summary
+      .col.s12
+        .card
+          .card-header Featured Projects
+          .card-content
+            p Financial model for Jasper Offshore to support bank re-financing
+            p Feasibility report to evaluate an opportunity in an Indonesian Offshore Marine Centre
+            p Sell-side advisor to Great Wall Foodstuff in its JV with Wilmar
+            p Sell-side advisor to one of the top 10 travel agents in Singapore
+      .col.s12
+        .card
+          .card-header Experience
+          .card-content
+            p Maersk Group
+            p KPMG M&A Advisory
+            p Standard Chartered
+            p Rothschild
+            p Brand Valuation PLC
+      .col.s12
+        .card
+          .card-header Qualifications
+          .card-content
+            p Bachelor of Business Management, Singapore Management University
+      .col.s12
+        .card
+          .card-header Reviews
+          .card-content
+            p "Worked with Han Sheng on a project and he was very timely and professional in his responses."

@@ -20,5 +20,10 @@ html lang="en"
 
   body[class="#{controller_name} #{action_name} grey lighten-5"]
     = render 'layouts/header'
-    = render 'layouts/messages'
-    = yield
+    - if controller_name == "home"
+      = render 'layouts/messages'
+      = yield
+    - else
+      .container
+        = render 'layouts/messages'
+        = yield
