@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20151114064937) do
     t.text     "summary"
     t.string   "industry"
     t.string   "specialties"
-    t.string   "profile_url"
+    t.string   "image_url"
     t.string   "linkedin_url"
     t.string   "location"
     t.string   "country_code"

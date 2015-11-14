@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
         summary: auth.extra.raw_info.summary,
         industry: auth.extra.raw_info.industry,
         specialties: auth.extra.raw_info.specialties,
-        profile_url: auth.extra.raw_info.pictureUrls["values"][0],
+        image_url: auth.extra.raw_info.pictureUrls["values"][0],
         linkedin_url: auth.extra.raw_info.publicProfileUrl,
         location: auth.extra.raw_info.location.name,
         country_code: auth.extra.raw_info.location.country.code
