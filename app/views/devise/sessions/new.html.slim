@@ -1,0 +1,30 @@
+.row
+  .col.s12.m8.offset-m2
+    .card.login
+      .card-header Log in
+      .card-content
+        = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+          .row
+            .input-field.col.s12
+              = f.email_field :email, autofocus: true
+              = f.label :email
+
+          .row
+            .input-field.col.s12
+              = f.password_field :password, autocomplete: "off"
+              = f.label :password
+
+          .row
+            .input.col.s12.m6
+              - if devise_mapping.rememberable?
+                .row
+                  .input.col.s12
+                    = f.check_box :remember_me
+                    = f.label :remember_me
+              .row
+                .input-field.col.s12.m6
+                  .actions
+                    = f.submit "Log in", class: "btn green darken-4"
+
+            .col.s12.m6.right-align
+              = render "devise/shared/links"
