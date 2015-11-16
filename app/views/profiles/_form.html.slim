@@ -1,0 +1,38 @@
+= form_for(@profile) do |f|
+  - if @profile.errors.any?
+    #error_explanation
+      h5
+        = pluralize(@profile.errors.count, "error")
+        |  prohibited this profile from being saved:
+
+      ul
+        - @profile.errors.full_messages.each do |message|
+          li = message
+
+  = f.fields_for :user do |ff|
+    .row
+      .input-field.col.s12.m6
+        = ff.text_field :first_name
+        = ff.label :first_name
+      .input-field.col.s12.m6
+        = ff.text_field :last_name
+        = ff.label :last_name
+
+  .row
+    .input-field.col.s12
+      = f.text_field :headline
+      = f.label :headline
+  .row
+    .input-field.col.s12
+      = f.text_area :summary, class: "materialize-textarea"
+      = f.label :summary
+  .row
+    .input-field.col.s12.m6
+      = f.text_field :industry
+      = f.label :industry
+    .input-field.col.s12.m6
+      = f.text_field :specialties
+      = f.label :specialties
+
+  .actions
+    = f.submit class: "btn green darken-4"

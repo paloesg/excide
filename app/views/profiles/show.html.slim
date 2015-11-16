@@ -23,7 +23,7 @@
         .card
           .card-header Summary
           .card-content
-            p = @user.profile.summary
+            p = @user.profile.summary.present? ? @user.profile.summary : link_to('Add your summary', edit_profile_path)
       .col.s12
         .card
           .card-header Featured Projects
