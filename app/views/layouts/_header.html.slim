@@ -7,6 +7,7 @@
           sup  Beta
         ul.right
           - if current_user
-            li=link_to current_user.first_name, profile_path
+            li = link_to current_user.first_name, profile_path
+            li = link_to "Logout", destroy_user_session_path, method: :delete
           - else
-            li=link_to "Login", new_user_session_path
+            li = link_to "Login", new_user_session_path
