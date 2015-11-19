@@ -1,10 +1,14 @@
 window.App ||= {}
 
 App.init = ->
-  $('#fullpage').fullpage({
-    responsiveWidth: 992
-  })
   mixpanel.track("Page view");
+
+  if $('body').hasClass('index')
+    $('#fullpage').fullpage({
+      responsiveWidth: 992
+    })
+  else
+    $('#fullpage').fullpage.destroy('all')
 
 $(document).on "page:change", ->
   App.init()
