@@ -41,7 +41,7 @@ class ProfilesController < ApplicationController
   # PATCH/PUT /profiles/1.json
   def update
     if @profile.update(profile_params)
-      redirect_to @profile, notice: 'Profile was successfully updated.'
+      redirect_to profile_path, notice: 'Profile was successfully updated.'
     else
       render :edit
     end
