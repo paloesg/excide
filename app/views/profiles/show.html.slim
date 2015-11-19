@@ -26,28 +26,6 @@
             p = @user.profile.summary.present? ? @user.profile.summary : link_to('Add your summary', edit_profile_path)
       .col.s12
         .card
-          .card-header Featured Projects
-          .card-content
-            p Financial model for Jasper Offshore to support bank re-financing
-            p Feasibility report to evaluate an opportunity in an Indonesian Offshore Marine Centre
-            p Sell-side advisor to Great Wall Foodstuff in its JV with Wilmar
-            p Sell-side advisor to one of the top 10 travel agents in Singapore
-      .col.s12
-        .card
           .card-header Experience
           .card-content
-            p Maersk Group
-            p KPMG M&A Advisory
-            p Standard Chartered
-            p Rothschild
-            p Brand Valuation PLC
-      .col.s12
-        .card
-          .card-header Qualifications
-          .card-content
-            p Bachelor of Business Management, Singapore Management University
-      .col.s12
-        .card
-          .card-header Reviews
-          .card-content
-            p "Worked with Han Sheng on a project and he was very timely and professional in his responses."
+            p = link_to('Add your experience', edit_profile_path)
