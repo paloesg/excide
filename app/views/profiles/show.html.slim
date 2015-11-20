@@ -6,9 +6,8 @@
           .card-image
             = image_tag @user.profile.image_url
             .card-title Han Sheng
-            .card-subtitle = @user.profile.headline
           .card-content
-            | 3 years of experience
+            = @user.profile.headline
             br
             = @user.profile.location
       .col.s12
@@ -30,9 +29,11 @@
           .card-content
             - if @experiences.present?
               - @experiences.each do |e|
-                p = e.title
-                p = e.company
-                p = e.start_date.to_s + ' – ' + e.end_date.to_s
+                p
+                  strong = e.title
+                p
+                  em = e.company
+                p = e.start_date.strftime('%b %Y') + ' – ' + e.end_date.strftime('%b %Y')
                 p = e.description
             - else
               p = link_to('Add your experience', edit_profile_path)
