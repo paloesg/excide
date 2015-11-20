@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
       user.first_name = auth.info.first_name
       user.last_name = auth.info.last_name
-      user.create_profile!(
+      profile = user.create_profile!(
         headline: auth.extra.raw_info.headline,
         summary: auth.extra.raw_info.summary,
         industry: auth.extra.raw_info.industry,
@@ -20,6 +20,13 @@ class User < ActiveRecord::Base
         linkedin_url: auth.extra.raw_info.publicProfileUrl,
         location: auth.extra.raw_info.location.name,
         country_code: auth.extra.raw_info.location.country.code
+      )
+      position = auth.extra.raw_info.positions["values"][0]
+      experience = profile.experiences.create!(
+        title: position.title,
+        company: position.company.name,
+        start_date: Date.parse('position.startDate.month + " " + position.startDate.year'),
+        description: position.summary
       )
     end
   end

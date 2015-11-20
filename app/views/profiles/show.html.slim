@@ -29,11 +29,13 @@
           .card-content
             - if @experiences.present?
               - @experiences.each do |e|
-                p
-                  strong = e.title
-                p
-                  em = e.company
-                p = e.start_date.strftime('%b %Y') + ' – ' + e.end_date.strftime('%b %Y')
-                p = e.description
+                .row
+                  .col.s12
+                    p
+                      strong = e.title
+                    p
+                      em = e.company
+                    p = e.start_date.strftime('%b %Y') + ' – ' + (e.end_date.present? ? e.end_date.strftime('%b %Y') : "Present")
+                    p = e.description
             - else
               p = link_to('Add your experience', edit_profile_path)
