@@ -34,7 +34,7 @@
       = f.text_field :specialties
       = f.label :specialties
 
-  h5 Current Position
+  h5 Experience
   = f.fields_for :experiences do |e|
     .row
       .input-field.col.s12.m6
@@ -50,6 +50,24 @@
       .col.s12.m6
         = e.label :end_date
         = e.date_field :end_date
+    .row
+      .input-field.col.s12
+        = e.text_area :description, class: "materialize-textarea"
+        = e.label :description
+
+  h5 Qualifications
+  = f.fields_for :qualifications do |e|
+    .row
+      .input-field.col.s12.m6
+        = e.text_field :title
+        = e.label :title
+      .input-field.col.s12.m6
+        = e.text_field :institution
+        = e.label :institution
+    .row
+      .col.s12.m6
+        = e.label :year_obtained
+        = e.number_field :year_obtained
     .row
       .input-field.col.s12
         = e.text_area :description, class: "materialize-textarea"

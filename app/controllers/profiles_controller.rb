@@ -22,6 +22,10 @@ class ProfilesController < ApplicationController
     if @experiences.blank?
       @experiences.build
     end
+
+    if @qualifications.blank?
+      @qualifications.build
+    end
   end
 
   # POST /profiles
@@ -66,10 +70,16 @@ class ProfilesController < ApplicationController
       @user = current_user
       @profile = @user.profile
       @experiences = @profile.experiences
+      @qualifications = @profile.qualifications
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def profile_params
-      params.require(:profile).permit(:id, :headline, :summary, :industry, :specialties, :location, :country_code, user_attributes: [:id, :first_name, :last_name, :email, :password], experiences_attributes: [:id, :title, :company, :start_date, :end_date, :description])
+      params.require(:profile).permit(
+        :id, :headline, :summary, :industry, :specialties, :location, :country_code,
+        user_attributes: [:id, :first_name, :last_name, :email, :password],
+        experiences_attributes: [:id, :title, :company, :start_date, :end_date, :description],
+        qualifications_attributes: [:id, :title, :institution, :year_obtained, :description]
+      )
     end
 end

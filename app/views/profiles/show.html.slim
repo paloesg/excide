@@ -39,3 +39,19 @@
                     p = e.description
             - else
               p = link_to('Add your experience', edit_profile_path)
+      .col.s12
+        .card
+          .card-header Qualifications
+          .card-content
+            - if @qualifications.present?
+              - @qualifications.each do |e|
+                .row
+                  .col.s12
+                    p
+                      strong = e.title
+                      ' ,
+                      em = e.institution
+                      |  (#{e.year_obtained})
+                    p = e.description
+            - else
+              p = link_to('Add your qualifications', edit_profile_path)
