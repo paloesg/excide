@@ -28,4 +28,11 @@
         .card
           .card-header Experience
           .card-content
-            p = link_to('Add your experience', edit_profile_path)
+            - if @experiences.present?
+              - @experiences.each do |e|
+                p = e.title
+                p = e.company
+                p = e.start_date.to_s + ' – ' + e.end_date.to_s
+                p = e.description
+            - else
+              p = link_to('Add your experience', edit_profile_path)

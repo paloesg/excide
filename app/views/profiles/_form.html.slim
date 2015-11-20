@@ -9,14 +9,14 @@
         - @profile.errors.full_messages.each do |message|
           li = message
 
-  = f.fields_for :user do |ff|
+  = f.fields_for :user do |u|
     .row
       .input-field.col.s12.m6
-        = ff.text_field :first_name
-        = ff.label :first_name
+        = u.text_field :first_name
+        = u.label :first_name
       .input-field.col.s12.m6
-        = ff.text_field :last_name
-        = ff.label :last_name
+        = u.text_field :last_name
+        = u.label :last_name
 
   .row
     .input-field.col.s12
@@ -33,6 +33,26 @@
     .input-field.col.s12.m6
       = f.text_field :specialties
       = f.label :specialties
+
+  = f.fields_for :experiences do |e|
+    .row
+      .input-field.col.s12.m6
+        = e.text_field :title
+        = e.label :title
+      .input-field.col.s12.m6
+        = e.text_field :company
+        = e.label :company
+    .row
+      .col.s12.m6
+        = e.label :start_date
+        = e.date_field :start_date
+      .col.s12.m6
+        = e.label :end_date
+        = e.date_field :end_date
+    .row
+      .input-field.col.s12
+        = e.text_area :description, class: "materialize-textarea"
+        = e.label :description
 
   .actions
     = f.submit class: "btn green darken-4"
