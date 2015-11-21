@@ -21,13 +21,15 @@ class User < ActiveRecord::Base
         location: auth.extra.raw_info.location.name,
         country_code: auth.extra.raw_info.location.country.code
       )
-      position = auth.extra.raw_info.positions["values"][0]
-      experience = profile.experiences.create!(
-        title: position.title,
-        company: position.company.name,
-        start_date: Date.parse('position.startDate.month + " " + position.startDate.year'),
-        description: position.summary
-      )
+      unless auth.extra.raw_info.positions["_total"] == 0
+        position = auth.extra.raw_info.positions["values"][0]
+        experience = profile.experiences.create!(
+          title: position.title,
+          company: position.company.name,
+          start_date: Date.parse('position.startDate.month + " " + position.startDate.year'),
+          description: position.summary
+        )
+      end
     end
   end
 end
