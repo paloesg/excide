@@ -35,6 +35,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Frontend framework
 gem 'materialize-sass', '0.97.1'
 
+# Nested form helper
+gem "cocoon"
+
 # Authentication
 gem 'devise'
 
