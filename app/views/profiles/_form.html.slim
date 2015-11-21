@@ -9,69 +9,65 @@
         - @profile.errors.full_messages.each do |message|
           li = message
 
-  = f.fields_for :user do |u|
-    .row
-      .input-field.col.s12.m6
-        = u.text_field :first_name
-        = u.label :first_name
-      .input-field.col.s12.m6
-        = u.text_field :last_name
-        = u.label :last_name
+  .row
+    .col.s12
+      .card
+        .card-header General
+        .card-content
+          = f.fields_for :user do |u|
+            .row
+              .input-field.col.s12.m6
+                = u.text_field :first_name
+                = u.label :first_name
+              .input-field.col.s12.m6
+                = u.text_field :last_name
+                = u.label :last_name
+
+          .row
+            .input-field.col.s12
+              = f.text_field :headline
+              = f.label :headline
+          .row
+            .input-field.col.s12
+              = f.text_area :summary, class: "materialize-textarea"
+              = f.label :summary
+          .row
+            .input-field.col.s12.m6
+              = f.text_field :industry
+              = f.label :industry
+            .input-field.col.s12.m6
+              = f.text_field :specialties
+              = f.label :specialties
 
   .row
-    .input-field.col.s12
-      = f.text_field :headline
-      = f.label :headline
-  .row
-    .input-field.col.s12
-      = f.text_area :summary, class: "materialize-textarea"
-      = f.label :summary
-  .row
-    .input-field.col.s12.m6
-      = f.text_field :industry
-      = f.label :industry
-    .input-field.col.s12.m6
-      = f.text_field :specialties
-      = f.label :specialties
+    .col.s12
+      .card
+        .card-header Experience
+        .card-content
+          = f.fields_for :experiences do |e|
+            = render 'experience_fields', f: e
 
-  h5 Experience
-  = f.fields_for :experiences do |e|
-    .row
-      .input-field.col.s12.m6
-        = e.text_field :title
-        = e.label :title
-      .input-field.col.s12.m6
-        = e.text_field :company
-        = e.label :company
-    .row
-      .col.s12.m6
-        = e.label :start_date
-        = e.date_field :start_date
-      .col.s12.m6
-        = e.label :end_date
-        = e.date_field :end_date
-    .row
-      .input-field.col.s12
-        = e.text_area :description, class: "materialize-textarea"
-        = e.label :description
-
-  h5 Qualifications
-  = f.fields_for :qualifications do |e|
-    .row
-      .input-field.col.s12.m6
-        = e.text_field :title
-        = e.label :title
-      .input-field.col.s12.m6
-        = e.text_field :institution
-        = e.label :institution
-    .row
-      .col.s12.m6
-        = e.label :year_obtained
-        = e.number_field :year_obtained
-    .row
-      .input-field.col.s12
-        = e.text_area :description, class: "materialize-textarea"
-        = e.label :description
+  .row
+    .col.s12
+      .card
+        .card-header Qualifications
+        .card-content
+          = f.fields_for :qualifications do |e|
+            .row
+              .input-field.col.s12.m6
+                = e.text_field :title
+                = e.label :title
+              .input-field.col.s12.m6
+                = e.text_field :institution
+                = e.label :institution
+            .row
+              .col.s12.m6
+                = e.label :year_obtained
+                = e.number_field :year_obtained
+            .row
+              .input-field.col.s12
+                = e.text_area :description, class: "materialize-textarea"
+                = e.label :description
 
   .actions
     = f.submit class: "btn green darken-4"
