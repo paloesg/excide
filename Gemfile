@@ -49,6 +49,9 @@ gem 'omniauth-linkedin-oauth2'
 # Analytics
 gem 'mixpanel-ruby'
 
+#Backend admin
+gem 'administrate'
+
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
 
