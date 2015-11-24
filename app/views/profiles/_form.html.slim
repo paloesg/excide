@@ -14,15 +14,6 @@
       .card
         .card-header General
         .card-content
-          = f.fields_for :user do |u|
-            .row
-              .input-field.col.s12.m6
-                = u.text_field :first_name
-                = u.label :first_name
-              .input-field.col.s12.m6
-                = u.text_field :last_name
-                = u.label :last_name
-
           .row
             .input-field.col.s12
               = f.text_field :headline

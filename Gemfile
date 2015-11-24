@@ -41,6 +41,12 @@ gem "cocoon"
 # Authentication
 gem 'devise'
 
+# Roles
+gem 'rolify'
+
+# Authorization
+gem 'pundit'
+
 # LinkedIn API integration
 gem 'omniauth'
 gem 'omniauth-oauth2', '~> 1.3.1'
