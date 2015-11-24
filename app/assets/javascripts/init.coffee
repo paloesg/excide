@@ -7,7 +7,7 @@ App.init = ->
     $('#fullpage').fullpage({
       responsiveWidth: 992
     })
-  else
+  else if $.isFunction($('#fullpage').fullpage.destroy)
     $('#fullpage').fullpage.destroy('all')
 
 $(document).on "page:change", ->
