@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
   has_one :profile, dependent: :destroy
 
+  before_create :build_default_profile
+
   def self.from_omniauth(auth)
     logger.info auth
 
@@ -14,6 +16,7 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
       user.first_name = auth.info.first_name
       user.last_name = auth.info.last_name
+
       profile = user.create_profile!(
         headline: auth.extra.raw_info.headline,
         summary: auth.extra.raw_info.summary,
@@ -24,6 +27,7 @@ class User < ActiveRecord::Base
         location: auth.extra.raw_info.location.name,
         country_code: auth.extra.raw_info.location.country.code
       )
+
       unless auth.extra.raw_info.positions["_total"] == 0
         position = auth.extra.raw_info.positions["values"][0]
         experience = profile.experiences.create!(
@@ -34,5 +38,12 @@ class User < ActiveRecord::Base
         )
       end
     end
+  end
+
+  private
+
+  def build_default_profile
+    build_profile
+    true
   end
 end
