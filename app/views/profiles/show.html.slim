@@ -14,8 +14,11 @@
         .card
           .card-header Expertise
           .card-content
-            p = @user.profile.industry
-            p = @user.profile.specialties
+            - unless @user.profile.industry.present? || @user.profile.specialties.present?
+              p = link_to 'Add your expertise', edit_profile_path
+            - else
+              p = @user.profile.industry
+              p = @user.profile.specialties
   .col.s12.m6.l8
     .row
       .col.s12
