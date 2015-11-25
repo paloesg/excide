@@ -1,3 +1,22 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.linkedin-login {
+  background: image-url("Sign-In-with-LinkedIn-Default.png") center/215px 40px no-repeat;
+  display:block;
+  width: 215;
+  height: 40px;
+  overflow:hidden;
+  text-indent:100%;
+  white-space:nowrap;
+  margin: 40px 0;
+}
+
+.linkedin-login:hover {
+  background-image: image-url("Sign-In-with-LinkedIn-Hover.png");
+}
+
+.linkedin-login:active {
+  background-image: image-url("Sign-In-with-LinkedIn-Active.png");
+}

@@ -3,10 +3,17 @@
     .card.login
       .card-header Log in
       .card-content
+        .row
+          .col.s12.center
+            = link_to "Log in with LinkedIn", user_omniauth_authorize_path(:linkedin, role: :consultant), class: 'linkedin-login'
+
+        .row
+          .col.s12.center-align - OR -
+
         = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
           .row
             .input-field.col.s12
-              = f.email_field :email, autofocus: true
+              = f.email_field :email
               = f.label :email
 
           .row
@@ -25,6 +32,3 @@
                 .input-field.col.s12.m6
                   .actions
                     = f.submit "Log in", class: "btn green darken-4"
-
-            .col.s12.m6.right-align
-              = render "devise/shared/links"

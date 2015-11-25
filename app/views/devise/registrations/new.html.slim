@@ -1,14 +1,20 @@
 .row
   .col.s12.m8.offset-m2
     .card.login
-      .card-header Sign up
+      .card-header Sign up as a #{params[:role]}
       .card-content
+        .row
+          .col.s12.center
+            = link_to "Sign up with LinkedIn", user_omniauth_authorize_path(:linkedin), class: 'linkedin-login'
+
+        .row
+          .col.s12.center-align - OR -
+
         = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
           = devise_error_messages!
-
           .row
             .input-field.col.s12
-              = f.email_field :email, autofocus: true
+              = f.email_field :email
               = f.label :email
 
             .input-field.col.s12
@@ -22,6 +28,3 @@
           .row
             .actions.col.s12.m6
               = f.submit "Sign up", class: "btn green darken-4"
-
-            .col.s12.m6.right-align
-              = render "devise/shared/links"
