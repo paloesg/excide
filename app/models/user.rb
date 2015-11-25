@@ -8,14 +8,16 @@ class User < ActiveRecord::Base
 
   before_create :build_default_profile
 
-  def self.from_omniauth(auth)
+  def self.from_omniauth(auth, params)
     logger.info auth
+    logger.info params
 
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
       user.password = Devise.friendly_token[0,20]
       user.first_name = auth.info.first_name
       user.last_name = auth.info.last_name
+      user.add_role params["role"].to_sym
 
       profile = user.create_profile!(
         headline: auth.extra.raw_info.headline,

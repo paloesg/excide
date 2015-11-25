@@ -5,7 +5,7 @@
       .card-content
         .row
           .col.s12.center
-            = link_to "Sign up with LinkedIn", user_omniauth_authorize_path(:linkedin), class: 'linkedin-login'
+            = link_to "Sign up with LinkedIn", user_omniauth_authorize_path(:linkedin, role: params[:role]), class: 'linkedin-login'
 
         .row
           .col.s12.center-align - OR -
