@@ -7,7 +7,10 @@ Rails.application.routes.draw do
     root controller: DashboardManifest::ROOT_DASHBOARD, action: :index
   end
 
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  as :user do
+    get '/:role/sign_up', to: 'users/registrations#new', as: :new_user_registration
+  end
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }
 
   get 'profile', to: 'profiles#show'
   get 'profile/edit', to: 'profiles#edit', as: :edit_profile
