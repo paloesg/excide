@@ -1,3 +1,9 @@
+ul#user-dropdown.dropdown-content
+  li = link_to "Profile", profile_path
+  - if controller_name == "profiles" && action_name == "show"
+    li = link_to "Edit Profile", edit_profile_path
+  li = link_to "Account", root_path
+  li = link_to "Logout", destroy_user_session_path, method: :delete
 .navbar-fixed
   nav.green.darken-4
     .container
@@ -7,9 +13,8 @@
           sup  Beta
         ul.right
           - if current_user
-            - if controller_name == "profiles" && action_name == "show"
-              li = link_to "Edit Profile", edit_profile_path
-            li = link_to current_user.first_name, profile_path
-            li = link_to "Logout", destroy_user_session_path, method: :delete
+            li = link_to "", class: "dropdown-button", data: { activates: "user-dropdown" } do
+              = current_user.first_name
+              i.material-icons.right.hide-on-med-and-down arrow_drop_down
           - else
             li = link_to "Login", new_user_session_path
