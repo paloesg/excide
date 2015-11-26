@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
       profile_path
     elsif current_user.has_role? :business
       business_path
+    else
+      root_path
     end
   end
 end
