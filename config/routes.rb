@@ -8,9 +8,11 @@ Rails.application.routes.draw do
   end
 
   as :user do
-    get '/:role/sign_up', to: 'users/registrations#new', as: :new_user_registration
+    get '/:role/register', to: 'users/registrations#new', as: :register
+    get 'login', to: 'devise/sessions#new', as: :login
+    get 'logout', to: 'devise/sessions#destroy', as: :logout
   end
-  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout' }
 
   get 'profile', to: 'profiles#show'
   get 'profile/edit', to: 'profiles#edit', as: :edit_profile
