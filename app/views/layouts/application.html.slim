@@ -19,12 +19,13 @@ html lang="en"
       mixpanel.init($('meta[name="mixpanel-token"]').attr('content'));
 
   body[class="#{controller_name} #{action_name} grey lighten-5"]
-    = render 'layouts/header'
-    - if controller_name == "home"
-      = render 'layouts/messages'
-      = yield
-    - else
-      .container
-        = render 'layouts/messages'
+    header = render 'layouts/header'
+    = render 'layouts/messages'
+    main
+      - if controller_name == "home"
         = yield
-    = render 'layouts/footer'
+      - else
+        .container
+          = yield
+    footer.page-footer.grey.lighten-3
+      = render 'layouts/footer'

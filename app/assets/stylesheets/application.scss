@@ -17,6 +17,16 @@
 @import "materialize";
 @import "jquery.fullPage";
 
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
 nav .brand-logo {
   background-image: image-url("logo-light.png");
   background-position: center left;
