@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   end
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout' }
 
+  get 'account/new', to: 'accounts#new', as: :new_account
+  get 'account', to: 'accounts#edit', as: :edit_account
+  patch 'account', to: 'accounts#update'
+
   get 'profile', to: 'profiles#show'
   get 'profile/edit', to: 'profiles#edit', as: :edit_profile
   patch 'profile', to: 'profiles#update'
