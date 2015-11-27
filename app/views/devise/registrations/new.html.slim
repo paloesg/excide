@@ -19,7 +19,7 @@
 
             .input-field.col.s12
               = f.password_field :password, autocomplete: "off"
-              = f.label "Password (#{@minimum_password_length} characters minimum)"
+              = f.label :password, "Password (#{@minimum_password_length} characters minimum)"
 
             .input-field.col.s12
               = f.password_field :password_confirmation, autocomplete: "off"

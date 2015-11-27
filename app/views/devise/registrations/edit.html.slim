@@ -19,7 +19,7 @@
           .row
             .input-field.col.s12
               = f.password_field :password, autocomplete: "off"
-              = f.label "Password (leave blank if you don't want to change it)"
+              = f.label :password, "Password (leave blank if you don't want to change it)"
 
           .row
             .input-field.col.s12
@@ -29,7 +29,7 @@
           .row
             .input-field.col.s12
               = f.password_field :current_password, autocomplete: "off"
-              = f.label "Current password (we need your current password to confirm your changes)"
+              = f.label :current_password, "Current password (we need your current password to confirm your changes)"
 
           .row
             .actions.col.s12

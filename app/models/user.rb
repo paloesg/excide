@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
 
       unless auth.extra.raw_info.positions["_total"] == 0
         position = auth.extra.raw_info.positions["values"][0]
-        experience = profile.experiences.create!(
+        experience = profile.create_experience!(
           title: position.title,
           company: position.company.name,
           start_date: Date.parse('position.startDate.month + " " + position.startDate.year'),
