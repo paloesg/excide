@@ -1,5 +1,3 @@
-.row
-  .large-12.columns
-    - flash.each do |name, msg|
-      javascript:
-        Materialize.toast("#{msg}", 5000);
+- flash.each do |name, msg|
+  javascript:
+    Materialize.toast("#{msg}", 5000);
