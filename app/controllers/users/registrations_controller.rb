@@ -4,7 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    if params[:role].to_sym == :consultant || params[:role].to_sym == :business
+    if params[:role] == 'consultant' || params[:role] == 'business'
       super
     else
       raise ActionController::RoutingError.new('No route matches [GET] "/' + params[:role] + '/sign_up"')
