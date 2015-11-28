@@ -12,7 +12,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       session["devise.linkedin_data"] = request.env["omniauth.auth"]
 
       if @user.save
-        profile = @user.create_profile(
+        profile = @user.profile.update_attributes(
           headline: auth.extra.raw_info.headline,
           summary: auth.extra.raw_info.summary,
           industry: auth.extra.raw_info.industry,

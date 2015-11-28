@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 
   has_one :profile, dependent: :destroy
 
+  before_create :build_default_profile
+
   def self.from_omniauth(auth, params)
     logger.info auth
     logger.info params
@@ -18,5 +20,12 @@ class User < ActiveRecord::Base
       user.last_name = auth.info.last_name
       user.add_role params["role"].to_sym
     end
+  end
+
+  private
+
+  def build_default_profile
+    build_profile
+    true
   end
 end
