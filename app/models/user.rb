@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   rolify
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:linkedin]
@@ -7,6 +8,12 @@ class User < ActiveRecord::Base
   has_one :profile, dependent: :destroy
 
   before_create :build_default_profile
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :contact_number, presence: true, on: :update
+  validates :allow_contact, inclusion: { in: [true] }, on: :update
+  validates :agree_terms, inclusion: { in: [true] }, on: :update
 
   def self.from_omniauth(auth, params)
     logger.info auth
@@ -19,7 +26,7 @@ class User < ActiveRecord::Base
       user.last_name = auth.info.last_name
       user.add_role params["role"].to_sym
 
-      profile = user.create_profile!(
+      profile = user.build_profile(
         headline: auth.extra.raw_info.headline,
         summary: auth.extra.raw_info.summary,
         industry: auth.extra.raw_info.industry,
@@ -32,7 +39,7 @@ class User < ActiveRecord::Base
 
       unless auth.extra.raw_info.positions["_total"] == 0
         position = auth.extra.raw_info.positions["values"][0]
-        experience = profile.create_experience!(
+        experience = profile.build_experience(
           title: position.title,
           company: position.company.name,
           start_date: Date.parse('position.startDate.month + " " + position.startDate.year'),

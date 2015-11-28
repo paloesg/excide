@@ -25,5 +25,10 @@ module Excide
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Override rails behaviour of wrapping form fields with error with a field_with_errors div to prevent issues with materialize
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance|
+      html_tag
+    }
   end
 end

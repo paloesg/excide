@@ -7,9 +7,18 @@ class AccountsController < ApplicationController
   def edit
   end
 
+  # Technically not creating a new entry. Updates user account details when user is first created and redirected here.
+  def create
+    if @user.update(user_params)
+      redirect_to profile_path, notice: 'Your account was successfully created.'
+    else
+      render :new
+    end
+  end
+
   def update
     if @user.update(user_params)
-      redirect_to profile_path, notice: 'User was successfully updated.'
+      redirect_to edit_account_path, notice: 'User was successfully updated.'
     else
       render :edit
     end
