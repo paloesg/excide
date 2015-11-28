@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   as :user do
     get '/:role/register', to: 'users/registrations#new', as: :register
-    get 'login', to: 'devise/sessions#new', as: :login
+    get '/:role/login', to: 'devise/sessions#new', as: :login
     get 'logout', to: 'devise/sessions#destroy', as: :logout
   end
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout' }
