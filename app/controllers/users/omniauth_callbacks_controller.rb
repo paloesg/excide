@@ -12,7 +12,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       session["devise.linkedin_data"] = request.env["omniauth.auth"]
 
       if @user.save
-        profile = @user.profile.update_attributes(
+        @user.profile.update_attributes(
           headline: auth.extra.raw_info.headline,
           summary: auth.extra.raw_info.summary,
           industry: auth.extra.raw_info.industry,
@@ -25,7 +25,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
         unless auth.extra.raw_info.positions["_total"] == 0
           position = auth.extra.raw_info.positions["values"][0]
-          experience = profile.experiences.create(
+          experience = @user.profile.experiences.create(
             title: position.title,
             company: position.company.name,
             start_date: Date.parse('position.startDate.month + " " + position.startDate.year'),
