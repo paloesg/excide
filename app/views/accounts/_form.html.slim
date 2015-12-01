@@ -12,19 +12,17 @@
   .input-field.col.s12
     = f.text_field :last_name
     = f.label :last_name
-.row
+.row.row-margin
   .col.s12
     = f.check_box :allow_contact, class: 'filled-in'
     = f.label :allow_contact, "Excide may contact me if there are suitable projects that fit my profile."
 - if action_name == 'new' || action_name == 'create'
-  .row
+  .row.row-margin
     .col.s12
       = f.check_box :agree_terms, class: 'filled-in'
       = f.label :agree_terms, "I agree to the terms of use."
 
 .row
   .input.col.s12.m6
-    .row
-      .input-field.col.s12.m6
-        .actions
-          = f.submit "Confirm", class: "btn green darken-4"
+    .actions
+      = f.submit "Confirm", class: "btn green darken-4"
