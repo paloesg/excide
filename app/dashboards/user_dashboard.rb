@@ -26,7 +26,6 @@ class UserDashboard < Administrate::BaseDashboard
     uid: Field::String,
     first_name: Field::String,
     last_name: Field::String,
-    roles: Field::HasMany,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -41,7 +40,6 @@ class UserDashboard < Administrate::BaseDashboard
     :email,
     :created_at,
     :updated_at,
-    :roles,
   ]
 
   # SHOW_PAGE_ATTRIBUTES
