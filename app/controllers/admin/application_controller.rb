@@ -8,8 +8,11 @@ class Admin::ApplicationController < Administrate::ApplicationController
   before_filter :authenticate_admin
 
   def authenticate_admin
-    redirect_to new_user_session_path unless current_user
-    redirect_to root_path unless current_user.has_role? :admin
+    unless current_user
+      redirect_to new_user_session_path
+    else
+      redirect_to root_path unless current_user.has_role? :admin
+    end
   end
 
   # Override this value to specify the number of elements to display at a time
