@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_user
 
   def new
@@ -12,7 +13,7 @@ class AccountsController < ApplicationController
     if @user.update(user_params)
       redirect_to profile_path, notice: 'Your account was successfully created.'
     else
-      render :new
+      render :new, error: 'Please ensure that all fields are entered.'
     end
   end
 

@@ -1,4 +1,5 @@
 class ProfilesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
 
   # GET /profiles
@@ -77,7 +78,6 @@ class ProfilesController < ApplicationController
     def profile_params
       params.require(:profile).permit(
         :id, :headline, :summary, :industry, :specialties, :location, :country_code,
-        user_attributes: [:id, :first_name, :last_name, :email, :password],
         experiences_attributes: [:id, :title, :company, :start_date, :end_date, :description],
         qualifications_attributes: [:id, :title, :institution, :year_obtained, :description]
       )
