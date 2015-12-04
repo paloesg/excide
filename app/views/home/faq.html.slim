@@ -1,7 +1,13 @@
 .container
   .row
     .col.s12
-      h5 For Businesses
+      ul.tabs
+        li.tab.col.s6
+          a href="#businesses" For Businesses
+        li.tab.col.s6
+          a href="#consultants" For Consultants
+  .row
+    .col.s12#businesses
       ul.collapsible data-collapsible="expandable"
         li
           .collapsible-header What types of projects are posted to Excide?
@@ -23,9 +29,8 @@
           .collapsible-header How do I make sure the consultant completes the work?
           .collapsible-body
             p Communication is key to ensure that the consultant produces what you need. Firstly, you should set a clear project scope and deliverables. Secondly, a regular review session is advisable. Thirdly, raise up any issues early with the consultants if expectations are not being met.
-  .row
-    .col.s12
-      h5 For Consultants
+
+    .col.s12#consultants
       ul.collapsible data-collapsible="expandable"
         li
           .collapsible-header What is the process of being hired?
