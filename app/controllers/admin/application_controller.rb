@@ -8,7 +8,7 @@ class Admin::ApplicationController < Administrate::ApplicationController
   before_filter :authenticate_admin
 
   def authenticate_admin
-    unless current_user
+    unless user_signed_in?
       redirect_to new_user_session_path
     else
       redirect_to root_path unless current_user.has_role? :admin
