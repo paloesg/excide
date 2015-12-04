@@ -9,6 +9,12 @@ class User < ActiveRecord::Base
 
   after_commit :create_default_profile
 
+  validates :first_name, presence: true, on: :update
+  validates :last_name, presence: true, on: :update
+  validates :contact_number, presence: true, on: :update
+  validates :allow_contact, inclusion: { in: [true] }, on: :update
+  validates :agree_terms, inclusion: { in: [true] }, on: :update
+
   def self.from_omniauth(auth, params)
     logger.info auth
     logger.info params
