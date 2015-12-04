@@ -10,6 +10,7 @@ ul#user-dropdown.dropdown-content
           | Excide
           sup  Beta
         ul.right.hide-on-med-and-down
+          li = link_to "FAQ", faq_path
           - if current_user
             li = link_to "", class: "dropdown-button", data: { activates: "user-dropdown" } do
               = current_user.first_name

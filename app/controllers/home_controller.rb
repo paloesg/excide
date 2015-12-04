@@ -4,4 +4,7 @@ class HomeController < ApplicationController
 
   def business
   end
+
+  def faq
+  end
 end
