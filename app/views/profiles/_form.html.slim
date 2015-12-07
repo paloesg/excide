@@ -45,22 +45,10 @@
       .card
         .card-header Qualifications
         .card-content
-          = f.fields_for :qualifications do |e|
-            .row
-              .input-field.col.s12.m6
-                = e.text_field :title
-                = e.label :title
-              .input-field.col.s12.m6
-                = e.text_field :institution
-                = e.label :institution
-            .row
-              .col.s12.m6
-                = e.label :year_obtained
-                = e.number_field :year_obtained
-            .row
-              .input-field.col.s12
-                = e.text_area :description, class: "materialize-textarea"
-                = e.label :description
+          = f.fields_for :qualifications do |q|
+            = render 'qualification_fields', f: q
+          .links.section
+            = link_to_add_association 'add qualification', f, :qualifications, class: "btn green darken-4"
 
   .row
     .col.s12
