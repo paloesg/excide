@@ -19,6 +19,8 @@
             - else
               p = @user.profile.industry
               p = @user.profile.specialties
+      .col.s12
+         = link_to "Edit Your Profile", edit_profile_path, class: 'btn green darken-4 wide-button btn-large'
   .col.s12.m6.l8
     .row
       .col.s12
