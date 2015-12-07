@@ -37,6 +37,8 @@
         .card-content
           = f.fields_for :experiences do |e|
             = render 'experience_fields', f: e
+          .links.section
+            = link_to_add_association 'add experience', f, :experiences, class: "btn green darken-4"
 
   .row
     .col.s12

@@ -1,4 +1,4 @@
-.nested-fields
+.nested-fields.section
   .row
     .input-field.col.s12.m6
       = f.text_field :title
@@ -17,3 +17,7 @@
     .input-field.col.s12
       = f.text_area :description, class: "materialize-textarea"
       = f.label :description
+  .row
+    .col.s12
+      = link_to_remove_association "remove", f, class: "btn green darken-4 right"
+  .divider
