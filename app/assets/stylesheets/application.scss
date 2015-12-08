@@ -75,3 +75,17 @@ sup {
 .wide-button {
   width: 100%;
 }
+
+.tabs {
+  .indicator {
+    background-color: #43a047;
+  }
+
+  .tab a {
+    color: #1B5E20;
+  }
+
+  .tab a:hover {
+    color: #4CAF50;
+  }
+}
