@@ -3,20 +3,20 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .linkedin-login {
-  background: image-url("Sign-In-with-LinkedIn-Default.png") center/215px 40px no-repeat;
-  display:block;
-  width: 215;
+  background: image-url("linkedin-buttons.png") center 0/215px 123px no-repeat;
+  display: block;
+  width: 215px;
   height: 40px;
   overflow:hidden;
   text-indent:100%;
   white-space:nowrap;
-  margin: 40px 0;
+  margin: 40px auto;
 }
 
 .linkedin-login:hover {
-  background-image: image-url("Sign-In-with-LinkedIn-Hover.png");
+  background-position: center -41px;
 }
 
 .linkedin-login:active {
-  background-image: image-url("Sign-In-with-LinkedIn-Active.png");
+  background-position: center -82px;
 }
