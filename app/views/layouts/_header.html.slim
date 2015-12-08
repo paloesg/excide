@@ -9,10 +9,19 @@ ul#user-dropdown.dropdown-content
         a.brand-logo href="/"
           | Excide
           sup  Beta
-        ul.right
+        ul.right.hide-on-med-and-down
           - if current_user
             li = link_to "", class: "dropdown-button", data: { activates: "user-dropdown" } do
               = current_user.first_name
-              i.material-icons.right.hide-on-med-and-down arrow_drop_down
+              i.material-icons.right arrow_drop_down
           - else
             li = link_to "Log in", new_user_session_path
+        ul.side-nav#user-sidenav
+          - if current_user
+            li = link_to "Profile", profile_path
+            li = link_to "Account", edit_account_path
+            li = link_to "Logout", destroy_user_session_path, method: :delete
+          - else
+            li = link_to "Log in", new_user_session_path
+        a.button-collapse.right href="#" data-activates="user-sidenav"
+          i.mdi-navigation-menu

@@ -10,5 +10,9 @@ App.init = ->
   else if $.isFunction($('#fullpage').fullpage.destroy)
     $('#fullpage').fullpage.destroy('all')
 
+  $(".button-collapse").sideNav({
+    edge: 'right'
+  })
+
 $(document).on "page:change", ->
   App.init()
