@@ -21,6 +21,7 @@ ul#user-dropdown.dropdown-content
           - if current_user
             li = link_to "Profile", profile_path
             li = link_to "Account", edit_account_path
+            li = link_to "FAQ", faq_path
             li = link_to "Logout", destroy_user_session_path, method: :delete
           - else
             li = link_to "Log in", new_user_session_path
