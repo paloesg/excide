@@ -5,7 +5,7 @@
         .card
           .card-image#profile-image
             = image_tag @user.profile.image_url
-            .card-title = @user.first_name
+            .card-title.truncate = @user.first_name
           .card-content
             = @user.profile.headline
             br
