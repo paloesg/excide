@@ -29,22 +29,50 @@
         .col.s12.m6
           h4.center Engage Seamlessly
           p Excide will manage your engagement process from consultant sourcing and recommendation to invoicing and payments. We understand the strengths of our independent consultants and will provide the appropriate recommendation for your projects. Our online platform also provides a convenient way to track every part of the engagement process.
+  .section#steps
+    .container
+      .row
+        .col.s12
+          h4.center How our platform works
+      .row
+        .col.s12
+          ul.tabs.z-depth-1
+            li.tab.col.s4
+              a.truncate href="#step1" Step 1
+            li.tab.col.s4
+              a.truncate href="#step2" Step 2
+            li.tab.col.s4
+              a.truncate href="#step3" Step 3
+      .row
+        .col.s12#step1
+          .card
+            .card-header Post a project
+            .card-content Decide on the project scope and the minimum consultant criteria for pre-qualification. We will screen and shortlist consultants that pre-qualify.
+        .col.s12#step2
+          .card
+            .card-header Review consultants
+            .card-content Consultants will send you their proposals. If required, we can arrange for the consultants to pitch their proposals to you in person or remotely.
+        .col.s12#step3
+          .card
+            .card-header Get to work
+            .card-content Choose the best consultant for the job and get to work immediately. We help you manage your contracts, invoices and payments.
+
   .section#services
     .container
       .row
         .col.s12
-          h3.center Some of our services
+          h4.center Some of our services
           .row
             .col.s12.m6.l3
               .card
                 .card-image
                   = image_tag "startups.jpg", class: "activator"
                 .card-content
-                  .card-title.activator.grey-text.text-darken-4
+                  .card-title.activator.grey-text.text-darken-4.truncate
                     | Start-ups
                 .card-reveal
                   .card-title.activator.grey-text.text-darken-4
-                    | Start-ups
+                    i.material-icons.right close
                   p Raise Capital
                   p Market and Competition Research
                   p Analytics and Finance Support
@@ -54,11 +82,11 @@
                 .card-image
                   = image_tag "local-enterprises.jpg", class: "activator"
                 .card-content
-                  .card-title.activator.grey-text.text-darken-4
+                  .card-title.activator.grey-text.text-darken-4.truncate
                     | Local Enterprises
                 .card-reveal
                   .card-title.activator.grey-text.text-darken-4
-                    | Local Enterprises
+                    i.material-icons.right close
                   p Analytics and Finance Support
                   p Customer Strategy Support
                   p Market and Competition Research
@@ -71,11 +99,11 @@
                 .card-image
                   = image_tag "consulting-firms.jpg", class: "activator"
                 .card-content
-                  .card-title.activator.grey-text.text-darken-4
+                  .card-title.activator.grey-text.text-darken-4.truncate
                     | Consulting Firms
                 .card-reveal
                   .card-title.activator.grey-text.text-darken-4
-                    | Consulting Firms
+                    i.material-icons.right close
                   p Market Research
                   p Due Diligence and M&A Support
             .col.s12.m6.l3
@@ -83,11 +111,11 @@
                 .card-image
                   = image_tag "investment-firms.jpg", class: "activator"
                 .card-content
-                  .card-title.activator.grey-text.text-darken-4
+                  .card-title.activator.grey-text.text-darken-4.truncate
                     | Investment Firms
                 .card-reveal
                   .card-title.activator.grey-text.text-darken-4
-                    | Investment Firms
+                    i.material-icons.right close
                   p Analytics and Finance Support
                   p Due Diligence and M&A Support
                   p Market and Competition Research
