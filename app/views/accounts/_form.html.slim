@@ -16,11 +16,14 @@
   .col.s12
     = f.check_box :allow_contact, class: 'filled-in'
     = f.label :allow_contact, "Excide may contact me if there are suitable projects that fit my profile."
-- if action_name == 'new' || action_name == 'create'
-  .row.row-margin
-    .col.s12
-      = f.check_box :agree_terms, class: 'filled-in'
-      = f.label :agree_terms, "I agree to the terms of use."
+
+.row.row-margin
+  .col.s12
+    = f.check_box :agree_terms, class: 'filled-in'
+    = f.label :agree_terms, "I agree to the"
+    '
+    = link_to "terms of service", terms_path, target: :_blank
+    | .
 
 .row
   .input.col.s12.m6

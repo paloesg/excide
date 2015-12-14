@@ -5,10 +5,17 @@
         strong Excide
         |  is an all-in-one platform to source, hire and engage the best independent consultants in Singapore.
     .col.s12.m4.offset-m4
-      p
+      p.right
         strong Contact Us
         br
         = mail_to "info@excide.co"
 .footer-copyright
   .container
-    small.black-text © Copyright #{Date.today.year} Excide Pte. Ltd. All Rights Reserved.
+    .row
+      .col.s12.m6
+        .black-text © Copyright #{Date.today.year} Excide Pte. Ltd. All Rights Reserved.
+      .col.s12.m6
+        .black-text.right
+          = link_to "Terms of Service", terms_path
+          '  |
+          = link_to "Privacy Policy", privacy_path

@@ -25,6 +25,8 @@ Rails.application.routes.draw do
 
   get 'business', to: 'home#business'
   get 'faq', to: 'home#faq'
+  get 'terms', to: 'home#terms'
+  get 'privacy', to: 'home#privacy'
 
   root 'home#index'
 end
