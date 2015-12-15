@@ -17,13 +17,38 @@
               = f.email_field :email
               = f.label :email
 
-            .input-field.col.s12
+          .row
+            .input-field.col.s12.m6
               = f.password_field :password, autocomplete: "off"
-              = f.label :password, "Password (#{@minimum_password_length} characters minimum)"
+              = f.label :password, "Password (#{@minimum_password_length} characters min.)"
 
-            .input-field.col.s12
+            .input-field.col.s12.m6
               = f.password_field :password_confirmation, autocomplete: "off"
               = f.label :password_confirmation
+
+          .row
+            .input-field.col.s12
+              = f.telephone_field :contact_number
+              = f.label :contact_number
+          .row
+            .input-field.col.s12.m6
+              = f.text_field :first_name
+              = f.label :first_name
+            .input-field.col.s12.m6
+              = f.text_field :last_name
+              = f.label :last_name
+          .row.row-margin
+            .col.s12
+              = f.check_box :allow_contact, class: 'filled-in'
+              = f.label :allow_contact, "Excide may contact me if there are suitable projects that fit my profile."
+          - if action_name == 'new' || action_name == 'create'
+            .row.row-margin
+              .col.s12
+                = f.check_box :agree_terms, class: 'filled-in'
+                = f.label :agree_terms, "I agree to the"
+                '
+                = link_to "terms of service", terms_path, target: :_blank
+                | .
 
           .row
             .actions.col.s12.m6
