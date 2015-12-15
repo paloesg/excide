@@ -1,7 +1,9 @@
 = form_for(@profile) do |f|
   - if @profile.errors.any?
+    javascript:
+      Materialize.toast("Please fix the errors and try again.", 5000);
     #error_explanation
-      h5
+      strong
         = pluralize(@profile.errors.count, "error")
         |  prohibited this profile from being saved:
 
