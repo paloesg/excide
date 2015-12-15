@@ -15,7 +15,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       @user.skip_confirmation!
 
       if @user.save
-        puts @user.profile.inspect
         @user.create_profile(
           headline: auth.extra.raw_info.headline,
           summary: auth.extra.raw_info.summary,
