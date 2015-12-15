@@ -14,9 +14,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     build_resource(sign_up_params)
-    puts sign_up_params.inspect
 
     resource.save
+    resource.add_role params[:role].to_sym
+
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
