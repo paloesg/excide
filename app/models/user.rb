@@ -9,11 +9,13 @@ class User < ActiveRecord::Base
 
   after_commit :create_default_profile
 
-  validates :first_name, presence: true, on: :update
-  validates :last_name, presence: true, on: :update
-  validates :contact_number, presence: true, on: :update
-  validates :allow_contact, inclusion: { in: [true] }, on: :update
-  validates :agree_terms, inclusion: { in: [true] }, on: :update
+  validates :first_name, presence: true, unless: :skip_validation?
+  validates :last_name, presence: true, unless: :skip_validation?
+  validates :contact_number, presence: true, unless: :skip_validation?
+  validates :allow_contact, inclusion: { in: [true] }, unless: :skip_validation?
+  validates :agree_terms, inclusion: { in: [true] }, unless: :skip_validation?
+
+  attr_accessor :skip_validation
 
   def self.from_omniauth(auth, params)
     logger.info auth
@@ -33,7 +35,14 @@ class User < ActiveRecord::Base
   def create_default_profile
     if self.profile.nil?
       create_profile
+    end
+  end
+
+  def skip_validation?
+    if skip_validation == true
       true
+    else
+      false
     end
   end
 end
