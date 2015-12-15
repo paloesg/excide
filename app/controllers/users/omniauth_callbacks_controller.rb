@@ -11,11 +11,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     else
       session["devise.linkedin_data"] = request.env["omniauth.auth"]
 
+      # User creation in process, skip validations for now
+      @user.skip_validation = true
+
       # Skip email confirmation for users that signed up through LinkedIn
       @user.skip_confirmation!
 
       if @user.save
-        puts @user.profile.inspect
         @user.create_profile(
           headline: auth.extra.raw_info.headline,
           summary: auth.extra.raw_info.summary,
@@ -36,6 +38,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
             description: position.summary
           )
         end
+
+        # User creation complete, require validation
+        @user.skip_validation = false
 
         sign_in @user
         redirect_to new_account_path
