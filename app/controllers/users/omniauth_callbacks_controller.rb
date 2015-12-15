@@ -11,8 +11,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     else
       session["devise.linkedin_data"] = request.env["omniauth.auth"]
 
+      # Skip email confirmation for users that signed up through LinkedIn
+      @user.skip_confirmation!
+
       if @user.save
-        @user.profile.update_attributes(
+        puts @user.profile.inspect
+        @user.create_profile(
           headline: auth.extra.raw_info.headline,
           summary: auth.extra.raw_info.summary,
           industry: auth.extra.raw_info.industry,
