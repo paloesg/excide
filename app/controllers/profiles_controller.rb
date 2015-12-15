@@ -6,13 +6,7 @@ class ProfilesController < ApplicationController
   end
 
   def edit
-    if @experiences.blank?
-      @experiences.build
-    end
-
-    if @qualifications.blank?
-      @qualifications.build
-    end
+    build_experiences_and_qualifications
   end
 
   def create
@@ -33,6 +27,7 @@ class ProfilesController < ApplicationController
     if @profile.update(profile_params)
       redirect_to profile_path, notice: 'Profile was successfully updated.'
     else
+      build_experiences_and_qualifications
       render :edit
     end
   end
@@ -53,5 +48,15 @@ class ProfilesController < ApplicationController
         experiences_attributes: [:id, :title, :company, :start_date, :end_date, :description, :_destroy],
         qualifications_attributes: [:id, :title, :institution, :year_obtained, :description, :_destroy]
       )
+    end
+
+    def build_experiences_and_qualifications
+      if @experiences.blank?
+        @experiences.build
+      end
+
+      if @qualifications.blank?
+        @qualifications.build
+      end
     end
 end
