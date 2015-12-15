@@ -1,13 +1,13 @@
 class User < ActiveRecord::Base
   rolify
 
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:linkedin]
 
   has_one :profile, dependent: :destroy
 
-  before_create :build_default_profile
+  after_commit :create_default_profile
 
   def self.from_omniauth(auth, params)
     logger.info auth
@@ -24,8 +24,10 @@ class User < ActiveRecord::Base
 
   private
 
-  def build_default_profile
-    build_profile
-    true
+  def create_default_profile
+    if self.profile.nil?
+      create_profile
+      true
+    end
   end
 end
