@@ -4,7 +4,7 @@
       .col.s12
         .card
           .card-image#profile-image
-            = image_tag @user.profile.image_url
+            = @user.profile.image_url.present? ? image_tag(@user.profile.image_url) : image_tag('https://placeholdit.imgix.net/~text?txtsize=32&txt=No+profile+image&w=300&h=300&txttrack=0')
             .card-title.truncate = @user.first_name
           .card-content
             = @user.profile.headline
