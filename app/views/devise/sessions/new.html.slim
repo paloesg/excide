@@ -28,7 +28,12 @@
                   .input.col.s12
                     = f.check_box :remember_me
                     = f.label :remember_me
-              .row
-                .input-field.col.s12.m6
-                  .actions
-                    = f.submit "Log in", class: "btn green darken-4"
+            .col.s12.m6
+              .right
+                = link_to "Sign up", register_path(:consultant)
+                '  |
+                = link_to "Forgot password", new_password_path(@user)
+          .row
+            .input-field.col.s12.m6
+              .actions
+                = f.submit "Log in", class: "btn green darken-4"
