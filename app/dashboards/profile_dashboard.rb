@@ -9,11 +9,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     user: Field::BelongsTo,
-    experiences: Field::HasMany,
-    qualifications: Field::HasMany,
     id: Field::Number,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
     headline: Field::String,
     summary: Field::Text,
     industry: Field::String,
@@ -22,6 +18,10 @@ class ProfileDashboard < Administrate::BaseDashboard
     linkedin_url: Field::String,
     location: Field::String,
     country_code: Field::String,
+    experiences: Field::HasMany,
+    qualifications: Field::HasMany,
+    created_at: Field::DateTime,
+    updated_at: Field::DateTime,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -31,11 +31,10 @@ class ProfileDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :id,
+    :user,
     :headline,
     :industry,
-    :user,
-    :experiences,
-    :qualifications,
+    :summary,
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -62,7 +61,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how profiles are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(profile)
-  #   "Profile ##{profile.id}"
-  # end
+  def display_resource(profile)
+    "#{profile.user.first_name} #{profile.user.last_name}"
+  end
 end
