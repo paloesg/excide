@@ -3,6 +3,7 @@
 //= require jquery_ujs
 //= require materialize-sprockets
 //= require cocoon
+//= require analytics
 //= require init
 //= require jquery.fullPage.min
 //= require turbolinks
