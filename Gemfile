@@ -27,6 +27,9 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+# Force sprockets rails to use version 2.3.3 to fix Heroku deployment issue
+gem 'sprockets-rails', '2.3.3'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 
