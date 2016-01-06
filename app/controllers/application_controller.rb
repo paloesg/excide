@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
     elsif current_user.has_role? :consultant
       profile_path
     elsif current_user.has_role? :business
-      business_path
+      new_project_path
     else
       root_path
     end
