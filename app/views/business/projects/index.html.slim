@@ -1,0 +1,31 @@
+.row
+  .col.s12.m6.l4
+    .row
+      .col.s12
+        .card
+          .card-image#profile-image
+            = image_tag('https://placeholdit.imgix.net/~text?txtsize=32&txt=No+profile+image&w=300&h=300&txttrack=0')
+            .card-title.truncate = @business.name
+          .card-content
+            p = @business.industry
+            p = @business.type
+      .col.s12
+         = link_to "Post New Project", new_business_project_path, class: 'btn green darken-4 wide-button btn-large'
+  .col.s12.m6.l8
+    .row
+      .col.s12
+        .card
+          .card-header Projects
+          .card-content
+            - if @projects.present?
+              - @projects.each do |p|
+                .row
+                  .col.s12
+                    p
+                      strong = p.title
+                    p
+                      em = p.business.name
+                    p = p.start_date.strftime('%b %Y') + ' – ' + p.end_date.strftime('%b %Y')
+                    p = p.description
+            - else
+              p = link_to('Post a project', new_business_project_path)
