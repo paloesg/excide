@@ -3,5 +3,5 @@ class Project < ActiveRecord::Base
 
   enum category: %w(category1 category2 category3)
   enum budget_type: %w(fixed rate)
-  enum status: %w(draft pending published private closed completed)
+  enum status: %w(draft pending published hidden closed completed)
 end
