@@ -1,6 +1,6 @@
-class ProjectsController < ApplicationController
+class Business::ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, only: [:index]
+  before_action :set_project, only: [:index, :create]
 
   def index
   end
@@ -11,9 +11,10 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(project_params)
+    @project.business_id = @business.id
 
     if @project.save
-      redirect_to projects_path, notice: 'Project was successfully created.'
+      redirect_to business_projects_path, notice: 'Project was successfully created.'
     else
       render :new
     end

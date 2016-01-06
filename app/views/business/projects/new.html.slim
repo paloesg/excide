@@ -3,5 +3,5 @@
     .card.login
       .card-header Post a new project
       .card-content
-        = form_for @project do |f|
+        = form_for [:business, @project] do |f|
           = render 'form', f: f
