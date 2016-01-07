@@ -25,11 +25,13 @@ Rails.application.routes.draw do
 
   get 'projects', to: 'projects#show'
 
+  get 'business/edit', to: 'business#edit', as: :edit_business
+  patch 'business', to: 'business#update'
+
   namespace :business do
     resources :projects
   end
 
-  get 'business', to: 'home#business'
   get 'faq', to: 'home#faq'
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'

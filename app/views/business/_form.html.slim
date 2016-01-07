@@ -1,0 +1,15 @@
+.row
+  .input-field.col.s12
+    = f.text_field :name
+    = f.label :name
+.row
+  .input-field.col.s12.m6
+    = f.text_field :industry
+    = f.label :industry
+  .input-field.col.s12.m6
+    = f.number_field :company_type
+    = f.label :company_type
+.row
+  .input.col.s12.m6
+    .actions
+      = f.submit "Update business", class: "btn green darken-4"
