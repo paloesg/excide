@@ -1,5 +1,9 @@
+/ Desktop menu
 ul#user-dropdown.dropdown-content
-  li = link_to "Profile", profile_path
+  - if current_user.has_role? :consultant
+    li = link_to "Profile", profile_path
+  - elsif current_user.has_role? :business
+    li = link_to "Projects", business_projects_path
   li = link_to "Account", edit_account_path
   li = link_to "Logout", destroy_user_session_path, method: :delete
 .navbar-fixed
@@ -17,9 +21,11 @@ ul#user-dropdown.dropdown-content
               i.material-icons.right arrow_drop_down
           - else
             li = link_to "Log in", new_user_session_path
+        / Mobile menu
         ul.side-nav#user-sidenav
           - if current_user
-            li = link_to "Profile", profile_path
+            - if current_user.has_role? :consultant
+              li = link_to "Profile", profile_path
             li = link_to "Account", edit_account_path
             li = link_to "FAQ", faq_path
             li = link_to "Logout", destroy_user_session_path, method: :delete
