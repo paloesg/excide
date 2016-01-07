@@ -1,5 +1,5 @@
 .row
-  .col.s12.m6.l4
+  .col.s12.m4.l4.hide-on-small-only
     .row
       .col.s12
         .card
@@ -11,21 +11,38 @@
             p = @business.company_type.humanize
       .col.s12
          = link_to "Post New Project", new_business_project_path, class: 'btn green darken-4 wide-button btn-large'
-  .col.s12.m6.l8
-    .row
-      .col.s12
-        .card
-          .card-header Projects
-          .card-content
-            - if @projects.present?
-              - @projects.each do |p|
+  .col.s12.m8.l8
+    h5 My Projects
+    - if @projects.present?
+      - @projects.each do |p|
+        .row
+          .col.s12
+            .card
+              .card-header = p.title
+              .card-content
                 .row
                   .col.s12
-                    p
-                      strong = p.title
-                    p
-                      em = p.business.name
-                    p = p.start_date.strftime('%b %Y') + ' – ' + p.end_date.strftime('%b %Y')
+                    .chip = p.category.humanize
+                    .chip = p.budget_type.humanize
+                .row
+                  .col.s12
                     p = p.description
-            - else
-              p = link_to('Post a project', new_business_project_path)
+                    br
+                    p
+                      strong Remarks:
+                      br
+                      = p.remarks
+                    br
+                    .left
+                      strong
+                        ' Start Date:
+                      = p.start_date.strftime('%b %Y')
+                    .right
+                      strong
+                        ' End Date:
+                      = p.end_date.strftime('%b %Y')
+              .card-action
+                = p.status.humanize.upcase
+                .right = link_to('Edit', edit_business_project_path(p.id))
+    - else
+      p = link_to('Post a project', new_business_project_path)
