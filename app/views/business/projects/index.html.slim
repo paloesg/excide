@@ -8,7 +8,7 @@
             .card-title.truncate = @business.name
           .card-content
             p = @business.industry
-            p = @business.company_type
+            p = @business.company_type.humanize
       .col.s12
          = link_to "Post New Project", new_business_project_path, class: 'btn green darken-4 wide-button btn-large'
   .col.s12.m6.l8

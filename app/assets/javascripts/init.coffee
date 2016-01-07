@@ -14,5 +14,8 @@ App.init = ->
     edge: 'right'
   })
 
+  if $('body').hasClass('business') && $('body').hasClass('edit')
+    $('select').material_select();
+
 $(document).on "page:change", ->
   App.init()
