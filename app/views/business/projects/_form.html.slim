@@ -29,10 +29,15 @@
   .input-field.col.s12
     = f.text_area :remarks, class: "materialize-textarea"
     = f.label :remarks
-.row
-  .input-field.col.s12
-    = f.select :status, Project.statuses.keys.map { |s| [s.humanize, s] }
-    = f.label "Status"
+- if action_name == 'edit'
+  .row
+    .input-field.col.s12
+      - if @project.status == "in_review"
+        = f.select :status, ["In review"], {}, disabled: true
+        = f.label "Status"
+      - else
+        = f.select :status, Project.statuses.keys.reject { |s| s == "in_review" || s == "draft" }.map { |s| [s.humanize, s] }
+        = f.label "Status"
 .row
   .input.col.s12.m6
     .actions

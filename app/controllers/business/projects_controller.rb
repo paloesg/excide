@@ -12,6 +12,7 @@ class Business::ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     @project.business_id = @business.id
+    @project.status = "in_review"
 
     if @project.save
       redirect_to business_projects_path, notice: 'Project was successfully created.'
