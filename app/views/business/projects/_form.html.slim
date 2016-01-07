@@ -18,6 +18,10 @@
     = f.label :end_date
     = f.date_field :end_date
 .row
+  .input-field.col.s12
+    = f.select :budget_type, Project.budget_types.keys.map { |t| [t.humanize, t] }
+    = f.label "Budget type"
+.row
   .col.s12
     = f.label :budget
     = f.number_field :budget
@@ -25,6 +29,10 @@
   .input-field.col.s12
     = f.text_area :remarks, class: "materialize-textarea"
     = f.label :remarks
+.row
+  .input-field.col.s12
+    = f.select :status, Project.statuses.keys.map { |s| [s.humanize, s] }
+    = f.label "Status"
 .row
   .input.col.s12.m6
     .actions
