@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
   belongs_to :business
 
-  enum category: %w(category1 category2 category3)
-  enum budget_type: %w(fixed rate)
-  enum status: %w(draft pending published hidden closed completed)
+  enum category: [:category1, :category2, :category3]
+  enum budget_type: [:fixed, :rate]
+  enum status: [:draft, :pending, :published, :hidden, :closed, :completed]
 end

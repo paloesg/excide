@@ -1,6 +1,6 @@
 class Business::ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, only: [:index, :create]
+  before_action :get_projects, only: [:index, :create, :edit, :update]
 
   def index
   end
@@ -20,9 +20,23 @@ class Business::ProjectsController < ApplicationController
     end
   end
 
+  def edit
+    @project = @projects.find(params[:id])
+  end
+
+  def update
+    @project = @projects.find(params[:id])
+
+    if @project.update(project_params)
+      redirect_to business_projects_path, notice: 'Your project was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
   private
 
-  def set_project
+  def get_projects
     @user = current_user
     @business = @user.business
     @projects = @business.projects

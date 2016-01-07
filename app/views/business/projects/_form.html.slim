@@ -1,11 +1,15 @@
 .row
   .input-field.col.s12
     = f.text_field :title
-    = f.label :title
+    = f.label "Headline"
+.row
+  .input-field.col.s12
+    = f.select :category, Project.categories.keys.map { |c| [c.humanize, c] }, :include_blank => true
+    = f.label "Type of project"
 .row
   .input-field.col.s12
     = f.text_area :description, class: "materialize-textarea"
-    = f.label :description
+    = f.label "Detailed requirements"
 .row
   .col.s12.m6
     = f.label :start_date

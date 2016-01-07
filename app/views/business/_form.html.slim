@@ -7,7 +7,7 @@
     = f.text_field :industry
     = f.label :industry
   .input-field.col.s12.m6
-    = f.select :company_type, Business.company_types.keys.map { |t| [t.humanize, t] }
+    = f.select :company_type, Business.company_types.keys.map { |t| [t.humanize, t] }, :include_blank => true
     = f.label :company_type
 .row
   .input.col.s12.m6
