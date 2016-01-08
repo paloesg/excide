@@ -3,7 +3,7 @@ window.App ||= {}
 App.init = ->
   mixpanel.track("Page view");
 
-  if $('body').hasClass('index')
+  if $('body').hasClass('home') && $('body').hasClass('index')
     $('#fullpage').fullpage({
       responsiveWidth: 992
     })
