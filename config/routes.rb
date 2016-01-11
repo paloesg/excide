@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get 'profile/edit', to: 'profiles#edit', as: :edit_profile
   patch 'profile', to: 'profiles#update'
 
-  get 'projects', to: 'projects#show'
+  get 'projects', to: 'projects#index'
 
   get 'business/edit', to: 'business#edit', as: :edit_business
   patch 'business', to: 'business#update'
