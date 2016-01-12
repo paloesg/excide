@@ -1,6 +1,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_filter :configure_sign_up_params, only: [:create]
   # before_filter :configure_account_update_params, only: [:update]
+  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
   # GET /resource/sign_up
   def new
@@ -82,4 +83,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  def set_s3_direct_post
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
+  end
 end
