@@ -6,8 +6,10 @@ class User < ActiveRecord::Base
          :omniauthable, :omniauth_providers => [:linkedin]
 
   has_one :profile, dependent: :destroy
+  has_one :business, dependent: :destroy
 
-  after_commit :create_default_profile
+  after_commit :create_default_profile, if: Proc.new { self.has_role? :consultant }
+  after_commit :create_default_business, if: Proc.new { self.has_role? :business }
 
   validates :first_name, presence: true, unless: :skip_validation?
   validates :last_name, presence: true, unless: :skip_validation?
@@ -35,6 +37,12 @@ class User < ActiveRecord::Base
   def create_default_profile
     if self.profile.nil?
       create_profile
+    end
+  end
+
+  def create_default_business
+    if self.business.nil?
+      create_business
     end
   end
 

@@ -6,4 +6,6 @@
 //= require analytics
 //= require init
 //= require jquery.fullPage.min
+//= require jquery.ui.widget
+//= require jquery.fileupload
 //= require turbolinks

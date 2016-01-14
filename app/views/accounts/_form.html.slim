@@ -16,7 +16,10 @@
 .row.row-margin
   .col.s12
     = f.check_box :allow_contact, class: 'filled-in'
-    = f.label :allow_contact, "Excide may contact me if there are suitable projects that fit my profile."
+    - if current_user.has_role? 'consultant'
+      = f.label :allow_contact, "Excide may contact me if there are suitable projects that fit my profile."
+    - else
+      = f.label :allow_contact, "Excide may contact me with suitable candidates for my projects."
 - if action_name == 'new' || action_name == 'create'
   .row.row-margin
     .col.s12

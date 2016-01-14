@@ -11,10 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151215082214) do
+ActiveRecord::Schema.define(version: 20160114080201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "businesses", force: :cascade do |t|
+    t.string   "name"
+    t.string   "industry"
+    t.integer  "company_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "user_id"
+    t.string   "image_url"
+  end
+
+  add_index "businesses", ["user_id"], name: "index_businesses_on_user_id", using: :btree
 
   create_table "experiences", force: :cascade do |t|
     t.integer  "profile_id"
@@ -44,6 +56,23 @@ ActiveRecord::Schema.define(version: 20151215082214) do
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
+
+  create_table "projects", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "category"
+    t.text     "description"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer  "budget"
+    t.integer  "budget_type"
+    t.text     "remarks"
+    t.integer  "status"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "business_id"
+  end
+
+  add_index "projects", ["business_id"], name: "index_projects_on_business_id", using: :btree
 
   create_table "qualifications", force: :cascade do |t|
     t.integer  "profile_id"
@@ -107,7 +136,9 @@ ActiveRecord::Schema.define(version: 20151215082214) do
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
+  add_foreign_key "businesses", "users"
   add_foreign_key "experiences", "profiles"
   add_foreign_key "profiles", "users"
+  add_foreign_key "projects", "businesses"
   add_foreign_key "qualifications", "profiles"
 end

@@ -1,0 +1,44 @@
+.row
+  .col.s12
+    h5 Browse Projects
+.row
+  .col.s12.m6.l4
+    .row
+      .col.s12
+        .card
+          .card-header Search
+          .card-content Listing all projects
+  .col.s12.m8.l8
+    - if @projects.present?
+      - @projects.each do |p|
+        .row
+          .col.s12
+            .card
+              .card-header = p.title
+              .card-content
+                .row
+                  .col.s12
+                    .chip = p.category.humanize
+                    .chip = p.budget_type.humanize
+                .row
+                  .col.s12
+                    p = p.description
+                    br
+                    p
+                      strong Remarks:
+                      br
+                      = p.remarks
+                    br
+                    .left
+                      strong
+                        ' Start Date:
+                      = p.start_date.strftime('%b %Y')
+                    .right
+                      strong
+                        ' End Date:
+                      = p.end_date.strftime('%b %Y')
+              .card-action
+                = p.status.humanize.upcase
+                .right = link_to('Edit', edit_business_project_path(p.id))
+    - else
+      p We do not have projects suitable for you at the moment. Please check back later for more projects!

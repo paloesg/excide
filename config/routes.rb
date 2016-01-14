@@ -23,7 +23,15 @@ Rails.application.routes.draw do
   get 'profile/edit', to: 'profiles#edit', as: :edit_profile
   patch 'profile', to: 'profiles#update'
 
-  get 'business', to: 'home#business'
+  get 'projects', to: 'projects#index'
+
+  get 'business/edit', to: 'business#edit', as: :edit_business
+  patch 'business', to: 'business#update'
+
+  namespace :business do
+    resources :projects
+  end
+
   get 'faq', to: 'home#faq'
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'

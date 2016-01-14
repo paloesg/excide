@@ -1,6 +1,7 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
   def show
   end
@@ -44,7 +45,7 @@ class ProfilesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def profile_params
       params.require(:profile).permit(
-        :id, :headline, :summary, :industry, :specialties, :location, :country_code,
+        :id, :headline, :summary, :industry, :specialties, :location, :country_code, :image_url,
         experiences_attributes: [:id, :title, :company, :start_date, :end_date, :description, :_destroy],
         qualifications_attributes: [:id, :title, :institution, :year_obtained, :description, :_destroy]
       )
@@ -58,5 +59,9 @@ class ProfilesController < ApplicationController
       if @qualifications.blank?
         @qualifications.build
       end
+    end
+
+    def set_s3_direct_post
+      @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
     end
 end

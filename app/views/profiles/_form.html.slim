@@ -1,4 +1,4 @@
-= form_for(@profile) do |f|
+= form_for(@profile, url: {action: "update"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
   - if @profile.errors.any?
     javascript:
       Materialize.toast("Please fix the errors and try again.", 5000);
@@ -31,6 +31,13 @@
             .input-field.col.s12.m6
               = f.text_field :specialties
               = f.label :specialties
+          .row
+            .input-field.file-field.col.s12
+              = f.file_field :image_url
+              .btn.green.darken-4
+                | Profile Image
+              .file-path-wrapper
+                = f.text_field :image_url, class: "file-path"
 
   .row
     .col.s12
