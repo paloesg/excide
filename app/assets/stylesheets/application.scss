@@ -89,3 +89,14 @@ sup {
     color: #4CAF50;
   }
 }
+
+.progress {
+  display: none;
+}
+
+.progress .bar {
+  height:  1.2em;
+  padding-left: 0.2em;
+  color:   white;
+  display: none;
+}

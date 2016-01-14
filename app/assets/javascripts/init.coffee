@@ -42,6 +42,7 @@ App.init = ->
           start: (e) ->
             submitButton.prop 'disabled', true
             progressBar.css('background', 'green').css('display', 'block').css('width', '0%').text 'Loading...'
+            barContainer.css('display', 'block')
             return
           done: (e, data) ->
             submitButton.prop 'disabled', false
