@@ -17,7 +17,7 @@ App.init = ->
   if ($('body').hasClass('business') && $('body').hasClass('edit')) || $('body').hasClass('projects')
     $('select').material_select();
 
-  if ($('body').hasClass('profiles') && $('body').hasClass('edit'))
+  if ($('body').hasClass('profiles') && $('body').hasClass('edit')) || ($('body').hasClass('business') && $('body').hasClass('edit'))
     $ ->
       $('.directUpload').find('input:file').each (i, elem) ->
         fileInput = $(elem)
