@@ -3,19 +3,19 @@
     = f.text_field :name
     = f.label :name
 .row
-  .input-field.col.s12.m6
-    = f.text_field :industry
-    = f.label :industry
-  .input-field.col.s12.m6
-    = f.select :company_type, Business.company_types.keys.map { |t| [t.humanize, t] }, :include_blank => true
-    = f.label :company_type
-.row
   .input-field.file-field.col.s12
     = f.file_field :image_url
     .btn.green.darken-4
       | Company Logo
     .file-path-wrapper
       = f.text_field :image_url, class: "file-path"
+.row
+  .input-field.col.s12.m6
+    = f.text_field :industry
+    = f.label :industry
+  .input-field.col.s12.m6
+    = f.select :company_type, Business.company_types.keys.map { |t| [t.humanize, t] }, :include_blank => true
+    = f.label :company_type
 .row
   .input.col.s12.m6
     .actions
