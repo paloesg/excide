@@ -15,19 +15,26 @@
           | Excide
           sup  Beta
         ul.right.hide-on-med-and-down
-          li = link_to "FAQ", faq_path
           - if current_user
+            - if current_user.has_role? :consultant
+              li = link_to "Browser Projects", projects_path
+            - if current_user.has_role? :business
+              li = link_to "Post New Project", new_business_project_path
+            li = link_to "FAQ", faq_path
             li = link_to "", class: "dropdown-button", data: { activates: "user-dropdown" } do
               = current_user.first_name
               i.material-icons.right arrow_drop_down
           - else
+            li = link_to "FAQ", faq_path
             li = link_to "Log in", new_user_session_path
         / Mobile menu
         ul.side-nav#user-sidenav
           - if current_user
             - if current_user.has_role? :consultant
+              li = link_to "Browser Projects", projects_path
               li = link_to "Profile", profile_path
             - if current_user.has_role? :business
+              li = link_to "Post New Project", new_business_project_path
               li = link_to "Projects", business_projects_path
             li = link_to "Account", edit_account_path
             li = link_to "FAQ", faq_path
