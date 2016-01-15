@@ -11,6 +11,10 @@
     = f.text_area :description, class: "materialize-textarea"
     = f.label "Detailed requirements"
 .row
+  .input-field.col.s12
+    = f.text_area :criteria, class: "materialize-textarea"
+    = f.label "Criteria for suitable consultant"
+.row
   .col.s12.m6
     = f.label :start_date
     = f.date_field :start_date
@@ -25,6 +29,10 @@
   .col.s12
     = f.label :budget
     = f.number_field :budget
+.row
+  .input-field.col.s12
+    = f.select :grant, Project.grants.keys.map { |g| [g.upcase, g] }, :include_blank => true
+    = f.label :grant
 .row
   .input-field.col.s12
     = f.text_area :remarks, class: "materialize-textarea"
