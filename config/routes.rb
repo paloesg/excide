@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   patch 'profile', to: 'profiles#update'
 
   get 'projects', to: 'projects#index'
+  get 'project/:id', to: 'projects#show', as: :project
 
   get 'business/edit', to: 'business#edit', as: :edit_business
   patch 'business', to: 'business#update'
