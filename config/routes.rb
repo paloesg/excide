@@ -26,15 +26,17 @@ Rails.application.routes.draw do
   get 'projects', to: 'projects#index'
   get 'project/:id', to: 'projects#show', as: :project
 
+  namespace :consultant do
+    get 'proposals/new/:project_id', to: 'proposals#new', as: :new_proposal
+    post 'proposals/create', to: 'proposals#create', as: :proposals
+  end
+
   get 'business/edit', to: 'business#edit', as: :edit_business
   patch 'business', to: 'business#update'
 
   namespace :business do
     resources :projects
   end
-
-  get 'proposals/new/:project_id', to: 'proposals#new', as: :new_proposal
-  post 'proposals/create', to: 'proposals#create', as: :proposals
 
   get 'faq', to: 'home#faq'
   get 'terms', to: 'home#terms'
