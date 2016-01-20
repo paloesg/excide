@@ -33,6 +33,9 @@ Rails.application.routes.draw do
     resources :projects
   end
 
+  get 'proposals/new/:project_id', to: 'proposals#new', as: :new_proposal
+  post 'proposals/create', to: 'proposals#create', as: :proposals
+
   get 'faq', to: 'home#faq'
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
