@@ -1,5 +1,6 @@
 class Consultant::ProposalsController < ApplicationController
   before_action :authenticate_user!
+  before_action :get_proposals, only: [:index, :create]
 
   def index
   end
@@ -10,7 +11,7 @@ class Consultant::ProposalsController < ApplicationController
 
   def create
     @proposal = Proposal.new(proposal_params)
-    @proposal.profile_id = current_user.profile.id
+    @proposal.profile_id = @user.profile.id
 
     if @proposal.save
       redirect_to project_path(@proposal.project_id), notice: 'Proposal was successfully submitted.'
@@ -32,5 +33,10 @@ class Consultant::ProposalsController < ApplicationController
 
   def proposal_params
     params.require(:proposal).permit(:id, :profile_id, :project_id, :qualifications, :amount, :file_url)
+  end
+
+  def get_proposals
+    @user = current_user
+    @proposals = @user.profile.proposals
   end
 end
