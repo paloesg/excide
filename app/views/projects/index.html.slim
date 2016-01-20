@@ -24,11 +24,6 @@
                   .col.s12
                     p = p.description
                     br
-                    p
-                      strong Remarks:
-                      br
-                      = p.remarks
-                    br
                     .left
                       strong
                         ' Start Date:
@@ -39,6 +34,6 @@
                       = p.end_date.strftime('%b %Y')
               .card-action
                 = p.status.humanize.upcase
-                .right = link_to('Edit', edit_business_project_path(p.id))
+                .right = link_to('View', project_path(p.id))
     - else
       p We do not have projects suitable for you at the moment. Please check back later for more projects!
