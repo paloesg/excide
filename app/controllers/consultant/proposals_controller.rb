@@ -1,6 +1,6 @@
 class Consultant::ProposalsController < ApplicationController
   before_action :authenticate_user!
-  before_action :get_proposals, only: [:index, :create]
+  before_action :get_proposals, only: [:index, :create, :edit, :update]
 
   def index
   end
@@ -24,9 +24,17 @@ class Consultant::ProposalsController < ApplicationController
   end
 
   def edit
+    @proposal = @proposals.find(params[:id])
   end
 
   def update
+    @proposal = @proposals.find(params[:id])
+
+    if @proposal.update(proposal_params)
+      redirect_to consultant_proposals_path, notice: 'Your proposal was successfully updated.'
+    else
+      render :edit
+    end
   end
 
   private
