@@ -15,7 +15,7 @@ class Consultant::ProposalsController < ApplicationController
     @proposal.profile_id = @user.profile.id
 
     if @proposal.save
-      redirect_to project_path(@proposal.project_id), notice: 'Proposal was successfully submitted.'
+      redirect_to consultant_proposals_path(@proposal.project_id), notice: 'Your proposal was successfully submitted.'
     else
       render :new
     end
