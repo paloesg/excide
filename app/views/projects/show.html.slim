@@ -43,6 +43,6 @@
                       = p.end_date.strftime('%b %Y')
               .card-action
                 = p.status.humanize.upcase
-                .right = link_to('Apply', consultant_new_proposal_path(p.id))
+                .right = link_to('Apply', new_consultant_proposal_path(p.id))
     - else
       p = link_to('Post a project', new_business_project_path)
