@@ -1,6 +1,6 @@
 class Business::ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :get_projects, only: [:index, :create, :edit, :update]
+  before_action :get_projects, only: [:index, :create, :show, :edit, :update]
 
   def index
   end
@@ -19,6 +19,11 @@ class Business::ProjectsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def show
+    @project = @projects.find(params[:id])
+    @proposals = @project.proposals
   end
 
   def edit

@@ -46,6 +46,8 @@
                       = p.end_date.strftime('%b %Y')
               .card-action
                 = p.status.humanize.upcase
-                .right = link_to('Edit', edit_business_project_path(p.id))
+                .right
+                  = link_to('View Proposals', business_project_path(p.id))
+                  = link_to('Edit', edit_business_project_path(p.id))
     - else
       p = link_to('Post a project', new_business_project_path)

@@ -1,0 +1,33 @@
+.row
+  .col.s12.m4.l4.hide-on-small-only
+    .row
+      .col.s12
+        .card
+          .card-header = @project.title
+          .card-content
+            .row
+              .col.s12
+                .chip = @project.category.humanize
+                .chip = @project.budget_type.humanize
+            .row
+              .col.s12
+                p = @project.description
+  .col.s12.m8.l8
+    h5 Proposals
+    - if @proposals.present?
+      - @proposals.each do |p|
+        .row
+          .col.s12
+            .card
+              .card-header = p.profile.user.first_name
+              .card-content
+                .row
+                  .col.s12
+                    p = p.qualifications
+                    br
+                    p
+                      strong Proposed Fee:
+                      br
+                      = p.amount
+    - else
+      p Sorry, there are no proposals submitted for your project yet.
