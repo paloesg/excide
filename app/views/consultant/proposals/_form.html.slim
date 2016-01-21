@@ -8,6 +8,13 @@
     = f.label "Proposed Fee"
     = f.number_field :amount
 .row
+  .input-field.file-field.col.s12
+    = f.file_field :file_url
+    .btn.green.darken-4
+      | Attachment
+    .file-path-wrapper
+      = f.text_field :file_url, class: "file-path"
+.row
   .input.col.s12.m6
     .actions
       = f.submit "Submit Proposal", class: "btn green darken-4"

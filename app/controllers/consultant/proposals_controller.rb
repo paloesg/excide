@@ -1,6 +1,7 @@
 class Consultant::ProposalsController < ApplicationController
   before_action :authenticate_user!
   before_action :get_proposals, only: [:index, :create, :edit, :update]
+  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
   def index
   end
@@ -46,5 +47,9 @@ class Consultant::ProposalsController < ApplicationController
   def get_proposals
     @user = current_user
     @proposals = @user.profile.proposals
+  end
+
+  def set_s3_direct_post
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
   end
 end
