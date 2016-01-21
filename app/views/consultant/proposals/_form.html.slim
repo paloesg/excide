@@ -1,0 +1,13 @@
+= f.hidden_field :project_id
+.row
+  .input-field.col.s12
+    = f.text_area :qualifications, class: "materialize-textarea"
+    = f.label "Specific qualifications for the project"
+.row
+  .col.s12
+    = f.label :amount
+    = f.number_field "Proposed Fee"
+.row
+  .input.col.s12.m6
+    .actions
+      = f.submit "Submit Proposal", class: "btn green darken-4"

@@ -26,6 +26,10 @@ Rails.application.routes.draw do
   get 'projects', to: 'projects#index'
   get 'project/:id', to: 'projects#show', as: :project
 
+  namespace :consultant do
+    resources :proposals, only: [:index, :new, :create]
+  end
+
   get 'business/edit', to: 'business#edit', as: :edit_business
   patch 'business', to: 'business#update'
 
