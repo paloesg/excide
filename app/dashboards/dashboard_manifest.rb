@@ -11,6 +11,8 @@ class DashboardManifest
   # to work correctly.
   DASHBOARDS = [
     :profiles,
+    :businesses,
+    :projects,
     :experiences,
     :qualifications,
     :users,
