@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class ProjectDashboard < Administrate::BaseDashboard
+class ProposalDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,19 +8,12 @@ class ProjectDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    business: Field::BelongsTo,
+    project: Field::BelongsTo,
+    profile: Field::BelongsTo,
     id: Field::Number,
-    title: Field::String,
-    category: Field::String,
-    description: Field::Text,
-    start_date: Field::DateTime,
-    end_date: Field::DateTime,
-    budget: Field::Number,
-    budget_type: Field::String,
-    remarks: Field::Text,
-    criteria: Field::Text,
-    grant: Field::String,
-    status: Field::String,
+    qualifications: Field::Text,
+    amount: Field::Number,
+    file_url: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }
@@ -32,9 +25,10 @@ class ProjectDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :id,
-    :title,
-    :category,
-    :status,
+    :profile,
+    :qualifications,
+    :amount,
+    :project,
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -45,24 +39,17 @@ class ProjectDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :business,
-    :title,
-    :category,
-    :description,
-    :start_date,
-    :end_date,
-    :budget,
-    :budget_type,
-    :remarks,
-    :criteria,
-    :grant,
-    :status,
+    :project,
+    :profile,
+    :qualifications,
+    :amount,
+    :file_url,
   ]
 
   # Overwrite this method to customize how profiles are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(project)
-    "#{project.title}"
-  end
+  # def display_resource(profile)
+  #   "#{profile.user.first_name} #{profile.user.last_name}"
+  # end
 end
