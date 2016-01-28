@@ -1,19 +1,19 @@
 .row
   .input-field.col.s12
     = f.text_field :title
-    = f.label "Headline"
+    = f.label :title, "Headline"
 .row
   .input-field.col.s12
     = f.select :category, Project.categories.keys.map { |c| [c.humanize, c] }, :include_blank => true
-    = f.label "Type of project"
+    = f.label :category, "Type of project"
 .row
   .input-field.col.s12
     = f.text_area :description, class: "materialize-textarea"
-    = f.label "Detailed requirements"
+    = f.label :description, "Detailed requirements"
 .row
   .input-field.col.s12
     = f.text_area :criteria, class: "materialize-textarea"
-    = f.label "Criteria for suitable consultant"
+    = f.label :criteria, "Criteria for suitable consultant"
 .row
   .col.s12.m6
     = f.label :start_date
@@ -22,12 +22,8 @@
     = f.label :end_date
     = f.date_field :end_date
 .row
-  .input-field.col.s12
-    = f.select :budget_type, Project.budget_types.keys.map { |t| [t.humanize, t] }
-    = f.label "Budget type"
-.row
   .col.s12
-    = f.label :budget
+    = f.label :budget, "Budget (SGD)"
     = f.number_field :budget
 .row
   .input-field.col.s12
@@ -42,10 +38,10 @@
     .input-field.col.s12
       - if @project.status == "in_review"
         = f.select :status, ["In review"], {}, disabled: true
-        = f.label "Status"
+        = f.label :status
       - else
         = f.select :status, Project.statuses.keys.reject { |s| s == "in_review" || s == "draft" }.map { |s| [s.humanize, s] }
-        = f.label "Status"
+        = f.label :status
 .row
   .input.col.s12.m6
     .actions
