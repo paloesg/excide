@@ -14,6 +14,7 @@ class DashboardManifest
     :proposals,
     :businesses,
     :projects,
+    :project_categories,
     :experiences,
     :qualifications,
     :users,
