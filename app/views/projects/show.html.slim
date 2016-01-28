@@ -22,8 +22,7 @@
               .card-content
                 .row
                   .col.s12
-                    .chip = p.category.humanize
-                    .chip = p.budget_type.humanize
+                    .chip = p.project_category.try(:name)
                 .row
                   .col.s12
                     p = p.description

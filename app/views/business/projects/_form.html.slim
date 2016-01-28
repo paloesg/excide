@@ -4,8 +4,8 @@
     = f.label :title, "Headline"
 .row
   .input-field.col.s12
-    = f.select :category, Project.categories.keys.map { |c| [c.humanize, c] }, :include_blank => true
-    = f.label :category, "Type of project"
+    = f.select :project_category_id, ProjectCategory.all.map { |c| [c.name, c.id] }, :include_blank => true
+    = f.label :project_category_id, "Type of project"
 .row
   .input-field.col.s12
     = f.text_area :description, class: "materialize-textarea"

@@ -11,7 +11,7 @@ class ProjectCategoryDashboard < Administrate::BaseDashboard
     name: Field::String,
     id: Field::Number,
     slug: Field::String,
-    status: Field::Number,
+    status: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }

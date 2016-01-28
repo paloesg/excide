@@ -49,6 +49,6 @@ class Business::ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:id, :title, :category, :description, :start_date, :end_date, :budget, :budget_type, :remarks, :status)
+    params.require(:project).permit(:id, :title, :project_category_id, :description, :start_date, :end_date, :budget, :budget_type, :remarks, :status)
   end
 end
