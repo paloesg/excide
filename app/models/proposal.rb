@@ -3,4 +3,6 @@ class Proposal < ActiveRecord::Base
   belongs_to :project
 
   enum status: [:invited, :submitted, :withdrawn, :selected]
+
+  validates :qualifications, :amount, presence: true
 end
