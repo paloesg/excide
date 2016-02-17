@@ -38,7 +38,7 @@
     = f.number_field :budget
 .row
   .input-field.col.s12
-    = f.select :grant, Project.grants.keys.map { |g| [g.upcase, g] }, :include_blank => true
+    = f.select :grant, Project.grants.keys.map { |g| [g, g] }, :include_blank => true
     = f.label :grant
 .row
   .input-field.col.s12
