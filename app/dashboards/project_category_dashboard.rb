@@ -11,7 +11,6 @@ class ProjectCategoryDashboard < Administrate::BaseDashboard
     name: Field::String,
     parent: Field::BelongsTo.with_options(class_name: "ProjectCategory"),
     id: Field::Number,
-    slug: Field::String,
     status: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -26,7 +25,6 @@ class ProjectCategoryDashboard < Administrate::BaseDashboard
     :id,
     :name,
     :parent,
-    :slug,
     :status,
   ]
 
@@ -40,7 +38,6 @@ class ProjectCategoryDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :name,
     :parent,
-    :slug,
     :status,
   ]
 
