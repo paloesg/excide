@@ -21,7 +21,7 @@
         ul.right.hide-on-med-and-down
           - if current_user
             - if current_user.has_role? :consultant
-              li = link_to "Browser Projects", projects_path
+              li = link_to "Browse Projects", projects_path
             - if current_user.has_role? :business
               li = link_to "Post New Project", new_business_project_path
             li = link_to "FAQ", faq_path
@@ -35,7 +35,7 @@
         ul.side-nav#user-sidenav
           - if current_user
             - if current_user.has_role? :consultant
-              li = link_to "Browser Projects", projects_path
+              li = link_to "Browse Projects", projects_path
               li = link_to "My Profile", profile_path
               li = link_to "My Projects", consultant_proposals_path
             - if current_user.has_role? :business
