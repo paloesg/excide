@@ -1,3 +1,14 @@
+- if @project.errors.any?
+  javascript:
+    Materialize.toast("Please fix the errors and try again.", 5000);
+  #error_explanation
+    strong
+      = pluralize(@project.errors.count, "error")
+      |  prevented this project from being saved:
+
+    ul
+      - @project.errors.full_messages.each do |message|
+        li = message
 .row
   .input-field.col.s12
     = f.text_field :title
