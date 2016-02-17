@@ -9,6 +9,7 @@ class ProjectCategoryDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     name: Field::String,
+    parent: Field::BelongsTo.with_options(class_name: "ProjectCategory"),
     id: Field::Number,
     slug: Field::String,
     status: Field::String,
@@ -24,6 +25,7 @@ class ProjectCategoryDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :name,
+    :parent,
     :slug,
     :status,
   ]
@@ -37,6 +39,7 @@ class ProjectCategoryDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :name,
+    :parent,
     :slug,
     :status,
   ]
@@ -44,7 +47,7 @@ class ProjectCategoryDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how profiles are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(business)
-    "#{business.name}"
+  def display_resource(project_category)
+    "#{project_category.name}"
   end
 end
