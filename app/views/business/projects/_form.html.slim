@@ -15,7 +15,7 @@
     = f.label :title, "Headline"
 .row
   .input-field.col.s12
-    = f.select :project_category_id, ProjectCategory.all.map { |c| [c.name, c.id] }, :include_blank => true
+    = f.grouped_collection_select :project_category_id, ProjectCategory.parent_categories, :children, :name, :id, :name, :include_blank => true
     = f.label :project_category_id, "Type of project"
 .row
   .input-field.col.s12
