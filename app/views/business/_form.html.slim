@@ -17,6 +17,10 @@
     = f.select :company_type, Business.company_types.keys.map { |t| [t.humanize, t] }, :include_blank => true
     = f.label :company_type
 .row
+  .input-field.col.s12
+    = f.text_area :description, class: "materialize-textarea"
+    = f.label :description
+.row
   .input.col.s12.m6
     .actions
       = f.submit "Update business", class: "btn green darken-4"

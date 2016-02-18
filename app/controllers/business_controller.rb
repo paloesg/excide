@@ -22,7 +22,7 @@ class BusinessController < ApplicationController
   end
 
   def business_params
-    params.require(:business).permit(:id, :name, :industry, :company_type, :image_url)
+    params.require(:business).permit(:id, :name, :industry, :company_type, :image_url, :description)
   end
 
   def set_s3_direct_post
