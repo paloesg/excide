@@ -2,46 +2,37 @@
   .col.s12
     h5 Project Details
 .row
-  .col.s12.m4.l4.hide-on-small-only
-    .row
-      .col.s12
-        .card
-          .card-image#profile-image
-            = @business.image_url.present? ? image_tag(@business.image_url) : image_tag('https://placeholdit.imgix.net/~text?txtsize=32&txt=No+profile+image&w=300&h=300&txttrack=0')
-            .card-title.truncate = @business.name
-          .card-content
-            p = @business.industry
-            p = @business.company_type.humanize
-  .col.s12.m8.l8
-    - if @projects.present?
-      - @projects.each do |p|
+  .col.s12
+    .card
+      .card-header = @project.title
+      .card-content
         .row
           .col.s12
-            .card
-              .card-header = p.title
-              .card-content
-                .row
-                  .col.s12
-                    .chip = p.project_category.try(:name)
-                .row
-                  .col.s12
-                    p = p.description
-                    br
-                    p
-                      strong Remarks:
-                      br
-                      = p.remarks
-                    br
-                    .left
-                      strong
-                        ' Start Date:
-                      = p.start_date.strftime('%b %Y')
-                    .right
-                      strong
-                        ' End Date:
-                      = p.end_date.strftime('%b %Y')
-              .card-action
-                = p.status.humanize.upcase
-                .right = link_to('Apply', consultant_new_proposal_path(p.id))
-    - else
-      p = link_to('Post a project', new_business_project_path)
+            .chip = @project.project_category.try(:name)
+        .row
+          .col.s12
+            p = @project.description
+            br
+            p
+              strong Remarks:
+              br
+              = @project.remarks
+            br
+            .left
+              strong
+                ' Start Date:
+              = @project.start_date.strftime('%b %Y')
+            .right
+              strong
+                ' End Date:
+              = @project.end_date.strftime('%b %Y')
+      .card-action
+        = @project.status.humanize.upcase
+
+.row
+  .col.s12
+    .card.login
+        .card-header Submit a proposal
+        .card-content
+          = form_for [:consultant, @proposal], url: {controller: "consultant/proposals", action: "create"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } } do |f|
+            = render 'consultant/proposals/form', f: f
