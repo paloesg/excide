@@ -11,7 +11,7 @@ class ProjectDashboard < Administrate::BaseDashboard
     business: Field::BelongsTo,
     id: Field::Number,
     title: Field::String,
-    category: Field::String,
+    project_category: Field::BelongsTo,
     description: Field::Text,
     start_date: Field::DateTime,
     end_date: Field::DateTime,
@@ -33,7 +33,7 @@ class ProjectDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :title,
-    :category,
+    :project_category,
     :status,
   ]
 
@@ -47,7 +47,7 @@ class ProjectDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :business,
     :title,
-    :category,
+    :project_category,
     :description,
     :start_date,
     :end_date,
