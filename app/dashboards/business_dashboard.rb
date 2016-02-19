@@ -12,6 +12,7 @@ class BusinessDashboard < Administrate::BaseDashboard
     id: Field::Number,
     company_type: Field::String,
     image_url: Field::String,
+    description: Field::Text,
     user: Field::BelongsTo,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -40,6 +41,7 @@ class BusinessDashboard < Administrate::BaseDashboard
     :name,
     :company_type,
     :image_url,
+    :description,
     :user,
   ]
 
