@@ -59,6 +59,9 @@ gem 'omniauth-linkedin-oauth2'
 # Use puma web server
 gem 'puma'
 
+# Set timeout for long running processes
+gem 'rack-timeout'
+
 # Amazon S3 SDK
 gem 'aws-sdk', '~> 2'
 
