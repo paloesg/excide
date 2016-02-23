@@ -11,7 +11,7 @@
             .chip = @project.project_category.try(:name)
         .row
           .col.s12
-            p = @project.description
+            p = @project.description.html_safe
             br
             p
               strong Remarks:

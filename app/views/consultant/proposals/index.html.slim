@@ -35,7 +35,7 @@
                     .chip = p.project.project_category.try(:name)
                 .row
                   .col.s12
-                    p = p.project.description
+                    p = p.project.description.html_safe
                     br
                     .left
                       strong
