@@ -70,6 +70,8 @@ gem 'aws-sdk', '~> 2'
 
 # Sitemap generator
 gem 'sitemap_generator'
+# Uploading of sitemap to AWS
+gem 'fog-aws'
 
 # Analytics
 gem 'mixpanel-ruby'
