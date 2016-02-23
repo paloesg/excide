@@ -2,6 +2,7 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require materialize-sprockets
+//= require trix
 //= require cocoon
 //= require analytics
 //= require init

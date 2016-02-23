@@ -56,6 +56,9 @@ gem 'omniauth'
 gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-linkedin-oauth2'
 
+# WYSIWYG editor
+gem 'trix'
+
 # Use puma web server
 gem 'puma'
 
