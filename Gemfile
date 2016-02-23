@@ -68,6 +68,9 @@ gem 'rack-timeout'
 # Amazon S3 SDK
 gem 'aws-sdk', '~> 2'
 
+# Sitemap generator
+gem 'sitemap_generator'
+
 # Analytics
 gem 'mixpanel-ruby'
 
