@@ -42,5 +42,7 @@ Rails.application.routes.draw do
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
 
+  get '/robots.txt' => 'home#robots'
+
   root 'home#index'
 end
