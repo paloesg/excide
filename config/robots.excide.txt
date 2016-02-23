@@ -4,4 +4,4 @@
 # User-agent: *
 # Disallow: /
 
-Sitemap: https://www.excide.co/sitemap.xml.gz
+Sitemap: http://excide-platform.s3.amazonaws.com/sitemaps/sitemap.xml.gz
