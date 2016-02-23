@@ -19,8 +19,9 @@
     = f.label :project_category_id, "Type of project"
 .row
   .input-field.col.s12
-    = f.text_area :description, class: "materialize-textarea"
-    = f.label :description, "Detailed requirements"
+    = f.label :description, "Detailed requirements", class: "custom-label"
+    = f.trix_editor :description
+br
 .row
   .input-field.col.s12
     = f.text_area :criteria, class: "materialize-textarea"
