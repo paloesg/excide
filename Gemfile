@@ -73,6 +73,9 @@ gem 'sitemap_generator'
 # Uploading of sitemap to AWS
 gem 'fog-aws'
 
+# Set meta tags
+gem 'meta-tags'
+
 # Analytics
 gem 'mixpanel-ruby'
 

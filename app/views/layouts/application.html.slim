@@ -5,8 +5,7 @@ html lang="en"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
     link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
 
-    title
-      = content_for?(:title) ? yield(:title) : "Excide – Experts, You Decide"
+    = display_meta_tags site: "Excide – Experts, You Decide"
 
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application", 'data-turbolinks-track' => true
