@@ -80,6 +80,64 @@ class SlackService
     self
   end
 
+  def business_signup(user, business)
+    params = {
+        attachments: [
+            {
+                title: 'A new business has signed up!',
+                fallback: 'A new business has signed up!',
+                color: GOOD,
+                fields: [
+                    {
+                        title: 'First Name',
+                        value: user.first_name,
+                        short: true
+                    },
+                    {
+                        title: 'Last Name',
+                        value: user.last_name,
+                        short: true
+                    },
+                    {
+                        title: 'Email',
+                        value: user.email,
+                        short: true
+                    },
+                    {
+                        title: 'Phone',
+                        value: user.contact_number,
+                        short: true
+                    },
+                    {
+                        title: 'Company',
+                        value: business.name
+                    },
+                    {
+                        title: 'Description',
+                        value: business.description
+                    },
+                    {
+                        title: 'Industry',
+                        value: business.industry,
+                        short: true
+                    },
+                    {
+                        title: 'Company Type',
+                        value: business.company_type,
+                        short: true
+                    },
+                    {
+                        title: 'LinkedIn URL',
+                        value: business.linkedin_url
+                    }
+                ]
+            }
+        ]
+    }
+    @params = generate_payload(params)
+    self
+  end
+
   def deliver
     begin
       Net::HTTP.post_form(@uri, @params)
