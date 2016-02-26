@@ -11,8 +11,12 @@ class AccountsController < ApplicationController
   # Technically not creating a new entry. Updates user account details when user is first created and redirected here.
   def create
     if @user.update(user_params)
-      SlackService.new.consultant_signup(@user, @user.profile).deliver
-      redirect_to profile_path, notice: 'Your account was successfully created.'
+      if @user.has_role? :consultant
+        SlackService.new.consultant_signup(@user, @user.profile).deliver
+        redirect_to profile_path, notice: 'Your account was successfully created.'
+      else
+        redirect_to new_business_project_path, notice: 'Your account was successfully created.'
+      end
     else
       render :new, error: 'Please ensure that all fields are entered.'
     end
