@@ -49,15 +49,22 @@
                 .row
                   .col.s12
                     h5 Submitted Proposal
-                    p
-                      strong Qualifications:
-                      br
-                      = p.qualifications
-                    br
-                    p
-                      strong Proposed Fee:
-                      br
-                      = p.amount
+                    .row
+                      .col.s12
+                        p = p.qualifications
+                    .row
+                      .col.s6
+                        p
+                          h6
+                            strong Proposed Fee
+                          ' S$
+                          = p.amount
+                      - if p.file_url.present?
+                        .col.s6
+                          p
+                            h6
+                              strong Attachment
+                            = link_to File.basename(p.file_url), p.file_url
               .card-action
                 = p.project.status.humanize.upcase
                 .right = link_to('Edit Proposal', edit_consultant_proposal_path(p.id))
