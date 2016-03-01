@@ -30,10 +30,11 @@
                         strong Proposed Fee
                       ' S$
                       = p.amount
-                  .col.s6
-                    p
-                      h6
-                        strong Attachment
-                      = link_to File.basename(p.file_url), p.file_url
+                  - if p.file_url.present?
+                    .col.s6
+                      p
+                        h6
+                          strong Attachment
+                        = link_to File.basename(p.file_url), p.file_url
     - else
       p Sorry, there are no proposals submitted for your project yet.
