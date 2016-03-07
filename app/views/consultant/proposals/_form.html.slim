@@ -12,11 +12,11 @@
 = f.hidden_field :project_id
 .row
   .input-field.col.s12
-    = f.text_area :qualifications, class: "materialize-textarea"
-    = f.label "Specific qualifications for the project"
+    = f.label :qualifications, "Specific qualifications for the project"
+    = f.trix_editor :qualifications
 .row
   .col.s12
-    = f.label "Proposed Fee"
+    = f.label :amount, "Proposed Fee (SGD)"
     = f.number_field :amount
 .row
   .input-field.file-field.col.s12
