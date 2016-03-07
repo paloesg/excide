@@ -19,13 +19,13 @@
     = f.label :project_category_id, "Type of project"
 .row
   .input-field.col.s12
-    = f.label :description, "Detailed requirements", class: "custom-label"
+    = f.label :description, "Detailed requirements"
     = f.trix_editor :description
 br
 .row
   .input-field.col.s12
-    = f.text_area :criteria, class: "materialize-textarea"
     = f.label :criteria, "Criteria for suitable consultant"
+    = f.trix_editor :criteria
 .row
   .col.s12.m6
     = f.label :start_date
@@ -44,7 +44,7 @@ br
 .row
   .input-field.col.s12
     = f.text_area :remarks, class: "materialize-textarea"
-    = f.label :remarks
+    = f.label "Remarks (for the Excide team)"
 - if action_name == 'edit'
   .row
     .input-field.col.s12
