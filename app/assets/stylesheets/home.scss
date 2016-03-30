@@ -1,25 +1,44 @@
-#hero {
+#hero:before, #tailored:before, #on-demand:before, #seamless:before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  z-index: -1;
+  display: block;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+
+#hero:before {
   background-image: image-url("hero-image.jpg");
 }
 
-#tailored {
+#tailored:before {
   background-image: image-url("tailored-solutions.jpg");
 }
 
-#on-demand {
+#on-demand:before {
   background-image: image-url("talent-on-demand.jpg");
 }
 
-#seamless {
+#seamless:before {
   background-image: image-url("engage-seamlessly.jpg");
 }
 
 #hero, #tailored, #on-demand, #seamless {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   color: #ffffff;
   margin-top: -20px;
+
+  h1, h2, h3, p {
+    text-shadow: 0px 1px 5px #333333;
+  }
 }
 
 #hero-content {
