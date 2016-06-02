@@ -112,9 +112,11 @@ trix-toolbar {
   border-radius: 0;
 }
 
-ul {
-  li {
-    list-style-type: disc;
-    margin-left: 25px;
+.card-content {
+  ul {
+    li {
+      list-style-type: disc;
+      margin-left: 25px;
+    }
   }
 }
