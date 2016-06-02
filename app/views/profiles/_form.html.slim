@@ -34,7 +34,7 @@
           .row
             .input-field.file-field.col.s12
               = f.file_field :image_url
-              .btn.green.darken-4
+              .btn.green.darken-3
                 | Profile Image
               .file-path-wrapper
                 = f.text_field :image_url, class: "file-path"
@@ -47,7 +47,7 @@
           = f.fields_for :experiences do |e|
             = render 'experience_fields', f: e
           .links.section
-            = link_to_add_association 'add experience', f, :experiences, class: "btn green darken-4"
+            = link_to_add_association 'add experience', f, :experiences, class: "btn green darken-3"
 
   .row
     .col.s12
@@ -57,9 +57,9 @@
           = f.fields_for :qualifications do |q|
             = render 'qualification_fields', f: q
           .links.section
-            = link_to_add_association 'add qualification', f, :qualifications, class: "btn green darken-4"
+            = link_to_add_association 'add qualification', f, :qualifications, class: "btn green darken-3"
 
   .row
     .col.s12
       .actions
-        = f.submit class: "btn green darken-4"
+        = f.submit class: "btn green darken-3"

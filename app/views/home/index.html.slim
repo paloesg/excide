@@ -2,67 +2,70 @@
 .landing-page#fullpage
   .section#hero
     .container
-      #hero-content
+      #hero-content.grey-overlay
         .row
           .col.s12.center
-            h3 Business Services On Demand
-            p Excide is an all-in-one platform for businesses to source, hire and engage the best independent consultants in Singapore.
+            h1
+              | Business Services.
+              br
+              | On Demand.
+            p
+              | The all-in-one platform for businesses to source, hire and engage
+              br
+              | the best independent consultants in Singapore.
         .row
           .col.s12.m6.l4.offset-l2
-            = link_to "I'm a consultant", register_path(:consultant), class: "button btn-large green darken-4 hero-button"
+            = link_to "I'm a business", register_path(:business), class: "button btn-large green darken-3 hero-button"
           .col.s12.m6.l4
-            = link_to "I'm a business", register_path(:business), class: "button btn-large green darken-4 hero-button"
+            = link_to "I'm a consultant", register_path(:consultant), class: "button btn-large green darken-3 hero-button"
   .section#tailored
     .container
       .row
-        .col.s12.m6
-          h4.center Tailored Solutions
+        .col.s12.m8.grey-overlay
+          h2.center Tailored Solutions
           p Excide provides timely and cost-effective solutions tailored to your needs. As our online platform is able to streamline any unnecessary overhead, we are able to develop bespoke solutions targeted at your specific needs with pinpoint accuracy.
   .section#on-demand
     .container
       .row
-        .col.s12.m6.offset-m6
-          h4.center Talent On Demand
+        .col.s12.m8.offset-m4.grey-overlay
+          h2.center Talent On Demand
           p Excide has an extensive network of independent consultants with diverse expertise and experience. Our search for consultants is only the first step. We are committed to understanding and identifying consultants that provides you with the most suitable service. The rigor we apply ensures a positive outcome.
   .section#seamless
     .container
       .row
-        .col.s12.m6
-          h4.center Engage Seamlessly
+        .col.s12.m8.grey-overlay
+          h2.center Engage Seamlessly
           p Excide will manage your engagement process from consultant sourcing and recommendation to invoicing and payments. We understand the strengths of our independent consultants and will provide the appropriate recommendation for your projects. Our online platform also provides a convenient way to track every part of the engagement process.
   .section#steps
-    .container
+    .container.overlay
       .row
         .col.s12
-          h4.center How our platform works
+          h2.center How our platform works
       .row
-        .col.s12
-          ul.tabs.z-depth-1
-            li.tab.col.s4
-              a.truncate href="#step1" Step 1
-            li.tab.col.s4
-              a.truncate href="#step2" Step 2
-            li.tab.col.s4
-              a.truncate href="#step3" Step 3
-      .row
-        .col.s12#step1
+        .col.s12.m4
+          h4 Step 1
           .card
-            .card-header Post a project
-            .card-content Decide on the project scope and the minimum consultant criteria for pre-qualification. We will screen and shortlist consultants that pre-qualify.
-        .col.s12#step2
+            .card-content
+              .card-title Post a project
+              p Decide on the project scope and the minimum consultant criteria for pre-qualification. We will screen and shortlist consultants that pre-qualify.
+        .col.s12.m4
+          h4 Step 2
           .card
-            .card-header Review consultants
-            .card-content Consultants will send you their proposals. If required, we can arrange for the consultants to pitch their proposals to you in person or remotely.
-        .col.s12#step3
+            .card-content
+              .card-title Review consultants
+              p Consultants will send you their proposals. If required, we can arrange for the consultants to pitch their proposals to you in person or remotely.
+        .col.s12.m4
+          h4 Step 3
           .card
-            .card-header Get to work
-            .card-content Choose the best consultant for the job and get to work immediately. We help you manage your contracts, invoices and payments.
+            .card-content
+              .card-title Get to work
+              p Choose the best consultant for the job and get to work immediately. We help you manage your contracts, invoices and payments.
 
   .section#services
     .container
       .row
         .col.s12
-          h4.center Some of our services
+          h2.center Some of our services
           .row
             .col.s12.m6.l3
               .card
