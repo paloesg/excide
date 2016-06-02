@@ -2,33 +2,39 @@
 .landing-page#fullpage
   .section#hero
     .container
-      #hero-content
+      #hero-content.grey-overlay
         .row
           .col.s12.center
-            h3 Business Services On Demand
-            p Excide is an all-in-one platform for businesses to source, hire and engage the best independent consultants in Singapore.
+            h1
+              | Business Services.
+              br
+              | On Demand.
+            p
+              | The all-in-one platform for businesses to source, hire and engage
+              br
+              | the best independent consultants in Singapore.
         .row
           .col.s12.m6.l4.offset-l2
-            = link_to "I'm a consultant", register_path(:consultant), class: "button btn-large green darken-2 hero-button"
+            = link_to "I'm a business", register_path(:business), class: "button btn-large green darken-3 hero-button"
           .col.s12.m6.l4
-            = link_to "I'm a business", register_path(:business), class: "button btn-large green darken-2 hero-button"
+            = link_to "I'm a consultant", register_path(:consultant), class: "button btn-large green darken-3 hero-button"
   .section#tailored
     .container
       .row
-        .col.s12.m6
-          h4.center Tailored Solutions
+        .col.s12.m8.grey-overlay
+          h2.center Tailored Solutions
           p Excide provides timely and cost-effective solutions tailored to your needs. As our online platform is able to streamline any unnecessary overhead, we are able to develop bespoke solutions targeted at your specific needs with pinpoint accuracy.
   .section#on-demand
     .container
       .row
-        .col.s12.m6.offset-m6
-          h4.center Talent On Demand
+        .col.s12.m8.offset-m4.grey-overlay
+          h2.center Talent On Demand
           p Excide has an extensive network of independent consultants with diverse expertise and experience. Our search for consultants is only the first step. We are committed to understanding and identifying consultants that provides you with the most suitable service. The rigor we apply ensures a positive outcome.
   .section#seamless
     .container
       .row
-        .col.s12.m6
-          h4.center Engage Seamlessly
+        .col.s12.m8.grey-overlay
+          h2.center Engage Seamlessly
           p Excide will manage your engagement process from consultant sourcing and recommendation to invoicing and payments. We understand the strengths of our independent consultants and will provide the appropriate recommendation for your projects. Our online platform also provides a convenient way to track every part of the engagement process.
   .section#steps
     .container
