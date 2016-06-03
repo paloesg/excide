@@ -106,3 +106,33 @@
     font-size: 14px;
   }
 }
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  #hero, #tailored, #on-demand, #seamless {
+    padding: 0;
+
+    .container {
+      width: 100%;
+      height: 100%;
+    }
+
+    .section {
+      padding: 0;
+    }
+
+    .grey-overlay {
+      height: 100%;
+    }
+  }
+
+  #tailored, #on-demand, #seamless {
+    .row {
+      height: 100%;
+    }
+  }
+
+  #on-demand {
+    background-position: left;
+  }
+}
