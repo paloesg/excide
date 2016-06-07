@@ -11,7 +11,7 @@ class BusinessDashboard < Administrate::BaseDashboard
     name: Field::String,
     id: Field::Number,
     company_type: Field::String,
-    image_url: Field::String,
+    image_url: Field::Image,
     description: Field::Text,
     user: Field::BelongsTo,
     created_at: Field::DateTime,
