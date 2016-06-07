@@ -80,7 +80,7 @@ gem 'meta-tags'
 gem 'mixpanel-ruby'
 
 # Error monitoring
-gem 'rollbar', '~> 2.4.0'
+gem 'rollbar'
 gem 'oj', '~> 2.12.14'
 
 #Backend admin
