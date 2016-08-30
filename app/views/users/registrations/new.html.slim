@@ -4,17 +4,6 @@
       .card-header Sign up as a #{params[:role]}
       .card-content
         .row
-          - if params[:role] == 'consultant'
-            .col.s12
-              ' You will be able to bid for projects posted on the platform. If you would like to post a project instead, sign up
-              = link_to "here", register_path(:business)
-              | .
-          - elsif params[:role] == 'business'
-            .col.s12
-              ' You will be able to post projects on Excide for consultants to view. If you would like to bid for projects instead, sign up
-              = link_to "here", register_path(:consultant)
-              | .
-        .row
           .col.s12.center
             = link_to "Sign up with LinkedIn", user_omniauth_authorize_path(:linkedin, role: params[:role]), class: 'linkedin-login'
 
