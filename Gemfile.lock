@@ -136,7 +136,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
-    materialize-sass (0.97.5)
+    materialize-sass (0.97.7)
       sass (~> 3.3)
     meta-tags (2.1.0)
       actionpack (>= 3.0.0)
@@ -288,7 +288,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
-  materialize-sass (= 0.97.5)
+  materialize-sass (= 0.97.7)
   meta-tags
   mixpanel-ruby
   oj (~> 2.12.14)
