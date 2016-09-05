@@ -98,13 +98,27 @@
 }
 
 .landing-page {
-  p {
+  #hero p {
     font-size: 20px;
   }
 
   .card p {
     font-size: 14px;
   }
+}
+
+.promo i {
+  margin: 40px 0;
+  font-size: 7rem;
+  display: block;
+  color: #2E7D32;
+}
+
+.promo-caption {
+  font-size: 1.7rem;
+  font-weight: 500;
+  margin-top: 5px;
+  margin-bottom: 0;
 }
 
 /* Smartphones (portrait and landscape) ----------- */
