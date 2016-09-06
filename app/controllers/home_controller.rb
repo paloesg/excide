@@ -16,6 +16,9 @@ class HomeController < ApplicationController
 
   def digital
   end
+
+  def growth
+  end
   def robots
     robots = File.read(Rails.root + "config/robots.#{ENV['HEROKU_NAME']}.txt")
     render :text => robots, :layout => false, :content_type => "text/plain"
