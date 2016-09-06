@@ -11,6 +11,12 @@
     li.divider
     li = link_to "Account", edit_account_path
     li = link_to "Logout", destroy_user_session_path, method: :delete
+
+ul#consulting-services.dropdown-content
+  li = link_to "Digital Transformation", digital_path
+  li = link_to "Growth Strategies", growth_path
+  li = link_to "M&A Support", merger_path
+
 .navbar-fixed
   nav.green.darken-3
     .container
@@ -28,6 +34,9 @@
               = current_user.first_name
               i.material-icons.right arrow_drop_down
           - else
+            li = link_to "", class: "dropdown-button", data: { activates: "consulting-services" } do
+              | Consulting Services
+              i.material-icons.right arrow_drop_down
             li = link_to "Log in", new_user_session_path
         / Mobile menu
         ul.side-nav#user-sidenav

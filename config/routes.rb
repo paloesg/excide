@@ -41,9 +41,9 @@ Rails.application.routes.draw do
   get 'faq', to: 'home#faq'
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
-  get 'digital-transformation', to: 'home#digital'
-  get 'growth-strategies', to: 'home#growth'
-  get 'merger-support', to: 'home#merger'
+  get 'digital-transformation', to: 'home#digital', as: :digital
+  get 'growth-strategies', to: 'home#growth', as: :growth
+  get 'merger-support', to: 'home#merger', as: :merger
 
   get '/robots.txt' => 'home#robots'
 
