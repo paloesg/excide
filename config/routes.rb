@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   get 'privacy', to: 'home#privacy'
   get 'digital-transformation', to: 'home#digital'
   get 'growth-strategies', to: 'home#growth'
+  get 'merger-support', to: 'home#merger'
 
   get '/robots.txt' => 'home#robots'
 
