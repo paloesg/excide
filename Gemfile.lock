@@ -288,7 +288,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
-  materialize-sass (= 0.97.7)
+  materialize-sass (~> 0.97)
   meta-tags
   mixpanel-ruby
   oj (~> 2.12.14)
