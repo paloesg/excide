@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   get 'faq', to: 'home#faq'
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
+  get 'digital-transformation', to: 'home#digital'
 
   get '/robots.txt' => 'home#robots'
 
