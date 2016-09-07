@@ -16,25 +16,38 @@
             = link_to "I'm interested", register_path(:consultant), class: "button btn-large green darken-3 hero-button"
   .section#services
     .container
-      .row
-        .col.s12
-          h2.center Our Focus Areas
-          .row
-            .col.s12.m6.l4
-              .promo.center
-                i.material-icons stay_current_portrait
-                p.promo-caption Digital Transformation
-                p.light Using technology and innovative solutions to enable traditional businesses.
-            .col.s12.m6.l4
-              .promo.center
-                i.material-icons trending_up
-                p.promo-caption Growth Strategies
-                p.light Leveraging knowledge to grow faster, work smarter and compete better.
-            .col.s12.m6.l4
-              .promo.center
-                i.material-icons call_merge
-                p.promo-caption M&A Support
-                p.light Providing continuous and seamless services from deal origination to transaction execution.
+      .grey-overlay
+        .row
+          .col.s12
+            h2.center Our Focus Areas
+            .row
+              .col.s12.m6.l4
+                = link_to digital_path
+                  .promo.center
+                    i.material-icons stay_current_portrait
+                    p.promo-caption
+                      | Digital
+                      br
+                      | Transformation
+                    p.light Using technology and innovative solutions to enable traditional businesses.
+              .col.s12.m6.l4
+                = link_to growth_path
+                  .promo.center
+                    i.material-icons trending_up
+                    p.promo-caption
+                      |Growth
+                      br
+                      | Strategies
+                    p.light Leveraging knowledge to grow faster, work smarter and compete better.
+              .col.s12.m6.l4
+                = link_to merger_path
+                  .promo.center
+                    i.material-icons call_merge
+                    p.promo-caption
+                      | M&A
+                      br
+                      | Support
+                    p.light Providing continuous and seamless services from deal origination to transaction execution.
   .section#contactus
     .container.login
       .row

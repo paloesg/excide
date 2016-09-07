@@ -2,7 +2,7 @@
   background-image: image-url("hero-image.jpg");
 }
 
-#tailored {
+#services {
   background-image: image-url("tailored-solutions.jpg");
 }
 
@@ -14,20 +14,20 @@
   background-image: image-url("engage-seamlessly.jpg");
 }
 
-#hero, #tailored, #on-demand, #seamless {
+#hero, #services, #on-demand, #seamless {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  color: #ffffff;
   margin-top: -20px;
 
-  h1, h2, h3, p {
+  h1, h2, h3, p, a, i {
     text-shadow: 0px 1px 5px #333333;
+    color: #ffffff;
   }
 }
 
 .grey-overlay {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
 #hero {
@@ -36,9 +36,9 @@
   }
 }
 
-#tailored, #on-demand, #seamless {
+#services {
   .grey-overlay {
-    padding: 30px 50px;
+    padding: 0 20px 0 20px;
   }
 }
 
@@ -85,12 +85,6 @@
   }
 }
 
-#steps, #services {
-  h1, h2, h3, h4, p {
-    color: #3e3e3e;
-  }
-}
-
 #services {
   .card-title {
     font-size: 20px;
@@ -111,7 +105,7 @@
   margin: 40px 0;
   font-size: 7rem;
   display: block;
-  color: #2E7D32;
+  text-shadow: 0px 1px 5px #333333;
 }
 
 .promo-caption {
