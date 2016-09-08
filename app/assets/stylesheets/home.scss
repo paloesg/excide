@@ -6,15 +6,11 @@
   background-image: image-url("tailored-solutions.jpg");
 }
 
-#on-demand {
-  background-image: image-url("talent-on-demand.jpg");
+#contactus {
+  background-image: image-url("lets-work-together.jpg");
 }
 
-#seamless {
-  background-image: image-url("engage-seamlessly.jpg");
-}
-
-#hero, #services, #on-demand, #seamless {
+#hero, #services, #contactus {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -42,41 +38,47 @@
   }
 }
 
+#contactus {
+  .grey-overlay {
+    padding: 0 20px 30px 20px;
+  }
+}
+
 #hero-content {
 
   /* label color */
   .input-field label {
-   color: #f9f9f9;
-   font-size: 20px;
+    color: #f9f9f9;
+    font-size: 20px;
   }
   /* label focus color */
   .input-field input[type=text]:focus + label {
-   color: #ffffff;
-   font-size: inherit;
+    color: #ffffff;
+    font-size: inherit;
   }
   /* label underline color */
   .input-field input[type=text] {
-   border-bottom: 1px solid #f9f9f9;
-   box-shadow: none;
+    border-bottom: 1px solid #f9f9f9;
+    box-shadow: none;
   }
   /* label underline focus color */
   .input-field input[type=text]:focus {
-   border-bottom: 1px solid #ffffff;
-   box-shadow: 0 1px 0 0 #ffffff;
+    border-bottom: 1px solid #ffffff;
+    box-shadow: 0 1px 0 0 #ffffff;
   }
   /* valid color */
   .input-field input[type=text].valid {
-   border-bottom: 1px solid #ffffff;
-   box-shadow: 0 1px 0 0 #ffffff;
+    border-bottom: 1px solid #ffffff;
+    box-shadow: 0 1px 0 0 #ffffff;
   }
   /* invalid color */
   .input-field input[type=text].invalid {
-   border-bottom: 1px solid #ffffff;
-   box-shadow: 0 1px 0 0 #ffffff;
+    border-bottom: 1px solid #ffffff;
+    box-shadow: 0 1px 0 0 #ffffff;
   }
   /* icon prefix focus color */
   .input-field .prefix.active {
-   color: #ffffff;
+    color: #ffffff;
   }
 
   .hero-button {
@@ -88,6 +90,41 @@
 #services {
   .card-title {
     font-size: 20px;
+  }
+}
+
+#contactus {
+  /* input text and label color */
+  input, .input-field label, textarea {
+    color: #fff;
+  }
+  /* label focus color */
+  .input-field input[type]:focus + label {
+    color: #fff;
+  }
+  /* label underline color */
+  .input-field input[type], textarea {
+    border-bottom: 1px solid #fff;
+    box-shadow: none;
+  }
+  /* label underline focus color */
+  .input-field input[type]:focus {
+    border-bottom: 1px solid #fff;
+    box-shadow: 0 1px 0 0 #fff;
+  }
+  /* valid color */
+  .input-field input[type].valid {
+    border-bottom: 1px solid #43a047;
+    box-shadow: 0 1px 0 0 #43a047;
+  }
+  /* invalid color */
+  .input-field input[type].invalid {
+    border-bottom: 1px solid #F44336;
+    box-shadow: 0 1px 0 0 #F44336;
+  }
+  /* icon prefix focus color */
+  .input-field .prefix.active {
+    color: #fff;
   }
 }
 
