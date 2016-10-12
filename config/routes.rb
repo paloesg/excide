@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   get 'projects', to: 'projects#index'
   get 'project/:id', to: 'projects#show', as: :project
 
+  resources :enquiries
+
   namespace :consultant do
     resources :proposals, except: [:new]
     get 'proposals/new/:project_id', to: 'proposals#new', as: :new_proposal

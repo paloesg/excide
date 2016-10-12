@@ -54,23 +54,24 @@
         .row
           .col.s12
             h2.center Let's work together
-            form.col.s12.m6.offset-m3
-              .row
-                .input-field.col.s12
-                  input.validate#name type="text"
-                  label for="name" Name
-              .row
-                .input-field.col.s12
-                  input.validate#phone type="tel"
-                  label for="phone" Phone
-              .row
-                .input-field.col.s12
-                  input.validate#email type="email"
-                  label for="email" Email
-              .row
-                .input-field.col.s12
-                  textarea.materialize-textarea#comments
-                  label for="comments" Comments (optional)
-              .row
-                .actions.col.s12
-                  .btn.green.darken-3 Submit
+            .col.s12.m6.offset-m3
+              = form_for @enquiry, url: enquiries_path(@enquiry), remote: true do |f|
+                .row
+                  .input-field.col.s12
+                    = f.text_field :name, class: "validate"
+                    label for="enquiry_name" Name
+                .row
+                  .input-field.col.s12
+                    = f.telephone_field :contact, class: "validate"
+                    label for="enquiry_contact" Phone
+                .row
+                  .input-field.col.s12
+                    = f.email_field :email, class: "validate"
+                    label for="enquiry_email" Email
+                .row
+                  .input-field.col.s12
+                    = f.text_area :comments, class: "materialize-textarea"
+                    label for="comments" Comments (optional)
+                .row
+                  .actions.col.s12
+                    = f.submit "Submit", class: "btn green darken-3"
