@@ -15,8 +15,8 @@
  *= require_self
  */
 
-@import "materialize";
-@import "jquery.fullPage";
+@import "bootstrap-sprockets";
+@import "bootstrap";
 
 body {
   display: flex;

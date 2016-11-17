@@ -37,7 +37,7 @@ gem 'sprockets-rails', '2.3.3'
 # gem 'capistrano-rails', group: :development
 
 # Frontend framework
-gem 'materialize-sass', '~> 0.97'
+gem 'bootstrap-sass', '~> 3.3.6'
 
 # Nested form helper
 gem "cocoon"
