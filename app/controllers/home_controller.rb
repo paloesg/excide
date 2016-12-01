@@ -16,12 +16,15 @@ class HomeController < ApplicationController
   end
 
   def digital
+    @enquiry = Enquiry.new
   end
 
   def growth
+    @enquiry = Enquiry.new
   end
 
   def merger
+    @enquiry = Enquiry.new
   end
 
   def robots

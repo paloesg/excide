@@ -39,6 +39,9 @@ gem 'sprockets-rails', '2.3.3'
 # Frontend framework
 gem 'bootstrap-sass', '~> 3.3.6'
 
+# Themify icon set web fonts
+gem 'themify-icons-rails'
+
 # Nested form helper
 gem "cocoon"
 

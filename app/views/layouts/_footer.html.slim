@@ -1,18 +1,27 @@
-.container
-  .row
-    .col.s12.m6
-      p
-        strong Excide
-        |  is a collaborative consulting outfit that allows independent consultants to come together leverage on their collective strength and economies of scale to compete more effectively.
-    .col.s12.m6
-      p.right
-        = mail_to "info@excide.co", "Contact Us"
-        '  |
-        = link_to "Terms of Service", terms_path
-        '  |
-        = link_to "Privacy Policy", privacy_path
-.footer-copyright
+footer.footer-1.bg-dark
   .container
     .row
-      .col.s12
-        .black-text © Copyright #{Date.today.year} Excide Pte. Ltd. All Rights Reserved.
+      .col-md-4.col-sm-6
+        img.logo alt="Excide Logo" src=image_url('logo-light.png')
+      .col-md-4.col-sm-6
+        .widget
+          h6.title Recent Posts
+          hr
+      .col-md-4.col-sm-6
+        .widget
+          h6.title Latest Updates
+          hr
+    .row
+      .col-sm-6
+        span.sub &copy; Copyright 2017 – Excide Pte. Ltd.
+      .col-sm-6.text-right
+        ul.list-inline.social-list
+          li
+            a href="http://twitter.com/excidenetwork/"
+              i.ti-twitter-alt
+          li
+            a href="http://facebook.com/excidenetwork/"
+              i.ti-facebook
+          li
+            a href="http://linkedin.com/excidenetwork/"
+              i.ti-linkedin

@@ -1,60 +1,23 @@
-/ Desktop menu
-- if current_user
-  ul#user-dropdown.dropdown-content
-    - if current_user.has_role? :consultant
-      li = link_to "My Projects", consultant_proposals_path
-      li = link_to "My Profile", profile_path
-    - if current_user.has_role? :business
-      li.divider
-      li = link_to "Projects", business_projects_path
-      li = link_to "Business Profile", edit_business_path
-    li.divider
-    li = link_to "Account", edit_account_path
-    li = link_to "Logout", destroy_user_session_path, method: :delete
-
-ul#consulting-services.dropdown-content
-  li = link_to "Digital Transformation", digital_path
-  li = link_to "Growth Strategies", growth_path
-  li = link_to "M&A Support", merger_path
-
-.navbar-fixed
-  nav.green.darken-3
-    .container
-      .nav-wrapper
-        a.brand-logo href="/"
-          | Excide
-        ul.right.hide-on-med-and-down
-          - if current_user
-            - if current_user.has_role? :consultant
-              li = link_to "Browse Projects", projects_path
-            - if current_user.has_role? :business
-              li = link_to "Post New Project", new_business_project_path
-            li = link_to "FAQ", faq_path
-            li = link_to "", class: "dropdown-button", data: { activates: "user-dropdown" } do
-              = current_user.first_name
-              i.material-icons.right arrow_drop_down
-          - else
-            li = link_to "", class: "dropdown-button", data: { activates: "consulting-services" } do
-              | Consulting Services
-              i.material-icons.right arrow_drop_down
-            li = link_to "Log in", new_user_session_path
-        / Mobile menu
-        ul.side-nav#user-sidenav
-          - if current_user
-            - if current_user.has_role? :consultant
-              li = link_to "Browse Projects", projects_path
-              li = link_to "My Profile", profile_path
-              li = link_to "My Projects", consultant_proposals_path
-            - if current_user.has_role? :business
-              li.divider
-              li = link_to "Post New Project", new_business_project_path
-              li = link_to "Projects", business_projects_path
-              li = link_to "Business Profile", edit_business_path
-            li.divider
-            li = link_to "Account", edit_account_path
-            li = link_to "FAQ", faq_path
-            li = link_to "Logout", destroy_user_session_path, method: :delete
-          - else
-            li = link_to "Log in", new_user_session_path
-        a.button-collapse.right href="#" data-activates="user-sidenav"
-          i.mdi-navigation-menu
+a#top
+nav.absolute.transparent
+  .nav-bar
+    .module.left
+      a href="/"
+        img.logo.logo-light alt="Foundry" src=image_url('logo-light.png')
+        img.logo.logo-dark alt="Foundry" src=image_url('logo-light.png')
+    .module.widget-handle.mobile-toggle.right.visible-sm.visible-xs
+      i.ti-menu
+    .module-group.right
+      .module.left
+        ul.menu
+          li
+            a href="#" Home
+          li.has-dropdown
+            a href="#" Services
+            ul
+              li
+                a href="#" Strategic Advisory
+              li
+                a href="#" Fundraising
+              li
+                a href="#" Financial Reporting

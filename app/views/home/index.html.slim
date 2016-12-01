@@ -1,77 +1,114 @@
 - set_meta_tags title: 'Business Consulting Reinvented', description: 'Excide manages the end-to-end business consulting process so that consultants have greater productivity and businesses get better results.'
-.landing-page#fullpage
-  .section#hero
-    .container
-      #hero-content.grey-overlay
-        .row
-          .col.s12.center
-            h1
-              | Business Consulting Reinvented.
-            p
-              | Excide is a collaborative consulting outfit that allows independent consultants to come together
-              br
-              | to leverage on their collective strength and economies of scale to compete more effectively.
-        .row
-          .col.s12.m6.l4.offset-l4
-            = link_to "I'm interested", "#contactus", class: "button btn-large green darken-3 hero-button"
-  .section#services
-    .container
-      .grey-overlay
-        .row
-          .col.s12
-            h2.center Our Focus Areas
-            .row
-              .col.s12.m6.l4
-                = link_to digital_path
-                  .promo.center
-                    i.material-icons stay_current_portrait
-                    p.promo-caption
-                      | Digital
-                      br
-                      | Transformation
-                    p.light Using technology and innovative solutions to enable traditional businesses.
-              .col.s12.m6.l4
-                = link_to growth_path
-                  .promo.center
-                    i.material-icons trending_up
-                    p.promo-caption
-                      |Growth
-                      br
-                      | Strategies
-                    p.light Leveraging knowledge to grow faster, work smarter and compete better.
-              .col.s12.m6.l4
-                = link_to merger_path
-                  .promo.center
-                    i.material-icons call_merge
-                    p.promo-caption
-                      | M&A
-                      br
-                      | Support
-                    p.light Providing continuous and seamless services from deal origination to transaction execution.
-  .section#contactus
-    .container.login
-      .grey-overlay
-        .row
-          .col.s12
-            h2.center Let's work together
-            .col.s12.m6.offset-m3
-              = form_for @enquiry, url: enquiries_path(@enquiry), remote: true do |f|
-                .row
-                  .input-field.col.s12
-                    = f.text_field :name, class: "validate"
-                    label for="enquiry_name" Name
-                .row
-                  .input-field.col.s12
-                    = f.telephone_field :contact, class: "validate"
-                    label for="enquiry_contact" Phone
-                .row
-                  .input-field.col.s12
-                    = f.email_field :email, class: "validate"
-                    label for="enquiry_email" Email
-                .row
-                  .input-field.col.s12
-                    = f.text_area :comments, class: "materialize-textarea"
-                    label for="comments" Comments (optional)
-                .row
-                  .actions.col.s12
-                    = f.submit "Submit", class: "btn green darken-3"
+section.fullscreen.image-bg.parallax.background-multiply
+  .background-image-holder
+    img.background-image alt="image" src=image_url('hero-image.jpg')
+  .container.v-align-transform
+    .row
+      .col-sm-12
+        h1 Excide helps small businesses think big
+  .align-bottom.text-center
+    a.btn.btn-white.mb32 href="#contactus" Get in touch
+    ul.list-inline.social-list.mb24
+      li
+        a href="https://twitter.com/excidenetwork/"
+          i.ti-twitter-alt
+      li
+        a href="https://www.facebook.com/excidenetwork/"
+          i.ti-facebook
+      li
+        a href="https://www.linkedin.com/company/excide"
+          i.ti-linkedin
+section
+  .container
+    .row
+      .col-sm-12
+        h6.uppercase About Excide
+        hr.mb160.mb-xs-24
+    .row
+      .col-md-10
+        h1.thin A business consultancy that specialises in helping small businesses take the next step
+    .row.mb160.mb-xs-0
+      .col-md-6.col-sm-8
+          p.lead Starting as a small business ourselves, we understand the unique challenges and constraints facing small businesses and startups. Combined with our big business expertice and know-how, we blend the best of both worlds to offer solutions that can deliver real business value quickly and effectively for you.
+    .row
+      .col-sm-4.mb-xs-24
+      .col-sm-4.mb-xs-24
+      .col-sm-4
+section.pt240.pb240.image-bg
+  .background-image-holder
+    img.background-image alt="image" src=image_url('tailored-solutions.jpg')
+section.bg-dark
+  .container
+    .row
+      .col-sm-12
+        h6.uppercase Focus Areas
+        h4.mb160.mb-xs-24
+    .row
+      .col-md-10
+        h1.thin Performing the role of your CFO
+    .row.mb160.mb-xs-0
+      .col-md-6.col-sm-8
+        p.lead Excide provides clients with CFO expertise through a business partnering approach.
+    .row
+      .col-md-4.col-sm-6.mb-xs-24
+        i.ti-book.icon.mb32
+        h6.uppercase Financial reporting
+        p Ensure compliance with regulations and provide accurate historical financials
+        ul
+          li Company registration
+          li Annual filing support
+          li Bookkeeping services
+          li Reporting frameworks
+      .col-md-4.col-sm-6.mb-xs-24
+        i.ti-money.icon.mb32
+        h6.uppercase Financing support
+        p Oversee capital structure and manage company liquidity
+        ul
+          li Banking relationship
+          li Debt modelling
+          li Crowdfunding advisory
+      .col-md-4.col-sm-6.mb-xs-24
+        i.ti-bar-chart.icon.mb32
+        h6.uppercase Strategic financial planning
+        p Align business and finance strategy to grow the business
+        ul
+          li M&amp;A support
+          li Exit planning
+          li Strategic fundraising
+          li Financial modelling
+          li Financial feasibility
+          li Demand planning
+          li End-customer pricing
+          li Capital budgeting
+section.image-bg.bg-light.overlay.pt160.pb160.pt-xs-80.pb-xs-80
+  .background-image-holder
+    img.background-image alt="image" src=image_url('engage-seamlessly.jpg')
+  .container
+    .row
+      .col-md-7.col-sm-8
+        i.ti-quote-left.icon.icon-sm.mb16
+        h3.mb32 Excide provided us with the insights needed for us to make the right decisions for a successfully launch of our product.
+        p Chris, founder of CX Hub
+section
+  .container
+    .row
+      .col-sm-12
+        h6.uppercase The Excide Team
+        hr.mb160.mb-xs-24
+    .row
+      .col-md-3.col-sm-4.mb24
+        h6.uppercase.mb0.color-primary Chin Han Sheng
+        span CEO
+      .col-md-3.col-sm-4.mb24
+        h6.uppercase.mb0.color-primary Sam Lee Chengyi
+        span Partner
+      .col-md-3.col-sm-4.mb24
+        h6.uppercase.mb0.color-primary Christopher Lye
+        span CSO
+section.fullscreen.image-bg.background-multiply
+  .background-image-holder
+    img.background-image alt="image" src=image_url('lets-work-together.jpg')
+  .container.v-align-transform
+    .row
+      .col-sm-12.text-center
+        h1.large.mb0 Let's work together

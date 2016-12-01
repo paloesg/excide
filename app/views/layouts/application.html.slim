@@ -3,7 +3,7 @@ html lang="en"
   head
     meta charset="utf-8"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
-    link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
+    link href="http://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600" rel="stylesheet" type="text/css"
 
     = display_meta_tags site: "Excide – Experts, You Decide"
 
@@ -17,14 +17,14 @@ html lang="en"
       for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);
       mixpanel.init($('meta[name="mixpanel-token"]').attr('content'));
 
-  body[class="#{controller_name} #{action_name} grey lighten-5"]
-    header = render 'layouts/header'
+  body[class="#{controller_name} #{action_name} scroll-assist"]
+    .nav-container = render 'layouts/header'
     = render 'layouts/messages'
-    main
+    .main-container
       - if controller_name == "home"
         = yield
       - else
         .container
           = yield
-    footer.page-footer.grey.lighten-3
+    .page-footer
       = render 'layouts/footer'
