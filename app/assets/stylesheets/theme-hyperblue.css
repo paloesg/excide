@@ -692,7 +692,7 @@ footer.bg-dark li,
   display: none;
 }
 .background-multiply .background-image-holder {
-  background-color: #777777 !important;
+  background-color: rgba(119,119,119,0.7) !important;
   background-blend-mode: multiply;
 }
 .background-image-holder.fadeIn {
