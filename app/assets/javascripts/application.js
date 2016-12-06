@@ -14,10 +14,10 @@
 //= require flickr
 //= require flexslider.min
 //= require lightbox.min
-//= require masonry.min.js
-//= require twitterfetcher.min.js
-//= require spectragram.min.js
-//= require ytplayer.min.js
-//= require countdown.min.js
+//= require masonry.min
+//= require twitterfetcher.min
+//= require spectragram.min
+//= require ytplayer.min
+//= require countdown.min
 //= require smooth-scroll.min
 //= require scripts
