@@ -99,10 +99,35 @@ section
         img.mb24 alt="Chris profile image" src=image_path('chris-profile.jpg')
         h6.uppercase.mb0.color-primary Christopher Lye
         span Chief Operating Officer
-section.fullscreen.image-bg.parallax.background-multiply
+section.pt240.pb240.image-bg.parallax
   .background-image-holder
     img.background-image alt="image" src=image_path('lets-work-together.jpg')
-  .container.v-align-transform
+section
+  .container
     .row
-      .col-sm-12.text-center
-        h1.large.mb0 Let's work together
+      .col-sm-6
+        .feature.bordered
+          h1.large.uppercase.mb64.mb-xs-24 Get in touch
+          form.form-email data-success="Thanks for your booking, we will be in touch to confirm shortly." data-error="Please fill all fields correctly."
+            input.validate-required type="text" name="name" placeholder="Name"
+            input.validate-required type="text" name="contact" placeholder="Contact Number"
+            input.validate-required type="text" name="email" placeholder="Email"
+            input type="text" name="enquiry" placeholder="Enquiry"
+            button type="submit" Submit Enquiry
+      .col-sm-6
+        .map-holder.pt160.pb160.mb24
+          iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCFxJd9qfiHi2nmn0myTo02zTgmFqW82so&q=2+Leng+Kee+Rd,+Singapore+159086"
+        .feature.bordered
+          h4.uppercase Contact Us
+          p
+            | 2 Leng Kee Road #03-10
+            br
+            | Thye Hong Centre
+            br
+            | Singapore 159086
+          p
+            strong P:
+            | +65 6352 2843
+            br
+            strong E:
+            | info@excide.co
