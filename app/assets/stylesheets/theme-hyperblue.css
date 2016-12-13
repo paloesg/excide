@@ -249,7 +249,7 @@ hr.short-thick {
   font-weight: 600 !important;
 }
 .thin {
-  font-weight: 100 !important;
+  font-weight: 200 !important;
 }
 @media all and (max-width: 767px) {
   .thin {
@@ -371,7 +371,7 @@ h6,
   }
 }
 .uppercase {
-  font-weight: 400;
+  font-weight: 300;
   text-transform: uppercase;
 }
 h1.uppercase {
