@@ -8,7 +8,7 @@ class EnquiriesController < ApplicationController
 
     respond_to do |format|
       if @enquiry.save
-        format.json { render json: @enquiry, status: :created, location: @enquiry }
+        format.json { render json: 1, status: :created, location: @enquiry }
       else
         format.json { render json: @enquiry.errors, status: :unprocessable_entity }
       end
@@ -18,6 +18,6 @@ class EnquiriesController < ApplicationController
   private
 
   def enquiry_params
-    params.require(:enquiry).permit(:name, :contact, :email, :comments)
+    params.permit(:name, :contact, :email, :comments)
   end
 end
