@@ -12,6 +12,40 @@ class SlackService
     @channel = channel
   end
 
+  def new_enquiry(enquiry)
+    params = {
+        attachments: [
+            {
+                title: 'There is a new enquiry!',
+                fallback: 'There is a new enquiry!',
+                color: GOOD,
+                fields: [
+                    {
+                        title: 'Name',
+                        value: enquiry.name
+                    },
+                    {
+                        title: 'Contact Number',
+                        value: enquiry.contact,
+                        short: true
+                    },
+                    {
+                        title: 'Email',
+                        value: enquiry.email,
+                        short: true
+                    },
+                    {
+                        title: 'Message',
+                        value: enquiry.comments
+                    },
+                ]
+            }
+        ]
+    }
+    @params = generate_payload(params)
+    self
+  end
+
   def consultant_signup(user, profile)
     params = {
         attachments: [

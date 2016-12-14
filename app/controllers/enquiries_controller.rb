@@ -8,6 +8,7 @@ class EnquiriesController < ApplicationController
 
     respond_to do |format|
       if @enquiry.save
+        SlackService.new.new_enquiry(@enquiry).deliver
         format.json { render json: 1, status: :created, location: @enquiry }
       else
         format.json { render json: @enquiry.errors, status: :unprocessable_entity }
