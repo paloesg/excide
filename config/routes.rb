@@ -40,6 +40,12 @@ Rails.application.routes.draw do
     resources :projects
   end
 
+  # Hosted files
+
+  get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
+
+  # Static pages
+
   get 'faq', to: 'home#faq'
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
