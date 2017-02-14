@@ -1,113 +1,129 @@
 - set_meta_tags title: 'Business Consulting Reinvented', description: 'Excide manages the end-to-end business consulting process so that consultants have greater productivity and businesses get better results.'
-section.fullscreen.image-bg.parallax.background-multiply
-  .background-image-holder
-    img.background-image alt="image" src=image_path('hero-image.jpg')
-  .container.v-align-transform
-    .row
-      .col-sm-12
-        h1 Excide helps small businesses think big
-  .align-bottom.text-center
-    a.btn.btn-white.mb32 href="#contactus" Get in touch
-    ul.list-inline.social-list.mb24
-      li
-        a href="https://twitter.com/excidenetwork/"
-          i.ti-twitter-alt
-      li
-        a href="https://www.facebook.com/excidenetwork/"
-          i.ti-facebook
-      li
-        a href="https://www.linkedin.com/company/excide"
-          i.ti-linkedin
+section.cover.fullscreen.image-slider.slider-all-controls.controls-inside.parallax
+  ul.slides
+    li.overlay.image-bg
+      .background-image-holder
+        img.background-image alt="image" src=image_path('hero-image.jpg')
+      .container.v-align-transform
+        .row
+          .col-sm-12.text-center
+            h1.mb8 Excide helps small businesses think big
+            p.lead.mb48
+              | Experts, by your side. Get in touch with us for a free 1-hour consultation!
+        .row
+          .col-md-10.col-md-offset-1.col-sm-12.text-center
+            form.form-newsletter.thirds data-success="Thanks for your enquiry, we will get back to you shortly." data-error="Please fill in the required fields."
+              input.validate-required type="text" name="name" placeholder="Name"
+              input.validate-required type="email" name="email" placeholder="Email"
+              button type="submit" Get In Touch
+              p.sub.text-center
+                | By submitting, you agree to receiving email from us.
 section
   .container
     .row
-      .col-sm-12
-        h6.uppercase About Excide
-        hr.mb160.mb-xs-24
+      .col-sm-12.text-center
+        h4.uppercase.mb16 The Situation
+        p.lead.mb80 Every start-up or small business faces 3 key issues
     .row
-      .col-md-10
-        h2.thin A business consultancy that specialises in helping small businesses take the next step
-    .row.mb160.mb-xs-0
-      .col-md-6.col-sm-8
-          p.lead Starting as a small business ourselves, we understand the unique challenges and constraints facing small businesses and startups. Combined with our big business expertise and know-how, we blend the best of both worlds to offer solutions that can deliver real business value quickly and effectively for you.
-    .row
-      .col-sm-4.mb-xs-24
-      .col-sm-4.mb-xs-24
-      .col-sm-4
+      .col-md-8.col-md-offset-2.col-sm-12.text-center
+        .tabbed-content.icon-tabs
+          ul.tabs
+            li.active
+              .tab-title
+                i.ti-money.icon
+                span Funding
+              .tab-content
+                p Funding forms the core of every business whether this funding comes from the pockets of the founders, the funds from venture capitalists, or organic growth. A business that stagnates is a dying business. Every business needs to grow, and maintaining a healthy flow of cash is critical. Is your business truly growing?
+            li
+              .tab-title
+                i.ti-user.icon
+                span Customers
+              .tab-content
+                p Any business owner’s primary concern would be sales. “Where am I going to get my customers from? How am I going to sustain a healthy pipeline throughout my business? How can I retain my existing customers?” From lead generation, to lead qualification, all the way to even having them refer you more customers, what does your process look like?
+            li
+              .tab-title
+                i.ti-light-bulb.icon
+                span Expertise
+              .tab-content
+                p In a small set-up, resourcing becomes the third but not in any way the least of concerns to a business owner. Being able to find the people with the right talent is one thing, whereas finding the right people is another. “Where should I be looking for the right talent? Should I be doing this task by myself or outsourcing it to someone else? Can I trust that they deliver?”
 section.pt240.pb240.image-bg.parallax
   .background-image-holder
     img.background-image alt="image" src=image_path('tailored-solutions.jpg')
-section.bg-dark
-  .container
-    .row
-      .col-sm-12
-        h6.uppercase Focus Areas
-        h4.mb160.mb-xs-24
-    .row
-      .col-md-10
-        h2.thin Performing the role of your CFO
-    .row.mb160.mb-xs-0
-      .col-md-6.col-sm-8
-        p.lead Excide provides clients with CFO expertise through a business partnering approach.
-    .row
-      .col-md-4.col-sm-6.mb-xs-24
-        i.ti-book.icon.mb32
-        h6.uppercase Financial reporting
-        p Ensure compliance with regulations and provide accurate historical financials
-        ul
-          li Company registration
-          li Annual filing support
-          li Bookkeeping services
-          li Reporting frameworks
-      .col-md-4.col-sm-6.mb-xs-24
-        i.ti-money.icon.mb32
-        h6.uppercase Financing support
-        p Oversee capital structure and manage company liquidity
-        ul
-          li Banking relationship
-          li Debt modelling
-          li Crowdfunding advisory
-      .col-md-4.col-sm-6.mb-xs-24
-        i.ti-bar-chart.icon.mb32
-        h6.uppercase Strategic financial planning
-        p Align business and finance strategy to grow the business
-        ul
-          li M&amp;A support
-          li Exit planning
-          li Strategic fundraising
-          li Financial modelling
-          li Financial feasibility
-          li Demand planning
-          li End-customer pricing
-          li Capital budgeting
 section
   .container
     .row
-      .col-sm-12
-        h6.uppercase The Excide Team
-        hr.mb160.mb-xs-24
+      .col-md-8.col-md-offset-2.col-sm-12.text-center
+        h4.uppercase.mb16 The Problem
+        p.mb80 In the Johari window, the quadrant not known to self while known to others, is called the blind spot. It is important for startups and small businesses to identify the critical issues in their blind spot and resolve them before they run out of their financial runway. However, a reluctance to get help or getting the wrong kind of help could worsen the situation.
+section.pt240.pb240.image-bg.parallax
+  .background-image-holder
+    img.background-image alt="image" src=image_path('meeting-table.jpg')
+section
+  .container
     .row
-      .col-md-3.col-sm-4.mb24
-        img.mb24 alt="Han Sheng profile image" src=image_path('hs-profile.jpg')
-        h6.uppercase.mb0.color-primary Chin Han Sheng
-        span Chief Executive Officer
-      .col-md-3.col-sm-4.mb24
-        img.mb24 alt="Sam profile image" src=image_path('sam-profile.jpg')
-        h6.uppercase.mb0.color-primary Sam Lee Chengyi
-        span Partner
-      .col-md-3.col-sm-4.mb24
-        img.mb24 alt="Chris profile image" src=image_path('chris-profile.jpg')
-        h6.uppercase.mb0.color-primary Christopher Lye
-        span Chief Operating Officer
+      .col-md-8.col-md-offset-2.col-sm-12.text-center
+        h4.uppercase.mb16 The Solution
+        p.lead.mb80 Every start-up or small business faces 3 key issues
+    .row
+      .col-sm-4
+        .feature.feature-1
+          .text-center
+            i.ti-search.icon
+            h5.uppercase Diagnosis
+          p Many consultants jump to offering solutions before even hearing what the problem is. We do not promise a solution before we hear you out and understand your business better. There is nothing more damaging to a business than to administer changes that are based on an inaccurate diagnosis.
+      .col-sm-4
+        .feature.feature-1
+          .text-center
+            i.ti-pencil.icon
+            h5.uppercase Prescription
+          p Once we are certain of your needs, we will provide either affordable off-the-shelf solutions or customised solutions if necessary. Our strength is that we can provide an objective perspective on the financial status of your business as we do not take brokerage fees or equity.
+      .col-sm-4
+        .feature.feature-1
+          .text-center
+            i.ti-pulse.icon
+            h5.uppercase Treatment
+          p This is where we will fine-tune the various aspects of your business that can be optimised. Based on a rock-solid financial model, you will have a complete overview of the health of your business and will know which are the areas that can be tweaked to improve business performance.
+section.pt240.pb240.image-bg.parallax
+  .background-image-holder
+    img.background-image alt="image" src=image_path('working-with-clients.jpg')
+section.bg-secondary
+  .container
+    .row
+      .col-sm-8.col-sm-offset-2.text-center
+        h4.mb64.uppercase What our clients say
+        .testimonials.text-slider.slider-arrow-controls
+          ul.slides
+            li
+              p.lead Excide’s quality of work has been impressive and have served us with high level of professionalism. Their deep experience and industry understanding have helped Rainmaker Labs pin-point the key growth drivers. We appreciate their services and wish to recommend this dedicated team to businesses alike.
+              .quote-author
+                img alt="Sam profile image" src=image_path('sam-profile.jpg')
+                h6.uppercase Sam
+                span Rainmaker Labs
+            li
+              p.lead We would like to commend Excide’s professionalism and integrity. Excide has gone beyond our expectations compared to other consultancy firms that I have seen in the market. What I greatly appreciate is the fact that they are open about the unnecessary services and only recommend solutions that are needed. Excide is a brand that I trust.
+              .quote-author
+                img alt="Han Sheng profile image" src=image_path('hs-profile.jpg')
+                h6.uppercase Martin
+                span Martin
+            li
+              p.lead Excide has been an immense help to Digitalfolks. What is most impressive is their sincerity and the in-depth knowledge of start-ups and digital businesses that make them a Subject Matter Expert in the field of start-up financial management consultancy. Digitalfolks is very grateful to the Excide team for being both a friend and a partner, facilitating our business by offering us practical advice that is backed by concrete professional work. I can count on Excide to deliver.
+              .quote-author
+                img alt="Chris profile image" src=image_path('chris-profile.jpg')
+                h6.uppercase Sharon
+                span Digitalfolks
 section.pt240.pb240.image-bg.parallax
   .background-image-holder
     img.background-image alt="image" src=image_path('lets-work-together.jpg')
 section#contactus
   .container
     .row
+      .col-sm-8.col-sm-offset-2.text-center
+        h4.mb64.uppercase Get in touch
+        p.lead.mb80 We are happy to provide you with a free 1-hour consultation. Just drop us a message below!
+    .row
       .col-sm-6
         .feature.bordered
-          h2.thin.uppercase.mb64.mb-xs-24 Get in touch
+          h5.uppercase Send us a message
           form.form-email data-success="Thanks for your enquiry, we will get back to you shortly." data-error="Please fill in the required fields."
             input.validate-required type="text" name="name" placeholder="Name"
             input.validate-required type="tel" name="contact" placeholder="Contact Number"
@@ -116,9 +132,9 @@ section#contactus
             button type="submit" Submit Enquiry
       .col-sm-6
         .map-holder.pt160.pb160.mb24
-          iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCFxJd9qfiHi2nmn0myTo02zTgmFqW82so&q=2+Leng+Kee+Rd,+Singapore+159086"
+          iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCFxJd9qfiHi2nmn0myTo02zTgmFqW82so&q=Excide+Pte.+Ltd.,+Singapore+159086"
         .feature.bordered
-          h4.uppercase Contact Us
+          h5.uppercase Contact Information
           p
             | +65 6352 2843
             br
