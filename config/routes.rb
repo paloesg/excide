@@ -51,6 +51,7 @@ Rails.application.routes.draw do
   get 'privacy', to: 'home#privacy'
 
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
+  get 'about-us', to: 'home#about', as: :about
 
   get '/robots.txt' => 'home#robots'
 
