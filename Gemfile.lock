@@ -281,6 +281,7 @@ DEPENDENCIES
   administrate-field-image
   aws-sdk (~> 2)
   bootstrap-sass (~> 3.3.6)
+  bourbon
   byebug
   cocoon
   coffee-rails (~> 4.1.1)
