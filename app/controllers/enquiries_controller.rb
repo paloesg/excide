@@ -19,6 +19,6 @@ class EnquiriesController < ApplicationController
   private
 
   def enquiry_params
-    params.permit(:name, :contact, :email, :comments)
+    params.permit(:name, :contact, :email, :comments, :source)
   end
 end

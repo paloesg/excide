@@ -22,7 +22,13 @@ class SlackService
                 fields: [
                     {
                         title: 'Name',
-                        value: enquiry.name
+                        value: enquiry.name,
+                        short: true
+                    },
+                    {
+                        title: 'Source',
+                        value: enquiry.source,
+                        short: true
                     },
                     {
                         title: 'Contact Number',
