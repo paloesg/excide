@@ -35,12 +35,7 @@ section.pt240.pb240.image-bg.parallax
           .text-center
             h4.mb10.uppercase Free financial model template
             p.lead.mb24 Wish to do a preliminary understanding if your business requires a Virtual Financial Officer? Here is a free PDF download for you to determine if you are on-track with your business’ finances. As soon as you fill up your details, we will furnish you with a financial model template.
-            form.form-newsletter.thirds data-success="Thanks for your enquiry, we will get back to you shortly." data-error="Please fill in the required fields."
-              input.validate-required type="text" name="name" placeholder="Name"
-              input.validate-required type="email" name="email" placeholder="Email"
-              button type="submit" Get In Touch
-              p.sub.text-center
-                | By submitting, you agree to receive email from us.
+            = render 'contact', short: true
 section
   .container
     .row
