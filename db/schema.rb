@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224154720) do
+ActiveRecord::Schema.define(version: 20170302095501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,20 @@ ActiveRecord::Schema.define(version: 20170224154720) do
   end
 
   add_index "businesses", ["user_id"], name: "index_businesses_on_user_id", using: :btree
+
+  create_table "choices", force: :cascade do |t|
+    t.text     "content"
+    t.integer  "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "choices_questions", id: false, force: :cascade do |t|
+    t.integer "question_id", null: false
+    t.integer "choice_id",   null: false
+  end
+
+  add_index "choices_questions", ["question_id", "choice_id"], name: "index_choices_questions_on_question_id_and_choice_id", using: :btree
 
   create_table "enquiries", force: :cascade do |t|
     t.string   "name"
@@ -123,6 +137,30 @@ ActiveRecord::Schema.define(version: 20170224154720) do
 
   add_index "qualifications", ["profile_id"], name: "index_qualifications_on_profile_id", using: :btree
 
+  create_table "questions", force: :cascade do |t|
+    t.text     "content"
+    t.integer  "question_type"
+    t.integer  "position"
+    t.integer  "section_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "questions", ["section_id"], name: "index_questions_on_section_id", using: :btree
+
+  create_table "responses", force: :cascade do |t|
+    t.text     "content"
+    t.integer  "question_id"
+    t.integer  "choice_id"
+    t.integer  "segment_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "responses", ["choice_id"], name: "index_responses_on_choice_id", using: :btree
+  add_index "responses", ["question_id"], name: "index_responses_on_question_id", using: :btree
+  add_index "responses", ["segment_id"], name: "index_responses_on_segment_id", using: :btree
+
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "resource_id"
@@ -133,6 +171,50 @@ ActiveRecord::Schema.define(version: 20170224154720) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+
+  create_table "sections", force: :cascade do |t|
+    t.string   "unique_name"
+    t.string   "display_name"
+    t.integer  "position"
+    t.integer  "template_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "sections", ["template_id"], name: "index_sections_on_template_id", using: :btree
+
+  create_table "segments", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "position"
+    t.integer  "section_id"
+    t.integer  "survey_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "segments", ["section_id"], name: "index_segments_on_section_id", using: :btree
+  add_index "segments", ["survey_id"], name: "index_segments_on_survey_id", using: :btree
+
+  create_table "surveys", force: :cascade do |t|
+    t.string   "title"
+    t.text     "remarks"
+    t.integer  "user_id"
+    t.integer  "business_id"
+    t.integer  "template_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "surveys", ["business_id"], name: "index_surveys_on_business_id", using: :btree
+  add_index "surveys", ["template_id"], name: "index_surveys_on_template_id", using: :btree
+  add_index "surveys", ["user_id"], name: "index_surveys_on_user_id", using: :btree
+
+  create_table "templates", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "business_model"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",                          null: false
@@ -180,4 +262,14 @@ ActiveRecord::Schema.define(version: 20170224154720) do
   add_foreign_key "proposals", "profiles"
   add_foreign_key "proposals", "projects"
   add_foreign_key "qualifications", "profiles"
+  add_foreign_key "questions", "sections"
+  add_foreign_key "responses", "choices"
+  add_foreign_key "responses", "questions"
+  add_foreign_key "responses", "segments"
+  add_foreign_key "sections", "templates"
+  add_foreign_key "segments", "sections"
+  add_foreign_key "segments", "surveys"
+  add_foreign_key "surveys", "businesses"
+  add_foreign_key "surveys", "templates"
+  add_foreign_key "surveys", "users"
 end
