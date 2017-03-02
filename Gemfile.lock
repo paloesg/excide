@@ -36,6 +36,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    acts_as_list (0.9.2)
+      activerecord (>= 3.0)
     administrate (0.3.0)
       autoprefixer-rails (~> 6.0)
       bourbon (~> 4.2)
@@ -277,6 +279,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts_as_list
   administrate
   administrate-field-image
   aws-sdk (~> 2)

@@ -30,12 +30,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Force sprockets rails to use version 2.3.3 to fix Heroku deployment issue
 gem 'sprockets-rails', '2.3.3'
 
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 # Frontend framework
 gem 'bootstrap-sass', '~> 3.3.6'
 
@@ -93,6 +87,9 @@ gem 'bourbon'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
+
+# Manage ordering for survey objects
+gem 'acts_as_list'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
