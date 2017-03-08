@@ -11,13 +11,15 @@ class DashboardManifest
   # to work correctly.
   DASHBOARDS = [
     :profiles,
-    :proposals,
     :businesses,
-    :projects,
-    :project_categories,
-    :experiences,
-    :qualifications,
     :users,
+    :surveys,
+    :templates,
+    :sections,
+    :segments,
+    :questions,
+    :responses,
+    :choices,
   ]
 
   # `ROOT_DASHBOARD`
