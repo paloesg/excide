@@ -10,7 +10,7 @@ class TemplateDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     title: Field::String,
-    business_model: Field::EnumField,
+    business_model: EnumField,
     surveys: Field::HasMany,
     sections: Field::HasMany,
     created_at: Field::DateTime,

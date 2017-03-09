@@ -13,7 +13,7 @@ class QuestionDashboard < Administrate::BaseDashboard
     choices: Field::HasMany,
     id: Field::Number,
     content: Field::Text,
-    question_type: Field::Number,
+    question_type: EnumField,
     position: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -25,22 +25,17 @@ class QuestionDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :section,
-    :responses,
-    :choices,
-    :id,
+    :content,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :section,
-    :responses,
-    :choices,
     :id,
     :content,
     :question_type,
     :position,
+    :choices,
     :created_at,
     :updated_at,
   ].freeze
@@ -50,11 +45,10 @@ class QuestionDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :section,
-    :responses,
-    :choices,
     :content,
     :question_type,
     :position,
+    :choices,
   ].freeze
 
   # Overwrite this method to customize how questions are displayed
