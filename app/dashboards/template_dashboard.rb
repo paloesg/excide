@@ -8,11 +8,11 @@ class TemplateDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    sections: Field::HasMany,
-    surveys: Field::HasMany,
     id: Field::Number,
     title: Field::String,
-    business_model: Field::Number,
+    business_model: Field::EnumField,
+    surveys: Field::HasMany,
+    sections: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -23,22 +23,22 @@ class TemplateDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :sections,
-    :surveys,
     :id,
     :title,
+    :business_model,
+    :surveys,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :sections,
-    :surveys,
     :id,
     :title,
     :business_model,
     :created_at,
     :updated_at,
+    :sections,
+    :surveys,
   ].freeze
 
   # FORM_ATTRIBUTES
