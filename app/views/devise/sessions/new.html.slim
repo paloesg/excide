@@ -1,39 +1,21 @@
-.row
-  .col.s12.l8.offset-l2
-    .card.login
-      .card-header Log in
-      .card-content
-        .row
-          .col.s12.center
-            = link_to "Log in with LinkedIn", user_linkedin_omniauth_authorize_path(role: params[:role]), class: 'linkedin-login'
-
-        .row
-          .col.s12.center-align - OR -
-
-        = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-          .row
-            .input-field.col.s12
-              = f.email_field :email
-              = f.label :email
-
-          .row
-            .input-field.col.s12
-              = f.password_field :password, autocomplete: "off"
-              = f.label :password
-
-          .row
-            .input.col.s12.m6
-              - if devise_mapping.rememberable?
-                .row
-                  .input.col.s12
-                    = f.check_box :remember_me
-                    = f.label :remember_me
-            .col.s12.m6
-              .right
-                = link_to "Sign up", register_path(:consultant)
-                '  |
-                = link_to "Forgot password", new_password_path(@user)
-          .row
-            .input-field.col.s12.m6
-              .actions
-                = f.submit "Log in", class: "btn green darken-3"
+section.cover.fullscreen.image-bg.overlay
+  .background-image-holder
+    img.background-image alt="Growing your business" src=image_path('hero-image.jpg')
+  .container.v-align-transform
+    .row
+      .col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2
+        .feature.boxed
+          h4.uppercase Log In
+          = link_to "Log in with LinkedIn", user_linkedin_omniauth_authorize_path(role: params[:role]), class: 'linkedin-login'
+          = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+            = f.email_field :email, placeholder: "Email"
+            = f.password_field :password, placeholder: "Password", autocomplete: "off"
+            - if devise_mapping.rememberable?
+              span = f.label :remember_me
+              .checkbox-option.pull-right
+                .inner
+                = f.check_box :remember_me
+            = f.submit "Log in"
+            = link_to "Sign up", register_path(:consultant)
+            '  |
+            = link_to "Forgot password", new_password_path(@user), class: "pull-right"

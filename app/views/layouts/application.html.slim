@@ -21,11 +21,7 @@ html lang="en"
     .nav-container = render 'layouts/header'
     = render 'layouts/messages'
     .main-container
-      - if controller_name == "home"
-        = yield
-      - else
-        .container
-          = yield
+      = yield
     .page-footer
       = render 'layouts/footer'
 
