@@ -50,7 +50,7 @@ class ChoiceDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how choices are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(choice)
-  #   "Choice ##{choice.id}"
-  # end
+  def display_resource(choice)
+    choice.content
+  end
 end

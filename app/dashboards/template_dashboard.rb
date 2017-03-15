@@ -45,16 +45,15 @@ class TemplateDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :sections,
-    :surveys,
     :title,
     :business_model,
+    :sections,
   ].freeze
 
   # Overwrite this method to customize how templates are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(template)
-  #   "Template ##{template.id}"
-  # end
+  def display_resource(template)
+    template.title
+  end
 end

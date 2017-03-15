@@ -26,7 +26,7 @@ class SectionDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :id,
-    :display_name,
+    :unique_name,
     :position,
   ].freeze
 
@@ -55,7 +55,7 @@ class SectionDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how sections are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(section)
-  #   "Section ##{section.id}"
-  # end
+  def display_resource(section)
+    section.unique_name
+  end
 end
