@@ -5,5 +5,5 @@ class Question < ActiveRecord::Base
 
   has_and_belongs_to_many :choices
 
-  enum question_type: [:text, :number, :radio, :checkbox, :file]
+  enum question_type: [:text, :number, :single, :multiple, :file]
 end
