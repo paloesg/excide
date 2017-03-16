@@ -83,6 +83,7 @@ gem 'oj', '~> 2.12.14'
 #Backend admin
 gem 'administrate'
 gem 'administrate-field-image'
+gem "administrate-field-nested_has_many", "~> 0.0.2"
 gem 'bourbon'
 
 # Heroku requirement for static asset serving and logging
