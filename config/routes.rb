@@ -29,6 +29,10 @@ Rails.application.routes.draw do
   resources :enquiries
 
   resources :surveys
+  get 'survey/:id/section', to: 'surveys#section', as: :survey_section
+
+  resources :segments
+  resources :responses
 
   namespace :consultant do
     resources :proposals, except: [:new]
