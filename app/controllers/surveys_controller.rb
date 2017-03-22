@@ -10,18 +10,25 @@ class SurveysController < ApplicationController
     @survey.user_id = current_user.id
 
     if @survey.save!
-      redirect_to survey_section_path(@survey.id)
+      redirect_to survey_section_path(@survey.id, 1)
     end
   end
 
   def section
-    @survey = Survey.find(params[:id])
+    @survey = Survey.find(params[:survey_id])
+    @position = params[:section_position].to_i
 
     @sections = @survey.template.sections
-    @section = @sections.first
+    unless @section = @sections.find_by_position(@position)
+      redirect_to survey_complete_path
+      return
+    end
+
     @questions = @section.questions
 
     @segment = Segment.new
+    @segment.survey_id = @survey.id
+    @segment.section_id = @section.id
 
     @responses = []
     @questions.each do |question|
@@ -30,6 +37,8 @@ class SurveysController < ApplicationController
       @responses << @response
     end
 
+    def complete
+    end
   end
 
   private
