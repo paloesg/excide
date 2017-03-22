@@ -33,6 +33,8 @@ Rails.application.routes.draw do
   get 'survey/complete', to: 'surveys#complete', as: :survey_complete
 
   resources :segments
+  post 'segment/create-and-new', to: 'segments#create_and_new', as: :segment_create_and_new
+
   resources :responses
 
   namespace :consultant do

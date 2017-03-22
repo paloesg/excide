@@ -4,8 +4,16 @@ class SegmentsController < ApplicationController
   def create
     @segment = Segment.new(segment_params)
 
-    if @segment.save
+    if @segment.save!
       redirect_to survey_section_path(@segment.survey.id, @segment.section.position + 1)
+    end
+  end
+
+  def create_and_new
+    @segment = Segment.new(segment_params)
+
+    if @segment.save!
+      redirect_to survey_section_path(@segment.survey.id, @segment.section.position)
     end
   end
 
