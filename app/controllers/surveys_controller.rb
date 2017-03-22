@@ -36,9 +36,9 @@ class SurveysController < ApplicationController
       @response.question_id = question.id
       @responses << @response
     end
+  end
 
-    def complete
-    end
+  def complete
   end
 
   private
