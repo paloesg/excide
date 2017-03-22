@@ -9,7 +9,7 @@ class SectionDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     template: Field::BelongsTo,
-    questions: Field::HasMany,
+    questions: Field::HasMany.with_options(limit: 50),
     segments: Field::HasMany,
     id: Field::Number,
     unique_name: Field::String,
