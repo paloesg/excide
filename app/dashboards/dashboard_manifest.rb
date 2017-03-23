@@ -11,11 +11,11 @@ class DashboardManifest
   # to work correctly.
   DASHBOARDS = [
     :surveys,
+    :segments,
+    :responses,
     :templates,
     :sections,
-    :segments,
     :questions,
-    :responses,
     :choices,
     :businesses,
     :profiles,
