@@ -11,6 +11,9 @@
   text-indent:100%;
   white-space:nowrap;
   margin: 40px auto;
+  transition: all 0s ease;
+  -webkit-transition: all 0s ease;
+  -moz-transition: all 0s ease;
 }
 
 .linkedin-login:hover {
