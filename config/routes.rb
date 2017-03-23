@@ -29,8 +29,8 @@ Rails.application.routes.draw do
   resources :enquiries
 
   resources :surveys
-  get 'survey/:survey_id/section/:section_position', to: 'surveys#section', as: :survey_section
-  get 'survey/complete', to: 'surveys#complete', as: :survey_complete
+  get 'surveys/:survey_id/section/:section_position', to: 'surveys#section', as: :survey_section
+  get 'surveys/complete', to: 'surveys#complete', as: :survey_complete
 
   resources :segments
   post 'segment/create-and-new', to: 'segments#create_and_new', as: :segment_create_and_new
