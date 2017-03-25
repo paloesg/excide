@@ -6,4 +6,8 @@ class Survey < ActiveRecord::Base
   has_many :sections
 
   accepts_nested_attributes_for :business
+
+  validates :user, presence: true
+  validates :template, presence: true
+  validates :title, presence: true
 end
