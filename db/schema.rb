@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302095501) do
+ActiveRecord::Schema.define(version: 20170325154056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,6 +147,16 @@ ActiveRecord::Schema.define(version: 20170302095501) do
   end
 
   add_index "questions", ["section_id"], name: "index_questions_on_section_id", using: :btree
+
+  create_table "reminders", force: :cascade do |t|
+    t.datetime "next_reminder"
+    t.boolean  "repeat"
+    t.integer  "freq_value"
+    t.integer  "freq_unit"
+    t.datetime "past_reminders", default: [],              array: true
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "responses", force: :cascade do |t|
     t.text     "content"
