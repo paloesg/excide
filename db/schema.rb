@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170325154056) do
+ActiveRecord::Schema.define(version: 20170325160414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,7 +156,12 @@ ActiveRecord::Schema.define(version: 20170325154056) do
     t.datetime "past_reminders", default: [],              array: true
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.integer  "user_id"
+    t.integer  "business_id"
   end
+
+  add_index "reminders", ["business_id"], name: "index_reminders_on_business_id", using: :btree
+  add_index "reminders", ["user_id"], name: "index_reminders_on_user_id", using: :btree
 
   create_table "responses", force: :cascade do |t|
     t.text     "content"
@@ -273,6 +278,8 @@ ActiveRecord::Schema.define(version: 20170325154056) do
   add_foreign_key "proposals", "projects"
   add_foreign_key "qualifications", "profiles"
   add_foreign_key "questions", "sections"
+  add_foreign_key "reminders", "businesses"
+  add_foreign_key "reminders", "users"
   add_foreign_key "responses", "choices"
   add_foreign_key "responses", "questions"
   add_foreign_key "responses", "segments"
