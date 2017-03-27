@@ -52,21 +52,31 @@ class SlackService
     self
   end
 
-  def send_reminder(business)
+  def send_reminder(reminder)
     params = {
         attachments: [
             {
-                title: 'A reminder has been sent',
-                fallback: 'A reminder has been sent',
-                color: GOOD,
+                title: 'Reminder',
+                fallback: 'Reminder',
+                color: WARNING,
                 fields: [
                     {
                         title: 'Client',
-                        value: business.name
+                        value: reminder.business.name,
+                        short: true
                     },
                     {
                         title: 'Email',
-                        value: business.user.email
+                        value: reminder.business.user.email,
+                        short: true
+                    },
+                    {
+                        title: 'Title',
+                        value: reminder.title,
+                    },
+                    {
+                        title: 'Message',
+                        value: reminder.content,
                     },
                 ]
             }

@@ -9,7 +9,7 @@ class Reminder < ActiveRecord::Base
   end
 
   def send_reminder
-    SlackService.new.send_reminder(self.business).deliver
+    SlackService.new.send_reminder(self).deliver
     if self.repeat?
       self.next_reminder = Date.today + self.freq_value.to_i.send(self.freq_unit)
     else
