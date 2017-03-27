@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302095501) do
+ActiveRecord::Schema.define(version: 20170327084659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,6 +148,23 @@ ActiveRecord::Schema.define(version: 20170302095501) do
 
   add_index "questions", ["section_id"], name: "index_questions_on_section_id", using: :btree
 
+  create_table "reminders", force: :cascade do |t|
+    t.datetime "next_reminder"
+    t.boolean  "repeat"
+    t.integer  "freq_value"
+    t.integer  "freq_unit"
+    t.datetime "past_reminders", default: [],              array: true
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "user_id"
+    t.integer  "business_id"
+    t.string   "title"
+    t.text     "content"
+  end
+
+  add_index "reminders", ["business_id"], name: "index_reminders_on_business_id", using: :btree
+  add_index "reminders", ["user_id"], name: "index_reminders_on_user_id", using: :btree
+
   create_table "responses", force: :cascade do |t|
     t.text     "content"
     t.integer  "question_id"
@@ -263,6 +280,8 @@ ActiveRecord::Schema.define(version: 20170302095501) do
   add_foreign_key "proposals", "projects"
   add_foreign_key "qualifications", "profiles"
   add_foreign_key "questions", "sections"
+  add_foreign_key "reminders", "businesses"
+  add_foreign_key "reminders", "users"
   add_foreign_key "responses", "choices"
   add_foreign_key "responses", "questions"
   add_foreign_key "responses", "segments"
