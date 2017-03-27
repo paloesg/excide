@@ -80,6 +80,8 @@ gem 'mixpanel-ruby'
 gem 'rollbar'
 gem 'oj', '~> 2.12.14'
 
+gem 'snitcher'
+
 #Backend admin
 gem 'administrate'
 gem 'administrate-field-image'

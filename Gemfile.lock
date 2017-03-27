@@ -246,6 +246,7 @@ GEM
       actionpack (>= 3.1)
       railties (>= 3.1)
       slim (~> 3.0)
+    snitcher (0.4.0)
     spring (2.0.1)
       activesupport (>= 4.2)
     sprockets (3.7.1)
@@ -316,6 +317,7 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   sitemap_generator
   slim-rails
+  snitcher
   spring
   sprockets-rails (= 2.3.3)
   themify-icons-rails
@@ -328,4 +330,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.14.5
+   1.14.6
