@@ -1,6 +1,6 @@
 class SlackService
   NAME_AND_ICON = {
-      username: 'Excide Platform'
+    username: 'Excide Platform'
   }
 
   GOOD = 'good'
@@ -14,39 +14,41 @@ class SlackService
 
   def new_enquiry(enquiry)
     params = {
-        attachments: [
+      attachments: [
+        {
+          title: 'Enquiry Details',
+          title_link: 'https://' + ENV['HEROKU_NAME'] + '.herokuapp.com/admin/enquiries/' + enquiry.id.to_s,
+          fallback: 'There is a new enquiry with ID ' + enquiry.id.to_s,
+          pretext: 'Yay! There is a new enquiry from the website.',
+          color: GOOD,
+          fields: [
             {
-                title: 'There is a new enquiry!',
-                fallback: 'There is a new enquiry!',
-                color: GOOD,
-                fields: [
-                    {
-                        title: 'Name',
-                        value: enquiry.name,
-                        short: true
-                    },
-                    {
-                        title: 'Source',
-                        value: enquiry.source,
-                        short: true
-                    },
-                    {
-                        title: 'Contact Number',
-                        value: enquiry.contact,
-                        short: true
-                    },
-                    {
-                        title: 'Email',
-                        value: enquiry.email,
-                        short: true
-                    },
-                    {
-                        title: 'Message',
-                        value: enquiry.comments
-                    },
-                ]
-            }
-        ]
+              title: 'Name',
+              value: enquiry.name,
+              short: true
+            },
+            {
+              title: 'Source',
+              value: enquiry.source,
+              short: true
+            },
+            {
+              title: 'Contact Number',
+              value: enquiry.contact || '-',
+              short: true
+            },
+            {
+              title: 'Email',
+              value: enquiry.email,
+              short: true
+            },
+            {
+              title: 'Message',
+              value: enquiry.comments || '-'
+            },
+          ]
+        }
+      ]
     }
     @params = generate_payload(params)
     self
@@ -54,33 +56,35 @@ class SlackService
 
   def send_reminder(reminder)
     params = {
-        attachments: [
+      attachments: [
+        {
+          title: 'Reminder',
+          title_link: 'https://' + ENV['HEROKU_NAME'] + '.herokuapp.com/admin/reminders/' + reminder.id.to_s,
+          fallback: 'Reminder ID ' + reminder.id.to_s,
+          pretext: 'Please send a reminder to the following client.',
+          color: WARNING,
+          fields: [
             {
-                title: 'Reminder',
-                fallback: 'Reminder',
-                color: WARNING,
-                fields: [
-                    {
-                        title: 'Client',
-                        value: reminder.business.name,
-                        short: true
-                    },
-                    {
-                        title: 'Email',
-                        value: reminder.business.user.email,
-                        short: true
-                    },
-                    {
-                        title: 'Title',
-                        value: reminder.title,
-                    },
-                    {
-                        title: 'Message',
-                        value: reminder.content,
-                    },
-                ]
-            }
-        ]
+              title: 'Client',
+              value: reminder.business.name,
+              short: true
+            },
+            {
+              title: 'Email',
+              value: reminder.business.user.email,
+              short: true
+            },
+            {
+              title: 'Title',
+              value: reminder.title,
+            },
+            {
+              title: 'Message',
+              value: reminder.content,
+            },
+          ]
+        }
+      ]
     }
     @params = generate_payload(params)
     self
@@ -88,67 +92,13 @@ class SlackService
 
   def consultant_signup(user, profile)
     params = {
-        attachments: [
-            {
-                title: 'A new consultant has signed up!',
-                fallback: 'A new consultant has signed up!',
-                color: GOOD,
-                fields: [
-                    {
-                        title: 'First Name',
-                        value: user.first_name,
-                        short: true
-                    },
-                    {
-                        title: 'Last Name',
-                        value: user.last_name,
-                        short: true
-                    },
-                    {
-                        title: 'Email',
-                        value: user.email,
-                        short: true
-                    },
-                    {
-                        title: 'Phone',
-                        value: user.contact_number,
-                        short: true
-                    },
-                    {
-                        title: 'Headline',
-                        value: profile.headline
-                    },
-                    {
-                        title: 'Summary',
-                        value: profile.summary
-                    },
-                    {
-                        title: 'Industry',
-                        value: profile.industry,
-                        short: true
-                    },
-                    {
-                        title: 'Specialties',
-                        value: profile.specialties,
-                        short: true
-                    },
-                    {
-                        title: 'Location',
-                        value: profile.location,
-                        short: true
-                    },
-                    {
-                        title: 'Country Code',
-                        value: profile.country_code,
-                        short: true
-                    },
-                    {
-                        title: 'LinkedIn URL',
-                        value: profile.linkedin_url
-                    }
-                ]
-            }
-        ]
+      attachments: [
+        {
+          title: 'A new consultant has signed up!',
+          fallback: 'A new consultant has signed up!',
+          color: GOOD
+        }
+      ]
     }
     @params = generate_payload(params)
     self
@@ -156,57 +106,13 @@ class SlackService
 
   def business_signup(user, business)
     params = {
-        attachments: [
-            {
-                title: 'A new business has signed up!',
-                fallback: 'A new business has signed up!',
-                color: GOOD,
-                fields: [
-                    {
-                        title: 'First Name',
-                        value: user.first_name,
-                        short: true
-                    },
-                    {
-                        title: 'Last Name',
-                        value: user.last_name,
-                        short: true
-                    },
-                    {
-                        title: 'Email',
-                        value: user.email,
-                        short: true
-                    },
-                    {
-                        title: 'Phone',
-                        value: user.contact_number,
-                        short: true
-                    },
-                    {
-                        title: 'Company',
-                        value: business.name
-                    },
-                    {
-                        title: 'Description',
-                        value: business.description
-                    },
-                    {
-                        title: 'Industry',
-                        value: business.industry,
-                        short: true
-                    },
-                    {
-                        title: 'Company Type',
-                        value: business.company_type,
-                        short: true
-                    },
-                    {
-                        title: 'LinkedIn URL',
-                        value: business.linkedin_url
-                    }
-                ]
-            }
-        ]
+      attachments: [
+        {
+          title: 'A new business has signed up!',
+          fallback: 'A new business has signed up!',
+          color: GOOD
+        }
+      ]
     }
     @params = generate_payload(params)
     self
@@ -224,9 +130,9 @@ class SlackService
 
   def generate_payload(params)
     {
-        payload: NAME_AND_ICON
-                     .merge(channel: @channel)
-                     .merge(params).to_json
+      payload: NAME_AND_ICON
+        .merge(channel: @channel)
+        .merge(params).to_json
     }
   end
 end
