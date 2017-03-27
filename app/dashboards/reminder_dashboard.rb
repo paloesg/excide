@@ -18,6 +18,8 @@ class ReminderDashboard < Administrate::BaseDashboard
     updated_at: Field::DateTime,
     user: Field::BelongsTo,
     business: Field::BelongsTo,
+    title: Field::String,
+    content: Field::Text,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -28,6 +30,7 @@ class ReminderDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :business,
+    :title,
     :next_reminder,
     :repeat,
     :freq_value,
@@ -38,6 +41,8 @@ class ReminderDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :id,
+    :title,
+    :content,
     :next_reminder,
     :repeat,
     :freq_value,
@@ -52,11 +57,12 @@ class ReminderDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
+    :title,
+    :content,
     :next_reminder,
     :repeat,
     :freq_value,
     :freq_unit,
-    :user,
     :business,
   ].freeze
 
