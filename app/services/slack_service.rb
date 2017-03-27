@@ -52,6 +52,30 @@ class SlackService
     self
   end
 
+  def send_reminder(business)
+    params = {
+        attachments: [
+            {
+                title: 'A reminder has been sent',
+                fallback: 'A reminder has been sent',
+                color: GOOD,
+                fields: [
+                    {
+                        title: 'Client',
+                        value: business.name
+                    },
+                    {
+                        title: 'Email',
+                        value: business.user.email
+                    },
+                ]
+            }
+        ]
+    }
+    @params = generate_payload(params)
+    self
+  end
+
   def consultant_signup(user, profile)
     params = {
         attachments: [
