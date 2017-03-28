@@ -9,6 +9,6 @@ namespace :scheduler do
       end
     }
 
-    Snitcher.snitch("64699878dc", message: "Finished in #{time.round(2)} seconds.")
+    Snitcher.snitch(ENV['SNITCH_TOKEN'], message: "Finished in #{time.round(2)} seconds.")
   end
 end
