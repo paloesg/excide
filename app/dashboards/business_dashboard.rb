@@ -10,7 +10,7 @@ class BusinessDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     name: Field::String,
     id: Field::Number,
-    company_type: Field::String,
+    company_type: EnumField,
     image_url: Field::Image,
     description: Field::Text,
     user: Field::BelongsTo,
