@@ -21,6 +21,8 @@ namespace :scheduler do
       else
         EnquiryMailer.general_enquiry(enquiry).deliver_now
       end
+      enquiry.update_attributes(responded: true)
+      SlackService.new.auto_response(enquiry).deliver
     end
   end
 end
