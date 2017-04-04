@@ -3,7 +3,9 @@ class EnquiryMailer < ApplicationMailer
 
   def general_enquiries(enquiry)
     @enquiry = enquiry
-    @url  = 'http://example.com/login'
-    mail(to: @enquiry.email, subject: 'Thank you for your enquiry')
+    address = Mail::Address.new @enquiry.email
+    address.display_name = @enquiry.name
+    @url  = 'https://calendly.com/sam-excide/'
+    mail(to: address.format, subject: 'Thank you for your enquiry')
   end
 end
