@@ -11,4 +11,16 @@ namespace :scheduler do
 
     Snitcher.snitch(ENV['SNITCH_TOKEN'], message: "Finished in #{time.round(2)} seconds.")
   end
+
+  task :enquiry_emails => :environment do
+    enquiries = Enquiry.yesterday.where(responded: false)
+    enquiries.each do |enquiry|
+      # If enquiry came in from vfo or about page without contact info, they are interested in the financial model template
+      if enquiry.contact.nil? && (enquiry.source == "vfo" || enquiry.source == "about")
+        EnquiryMailer.template_enquiry(enquiry).deliver_now
+      else
+        EnquiryMailer.general_enquiry(enquiry).deliver_now
+      end
+    end
+  end
 end
