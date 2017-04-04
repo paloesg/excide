@@ -54,6 +54,44 @@ class SlackService
     self
   end
 
+  def auto_response(enquiry)
+    params = {
+      attachments: [
+        {
+          title: 'Automated Enquiry Response',
+          title_link: 'https://' + ENV['HEROKU_NAME'] + '.herokuapp.com/admin/enquiries/' + enquiry.id.to_s,
+          fallback: 'An automated email has been sent to enquiry with ID ' + enquiry.id.to_s,
+          pretext: 'An automated email response has been sent to this enquiry.',
+          color: GOOD,
+          fields: [
+            {
+              title: 'Name',
+              value: enquiry.name,
+              short: true
+            },
+            {
+              title: 'Source',
+              value: enquiry.source,
+              short: true
+            },
+            {
+              title: 'Email',
+              value: enquiry.email,
+              short: true
+            },
+            {
+              title: 'Response Sent',
+              value: enquiry.responded || '-',
+              short: true
+            },
+          ]
+        }
+      ]
+    }
+    @params = generate_payload(params)
+    self
+  end
+
   def send_reminder(reminder)
     params = {
       attachments: [
