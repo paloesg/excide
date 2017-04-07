@@ -17,5 +17,10 @@ module Admin
 
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
+    def export
+      @survey = Survey.find(params[:id])
+
+      send_data @survey.to_csv, filename: "survey.csv"
+    end
   end
 end

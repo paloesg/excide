@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   namespace :admin do
     DashboardManifest::DASHBOARDS.each do |dashboard_resource|
-      resources dashboard_resource
+      resources dashboard_resource do
+        member do
+          get :export
+        end
+      end
     end
 
     root controller: DashboardManifest::ROOT_DASHBOARD, action: :index
