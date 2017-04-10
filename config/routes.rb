@@ -61,6 +61,18 @@ Rails.application.routes.draw do
 
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
   get 'about-us', to: 'home#about', as: :about
+  
+  # VFO drop down section
+  
+  get 'financial-analytics-reporting', to: 'home#financial-analytics-reporting',as: :financial_analytics_reporting
+  
+  
+  # this part is for the services section, can take out if not necessary
+  
+  get 'services', to: 'home#services', as: :services
+  get 'accounting-services', to: 'home#accounting-services', as: :accounting
+  get 'annual-return-filing', to: 'home#annual-return-filing', as: :return
+  get 'bookkeeping', to: 'home#bookkeeping', as: :bookkeeping
 
   get '/robots.txt' => 'home#robots'
 
