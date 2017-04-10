@@ -64,7 +64,8 @@ Rails.application.routes.draw do
   
   # VFO drop down section
   
-  get 'financial-analytics-reporting', to: 'home#financial-analytics-reporting',as: :financial_analytics_reporting
+  get 'financial-analytics-reporting', to: 'home#financial-analytics-reporting', as: :financial_analytics_reporting
+  get 'business-plan-assistance', to: 'home#business-plan-assistance', as: :business_plan_assistance
   
   
   # this part is for the services section, can take out if not necessary
