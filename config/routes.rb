@@ -67,7 +67,7 @@ Rails.application.routes.draw do
   get 'financial-analytics-reporting', to: 'home#financial-analytics-reporting', as: :financial_analytics_reporting
   get 'business-plan-assistance', to: 'home#business-plan-assistance', as: :business_plan_assistance
   get 'corporate-planning-structure', to: 'home#corporate-planning-structure', as: :corporate_planning_structure
-  
+  get 'forecasting-sensitivity-analysis', to: 'home#forecasting-sensitivity-analysis', as: :forecasting_sensitivity_analysis  
   
   # this part is for the services section, can take out if not necessary
   
