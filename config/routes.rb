@@ -71,6 +71,7 @@ Rails.application.routes.draw do
   get 'budgeting-forecasting', to: 'home#budgeting-forecasting', as: :bugeting_forecasting
   get 'ipo-support', to: 'home#ipo-support', as: :ipo_support
   get 'm&a-support', to: 'home#m&a-support', as: :mna_support
+  get 'exit-strategy', to: 'home#exit-strategy', as: :exit_strategy
   
   
   # this part is for the services section, can take out if not necessary
