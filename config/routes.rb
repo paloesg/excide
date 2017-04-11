@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   get 'forecasting-sensitivity-analysis', to: 'home#forecasting-sensitivity-analysis', as: :forecasting_sensitivity_analysis  
   get 'budgeting-forecasting', to: 'home#budgeting-forecasting', as: :bugeting_forecasting
   get 'ipo-support', to: 'home#ipo-support', as: :ipo_support
+  get 'm&a-support', to: 'home#m&a-support', as: :mna_support
   
   
   # this part is for the services section, can take out if not necessary
