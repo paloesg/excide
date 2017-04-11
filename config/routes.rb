@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   get 'ipo-support', to: 'home#ipo-support', as: :ipo_support
   get 'm&a-support', to: 'home#m&a-support', as: :mna_support
   get 'exit-strategy', to: 'home#exit-strategy', as: :exit_strategy
+  get 'turnaround-management', to: 'home#turnaround-management', as: :turnaround_management
   
   
   # this part is for the services section, can take out if not necessary
