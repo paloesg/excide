@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   get 'm&a-support', to: 'home#m&a-support', as: :mna_support
   get 'exit-strategy', to: 'home#exit-strategy', as: :exit_strategy
   get 'turnaround-management', to: 'home#turnaround-management', as: :turnaround_management
+  get 'fund-raising', to: 'home#fund-raising', as: :fund_raising
   
   
   # this part is for the services section, can take out if not necessary
