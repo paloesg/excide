@@ -1,85 +1,59 @@
 - set_meta_tags title: 'Virtual Financial Officer', description: 'Performing the role of your CFO at a fraction of the cost.'
 section.page-title.page-title-1.image-bg.overlay.parallax
   .background-image-holder
-    img.background-image alt="image" src=image_path('budgeting-forecasting.jpg')
+    img.background-image alt="image" src=image_path('laptop-with-charts.jpg')
   .container
     .row
       .col-sm-12.text-center
-        h3.uppercase.mb0 Budgeting & Forecasting
+        h2.uppercase.mb0 Budgeting & Forecasting
+        p.lead.mb64 Proper budgeting goes a long way
   ol.breadcrumb.breadcrumb-2
     li
       a href="/" Home
     li
-      a href="budgeting-forecasting" Budgeting & Forecasting
-
-section.pb0
-  .container
-    .row
-      .col-md-12.text-center
-        h3 Proper budgeting goes a long way
-          
+      a href="/vfo" Virtual Financial Officer
+    li Budgeting & Forecasting
 section
   .container
     .row
-      .col-md-9.pb32
+      .col-md-8.col-md-offset-2.col-sm-12
         .text-center
-          h4.mb64.uppercase Importance of Budgeting
-        p.lead.m32.pb32 Budgeting provides an estimation of your business’s cash flow, of both revenues reaped and expenses paid. Budgeting uses estimation to quantify the expectation of revenues a business wants to achieve for a future period, usually over a fiscal year. It represents a business’s financial position and it helps provide a direction where the business wants to go. To be a successful player in today's environment, one has to have a robust budgeting & forecasting system. Businesses would need to:
-      
+          h4.mb64.uppercase The Importance of Budgeting
+        p.lead.m32 Budgeting provides an estimation of your business’s cash flow, of both revenues earned and expenses paid. Budgeting uses estimation to quantify the expectation of revenues a business wants to achieve for a future period, usually over a fiscal year. It represents a business’s financial position and it helps provide a direction where the business wants to go. To be a successful player in today's environment, one has to have a robust budgeting & forecasting system. Businesses would need to:
+
         ul.lead data-bullet="ti-check-box"
           li Know your cashflow and other resources requirement
           li Plan and prepare for any contingencies
           li Set goals and targets for key management personnel
           li Drawing up growth strategy and identifying milestones
-
-      .col-md-9
-        .text-center  
+section.pt240.pb240.image-bg.parallax
+  .background-image-holder
+    img.background-image alt="image" src=image_path('charts-with-iphone.jpg')
+section
+  .container
+    .row
+      .col-md-8.col-md-offset-2.col-sm-12
+        .text-center
           h4.mb64.uppercase Why Excide
-        p.lead.m32.pb32 At Excide, we will assist you in creating a robust budgeting & forecasting system. This system creation cannot be created overnight and requires consistent planning and prudent budget analysis. We will help you with:
-        
+        p.lead.m32 At Excide, we will assist you in creating a robust budgeting & forecasting system. This system creation cannot be created overnight and requires consistent planning and prudent budget analysis. We will help you with:
         ul.lead data-bullet="ti-check-box"
-          li Planning - outlines the company's financial direction and expectations
-          li Budgeting - documents how the overall plan will be executed month to month, specifying expenditures
-          li Forecasting - uses accumulated historical data to predict financial outcomes for the future
-          
-        p.lead.m32.pb32 These steps will be crucial in knowing how your business will do in the years to come. 
-        
-          
-      .col-md-3.hidden-sm
-      .widget
-        h6.title Financial Process & Analytics
-        ul.link-list
-          li
-          a href="financial-analytics-reporting" Financial Analytics & Reporting
-          
-        h6.title Strategic Financial Planning
-        ul.link-list
-          li
-          a href="business-plan-assistance" Business Plan Assistance
-          li
-          a href="corporate-planning-structure" Corporate Planning & Structure
-          li
-          a href="forecasting-sensitivity-analysis" Forecasting & Sensitivity Analysis
-          li
-          a href="budgeting-forecasting" Budgeting & Forecasting
-          li
-          a href="ipo-support" IPO Support
-          li
-          a href="m&a-support" M&A Support
-          
-        h6.title Inorganic Growth Strategy
-        ul.link-list
-          li
-          a href="exit-strategy" Exit Strategy
-          li
-          a href="turnaround-management" Turnaround Management
-          li
-          a href="fund-raising" Fund Raising
+          li Planning - outline the company's financial direction and expectations
+          li Budgeting - document how the overall plan will be executed month by month and expenditure
+          li Forecasting - use accumulated historical data to predict financial outcomes for the future
 
+        p.lead.m32.pb32 These steps will be crucial in knowing how your business will do in the years to come.
+section.image-bg.overlay.parallax
+  .background-image-holder
+    img.background-image alt="image" src=image_path('table-top-post-its.jpg')
+  .container
+    .row
+      .col-sm-12.text-center
+        h3.uppercase.mb64.mb-xs-32 More Services
+        = render 'services_list'
 section#contactus
   .container
     .row
-      .col-sm-8.col-sm-offset-2.text-center
-        h4.mb64.uppercase Unsure of what we are able to offer?
-        p.lead.mb80 Let us convince you through a face to face consultation clearing all your doubts and uncertainty. Leave us your details and we will get in touch with you soon.
+      .col-md-8.col-md-offset-2.col-sm-12.text-center
+        h4.mb64.uppercase Need to know more about what we offer?
+        p.lead.mb80 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
     = render 'contact'
