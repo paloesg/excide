@@ -58,26 +58,24 @@ Rails.application.routes.draw do
   get 'faq', to: 'home#faq'
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
+  get 'about-us', to: 'home#about', as: :about
+
+  # VFO services
 
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
-  get 'about-us', to: 'home#about', as: :about
-  
-  # VFO drop down section
-  
   get 'financial-analytics-reporting', to: 'home#financial-analytics-reporting', as: :financial_analytics_reporting
   get 'business-plan-assistance', to: 'home#business-plan-assistance', as: :business_plan_assistance
   get 'corporate-planning-structure', to: 'home#corporate-planning-structure', as: :corporate_planning_structure
-  get 'forecasting-sensitivity-analysis', to: 'home#forecasting-sensitivity-analysis', as: :forecasting_sensitivity_analysis  
+  get 'forecasting-sensitivity-analysis', to: 'home#forecasting-sensitivity-analysis', as: :forecasting_sensitivity_analysis
   get 'budgeting-forecasting', to: 'home#budgeting-forecasting', as: :bugeting_forecasting
   get 'ipo-support', to: 'home#ipo-support', as: :ipo_support
-  get 'm&a-support', to: 'home#m&a-support', as: :mna_support
+  get 'mergers-acquisitions-support', to: 'home#m&a-support', as: :mna_support
   get 'exit-strategy', to: 'home#exit-strategy', as: :exit_strategy
   get 'turnaround-management', to: 'home#turnaround-management', as: :turnaround_management
   get 'fund-raising', to: 'home#fund-raising', as: :fund_raising
-  
-  
-  # this part is for the services section, can take out if not necessary
-  
+
+  # Corp sec services
+
   get 'services', to: 'home#services', as: :services
   get 'accounting-services', to: 'home#accounting-services', as: :accounting
   get 'annual-return-filing', to: 'home#annual-return-filing', as: :return
