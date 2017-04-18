@@ -69,7 +69,7 @@ Rails.application.routes.draw do
   get 'forecasting-sensitivity-analysis', to: 'home#forecasting-sensitivity-analysis', as: :forecasting_sensitivity_analysis
   get 'budgeting-forecasting', to: 'home#budgeting-forecasting', as: :bugeting_forecasting
   get 'ipo-support', to: 'home#ipo-support', as: :ipo_support
-  get 'mergers-acquisitions-support', to: 'home#m&a-support', as: :mna_support
+  get 'mergers-acquisitions-support', to: 'home#mergers-acquisitions-support', as: :mergers_acquisitions_support
   get 'exit-strategy', to: 'home#exit-strategy', as: :exit_strategy
   get 'turnaround-management', to: 'home#turnaround-management', as: :turnaround_management
   get 'fund-raising', to: 'home#fund-raising', as: :fund_raising
