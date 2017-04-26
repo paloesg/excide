@@ -31,7 +31,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'sprockets-rails', '2.3.3'
 
 # Frontend framework
-gem 'bootstrap-sass', '~> 3.3.6'
+gem 'bootstrap-sass'
 
 # Themify icon set web fonts
 gem 'themify-icons-rails'
@@ -83,9 +83,8 @@ gem 'oj', '~> 2.12.14'
 gem 'snitcher'
 
 #Backend admin
-gem 'administrate'
+gem 'administrate', '~> 0.4.0'
 gem 'administrate-field-image'
-gem "administrate-field-nested_has_many", "~> 0.0.2"
 gem 'bourbon'
 
 # Heroku requirement for static asset serving and logging
