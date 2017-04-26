@@ -105,5 +105,9 @@ group :development, :test do
 
   # Manage env variables during development and testing
   gem 'dotenv-rails'
+
+  # Better error page in development
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
