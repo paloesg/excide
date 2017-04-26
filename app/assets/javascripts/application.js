@@ -9,7 +9,6 @@
 //= require init
 //= require jquery.ui.widget
 //= require jquery.fileupload
-//= require turbolinks
 
 //= require flickr
 //= require flexslider.min
@@ -21,3 +20,5 @@
 //= require countdown.min
 //= require smooth-scroll.min
 //= require scripts
+
+//= require turbolinks

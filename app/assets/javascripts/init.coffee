@@ -1,8 +1,6 @@
 window.App ||= {}
 
 App.init = ->
-  mixpanel.track("Page view");
-
   if ($('body').hasClass('business') && $('body').hasClass('edit')) || $('body').hasClass('projects')
     $('select').material_select();
 
@@ -53,5 +51,6 @@ App.init = ->
         return
       return
 
-$(document).on "page:change", ->
+$(document).on 'page:load', ->
+  mixpanel.track("Page view")
   App.init()
