@@ -1,4 +1,8 @@
 class Business < ActiveRecord::Base
+  include AASM
+
+  aasm do
+  end
   belongs_to :user
 
   has_many :projects, dependent: :destroy
