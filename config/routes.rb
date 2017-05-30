@@ -46,6 +46,8 @@ Rails.application.routes.draw do
     get 'proposals/new/:project_id', to: 'proposals#new', as: :new_proposal
   end
 
+  get 'business/new', to: 'business#new', as: :new_business
+  patch 'business/create', to: 'business#create', as: :create_business
   get 'business/edit', to: 'business#edit', as: :edit_business
   patch 'business', to: 'business#update'
 

@@ -3,6 +3,10 @@ class BusinessController < ApplicationController
   before_action :set_business, only: [:edit, :update]
   before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
+  def new
+    @business = Business.new
+  end
+
   def edit
   end
 
