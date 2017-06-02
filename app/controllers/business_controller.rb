@@ -7,6 +7,15 @@ class BusinessController < ApplicationController
     @business = Business.new
   end
 
+  def create
+    @business = Business.new(business_params)
+    @business.submit_details
+
+    if @business.save
+       render :edit
+    end
+  end
+
   def edit
   end
 

@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   end
 
   get 'business/new', to: 'business#new', as: :new_business
-  patch 'business/create', to: 'business#create', as: :create_business
+  post 'business/create', to: 'business#create', as: :create_business
   get 'business/edit', to: 'business#edit', as: :edit_business
   patch 'business', to: 'business#update'
 
