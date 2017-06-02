@@ -1,26 +1,13 @@
 .row
-  .input-field.col.s12
-    = f.text_field :name
-    = f.label :name
+  .col-sm-12
+    .input-with-label.text-left
+      span Company Name
+      = f.text_field :name
 .row
-  .input-field.file-field.col.s12
-    = f.file_field :image_url
-    .btn.green.darken-4
-      | Company Logo
-    .file-path-wrapper
-      = f.text_field :image_url, class: "file-path"
+  .col-sm-12
+    .input-with-label.text-left
+      span Description
+      = f.text_area :description
 .row
-  .input-field.col.s12.m6
-    = f.text_field :industry
-    = f.label :industry
-  .input-field.col.s12.m6
-    = f.select :company_type, Business.company_types.keys.map { |t| [t.humanize, t] }, :include_blank => true
-    = f.label :company_type
-.row
-  .input-field.col.s12
-    = f.text_area :description, class: "materialize-textarea"
-    = f.label :description
-.row
-  .input.col.s12.m6
-    .actions
-      = f.submit "Update business", class: "btn green darken-3"
+  .col-md-4.col-sm-6
+    = f.submit "Save details"

@@ -53,6 +53,9 @@ gem 'omniauth'
 gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-linkedin-oauth2'
 
+# State machine gem
+gem 'aasm'
+
 # WYSIWYG editor
 gem 'trix'
 
