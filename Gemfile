@@ -59,8 +59,11 @@ gem 'aasm'
 # WYSIWYG editor
 gem 'trix'
 
-# Payments
+# Payments integration with Stripe
 gem 'stripe'
+
+# Docusign gem for e-signature
+gem 'docusign_rest'
 
 # Use puma web server
 gem 'puma'
