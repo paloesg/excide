@@ -260,6 +260,8 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    stripe (2.11.0)
+      faraday (~> 0.9)
     temple (0.7.7)
     themify-icons-rails (1.0.1.1)
       rails (~> 4.1)
@@ -325,6 +327,7 @@ DEPENDENCIES
   snitcher
   spring
   sprockets-rails (= 2.3.3)
+  stripe
   themify-icons-rails
   trix
   turbolinks (< 5)

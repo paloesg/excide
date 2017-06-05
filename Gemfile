@@ -59,6 +59,9 @@ gem 'aasm'
 # WYSIWYG editor
 gem 'trix'
 
+# Payments
+gem 'stripe'
+
 # Use puma web server
 gem 'puma'
 
