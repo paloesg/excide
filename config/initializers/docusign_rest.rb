@@ -5,10 +5,10 @@
 require 'docusign_rest'
 
 DocusignRest.configure do |config|
-  config.username       = 'admin@excide.co'
-  config.password       = 'fE3}yzPWkRLDE)e4iSz3L2mr'
-  config.integrator_key = '75b0deb6-b5fe-4516-9150-eeaac68b0130'
-  config.account_id     = '3060480'
+  config.username       = ENV['DOCUSIGN_USERNAME']
+  config.password       = ENV['DOCUSIGN_PASSWORD']
+  config.integrator_key = ENV['DOCUSIGN_INTEGRATOR_KEY']
+  config.account_id     = ENV['DOCUSIGN_ACCOUNT_ID']
   #config.endpoint       = 'https://www.docusign.net/restapi'
   #config.api_version    = 'v2'
 end
