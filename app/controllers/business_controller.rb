@@ -1,6 +1,6 @@
 class BusinessController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_business, only: [:edit, :update]
+  before_action :set_business, only: [:edit, :update, :name_reservation, :incorporation]
   before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
   def new
@@ -25,6 +25,12 @@ class BusinessController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def name_reservation
+  end
+
+  def incorporation
   end
 
   private

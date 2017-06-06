@@ -48,6 +48,8 @@ Rails.application.routes.draw do
 
   get 'business/new', to: 'business#new', as: :new_business
   post 'business/create', to: 'business#create', as: :create_business
+  get 'business/name-reservation', to: 'business#name_reservation', as: :name_reservation_business
+  get 'business/incorporation', to: 'business#incorporation', as: :incorporation_business
   get 'business/edit', to: 'business#edit', as: :edit_business
   patch 'business', to: 'business#update'
 
@@ -82,6 +84,7 @@ Rails.application.routes.draw do
 
   # Corp sec services
 
+  get 'corporate-secretary', to: 'home#corp-sec', as: :corp_sec
   get 'services', to: 'home#services', as: :services
   get 'accounting-services', to: 'home#accounting-services', as: :accounting
   get 'annual-return-filing', to: 'home#annual-return-filing', as: :return
