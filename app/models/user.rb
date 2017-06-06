@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :omniauthable, :omniauth_providers => [:linkedin]
 
   has_one :profile, dependent: :destroy
-  has_one :business, dependent: :destroy
+  has_one :company, dependent: :destroy
 
   after_commit :create_default_profile, if: Proc.new { self.has_role? :consultant }
   after_commit :create_default_business, if: Proc.new { self.has_role? :business }
@@ -41,8 +41,8 @@ class User < ActiveRecord::Base
   end
 
   def create_default_business
-    if self.business.nil?
-      create_business
+    if self.companay.nil?
+      create_company
     end
   end
 

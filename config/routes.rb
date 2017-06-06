@@ -46,14 +46,14 @@ Rails.application.routes.draw do
     get 'proposals/new/:project_id', to: 'proposals#new', as: :new_proposal
   end
 
-  get 'business/new', to: 'business#new', as: :new_business
-  post 'business/create', to: 'business#create', as: :create_business
-  get 'business/name-reservation', to: 'business#name_reservation', as: :name_reservation_business
-  get 'business/incorporation', to: 'business#incorporation', as: :incorporation_business
-  get 'business/edit', to: 'business#edit', as: :edit_business
-  patch 'business', to: 'business#update'
+  get 'company/new', to: 'companies#new', as: :new_company
+  post 'company/create', to: 'companies#create', as: :create_company
+  get 'company/name-reservation', to: 'companies#name_reservation', as: :name_reservation_company
+  get 'company/incorporation', to: 'companies#incorporation', as: :incorporation_company
+  get 'company/edit', to: 'companies#edit', as: :edit_company
+  patch 'company', to: 'companies#update'
 
-  namespace :business do
+  namespace :company do
     resources :projects
   end
 

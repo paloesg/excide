@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class BusinessDashboard < Administrate::BaseDashboard
+class CompanyDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -48,7 +48,7 @@ class BusinessDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how profiles are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(business)
-    "#{business.name}"
+  def display_resource(company)
+    "#{company.name}"
   end
 end

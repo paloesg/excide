@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
 
   def show
     @project = @projects.find(params[:id])
-    @business = @project.business
+    @company = @project.company
 
     @proposal = Proposal.new(project_id: @project.id)
   end

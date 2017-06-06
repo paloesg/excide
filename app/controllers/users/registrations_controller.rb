@@ -26,7 +26,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         if resource.has_role? :consultant
           SlackService.new.consultant_signup(resource, resource.profile).deliver
         else
-          SlackService.new.business_signup(resource, resource.business).deliver
+          SlackService.new.business_signup(resource, resource.company).deliver
         end
         respond_with resource, location: after_sign_up_path_for(resource)
       else

@@ -1,6 +1,6 @@
 class Reminder < ActiveRecord::Base
   belongs_to :user
-  belongs_to :business
+  belongs_to :company
 
   enum freq_unit: [:days, :weeks, :months, :years]
 

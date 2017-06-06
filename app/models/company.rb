@@ -1,4 +1,4 @@
-class Business < ActiveRecord::Base
+class Company < ActiveRecord::Base
   include AASM
 
   aasm do

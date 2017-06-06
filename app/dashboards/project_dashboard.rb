@@ -8,7 +8,7 @@ class ProjectDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    business: Field::BelongsTo,
+    company: Field::BelongsTo,
     id: Field::Number,
     title: Field::String,
     project_category: Field::BelongsTo,
@@ -45,7 +45,7 @@ class ProjectDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :business,
+    :company,
     :title,
     :project_category,
     :description,

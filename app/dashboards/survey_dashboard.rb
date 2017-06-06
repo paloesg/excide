@@ -9,7 +9,7 @@ class SurveyDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     user: Field::BelongsTo,
-    business: Field::BelongsTo,
+    company: Field::BelongsTo,
     template: Field::BelongsTo,
     id: Field::Number,
     title: Field::String,
@@ -28,14 +28,14 @@ class SurveyDashboard < Administrate::BaseDashboard
     :title,
     :template,
     :user,
-    :business,
+    :company,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :user,
-    :business,
+    :company,
     :template,
     :id,
     :title,
@@ -49,7 +49,7 @@ class SurveyDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :user,
-    :business,
+    :company,
     :template,
     :title,
     :remarks,

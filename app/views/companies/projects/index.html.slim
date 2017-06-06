@@ -4,16 +4,16 @@
       .col.s12
         .card
           .card-image#profile-image
-            = @business.image_url.present? ? image_tag(@business.image_url) : image_tag('https://placeholdit.imgix.net/~text?txtsize=32&txt=No+profile+image&w=300&h=300&txttrack=0')
-            .card-title.truncate = @business.name
+            = @company.image_url.present? ? image_tag(@company.image_url) : image_tag('https://placeholdit.imgix.net/~text?txtsize=32&txt=No+profile+image&w=300&h=300&txttrack=0')
+            .card-title.truncate = @company.name
           .card-content
-            p = @business.industry
-            p = @business.company_type.try(:humanize)
+            p = @company.industry
+            p = @company.company_type.try(:humanize)
       .col.s12
-        = link_to "Post New Project", new_business_project_path, class: 'btn green darken-3 wide-button btn-large'
+        = link_to "Post New Project", new_company_project_path, class: 'btn green darken-3 wide-button btn-large'
     .row
       .col.s12
-        = link_to "Edit Business Details", edit_business_path, class: 'btn green darken-3 wide-button btn-large'
+        = link_to "Edit Company Details", edit_company_path, class: 'btn green darken-3 wide-button btn-large'
   .col.s12.m8.l8
     h5 My Projects
     - if @projects.present?
@@ -46,7 +46,7 @@
               .card-action
                 = p.status.humanize.upcase
                 .right
-                  = link_to('View Proposals', business_project_path(p.id))
-                  = link_to('Edit', edit_business_project_path(p.id))
+                  = link_to('View Proposals', company_project_path(p.id))
+                  = link_to('Edit', edit_company_project_path(p.id))
     - else
-      p = link_to('Post a project', new_business_project_path)
+      p = link_to('Post a project', new_company_project_path)

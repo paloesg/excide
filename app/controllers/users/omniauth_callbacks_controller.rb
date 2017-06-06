@@ -42,7 +42,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         elsif @user.has_role? :business
           unless auth.extra.raw_info.positions["_total"] == 0
             position = auth.extra.raw_info.positions["values"][0]
-            @user.create_business(
+            @user.create_company(
               name: position.company.name,
               title: position.title,
               industry: position.company.industry,

@@ -11,26 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170530044829) do
+ActiveRecord::Schema.define(version: 20170606095338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "businesses", force: :cascade do |t|
-    t.string   "name"
-    t.string   "industry"
-    t.integer  "company_type"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.integer  "user_id"
-    t.string   "image_url"
-    t.text     "description"
-    t.string   "title"
-    t.string   "linkedin_url"
-    t.string   "aasm_state"
-  end
-
-  add_index "businesses", ["user_id"], name: "index_businesses_on_user_id", using: :btree
 
   create_table "choices", force: :cascade do |t|
     t.text     "content"
@@ -45,6 +29,22 @@ ActiveRecord::Schema.define(version: 20170530044829) do
   end
 
   add_index "choices_questions", ["question_id", "choice_id"], name: "index_choices_questions_on_question_id_and_choice_id", using: :btree
+
+  create_table "companies", force: :cascade do |t|
+    t.string   "name"
+    t.string   "industry"
+    t.integer  "company_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "user_id"
+    t.string   "image_url"
+    t.text     "description"
+    t.string   "title"
+    t.string   "linkedin_url"
+    t.string   "aasm_state"
+  end
+
+  add_index "companies", ["user_id"], name: "index_companies_on_user_id", using: :btree
 
   create_table "enquiries", force: :cascade do |t|
     t.string   "name"
@@ -106,12 +106,12 @@ ActiveRecord::Schema.define(version: 20170530044829) do
     t.integer  "status"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.integer  "business_id"
+    t.integer  "company_id"
     t.text     "criteria"
     t.integer  "grant"
   end
 
-  add_index "projects", ["business_id"], name: "index_projects_on_business_id", using: :btree
+  add_index "projects", ["company_id"], name: "index_projects_on_company_id", using: :btree
 
   create_table "proposals", force: :cascade do |t|
     t.integer  "profile_id"
@@ -159,12 +159,12 @@ ActiveRecord::Schema.define(version: 20170530044829) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.integer  "user_id"
-    t.integer  "business_id"
+    t.integer  "company_id"
     t.string   "title"
     t.text     "content"
   end
 
-  add_index "reminders", ["business_id"], name: "index_reminders_on_business_id", using: :btree
+  add_index "reminders", ["company_id"], name: "index_reminders_on_company_id", using: :btree
   add_index "reminders", ["user_id"], name: "index_reminders_on_user_id", using: :btree
 
   create_table "responses", force: :cascade do |t|
@@ -218,13 +218,13 @@ ActiveRecord::Schema.define(version: 20170530044829) do
     t.string   "title"
     t.text     "remarks"
     t.integer  "user_id"
-    t.integer  "business_id"
+    t.integer  "company_id"
     t.integer  "template_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  add_index "surveys", ["business_id"], name: "index_surveys_on_business_id", using: :btree
+  add_index "surveys", ["company_id"], name: "index_surveys_on_company_id", using: :btree
   add_index "surveys", ["template_id"], name: "index_surveys_on_template_id", using: :btree
   add_index "surveys", ["user_id"], name: "index_surveys_on_user_id", using: :btree
 
@@ -274,15 +274,15 @@ ActiveRecord::Schema.define(version: 20170530044829) do
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
-  add_foreign_key "businesses", "users"
+  add_foreign_key "companies", "users"
   add_foreign_key "experiences", "profiles"
   add_foreign_key "profiles", "users"
-  add_foreign_key "projects", "businesses"
+  add_foreign_key "projects", "companies"
   add_foreign_key "proposals", "profiles"
   add_foreign_key "proposals", "projects"
   add_foreign_key "qualifications", "profiles"
   add_foreign_key "questions", "sections"
-  add_foreign_key "reminders", "businesses"
+  add_foreign_key "reminders", "companies"
   add_foreign_key "reminders", "users"
   add_foreign_key "responses", "choices"
   add_foreign_key "responses", "questions"
@@ -290,7 +290,7 @@ ActiveRecord::Schema.define(version: 20170530044829) do
   add_foreign_key "sections", "templates"
   add_foreign_key "segments", "sections"
   add_foreign_key "segments", "surveys"
-  add_foreign_key "surveys", "businesses"
+  add_foreign_key "surveys", "companies"
   add_foreign_key "surveys", "templates"
   add_foreign_key "surveys", "users"
 end

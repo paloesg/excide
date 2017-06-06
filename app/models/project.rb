@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  belongs_to :business
+  belongs_to :company
   belongs_to :project_category
 
   has_many :proposals

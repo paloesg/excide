@@ -17,7 +17,7 @@ class ReminderDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     user: Field::BelongsTo,
-    business: Field::BelongsTo,
+    company: Field::BelongsTo,
     title: Field::String,
     content: Field::Text,
   }.freeze
@@ -29,7 +29,7 @@ class ReminderDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :id,
-    :business,
+    :company,
     :title,
     :next_reminder,
     :repeat,
@@ -50,7 +50,7 @@ class ReminderDashboard < Administrate::BaseDashboard
     :created_at,
     :updated_at,
     :user,
-    :business,
+    :company,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -63,7 +63,7 @@ class ReminderDashboard < Administrate::BaseDashboard
     :repeat,
     :freq_value,
     :freq_unit,
-    :business,
+    :company,
   ].freeze
 
   # Overwrite this method to customize how reminders are displayed

@@ -13,7 +13,7 @@ class UserDashboard < Administrate::BaseDashboard
     email: Field::String,
     contact_number: Field::String,
     profile: Field::HasOne,
-    business: Field::HasOne,
+    company: Field::HasOne,
     id: Field::Number,
     allow_contact: Field::Boolean,
     agree_terms: Field::Boolean,

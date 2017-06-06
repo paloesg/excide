@@ -2,16 +2,16 @@ section.page-title.page-title-4.bg-secondary
   .container
     .row
       .col-md-6
-        h2.uppercase.mb8 Register Company
+        h2.uppercase.mb8 Update Company
       .col-md-6.text-right
         ol.breadcrumb.breadcrumb-2
           li
             a href="#" Home
           li
             a href="#" Company
-          li.active Register
+          li.active Update
 section
   .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
     .feature.boxed.bg-secondary
-      = form_for(@business, url: {action: "create"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
+      = form_for(@company, url: {action: "update"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
           = render 'form', f: f

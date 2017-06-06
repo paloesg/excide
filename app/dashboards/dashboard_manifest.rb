@@ -19,7 +19,7 @@ class DashboardManifest
     :sections,
     :questions,
     :choices,
-    :businesses,
+    :companies,
     :profiles,
     :users,
   ]

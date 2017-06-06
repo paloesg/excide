@@ -104,12 +104,12 @@ class SlackService
           fields: [
             {
               title: 'Client',
-              value: reminder.business.name,
+              value: reminder.company.name,
               short: true
             },
             {
               title: 'Email',
-              value: reminder.business.user.email,
+              value: reminder.company.user.email,
               short: true
             },
             {
@@ -142,12 +142,12 @@ class SlackService
     self
   end
 
-  def business_signup(user, business)
+  def company_signup(user, company)
     params = {
       attachments: [
         {
-          title: 'A new business has signed up!',
-          fallback: 'A new business has signed up!',
+          title: 'A new company has signed up!',
+          fallback: 'A new company has signed up!',
           color: GOOD
         }
       ]

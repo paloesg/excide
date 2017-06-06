@@ -15,8 +15,8 @@ class AccountsController < ApplicationController
         SlackService.new.consultant_signup(@user, @user.profile).deliver
         redirect_to profile_path, notice: 'Your account was successfully created.'
       else
-        SlackService.new.business_signup(@user, @user.business).deliver
-        redirect_to new_business_project_path, notice: 'Your account was successfully created.'
+        SlackService.new.company_signup(@user, @user.company).deliver
+        redirect_to new_company_project_path, notice: 'Your account was successfully created.'
       end
     else
       render :new, error: 'Please ensure that all fields are entered.'
