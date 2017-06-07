@@ -7,6 +7,9 @@ class User < ActiveRecord::Base
 
   has_one :profile, dependent: :destroy
   has_one :company, dependent: :destroy
+  has_one :address, as: :addressable
+
+  accepts_nested_attributes_for :address
 
   after_commit :create_default_profile, if: Proc.new { self.has_role? :consultant }
   after_commit :create_default_business, if: Proc.new { self.has_role? :business }
