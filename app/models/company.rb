@@ -34,5 +34,5 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :projects, :reject_if => :all_blank, :allow_destroy => true
   accepts_nested_attributes_for :address
 
-  enum company_type: [:public_company, :educational, :self_employed, :government_agency, :non_profit, :self_owned, :privately_held, :partnership]
+  enum company_type: [:exempt_private_company_limited_by_shares, :private_company_limited_by_shares, :public_company_limited_by_guarantee, :public_company_limited_by_shares, :unlimited_exempt_private_company, :unlimited_public_company]
 end
