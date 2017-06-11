@@ -1,60 +1,30 @@
-.row
-  .col.s12.l8.offset-l2
-    .card.login
-      .card-header Sign up as a #{params[:role]}
-      .card-content
-        .row
-          .col.s12.center
-            = link_to "Sign up with LinkedIn", user_linkedin_omniauth_authorize_path(role: params[:role]), class: 'linkedin-login'
+section.cover.fullscreen.image-bg.overlay
+  .background-image-holder
+    img.background-image alt="Growing your business" src=image_path('hero-image.jpg')
+  .container.v-align-transform
+    .row
+      .col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2
+        .feature.boxed
+          h4.uppercase Sign up
+          = link_to "Sign up with LinkedIn", user_linkedin_omniauth_authorize_path(role: params[:role]), class: 'linkedin-login'
+          hr
+          = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+            br
+            = devise_error_messages!
+            = hidden_field_tag :role, params[:role]
 
-        .row
-          .col.s12.center-align - OR -
-
-        = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-          br
-          = devise_error_messages!
-          = hidden_field_tag :role, params[:role]
-          .row
-            .input-field.col.s12
-              = f.email_field :email
-              = f.label :email
-
-          .row
-            .input-field.col.s12.m6
-              = f.password_field :password, autocomplete: "off"
-              = f.label :password, "Password (#{@minimum_password_length} characters min.)"
-
-            .input-field.col.s12.m6
-              = f.password_field :password_confirmation, autocomplete: "off"
-              = f.label :password_confirmation
-
-          .row
-            .input-field.col.s12
-              = f.telephone_field :contact_number
-              = f.label :contact_number
-          .row
-            .input-field.col.s12.m6
-              = f.text_field :first_name
-              = f.label :first_name
-            .input-field.col.s12.m6
-              = f.text_field :last_name
-              = f.label :last_name
-          .row.row-margin
-            .col.s12
-              = f.check_box :allow_contact, class: 'filled-in'
-              - if params[:role] == 'consultant'
-                = f.label :allow_contact, "Excide may contact me if there are suitable projects that fit my profile."
-              - else
-                = f.label :allow_contact, "Excide may contact me with suitable candidates for my projects."
-          - if action_name == 'new' || action_name == 'create'
-            .row.row-margin
-              .col.s12
-                = f.check_box :agree_terms, class: 'filled-in'
-                = f.label :agree_terms, "I agree to the"
-                '
-                = link_to "terms of service", terms_path(:anchor => params[:role]), target: :_blank
-                | .
-
-          .row
-            .actions.col.s12.m6
-              = f.submit "Sign up", class: "btn green darken-3"
+            = f.email_field :email, placeholder: "Email"
+            = f.password_field :password, autocomplete: "off", placeholder: "Password (#{@minimum_password_length} characters min.)"
+            = f.password_field :password_confirmation, autocomplete: "off", placeholder: "Confirm password"
+            = f.telephone_field :contact_number, placeholder: "Contact number"
+            = f.text_field :first_name, placeholder: "First name"
+            = f.text_field :last_name, placeholder: "Last name"
+            - if action_name == 'new' || action_name == 'create'
+              span = f.label :agree_terms, "I agree to the"
+              '
+              = link_to "terms of service", terms_path, target: :_blank
+              | .
+              .checkbox-option.pull-right
+                .inner
+                  = f.check_box :agree_terms, class: 'filled-in'
+            = f.submit "Sign up"
