@@ -1,4 +1,23 @@
 class User < ActiveRecord::Base
+  include AASM
+
+  aasm do
+    state :lead, :initial => true
+    state :subscribed, :expired, :cancelled
+
+    event :make_payment do
+      transitions :from => :lead, :to => :subscribed
+    end
+
+    event :cancel_subscription do
+      transitions :from => :subscribed, :to => :cancelled
+    end
+
+    event :end_subscription do
+      transitions :from => :subscribed, :to => :expired
+    end
+  end
+
   rolify
 
   devise :database_authenticatable, :registerable, :confirmable,
@@ -17,7 +36,6 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true, unless: :skip_validation?
   validates :last_name, presence: true, unless: :skip_validation?
   validates :contact_number, presence: true, unless: :skip_validation?
-  validates :allow_contact, inclusion: { in: [true] }, unless: :skip_validation?
   validates :agree_terms, inclusion: { in: [true] }, unless: :skip_validation?
 
   attr_accessor :skip_validation
