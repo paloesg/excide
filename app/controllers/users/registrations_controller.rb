@@ -4,7 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    if params[:role] == 'consultant' || params[:role] == 'company'
+    if params[:role] == 'company'
       super
     else
       raise ActionController::RoutingError.new('No route matches [GET] "/' + params[:role] + '/sign_up"')
@@ -26,7 +26,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         if resource.has_role? :consultant
           SlackService.new.consultant_signup(resource, resource.profile).deliver
         else
-          SlackService.new.business_signup(resource, resource.company).deliver
+          SlackService.new.company_signup(resource, resource.company).deliver
         end
         respond_with resource, location: after_sign_up_path_for(resource)
       else
@@ -70,7 +70,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :contact_number, :allow_contact, :agree_terms])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :contact_number, :agree_terms])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
