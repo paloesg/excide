@@ -1,9 +1,70 @@
-= form_tag charges_path do
-  article
-    - if flash[:error].present?
-      div#error_explanation
-        p = flash[:error]
-    label.amount
-      span Amount: $25.00
+section.fullscreen
+  .container.v-align-transform
+    .row
+      .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
+        .feature.boxed.bg-secondary
+          h4.uppercase Enter your payment information
+          p.lead.mb64.mb-xs-24 You will be charged SGD 25/month
+          = form_tag charges_path, id: "payment-form" do
+            .row
+              .col-md-6.col-sm-12
+                #card-element style="background-color: #ffffff; padding: 10px; margin-bottom: 20px"
+                #card-errors role="alert"
+            .row
+              .col-md-6.col-sm-12
+                = submit_tag "Submit Payment"
+  javascript:
+    var stripe = Stripe($('meta[name="stripe-key"]').attr('content'));
+    var elements = stripe.elements();
 
-  script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key=Rails.configuration.stripe[:publishable_key] data-description="Excide Compliance Toolkit Subscription" data-amount="2500" data-locale="auto"
+    var style = {
+      base: {
+        fontSize: '16px',
+        lineHeight: '24px',
+      }
+    };
+
+    // Create an instance of the card Element
+    var card = elements.create('card', {hidePostalCode: true, style: style});
+
+    // Add an instance of the card Element into the `card-element` <div>
+    card.mount('#card-element');
+
+    card.addEventListener('change', function(event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    // Create a token or display an error when the form is submitted.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      stripe.createToken(card).then(function(result) {
+        if (result.error) {
+          // Inform the user if there was an error
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
+
+    function stripeTokenHandler(token) {
+      // Insert the token ID into the form so it gets submitted to the server
+      var form = document.getElementById('payment-form');
+      var hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'stripeToken');
+      hiddenInput.setAttribute('value', token.id);
+      form.appendChild(hiddenInput);
+
+      // Submit the form
+      form.submit();
+    }
