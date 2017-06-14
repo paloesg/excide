@@ -1,0 +1,87 @@
+section.page-title.page-title-4.bg-secondary
+  .container
+    .row
+      .col-md-6
+        h2.uppercase.mb8 Dashboard
+      .col-md-6.text-right
+        ol.breadcrumb.breadcrumb-2
+          li
+            a href="#" Home
+          li
+            a href="#" Company
+          li.active Dashboard
+section
+  .container
+    .col-md-3.col-sm-4
+      .widget
+        h6.title Navigation
+        hr
+        ul.link-list
+          li = link_to "Company Dashboard", dashboard_path
+          li = link_to "Incorporation"
+          li = link_to "Routine Filings"
+          li = link_to "Non-Routine Filings"
+          li = link_to "Company Documents"
+          li = link_to "Account Settings"
+
+    .col-md-6.col-sm-4
+      .widget
+        h6.title Outstanding Tasks
+        hr
+        table.table.table-hover
+          thead
+            tr
+              th Task Description
+              th Due Date
+              th Status
+          tbody
+            tr.success
+              td Sign Director's First Resolution
+              td 03/02/16
+              td All Signed
+            tr.success
+              td Appoint Company Secretary
+              td 03/08/16
+              td Appointed
+            tr.success
+              td Appoint Company Controller
+              td 03/09/16
+              td Appointed
+            tr.warning
+              td Sign Share Certificate
+              td 03/11/16
+              td Not signed yet
+            tr.danger
+              td Sign Company Constitution
+              td 06/12/16
+              td Overdue
+      .widget
+        h6.title Company Information
+        hr
+        p Excide is a boutique consulting house that performs the role of a CFO at a fraction of the cost by tapping on technology to automate various work streams to provide these services in a cost effective manner.
+        p Unique Entity Number: 201538131K
+        p Incorporation Date: 19 October 2015
+        p Registered Address: 2 Leng Kee Road, #03-10, Thye Hong Centre
+        p Financial Year End: 31st December
+    .col-md-3.col-sm-4
+      .widget
+        h6.title Compliance Rating
+        hr
+        .text-center
+          div.rating 50%
+      .widget
+        h6.title Recent Documents
+        hr
+        ul.cart-overview
+          li
+            a href=""
+              i.ti-file.icon
+              .description
+                span.product-title Document 1
+                span.price.number PDF file
+          li
+            a href=""
+              i.ti-file.icon
+              .description
+                span.product-title Document 2
+                span.price.number PDF file

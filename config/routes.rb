@@ -58,6 +58,7 @@ Rails.application.routes.draw do
   end
 
   resources :charges
+  resources :dashboards
 
   # Hosted files
 
