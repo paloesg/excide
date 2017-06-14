@@ -33,12 +33,12 @@ class AccountsController < ApplicationController
 
   private
 
-    def set_user
-      @user = current_user
-    end
+  def set_user
+    @user = current_user
+  end
 
-    def user_params
-      params.require(:user).permit(:id, :first_name, :last_name, :contact_number, :allow_contact, :agree_terms)
-    end
+  def user_params
+    params.require(:user).permit(:id, :first_name, :last_name, :contact_number, :allow_contact, :agree_terms)
+  end
 
 end

@@ -1,5 +1,6 @@
 class ChargesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_user
 
   def new
   end
@@ -19,11 +20,17 @@ class ChargesController < ApplicationController
       :plan => "compliance-toolkit",
     )
 
-    current_user.make_payment
-    current_user.save
+    @user.make_payment
+    @user.save
 
   rescue Stripe::CardError => e
     flash[:error] = e.message
     redirect_to new_charge_path
+  end
+
+  private
+
+  def set_user
+    @user = current_user
   end
 end
