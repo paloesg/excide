@@ -1,0 +1,11 @@
+.alert {
+  position: absolute;
+  top: 10px;
+  left: 500px;
+  width: 500px;
+  z-index: 5000;
+}
+
+button.close {
+  margin-bottom: 0;
+}
