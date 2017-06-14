@@ -1,7 +1,8 @@
-.row
-  .col.s12.l8.offset-l2
-    .card.login
-      .card-header Just a few more details...
-      .card-content
-        = form_for @user, as: :user, url: create_account_path do |f|
-          = render 'form', f: f
+section.fullscreen
+  .container.v-align-transform
+    .row
+      .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
+        .feature.boxed.bg-secondary
+          h4.uppercase Just a few more details...
+          = form_for @user, as: :user, url: create_account_path do |f|
+            = render 'form', f: f
