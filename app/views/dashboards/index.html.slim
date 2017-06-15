@@ -63,15 +63,10 @@ section
         h6.title Recent Documents
         hr
         ul.cart-overview
-          li
-            a href=""
-              i.ti-file.icon
-              .description
-                span.product-title Document 1
-                span.price.number PDF file
-          li
-            a href=""
-              i.ti-file.icon
-              .description
-                span.product-title Document 2
-                span.price.number PDF file
+          - @documents.each do |d|
+            li
+              a href="#{d.file_url}"
+                i.ti-file.icon
+                .description
+                  span.product-title = d.filename
+                  span.price.number = d.file_type
