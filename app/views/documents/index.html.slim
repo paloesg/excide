@@ -1,29 +1,45 @@
-h1 Listing documents
+section.page-title.page-title-4.bg-secondary
+  .container
+    .row
+      .col-md-6
+        h2.uppercase.mb8 Documents
+      .col-md-6.text-right
+        ol.breadcrumb.breadcrumb-2
+          li
+            a href="#" Home
+          li
+            a href="#" Company
+          li.active Documents
+section
+  .container
+    = render 'layouts/left_sidebar'
 
-table
-  thead
-    tr
-      th Filename
-      th File type
-      th Company
-      th Date signed
-      th Date uploaded
-      th
-      th
-      th
+    .col-md-9.col-sm-12
+      .widget
+        h6.title Listing documents
+        hr
+        table.table.table-hover
+          thead
+            tr
+              th Filename
+              th File type
+              th Company
+              th Date signed
+              th Date uploaded
+              th
+              th
+              th
+          tbody
+            - @documents.each do |document|
+              tr
+                td = document.filename
+                td = document.file_type
+                td = document.company
+                td = document.date_signed
+                td = document.date_uploaded
+                td = link_to 'Show', document
+                td = link_to 'Edit', edit_document_path(document)
+                td = link_to 'Destroy', document, data: { confirm: 'Are you sure?' }, method: :delete
+        br
 
-  tbody
-    - @documents.each do |document|
-      tr
-        td = document.filename
-        td = document.file_type
-        td = document.company
-        td = document.date_signed
-        td = document.date_uploaded
-        td = link_to 'Show', document
-        td = link_to 'Edit', edit_document_path(document)
-        td = link_to 'Destroy', document, data: { confirm: 'Are you sure?' }, method: :delete
-
-br
-
-= link_to 'New Document', new_document_path
+        = link_to 'New Document', new_document_path
