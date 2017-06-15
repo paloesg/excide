@@ -1,0 +1,29 @@
+h1 Listing documents
+
+table
+  thead
+    tr
+      th Filename
+      th File type
+      th Company
+      th Date signed
+      th Date uploaded
+      th
+      th
+      th
+
+  tbody
+    - @documents.each do |document|
+      tr
+        td = document.filename
+        td = document.file_type
+        td = document.company
+        td = document.date_signed
+        td = document.date_uploaded
+        td = link_to 'Show', document
+        td = link_to 'Edit', edit_document_path(document)
+        td = link_to 'Destroy', document, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Document', new_document_path
