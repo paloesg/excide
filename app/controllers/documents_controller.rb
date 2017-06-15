@@ -1,10 +1,12 @@
 class DocumentsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_company
   before_action :set_document, only: [:show, :edit, :update, :destroy]
 
   # GET /documents
   # GET /documents.json
   def index
-    @documents = Document.all
+    @documents = @company.documents
   end
 
   # GET /documents/1
@@ -62,13 +64,18 @@ class DocumentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_document
-      @document = Document.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_company
+    @user = current_user
+    @company = @user.company
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def document_params
-      params.require(:document).permit(:filename, :file_type, :company_id, :date_signed, :date_uploaded)
-    end
+  def set_document
+    @document = @company.documents.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def document_params
+    params.require(:document).permit(:filename, :file_type, :company_id, :date_signed, :date_uploaded)
+  end
 end
