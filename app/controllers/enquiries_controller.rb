@@ -1,5 +1,5 @@
 class EnquiriesController < ApplicationController
-  def index
+  def new
     @enquiry = Enquiry.new
   end
 
