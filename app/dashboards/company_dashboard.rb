@@ -14,6 +14,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     image_url: Field::Image,
     description: Field::Text,
     user: Field::BelongsTo,
+    ssic_code: Field::String,
+    financial_year_end: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }
@@ -43,6 +45,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     :image_url,
     :description,
     :user,
+    :ssic_code,
+    :financial_year_end,
   ]
 
   # Overwrite this method to customize how profiles are displayed
