@@ -20,6 +20,7 @@ class DashboardManifest
     :questions,
     :choices,
     :companies,
+    :documents,
     :profiles,
     :users,
   ]
