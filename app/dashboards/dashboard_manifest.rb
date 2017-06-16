@@ -21,6 +21,8 @@ class DashboardManifest
     :choices,
     :companies,
     :documents,
+    :tasks,
+    :actions,
     :profiles,
     :users,
   ]
