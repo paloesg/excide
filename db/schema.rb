@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170615140023) do
+ActiveRecord::Schema.define(version: 20170616084739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "actions", force: :cascade do |t|
+    t.integer  "task_id"
+    t.boolean  "completed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "actions", ["task_id"], name: "index_actions_on_task_id", using: :btree
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line_1"
@@ -254,6 +263,16 @@ ActiveRecord::Schema.define(version: 20170615140023) do
   add_index "surveys", ["template_id"], name: "index_surveys_on_template_id", using: :btree
   add_index "surveys", ["user_id"], name: "index_surveys_on_user_id", using: :btree
 
+  create_table "tasks", force: :cascade do |t|
+    t.string   "instructions"
+    t.integer  "position"
+    t.integer  "section_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "tasks", ["section_id"], name: "index_tasks_on_section_id", using: :btree
+
   create_table "templates", force: :cascade do |t|
     t.string   "title"
     t.integer  "business_model"
@@ -301,6 +320,7 @@ ActiveRecord::Schema.define(version: 20170615140023) do
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
+  add_foreign_key "actions", "tasks"
   add_foreign_key "companies", "users"
   add_foreign_key "documents", "companies"
   add_foreign_key "experiences", "profiles"
@@ -321,4 +341,5 @@ ActiveRecord::Schema.define(version: 20170615140023) do
   add_foreign_key "surveys", "companies"
   add_foreign_key "surveys", "templates"
   add_foreign_key "surveys", "users"
+  add_foreign_key "tasks", "sections"
 end
