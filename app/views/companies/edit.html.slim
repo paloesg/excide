@@ -2,7 +2,7 @@ section.page-title.page-title-4.bg-secondary
   .container
     .row
       .col-md-6
-        h2.uppercase.mb8 Company Details
+        h2.uppercase.mb8 Update Company
       .col-md-6.text-right
         ol.breadcrumb.breadcrumb-2
           li
@@ -15,6 +15,8 @@ section
     = render 'layouts/left_sidebar'
 
     .col-md-9.col-sm-8
-      .feature.boxed.bg-secondary
+      .widget
+        h6.title Company Details
+        hr
         = form_for(@company, url: {action: "update"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
             = render 'form', f: f
