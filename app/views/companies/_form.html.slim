@@ -6,7 +6,7 @@
 .row
   .col-sm-12
     .input-with-label.text-left
-      span Company Name
+      span Company Type
       = f.select :company_type, Company.company_types.keys.map { |c| [c, c] }, :include_blank => true
 .row
   .col-sm-12
