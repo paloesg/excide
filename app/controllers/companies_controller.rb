@@ -17,6 +17,7 @@ class CompaniesController < ApplicationController
   end
 
   def edit
+    build_addresses
   end
 
   def update
@@ -41,7 +42,15 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:id, :name, :industry, :company_type, :image_url, :description)
+    params.require(:company).permit(:id, :name, :industry, :company_type, :image_url, :description,
+      address_attributes: [:line_1, :line_2, :postal_code]
+    )
+  end
+
+  def build_addresses
+    if @company.address.blank?
+      @company.address = @company.address.build
+    end
   end
 
   def set_s3_direct_post

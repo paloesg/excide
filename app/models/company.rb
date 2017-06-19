@@ -33,7 +33,7 @@ class Company < ActiveRecord::Base
   has_one :address, as: :addressable
 
   accepts_nested_attributes_for :projects, :reject_if => :all_blank, :allow_destroy => true
-  accepts_nested_attributes_for :address
+  accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
 
   enum company_type: ["Exempt Private Company Limited By Shares", "Private Company Limited By Shares", "Public Company Limited By Guarantee", "Public Company Limited By Shares", "Unlimited Exempt Private Company", "Unlimited Public Company"]
 end
