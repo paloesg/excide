@@ -16,17 +16,15 @@ section
 
     .col-md-9.col-sm-12
       .widget
-        h6.title Listing documents
+        h6.title Documents Listing
         hr
         table.table.table-hover
           thead
             tr
               th Filename
               th File type
-              th Company
+              th Date uploaded
               th Date signed
-              th
-              th
               th
               th
           tbody
@@ -34,12 +32,8 @@ section
               tr
                 td = document.filename
                 td = document.file_type
-                td = document.company.name
+                td = document.created_at.to_date
                 td = document.date_signed
-                td = link_to "Download", document.file_url
-                td = link_to 'Show', document
+                td = link_to "View", document.file_url
                 td = link_to 'Edit', edit_document_path(document)
-                td = link_to 'Destroy', document, data: { confirm: 'Are you sure?' }, method: :delete
-        br
-
         = link_to 'New Document', new_document_path

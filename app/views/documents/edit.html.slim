@@ -1,8 +1,23 @@
-h1 Editing document
+section.page-title.page-title-4.bg-secondary
+  .container
+    .row
+      .col-md-6
+        h2.uppercase.mb8 Edit Document
+      .col-md-6.text-right
+        ol.breadcrumb.breadcrumb-2
+          li
+            a href="#" Home
+          li
+            a href="#" Company
+          li
+            a href="#" Documents
+          li.active Edit
+section
+  .container
+    = render 'layouts/left_sidebar'
 
-== render 'form'
-
-= link_to 'Show', @document
-'  |
-= link_to 'Back', documents_path
-
+    .col-md-9.col-sm-12
+      .widget
+        h6.title Document Information
+        hr
+        == render 'form'

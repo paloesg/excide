@@ -1,21 +1,41 @@
-p#notice = notice
+section.page-title.page-title-4.bg-secondary
+  .container
+    .row
+      .col-md-6
+        h2.uppercase.mb8 Edit Document
+      .col-md-6.text-right
+        ol.breadcrumb.breadcrumb-2
+          li
+            a href="#" Home
+          li
+            a href="#" Company
+          li
+            a href="#" Documents
+          li.active Edit
+section
+  .container
+    = render 'layouts/left_sidebar'
 
-p
-  strong Filename:
-  = @document.filename
-p
-  strong File type:
-  = @document.file_type
-p
-  strong Company:
-  = @document.company
-p
-  strong Date signed:
-  = @document.date_signed
-p
-  strong File URL:
-  = @document.file_url
+    .col-md-9.col-sm-12
+      .widget
+        h6.title Document Information
+        hr
+        p
+          strong Filename:
+          = @document.filename
+        p
+          strong File type:
+          = @document.file_type
+        p
+          strong Company:
+          = @document.company
+        p
+          strong Date signed:
+          = @document.date_signed
+        p
+          strong File URL:
+          = @document.file_url
 
-= link_to 'Edit', edit_document_path(@document)
-'  |
-= link_to 'Back', documents_path
+        = link_to 'Edit', edit_document_path(@document)
+        '  |
+        = link_to 'Back', documents_path
