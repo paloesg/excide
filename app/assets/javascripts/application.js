@@ -8,7 +8,7 @@
 //= require analytics
 //= require init
 //= require jquery.ui.widget
-//= require jquery.fileupload
+//= require z.jquery.fileupload
 
 //= require flickr
 //= require flexslider.min

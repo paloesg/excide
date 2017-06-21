@@ -1,13 +1,11 @@
 window.App ||= {}
 
 App.init = ->
-  if ($('body').hasClass('companies') && $('body').hasClass('edit')) || $('body').hasClass('projects')
-    $('select').material_select();
-
-  if ($('body').hasClass('profiles') || $('body').hasClass('companies') || $('body').hasClass('proposals') || $('body').hasClass('projects'))
+  if $('body').hasClass('documents')
     $ ->
       $('.directUpload').find('input:file').each (i, elem) ->
         fileInput = $(elem)
+        console.log(fileInput)
         form = $(fileInput.parents('form:first'))
         submitButton = form.find('input[type="submit"]')
         progressBar = $('<div class=\'bar\'></div>')

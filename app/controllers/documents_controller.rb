@@ -2,6 +2,7 @@ class DocumentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_document, only: [:show, :edit, :update, :destroy]
+  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
   # GET /documents
   # GET /documents.json
@@ -76,6 +77,10 @@ class DocumentsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def document_params
-    params.require(:document).permit(:filename, :file_type, :company_id, :date_signed, :date_uploaded)
+    params.require(:document).permit(:filename, :file_type, :company_id, :date_signed, :date_uploaded, :file_url)
+  end
+
+  def set_s3_direct_post
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
   end
 end
