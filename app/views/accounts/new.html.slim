@@ -4,7 +4,7 @@ section
       .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
         .feature.boxed.bg-secondary
           h4.uppercase Just a few more details...
-          = form_for @user, as: :user, url: create_account_path, id: "payment-form" do |f|
+          = form_for @user, as: :user, url: create_account_path, html: { id: "payment-form" } do |f|
             = devise_error_messages!
             .row
               .col-md-6.col-sm-12
@@ -27,7 +27,7 @@ section
             hr
             .row
               .col-md-6.col-sm-12
-                = f.submit "Confirm", class: "btn"
+                = f.submit "Submit", class: "btn"
 
 javascript:
   var stripe = Stripe($('meta[name="stripe-key"]').attr('content'));
