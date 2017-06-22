@@ -3,21 +3,19 @@ class AccountsController < ApplicationController
   before_action :set_user
 
   def new
+    @company = Company.new
+    @company.user = current_user
+    @company.build_address
   end
 
   def edit
   end
 
-  # Technically not creating a new entry. Updates user account details when user is first created and redirected here.
+  # Technically not creating a new entry. Updates user account details and create new comapny when user is first created and redirected here.
   def create
     if @user.update(user_params)
-      if @user.has_role? :consultant
-        SlackService.new.consultant_signup(@user, @user.profile).deliver
-        redirect_to profile_path, notice: 'Your account was successfully created.'
-      else
-        SlackService.new.company_signup(@user, @user.company).deliver
-        redirect_to new_company_project_path, notice: 'Your account was successfully created.'
-      end
+      SlackService.new.company_signup(@user, @user.company).deliver
+      redirect_to dashboards_path, notice: 'Your account was successfully created.'
     else
       render :new, error: 'Please ensure that all fields are entered.'
     end
@@ -38,7 +36,13 @@ class AccountsController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:id, :first_name, :last_name, :contact_number, :allow_contact, :agree_terms)
+    params.require(:user).permit(:id, :first_name, :last_name, :contact_number, :agree_terms,
+      company_attributes: [:name, :industry, :company_type, :image_url, :description, :ssic_code, :financial_year_end, address_attributes: [:line_1, :line_2, :postal_code]])
   end
 
+  def company_params
+    params.require(:company).permit(:id, :name, :industry, :company_type, :image_url, :description,
+      address_attributes: [:line_1, :line_2, :postal_code]
+    )
+  end
 end

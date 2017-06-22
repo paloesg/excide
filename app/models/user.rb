@@ -28,13 +28,12 @@ class User < ActiveRecord::Base
   has_one :company, dependent: :destroy
   has_one :address, as: :addressable
 
-  accepts_nested_attributes_for :address
+  accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
+  accepts_nested_attributes_for :company, :reject_if => :all_blank, :allow_destroy => true
 
   after_commit :create_default_profile, if: Proc.new { self.has_role? :consultant }
   after_commit :create_default_business, if: Proc.new { self.has_role? :business }
 
-  validates :first_name, presence: true, unless: :skip_validation?
-  validates :last_name, presence: true, unless: :skip_validation?
   validates :contact_number, presence: true, unless: :skip_validation?
   validates :agree_terms, inclusion: { in: [true] }, unless: :skip_validation?
 

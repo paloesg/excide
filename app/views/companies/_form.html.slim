@@ -7,7 +7,7 @@
   .col-sm-12
     .input-with-label.text-left
       = f.fields_for :address do |a|
-        = render 'address_fields', f: a
+        = render 'companies/address_fields', f: a
 .row
   .col-sm-12
     .input-with-label.text-left
@@ -19,15 +19,11 @@
       span Description
       = f.text_area :description
 .row
-  .col-sm-12
+  .col-md-6.col-sm-12
     .input-with-label.text-left
       span SSIC Code
       = f.text_field :ssic_code
-.row
-  .col-sm-12
+  .col-md-6.col-sm-12
     .input-with-label.text-left
       span Financial Year End
       = f.text_field :financial_year_end
-.row
-  .col-md-4.col-sm-6
-    = f.submit "Save details"

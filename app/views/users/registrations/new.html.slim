@@ -14,11 +14,6 @@ section.cover.fullscreen.image-bg.overlay
             = hidden_field_tag :role, params[:role]
             .row
               .col-md-6.col-sm-12
-                = f.text_field :first_name, placeholder: "First name"
-              .col-md-6.col-sm-12
-                = f.text_field :last_name, placeholder: "Last name"
-            .row
-              .col-md-6.col-sm-12
                 = f.email_field :email, placeholder: "Email"
               .col-md-6.col-sm-12
                 = f.telephone_field :contact_number, placeholder: "Contact number"
