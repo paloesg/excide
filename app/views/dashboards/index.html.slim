@@ -61,10 +61,13 @@ section
         h6.title Recent Documents
         hr
         ul.cart-overview
-          - @documents.each do |d|
-            li
-              a href="#{d.file_url}"
-                i.ti-file.icon
-                .description
-                  span.product-title = d.filename
-                  span.price.number = d.file_type
+          - if @documents.empty?
+            li No documents yet.
+          - else
+            - @documents.each do |d|
+              li
+                a href="#{d.file_url}"
+                  i.ti-file.icon
+                  .description
+                    span.product-title = d.filename
+                    span.price.number = d.file_type
