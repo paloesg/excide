@@ -293,7 +293,7 @@ PLATFORMS
 DEPENDENCIES
   aasm
   acts_as_list
-  administrate (~> 0.4.0)
+  administrate
   administrate-field-image
   aws-sdk (~> 2)
   better_errors
