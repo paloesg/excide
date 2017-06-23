@@ -15,7 +15,6 @@ gem 'coffee-rails', '~> 4.1.1'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 gem "slim-rails"
-
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -26,59 +25,50 @@ gem 'jquery-turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
-
 # Force sprockets rails to use version 2.3.3 to fix Heroku deployment issue
 gem 'sprockets-rails', '2.3.3'
+# Use puma web server
+gem 'puma'
+# Set timeout for long running processes
+gem 'rack-timeout'
 
-# Frontend framework
-gem 'bootstrap-sass'
-
-# Themify icon set web fonts
-gem 'themify-icons-rails'
-
-# Nested form helper
-gem "cocoon"
+################################################
+#                                              #
+# Login, authentication, roles, access-control #
+#                                              #
+################################################
 
 # Authentication
 gem 'devise'
-
 # Roles
 gem 'rolify'
-
 # Authorization
 gem 'pundit'
-
 # LinkedIn API integration
 gem 'omniauth'
 gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-linkedin-oauth2'
 
+################################################
+#                                              #
+#             App specific functions           #
+#                                              #
+################################################
+
 # State machine gem
 gem 'aasm'
-
-# WYSIWYG editor
-gem 'trix'
-
 # Payments integration with Stripe
 gem 'stripe'
-
 # Docusign gem for e-signature
 gem 'docusign_rest'
-
-# Use puma web server
-gem 'puma'
-
-# Set timeout for long running processes
-gem 'rack-timeout'
-
+# Manage ordering for survey objects
+gem 'acts_as_list'
 # Amazon S3 SDK
 gem 'aws-sdk', '~> 2'
-
 # Sitemap generator
 gem 'sitemap_generator'
 # Uploading of sitemap to AWS
 gem 'fog-aws'
-
 # Set meta tags
 gem 'meta-tags'
 
@@ -88,8 +78,16 @@ gem 'mixpanel-ruby'
 # Error monitoring
 gem 'rollbar'
 gem 'oj', '~> 2.12.14'
-
 gem 'snitcher'
+
+# Frontend framework
+gem 'bootstrap-sass'
+# Themify icon set web fonts
+gem 'themify-icons-rails'
+# Nested form helper
+gem "cocoon"
+# WYSIWYG editor
+gem 'trix'
 
 #Backend admin
 gem 'administrate'
@@ -98,9 +96,6 @@ gem 'bourbon'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
-
-# Manage ordering for survey objects
-gem 'acts_as_list'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
