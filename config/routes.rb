@@ -48,14 +48,13 @@ Rails.application.routes.draw do
 
   get 'company/new', to: 'companies#new', as: :new_company
   post 'company/create', to: 'companies#create', as: :create_company
-  get 'company/name-reservation', to: 'companies#name_reservation', as: :name_reservation_company
-  get 'company/incorporation', to: 'companies#incorporation', as: :incorporation_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
 
   namespace :company do
     resources :projects
   end
+  get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
 
   resources :charges, only: [:new, :create]
   resources :dashboards, only: [:index]

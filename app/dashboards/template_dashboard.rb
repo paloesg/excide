@@ -12,6 +12,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     title: Field::String,
     business_model: EnumField,
     surveys: Field::HasMany,
+    workflows: Field::HasMany,
     sections: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -25,8 +26,8 @@ class TemplateDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :title,
-    :business_model,
     :surveys,
+    :workflows,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -39,6 +40,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     :updated_at,
     :sections,
     :surveys,
+    :workflows,
   ].freeze
 
   # FORM_ATTRIBUTES

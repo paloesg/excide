@@ -4,6 +4,7 @@ class Template < ActiveRecord::Base
 
   has_many :sections
   has_many :surveys
+  has_many :workflows
 
   accepts_nested_attributes_for :sections
 
