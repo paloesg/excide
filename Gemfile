@@ -63,6 +63,8 @@ gem 'stripe'
 gem 'docusign_rest'
 # Manage ordering for survey objects
 gem 'acts_as_list'
+# Use user friendly slugs
+gem 'friendly_id', '~> 5.1.0'
 # Amazon S3 SDK
 gem 'aws-sdk', '~> 2'
 # Sitemap generator
