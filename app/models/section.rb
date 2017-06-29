@@ -3,4 +3,5 @@ class Section < ActiveRecord::Base
 
   has_many :questions
   has_many :segments
+  has_many :tasks
 end

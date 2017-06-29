@@ -1,0 +1,35 @@
+section.page-title.page-title-4.bg-secondary
+  .container
+    .row
+      .col-md-6
+        h2.uppercase.mb8 #{@template.title}
+      .col-md-6.text-right
+        ol.breadcrumb.breadcrumb-2
+          li
+            a href="#" Home
+          li
+            a href="#" Company
+          li.active #{@template.title}
+section
+  .container
+    = render 'layouts/left_sidebar'
+
+    .col-md-9.col-sm-8
+      .widget
+        h6.title Tasks
+        hr
+        table.table.table-hover
+          thead
+            tr
+              th Completed
+              th Instructions
+          tbody
+            - @tasks.each do |t|
+              tr
+                td
+                td = t.instructions
+      - if @next_task.image_url.present?
+        .widget
+          h6.title Screenshot
+          hr
+          = image_tag(@next_task.image_url)

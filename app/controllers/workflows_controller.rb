@@ -5,6 +5,9 @@ class WorkflowsController < ApplicationController
   def show
     # Look for existing workflow if not create new workflow
     @workflow = @workflows.create_with(user: @user).find_or_create_by(template: @template, company: @company)
+    @sections = @template.sections.joins(tasks: :actions).where(actions: { completed: false})
+    @tasks = @sections.first.tasks
+    @next_task = @tasks.first
   end
 
   private

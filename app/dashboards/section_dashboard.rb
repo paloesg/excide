@@ -10,6 +10,7 @@ class SectionDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     template: Field::BelongsTo,
     questions: Field::HasMany.with_options(limit: 50),
+    tasks: Field::HasMany.with_options(limit: 50),
     segments: Field::HasMany,
     id: Field::Number,
     unique_name: Field::String,
@@ -28,6 +29,8 @@ class SectionDashboard < Administrate::BaseDashboard
     :id,
     :unique_name,
     :position,
+    :questions,
+    :tasks,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -39,6 +42,7 @@ class SectionDashboard < Administrate::BaseDashboard
     :position,
     :template,
     :questions,
+    :tasks,
     :created_at,
     :updated_at,
   ].freeze
@@ -50,6 +54,8 @@ class SectionDashboard < Administrate::BaseDashboard
     :unique_name,
     :display_name,
     :position,
+    :questions,
+    :tasks,
   ].freeze
 
   # Overwrite this method to customize how sections are displayed

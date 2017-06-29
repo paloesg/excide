@@ -13,6 +13,7 @@ class TaskDashboard < Administrate::BaseDashboard
     id: Field::Number,
     instructions: Field::String,
     position: Field::Number,
+    image_url: Field::Image,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -36,6 +37,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :actions,
     :id,
     :instructions,
+    :image_url,
     :position,
     :created_at,
     :updated_at,
@@ -48,6 +50,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :section,
     :actions,
     :instructions,
+    :image_url,
     :position,
   ].freeze
 
