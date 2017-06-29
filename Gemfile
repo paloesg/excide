@@ -61,6 +61,8 @@ gem 'aasm'
 gem 'stripe'
 # Docusign gem for e-signature
 gem 'docusign_rest'
+# SMS integration with Twilio
+gem 'twilio-ruby'
 # Manage ordering for survey objects
 gem 'acts_as_list'
 # Use user friendly slugs
