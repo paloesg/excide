@@ -31,6 +31,7 @@ class Company < ActiveRecord::Base
   has_many :projects, dependent: :destroy
   has_many :documents
   has_many :workflows
+  has_many :actions
   has_one :address, as: :addressable
 
   accepts_nested_attributes_for :projects, :reject_if => :all_blank, :allow_destroy => true
