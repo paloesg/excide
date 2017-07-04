@@ -3,11 +3,21 @@ class WorkflowsController < ApplicationController
   before_action :set_workflow
 
   def show
-    # Look for existing workflow if not create new workflow
+    # Look for existing workflow if not create new workflow and then show the tasks from the first section
     @workflow = @workflows.create_with(user: @user).find_or_create_by(template: @template, company: @company)
-    @sections = @template.sections.joins(tasks: :actions).where(actions: { completed: false})
-    @tasks = @sections.first.tasks
-    @next_task = @tasks.first
+    @sections = @template.sections
+    @current_section = @sections.joins(tasks: :actions).where(actions: {completed: false}).to_ary.shift
+
+    set_tasks
+  end
+
+  def section
+    @workflow = @workflows.where(template: @template).first
+    @sections = @template.sections
+    @current_section = @sections.find(params[:section_id])
+
+    set_tasks
+    render :show
   end
 
   private
@@ -17,6 +27,12 @@ class WorkflowsController < ApplicationController
     @company = @user.company
     @workflows = @company.workflows
     @template = Template.find(params[:workflow_name])
+  end
+
+  def set_tasks
+    @next_section = @sections.find_by_id(@current_section.id + 1)
+    @tasks = @current_section.tasks
+    @current_task = @tasks.first
   end
 
   def workflow_params

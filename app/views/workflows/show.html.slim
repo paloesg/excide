@@ -16,20 +16,22 @@ section
 
     .col-md-9.col-sm-8
       .widget
-        h6.title Tasks
+        h6.title = @current_section.display_name
         hr
-        table.table.table-hover
+        table.table
           thead
             tr
-              th Completed
+              th No.
               th Instructions
+              th Done
           tbody
             - @tasks.each do |t|
               tr
+                td = t.position.to_s + '.'
                 td
-                td = t.instructions
-      - if @next_task.image_url.present?
-        .widget
-          h6.title Screenshot
-          hr
-          = image_tag(@next_task.image_url)
+                  = t.instructions
+                  = image_tag(t.image_url)
+                td
+                  input type="checkbox"
+        - if @next_section.present?
+          = button_to "Next Section", company_workflow_section_path(@template.slug, @next_section.id), method: "get"
