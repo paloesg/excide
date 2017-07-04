@@ -18,7 +18,7 @@ section
       .widget
         h6.title Outstanding Tasks
         hr
-        table.table.table-hover
+        table.table
           thead
             tr
               th Task Description
@@ -35,7 +35,7 @@ section
                 tr.danger
                   td = t.instructions
                   td = t.created_at
-                  td Not done
+                  td = link_to "Incomplete", company_workflow_path(@current_section.template.slug), method: "get"
       .widget
         h6.title Company Information
         hr
