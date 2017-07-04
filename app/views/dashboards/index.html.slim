@@ -25,26 +25,17 @@ section
               th Due Date
               th Status
           tbody
-            tr.success
-              td Sign Director's First Resolution
-              td 03/02/16
-              td All Signed
-            tr.success
-              td Appoint Company Secretary
-              td 03/08/16
-              td Appointed
-            tr.success
-              td Appoint Company Controller
-              td 03/09/16
-              td Appointed
-            tr.warning
-              td Sign Share Certificate
-              td 03/11/16
-              td Not signed yet
-            tr.danger
-              td Sign Company Constitution
-              td 06/12/16
-              td Overdue
+            - @tasks.each do |t|
+              - if t.company_action(@company).completed?
+                tr.success
+                  td = t.instructions
+                  td = t.created_at
+                  td Completed
+              - else
+                tr.danger
+                  td = t.instructions
+                  td = t.created_at
+                  td Not done
       .widget
         h6.title Company Information
         hr
