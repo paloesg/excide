@@ -18,24 +18,27 @@ section
       .widget
         h6.title Outstanding Tasks
         hr
-        table.table
-          thead
-            tr
-              th Task Description
-              th Due Date
-              th Status
-          tbody
-            - @tasks.each do |t|
-              - if t.company_action(@company).completed?
-                tr.success
-                  td = t.instructions
-                  td = t.created_at
-                  td Completed
-              - else
-                tr.danger
-                  td = t.instructions
-                  td = t.created_at
-                  td = link_to "Incomplete", company_workflow_path(@current_section.template.slug), method: "get"
+        - if @current_section.nil?
+          | No outstanding tasks at the moment. Click on a workflow to begin.
+        - else
+          table.table
+            thead
+              tr
+                th Task Description
+                th Due Date
+                th Status
+            tbody
+              - @tasks.each do |t|
+                - if t.company_action(@company).completed?
+                  tr.success
+                    td = t.instructions
+                    td = t.created_at
+                    td Completed
+                - else
+                  tr.danger
+                    td = t.instructions
+                    td = t.created_at
+                    td = link_to "Incomplete", company_workflow_path(@current_section.template.slug), method: "get"
       .widget
         h6.title Company Information
         hr
