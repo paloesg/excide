@@ -4,4 +4,6 @@
 //= require moment
 //= require datetime_picker
 //= require cocoon
+//= require jquery.ui.widget
+//= require z.jquery.fileupload
 //= require_tree .
