@@ -13,7 +13,7 @@ class TaskDashboard < Administrate::BaseDashboard
     id: Field::Number,
     instructions: Field::String,
     position: Field::Number,
-    image_url: Field::Image,
+    image_url: ImageField,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
