@@ -14,7 +14,7 @@ class ProfileDashboard < Administrate::BaseDashboard
     summary: Field::Text,
     industry: Field::String,
     specialties: Field::String,
-    image_url: Field::Image,
+    image_url: ImageField,
     linkedin_url: Field::String,
     location: Field::String,
     country_code: Field::String,
