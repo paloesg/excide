@@ -56,6 +56,7 @@ Rails.application.routes.draw do
   end
   get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
   get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
+  post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
 
   resources :charges, only: [:new, :create]
   resources :dashboards, only: [:index]

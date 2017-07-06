@@ -32,6 +32,6 @@ section
                   = t.instructions
                   = image_tag(t.image_url)
                 td
-                  input type="checkbox"
+                  = check_box_tag 'completed', t.company_action(@company).id, t.company_action(@company).completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }
         - if @next_section.present?
           = button_to "Next Section", company_workflow_section_path(@template.slug, @next_section.id), method: "get"
