@@ -15,6 +15,7 @@ class DashboardManifest
     :surveys,
     :segments,
     :responses,
+    :workflows,
     :templates,
     :sections,
     :questions,
