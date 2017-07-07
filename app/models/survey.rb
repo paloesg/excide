@@ -5,7 +5,7 @@ class Survey < ActiveRecord::Base
   belongs_to :company
   belongs_to :template
 
-  has_many :sections
+  has_many :segments, dependent: :destroy
 
   accepts_nested_attributes_for :company
 
