@@ -26,7 +26,7 @@ class TaskDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :section,
     :actions,
-    :id,
+    :position,
     :instructions,
   ].freeze
 
