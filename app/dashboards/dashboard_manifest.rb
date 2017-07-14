@@ -26,6 +26,7 @@ class DashboardManifest
     :actions,
     :profiles,
     :users,
+    :roles,
   ]
 
   # `ROOT_DASHBOARD`
