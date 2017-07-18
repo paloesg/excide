@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
     elsif current_user.has_role? :consultant
       profile_path
     elsif current_user.has_role? :company
-      new_company_project_path
+      dashboard_path
     else
       root_path
     end
