@@ -52,11 +52,6 @@ nav
 
           li
             a href="https://blog.excide.co/" Blog
-          li
-            - if current_user.present?
-              = link_to "Log Out", logout_path
-            -else
-              = link_to "Log In", new_user_session_path
 
           li.has-dropdown.hidden
             a href="/services" Services

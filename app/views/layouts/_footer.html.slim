@@ -6,7 +6,11 @@ footer.footer-1.bg-dark
       .col-md-4.col-sm-6
         .widget
       .col-md-4.col-sm-6
-        .widget
+        .widget.text-right
+          - if current_user.present?
+            = link_to "Log Out", logout_path
+          - else
+            = link_to "Log In", new_user_session_path
     .row
       .col-sm-6
         span.sub &copy; Copyright 2017 – Excide Pte. Ltd.
