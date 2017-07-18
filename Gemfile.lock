@@ -328,6 +328,7 @@ DEPENDENCIES
   byebug
   cocoon
   coffee-rails (~> 4.1.1)
+  datetime_picker_rails
   devise
   docusign_rest
   dotenv-rails

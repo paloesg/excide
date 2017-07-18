@@ -2,6 +2,8 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require moment
+//= require datetime_picker
 
 //= require trix
 //= require cocoon

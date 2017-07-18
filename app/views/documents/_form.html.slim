@@ -5,7 +5,7 @@
       ul
         - @document.errors.full_messages.each do |message|
           li = message
-
+  = f.hidden_field :company, value: @company.id
   .field
     = f.label :filename
     = f.text_field :filename
@@ -13,13 +13,18 @@
     = f.label :file_type
     = f.text_field :file_type
   .field
-    = f.label :company
-    = f.text_field :company
-  .field
     = f.label :date_signed
-    = f.date_select :date_signed
+    = f.text_field :date_signed, class: 'datetimepicker'
   .field.file-field
     = f.file_field :file_url
     .file-path-wrapper
       = f.text_field :file_url, class: "file-path"
   .actions = f.submit
+
+javascript:
+  $(function() {
+    $('.datetimepicker').datetimepicker({
+      debug: false,
+      format: 'YYYY-MM-DD'
+    });
+  });

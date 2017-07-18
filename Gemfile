@@ -94,6 +94,8 @@ gem 'themify-icons-rails'
 gem "cocoon"
 # WYSIWYG editor
 gem 'trix'
+# Date time picker
+gem "datetime_picker_rails"
 
 #Backend admin
 gem 'administrate'
