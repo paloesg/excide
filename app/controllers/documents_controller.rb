@@ -28,6 +28,7 @@ class DocumentsController < ApplicationController
   # POST /documents.json
   def create
     @document = Document.new(document_params)
+    @document.company = @company
 
     respond_to do |format|
       if @document.save

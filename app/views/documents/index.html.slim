@@ -34,6 +34,6 @@ section
                 td = document.file_type
                 td = document.created_at.to_date
                 td = document.date_signed
-                td = link_to "View", document.file_url
+                td = link_to "Download", document.file_url
                 td = link_to 'Edit', edit_document_path(document)
         = link_to 'New Document', new_document_path

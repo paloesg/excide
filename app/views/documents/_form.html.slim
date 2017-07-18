@@ -5,7 +5,6 @@
       ul
         - @document.errors.full_messages.each do |message|
           li = message
-  = f.hidden_field :company, value: @company.id
   .field
     = f.label :filename
     = f.text_field :filename
