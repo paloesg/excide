@@ -41,9 +41,8 @@ class UserDashboard < Administrate::BaseDashboard
     :first_name,
     :last_name,
     :email,
+    :contact_number,
     :roles,
-    :created_at,
-    :updated_at,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -70,6 +69,7 @@ class UserDashboard < Administrate::BaseDashboard
     :roles,
     :allow_contact,
     :agree_terms,
+    :confirmed_at,
   ].freeze
 
   # Overwrite this method to customize how users are displayed
