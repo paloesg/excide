@@ -8,9 +8,6 @@ module DeviseHelper
                       :resource => @user.class.model_name.human.downcase)
 
     html = <<-HTML
-    <script>
-      Materialize.toast("Please fix the errors and try again.", 5000);
-    </script>
     <div id="error_explanation">
       <strong>#{sentence}</strong>
       <ul>#{messages}</ul>

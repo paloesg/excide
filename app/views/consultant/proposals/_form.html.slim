@@ -1,6 +1,4 @@
 - if @proposal.errors.any?
-  javascript:
-    Materialize.toast("Please fix the errors and try again.", 5000);
   #error_explanation
     strong
       = pluralize(@proposal.errors.count, "error")

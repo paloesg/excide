@@ -1,7 +1,5 @@
 = form_for(@profile, url: {action: "update"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
   - if @profile.errors.any?
-    javascript:
-      Materialize.toast("Please fix the errors and try again.", 5000);
     #error_explanation
       strong
         = pluralize(@profile.errors.count, "error")
@@ -22,7 +20,7 @@
               = f.label :headline
           .row
             .input-field.col.s12
-              = f.text_area :summary, class: "materialize-textarea"
+              = f.text_area :summary
               = f.label :summary
           .row
             .input-field.col.s12.m6
