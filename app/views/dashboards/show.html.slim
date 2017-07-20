@@ -43,7 +43,8 @@ section
         h6.title Company Information
         hr
         p = @company.description
-        p Registered Address: #{@company.address.line_1}, #{@company.address.line_2}, Singapore #{@company.address.postal_code}
+        - if @company.address.present?
+          p Registered Address: #{@company.address.line_1}, #{@company.address.line_2}, Singapore #{@company.address.postal_code}
         p Financial Year End: #{@company.financial_year_end}
     .col-md-3.col-sm-4
       .widget
