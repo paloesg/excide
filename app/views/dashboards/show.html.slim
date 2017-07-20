@@ -18,7 +18,7 @@ section
       .widget
         h6.title Outstanding Tasks
         hr
-        - if @current_section.nil?
+        - if @tasks.empty?
           | No outstanding tasks at the moment. Click on a workflow to begin.
         - else
           table.table
@@ -38,7 +38,7 @@ section
                   tr.danger
                     td = t.instructions
                     td = t.created_at
-                    td = link_to "Incomplete", company_workflow_path(@current_section.template.slug), method: "get"
+                    td = link_to "Incomplete", company_workflow_path(t.section.template.slug), method: "get"
       .widget
         h6.title Company Information
         hr

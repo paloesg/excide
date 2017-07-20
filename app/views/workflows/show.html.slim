@@ -37,4 +37,4 @@ section
         - if @next_section.present?
           = button_to "Next Section", company_workflow_section_path(@template.slug, @next_section.id), method: "get"
         - else
-          = button_to "Submit", dashboards_path, method: "get"
+          = button_to "Submit", dashboard_path, method: "get"

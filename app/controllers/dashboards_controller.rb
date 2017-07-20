@@ -2,19 +2,14 @@ class DashboardsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_dashboard, only: [:show]
 
-  def index
-    @user = current_user
-    @company = Company.first
-    @workflows = @company.workflows
-    @documents = @company.documents.last(3).reverse
-
-    render :show
-  end
-
   def show
     if @workflows.present?
-      @current_section = @workflows.first.template.sections.joins(tasks: :actions).where(actions: {completed: false}).to_ary.shift
-      @tasks = @current_section.tasks
+      @tasks = []
+      @workflows.each do |w|
+        w.template.sections.each do |s|
+          @tasks += s.tasks.joins(:actions).where(actions: {company: @company, completed: false})
+        end
+      end
     else
       @current_section = nil
       @tasks = nil
