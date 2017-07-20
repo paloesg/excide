@@ -35,7 +35,6 @@ class TemplateDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = [
     :id,
     :title,
-    :business_model,
     :created_at,
     :updated_at,
     :sections,
@@ -48,7 +47,6 @@ class TemplateDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :title,
-    :business_model,
     :sections,
   ].freeze
 
