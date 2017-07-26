@@ -29,15 +29,16 @@ section
                 th Status
             tbody
               - @tasks.each do |t|
-                - if t.company_action(@company).completed?
+                - action = t.company_action(@company)
+                - if action.completed?
                   tr.success
                     td = t.instructions
-                    td = t.created_at
+                    td = action.deadline || '-'
                     td Completed
                 - else
                   tr.danger
                     td = t.instructions
-                    td = t.created_at
+                    td = action.deadline || '-'
                     td = link_to "Incomplete", company_workflow_section_path(t.section.template.slug, t.section.id), method: "get"
       .widget
         h6.title Company Information

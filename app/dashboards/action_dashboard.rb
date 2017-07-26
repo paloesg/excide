@@ -8,9 +8,11 @@ class ActionDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    id: Field::Number,
     task: Field::BelongsTo,
     company: Field::BelongsTo,
-    id: Field::Number,
+    deadline: Field::DateTime,
+    reminder: Field::HasOne,
     completed: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -24,17 +26,19 @@ class ActionDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :company,
     :task,
-    :id,
+    :deadline,
+    :reminder,
     :completed,
-    :created_at,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
+    :id,
     :company,
     :task,
-    :id,
+    :deadline,
+    :reminder,
     :completed,
     :created_at,
     :updated_at,
@@ -46,6 +50,7 @@ class ActionDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :company,
     :task,
+    :deadline,
     :completed,
   ].freeze
 
