@@ -11,22 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170726051547) do
+ActiveRecord::Schema.define(version: 20170726171534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "actions", force: :cascade do |t|
-    t.integer  "task_id"
-    t.boolean  "completed"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deadline"
-    t.integer  "company_id"
-  end
-
-  add_index "actions", ["company_id"], name: "index_actions_on_company_id", using: :btree
-  add_index "actions", ["task_id"], name: "index_actions_on_task_id", using: :btree
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line_1"
@@ -71,6 +59,18 @@ ActiveRecord::Schema.define(version: 20170726051547) do
   end
 
   add_index "companies", ["user_id"], name: "index_companies_on_user_id", using: :btree
+
+  create_table "company_actions", force: :cascade do |t|
+    t.integer  "task_id"
+    t.boolean  "completed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deadline"
+    t.integer  "company_id"
+  end
+
+  add_index "company_actions", ["company_id"], name: "index_company_actions_on_company_id", using: :btree
+  add_index "company_actions", ["task_id"], name: "index_company_actions_on_task_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "filename"
@@ -207,18 +207,18 @@ ActiveRecord::Schema.define(version: 20170726051547) do
     t.boolean  "repeat"
     t.integer  "freq_value"
     t.integer  "freq_unit"
-    t.datetime "past_reminders", default: [],              array: true
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "past_reminders",    default: [],              array: true
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.integer  "user_id"
     t.integer  "company_id"
     t.string   "title"
     t.text     "content"
     t.integer  "task_id"
-    t.integer  "action_id"
+    t.integer  "company_action_id"
   end
 
-  add_index "reminders", ["action_id"], name: "index_reminders_on_action_id", using: :btree
+  add_index "reminders", ["company_action_id"], name: "index_reminders_on_company_action_id", using: :btree
   add_index "reminders", ["company_id"], name: "index_reminders_on_company_id", using: :btree
   add_index "reminders", ["task_id"], name: "index_reminders_on_task_id", using: :btree
   add_index "reminders", ["user_id"], name: "index_reminders_on_user_id", using: :btree
@@ -360,9 +360,9 @@ ActiveRecord::Schema.define(version: 20170726051547) do
   add_index "workflows", ["template_id"], name: "index_workflows_on_template_id", using: :btree
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
 
-  add_foreign_key "actions", "companies"
-  add_foreign_key "actions", "tasks"
   add_foreign_key "companies", "users"
+  add_foreign_key "company_actions", "companies"
+  add_foreign_key "company_actions", "tasks"
   add_foreign_key "documents", "companies"
   add_foreign_key "experiences", "profiles"
   add_foreign_key "profiles", "users"
@@ -371,8 +371,8 @@ ActiveRecord::Schema.define(version: 20170726051547) do
   add_foreign_key "proposals", "projects"
   add_foreign_key "qualifications", "profiles"
   add_foreign_key "questions", "sections"
-  add_foreign_key "reminders", "actions"
   add_foreign_key "reminders", "companies"
+  add_foreign_key "reminders", "company_actions"
   add_foreign_key "reminders", "tasks"
   add_foreign_key "reminders", "users"
   add_foreign_key "responses", "choices"

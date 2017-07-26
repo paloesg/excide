@@ -29,7 +29,7 @@ section
                 th Status
             tbody
               - @tasks.each do |t|
-                - action = t.company_action(@company)
+                - action = t.get_company_action(@company)
                 - if action.completed?
                   tr.success
                     td = t.instructions

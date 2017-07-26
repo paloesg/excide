@@ -6,7 +6,7 @@ class WorkflowsController < ApplicationController
     # Look for existing workflow if not create new workflow and then show the tasks from the first section
     @workflow = @workflows.create_with(user: @user).find_or_create_by(template: @template, company: @company)
     @sections = @template.sections
-    @current_section = @sections.joins(tasks: :actions).where(actions: {completed: false}).to_ary.shift
+    @current_section = @sections.joins(tasks: :company_actions).where(company_actions: {completed: false}).to_ary.shift
 
     set_tasks
   end
@@ -21,7 +21,7 @@ class WorkflowsController < ApplicationController
   end
 
   def toggle
-    @action = Task.find_by_id(params[:task_id]).company_action(@company)
+    @action = Task.find_by_id(params[:task_id]).get_company_action(@company)
 
     respond_to do |format|
       if @action.update_attributes(completed: !@action.completed)

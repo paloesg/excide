@@ -9,7 +9,7 @@ class TaskDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     section: Field::BelongsTo,
-    actions: Field::HasMany,
+    company_actions: Field::HasMany,
     id: Field::Number,
     instructions: Field::String,
     position: Field::Number,
@@ -25,7 +25,7 @@ class TaskDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :section,
-    :actions,
+    :company_actions,
     :position,
     :instructions,
   ].freeze
@@ -34,7 +34,7 @@ class TaskDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :section,
-    :actions,
+    :company_actions,
     :id,
     :instructions,
     :image_url,
@@ -48,7 +48,7 @@ class TaskDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :section,
-    :actions,
+    :company_actions,
     :instructions,
     :image_url,
     :position,

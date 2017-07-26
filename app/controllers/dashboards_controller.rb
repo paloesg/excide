@@ -7,7 +7,7 @@ class DashboardsController < ApplicationController
       @tasks = []
       @workflows.each do |w|
         w.template.sections.each do |s|
-          @tasks += s.tasks.joins(:actions).where(actions: {company: @company, completed: false})
+          @tasks += s.tasks.joins(:company_actions).where(company_actions: {company: @company, completed: false})
         end
       end
     else

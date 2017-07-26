@@ -2,7 +2,7 @@ class Reminder < ActiveRecord::Base
   belongs_to :user
   belongs_to :company
   belongs_to :task
-  belongs_to :action
+  belongs_to :company_action
 
   enum freq_unit: [:days, :weeks, :months, :years]
 

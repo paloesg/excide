@@ -24,7 +24,7 @@ class DashboardManifest
     :addresses,
     :documents,
     :tasks,
-    :actions,
+    :company_actions,
     :profiles,
     :users,
     :roles,

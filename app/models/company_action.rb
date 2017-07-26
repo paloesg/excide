@@ -1,4 +1,4 @@
-class Action < ActiveRecord::Base
+class CompanyAction < ActiveRecord::Base
   after_save :set_deadline_and_reminders, if: :completed_changed?
 
   belongs_to :task
