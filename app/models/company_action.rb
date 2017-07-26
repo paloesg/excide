@@ -15,11 +15,11 @@ class CompanyAction < ActiveRecord::Base
 
       # Find next action in line and set deadline
       next_task = self.task.lower_item
-      next_action = next_task.action
-      next_action.update_attributes(deadline: Date.today + next_task.days_to_complete)
+      next_action = next_task.get_company_action(self.company)
+      next_action.update_attributes(deadline: Date.today + next_task.days_to_complete) unless next_task.days_to_complete.nil?
 
       # Create new reminder based on deadline of action and repeat every 2 days
-      Reminder.create(next_reminder: next_action.deadline, repeat: true, freq_value: 2, freq_unit: "days", company_id: self.company_id, task_id: next_task.id, action_id: self.id)
+      Reminder.create(next_reminder: next_action.deadline, repeat: true, freq_value: 2, freq_unit: "days", company_id: self.company_id, task_id: next_task.id, company_action_id: self.id)
     end
   end
 end
