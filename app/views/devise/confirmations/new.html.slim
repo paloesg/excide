@@ -1,0 +1,15 @@
+section.cover.fullscreen.image-bg.overlay
+  .background-image-holder
+    img.background-image alt="Growing your business" src=image_path('hero-image.jpg')
+  .container.v-align-transform
+    .row
+      .col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+        .feature.boxed
+          h4.uppercase Resend confirmation instructions
+          = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
+            = devise_error_messages!
+            .field = f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), placeholder: "Email"
+
+            .actions = f.submit "Resend confirmation instructions"
+
+            = render "devise/shared/links"
