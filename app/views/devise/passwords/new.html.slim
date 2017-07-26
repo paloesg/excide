@@ -1,15 +1,12 @@
-.row
-  .col.s12.l8.offset-l2
-    .card.login
-      .card-header Account recovery
-      .card-content
-        = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
-          = devise_error_messages!
-          .row
-            .input-field.col.s12
-              = f.email_field :email, autofocus: true
-              = f.label :email
-
-          .row
-            .actions.col.s12.m6
-              = f.submit "Send reset email", class: "btn green darken-3"
+section.cover.fullscreen.image-bg.overlay
+  .background-image-holder
+    img.background-image alt="Growing your business" src=image_path('hero-image.jpg')
+  .container.v-align-transform
+    .row
+      .col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2
+        .feature.boxed
+          h4.uppercase Account recovery
+          = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+            = devise_error_messages!
+            = f.email_field :email, autofocus: true, placeholder: "Email"
+            = f.submit "Send reset email"
