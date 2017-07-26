@@ -18,7 +18,7 @@ section
       .widget
         h6.title Outstanding Tasks
         hr
-        - if @tasks.empty?
+        - if @tasks.nil?
           | No outstanding tasks at the moment. Click on a workflow to begin.
         - else
           table.table
