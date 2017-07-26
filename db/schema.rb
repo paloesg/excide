@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170704091512) do
+ActiveRecord::Schema.define(version: 20170726051547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,9 +214,13 @@ ActiveRecord::Schema.define(version: 20170704091512) do
     t.integer  "company_id"
     t.string   "title"
     t.text     "content"
+    t.integer  "task_id"
+    t.integer  "action_id"
   end
 
+  add_index "reminders", ["action_id"], name: "index_reminders_on_action_id", using: :btree
   add_index "reminders", ["company_id"], name: "index_reminders_on_company_id", using: :btree
+  add_index "reminders", ["task_id"], name: "index_reminders_on_task_id", using: :btree
   add_index "reminders", ["user_id"], name: "index_reminders_on_user_id", using: :btree
 
   create_table "responses", force: :cascade do |t|
@@ -284,9 +288,11 @@ ActiveRecord::Schema.define(version: 20170704091512) do
     t.string   "instructions"
     t.integer  "position"
     t.integer  "section_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.string   "image_url"
+    t.integer  "days_to_complete"
+    t.boolean  "set_reminder"
   end
 
   add_index "tasks", ["section_id"], name: "index_tasks_on_section_id", using: :btree
@@ -365,7 +371,9 @@ ActiveRecord::Schema.define(version: 20170704091512) do
   add_foreign_key "proposals", "projects"
   add_foreign_key "qualifications", "profiles"
   add_foreign_key "questions", "sections"
+  add_foreign_key "reminders", "actions"
   add_foreign_key "reminders", "companies"
+  add_foreign_key "reminders", "tasks"
   add_foreign_key "reminders", "users"
   add_foreign_key "responses", "choices"
   add_foreign_key "responses", "questions"
