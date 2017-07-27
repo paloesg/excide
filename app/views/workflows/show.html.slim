@@ -23,16 +23,19 @@ section
             tr
               th No.
               th Instructions
+              th Deadline
               th Done
           tbody
             - @tasks.each do |t|
+              - action = t.get_company_action(@company)
               tr
                 td = t.position.to_s + '.'
                 td
                   = t.instructions
                   = image_tag(t.image_url)
+                td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
                 td
-                  = check_box_tag 'completed', t.get_company_action(@company).id, t.get_company_action(@company).completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }
+                  = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }
       .col-md-4.col-md-offset-8.col-sm-6.col-sm-offset-6
         - if @next_section.present?
           = button_to "Next Section", company_workflow_section_path(@template.slug, @next_section.id), method: "get"

@@ -25,7 +25,7 @@ section
             thead
               tr
                 th Task Description
-                th Due Date
+                th Deadline
                 th Status
             tbody
               - @tasks.each do |t|
@@ -33,12 +33,12 @@ section
                 - if action.completed?
                   tr.success
                     td = t.instructions
-                    td = action.deadline || '-'
+                    td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
                     td Completed
                 - else
                   tr.danger
                     td = t.instructions
-                    td = action.deadline || '-'
+                    td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
                     td = link_to "Incomplete", company_workflow_section_path(t.section.template.slug, t.section.id), method: "get"
       .widget
         h6.title Company Information
