@@ -128,12 +128,12 @@ class SlackService
     self
   end
 
-  def consultant_signup(user, profile)
+  def user_signup(user)
     params = {
       attachments: [
         {
-          title: 'A new consultant has signed up!',
-          fallback: 'A new consultant has signed up!',
+          title: 'A new user has signed up!',
+          fallback: 'A new user has signed up!',
           color: GOOD
         }
       ]
