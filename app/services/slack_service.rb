@@ -128,6 +128,32 @@ class SlackService
     self
   end
 
+  def send_notification(action)
+    params = {
+      attachments: [
+        {
+          title: 'Notification',
+          fallback: 'Task ID ' + action.task.id.to_s,
+          pretext: 'The following task has been completed.',
+          color: GOOD,
+          fields: [
+            {
+              title: 'Client',
+              value: action.company.name,
+              short: true
+            },
+            {
+              title: 'Task',
+              value: action.task.instructions,
+            },
+          ]
+        }
+      ]
+    }
+    @params = generate_payload(params)
+    self
+  end
+
   def user_signup(user)
     params = {
       attachments: [
