@@ -8,7 +8,7 @@ section.page-title.page-title-4.bg-secondary
           li
             a href="#" Home
           li
-            a href="#" Company
+            a href="#" #{@company.name}
           li.active Dashboard
 section
   .container
@@ -18,7 +18,7 @@ section
       .widget
         h6.title Outstanding Tasks
         hr
-        - if @tasks.nil?
+        - if @tasks.blank?
           | No outstanding tasks at the moment. Click on a workflow to begin.
         - else
           table.table

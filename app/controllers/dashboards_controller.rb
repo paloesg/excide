@@ -20,7 +20,14 @@ class DashboardsController < ApplicationController
 
   def set_dashboard
     @user = current_user
-    @company = @user.company
+    if current_user.has_role? :admin
+      @company = Company.find(params[:company_id])
+    elsif params[:company_id].present?
+      @company = @user.company
+      redirect_to dashboard_path
+    else
+      @company = @user.company
+    end
     @workflows = @company.workflows
     @documents = @company.documents.last(3).reverse
   end
