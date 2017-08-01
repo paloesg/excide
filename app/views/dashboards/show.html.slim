@@ -62,3 +62,14 @@ section
                   .description
                     span.product-title = d.filename
                     span.price.number = d.file_type
+      .widget
+        h6.title Recent Activity
+        hr
+        ul.cart-overview
+          - if @activities.empty?
+            li No activity yet.
+          - else
+            - @activities.each do |activity|
+              li
+                = activity.owner.first_name if activity.owner
+                = render_activity activity
