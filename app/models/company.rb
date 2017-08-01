@@ -1,5 +1,7 @@
 class Company < ActiveRecord::Base
   include AASM
+  include PublicActivity::Model
+  tracked owner: ->(controller, model) { controller && controller.current_user }
 
   aasm do
     state :lead, :initial => true

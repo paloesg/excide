@@ -1,4 +1,7 @@
 class CompanyAction < ActiveRecord::Base
+  include PublicActivity::Model
+  tracked except: :create, owner: ->(controller, model) { controller && controller.current_user }
+
   after_save :set_deadline_and_reminders
   after_save :send_notification, if: :completed_changed?
 
