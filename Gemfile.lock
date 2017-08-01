@@ -193,6 +193,11 @@ GEM
       omniauth (~> 1.2)
     orm_adapter (0.5.0)
     pg (0.21.0)
+    public_activity (1.5.0)
+      actionpack (>= 3.0.0)
+      activerecord (>= 3.0)
+      i18n (>= 0.5.0)
+      railties (>= 3.0.0)
     puma (3.9.1)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
@@ -338,6 +343,7 @@ DEPENDENCIES
   omniauth-linkedin-oauth2
   omniauth-oauth2 (~> 1.3.1)
   pg
+  public_activity
   puma
   pundit
   rack-reverse-proxy
@@ -365,4 +371,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.14.6
+   1.15.3

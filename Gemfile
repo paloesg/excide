@@ -77,6 +77,8 @@ gem 'sitemap_generator'
 gem 'fog-aws'
 # Set meta tags
 gem 'meta-tags'
+# Activity feed
+gem 'public_activity'
 
 # Analytics
 gem 'mixpanel-ruby'
