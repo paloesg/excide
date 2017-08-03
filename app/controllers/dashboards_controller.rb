@@ -22,6 +22,7 @@ class DashboardsController < ApplicationController
     @user = current_user
 
     if current_user.has_role? :admin
+      @companies = Company.all
       @company = Company.find(params[:company_id])
     elsif params[:company_id].present?
       @company = @user.company
