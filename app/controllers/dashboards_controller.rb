@@ -20,6 +20,7 @@ class DashboardsController < ApplicationController
 
   def set_dashboard
     @user = current_user
+
     if current_user.has_role? :admin
       @company = Company.find(params[:company_id])
     elsif params[:company_id].present?
@@ -28,6 +29,7 @@ class DashboardsController < ApplicationController
     else
       @company = @user.company
     end
+
     @workflows = @company.workflows
     @documents = @company.documents.last(3).reverse
     @activities = PublicActivity::Activity.order("created_at desc").where(owner_id: current_user.id)

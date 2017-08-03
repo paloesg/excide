@@ -11,6 +11,11 @@ Rails.application.routes.draw do
     root controller: DashboardManifest::ROOT_DASHBOARD, action: :index
   end
 
+  # Admin pages for company workflow management
+  scope :admin do
+    get 'companies/:company_id/dashboard', to: 'dashboards#show', as: :admin_company_dashboard
+  end
+
   as :user do
     get '/:role/register', to: 'users/registrations#new', as: :register
     get '/:role/login', to: 'devise/sessions#new', as: :login
@@ -54,13 +59,14 @@ Rails.application.routes.draw do
   namespace :company do
     resources :projects
   end
+
+  resources :charges, only: [:new, :create]
+
+  # Company workflow management
+  get 'dashboard', to: 'dashboards#show', as: :dashboard
   get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
   get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
   post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
-
-  get 'dashboard', to: 'dashboards#show', as: :dashboard
-  get 'dashboard/:company_id', to: 'dashboards#show', as: :get_company_dashboard
-  resources :charges, only: [:new, :create]
   resources :documents
 
   # Hosted files

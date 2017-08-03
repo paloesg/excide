@@ -9,7 +9,7 @@
     h6.title Company
     hr
     ul.link-list
-      li = link_to "Company Dashboard", dashboard_path
+      li = link_to "Company Dashboard", params[:company_id] ? admin_company_dashboard_path : dashboard_path
       li = link_to "Company Documents", documents_path
       li = link_to "Company Details", edit_company_path
   .widget
