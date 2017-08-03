@@ -10,8 +10,8 @@
     hr
     ul.link-list
       li = link_to "Company Dashboard", params[:company_id] ? admin_company_dashboard_path : dashboard_path
-      li = link_to "Company Documents", documents_path
-      li = link_to "Company Details", edit_company_path
+      li = link_to "Company Documents", params[:company_id] ? admin_company_dashboard_path : documents_path
+      li = link_to "Company Details", params[:company_id] ? admin_company_dashboard_path : edit_company_path
   .widget
     h6.title User
     hr

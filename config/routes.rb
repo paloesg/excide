@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   # Admin pages for company workflow management
   scope :admin do
     get 'companies/:company_id/dashboard', to: 'dashboards#show', as: :admin_company_dashboard
+    get 'workflow/:workflow_name', to: 'workflows#show', as: :admin_company_workflow
+    get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :admin_company_workflow_section
+    post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :admin_company_workflow_task_toggle
+    resources :documents
   end
 
   as :user do
