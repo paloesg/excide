@@ -46,6 +46,6 @@ App.init = ->
     return
   return
 
-$(document).on 'page:load', ->
+$(document).on 'ready page:load', ->
   mixpanel.track("Page view")
   App.init()
