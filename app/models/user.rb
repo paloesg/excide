@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   end
 
   def create_default_business
-    if self.companay.nil?
+    if self.company.nil?
       create_company
     end
   end
