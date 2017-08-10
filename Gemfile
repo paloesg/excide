@@ -102,6 +102,7 @@ gem "datetime_picker_rails"
 #Backend admin
 gem 'administrate'
 gem 'administrate-field-image'
+gem 'administrate-field-nested_has_many', github: 'ContainerMb4/administrate-field-nested_has_many'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production

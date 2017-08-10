@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/ContainerMb4/administrate-field-nested_has_many.git
+  revision: f21a7c926c085d6d2940922b9c05d3259d0f0456
+  specs:
+    administrate-field-nested_has_many (0.1.1)
+      administrate (~> 0.8)
+      cocoon (~> 1.2)
+      rails (>= 4.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -320,6 +329,7 @@ DEPENDENCIES
   acts_as_list
   administrate
   administrate-field-image
+  administrate-field-nested_has_many!
   aws-sdk (~> 2)
   better_errors
   binding_of_caller
