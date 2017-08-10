@@ -18,31 +18,51 @@ section
     = render 'layouts/left_sidebar'
 
     .col-md-6.col-sm-4
-      .widget
-        h6.title Outstanding Tasks
-        hr
-        - if @tasks.blank?
-          | No outstanding tasks at the moment. Click on a workflow to begin.
-        - else
-          table.table
-            thead
-              tr
-                th Task Description
-                th Deadline
-                th Status
-            tbody
-              - @tasks.each do |t|
-                - action = t.get_company_action(@company)
-                - if action.completed?
-                  tr.success
-                    td = t.instructions
-                    td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                    td Completed
-                - else
-                  tr.danger
-                    td = t.instructions
-                    td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                    td = link_to "Incomplete", company_workflow_section_path(t.section.template.slug, t.section.id), method: "get"
+      - if current_user.has_role? :admin
+        .widget
+          h6.title Outstanding Tasks
+          hr
+          - if @tasks.blank?
+            | No outstanding tasks at the moment. Click on a workflow to begin.
+          - else
+            table.table
+              thead
+                tr
+                  th Task Description
+                  th Deadline
+                  th Status
+              tbody
+                - @tasks.each do |t|
+                  - action = t.get_company_action(@company)
+                  - if action.completed?
+                    tr.success
+                      td = t.instructions
+                      td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
+                      td Completed
+                  - else
+                    tr.danger
+                      td = t.instructions
+                      td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
+                      td = link_to "Incomplete", company_workflow_section_path(t.section.template.slug, t.section.id), method: "get"
+      - else
+        .widget
+          h6.title Workflows
+          hr
+          - if @workflows.blank?
+            | No outstanding workflows at the moment. Click on a workflow to begin.
+          - else
+            table.table
+              thead
+                tr
+                  th Workflow Name
+                  th Deadline
+                  th Status
+              tbody
+                - @workflows.each do |w|
+                  tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.past?)), ('danger' if (!w.completed? && w.deadline.past?))].compact.join(''))
+                    td = w.template.title
+                    td = w.deadline.try(:strftime, "%d/%m/%Y") || '-'
+                    td = w.completed ? 'Completed' : 'In Progress'
       .widget
         h6.title Company Information
         hr
