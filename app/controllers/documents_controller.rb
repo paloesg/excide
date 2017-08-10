@@ -69,7 +69,16 @@ class DocumentsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_company
     @user = current_user
-    @company = @user.company
+
+    if current_user.has_role? :admin
+      @companies = Company.all
+      @company = Company.find(params[:company_id])
+    elsif params[:company_id].present?
+      @company = @user.company
+      redirect_to dashboard_path
+    else
+      @company = @user.company
+    end
   end
 
   def set_document
