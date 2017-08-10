@@ -36,7 +36,17 @@ class WorkflowsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_workflow
     @user = current_user
-    @company = @user.company
+
+    if current_user.has_role? :admin
+      @companies = Company.all
+      @company = Company.find(params[:company_id])
+    elsif params[:company_id].present?
+      @company = @user.company
+      redirect_to dashboard_path
+    else
+      @company = @user.company
+    end
+
     @workflows = @company.workflows
     @template = Template.find(params[:workflow_name])
   end
