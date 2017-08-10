@@ -34,16 +34,10 @@ section
               tbody
                 - @tasks.each do |t|
                   - action = t.get_company_action(@company)
-                  - if action.completed?
-                    tr.success
-                      td = t.instructions
-                      td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                      td Completed
-                  - else
-                    tr.danger
-                      td = t.instructions
-                      td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                      td = link_to "Incomplete", company_workflow_section_path(t.section.template.slug, t.section.id), method: "get"
+                  tr class=([('success' if action.completed?), ('warning' if (!action.completed? && !action.deadline.try(:past?))), ('danger' if (!action.completed? && action.deadline.try(:past?)))].compact.join(''))
+                    td = t.instructions
+                    td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
+                    td = action.completed ? 'Completed' : (link_to "Incomplete", company_workflow_section_path(t.section.template.slug, t.section.id), method: "get")
       - else
         .widget
           h6.title Workflows
