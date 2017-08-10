@@ -59,7 +59,7 @@ section
                   th Status
               tbody
                 - @workflows.each do |w|
-                  tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.past?)), ('danger' if (!w.completed? && w.deadline.past?))].compact.join(''))
+                  tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
                     td = w.template.title
                     td = w.deadline.try(:strftime, "%d/%m/%Y") || '-'
                     td = w.completed ? 'Completed' : 'In Progress'
