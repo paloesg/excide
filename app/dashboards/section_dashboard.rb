@@ -10,7 +10,7 @@ class SectionDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     template: Field::BelongsTo,
     questions: Field::HasMany.with_options(limit: 50),
-    tasks: Field::HasMany.with_options(limit: 50),
+    tasks: Field::NestedHasMany.with_options(skip: [:section, :company_actions]),
     segments: Field::HasMany,
     id: Field::Number,
     unique_name: Field::String,

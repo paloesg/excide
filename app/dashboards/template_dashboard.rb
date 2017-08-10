@@ -13,7 +13,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     business_model: EnumField,
     surveys: Field::HasMany,
     workflows: Field::HasMany,
-    sections: Field::HasMany,
+    sections: Field::NestedHasMany.with_options(skip: [:template]),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
