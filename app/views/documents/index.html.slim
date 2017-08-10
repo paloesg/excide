@@ -31,7 +31,7 @@ section
             - @documents.each do |document|
               tr
                 td = document.filename
-                td = document.file_type
+                td = File.extname(document.file_url)
                 td = document.created_at.to_date
                 td = document.date_signed
                 td = link_to "Download", document.file_url
