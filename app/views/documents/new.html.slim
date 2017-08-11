@@ -20,4 +20,5 @@ section
       .widget
         h6.title Document Information
         hr
-        == render 'form'
+        = form_for(@document, url: (current_user.has_role? :admin) ? admin_company_documents_path(@company.id) : documents_path, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
+          = render 'form', f: f

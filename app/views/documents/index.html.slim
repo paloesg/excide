@@ -35,5 +35,5 @@ section
                 td = document.created_at.to_date
                 td = document.date_signed
                 td = link_to "Download", document.file_url
-                td = link_to 'Edit', edit_document_path(document)
-        = link_to 'New Document', new_document_path
+                td = link_to 'Edit', (current_user.has_role? :admin) ? edit_admin_company_document_path(@company.id, document) : edit_document_path(document)
+        = link_to 'New Document', (current_user.has_role? :admin) ? new_admin_company_document_path(params[:company_id]) : new_document_path

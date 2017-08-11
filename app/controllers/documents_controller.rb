@@ -31,7 +31,7 @@ class DocumentsController < ApplicationController
     @document.company = @company
 
     if @document.save
-      redirect_to @document, notice: 'Document was successfully created.'
+      redirect_to (current_user.has_role? :admin) ? admin_company_documents_path(@company.id) : documents_path, notice: 'Document was successfully created.'
     else
       render :new
     end
@@ -41,7 +41,7 @@ class DocumentsController < ApplicationController
   # PATCH/PUT /documents/1.json
   def update
     if @document.update(document_params)
-      redirect_to @document, notice: 'Document was successfully updated.'
+      redirect_to (current_user.has_role? :admin) ? admin_company_documents_path(@company.id) : documents_path, notice: 'Document was successfully updated.'
     else
       render :edit
     end
@@ -52,7 +52,7 @@ class DocumentsController < ApplicationController
   def destroy
     @document.destroy
     respond_to do |format|
-      redirect_to documents_url, notice: 'Document was successfully destroyed.'
+      redirect_to (current_user.has_role? :admin) ? admin_company_documents(@company.id) : documents_path, notice: 'Document was successfully destroyed.'
     end
   end
 

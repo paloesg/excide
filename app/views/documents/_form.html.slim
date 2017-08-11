@@ -1,24 +1,23 @@
-= form_for(@document, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
-  - if @document.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@document.errors.count, "error")} prohibited this document from being saved:"
-      ul
-        - @document.errors.full_messages.each do |message|
-          li = message
-  .field
-    = f.label :filename
-    = f.text_field :filename
-  .field
-    = f.label :file_type
-    = f.text_field :file_type
-  .field
-    = f.label :date_signed
-    = f.text_field :date_signed, class: 'datetimepicker'
-  .field.file-field
-    = f.file_field :file_url
-    .file-path-wrapper
-      = f.text_field :file_url, class: "file-path"
-  .actions = f.submit
+- if @document.errors.any?
+  #error_explanation
+    h2 = "#{pluralize(@document.errors.count, "error")} prohibited this document from being saved:"
+    ul
+      - @document.errors.full_messages.each do |message|
+        li = message
+.field
+  = f.label :filename
+  = f.text_field :filename
+.field
+  = f.label :file_type
+  = f.text_field :file_type
+.field
+  = f.label :date_signed
+  = f.text_field :date_signed, class: 'datetimepicker'
+.field.file-field
+  = f.file_field :file_url
+  .file-path-wrapper
+    = f.text_field :file_url, class: "file-path"
+.actions = f.submit
 
 javascript:
   $(function() {
