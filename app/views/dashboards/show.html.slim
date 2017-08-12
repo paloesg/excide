@@ -78,7 +78,7 @@ section
                   i.ti-file.icon
                   .description
                     span.product-title = d.filename
-                    span.price.number = d.file_type
+                    span.price.number = File.extname(d.file_url)
       .widget
         h6.title Recent Activity
         hr
