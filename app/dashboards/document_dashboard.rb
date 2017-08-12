@@ -11,7 +11,7 @@ class DocumentDashboard < Administrate::BaseDashboard
     company: Field::BelongsTo,
     id: Field::Number,
     filename: Field::String,
-    file_type: Field::String,
+    remarks: Field::Text,
     date_signed: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -27,7 +27,7 @@ class DocumentDashboard < Administrate::BaseDashboard
     :company,
     :id,
     :filename,
-    :file_type,
+    :remarks,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -36,7 +36,7 @@ class DocumentDashboard < Administrate::BaseDashboard
     :company,
     :id,
     :filename,
-    :file_type,
+    :remarks,
     :date_signed,
     :created_at,
     :updated_at,
@@ -49,7 +49,7 @@ class DocumentDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :company,
     :filename,
-    :file_type,
+    :remarks,
     :date_signed,
     :file_url,
   ].freeze
