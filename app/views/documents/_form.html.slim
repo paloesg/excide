@@ -8,15 +8,15 @@
   = f.label :filename
   = f.text_field :filename
 .field
-  = f.label :file_type
-  = f.text_field :file_type
+  = f.label :remarks
+  = f.text_area :remarks
 .field
   = f.label :date_signed
   = f.text_field :date_signed, class: 'datetimepicker'
 .field.file-field
   = f.file_field :file_url
   .file-path-wrapper
-    = f.text_field :file_url, class: "file-path"
+    = f.text_field :file_url, class: "file-path", disabled: true
 .actions = f.submit
 
 javascript:
