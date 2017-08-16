@@ -21,6 +21,7 @@ class DashboardManifest
     :documents,
     :enquiries,
     :surveys,
+    :survey_templates,
     :segments,
     :questions,
     :choices,
