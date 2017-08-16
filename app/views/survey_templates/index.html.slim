@@ -1,0 +1,23 @@
+h1 Listing survey_templates
+
+table
+  thead
+    tr
+      th Title
+      th Slug
+      th
+      th
+      th
+
+  tbody
+    - @survey_templates.each do |survey_template|
+      tr
+        td = survey_template.title
+        td = survey_template.slug
+        td = link_to 'Show', survey_template
+        td = link_to 'Edit', edit_survey_template_path(survey_template)
+        td = link_to 'Destroy', survey_template, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Survey template', new_survey_template_path

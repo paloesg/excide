@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170812160018) do
+ActiveRecord::Schema.define(version: 20170816152108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -286,6 +286,13 @@ ActiveRecord::Schema.define(version: 20170812160018) do
 
   add_index "segments", ["section_id"], name: "index_segments_on_section_id", using: :btree
   add_index "segments", ["survey_id"], name: "index_segments_on_survey_id", using: :btree
+
+  create_table "survey_templates", force: :cascade do |t|
+    t.string   "title"
+    t.string   "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "surveys", force: :cascade do |t|
     t.string   "title"

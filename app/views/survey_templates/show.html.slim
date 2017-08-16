@@ -1,0 +1,12 @@
+p#notice = notice
+
+p
+  strong Title:
+  = @survey_template.title
+p
+  strong Slug:
+  = @survey_template.slug
+
+= link_to 'Edit', edit_survey_template_path(@survey_template)
+'  |
+= link_to 'Back', survey_templates_path

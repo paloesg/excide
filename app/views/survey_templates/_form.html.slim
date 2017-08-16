@@ -1,0 +1,15 @@
+= form_for @survey_template do |f|
+  - if @survey_template.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@survey_template.errors.count, "error")} prohibited this survey_template from being saved:"
+      ul
+        - @survey_template.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :slug
+    = f.text_field :slug
+  .actions = f.submit
