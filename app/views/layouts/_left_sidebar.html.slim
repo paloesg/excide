@@ -6,6 +6,12 @@
       - get_templates.each do |t|
         li = link_to t.title, params[:company_id] ? admin_company_workflow_path(params[:company_id], t.slug) : company_workflow_path(t.slug)
   .widget
+    h6.title Submit new request
+    hr
+    ul.link-list
+      - get_cs_requests.each do |r|
+        li = link_to r.title
+  .widget
     h6.title Company
     hr
     ul.link-list
