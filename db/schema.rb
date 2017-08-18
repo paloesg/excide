@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170818080843) do
+ActiveRecord::Schema.define(version: 20170818095733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -301,8 +301,9 @@ ActiveRecord::Schema.define(version: 20170818080843) do
   create_table "survey_templates", force: :cascade do |t|
     t.string   "title"
     t.string   "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "survey_type"
   end
 
   create_table "surveys", force: :cascade do |t|

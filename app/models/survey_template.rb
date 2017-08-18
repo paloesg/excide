@@ -6,4 +6,6 @@ class SurveyTemplate < ActiveRecord::Base
   has_many :surveys
 
   accepts_nested_attributes_for :survey_sections
+
+  enum survey_type: ["Corp Sec Request", "Financial Model"]
 end

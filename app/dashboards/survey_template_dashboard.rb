@@ -11,6 +11,7 @@ class SurveyTemplateDashboard < Administrate::BaseDashboard
     id: Field::Number,
     title: Field::String,
     slug: Field::String,
+    survey_type: EnumField,
     surveys: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -25,6 +26,7 @@ class SurveyTemplateDashboard < Administrate::BaseDashboard
     :id,
     :title,
     :slug,
+    :survey_type,
     :surveys,
     :created_at,
   ].freeze
@@ -35,6 +37,7 @@ class SurveyTemplateDashboard < Administrate::BaseDashboard
     :id,
     :title,
     :slug,
+    :survey_type,
     :surveys,
     :created_at,
     :updated_at,
@@ -46,6 +49,7 @@ class SurveyTemplateDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :title,
     :slug,
+    :survey_type,
     :surveys,
   ].freeze
 
