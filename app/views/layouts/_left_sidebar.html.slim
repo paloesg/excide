@@ -10,7 +10,7 @@
     hr
     ul.link-list
       - get_cs_requests.each do |r|
-        li = link_to r.title
+        li = link_to r.title, new_survey_path
   .widget
     h6.title Company
     hr
