@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170818073325) do
+ActiveRecord::Schema.define(version: 20170818080843) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,12 +212,12 @@ ActiveRecord::Schema.define(version: 20170818073325) do
     t.text     "content"
     t.integer  "question_type"
     t.integer  "position"
-    t.integer  "section_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer  "survey_section_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
-  add_index "questions", ["section_id"], name: "index_questions_on_section_id", using: :btree
+  add_index "questions", ["survey_section_id"], name: "index_questions_on_survey_section_id", using: :btree
 
   create_table "reminders", force: :cascade do |t|
     t.datetime "next_reminder"
@@ -310,13 +310,13 @@ ActiveRecord::Schema.define(version: 20170818073325) do
     t.text     "remarks"
     t.integer  "user_id"
     t.integer  "company_id"
-    t.integer  "template_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "survey_template_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   add_index "surveys", ["company_id"], name: "index_surveys_on_company_id", using: :btree
-  add_index "surveys", ["template_id"], name: "index_surveys_on_template_id", using: :btree
+  add_index "surveys", ["survey_template_id"], name: "index_surveys_on_survey_template_id", using: :btree
   add_index "surveys", ["user_id"], name: "index_surveys_on_user_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
@@ -406,7 +406,7 @@ ActiveRecord::Schema.define(version: 20170818073325) do
   add_foreign_key "proposals", "profiles"
   add_foreign_key "proposals", "projects"
   add_foreign_key "qualifications", "profiles"
-  add_foreign_key "questions", "sections"
+  add_foreign_key "questions", "sections", column: "survey_section_id"
   add_foreign_key "reminders", "companies"
   add_foreign_key "reminders", "company_actions"
   add_foreign_key "reminders", "tasks"
@@ -419,7 +419,7 @@ ActiveRecord::Schema.define(version: 20170818073325) do
   add_foreign_key "segments", "surveys"
   add_foreign_key "survey_sections", "survey_templates"
   add_foreign_key "surveys", "companies"
-  add_foreign_key "surveys", "templates"
+  add_foreign_key "surveys", "templates", column: "survey_template_id"
   add_foreign_key "surveys", "users"
   add_foreign_key "tasks", "sections"
   add_foreign_key "workflows", "companies"

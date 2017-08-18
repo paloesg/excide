@@ -9,9 +9,7 @@ class SectionDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     template: Field::BelongsTo,
-    questions: Field::HasMany.with_options(limit: 50),
     tasks: Field::NestedHasMany.with_options(skip: [:section, :company_actions]),
-    segments: Field::HasMany,
     id: Field::Number,
     unique_name: Field::String,
     display_name: Field::String,
@@ -29,7 +27,6 @@ class SectionDashboard < Administrate::BaseDashboard
     :id,
     :unique_name,
     :position,
-    :questions,
     :tasks,
   ].freeze
 
@@ -41,7 +38,6 @@ class SectionDashboard < Administrate::BaseDashboard
     :display_name,
     :position,
     :template,
-    :questions,
     :tasks,
     :created_at,
     :updated_at,
@@ -55,7 +51,6 @@ class SectionDashboard < Administrate::BaseDashboard
     :unique_name,
     :display_name,
     :position,
-    :questions,
     :tasks,
   ].freeze
 

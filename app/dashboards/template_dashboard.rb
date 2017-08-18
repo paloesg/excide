@@ -11,7 +11,6 @@ class TemplateDashboard < Administrate::BaseDashboard
     id: Field::Number,
     title: Field::String,
     business_model: EnumField,
-    surveys: Field::HasMany,
     workflows: Field::HasMany,
     sections: Field::NestedHasMany.with_options(skip: [:template]),
     created_at: Field::DateTime,
@@ -26,7 +25,6 @@ class TemplateDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :title,
-    :surveys,
     :workflows,
   ].freeze
 
@@ -38,7 +36,6 @@ class TemplateDashboard < Administrate::BaseDashboard
     :created_at,
     :updated_at,
     :sections,
-    :surveys,
     :workflows,
   ].freeze
 

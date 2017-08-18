@@ -1,5 +1,6 @@
 class Question < ActiveRecord::Base
-  belongs_to :section
+  belongs_to :survey_section
+  acts_as_list scope: :survey_section
 
   has_many :responses
 

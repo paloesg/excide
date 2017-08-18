@@ -11,6 +11,7 @@ class SurveyTemplateDashboard < Administrate::BaseDashboard
     id: Field::Number,
     title: Field::String,
     slug: Field::String,
+    surveys: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -24,6 +25,7 @@ class SurveyTemplateDashboard < Administrate::BaseDashboard
     :id,
     :title,
     :slug,
+    :surveys,
     :created_at,
   ].freeze
 
@@ -33,6 +35,7 @@ class SurveyTemplateDashboard < Administrate::BaseDashboard
     :id,
     :title,
     :slug,
+    :surveys,
     :created_at,
     :updated_at,
   ].freeze
@@ -43,12 +46,13 @@ class SurveyTemplateDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :title,
     :slug,
+    :surveys,
   ].freeze
 
   # Overwrite this method to customize how survey templates are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(survey_template)
-  #   "SurveyTemplate ##{survey_template.id}"
-  # end
+  def display_resource(survey_template)
+    survey_template.title
+  end
 end

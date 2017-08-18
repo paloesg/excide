@@ -8,7 +8,7 @@ class QuestionDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    section: Field::BelongsTo,
+    survey_section: Field::BelongsTo,
     responses: Field::HasMany,
     choices: Field::HasMany,
     id: Field::Number,
@@ -45,7 +45,7 @@ class QuestionDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :section,
+    :survey_section,
     :content,
     :question_type,
     :position,

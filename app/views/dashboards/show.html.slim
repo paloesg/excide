@@ -77,8 +77,7 @@ section
                 a href="#{d.file_url}"
                   i.ti-file.icon
                   .description
-                    span.product-title = d.filename
-                    span.price.number = File.extname(d.file_url)
+                    span.product-title = d.filename + File.extname(d.file_url)
       .widget
         h6.title Recent Activity
         hr
