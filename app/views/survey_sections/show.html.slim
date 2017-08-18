@@ -1,0 +1,18 @@
+p#notice = notice
+
+p
+  strong Unique name:
+  = @survey_section.unique_name
+p
+  strong Display name:
+  = @survey_section.display_name
+p
+  strong Position:
+  = @survey_section.position
+p
+  strong Survey template:
+  = @survey_section.survey_template
+
+= link_to 'Edit', edit_survey_section_path(@survey_section)
+'  |
+= link_to 'Back', survey_sections_path

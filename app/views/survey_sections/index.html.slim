@@ -1,0 +1,27 @@
+h1 Listing survey_sections
+
+table
+  thead
+    tr
+      th Unique name
+      th Display name
+      th Position
+      th Survey template
+      th
+      th
+      th
+
+  tbody
+    - @survey_sections.each do |survey_section|
+      tr
+        td = survey_section.unique_name
+        td = survey_section.display_name
+        td = survey_section.position
+        td = survey_section.survey_template
+        td = link_to 'Show', survey_section
+        td = link_to 'Edit', edit_survey_section_path(survey_section)
+        td = link_to 'Destroy', survey_section, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Survey section', new_survey_section_path
