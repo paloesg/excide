@@ -9,3 +9,20 @@
 button.close {
   margin-bottom: 0;
 }
+
+.large-header, .small-header {
+  font-weight: 600;
+}
+
+.small-header {
+  display: none;
+}
+
+@media all and (max-width: 1200px) {
+  .large-header {
+    display: none;
+  }
+  .small-header {
+    display: inline;
+  }
+}
