@@ -107,7 +107,11 @@ gem 'administrate-field-nested_has_many', github: 'ContainerMb4/administrate-fie
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
 
-gem 'rails_real_favicon', group: :development
+group :development do
+  gem 'rails_real_favicon'
+  gem 'rubocop', require: false
+  gem 'brakeman', require: false
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
