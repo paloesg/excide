@@ -14,7 +14,7 @@ module Excide
     # Reverse proxy to point subdirectory to a different server.
     config.middleware.insert(0, Rack::ReverseProxy) do
       reverse_proxy_options preserve_host: true
-      reverse_proxy '/blog', 'http://ec2-54-169-106-168.ap-southeast-1.compute.amazonaws.com/'
+      reverse_proxy '/blog', 'http://ec2-13-228-70-169.ap-southeast-1.compute.amazonaws.com/'
     end
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
