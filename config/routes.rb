@@ -109,7 +109,7 @@ Rails.application.routes.draw do
 
   get '/robots.txt' => 'home#robots'
 
-  get '/blog' => redirect("http://www.excide.co/blog/")
+  get '/blog' => redirect("https://www.excide.co/blog/")
 
   root 'home#index'
 end
