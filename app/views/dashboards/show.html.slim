@@ -14,78 +14,83 @@ section.page-title.page-title-4.bg-secondary
               a href="#" #{@company.name}
           li.active Dashboard
 section
-  .container
-    = render 'layouts/left_sidebar'
+  .container-fluid
+    .row
+      = render 'layouts/dashboard/left_sidebar'
 
-    .col-md-6.col-sm-4
-      - if current_user.has_role? :admin
-        .widget
-          h6.title Outstanding Tasks
-          hr
-          - if @tasks.blank?
-            | No outstanding tasks at the moment. Click on a workflow to begin.
-          - else
-            table.table
-              thead
-                tr
-                  th Task Description
-                  th Deadline
-                  th Status
-              tbody
-                - @tasks.each do |t|
-                  - action = t.get_company_action(@company)
-                  tr class=([('success' if action.completed?), ('warning' if (!action.completed? && !action.deadline.try(:past?))), ('danger' if (!action.completed? && action.deadline.try(:past?)))].compact.join(''))
-                    td = t.instructions
-                    td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                    td = action.completed ? 'Completed' : (link_to "Incomplete", company_workflow_section_path(t.section.template.slug, t.section.id), method: "get")
-      - else
-        .widget
-          h6.title Workflows
-          hr
-          - if @workflows.blank?
-            | No outstanding workflows at the moment. Click on a workflow to begin.
-          - else
-            table.table
-              thead
-                tr
-                  th Workflow Name
-                  th Deadline
-                  th Status
-              tbody
-                - @workflows.each do |w|
-                  tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                    td = w.template.title
-                    td = w.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                    td = w.completed ? 'Completed' : 'In Progress'
-      .widget
-        h6.title Company Information
-        hr
-        p = @company.description
-        - if @company.address.present?
-          p Registered Address: #{@company.address.line_1}, #{@company.address.line_2}, Singapore #{@company.address.postal_code}
-        p Financial Year End: #{@company.financial_year_end}
-    .col-md-3.col-sm-4
-      .widget
-        h6.title Recent Documents
-        hr
-        ul.cart-overview
-          - if @documents.empty?
-            li No documents yet.
-          - else
-            - @documents.each do |d|
-              li
-                a href="#{d.file_url}"
-                  i.ti-file.icon
-                  .description
-                    span.product-title = d.filename + File.extname(d.file_url)
-      .widget
-        h6.title Recent Activity
-        hr
-        ul.cart-overview
-          - if @activities.empty?
-            li No activity yet.
-          - else
-            - @activities.each do |activity|
-              li
-                = activity.owner.first_name if activity.owner
-                = render_activity activity
+      .col-md-6.col-sm-4
+        - if current_user.has_role? :admin
+          .panel.panel-default
+            .panel-heading
+              h3.panel-title Outstanding Tasks
+            .panel-body
+              - if @tasks.blank?
+                | No outstanding tasks at the moment. Click on a workflow to begin.
+              - else
+                table.table
+                  thead
+                    tr
+                      th Task Description
+                      th Deadline
+                      th Status
+                  tbody
+                    - @tasks.each do |t|
+                      - action = t.get_company_action(@company)
+                      tr class=([('success' if action.completed?), ('warning' if (!action.completed? && !action.deadline.try(:past?))), ('danger' if (!action.completed? && action.deadline.try(:past?)))].compact.join(''))
+                        td = t.instructions
+                        td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
+                        td = action.completed ? 'Completed' : (link_to "Incomplete", company_workflow_section_path(t.section.template.slug, t.section.id), method: "get")
+        - else
+          .panel.panel-default
+            .panel-heading
+              h3.panel-title Workflows
+            .panel-body
+              - if @workflows.blank?
+                | No outstanding workflows at the moment. Click on a workflow to begin.
+              - else
+                table.table
+                  thead
+                    tr
+                      th Workflow Name
+                      th Deadline
+                      th Status
+                  tbody
+                    - @workflows.each do |w|
+                      tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
+                        td = w.template.title
+                        td = w.deadline.try(:strftime, "%d/%m/%Y") || '-'
+                        td = w.completed ? 'Completed' : 'In Progress'
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Company Information
+          .panel-body
+            p = @company.description
+            - if @company.address.present?
+              p Registered Address: #{@company.address.line_1}, #{@company.address.line_2}, Singapore #{@company.address.postal_code}
+            p Financial Year End: #{@company.financial_year_end}
+      .col-md-3.col-sm-4
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Recent Documents
+          .panel-body
+            - if @documents.empty?
+              li No documents yet.
+            - else
+              - @documents.each do |d|
+                .media
+                  a href="#{d.file_url}"
+                    .media-left.media-middle
+                      i.ti-file.icon
+                    .media-body
+                      = d.filename + File.extname(d.file_url)
+        .panel.panel-default
+          .panel-heading
+            h6.panel-title Recent Activity
+          .panel-body
+            - if @activities.empty?
+              li No activity yet.
+            - else
+              - @activities.each do |activity|
+                p
+                  = activity.owner.first_name if activity.owner
+                  = render_activity activity
