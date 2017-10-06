@@ -1,0 +1,8 @@
+.col-md-3.col-sm-4.sidebar
+  ul.nav.nav-sidebar
+    h5 Workflows
+    - get_templates.each do |t|
+      li = link_to t.title, params[:company_id] ? admin_company_workflow_path(params[:company_id], t.slug) : company_workflow_path(t.slug)
+    h5 Submit new request
+    - get_cs_requests.each do |r|
+      li = link_to r.title, new_survey_path
