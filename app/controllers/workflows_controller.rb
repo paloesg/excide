@@ -1,4 +1,6 @@
 class WorkflowsController < ApplicationController
+  layout "dashboard/application"
+
   before_action :authenticate_user!
   before_action :set_workflow
 
