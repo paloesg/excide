@@ -8,7 +8,7 @@ html lang="en"
     = render 'application/favicon'
     = display_meta_tags site: "Virtual CFO | Excide"
 
-    = stylesheet_link_tag    "dashboard/application"
+    = stylesheet_link_tag    "application-dashboard"
     = javascript_include_tag "dashboard/application", 'data-turbolinks-track' => true
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
