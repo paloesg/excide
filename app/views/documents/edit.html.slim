@@ -1,24 +1,15 @@
-section.page-title.page-title-4.bg-secondary
-  .container
-    .row
-      .col-md-6
-        h2.uppercase.mb8 Edit Document
-      .col-md-6.text-right
-        ol.breadcrumb.breadcrumb-2
-          li
-            a href="#" Home
-          li
-            a href="#" Company
-          li
-            a href="#" Documents
-          li.active Edit
-section
-  .container
-    = render 'layouts/left_sidebar'
-
-    .col-md-9.col-sm-12
-      .widget
-        h6.title Document Information
-        hr
-        = form_for(@document, url: (current_user.has_role? :admin) ? admin_company_document_path(@company.id, @document.id) : document_path(@document.id), html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
-          = render 'form', f: f
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li
+        a href="#" Documents
+      li.active Edit
+    h1.page-header Document Information
+.row
+  .col-sm-12
+    = form_for(@document, url: (current_user.has_role? :admin) ? admin_company_document_path(@company.id, @document.id) : document_path(@document.id), html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
+      = render 'form', f: f

@@ -1,39 +1,33 @@
-section.page-title.page-title-4.bg-secondary
-  .container
-    .row
-      .col-md-6
-        h2.uppercase.mb8 Documents
-      .col-md-6.text-right
-        ol.breadcrumb.breadcrumb-2
-          li
-            a href="#" Home
-          li
-            a href="#" Company
-          li.active Documents
-section
-  .container
-    = render 'layouts/left_sidebar'
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li
+        a href="#" Documents
+      li.active Edit
+    h1.page-header Documents Listing
 
-    .col-md-9.col-sm-12
-      .widget
-        h6.title Documents Listing
-        hr
-        table.table.table-hover
-          thead
-            tr
-              th Filename
-              th File type
-              th Remarks
-              th Date signed
-              th
-              th
-          tbody
-            - @documents.each do |document|
-              tr
-                td = document.filename
-                td = File.extname(document.file_url)
-                td = document.remarks
-                td = document.date_signed
-                td = link_to "Download", document.file_url
-                td = link_to 'Edit', (current_user.has_role? :admin) ? edit_admin_company_document_path(@company.id, document) : edit_document_path(document)
-        = link_to 'New Document', (current_user.has_role? :admin) ? new_admin_company_document_path(params[:company_id]) : new_document_path
+.row
+  .col-sm-12
+    table.table.table-hover
+      thead
+        tr
+          th Filename
+          th File type
+          th Remarks
+          th Date signed
+          th
+          th
+      tbody
+        - @documents.each do |document|
+          tr
+            td = document.filename
+            td = File.extname(document.file_url)
+            td = document.remarks
+            td = document.date_signed
+            td = link_to "Download", document.file_url
+            td = link_to 'Edit', (current_user.has_role? :admin) ? edit_admin_company_document_path(@company.id, document) : edit_document_path(document)
+    = link_to 'New Document', (current_user.has_role? :admin) ? new_admin_company_document_path(params[:company_id]) : new_document_path
