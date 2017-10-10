@@ -3,14 +3,14 @@ require 'csv'
 class Survey < ActiveRecord::Base
   belongs_to :user
   belongs_to :company
-  belongs_to :template
+  belongs_to :survey_template
 
   has_many :segments, dependent: :destroy
 
   accepts_nested_attributes_for :company
 
   validates :user, presence: true
-  validates :template, presence: true
+  validates :survey_template, presence: true
   validates :title, presence: true
 
   def to_csv

@@ -10,7 +10,7 @@ class SurveyDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     user: Field::BelongsTo,
     company: Field::BelongsTo,
-    template: Field::BelongsTo,
+    survey_template: Field::BelongsTo,
     id: Field::Number,
     title: Field::String,
     remarks: Field::Text,
@@ -26,7 +26,7 @@ class SurveyDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :title,
-    :template,
+    :survey_template,
     :user,
     :company,
   ].freeze
@@ -36,7 +36,7 @@ class SurveyDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = [
     :user,
     :company,
-    :template,
+    :survey_template,
     :id,
     :title,
     :remarks,
@@ -50,7 +50,7 @@ class SurveyDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :user,
     :company,
-    :template,
+    :survey_template,
     :title,
     :remarks,
   ].freeze

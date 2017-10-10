@@ -1,4 +1,6 @@
 class SurveysController < ApplicationController
+  layout "dashboard/application"
+
   before_action :authenticate_user!
 
   def new
@@ -18,7 +20,7 @@ class SurveysController < ApplicationController
     @survey = Survey.find(params[:survey_id])
     @position = params[:section_position].to_i
 
-    @sections = @survey.template.sections
+    @sections = @survey.survey_template.sections
     unless @section = @sections.find_by_position(@position)
       redirect_to survey_complete_path
       return
@@ -44,6 +46,6 @@ class SurveysController < ApplicationController
   private
 
   def survey_params
-    params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :template_id)
+    params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :survey_template_id)
   end
 end
