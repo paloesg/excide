@@ -13,3 +13,4 @@ nav.navbar.navbar-inverse.navbar-fixed-top
         li = link_to "Company Documents", params[:company_id] ? admin_company_documents_path : documents_path
         li = link_to "Company Details", params[:company_id] ? admin_company_edit_path : edit_company_path
         li = link_to "User Details", edit_profile_path
+        li = link_to "Log Out", logout_path
