@@ -1,25 +1,23 @@
-section.page-title.page-title-4.bg-secondary
-  .container
-    .row
-      .col-md-6
-        h2.uppercase.mb8 New Survey
-      .col-md-6.text-right
-        ol.breadcrumb.breadcrumb-2
-          li
-            a href="#" Home
-          li
-            a href="#" Surveys
-          li.active New Survey
-section
-  .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" Surveys
+      li.active New
+    h1 New Survey
+
+.row
+  .col-sm-12
     .feature.boxed.bg-secondary
       = form_for @survey do |f|
-        = f.text_field :title, placeholder: 'Survey title'
-        .select-option
-          i.ti-angle-down
-          = f.collection_select(:survey_template_id, ::SurveyTemplate.all.map{|t| [t.survey_type.titleize, t.id]}, :last, :first, {include_blank: 'Business Model'})
-        .select-option
-          i.ti-angle-down
-          = f.collection_select(:company_id, Company.all, :id, :name, {include_blank: 'Company Name'})
-        = f.text_area :remarks, placeholder: 'Remarks'
-        = f.submit
+        .form-group
+          = f.text_field :title, placeholder: 'Survey title', class: 'form-control'
+        .form-group
+          = f.collection_select(:survey_template_id, ::SurveyTemplate.all.map{|t| [t.survey_type.titleize, t.id]}, :last, :first, {include_blank: 'Business Model'}, class: 'form-control')
+        .form-group
+          = f.collection_select(:company_id, Company.all, :id, :name, {include_blank: 'Company Name'}, class: 'form-control')
+        .form-group
+          = f.text_area :remarks, placeholder: 'Remarks', class: 'form-control'
+        = f.submit 'Create Survey', class: 'btn btn-default pull-right'
