@@ -1,6 +1,6 @@
 module ApplicationHelper
   def get_templates
-    Template.all
+    Template.where(company_id: nil)
   end
 
   def get_cs_requests
