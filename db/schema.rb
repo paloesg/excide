@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170818095733) do
+ActiveRecord::Schema.define(version: 20171011091140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -339,8 +339,10 @@ ActiveRecord::Schema.define(version: 20170818095733) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.string   "slug"
+    t.integer  "company_id"
   end
 
+  add_index "templates", ["company_id"], name: "index_templates_on_company_id", using: :btree
   add_index "templates", ["slug"], name: "index_templates_on_slug", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -423,6 +425,7 @@ ActiveRecord::Schema.define(version: 20170818095733) do
   add_foreign_key "surveys", "templates", column: "survey_template_id"
   add_foreign_key "surveys", "users"
   add_foreign_key "tasks", "sections"
+  add_foreign_key "templates", "companies"
   add_foreign_key "workflows", "companies"
   add_foreign_key "workflows", "templates"
   add_foreign_key "workflows", "users"

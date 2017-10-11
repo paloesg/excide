@@ -32,6 +32,7 @@ class Company < ActiveRecord::Base
 
   has_many :projects, dependent: :destroy
   has_many :documents
+  has_many :templates
   has_many :workflows
   has_many :company_actions
   has_one :address, as: :addressable
