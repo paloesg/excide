@@ -1,48 +1,43 @@
-section.page-title.page-title-4.bg-secondary
-  .container
-    .row
-      .col-md-6
-        h2.uppercase.mb8 = @section.display_name
-      .col-md-6.text-right
-        ol.breadcrumb.breadcrumb-2
-          li
-            a href="#" Home
-          li
-            a href="#" Surveys
-          li.active New Survey
-section
-  .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
-    .feature.boxed.bg-secondary
-      = form_for @segment do |f|
-        .row
-          .col-sm-12
-            = f.hidden_field :survey_id, value: @segment.survey_id
-            = f.hidden_field :section_id, value: @segment.section_id
-            - @responses.each do |response|
-              = f.fields_for :responses, response do |r|
-                .input-with-label.text-left
-                  - if response.question.number?
-                    span = response.question.content
-                    = r.number_field :content
-                  - elsif response.question.single?
-                    span = response.question.content
-                    .select-option
-                      i.ti-angle-down
-                      = r.collection_select(:choice_id, response.question.choices, :id, :content, {include_blank: ''})
-                  - elsif response.question.multiple?
-                    span = response.question.content
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" Surveys
+      li.active New Survey
+    h1.page-header New Section
+
+.row
+  .col-sm-12
+    = form_for @segment do |f|
+      .row
+        .col-sm-12
+          = f.hidden_field :survey_id, value: @segment.survey_id
+          = f.hidden_field :section_id, value: @segment.section_id
+          - @responses.each do |response|
+            = f.fields_for :responses, response do |r|
+              .form-group
+                - if response.question.number?
+                  span = response.question.content
+                  = r.number_field :content, class: 'form-control'
+                - elsif response.question.single?
+                  span = response.question.content
+                  = r.collection_select(:choice_id, response.question.choices, :id, :content, {include_blank: ''}, class: 'form-control')
+                - elsif response.question.multiple?
+                  span = response.question.content
+                  .row.checkbox
                     = r.collection_check_boxes(:content, response.question.choices, :id, :content) do |option|
-                      .col-md-4.col-sm-8
-                        = option.label
-                      .col-md-2.col-sm-4
-                        .checkbox-option
-                          .inner
+                      .col-md-12.col-sm-12
+                        = option.label do
                           = option.check_box
-                  - else
-                    span = response.question.content
-                    = r.text_field :content
-        .row
-          .col-md-4.col-sm-6
-            = f.submit "Save & Add Another", formaction: segment_create_and_new_path
-          .col-md-4.col-md-offset-4.col-sm-6
-            = f.submit "Save & Next Section"
+                          = option.text
+
+                - else
+                  span = response.question.content
+                  = r.text_field :content, class: 'form-control'
+      .row
+        .col-md-4.col-sm-6
+          = f.submit "Save & Add Another", formaction: segment_create_and_new_path, class: 'btn btn-default'
+        .col-md-4.col-md-offset-4.col-sm-6
+          = f.submit "Save & Next Section", class: 'btn btn-default pull-right'

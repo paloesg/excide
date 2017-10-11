@@ -20,7 +20,7 @@ class SurveysController < ApplicationController
     @survey = Survey.find(params[:survey_id])
     @position = params[:section_position].to_i
 
-    @sections = @survey.survey_template.sections
+    @sections = @survey.survey_template.survey_sections
     unless @section = @sections.find_by_position(@position)
       redirect_to survey_complete_path
       return
