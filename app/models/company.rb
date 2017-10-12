@@ -28,8 +28,7 @@ class Company < ActiveRecord::Base
     end
   end
 
-  belongs_to :user
-
+  has_many :users
   has_many :projects, dependent: :destroy
   has_many :documents
   has_many :templates

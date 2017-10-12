@@ -4,8 +4,8 @@ class AccountsController < ApplicationController
 
   def new
     @company = Company.new
-    @company.user = current_user
     @company.build_address
+    @user.company = @company
   end
 
   def edit

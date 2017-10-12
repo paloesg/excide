@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011091140) do
+ActiveRecord::Schema.define(version: 20171012083943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,7 +65,6 @@ ActiveRecord::Schema.define(version: 20171011091140) do
     t.integer  "company_type"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
-    t.integer  "user_id"
     t.string   "image_url"
     t.text     "description"
     t.string   "title"
@@ -74,8 +73,6 @@ ActiveRecord::Schema.define(version: 20171011091140) do
     t.string   "ssic_code"
     t.date     "financial_year_end"
   end
-
-  add_index "companies", ["user_id"], name: "index_companies_on_user_id", using: :btree
 
   create_table "company_actions", force: :cascade do |t|
     t.integer  "task_id"
@@ -370,8 +367,10 @@ ActiveRecord::Schema.define(version: 20171011091140) do
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
     t.string   "aasm_state"
+    t.integer  "company_id"
   end
 
+  add_index "users", ["company_id"], name: "index_users_on_company_id", using: :btree
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["provider"], name: "index_users_on_provider", using: :btree
@@ -399,7 +398,6 @@ ActiveRecord::Schema.define(version: 20171011091140) do
   add_index "workflows", ["template_id"], name: "index_workflows_on_template_id", using: :btree
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
 
-  add_foreign_key "companies", "users"
   add_foreign_key "company_actions", "companies"
   add_foreign_key "company_actions", "tasks"
   add_foreign_key "documents", "companies"
@@ -426,6 +424,7 @@ ActiveRecord::Schema.define(version: 20171011091140) do
   add_foreign_key "surveys", "users"
   add_foreign_key "tasks", "sections"
   add_foreign_key "templates", "companies"
+  add_foreign_key "users", "companies"
   add_foreign_key "workflows", "companies"
   add_foreign_key "workflows", "templates"
   add_foreign_key "workflows", "users"
