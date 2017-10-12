@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171012083943) do
+ActiveRecord::Schema.define(version: 20171012090550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20171012083943) do
     t.string   "aasm_state"
     t.string   "ssic_code"
     t.date     "financial_year_end"
+    t.string   "slug"
   end
 
   create_table "company_actions", force: :cascade do |t|

@@ -1,7 +1,11 @@
 class Company < ActiveRecord::Base
-  include AASM
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   include PublicActivity::Model
   tracked owner: ->(controller, model) { controller && controller.current_user }
+
+  include AASM
 
   aasm do
     state :lead, :initial => true
