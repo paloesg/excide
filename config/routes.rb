@@ -76,6 +76,8 @@ Rails.application.routes.draw do
   post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   resources :documents
 
+  get 'symphony', to: 'symphony#show', as: :symphony
+
   # Hosted files
 
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
