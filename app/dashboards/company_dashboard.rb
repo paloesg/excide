@@ -14,7 +14,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     image_url: Field::Image,
     description: Field::Text,
     address: Field::HasOne,
-    user: Field::BelongsTo,
+    users: Field::HasMany,
     ssic_code: Field::String,
     financial_year_end: Field::DateTime,
     created_at: Field::DateTime,
@@ -30,7 +30,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :id,
     :name,
     :company_type,
-    :user,
+    :users,
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -46,7 +46,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :image_url,
     :description,
     :address,
-    :user,
+    :users,
     :ssic_code,
     :financial_year_end,
   ]
