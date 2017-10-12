@@ -5,12 +5,13 @@ section.cover.fullscreen.image-bg.overlay
     .row
       .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
         .feature.boxed
-          h4.uppercase Sign up
+          h4.uppercase #{params[:company]} Register
           = link_to "Sign up with LinkedIn", user_linkedin_omniauth_authorize_path(role: params[:role]), class: 'linkedin-login'
           hr
           = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
             br
             = devise_error_messages!
+            = hidden_field_tag :company, params[:company]
             = hidden_field_tag :role, params[:role]
             .row
               .col-md-6.col-sm-12
@@ -22,12 +23,4 @@ section.cover.fullscreen.image-bg.overlay
                 = f.password_field :password, autocomplete: "off", placeholder: "Password (#{@minimum_password_length} characters min.)"
               .col-md-6.col-sm-12
                 = f.password_field :password_confirmation, autocomplete: "off", placeholder: "Confirm password"
-            - if action_name == 'new' || action_name == 'create'
-              span = f.label :agree_terms, "I agree to the"
-              '
-              = link_to "terms of service", terms_path, target: :_blank
-              | .
-              .checkbox-option.pull-right
-                .inner
-                  = f.check_box :agree_terms, class: 'filled-in'
             = f.submit "Sign up"

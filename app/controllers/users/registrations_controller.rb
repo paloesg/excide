@@ -4,19 +4,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    if params[:role] == 'company'
-      super
-    else
-      raise ActionController::RoutingError.new('No route matches [GET] "/' + params[:role] + '/sign_up"')
-    end
+    super
   end
 
   # POST /resource
   def create
     build_resource(sign_up_params)
 
+    if params[:company].present?
+      resource.company = Company.friendly.find(params[:company])
+    end
     resource.save
-    resource.add_role params[:role].to_sym
+    resource.add_role params[:role].to_sym if params[:role].present?
 
     yield resource if block_given?
     if resource.persisted?

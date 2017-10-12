@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
   after_commit :create_default_business, if: Proc.new { self.has_role? :business }
 
   validates :contact_number, presence: true, unless: :skip_validation?
-  validates :agree_terms, inclusion: { in: [true] }, unless: :skip_validation?
+  # validates :agree_terms, inclusion: { in: [true] }, unless: :skip_validation?
 
   attr_accessor :skip_validation
 
