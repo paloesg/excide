@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
 
   # Admin pages for company workflow management
-  scope 'admin/companies/:company_id', as: 'admin_company' do
+  scope 'admin/companies/:company_name', as: 'admin_company' do
     get 'dashboard', to: 'dashboards#show', as: :dashboard
     get 'edit', to: 'companies#edit', as: :edit
     get 'workflow/:workflow_name', to: 'workflows#show', as: :workflow

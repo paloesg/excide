@@ -25,8 +25,8 @@ class DashboardsController < ApplicationController
 
     if current_user.has_role? :admin
       @companies = Company.all
-      @company = Company.find(params[:company_id])
-    elsif params[:company_id].present?
+      @company = Company.friendly.find(params[:company_name])
+    elsif params[:company_name].present?
       @company = @user.company
       redirect_to dashboard_path
     else
