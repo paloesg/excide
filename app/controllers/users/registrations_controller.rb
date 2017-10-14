@@ -15,7 +15,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
       resource.company = Company.friendly.find(params[:company])
     end
     resource.save
-    resource.add_role params[:role].to_sym if params[:role].present?
+    if resource.company.present?
+      resource.add_role params[:role].to_sym, resource.company
+    else
+      resource.add_role params[:role].to_sym
+    end
 
     yield resource if block_given?
     if resource.persisted?

@@ -1,4 +1,6 @@
 class Company < ActiveRecord::Base
+  resourcify
+
   extend FriendlyId
   friendly_id :name, use: :slugged
 
