@@ -20,12 +20,11 @@ class SymphonyController < ApplicationController
 
   private
 
-  def set_dashboard
+  def set_workflow
     @user = current_user
     @company = @user.company
+    @templates = @company.templates
     @workflows = @company.workflows
-    @documents = @company.documents.last(3).reverse
-    @activities = PublicActivity::Activity.order("created_at desc").where(owner_id: current_user.id)
   end
 
 end
