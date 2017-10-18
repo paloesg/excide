@@ -6,6 +6,7 @@ class WorkflowsController < ApplicationController
 
   def show
     # Look for existing workflow if not create new workflow and then show the tasks from the first section
+    #TODO: Refactor to separate workflow creation
     @workflow = @workflows.create_with(user: @user).find_or_create_by(template: @template, company: @company)
     @sections = @template.sections
     @current_section = @sections.joins(tasks: :company_actions).where(company_actions: {completed: false}).to_ary.shift
@@ -55,7 +56,16 @@ class WorkflowsController < ApplicationController
 
   def set_tasks
     @next_section = @sections.find_by_id(@current_section.id + 1)
-    @tasks = @current_section.tasks
+
+    # Only retrieve tasks that belong to current user if it's a company specific workflow
+    if @template.company.present?
+      # Find tasks by user roles
+      @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
+      @tasks = @current_section.tasks.where(role_id: @roles.map(&:id))
+    else
+      @tasks = @current_section.tasks
+    end
+
     @current_task = @tasks.first
   end
 
