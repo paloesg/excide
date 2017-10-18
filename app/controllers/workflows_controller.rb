@@ -35,6 +35,18 @@ class WorkflowsController < ApplicationController
     end
   end
 
+  def approve
+    @action = Task.find_by_id(params[:task_id]).get_company_action(@company)
+
+    respond_to do |format|
+      if @action.update_attributes(approved_by: current_user.id)
+        format.json { render json: @action.completed, status: :ok }
+      else
+        format.json { render json: @action.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_workflow
