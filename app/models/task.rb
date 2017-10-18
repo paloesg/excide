@@ -4,6 +4,8 @@ class Task < ActiveRecord::Base
 
   has_many :company_actions
 
+  enum task_type: [:instructions, :upload_file, :approval]
+
   def get_company_action(company)
     action = self.company_actions.where(company_id: company.id).first
   end
