@@ -1,13 +1,13 @@
 .col-md-2.col-sm-3.sidebar
   ul.nav.nav-sidebar
-    - if controller_name == 'symphony'
-      - @templates.each do |t|
+    - if controller_name == 'symphony' || (@template.present? && @template.company.present?)
+      - get_company_templates.each do |t|
         h5 = t.title
         - t.workflows.each do |w|
-          li = link_to w.created_at, company_workflow_path()
+          li = link_to w.created_at.to_date, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : company_workflow_path(w.template.slug)
     - else
       h5 Workflows
-      - get_templates.each do |t|
+      - get_general_templates.each do |t|
         li = link_to t.title, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : company_workflow_path(t.slug)
       hr
       h5 Submit new request
