@@ -19,6 +19,7 @@
               th No.
               th Instructions
               th Deadline
+              th Approved
               th Done
           tbody
             - @tasks.each do |t|
@@ -28,7 +29,13 @@
                 td
                   = t.instructions
                   = image_tag(t.image_url)
+                  - if t.upload_file?
+                    br
+                    = link_to "Upload File", new_document_path
                 td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
+                td
+                  - if t.approval?
+                    = check_box_tag 'approved_by', action.id, action.approved_by, data: { remote: true, url: url_for(action: :approve, task_id: t.id), method: "POST" }
                 td
                   = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }
 .row
