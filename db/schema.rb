@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171012090550) do
+ActiveRecord::Schema.define(version: 20171018133606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,10 +78,11 @@ ActiveRecord::Schema.define(version: 20171012090550) do
   create_table "company_actions", force: :cascade do |t|
     t.integer  "task_id"
     t.boolean  "completed"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.datetime "deadline"
     t.integer  "company_id"
+    t.integer  "approved_by"
   end
 
   add_index "company_actions", ["company_id"], name: "index_company_actions_on_company_id", using: :btree
@@ -327,8 +328,11 @@ ActiveRecord::Schema.define(version: 20171012090550) do
     t.string   "image_url"
     t.integer  "days_to_complete"
     t.boolean  "set_reminder"
+    t.integer  "role_id"
+    t.integer  "task_type"
   end
 
+  add_index "tasks", ["role_id"], name: "index_tasks_on_role_id", using: :btree
   add_index "tasks", ["section_id"], name: "index_tasks_on_section_id", using: :btree
 
   create_table "templates", force: :cascade do |t|
@@ -423,6 +427,7 @@ ActiveRecord::Schema.define(version: 20171012090550) do
   add_foreign_key "surveys", "companies"
   add_foreign_key "surveys", "templates", column: "survey_template_id"
   add_foreign_key "surveys", "users"
+  add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
