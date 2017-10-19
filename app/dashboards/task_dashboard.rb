@@ -11,6 +11,8 @@ class TaskDashboard < Administrate::BaseDashboard
     section: Field::BelongsTo,
     company_actions: Field::HasMany,
     id: Field::Number,
+    role: Field::BelongsTo,
+    task_type: EnumField,
     instructions: Field::String,
     position: Field::Number,
     image_url: ImageField,
@@ -29,6 +31,8 @@ class TaskDashboard < Administrate::BaseDashboard
     :section,
     :company_actions,
     :position,
+    :role,
+    :task_type,
     :instructions,
     :days_to_complete,
     :set_reminder,
@@ -38,6 +42,8 @@ class TaskDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :position,
+    :role,
+    :task_type,
     :section,
     :instructions,
     :image_url,
@@ -54,12 +60,14 @@ class TaskDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :section,
-    :company_actions,
+    :role,
+    :task_type,
     :instructions,
-    :image_url,
     :position,
+    :image_url,
     :days_to_complete,
     :set_reminder,
+    :company_actions,
   ].freeze
 
   # Overwrite this method to customize how tasks are displayed

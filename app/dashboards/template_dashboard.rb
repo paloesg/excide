@@ -11,6 +11,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     id: Field::Number,
     title: Field::String,
     business_model: EnumField,
+    company: Field::BelongsTo,
     workflows: Field::HasMany,
     sections: Field::NestedHasMany.with_options(skip: [:template]),
     created_at: Field::DateTime,
@@ -25,6 +26,7 @@ class TemplateDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :title,
+    :company,
     :workflows,
   ].freeze
 
@@ -33,6 +35,7 @@ class TemplateDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = [
     :id,
     :title,
+    :company,
     :created_at,
     :updated_at,
     :sections,
@@ -44,6 +47,7 @@ class TemplateDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :title,
+    :company,
     :sections,
   ].freeze
 
