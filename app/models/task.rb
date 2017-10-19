@@ -3,6 +3,7 @@ class Task < ActiveRecord::Base
   acts_as_list scope: :section
 
   has_many :company_actions
+  belongs_to :role
 
   enum task_type: [:instructions, :upload_file, :approval]
 
