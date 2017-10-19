@@ -1,0 +1,9 @@
+p Hi #{@user.first_name},
+
+p You have a new task that you are required to complete.
+
+p
+  ' The instructions for the task are as follows: "#{@task.instructions}". You can access the task from this link:
+  a href="#{company_workflow_url(@task.section.template.slug)}" #{@task.section.template.title}
+
+p If you have any queries regarding your task, please contact your admin.
