@@ -8,7 +8,7 @@
       li.active #{@template.title}
     h1.page-header = @template.title
 .row
-  .col-sm-12
+  .col-md-8.col-sm-6
     .panel.panel-default
       .panel-heading
         h3.panel-title = @current_section.display_name
@@ -38,9 +38,22 @@
                     = check_box_tag 'approved_by', action.id, action.approved_by, data: { remote: true, url: url_for(action: :approve, task_id: t.id), method: "POST" }
                 td
                   = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }
-.row
-  .col-sm-12
     - if @next_section.present?
       = button_to "Next Section", company_workflow_section_path(@template.slug, @next_section.id), method: "get", class: 'btn btn-default pull-right'
     - else
       = button_to "Submit", dashboard_path, method: "get", class: 'btn btn-default pull-right'
+  .col-md-4.col-sm-6
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Documents
+      .panel-body
+        - if @documents.empty?
+          li No documents yet.
+        - else
+          - @documents.each do |d|
+            .media
+              a href="#{d.file_url}"
+                .media-left.media-middle
+                  i.ti-file.icon
+                .media-body
+                  = d.filename + File.extname(d.file_url)

@@ -64,6 +64,7 @@ class WorkflowsController < ApplicationController
 
     @workflows = @company.workflows
     @template = Template.find(params[:workflow_name])
+    @documents = @company.documents
   end
 
   def set_tasks
