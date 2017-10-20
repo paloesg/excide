@@ -9,7 +9,7 @@ class SectionDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     template: Field::BelongsTo,
-    tasks: Field::NestedHasMany.with_options(skip: [:section, :company_actions]),
+    tasks: Field::NestedHasMany.with_options(skip: [:section, :company_actions, :role]),
     id: Field::Number,
     unique_name: Field::String,
     display_name: Field::String,
