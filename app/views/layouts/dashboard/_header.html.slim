@@ -6,11 +6,21 @@ nav.navbar.navbar-inverse.navbar-fixed-top
         .icon-bar
         .icon-bar
         .icon-bar
-      a.navbar-brand href="#" Excide
+      - if controller.class.parents.include?(Symphony)
+        = link_to current_user.company.name, symphony_root_path, class: "navbar-brand"
+      - else
+        = link_to "Excide", dashboard_path, class: "navbar-brand"
     #navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.navbar-right
-        li = link_to "Company Dashboard", params[:company_name] ? admin_company_dashboard_path : dashboard_path
-        li = link_to "Company Documents", params[:company_name] ? admin_company_documents_path : documents_path
-        li = link_to "Company Details", params[:company_name] ? admin_company_edit_path : edit_company_path
-        li = link_to "User Details", edit_profile_path
-        li = link_to "Log Out", logout_path
+        - if controller.class.parents.include?(Symphony)
+          li = link_to "Company Dashboard", params[:company_name] ? admin_company_dashboard_path : symphony_root_path
+          li = link_to "Company Documents", params[:company_name] ? admin_company_documents_path : symphony_documents_path
+          li = link_to "Company Details", params[:company_name] ? admin_company_edit_path : edit_company_path
+          li = link_to "User Details", edit_profile_path
+          li = link_to "Log Out", logout_path
+        - else
+          li = link_to "Company Dashboard", params[:company_name] ? admin_company_dashboard_path : dashboard_path
+          li = link_to "Company Documents", params[:company_name] ? admin_company_documents_path : documents_path
+          li = link_to "Company Details", params[:company_name] ? admin_company_edit_path : edit_company_path
+          li = link_to "User Details", edit_profile_path
+          li = link_to "Log Out", logout_path
