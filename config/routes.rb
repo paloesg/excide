@@ -22,6 +22,24 @@ Rails.application.routes.draw do
     resources :documents
   end
 
+  # Company workflow management
+  get 'dashboard', to: 'dashboards#show', as: :dashboard
+  get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
+  get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
+  post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
+  post 'workflow/:workflow_name/approve/:task_id', to: 'workflows#approve', as: :company_workflow_task_approve
+  resources :documents
+
+  namespace :symphony do
+    get '/:workflow_name', to: 'workflows#show', as: :workflow
+    get '/:workflow_name/:section_id', to: 'workflows#section', as: :workflow_section
+    post '/:workflow_name/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
+    post '/:workflow_name/approve/:task_id', to: 'workflows#approve', as: :workflow_task_approve
+    resources :documents
+
+    root to: 'home#show'
+  end
+
   as :user do
     get '/cs/:role/register', to: 'users/registrations#new', as: :register
     get '/cs/:role/login', to: 'devise/sessions#new', as: :login
@@ -69,16 +87,6 @@ Rails.application.routes.draw do
   end
 
   resources :charges, only: [:new, :create]
-
-  # Company workflow management
-  get 'dashboard', to: 'dashboards#show', as: :dashboard
-  get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
-  get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
-  post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
-  post 'workflow/:workflow_name/approve/:task_id', to: 'workflows#approve', as: :company_workflow_task_approve
-  resources :documents
-
-  get 'symphony', to: 'symphony#show', as: :symphony
 
   # Hosted files
 

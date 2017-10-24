@@ -1,4 +1,4 @@
-class SymphonyController < ApplicationController
+class Symphony::HomeController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!

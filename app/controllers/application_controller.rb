@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
     if current_user.has_role? :admin
       admin_root_path
     elsif current_user.company.present?
-      symphony_path
+      symphony_root_path
     elsif current_user.lead?
       new_account_path
     elsif current_user.has_role? :consultant
