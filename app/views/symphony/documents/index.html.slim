@@ -29,5 +29,5 @@
             td = document.remarks
             td = document.date_signed
             td = link_to "Download", document.file_url
-            td = link_to 'Edit', (current_user.has_role? :admin) ? edit_admin_company_document_path(@company.id, document) : edit_document_path(document)
+            td = link_to 'Edit', edit_symphony_document_path(document)
     = link_to 'New Document', new_symphony_document_path
