@@ -17,7 +17,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def approve
-    @action = Task.find_by_id(params[:task_id]).get_company_action(@company)
+    @action = Task.find_by_id(params[:task_id]).get_company_action(@company, params[:workflow_identifier])
 
     respond_to do |format|
       if @action.update_attributes(approved_by: current_user.id)

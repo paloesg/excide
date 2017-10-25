@@ -6,7 +6,7 @@
       li
         a href="#" Company
       li.active #{@template.title}
-    h1.page-header = @template.title
+    h1.page-header #{@template.title} – #{@workflow.identifier}
 .row
   .col-md-8.col-sm-6
     .panel.panel-default
@@ -23,7 +23,7 @@
               th Done
           tbody
             - @tasks.each do |t|
-              - action = t.get_company_action(@company)
+              - action = t.get_company_action(@company.id, @workflow.identifier)
               tr
                 td = t.position.to_s + '.'
                 td

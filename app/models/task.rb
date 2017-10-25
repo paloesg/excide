@@ -7,7 +7,8 @@ class Task < ActiveRecord::Base
 
   enum task_type: [:instructions, :upload_file, :approval]
 
-  def get_company_action(company)
-    action = self.company_actions.where(company_id: company.id).first
+  def get_company_action(company_id, workflow_identifier = nil)
+    workflow_id = workflow_identifier.present? ? Workflow.find_by(identifier: workflow_identifier).id : nil
+    action = self.company_actions.find_by(company_id: company_id, workflow_id: workflow_id)
   end
 end
