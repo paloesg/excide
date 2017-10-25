@@ -9,44 +9,24 @@
     h1.page-header Dashboard
 .row
   .col-md-8.col-sm-6
-    - if current_user.has_role? :admin
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title Outstanding Tasks
-        .panel-body
-          - if @tasks.blank?
-            | No outstanding tasks at the moment. Click on a workflow to begin.
-          - else
-            table.table
-              thead
-                tr
-                  th Task Description
-                  th Deadline
-                  th Status
-              tbody
-                - @tasks.each do |t|
-                  - action = t.get_company_action(@company)
-                  tr class=([('success' if action.completed?), ('warning' if (!action.completed? && !action.deadline.try(:past?))), ('danger' if (!action.completed? && action.deadline.try(:past?)))].compact.join(''))
-                    td = t.instructions
-                    td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                    td = action.completed ? 'Completed' : (link_to "Incomplete", company_workflow_section_path(t.section.template.slug, t.section.id), method: "get")
-    - else
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title Workflows
-        .panel-body
-          - if @workflows.blank?
-            | No outstanding workflows at the moment. Click on a workflow to begin.
-          - else
-            table.table
-              thead
-                tr
-                  th Workflow Name
-                  th Deadline
-                  th Status
-              tbody
-                - @workflows.each do |w|
-                  tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                    td = w.template.title
-                    td = w.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                    td = w.completed ? 'Completed' : 'In Progress'
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Workflows
+      .panel-body
+        - if @workflows.blank?
+          | No outstanding workflows at the moment. Click on a workflow to begin.
+        - else
+          table.table
+            thead
+              tr
+                th Identifier
+                th Workflow Name
+                th Deadline
+                th Status
+            tbody
+              - @workflows.each do |w|
+                tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
+                  td = w.identifier
+                  td = w.template.title
+                  td = w.deadline.try(:strftime, "%d/%m/%Y") || '-'
+                  td = w.completed ? 'Completed' : 'In Progress'
