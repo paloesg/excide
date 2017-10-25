@@ -31,7 +31,7 @@
                   = image_tag(t.image_url)
                   - if t.upload_file?
                     br
-                    = link_to "Upload File", new_document_path
+                    = link_to "Upload File", new_symphony_document_path
                 td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
                 td
                   - if t.approval?

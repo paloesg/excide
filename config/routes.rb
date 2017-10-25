@@ -31,11 +31,11 @@ Rails.application.routes.draw do
   resources :documents
 
   namespace :symphony do
+    resources :documents
     get '/:workflow_name', to: 'workflows#show', as: :workflow
     get '/:workflow_name/:section_id', to: 'workflows#section', as: :workflow_section
     post '/:workflow_name/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
     post '/:workflow_name/approve/:task_id', to: 'workflows#approve', as: :workflow_task_approve
-    resources :documents
 
     root to: 'home#show'
   end

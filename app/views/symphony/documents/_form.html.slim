@@ -1,0 +1,29 @@
+- if @document.errors.any?
+  #error_explanation
+    h2 = "#{pluralize(@document.errors.count, "error")} prohibited this document from being saved:"
+    ul
+      - @document.errors.full_messages.each do |message|
+        li = message
+.form-group
+  = f.label :filename
+  = f.text_field :filename, class: 'form-control'
+.form-group
+  = f.label :remarks
+  = f.text_area :remarks, class: 'form-control'
+.form-group
+  = f.label :date_signed
+  = f.text_field :date_signed, class: 'form-control datetimepicker'
+.form-group.file-field
+  = f.label :file_url, 'Upload file'
+  = f.file_field :file_url
+  .file-path-wrapper
+    = f.text_field :file_url, class: 'file-path form-control', disabled: true
+= f.submit 'Save Document', class: 'btn btn-default'
+
+javascript:
+  $(function() {
+    $('.datetimepicker').datetimepicker({
+      debug: false,
+      format: 'YYYY-MM-DD'
+    });
+  });
