@@ -10,6 +10,7 @@ class TemplateDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     title: Field::String,
+    slug: Field::String,
     business_model: EnumField,
     company: Field::BelongsTo,
     workflows: Field::HasMany,
@@ -26,6 +27,7 @@ class TemplateDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :title,
+    :slug,
     :company,
     :workflows,
   ].freeze
@@ -35,6 +37,7 @@ class TemplateDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = [
     :id,
     :title,
+    :slug,
     :company,
     :created_at,
     :updated_at,
@@ -47,6 +50,7 @@ class TemplateDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :title,
+    :slug,
     :company,
     :sections,
   ].freeze
