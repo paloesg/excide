@@ -8,6 +8,7 @@ class CompanyAction < ActiveRecord::Base
 
   belongs_to :task
   belongs_to :company
+  belongs_to :workflow
 
   has_one :reminder
 
@@ -28,7 +29,7 @@ class CompanyAction < ActiveRecord::Base
     unless self.task.last? or !self.completed
       # Find next action in line and set deadline if not the last task in section
       next_task = self.task.lower_item
-      next_action = next_task.get_company_action(self.company)
+      next_action = next_task.get_company_action(self.company, self.workflow.identifier)
       next_action.update_columns(deadline: (Date.today + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
 
       # Create new reminder based on deadline of action and repeat every 2 days

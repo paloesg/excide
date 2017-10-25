@@ -3,6 +3,8 @@ class Workflow < ActiveRecord::Base
   belongs_to :company
   belongs_to :template
 
+  has_many :company_actions
+
   after_create :create_related_company_actions
 
   private

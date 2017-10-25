@@ -11,6 +11,7 @@ class CompanyActionDashboard < Administrate::BaseDashboard
     id: Field::Number,
     task: Field::BelongsTo,
     company: Field::BelongsTo,
+    workflow: Field::BelongsTo,
     deadline: Field::DateTime,
     reminder: Field::HasOne,
     completed: Field::Boolean,
@@ -26,6 +27,7 @@ class CompanyActionDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :company,
     :task,
+    :workflow,
     :deadline,
     :reminder,
     :completed,
@@ -37,6 +39,7 @@ class CompanyActionDashboard < Administrate::BaseDashboard
     :id,
     :company,
     :task,
+    :workflow,
     :deadline,
     :reminder,
     :completed,
@@ -50,6 +53,7 @@ class CompanyActionDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :company,
     :task,
+    :workflow,
     :deadline,
     :completed,
   ].freeze

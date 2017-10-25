@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171025161556) do
+ActiveRecord::Schema.define(version: 20171025170123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,10 +83,12 @@ ActiveRecord::Schema.define(version: 20171025161556) do
     t.datetime "deadline"
     t.integer  "company_id"
     t.integer  "approved_by"
+    t.integer  "workflow_id"
   end
 
   add_index "company_actions", ["company_id"], name: "index_company_actions_on_company_id", using: :btree
   add_index "company_actions", ["task_id"], name: "index_company_actions_on_task_id", using: :btree
+  add_index "company_actions", ["workflow_id"], name: "index_company_actions_on_workflow_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "filename"
@@ -406,6 +408,7 @@ ActiveRecord::Schema.define(version: 20171025161556) do
 
   add_foreign_key "company_actions", "companies"
   add_foreign_key "company_actions", "tasks"
+  add_foreign_key "company_actions", "workflows"
   add_foreign_key "documents", "companies"
   add_foreign_key "experiences", "profiles"
   add_foreign_key "profiles", "users"
