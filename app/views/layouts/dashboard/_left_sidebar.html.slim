@@ -4,7 +4,7 @@
       - get_company_templates.each do |t|
         h5 = t.title
         - t.workflows.each do |w|
-          li = link_to w.created_at.to_date, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug)
+          li = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)
     - else
       h5 Workflows
       - get_general_templates.each do |t|

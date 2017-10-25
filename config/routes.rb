@@ -18,7 +18,6 @@ Rails.application.routes.draw do
     get 'workflow/:workflow_name', to: 'workflows#show', as: :workflow
     get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :workflow_section
     post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
-    post 'workflow/:workflow_name/approve/:task_id', to: 'workflows#approve', as: :workflow_task_approve
     resources :documents
   end
 
@@ -32,10 +31,10 @@ Rails.application.routes.draw do
 
   namespace :symphony do
     resources :documents
-    get '/:workflow_name', to: 'workflows#show', as: :workflow
-    get '/:workflow_name/:section_id', to: 'workflows#section', as: :workflow_section
-    post '/:workflow_name/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
-    post '/:workflow_name/approve/:task_id', to: 'workflows#approve', as: :workflow_task_approve
+    get '/:workflow_name/:workflow_identifier', to: 'workflows#show', as: :workflow
+    get '/:workflow_name/:workflow_identifier/:section_id', to: 'workflows#section', as: :workflow_section
+    post '/:workflow_name/:workflow_identifier/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
+    post '/:workflow_name/:workflow_identifier/approve/:task_id', to: 'workflows#approve', as: :workflow_task_approve
 
     root to: 'home#show'
   end
