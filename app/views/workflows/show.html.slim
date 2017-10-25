@@ -52,8 +52,12 @@
         - else
           - @documents.each do |d|
             .media
-              a href="#{d.file_url}"
-                .media-left.media-middle
-                  i.ti-file.icon
-                .media-body
-                  = d.filename + File.extname(d.file_url)
+              .media-left.media-middle
+                a href="#{d.file_url}"
+                  i.ti-file.icon style="font-size: 50px"
+              .media-body
+                h4.media-heading = d.filename
+                a href="#{d.file_url}"
+                = File.basename(d.file_url)
+                br
+                = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
