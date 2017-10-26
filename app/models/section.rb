@@ -5,4 +5,8 @@ class Section < ActiveRecord::Base
   has_many :tasks, -> { order(position: :asc) }
 
   accepts_nested_attributes_for :tasks
+
+  def get_next_section
+    self.lower_item
+  end
 end
