@@ -39,9 +39,12 @@
                 td
                   = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }
     - if @next_section.present?
-      = button_to "Next Section", company_workflow_section_path(@template.slug, @next_section.id), method: "get", class: 'btn btn-default pull-right'
+      - if controller.class.parents.include?(Symphony)
+        = button_to "Next Section", symphony_workflow_section_path(@template.slug, @workflow.identifier, @next_section.id), method: "get", class: 'btn btn-default pull-right'
+      - else
+        = button_to "Next Section", company_workflow_section_path(@template.slug, @next_section.id), method: "get", class: 'btn btn-default pull-right'
     - else
-      = button_to "Submit", dashboard_path, method: "get", class: 'btn btn-default pull-right'
+      = button_to "Done", dashboard_path, method: "get", class: 'btn btn-default pull-right'
   .col-md-4.col-sm-6
     .panel.panel-default
       .panel-heading
