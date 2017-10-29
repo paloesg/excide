@@ -11,6 +11,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
     user: Field::BelongsTo,
     company: Field::BelongsTo,
     template: Field::BelongsTo,
+    identifier: Field::String,
     id: Field::Number,
     completed: Field::Boolean,
     created_at: Field::DateTime,
@@ -25,6 +26,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :user,
     :company,
+    :identifier,
     :template,
     :id,
   ].freeze
@@ -34,6 +36,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = [
     :user,
     :company,
+    :identifier,
     :template,
     :id,
     :completed,
@@ -47,6 +50,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :user,
     :company,
+    :identifier,
     :template,
     :completed,
   ].freeze
