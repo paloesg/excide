@@ -3,8 +3,10 @@ class Symphony::DocumentsController < DocumentsController
     @document = Document.new(document_params)
     @document.company = @company
 
+    @workflow = Workflow.find_by(identifier: params[:workflow]) if params[:workflow].present?
+
     if @document.save
-      redirect_to symphony_documents_path, notice: 'Document was successfully created.'
+      redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.'
     else
       render :new
     end
