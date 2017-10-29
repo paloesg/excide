@@ -50,6 +50,7 @@ class WorkflowsController < ApplicationController
       @company = @user.company
     end
 
+    @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
     @workflows = @company.workflows
     @template = Template.find(params[:workflow_name])
     @documents = @company.documents
@@ -57,16 +58,7 @@ class WorkflowsController < ApplicationController
 
   def set_tasks
     @next_section = @sections.find_by_id(@current_section.id + 1)
-
-    # Only retrieve tasks that belong to current user if it's a company specific workflow
-    if @template.company.present?
-      # Find tasks by user roles
-      @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
-      @tasks = @current_section.tasks.where(role_id: @roles.map(&:id))
-    else
-      @tasks = @current_section.tasks
-    end
-
+    @tasks = @current_section.tasks
     @current_task = @tasks.first
   end
 

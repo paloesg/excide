@@ -31,13 +31,17 @@
                   = image_tag(t.image_url)
                   - if t.upload_file?
                     br
-                    = link_to "Upload File", new_symphony_document_path
+                    = link_to "Upload File", new_symphony_document_path(workflow: @workflow.identifier)
                 td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
                 td
                   - if t.approval?
                     = check_box_tag 'approved_by', action.id, action.approved_by, data: { remote: true, url: url_for(action: :approve, task_id: t.id), method: "POST" }
                 td
-                  = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }
+                  / Check if task requires a certain role to complete and whether user has that role
+                  - if t.role_id == nil || (@roles.map(&:id).include? t.role_id)
+                    = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }
+                  - else
+                    = check_box_tag 'completed', action.id, action.completed, disabled: true
     - if @next_section.present?
       - if controller.class.parents.include?(Symphony)
         = button_to "Next Section", symphony_workflow_section_path(@template.slug, @workflow.identifier, @next_section.id), method: "get", class: 'btn btn-default pull-right'
