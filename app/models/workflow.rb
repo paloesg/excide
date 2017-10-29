@@ -7,6 +7,10 @@ class Workflow < ActiveRecord::Base
 
   after_create :create_related_company_actions
 
+  def current_section
+    self.template.sections.joins(tasks: :company_actions).where(company_actions: {completed: false}).to_ary.shift
+  end
+
   private
 
   # Create all the actions that need to be completed for a workflow that is associated with a company
