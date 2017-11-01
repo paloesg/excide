@@ -53,7 +53,7 @@ class WorkflowsController < ApplicationController
     @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
     @workflows = @company.workflows
     @template = Template.find(params[:workflow_name])
-    @documents = @company.documents
+    @documents = @company.documents.order(created_at: :desc)
   end
 
   def set_tasks
