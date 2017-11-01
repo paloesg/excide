@@ -13,7 +13,7 @@ class Symphony::HomeController < ApplicationController
     @user = current_user
     @company = @user.company
     @templates = @company.templates
-    @workflows = @company.workflows
+    @workflows = @templates.map(&:workflows).flatten
   end
 
 end
