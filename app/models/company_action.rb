@@ -29,8 +29,13 @@ class CompanyAction < ActiveRecord::Base
     if self.task.last? && self.completed
       # Find task in next section if last task in section
       next_section = self.task.section.get_next_section
-      next_task = next_section.tasks.find_by(position: 1)
-      set_deadline_and_notify(next_task)
+      # Don't need to set up next task if no next section present, just mark workflow as completed
+      if next_section.present?
+        next_task = next_section.tasks.find_by(position: 1)
+        set_deadline_and_notify(next_task)
+      else
+        self.workflow.update_attributes(completed: true)
+      end
     elsif self.completed
       # Find next action in line and set deadline if not the last task in section
       next_task = self.task.lower_item
