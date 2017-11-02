@@ -8,7 +8,11 @@ class Workflow < ActiveRecord::Base
   after_create :create_related_company_actions
 
   def current_section
-    self.template.sections.joins(tasks: :company_actions).where(company_actions: {completed: false}).to_ary.shift
+    self.template.sections.joins(tasks: :company_actions).where(company_actions: {completed: false}).first
+  end
+
+  def current_task
+    self.current_section.tasks.joins(:company_actions).where(company_actions: {workflow_id: self.id, completed:false}).first
   end
 
   private
