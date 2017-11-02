@@ -9,7 +9,7 @@ class WorkflowsController < ApplicationController
     #TODO: Refactor to separate workflow creation
     @workflow = @workflows.create_with(user: @user).find_or_create_by(template: @template, company: @company)
     @sections = @template.sections
-    @current_section = @sections.joins(tasks: :company_actions).where(company_actions: {completed: false}).to_ary.shift
+    @current_section = @workflow.current_section
 
     set_tasks
   end
@@ -57,9 +57,9 @@ class WorkflowsController < ApplicationController
   end
 
   def set_tasks
-    @next_section = @sections.find_by_id(@current_section.id + 1)
+    @next_section = @workflow.next_section
     @tasks = @current_section.tasks
-    @current_task = @tasks.first
+    @current_task = @workflow.current_task
   end
 
   def workflow_params

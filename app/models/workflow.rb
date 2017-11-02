@@ -11,8 +11,16 @@ class Workflow < ActiveRecord::Base
     self.template.sections.joins(tasks: :company_actions).where(company_actions: {completed: false}).first
   end
 
+  def next_section
+    self.current_section.lower_item
+  end
+
   def current_task
-    self.current_section.tasks.joins(:company_actions).where(company_actions: {workflow_id: self.id, completed:false}).first
+    self.current_section.tasks.joins(:company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first
+  end
+
+  def next_task
+    self.current_task.lower_item
   end
 
   private
