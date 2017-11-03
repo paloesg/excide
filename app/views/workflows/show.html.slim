@@ -44,9 +44,9 @@
                     = check_box_tag 'completed', action.id, action.completed, disabled: true
     - if @next_section.present?
       - if controller.class.parents.include?(Symphony)
-        = button_to "Next Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @next_section.id), method: "get", class: 'btn btn-default pull-right'
+        = link_to "Next Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @next_section.id), class: 'btn btn-default pull-right'
       - else
-        = button_to "Next Section", company_workflow_section_path(@template.slug, @next_section.id), method: "get", class: 'btn btn-default pull-right'
+        = link_to "Next Section", company_workflow_section_path(@template.slug, @next_section.id), class: 'btn btn-default pull-right'
     - else
       = button_to "Done", dashboard_path, method: "get", class: 'btn btn-default pull-right'
   .col-md-4.col-sm-6
