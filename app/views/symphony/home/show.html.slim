@@ -23,12 +23,10 @@
                 th Workflow Name
                 th Deadline
                 th Status
-                th Current Section
             tbody
               - @workflows.each do |w|
                 tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
                   td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
                   td = w.template.title
                   td = w.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                  td = w.completed ? 'Completed' : 'In Progress'
-                  td = w.current_section.display_name
+                  td = w.completed ? 'Completed' : w.current_section.display_name
