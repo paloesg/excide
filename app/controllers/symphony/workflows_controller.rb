@@ -19,7 +19,7 @@ class Symphony::WorkflowsController < WorkflowsController
   def show
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
-    @current_section = @sections.joins(tasks: :company_actions).where(company_actions: {completed: false}).to_ary.shift
+    @section = @workflow.current_section
 
     set_tasks
   end
@@ -27,7 +27,7 @@ class Symphony::WorkflowsController < WorkflowsController
   def section
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
-    @current_section = @sections.find(params[:section_id])
+    @section = @sections.find(params[:section_id])
 
     set_tasks
     render :show
