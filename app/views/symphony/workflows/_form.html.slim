@@ -1,0 +1,21 @@
+- if @workflow.errors.any?
+  #error_explanation
+    h2 = "#{pluralize(@workflow.errors.count, "error")} prohibited this workflow from being saved:"
+    ul
+      - @workflow.errors.full_messages.each do |message|
+        li = message
+.form-group
+  = f.label :identifier
+  = f.text_field :identifier, class: 'form-control'
+.form-group
+  = f.label :deadline
+  = f.text_field :deadline, class: 'form-control datetimepicker'
+= f.submit 'Save Workflow', class: 'btn btn-default'
+
+javascript:
+  $(function() {
+    $('.datetimepicker').datetimepicker({
+      debug: false,
+      format: 'YYYY-MM-DD'
+    });
+  });

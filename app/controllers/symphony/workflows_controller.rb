@@ -1,4 +1,21 @@
 class Symphony::WorkflowsController < WorkflowsController
+  def new
+    @workflow = Workflow.new
+  end
+
+  def create
+    @workflow = Workflow.new(workflow_params)
+    @workflow.user = @user
+    @workflow.company = @company
+    @workflow.template = @template
+
+    if @workflow.save
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
+    else
+      render :new
+    end
+  end
+
   def show
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections

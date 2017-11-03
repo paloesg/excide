@@ -1,0 +1,13 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="/symphony/" Home
+      li
+        a href="#" #{@company.name}
+      li.active New Workflow
+    h1.page-header New Workflow
+.row
+  .col-md-12
+    = form_for(@workflow, url: symphony_workflows_path(workflow: params[:workflow])) do |f|
+      = render 'form', f: f
