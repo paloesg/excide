@@ -6,9 +6,15 @@ class Workflow < ActiveRecord::Base
   # Polymorphic association for any model that needs to be managed through workflows
   belongs_to :workflowable, polymorphic: true
 
-  has_many :company_actions
+  accepts_nested_attributes_for :workflowable
+
+  has_many :company_actions, dependent: :destroy
 
   after_create :create_related_company_actions
+
+  def build_workflowable(params)
+    self.workflowable = workflowable_type.constantize.new(params)
+  end
 
   def current_section
     self.template.sections.joins(tasks: :company_actions).where(company_actions: {completed: false}).first
