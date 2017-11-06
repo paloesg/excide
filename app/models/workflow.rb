@@ -3,6 +3,9 @@ class Workflow < ActiveRecord::Base
   belongs_to :company
   belongs_to :template
 
+  # Polymorphic association for any model that needs to be managed through workflows
+  belongs_to :workflowable, polymorphic: true
+
   has_many :company_actions
 
   after_create :create_related_company_actions

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171025170123) do
+ActiveRecord::Schema.define(version: 20171106095009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -396,15 +396,18 @@ ActiveRecord::Schema.define(version: 20171025170123) do
     t.integer  "company_id"
     t.integer  "template_id"
     t.boolean  "completed"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.datetime "deadline"
     t.string   "identifier"
+    t.integer  "workflowable_id"
+    t.string   "workflowable_type"
   end
 
   add_index "workflows", ["company_id"], name: "index_workflows_on_company_id", using: :btree
   add_index "workflows", ["template_id"], name: "index_workflows_on_template_id", using: :btree
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
+  add_index "workflows", ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id", using: :btree
 
   add_foreign_key "company_actions", "companies"
   add_foreign_key "company_actions", "tasks"
