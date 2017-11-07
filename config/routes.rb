@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   resources :documents
 
   namespace :symphony do
+    resources :users
     resources :documents
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
       member do
@@ -38,7 +39,6 @@ Rails.application.routes.draw do
         post '/approve/:task_id', to: 'workflows#approve', as: :task_approve
       end
     end
-
     root to: 'home#show'
   end
 
