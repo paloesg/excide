@@ -3,13 +3,13 @@ class Symphony::UsersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
+  before_action :set_user, only: [:show, :destroy]
 
   def index
     @users = User.where(company: @company)
   end
 
   def show
-    @user = User.find_by(id: params[:id], company: @company)
   end
 
   def new
@@ -26,10 +26,19 @@ class Symphony::UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user.destroy
+    redirect_to symphony_users_path, notice: 'User was successfully deleted.'
+  end
+
   private
 
   def set_company
     @company = current_user.company
+  end
+
+  def set_user
+    @user = User.find_by(id: params[:id], company: @company)
   end
 
   def user_params
