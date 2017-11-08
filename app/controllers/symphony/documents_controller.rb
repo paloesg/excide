@@ -22,8 +22,6 @@ class Symphony::DocumentsController < DocumentsController
 
   def destroy
     @document.destroy
-    respond_to do |format|
-      redirect_to symphony_documents_path, notice: 'Document was successfully destroyed.'
-    end
+    redirect_to symphony_documents_path, notice: 'Document was successfully destroyed.'
   end
 end
