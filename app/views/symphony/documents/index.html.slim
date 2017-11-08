@@ -20,7 +20,6 @@
           th Remarks
           th Date signed
           th
-          th
       tbody
         - @documents.each do |document|
           tr
@@ -28,6 +27,8 @@
             td = File.extname(document.file_url)
             td = document.remarks
             td = document.date_signed
-            td = link_to "Download", document.file_url
-            td = link_to 'Edit', edit_symphony_document_path(document)
+            td.btn-toolbar
+              = link_to "Download", document.file_url, role: 'button', class: 'btn btn-success btn-xs'
+              = link_to 'Edit', edit_symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-xs'
+              = link_to 'Delete', symphony_document_path(document), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
     = link_to 'New Document', new_symphony_document_path
