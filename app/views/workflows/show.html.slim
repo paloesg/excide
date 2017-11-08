@@ -32,7 +32,7 @@
                   = image_tag(t.image_url)
                   - if t.upload_file?
                     br
-                    = link_to "Upload File", new_symphony_document_path(workflow: @workflow.identifier)
+                    = link_to "Upload File", new_symphony_document_path(workflow: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-xs'
                 td = t.role.name.humanize
                 td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
                 td = t.approval? ? (check_box_tag 'approved_by', action.id, action.approved_by, data: { remote: true, url: url_for(action: :approve, task_id: t.id), method: "POST" }) : '-'
