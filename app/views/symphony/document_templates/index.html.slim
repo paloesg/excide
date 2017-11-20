@@ -22,9 +22,9 @@ table
         td = document_template.template
         td = document_template.task
         td = document_template.user
-        td = link_to 'Show', document_template
-        td = link_to 'Edit', edit_document_template_path(document_template)
-        td = link_to 'Destroy', document_template, data: { confirm: 'Are you sure?' }, method: :delete
+        td = link_to 'Show', symphony_document_template_path(document_template)
+        td = link_to 'Edit', edit_symphony_document_template_path(document_template)
+        td = link_to 'Destroy', symphony_document_template_path(document_template), data: { confirm: 'Are you sure?' }, method: :delete
 
 br
 

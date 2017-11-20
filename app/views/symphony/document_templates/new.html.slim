@@ -1,5 +1,6 @@
 h1 New document_template
 
-== render 'form'
+= form_for(@document_template, url: symphony_document_templates_path) do |f|
+  == render 'form', f: f
 
-= link_to 'Back', document_templates_path
+= link_to 'Back', symphony_document_templates_path

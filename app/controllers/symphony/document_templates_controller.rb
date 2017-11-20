@@ -32,7 +32,7 @@ class Symphony::DocumentTemplatesController < ApplicationController
 
     respond_to do |format|
       if @document_template.save
-        format.html { redirect_to @document_template, notice: 'Document template was successfully created.' }
+        format.html { redirect_to symphony_document_templates_path, notice: 'Document template was successfully created.' }
         format.json { render :show, status: :created, location: @document_template }
       else
         format.html { render :new }
@@ -46,7 +46,7 @@ class Symphony::DocumentTemplatesController < ApplicationController
   def update
     respond_to do |format|
       if @document_template.update(document_template_params)
-        format.html { redirect_to @document_template, notice: 'Document template was successfully updated.' }
+        format.html { redirect_to symphony_document_templates_path, notice: 'Document template was successfully updated.' }
         format.json { render :show, status: :ok, location: @document_template }
       else
         format.html { render :edit }
@@ -60,7 +60,7 @@ class Symphony::DocumentTemplatesController < ApplicationController
   def destroy
     @document_template.destroy
     respond_to do |format|
-      format.html { redirect_to document_templates_url, notice: 'Document template was successfully destroyed.' }
+      format.html { redirect_to symphony_document_templates_path, notice: 'Document template was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
