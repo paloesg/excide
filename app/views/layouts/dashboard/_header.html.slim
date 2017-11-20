@@ -15,8 +15,9 @@ nav.navbar.navbar-inverse.navbar-fixed-top
         - if controller.class.parents.include?(Symphony)
           li = link_to "Company Dashboard", params[:company_name] ? admin_company_dashboard_path : symphony_root_path
           li = link_to "Company Documents", params[:company_name] ? admin_company_documents_path : symphony_documents_path
+          li = link_to "Document Templates", symphony_document_templates_path
           li = link_to "Company Details", params[:company_name] ? admin_company_edit_path : edit_company_path
-          li = link_to "User Details", edit_profile_path
+          li = link_to "User Details", edit_user_registration_path
           li = link_to "Manage Users", symphony_users_path
           li = link_to "Log Out", logout_path
         - else
