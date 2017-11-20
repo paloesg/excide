@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171106095501) do
+ActiveRecord::Schema.define(version: 20171120150112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,21 @@ ActiveRecord::Schema.define(version: 20171106095501) do
   add_index "company_actions", ["company_id"], name: "index_company_actions_on_company_id", using: :btree
   add_index "company_actions", ["task_id"], name: "index_company_actions_on_task_id", using: :btree
   add_index "company_actions", ["workflow_id"], name: "index_company_actions_on_workflow_id", using: :btree
+
+  create_table "document_templates", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "file_url"
+    t.integer  "template_id"
+    t.integer  "task_id"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "document_templates", ["task_id"], name: "index_document_templates_on_task_id", using: :btree
+  add_index "document_templates", ["template_id"], name: "index_document_templates_on_template_id", using: :btree
+  add_index "document_templates", ["user_id"], name: "index_document_templates_on_user_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "filename"
@@ -423,6 +438,9 @@ ActiveRecord::Schema.define(version: 20171106095501) do
   add_foreign_key "company_actions", "companies"
   add_foreign_key "company_actions", "tasks"
   add_foreign_key "company_actions", "workflows"
+  add_foreign_key "document_templates", "tasks"
+  add_foreign_key "document_templates", "templates"
+  add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
   add_foreign_key "experiences", "profiles"
   add_foreign_key "profiles", "users"
