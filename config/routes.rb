@@ -31,6 +31,7 @@ Rails.application.routes.draw do
 
   namespace :symphony do
     resources :users
+    resources :document_templates
     resources :documents
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
       member do
