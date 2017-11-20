@@ -1,0 +1,31 @@
+h1 Listing document_templates
+
+table
+  thead
+    tr
+      th Title
+      th Description
+      th File URL
+      th Template
+      th Task
+      th User
+      th
+      th
+      th
+
+  tbody
+    - @document_templates.each do |document_template|
+      tr
+        td = document_template.title
+        td = document_template.description
+        td = document_template.file_url
+        td = document_template.template
+        td = document_template.task
+        td = document_template.user
+        td = link_to 'Show', document_template
+        td = link_to 'Edit', edit_document_template_path(document_template)
+        td = link_to 'Destroy', document_template, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Document template', new_symphony_document_template_path

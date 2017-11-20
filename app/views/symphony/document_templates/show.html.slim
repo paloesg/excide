@@ -1,0 +1,24 @@
+p#notice = notice
+
+p
+  strong Title:
+  = @document_template.title
+p
+  strong Description:
+  = @document_template.description
+p
+  strong File URL:
+  = @document_template.file_url
+p
+  strong Template:
+  = @document_template.template
+p
+  strong Task:
+  = @document_template.task
+p
+  strong User:
+  = @document_template.user
+
+=> link_to 'Edit', edit_document_template_path(@document_template)
+'|
+=< link_to 'Back', document_templates_path
