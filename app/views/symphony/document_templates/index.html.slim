@@ -1,31 +1,38 @@
-h1 Listing document_templates
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li
+        a href="#" Document Templates
+      li.active Edit
+    h1.page-header Document Templates Listing
 
-table
-  thead
-    tr
-      th Title
-      th Description
-      th File URL
-      th Template
-      th Task
-      th User
-      th
-      th
-      th
+.row
+  .col-sm-12
+    table.table.table-hover
+      thead
+        tr
+          th Title
+          th Description
+          th Template
+          th Task
+          th User
+          th
 
-  tbody
-    - @document_templates.each do |document_template|
-      tr
-        td = document_template.title
-        td = document_template.description
-        td = document_template.file_url
-        td = document_template.template
-        td = document_template.task
-        td = document_template.user
-        td = link_to 'Show', symphony_document_template_path(document_template)
-        td = link_to 'Edit', edit_symphony_document_template_path(document_template)
-        td = link_to 'Destroy', symphony_document_template_path(document_template), data: { confirm: 'Are you sure?' }, method: :delete
+      tbody
+        - @document_templates.each do |document_template|
+          tr
+            td = document_template.title
+            td = document_template.description
+            td = document_template.template
+            td = document_template.task
+            td = document_template.user
+            td.btn-toolbar
+              = link_to "Download", document_template.file_url, role: 'button', class: 'btn btn-success btn-xs'
+              = link_to 'Edit', edit_symphony_document_template_path(document_template), role: 'button', class: 'btn btn-primary btn-xs'
+              = link_to 'Destroy', symphony_document_template_path(document_template), data: { confirm: 'Are you sure?' }, method: :delete, class: 'btn btn-danger btn-xs'
 
-br
-
-= link_to 'New Document template', new_symphony_document_template_path
+    = link_to 'New Document Template', new_symphony_document_template_path, role: 'button', class: 'btn btn-default'
