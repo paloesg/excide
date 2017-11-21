@@ -1,6 +1,18 @@
-h1 Editing document_template
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li
+        a href="#" Document Templates
+      li.active Edit
+    h1.page-header Document Template Information
 
-= form_for(@document_template, url: symphony_document_template_path(@document_template.id)) do |f|
-  == render 'form', f: f
+.row
+  .col-sm-12
+    = form_for(@document_template, url: symphony_document_template_path(@document_template.id)) do |f|
+      = render 'form', f: f
 
-= link_to 'Back', symphony_document_templates_path
+    = link_to 'Back', symphony_document_templates_path, role: 'button', class: 'btn btn-default'

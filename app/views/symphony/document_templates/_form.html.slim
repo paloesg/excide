@@ -5,22 +5,19 @@
       - @document_template.errors.full_messages.each do |message|
         li = message
 
-.field
+.form-group
   = f.label :title
-  = f.text_field :title
-.field
+  = f.text_field :title, class: 'form-control'
+.form-group
   = f.label :description
-  = f.text_area :description
-.field
+  = f.text_area :description, class: 'form-control'
+.form-group.file-field
   = f.label :file_url
-  = f.text_field :file_url
-.field
+  = f.text_field :file_url, class: 'form-control'
+.form-group
   = f.label :template
-  = f.text_field :template
-.field
+  = f.text_field :template, class: 'form-control'
+.form-group
   = f.label :task
-  = f.text_field :task
-.field
-  = f.label :user
-  = f.text_field :user
-.actions = f.submit
+  = f.text_field :task, class: 'form-control'
+= f.submit class: 'btn btn-default'
