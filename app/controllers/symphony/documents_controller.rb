@@ -1,7 +1,7 @@
 class Symphony::DocumentsController < DocumentsController
   def index
     @workflows = @company.workflows
-    @document_templates = DocumentTemplate.joins(template: :company).where(templates: {company_id: @company.id})
+    @document_templates = DocumentTemplate.joins(template: :company).where(templates: {company_id: @company.id}).order(id: :asc)
     @documents = []
     @workflows.each do |workflow|
       docs = []
