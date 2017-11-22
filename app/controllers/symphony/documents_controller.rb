@@ -1,4 +1,18 @@
 class Symphony::DocumentsController < DocumentsController
+  def index
+    @workflows = @company.workflows
+    @document_templates = DocumentTemplate.joins(template: :company).where(templates: {company_id: @company.id})
+    @documents = []
+    @workflows.each do |workflow|
+      docs = []
+      docs << workflow
+      @document_templates.each do |template|
+        docs << Document.find_by(company: @company, workflow: workflow, document_template: template)
+      end
+      @documents << docs
+    end
+  end
+
   def create
     @document = Document.new(document_params)
     @document.company = @company

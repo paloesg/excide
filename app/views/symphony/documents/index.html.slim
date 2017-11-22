@@ -15,20 +15,19 @@
     table.table.table-hover
       thead
         tr
-          th Filename
-          th File type
-          th Remarks
-          th Date signed
+          th Workflow
+          - @document_templates.each do |template|
+            th = template.title
           th
       tbody
-        - @documents.each do |document|
+        - @documents.each do |workflow_docs|
           tr
-            td = document.filename
-            td = File.extname(document.file_url)
-            td = document.remarks
-            td = document.date_signed
-            td.btn-toolbar
-              = link_to "Download", document.file_url, role: 'button', class: 'btn btn-success btn-xs'
-              = link_to 'Edit', edit_symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-xs'
-              = link_to 'Delete', symphony_document_path(document), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
+            th = workflow_docs.shift.identifier
+            - workflow_docs.each do |doc|
+              td.btn-toolbar
+                - if doc.nil?
+                  .text-danger Not found
+                - else
+                  = link_to "Download", doc.file_url, role: 'button', class: 'btn btn-success btn-xs'
+                  = link_to 'Edit', edit_symphony_document_path(doc), role: 'button', class: 'btn btn-primary btn-xs'
     = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-default'
