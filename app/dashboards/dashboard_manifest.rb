@@ -18,6 +18,7 @@ class DashboardManifest
     :company_actions,
     :companies,
     :addresses,
+    :document_templates,
     :documents,
     :enquiries,
     :surveys,
