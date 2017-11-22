@@ -9,6 +9,7 @@ class Workflow < ActiveRecord::Base
   accepts_nested_attributes_for :workflowable
 
   has_many :company_actions, dependent: :destroy
+  has_many :documents
 
   after_create :create_related_company_actions
 

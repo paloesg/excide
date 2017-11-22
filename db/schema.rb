@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171121112835) do
+ActiveRecord::Schema.define(version: 20171122081639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,13 +120,15 @@ ActiveRecord::Schema.define(version: 20171121112835) do
     t.text     "remarks"
     t.integer  "company_id"
     t.date     "date_signed"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
     t.string   "file_url"
     t.integer  "workflow_id"
+    t.integer  "document_template_id"
   end
 
   add_index "documents", ["company_id"], name: "index_documents_on_company_id", using: :btree
+  add_index "documents", ["document_template_id"], name: "index_documents_on_document_template_id", using: :btree
   add_index "documents", ["workflow_id"], name: "index_documents_on_workflow_id", using: :btree
 
   create_table "enquiries", force: :cascade do |t|
@@ -444,6 +446,7 @@ ActiveRecord::Schema.define(version: 20171121112835) do
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
+  add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "workflows"
   add_foreign_key "experiences", "profiles"
   add_foreign_key "profiles", "users"
