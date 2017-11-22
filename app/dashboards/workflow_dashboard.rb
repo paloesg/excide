@@ -58,7 +58,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how workflows are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(workflow)
-  #   "Workflow ##{workflow.id}"
-  # end
+  def display_resource(workflow)
+    workflow.identifier
+  end
 end

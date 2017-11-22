@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class DocumentDashboard < Administrate::BaseDashboard
+class DocumentTemplateDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,16 +8,16 @@ class DocumentDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    company: Field::BelongsTo,
+    template: Field::BelongsTo,
+    task: Field::BelongsTo,
+    user: Field::BelongsTo,
+    documents: Field::HasMany,
     id: Field::Number,
-    filename: Field::String,
-    remarks: Field::Text,
-    date_signed: Field::DateTime,
+    title: Field::String,
+    description: Field::Text,
+    file_url: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    file_url: Field::String,
-    workflow: Field::BelongsTo,
-    document_template: Field::BelongsTo,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -26,46 +26,44 @@ class DocumentDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :company,
-    :workflow,
-    :document_template,
-    :id,
-    :filename,
-    :remarks,
+    :template,
+    :task,
+    :user,
+    :documents,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :company,
-    :workflow,
-    :document_template,
+    :template,
+    :task,
+    :user,
+    :documents,
     :id,
-    :filename,
-    :remarks,
-    :date_signed,
+    :title,
+    :description,
+    :file_url,
     :created_at,
     :updated_at,
-    :file_url,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :company,
-    :workflow,
-    :document_template,
-    :filename,
-    :remarks,
-    :date_signed,
+    :template,
+    :task,
+    :user,
+    :documents,
+    :title,
+    :description,
     :file_url,
   ].freeze
 
-  # Overwrite this method to customize how documents are displayed
+  # Overwrite this method to customize how document templates are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(document)
-  #   "Document ##{document.id}"
-  # end
+  def display_resource(document_template)
+    document_template.title
+  end
 end
