@@ -28,6 +28,6 @@
                 - if doc.nil?
                   .text-danger Not found
                 - else
+                  = link_to "View", symphony_document_path(doc), role: 'button', class: 'btn btn-primary btn-xs'
                   = link_to "Download", doc.file_url, role: 'button', class: 'btn btn-success btn-xs'
-                  = link_to 'Edit', edit_symphony_document_path(doc), role: 'button', class: 'btn btn-primary btn-xs'
     = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-default'
