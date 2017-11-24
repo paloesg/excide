@@ -7,7 +7,7 @@
         a href="#" Company
       li
         a href="#" Documents
-      li.active Edit
+      li.active View
     h1.page-header View Document
 .row
   .col-md-8.col-sm-12
@@ -29,6 +29,19 @@
           strong
             ' File Type:
           = File.extname(@document.file_url)
+        p
+          strong
+            ' Workflow Identifier:
+          = @document.workflow.identifier
+        p
+          strong
+            ' Template:
+          = @document.document_template.title
+        p
+          strong
+            ' Remarks:
+          br
+          = @document.remarks
 
         = link_to 'Edit', edit_symphony_document_path(@document)
         '  |
