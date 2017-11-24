@@ -5,6 +5,9 @@
       - @document.errors.full_messages.each do |message|
         li = message
 .form-group
+  = f.label :identifier
+  = f.text_field :identifier, class: 'form-control'
+.form-group
   = f.label :filename
   = f.text_field :filename, class: 'form-control'
 .form-group
