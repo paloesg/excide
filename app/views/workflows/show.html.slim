@@ -20,7 +20,7 @@
               th Instructions
               th Who
               th Deadline
-              th Approve
+              / th Approve
               th Done
           tbody
             - @tasks.each do |t|
@@ -35,7 +35,7 @@
                     = link_to "Upload File", new_symphony_document_path(workflow: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-xs'
                 td = t.role.name.humanize
                 td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                td = t.approval? ? (check_box_tag 'approved_by', action.id, action.approved_by, data: { remote: true, url: url_for(action: :approve, task_id: t.id), method: "POST" }) : '-'
+                / td = t.approval? ? (check_box_tag 'approved_by', action.id, action.approved_by, data: { remote: true, url: url_for(action: :approve, task_id: t.id), method: "POST" }) : '-'
                 td
                   / Check if task requires a certain role to complete and whether user has that role
                   - if t.role_id == nil || (@roles.map(&:id).include? t.role_id)
