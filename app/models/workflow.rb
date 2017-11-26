@@ -22,7 +22,7 @@ class Workflow < ActiveRecord::Base
   end
 
   def next_section
-    self.current_section.lower_item
+    self.current_section&.lower_item
   end
 
   def current_task
@@ -30,7 +30,7 @@ class Workflow < ActiveRecord::Base
   end
 
   def next_task
-    self.current_task.lower_item
+    self.current_task&.lower_item
   end
 
   private
