@@ -20,9 +20,9 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
     @section = @workflow.current_section
-    @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
 
     set_tasks
+    set_documents
   end
 
   def section
@@ -31,6 +31,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @section = @sections.find(params[:section_id])
 
     set_tasks
+    set_documents
     render :show
   end
 
@@ -50,5 +51,9 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def workflow_params
     params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type)
+  end
+
+  def set_documents
+    @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
   end
 end
