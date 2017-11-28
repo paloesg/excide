@@ -1,7 +1,8 @@
 class Symphony::DocumentsController < DocumentsController
+  before_action :set_templates, only: [:index, :new, :edit]
+  before_action :set_workflows, only: [:index, :new, :edit]
+
   def index
-    @workflows = @company.workflows
-    @document_templates = DocumentTemplate.joins(template: :company).where(templates: {company_id: @company.id}).order(id: :asc)
     @documents = []
 
     # For each workflow that a company has, retrieve all the documents present, ordered by document templates so that they can be displayed in the table
@@ -41,5 +42,15 @@ class Symphony::DocumentsController < DocumentsController
   def destroy
     @document.destroy
     redirect_to symphony_documents_path, notice: 'Document was successfully destroyed.'
+  end
+
+  private
+
+  def set_templates
+    @document_templates = DocumentTemplate.joins(template: :company).where(templates: {company_id: @company.id}).order(id: :asc)
+  end
+
+  def set_workflows
+    @workflows = @company.workflows
   end
 end
