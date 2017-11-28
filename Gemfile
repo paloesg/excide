@@ -88,6 +88,9 @@ gem 'rollbar'
 gem 'oj', '~> 2.12.14'
 gem 'snitcher'
 
+# Performance reporting
+gem "skylight"
+
 # Frontend framework
 gem 'bootstrap-sass'
 # Themify icon set web fonts
