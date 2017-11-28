@@ -20,6 +20,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
     @section = @workflow.current_section
+    @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
 
     set_tasks
   end
