@@ -2,7 +2,9 @@ class WorkflowsController < ApplicationController
   layout "dashboard/application"
 
   before_action :authenticate_user!
-  before_action :set_workflow
+  before_action :set_company_and_roles
+  before_action :set_template
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy]
 
   def show
     # Look for existing workflow if not create new workflow and then show the tasks from the first section
@@ -37,7 +39,7 @@ class WorkflowsController < ApplicationController
 
   private
   # Use callbacks to share common setup or constraints between actions.
-  def set_workflow
+  def set_company_and_roles
     @user = current_user
 
     if current_user.has_role? :admin
@@ -51,8 +53,14 @@ class WorkflowsController < ApplicationController
     end
 
     @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
-    @workflows = @company.workflows
+  end
+
+  def set_template
     @template = Template.find(params[:workflow_name])
+  end
+
+  def set_workflow
+    @workflows = @company.workflows
     @documents = @company.documents.order(created_at: :desc)
   end
 
