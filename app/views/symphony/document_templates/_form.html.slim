@@ -1,6 +1,6 @@
 - if @document_template.errors.any?
-  #error_explanation
-    h2 = "#{pluralize(@document_template.errors.count, "error")} prohibited this document_template from being saved:"
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@document_template.errors.count, "error")} prohibited this document_template from being saved:"
     ul
       - @document_template.errors.full_messages.each do |message|
         li = message
