@@ -40,7 +40,7 @@
                 / td = t.approval? ? (check_box_tag 'approved_by', action.id, action.approved_by, data: { remote: true, url: url_for(action: :approve, task_id: t.id), method: "POST" }) : '-'
                 td
                   / Check if task requires a certain role to complete and whether user has that role
-                  - if t.role_id == nil || (@roles.map(&:id).include? t.role_id)
+                  - if t == @workflow.current_task && (t.role_id == nil || (@roles.map(&:id).include? t.role_id) || (@user.has_role? :admin, @company))
                     = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }
                   - else
                     = check_box_tag 'completed', action.id, action.completed, disabled: true
