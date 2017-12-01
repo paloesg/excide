@@ -11,6 +11,8 @@ class Workflow < ActiveRecord::Base
   has_many :company_actions, dependent: :destroy
   has_many :documents
 
+  validates :identifier, uniqueness: true
+
   after_create :create_related_company_actions
 
   def build_workflowable(params)
