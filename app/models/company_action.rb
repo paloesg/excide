@@ -10,7 +10,7 @@ class CompanyAction < ActiveRecord::Base
   belongs_to :company
   belongs_to :workflow
 
-  has_one :reminder
+  has_one :reminder, dependent: :destroy
 
   private
 

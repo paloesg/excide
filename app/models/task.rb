@@ -2,7 +2,8 @@ class Task < ActiveRecord::Base
   belongs_to :section
   acts_as_list scope: :section
 
-  has_many :company_actions
+  has_many :reminders, dependent: :destroy
+  has_many :company_actions, dependent: :destroy
   belongs_to :role
 
   enum task_type: [:instructions, :upload_file, :approval]
