@@ -114,14 +114,20 @@ group :development do
   gem 'rails_real_favicon'
   gem 'rubocop', require: false
   gem 'brakeman', require: false
-end
 
-group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console'
+
+  # Better error page in development
+  gem "better_errors"
+  gem "binding_of_caller"
+end
+
+group :development, :test do
+
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
@@ -129,8 +135,7 @@ group :development, :test do
   # Manage env variables during development and testing
   gem 'dotenv-rails'
 
-  # Better error page in development
-  gem "better_errors"
-  gem "binding_of_caller"
+  # Testing framework
+  gem 'rspec-rails', '~> 3.6'
 end
 
