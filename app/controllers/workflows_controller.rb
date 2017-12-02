@@ -4,7 +4,7 @@ class WorkflowsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company_and_roles
   before_action :set_template
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :section]
 
   def show
     # Look for existing workflow if not create new workflow and then show the tasks from the first section
