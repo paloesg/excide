@@ -5,4 +5,6 @@ class Document < ActiveRecord::Base
   belongs_to :company
   belongs_to :workflow
   belongs_to :document_template
+
+  validates :identifier, :file_url, presence: true
 end
