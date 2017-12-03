@@ -10,4 +10,6 @@ class Template < ActiveRecord::Base
   accepts_nested_attributes_for :sections
 
   enum business_model: [:ecommerce, :marketplace, :media, :mobile, :saas, :others]
+
+  validates :title, :slug, :company, presence: true
 end
