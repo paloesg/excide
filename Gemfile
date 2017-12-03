@@ -136,4 +136,5 @@ group :development, :test do
   # Testing framework
   gem 'rspec-rails', '~> 3.6'
   gem 'shoulda'
+  gem 'factory_bot'
 end
