@@ -1,4 +1,4 @@
-# Excide
+# Excide [ ![Codeship Status for hschin/excide](https://app.codeship.com/projects/2db702b0-b9a0-0135-5621-32473b6e6746/status?branch=master)](https://app.codeship.com/projects/259155)
 
 The Excide web platform hosts the main website of Excide and several backend processes such as enquiries, reminders and surveys.
 
