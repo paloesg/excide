@@ -6,7 +6,7 @@ class Section < ActiveRecord::Base
 
   accepts_nested_attributes_for :tasks
 
-  validates :unique_name, :position, :template, presence: true
+  validates :unique_name, :display_name, :position, :template, presence: true
 
   def get_next_section
     self.lower_item
