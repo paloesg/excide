@@ -9,9 +9,7 @@ class Survey < ActiveRecord::Base
 
   accepts_nested_attributes_for :company
 
-  validates :user, presence: true
-  validates :survey_template, presence: true
-  validates :title, presence: true
+  validates :user, :survey_template, :title, presence: true
 
   def to_csv
     ::CSV.generate(headers: true) do |csv|
