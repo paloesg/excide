@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171124084230) do
+ActiveRecord::Schema.define(version: 20171214135452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -309,14 +309,14 @@ ActiveRecord::Schema.define(version: 20171124084230) do
   create_table "segments", force: :cascade do |t|
     t.string   "name"
     t.integer  "position"
-    t.integer  "section_id"
+    t.integer  "survey_section_id"
     t.integer  "survey_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
-  add_index "segments", ["section_id"], name: "index_segments_on_section_id", using: :btree
   add_index "segments", ["survey_id"], name: "index_segments_on_survey_id", using: :btree
+  add_index "segments", ["survey_section_id"], name: "index_segments_on_survey_section_id", using: :btree
 
   create_table "survey_sections", force: :cascade do |t|
     t.string   "unique_name"
@@ -464,7 +464,7 @@ ActiveRecord::Schema.define(version: 20171124084230) do
   add_foreign_key "responses", "questions"
   add_foreign_key "responses", "segments"
   add_foreign_key "sections", "templates"
-  add_foreign_key "segments", "sections"
+  add_foreign_key "segments", "sections", column: "survey_section_id"
   add_foreign_key "segments", "surveys"
   add_foreign_key "survey_sections", "survey_templates"
   add_foreign_key "surveys", "companies"
