@@ -9,7 +9,7 @@ class Task < ActiveRecord::Base
 
   acts_as_list scope: :section
 
-  validates :instructions, :position, :section, :role, :task_type, presence: true
+  validates :instructions, :position, :task_type, presence: true
 
   def get_company_action(company_id, workflow_identifier = nil)
     workflow_id = workflow_identifier.present? ? Workflow.find_by(identifier: workflow_identifier).id : nil
