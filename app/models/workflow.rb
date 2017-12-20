@@ -20,7 +20,11 @@ class Workflow < ActiveRecord::Base
   end
 
   def current_section
-    self.template.sections.joins(tasks: :company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first
+    if self.completed
+      self.template.sections.last
+    else
+      self.template.sections.joins(tasks: :company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first
+    end
   end
 
   def next_section
@@ -28,7 +32,7 @@ class Workflow < ActiveRecord::Base
   end
 
   def current_task
-    self.current_section.tasks.joins(:company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first
+    self.current_section.tasks.joins(:company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first unless self.completed
   end
 
   def next_task
