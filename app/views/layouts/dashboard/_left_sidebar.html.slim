@@ -9,10 +9,10 @@
                 a data-toggle="collapse" href="#collapse-#{t.slug}" aria-expanded="false" aria-controls="collapse-#{t.slug}" role="button"
                   = t.title
                   span.caret
-            .panel-collapse.collapse id="collapse-#{t.slug}" role="tabpanel" aria-labelledby="#collapse-#{t.slug}-heading"
+            .panel-collapse.collapse id="collapse-#{t.slug}" role="tabpanel" aria-labelledby="#collapse-#{t.slug}-heading" class=('in' if t.slug == @workflow&.template&.slug)
               ul.list-group
               - t.workflows.each do |w|
-                li.list-group-item = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)
+                li.list-group-item class=('active' if w.identifier == @workflow&.identifier) = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)
     - else
       h5 Workflows
       - get_general_templates.each do |t|

@@ -54,6 +54,20 @@ body {
   margin-right: -21px; /* 20px padding + 1px border */
   margin-bottom: 20px;
   margin-left: -20px;
+
+  li {
+    border-left: 0px;
+    border-right: 0px;
+  }
+
+  .active, .active:hover {
+    background-color: #eeeeee;
+    border-color: #dddddd;
+
+    a {
+      color: #777777;
+    }
+  }
 }
 
 /*
