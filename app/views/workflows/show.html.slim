@@ -34,6 +34,9 @@
                   - if t.upload_file?
                     br
                     = link_to "Upload File", new_symphony_document_path(workflow: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-xs'
+                  - if t.download_file?
+                    br
+                    = link_to "Download File", symphony_document_templates_path, role: 'button', class: 'btn btn-primary btn-xs'
                 - if controller.class.parents.include?(Symphony)
                   td = t.role.name.humanize
                 td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
