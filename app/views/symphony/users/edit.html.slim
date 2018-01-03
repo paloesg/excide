@@ -1,0 +1,15 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li
+        a href="#" Users
+      li.active Edit
+    h1.page-header Edit User
+.row
+  .col-sm-12
+    = form_for(@user, url: symphony_user_path) do |f|
+      = render 'form', f: f

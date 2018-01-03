@@ -3,7 +3,7 @@ class Symphony::UsersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_user, only: [:show, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
     @users = User.where(company: @company).order(:id)
@@ -23,6 +23,17 @@ class Symphony::UsersController < ApplicationController
       redirect_to symphony_users_path, notice: 'User successfully created!'
     else
       render :new
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @user.update(user_params)
+      redirect_to symphony_users_path, notice: 'User successfully updated!'
+    else
+      render :edit
     end
   end
 
