@@ -18,6 +18,7 @@ class TaskDashboard < Administrate::BaseDashboard
     image_url: ImageField,
     days_to_complete: Field::Number,
     set_reminder: Field::Boolean,
+    document_template: Field::HasOne,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -36,6 +37,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :instructions,
     :days_to_complete,
     :set_reminder,
+    :document_template,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -49,6 +51,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :image_url,
     :days_to_complete,
     :set_reminder,
+    :document_template,
     :company_actions,
     :id,
     :created_at,
@@ -67,6 +70,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :image_url,
     :days_to_complete,
     :set_reminder,
+    :document_template,
     :company_actions,
   ].freeze
 
