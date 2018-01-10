@@ -126,6 +126,8 @@ group :development do
   # Better error page in development
   gem "better_errors"
   gem "binding_of_caller"
+
+  gem 'rails-erd'
 end
 
 group :development, :test do
