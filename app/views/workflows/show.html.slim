@@ -34,7 +34,7 @@
                   - if t.upload_file?
                     br
                     = link_to "Upload File", new_symphony_document_path(workflow: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-xs'
-                  - if t.download_file?
+                  - if t.download_file? && t.document_template.present?
                     br
                     = link_to "Download File", t.document_template.file_url, role: 'button', class: 'btn btn-primary btn-xs'
                 - if controller.class.parents.include?(Symphony)
