@@ -46,6 +46,11 @@ class Symphony::DocumentsController < DocumentsController
 
   private
 
+  def set_company
+    @user = current_user
+    @company = @user.company
+  end
+
   def set_templates
     @document_templates = DocumentTemplate.joins(template: :company).where(templates: {company_id: @company.id}).order(id: :asc)
   end
