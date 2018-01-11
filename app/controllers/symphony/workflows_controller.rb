@@ -49,6 +49,12 @@ class Symphony::WorkflowsController < WorkflowsController
 
   private
 
+  def set_company_and_roles
+    @user = current_user
+    @company = @user.company
+    @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
+  end
+
   def workflow_params
     params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type)
   end
