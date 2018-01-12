@@ -67,9 +67,9 @@
       .panel-heading
         h3.panel-title #{@workflow.workflowable_type}
       .panel-body
-        | Name: #{@workflow.workflowable.name}
+        | Name: #{@workflow.workflowable&.name}
         br
-        | Identifier: #{@workflow.workflowable.identifier}
+        | Identifier: #{@workflow.workflowable&.identifier}
     .panel.panel-default
       .panel-heading
         h3.panel-title Documents
