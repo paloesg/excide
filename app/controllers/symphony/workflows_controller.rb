@@ -8,7 +8,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.user = @user
     @workflow.company = @company
     @workflow.template = @template
-    @client = Client.where(identifier: params[:workflow][:client][:identifier]).first_or_create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier])
+    @client = Client.where(identifier: params[:workflow][:workflowable_attributes][:identifier]).first_or_create(name: params[:workflow][:workflowable_attributes][:name], identifier: params[:workflow][:workflowable_attributes][:identifier])
     @workflow.workflowable = @client
 
     if @workflow.save
@@ -25,6 +25,20 @@ class Symphony::WorkflowsController < WorkflowsController
 
     set_tasks
     set_documents
+  end
+
+  def edit
+  end
+
+  def update
+    @client = Client.where(identifier: params[:workflow][:workflowable_attributes][:identifier]).first_or_create(name: params[:workflow][:workflowable_attributes][:name], identifier: params[:workflow][:workflowable_attributes][:identifier])
+    @workflow.workflowable = @client
+
+    if @workflow.update(workflow_params)
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
+    else
+      render :edit
+    end
   end
 
   def section
@@ -55,6 +69,12 @@ class Symphony::WorkflowsController < WorkflowsController
     @user = current_user
     @company = @user.company
     @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
+  end
+
+  def set_workflow
+    @workflows = @company.workflows
+    @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
+    @documents = @company.documents.order(created_at: :desc)
   end
 
   def workflow_params

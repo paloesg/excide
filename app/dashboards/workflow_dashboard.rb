@@ -14,6 +14,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
     identifier: Field::String,
     id: Field::Number,
     completed: Field::Boolean,
+    workflowable: Field::Polymorphic,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -28,6 +29,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
     :company,
     :identifier,
     :template,
+    :workflowable,
     :id,
   ].freeze
 
@@ -38,6 +40,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
     :company,
     :identifier,
     :template,
+    :workflowable,
     :id,
     :completed,
     :created_at,
@@ -52,6 +55,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
     :company,
     :identifier,
     :template,
+    :workflowable,
     :completed,
   ].freeze
 

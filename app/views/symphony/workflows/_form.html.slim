@@ -11,7 +11,7 @@
 .form-group
   = f.label :deadline
   = f.text_field :deadline, class: 'form-control datetimepicker'
-= f.fields_for :client do |c|
+= f.fields_for :workflowable do |c|
   .form-group
     = c.label :name, 'Client Name'
     = c.text_field :name, class: 'form-control'
