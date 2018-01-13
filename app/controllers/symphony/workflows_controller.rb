@@ -9,7 +9,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.user = @user
     @workflow.company = @company
     @workflow.template = @template
-    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier]) unless params[:workflow][:workflowable_id].present?
+    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
     if @workflow.save
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
     else
