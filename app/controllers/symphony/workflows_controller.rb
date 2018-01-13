@@ -1,6 +1,7 @@
 class Symphony::WorkflowsController < WorkflowsController
   def new
     @workflow = Workflow.new
+    @clients = Client.where(company: @company)
   end
 
   def create
@@ -8,12 +9,11 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.user = @user
     @workflow.company = @company
     @workflow.template = @template
-    @client = Client.where(identifier: params[:workflow][:workflowable_attributes][:identifier]).first_or_create(name: params[:workflow][:workflowable_attributes][:name], identifier: params[:workflow][:workflowable_attributes][:identifier])
-    @workflow.workflowable = @client
-
+    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier]) unless params[:workflow][:workflowable_id].present?
     if @workflow.save
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
     else
+      @clients = Client.where(company: @company)
       render :new
     end
   end
@@ -28,12 +28,10 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def edit
+    @clients = Client.where(company: @company)
   end
 
   def update
-    @client = Client.where(identifier: params[:workflow][:workflowable_attributes][:identifier]).first_or_create(name: params[:workflow][:workflowable_attributes][:name], identifier: params[:workflow][:workflowable_attributes][:identifier])
-    @workflow.workflowable = @client
-
     if @workflow.update(workflow_params)
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
     else
