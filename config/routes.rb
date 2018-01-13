@@ -35,8 +35,8 @@ Rails.application.routes.draw do
     resources :documents
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
       member do
-        get '/:section_id', to: 'workflows#section', as: :section
-        post '/:task_id', to: 'workflows#toggle', as: :task_toggle
+        get '/section/:section_id', to: 'workflows#section', as: :section
+        post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
         post '/approve/:task_id', to: 'workflows#approve', as: :task_approve
       end
     end

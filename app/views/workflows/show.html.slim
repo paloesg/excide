@@ -63,6 +63,9 @@
       - else
         = link_to "Next Section", company_workflow_section_path(@template.slug, @section.lower_item.id), class: 'btn btn-default pull-right'
   .col-md-4.col-sm-6
+    = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
+    br
+  .col-md-4.col-sm-6
     .panel.panel-default
       .panel-heading
         h3.panel-title #{@workflow.workflowable_type}

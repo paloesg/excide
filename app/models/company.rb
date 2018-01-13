@@ -40,6 +40,7 @@ class Company < ActiveRecord::Base
   has_many :templates
   has_many :workflows
   has_many :company_actions
+  has_many :clients
   has_one :address, as: :addressable
 
   accepts_nested_attributes_for :projects, :reject_if => :all_blank, :allow_destroy => true

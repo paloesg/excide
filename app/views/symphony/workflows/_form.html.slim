@@ -11,14 +11,31 @@
 .form-group
   = f.label :deadline
   = f.text_field :deadline, class: 'form-control datetimepicker'
-= f.fields_for :client do |c|
-  .form-group
-    = c.label :name, 'Client Name'
-    = c.text_field :name, class: 'form-control'
-  .form-group
-    = c.label :identifier, 'Client Identifier'
-    = c.text_field :identifier, class: 'form-control'
-= f.submit 'Save Workflow', class: 'btn btn-default'
+.row
+  - if @workflow.workflowable.blank?
+    .col-md-6.col-sm-12
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title New Client
+        .panel-body
+          = f.fields_for :client do |c|
+            .form-group
+              = c.label :name, 'Client Name'
+              = c.text_field :name, class: 'form-control'
+            .form-group
+              = c.label :identifier, 'Client Identifier'
+              = c.text_field :identifier, class: 'form-control'
+  .col-md-6.col-sm-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Existing Client
+      .panel-body
+        .form-group
+          = f.label :workflowable_id, 'Client'
+          = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'form-control'
+.row
+  .col-sm-12
+    = f.submit 'Save Workflow', class: 'btn btn-default'
 
 javascript:
   $(function() {

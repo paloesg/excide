@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180105094715) do
+ActiveRecord::Schema.define(version: 20180113083535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,8 +65,10 @@ ActiveRecord::Schema.define(version: 20180105094715) do
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "company_id"
   end
 
+  add_index "clients", ["company_id"], name: "index_clients_on_company_id", using: :btree
   add_index "clients", ["user_id"], name: "index_clients_on_user_id", using: :btree
 
   create_table "companies", force: :cascade do |t|
@@ -441,6 +443,7 @@ ActiveRecord::Schema.define(version: 20180105094715) do
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
   add_index "workflows", ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id", using: :btree
 
+  add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
   add_foreign_key "company_actions", "companies"
   add_foreign_key "company_actions", "tasks"
