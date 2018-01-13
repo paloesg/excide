@@ -32,6 +32,8 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def update
+    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
+
     if @workflow.update(workflow_params)
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
     else
@@ -76,7 +78,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type)
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :workflowable)
   end
 
   def set_documents
