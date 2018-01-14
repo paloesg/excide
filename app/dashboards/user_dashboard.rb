@@ -29,6 +29,7 @@ class UserDashboard < Administrate::BaseDashboard
     current_sign_in_ip: Field::String.with_options(searchable: false),
     last_sign_in_ip: Field::String.with_options(searchable: false),
     roles: HasManyRolesField,
+    company: Field::BelongsTo,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -42,6 +43,7 @@ class UserDashboard < Administrate::BaseDashboard
     :last_name,
     :email,
     :contact_number,
+    :company,
     :roles,
   ].freeze
 
@@ -53,6 +55,7 @@ class UserDashboard < Administrate::BaseDashboard
     :last_name,
     :email,
     :contact_number,
+    :company,
     :roles,
     :allow_contact,
     :agree_terms,
@@ -66,6 +69,7 @@ class UserDashboard < Administrate::BaseDashboard
     :last_name,
     :email,
     :contact_number,
+    :company,
     :roles,
     :allow_contact,
     :agree_terms,
