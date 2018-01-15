@@ -12,11 +12,8 @@
   = f.label :description
   = f.text_area :description, class: 'form-control'
 .form-group
-  = f.label :template
-  = f.text_field :template, class: 'form-control'
-.form-group
-  = f.label :task
-  = f.text_field :task, class: 'form-control'
+  = f.label :template_id, 'Template'
+  = f.collection_select :template_id, @templates, :id, :title, {include_blank: true}, class: 'form-control'
 .form-group.file-field
   = f.label :file_url, 'Upload file'
   = f.file_field :file_url

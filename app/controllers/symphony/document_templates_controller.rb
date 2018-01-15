@@ -5,6 +5,7 @@ class Symphony::DocumentTemplatesController < ApplicationController
   before_action :set_company
   before_action :set_document_template, only: [:show, :edit, :update, :destroy]
   before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
+  before_action :set_templates, only: [:new, :edit, :create, :update]
 
   # GET /document_templates
   # GET /document_templates.json
@@ -75,6 +76,10 @@ class Symphony::DocumentTemplatesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_document_template
       @document_template = DocumentTemplate.find(params[:id])
+    end
+
+    def set_templates
+      @templates = @company.templates
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
