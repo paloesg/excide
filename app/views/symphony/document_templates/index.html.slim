@@ -18,8 +18,6 @@
           th Title
           th Description
           th Workflow Template
-          th Task
-          th Uploader
           th
 
       tbody
@@ -28,8 +26,6 @@
             td = document_template.title
             td = document_template.description
             td = document_template&.template&.title
-            td = document_template&.task&.id
-            td = document_template&.user&.first_name
             td.btn-toolbar
               = link_to "Download", document_template.file_url, role: 'button', class: 'btn btn-success btn-xs'
               = link_to 'Edit', edit_symphony_document_template_path(document_template), role: 'button', class: 'btn btn-primary btn-xs'
