@@ -38,7 +38,7 @@
                     br
                     = link_to "Download File", t.document_template.file_url, role: 'button', class: 'btn btn-primary btn-xs'
                 - if controller.class.parents.include?(Symphony)
-                  td = t.role.name.humanize
+                  td = t.role&.name&.humanize
                 td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
                 / td = t.approval? ? (check_box_tag 'approved_by', action.id, action.approved_by, data: { remote: true, url: url_for(action: :approve, task_id: t.id), method: "POST" }) : '-'
                 td
