@@ -11,13 +11,16 @@
 .form-group
   = f.label :description
   = f.text_area :description, class: 'form-control'
-.form-group.file-field
-  = f.label :file_url
-  = f.text_field :file_url, class: 'form-control'
 .form-group
   = f.label :template
   = f.text_field :template, class: 'form-control'
 .form-group
   = f.label :task
   = f.text_field :task, class: 'form-control'
+.form-group.file-field
+  = f.label :file_url, 'Upload file'
+  = f.file_field :file_url
+  .file-path-wrapper
+    = f.label 'File URL'
+    = f.text_field :file_url, class: 'file-path form-control', disabled: true
 = f.submit class: 'btn btn-default'

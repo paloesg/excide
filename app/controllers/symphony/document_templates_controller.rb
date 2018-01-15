@@ -4,6 +4,7 @@ class Symphony::DocumentTemplatesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_document_template, only: [:show, :edit, :update, :destroy]
+  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
   # GET /document_templates
   # GET /document_templates.json
@@ -79,5 +80,9 @@ class Symphony::DocumentTemplatesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def document_template_params
       params.require(:document_template).permit(:title, :description, :file_url, :template_id, :task_id, :user_id)
+    end
+
+    def set_s3_direct_post
+      @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
     end
 end
