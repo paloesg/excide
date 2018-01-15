@@ -1,8 +1,8 @@
 class Task < ActiveRecord::Base
   belongs_to :section
   belongs_to :role
+  belongs_to :document_template
 
-  has_one :document_template
   has_many :reminders, dependent: :destroy
   has_many :company_actions, dependent: :destroy
 
