@@ -75,6 +75,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflows = @company.workflows
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @documents = @company.documents.order(created_at: :desc)
+    @document_templates = DocumentTemplate.where(template: @workflow.template)
   end
 
   def workflow_params

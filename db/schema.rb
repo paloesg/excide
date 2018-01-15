@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180113083535) do
+ActiveRecord::Schema.define(version: 20180115075021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,13 +107,11 @@ ActiveRecord::Schema.define(version: 20180113083535) do
     t.text     "description"
     t.string   "file_url"
     t.integer  "template_id"
-    t.integer  "task_id"
     t.integer  "user_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  add_index "document_templates", ["task_id"], name: "index_document_templates_on_task_id", using: :btree
   add_index "document_templates", ["template_id"], name: "index_document_templates_on_template_id", using: :btree
   add_index "document_templates", ["user_id"], name: "index_document_templates_on_user_id", using: :btree
 
@@ -448,7 +446,6 @@ ActiveRecord::Schema.define(version: 20180113083535) do
   add_foreign_key "company_actions", "companies"
   add_foreign_key "company_actions", "tasks"
   add_foreign_key "company_actions", "workflows"
-  add_foreign_key "document_templates", "tasks"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"

@@ -2,17 +2,15 @@
   .col-sm-12
     ol.breadcrumb.text-right
       li
-        a href="#" Home
+        a href="/symphony" Dashboard
       li
-        a href="#" Company
+        a href="/symphony/company" #{@company.name}
       li
-        a href="#" Document Templates
+        a href="/symphony/document_templates" Document Templates
       li.active Edit
     h1.page-header Document Template Information
 
 .row
   .col-sm-12
-    = form_for(@document_template, url: symphony_document_template_path(@document_template.id)) do |f|
+    = form_for(@document_template, url: symphony_document_template_path(@document_template.id), html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
       = render 'form', f: f
-
-    = link_to 'Back', symphony_document_templates_path, role: 'button', class: 'btn btn-default'

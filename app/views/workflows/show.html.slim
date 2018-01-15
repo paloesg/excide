@@ -91,3 +91,21 @@
                 = File.basename(d.file_url)
                 br
                 = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Document Templates
+      .panel-body
+        - if @document_templates.empty?
+          | No documents yet.
+        - else
+          - @document_templates.each do |d|
+            .media
+              .media-left.media-middle
+                a href="#{d.file_url}"
+                  i.ti-file.icon style="font-size: 50px"
+              .media-body
+                h4.media-heading = d.title
+                a href="#{d.file_url}"
+                = File.basename(d.file_url)
+                br
+                = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
