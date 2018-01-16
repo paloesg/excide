@@ -18,7 +18,7 @@ class TaskDashboard < Administrate::BaseDashboard
     image_url: ImageField,
     days_to_complete: Field::Number,
     set_reminder: Field::Boolean,
-    document_template: Field::HasOne,
+    document_template: Field::BelongsTo,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze

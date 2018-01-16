@@ -9,7 +9,7 @@ class DocumentTemplateDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     template: Field::BelongsTo,
-    task: Field::BelongsTo,
+    task: Field::HasMany,
     user: Field::BelongsTo,
     documents: Field::HasMany,
     id: Field::Number,
