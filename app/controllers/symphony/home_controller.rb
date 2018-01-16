@@ -1,5 +1,6 @@
 class Symphony::HomeController < ApplicationController
   layout 'dashboard/application'
+  require 'will_paginate/array'
 
   before_action :authenticate_user!
   before_action :set_workflow, only: [:show]
@@ -14,6 +15,7 @@ class Symphony::HomeController < ApplicationController
     @company = @user.company
     @templates = @company.templates
     @workflows = @templates.map(&:workflows).flatten
+    @workflows = @workflows.paginate(page: params[:page], per_page: 10)
   end
 
 end
