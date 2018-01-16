@@ -79,6 +79,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def workflow_params
+    params[:workflow][:identifier] = params[:workflow][:identifier].parameterize.upcase
     params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :workflowable)
   end
 
