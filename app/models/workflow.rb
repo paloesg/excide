@@ -14,6 +14,7 @@ class Workflow < ActiveRecord::Base
   validates :identifier, uniqueness: true
 
   after_create :create_related_company_actions
+  before_save :uppercase_identifier
 
   def build_workflowable(params)
     self.workflowable = workflowable_type.constantize.new(params)
@@ -37,6 +38,10 @@ class Workflow < ActiveRecord::Base
 
   def next_task
     self.current_task&.lower_item
+  end
+
+  def uppercase_identifier
+    self.identifier = identifier.parameterize.upcase
   end
 
   private
