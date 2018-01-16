@@ -4,4 +4,6 @@ class DocumentTemplate < ActiveRecord::Base
 
   has_many :documents
   has_many :tasks
+
+  validates :title, :file_url, :template, presence: true
 end

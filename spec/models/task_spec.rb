@@ -7,6 +7,7 @@ RSpec.describe Task, type: :model do
 
   it { should belong_to(:section) }
   it { should belong_to(:role) }
+  it { should belong_to(:document_template) }
   it { should have_many(:reminders) }
   it { should have_many(:company_actions) }
 end

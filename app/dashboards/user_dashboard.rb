@@ -13,7 +13,7 @@ class UserDashboard < Administrate::BaseDashboard
     email: Field::String,
     contact_number: Field::String,
     profile: Field::HasOne,
-    company: Field::HasOne,
+    company: Field::BelongsTo,
     id: Field::Number,
     allow_contact: Field::Boolean,
     agree_terms: Field::Boolean,
@@ -29,7 +29,6 @@ class UserDashboard < Administrate::BaseDashboard
     current_sign_in_ip: Field::String.with_options(searchable: false),
     last_sign_in_ip: Field::String.with_options(searchable: false),
     roles: HasManyRolesField,
-    company: Field::BelongsTo,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
