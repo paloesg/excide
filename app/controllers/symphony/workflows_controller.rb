@@ -1,7 +1,8 @@
 class Symphony::WorkflowsController < WorkflowsController
+  before_action :set_clients, only: [:new, :create, :edit, :update]
+
   def new
     @workflow = Workflow.new
-    @clients = Client.where(company: @company)
   end
 
   def create
@@ -13,7 +14,6 @@ class Symphony::WorkflowsController < WorkflowsController
     if @workflow.save
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
     else
-      @clients = Client.where(company: @company)
       render :new
     end
   end
@@ -28,7 +28,6 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def edit
-    @clients = Client.where(company: @company)
   end
 
   def update
@@ -76,6 +75,10 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @documents = @company.documents.order(created_at: :desc)
     @document_templates = DocumentTemplate.where(template: @workflow.template)
+  end
+
+  def set_clients
+    @clients = Client.where(company: @company)
   end
 
   def workflow_params
