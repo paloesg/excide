@@ -2,7 +2,7 @@ class Company < ActiveRecord::Base
   resourcify
 
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :finders]
 
   include PublicActivity::Model
   tracked owner: ->(controller, model) { controller && controller.current_user }
