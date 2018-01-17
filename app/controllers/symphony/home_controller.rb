@@ -14,8 +14,7 @@ class Symphony::HomeController < ApplicationController
     @user = current_user
     @company = @user.company
     @templates = @company.templates
-    @workflows = @templates.map(&:workflows).flatten
-    @workflows = @workflows.paginate(page: params[:page], per_page: 10)
+    @workflows = @templates.map(&:workflows).flatten.paginate(page: params[:page], per_page: 10)
   end
 
 end
