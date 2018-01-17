@@ -101,10 +101,6 @@ gem "cocoon"
 gem 'trix'
 # Date time picker
 gem "datetime_picker_rails"
-# Pagination Library
-gem 'will_paginate', '~> 3.1.0'
-# Bootstrap for will_paginate
-gem 'bootstrap-will_paginate'
 
 # Backend admin
 gem 'administrate'
