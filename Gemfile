@@ -104,7 +104,7 @@ gem "datetime_picker_rails"
 # Pagination Library
 gem 'will_paginate', '~> 3.1.0'
 # Bootstrap for will_paginate
-gem 'will_paginate-bootstrap', github: 'HeyPublisher/will_paginate-bootstrap'
+gem 'bootstrap-will_paginate'
 
 # Backend admin
 gem 'administrate'

@@ -35,7 +35,9 @@
                   td = w.deadline&.strftime("%d/%m/%Y") || '-'
                   td = w.completed ? 'Completed' : w.current_section&.display_name
       .text-center
-        = will_paginate @workflows, renderer: BootstrapPagination::Rails
+        = page_entries_info @workflows
+        br
+        = will_paginate @workflows
   .col-md-4.col-sm-6
     .panel.panel-default
       .panel-heading
