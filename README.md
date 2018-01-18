@@ -21,8 +21,7 @@ The defaults should be fine.
 
     cp config/database.yml.sample config/database.yml
 
-Create a `.env` file from the sample so [dotenv](https://github.com/bkeepers/dotenv) can set the required environment variables.
-Please obtain any missing values from the project administrator.
+Create a `.env` file from the sample so [dotenv](https://github.com/bkeepers/dotenv) can set the required environment variables. Please obtain any missing values from the project administrator.
 
     cp .env.sample .env
 
@@ -73,13 +72,13 @@ code and take the next appropriate actions.
 
 The application is deployed to [Heroku](https://www.heroku.com/) at:
 
-* [http://telstra-bm-survey.herokuapp.com/](http://telstra-bm-survey.herokuapp.com/)
-* [http://telstra-bm-survey-staging.herokuapp.com/](http://telstra-bm-survey-staging.herokuapp.com/)
+* [https://excide.herokuapp.com/](https://excide.herokuapp.com/)
+* [https://excide-staging.herokuapp.com/](https://excide-staging.herokuapp.com/)
 
 Ensure the Git remotes are set up:
 
-    heroku git:remote --app telstra-bm-survey --remote production
-    heroku git:remote --app telstra-bm-survey-staging --remote staging
+    heroku git:remote --a excide --remote production
+    heroku git:remote --a excide-staging --remote staging
 
 To deploy, just run:
 
@@ -88,6 +87,6 @@ To deploy, just run:
 
 Do remember to specify the app name when running Heroku commands like so:
 
-    heroku run --app telstra-bm-survey rake db:migrate
-    heroku run --app telstra-bm-survey-staging rake db:migrate
+    heroku run --a excide rake db:migrate
+    heroku run --a excide-staging rake db:migrate
 
