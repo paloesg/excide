@@ -1,4 +1,6 @@
 class Task < ActiveRecord::Base
+  after_create :add_company_action
+
   belongs_to :section
   belongs_to :role
   belongs_to :document_template
@@ -15,5 +17,13 @@ class Task < ActiveRecord::Base
   def get_company_action(company_id, workflow_identifier = nil)
     workflow_id = workflow_identifier.present? ? Workflow.find_by(identifier: workflow_identifier).id : nil
     action = self.company_actions.find_by(company_id: company_id, workflow_id: workflow_id)
+  end
+
+  private
+  # Create company action for existing workflows that this task belongs to
+  def add_company_action
+    self.section.template.workflows&.each do |workflow|
+      CompanyAction.create(task_id: self.id, company_id: workflow.company_id, workflow_id: workflow.id)
+    end
   end
 end
