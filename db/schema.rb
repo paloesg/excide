@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180115075021) do
+ActiveRecord::Schema.define(version: 20180118061050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -434,6 +434,7 @@ ActiveRecord::Schema.define(version: 20180115075021) do
     t.string   "identifier"
     t.integer  "workflowable_id"
     t.string   "workflowable_type"
+    t.text     "remarks"
   end
 
   add_index "workflows", ["company_id"], name: "index_workflows_on_company_id", using: :btree
