@@ -24,7 +24,7 @@ class Workflow < ActiveRecord::Base
     if self.completed
       self.template.sections.last
     else
-      self.template.sections.joins(tasks: :company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first
+      self.template.sections.joins(tasks: :company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first || self.template.sections.first
     end
   end
 
