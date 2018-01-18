@@ -13,7 +13,8 @@ class Symphony::HomeController < ApplicationController
     @user = current_user
     @company = @user.company
     @templates = @company.templates
-    @workflows = @templates.map(&:workflows).flatten
+    @workflows_array = @templates.map(&:workflows).flatten
+    @workflows = Kaminari.paginate_array(@workflows_array).page(params[:page]).per(10)
   end
 
 end

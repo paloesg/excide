@@ -16,6 +16,7 @@
         - if @workflows.blank?
           | No outstanding workflows at the moment. Click on a workflow to begin.
         - else
+          .pull-right = page_entries_info @workflows, entry_name: 'workflow'
           table.table
             thead
               tr
@@ -34,6 +35,8 @@
                   td = w.workflowable&.identifier
                   td = w.deadline&.strftime("%d/%m/%Y") || '-'
                   td = w.completed ? 'Completed' : w.current_section&.display_name
+        .text-center
+          = paginate @workflows
   .col-md-4.col-sm-6
     .panel.panel-default
       .panel-heading
