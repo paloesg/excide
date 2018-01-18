@@ -50,7 +50,6 @@ class TemplateDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :title,
-    :slug,
     :company,
     :sections,
   ].freeze
