@@ -75,6 +75,14 @@
         | Identifier: #{@workflow.workflowable&.identifier}
     .panel.panel-default
       .panel-heading
+        h3.panel-title Remarks
+      .panel-body = @workflow.remarks.present? ? @workflow.remarks : '-'
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Deadline
+      .panel-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
+    .panel.panel-default
+      .panel-heading
         h3.panel-title Documents
       .panel-body
         - if @documents.empty?
