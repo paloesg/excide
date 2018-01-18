@@ -23,7 +23,6 @@
                 th Identifier
                 th Workflow Type
                 th Client Name
-                th Client Identifier
                 th Deadline
                 th Status
             tbody
@@ -32,7 +31,6 @@
                   td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
                   td = w.template.title
                   td = w.workflowable&.name
-                  td = w.workflowable&.identifier
                   td = w.deadline&.strftime("%d/%m/%Y") || '-'
                   td = w.completed ? 'Completed' : w.current_section&.display_name
         .text-center
