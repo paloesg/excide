@@ -25,6 +25,7 @@ class SectionDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :id,
+    :template,
     :unique_name,
     :position,
     :tasks,
@@ -36,6 +37,7 @@ class SectionDashboard < Administrate::BaseDashboard
     :id,
     :unique_name,
     :display_name,
+    :template,
     :position,
     :template,
     :tasks,
