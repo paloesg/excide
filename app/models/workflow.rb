@@ -51,7 +51,7 @@ class Workflow < ActiveRecord::Base
     sections = self.template.sections
     sections.each do |s|
       s.tasks.each do |t|
-        CompanyAction.create(task: t, company: self.company, completed: false, workflow: self)
+        CompanyAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
   end
