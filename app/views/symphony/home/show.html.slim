@@ -20,12 +20,12 @@
           table.table
             thead
               tr
-                th = link_to "Identifier", :sort => "identifier"
-                th = link_to "Workflow Type", :sort => "template"
-                th = link_to "Client Name", :sort => "workflowable"
-                th = link_to "Remarks", :sort => "remarks"
-                th = link_to "Deadline", :sort => "deadline"
-                th = link_to "Status", :sort => "completed"
+                th = sortable "identifier", "Identifier"
+                th = sortable "template", "Workflow Type"
+                th = sortable "workflowable", "Client Name"
+                th = sortable "remarks", "Remarks"
+                th = sortable "deadline", "Deadline"
+                th = sortable "completed", "Status"
             tbody
               - @workflows.each do |w|
                 tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
@@ -36,6 +36,7 @@
                   td = w.deadline&.strftime("%d/%m/%Y") || '-'
                   td = w.completed ? 'Completed' : w.current_section&.display_name
         .text-center
+          i class="fa fa-meetup" aria-hidden="true"
           = paginate @workflows
   .col-md-4.col-sm-6
     .panel.panel-default
