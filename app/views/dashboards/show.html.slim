@@ -76,14 +76,14 @@
                   i.ti-file.icon
                 .media-body
                   = d.filename + File.extname(d.file_url)
-    .panel.panel-default
-      .panel-heading
-        h6.panel-title Recent Activity
-      .panel-body
-        - if @activities.empty?
-          li No activity yet.
-        - else
-          - @activities.each do |activity|
-            p
-              = activity.owner.first_name if activity.owner
-              = render_activity activity
+    / .panel.panel-default
+    /   .panel-heading
+    /     h6.panel-title Recent Activity
+    /   .panel-body
+    /     - if @activities.empty?
+    /       li No activity yet.
+    /     - else
+    /       - @activities.each do |activity|
+    /         p
+    /           = activity.owner.first_name if activity.owner
+    /           = render_activity activity

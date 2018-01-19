@@ -1,5 +1,8 @@
-- if activity.trackable.completed
-  = " completed task "
+- if activity.trackable_type == "Task"
+  - if activity.trackable.completed
+    = " completed task "
+  - else
+    = " updated task "
+  = link_to(activity.trackable.task.id, company_workflow_section_path(activity.trackable.task.section.template.slug, activity.trackable.task.section.id))
 - else
-  = " updated task "
-= link_to(activity.trackable.task.id, company_workflow_section_path(activity.trackable.task.section.template.slug, activity.trackable.task.section.id))
+  = " added " + activity.trackable_type
