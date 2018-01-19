@@ -12,6 +12,7 @@ class WorkflowsController < ApplicationController
     @workflow = @workflows.create_with(user: @user).find_or_create_by(template: @template, company: @company)
     @sections = @template.sections
     @section = @workflow.current_section
+    @document_templates = DocumentTemplate.where(template: @workflow.template)
 
     set_tasks
   end
