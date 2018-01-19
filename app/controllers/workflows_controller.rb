@@ -9,9 +9,11 @@ class WorkflowsController < ApplicationController
   def show
     # Look for existing workflow if not create new workflow and then show the tasks from the first section
     #TODO: Refactor to separate workflow creation
-    @workflow = @workflows.create_with(user: @user).find_or_create_by(template: @template, company: @company)
+    identifier = @company.name + '-' + @template.title
+    @workflow = @workflows.create_with(user: @user, identifier: identifier).find_or_create_by!(template: @template, company: @company)
     @sections = @template.sections
     @section = @workflow.current_section
+    @document_templates = DocumentTemplate.where(template: @workflow.template)
 
     set_tasks
   end
@@ -20,6 +22,7 @@ class WorkflowsController < ApplicationController
     @workflow = @workflows.where(template: @template).first
     @sections = @template.sections
     @section = @sections.find(params[:section_id])
+    @document_templates = DocumentTemplate.where(template: @workflow.template)
 
     set_tasks
     render :show

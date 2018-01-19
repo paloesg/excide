@@ -26,7 +26,6 @@ Rails.application.routes.draw do
   get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
   get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
   post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
-  post 'workflow/:workflow_name/approve/:task_id', to: 'workflows#approve', as: :company_workflow_task_approve
   resources :documents
 
   namespace :symphony do
@@ -37,7 +36,6 @@ Rails.application.routes.draw do
       member do
         get '/section/:section_id', to: 'workflows#section', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
-        post '/approve/:task_id', to: 'workflows#approve', as: :task_approve
       end
     end
     root to: 'home#show'

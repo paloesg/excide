@@ -3,8 +3,8 @@ class CompanyAction < ActiveRecord::Base
   tracked except: :create, owner: ->(controller, model) { controller && controller.current_user }
 
   after_save :set_deadline_and_reminders
-  after_save :send_notification, if: :completed_changed?
   after_save :trigger_next_task, if: :completed_changed?
+  after_save :send_notification, if: :completed_changed?
 
   belongs_to :task
   belongs_to :company
@@ -51,7 +51,11 @@ class CompanyAction < ActiveRecord::Base
     create_reminder(next_task, next_action)
 
     # Trigger email notification for next task
-    users = User.with_role(next_task.role.name.to_sym, self.company)
+    if next_task.role.present?
+      users = User.with_role(next_task.role.name.to_sym, self.company)
+    else
+      users = self.company.users
+    end
     NotificationMailer.deliver_notifications(next_task, next_action, users)
   end
 
