@@ -28,7 +28,7 @@
                   th Status
               tbody
                 - @tasks.each do |t|
-                  - action = t.get_company_action(@company)
+                  - action = t.get_company_action(@company.id)
                   tr class=([('success' if action.completed?), ('warning' if (!action.completed? && !action.deadline.try(:past?))), ('danger' if (!action.completed? && action.deadline.try(:past?)))].compact.join(''))
                     td = t.instructions
                     td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
