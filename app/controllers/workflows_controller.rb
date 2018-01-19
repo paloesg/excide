@@ -22,6 +22,7 @@ class WorkflowsController < ApplicationController
     @workflow = @workflows.where(template: @template).first
     @sections = @template.sections
     @section = @sections.find(params[:section_id])
+    @document_templates = DocumentTemplate.where(template: @workflow.template)
 
     set_tasks
     render :show
