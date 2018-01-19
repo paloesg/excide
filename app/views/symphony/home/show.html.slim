@@ -20,12 +20,12 @@
           table.table
             thead
               tr
-                th Identifier
-                th Workflow Type
-                th Client Name
-                th Remarks
-                th Deadline
-                th Status
+                th = link_to "Identifier", :sort => "identifier"
+                th = link_to "Workflow Type", :sort => "template"
+                th = link_to "Client Name", :sort => "workflowable"
+                th = link_to "Remarks", :sort => "remarks"
+                th = link_to "Deadline", :sort => "deadline"
+                th = link_to "Status", :sort => "completed"
             tbody
               - @workflows.each do |w|
                 tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
