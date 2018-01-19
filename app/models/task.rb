@@ -15,7 +15,7 @@ class Task < ActiveRecord::Base
   validates :instructions, :position, :task_type, presence: true
 
   def get_company_action(company_id, workflow_identifier = nil)
-    workflow_id = workflow_identifier.present? ? Workflow.find_by(identifier: workflow_identifier).id : nil
+    workflow_id = workflow_identifier.present? ? Workflow.find_by(identifier: workflow_identifier).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id
     action = self.company_actions.find_by(company_id: company_id, workflow_id: workflow_id)
   end
 
