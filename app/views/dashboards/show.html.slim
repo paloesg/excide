@@ -32,7 +32,7 @@
                   tr class=([('success' if action.completed?), ('warning' if (!action.completed? && !action.deadline.try(:past?))), ('danger' if (!action.completed? && action.deadline.try(:past?)))].compact.join(''))
                     td = t.instructions
                     td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                    td = action.completed ? 'Completed' : (link_to "Incomplete", company_workflow_section_path(t.section.template.slug, t.section.id), method: "get")
+                    td = action.completed ? 'Completed' : (link_to "Incomplete", params[:company_name] ? admin_company_workflow_section_path(params[:company_name], t.section.template.slug, t.section.id) : company_workflow_section_path(t.section.template.slug, t.section.id), method: "get")
     - else
       .panel.panel-default
         .panel-heading
