@@ -36,7 +36,6 @@
                   td = w.deadline&.strftime("%d/%m/%Y") || '-'
                   td = w.completed ? 'Completed' : w.current_section&.display_name
         .text-center
-          i class="fa fa-meetup" aria-hidden="true"
           = paginate @workflows
   .col-md-4.col-sm-6
     .panel.panel-default
