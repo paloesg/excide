@@ -42,11 +42,11 @@
                   - else
                     = check_box_tag 'completed', action.id, action.completed, disabled: true
     - unless @section.first?
-      = link_to "Previous Section", company_workflow_section_path(@template.slug, @section.higher_item.id), class: 'btn btn-default pull-left'
+      = link_to "Previous Section", params[:company_name] ? admin_company_workflow_section_path(params[:company_name], @template.slug, @section.higher_item.id) : company_workflow_section_path(@template.slug, @section.higher_item.id), class: 'btn btn-default pull-left'
     - if @section.last?
-      = link_to "Done", dashboard_path, class: 'btn btn-default pull-right'
+      = link_to "Done", params[:company_name] ? admin_company_dashboard_path(params[:company_name]) : dashboard_path, class: 'btn btn-default pull-right'
     - else
-      = link_to "Next Section", company_workflow_section_path(@template.slug, @section.lower_item.id), class: 'btn btn-default pull-right'
+      = link_to "Next Section", params[:company_name] ? admin_company_workflow_section_path(params[:company_name], @template.slug, @section.lower_item.id) : company_workflow_section_path(@template.slug, @section.lower_item.id), class: 'btn btn-default pull-right'
   .col-md-4.col-sm-6
     .panel.panel-default
       .panel-heading
