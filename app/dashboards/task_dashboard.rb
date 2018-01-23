@@ -16,6 +16,7 @@ class TaskDashboard < Administrate::BaseDashboard
     instructions: Field::String,
     position: Field::Number,
     image_url: ImageField,
+    link_url: Field::String,
     days_to_complete: Field::Number,
     set_reminder: Field::Boolean,
     document_template: Field::BelongsTo,
@@ -29,31 +30,32 @@ class TaskDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :section,
-    :company_actions,
-    :position,
-    :role,
     :task_type,
     :instructions,
+    :section,
+    :position,
+    :role,
+    :document_template,
     :days_to_complete,
     :set_reminder,
-    :document_template,
+    :company_actions,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
+    :id,
+    :task_type,
+    :instructions,
+    :section,
     :position,
     :role,
-    :task_type,
-    :section,
-    :instructions,
+    :document_template,
     :image_url,
+    :link_url,
     :days_to_complete,
     :set_reminder,
-    :document_template,
     :company_actions,
-    :id,
     :created_at,
     :updated_at,
   ].freeze
@@ -62,15 +64,16 @@ class TaskDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :section,
-    :role,
     :task_type,
     :instructions,
+    :section,
     :position,
+    :role,
+    :document_template,
     :image_url,
+    :link_url,
     :days_to_complete,
     :set_reminder,
-    :document_template,
     :company_actions,
   ].freeze
 
