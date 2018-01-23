@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118061050) do
+ActiveRecord::Schema.define(version: 20180123071144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -363,6 +363,7 @@ ActiveRecord::Schema.define(version: 20180118061050) do
     t.integer  "role_id"
     t.integer  "task_type"
     t.integer  "document_template_id"
+    t.string   "link_url"
   end
 
   add_index "tasks", ["document_template_id"], name: "index_tasks_on_document_template_id", using: :btree
