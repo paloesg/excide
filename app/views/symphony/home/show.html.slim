@@ -31,12 +31,8 @@
                 tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
                   td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
                   td = w.template.title
-                  - if w.workflowable
-                    td = w.workflowable&.name
-                  - else 
-                    td 
-                      strong.text-danger no client data
-                  td = w.remarks
+                  td = w.workflowable&.name || '-'
+                  td = w.remarks || '-'
                   td = w.deadline&.strftime("%d/%m/%Y") || '-'
                   td = w.completed ? 'Completed' : w.current_section&.display_name
         .text-center
