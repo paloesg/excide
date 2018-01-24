@@ -1,24 +1,23 @@
-= form_for @conductor_activation do |f|
-  - if @conductor_activation.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@conductor_activation.errors.count, "error")} prohibited this conductor_activation from being saved:"
-      ul
-        - @conductor_activation.errors.full_messages.each do |message|
-          li = message
+- if @activation.errors.any?
+  #error_explanation
+    h2 = "#{pluralize(@activation.errors.count, "error")} prohibited this activation from being saved:"
+    ul
+      - @activation.errors.full_messages.each do |message|
+        li = message
 
-  .field
-    = f.label :activation_type
-    = f.number_field :activation_type
-  .field
-    = f.label :start_time
-    = f.datetime_select :start_time
-  .field
-    = f.label :end_time
-    = f.datetime_select :end_time
-  .field
-    = f.label :remarks
-    = f.text_area :remarks
-  .field
-    = f.label :location
-    = f.text_field :location
-  .actions = f.submit
+.field
+  = f.label :activation_type
+  = f.number_field :activation_type
+.field
+  = f.label :start_time
+  = f.datetime_select :start_time
+.field
+  = f.label :end_time
+  = f.datetime_select :end_time
+.field
+  = f.label :remarks
+  = f.text_area :remarks
+.field
+  = f.label :location
+  = f.text_field :location
+.actions = f.submit

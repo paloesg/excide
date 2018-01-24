@@ -1,10 +1,12 @@
 class Conductor::ActivationsController < ApplicationController
-  before_action :set_conductor_activation, only: [:show, :edit, :update, :destroy]
+  layout 'dashboard/application'
+
+  before_action :set_activation, only: [:show, :edit, :update, :destroy]
 
   # GET /conductor/activations
   # GET /conductor/activations.json
   def index
-    @conductor_activations = Conductor::Activation.all
+    @activations = Activation.all
   end
 
   # GET /conductor/activations/1
@@ -14,7 +16,7 @@ class Conductor::ActivationsController < ApplicationController
 
   # GET /conductor/activations/new
   def new
-    @conductor_activation = Conductor::Activation.new
+    @activation = Activation.new
   end
 
   # GET /conductor/activations/1/edit
@@ -24,15 +26,15 @@ class Conductor::ActivationsController < ApplicationController
   # POST /conductor/activations
   # POST /conductor/activations.json
   def create
-    @conductor_activation = Conductor::Activation.new(conductor_activation_params)
+    @activation = Activation.new(activation_params)
 
     respond_to do |format|
-      if @conductor_activation.save
-        format.html { redirect_to @conductor_activation, notice: 'Activation was successfully created.' }
-        format.json { render :show, status: :created, location: @conductor_activation }
+      if @activation.save
+        format.html { redirect_to @activation, notice: 'Activation was successfully created.' }
+        format.json { render :show, status: :created, location: @activation }
       else
         format.html { render :new }
-        format.json { render json: @conductor_activation.errors, status: :unprocessable_entity }
+        format.json { render json: @activation.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -41,12 +43,12 @@ class Conductor::ActivationsController < ApplicationController
   # PATCH/PUT /conductor/activations/1.json
   def update
     respond_to do |format|
-      if @conductor_activation.update(conductor_activation_params)
-        format.html { redirect_to @conductor_activation, notice: 'Activation was successfully updated.' }
-        format.json { render :show, status: :ok, location: @conductor_activation }
+      if @activation.update(activation_params)
+        format.html { redirect_to @activation, notice: 'Activation was successfully updated.' }
+        format.json { render :show, status: :ok, location: @activation }
       else
         format.html { render :edit }
-        format.json { render json: @conductor_activation.errors, status: :unprocessable_entity }
+        format.json { render json: @activation.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -54,21 +56,21 @@ class Conductor::ActivationsController < ApplicationController
   # DELETE /conductor/activations/1
   # DELETE /conductor/activations/1.json
   def destroy
-    @conductor_activation.destroy
+    @activation.destroy
     respond_to do |format|
-      format.html { redirect_to conductor_activations_url, notice: 'Activation was successfully destroyed.' }
+      format.html { redirect_to activations_url, notice: 'Activation was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_conductor_activation
-      @conductor_activation = Conductor::Activation.find(params[:id])
+    def set_activation
+      @activation = Activation.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def conductor_activation_params
-      params.require(:conductor_activation).permit(:activation_type, :start_time, :end_time, :remarks, :location)
+    def activation_params
+      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location)
     end
 end

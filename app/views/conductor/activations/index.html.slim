@@ -1,4 +1,4 @@
-h1 Listing conductor_activations
+h1 Listing activations
 
 table
   thead
@@ -13,16 +13,16 @@ table
       th
 
   tbody
-    - @conductor_activations.each do |conductor_activation|
+    - @activations.each do |activation|
       tr
-        td = conductor_activation.activation_type
-        td = conductor_activation.start_time
-        td = conductor_activation.end_time
-        td = conductor_activation.remarks
-        td = conductor_activation.location
-        td = link_to 'Show', conductor_activation
-        td = link_to 'Edit', edit_conductor_activation_path(conductor_activation)
-        td = link_to 'Destroy', conductor_activation, data: { confirm: 'Are you sure?' }, method: :delete
+        td = activation.activation_type
+        td = activation.start_time
+        td = activation.end_time
+        td = activation.remarks
+        td = activation.location
+        td = link_to 'Show', activation
+        td = link_to 'Edit', edit_conductor_activation_path(activation)
+        td = link_to 'Destroy', activation, data: { confirm: 'Are you sure?' }, method: :delete
 
 br
 
