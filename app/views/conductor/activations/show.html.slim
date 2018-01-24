@@ -1,0 +1,21 @@
+p#notice = notice
+
+p
+  strong Activation type:
+  = @conductor_activation.activation_type
+p
+  strong Start time:
+  = @conductor_activation.start_time
+p
+  strong End time:
+  = @conductor_activation.end_time
+p
+  strong Remarks:
+  = @conductor_activation.remarks
+p
+  strong Location:
+  = @conductor_activation.location
+
+=> link_to 'Edit', edit_conductor_activation_path(@conductor_activation)
+'|
+=< link_to 'Back', conductor_activations_path

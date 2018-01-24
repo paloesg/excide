@@ -44,6 +44,10 @@ Rails.application.routes.draw do
     root to: 'home#show'
   end
 
+  namespace :conductor do
+    resources :activations
+  end
+
   as :user do
     get '/cs/:role/register', to: 'users/registrations#new', as: :register
     get '/cs/:role/login', to: 'devise/sessions#new', as: :login
