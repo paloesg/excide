@@ -1,6 +1,6 @@
-class CreateConductorActivations < ActiveRecord::Migration
+class CreateActivations < ActiveRecord::Migration
   def change
-    create_table :conductor_activations do |t|
+    create_table :activations do |t|
       t.integer :activation_type
       t.datetime :start_time
       t.datetime :end_time

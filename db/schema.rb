@@ -16,6 +16,16 @@ ActiveRecord::Schema.define(version: 20180220102056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "activations", force: :cascade do |t|
+    t.integer  "activation_type"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.text     "remarks"
+    t.string   "location"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id"
     t.string   "trackable_type"
