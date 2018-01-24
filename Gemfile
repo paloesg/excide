@@ -101,6 +101,8 @@ gem "cocoon"
 gem 'trix'
 # Date time picker
 gem "datetime_picker_rails"
+# Render calendar
+gem "simple_calendar", "~> 2.0"
 
 # Backend admin
 gem 'administrate'
