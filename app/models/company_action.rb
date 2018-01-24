@@ -50,13 +50,11 @@ class CompanyAction < ActiveRecord::Base
     # Create new reminder based on deadline of action and repeat every 2 days
     create_reminder(next_task, next_action)
 
-    # Trigger email notification for next task
+    # Trigger email notification for next task if role present
     if next_task.role.present?
       users = User.with_role(next_task.role.name.to_sym, self.company)
-    else
-      users = self.company.users
+      NotificationMailer.deliver_notifications(next_task, next_action, users)
     end
-    NotificationMailer.deliver_notifications(next_task, next_action, users)
   end
 
   def create_reminder(task, action)
