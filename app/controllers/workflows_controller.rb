@@ -34,6 +34,7 @@ class WorkflowsController < ApplicationController
     respond_to do |format|
       if @action.update_attributes(completed: !@action.completed)
         format.json { render json: @action.completed, status: :ok }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
