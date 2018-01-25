@@ -1,6 +1,7 @@
 class Conductor::ActivationsController < ApplicationController
   layout 'dashboard/application'
 
+  before_action :authenticate_user!
   before_action :set_activation, only: [:show, :edit, :update, :destroy]
 
   # GET /conductor/activations

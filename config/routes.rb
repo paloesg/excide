@@ -46,6 +46,8 @@ Rails.application.routes.draw do
 
   namespace :conductor do
     resources :activations
+
+    root to: 'home#show'
   end
 
   as :user do
