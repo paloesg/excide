@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
 
   has_one :profile, dependent: :destroy
   has_one :address, as: :addressable
+  has_many :clients
+  has_many :activations
 
   has_many :company_actions
 
