@@ -2,10 +2,12 @@ require 'rails_helper'
 
 RSpec.describe "conductor/activations/show", type: :view do
   before(:each) do
-    @conductor_activation = assign(:conductor_activation, Conductor::Activation.create!(
+    @activation = assign(:activation, Activation.create!(
       :activation_type => 2,
       :remarks => "MyText",
-      :location => "Location"
+      :location => "Location",
+      :start_time => Time.now,
+      :end_time => Time.now + 1.day
     ))
   end
 
