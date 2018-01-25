@@ -3,7 +3,7 @@ h1 Editing activation
 = form_for @activation, url: conductor_activation_path(@activation.id) do |f|
   = render 'form', f: f
 
-=> link_to 'Show', @activation
+=> link_to 'Show', conductor_activation_path(@activation)
 '|
 =< link_to 'Back', conductor_activations_path
 

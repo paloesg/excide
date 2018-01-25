@@ -20,9 +20,9 @@ table
         td = activation.end_time
         td = activation.remarks
         td = activation.location
-        td = link_to 'Show', activation
+        td = link_to 'Show', conductor_activation_path(activation)
         td = link_to 'Edit', edit_conductor_activation_path(activation)
-        td = link_to 'Destroy', activation, data: { confirm: 'Are you sure?' }, method: :delete
+        td = link_to 'Destroy', conductor_activation_path(activation), data: { confirm: 'Are you sure?' }, method: :delete
 
 br
 

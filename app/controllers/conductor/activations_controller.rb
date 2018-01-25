@@ -31,7 +31,7 @@ class Conductor::ActivationsController < ApplicationController
 
     respond_to do |format|
       if @activation.save
-        format.html { redirect_to @activation, notice: 'Activation was successfully created.' }
+        format.html { redirect_to conductor_activation_path(@activation), notice: 'Activation was successfully created.' }
         format.json { render :show, status: :created, location: @activation }
       else
         format.html { render :new }
@@ -45,7 +45,7 @@ class Conductor::ActivationsController < ApplicationController
   def update
     respond_to do |format|
       if @activation.update(activation_params)
-        format.html { redirect_to @activation, notice: 'Activation was successfully updated.' }
+        format.html { redirect_to conductor_activation_path(@activation), notice: 'Activation was successfully updated.' }
         format.json { render :show, status: :ok, location: @activation }
       else
         format.html { render :edit }
@@ -59,7 +59,7 @@ class Conductor::ActivationsController < ApplicationController
   def destroy
     @activation.destroy
     respond_to do |format|
-      format.html { redirect_to activations_url, notice: 'Activation was successfully destroyed.' }
+      format.html { redirect_to conductor_activations_url, notice: 'Activation was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
