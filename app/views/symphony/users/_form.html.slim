@@ -26,6 +26,6 @@
 - Role.defined_roles.each do |role|
   .checkbox
     label
-      = check_box_tag 'user[roles][]', role.display_name, @user.has_role?(role.name, @user.company)
-      = role.display_name
+      = check_box_tag 'user[role_ids][]', role.id, (@user.roles.include? role)
+      = role.display_name 
 = f.submit 'Save User', class: 'btn btn-default'

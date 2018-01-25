@@ -27,6 +27,7 @@ class Symphony::UsersController < ApplicationController
   end
 
   def edit
+    @user = User.find(params[:id])
   end
 
   def update
@@ -53,6 +54,6 @@ class Symphony::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :password, :email, :contact_number, :company_id)
+    params.require(:user).permit(:first_name, :last_name, :password, :email, :contact_number, :company_id, :role_ids => [])
   end
 end
