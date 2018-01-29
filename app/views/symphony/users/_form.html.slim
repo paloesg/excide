@@ -23,7 +23,7 @@
   .form-group
     = f.label :password_confirmation
     = f.password_field :password_confirmation, class: 'form-control'
-- @roles.each do |role|
+- @company_roles.each do |role|
   .checkbox
     label
       = check_box_tag 'user[role_ids][]', role.id, (@user.roles.include? role)
