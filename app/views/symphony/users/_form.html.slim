@@ -23,9 +23,9 @@
   .form-group
     = f.label :password_confirmation
     = f.password_field :password_confirmation, class: 'form-control'
-- Role.defined_roles.each do |role|
+- @company_roles.each do |role|
   .checkbox
     label
       = check_box_tag 'user[role_ids][]', role.id, (@user.roles.include? role)
-      = role.display_name 
+      = role.display_name
 = f.submit 'Save User', class: 'btn btn-default'

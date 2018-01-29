@@ -14,6 +14,7 @@ class Symphony::UsersController < ApplicationController
 
   def new
     @user = User.new
+    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
   end
 
   def create
@@ -28,6 +29,7 @@ class Symphony::UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
   end
 
   def update
