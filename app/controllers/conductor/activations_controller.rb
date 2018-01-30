@@ -29,6 +29,7 @@ class Conductor::ActivationsController < ApplicationController
   # POST /conductor/activations.json
   def create
     @activation = Activation.new(activation_params)
+    @activation.company = @company
 
     respond_to do |format|
       if @activation.save
