@@ -1,6 +1,13 @@
-h1 New activation
-
-= form_for @activation, url: conductor_activations_path do |f|
-  = render 'form', f: f
-
-= link_to 'Back', conductor_activations_path
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="/symphony/" Home
+      li
+        a href="#" #{@company.name}
+      li.active New Activation
+    h1.page-header New Activation
+.row
+  .col-md-12
+    = form_for @activation, url: conductor_activations_path do |f|
+      = render 'form', f: f

@@ -1,23 +1,34 @@
 - if @activation.errors.any?
-  #error_explanation
-    h2 = "#{pluralize(@activation.errors.count, "error")} prohibited this activation from being saved:"
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@activation.errors.count, "error")} prohibited this activation from being saved:"
     ul
       - @activation.errors.full_messages.each do |message|
         li = message
 
-.field
+.form-group
   = f.label :activation_type
-  = f.number_field :activation_type
-.field
+  = f.select :activation_type, Activation.activation_types.map { |key, value| [key.titleize, key] }, {selected: @activation.activation_type}, class: 'form-control'
+.form-group
   = f.label :start_time
-  = f.datetime_select :start_time
-.field
+  = f.text_field :start_time, class: 'form-control datetimepicker'
+.form-group
   = f.label :end_time
-  = f.datetime_select :end_time
-.field
+  = f.text_field :end_time, class: 'form-control datetimepicker'
+.form-group
   = f.label :remarks
-  = f.text_area :remarks
-.field
+  = f.text_area :remarks, class: 'form-control'
+.form-group
   = f.label :location
-  = f.text_field :location
-.actions = f.submit
+  = f.text_field :location, class: 'form-control'
+.row
+  .col-sm-12
+    = f.submit 'Save Activation', class: 'btn btn-default'
+
+
+javascript:
+  $(function() {
+    $('.datetimepicker').datetimepicker({
+      debug: false,
+      format: 'YYYY-MM-DD'
+    });
+  });

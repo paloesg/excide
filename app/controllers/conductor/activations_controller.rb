@@ -2,6 +2,7 @@ class Conductor::ActivationsController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
+  before_action :set_company_and_roles
   before_action :set_activation, only: [:show, :edit, :update, :destroy]
 
   # GET /conductor/activations
@@ -68,6 +69,12 @@ class Conductor::ActivationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_activation
       @activation = Activation.find(params[:id])
+    end
+
+    def set_company_and_roles
+      @user = current_user
+      @company = @user.company
+      @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
