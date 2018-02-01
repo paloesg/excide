@@ -20,7 +20,6 @@
               th Instructions
               th Who
               th Deadline
-              / th Approve
               th Done
           tbody
             - @tasks.each do |t|
@@ -46,10 +45,9 @@
                   - else
                     = t.role&.name&.humanize
                 td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                / td = t.approval? ? (check_box_tag 'approved_by', action.id, action.approved_by, data: { remote: true, url: url_for(action: :approve, task_id: t.id), method: "POST" }) : '-'
                 td
-                  / Check if task requires a certain role to complete and whether user has that role
-                  - if t == @workflow.current_task && (t.role_id == nil || (@roles.map(&:id).include? t.role_id) || (@user.has_role? :admin, @company))
+                  / Check if task is current task AND check if it's assigned to a particular user OR whether user has the required role OR user has admin role
+                  - if t == @workflow.current_task && (action.user == current_user || t.role_id == nil || (@roles.map(&:id).include? t.role_id) || (@user.has_role? :admin, @company))
                     = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }, :onclick => "this.checked=true;"
                   - else
                     = check_box_tag 'completed', action.id, action.completed, disabled: true
