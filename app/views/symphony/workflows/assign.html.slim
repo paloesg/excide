@@ -43,4 +43,6 @@
           h3.panel-title = role.name.titleize
         .panel-body
           - (User.with_role role.name, @company).each do |user|
-            span.badge = user.first_name + ' ' + user.last_name
+            span.glyphicon.glyphicon-user aria-hidden="true"
+            |  #{user.full_name}
+            br
