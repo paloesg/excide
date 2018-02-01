@@ -1,6 +1,6 @@
 .col-md-2.col-sm-3.sidebar
   .nav.nav-sidebar
-    - if controller.class.parents.include?(Symphony)
+    - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
       - get_company_templates.each do |t|
         .panel-group role="tablist"
           .panel.panel-default
@@ -13,7 +13,6 @@
               ul.list-group
               - t.workflows.each do |w|
                 li.list-group-item class=('active' if w.identifier == @workflow&.identifier) = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)
-    - elsif controller.class == CompaniesController
     - else
       .panel-group role="tablist"
         .panel.panel-default
