@@ -7,11 +7,17 @@ nav.navbar.navbar-inverse.navbar-fixed-top
         .icon-bar
         .icon-bar
       - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
-        = link_to current_user.company.name, symphony_root_path, class: "navbar-brand"
+        = link_to(symphony_root_path, class: "navbar-brand") do
+          - if ENV['APP_NAME'] == "excide-staging"
+            | #{current_user.company.name} #{content_tag :span, "Staging", class: "label label-danger" }
+          - else
+            | #{current_user.company.name}
       - else
-        = link_to "Excide", dashboard_path, class: "navbar-brand"
-      - if ENV['APP_NAME'] == "excide-staging"
-        span.label.label-danger Staging
+        = link_to(dashboard_path, class: "navbar-brand") do
+          - if ENV['APP_NAME'] == "excide-staging"
+            | Excide #{content_tag :span, "Staging", class: "label label-danger" }
+          - else
+            | Excide
     #navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.navbar-right
         - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
