@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       member do
         get '/section/:section_id', to: 'workflows#section', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
+        get '/assign', to: 'workflows#assign', as: :assign
       end
     end
     root to: 'home#show'

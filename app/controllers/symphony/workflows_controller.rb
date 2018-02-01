@@ -1,5 +1,6 @@
 class Symphony::WorkflowsController < WorkflowsController
   before_action :set_clients, only: [:new, :create, :edit, :update]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section]
 
   def new
     @workflow = Workflow.new
@@ -48,6 +49,12 @@ class Symphony::WorkflowsController < WorkflowsController
     set_tasks
     set_documents
     render :show
+  end
+
+  def assign
+    @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
+    @sections = @template.sections
+    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
   end
 
   def approve
