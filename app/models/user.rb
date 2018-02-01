@@ -27,6 +27,8 @@ class User < ActiveRecord::Base
   has_one :profile, dependent: :destroy
   has_one :address, as: :addressable
 
+  has_many :company_actions
+
   belongs_to :company
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
