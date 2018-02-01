@@ -1,4 +1,6 @@
 class CompaniesController < ApplicationController
+  layout "dashboard/application"
+
   before_action :authenticate_user!
   before_action :set_company, only: [:edit, :update, :name_reservation, :incorporation]
   before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]

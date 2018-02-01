@@ -1,6 +1,6 @@
 .col-md-2.col-sm-3.sidebar
   .nav.nav-sidebar
-    - if controller.class.parents.include?(Symphony)
+    - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
       - get_company_templates.each do |t|
         .panel-group role="tablist"
           .panel.panel-default

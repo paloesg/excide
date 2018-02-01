@@ -6,13 +6,13 @@ nav.navbar.navbar-inverse.navbar-fixed-top
         .icon-bar
         .icon-bar
         .icon-bar
-      - if controller.class.parents.include?(Symphony)
+      - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
         = link_to current_user.company.name, symphony_root_path, class: "navbar-brand"
       - else
         = link_to "Excide", dashboard_path, class: "navbar-brand"
     #navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.navbar-right
-        - if controller.class.parents.include?(Symphony)
+        - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
           li = link_to "Company Dashboard", symphony_root_path
           li = link_to "Company Documents", symphony_documents_path
           li = link_to "Document Templates", symphony_document_templates_path
