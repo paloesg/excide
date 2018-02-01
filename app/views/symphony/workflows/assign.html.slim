@@ -32,7 +32,7 @@
                     = t.instructions
                     = image_tag(t.image_url) if t.image_url.present?
                   td = t.role&.name&.humanize
-                  td
+                  td = select_tag 'user', content_tag(:option,'Select user...',:value=>"")+options_from_collection_for_select((User.with_role t.role.name, @company), 'id', 'first_name'), class: 'form-control'
   .col-md-4.col-sm-6
     = link_to "Skip Assignment", symphony_workflow_path(@template.slug, @workflow.identifier), class: 'btn btn-primary btn-block'
     br
