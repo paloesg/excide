@@ -1,48 +1,57 @@
 .row
-  .col.s12.l8.offset-l2
-    .card.login
-      .card-header Edit #{resource_name.to_s.humanize}
-      .card-content
-
-        = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
-
-          = devise_error_messages!
-          .row
-            .input-field.col.s12
-              = f.email_field :email, autofocus: true
-              = f.label :email
-            - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-              div
-                | Currently waiting confirmation for:
-                = resource.unconfirmed_email
-
-          .row
-            .input-field.col.s12
-              = f.password_field :password, autocomplete: "off"
-              = f.label :password, "Password (leave blank if you don't want to change it)"
-
-          .row
-            .input-field.col.s12
-              = f.password_field :password_confirmation, autocomplete: "off"
-              = f.label :password_confirmation
-
-          .row
-            .input-field.col.s12
-              = f.password_field :current_password, autocomplete: "off"
-              = f.label :current_password, "Current password (we need your current password to confirm your changes)"
-
-          .row
-            .actions.col.s12
-              = f.submit "Update", class: "btn green darken-3"
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" #{resource_name.to_s.humanize}
+      li.active Update
+    h1.page-header Edit User
 
 .row
-  .col.s12.l8.offset-l2
-    .card
-      .card-header Delete my account
-      .card-content
-        .row
-          .col.s12
-            | I no longer want access to the best independent consultants in Singapore.
-        .row
-          .actions.col.s12
-            = button_to "Delete my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn green darken-3"
+  .col-md-12
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+      = devise_error_messages!
+      .row
+        .col-md-12
+          .form-group
+            = f.label :first_name
+            = f.text_field :first_name, class: 'form-control'
+      .row
+        .col-md-12
+          .form-group
+            = f.label :last_name
+            = f.text_field :last_name, class: 'form-control'
+      .row
+        .col-md-12
+          .form-group
+            = f.label :email
+            = f.email_field :email, class: 'form-control'
+          - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+            div
+              | Currently waiting confirmation for:
+              = resource.unconfirmed_email
+      .row
+        .col-md-12
+          .form-group
+            = f.label :contact_number
+            = f.text_field :contact_number, class: 'form-control'
+      .row
+        .col-md-12
+          .form-group
+          = f.label :password, "Password (leave blank if you don't want to change it)"
+          = f.password_field :password, autocomplete: "off", class: 'form-control'
+      .row
+        .col-md-12
+          .form-group
+          = f.label :password_confirmation
+          = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
+      .row
+        .col-md-12
+          .form-group
+          = f.label :current_password, "Current password (we need your current password to confirm your changes)"
+          = f.password_field :current_password, autocomplete: "off", class: 'form-control'
+      .row
+        .col-md-12
+          .form-group
+          = f.submit "Update", class: "btn green darken-3", class: 'btn btn-default'
