@@ -10,6 +10,8 @@ nav.navbar.navbar-inverse.navbar-fixed-top
         = link_to current_user.company.name, symphony_root_path, class: "navbar-brand"
       - else
         = link_to "Excide", dashboard_path, class: "navbar-brand"
+      - if ENV['APP_NAME'] == "excide-staging"
+        span.label.label-danger Staging
     #navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.navbar-right
         - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
