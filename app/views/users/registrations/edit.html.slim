@@ -45,17 +45,3 @@
         .col-md-12
           .form-group
           = f.submit "Update", class: "btn green darken-3", class: 'btn btn-default'
-
-  .row
-    .col-md-12
-      .container
-        .form-group
-        .panel.panel-default
-          .panel-heading Delete my account
-          .panel-body
-            .row
-              .col-md-12
-                | I no longer want access to the best independent consultants in Singapore.
-            .row
-              .col-md-12
-                = button_to "Delete my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn green darken-3"
