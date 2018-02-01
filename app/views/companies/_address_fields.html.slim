@@ -1,15 +1,15 @@
 .row
-  .col-sm-12
-    .input-with-label.text-left
-      span Address Line 1
-      = f.text_field :line_1
+  .col-md-12
+    .form-group
+      = f.label :line_1, 'Address Line 1'
+      = f.text_field :line_1, class: 'form-control'
 .row
-  .col-sm-12
-    .input-with-label.text-left
-      span Address Line 2
-      = f.text_field :line_2
+  .col-md-12
+    .form-group
+      = f.label :line_2, 'Address Line 2'
+      = f.text_field :line_2, class: 'form-control'
 .row
-  .col-md-6.col-sm-12
-    .input-with-label.text-left
-      span Postal Code
-      = f.text_field :postal_code
+  .col-md-12
+    .form-group
+      = f.label :postal_code, 'Postal Code'
+      = f.text_field :postal_code, class: 'form-control'

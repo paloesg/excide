@@ -1,20 +1,16 @@
-section.page-title.page-title-4.bg-secondary
-  .container
-    .row
-      .col-md-6
-        h2.uppercase.mb8 Register Company
-      .col-md-6.text-right
-        ol.breadcrumb.breadcrumb-2
-          li
-            a href="#" Home
-          li
-            a href="#" Company
-          li.active Register
-section
-  .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
-    .feature.boxed.bg-secondary
-      = form_for(@company, url: {action: "create"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
-          = render 'form', f: f
-          .row
-            .col-md-4.col-sm-6
-              = f.submit "Save details"
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" #{@company.name}
+      li.active Company
+    h1.page-header Register Company
+.row
+  .col-md-12
+    = form_for(@company, url: {action: "create"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
+        = render 'form', f: f
+        .row
+          .col-md-4.col-sm-6
+            = f.submit "Save details", class: 'btn btn-default'

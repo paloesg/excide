@@ -1,32 +1,33 @@
 .row
-  .col-sm-12
-    .input-with-label.text-left
-      span Company Name
-      = f.text_field :name
+  .col-md-12
+    .form-group
+      = f.label :name, 'Company Name'
+      = f.text_field :name, class: 'form-control'
 .row
-  .col-sm-12
-    .input-with-label.text-left
+  .col-md-12
+    .form-group
       = f.fields_for :address do |a|
         = render 'companies/address_fields', f: a
 .row
-  .col-sm-12
-    .input-with-label.text-left
-      span Company Type
-      = f.select :company_type, Company.company_types.keys.map { |c| [c, c] }, :include_blank => true
+  .col-md-12
+    .form-group
+      = f.label :company_type, 'Company Type'
+      = f.select :company_type, Company.company_types.keys.map { |c| [c, c] }, {:include_blank => true}, class: 'form-control'
 .row
-  .col-sm-12
-    .input-with-label.text-left
-      span Description
-      = f.text_area :description
+  .col-md-12
+    .form-group
+      = f.label :description, 'Description'
+      = f.text_area :description, class: 'form-control'
 .row
-  .col-md-6.col-sm-12
-    .input-with-label.text-left
-      span SSIC Code
-      = f.text_field :ssic_code
-  .col-md-6.col-sm-12
-    .input-with-label.text-left
-      span Financial Year End
-      = f.text_field :financial_year_end, class: 'datetimepicker'
+  .col-md-12
+    .form-group
+      = f.label :ssic_code, 'SSIC Code'
+      = f.text_field :ssic_code, class: 'form-control'
+.row
+  .col-md-12
+    .form-group
+      = f.label :financial_year_end, 'Financial Year End'
+      = f.text_field :financial_year_end, class: 'form-control datetimepicker'
 
 javascript:
   $(function() {
