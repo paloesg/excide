@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
   post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   resources :documents
+  patch 'company_actions/update/:id', to: 'company_actions#update', as: :company_action
 
   namespace :symphony do
     resources :users
