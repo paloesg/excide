@@ -8,16 +8,12 @@ nav.navbar.navbar-inverse.navbar-fixed-top
         .icon-bar
       - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
         = link_to(symphony_root_path, class: "navbar-brand") do
-          - if ENV['APP_NAME'] == "excide-staging"
-            | #{current_user.company.name} #{content_tag :span, "Staging", class: "label label-danger" }
-          - else
-            | #{current_user.company.name}
+          ' #{current_user.company.name}
+          = content_tag :span, "Staging", class: "label label-danger" if ENV['APP_NAME'] == "excide-staging"
       - else
         = link_to(dashboard_path, class: "navbar-brand") do
-          - if ENV['APP_NAME'] == "excide-staging"
-            | Excide #{content_tag :span, "Staging", class: "label label-danger" }
-          - else
-            | Excide
+          ' Excide
+          = content_tag :span, "Staging", class: "label label-danger" if ENV['APP_NAME'] == "excide-staging"
     #navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.navbar-right
         - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
