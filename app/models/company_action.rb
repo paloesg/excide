@@ -9,6 +9,7 @@ class CompanyAction < ActiveRecord::Base
   belongs_to :task
   belongs_to :company
   belongs_to :workflow
+  belongs_to :user
 
   has_one :reminder, dependent: :destroy
 
