@@ -11,10 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180123071144) do
+ActiveRecord::Schema.define(version: 20180201070507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activations", force: :cascade do |t|
+    t.integer  "activation_type"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.text     "remarks"
+    t.string   "location"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "company_id"
+    t.integer  "user_id"
+  end
+
+  add_index "activations", ["company_id"], name: "index_activations_on_company_id", using: :btree
+  add_index "activations", ["user_id"], name: "index_activations_on_user_id", using: :btree
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id"
@@ -96,10 +111,12 @@ ActiveRecord::Schema.define(version: 20180123071144) do
     t.integer  "company_id"
     t.integer  "approved_by"
     t.integer  "workflow_id"
+    t.integer  "user_id"
   end
 
   add_index "company_actions", ["company_id"], name: "index_company_actions_on_company_id", using: :btree
   add_index "company_actions", ["task_id"], name: "index_company_actions_on_task_id", using: :btree
+  add_index "company_actions", ["user_id"], name: "index_company_actions_on_user_id", using: :btree
   add_index "company_actions", ["workflow_id"], name: "index_company_actions_on_workflow_id", using: :btree
 
   create_table "document_templates", force: :cascade do |t|
@@ -443,10 +460,13 @@ ActiveRecord::Schema.define(version: 20180123071144) do
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
   add_index "workflows", ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id", using: :btree
 
+  add_foreign_key "activations", "companies"
+  add_foreign_key "activations", "users"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
   add_foreign_key "company_actions", "companies"
   add_foreign_key "company_actions", "tasks"
+  add_foreign_key "company_actions", "users"
   add_foreign_key "company_actions", "workflows"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"

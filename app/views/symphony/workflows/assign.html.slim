@@ -1,0 +1,49 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.breadcrumb-2
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li
+        a href="#" #{@template.title}
+      li.active #{@workflow.identifier}
+    h1.page-header User Assignment
+.row
+  .col-md-8.col-sm-6
+    - @sections.each do |section|
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title = section.display_name
+        .panel-body
+          table.table
+            thead
+              tr
+                th No.
+                th Instructions
+                th Role
+                th User
+            tbody
+              - section.tasks.each do |t|
+                - action = t.get_company_action(@company.id, @workflow.identifier)
+                tr
+                  td = t.position.to_s + '.'
+                  td
+                    = t.instructions
+                    = image_tag(t.image_url) if t.image_url.present?
+                  td = t.role&.name&.humanize
+                  td = form_for action, remote: true do |f|
+                    = f.collection_select(:user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = {data: {action_id: action.id}, class: 'form-control', onchange: '$(this).submit()'})
+  .col-md-4.col-sm-6
+    = link_to "Finish Assignment", symphony_workflow_path(@template.slug, @workflow.identifier), class: 'btn btn-primary btn-block'
+    br
+  - @workflow_roles.each do |role|
+    .col-md-4.col-sm-6
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title = role.name.titleize
+        .panel-body
+          - (User.with_role role.name, @company).each do |user|
+            span.glyphicon.glyphicon-user aria-hidden="true"
+            |  #{user.full_name}
+            br

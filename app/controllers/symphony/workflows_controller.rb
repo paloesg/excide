@@ -1,6 +1,6 @@
 class Symphony::WorkflowsController < WorkflowsController
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset]
 
   def new
     @workflow = Workflow.new
@@ -13,7 +13,11 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.template = @template
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
     if @workflow.save
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
+      if params[:assign]
+        redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
+      else
+        redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
+      end
     else
       render :new
     end
@@ -35,7 +39,11 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
 
     if @workflow.update(workflow_params)
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
+      if params[:assign]
+        redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
+      else
+        redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
+      end
     else
       render :edit
     end
@@ -49,6 +57,12 @@ class Symphony::WorkflowsController < WorkflowsController
     set_tasks
     set_documents
     render :show
+  end
+
+  def assign
+    @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
+    @sections = @template.sections
+    @workflow_roles = @sections.map{|section| section.tasks.map(&:role)}.flatten.uniq
   end
 
   def approve
