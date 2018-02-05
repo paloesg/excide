@@ -1,6 +1,6 @@
 class Symphony::WorkflowsController < WorkflowsController
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset]
 
   def new
     @workflow = Workflow.new
@@ -75,6 +75,13 @@ class Symphony::WorkflowsController < WorkflowsController
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def reset
+    @company_actions = @company.company_actions.where(workflow_id: @workflow.id)
+    @workflow.update_attribute(:completed, false)
+    @company_actions.update_all(completed: false)
+    redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully reset.'
   end
 
   private

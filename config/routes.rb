@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     resources :documents
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
       member do
+        get '/reset', to: 'workflows#reset', as: :reset
         get '/section/:section_id', to: 'workflows#section', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
         get '/assign', to: 'workflows#assign', as: :assign
