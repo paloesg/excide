@@ -28,7 +28,7 @@
                 td = t.position.to_s + '.'
                 td
                   = t.instructions
-                  = image_tag(t.image_url) if t.image_url.present?
+                  = image_tag(t.image_url, class: "img-responsive") if t.image_url.present?
                   - if t.upload_file?
                     br
                     = link_to "Upload File", new_symphony_document_path(workflow: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-xs'
