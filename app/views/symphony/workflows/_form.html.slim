@@ -39,9 +39,6 @@
 .row
   .col-sm-12
     = f.submit 'Save Workflow', class: 'btn btn-default'
-    - if @workflow.workflowable.present? and @user.has_role? :admin
-      | &nbsp;
-      = link_to('Reset', {:action => :reset} ,class: 'btn btn-warning', data: { confirm: 'Are you sure, reset all tasks for this workflow?' })
 
 javascript:
   $(function() {

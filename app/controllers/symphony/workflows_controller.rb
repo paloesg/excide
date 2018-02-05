@@ -67,7 +67,6 @@ class Symphony::WorkflowsController < WorkflowsController
     @company_actions = @company.company_actions.where(workflow_id: @workflow.id)
     @workflow.update_attribute(:completed, false)
     @company_actions.update_all(completed: false)
-
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully reset.'
   end
 
