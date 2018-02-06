@@ -62,7 +62,6 @@ class Symphony::WorkflowsController < WorkflowsController
   def assign
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
-    @workflow_roles = @sections.map{|section| section.tasks.map(&:role)}.flatten.uniq
   end
 
   def approve
