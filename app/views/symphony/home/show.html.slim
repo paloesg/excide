@@ -37,12 +37,13 @@
                   td = w.completed ? 'Completed' : w.current_section&.display_name
         .text-center
           = paginate @workflows, views_prefix: 'dashboards'
-  .col-md-4.col-sm-6
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title New Workflow
-      .panel-body
-        .form-group
-          = label_tag "template", "Select workflow type"
-          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), class: "form-control template-dropdown", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-        = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-default', id: 'new-workflow'
+  - if @templates.present?
+    .col-md-4.col-sm-6
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title New Workflow
+        .panel-body
+          .form-group
+            = label_tag "template", "Select workflow type"
+            = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), class: "form-control template-dropdown", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
+          = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-default', id: 'new-workflow'
