@@ -33,7 +33,8 @@
                   td = t.role&.name&.humanize
                   td = form_for action, remote: true do |f|
                     = f.collection_select(:user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = {data: {action_id: action.id}, class: 'form-control', onchange: 'assign(this)'})
-                    i.glyphicon.glyphicon-ok.text-success.pull-right style="display:none; top:-25px; right:-18px;"
+                    i.glyphicon.glyphicon-ok.text-success.pull-right style="display:none;" Assign successfully
+                    i.glyphicon.glyphicon-remove.text-danger.pull-right style="display:none;" Assign failed
   .col-md-4.col-sm-6
     = link_to "Finish Assignment", symphony_workflow_path(@template.slug, @workflow.identifier), class: 'btn btn-primary btn-block'
     br
@@ -53,11 +54,12 @@ javascript:
       formParent = formJquery.parent();
       formJquery.submit();
       $(formParent).on('ajax:success', function(){
-        $(formParent.children(".glyphicon-ok")).fadeTo(2000, 500).slideUp(500, function () {
+        $(formParent.children(".glyphicon-ok")).fadeTo(2000, 500).slideUp(1000, function () {
           $(formParent.children(".glyphicon-ok")).slideUp(500);
         });
       }).on('ajax:error',function(){
-        console.log(status);
-        alert("error ",status)
+        $(formParent.children(".glyphicon-remove")).fadeTo(2000, 500).slideUp(1000, function () {
+          $(formParent.children(".glyphicon-remove")).slideUp(500);
+        });
       });
     }
