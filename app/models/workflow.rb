@@ -41,7 +41,11 @@ class Workflow < ActiveRecord::Base
   end
 
   def get_roles
-    self.template.sections.map{|section| section.tasks.map(&:role)}.flatten.uniq
+    self.template.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
+  end
+
+  def get_users
+    self.template.sections.map{|section| section.tasks.map{|task| task.company_actions.map(&:user)}}.flatten.compact.uniq
   end
 
   private
