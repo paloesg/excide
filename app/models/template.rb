@@ -12,4 +12,8 @@ class Template < ActiveRecord::Base
   enum business_model: [:ecommerce, :marketplace, :media, :mobile, :saas, :others]
 
   validates :title, :slug, :company, presence: true
+
+  def get_roles
+    self.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
+  end
 end

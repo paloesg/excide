@@ -40,8 +40,12 @@ class Workflow < ActiveRecord::Base
     self.current_task&.lower_item
   end
 
-  def uppercase_identifier
-    self.identifier = identifier.parameterize.upcase
+  def get_roles
+    self.template.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
+  end
+
+  def get_users
+    self.template.sections.map{|section| section.tasks.map{|task| task.company_actions.map(&:user)}}.flatten.compact.uniq
   end
 
   private
@@ -54,5 +58,9 @@ class Workflow < ActiveRecord::Base
         CompanyAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
+  end
+
+  def uppercase_identifier
+    self.identifier = identifier.parameterize.upcase
   end
 end
