@@ -57,5 +57,6 @@ class Symphony::DocumentsController < DocumentsController
 
   def set_workflows
     @workflows = @company.workflows
+    @workflow = @workflows.find_by(identifier: params[:workflow])
   end
 end
