@@ -1,6 +1,7 @@
 class Symphony::DocumentsController < DocumentsController
   before_action :set_templates, only: [:index, :new, :edit]
-  before_action :set_workflows, only: [:index, :new, :edit]
+  before_action :set_company_workflows, only: [:index, :new, :edit]
+  before_action :set_workflow, only: [:new, :edit]
 
   def index
     @documents = []
@@ -55,8 +56,11 @@ class Symphony::DocumentsController < DocumentsController
     @document_templates = DocumentTemplate.joins(template: :company).where(templates: {company_id: @company.id}).order(id: :asc)
   end
 
-  def set_workflows
+  def set_company_workflows
     @workflows = @company.workflows
+  end
+
+  def set_workflow
     @workflow = @workflows.find_by(identifier: params[:workflow])
   end
 end
