@@ -23,6 +23,7 @@
                 th Instructions
                 th Role
                 th User
+                th
             tbody
               - section.tasks.each do |t|
                 - action = t.get_company_action(@company.id, @workflow.identifier)
@@ -31,10 +32,11 @@
                   td
                     = t.instructions
                   td = t.role&.name&.humanize
-                  td style="padding:5px 15px 0px !important" = form_for action, remote: true do |f|
+                  td = form_for action, remote: true do |f|
                     = f.collection_select(:user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = {data: {action_id: action.id}, class: 'form-control', onchange: 'assign(this)'})
-                    i.glyphicon.glyphicon-ok.text-success.pull-right style="opacity: 0;left: 17px;top: -25px;"
-                    i.glyphicon.glyphicon-remove.text-danger.pull-right style="opacity: 0;left: 30px;top: -25px;"
+                  td
+                    i.glyphicon.glyphicon-ok.text-success style="opacity: 0;"
+                    i.glyphicon.glyphicon-remove.text-danger style="opacity: 0;"
   .col-md-4.col-sm-6
     = link_to "Finish Assignment", symphony_workflow_path(@template.slug, @workflow.identifier), class: 'btn btn-primary btn-block'
     br
@@ -52,14 +54,15 @@ javascript:
   function assign(form_element) {
     formJquery = $(form_element);
     formParent = formJquery.parent();
+    tableRow = formParent.parent().parent();
     formJquery.submit();
     $(formParent).on('ajax:success', function(){
-      $(formParent.children(".glyphicon-ok")).show().fadeTo(1000,500, function () {
-        $(formParent.children(".glyphicon-ok")).fadeTo(500,0);
+      $(tableRow.find(".glyphicon-ok")).show().fadeTo(500,200, function () {
+        $(tableRow.find(".glyphicon-ok")).fadeTo(200,0);
       });
     }).on('ajax:error',function(){
-      $(formParent.children(".glyphicon-remove")).show().fadeTo(1000,500, function () {
-        $(formParent.children(".glyphicon-remove")).fadeTo(500,0);
+      $(tableRow.find(".glyphicon-remove")).show().fadeTo(500,200, function () {
+        $(tableRow.find(".glyphicon-remove")).fadeTo(200,0);
       });
     });
   }
