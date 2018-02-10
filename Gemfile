@@ -138,7 +138,9 @@ group :development, :test do
   gem 'dotenv-rails'
 
   # Testing framework
-  gem 'rspec-rails', '~> 3.6'
+  gem 'rspec-rails'
+  gem 'guard-rspec'
+  gem 'spring-commands-rspec'
   gem 'shoulda'
-  gem 'factory_bot'
+  gem 'factory_bot_rails'
 end
