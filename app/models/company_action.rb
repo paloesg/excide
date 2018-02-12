@@ -2,7 +2,7 @@ class CompanyAction < ActiveRecord::Base
   include PublicActivity::Model
   tracked except: :create, owner: ->(controller, model) { controller && controller.current_user }
 
-  after_save :set_deadline_and_reminders
+  after_save :clear_reminder, if: :completed_changed?
   after_save :trigger_next_task, if: :completed_changed?
   after_save :send_notification, if: :completed_changed?
 
@@ -13,16 +13,26 @@ class CompanyAction < ActiveRecord::Base
 
   has_one :reminder, dependent: :destroy
 
+  def set_deadline_and_notify(next_task)
+    next_action = next_task.get_company_action(self.company, self.workflow.identifier)
+    next_action.update_columns(deadline: (Date.today + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
+
+    # Create new reminder based on deadline of action and repeat every 2 days
+    create_reminder(next_task, next_action)
+
+    # Trigger email notification for next task if role present
+    if next_task.role.present?
+      users = User.with_role(next_task.role.name.to_sym, self.company)
+      NotificationMailer.deliver_notifications(next_task, next_action, users)
+    end
+  end
+
   private
 
-  def set_deadline_and_reminders
+  def clear_reminder
     if self.completed
-      # Find associated reminders and remove next reminder date
+      # Find associated reminder and remove next reminder date
       self.reminder.update_attributes(next_reminder: nil) if self.reminder.present?
-    elsif self.task.first? && self.reminder.nil?
-      # If task is first in the list, create own reminder
-      self.update_columns(deadline: (Date.today + self.task.days_to_complete)) unless self.task.days_to_complete.nil?
-      create_reminder(self.task, self)
     end
   end
 
@@ -41,20 +51,6 @@ class CompanyAction < ActiveRecord::Base
       # Find next action in line and set deadline if not the last task in section
       next_task = self.task.lower_item
       set_deadline_and_notify(next_task)
-    end
-  end
-
-  def set_deadline_and_notify(next_task)
-    next_action = next_task.get_company_action(self.company, self.workflow.identifier)
-    next_action.update_columns(deadline: (Date.today + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
-
-    # Create new reminder based on deadline of action and repeat every 2 days
-    create_reminder(next_task, next_action)
-
-    # Trigger email notification for next task if role present
-    if next_task.role.present?
-      users = User.with_role(next_task.role.name.to_sym, self.company)
-      NotificationMailer.deliver_notifications(next_task, next_action, users)
     end
   end
 
