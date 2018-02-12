@@ -14,6 +14,7 @@ class Workflow < ActiveRecord::Base
   validates :identifier, uniqueness: true
 
   after_create :create_related_company_actions
+  after_create :trigger_first_task
   before_save :uppercase_identifier
 
   def build_workflowable(params)
@@ -58,6 +59,10 @@ class Workflow < ActiveRecord::Base
         CompanyAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
+  end
+
+  def trigger_first_task
+    self.current_task.get_company_action(self.company, self.identifier).set_deadline_and_notify(current_task)
   end
 
   def uppercase_identifier
