@@ -2,7 +2,7 @@ class Section < ActiveRecord::Base
   belongs_to :template
   acts_as_list scope: :template
 
-  has_many :tasks, -> { order(position: :asc) }
+  has_many :tasks, -> { order(position: :asc) }, dependent: :destroy
 
   accepts_nested_attributes_for :tasks
 
