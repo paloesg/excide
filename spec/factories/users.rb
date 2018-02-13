@@ -11,4 +11,5 @@ FactoryBot.define do
     password_confirmation '12345678'
     company
   end
+
 end
