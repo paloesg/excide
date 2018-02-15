@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :section, :class => "Section" do
-    unique_name SecureRandom.hex
-    display_name SecureRandom.hex
+    unique_name Faker::Name.title
+    display_name Faker::Name.title
     position 1
   end
 end
