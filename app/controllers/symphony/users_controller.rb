@@ -3,6 +3,7 @@ class Symphony::UsersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
+  before_action :set_company_roles, only: [:new, :create, :edit]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -14,7 +15,6 @@ class Symphony::UsersController < ApplicationController
 
   def new
     @user = User.new
-    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
   end
 
   def create
@@ -29,7 +29,6 @@ class Symphony::UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
-    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
   end
 
   def update
@@ -53,6 +52,10 @@ class Symphony::UsersController < ApplicationController
 
   def set_user
     @user = User.find_by(id: params[:id], company: @company)
+  end
+
+  def set_company_roles
+    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
   end
 
   def user_params

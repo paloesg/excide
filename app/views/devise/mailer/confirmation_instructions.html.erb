@@ -1,5 +1,5 @@
 <p>Hi <%= @user.first_name %>,</p>
 
-<p>Welcome to Excide! Before you get started, please confirm your registration by clicking on the link below:</p>
+<p>You have been added to the Excide Symphony Platform! Before you get started, please activate your account by clicking on the link below:</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+<p><%= link_to 'Activate my account', confirmation_url(@resource, confirmation_token: @token) %></p>

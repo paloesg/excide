@@ -24,6 +24,7 @@
               th Last Name
               th Email
               th Phone
+              th Status
               th
           tbody
             - @users.each do |u|
@@ -34,6 +35,7 @@
                 td = u.last_name
                 td = u.email
                 td = u.contact_number
+                td = u.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed'
                 td.btn-toolbar
                   = link_to 'Edit', edit_symphony_user_path(u.id), role: 'button', class: 'btn btn-primary btn-xs'
                   = link_to 'Delete', symphony_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'

@@ -50,8 +50,9 @@ Rails.application.routes.draw do
     get '/:company/:role/register', to: 'users/registrations#new', as: :company_user_register
     get '/:company/login', to: 'devise/sessions#new', as: :company_user_login
     get 'logout', to: 'devise/sessions#destroy', as: :logout
+    match 'confirmation' => 'confirmations#update', :via => :put, :as => :update_user_confirmation
   end
-  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout' }
+  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout' }
 
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account
