@@ -13,8 +13,10 @@
       .panel-heading
         h3.panel-title Calendar
       .panel-body
-        = month_calendar do |date|
-          = date
+        = month_calendar events: @activations do |date, activations|
+          = date.day
+          - activations.each do |activation|
+            p = activation.activation_type.titleize
 .row
   .col-sm-6.col-xs-12
     .panel.panel-default
@@ -32,9 +34,9 @@
             tbody
               - @activations.each do |activation|
                 tr
-                  td = activation.activation_type
-                  td = activation.start_time
-                  td = activation.end_time
+                  td = activation.activation_type.titleize
+                  td = activation.start_time.strftime('%e %b %k:%M')
+                  td = activation.end_time.strftime('%e %b %k:%M')
                   td = activation.location
         - else
           | No upcoming activations this month.
