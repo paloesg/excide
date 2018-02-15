@@ -5,7 +5,7 @@ class CustomDeviseMailer < Devise::Mailer
   default from: 'Excide <info@excide.co>'
 
   def confirmation_instructions(record, token, opts={})
-    opts[:subject] = 'Thank you for registering on Excide! Please confirm your account'
+    opts[:subject] = 'Please activate your Excide Symphony account'
     super
   end
 end
