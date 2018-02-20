@@ -49,6 +49,38 @@ class Workflow < ActiveRecord::Base
     self.template.sections.map{|section| section.tasks.map{|task| task.company_actions.map(&:user)}}.flatten.compact.uniq
   end
 
+  def data
+    read_attribute(:data).map {|v| Data.new(v) }
+  end
+
+  def data_attributes=(attributes)
+    data = []
+    attributes.each do |index, attrs|
+      next if '1' == attrs.delete("_destroy")
+      attrs[:percentage] = attrs[:percentage].try(:to_i)
+      data << attrs
+    end
+    write_attribute(:data, data)
+  end
+
+  def build_data
+    d = self.data.dup
+    d << Data.new({name: '', value: ''})
+    self.data = d
+  end
+
+  class Data
+    attr_accessor :name, :value
+    def initialize(hash)
+      @name   = hash['name']
+      @value  = hash['value']
+    end
+    def persisted?() false; end
+    def new_record?() false; end
+    def marked_for_destruction?() false; end
+    def _destroy() false; end
+  end
+
   private
 
   # Create all the actions that need to be completed for a workflow that is associated with a company
