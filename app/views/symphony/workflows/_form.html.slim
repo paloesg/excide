@@ -28,7 +28,7 @@
         tbody
           = f.fields_for :data do |d|
             = render 'data_fields', f: d
-      = link_to "Add attribute", '#', class: "remove_fields btn btn-sm btn-success"
+      = link_to_add_fields "Add attribute", f, :data
 .row
   - if @workflow.workflowable.blank?
     .col-md-6.col-sm-12
