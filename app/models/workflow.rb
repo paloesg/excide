@@ -12,6 +12,7 @@ class Workflow < ActiveRecord::Base
   has_many :documents, dependent: :destroy
 
   validates :identifier, uniqueness: true
+  validate :check_data_fields
 
   after_create :create_related_company_actions
   after_create :trigger_first_task
@@ -99,5 +100,10 @@ class Workflow < ActiveRecord::Base
 
   def uppercase_identifier
     self.identifier = identifier.parameterize.upcase
+  end
+
+  def check_data_fields
+    self.errors.add(:data, "name of attributes cannot blank") if self.data.map(&:name).include? ""
+    self.errors.add(:data, "value of attributes cannot blank") if self.data.map(&:value).include? ""
   end
 end
