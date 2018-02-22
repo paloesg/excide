@@ -80,6 +80,20 @@
       .panel-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
     .panel.panel-default
       .panel-heading
+        h3.panel-title Attributes
+      .panel-body
+        table.table.table-condensed
+          thead
+            tr
+              th Name
+              th Value
+          tbody
+          - @workflow.data.each do |d|
+            tr
+              td = d.name
+              td = d.value
+    .panel.panel-default
+      .panel-heading
         h3.panel-title Documents
       .panel-body
         - if @documents.empty?
