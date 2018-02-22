@@ -14,6 +14,22 @@
 .form-group
   = f.label :deadline
   = f.text_field :deadline, class: 'form-control datetimepicker'
+.form-group
+  .panel.panel-default
+    .panel-heading
+      h3.panel-title Attributes
+    .panel-body
+      table.table
+        thead
+          tr
+            th Name
+            th Value
+            th
+        tbody
+          tr
+          = f.fields_for :data do |d|
+            = render 'data_fields', f: d
+      = link_to_add_fields "Add Attribute", f, :data
 .row
   - if @workflow.workflowable.blank?
     .col-md-6.col-sm-12

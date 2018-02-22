@@ -12,6 +12,7 @@ class Workflow < ActiveRecord::Base
   has_many :documents, dependent: :destroy
 
   validates :identifier, uniqueness: true
+  validate :check_data_fields
 
   after_create :create_related_company_actions
   after_create :trigger_first_task
@@ -49,6 +50,38 @@ class Workflow < ActiveRecord::Base
     self.template.sections.map{|section| section.tasks.map{|task| task.company_actions.map(&:user)}}.flatten.compact.uniq
   end
 
+  def data
+    read_attribute(:data).map {|v| Data.new(v) }
+  end
+
+  def data_attributes=(attributes)
+    data = []
+    attributes.each do |index, attrs|
+      next if '1' == attrs.delete("_destroy")
+      next if attrs['name'].empty? && attrs['value'].empty?
+      data << attrs
+    end
+    write_attribute(:data, data)
+  end
+
+  def build_data
+    d = self.data.dup
+    d << Data.new({name: '', value: ''})
+    self.data = d
+  end
+
+  class Data
+    attr_accessor :name, :value
+    def initialize(hash)
+      @name   = hash['name']
+      @value  = hash['value']
+    end
+    def persisted?() false; end
+    def new_record?() false; end
+    def marked_for_destruction?() false; end
+    def _destroy() false; end
+  end
+
   private
 
   # Create all the actions that need to be completed for a workflow that is associated with a company
@@ -67,5 +100,10 @@ class Workflow < ActiveRecord::Base
 
   def uppercase_identifier
     self.identifier = identifier.parameterize.upcase
+  end
+
+  def check_data_fields
+    self.errors.add(:data, "attribute name cannot be blank") if self.data.map(&:name).include? ""
+    self.errors.add(:data, "attribute value cannot be blank") if self.data.map(&:value).include? ""
   end
 end
