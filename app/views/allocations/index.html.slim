@@ -1,0 +1,29 @@
+h1 Listing allocations
+
+table
+  thead
+    tr
+      th User
+      th Activation
+      th Allocation date
+      th Start time
+      th End time
+      th
+      th
+      th
+
+  tbody
+    - @allocations.each do |allocation|
+      tr
+        td = allocation.user
+        td = allocation.activation
+        td = allocation.allocation_date
+        td = allocation.start_time
+        td = allocation.end_time
+        td = link_to 'Show', allocation
+        td = link_to 'Edit', edit_allocation_path(allocation)
+        td = link_to 'Destroy', allocation, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Allocation', new_allocation_path

@@ -1,0 +1,21 @@
+p#notice = notice
+
+p
+  strong User:
+  = @allocation.user
+p
+  strong Activation:
+  = @allocation.activation
+p
+  strong Allocation date:
+  = @allocation.allocation_date
+p
+  strong Start time:
+  = @allocation.start_time
+p
+  strong End time:
+  = @allocation.end_time
+
+=> link_to 'Edit', edit_allocation_path(@allocation)
+'|
+=< link_to 'Back', allocations_path

@@ -46,6 +46,8 @@ Rails.application.routes.draw do
 
   namespace :conductor do
     resources :activations
+    resources :allocations
+    resources :availabilities
 
     root to: 'home#show'
   end

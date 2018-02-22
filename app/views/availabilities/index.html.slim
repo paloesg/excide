@@ -1,0 +1,29 @@
+h1 Listing availabilities
+
+table
+  thead
+    tr
+      th User
+      th Available date
+      th Start time
+      th End time
+      th Assigned
+      th
+      th
+      th
+
+  tbody
+    - @availabilities.each do |availability|
+      tr
+        td = availability.user
+        td = availability.available_date
+        td = availability.start_time
+        td = availability.end_time
+        td = availability.assigned
+        td = link_to 'Show', availability
+        td = link_to 'Edit', edit_availability_path(availability)
+        td = link_to 'Destroy', availability, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Availability', new_availability_path

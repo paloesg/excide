@@ -5,7 +5,7 @@ class Conductor::HomeController < ApplicationController
   before_action :set_company_and_roles
 
   def show
-    date_from = params[:start_date]&.to_date || Date.today
+    date_from = Date.today
     date_to = date_from.to_date + 1.month
     @activations = Activation.where(company: @company, start_time: date_from.beginning_of_day..date_to.end_of_day)
   end
