@@ -12,5 +12,4 @@ jQuery ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
     $(".table>tbody>tr:last-child").after($(this).data('fields').replace(regexp, time))
-    console.log(this)
     event.preventDefault()

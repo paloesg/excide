@@ -57,7 +57,7 @@ class Workflow < ActiveRecord::Base
     data = []
     attributes.each do |index, attrs|
       next if '1' == attrs.delete("_destroy")
-      attrs[:percentage] = attrs[:percentage].try(:to_i)
+      next if attrs['name'].empty? && attrs['value'].empty?
       data << attrs
     end
     write_attribute(:data, data)

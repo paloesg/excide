@@ -26,6 +26,7 @@
             th Value
             th Remove
         tbody
+          tr
           = f.fields_for :data do |d|
             = render 'data_fields', f: d
       = link_to_add_fields "Add attribute", f, :data
