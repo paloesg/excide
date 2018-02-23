@@ -17,6 +17,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     sections: Field::NestedHasMany.with_options(skip: [:template]),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    data_names: Field::JSON,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -51,6 +52,7 @@ class TemplateDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :title,
     :company,
+    :data_names,
     :sections,
   ].freeze
 

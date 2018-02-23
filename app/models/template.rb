@@ -17,12 +17,4 @@ class Template < ActiveRecord::Base
   def get_roles
     self.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
   end
-
-  class DataName
-    attr_accessor :document_templates
-
-    def initialize(hash)
-      @name = hash['name']
-    end
-  end
 end
