@@ -20,10 +20,10 @@ table
         td = allocation.allocation_date
         td = allocation.start_time
         td = allocation.end_time
-        td = link_to 'Show', allocation
-        td = link_to 'Edit', edit_allocation_path(allocation)
-        td = link_to 'Destroy', allocation, data: { confirm: 'Are you sure?' }, method: :delete
+        td = link_to 'Show', conductor_allocation_path(allocation)
+        td = link_to 'Edit', edit_conductor_allocation_path(allocation)
+        td = link_to 'Destroy', conductor_allocation_path(allocation), data: { confirm: 'Are you sure?' }, method: :delete
 
 br
 
-= link_to 'New Allocation', new_allocation_path
+= link_to 'New Allocation', new_conductor_allocation_path

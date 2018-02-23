@@ -20,10 +20,10 @@ table
         td = availability.start_time
         td = availability.end_time
         td = availability.assigned
-        td = link_to 'Show', availability
-        td = link_to 'Edit', edit_availability_path(availability)
-        td = link_to 'Destroy', availability, data: { confirm: 'Are you sure?' }, method: :delete
+        td = link_to 'Show', conductor_availability_path(availability)
+        td = link_to 'Edit', edit_conductor_availability_path(availability)
+        td = link_to 'Destroy', conductor_availability_path(availability), data: { confirm: 'Are you sure?' }, method: :delete
 
 br
 
-= link_to 'New Availability', new_availability_path
+= link_to 'New Availability', new_conductor_availability_path
