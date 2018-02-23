@@ -68,6 +68,9 @@ GEM
       selectize-rails (~> 0.6)
     administrate-field-image (1.1.0)
       administrate (>= 0.2.0.rc1)
+    administrate-field-json (0.0.4)
+      administrate (~> 0.3)
+      rails (>= 4.2, < 5.1)
     arel (6.0.4)
     ast (2.3.0)
     autoprefixer-rails (7.1.6)
@@ -449,6 +452,7 @@ DEPENDENCIES
   acts_as_list
   administrate
   administrate-field-image
+  administrate-field-json
   administrate-field-nested_has_many!
   aws-sdk (~> 2)
   better_errors

@@ -106,6 +106,7 @@ gem "datetime_picker_rails"
 gem 'administrate'
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many', github: 'ContainerMb4/administrate-field-nested_has_many'
+gem 'administrate-field-json'
 # Deep cloning for cloning of template with associated sections
 gem 'deep_cloneable', '~> 2.3.0'
 
