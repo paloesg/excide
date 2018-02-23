@@ -44,6 +44,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     :updated_at,
     :sections,
     :workflows,
+    :data_names
   ].freeze
 
   # FORM_ATTRIBUTES
