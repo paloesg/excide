@@ -17,6 +17,8 @@
       .col-sm-12
         = link_to 'View Activations', conductor_activations_path, class: 'btn btn-primary btn-block'
         = link_to 'New Activation', new_conductor_activation_path, class: 'btn btn-primary btn-block'
+        = link_to 'Allocation', conductor_allocations_path, class: 'btn btn-primary btn-block'
+        = link_to 'Manpower', conductor_availabilities_path, class: 'btn btn-primary btn-block'
     - else
       .panel-group role="tablist"
         .panel.panel-default
