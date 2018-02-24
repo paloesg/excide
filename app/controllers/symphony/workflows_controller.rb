@@ -4,7 +4,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def new
     @workflow = Workflow.new
-    @workflow.build_data
+    @workflow.template_data(@template)
   end
 
   def create
