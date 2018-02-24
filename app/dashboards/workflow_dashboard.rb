@@ -57,7 +57,6 @@ class WorkflowDashboard < Administrate::BaseDashboard
     :company,
     :identifier,
     :template,
-    :workflowable,
     :completed,
   ].freeze
 
