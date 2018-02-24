@@ -1,9 +1,9 @@
 GIT
-  remote: git://github.com/Container4/administrate-field-nested_has_many.git
-  revision: f21a7c926c085d6d2940922b9c05d3259d0f0456
+  remote: git://github.com/hschin/administrate-field-nested_has_many.git
+  revision: 0a00c71b08cc02de94a3c5232c0a2c4cc35edc1a
   specs:
-    administrate-field-nested_has_many (0.1.1)
-      administrate (~> 0.8)
+    administrate-field-nested_has_many (0.1.0)
+      administrate (>= 0.7.0)
       cocoon (~> 1.2)
       rails (>= 4.2)
 
