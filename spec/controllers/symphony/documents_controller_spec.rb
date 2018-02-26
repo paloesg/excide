@@ -25,12 +25,16 @@ RSpec.describe Symphony::DocumentsController, type: :controller do
     end
 
     it "should show only company documents" do
-      create( :template_with_workflow_and_document, company: user.company )
+      create_list( :template_with_workflow, 3)
+      create_list( :template_with_workflow, 3, company: user.company )
       get :index
       assigns( :documents ).each do |workflows_documents|
         workflows_documents.shift.identifier
         workflows_documents.each do |document|
-          expect( document[:company_id] ).to eq( user.company.id )
+          if document.nil? # Different Document Template
+          else
+            expect( document[:company_id] ).to eq( user.company.id )
+          end
         end
       end
     end

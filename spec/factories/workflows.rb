@@ -1,11 +1,11 @@
 FactoryBot.define do
-  factory :workflow do
-    identifier Faker::Name.title
-    workflowable_type "Client"
+  factory :workflow do |workflow|
+    workflow.identifier { Faker::Name.title}
+    workflow.workflowable_type "Client"
 
     factory :workflow_with_document do
       transient do
-        company
+        workflow.company
       end
 
       after(:create) do |w|

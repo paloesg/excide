@@ -1,6 +1,6 @@
 FactoryBot.define do
-  factory :document, :class => "Document" do
-    identifier Faker::Name.title
-    file_url Faker::File.file_name('foo/bar', 'baz', 'jpg')
+  factory :document, :class => "Document" do |document|
+    document.identifier { Faker::Name.title }
+    document.file_url { Faker::File.file_name('foo/bar', 'baz', 'jpg') }
   end
 end
