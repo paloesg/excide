@@ -17,7 +17,6 @@ RSpec.describe Symphony::DocumentsController, type: :controller do
     let(:user) { FactoryBot.create(:user) }
     before :each do
       login_with user
-      create( :template_with_workflow_and_document, company: user.company )
     end
 
     it "should let a user see all the posts" do
@@ -26,8 +25,10 @@ RSpec.describe Symphony::DocumentsController, type: :controller do
     end
 
     it "should show only company documents" do
+      create( :template_with_workflow_and_document, company: user.company )
       get :index
       assigns( :documents ).each do |workflows_documents|
+        workflows_documents.shift.identifier
         workflows_documents.each do |document|
           expect( document[:company_id] ).to eq( user.company.id )
         end
