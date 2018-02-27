@@ -74,10 +74,12 @@ javascript:
         $('#identifier_form').removeClass('has-error');
         $('#identifier_unique').show();
         $('#identifier_exist').hide();
+        $('input[type="submit"]').prop('disabled', false);
       } else {
         $('#identifier_form').addClass('has-error');
         $('#identifier_unique').hide();
         $('#identifier_exist').show();
+        $('input[type="submit"]').prop('disabled', true);
       }
     });
   });
