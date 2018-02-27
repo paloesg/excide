@@ -85,7 +85,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def identifier_check
-    @check_workflow = Workflow.where(identifier: params[:identifier].upcase)
+    @check_workflow = Workflow.where(identifier: params[:identifier].parameterize.upcase)
 
     respond_to do |format|
       format.json { render json: { :unique => @check_workflow.blank?, :workflow_identifier => params[:workflow_identifier]} }
