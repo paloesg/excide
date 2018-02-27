@@ -8,6 +8,7 @@
 .form-group
   = f.label :identifier
   = f.text_field :identifier, class: 'form-control'
+  span.help-block style="display:none" This identifier name already exist
 .form-group
   = f.label :remarks
   = f.text_area :remarks, class: 'form-control'
@@ -63,5 +64,15 @@ javascript:
     $('.datetimepicker').datetimepicker({
       debug: false,
       format: 'YYYY-MM-DD'
+    });
+  });
+
+  $('#workflow_identifier').focusout(function(){
+    $.get('identifier_check?identifier='+$('#workflow_identifier').val(),function(data){
+      if (data.unique || $('#workflow_identifier').val().toUpperCase() == data.workflow_identifier) {
+        $('#workflow_identifier').parent().removeClass('has-error'); $('.help-block').hide();
+      } else {
+        $('#workflow_identifier').parent().addClass('has-error'); $('.help-block').show();
+      }
     });
   });

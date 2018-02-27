@@ -34,7 +34,11 @@ Rails.application.routes.draw do
     resources :document_templates
     resources :documents
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
+      collection do
+        get "identifier_check", to: 'workflows#identifier_check', as: :identifier_check
+      end
       member do
+        get "identifier_check", to: 'workflows#identifier_check', as: :identifier_check_edit
         get '/reset', to: 'workflows#reset', as: :reset
         get '/section/:section_id', to: 'workflows#section', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle

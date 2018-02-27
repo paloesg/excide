@@ -84,6 +84,14 @@ class Symphony::WorkflowsController < WorkflowsController
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully reset.'
   end
 
+  def identifier_check
+    @check_workflow = Workflow.where(identifier: params[:identifier].upcase)
+
+    respond_to do |format|
+      format.json { render json: { :unique => @check_workflow.blank?, :workflow_identifier => params[:workflow_identifier]} }
+    end
+  end
+
   private
 
   def set_company_and_roles
