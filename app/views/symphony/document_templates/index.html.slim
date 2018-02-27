@@ -29,4 +29,4 @@
             td.btn-toolbar
               = link_to "Download", document_template.file_url, role: 'button', class: 'btn btn-success btn-xs'
               = link_to 'Edit', edit_symphony_document_template_path(document_template), role: 'button', class: 'btn btn-primary btn-xs' if current_user.has_role? :admin, @company
-              = link_to 'Destroy', symphony_document_template_path(document_template), data: { confirm: 'Are you sure?' }, method: :delete, class: 'btn btn-danger btn-xs' if current_user.has_role? :admin, @company
+              = link_to 'Destroy', symphony_document_template_path(document_template), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs' if current_user.has_role? :admin, @company
