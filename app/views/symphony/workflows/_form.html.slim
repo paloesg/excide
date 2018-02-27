@@ -5,10 +5,11 @@
       - @workflow.errors.full_messages.each do |message|
         li = message
 = f.hidden_field(:workflowable_type, value: 'Client')
-.form-group
+.form-group id="identifier_form"
   = f.label :identifier
   = f.text_field :identifier, class: 'form-control'
-  span.help-block style="display:none" This identifier name already exist
+  span.help-block id="identifier_exist" style="display:none" This identifier name already exist
+  span.help-block id="identifier_unique" style="display:none" This identifier name is unique
 .form-group
   = f.label :remarks
   = f.text_area :remarks, class: 'form-control'
@@ -70,9 +71,13 @@ javascript:
   $('#workflow_identifier').focusout(function(){
     $.get('identifier_check?identifier='+$('#workflow_identifier').val(),function(data){
       if (data.unique || $('#workflow_identifier').val().toUpperCase() == data.workflow_identifier) {
-        $('#workflow_identifier').parent().removeClass('has-error'); $('.help-block').hide();
+        $('#identifier_form').removeClass('has-error');
+        $('#identifier_unique').show();
+        $('#identifier_exist').hide();
       } else {
-        $('#workflow_identifier').parent().addClass('has-error'); $('.help-block').show();
+        $('#identifier_form').addClass('has-error');
+        $('#identifier_unique').hide();
+        $('#identifier_exist').show();
       }
     });
   });
