@@ -5,11 +5,11 @@
       - @workflow.errors.full_messages.each do |message|
         li = message
 = f.hidden_field(:workflowable_type, value: 'Client')
-.form-group id="identifier_form"
+.form-group#identifier_form
   = f.label :identifier
   = f.text_field :identifier, class: 'form-control'
-  span.help-block id="identifier_exist" style="display:none" This identifier name already exist
-  span.help-block id="identifier_unique" style="display:none" This identifier name is unique
+  span.help-block.hidden#identifier_exist This identifier name already exist
+  span.help-block.hidden#identifier_unique This identifier name is unique
 .form-group
   = f.label :remarks
   = f.text_area :remarks, class: 'form-control'
@@ -69,17 +69,17 @@ javascript:
   });
 
   $('#workflow_identifier').focusout(function(){
-    workflow_identifier = "#{@workflow.identifier ? @workflow.identifier : ''}";
+    workflowIdentifier = "#{@workflow.identifier ? @workflow.identifier : ''}";
     $.get('/symphony/identifier_check?identifier='+$('#workflow_identifier').val(),function(data){
-      if (data.unique || $('#workflow_identifier').val().toUpperCase() == workflow_identifier) {
+      if (data.unique || $('#workflow_identifier').val().toUpperCase() == workflowIdentifier) {
         $('#identifier_form').removeClass('has-error');
-        $('#identifier_unique').show();
-        $('#identifier_exist').hide();
+        $('#identifier_unique').removeClass('hidden');
+        $('#identifier_exist').addClass('hidden');
         $('input[type="submit"]').prop('disabled', false);
       } else {
         $('#identifier_form').addClass('has-error');
-        $('#identifier_unique').hide();
-        $('#identifier_exist').show();
+        $('#identifier_unique').addClass('hidden');
+        $('#identifier_exist').removeClass('hidden');
         $('input[type="submit"]').prop('disabled', true);
       }
     });
