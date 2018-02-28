@@ -69,8 +69,9 @@ javascript:
   });
 
   $('#workflow_identifier').focusout(function(){
-    $.get('identifier_check?identifier='+$('#workflow_identifier').val(),function(data){
-      if (data.unique || $('#workflow_identifier').val().toUpperCase() == data.workflow_identifier) {
+    workflow_identifier = "#{@workflow.identifier ? @workflow.identifier : ''}";
+    $.get('/symphony/identifier_check?identifier='+$('#workflow_identifier').val(),function(data){
+      if (data.unique || $('#workflow_identifier').val().toUpperCase() == workflow_identifier) {
         $('#identifier_form').removeClass('has-error');
         $('#identifier_unique').show();
         $('#identifier_exist').hide();

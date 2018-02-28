@@ -30,15 +30,12 @@ Rails.application.routes.draw do
   patch 'company_actions/update/:id', to: 'company_actions#update', as: :company_action
 
   namespace :symphony do
+    get "identifier_check", to: 'workflows#identifier_check', as: :identifier_check
     resources :users
     resources :document_templates
     resources :documents
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
-      collection do
-        get "identifier_check", to: 'workflows#identifier_check', as: :identifier_check
-      end
       member do
-        get "identifier_check", to: 'workflows#identifier_check', as: :identifier_check_edit
         get '/reset', to: 'workflows#reset', as: :reset
         get '/section/:section_id', to: 'workflows#section', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
