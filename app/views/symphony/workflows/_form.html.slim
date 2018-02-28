@@ -71,7 +71,12 @@ javascript:
   $('#workflow_identifier').focusout(function(){
     workflowIdentifier = "#{@workflow.identifier ? @workflow.identifier : ''}";
     $.get('/symphony/check-identifier?identifier='+$('#workflow_identifier').val(),function(data){
-      if (data.unique || $('#workflow_identifier').val().toUpperCase() == workflowIdentifier) {
+      if ($('#workflow_identifier').val().toUpperCase() == workflowIdentifier || $('#workflow_identifier').val() == '') {
+        $('#identifier_form').removeClass('has-error');
+        $('#identifier_unique').addClass('hidden');
+        $('#identifier_exist').addClass('hidden');
+        $('input[type="submit"]').prop('disabled', false);
+      } else if (data.unique) {
         $('#identifier_form').removeClass('has-error');
         $('#identifier_unique').removeClass('hidden');
         $('#identifier_exist').addClass('hidden');
