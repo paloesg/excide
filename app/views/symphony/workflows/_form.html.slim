@@ -8,8 +8,12 @@
 .form-group#identifier_form
   = f.label :identifier
   = f.text_field :identifier, class: 'form-control'
-  span.help-block.hidden#identifier_exist This identifier name already exist
-  span.help-block.hidden#identifier_unique This identifier name is unique
+  span.help-block.hidden#identifier_exist
+    .glyphicon.glyphicon-remove aria-hidden="true"
+    |  This identifier is already in use.
+  span.help-block.hidden#identifier_unique
+    .glyphicon.glyphicon-ok aria-hidden="true"
+    |  This identifier is unique.
 .form-group
   = f.label :remarks
   = f.text_area :remarks, class: 'form-control'
