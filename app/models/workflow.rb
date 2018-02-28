@@ -73,7 +73,7 @@ class Workflow < ActiveRecord::Base
   def template_data(template)
     template.data_names.each do |data_name|
       d = self.data.dup
-      d << {name: data_name['name'], value: ''}
+      d << {name: data_name['name'], value: data_name['default']}
       self.data = d
     end
   end
