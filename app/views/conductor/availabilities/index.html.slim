@@ -1,29 +1,37 @@
-h1 Listing availabilities
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="/symphony" Dashboard
+      li
+        a href="/symphony/company" #{@company.name}
+      li.active Manpower
+    h1.page-header
+      | Staff Listing
+      = link_to 'New Staff', new_conductor_activation_path, role: 'button', class: 'btn btn-warning pull-right'
 
-table
-  thead
-    tr
-      th User
-      th Available date
-      th Start time
-      th End time
-      th Assigned
-      th
-      th
-      th
+.row
+  .col-sm-12
+    table.table.table-hover
+      thead
+        tr
+          th User
+          th Available date
+          th Start time
+          th End time
+          th Assigned
+          th
+          th
+          th
 
-  tbody
-    - @availabilities.each do |availability|
-      tr
-        td = availability.user
-        td = availability.available_date
-        td = availability.start_time
-        td = availability.end_time
-        td = availability.assigned
-        td = link_to 'Show', conductor_availability_path(availability)
-        td = link_to 'Edit', edit_conductor_availability_path(availability)
-        td = link_to 'Destroy', conductor_availability_path(availability), data: { confirm: 'Are you sure?' }, method: :delete
-
-br
-
-= link_to 'New Availability', new_conductor_availability_path
+      tbody
+        - @availabilities.each do |availability|
+          tr
+            td = availability.user
+            td = availability.available_date
+            td = availability.start_time
+            td = availability.end_time
+            td = availability.assigned
+            td = link_to 'Show', conductor_availability_path(availability)
+            td = link_to 'Edit', edit_conductor_availability_path(availability)
+            td = link_to 'Destroy', conductor_availability_path(availability), data: { confirm: 'Are you sure?' }, method: :delete
