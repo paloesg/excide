@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   patch 'company_actions/update/:id', to: 'company_actions#update', as: :company_action
 
   namespace :symphony do
-    get "identifier_check", to: 'workflows#identifier_check', as: :identifier_check
+    get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
     resources :users
     resources :document_templates
     resources :documents

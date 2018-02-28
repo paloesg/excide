@@ -3,7 +3,7 @@ class WorkflowsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company_and_roles
-  before_action :set_template, except: [:identifier_check]
+  before_action :set_template, except: [:check_identifier]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :section]
 
   def show
@@ -41,7 +41,7 @@ class WorkflowsController < ApplicationController
     end
   end
 
-  def identifier_check
+  def check_identifier
     @check_workflow = Workflow.where(identifier: params[:identifier].parameterize.upcase)
 
     respond_to do |format|

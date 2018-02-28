@@ -70,7 +70,7 @@ javascript:
 
   $('#workflow_identifier').focusout(function(){
     workflowIdentifier = "#{@workflow.identifier ? @workflow.identifier : ''}";
-    $.get('/symphony/identifier_check?identifier='+$('#workflow_identifier').val(),function(data){
+    $.get('/symphony/check-identifier?identifier='+$('#workflow_identifier').val(),function(data){
       if (data.unique || $('#workflow_identifier').val().toUpperCase() == workflowIdentifier) {
         $('#identifier_form').removeClass('has-error');
         $('#identifier_unique').removeClass('hidden');
