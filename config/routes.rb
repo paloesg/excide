@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   end
 
   namespace :conductor do
+    resources :users
     resources :activations
     resources :allocations
     resources :availabilities
