@@ -7,7 +7,7 @@ class Conductor::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.where(company: @company).order(:id)
+    @users = User.where(company: @company).with_role :temp_staff, @company
   end
 
   def show
@@ -21,7 +21,8 @@ class Conductor::UsersController < ApplicationController
     @user = User.new(user_params)
     @user.company = @company
     if @user.save
-      redirect_to symphony_users_path, notice: 'User successfully created!'
+      @user.add_role :temp_staff, @company
+      redirect_to conductor_users_path, notice: 'User successfully created!'
     else
       render :new
     end
@@ -33,7 +34,7 @@ class Conductor::UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to symphony_users_path, notice: 'User successfully updated!'
+      redirect_to conductor_users_path, notice: 'User successfully updated!'
     else
       render :edit
     end
@@ -41,7 +42,7 @@ class Conductor::UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    redirect_to symphony_users_path, notice: 'User was successfully deleted.'
+    redirect_to conductor_users_path, notice: 'User was successfully deleted.'
   end
 
   private
