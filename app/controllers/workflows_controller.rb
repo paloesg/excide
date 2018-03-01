@@ -32,7 +32,7 @@ class WorkflowsController < ApplicationController
     @action = Task.find_by_id(params[:task_id]).get_company_action(@company.id, params[:workflow_identifier])
 
     respond_to do |format|
-      if @action.update_attributes(completed: !@action.completed)
+      if @action.update_attributes(completed: !@action.completed, user_id: current_user.id)
         format.json { render json: @action.completed, status: :ok }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
