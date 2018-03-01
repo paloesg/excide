@@ -17,4 +17,15 @@ class Template < ActiveRecord::Base
   def get_roles
     self.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
   end
+
+  def workflows_to_csv
+    attributes = %w{identifier created_at completed remarks data}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      self.workflows.each do |workflow|
+        csv << attributes.map{ |attr| workflow.send(attr)}
+      end
+    end
+  end
 end
