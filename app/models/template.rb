@@ -19,12 +19,12 @@ class Template < ActiveRecord::Base
   end
 
   def workflows_to_csv
-    attributes = %w{identifier created_at completed remarks data}
+    attributes = %w{identifier created_at completed remarks data_array}
 
     CSV.generate(headers: true) do |csv|
       csv << attributes
-      self.workflows.each do |workflow|
-        csv << attributes.map{ |attr| workflow.send(attr)}
+      workflows.each do |workflow|
+        csv << attributes.map{ |attr| workflow.send(attr) }
       end
     end
   end

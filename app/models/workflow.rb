@@ -50,6 +50,14 @@ class Workflow < ActiveRecord::Base
     self.template.sections.map{|section| section.tasks.map{|task| task.company_actions.map(&:user)}}.flatten.compact.uniq
   end
 
+  def data_array
+    data = []
+    self.data.each do |attrs|
+      data << {name: attrs.name, value: attrs.value}
+    end
+    JSON.pretty_generate data, {indent: '', object_nl: '', array_nl: ''}
+  end
+
   def data
     read_attribute(:data).map {|v| Data.new(v) }
   end
