@@ -4,12 +4,12 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
+  before_action :set_temp_staff, only: [:index, :new, :edit]
 
   # GET /availabilities
   # GET /availabilities.json
   def index
     @availabilities = Availability.all
-    @users = User.where(company: @company).with_role :temp_staff, @company
   end
 
   # GET /availabilities/1
@@ -20,6 +20,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   # GET /availabilities/new
   def new
     @availability = Availability.new
+    @availability.user_id = params[:user_id]
   end
 
   # GET /availabilities/1/edit
@@ -33,7 +34,7 @@ class Conductor::AvailabilitiesController < ApplicationController
 
     respond_to do |format|
       if @availability.save
-        format.html { redirect_to @availability, notice: 'Availability was successfully created.' }
+        format.html { redirect_to conductor_availabilities_path, notice: 'Availability was successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
         format.html { render :new }
@@ -47,7 +48,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   def update
     respond_to do |format|
       if @availability.update(availability_params)
-        format.html { redirect_to @availability, notice: 'Availability was successfully updated.' }
+        format.html { redirect_to conductor_availabilities_path, notice: 'Availability was successfully updated.' }
         format.json { render :show, status: :ok, location: @availability }
       else
         format.html { render :edit }
@@ -61,14 +62,14 @@ class Conductor::AvailabilitiesController < ApplicationController
   def destroy
     @availability.destroy
     respond_to do |format|
-      format.html { redirect_to availabilities_url, notice: 'Availability was successfully destroyed.' }
+      format.html { redirect_to conductor_availabilities_path, notice: 'Availability was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   def user
     @user = User.find_by(id: params[:user_id])
-    @availabilities = @user.availabilities
+    @availabilities = @user.availabilities.order(available_date: :asc, start_time: :asc)
   end
 
   private
@@ -79,6 +80,10 @@ class Conductor::AvailabilitiesController < ApplicationController
 
     def set_company
       @company = current_user.company
+    end
+
+    def set_temp_staff
+      @users = User.where(company: @company).with_role :temp_staff, @company
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

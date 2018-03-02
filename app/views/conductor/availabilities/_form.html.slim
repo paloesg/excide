@@ -1,24 +1,36 @@
-= form_for @availability, url: conductor_availabilities_path do |f|
-  - if @availability.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@availability.errors.count, "error")} prohibited this availability from being saved:"
-      ul
-        - @availability.errors.full_messages.each do |message|
-          li = message
+- if @availability.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@availability.errors.count, "error")} prohibited this availability from being saved:"
+    ul
+      - @availability.errors.full_messages.each do |message|
+        li = message
 
-  .field
-    = f.label :user
-    = f.text_field :user
-  .field
-    = f.label :available_date
-    = f.date_select :available_date
-  .field
-    = f.label :start_time
-    = f.time_select :start_time
-  .field
-    = f.label :end_time
-    = f.time_select :end_time
-  .field
-    = f.label :assigned
-    = f.check_box :assigned
-  .actions = f.submit
+.row
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :user_id
+      = f.collection_select :user_id, @users, :id, :first_name, {include_blank: true}, class: 'form-control'
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :available_date
+      = f.text_field :available_date, class: 'form-control datepicker'
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :start_time
+      = f.text_field :start_time, class: 'form-control timepicker'
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :end_time
+      = f.text_field :end_time, class: 'form-control timepicker'
+= f.submit 'Save Availability', class: 'btn btn-default'
+
+javascript:
+  $(function() {
+    $('.datepicker').datetimepicker({
+      format: 'YYYY-MM-DD'
+    });
+
+    $('.timepicker').datetimepicker({
+      format: 'HH:mm'
+    });
+  });

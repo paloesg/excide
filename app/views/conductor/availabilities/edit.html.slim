@@ -1,8 +1,16 @@
-h1 Editing availability
-
-== render 'form'
-
-=> link_to 'Show', @availability
-'|
-=< link_to 'Back', conductor_availabilities_path
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Dashboard
+      li
+        a href="#" #{@company.name}
+      li
+        a href="#" Manpower
+      li.active Edit
+    h1.page-header Edit Availability
+.row
+  .col-sm-12
+    = form_for @availability, url: conductor_availability_path(@availability.id) do |f|
+      = render 'form', f: f
 
