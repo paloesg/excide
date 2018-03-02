@@ -28,6 +28,8 @@ class User < ActiveRecord::Base
   has_one :address, as: :addressable
   has_many :clients
   has_many :activations
+  has_many :availabilities
+  has_many :allocations
 
   has_many :company_actions
 
