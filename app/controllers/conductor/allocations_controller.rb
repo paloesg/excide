@@ -2,7 +2,9 @@ class Conductor::AllocationsController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
+  before_action :set_company
   before_action :set_allocation, only: [:show, :edit, :update, :destroy]
+  before_action :set_temp_staff, only: [:new, :edit]
 
   # GET /allocations
   # GET /allocations.json
@@ -18,6 +20,7 @@ class Conductor::AllocationsController < ApplicationController
   # GET /allocations/new
   def new
     @allocation = Allocation.new
+    @activations = Activation.where(company: @company)
   end
 
   # GET /allocations/1/edit
@@ -31,7 +34,7 @@ class Conductor::AllocationsController < ApplicationController
 
     respond_to do |format|
       if @allocation.save
-        format.html { redirect_to @allocation, notice: 'Allocation was successfully created.' }
+        format.html { redirect_to conductor_allocations_path, notice: 'Allocation was successfully created.' }
         format.json { render :show, status: :created, location: @allocation }
       else
         format.html { render :new }
@@ -45,7 +48,7 @@ class Conductor::AllocationsController < ApplicationController
   def update
     respond_to do |format|
       if @allocation.update(allocation_params)
-        format.html { redirect_to @allocation, notice: 'Allocation was successfully updated.' }
+        format.html { redirect_to conductor_allocations_path, notice: 'Allocation was successfully updated.' }
         format.json { render :show, status: :ok, location: @allocation }
       else
         format.html { render :edit }
@@ -59,7 +62,7 @@ class Conductor::AllocationsController < ApplicationController
   def destroy
     @allocation.destroy
     respond_to do |format|
-      format.html { redirect_to allocations_url, notice: 'Allocation was successfully destroyed.' }
+      format.html { redirect_to conductor_allocations_path, notice: 'Allocation was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -68,6 +71,14 @@ class Conductor::AllocationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_allocation
       @allocation = Allocation.find(params[:id])
+    end
+
+    def set_company
+      @company = current_user.company
+    end
+
+    def set_temp_staff
+      @users = User.where(company: @company).with_role :temp_staff, @company
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

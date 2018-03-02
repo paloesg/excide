@@ -1,8 +1,15 @@
-h1 Editing allocation
-
-== render 'form'
-
-=> link_to 'Show', @allocation
-'|
-=< link_to 'Back', conductor_allocations_path
-
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Dashboard
+      li
+        a href="#" #{@company.name}
+      li
+        a href="#" Allocation
+      li.active Edit
+    h1.page-header Edit Allocation
+.row
+  .col-sm-12
+    = form_for @allocation, url: conductor_allocation_path(@allocation.id) do |f|
+      = render 'form', f: f

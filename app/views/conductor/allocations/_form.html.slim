@@ -1,24 +1,41 @@
-= form_for @allocation, url: conductor_allocations_path do |f|
-  - if @allocation.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@allocation.errors.count, "error")} prohibited this allocation from being saved:"
-      ul
-        - @allocation.errors.full_messages.each do |message|
-          li = message
+- if @allocation.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@allocation.errors.count, "error")} prohibited this allocation from being saved:"
+    ul
+      - @allocation.errors.full_messages.each do |message|
+        li = message
 
-  .field
-    = f.label :user
-    = f.text_field :user
-  .field
-    = f.label :activation
-    = f.text_field :activation
-  .field
-    = f.label :allocation_date
-    = f.date_select :allocation_date
-  .field
-    = f.label :start_time
-    = f.time_select :start_time
-  .field
-    = f.label :end_time
-    = f.time_select :end_time
-  .actions = f.submit
+.row
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :activation
+      = f.collection_select :activation_id, @activations, :id, :name, {include_blank: true}, class: 'form-control'
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :user
+      = f.collection_select :user_id, @users, :id, :first_name, {include_blank: true}, class: 'form-control'
+.row
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :allocation_date
+      = f.text_field :allocation_date, class: 'form-control datepicker'
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :start_time
+      = f.text_field :start_time, class: 'form-control timepicker'
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :end_time
+      = f.text_field :end_time, class: 'form-control timepicker'
+= f.submit 'Save Allocation', class: 'btn btn-default'
+
+javascript:
+  $(function() {
+    $('.datepicker').datetimepicker({
+      format: 'YYYY-MM-DD'
+    });
+
+    $('.timepicker').datetimepicker({
+      format: 'HH:mm'
+    });
+  });

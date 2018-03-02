@@ -7,4 +7,8 @@ class Activation < ActiveRecord::Base
   enum activation_type: [:happy_cart, :flash_sale, :brand_activation]
 
   validates :start_time, :end_time, presence: true
+
+  def name
+    company.name + ' ' + activation_type.titleize + ' (' + start_time.strftime("%d/%M/%Y") + ')'
+  end
 end
