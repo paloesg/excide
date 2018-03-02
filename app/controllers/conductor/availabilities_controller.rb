@@ -2,12 +2,14 @@ class Conductor::AvailabilitiesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
+  before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
 
   # GET /availabilities
   # GET /availabilities.json
   def index
     @availabilities = Availability.all
+    @users = User.where(company: @company).with_role :temp_staff, @company
   end
 
   # GET /availabilities/1
@@ -64,10 +66,19 @@ class Conductor::AvailabilitiesController < ApplicationController
     end
   end
 
+  def user
+    @user = User.find_by(id: params[:user_id])
+    @availabilities = @user.availabilities
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_availability
       @availability = Availability.find(params[:id])
+    end
+
+    def set_company
+      @company = current_user.company
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

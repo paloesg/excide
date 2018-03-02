@@ -48,7 +48,11 @@ Rails.application.routes.draw do
     resources :users
     resources :activations
     resources :allocations
-    resources :availabilities
+    resources :availabilities do
+      collection do
+        get '/user/:user_id', to: 'availabilities#user', as: :user
+      end
+    end
 
     root to: 'home#show'
   end

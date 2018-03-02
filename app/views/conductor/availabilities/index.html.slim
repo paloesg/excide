@@ -7,8 +7,7 @@
         a href="/symphony/company" #{@company.name}
       li.active Manpower
     h1.page-header
-      | Staff Listing
-      = link_to 'New Staff', new_conductor_activation_path, role: 'button', class: 'btn btn-warning pull-right'
+      | Availability Listing
 
 .row
   .col-sm-12
@@ -16,22 +15,16 @@
       thead
         tr
           th User
-          th Available date
-          th Start time
-          th End time
-          th Assigned
-          th
-          th
-          th
+          th Availabilities
+          th View Availabilities
+          th Allocations
+          th View Allocations
 
       tbody
-        - @availabilities.each do |availability|
+        - @users.each do |user|
           tr
-            td = availability.user
-            td = availability.available_date
-            td = availability.start_time
-            td = availability.end_time
-            td = availability.assigned
-            td = link_to 'Show', conductor_availability_path(availability)
-            td = link_to 'Edit', edit_conductor_availability_path(availability)
-            td = link_to 'Destroy', conductor_availability_path(availability), data: { confirm: 'Are you sure?' }, method: :delete
+            td = user.full_name
+            td = user.availabilities.count
+            td = link_to 'View', user_conductor_availabilities_path(user.id)
+            td = user.allocations.count
+            td = link_to 'View'
