@@ -19,12 +19,25 @@ class Template < ActiveRecord::Base
   end
 
   def workflows_to_csv
-    attributes = %w{identifier created_at completed remarks data_array}
-
+    data_names = workflows.map{|workflow| workflow.data.map(&:name)}.flatten.uniq
+    attributes = %w{Identifier Created Status Remarks} + data_names
     CSV.generate(headers: true) do |csv|
       csv << attributes
       workflows.each do |workflow|
-        csv << attributes.map{ |attr| workflow.send(attr) }
+        row = [
+          workflow['identifier'],
+          workflow['created_at'],
+          workflow['completed'] ? 'Completed' : workflow.current_section&.display_name,
+          workflow['remarks']
+        ]
+        row_value = []
+        data_names.length.times {row_value.push('')}
+        workflow.data.each do |data|
+          name_index = data_names.index(data.name).to_i
+          row_value[name_index] = data.value
+        end
+        row += row_value
+        csv << row
       end
     end
   end
