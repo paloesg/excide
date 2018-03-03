@@ -17,4 +17,28 @@ class Template < ActiveRecord::Base
   def get_roles
     self.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
   end
+
+  def workflows_to_csv
+    data_names = workflows.map{|workflow| workflow.data.map(&:name)}.flatten.uniq
+    attributes = %w{Identifier Created Status Remarks} + data_names
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      workflows.each do |workflow|
+        row = [
+          workflow['identifier'],
+          workflow['created_at'],
+          workflow['completed'] ? 'Completed' : workflow.current_section&.display_name,
+          workflow['remarks']
+        ]
+        row_value = []
+        data_names.length.times {row_value.push('')}
+        workflow.data.each do |data|
+          name_index = data_names.index(data.name).to_i
+          row_value[name_index] = data.value
+        end
+        row += row_value
+        csv << row
+      end
+    end
+  end
 end
