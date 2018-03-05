@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180222152628) do
+ActiveRecord::Schema.define(version: 20180305025530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,8 +26,10 @@ ActiveRecord::Schema.define(version: 20180222152628) do
     t.datetime "updated_at",      null: false
     t.integer  "company_id"
     t.integer  "user_id"
+    t.integer  "client_id"
   end
 
+  add_index "activations", ["client_id"], name: "index_activations_on_client_id", using: :btree
   add_index "activations", ["company_id"], name: "index_activations_on_company_id", using: :btree
   add_index "activations", ["user_id"], name: "index_activations_on_user_id", using: :btree
 
@@ -415,10 +417,11 @@ ActiveRecord::Schema.define(version: 20180222152628) do
   create_table "templates", force: :cascade do |t|
     t.string   "title"
     t.integer  "business_model"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.string   "slug"
     t.integer  "company_id"
+    t.json     "data_names",     default: []
   end
 
   add_index "templates", ["company_id"], name: "index_templates_on_company_id", using: :btree
@@ -486,6 +489,7 @@ ActiveRecord::Schema.define(version: 20180222152628) do
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
   add_index "workflows", ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id", using: :btree
 
+  add_foreign_key "activations", "clients"
   add_foreign_key "activations", "companies"
   add_foreign_key "activations", "users"
   add_foreign_key "allocations", "activations"

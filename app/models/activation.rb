@@ -1,6 +1,7 @@
 class Activation < ActiveRecord::Base
   belongs_to :user
   belongs_to :company
+  belongs_to :client
 
   has_many :allocations
 
@@ -9,6 +10,6 @@ class Activation < ActiveRecord::Base
   validates :start_time, :end_time, presence: true
 
   def name
-    company.name + ' ' + activation_type.titleize + ' (' + start_time.strftime("%d/%M/%Y") + ')'
+    client.name + ' ' + activation_type.titleize + ' (' + start_time.strftime("%d/%M/%Y") + ')'
   end
 end

@@ -16,20 +16,22 @@
       thead
         tr
           th Activation type
+          th Client
           th Start time
           th End time
-          th Remarks
           th Location
+          th Allocations
           th
 
       tbody
         - @activations.each do |activation|
           tr
             td = activation.activation_type.titleize
+            td = activation.client.name
             td = activation.start_time
             td = activation.end_time
-            td = activation.remarks
             td = activation.location
+            td = activation.allocations.count
             td.btn-toolbar
               = link_to 'Show', conductor_activation_path(activation), role: 'button', class: 'btn btn-success btn-xs'
               = link_to 'Edit', edit_conductor_activation_path(activation), role: 'button', class: 'btn btn-primary btn-xs'
