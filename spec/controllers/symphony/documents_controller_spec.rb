@@ -39,7 +39,11 @@ RSpec.describe Symphony::DocumentsController, type: :controller do
       end
     end
 
-    it "should create company documents"
+    it "should create company documents" do
+      document_params = FactoryBot.attributes_for(:document)
+      expect{ post :create, :document => document_params }.to change(Document, :count).by(1)
+      expect( Document.last().company_id ).to eq( user.company.id )
+    end
 
 
     it "should not show other company documents"
