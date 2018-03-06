@@ -23,6 +23,7 @@
               th Last Name
               th Email
               th Phone
+              th Max Hours
               th Status
               th
           tbody
@@ -33,6 +34,7 @@
                 td = u.last_name
                 td = u.email
                 td = u.contact_number
+                td = u.max_hours_per_week
                 td = u.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed'
                 td.btn-toolbar
                   = link_to 'Edit', edit_conductor_user_path(u.id), role: 'button', class: 'btn btn-primary btn-xs'

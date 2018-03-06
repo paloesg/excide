@@ -16,4 +16,7 @@
 .form-group
   = f.label :contact_number
   = f.text_field :contact_number, class: 'form-control'
+.form-group
+  = f.label :max_hours_per_week
+  = f.number_field :max_hours_per_week, class: 'form-control'
 = f.submit 'Save User', class: 'btn btn-default'
