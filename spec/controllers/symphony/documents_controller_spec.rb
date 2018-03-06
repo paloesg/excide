@@ -45,9 +45,24 @@ RSpec.describe Symphony::DocumentsController, type: :controller do
       expect( Document.last().company_id ).to eq( user.company.id )
     end
 
+    it "should not show other company documents" do
+      create_list( :template_with_workflow, 3)
+      get :index
 
-    it "should not show other company documents"
+      Document.all().each do |document|
+        expect( document.id ).not_to eq( user.company.id )
+      end
 
+      assigns( :documents ).each do |workflows_documents|
+        workflows_documents.shift.identifier
+        workflows_documents.each do |document|
+          if document.nil? # Different Document Template
+          else
+            expect( document[:company_id] ).to eq( user.company.id )
+          end
+        end
+      end
+    end
 
     it "should not create other company docments"
   end
