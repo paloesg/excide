@@ -6,6 +6,9 @@
         li = message
 
 .form-group
+  = f.label :client_id
+  = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @activation.client_id}, class: 'form-control'
+.form-group
   = f.label :activation_type
   = f.select :activation_type, Activation.activation_types.map { |key, value| [key.titleize, key] }, {selected: @activation.activation_type}, class: 'form-control'
 .form-group

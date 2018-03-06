@@ -2,7 +2,7 @@ class Conductor::ActivationsController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_company_and_roles
+  before_action :set_company_and_clients
   before_action :set_activation, only: [:show, :edit, :update, :destroy]
 
   # GET /conductor/activations
@@ -33,7 +33,7 @@ class Conductor::ActivationsController < ApplicationController
 
     respond_to do |format|
       if @activation.save
-        format.html { redirect_to conductor_activation_path(@activation), notice: 'Activation was successfully created.' }
+        format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully created.' }
         format.json { render :show, status: :created, location: @activation }
       else
         format.html { render :new }
@@ -47,7 +47,7 @@ class Conductor::ActivationsController < ApplicationController
   def update
     respond_to do |format|
       if @activation.update(activation_params)
-        format.html { redirect_to conductor_activation_path(@activation), notice: 'Activation was successfully updated.' }
+        format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully updated.' }
         format.json { render :show, status: :ok, location: @activation }
       else
         format.html { render :edit }
@@ -72,14 +72,14 @@ class Conductor::ActivationsController < ApplicationController
       @activation = Activation.find(params[:id])
     end
 
-    def set_company_and_roles
+    def set_company_and_clients
       @user = current_user
       @company = @user.company
-      @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
+      @clients = Client.where(company_id: @company.id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def activation_params
-      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location)
+      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location, :client_id)
     end
 end
