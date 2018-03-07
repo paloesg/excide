@@ -50,7 +50,7 @@ RSpec.describe Symphony::DocumentsController, type: :controller do
       get :index
 
       Document.all().each do |document|
-        expect( document.id ).not_to eq( user.company.id )
+        expect( document.company.id ).not_to eq( user.company.id )
       end
 
       assigns( :documents ).each do |workflows_documents|
