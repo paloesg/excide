@@ -19,10 +19,12 @@ class Conductor::ActivationsController < ApplicationController
   # GET /conductor/activations/new
   def new
     @activation = Activation.new
+    @event_ics = User.where(company: @company).with_role :event_ic, @company
   end
 
   # GET /conductor/activations/1/edit
   def edit
+    @event_ics = User.where(company: @company).with_role :event_ic, @company
   end
 
   # POST /conductor/activations
@@ -86,6 +88,6 @@ class Conductor::ActivationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def activation_params
-      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location, :client_id, address_attributes: [:line_1, :line_2, :postal_code])
+      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location, :client_id, :user_id, address_attributes: [:line_1, :line_2, :postal_code])
     end
 end

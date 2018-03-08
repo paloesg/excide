@@ -17,6 +17,7 @@
         tr
           th Activation type
           th Client
+          th Event I/C
           th Start time
           th End time
           th Location
@@ -27,9 +28,10 @@
         - @activations.each do |activation|
           tr
             td = activation.activation_type.titleize
-            td = activation.client.name
-            td = activation.start_time
-            td = activation.end_time
+            td = activation.client&.name
+            td = activation.user&.full_name
+            td = activation.start_time.strftime("%d/%m/%y %H:%M")
+            td = activation.end_time.strftime("%d/%m/%y %H:%M")
             td = activation.location
             td = activation.allocations.count
             td.btn-toolbar
