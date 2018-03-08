@@ -3,7 +3,7 @@ class Activation < ActiveRecord::Base
   belongs_to :company
   belongs_to :client
 
-  has_one :address, as: :addressable
+  has_one :address, as: :addressable, dependent: :destroy
   has_many :allocations
 
   enum activation_type: [:happy_cart, :flash_sale, :brand_activation]
