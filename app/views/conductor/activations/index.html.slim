@@ -33,7 +33,11 @@
             td = activation.start_time.strftime("%d/%m/%y %H:%M")
             td = activation.end_time.strftime("%d/%m/%y %H:%M")
             td = activation.location
-            td = activation.allocations.count
+            td
+              - if activation.allocations.blank?
+                = select_tag('allocations', options_for_select((activation.allocations.count..5).to_a, activation.allocations.count))
+              - else
+                = select_tag('allocations', options_for_select([activation.allocations.count]), disabled: true)
             td.btn-toolbar
               = link_to 'Show', conductor_activation_path(activation), role: 'button', class: 'btn btn-success btn-xs'
               = link_to 'Edit', edit_conductor_activation_path(activation), role: 'button', class: 'btn btn-primary btn-xs'
