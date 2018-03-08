@@ -3,9 +3,12 @@ class Activation < ActiveRecord::Base
   belongs_to :company
   belongs_to :client
 
+  has_one :address, as: :addressable
   has_many :allocations
 
   enum activation_type: [:happy_cart, :flash_sale, :brand_activation]
+
+  accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
 
   validates :start_time, :end_time, presence: true
 

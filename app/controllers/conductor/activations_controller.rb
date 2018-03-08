@@ -78,8 +78,14 @@ class Conductor::ActivationsController < ApplicationController
       @clients = Client.where(company_id: @company.id)
     end
 
+    def build_addresses
+      if @activation.address.blank?
+        @activation.address = @activation.address.build
+      end
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def activation_params
-      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location, :client_id)
+      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location, :client_id, address_attributes: [:line_1, :line_2, :postal_code])
     end
 end
