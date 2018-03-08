@@ -19,11 +19,13 @@ class Conductor::ActivationsController < ApplicationController
   # GET /conductor/activations/new
   def new
     @activation = Activation.new
+    @activation.build_address
     @event_ics = User.where(company: @company).with_role :event_ic, @company
   end
 
   # GET /conductor/activations/1/edit
   def edit
+    @activation.build_address if @activation.address.blank?
     @event_ics = User.where(company: @company).with_role :event_ic, @company
   end
 
@@ -78,12 +80,6 @@ class Conductor::ActivationsController < ApplicationController
       @user = current_user
       @company = @user.company
       @clients = Client.where(company_id: @company.id)
-    end
-
-    def build_addresses
-      if @activation.address.blank?
-        @activation.address = @activation.address.build
-      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
