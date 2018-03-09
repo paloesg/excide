@@ -57,6 +57,7 @@ class Conductor::AllocationsController < ApplicationController
       if @allocation.update(allocation_params)
         format.html { redirect_to conductor_allocations_path, notice: 'Allocation was successfully updated.' }
         format.json { render :show, status: :ok, location: @allocation }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         format.html { render :edit }
         format.json { render json: @allocation.errors, status: :unprocessable_entity }
