@@ -35,10 +35,16 @@
             td = activation.location
             td
               - if activation.allocations.blank?
-                = select_tag('allocations', options_for_select((activation.allocations.count..5).to_a, activation.allocations.count))
+                = select_tag('allocations', options_for_select((activation.allocations.count..5).to_a, activation.allocations.count), :onchange => "createAllocations(#{activation.id}, this.value);")
               - else
                 = select_tag('allocations', options_for_select([activation.allocations.count]), disabled: true)
             td.btn-toolbar
               = link_to 'Show', conductor_activation_path(activation), role: 'button', class: 'btn btn-success btn-xs'
               = link_to 'Edit', edit_conductor_activation_path(activation), role: 'button', class: 'btn btn-primary btn-xs'
               = link_to 'Destroy', conductor_activation_path(activation), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
+
+javascript:
+  function createAllocations(activation_id, count) {
+    $.get( "activations/create-allocations/"+activation_id+"/"+count, function( data ) {
+    });
+  }
