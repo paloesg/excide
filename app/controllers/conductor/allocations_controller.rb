@@ -12,8 +12,10 @@ class Conductor::AllocationsController < ApplicationController
     @allocations = Allocation.joins(:activation).where(activations: { company_id: @company.id })
     if params[:allocation].present?
       @users = User.with_role :temp_staff, @company
+      @allocation = Allocation.find(params[:allocation])
     else
       @users = User.none
+      @allocation = Allocation.none
     end
   end
 

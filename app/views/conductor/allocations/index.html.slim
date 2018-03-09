@@ -23,7 +23,7 @@
 
       tbody
         - @allocations.each do |allocation|
-          tr data-allocation='#{allocation.id}' class="#{params[:allocation].to_i == allocation.id ? 'active' : ''}"
+          tr data-allocation='#{allocation.id}' class="#{@allocation.id == allocation.id ? 'active' : ''}"
             td = allocation.activation.name
             td = allocation.allocation_date
             td = allocation.start_time.strftime("%H:%M")
@@ -41,8 +41,12 @@
         - @users.each do |user|
           li.list-group-item
             span.glyphicon.glyphicon-user aria-hidden="true"
-            |  #{user.full_name}
-            = link_to 'Assign', '#', role: 'button', class: 'btn btn-primary btn-xs pull-right'
+            '  #{user.full_name}
+            - if @allocation.user == user
+              span.label.label-default Assigned
+              = link_to 'Remove', '#', role: 'button', class: 'btn btn-danger btn-xs pull-right'
+            - else
+              = link_to 'Assign', '#', role: 'button', class: 'btn btn-primary btn-xs pull-right'
 
 javascript:
   $("tr[data-allocation]").click(function() {
