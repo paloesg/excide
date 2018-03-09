@@ -9,7 +9,8 @@ class Conductor::AllocationsController < ApplicationController
   # GET /allocations
   # GET /allocations.json
   def index
-    @allocations = Allocation.all
+    @allocations = Allocation.joins(:activation).where(activations: { company_id: @company.id })
+    @users = User.with_role :temp_staff, @company
   end
 
   # GET /allocations/1
