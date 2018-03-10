@@ -35,10 +35,35 @@
             td = activation.location
             td
               - if activation.allocations.blank?
-                = select_tag('allocations', options_for_select((activation.allocations.count..5).to_a, activation.allocations.count))
+                = select_tag('allocations', options_for_select((activation.allocations.count..5).to_a, activation.allocations.count), :onchange => "create_allocations(#{activation.id}, this);")
               - else
                 = select_tag('allocations', options_for_select([activation.allocations.count]), disabled: true)
+            td
+              i.glyphicon.glyphicon-ok.text-success style="opacity: 0;"
+              i.glyphicon.glyphicon-remove.text-danger style="opacity: 0;"
             td.btn-toolbar
               = link_to 'Show', conductor_activation_path(activation), role: 'button', class: 'btn btn-success btn-xs'
               = link_to 'Edit', edit_conductor_activation_path(activation), role: 'button', class: 'btn btn-primary btn-xs'
               = link_to 'Destroy', conductor_activation_path(activation), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
+
+javascript:
+  function create_allocations(activation_id, element) {
+    count = element.value
+    glyphicon_table_data = $(element).parent().next()
+    $.ajax({
+      type:"GET",
+      url:"activations/create-allocations/"+activation_id+"/"+count,
+      dataType:"json",
+      success: function() {
+        $(element).prop('disabled', 'disabled');
+        $(glyphicon_table_data.find(".glyphicon-ok")).show().fadeTo(500,200, function () {
+          $(glyphicon_table_data.find(".glyphicon-ok")).fadeTo(200,0)
+        })
+      },
+      error: function() {
+        $(glyphicon_table_data.find(".glyphicon-remove")).show().fadeTo(500,200, function () {
+          $(glyphicon_table_data.find(".glyphicon-remove")).fadeTo(200,0)
+        })
+      }
+    })
+  }
