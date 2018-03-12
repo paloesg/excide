@@ -47,12 +47,12 @@
               = link_to 'Destroy', conductor_activation_path(activation), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
 
 javascript:
-  function create_allocations(activation_id, element) {
+  function create_allocations(id, element) {
     count = element.value
     glyphicon_table_data = $(element).parent().next()
     $.ajax({
       type:"GET",
-      url:"activations/create-allocations/"+activation_id+"/"+count,
+      url:"activations/"+id+"/create-allocations/"+count,
       dataType:"json",
       success: function() {
         $(element).prop('disabled', 'disabled');

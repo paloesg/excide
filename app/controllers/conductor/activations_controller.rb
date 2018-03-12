@@ -71,7 +71,7 @@ class Conductor::ActivationsController < ApplicationController
   end
 
   def create_allocations
-    @activation = Activation.find(params[:activation_id])
+    @activation = Activation.find(params[:id])
     count = params[:count].to_i
     count.times do
       @allocation = Allocation.new(activation_id: @activation.id, allocation_date: @activation.start_time, start_time: @activation.start_time, end_time: @activation.end_time)
