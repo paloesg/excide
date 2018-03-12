@@ -12,5 +12,6 @@
 //= require jquery.ui.widget
 //= require z.jquery.fileupload
 //= require symphony
+//= require conductor/create_allocations
 
 //= require turbolinks

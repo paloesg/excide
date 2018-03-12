@@ -70,6 +70,20 @@ class Conductor::ActivationsController < ApplicationController
     end
   end
 
+  def create_allocations
+    @activation = Activation.find(params[:id])
+    count = params[:count].to_i
+    count.times do
+      @allocation = Allocation.new(activation_id: @activation.id, allocation_date: @activation.start_time, start_time: @activation.start_time, end_time: @activation.end_time)
+      if !@allocation.save
+        format.json { render json: @allocation.errors, status: :unprocessable_entity  }
+      end
+    end
+    respond_to do |format|
+      format.json { render json: @activation, status: :ok  }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_activation

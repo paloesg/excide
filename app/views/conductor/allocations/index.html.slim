@@ -26,8 +26,8 @@
           tr data-allocation='#{allocation.id}' class="#{@allocation == allocation ? 'active' : ''}"
             td = allocation.activation.name
             td = allocation.allocation_date
-            td = allocation.start_time.strftime("%H:%M")
-            td = allocation.end_time.strftime("%H:%M")
+            td = allocation.start_time.in_time_zone.strftime("%H:%M")
+            td = allocation.end_time.in_time_zone.strftime("%H:%M")
             td = allocation.user&.full_name
             td = link_to 'Edit', edit_conductor_allocation_path(allocation)
 

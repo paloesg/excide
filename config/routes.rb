@@ -46,7 +46,11 @@ Rails.application.routes.draw do
 
   namespace :conductor do
     resources :users
-    resources :activations
+    resources :activations do
+      member do
+        get '/create-allocations/:count', to: 'activations#create_allocations', as: :create_allocations
+      end
+    end
     resources :allocations
     resources :availabilities do
       collection do
