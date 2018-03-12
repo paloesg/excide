@@ -9,7 +9,14 @@ class Conductor::AllocationsController < ApplicationController
   # GET /allocations
   # GET /allocations.json
   def index
-    @allocations = Allocation.all
+    @allocations = Allocation.joins(:activation).where(activations: { company_id: @company.id })
+    if params[:allocation].present?
+      @users = User.with_role :temp_staff, @company
+      @allocation = Allocation.find(params[:allocation])
+    else
+      @users = User.none
+      @allocation = Allocation.none
+    end
   end
 
   # GET /allocations/1
@@ -50,6 +57,7 @@ class Conductor::AllocationsController < ApplicationController
       if @allocation.update(allocation_params)
         format.html { redirect_to conductor_allocations_path, notice: 'Allocation was successfully updated.' }
         format.json { render :show, status: :ok, location: @allocation }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         format.html { render :edit }
         format.json { render json: @allocation.errors, status: :unprocessable_entity }
