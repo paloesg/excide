@@ -4,10 +4,12 @@
       = t('date.month_names')[start_date.month]
       '
       = start_date.year
-    .pull-right
-      = link_to calendar.url_for_previous_view do
+    .btn-group.pull-right role='group'
+      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-xs btn-default'
         i.glyphicon.glyphicon-chevron-left
-      = link_to calendar.url_for_next_view
+        | Previous Month
+      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-xs btn-default'
+        | Next Month
         i.glyphicon.glyphicon-chevron-right
   table.table.table-striped
     thead
