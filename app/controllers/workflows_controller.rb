@@ -3,7 +3,7 @@ class WorkflowsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company_and_roles
-  before_action :set_template
+  before_action :set_template, except: [:check_identifier]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :section]
 
   def show
@@ -32,12 +32,20 @@ class WorkflowsController < ApplicationController
     @action = Task.find_by_id(params[:task_id]).get_company_action(@company.id, params[:workflow_identifier])
 
     respond_to do |format|
-      if @action.update_attributes(completed: !@action.completed)
+      if @action.update_attributes(completed: !@action.completed, user_id: current_user.id)
         format.json { render json: @action.completed, status: :ok }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def check_identifier
+    @check_workflow = Workflow.where(identifier: params[:identifier].parameterize.upcase)
+
+    respond_to do |format|
+      format.json { render json: { :unique => @check_workflow.blank? } }
     end
   end
 

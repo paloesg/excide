@@ -17,5 +17,10 @@ module Admin
 
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
+    def export
+      @template = Template.find(params[:id])
+
+      send_data @template.workflows_to_csv, filename: "#{@template.title}-#{Date.today}.csv"
+    end
   end
 end
