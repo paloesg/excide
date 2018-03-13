@@ -7,6 +7,7 @@
         a href="#" Company
       li.active Conductor
     h1.page-header Conductor
+    = select_tag('activation_type', options_for_select(Activation.activation_types.map {|k,v| [k.titleize, k] }, selected: params[:activation_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?activation_type=' + $(this).val());", include_blank: 'All', class: 'pull-right')
 .row
   .col-sm-12
     = month_calendar events: @activations do |date, activations|

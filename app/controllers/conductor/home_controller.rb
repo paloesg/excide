@@ -7,7 +7,8 @@ class Conductor::HomeController < ApplicationController
   def show
     date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.today.beginning_of_month
     date_to = date_from.to_date + 1.month
-    @activations = Activation.where(company: @company, start_time: date_from..date_to)
+    activation_type = params[:activation_type].blank? ? 'all' : params[:activation_type]
+    @activations = Activation.where(company: @company, start_time: date_from..date_to).send(activation_type)
   end
 
   private
