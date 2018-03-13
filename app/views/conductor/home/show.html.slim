@@ -9,20 +9,16 @@
     h1.page-header Conductor
 .row
   .col-sm-12
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Calendar
-      .panel-body
-        = month_calendar events: @activations do |date, activations|
-          p = date.day
-          - activations.each do |activation|
-            .panel.panel-default
-              .panel-body
-                p
-                  = activation.start_time.strftime('%k:%M') + ' - ' + activation.end_time.strftime('%k:%M')
-                  br
-                  = activation.activation_type.titleize
-                = activation.location
+    = month_calendar events: @activations do |date, activations|
+      p = date.day
+      - activations.each do |activation|
+        .panel.panel-default
+          .panel-body
+            p
+              = activation.start_time.strftime('%k:%M') + ' - ' + activation.end_time.strftime('%k:%M')
+              br
+              = activation.activation_type.titleize
+            = activation.location
 .row
   .col-sm-6.col-xs-12
     .panel.panel-default
