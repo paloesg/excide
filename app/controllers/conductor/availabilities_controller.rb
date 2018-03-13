@@ -31,10 +31,11 @@ class Conductor::AvailabilitiesController < ApplicationController
   # POST /availabilities.json
   def create
     @availability = Availability.new(availability_params)
+    after_save_path = (current_user.has_role? :temp_staff, :any) ? conductor_user_path : conductor_availabilities_path
 
     respond_to do |format|
       if @availability.save
-        format.html { redirect_to conductor_availabilities_path, notice: 'Availability was successfully created.' }
+        format.html { redirect_to after_save_path, notice: 'Availability was successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
         format.html { render :new }

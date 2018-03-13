@@ -11,6 +11,7 @@ class Conductor::UsersController < ApplicationController
   end
 
   def show
+    @availabilities = Availability.where(user: @user)
   end
 
   def new
