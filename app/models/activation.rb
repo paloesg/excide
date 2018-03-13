@@ -1,4 +1,6 @@
 class Activation < ActiveRecord::Base
+  after_save :activation_notification
+
   belongs_to :user
   belongs_to :company
   belongs_to :client
@@ -14,5 +16,9 @@ class Activation < ActiveRecord::Base
 
   def name
     client.name + ' ' + activation_type.titleize + ' (' + start_time.strftime("%d/%M/%Y") + ')'
+  end
+
+  def activation_notification
+    NotificationMailer.activation_notification(self.user).deliver if self.user.present?
   end
 end
