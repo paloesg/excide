@@ -5,9 +5,15 @@
       - @workflow.errors.full_messages.each do |message|
         li = message
 = f.hidden_field(:workflowable_type, value: 'Client')
-.form-group
+.form-group#identifier_form
   = f.label :identifier
   = f.text_field :identifier, class: 'form-control'
+  span.help-block.hidden#identifier_exist
+    .glyphicon.glyphicon-remove aria-hidden="true"
+    |  This identifier is already in use.
+  span.help-block.hidden#identifier_unique
+    .glyphicon.glyphicon-ok aria-hidden="true"
+    |  This identifier is unique.
 .form-group
   = f.label :remarks
   = f.text_area :remarks, class: 'form-control'
@@ -63,5 +69,30 @@ javascript:
     $('.datetimepicker').datetimepicker({
       debug: false,
       format: 'YYYY-MM-DD'
+    });
+  });
+
+  $('#workflow_identifier').focusout(function(){
+    workflowIdentifier = "#{@workflow.identifier ? @workflow.identifier : ''}";
+    $.get('/symphony/check-identifier?identifier='+$('#workflow_identifier').val(),function(data){
+      if ($('#workflow_identifier').val().toUpperCase() == workflowIdentifier || $('#workflow_identifier').val() == '') {
+        $('#identifier_form').removeClass('has-error');
+        $('#identifier_form').removeClass('has-success');
+        $('#identifier_unique').addClass('hidden');
+        $('#identifier_exist').addClass('hidden');
+        $('input[type="submit"]').prop('disabled', false);
+      } else if (data.unique) {
+        $('#identifier_form').removeClass('has-error');
+        $('#identifier_form').addClass('has-success');
+        $('#identifier_unique').removeClass('hidden');
+        $('#identifier_exist').addClass('hidden');
+        $('input[type="submit"]').prop('disabled', false);
+      } else {
+        $('#identifier_form').addClass('has-error');
+        $('#identifier_form').removeClass('has-success');
+        $('#identifier_unique').addClass('hidden');
+        $('#identifier_exist').removeClass('hidden');
+        $('input[type="submit"]').prop('disabled', true);
+      }
     });
   });
