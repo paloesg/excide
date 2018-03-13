@@ -20,7 +20,13 @@ class Conductor::AvailabilitiesController < ApplicationController
   # GET /availabilities/new
   def new
     @availability = Availability.new
-    @availability.user_id = params[:user_id]
+    if current_user.has_role? :temp_staff, :any
+      @availability.user_id = current_user.id
+      @disable_user_select = true
+    else
+      @availability.user_id = params[:user_id]
+      @disable_user_select = false
+    end
   end
 
   # GET /availabilities/1/edit
