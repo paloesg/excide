@@ -19,6 +19,6 @@ class Activation < ActiveRecord::Base
   end
 
   def activation_notification
-    NotificationMailer.activation_notification(self.user).deliver if self.user.present?
+    NotificationMailer.activation_notification(self, self.user).deliver if self.user.present?
   end
 end

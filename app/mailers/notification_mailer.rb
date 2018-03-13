@@ -17,8 +17,9 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: 'You have a new task to complete')
   end
 
-  def activation_notification(user)
+  def activation_notification(activation, user)
     @user = user
+    @activation = activation
     address = Mail::Address.new @user.email
     address.display_name = @user.first_name + @user.last_name
     mail(to: address.format, subject: 'You have a new activation to complete')
