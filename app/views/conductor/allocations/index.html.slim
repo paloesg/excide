@@ -23,7 +23,7 @@
 
       tbody
         - @allocations.each do |allocation|
-          tr data-allocation='#{allocation.id}' class="#{@allocation == allocation ? 'active' : ''}"
+          tr data-allocation='#{allocation.id}' class="#{@allocation == allocation ? 'info' : ''}"
             td = allocation.activation.name
             td = allocation.allocation_date
             td = allocation.start_time.in_time_zone.strftime("%H:%M")

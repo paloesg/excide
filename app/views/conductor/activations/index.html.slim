@@ -34,7 +34,7 @@
             td = activation.end_time.strftime("%d/%m/%y %H:%M")
             td = activation.location
             td
-              - if activation.allocations.blank?
+              - if activation.allocations.blank? && ((current_user.has_role? :manpower_allocator, @company) || (current_user.has_role? :admin, @company))
                 = select_tag('allocations', options_for_select((activation.allocations.count..5).to_a, activation.allocations.count), :onchange => "create_allocations(#{activation.id}, this);")
               - else
                 = select_tag('allocations', options_for_select([activation.allocations.count]), disabled: true)
