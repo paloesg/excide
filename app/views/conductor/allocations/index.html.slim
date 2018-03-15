@@ -31,6 +31,9 @@
             td = allocation.user&.full_name
             td = link_to 'Edit', edit_conductor_allocation_path(allocation)
 
+  .col-md-4.col-xs-12
+    = link_to 'Export Allocations', {:action => :export} ,class: 'btn btn-success btn-block'
+    br
   .col-sm-4.col-xs-12
     .panel.panel-default
       .panel-heading
