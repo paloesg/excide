@@ -18,15 +18,15 @@ class NotificationMailer < ApplicationMailer
   end
 
   def create_activation(activation, user)
-    activation_notification(activation, user, 'You have a new activation to complete')
+    activation_notification(activation, user, 'A new activation has been created')
   end
 
   def edit_activation(activation, user)
-    activation_notification(activation, user, 'The activation has been changed')
+    activation_notification(activation, user, 'An activation has been changed')
   end
 
   def destroy_activation(activation, user)
-    activation_notification(activation, user, 'The activation has been cancelled')
+    activation_notification(activation, user, 'An activation has been cancelled')
   end
 
   def activation_notification(activation, user, subject)
