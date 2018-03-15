@@ -1,4 +1,4 @@
 p Hi #{@user.first_name},
 
 p
-  | The activation for #{@activation.client.name} has been changed. The activation now starts on #{@activation.start_time.strftime("%F")} from #{@activation.start_time.strftime("%H:%M")} to #{@activation.end_time.strftime("%H:%M")} at #{@activation.location}
+  | The activation for #{@activation.client.name} has been changed. The activation now starts on #{@activation.start_time.strftime("%d/%m/%Y")} from #{@activation.start_time.strftime("%H:%M")} to #{@activation.end_time.strftime("%H:%M")} at #{@activation.location}
