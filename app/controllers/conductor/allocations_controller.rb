@@ -75,6 +75,11 @@ class Conductor::AllocationsController < ApplicationController
     end
   end
 
+  def export
+    @allocations = Allocation.joins(:activation).where(activations: { company_id: @company.id })
+    send_data @allocations.to_csv, filename: "Allocations-#{Date.today}.csv"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_allocation
