@@ -1,4 +1,8 @@
 class Activation < ActiveRecord::Base
+  after_create :create_activation_notification
+  after_update :edit_activation_notification
+  after_destroy :destroy_activation_notification
+
   belongs_to :user
   belongs_to :company
   belongs_to :client
@@ -14,5 +18,19 @@ class Activation < ActiveRecord::Base
 
   def name
     client.name + ' ' + activation_type.titleize + ' (' + start_time.strftime("%d/%M/%Y") + ')'
+  end
+
+  private
+
+  def create_activation_notification
+    NotificationMailer.create_activation(self, self.user).deliver if self.user.present?
+  end
+
+  def edit_activation_notification
+    NotificationMailer.edit_activation(self, self.user).deliver if self.user.present?
+  end
+
+  def destroy_activation_notification
+    NotificationMailer.destroy_activation(self, self.user).deliver if self.user.present?
   end
 end
