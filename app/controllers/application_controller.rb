@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
     if current_user.has_role? :admin
       admin_root_path
     elsif current_user.has_role? :temp_staff, :any
-      conductor_user_path
+      conductor_user_path current_user
     elsif current_user.company.present?
       symphony_root_path
     elsif current_user.lead?
