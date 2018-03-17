@@ -37,4 +37,11 @@ class NotificationMailer < ApplicationMailer
     address.display_name = @user.first_name + @user.last_name
     mail(to: address.format, subject: @subject)
   end
+
+  def temp_staff_notification(user)
+    @user = user
+    address = Mail::Address.new @user.email
+    address.display_name = @user.first_name + @user.last_name
+    mail(to: address.format, subject: 'Assign your avaibility for the next month')
+  end
 end
