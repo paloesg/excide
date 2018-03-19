@@ -65,10 +65,11 @@
     = f.submit 'Save & Assign Tasks', name: 'assign', class: 'btn btn-default'
 
 javascript:
-  $('#workflow_identifier').focusout(function(){
-    workflowIdentifier = "#{@workflow.identifier ? @workflow.identifier : ''}";
-    $.get('/symphony/check-identifier?identifier='+$('#workflow_identifier').val(),function(data){
-      if ($('#workflow_identifier').val().toUpperCase() == workflowIdentifier || $('#workflow_identifier').val() == '') {
+  workflow_identifier_value = $('#workflow_identifier').val().toUpperCase()
+  $('#workflow_identifier').focusout(function () {
+    $.get('/symphony/check-identifier?identifier=' + $('#workflow_identifier').val(), function (data) {
+      new_workflow_identifier_value = $('#workflow_identifier').val().toUpperCase()
+      if (workflow_identifier_value == new_workflow_identifier_value || $('#workflow_identifier').val() == '') {
         $('#identifier_form').removeClass('has-error');
         $('#identifier_form').removeClass('has-success');
         $('#identifier_unique').addClass('hidden');
