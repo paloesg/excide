@@ -65,13 +65,6 @@
     = f.submit 'Save & Assign Tasks', name: 'assign', class: 'btn btn-default'
 
 javascript:
-  $(function() {
-    $('.datetimepicker').datetimepicker({
-      debug: false,
-      format: 'YYYY-MM-DD'
-    });
-  });
-
   $('#workflow_identifier').focusout(function(){
     workflowIdentifier = "#{@workflow.identifier ? @workflow.identifier : ''}";
     $.get('/symphony/check-identifier?identifier='+$('#workflow_identifier').val(),function(data){
