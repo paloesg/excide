@@ -1,11 +1,11 @@
 FactoryBot.define do
-  factory :template, :class => "Template" do
-    title Faker::Name.title
-    slug Faker::Internet.slug
+  factory :template, :class => "Template" do |template|
+    template.title { Faker::Name::title }
+    template.slug { Faker::Internet::slug }
 
-    factory :template_with_workflow_and_document do
+    factory :template_with_workflow do
       transient do
-        company
+        template.company
       end
 
       after(:create) do |t|
