@@ -52,7 +52,11 @@ Rails.application.routes.draw do
         get '/create-allocations/:count', to: 'activations#create_allocations', as: :create_allocations
       end
     end
-    resources :allocations
+    resources :allocations do
+      collection do
+        get :export, to: 'allocations#export'
+      end
+    end
     resources :availabilities do
       collection do
         get '/user/:user_id', to: 'availabilities#user', as: :user
