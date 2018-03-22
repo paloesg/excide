@@ -9,6 +9,8 @@ class Reminder < ActiveRecord::Base
 
   enum freq_unit: [:days, :weeks, :months, :years]
 
+  validate :at_least_one_notification_method
+
   def self.today
     reminders = Reminder.where('DATE(next_reminder) = ?', Date.today)
   end
@@ -49,5 +51,11 @@ class Reminder < ActiveRecord::Base
       self.next_reminder = nil
     end
     self.save
+  end
+
+  def at_least_one_notification_method
+    unless self.email? || self.sms? || self.slack?
+      errors[:base] << "This reminder must have at least one notification method."
+    end
   end
 end
