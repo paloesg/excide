@@ -23,10 +23,12 @@ class Reminder < ActiveRecord::Base
     self.save
   end
 
-  def sms_reminder(to_number, message_body)
+  def send_sms_reminder
     from_number = ENV['TWILIO_NUMBER']
     account_sid = ENV['TWILIO_ACCOUNT_SID']
     auth_token = ENV['TWILIO_AUTH_TOKEN']
+    to_number = '+65' + self.user.contact_number
+    message_body = self.content
 
     @client = Twilio::REST::Client.new account_sid, auth_token
 
