@@ -22,5 +22,6 @@
 //= require countdown.min
 //= require smooth-scroll.min
 //= require scripts
+//= require components/card_element
 
 //= require turbolinks
