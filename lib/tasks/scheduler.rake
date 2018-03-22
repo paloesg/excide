@@ -5,10 +5,7 @@ namespace :scheduler do
     time = Benchmark.realtime {
       reminders = Reminder.today
       reminders.each do |reminder|
-        # TODO: Move reminder logic into reminder model
-        reminder.send_slack_reminder
-        reminder.send_email_reminder
-        reminder.set_next_reminder
+        reminder.send_reminder
       end
     }
 

@@ -13,6 +13,15 @@ class Reminder < ActiveRecord::Base
     reminders = Reminder.where('DATE(next_reminder) = ?', Date.today)
   end
 
+  def send_reminder
+    # TODO: Move into a background service
+    send_email_reminder if self.email?
+    send_sms_reminder if self.sms?
+    send_slack_reminder if self.slack?
+    # TODO: Log reminders sent
+    set_next_reminder
+  end
+
   def send_slack_reminder
     SlackService.new.send_reminder(self).deliver
   end
