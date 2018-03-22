@@ -5,7 +5,7 @@ namespace :scheduler do
     time = Benchmark.realtime {
       reminders = Reminder.today
       reminders.each do |reminder|
-        reminder.send_reminder
+        reminder.send_slack_reminder
       end
     }
 

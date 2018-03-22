@@ -13,7 +13,7 @@ class Reminder < ActiveRecord::Base
     reminders = Reminder.where('DATE(next_reminder) = ?', Date.today)
   end
 
-  def send_reminder
+  def send_slack_reminder
     SlackService.new.send_reminder(self).deliver
     if self.repeat?
       self.next_reminder = Date.today + self.freq_value.to_i.send(self.freq_unit)
@@ -21,5 +21,17 @@ class Reminder < ActiveRecord::Base
       self.next_reminder = nil
     end
     self.save
+  end
+
+  def send_sms_reminder
+    from_number = ENV['TWILIO_NUMBER']
+    account_sid = ENV['TWILIO_ACCOUNT_SID']
+    auth_token = ENV['TWILIO_AUTH_TOKEN']
+    to_number = '+65' + self.user.contact_number
+    message_body = self.content
+
+    @client = Twilio::REST::Client.new account_sid, auth_token
+
+    message = @client.api.account.messages.create( from: from_number, to: to_number, body: message_body )
   end
 end
