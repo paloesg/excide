@@ -7,7 +7,7 @@ RSpec.describe "conductor/activations/edit", type: :view do
       :remarks => "MyText",
       :location => "MyString",
       :start_time => Time.now,
-      :end_time => Time.now + 1.day
+      :end_time => Time.now + 1.day,
     ))
   end
 

@@ -41,6 +41,11 @@ RSpec.describe Conductor::ActivationsController, type: :controller do
   # Conductor::ActivationsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  let(:user) { FactoryBot.create(:user) }
+  before :each do
+    login_with user
+  end
+
   describe "GET #index" do
     it "returns a success response" do
       activation = Activation.create! valid_attributes

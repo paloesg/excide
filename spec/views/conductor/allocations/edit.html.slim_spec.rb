@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "allocations/edit", type: :view do
+RSpec.describe "conductor/allocations/edit", type: :view do
   before(:each) do
     @allocation = assign(:allocation, Allocation.create!(
       :user => nil,
@@ -11,7 +11,7 @@ RSpec.describe "allocations/edit", type: :view do
   it "renders the edit allocation form" do
     render
 
-    assert_select "form[action=?][method=?]", allocation_path(@allocation), "post" do
+    assert_select "form[action=?][method=?]", conductor_allocation_path(@allocation), "post" do
 
       assert_select "input#allocation_user_id[name=?]", "allocation[user_id]"
 

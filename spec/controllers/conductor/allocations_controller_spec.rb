@@ -41,6 +41,11 @@ RSpec.describe Conductor::AllocationsController, type: :controller do
   # AllocationsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  let(:user) { FactoryBot.create(:user) }
+  before :each do
+    login_with user
+  end
+
   describe "GET #index" do
     it "returns a success response" do
       allocation = Allocation.create! valid_attributes
