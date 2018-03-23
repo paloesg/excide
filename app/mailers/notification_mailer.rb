@@ -12,8 +12,16 @@ class NotificationMailer < ApplicationMailer
     @action = action
     @user = user
     address = Mail::Address.new @user.email
-    address.display_name = @user.first_name + @user.last_name
-    @url  = 'https://calendly.com/sam-excide/'
+    address.display_name = @user.full_name
     mail(to: address.format, subject: 'You have a new task to complete')
+  end
+
+  def reminder_notification(reminder)
+    @reminder = reminder
+    @user = reminder.user
+
+    address = Mail::Address.new @user.email
+    address.display_name = @user.full_name
+    mail(to: address.format, subject: @reminder.title)
   end
 end

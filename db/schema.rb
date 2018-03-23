@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180222104051) do
+ActiveRecord::Schema.define(version: 20180322131626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -266,6 +266,9 @@ ActiveRecord::Schema.define(version: 20180222104051) do
     t.text     "content"
     t.integer  "task_id"
     t.integer  "company_action_id"
+    t.boolean  "email"
+    t.boolean  "sms"
+    t.boolean  "slack"
   end
 
   add_index "reminders", ["company_action_id"], name: "index_reminders_on_company_action_id", using: :btree
