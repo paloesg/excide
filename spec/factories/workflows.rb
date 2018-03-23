@@ -3,6 +3,10 @@ FactoryBot.define do
     workflow.identifier { Faker::Name.title}
     workflow.workflowable_type "Client"
 
+    after(:create) do |workflow|
+      create_list(:section, 3, template: workflow.template)
+    end
+
     factory :workflow_with_document do
       transient do
         workflow.company
