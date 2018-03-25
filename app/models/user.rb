@@ -62,6 +62,15 @@ class User < ActiveRecord::Base
     first_name + ' ' + last_name
   end
 
+  def staff_currently_hours(allocation_date)
+    allocation_date = Date.parse(allocation_date)
+    allocation_days = self.allocations.where(allocation_date: (allocation_date.beginning_of_week)..(allocation_date.end_of_week))
+
+    currently_hours = 0
+    allocation_days.each { |allocation| currently_hours += ( allocation.end_time - allocation.start_time ) / 3600 }
+    return currently_hours
+  end
+
   def password_required?
     # Password is required if it is being set, but not for new records
     if !persisted?
