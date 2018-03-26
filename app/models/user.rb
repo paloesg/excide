@@ -66,9 +66,9 @@ class User < ActiveRecord::Base
     allocation_date = Date.parse(allocation.allocation_date.to_s)
     allocation_days = self.allocations.where(allocation_date: (allocation_date.beginning_of_week)..(allocation_date.end_of_week))
 
-    currently_hours = 0
-    allocation_days.each { | allocation | currently_hours += ( allocation.end_time - allocation.start_time ) / 3600 }
-    currently_hours += (( allocation.end_time - allocation.start_time ) / 3600)
+    current_hours = 0
+    allocation_days.each { | a | current_hours += a.hours }
+    currently_hours += allocation.hours
 
     assign = currently_hours > self.max_hours_per_week ? false : true
     return assign
