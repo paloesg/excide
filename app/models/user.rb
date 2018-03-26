@@ -62,13 +62,16 @@ class User < ActiveRecord::Base
     first_name + ' ' + last_name
   end
 
-  def staff_currently_hours(allocation_date)
-    allocation_date = Date.parse(allocation_date)
+  def staff_currently_hours(allocation)
+    allocation_date = Date.parse(allocation.allocation_date.to_s)
     allocation_days = self.allocations.where(allocation_date: (allocation_date.beginning_of_week)..(allocation_date.end_of_week))
 
     currently_hours = 0
-    allocation_days.each { |allocation| currently_hours += ( allocation.end_time - allocation.start_time ) / 3600 }
-    return currently_hours
+    allocation_days.each { | allocation | currently_hours += ( allocation.end_time - allocation.start_time ) / 3600 }
+    currently_hours += (( allocation.end_time - allocation.start_time ) / 3600)
+
+    assign = currently_hours > self.max_hours_per_week ? false : true
+    return assign
   end
 
   def password_required?
