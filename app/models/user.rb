@@ -68,9 +68,9 @@ class User < ActiveRecord::Base
 
     current_hours = 0
     allocation_days.each { | a | current_hours += a.hours }
-    currently_hours += allocation.hours
+    current_hours += allocation.hours
 
-    assign = currently_hours > self.max_hours_per_week ? false : true
+    assign = current_hours > self.max_hours_per_week ? false : true
     return assign
   end
 
