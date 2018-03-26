@@ -10,7 +10,7 @@ class Activation < ActiveRecord::Base
   has_one :address, as: :addressable, dependent: :destroy
   has_many :allocations
 
-  enum activation_type: [:happy_cart, :flash_sale, :brand_activation]
+  enum activation_type: [:happy_cart, :flash_sale, :brand_activation, :in_store_activation, :g5_cart]
 
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
 
