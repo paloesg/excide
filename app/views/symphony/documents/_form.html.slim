@@ -4,7 +4,7 @@
     ul
       - @document.errors.full_messages.each do |message|
         li = message
-= f.hidden_field(:workflow_id, value: @workflow.id)
+= f.hidden_field(:workflow_id, value: @workflow&.id)
 .form-group
   = f.label :identifier, 'Document Identifier'
   = f.text_field :identifier, class: 'form-control'
