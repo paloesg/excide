@@ -20,6 +20,11 @@ class ReminderDashboard < Administrate::BaseDashboard
     company: Field::BelongsTo,
     title: Field::String,
     content: Field::Text,
+    task: Field::BelongsTo,
+    company_action: Field::BelongsTo,
+    email: Field::Boolean,
+    sms: Field::Boolean,
+    slack: Field::Boolean,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -30,40 +35,49 @@ class ReminderDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :company,
+    :user,
     :title,
     :next_reminder,
-    :repeat,
-    :freq_value,
-    :freq_unit,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :id,
+    :user,
+    :company,
     :title,
     :content,
+    :task,
+    :company_action,
     :next_reminder,
     :repeat,
     :freq_value,
     :freq_unit,
+    :email,
+    :sms,
+    :slack,
     :created_at,
     :updated_at,
-    :user,
-    :company,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
+    :user,
+    :company,
     :title,
     :content,
+    :task,
+    :company_action,
     :next_reminder,
     :repeat,
     :freq_value,
     :freq_unit,
-    :company,
+    :email,
+    :sms,
+    :slack,
   ].freeze
 
   # Overwrite this method to customize how reminders are displayed
