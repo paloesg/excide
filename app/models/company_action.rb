@@ -2,7 +2,7 @@ class CompanyAction < ActiveRecord::Base
   include PublicActivity::Model
   tracked except: :create, owner: ->(controller, model) { controller && controller.current_user }
 
-  after_save :clear_reminder, if: :completed_changed?
+  after_save :clear_reminders, if: :completed_changed?
   after_save :trigger_next_task, if: :completed_changed?
   after_save :send_notification, if: :completed_changed?
 
@@ -11,7 +11,7 @@ class CompanyAction < ActiveRecord::Base
   belongs_to :workflow
   belongs_to :user
 
-  has_one :reminder, dependent: :destroy
+  has_many :reminders, dependent: :destroy
 
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_company_action(self.company, self.workflow.identifier)
@@ -29,10 +29,10 @@ class CompanyAction < ActiveRecord::Base
 
   private
 
-  def clear_reminder
+  def clear_reminders
     if self.completed
-      # Find associated reminder and remove next reminder date
-      self.reminder.update_attributes(next_reminder: nil) if self.reminder.present?
+      # Find associated reminders and remove next reminder date
+      self.reminders.each { |reminder| reminder.update_attributes(next_reminder: nil) } unless self.reminders.empty?
     end
   end
 
