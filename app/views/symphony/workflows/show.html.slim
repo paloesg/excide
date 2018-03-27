@@ -18,9 +18,10 @@
             tr
               th No.
               th Instructions
-              th Who
+              th Assigned To
               th Deadline
               th Done
+              th Completed By
           tbody
             - @tasks.each do |t|
               - action = t.get_company_action(@company.id, @workflow.identifier)
@@ -39,18 +40,22 @@
                     br
                     = link_to "Visit Link", t.link_url, target: :_blank, role: 'button', class: 'btn btn-primary btn-xs'
                 td
-                  - if action.user.present?
+                  - if action.assigned_user.present?
                     span.glyphicon.glyphicon-user aria-hidden="true"
-                    |  #{action.user.full_name}
+                    |  #{action.assigned_user&.full_name}
                   - else
                     = t.role&.name&.humanize
                 td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
                 td
                   / Check if task is current task AND check if it's assigned to a particular user OR whether user has the required role OR user has admin role
-                  - if t == @workflow.current_task && (action.user == current_user || t.role_id == nil || (@roles.map(&:id).include? t.role_id) || (@user.has_role? :admin, @company))
+                  - if t == @workflow.current_task && (action.assigned_user == current_user || t.role_id == nil || (@roles.map(&:id).include? t.role_id) || (@user.has_role? :admin, @company))
                     = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }, :onclick => "this.checked=true;"
                   - else
                     = check_box_tag 'completed', action.id, action.completed, disabled: true
+                td
+                  - if action.completed? && action.completed_user.present?
+                    span.glyphicon.glyphicon-user aria-hidden="true"
+                    |  #{action.completed_user&.full_name}
     - unless @section.first?
       = link_to "Previous Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-default pull-left'
     - if @section.last?

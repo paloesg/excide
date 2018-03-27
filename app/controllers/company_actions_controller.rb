@@ -19,6 +19,6 @@ class CompanyActionsController < ApplicationController
   end
 
   def company_action_params
-    params.require(:company_action).permit(:user_id)
+    params.require(:company_action).permit(:assigned_user_id)
   end
 end

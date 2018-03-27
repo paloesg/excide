@@ -9,7 +9,9 @@ class CompanyAction < ActiveRecord::Base
   belongs_to :task
   belongs_to :company
   belongs_to :workflow
-  belongs_to :user
+
+  belongs_to :assigned_user, class_name: 'User'
+  belongs_to :completed_user, class_name: 'User'
 
   has_many :reminders, dependent: :destroy
 
@@ -69,8 +71,8 @@ class CompanyAction < ActiveRecord::Base
       email: true
     )
 
-    if action.user.present?
-      reminder.user = action.user
+    if action.assigned_user.present?
+      reminder.user = action.assigned_user
       reminder.save
     else
       task.role.users.each do |user|

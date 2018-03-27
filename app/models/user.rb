@@ -27,7 +27,8 @@ class User < ActiveRecord::Base
   has_one :profile, dependent: :destroy
   has_one :address, as: :addressable
 
-  has_many :company_actions
+  has_many :assigned_tasks, class_name: 'CompanyAction', foreign_key: 'assigned_user_id'
+  has_many :completed_tasks, class_name: 'CompanyAction', foreign_key: 'completed_user_id'
 
   belongs_to :company
 

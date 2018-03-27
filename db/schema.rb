@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180322131626) do
+ActiveRecord::Schema.define(version: 20180327084920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,18 +90,20 @@ ActiveRecord::Schema.define(version: 20180322131626) do
   create_table "company_actions", force: :cascade do |t|
     t.integer  "task_id"
     t.boolean  "completed"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.datetime "deadline"
     t.integer  "company_id"
     t.integer  "approved_by"
     t.integer  "workflow_id"
-    t.integer  "user_id"
+    t.integer  "assigned_user_id"
+    t.integer  "completed_user_id"
   end
 
+  add_index "company_actions", ["assigned_user_id"], name: "index_company_actions_on_assigned_user_id", using: :btree
   add_index "company_actions", ["company_id"], name: "index_company_actions_on_company_id", using: :btree
+  add_index "company_actions", ["completed_user_id"], name: "index_company_actions_on_completed_user_id", using: :btree
   add_index "company_actions", ["task_id"], name: "index_company_actions_on_task_id", using: :btree
-  add_index "company_actions", ["user_id"], name: "index_company_actions_on_user_id", using: :btree
   add_index "company_actions", ["workflow_id"], name: "index_company_actions_on_workflow_id", using: :btree
 
   create_table "document_templates", force: :cascade do |t|
@@ -454,7 +456,8 @@ ActiveRecord::Schema.define(version: 20180322131626) do
   add_foreign_key "clients", "users"
   add_foreign_key "company_actions", "companies"
   add_foreign_key "company_actions", "tasks"
-  add_foreign_key "company_actions", "users"
+  add_foreign_key "company_actions", "users", column: "assigned_user_id"
+  add_foreign_key "company_actions", "users", column: "completed_user_id"
   add_foreign_key "company_actions", "workflows"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
