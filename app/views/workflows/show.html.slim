@@ -8,7 +8,7 @@
       li.active #{@template.title}
     h1.page-header #{@template.title}
 .row
-  .col-md-8.col-sm-6
+  .col-md-9.col-sm-12
     .panel.panel-default
       .panel-heading
         h3.panel-title = @section.display_name
@@ -50,7 +50,7 @@
       = link_to "Done", params[:company_name] ? admin_company_dashboard_path(params[:company_name]) : dashboard_path, class: 'btn btn-default pull-right'
     - else
       = link_to "Next Section", params[:company_name] ? admin_company_workflow_section_path(params[:company_name], @template.slug, @section.lower_item.id) : company_workflow_section_path(@template.slug, @section.lower_item.id), class: 'btn btn-default pull-right'
-  .col-md-4.col-sm-6
+  .col-md-3.col-sm-6
     .panel.panel-default
       .panel-heading
         h3.panel-title Remarks
