@@ -1,0 +1,59 @@
+.col-sm-2.col-xs-2.nopadding
+  br
+  .simple-calendar
+    .calendar-heading
+    table.table.table-striped
+      thead
+        tr
+          th TIME
+      tbody
+        tr
+          td.day
+            br
+            p All day
+            hr
+            p 9 AM
+            hr
+            p 10 AM
+            hr
+            p 11 AM
+            hr
+            p 12 AM
+            hr
+            p 1 PM
+            hr
+            p 2 PM
+            hr
+            p 3 PM
+            hr
+            p 4 PM
+            hr
+            p 5 PM
+            hr
+            p 6 PM
+.col-sm-10.col-xs-10.nopadding
+  = form_tag conductor_availabilities_path do
+    = week_calendar thead: false do |date|
+      br
+      p = check_box date, 0, {:multiple => true}, "all_day", nil
+      hr
+      p = check_box date, 1, {:multiple => true}, "9AM", nil
+      hr
+      p = check_box date, 2, {:multiple => true}, "10AM", nil
+      hr
+      p = check_box date, 3, {:multiple => true}, "11AM", nil
+      hr
+      p = check_box date, 4, {:multiple => true}, "12AM", nil
+      hr
+      p = check_box date, 5, {:multiple => true}, "1PM", nil
+      hr
+      p = check_box date, 6, {:multiple => true}, "2PM", nil
+      hr
+      p = check_box date, 7, {:multiple => true}, "3PM", nil
+      hr
+      p = check_box date, 8, {:multiple => true}, "4PM", nil
+      hr
+      p = check_box date, 9, {:multiple => true}, "5PM", nil
+      hr
+      p = check_box date, 10, {:multiple => true}, "6PM", nil
+    = submit_tag "Submit", class: 'btn btn-default'
