@@ -39,7 +39,7 @@
   = form_tag conductor_availabilities_path do
     = week_calendar do |date|
       br
-      p = check_box date, 0, {:multiple => true}, "all_day", nil
+      p = check_box date, 0, {:multiple => true, :onchange => 'allDay(this)'}, "all_day", nil
       hr
       p = check_box date, 1, {:multiple => true}, "9AM", nil
       hr
@@ -61,3 +61,17 @@
       hr
       p = check_box date, 10, {:multiple => true}, "6PM", nil
     = submit_tag "Submit", class: 'btn btn-default'
+
+javascript:
+  function allDay(element)
+  {
+    $(element).parent().parent().find("input").not(element).prop("checked", element.checked)
+    if (element.checked)
+    {
+      $(element).parent().parent().find("input").not(element).attr("disabled", true)
+    }
+    else
+    {
+      $(element).parent().parent().find("input").not(element).removeAttr("disabled")
+    }
+  }
