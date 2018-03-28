@@ -9,7 +9,10 @@
       tbody
         tr
           td.day
-            br
+            p Month
+            p Date
+            p Day
+            hr
             p All day
             hr
             p 9 AM
@@ -34,7 +37,10 @@
 .col-sm-10.col-xs-10.nopadding
   = form_tag conductor_availabilities_path do
     = week_calendar thead: false do |date|
-      br
+      p = date.strftime("%b")
+      p = date.day
+      p = date.strftime("%a")
+      hr
       p = check_box date, 0, {:multiple => true}, "all_day", nil
       hr
       p = check_box date, 1, {:multiple => true}, "9AM", nil
