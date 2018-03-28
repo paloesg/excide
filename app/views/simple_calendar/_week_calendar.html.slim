@@ -1,18 +1,22 @@
-.simple-calendar
-  .calendar-heading
-    = link_to t('simple_calendar.previous', default: 'Previous'), calendar.url_for_previous_view
-    - if calendar.number_of_weeks == 1
-      span.calendar-title
-        | Week #{calendar.week_number}
-    - else
-      span.calendar-title
-        | Week #{calendar.week_number} - #{calendar.end_week}
-    = link_to t('simple_calendar.next', default: 'Next'), calendar.url_for_next_view
+.panel.panel-default.simple-calendar
+  .panel-heading.calendar-heading
+    span.calendar-title
+      | Week #{calendar.week_number}
+    .btn-group.pull-right role='group'
+      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-xs btn-default'
+        i.glyphicon.glyphicon-chevron-left
+        | Previous Week
+      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-xs btn-default'
+        | Next Week
+        i.glyphicon.glyphicon-chevron-right
   table.table.table-striped
     thead
       tr
         - date_range.slice(0, 7).each do |day|
-          th= t('date.abbr_day_names')[day.wday]
+          th
+            p = t('date.abbr_month_names')[day.month]
+            p = day.day
+            p = t('date.abbr_day_names')[day.wday]
     tbody
       - date_range.each_slice(7) do |week|
         tr

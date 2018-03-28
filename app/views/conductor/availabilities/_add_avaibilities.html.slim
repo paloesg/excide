@@ -1,18 +1,19 @@
 .col-sm-2.col-xs-2.nopadding
-  br
-  .simple-calendar
-    .calendar-heading
+  .panel.panel-default.simple-calendar
+    .panel-heading.calendar-heading
+      span.calendar-title
+        | &nbsp;
     table.table.table-striped
       thead
         tr
-          th TIME
-      tbody
-        tr
-          td.day
+          th
             p Month
             p Date
             p Day
-            hr
+      tbody
+        tr
+          td.day
+            br
             p All day
             hr
             p 9 AM
@@ -36,11 +37,8 @@
             p 6 PM
 .col-sm-10.col-xs-10.nopadding
   = form_tag conductor_availabilities_path do
-    = week_calendar thead: false do |date|
-      p = date.strftime("%b")
-      p = date.day
-      p = date.strftime("%a")
-      hr
+    = week_calendar do |date|
+      br
       p = check_box date, 0, {:multiple => true}, "all_day", nil
       hr
       p = check_box date, 1, {:multiple => true}, "9AM", nil
