@@ -1,6 +1,6 @@
 FactoryBot.define do
-  factory :template do |template|
-    template.title { Faker::Name::title }
+  factory :template do
+    title Faker::Name::title
     company
 
     factory :template_with_workflow do
