@@ -13,7 +13,7 @@ FactoryBot.define do
     end
 
     factory :company_admin do
-      after(:create) { |user| user.add_role :admin, company }
+      after(:create) { |user| user.add_role :admin, user.company }
     end
   end
 end
