@@ -1,38 +1,14 @@
 .col-md-2.col-sm-3.sidebar
   .nav.nav-sidebar
-    - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
-      - get_relevant_templates.each do |t|
-        .panel-group role="tablist"
-          .panel.panel-default
-            .panel-heading role="tab" id="#collapse-#{t.slug}-heading"
-              h4.panel-title
-                a data-toggle="collapse" href="#collapse-#{t.slug}" aria-expanded="false" aria-controls="collapse-#{t.slug}" role="button"
-                  = t.title
-                  span.caret
-            .panel-collapse.collapse id="collapse-#{t.slug}" role="tabpanel" aria-labelledby="#collapse-#{t.slug}-heading" class=('in' if t.slug == @workflow&.template&.slug)
-              ul.list-group
-              - t.workflows.each do |w|
-                li.list-group-item class=('active' if w.identifier == @workflow&.identifier) = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)
-    - else
+    - get_relevant_templates.each do |t|
       .panel-group role="tablist"
         .panel.panel-default
-          .panel-heading role="tab" id="#collapse-workflows-heading"
+          .panel-heading role="tab" id="#collapse-#{t.slug}-heading"
             h4.panel-title
-              a data-toggle="collapse" href="#collapse-workflows" aria-expanded="false" aria-controls="collapse-workflows" role="button"
-                | Workflows
+              a data-toggle="collapse" href="#collapse-#{t.slug}" aria-expanded="false" aria-controls="collapse-#{t.slug}" role="button"
+                = t.title
                 span.caret
-          .panel-collapse.collapse id="collapse-workflows" role="tabpanel" aria-labelledby="#collapse-workflows-heading"
+          .panel-collapse.collapse id="collapse-#{t.slug}" role="tabpanel" aria-labelledby="#collapse-#{t.slug}-heading" class=('in' if t.slug == @workflow&.template&.slug)
             ul.list-group
-            - get_general_templates.each do |t|
-              li.list-group-item = link_to t.title, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : company_workflow_path(t.slug)
-      .panel-group role="tablist"
-        .panel.panel-default
-          .panel-heading role="tab" id="#collapse-requests-heading"
-            h4.panel-title
-              a data-toggle="collapse" href="#collapse-requests" aria-expanded="false" aria-controls="collapse-requests" role="button"
-                | Submit new request
-                span.caret
-          .panel-collapse.collapse id="collapse-requests" role="tabpanel" aria-labelledby="#collapse-requests-heading"
-            ul.list-group
-            - get_cs_requests.each do |r|
-              li.list-group-item = link_to r.title, new_survey_path
+            - t.workflows.each do |w|
+              li.list-group-item class=('active' if w.identifier == @workflow&.identifier) = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)
