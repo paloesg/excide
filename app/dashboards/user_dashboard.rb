@@ -15,8 +15,6 @@ class UserDashboard < Administrate::BaseDashboard
     profile: Field::HasOne,
     company: Field::BelongsTo,
     id: Field::Number,
-    allow_contact: Field::Boolean,
-    agree_terms: Field::Boolean,
     provider: Field::String,
     uid: Field::String,
     confirmed_at: Field::DateTime,
@@ -29,6 +27,8 @@ class UserDashboard < Administrate::BaseDashboard
     current_sign_in_ip: Field::String.with_options(searchable: false),
     last_sign_in_ip: Field::String.with_options(searchable: false),
     roles: HasManyRolesField,
+    assigned_tasks: Field::HasMany.with_options(class_name: CompanyAction),
+    completed_tasks: Field::HasMany.with_options(class_name: CompanyAction),
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -56,8 +56,8 @@ class UserDashboard < Administrate::BaseDashboard
     :contact_number,
     :company,
     :roles,
-    :allow_contact,
-    :agree_terms,
+    :assigned_tasks,
+    :completed_tasks,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -70,8 +70,6 @@ class UserDashboard < Administrate::BaseDashboard
     :contact_number,
     :company,
     :roles,
-    :allow_contact,
-    :agree_terms,
     :confirmed_at,
   ].freeze
 
