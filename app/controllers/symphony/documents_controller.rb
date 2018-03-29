@@ -22,6 +22,7 @@ class Symphony::DocumentsController < DocumentsController
   def create
     @document = Document.new(document_params)
     @document.company = @company
+    @document.user = @user
 
     @workflow = Workflow.find_by(identifier: params[:workflow]) if params[:workflow].present?
 
