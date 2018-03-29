@@ -1,1 +1,9 @@
-<%= field.data.pluck(:name).join(', ').titleize %>
+<% roles = [] %>
+<% field.data.pluck(:name, :resource_type, :resource_id).each do |name, resource_type, resource_id| %>
+  <% if resource_type.present? %>
+    <% roles << resource_type.constantize.find(resource_id).name + " " + name %>
+  <% else %>
+    <% roles << "Global " + name %>
+  <% end %>
+<% end %>
+<%= roles.join(', ').titleize %>
