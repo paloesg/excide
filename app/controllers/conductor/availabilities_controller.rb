@@ -36,16 +36,25 @@ class Conductor::AvailabilitiesController < ApplicationController
   # POST /availabilities
   # POST /availabilities.json
   def create
-    @availability = Availability.new(availability_params)
+    available = params[:available]
+    available_dates = []
+    available[:dates].each do |date|
+      slice_time = date[1].slice_when {|i, j| i[0].to_i+1 != j[0].to_i }
+      slice_time.each do |time|
+        date_time = date[0]
+        start_time = time.first[1][0]
+        end_time = (Time.parse(time.last[1][0]) + 1.hours).strftime("%T")
+        available_dates << Availability.new(:user_id => available[:user_id], :available_date => date_time , :start_time => start_time, :end_time => end_time)
+      end
+    end
     after_save_path = (current_user.has_role? :temp_staff, :any) ? conductor_user_path : conductor_availabilities_path
-
     respond_to do |format|
-      if @availability.save
+      if available_dates.each(&:save)
         format.html { redirect_to after_save_path, notice: 'Availability was successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
         format.html { render :new }
-        format.json { render json: @availability.errors, status: :unprocessable_entity }
+        format.json { render json: available_dates.errors, status: :unprocessable_entity }
       end
     end
   end
