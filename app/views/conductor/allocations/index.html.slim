@@ -57,7 +57,7 @@
                   - if user.staff_currently_hours(@allocation)
                     = button_to 'Assign', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-primary btn-xs pull-right', params: { 'allocation[user_id]': user.id}
                   - else
-                    = button_to 'Hours Exceeded', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-xs pull-right disabled', params: { 'allocation[user_id]': user.id}
+                    = button_to 'Hours Exceeded', {}, disabled: true, role: 'button', class: 'btn btn-xs pull-right', params: { 'allocation[user_id]': user.id}
 
 javascript:
   $("tr[data-allocation]").click(function() {
