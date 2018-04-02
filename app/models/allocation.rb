@@ -23,7 +23,7 @@ class Allocation < ActiveRecord::Base
   end
 
   def hours
-    return (self.end_time - self.start_time) / 3600
+    (self.end_time - self.start_time) / 3600
   end
 
 end

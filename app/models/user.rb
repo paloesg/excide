@@ -69,9 +69,7 @@ class User < ActiveRecord::Base
     current_hours = 0
     allocation_days.each { | a | current_hours += a.hours }
     current_hours += allocation.hours
-
-    assign = current_hours > self.max_hours_per_week ? false : true
-    return assign
+    current_hours > self.max_hours_per_week ? false : true
   end
 
   def password_required?
