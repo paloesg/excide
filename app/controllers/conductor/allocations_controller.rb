@@ -9,7 +9,7 @@ class Conductor::AllocationsController < ApplicationController
   # GET /allocations
   # GET /allocations.json
   def index
-    @allocations = Allocation.joins(:activation).where(activations: { company_id: @company.id })
+    @allocations = Allocation.joins(:activation).where(activations: { company_id: @company.id }).order(allocation_date: :desc, start_time: :asc, id: :asc)
     if params[:allocation].present?
       @users = User.with_role :temp_staff, @company
       @allocation = Allocation.find(params[:allocation])
