@@ -46,14 +46,15 @@ class Conductor::AvailabilitiesController < ApplicationController
         end_time = (Time.parse(time.last[1][0]) + 1.hours).strftime("%T")
         available_dates << Availability.new(:user_id => available[:user_id], :available_date => date_time , :start_time => start_time, :end_time => end_time)
       end
-    end
+    end if available[:dates].present?
+
     after_save_path = (current_user.has_role? :temp_staff, :any) ? conductor_user_path : conductor_availabilities_path
     respond_to do |format|
-      if available_dates.each(&:save)
+      if available_dates.each(&:save!) and available_dates.any?
         format.html { redirect_to after_save_path, notice: 'Availability was successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
-        format.html { render :new }
+        format.html { redirect_to :back }
         format.json { render json: available_dates.errors, status: :unprocessable_entity }
       end
     end
