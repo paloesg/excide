@@ -28,7 +28,6 @@
                 th = sortable "completed", "Status"
             tbody
               - @workflows.each do |w|
-                - next if !w.completed?
                 tr.success
                   td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
                   td = w.template.title
