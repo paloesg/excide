@@ -21,6 +21,7 @@ class Symphony::ArchivesController < ApplicationController
       @templates_type = @workflows_array.select{ |t| t.template.slug == params[:workflow_type] }
     end
 
+    @templates_completed = @workflows_array.map{ |w| w.template }.uniq
     @workflows_completed = @templates_type.select{ |w| w.completed? }
     @workflows_sort = sort_column(@workflows_completed)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
