@@ -11,11 +11,12 @@ class Conductor::AllocationsController < ApplicationController
   def index
     @allocations = Allocation.joins(:activation).where(activations: { company_id: @company.id }).order(allocation_date: :desc, start_time: :asc, id: :asc)
     if params[:allocation].present?
-      @users = User.with_role :temp_staff, @company
       @allocation = Allocation.find(params[:allocation])
+      # Check if the availability date and allocation date matches first, then check whether the availability start time is less than the allocation start time, then finally check whether the availability end time is greater than the allocation end time. If all conditions are met, the user is available for assignment.
+      @users = User.with_role(:temp_staff, @company).joins(:availabilities).where(availabilities: {available_date: @allocation.allocation_date}).where("availabilities.start_time <= ?", @allocation.start_time).where("availabilities.end_time >= ?", @allocation.end_time)
     else
-      @users = User.none
       @allocation = Allocation.none
+      @users = User.none
     end
   end
 
