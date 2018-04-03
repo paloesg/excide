@@ -14,8 +14,15 @@ class Symphony::ArchivesController < ApplicationController
     @company = @user.company
     @templates = view_context.get_relevant_templates
     @workflows_array = @templates.map(&:workflows).flatten
-    @workflow_completed = @workflows_array.select{ |w| w.completed? }
-    @workflows_sort = sort_column(@workflow_completed)
+
+    if params[:workflow_type].blank?
+      @templates_type = @workflows_array
+    else
+      @templates_type = @workflows_array.select{ |t| t.template.slug == params[:workflow_type] }
+    end
+
+    @workflows_completed = @templates_type.select{ |w| w.completed? }
+    @workflows_sort = sort_column(@workflows_completed)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
     @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
   end
