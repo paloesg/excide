@@ -5,6 +5,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
   before_action :set_temp_staff, only: [:index, :new, :edit]
+  before_action :convert_times_to_utc, only: [:create, :update]
 
   # GET /availabilities
   # GET /availabilities.json
@@ -37,7 +38,6 @@ class Conductor::AvailabilitiesController < ApplicationController
   # POST /availabilities.json
   def create
     @availability = Availability.new(availability_params)
-    after_save_path = (current_user.has_role? :temp_staff, :any) ? conductor_user_path : conductor_availabilities_path
 
     respond_to do |format|
       if @availability.save
@@ -92,6 +92,15 @@ class Conductor::AvailabilitiesController < ApplicationController
 
     def set_temp_staff
       @users = User.where(company: @company).with_role :temp_staff, @company
+    end
+
+    def convert_times_to_utc
+      params[:availability][:start_time] = Time.parse("#{params[:availability][:start_time]} #{Time.zone.name}")
+      params[:availability][:end_time] = Time.parse("#{params[:availability][:end_time]} #{Time.zone.name}")
+    end
+
+    def after_save_path
+      (current_user.has_role? :temp_staff, :any) ? conductor_user_path : conductor_availabilities_path
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
