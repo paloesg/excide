@@ -24,7 +24,7 @@ class Conductor::AvailabilitiesController < ApplicationController
       @availability.user_id = current_user.id
       @disable_user_select = true
     else
-      @availability.user_id = params[:user_id]
+      @availability.user_id ||= params[:user_id]
       @disable_user_select = false
     end
   end
@@ -44,6 +44,7 @@ class Conductor::AvailabilitiesController < ApplicationController
         format.html { redirect_to after_save_path, notice: 'Availability was successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
+        set_temp_staff
         format.html { render :new }
         format.json { render json: @availability.errors, status: :unprocessable_entity }
       end
