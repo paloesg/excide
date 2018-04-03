@@ -5,7 +5,6 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
   before_action :set_temp_staff, only: [:index, :new, :edit]
-  before_action :convert_times_to_utc, only: [:create, :update]
 
   # GET /availabilities
   # GET /availabilities.json
@@ -92,11 +91,6 @@ class Conductor::AvailabilitiesController < ApplicationController
 
     def set_temp_staff
       @users = User.where(company: @company).with_role :temp_staff, @company
-    end
-
-    def convert_times_to_utc
-      params[:availability][:start_time] = Time.parse("#{params[:availability][:start_time]} #{Time.zone.name}")
-      params[:availability][:end_time] = Time.parse("#{params[:availability][:end_time]} #{Time.zone.name}")
     end
 
     def after_save_path
