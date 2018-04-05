@@ -16,7 +16,7 @@
         = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'pull-right')
         br
         - if @workflows.blank?
-          | No outstanding workflows at the moment. Click on a workflow to begin.
+          | No completed workflows at the moment.
         - else
           .pull-right = page_entries_info @workflows, entry_name: 'workflow'
           table.table
