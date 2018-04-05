@@ -2,7 +2,6 @@ class Symphony::ArchivesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_workflow, only: [:index]
 
   def index
   end
