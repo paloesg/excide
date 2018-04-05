@@ -5,6 +5,7 @@ class Conductor::AllocationsController < ApplicationController
   before_action :set_company
   before_action :set_allocation, only: [:show, :edit, :update, :destroy]
   before_action :set_temp_staff, only: [:new, :edit]
+  before_action :set_activations, only: [:new, :edit]
 
   # GET /allocations
   # GET /allocations.json
@@ -28,7 +29,6 @@ class Conductor::AllocationsController < ApplicationController
   # GET /allocations/new
   def new
     @allocation = Allocation.new
-    @activations = Activation.where(company: @company)
   end
 
   # GET /allocations/1/edit
@@ -45,6 +45,8 @@ class Conductor::AllocationsController < ApplicationController
         format.html { redirect_to conductor_allocations_path, notice: 'Allocation was successfully created.' }
         format.json { render :show, status: :created, location: @allocation }
       else
+        set_temp_staff
+        set_activations
         format.html { render :new }
         format.json { render json: @allocation.errors, status: :unprocessable_entity }
       end
@@ -60,6 +62,8 @@ class Conductor::AllocationsController < ApplicationController
         format.json { render :show, status: :ok, location: @allocation }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
+        set_temp_staff
+        set_activations
         format.html { render :edit }
         format.json { render json: @allocation.errors, status: :unprocessable_entity }
       end
@@ -93,6 +97,10 @@ class Conductor::AllocationsController < ApplicationController
 
     def set_temp_staff
       @users = User.where(company: @company).with_role :temp_staff, @company
+    end
+
+    def set_activations
+      @activations = Activation.where(company: @company)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
