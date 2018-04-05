@@ -4,11 +4,6 @@ class Symphony::ArchivesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-  end
-
-  private
-
-  def set_workflow
     @user = current_user
     @company = @user.company
     @templates = view_context.get_relevant_templates
@@ -26,6 +21,8 @@ class Symphony::ArchivesController < ApplicationController
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
     @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
   end
+
+  private
 
   def sort_column(array)
     array.sort_by{
