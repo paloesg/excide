@@ -11,4 +11,5 @@
           .panel-collapse.collapse id="collapse-#{t.slug}" role="tabpanel" aria-labelledby="#collapse-#{t.slug}-heading" class=('in' if t.slug == @workflow&.template&.slug)
             ul.list-group
             - t.workflows.each do |w|
+              - next if w.completed?
               li.list-group-item class=('active' if w.identifier == @workflow&.identifier) = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)
