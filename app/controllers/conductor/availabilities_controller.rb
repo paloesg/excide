@@ -4,7 +4,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
-  before_action :set_temp_staff, only: [:index, :new, :edit]
+  before_action :set_contractor, only: [:index, :new, :edit]
 
   # GET /availabilities
   # GET /availabilities.json
@@ -20,7 +20,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   # GET /availabilities/new
   def new
     @availability = Availability.new
-    if current_user.has_role? :temp_staff, :any
+    if current_user.has_role? :contractor, :any
       @availability.user_id = current_user.id
       @disable_user_select = true
     else
@@ -90,8 +90,8 @@ class Conductor::AvailabilitiesController < ApplicationController
       @company = current_user.company
     end
 
-    def set_temp_staff
-      @users = User.where(company: @company).with_role :temp_staff, @company
+    def set_contractor
+      @users = User.where(company: @company).with_role :contractor, @company
     end
 
     def after_save_path
