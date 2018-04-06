@@ -43,7 +43,7 @@ class Conductor::AvailabilitiesController < ApplicationController
         format.html { redirect_to after_save_path, notice: 'Availability was successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
-        set_temp_staff
+        set_contractor
         format.html { render :new }
         format.json { render json: @availability.errors, status: :unprocessable_entity }
       end
@@ -95,7 +95,7 @@ class Conductor::AvailabilitiesController < ApplicationController
     end
 
     def after_save_path
-      (current_user.has_role? :temp_staff, :any) ? conductor_user_path : conductor_availabilities_path
+      (current_user.has_role? :contractor, :any) ? conductor_user_path : conductor_availabilities_path
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
