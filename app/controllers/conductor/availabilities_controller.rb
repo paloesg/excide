@@ -58,7 +58,7 @@ class Conductor::AvailabilitiesController < ApplicationController
         format.html { redirect_to conductor_availabilities_path, notice: 'Availability was successfully updated.' }
         format.json { render :show, status: :ok, location: @availability }
       else
-        set_temp_staff
+        set_contractor
         format.html { render :edit }
         format.json { render json: @availability.errors, status: :unprocessable_entity }
       end
