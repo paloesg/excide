@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180306090812) do
+ActiveRecord::Schema.define(version: 20180329075432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,18 +132,20 @@ ActiveRecord::Schema.define(version: 20180306090812) do
   create_table "company_actions", force: :cascade do |t|
     t.integer  "task_id"
     t.boolean  "completed"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.datetime "deadline"
     t.integer  "company_id"
     t.integer  "approved_by"
     t.integer  "workflow_id"
-    t.integer  "user_id"
+    t.integer  "assigned_user_id"
+    t.integer  "completed_user_id"
   end
 
+  add_index "company_actions", ["assigned_user_id"], name: "index_company_actions_on_assigned_user_id", using: :btree
   add_index "company_actions", ["company_id"], name: "index_company_actions_on_company_id", using: :btree
+  add_index "company_actions", ["completed_user_id"], name: "index_company_actions_on_completed_user_id", using: :btree
   add_index "company_actions", ["task_id"], name: "index_company_actions_on_task_id", using: :btree
-  add_index "company_actions", ["user_id"], name: "index_company_actions_on_user_id", using: :btree
   add_index "company_actions", ["workflow_id"], name: "index_company_actions_on_workflow_id", using: :btree
 
   create_table "document_templates", force: :cascade do |t|
@@ -170,10 +172,12 @@ ActiveRecord::Schema.define(version: 20180306090812) do
     t.integer  "workflow_id"
     t.integer  "document_template_id"
     t.string   "identifier"
+    t.integer  "user_id"
   end
 
   add_index "documents", ["company_id"], name: "index_documents_on_company_id", using: :btree
   add_index "documents", ["document_template_id"], name: "index_documents_on_document_template_id", using: :btree
+  add_index "documents", ["user_id"], name: "index_documents_on_user_id", using: :btree
   add_index "documents", ["workflow_id"], name: "index_documents_on_workflow_id", using: :btree
 
   create_table "enquiries", force: :cascade do |t|
@@ -308,6 +312,9 @@ ActiveRecord::Schema.define(version: 20180306090812) do
     t.text     "content"
     t.integer  "task_id"
     t.integer  "company_action_id"
+    t.boolean  "email"
+    t.boolean  "sms"
+    t.boolean  "slack"
   end
 
   add_index "reminders", ["company_action_id"], name: "index_reminders_on_company_action_id", using: :btree
@@ -498,12 +505,14 @@ ActiveRecord::Schema.define(version: 20180306090812) do
   add_foreign_key "clients", "users"
   add_foreign_key "company_actions", "companies"
   add_foreign_key "company_actions", "tasks"
-  add_foreign_key "company_actions", "users"
+  add_foreign_key "company_actions", "users", column: "assigned_user_id"
+  add_foreign_key "company_actions", "users", column: "completed_user_id"
   add_foreign_key "company_actions", "workflows"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
+  add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflows"
   add_foreign_key "experiences", "profiles"
   add_foreign_key "profiles", "users"

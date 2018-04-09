@@ -19,7 +19,7 @@ module ApplicationHelper
     arrow = params[:direction] == "asc" ? "glyphicon glyphicon-triangle-bottom" : "glyphicon glyphicon-triangle-top"
     css_class = column == params[:sort] ? "current #{arrow}" : nil
     direction_sort = column == params[:sort] && params[:direction] == "asc" ? "desc" : "asc"
-    link_to "?sort=#{column}&direction=#{direction_sort}" do
+    link_to params.merge({:sort => column, :direction => direction_sort}) do
       if column == params[:sort]
         "#{title} #{content_tag :i, nil, class: arrow }".html_safe
       else

@@ -31,7 +31,10 @@ class User < ActiveRecord::Base
   has_many :availabilities
   has_many :allocations
 
-  has_many :company_actions
+  has_many :documents
+
+  has_many :assigned_tasks, class_name: 'CompanyAction', foreign_key: 'assigned_user_id'
+  has_many :completed_tasks, class_name: 'CompanyAction', foreign_key: 'completed_user_id'
 
   belongs_to :company
 

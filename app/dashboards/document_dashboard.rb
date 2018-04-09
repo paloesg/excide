@@ -18,6 +18,7 @@ class DocumentDashboard < Administrate::BaseDashboard
     file_url: Field::String,
     workflow: Field::BelongsTo,
     document_template: Field::BelongsTo,
+    user: Field::BelongsTo,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -27,6 +28,7 @@ class DocumentDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :company,
+    :user,
     :workflow,
     :document_template,
     :id,
@@ -38,6 +40,7 @@ class DocumentDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :company,
+    :user,
     :workflow,
     :document_template,
     :id,
@@ -54,6 +57,7 @@ class DocumentDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :company,
+    :user,
     :workflow,
     :document_template,
     :filename,

@@ -8,7 +8,7 @@
       li.active #{@template.title}
     h1.page-header #{@template.title} – #{@workflow.identifier}
 .row
-  .col-md-8.col-sm-6
+  .col-md-9.col-sm-12
     .panel.panel-default
       .panel-heading
         h3.panel-title = @section.display_name
@@ -18,9 +18,10 @@
             tr
               th No.
               th Instructions
-              th Who
+              th Assigned To
               th Deadline
               th Done
+              th Completed By
           tbody
             - @tasks.each do |t|
               - action = t.get_company_action(@company.id, @workflow.identifier)
@@ -39,31 +40,34 @@
                     br
                     = link_to "Visit Link", t.link_url, target: :_blank, role: 'button', class: 'btn btn-primary btn-xs'
                 td
-                  - if action.user.present?
+                  - if action.assigned_user.present?
                     span.glyphicon.glyphicon-user aria-hidden="true"
-                    |  #{action.user.full_name}
+                    |  #{action.assigned_user&.full_name}
                   - else
                     = t.role&.name&.humanize
                 td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
                 td
                   / Check if task is current task AND check if it's assigned to a particular user OR whether user has the required role OR user has admin role
-                  - if t == @workflow.current_task && (action.user == current_user || t.role_id == nil || (@roles.map(&:id).include? t.role_id) || (@user.has_role? :admin, @company))
+                  - if t == @workflow.current_task && (action.assigned_user == current_user || t.role_id == nil || (@roles.map(&:id).include? t.role_id) || (@user.has_role? :admin, @company))
                     = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }, :onclick => "this.checked=true;"
                   - else
                     = check_box_tag 'completed', action.id, action.completed, disabled: true
+                td
+                  - if action.completed? && action.completed_user.present?
+                    span.glyphicon.glyphicon-user aria-hidden="true"
+                    |  #{action.completed_user&.full_name}
     - unless @section.first?
       = link_to "Previous Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-default pull-left'
     - if @section.last?
       = link_to "Done", symphony_root_path, class: 'btn btn-default pull-right'
     - else
       = link_to "Next Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.lower_item.id), class: 'btn btn-default pull-right'
-  - if @user.has_role? :admin, @company
-    .col-md-4.col-sm-6
-      = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
-      - if @user.has_role? :admin
-        = link_to('Reset Workflow', {:action => :reset} ,class: 'btn btn-warning btn-block', data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' })
-      br
-  .col-md-4.col-sm-6
+  .col-md-3.col-sm-6
+    = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
+    - if @user.has_role? :admin
+      = link_to('Reset Workflow', {:action => :reset} ,class: 'btn btn-warning btn-block', data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' })
+    br
+  .col-md-3.col-sm-6
     .panel.panel-default
       .panel-heading
         h3.panel-title #{@workflow.workflowable_type}
@@ -110,7 +114,8 @@
                 a href="#{d.file_url}"
                 = File.basename(d.file_url)
                 br
-                = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+                = d.created_at.strftime("Uploaded at %d/%m/%Y %R by ")
+                = d.user&.full_name
     .panel.panel-default
       .panel-heading
         h3.panel-title Document Templates

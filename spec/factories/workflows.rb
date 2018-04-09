@@ -1,15 +1,20 @@
 FactoryBot.define do
-  factory :workflow do
-    identifier Faker::Name.title
-    workflowable_type "Client"
+  factory :workflow do |workflow|
+    association :workflowable, factory: :client
+
+    workflow.identifier { Faker::Name.title}
+
+    company
+
+    after(:create) do |workflow|
+      create_list(:section, 3, template: workflow.template)
+    end
 
     factory :workflow_with_document do
-      transient do
-        company
-      end
-
       after(:create) do |w|
-        create(:document, workflow_id: w.id, company: w.company)
+        create(:document_template, template: w.template) do |d|
+          create(:document, workflow_id: w.id, company: w.company, document_template: d)
+        end
       end
     end
   end

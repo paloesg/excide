@@ -4,7 +4,7 @@
     ul
       - @document.errors.full_messages.each do |message|
         li = message
-= f.hidden_field(:workflow_id, value: @workflow.id)
+= f.hidden_field(:workflow_id, value: @workflow&.id)
 .form-group
   = f.label :identifier, 'Document Identifier'
   = f.text_field :identifier, class: 'form-control'
@@ -27,11 +27,3 @@
     = f.label 'File URL'
     = f.text_field :file_url, class: 'file-path form-control', disabled: true
 = f.submit 'Save Document', class: 'btn btn-default'
-
-javascript:
-  $(function() {
-    $('.datetimepicker').datetimepicker({
-      debug: false,
-      format: 'YYYY-MM-DD'
-    });
-  });

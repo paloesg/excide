@@ -2,23 +2,25 @@ class CompanyAction < ActiveRecord::Base
   include PublicActivity::Model
   tracked except: :create, owner: ->(controller, model) { controller && controller.current_user }
 
-  after_save :clear_reminder, if: :completed_changed?
+  after_save :clear_reminders, if: :completed_changed?
   after_save :trigger_next_task, if: :completed_changed?
   after_save :send_notification, if: :completed_changed?
 
   belongs_to :task
   belongs_to :company
   belongs_to :workflow
-  belongs_to :user
 
-  has_one :reminder, dependent: :destroy
+  belongs_to :assigned_user, class_name: 'User'
+  belongs_to :completed_user, class_name: 'User'
+
+  has_many :reminders, dependent: :destroy
 
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_company_action(self.company, self.workflow.identifier)
     next_action.update_columns(deadline: (Date.today + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
 
     # Create new reminder based on deadline of action and repeat every 2 days
-    create_reminder(next_task, next_action)
+    create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
 
     # Trigger email notification for next task if role present
     if next_task.role.present?
@@ -29,10 +31,10 @@ class CompanyAction < ActiveRecord::Base
 
   private
 
-  def clear_reminder
+  def clear_reminders
     if self.completed
-      # Find associated reminder and remove next reminder date
-      self.reminder.update_attributes(next_reminder: nil) if self.reminder.present?
+      # Find associated reminders and remove next reminder date
+      self.reminders.each { |reminder| reminder.update_attributes(next_reminder: nil) } unless self.reminders.empty?
     end
   end
 
@@ -55,7 +57,30 @@ class CompanyAction < ActiveRecord::Base
   end
 
   def create_reminder(task, action)
-    Reminder.create(next_reminder: action.deadline, repeat: true, freq_value: 2, freq_unit: "days", company_id: action.company_id, task_id: task.id, company_action_id: action.id) if (task.set_reminder && action.deadline.present?)
+    reminder = Reminder.new(
+      next_reminder: action.deadline,
+      repeat: true,
+      freq_value: 2,
+      freq_unit: "days",
+      company_id: action.company_id,
+      task_id: task.id,
+      company_action_id: action.id,
+      title: 'Reminder: You have a task awaiting completion.',
+      content: task.instructions,
+      slack: true,
+      email: true
+    )
+
+    if action.assigned_user.present?
+      reminder.user = action.assigned_user
+      reminder.save
+    else
+      task.role.users.each do |user|
+        user_reminder = reminder.dup
+        user_reminder.user = user
+        user_reminder.save
+      end
+    end
   end
 
   def send_notification

@@ -1,0 +1,10 @@
+p Hi #{@user.first_name},
+
+p #{@reminder.content}
+
+- if @reminder.task.present?
+  p
+    ' You can access the task from this link:
+    a href="#{symphony_workflow_url(@reminder.task.section.template.slug, @reminder.company_action.workflow.identifier)}" #{@task.section.template.title} - #{@action.workflow.identifier}
+
+p If you have any queries regarding your task, please contact your admin.
