@@ -41,4 +41,8 @@ class Template < ActiveRecord::Base
       end
     end
   end
+
+  def current_workflows
+    self.workflows.flatten.select{ |w| !w.completed? }
+  end
 end
