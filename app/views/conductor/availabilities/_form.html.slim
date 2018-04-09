@@ -23,15 +23,3 @@
       = f.label :end_time
       = f.text_field :end_time, value: @availability.end_time&.strftime("%H:%M"), class: 'form-control timepicker'
 = f.submit 'Save Availability', class: 'btn btn-default'
-
-javascript:
-  $(function() {
-    $('.datepicker').datetimepicker({
-      format: 'YYYY-MM-DD'
-    });
-
-    $('.timepicker').datetimepicker({
-      format: 'HH:mm',
-      stepping: 15
-    });
-  });
