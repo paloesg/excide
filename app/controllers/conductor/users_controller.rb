@@ -7,7 +7,7 @@ class Conductor::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.where(company: @company).with_role :temp_staff, @company
+    @users = User.where(company: @company).with_role :contractor, @company
   end
 
   def show
@@ -22,7 +22,7 @@ class Conductor::UsersController < ApplicationController
     @user = User.new(user_params)
     @user.company = @company
     if @user.save
-      @user.add_role :temp_staff, @company
+      @user.add_role :contractor, @company
       redirect_to conductor_users_path, notice: 'User successfully created!'
     else
       render :new
