@@ -13,33 +13,31 @@
       .panel-heading
         h3.panel-title Completed workflows
       .panel-body
-        .col-sm-offset-8.col-sm-4
-          = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'pull-right')
-        - if @workflows.blank?
-          | No completed workflows at the moment.
-        - else
-          .col-sm-offset-8.col-sm-4
+        .row
+          .col-sm-4
+            = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'pull-left')
+          .col-sm-offset-4.col-sm-4
             .pull-right = page_entries_info @workflows, entry_name: 'workflow'
-          table.table
-            thead
-              tr
-                th = sortable "identifier", "Identifier"
-                th = sortable "template", "Workflow Type"
-                th = sortable "workflowable", "Client Name"
-                th = sortable "remarks", "Remarks"
-                th = sortable "deadline", "Deadline"
-                th = sortable "completed", "Status"
-            tbody
-              - @workflows.each do |w|
-                tr.success
-                  td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
-                  td = w.template.title
-                  td = w.workflowable&.name || '-'
-                  td = w.remarks || '-'
-                  td = w.deadline&.strftime("%d/%m/%Y") || '-'
-                  td = w.completed ? 'Completed' : w.current_section&.display_name
-        .text-center
-          = paginate @workflows, views_prefix: 'dashboards'
+      table.table
+        thead
+          tr
+            th = sortable "identifier", "Identifier"
+            th = sortable "template", "Workflow Type"
+            th = sortable "workflowable", "Client Name"
+            th = sortable "remarks", "Remarks"
+            th = sortable "deadline", "Deadline"
+            th = sortable "completed", "Status"
+        tbody
+          - @workflows.each do |w|
+            tr.success
+              td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
+              td = w.template.title
+              td = w.workflowable&.name || '-'
+              td = w.remarks || '-'
+              td = w.deadline&.strftime("%d/%m/%Y") || '-'
+              td = w.completed ? 'Completed' : w.current_section&.display_name
+      .text-center
+        = paginate @workflows, views_prefix: 'dashboards'
   - if @templates.present?
     .col-md-4.col-sm-6
       .panel.panel-default
