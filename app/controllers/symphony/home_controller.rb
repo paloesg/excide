@@ -13,7 +13,7 @@ class Symphony::HomeController < ApplicationController
     @user = current_user
     @company = @user.company
     @templates = view_context.get_relevant_templates
-    @workflows_array = @templates.map(&:workflows).flatten
+    @workflows_array = @templates.map(&:current_workflows).flatten
     @workflows_sort = sort_column(@workflows_array)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
     @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
