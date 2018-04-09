@@ -1,0 +1,2 @@
+module Symphony::ArchivesHelper
+end
