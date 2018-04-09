@@ -25,4 +25,11 @@ namespace :scheduler do
       SlackService.new.auto_response(enquiry).deliver
     end
   end
+
+  task :contractor_reminders => :environment do
+    users = User.with_role(:contractor, :any)
+    users.each do |user|
+      NotificationMailer.contractor_notification(user).deliver_now
+    end
+  end
 end

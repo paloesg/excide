@@ -1,0 +1,65 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="/symphony" Dashboard
+      li
+        a href="/symphony/company" #{@company.name}
+      li.active Allocations
+    h1.page-header
+      | Allocate Contractor
+
+.row
+  .col-sm-8.col-xs-12
+    table.table.table-hover
+      thead
+        tr
+          th Activation
+          th Allocation date
+          th Start time
+          th End time
+          th User
+          th
+
+      tbody
+        - @allocations.each do |allocation|
+          tr data-allocation='#{allocation.id}' class="#{@allocation == allocation ? 'info' : ''}"
+            td = allocation.activation.name
+            td = allocation.allocation_date
+            td = allocation.start_time.strftime("%H:%M")
+            td = allocation.end_time.strftime("%H:%M")
+            td = allocation.user&.full_name
+            td = link_to 'Edit', edit_conductor_allocation_path(allocation)
+
+  .col-md-4.col-xs-12
+    = link_to 'Export Allocations', {:action => :export} ,class: 'btn btn-success btn-block'
+    br
+  .col-sm-4.col-xs-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Available Contractor
+      .panel-body
+        p Select an allocation on the left to assign contractor.
+      ul.list-group
+        - @users.each do |user|
+          li.list-group-item.clearfix
+            .row
+              .col-sm-6.col-xs-12
+                span.glyphicon.glyphicon-user aria-hidden="true"
+                '  #{user.full_name}
+                - if @allocation.user == user
+                  span.label.label-default Assigned
+              - if @allocation.user == user
+                .col-sm-6.col-xs-12
+                  = button_to 'Remove', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-danger btn-xs pull-right', params: { 'allocation[user_id]': nil}
+              - else
+                .col-sm-6.col-xs-12
+                  - if user.exceed_weekly_max_hours? @allocation
+                    = button_to 'Assign', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-primary btn-xs pull-right', params: { 'allocation[user_id]': user.id}
+                  - else
+                    = button_to 'Hours Exceeded', {}, disabled: true, role: 'button', class: 'btn btn-xs pull-right'
+
+javascript:
+  $("tr[data-allocation]").click(function() {
+    Turbolinks.visit('//' + location.host + location.pathname + '?allocation=' + $(this).data('allocation'));
+  })

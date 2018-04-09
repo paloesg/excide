@@ -1,0 +1,3 @@
+Hi <%= @user.first_name %>,
+
+A new activation for <%= @activation.client.name %> has been created on <%= @activation.start_time.strftime("%d/%m/%Y") %> from <%= @activation.start_time.strftime("%H:%M") %> to <%= @activation.end_time.strftime("%H:%M") %> at <%= @activation.location %> and you have been assigned as the Event In-Charge.

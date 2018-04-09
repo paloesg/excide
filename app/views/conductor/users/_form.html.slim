@@ -1,0 +1,22 @@
+- if @user.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+    ul
+      - @user.errors.full_messages.each do |message|
+        li = message
+.form-group
+  = f.label :first_name
+  = f.text_field :first_name, class: 'form-control'
+.form-group
+  = f.label :last_name
+  = f.text_field :last_name, class: 'form-control'
+.form-group
+  = f.label :email
+  = f.text_field :email, class: 'form-control'
+.form-group
+  = f.label :contact_number
+  = f.text_field :contact_number, class: 'form-control'
+.form-group
+  = f.label :max_hours_per_week
+  = f.number_field :max_hours_per_week, class: 'form-control'
+= f.submit 'Save User', class: 'btn btn-default'

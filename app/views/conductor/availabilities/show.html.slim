@@ -1,0 +1,21 @@
+p#notice = notice
+
+p
+  strong User:
+  = @availability.user
+p
+  strong Available date:
+  = @availability.available_date
+p
+  strong Start time:
+  = @availability.start_time
+p
+  strong End time:
+  = @availability.end_time
+p
+  strong Assigned:
+  = @availability.assigned
+
+=> link_to 'Edit', edit_conductor_availability_path(@availability)
+'|
+=< link_to 'Back', conductor_availabilities_path

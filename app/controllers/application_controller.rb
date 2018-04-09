@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     if current_user.has_role? :admin
       admin_root_path
+    elsif current_user.has_role? :contractor, :any
+      conductor_user_path current_user
     elsif current_user.company.present?
       symphony_root_path
     elsif current_user.lead?

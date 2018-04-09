@@ -1,0 +1,37 @@
+- if @availability.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@availability.errors.count, "error")} prohibited this availability from being saved:"
+    ul
+      - @availability.errors.full_messages.each do |message|
+        li = message
+
+.row
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :user_id
+      = f.collection_select :user_id, @users, :id, :first_name, {include_blank: true}, {class: 'form-control', disabled: @disable_user_select}
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :available_date
+      = f.text_field :available_date, class: 'form-control datepicker'
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :start_time
+      = f.text_field :start_time, value: @availability.start_time&.strftime("%H:%M"), class: 'form-control timepicker'
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :end_time
+      = f.text_field :end_time, value: @availability.end_time&.strftime("%H:%M"), class: 'form-control timepicker'
+= f.submit 'Save Availability', class: 'btn btn-default'
+
+javascript:
+  $(function() {
+    $('.datepicker').datetimepicker({
+      format: 'YYYY-MM-DD'
+    });
+
+    $('.timepicker').datetimepicker({
+      format: 'HH:mm',
+      stepping: 15
+    });
+  });

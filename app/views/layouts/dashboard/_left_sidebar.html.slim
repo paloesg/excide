@@ -1,6 +1,24 @@
 .col-md-2.col-sm-3.sidebar
   .nav.nav-sidebar
-    - get_relevant_templates.each do |t|
+    - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
+      - get_relevant_templates.each do |t|
+        .panel-group role="tablist"
+          .panel.panel-default
+            .panel-heading role="tab" id="#collapse-#{t.slug}-heading"
+              h4.panel-title
+                a data-toggle="collapse" href="#collapse-#{t.slug}" aria-expanded="false" aria-controls="collapse-#{t.slug}" role="button"
+                  = t.title
+                  span.caret
+            .panel-collapse.collapse id="collapse-#{t.slug}" role="tabpanel" aria-labelledby="#collapse-#{t.slug}-heading" class=('in' if t.slug == @workflow&.template&.slug)
+              ul.list-group
+              - t.workflows.each do |w|
+                li.list-group-item class=('active' if w.identifier == @workflow&.identifier) = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)
+    - elsif controller.class.parents.include?(Conductor)
+      .col-sm-12
+        = link_to 'New Activation', new_conductor_activation_path, class: 'btn btn-primary btn-block'
+        = link_to 'Allocate Contractor', conductor_allocations_path, class: 'btn btn-primary btn-block'
+        = link_to 'Contractor Availability', conductor_availabilities_path, class: 'btn btn-primary btn-block'
+    - else
       .panel-group role="tablist"
         .panel.panel-default
           .panel-heading role="tab" id="#collapse-#{t.slug}-heading"

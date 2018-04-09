@@ -46,6 +46,27 @@ Rails.application.routes.draw do
     root to: 'home#show'
   end
 
+  namespace :conductor do
+    resources :users
+    resources :activations do
+      member do
+        get '/create-allocations/:count', to: 'activations#create_allocations', as: :create_allocations
+      end
+    end
+    resources :allocations do
+      collection do
+        get :export, to: 'allocations#export'
+      end
+    end
+    resources :availabilities do
+      collection do
+        get '/user/:user_id', to: 'availabilities#user', as: :user
+      end
+    end
+
+    root to: 'home#show'
+  end
+
   as :user do
     get '/cs/:role/register', to: 'users/registrations#new', as: :register
     get '/cs/:role/login', to: 'devise/sessions#new', as: :login

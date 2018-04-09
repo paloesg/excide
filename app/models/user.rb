@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
 
   has_one :profile, dependent: :destroy
   has_one :address, as: :addressable
+  has_many :clients
+  has_many :activations
+  has_many :availabilities
+  has_many :allocations
 
   has_many :documents
 
@@ -59,6 +63,16 @@ class User < ActiveRecord::Base
 
   def full_name
     first_name + ' ' + last_name
+  end
+
+  def exceed_weekly_max_hours? allocation
+    allocation_date = Date.parse(allocation.allocation_date.to_s)
+    allocation_days = self.allocations.where(allocation_date: (allocation_date.beginning_of_week)..(allocation_date.end_of_week))
+
+    current_hours = 0
+    allocation_days.each { | a | current_hours += a.hours }
+    current_hours += allocation.hours
+    current_hours > self.max_hours_per_week ? false : true
   end
 
   def password_required?

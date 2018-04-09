@@ -1,0 +1,41 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="/" Home
+      li
+        a href="/symphony" #{@company.name}
+      li.active Contractor
+    h1.page-header
+      | Manage Contractors
+      = link_to "New Contractor", new_conductor_user_path, role: 'button', class: 'btn btn-warning pull-right'
+.row
+  .col-sm-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Contractor
+      .panel-body
+        table.table
+          thead
+            tr
+              th ID
+              th First Name
+              th Last Name
+              th Email
+              th Phone
+              th Max Hours
+              th Status
+              th
+          tbody
+            - @users.each do |u|
+              tr
+                td = u.id
+                td = u.first_name
+                td = u.last_name
+                td = u.email
+                td = u.contact_number
+                td = u.max_hours_per_week
+                td = u.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed'
+                td.btn-toolbar
+                  = link_to 'Edit', edit_conductor_user_path(u.id), role: 'button', class: 'btn btn-primary btn-xs'
+                  = link_to 'Delete', conductor_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'

@@ -101,6 +101,8 @@ gem "cocoon"
 gem 'trix'
 # Date time picker
 gem "datetime_picker_rails"
+# Render calendar
+gem "simple_calendar", "~> 2.0"
 
 # Backend admin
 gem 'administrate'
@@ -139,13 +141,13 @@ group :development, :test do
   # Manage env variables during development and testing
   gem 'dotenv-rails'
 
-  # A library for generating fake data such as names, addresses, and phone numbers.
-  gem 'faker', :git => 'https://github.com/stympy/faker.git'
-
   # Testing framework
   gem 'rspec-rails'
   gem 'guard-rspec'
   gem 'spring-commands-rspec'
   gem 'shoulda'
   gem 'factory_bot_rails'
+
+  # A library for generating fake data such as names, addresses, and phone numbers.
+  gem 'faker', :git => 'https://github.com/stympy/faker.git'
 end

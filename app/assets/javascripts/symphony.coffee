@@ -3,7 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 jQuery ->
   $('form').on 'click', '.remove_fields', (event) ->
-    console.log($(this).prev())
     $(this).next('input[type=hidden]').val('1')
     $(this).closest('tr').hide()
     event.preventDefault()

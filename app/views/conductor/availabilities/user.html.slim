@@ -1,0 +1,33 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="/symphony" Dashboard
+      li
+        a href="/symphony/company" #{@company.name}
+      li.active Manpower
+    h1.page-header
+      | #{@user.full_name} Availabilities
+      = link_to 'Add Availability', new_conductor_availability_path(user_id: @user.id), role: 'button', class: 'btn btn-warning pull-right'
+
+.row
+  .col-sm-12
+    table.table.table-hover
+      thead
+        tr
+          th Available date
+          th Start time
+          th End time
+          th Assigned
+          th
+          th
+
+      tbody
+        - @availabilities.each do |availability|
+          tr
+            td = availability.available_date
+            td = availability.start_time.strftime("%H:%M")
+            td = availability.end_time.strftime("%H:%M")
+            td = availability.assigned
+            td = link_to 'Edit', edit_conductor_availability_path(availability)
+            td = link_to 'Destroy', conductor_availability_path(availability), data: { confirm: 'Are you sure?' }, method: :delete

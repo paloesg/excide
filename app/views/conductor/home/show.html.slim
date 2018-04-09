@@ -1,0 +1,50 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.breadcrumb-2
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li.active Conductor
+    h1.page-header Conductor
+    = select_tag('activation_type', options_for_select(Activation.activation_types.map {|k,v| [k.titleize, k] }, selected: params[:activation_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?activation_type=' + $(this).val());", include_blank: 'All', class: 'pull-right')
+.row
+  .col-sm-12
+    = month_calendar events: @activations do |date, activations|
+      p = date.day
+      - activations.each do |activation|
+        .panel.panel-default
+          .panel-body
+            p
+              = activation.start_time.strftime('%k:%M') + ' - ' + activation.end_time.strftime('%k:%M')
+              br
+              = activation.activation_type.titleize
+            = activation.location
+.row
+  .col-sm-6.col-xs-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Upcoming Activations
+      .panel-body
+        - if @activations.present?
+          table.table
+            thead
+              tr
+                th Activation Type
+                th Start Time
+                th End Time
+                th Location
+            tbody
+              - @activations.each do |activation|
+                tr
+                  td = activation.activation_type.titleize
+                  td = activation.start_time.strftime('%e %b %k:%M')
+                  td = activation.end_time.strftime('%e %b %k:%M')
+                  td = activation.location
+        - else
+          | No upcoming activations this month.
+  .col-sm-6.col-xs-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Latest Updates
+      .panel-body

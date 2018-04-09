@@ -15,7 +15,7 @@ class NotificationMailer < ApplicationMailer
     address.display_name = @user.full_name
     mail(to: address.format, subject: 'You have a new task to complete')
   end
-
+  
   def reminder_notification(reminder)
     @reminder = reminder
     @user = reminder.user
@@ -23,5 +23,33 @@ class NotificationMailer < ApplicationMailer
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
     mail(to: address.format, subject: @reminder.title)
+  end
+
+  def create_activation(activation, user)
+    activation_notification(activation, user, 'A new activation has been created')
+  end
+
+  def edit_activation(activation, user)
+    activation_notification(activation, user, 'An activation has been changed')
+  end
+
+  def destroy_activation(activation, user)
+    activation_notification(activation, user, 'An activation has been cancelled')
+  end
+
+  def activation_notification(activation, user, subject)
+    @user = user
+    @subject = subject
+    @activation = activation
+    address = Mail::Address.new @user.email
+    address.display_name = @user.first_name + @user.last_name
+    mail(to: address.format, subject: @subject)
+  end
+
+  def contractor_notification(user)
+    @user = user
+    address = Mail::Address.new @user.email
+    address.display_name = @user.first_name + @user.last_name
+    mail(to: address.format, subject: 'Assign your avaibility for the next month')
   end
 end

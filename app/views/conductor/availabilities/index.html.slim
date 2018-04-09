@@ -1,0 +1,30 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="/symphony" Dashboard
+      li
+        a href="/symphony/company" #{@company.name}
+      li.active Manpower
+    h1.page-header
+      | Availability Listing
+
+.row
+  .col-sm-12
+    table.table.table-hover
+      thead
+        tr
+          th User
+          th Availabilities
+          th View Availabilities
+          th Allocations
+          th View Allocations
+
+      tbody
+        - @users.each do |user|
+          tr
+            td = user.full_name
+            td = user.availabilities.count
+            td = link_to 'View', user_conductor_availabilities_path(user.id)
+            td = user.allocations.count
+            td = link_to 'View'

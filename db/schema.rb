@@ -16,6 +16,23 @@ ActiveRecord::Schema.define(version: 20180329075432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "activations", force: :cascade do |t|
+    t.integer  "activation_type"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.text     "remarks"
+    t.string   "location"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.integer  "client_id"
+  end
+
+  add_index "activations", ["client_id"], name: "index_activations_on_client_id", using: :btree
+  add_index "activations", ["company_id"], name: "index_activations_on_company_id", using: :btree
+  add_index "activations", ["user_id"], name: "index_activations_on_user_id", using: :btree
+
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id"
     t.string   "trackable_type"
@@ -44,6 +61,31 @@ ActiveRecord::Schema.define(version: 20180329075432) do
   end
 
   add_index "addresses", ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", using: :btree
+
+  create_table "allocations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "activation_id"
+    t.date     "allocation_date"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "allocations", ["activation_id"], name: "index_allocations_on_activation_id", using: :btree
+  add_index "allocations", ["user_id"], name: "index_allocations_on_user_id", using: :btree
+
+  create_table "availabilities", force: :cascade do |t|
+    t.integer  "user_id"
+    t.date     "available_date"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.boolean  "assigned"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "availabilities", ["user_id"], name: "index_availabilities_on_user_id", using: :btree
 
   create_table "choices", force: :cascade do |t|
     t.text     "content"
@@ -410,14 +452,13 @@ ActiveRecord::Schema.define(version: 20180329075432) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "contact_number"
-    t.boolean  "allow_contact"
-    t.boolean  "agree_terms"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
     t.string   "aasm_state"
     t.integer  "company_id"
+    t.integer  "max_hours_per_week"
   end
 
   add_index "users", ["company_id"], name: "index_users_on_company_id", using: :btree
@@ -454,6 +495,12 @@ ActiveRecord::Schema.define(version: 20180329075432) do
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
   add_index "workflows", ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id", using: :btree
 
+  add_foreign_key "activations", "clients"
+  add_foreign_key "activations", "companies"
+  add_foreign_key "activations", "users"
+  add_foreign_key "allocations", "activations"
+  add_foreign_key "allocations", "users"
+  add_foreign_key "availabilities", "users"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
   add_foreign_key "company_actions", "companies"
