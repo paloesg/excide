@@ -54,7 +54,7 @@ class Conductor::AvailabilitiesController < ApplicationController
       slice_time.each do |time|
         available_date = date[0]
         start_time = time.first
-        end_time = (Time.parse(time.last) + 1.hours).strftime("%T")
+        end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
         available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
       end
     end
