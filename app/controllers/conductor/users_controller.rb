@@ -46,6 +46,11 @@ class Conductor::UsersController < ApplicationController
     redirect_to conductor_users_path, notice: 'User was successfully deleted.'
   end
 
+  def export
+    @users = User.where(company: @company).with_role :contractor, @company
+    send_data @users.contractors_to_csv, filename: "Contractors-#{Date.today}.csv"
+  end
+
   private
 
   def set_company
