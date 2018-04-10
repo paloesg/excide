@@ -44,7 +44,7 @@ class Conductor::AvailabilitiesController < ApplicationController
     available_dates = []
 
     if current_user.has_role? :contractor, :any
-      user_id = current_user
+      user_id = current_user.id
     else
       user_id = available[:user_id]
     end
@@ -58,8 +58,6 @@ class Conductor::AvailabilitiesController < ApplicationController
         available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
       end
     end
-
-    after_save_path = (current_user.has_role? :contractor, :any) ? conductor_user_path : conductor_availabilities_path
 
     respond_to do |format|
       if available_dates.each(&:save!) and available_dates.any?
@@ -117,7 +115,7 @@ class Conductor::AvailabilitiesController < ApplicationController
     end
 
     def after_save_path
-      (current_user.has_role? :contractor, :any) ? conductor_user_path : conductor_availabilities_path
+      (current_user.has_role? :contractor, :any) ? conductor_user_path(current_user) : conductor_availabilities_path
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
