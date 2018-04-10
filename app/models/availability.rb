@@ -1,7 +1,7 @@
 class Availability < ActiveRecord::Base
   belongs_to :user
 
-  validates :available_date, :start_time, :end_time, presence: true
+  validates :user, :available_date, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
 
   private
