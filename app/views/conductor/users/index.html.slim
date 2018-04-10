@@ -8,7 +8,9 @@
       li.active Contractor
     h1.page-header
       | Manage Contractors
-      = link_to "New Contractor", new_conductor_user_path, role: 'button', class: 'btn btn-warning pull-right'
+      .btn-toolbar.col-sm-6.pull-right
+        = link_to 'Export Contractors', {action: :export}, class: 'btn btn-success pull-right'
+        = link_to "New Contractor", new_conductor_user_path, role: 'button', class: 'btn btn-warning pull-right'
 .row
   .col-sm-12
     .panel.panel-default

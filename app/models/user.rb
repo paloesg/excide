@@ -1,3 +1,5 @@
+require 'csv'
+
 class User < ActiveRecord::Base
   include AASM
 
@@ -73,6 +75,17 @@ class User < ActiveRecord::Base
     allocation_days.each { | a | current_hours += a.hours }
     current_hours += allocation.hours
     current_hours > self.max_hours_per_week ? false : true
+  end
+
+  def self.contractors_to_csv
+    attributes = ['ID', 'First Name', 'Last Name', 'Email', 'Phone', 'Max Hours', 'Status']
+    CSV.generate do |csv|
+      csv << attributes
+      all.each do |user|
+        row = [ user.id, user.first_name, user.last_name, user.email, user.contact_number, user.max_hours_per_week, user.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed' ]
+        csv << row
+      end
+    end
   end
 
   def password_required?
