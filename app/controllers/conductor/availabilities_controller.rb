@@ -38,15 +38,18 @@ class Conductor::AvailabilitiesController < ApplicationController
   # POST /availabilities
   # POST /availabilities.json
   def create
+    # params[:available] format:
+    # {"user_id"=>"52", "dates"=>{"2018-04-10"=>{"time"=>["09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]}, "2018-04-12"=>{"time"=>["10:00:00", "11:00:00", "12:00:00"]}, "2018-04-13"=>{"time"=>["14:00:00", "15:00:00", "16:00:00"]}}}
     available = params[:available]
     available_dates = []
+    user_id = available[:user_id] || current_user
     available[:dates].each do |date|
-      slice_time = date[1].slice_when {|i, j| i[0].to_i+1 != j[0].to_i }
+      slice_time = date[1][:time].slice_when{|first, second| first.to_i+1 != second.to_i }
       slice_time.each do |time|
-        date_time = date[0]
-        start_time = time.first[1][0]
-        end_time = (Time.parse(time.last[1][0]) + 1.hours).strftime("%T")
-        available_dates << Availability.new(user_id: available[:user_id], available_date: date_time , start_time: start_time, end_time: end_time)
+        available_date = date[0]
+        start_time = time.first
+        end_time = (Time.parse(time.last) + 1.hours).strftime("%T")
+        available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
       end
     end if available[:dates].present?
 

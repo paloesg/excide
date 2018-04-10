@@ -20,10 +20,10 @@
     = hidden_field :available, :user_id, :value => params[:user_id]
     = week_calendar do |date|
       br
-      p = check_box :all_day, "dates[#{date}][0]", {:multiple => true, :onchange => 'allDay(this)', :id => 'all_day'}, "all_day", nil
+      p = check_box :all_day, "dates[#{date}]['all']", {:multiple => true, :onchange => 'allDay(this)', :id => 'all_day'}
       - @times_value.each_with_index do |time, i|
         hr
-        p = check_box :available, "dates[#{date}][#{i+1}]", {:multiple => true,  :onchange => 'day(this)'}, time, nil
+        p = check_box :available, "dates[#{date}][time]", {:multiple => true,  :onchange => 'day(this)'}, time, nil
     = submit_tag "Submit", class: 'btn btn-default'
 
 javascript:
