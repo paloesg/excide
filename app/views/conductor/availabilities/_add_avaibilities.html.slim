@@ -14,25 +14,9 @@
         tr
           td.day
             br
-            p All day
-            hr
-            p 9 AM
-            hr
-            p 10 AM
-            hr
-            p 11 AM
-            hr
-            p 12 AM
-            hr
-            p 1 PM
-            hr
-            p 2 PM
-            hr
-            p 3 PM
-            hr
-            p 4 PM
-            hr
-            p 5 PM
+            - @times_header.each do |time|
+              p #{time}
+              hr
 .col-sm-10.col-xs-10.nopadding
   = form_tag conductor_availabilities_path do
     = hidden_field :available, :user_id, :value => params[:user_id]
@@ -40,23 +24,9 @@
       br
       p = check_box :all_day, "dates[#{date}][0]", {:multiple => true, :onchange => 'allDay(this)', :id => 'all_day'}, "all_day", nil
       hr
-      p = check_box :available, "dates[#{date}][1]", {:multiple => true,  :onchange => 'day(this)'}, "09:00:00", nil
-      hr
-      p = check_box :available, "dates[#{date}][2]", {:multiple => true,  :onchange => 'day(this)'}, "10:00:00", nil
-      hr
-      p = check_box :available, "dates[#{date}][3]", {:multiple => true,  :onchange => 'day(this)'}, "11:00:00", nil
-      hr
-      p = check_box :available, "dates[#{date}][4]", {:multiple => true,  :onchange => 'day(this)'}, "12:00:00", nil
-      hr
-      p = check_box :available, "dates[#{date}][5]", {:multiple => true,  :onchange => 'day(this)'}, "13:00:00", nil
-      hr
-      p = check_box :available, "dates[#{date}][6]", {:multiple => true,  :onchange => 'day(this)'}, "14:00:00", nil
-      hr
-      p = check_box :available, "dates[#{date}][7]", {:multiple => true,  :onchange => 'day(this)'}, "15:00:00", nil
-      hr
-      p = check_box :available, "dates[#{date}][8]", {:multiple => true,  :onchange => 'day(this)'}, "16:00:00", nil
-      hr
-      p = check_box :available, "dates[#{date}][9]", {:multiple => true,  :onchange => 'day(this)'}, "17:00:00", nil
+      - @times_value.each_with_index do |time, i|
+        p = check_box :available, "dates[#{date}][#{i+1}]", {:multiple => true,  :onchange => 'day(this)'}, time, nil
+        hr
     = submit_tag "Submit", class: 'btn btn-default'
 
 javascript:
