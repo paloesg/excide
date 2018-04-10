@@ -44,7 +44,7 @@ class Conductor::AvailabilitiesController < ApplicationController
         date_time = date[0]
         start_time = time.first[1][0]
         end_time = (Time.parse(time.last[1][0]) + 1.hours).strftime("%T")
-        available_dates << Availability.new(:user_id => available[:user_id], :available_date => date_time , :start_time => start_time, :end_time => end_time)
+        available_dates << Availability.new(user_id: available[:user_id], available_date: date_time , start_time: start_time, end_time: end_time)
       end
     end if available[:dates].present?
 
