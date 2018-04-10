@@ -26,10 +26,10 @@ namespace :scheduler do
     end
   end
 
-  task :temp_staff_reminders => :environment do
-    users = User.with_role(:temp_staff, :any)
+  task :contractor_reminders => :environment do
+    users = User.with_role(:contractor, :any)
     users.each do |user|
-      NotificationMailer.temp_staff_notification(user).deliver_now
+      NotificationMailer.contractor_notification(user).deliver_now
     end
   end
 end

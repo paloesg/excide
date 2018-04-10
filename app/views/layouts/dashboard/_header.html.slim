@@ -17,17 +17,29 @@ nav.navbar.navbar-inverse.navbar-fixed-top
     #navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.navbar-right
         - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
-          li = link_to "Company Dashboard", symphony_root_path
-          li = link_to "Company Documents", symphony_documents_path
+          li = link_to "Dashboard", symphony_root_path
+          li = link_to "Documents", symphony_documents_path
           li = link_to "Document Templates", symphony_document_templates_path
-          li = link_to "Company Details", edit_company_path if current_user.has_role? :admin, @company
-          li = link_to "User Details", edit_user_registration_path
-          li = link_to "Manage Users", symphony_users_path if current_user.has_role? :admin, @company
+          li = link_to "Archives", symphony_archives_path
+          - if current_user.has_role? :admin, @company
+            li.dropdown
+              a.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                | Admin
+                span.caret
+              ul.dropdown-menu
+                li = link_to "Manage Users", symphony_users_path
+                li = link_to "User Details", edit_user_registration_path
+                li = link_to "Company Details", edit_company_path
+          li = link_to "Go to Conductor", conductor_root_path
           li = link_to "Log Out", logout_path
+
         - elsif controller.class.parents.include?(Conductor)
           li = link_to "Conductor Dashboard", conductor_root_path
-          li = link_to "Manage Users", conductor_users_path if current_user.has_role? :admin, @company
+          li = link_to 'Activations', conductor_activations_path
+          li = link_to "Manage Contractors", conductor_users_path if current_user.has_role? :admin, @company
+          li = link_to "Go to Symphony", symphony_root_path
           li = link_to "Log Out", logout_path
+
         - else
           li = link_to "Company Dashboard", params[:company_name] ? admin_company_dashboard_path : dashboard_path
           li = link_to "Company Documents", params[:company_name] ? admin_company_documents_path : documents_path

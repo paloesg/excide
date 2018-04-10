@@ -11,7 +11,11 @@
 //= require init
 //= require jquery.ui.widget
 //= require z.jquery.fileupload
+
 //= require symphony
+//= require components/date_time_picker
+//= require symphony/workflow_identifier
+//= require symphony/assign_ui
 //= require conductor/create_allocations
 
 //= require turbolinks

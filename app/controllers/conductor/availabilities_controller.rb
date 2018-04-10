@@ -4,7 +4,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
-  before_action :set_temp_staff, only: [:index, :new, :edit]
+  before_action :set_contractor, only: [:index, :new, :edit]
 
   # GET /availabilities
   # GET /availabilities.json
@@ -22,11 +22,11 @@ class Conductor::AvailabilitiesController < ApplicationController
     @times_header = [ "All day", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM" ]
     @times_value = [ "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]
     @availability = Availability.new
-    if current_user.has_role? :temp_staff, :any
+    if current_user.has_role? :contractor, :any
       @availability.user_id = current_user.id
       @disable_user_select = true
     else
-      @availability.user_id = params[:user_id]
+      @availability.user_id ||= params[:user_id]
       @disable_user_select = false
     end
   end
@@ -56,6 +56,7 @@ class Conductor::AvailabilitiesController < ApplicationController
         format.html { redirect_to after_save_path, notice: 'Availability was successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
+        set_contractor
         format.html { redirect_to :back }
         format.json { render json: available_dates.errors, status: :unprocessable_entity }
       end
@@ -70,6 +71,7 @@ class Conductor::AvailabilitiesController < ApplicationController
         format.html { redirect_to conductor_availabilities_path, notice: 'Availability was successfully updated.' }
         format.json { render :show, status: :ok, location: @availability }
       else
+        set_contractor
         format.html { render :edit }
         format.json { render json: @availability.errors, status: :unprocessable_entity }
       end
@@ -101,8 +103,12 @@ class Conductor::AvailabilitiesController < ApplicationController
       @company = current_user.company
     end
 
-    def set_temp_staff
-      @users = User.where(company: @company).with_role :temp_staff, @company
+    def set_contractor
+      @users = User.where(company: @company).with_role :contractor, @company
+    end
+
+    def after_save_path
+      (current_user.has_role? :contractor, :any) ? conductor_user_path : conductor_availabilities_path
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

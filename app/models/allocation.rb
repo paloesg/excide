@@ -4,6 +4,9 @@ class Allocation < ActiveRecord::Base
   belongs_to :user
   belongs_to :activation
 
+  validates :allocation_date, :start_time, :end_time, presence: true
+  validate :end_must_be_after_start
+
   def self.to_csv
     attributes = ['Activation', 'Allocation date', 'Start time', 'End time', 'User']
 
@@ -22,4 +25,15 @@ class Allocation < ActiveRecord::Base
     end
   end
 
+  def hours
+    (self.end_time - self.start_time) / 3600
+  end
+
+  private
+
+  def end_must_be_after_start
+    if start_time >= end_time
+      errors.add(:end_time, "must be after start time")
+    end
+  end
 end

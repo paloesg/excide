@@ -33,7 +33,7 @@
                     = t.instructions
                   td = t.role&.name&.humanize
                   td = form_for action, remote: true do |f|
-                    = f.collection_select(:user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = {data: {action_id: action.id}, class: 'form-control', onchange: 'assign(this)'})
+                    = f.collection_select(:assigned_user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = {data: {action_id: action.id}, class: 'form-control', onchange: 'assign(this)'})
                   td
                     i.glyphicon.glyphicon-ok.text-success style="opacity: 0;"
                     i.glyphicon.glyphicon-remove.text-danger style="opacity: 0;"
@@ -50,19 +50,3 @@
             span.glyphicon.glyphicon-user aria-hidden="true"
             |  #{user.full_name}
             br
-javascript:
-  function assign(form_element) {
-    formJquery = $(form_element);
-    formParent = formJquery.parent();
-    tableRow = formParent.parent().parent();
-    formJquery.submit();
-    $(formParent).on('ajax:success', function(){
-      $(tableRow.find(".glyphicon-ok")).show().fadeTo(500,200, function () {
-        $(tableRow.find(".glyphicon-ok")).fadeTo(200,0);
-      });
-    }).on('ajax:error',function(){
-      $(tableRow.find(".glyphicon-remove")).show().fadeTo(500,200, function () {
-        $(tableRow.find(".glyphicon-remove")).fadeTo(200,0);
-      });
-    });
-  }

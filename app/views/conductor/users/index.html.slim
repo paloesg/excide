@@ -5,15 +5,15 @@
         a href="/" Home
       li
         a href="/symphony" #{@company.name}
-      li.active Temp Staff
+      li.active Contractor
     h1.page-header
-      | Manage Temp Staff
-      = link_to "New User", new_conductor_user_path, role: 'button', class: 'btn btn-warning pull-right'
+      | Manage Contractors
+      = link_to "New Contractor", new_conductor_user_path, role: 'button', class: 'btn btn-warning pull-right'
 .row
   .col-sm-12
     .panel.panel-default
       .panel-heading
-        h3.panel-title Temp Staff
+        h3.panel-title Contractor
       .panel-body
         table.table
           thead

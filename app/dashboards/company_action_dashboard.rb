@@ -12,9 +12,10 @@ class CompanyActionDashboard < Administrate::BaseDashboard
     task: Field::BelongsTo,
     company: Field::BelongsTo,
     workflow: Field::BelongsTo,
-    user: Field::BelongsTo,
     deadline: Field::DateTime,
-    reminder: Field::HasOne,
+    reminders: Field::HasMany,
+    assigned_user: Field::BelongsTo.with_options(class_name: 'User'),
+    completed_user: Field::BelongsTo.with_options(class_name: 'User'),
     completed: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -29,10 +30,11 @@ class CompanyActionDashboard < Administrate::BaseDashboard
     :company,
     :task,
     :workflow,
-    :user,
+    :assigned_user,
     :deadline,
-    :reminder,
+    :reminders,
     :completed,
+    :completed_user,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -42,10 +44,11 @@ class CompanyActionDashboard < Administrate::BaseDashboard
     :company,
     :task,
     :workflow,
-    :user,
+    :assigned_user,
     :deadline,
-    :reminder,
+    :reminders,
     :completed,
+    :completed_user,
     :created_at,
     :updated_at,
   ].freeze
@@ -57,9 +60,10 @@ class CompanyActionDashboard < Administrate::BaseDashboard
     :company,
     :task,
     :workflow,
-    :user,
+    :assigned_user,
     :deadline,
     :completed,
+    :completed_user,
   ].freeze
 
   # Overwrite this method to customize how actions are displayed

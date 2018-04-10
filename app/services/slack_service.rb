@@ -105,12 +105,6 @@ class SlackService
             {
               title: 'Client',
               value: reminder.company.name,
-              short: true
-            },
-            {
-              title: 'Email',
-              value: reminder.company.user.email,
-              short: true
             },
             {
               title: 'Title',

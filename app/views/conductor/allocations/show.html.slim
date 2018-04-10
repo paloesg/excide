@@ -11,10 +11,10 @@ p
   = @allocation.allocation_date
 p
   strong Start time:
-  = @allocation.start_time.in_time_zone
+  = @allocation.start_time
 p
   strong End time:
-  = @allocation.end_time.in_time_zone
+  = @allocation.end_time
 
 => link_to 'Edit', edit_conductor_allocation_path(@allocation)
 '|

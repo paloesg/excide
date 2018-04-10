@@ -56,6 +56,10 @@ class RoleDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(role)
-    role.name.capitalize
+    if role.resource_type.present?
+      role.resource_type.constantize.find(role.resource_id).name + " " + role.name.titleize
+    else
+      "Global " + role.name.titleize
+    end
   end
 end

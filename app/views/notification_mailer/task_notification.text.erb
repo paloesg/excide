@@ -2,6 +2,6 @@ Hi <%= @user.first_name %>,
 
 You have a new task that you are required to complete.
 
-The instructions for the task are as follows: "#{@task.instructions}". You can access the task from this link: <%= company_workflow_url(@task.section.template.slug) %>
+The instructions for the task are as follows: "#{@task.instructions}". You can access the task from this link: <%= symphony_workflow_url(@task.section.template.slug, @action.workflow.identifier) %>
 
-If you have any queries regarding your task, please contact your admin.
+If you have any queries regarding your task, please contact the workflow creator: <%= @action.workflow.user.full_name %>
