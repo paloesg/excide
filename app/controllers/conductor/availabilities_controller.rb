@@ -53,10 +53,10 @@ class Conductor::AvailabilitiesController < ApplicationController
       end
     end if available[:dates].present?
 
-    after_save_path = (current_user.has_role? :temp_staff, :any) ? conductor_user_path : conductor_availabilities_path
+    after_save_path = (current_user.has_role? :contractor, :any) ? conductor_user_path : conductor_availabilities_path
     respond_to do |format|
       if available_dates.each(&:save!) and available_dates.any?
-        format.html { redirect_to after_save_path, notice: 'Availability was successfully created.' }
+        format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
         set_contractor
