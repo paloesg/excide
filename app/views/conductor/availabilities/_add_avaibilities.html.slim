@@ -1,4 +1,4 @@
-.col-sm-2.col-xs-2.nopadding
+.col-sm-1.col-xs-1.nopadding
   .panel.panel-default.simple-calendar
     .panel-heading.calendar-heading
       span.calendar-title
@@ -6,27 +6,24 @@
     table.table.table-striped
       thead
         tr
-          th
-            p Month
-            p Date
-            p Day
+          th Time
       tbody
         tr
           td.day
             br
+            p All day
             - @times_header.each do |time|
-              p #{time}
               hr
-.col-sm-10.col-xs-10.nopadding
+              p #{time}
+.col-sm-11.col-xs-11.nopadding
   = form_tag conductor_availabilities_path do
     = hidden_field :available, :user_id, :value => params[:user_id]
     = week_calendar do |date|
       br
       p = check_box :all_day, "dates[#{date}][0]", {:multiple => true, :onchange => 'allDay(this)', :id => 'all_day'}, "all_day", nil
-      hr
       - @times_value.each_with_index do |time, i|
-        p = check_box :available, "dates[#{date}][#{i+1}]", {:multiple => true,  :onchange => 'day(this)'}, time, nil
         hr
+        p = check_box :available, "dates[#{date}][#{i+1}]", {:multiple => true,  :onchange => 'day(this)'}, time, nil
     = submit_tag "Submit", class: 'btn btn-default'
 
 javascript:
