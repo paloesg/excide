@@ -30,7 +30,6 @@ class Conductor::UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
   end
 
   def update
@@ -58,7 +57,12 @@ class Conductor::UsersController < ApplicationController
   end
 
   def set_user
-    @user = User.find_by(id: params[:id], company: @company)
+    if current_user.id == params[:id].to_i or current_user.has_role? :admin, @company
+      @user = User.find_by(id: params[:id], company: @company)
+    else
+      flash[:alert] = "You are not authorized to perform this action."
+      redirect_to conductor_user_path current_user
+    end
   end
 
   def set_company_roles
