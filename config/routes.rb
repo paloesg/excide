@@ -64,7 +64,7 @@ Rails.application.routes.draw do
     end
     resources :availabilities do
       collection do
-        get '/user/:user_id', to: 'availabilities#user', as: :user
+        get '/users/:user_id', to: 'availabilities#user', as: :user
       end
     end
 
