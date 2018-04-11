@@ -30,7 +30,11 @@ class Conductor::UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
+    if current_user.id == params[:id].to_i or current_user.has_role? :admin, @company
+      @user = User.find(params[:id])
+    else
+      raise ActionController::RoutingError, 'Not Found'
+    end
   end
 
   def update
