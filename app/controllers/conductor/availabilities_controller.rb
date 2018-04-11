@@ -19,8 +19,8 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   # GET /availabilities/new
   def new
-    @times_header = [ "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM" ]
-    @times_value = [ "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]
+    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
+    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
     @availability = Availability.new
     if current_user.has_role? :contractor, :any
       @availability.user_id = current_user.id
@@ -101,25 +101,26 @@ class Conductor::AvailabilitiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_availability
-      @availability = Availability.find(params[:id])
-    end
 
-    def set_company
-      @company = current_user.company
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_availability
+    @availability = Availability.find(params[:id])
+  end
 
-    def set_contractor
-      @users = User.where(company: @company).with_role :contractor, @company
-    end
+  def set_company
+    @company = current_user.company
+  end
 
-    def after_save_path
-      (current_user.has_role? :contractor, :any) ? conductor_user_path(current_user) : conductor_availabilities_path
-    end
+  def set_contractor
+    @users = User.where(company: @company).with_role :contractor, @company
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def availability_params
-      params.require(:availability).permit(:user_id, :available_date, :start_time, :end_time, :assigned)
-    end
+  def after_save_path
+    (current_user.has_role? :contractor, :any) ? conductor_user_path(current_user) : conductor_availabilities_path
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def availability_params
+    params.require(:availability).permit(:user_id, :available_date, :start_time, :end_time, :assigned)
+  end
 end
