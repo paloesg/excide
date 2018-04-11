@@ -9,6 +9,8 @@ class Conductor::ActivationsController < ApplicationController
   # GET /conductor/activations.json
   def index
     @activations = Activation.all
+    # Only show activations relevant to contractor if logged in as contractor
+    @activations = @activations.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :contractor, :any
   end
 
   # GET /conductor/activations/1
