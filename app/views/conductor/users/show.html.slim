@@ -2,15 +2,11 @@
   .col-sm-12
     ol.breadcrumb.text-right
       li
-        a href="#" Home
-      li
-        a href="#" Company
-      li
-        a href="#" Contractor
-      li.active Availability
+        a href="/conductor" Conductor
+      li.active User Details
     h1.page-header
-      | Show Contractor Availability
-      = link_to "Add Availability", new_conductor_availability_path, role: 'button', class: 'btn btn-warning pull-right'
+      | User Details
+      = link_to "Edit Details", edit_conductor_user_path(current_user), role: 'button', class: 'btn btn-primary pull-right'
 .row
   .col-sm-8
     .panel.panel-default
@@ -31,10 +27,11 @@
                 td = availability.start_time.in_time_zone.strftime("%H:%M")
                 td = availability.end_time.in_time_zone.strftime("%H:%M")
                 td = availability.assigned
+        = link_to "Add Availability", new_conductor_availability_path, role: 'button', class: 'btn btn-warning pull-right'
   .col-sm-4
     .panel.panel-default
       .panel-heading
-        h3.panel-title Contractor Details
+        h3.panel-title Profile Information
       .panel-body
         table.table.table-bordered
           tbody
