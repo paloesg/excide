@@ -12,12 +12,12 @@
 .row
   .col-sm-8.col-xs-12
     .btn-group.pull-right role='group'
-      = link_to params.merge({:start_date => params[:start_date].present? ? Date.parse(params[:start_date]).prev_month : Date.today.prev_month}), type: 'button', class: 'btn btn-xs btn-default'
+      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).prev_month : Date.today.prev_month}", type: 'button', class: 'btn btn-xs btn-default'
         i.glyphicon.glyphicon-chevron-left
         | Previous Month
-      = link_to params.merge({:start_date => Date.today}), type: 'button', class: 'btn btn-xs btn-default'
+      = link_to "?start_date=#{Date.today}", type: 'button', class: 'btn btn-xs btn-default'
         | This Month
-      = link_to params.merge({:start_date => params[:start_date].present? ? Date.parse(params[:start_date]).next_month : Date.today.next_month}), type: 'button', class: 'btn btn-xs btn-default'
+      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).next_month : Date.today.next_month}", type: 'button', class: 'btn btn-xs btn-default'
         | Next Month
         i.glyphicon.glyphicon-chevron-right
     table.table.table-hover
@@ -70,5 +70,8 @@
 
 javascript:
   $("tr[data-allocation]").click(function() {
-    Turbolinks.visit('//' + location.host + location.pathname + '?allocation=' + $(this).data('allocation'));
+    url = new URL(location)
+    params =  new URLSearchParams(url.search.slice(1))
+    params.set('allocation', $(this).data('allocation'))
+    Turbolinks.visit('//' + location.host + location.pathname + '?' + params);
   })
