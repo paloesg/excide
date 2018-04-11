@@ -37,7 +37,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top
           li = link_to "Conductor Dashboard", conductor_root_path
           li = link_to 'Activations', conductor_activations_path
           li = link_to "Manage Contractors", conductor_users_path if current_user.has_role? :admin, @company
-          li = link_to "Go to Symphony", symphony_root_path
+          li = link_to "Go to Symphony", symphony_root_path unless current_user.has_role? :contractor, @company
           li = link_to "Log Out", logout_path
 
         - else
