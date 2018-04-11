@@ -4,7 +4,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
-  before_action :set_contractor, only: [:index, :new, :edit]
+  before_action :set_contractor, only: [:index, :edit]
 
   # GET /availabilities
   # GET /availabilities.json
@@ -19,6 +19,8 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   # GET /availabilities/new
   def new
+    @times_header = [ "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM" ]
+    @times_value = [ "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]
     @availability = Availability.new
     if current_user.has_role? :contractor, :any
       @availability.user_id = current_user.id
@@ -36,16 +38,34 @@ class Conductor::AvailabilitiesController < ApplicationController
   # POST /availabilities
   # POST /availabilities.json
   def create
-    @availability = Availability.new(availability_params)
+    # params[:available] format:
+    # {"user_id"=>"52", "dates"=>{"2018-04-10"=>{"time"=>["09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]}, "2018-04-12"=>{"time"=>["10:00:00", "11:00:00", "12:00:00"]}, "2018-04-13"=>{"time"=>["14:00:00", "15:00:00", "16:00:00"]}}}
+    available = params[:available]
+    available_dates = []
+
+    if current_user.has_role? :contractor, :any
+      user_id = current_user.id
+    else
+      user_id = available[:user_id]
+    end
+
+    available[:dates]&.each do |date|
+      slice_time = date[1][:time].slice_when{|first, second| first.to_i+1 != second.to_i }
+      slice_time.each do |time|
+        available_date = date[0]
+        start_time = time.first
+        end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
+        available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+      end
+    end
 
     respond_to do |format|
-      if @availability.save
-        format.html { redirect_to after_save_path, notice: 'Availability was successfully created.' }
+      if available_dates.each(&:save!) and available_dates.any?
+        format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
-        set_contractor
-        format.html { render :new }
-        format.json { render json: @availability.errors, status: :unprocessable_entity }
+        format.html { redirect_to :back }
+        format.json { render json: available_dates.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -95,7 +115,7 @@ class Conductor::AvailabilitiesController < ApplicationController
     end
 
     def after_save_path
-      (current_user.has_role? :contractor, :any) ? conductor_user_path : conductor_availabilities_path
+      (current_user.has_role? :contractor, :any) ? conductor_user_path(current_user) : conductor_availabilities_path
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -23,9 +23,9 @@
           tbody
             - @availabilities.each do |availability|
               tr
-                td = availability.available_date.strftime("#{availability.available_date.day.ordinalize} %b %Y")
-                td = availability.start_time.in_time_zone.strftime("%H:%M")
-                td = availability.end_time.in_time_zone.strftime("%H:%M")
+                td = availability.available_date.strftime("%d-%m-%Y")
+                td = availability.start_time.strftime("%H:%M")
+                td = availability.end_time.strftime("%H:%M")
                 td = availability.assigned
         = link_to "Add Availability", new_conductor_availability_path, role: 'button', class: 'btn btn-warning pull-right'
   .col-sm-4
@@ -41,3 +41,9 @@
             tr
               th First Name
               td = @user.first_name
+            tr
+              th Email Address
+              td = @user.email
+            tr
+              th Contact Number
+              td = @user.contact_number
