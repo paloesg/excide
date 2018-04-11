@@ -2,13 +2,11 @@
   .col-sm-12
     ol.breadcrumb.text-right
       li
-        a href="#" Home
+        a href="/conductor" Conductor
       li
-        a href="#" Company
-      li
-        a href="#" Contractor Details
+        a href="/conductor/users/#{current_user.id}" User Details
       li.active Edit
-    h1.page-header Edit Contractor Details
+    h1.page-header Edit User Details
 .row
   .col-sm-12
     = form_for(@user, url: conductor_user_path) do |f|
