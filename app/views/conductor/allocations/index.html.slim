@@ -11,6 +11,15 @@
 
 .row
   .col-sm-8.col-xs-12
+    .btn-group.pull-right role='group'
+      = link_to params.merge({:start_date => params[:start_date].present? ? Date.parse(params[:start_date]).prev_month : Date.today.prev_month}), type: 'button', class: 'btn btn-xs btn-default'
+        i.glyphicon.glyphicon-chevron-left
+        | Previous Month
+      = link_to params.merge({:start_date => Date.today}), type: 'button', class: 'btn btn-xs btn-default'
+        | This Month
+      = link_to params.merge({:start_date => params[:start_date].present? ? Date.parse(params[:start_date]).next_month : Date.today.next_month}), type: 'button', class: 'btn btn-xs btn-default'
+        | Next Month
+        i.glyphicon.glyphicon-chevron-right
     table.table.table-hover
       thead
         tr

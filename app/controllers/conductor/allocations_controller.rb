@@ -10,7 +10,9 @@ class Conductor::AllocationsController < ApplicationController
   # GET /allocations
   # GET /allocations.json
   def index
-    @allocations = Allocation.joins(:activation).where(activations: { company_id: @company.id }).order(allocation_date: :desc, start_time: :asc, id: :asc)
+    date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.today.beginning_of_month
+    date_to = date_from.end_of_month
+    @allocations = Allocation.where(allocation_date: date_from..date_to).joins(:activation).where(activations: { company_id: @company.id } ).order(allocation_date: :desc, start_time: :asc, id: :asc)
     if params[:allocation].present?
       @allocation = Allocation.find(params[:allocation])
       # Check if the availability date and allocation date matches first, then check whether the availability start time is less than the allocation start time, then finally check whether the availability end time is greater than the allocation end time. If all conditions are met, the user is available for assignment.
