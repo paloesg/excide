@@ -83,7 +83,9 @@ class Conductor::AllocationsController < ApplicationController
   end
 
   def export
-    @allocations = Allocation.joins(:activation).where(activations: { company_id: @company.id })
+    date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.today.beginning_of_month
+    date_to = date_from.end_of_month
+    @allocations = Allocation.where(allocation_date: date_from..date_to).joins(:activation).where(activations: { company_id: @company.id })
     send_data @allocations.to_csv, filename: "Allocations-#{Date.today}.csv"
   end
 
