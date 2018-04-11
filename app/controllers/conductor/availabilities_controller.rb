@@ -64,6 +64,7 @@ class Conductor::AvailabilitiesController < ApplicationController
         format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
+        flash[:alert] = "Please fill in at least time slot."
         format.html { redirect_to :back }
         format.json { render json: available_dates.errors, status: :unprocessable_entity }
       end
