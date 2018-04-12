@@ -1,9 +1,9 @@
 .col-md-2.col-sm-3.sidebar
   .nav.nav-sidebar
     - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
-      = render 'symphony_left_sidebar'
+      = render 'symphony/symphony_left_sidebar'
     - elsif controller.class.parents.include?(Conductor)
-      = render 'conductor_left_sidebar'
+      = render 'conductor/conductor_left_sidebar'
     - else
       .panel-group role="tablist"
         .panel.panel-default
