@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180329075432) do
+ActiveRecord::Schema.define(version: 20180412081503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -459,6 +459,12 @@ ActiveRecord::Schema.define(version: 20180329075432) do
     t.string   "aasm_state"
     t.integer  "company_id"
     t.integer  "max_hours_per_week"
+    t.string   "nric"
+    t.string   "bank_name"
+    t.string   "bank_account_number"
+    t.integer  "bank_account_type"
+    t.date     "date_of_birth"
+    t.text     "remarks"
   end
 
   add_index "users", ["company_id"], name: "index_users_on_company_id", using: :btree

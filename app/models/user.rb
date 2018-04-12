@@ -40,6 +40,8 @@ class User < ActiveRecord::Base
 
   belongs_to :company
 
+  enum bank_account_type: [:savings, :current]
+
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
   accepts_nested_attributes_for :company, :reject_if => :all_blank, :allow_destroy => true
 
