@@ -34,7 +34,7 @@ class Conductor::UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to conductor_users_path, notice: 'User successfully updated!'
+      redirect_to conductor_user_path, notice: 'User successfully updated!'
     else
       render :edit
     end
