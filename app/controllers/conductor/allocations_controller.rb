@@ -81,10 +81,7 @@ class Conductor::AllocationsController < ApplicationController
   end
 
   def export
-    date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.today.beginning_of_month
-    date_to = date_from.end_of_month
-    @allocations = Allocation.where(allocation_date: date_from..date_to).joins(:activation).where(activations: { company_id: @company.id })
-    send_data @allocations.to_csv, filename: "Allocations-#{Date.today}.csv"
+    send_data @allocations.to_csv, filename: "Allocations_#{@date_from}_to_#{@date_to}.csv"
   end
 
   private
@@ -94,9 +91,9 @@ class Conductor::AllocationsController < ApplicationController
   end
 
   def set_month_allocations
-    date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.today.beginning_of_month
-    date_to = date_from.end_of_month
-    @allocations = Allocation.where(allocation_date: date_from..date_to).joins(:activation).where(activations: { company_id: @company.id } ).order(allocation_date: :desc, start_time: :asc, id: :asc)
+    @date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
+    @date_to = @date_from.end_of_month
+    @allocations = Allocation.where(allocation_date: @date_from..@date_to).joins(:activation).where(activations: { company_id: @company.id } ).order(allocation_date: :desc, start_time: :asc, id: :asc)
   end
 
   def set_company

@@ -12,12 +12,12 @@
 .row
   .col-sm-8.col-xs-12
     .btn-group.pull-right role='group'
-      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.today.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-xs btn-default'
+      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-xs btn-default'
         i.glyphicon.glyphicon-chevron-left
         | Previous Month
-      = link_to "?start_date=#{Date.today.beginning_of_month}", type: 'button', class: 'btn btn-xs btn-default'
+      = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-xs btn-default'
         | Current Month
-      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.today.beginning_of_month.next_month}", type: 'button', class: 'btn btn-xs btn-default'
+      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-xs btn-default'
         | Next Month
         i.glyphicon.glyphicon-chevron-right
     table.table.table-hover
@@ -41,7 +41,7 @@
             td = link_to 'Edit', edit_conductor_allocation_path(allocation)
 
   .col-md-4.col-xs-12
-    = link_to 'Export Allocations', {action: :export, start_date: params[:start_date]} ,class: 'btn btn-success btn-block'
+    = link_to 'Export ' + @date_from.strftime("%B") + ' Allocations', {action: :export, start_date: params[:start_date]} ,class: 'btn btn-success btn-block'
     br
   .col-sm-4.col-xs-12
     .panel.panel-default
