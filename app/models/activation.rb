@@ -15,6 +15,7 @@ class Activation < ActiveRecord::Base
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
 
   validates :start_time, :end_time, presence: true
+  validate :end_must_be_after_start
 
   def name
     client.name + ' ' + activation_type.titleize + ' (' + start_time.strftime("%d/%M/%Y") + ')'
@@ -32,5 +33,11 @@ class Activation < ActiveRecord::Base
 
   def destroy_activation_notification
     NotificationMailer.destroy_activation(self, self.event_owner).deliver if self.event_owner.present?
+  end
+
+  def end_must_be_after_start
+    if start_time >= end_time
+      errors.add(:end_time, "must be after start time")
+    end
   end
 end
