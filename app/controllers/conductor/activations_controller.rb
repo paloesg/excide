@@ -4,7 +4,7 @@ class Conductor::ActivationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company_and_clients
   before_action :set_event_owners, only: [:new, :edit]
-  before_action :set_activation, only: [:show, :edit, :update, :destroy]
+  before_action :set_activation, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
 
   # GET /conductor/activations
   # GET /conductor/activations.json
@@ -73,11 +73,18 @@ class Conductor::ActivationsController < ApplicationController
     end
   end
 
+  def reset
+    @activation.allocations.destroy_all
+    respond_to do |format|
+      format.html { redirect_to conductor_activations_url, notice: 'Activation was successfully reset.' }
+      format.json { head :no_content }
+    end
+  end
+
   def create_allocations
-    @activation = Activation.find(params[:id])
     count = params[:count].to_i
     count.times do
-      @allocation = Allocation.new(activation_id: @activation.id, allocation_date: @activation.start_time, start_time: @activation.start_time, end_time: @activation.end_time)
+      @allocation = Allocation.new(activation_id: @activation.id, allocation_date: @activation.start_time, start_time: @activation.start_time, end_time: @activation.end_time, allocation_type: params[:type].underscore)
       if !@allocation.save
         format.json { render json: @allocation.errors, status: :unprocessable_entity  }
       end

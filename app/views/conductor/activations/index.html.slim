@@ -24,7 +24,8 @@
           - if @user.has_role? :contractor, :any
             th Remarks
           - else
-            th Allocations
+            th Contractor ICs
+            th Contractors
             th
             th
       tbody
@@ -40,14 +41,19 @@
               td = activation.remarks
             - else
               td
-                - if activation.allocations.blank? && ((current_user.has_role? :manpower_allocator, @company) || (current_user.has_role? :admin, @company))
-                  = select_tag('allocations', options_for_select((activation.allocations.count..5).to_a, activation.allocations.count), :onchange => "create_allocations(#{activation.id}, this);")
+                - if activation.allocations.contractor_in_charge.empty? and ((current_user.has_role? :manpower_allocator, @company) or current_user.has_role? :admin, @company)
+                  = select_tag('allocations', options_for_select((activation.allocations.contractor_in_charge.count..5).to_a, activation.allocations.contractor_in_charge.count), onchange: "create_allocations(#{activation.id}, 'contractor-in-charge', this);")
+                - else
+                  = select_tag('allocations', options_for_select([activation.allocations.contractor_in_charge.count]), disabled: true)
+              td
+                - if activation.allocations.contractor.empty? and ((current_user.has_role? :manpower_allocator, @company) or current_user.has_role? :admin, @company)
+                  = select_tag('allocations', options_for_select((activation.allocations.contractor.count..5).to_a, activation.allocations.contractor.contractor.count), onchange: "create_allocations(#{activation.id}, 'contractor', this);")
                 - else
                   = select_tag('allocations', options_for_select([activation.allocations.count]), disabled: true)
               td
                 i.glyphicon.glyphicon-ok.text-success style="opacity: 0;"
                 i.glyphicon.glyphicon-remove.text-danger style="opacity: 0;"
               td.btn-toolbar
-                = link_to 'Show', conductor_activation_path(activation), role: 'button', class: 'btn btn-success btn-xs'
                 = link_to 'Edit', edit_conductor_activation_path(activation), role: 'button', class: 'btn btn-primary btn-xs'
-                = link_to 'Destroy', conductor_activation_path(activation), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
+                = link_to 'Reset', reset_conductor_activation_path(activation), data: { confirm: 'This will remove all existing allocations for this activation. Are you sure?' }, method: :post, role: 'button', class: 'btn btn-warning btn-xs'
+                = link_to 'Delete', conductor_activation_path(activation), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'

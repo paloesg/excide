@@ -8,7 +8,7 @@ class Activation < ActiveRecord::Base
   belongs_to :client
 
   has_one :address, as: :addressable, dependent: :destroy
-  has_many :allocations
+  has_many :allocations, dependent: :destroy
 
   enum activation_type: [:happy_cart, :flash_sale, :brand_activation, :in_store_activation, :g5_cart]
 
@@ -18,7 +18,7 @@ class Activation < ActiveRecord::Base
   validate :end_must_be_after_start
 
   def name
-    client.name + ' ' + activation_type.titleize + ' (' + start_time.strftime("%d/%M/%Y") + ')'
+    client.name + ' ' + activation_type.titleize
   end
 
   private

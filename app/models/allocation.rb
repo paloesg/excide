@@ -4,6 +4,8 @@ class Allocation < ActiveRecord::Base
   belongs_to :user
   belongs_to :activation
 
+  enum allocation_type: [:contractor, :contractor_in_charge]
+
   validates :allocation_date, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
 
