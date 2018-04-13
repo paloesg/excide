@@ -63,8 +63,11 @@
               .col-sm-6.col-xs-12
                 span.glyphicon.glyphicon-user aria-hidden="true"
                 '  #{user.full_name}
+                - if user.has_role? :contractor_in_charge, :any
+                  span.badge.badge IC
+                  '
                 - if @allocation.user == user
-                  span.label.label-default Assigned
+                  span.label.label-success Assigned
               - if @allocation.user == user
                 .col-sm-6.col-xs-12
                   = button_to 'Remove', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-danger btn-xs pull-right', params: { 'allocation[user_id]': nil}
