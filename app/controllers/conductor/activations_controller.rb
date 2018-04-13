@@ -3,6 +3,7 @@ class Conductor::ActivationsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company_and_clients
+  before_action :set_event_owners, only: [:new, :edit]
   before_action :set_activation, only: [:show, :edit, :update, :destroy]
 
   # GET /conductor/activations
@@ -22,13 +23,11 @@ class Conductor::ActivationsController < ApplicationController
   def new
     @activation = Activation.new
     @activation.build_address
-    @event_owners = User.where(company: @company).with_role :event_owner, @company
   end
 
   # GET /conductor/activations/1/edit
   def edit
     @activation.build_address if @activation.address.blank?
-    @event_owners = User.where(company: @company).with_role :event_owner, @company
   end
 
   # POST /conductor/activations
@@ -42,6 +41,7 @@ class Conductor::ActivationsController < ApplicationController
         format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully created.' }
         format.json { render :show, status: :created, location: @activation }
       else
+        set_event_owners
         format.html { render :new }
         format.json { render json: @activation.errors, status: :unprocessable_entity }
       end
@@ -56,6 +56,7 @@ class Conductor::ActivationsController < ApplicationController
         format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully updated.' }
         format.json { render :show, status: :ok, location: @activation }
       else
+        set_event_owners
         format.html { render :edit }
         format.json { render json: @activation.errors, status: :unprocessable_entity }
       end
@@ -96,6 +97,10 @@ class Conductor::ActivationsController < ApplicationController
       @user = current_user
       @company = @user.company
       @clients = Client.where(company_id: @company.id)
+    end
+
+    def set_event_owners
+      @event_owners = User.where(company: @company).with_role :event_owner, @company
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
