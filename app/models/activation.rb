@@ -3,7 +3,7 @@ class Activation < ActiveRecord::Base
   after_update :edit_activation_notification
   after_destroy :destroy_activation_notification
 
-  belongs_to :user
+  belongs_to :event_owner, class_name: 'User'
   belongs_to :company
   belongs_to :client
 
@@ -23,14 +23,14 @@ class Activation < ActiveRecord::Base
   private
 
   def create_activation_notification
-    NotificationMailer.create_activation(self, self.user).deliver if self.user.present?
+    NotificationMailer.create_activation(self, self.event_owner).deliver if self.event_owner.present?
   end
 
   def edit_activation_notification
-    NotificationMailer.edit_activation(self, self.user).deliver if self.user.present?
+    NotificationMailer.edit_activation(self, self.event_owner).deliver if self.event_owner.present?
   end
 
   def destroy_activation_notification
-    NotificationMailer.destroy_activation(self, self.user).deliver if self.user.present?
+    NotificationMailer.destroy_activation(self, self.event_owner).deliver if self.event_owner.present?
   end
 end

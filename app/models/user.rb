@@ -1,6 +1,37 @@
 require 'csv'
 
 class User < ActiveRecord::Base
+  rolify
+
+  devise :database_authenticatable, :registerable, :confirmable,
+         :recoverable, :rememberable, :trackable, :validatable,
+         :omniauthable, :omniauth_providers => [:linkedin]
+
+  has_one :profile, dependent: :destroy
+  has_one :address, as: :addressable
+  has_many :clients
+  has_many :availabilities
+  has_many :allocations
+  has_many :documents
+
+  has_many :owned_events, class_name: 'Activation', foreign_key: 'event_owner_id'
+  has_many :assigned_tasks, class_name: 'CompanyAction', foreign_key: 'assigned_user_id'
+  has_many :completed_tasks, class_name: 'CompanyAction', foreign_key: 'completed_user_id'
+
+  belongs_to :company
+
+  enum bank_account_type: [:savings, :current]
+
+  accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
+  accepts_nested_attributes_for :company, :reject_if => :all_blank, :allow_destroy => true
+
+  after_commit :create_default_profile, if: Proc.new { self.has_role? :consultant }
+  after_commit :create_default_business, if: Proc.new { self.has_role? :business }
+
+  validates :company, presence: true
+
+  attr_accessor :skip_validation
+
   include AASM
 
   aasm do
@@ -19,38 +50,6 @@ class User < ActiveRecord::Base
       transitions :from => :subscribed, :to => :expired
     end
   end
-
-  rolify
-
-  devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:linkedin]
-
-  has_one :profile, dependent: :destroy
-  has_one :address, as: :addressable
-  has_many :clients
-  has_many :activations
-  has_many :availabilities
-  has_many :allocations
-
-  has_many :documents
-
-  has_many :assigned_tasks, class_name: 'CompanyAction', foreign_key: 'assigned_user_id'
-  has_many :completed_tasks, class_name: 'CompanyAction', foreign_key: 'completed_user_id'
-
-  belongs_to :company
-
-  enum bank_account_type: [:savings, :current]
-
-  accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
-  accepts_nested_attributes_for :company, :reject_if => :all_blank, :allow_destroy => true
-
-  after_commit :create_default_profile, if: Proc.new { self.has_role? :consultant }
-  after_commit :create_default_business, if: Proc.new { self.has_role? :business }
-
-  validates :company, presence: true
-
-  attr_accessor :skip_validation
 
   def self.from_omniauth(auth, params)
     logger.info auth

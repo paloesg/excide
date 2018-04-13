@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180412081503) do
+ActiveRecord::Schema.define(version: 20180413035038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,13 +25,13 @@ ActiveRecord::Schema.define(version: 20180412081503) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "company_id"
-    t.integer  "user_id"
+    t.integer  "event_owner_id"
     t.integer  "client_id"
   end
 
   add_index "activations", ["client_id"], name: "index_activations_on_client_id", using: :btree
   add_index "activations", ["company_id"], name: "index_activations_on_company_id", using: :btree
-  add_index "activations", ["user_id"], name: "index_activations_on_user_id", using: :btree
+  add_index "activations", ["event_owner_id"], name: "index_activations_on_event_owner_id", using: :btree
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id"
@@ -503,7 +503,7 @@ ActiveRecord::Schema.define(version: 20180412081503) do
 
   add_foreign_key "activations", "clients"
   add_foreign_key "activations", "companies"
-  add_foreign_key "activations", "users"
+  add_foreign_key "activations", "users", column: "event_owner_id"
   add_foreign_key "allocations", "activations"
   add_foreign_key "allocations", "users"
   add_foreign_key "availabilities", "users"

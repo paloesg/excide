@@ -32,7 +32,7 @@
           tr
             td = activation.activation_type.titleize
             td = activation.client&.name
-            td = activation.user&.full_name
+            td = activation.event_owner&.full_name
             td = activation.start_time.strftime("%d/%m/%y %H:%M")
             td = activation.end_time.strftime("%d/%m/%y %H:%M")
             td = activation.location
