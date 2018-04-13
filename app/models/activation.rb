@@ -18,7 +18,7 @@ class Activation < ActiveRecord::Base
   validate :end_must_be_after_start
 
   def name
-    client.name + ' ' + activation_type.titleize + ' (' + start_time.strftime("%d/%M/%Y") + ')'
+    client.name + ' ' + activation_type.titleize
   end
 
   private
