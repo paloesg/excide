@@ -70,6 +70,6 @@ class Conductor::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :password, :email, :contact_number, :max_hours_per_week, :company_id, :role_ids => [])
+    params.require(:user).permit(:first_name, :last_name, :password, :email, :contact_number, :nric, :date_of_birth, :max_hours_per_week, :bank_name, :bank_account_type, :bank_account_number, :company_id, :role_ids => [])
   end
 end

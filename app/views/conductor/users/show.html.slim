@@ -6,7 +6,7 @@
       li.active User Details
     h1.page-header
       | User Details
-      = link_to "Edit Details", edit_conductor_user_path(current_user), role: 'button', class: 'btn btn-primary pull-right'
+      = link_to "Edit Details", edit_conductor_user_path(@user), role: 'button', class: 'btn btn-primary pull-right'
 .row
   .col-sm-8
     .panel.panel-default
@@ -48,5 +48,20 @@
               th Contact Number
               td = @user.contact_number
             tr
+              th NRIC
+              td = @user.nric
+            tr
+              th Date of Birth
+              td = @user.date_of_birth
+            tr
               th Max Hours Per Week
               td = @user.max_hours_per_week
+            tr
+              th Bank Name
+              td = @user.bank_name
+            tr
+              th Bank Account Number
+              td = @user.bank_account_number
+            tr
+              th Bank Account Type
+              td = @user.bank_account_type&.titleize
