@@ -55,6 +55,7 @@ Rails.application.routes.draw do
     resources :activations do
       member do
         get '/create-allocations/:type/:count', to: 'activations#create_allocations', as: :create_allocations
+        post '/reset', to: 'activations#reset', as: :reset
       end
     end
     resources :allocations do
