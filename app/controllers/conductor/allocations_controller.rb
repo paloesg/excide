@@ -65,14 +65,15 @@ class Conductor::AllocationsController < ApplicationController
   # PATCH/PUT /allocations/1.json
   def update
     if allocation_params[:user_id].present?
+      # If user id present, user is being assigned
       @avaibility = User.find(allocation_params[:user_id]).get_avaibility(@allocation)
     else
+      # If user id not present, user is being unassigned
       @avaibility = @allocation.user.get_avaibility(@allocation) if @allocation.user
     end
-    @avaibility.update_attributes(assigned: allocation_params[:user_id].present? ? true : false) if @avaibility
 
     respond_to do |format|
-      if @allocation.update(allocation_params)
+      if @avaibility.toggle!(:assigned) and @allocation.update(allocation_params)
         format.html { redirect_to conductor_allocations_path, notice: 'Allocation was successfully updated.' }
         format.json { render :show, status: :ok, location: @allocation }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
