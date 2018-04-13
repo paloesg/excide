@@ -6,7 +6,7 @@
       li.active User Details
     h1.page-header
       | User Details
-      = link_to "Edit Details", edit_conductor_user_path(current_user), role: 'button', class: 'btn btn-primary pull-right'
+      = link_to "Edit Details", edit_conductor_user_path(@user), role: 'button', class: 'btn btn-primary pull-right'
 .row
   .col-sm-8
     .panel.panel-default
@@ -64,4 +64,4 @@
               td = @user.bank_account_number
             tr
               th Bank Account Type
-              td = @user.bank_account_type
+              td = @user.bank_account_type&.titleize
