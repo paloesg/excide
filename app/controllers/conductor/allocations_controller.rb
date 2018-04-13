@@ -67,9 +67,9 @@ class Conductor::AllocationsController < ApplicationController
     if allocation_params[:user_id].present?
       @avaibility = User.find(allocation_params[:user_id]).get_avaibility(@allocation)
     else
-      @avaibility = @allocation.user.get_avaibility(@allocation)
+      @avaibility = @allocation.user.get_avaibility(@allocation) if @allocation.user
     end
-    @avaibility.update_attributes(assigned: allocation_params[:user_id].present? ? true : false)
+    @avaibility.update_attributes(assigned: allocation_params[:user_id].present? ? true : false) if @avaibility
 
     respond_to do |format|
       if @allocation.update(allocation_params)
