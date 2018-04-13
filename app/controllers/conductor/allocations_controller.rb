@@ -7,7 +7,6 @@ class Conductor::AllocationsController < ApplicationController
   before_action :set_contractor, only: [:new, :edit]
   before_action :set_activations, only: [:new, :edit]
   before_action :set_month_allocations, only: [:index, :export]
-  before_action :set_avaibility, only: [:update]
 
   # GET /allocations
   # GET /allocations.json
@@ -65,6 +64,13 @@ class Conductor::AllocationsController < ApplicationController
   # PATCH/PUT /allocations/1
   # PATCH/PUT /allocations/1.json
   def update
+    if allocation_params[:user_id].present?
+      @avaibility = User.find(allocation_params[:user_id]).get_avaibility(@allocation)
+    else
+      @avaibility = @allocation.user.get_avaibility(@allocation)
+    end
+    @avaibility.update_attributes(assigned: allocation_params[:user_id].present? ? true : false)
+
     respond_to do |format|
       if @allocation.update(allocation_params)
         format.html { redirect_to conductor_allocations_path, notice: 'Allocation was successfully updated.' }
@@ -94,15 +100,6 @@ class Conductor::AllocationsController < ApplicationController
   end
 
   private
-
-  def set_avaibility
-    if allocation_params[:user_id].present?
-      @avaibility = User.find(allocation_params[:user_id]).get_avaibility(@allocation)
-    else
-      @avaibility = @allocation.user.get_avaibility(@allocation)
-    end
-    @avaibility.update_attributes(assigned: allocation_params[:user_id].present? ? true : false)
-  end
 
   def set_allocation
     @allocation = Allocation.find(params[:id])
