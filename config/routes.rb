@@ -54,7 +54,7 @@ Rails.application.routes.draw do
     end
     resources :activations do
       member do
-        get '/create-allocations/:count', to: 'activations#create_allocations', as: :create_allocations
+        get '/create-allocations/:type/:count', to: 'activations#create_allocations', as: :create_allocations
       end
     end
     resources :allocations do

@@ -77,7 +77,7 @@ class Conductor::ActivationsController < ApplicationController
     @activation = Activation.find(params[:id])
     count = params[:count].to_i
     count.times do
-      @allocation = Allocation.new(activation_id: @activation.id, allocation_date: @activation.start_time, start_time: @activation.start_time, end_time: @activation.end_time)
+      @allocation = Allocation.new(activation_id: @activation.id, allocation_date: @activation.start_time, start_time: @activation.start_time, end_time: @activation.end_time, allocation_type: params[:type].underscore)
       if !@allocation.save
         format.json { render json: @allocation.errors, status: :unprocessable_entity  }
       end

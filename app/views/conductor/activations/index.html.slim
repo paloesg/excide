@@ -24,7 +24,8 @@
           - if @user.has_role? :contractor, :any
             th Remarks
           - else
-            th Allocations
+            th Contractor ICs
+            th Contractors
             th
             th
       tbody
@@ -40,8 +41,13 @@
               td = activation.remarks
             - else
               td
-                - if activation.allocations.blank? && ((current_user.has_role? :manpower_allocator, @company) || (current_user.has_role? :admin, @company))
-                  = select_tag('allocations', options_for_select((activation.allocations.count..5).to_a, activation.allocations.count), :onchange => "create_allocations(#{activation.id}, this);")
+                - if activation.allocations.contractor_in_charge.empty? and ((current_user.has_role? :manpower_allocator, @company) or current_user.has_role? :admin, @company)
+                  = select_tag('allocations', options_for_select((activation.allocations.contractor_in_charge.count..5).to_a, activation.allocations.contractor_in_charge.count), onchange: "create_allocations(#{activation.id}, 'contractor-in-charge', this);")
+                - else
+                  = select_tag('allocations', options_for_select([activation.allocations.contractor_in_charge.count]), disabled: true)
+              td
+                - if activation.allocations.contractor.empty? and ((current_user.has_role? :manpower_allocator, @company) or current_user.has_role? :admin, @company)
+                  = select_tag('allocations', options_for_select((activation.allocations.contractor.count..5).to_a, activation.allocations.contractor.contractor.count), onchange: "create_allocations(#{activation.id}, 'contractor', this);")
                 - else
                   = select_tag('allocations', options_for_select([activation.allocations.count]), disabled: true)
               td
