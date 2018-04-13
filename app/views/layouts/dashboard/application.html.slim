@@ -23,10 +23,15 @@ html lang="en"
     = render 'layouts/dashboard/header'
     .container-fluid
       .row
-        = render 'layouts/dashboard/left_sidebar'
-        .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
-          = render 'layouts/messages'
-          = yield
+        - if controller.class.parents.include?(Conductor)
+          .col-sm-12.main
+            = render 'layouts/messages'
+            = yield
+        - else
+          = render 'layouts/dashboard/left_sidebar'
+          .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
+            = render 'layouts/messages'
+            = yield
     .page-footer
       = render 'layouts/dashboard/footer'
 
