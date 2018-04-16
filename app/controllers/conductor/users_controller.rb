@@ -52,7 +52,9 @@ class Conductor::UsersController < ApplicationController
 
   def import
     @users = User.csv_to_contractors(params[:csv_file], @company)
-    redirect_to conductor_users_path, notice: 'Users successfully created!'
+    flash[:notice] = "#{@users["imported"]} contractors imported succesfully. "
+    flash[:notice] << "#{@users["exist"]} contractors already exist in system." if @users["exist"] != 0
+    redirect_to conductor_users_path
   end
 
   private
