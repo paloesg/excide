@@ -50,6 +50,11 @@ class Conductor::UsersController < ApplicationController
     send_data @users.contractors_to_csv, filename: "Contractors-#{Date.today}.csv"
   end
 
+  def import
+    @users = User.csv_to_contractors(params[:csv_file], @company)
+    redirect_to conductor_users_path, notice: 'Users successfully created!'
+  end
+
   private
 
   def set_company

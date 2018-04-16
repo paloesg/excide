@@ -89,6 +89,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.csv_to_contractors(file, company)
+    CSV.foreach(file.path, headers: true) do |row|
+      @user = User.new( first_name: row['First Name'], last_name: row['Last Name'], email: row['Email'], contact_number: row['Phone'], nric: row['NRIC'], date_of_birth: row['Date of Birth'], max_hours_per_week: row['Max Hours Per Week'], bank_name: row['Bank Name'], bank_account_number: row['Bank Account Number'], bank_account_type: row['Bank Account Type'] )
+      @user.company = company
+      @user.add_role :contractor, @company if @user.save
+    end
+  end
+
   def password_required?
     # Password is required if it is being set, but not for new records
     if !persisted?

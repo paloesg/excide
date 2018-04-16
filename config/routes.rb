@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     resources :users do
       collection do
         get :export, to: 'users#export'
+        post :import, to: 'users#import'
       end
     end
     resources :activations do
