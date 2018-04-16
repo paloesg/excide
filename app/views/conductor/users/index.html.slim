@@ -41,7 +41,8 @@
                 td.btn-toolbar
                   = link_to 'Edit', edit_conductor_user_path(u.id), role: 'button', class: 'btn btn-primary btn-xs'
                   = link_to 'Delete', conductor_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
-    = form_tag({action: :import}, multipart: true, class: 'form-inline') do
-      .form-group
-        = file_field_tag 'csv_file', class: 'form-control'
-      = submit_tag "Import", class: 'btn btn-primary'
+    - if current_user.has_role? :admin, @company
+      = form_tag({action: :import}, multipart: true, class: 'form-inline') do
+        .form-group
+          = file_field_tag 'csv_file', class: 'form-control'
+        = submit_tag "Import", class: 'btn btn-primary'
