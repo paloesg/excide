@@ -9,7 +9,9 @@ class Conductor::ActivationsController < ApplicationController
   # GET /conductor/activations
   # GET /conductor/activations.json
   def index
-    @activations = Activation.all
+    @date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
+    @date_to = @date_from.end_of_month
+    @activations = Activation.where(start_time: @date_from..@date_to)
     # Only show activations relevant to contractor if logged in as contractor
     @activations = @activations.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :contractor, :any
   end
