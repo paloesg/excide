@@ -95,7 +95,7 @@ class User < ActiveRecord::Base
       @user = User.new( first_name: row['First Name'], last_name: row['Last Name'], email: row['Email'], contact_number: row['Phone'], nric: row['NRIC'], date_of_birth: row['Date of Birth'], max_hours_per_week: row['Max Hours Per Week'], bank_name: row['Bank Name'], bank_account_number: row['Bank Account Number'], bank_account_type: row['Bank Account Type'] )
       @user.company = company
       if @user.save
-        @user.add_role :contractor, @company
+        @user.add_role :contractor, company
         @count['imported'] += 1
       else
         @count['exist'] += 1
