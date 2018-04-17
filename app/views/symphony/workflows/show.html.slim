@@ -56,14 +56,14 @@
                   - if action.completed? && action.completed_user.present?
                     span.glyphicon.glyphicon-user aria-hidden="true"
                     |  #{action.completed_user&.full_name}
-    .row
-      .col-sm-12
+      .panel-footer
         - unless @section.first?
           = link_to "Previous Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-default pull-left'
         - if @section.last?
           = link_to "Done", symphony_root_path, class: 'btn btn-default pull-right'
         - else
           = link_to "Next Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.lower_item.id), class: 'btn btn-default pull-right'
+        .clearfix
     .row
       .col-sm-6
         .panel.panel-default
