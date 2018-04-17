@@ -18,6 +18,9 @@ class Workflow < ActiveRecord::Base
   after_create :trigger_first_task
   before_save :uppercase_identifier
 
+  include PublicActivity::Model
+  tracked owner: ->(controller, model) { controller && controller.current_user }
+
   def build_workflowable(params)
     self.workflowable = workflowable_type.constantize.new(params)
   end
