@@ -55,6 +55,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
     @section = @sections.find(params[:section_id])
+    @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
 
     set_tasks
     set_documents
