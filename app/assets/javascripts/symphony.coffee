@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 jQuery ->
   $('form').on 'click', '.remove_fields', (event) ->
-    $(this).next('input[type=hidden]').val('1')
+    $(this).closest('tr').find('.destroy').val('1')
     $(this).closest('tr').hide()
     event.preventDefault()
 
@@ -11,4 +11,8 @@ jQuery ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
     $(".table>tbody>tr:last-child").after($(this).data('fields').replace(regexp, time))
+    $(this).closest('tr').find('.create').val(true)
     event.preventDefault()
+
+  $('input').change (event) ->
+    $(this).closest('td').next().find('.update').val(true)

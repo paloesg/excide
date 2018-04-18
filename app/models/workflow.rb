@@ -63,6 +63,10 @@ class Workflow < ActiveRecord::Base
       if '1' == attrs.delete("_destroy")
         self.create_activity key: 'workflow.destroy_attribute', owner: User.find_by(id: attrs['user']), params: { attribute: {name: attrs['name'], value: attrs['value']} }
         next
+      elsif attrs[:_create]
+        self.create_activity key: 'workflow.create_attribute', owner: User.find_by(id: attrs['user']), params: { attribute: {name: attrs['name'], value: attrs['value']} }
+      elsif attrs[:_update]
+        self.create_activity key: 'workflow.update_attribute', owner: User.find_by(id: attrs['user']), params: { attribute: {name: attrs['name'], value: attrs['value']} }
       end
       next if attrs['name'].empty? && attrs['value'].empty?
       data << attrs
