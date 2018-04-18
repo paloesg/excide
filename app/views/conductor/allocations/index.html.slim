@@ -64,7 +64,7 @@
                   = button_to 'Remove', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-danger btn-xs pull-right', params: { 'allocation[user_id]': nil}
               - else
                 .col-sm-6.col-xs-12
-                  - if (user.max_hours_per_week > (user.exceed_weekly_max_hours @allocation))
+                  - if (user.max_hours_per_week > ((user.exceed_weekly_max_hours @allocation) + @allocation.hours))
                     = button_to 'Assign', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-primary btn-xs pull-right', params: { 'allocation[user_id]': user.id}
                   - else
                     = button_to 'Hours Exceeded', {}, disabled: true, role: 'button', class: 'btn btn-xs pull-right'
