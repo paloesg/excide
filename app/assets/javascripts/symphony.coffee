@@ -11,8 +11,8 @@ jQuery ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
     $(".table>tbody>tr:last-child").after($(this).data('fields').replace(regexp, time))
-    $(this).closest('tr').find('.create').val(true)
+    $(this).prev().find('tr:last-child').find('.create').val('1')
     event.preventDefault()
 
   $('input').change (event) ->
-    $(this).closest('td').next().find('.update').val(true)
+    $(this).closest('td').next().find('.update').val('1')
