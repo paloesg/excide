@@ -3,4 +3,8 @@ tr
   td = f.text_field :value, class: 'form-control'
   td
     = link_to "Remove", '#', class: 'remove_fields btn btn-danger'
-    = f.hidden_field :_destroy
+    = f.hidden_field :_destroy, class: 'destroy'
+    = f.hidden_field :user
+    = f.hidden_field :updated_at
+    = f.hidden_field :_create
+    = f.hidden_field :_update

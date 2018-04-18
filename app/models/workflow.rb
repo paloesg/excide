@@ -19,7 +19,7 @@ class Workflow < ActiveRecord::Base
   before_save :uppercase_identifier
 
   include PublicActivity::Model
-  tracked owner: ->(controller, model) { controller && controller.current_user }, recipient: ->(controller, model) { model}
+  tracked except: :update, owner: ->(controller, model) { controller && controller.current_user }, recipient: ->(controller, model) { model}
 
   def build_workflowable(params)
     self.workflowable = workflowable_type.constantize.new(params)
@@ -60,7 +60,10 @@ class Workflow < ActiveRecord::Base
   def data_attributes=(attributes)
     data = []
     attributes.each do |index, attrs|
-      next if '1' == attrs.delete("_destroy")
+      if '1' == attrs.delete("_destroy")
+        self.create_activity key: 'workflow.destroy_attribute', owner: User.find_by(id: attrs['user']), params: { attribute: {name: attrs['name'], value: attrs['value']} }
+        next
+      end
       next if attrs['name'].empty? && attrs['value'].empty?
       data << attrs
     end
@@ -92,6 +95,8 @@ class Workflow < ActiveRecord::Base
     def persisted?() false; end
     def new_record?() false; end
     def marked_for_destruction?() false; end
+    def _create() false; end
+    def _update() false; end
     def _destroy() false; end
   end
 
