@@ -75,11 +75,15 @@
                 tr
                   th Name
                   th Value
+                  th Updated By
+                  th Updated At
               tbody
                 - @workflow.data.each do |d|
                   tr
                     td = d.name
                     td = d.value
+                    td = d.user
+                    td = d.updated_at
       .col-sm-6
         .panel.panel-default
           .panel-heading

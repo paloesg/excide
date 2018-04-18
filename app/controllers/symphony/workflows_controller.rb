@@ -1,6 +1,7 @@
 class Symphony::WorkflowsController < WorkflowsController
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset]
+  before_action :set_attributes_metadata, only: [:create, :update]
 
   def new
     @workflow = Workflow.new
@@ -12,7 +13,9 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.user = @user
     @workflow.company = @company
     @workflow.template = @template
+
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
+
     if @workflow.save
       if params[:assign]
         redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
@@ -105,8 +108,15 @@ class Symphony::WorkflowsController < WorkflowsController
     @clients = Client.where(company: @company)
   end
 
+  def set_attributes_metadata
+    params[:workflow][:data_attributes].each do |key, value|
+      value[:user] = @user.id if value[:user].empty?
+      value[:updated_at] = Time.current if value[:updated_at].empty?
+    end
+  end
+
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :workflowable, :remarks, data_attributes: [:name, :value, :_destroy])
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :workflowable, :remarks, data_attributes: [:name, :value, :user, :updated_at, :_destroy])
   end
 
   def set_documents
