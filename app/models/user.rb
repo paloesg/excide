@@ -70,9 +70,7 @@ class User < ActiveRecord::Base
   def weekly_allocated_hours(allocation)
     allocation_date = Date.parse(allocation.allocation_date.to_s)
     allocation_days = self.allocations.where(allocation_date: (allocation_date.beginning_of_week)..(allocation_date.end_of_week))
-    current_hours = 0
-    allocation_days.each { | a | current_hours += a.hours }
-    current_hours
+    allocation_days.map(&:hours).sum
   end
 
   def self.contractors_to_csv
