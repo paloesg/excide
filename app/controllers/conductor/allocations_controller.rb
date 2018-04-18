@@ -19,10 +19,11 @@ class Conductor::AllocationsController < ApplicationController
       # Finally check whether the availability end time is greater than the allocation end time.
       # If all conditions are met, the user is available for the assignment.
       if @allocation.contractor_in_charge?
-        @users = User.with_role(:contractor_in_charge, @company).joins(:availabilities).where(availabilities: {available_date: @allocation.allocation_date}).where("availabilities.start_time <= ?", @allocation.start_time).where("availabilities.end_time >= ?", @allocation.end_time)
+        @users = User.with_role(:contractor_in_charge, @company)
       else
-        @users = User.with_role(:contractor, @company).joins(:availabilities).where(availabilities: {available_date: @allocation.allocation_date}).where("availabilities.start_time <= ?", @allocation.start_time).where("availabilities.end_time >= ?", @allocation.end_time)
+        @users = User.with_role(:contractor, @company)
       end
+      @users = @users.joins(:availabilities).where(availabilities: {available_date: @allocation.allocation_date}).where("availabilities.start_time <= ?", @allocation.start_time).where("availabilities.end_time >= ?", @allocation.end_time)
     else
       @allocation = Allocation.none
       @users = User.none
