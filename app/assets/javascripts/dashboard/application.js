@@ -17,5 +17,6 @@
 //= require symphony/workflow_identifier
 //= require symphony/assign_ui
 //= require conductor/create_allocations
+//= require conductor/add_avaibilities
 
 //= require turbolinks

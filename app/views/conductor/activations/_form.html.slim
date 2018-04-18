@@ -12,8 +12,8 @@
   = f.label :activation_type
   = f.select :activation_type, Activation.activation_types.map { |key, value| [key.titleize, key] }, {selected: @activation.activation_type}, class: 'form-control'
 .form-group
-  = f.label :user_id, "Event In Charge"
-  = f.select :user_id, @event_ics.map { |key, value| [key.full_name, key.id] }, {selected: @activation.activation_type}, class: 'form-control'
+  = f.label :event_owner_id, "Event Owner"
+  = f.select :event_owner_id, @event_owners.map { |key, value| [key.full_name, key.id] }, {selected: @activation.event_owner_id}, class: 'form-control'
 .form-group
   = f.label :location
   = f.text_field :location, class: 'form-control'

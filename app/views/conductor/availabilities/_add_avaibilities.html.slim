@@ -25,14 +25,3 @@
         hr
         p = check_box :available, "dates[#{date}][time]", {:multiple => true,  :onchange => 'day(this)'}, time, nil
     = submit_tag "Submit", class: 'btn btn-primary pull-right'
-
-javascript:
-  function allDay(element)
-  {
-    $(element).parent().parent().find("input").not(element).prop("checked", element.checked)
-  }
-
-  function day(element)
-  {
-    $(element).parent().parent().find("input").first().prop("checked", false)
-  }

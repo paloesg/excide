@@ -1,6 +1,37 @@
 require 'csv'
 
 class User < ActiveRecord::Base
+  rolify
+
+  devise :database_authenticatable, :registerable, :confirmable,
+         :recoverable, :rememberable, :trackable, :validatable,
+         :omniauthable, :omniauth_providers => [:linkedin]
+
+  has_one :profile, dependent: :destroy
+  has_one :address, as: :addressable
+  has_many :clients
+  has_many :availabilities
+  has_many :allocations
+  has_many :documents
+
+  has_many :owned_events, class_name: 'Activation', foreign_key: 'event_owner_id'
+  has_many :assigned_tasks, class_name: 'CompanyAction', foreign_key: 'assigned_user_id'
+  has_many :completed_tasks, class_name: 'CompanyAction', foreign_key: 'completed_user_id'
+
+  belongs_to :company
+
+  enum bank_account_type: [:savings, :current]
+
+  accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
+  accepts_nested_attributes_for :company, :reject_if => :all_blank, :allow_destroy => true
+
+  after_commit :create_default_profile, if: Proc.new { self.has_role? :consultant }
+  after_commit :create_default_business, if: Proc.new { self.has_role? :business }
+
+  validates :company, presence: true
+
+  attr_accessor :skip_validation
+
   include AASM
 
   aasm do
@@ -19,36 +50,6 @@ class User < ActiveRecord::Base
       transitions :from => :subscribed, :to => :expired
     end
   end
-
-  rolify
-
-  devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:linkedin]
-
-  has_one :profile, dependent: :destroy
-  has_one :address, as: :addressable
-  has_many :clients
-  has_many :activations
-  has_many :availabilities
-  has_many :allocations
-
-  has_many :documents
-
-  has_many :assigned_tasks, class_name: 'CompanyAction', foreign_key: 'assigned_user_id'
-  has_many :completed_tasks, class_name: 'CompanyAction', foreign_key: 'completed_user_id'
-
-  belongs_to :company
-
-  accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
-  accepts_nested_attributes_for :company, :reject_if => :all_blank, :allow_destroy => true
-
-  after_commit :create_default_profile, if: Proc.new { self.has_role? :consultant }
-  after_commit :create_default_business, if: Proc.new { self.has_role? :business }
-
-  validates :company, presence: true
-
-  attr_accessor :skip_validation
 
   def self.from_omniauth(auth, params)
     logger.info auth
@@ -74,11 +75,11 @@ class User < ActiveRecord::Base
   end
 
   def self.contractors_to_csv
-    attributes = ['ID', 'First Name', 'Last Name', 'Email', 'Phone', 'Max Hours', 'Status']
+    attributes = ['ID', 'First Name', 'Last Name', 'Email', 'Phone', 'NRIC', 'Date of Birth', 'Max Hours Per Week', 'Bank Name', 'Bank Account Number', 'Bank Account Type', 'Status']
     CSV.generate do |csv|
       csv << attributes
       all.each do |user|
-        row = [ user.id, user.first_name, user.last_name, user.email, user.contact_number, user.max_hours_per_week, user.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed' ]
+        row = [ user.id, user.first_name, user.last_name, user.email, user.contact_number, user.nric, user.date_of_birth, user.max_hours_per_week, user.bank_name, user.bank_account_number, user.bank_account_type&.titleize, user.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed' ]
         csv << row
       end
     end

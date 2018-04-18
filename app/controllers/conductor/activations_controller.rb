@@ -3,7 +3,8 @@ class Conductor::ActivationsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company_and_clients
-  before_action :set_activation, only: [:show, :edit, :update, :destroy]
+  before_action :set_event_owners, only: [:new, :edit]
+  before_action :set_activation, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
 
   # GET /conductor/activations
   # GET /conductor/activations.json
@@ -22,13 +23,11 @@ class Conductor::ActivationsController < ApplicationController
   def new
     @activation = Activation.new
     @activation.build_address
-    @event_ics = User.where(company: @company).with_role :event_ic, @company
   end
 
   # GET /conductor/activations/1/edit
   def edit
     @activation.build_address if @activation.address.blank?
-    @event_ics = User.where(company: @company).with_role :event_ic, @company
   end
 
   # POST /conductor/activations
@@ -42,6 +41,7 @@ class Conductor::ActivationsController < ApplicationController
         format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully created.' }
         format.json { render :show, status: :created, location: @activation }
       else
+        set_event_owners
         format.html { render :new }
         format.json { render json: @activation.errors, status: :unprocessable_entity }
       end
@@ -56,6 +56,7 @@ class Conductor::ActivationsController < ApplicationController
         format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully updated.' }
         format.json { render :show, status: :ok, location: @activation }
       else
+        set_event_owners
         format.html { render :edit }
         format.json { render json: @activation.errors, status: :unprocessable_entity }
       end
@@ -72,11 +73,18 @@ class Conductor::ActivationsController < ApplicationController
     end
   end
 
+  def reset
+    @activation.allocations.destroy_all
+    respond_to do |format|
+      format.html { redirect_to conductor_activations_url, notice: 'Activation was successfully reset.' }
+      format.json { head :no_content }
+    end
+  end
+
   def create_allocations
-    @activation = Activation.find(params[:id])
     count = params[:count].to_i
     count.times do
-      @allocation = Allocation.new(activation_id: @activation.id, allocation_date: @activation.start_time, start_time: @activation.start_time, end_time: @activation.end_time)
+      @allocation = Allocation.new(activation_id: @activation.id, allocation_date: @activation.start_time, start_time: @activation.start_time, end_time: @activation.end_time, allocation_type: params[:type].underscore)
       if !@allocation.save
         format.json { render json: @allocation.errors, status: :unprocessable_entity  }
       end
@@ -98,8 +106,12 @@ class Conductor::ActivationsController < ApplicationController
       @clients = Client.where(company_id: @company.id)
     end
 
+    def set_event_owners
+      @event_owners = User.where(company: @company).with_role :event_owner, @company
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def activation_params
-      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location, :client_id, :user_id, address_attributes: [:line_1, :line_2, :postal_code])
+      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location, :client_id, :event_owner_id, address_attributes: [:line_1, :line_2, :postal_code])
     end
 end
