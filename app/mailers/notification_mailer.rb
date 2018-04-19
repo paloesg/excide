@@ -13,9 +13,9 @@ class NotificationMailer < ApplicationMailer
     @user = user
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
-    mail(to: address.format, subject: 'You have a new task to complete')
+    mail(to: address.format, subject: 'You have a new task in ' + @task.section.template.title + ' (' + @action.workflow.identifier + ')')
   end
-  
+
   def reminder_notification(reminder)
     @reminder = reminder
     @user = reminder.user
