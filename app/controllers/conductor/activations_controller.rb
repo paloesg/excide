@@ -9,7 +9,7 @@ class Conductor::ActivationsController < ApplicationController
   # GET /conductor/activations
   # GET /conductor/activations.json
   def index
-    @date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
+    @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
     @date_to = @date_from.end_of_month
     @activations = Activation.where(start_time: @date_from..@date_to)
     # Only show activations relevant to contractor if logged in as contractor

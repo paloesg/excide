@@ -1,5 +1,5 @@
-.col-sm-12
-  .row
+.row
+  .col-sm-12
     ol.breadcrumb.text-right
       li
         a href="/symphony" Dashboard
@@ -9,7 +9,8 @@
     h1.page-header
       | Activations Listing
       = link_to 'New Activation', new_conductor_activation_path, role: 'button', class: 'btn btn-warning pull-right'
-  .row
+.row
+  .col-sm-12
     .btn-group.pull-right role='group'
       = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-xs btn-default'
         i.glyphicon.glyphicon-chevron-left
@@ -19,7 +20,8 @@
       = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-xs btn-default'
         | Next Month
         i.glyphicon.glyphicon-chevron-right
-  .row
+.row
+  .col-sm-12
     .table-responsive
       table.table.table-hover
         thead
