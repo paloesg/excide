@@ -60,20 +60,22 @@
         - @users.each do |user|
           li.list-group-item.clearfix
             .row
-              .col-sm-6.col-xs-12
+              .col-sm-9.col-xs-12
                 span.glyphicon.glyphicon-user aria-hidden="true"
-                '  #{user.full_name}
+                ' #{user.full_name}
                 - if user.has_role? :contractor_in_charge, :any
                   span.badge.badge IC
                   '
+                span.label.label-warning #{(user.weekly_allocated_hours @allocation).to_i} Hours Allocated
+                | &nbsp;
                 - if @allocation.user == user
                   span.label.label-success Assigned
               - if @allocation.user == user
-                .col-sm-6.col-xs-12
+                .col-sm-3.col-xs-12
                   = button_to 'Remove', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-danger btn-xs pull-right', params: { 'allocation[user_id]': nil}
               - else
-                .col-sm-6.col-xs-12
-                  - if user.exceed_weekly_max_hours? @allocation
+                .col-sm-3.col-xs-12
+                  - if (user.max_hours_per_week > ((user.weekly_allocated_hours @allocation) + @allocation.hours))
                     = button_to 'Assign', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-primary btn-xs pull-right', params: { 'allocation[user_id]': user.id}
                   - else
                     = button_to 'Hours Exceeded', {}, disabled: true, role: 'button', class: 'btn btn-xs pull-right'
