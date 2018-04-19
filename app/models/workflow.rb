@@ -69,7 +69,7 @@ class Workflow < ActiveRecord::Base
 
   def build_data
     d = self.data.dup
-    d << Data.new({name: '', value: '', user: '', updated_at: ''})
+    d << Data.new({name: '', value: '', user_id: '', updated_at: ''})
     self.data = d
   end
 
@@ -82,11 +82,11 @@ class Workflow < ActiveRecord::Base
   end
 
   class Data
-    attr_accessor :name, :value, :user, :updated_at
+    attr_accessor :name, :value, :user_id, :updated_at
     def initialize(hash)
       @name       = hash['name']
       @value      = hash['value']
-      @user       = hash['user']
+      @user_id       = hash['user_id']
       @updated_at = hash['updated_at']
     end
     def persisted?() false; end

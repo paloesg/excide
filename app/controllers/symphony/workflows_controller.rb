@@ -113,7 +113,7 @@ class Symphony::WorkflowsController < WorkflowsController
   def set_attributes_metadata
     params[:workflow][:data_attributes].each do |key, value|
       if value[:_create] == '1' or value[:_update] == '1' or value[:_destroy] == '1'
-        value[:user] = @user.id
+        value[:user_id] = @user.id
         value[:updated_at] = Time.current
       end
     end
@@ -122,17 +122,17 @@ class Symphony::WorkflowsController < WorkflowsController
   def log_activity
     params[:workflow][:data_attributes].each do |key, value|
       if value[:_create] == '1'
-        @workflow.create_activity key: 'workflow.create_attribute', owner: User.find_by(id: value[:user]), params: { attribute: {name: value[:name], value: value[:value]} }
+        @workflow.create_activity key: 'workflow.create_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
       elsif value[:_update] == '1'
-        @workflow.create_activity key: 'workflow.update_attribute', owner: User.find_by(id: value[:user]), params: { attribute: {name: value[:name], value: value[:value]} }
+        @workflow.create_activity key: 'workflow.update_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
       elsif value[:_destroy] == '1'
-        @workflow.create_activity key: 'workflow.destroy_attribute', owner: User.find_by(id: value[:user]), params: { attribute: {name: value[:name], value: value[:value]} }
+        @workflow.create_activity key: 'workflow.destroy_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
       end
     end
   end
 
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :workflowable, :remarks, data_attributes: [:name, :value, :user, :updated_at, :_create, :_update, :_destroy])
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :workflowable, :remarks, data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
   end
 
   def set_documents
