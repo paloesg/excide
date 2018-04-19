@@ -1,6 +1,6 @@
 class CompanyAction < ActiveRecord::Base
   include PublicActivity::Model
-  tracked except: :create, owner: ->(controller, model) { controller && controller.current_user }
+  tracked except: :create, owner: ->(controller, model) { controller&.current_user }, recipient: ->(controller, model) { model&.workflow }, params: { instructions: -> (controller, model) { model&.task.instructions }, completed: -> (controller, model) { model&.completed? }}
 
   after_save :clear_reminders, if: :completed_changed?
   after_save :trigger_next_task, if: :completed_changed?

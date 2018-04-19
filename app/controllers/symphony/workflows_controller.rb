@@ -1,6 +1,7 @@
 class Symphony::WorkflowsController < WorkflowsController
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset]
+  before_action :set_attributes_metadata, only: [:create, :update]
 
   def new
     @workflow = Workflow.new
@@ -12,8 +13,11 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.user = @user
     @workflow.company = @company
     @workflow.template = @template
+
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
+
     if @workflow.save
+      log_activity
       if params[:assign]
         redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
       else
@@ -28,6 +32,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
     @section = @workflow.current_section
+    @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
 
     set_tasks
     set_documents
@@ -40,6 +45,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
 
     if @workflow.update(workflow_params)
+      log_activity
       if params[:assign]
         redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
       else
@@ -54,6 +60,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
     @section = @sections.find(params[:section_id])
+    @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
 
     set_tasks
     set_documents
@@ -103,8 +110,29 @@ class Symphony::WorkflowsController < WorkflowsController
     @clients = Client.where(company: @company)
   end
 
+  def set_attributes_metadata
+    params[:workflow][:data_attributes].each do |key, value|
+      if value[:_create] == '1' or value[:_update] == '1' or value[:_destroy] == '1'
+        value[:user_id] = @user.id
+        value[:updated_at] = Time.current
+      end
+    end
+  end
+
+  def log_activity
+    params[:workflow][:data_attributes].each do |key, value|
+      if value[:_create] == '1'
+        @workflow.create_activity key: 'workflow.create_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
+      elsif value[:_update] == '1'
+        @workflow.create_activity key: 'workflow.update_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
+      elsif value[:_destroy] == '1'
+        @workflow.create_activity key: 'workflow.destroy_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
+      end
+    end
+  end
+
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :workflowable, :remarks, data_attributes: [:name, :value, :_destroy])
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :workflowable, :remarks, data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
   end
 
   def set_documents

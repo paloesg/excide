@@ -56,12 +56,48 @@
                   - if action.completed? && action.completed_user.present?
                     span.glyphicon.glyphicon-user aria-hidden="true"
                     |  #{action.completed_user&.full_name}
-    - unless @section.first?
-      = link_to "Previous Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-default pull-left'
-    - if @section.last?
-      = link_to "Done", symphony_root_path, class: 'btn btn-default pull-right'
-    - else
-      = link_to "Next Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.lower_item.id), class: 'btn btn-default pull-right'
+      .panel-footer
+        - unless @section.first?
+          = link_to "Previous Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-default pull-left'
+        - if @section.last?
+          = link_to "Done", symphony_root_path, class: 'btn btn-default pull-right'
+        - else
+          = link_to "Next Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.lower_item.id), class: 'btn btn-default pull-right'
+        .clearfix
+    .row
+      .col-sm-6
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Attributes
+          .panel-body
+            table.table.table-condensed
+              thead
+                tr
+                  th Name
+                  th Value
+                  th Updated By
+                  th Updated At
+              tbody
+                - @workflow.data.each do |d|
+                  tr
+                    td = d.name
+                    td = d.value
+                    td = User.find_by(id: d.user_id).full_name
+                    td = Time.parse(d.updated_at).strftime("%d/%m/%Y %R")
+      .col-sm-6
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Activity
+          .panel-body
+            table.table.table-condensed
+              thead
+                tr
+                  th User
+                  th Action
+                  th Time
+              tbody
+                - @activities.each do |activity|
+                  tr = render_activity activity
   .col-md-3.col-sm-6
     = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
     - if @user.has_role? :admin
@@ -83,20 +119,6 @@
       .panel-heading
         h3.panel-title Deadline
       .panel-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Attributes
-      .panel-body
-        table.table.table-condensed
-          thead
-            tr
-              th Name
-              th Value
-          tbody
-          - @workflow.data.each do |d|
-            tr
-              td = d.name
-              td = d.value
     .panel.panel-default
       .panel-heading
         h3.panel-title Documents

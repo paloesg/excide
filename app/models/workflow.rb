@@ -18,6 +18,9 @@ class Workflow < ActiveRecord::Base
   after_create :trigger_first_task
   before_save :uppercase_identifier
 
+  include PublicActivity::Model
+  tracked except: :update, owner: ->(controller, model) { controller && controller.current_user }, recipient: ->(controller, model) { model}
+
   def build_workflowable(params)
     self.workflowable = workflowable_type.constantize.new(params)
   end
@@ -66,7 +69,7 @@ class Workflow < ActiveRecord::Base
 
   def build_data
     d = self.data.dup
-    d << Data.new({name: '', value: ''})
+    d << Data.new({name: '', value: '', user_id: '', updated_at: ''})
     self.data = d
   end
 
@@ -79,14 +82,18 @@ class Workflow < ActiveRecord::Base
   end
 
   class Data
-    attr_accessor :name, :value
+    attr_accessor :name, :value, :user_id, :updated_at
     def initialize(hash)
-      @name   = hash['name']
-      @value  = hash['value']
+      @name       = hash['name']
+      @value      = hash['value']
+      @user_id       = hash['user_id']
+      @updated_at = hash['updated_at']
     end
     def persisted?() false; end
     def new_record?() false; end
     def marked_for_destruction?() false; end
+    def _create() false; end
+    def _update() false; end
     def _destroy() false; end
   end
 
