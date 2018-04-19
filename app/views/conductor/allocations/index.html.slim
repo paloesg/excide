@@ -79,6 +79,7 @@
                     = button_to 'Assign', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-primary btn-xs pull-right', params: { 'allocation[user_id]': user.id}
                   - else
                     = button_to 'Hours Exceeded', {}, disabled: true, role: 'button', class: 'btn btn-xs pull-right'
+            = check_box_tag 'last_minute', @allocation.id, @allocation.last_minute, data: { remote: true, url: url_for(action: :last_minute, id: @allocation.id), method: "POST" }, :onclick => "this.checked=true;"
 
 javascript:
   $("tr[data-allocation]").click(function() {
