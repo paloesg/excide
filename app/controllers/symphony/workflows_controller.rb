@@ -17,6 +17,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
 
     if @workflow.save
+      log_activity
       if params[:assign]
         redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
       else
@@ -44,6 +45,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
 
     if @workflow.update(workflow_params)
+      log_activity
       if params[:assign]
         redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
       else
@@ -110,9 +112,21 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def set_attributes_metadata
     params[:workflow][:data_attributes].each do |key, value|
-      if value[:_create] == '1' || value[:_update] == '1'
+      if value[:_create] == '1' or value[:_update] == '1' or value[:_destroy] == '1'
         value[:user] = @user.id
         value[:updated_at] = Time.current
+      end
+    end
+  end
+
+  def log_activity
+    params[:workflow][:data_attributes].each do |key, value|
+      if value[:_create] == '1'
+        @workflow.create_activity key: 'workflow.create_attribute', owner: User.find_by(id: value[:user]), params: { attribute: {name: value[:name], value: value[:value]} }
+      elsif value[:_update] == '1'
+        @workflow.create_activity key: 'workflow.update_attribute', owner: User.find_by(id: value[:user]), params: { attribute: {name: value[:name], value: value[:value]} }
+      elsif value[:_destroy] == '1'
+        @workflow.create_activity key: 'workflow.destroy_attribute', owner: User.find_by(id: value[:user]), params: { attribute: {name: value[:name], value: value[:value]} }
       end
     end
   end

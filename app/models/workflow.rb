@@ -60,14 +60,7 @@ class Workflow < ActiveRecord::Base
   def data_attributes=(attributes)
     data = []
     attributes.each do |index, attrs|
-      if '1' == attrs.delete("_destroy")
-        self.create_activity key: 'workflow.destroy_attribute', owner: User.find_by(id: attrs['user']), params: { attribute: {name: attrs['name'], value: attrs['value']} }
-        next
-      elsif '1' == attrs[:_create]
-        self.create_activity key: 'workflow.create_attribute', owner: User.find_by(id: attrs['user']), params: { attribute: {name: attrs['name'], value: attrs['value']} }
-      elsif '1' == attrs[:_update]
-        self.create_activity key: 'workflow.update_attribute', owner: User.find_by(id: attrs['user']), params: { attribute: {name: attrs['name'], value: attrs['value']} }
-      end
+      next if '1' == attrs.delete("_destroy")
       next if attrs['name'].empty? && attrs['value'].empty?
       data << attrs
     end
