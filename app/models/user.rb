@@ -51,8 +51,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def contractor_in_charge=(value)
-    if value
+  def add_role_contractor_ic(assign)
+    if assign
       self.add_role :contractor_in_charge, self.company
     else
       self.remove_role :contractor_in_charge, self.company

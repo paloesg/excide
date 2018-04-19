@@ -23,7 +23,7 @@ class Conductor::UsersController < ApplicationController
     @user.company = @company
     if @user.save
       @user.add_role :contractor, @company
-      @
+      @user.add_role_contractor_ic params[:contractor_in_charge]
       redirect_to conductor_users_path, notice: 'User successfully created!'
     else
       render :new
@@ -35,6 +35,7 @@ class Conductor::UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
+      @user.add_role_contractor_ic params[:contractor_in_charge]
       redirect_to conductor_user_path, notice: 'User successfully updated!'
     else
       render :edit
@@ -71,6 +72,6 @@ class Conductor::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :password, :email, :contact_number, :nric, :date_of_birth, :max_hours_per_week, :bank_name, :bank_account_type, :bank_account_number, :company_id, :contractor_in_charge, :role_ids => [])
+    params.require(:user).permit(:first_name, :last_name, :password, :email, :contact_number, :nric, :date_of_birth, :max_hours_per_week, :bank_name, :bank_account_type, :bank_account_number, :company_id, :role_ids => [])
   end
 end

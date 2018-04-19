@@ -35,5 +35,5 @@
   = f.label :bank_account_type
   = f.select :bank_account_type, User.bank_account_types.map { |key, value| [key.titleize, key] }, {selected: @user.bank_account_type}, class: 'form-control'
 .form-group
-  = f.check_box :contractor_in_charge, {checked: (@user.has_role? :contractor_in_charge, @company)}
+  = check_box_tag :contractor_in_charge, 'assign', (@user.has_role? :contractor_in_charge, @company)
 = f.submit 'Save User', class: 'btn btn-default'
