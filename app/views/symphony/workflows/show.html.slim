@@ -82,8 +82,8 @@
                   tr
                     td = d.name
                     td = d.value
-                    td = d.user
-                    td = d.updated_at
+                    td = User.find_by(id: d.user_id).full_name
+                    td = Time.parse(d.updated_at).strftime("%d/%m/%Y %R")
       .col-sm-6
         .panel.panel-default
           .panel-heading
