@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180420170955) do
+ActiveRecord::Schema.define(version: 20180420171513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -264,18 +264,6 @@ ActiveRecord::Schema.define(version: 20180420170955) do
   add_index "proposals", ["profile_id"], name: "index_proposals_on_profile_id", using: :btree
   add_index "proposals", ["project_id"], name: "index_proposals_on_project_id", using: :btree
 
-  create_table "qualifications", force: :cascade do |t|
-    t.integer  "profile_id"
-    t.string   "institution"
-    t.string   "title"
-    t.integer  "year_obtained"
-    t.text     "description"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  add_index "qualifications", ["profile_id"], name: "index_qualifications_on_profile_id", using: :btree
-
   create_table "questions", force: :cascade do |t|
     t.text     "content"
     t.integer  "question_type"
@@ -513,7 +501,6 @@ ActiveRecord::Schema.define(version: 20180420170955) do
   add_foreign_key "projects", "companies"
   add_foreign_key "proposals", "profiles"
   add_foreign_key "proposals", "projects"
-  add_foreign_key "qualifications", "profiles"
   add_foreign_key "questions", "sections", column: "survey_section_id"
   add_foreign_key "reminders", "companies"
   add_foreign_key "reminders", "company_actions"
