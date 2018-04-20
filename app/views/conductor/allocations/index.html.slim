@@ -60,7 +60,7 @@
         - @users.each do |user|
           li.list-group-item.clearfix
             .row
-              .col-sm-9.col-xs-12
+              .col-sm-8.col-xs-12
                 span.glyphicon.glyphicon-user aria-hidden="true"
                 ' #{user.full_name}
                 - if user.has_role? :contractor_in_charge, :any
@@ -71,15 +71,17 @@
                 - if @allocation.user == user
                   span.label.label-success Assigned
               - if @allocation.user == user
-                .col-sm-3.col-xs-12
+                .col-sm-4.col-xs-12
                   = button_to 'Remove', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-danger btn-xs pull-right', params: { 'allocation[user_id]': nil}
               - else
-                .col-sm-3.col-xs-12
+                .col-sm-4.col-xs-12
                   - if (user.max_hours_per_week > ((user.weekly_allocated_hours @allocation) + @allocation.hours))
+                    = label_tag 'last_minute', class: 'checkbox-inline pull-left' do
+                      = check_box_tag 'last_minute', @allocation.id, @allocation.last_minute, data: { remote: true, url: url_for(action: :last_minute, id: @allocation.id), method: "POST" }, :onclick => "this.checked=true;"
+                      | Last Minute
                     = button_to 'Assign', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-primary btn-xs pull-right', params: { 'allocation[user_id]': user.id}
                   - else
                     = button_to 'Hours Exceeded', {}, disabled: true, role: 'button', class: 'btn btn-xs pull-right'
-            = check_box_tag 'last_minute', @allocation.id, @allocation.last_minute, data: { remote: true, url: url_for(action: :last_minute, id: @allocation.id), method: "POST" }, :onclick => "this.checked=true;"
 
 javascript:
   $("tr[data-allocation]").click(function() {
