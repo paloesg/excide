@@ -67,10 +67,10 @@ class Conductor::AllocationsController < ApplicationController
   def update
     if allocation_params[:user_id].present?
       # If user id present, user is being assigned
-      @avaibility = User.find(allocation_params[:user_id]).get_avaibility(@allocation)
+      @avaibility = User.find(allocation_params[:user_id]).get_availability(@allocation)
     else
       # If user id not present, user is being unassigned
-      @avaibility = @allocation.user.get_avaibility(@allocation) if @allocation.user
+      @avaibility = @allocation.user.get_availability(@allocation) if @allocation.user
     end
 
     respond_to do |format|

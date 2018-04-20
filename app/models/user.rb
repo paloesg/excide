@@ -136,7 +136,7 @@ class User < ActiveRecord::Base
     pending_any_confirmation {yield}
   end
 
-  def get_avaibility allocation
+  def get_availability(allocation)
     self.availabilities.where(availabilities: {available_date: allocation.allocation_date}).where("availabilities.start_time <= ?", allocation.start_time).where("availabilities.end_time >= ?", allocation.end_time).first
   end
 

@@ -77,7 +77,7 @@
                 .col-sm-3.col-xs-12
                   - if (user.max_hours_per_week <= ((user.weekly_allocated_hours @allocation) + @allocation.hours))
                     = button_to 'Hours Exceeded', {}, disabled: true, role: 'button', class: 'btn btn-xs pull-right'
-                  - elsif @allocation.user.present? or user.get_avaibility(@allocation).assigned == true
+                  - elsif @allocation.user.present? or user.get_availability(@allocation).assigned == true
                     = button_to 'Assign', {}, disabled: true, role: 'button', class: 'btn btn-xs pull-right'
                   - else
                     = button_to 'Assign', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-primary btn-xs pull-right', params: { 'allocation[user_id]': user.id}
