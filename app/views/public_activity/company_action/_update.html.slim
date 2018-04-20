@@ -1,8 +1,6 @@
-- if activity.trackable_type == "Task"
-  - if activity.trackable.completed
-    = " completed task "
-  - else
-    = " updated task "
-  = link_to(activity.trackable.task.id, company_workflow_section_path(activity.trackable.task.section.template.slug, activity.trackable.task.section.id))
+td = activity.owner.full_name
+- if activity.parameters[:completed]
+  td completed task "#{activity.parameters[:instructions]}"
 - else
-  = " added " + activity.trackable_type
+  td updated task "#{activity.parameters[:instructions]}"
+td = activity.created_at.strftime("%d/%m/%Y %R")

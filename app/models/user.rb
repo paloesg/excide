@@ -68,14 +68,10 @@ class User < ActiveRecord::Base
     first_name + ' ' + last_name
   end
 
-  def exceed_weekly_max_hours? allocation
+  def weekly_allocated_hours(allocation)
     allocation_date = Date.parse(allocation.allocation_date.to_s)
     allocation_days = self.allocations.where(allocation_date: (allocation_date.beginning_of_week)..(allocation_date.end_of_week))
-
-    current_hours = 0
-    allocation_days.each { | a | current_hours += a.hours }
-    current_hours += allocation.hours
-    current_hours > self.max_hours_per_week ? false : true
+    allocation_days.map(&:hours).sum
   end
 
   def self.contractors_to_csv
@@ -87,6 +83,21 @@ class User < ActiveRecord::Base
         csv << row
       end
     end
+  end
+
+  def self.csv_to_contractors(file, company)
+    @count = { "imported" => 0, "exist" => 0 }
+    CSV.foreach(file.path, headers: true) do |row|
+      @user = User.new( first_name: row['First Name'], last_name: row['Last Name'], email: row['Email'], contact_number: row['Phone'], nric: row['NRIC'], date_of_birth: row['Date of Birth'], max_hours_per_week: row['Max Hours Per Week'], bank_name: row['Bank Name'], bank_account_number: row['Bank Account Number'], bank_account_type: row['Bank Account Type']&.downcase )
+      @user.company = company
+      if @user.save
+        @user.add_role :contractor, company
+        @count['imported'] += 1
+      else
+        @count['exist'] += 1
+      end
+    end
+    @count
   end
 
   def password_required?

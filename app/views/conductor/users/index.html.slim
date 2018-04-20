@@ -41,3 +41,15 @@
                 td.btn-toolbar
                   = link_to 'Edit', edit_conductor_user_path(u.id), role: 'button', class: 'btn btn-primary btn-xs'
                   = link_to 'Delete', conductor_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
+- if current_user.has_role? :admin, @company
+  .row
+    .col-md-4.col-sm-6
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Import Contractors
+        .panel-body
+          = form_tag({action: :import}, multipart: true, class: 'form-inline') do
+            .form-group.file-field
+              = label_tag 'csv_file', 'Upload contractor CSV file'
+              = file_field_tag 'csv_file'
+            = submit_tag "Import", class: 'btn btn-primary pull-right'
