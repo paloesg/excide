@@ -63,6 +63,9 @@ Rails.application.routes.draw do
       collection do
         get :export, to: 'allocations#export'
       end
+      member do
+        post :last_minute, to: 'allocations#last_minute'
+      end
     end
     resources :availabilities do
       collection do
