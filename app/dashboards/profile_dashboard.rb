@@ -18,7 +18,6 @@ class ProfileDashboard < Administrate::BaseDashboard
     linkedin_url: Field::String,
     location: Field::String,
     country_code: Field::String,
-    experiences: Field::HasMany,
     qualifications: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -46,7 +45,6 @@ class ProfileDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :user,
-    :experiences,
     :qualifications,
     :headline,
     :summary,
