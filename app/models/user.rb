@@ -85,6 +85,21 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.csv_to_contractors(file, company)
+    @count = { "imported" => 0, "exist" => 0 }
+    CSV.foreach(file.path, headers: true) do |row|
+      @user = User.new( first_name: row['First Name'], last_name: row['Last Name'], email: row['Email'], contact_number: row['Phone'], nric: row['NRIC'], date_of_birth: row['Date of Birth'], max_hours_per_week: row['Max Hours Per Week'], bank_name: row['Bank Name'], bank_account_number: row['Bank Account Number'], bank_account_type: row['Bank Account Type']&.downcase )
+      @user.company = company
+      if @user.save
+        @user.add_role :contractor, company
+        @count['imported'] += 1
+      else
+        @count['exist'] += 1
+      end
+    end
+    @count
+  end
+
   def password_required?
     # Password is required if it is being set, but not for new records
     if !persisted?
@@ -119,6 +134,10 @@ class User < ActiveRecord::Base
   # Instead you should use `pending_any_confirmation`.
   def only_if_unconfirmed
     pending_any_confirmation {yield}
+  end
+
+  def get_availability(allocation)
+    self.availabilities.where(availabilities: {available_date: allocation.allocation_date}).where("availabilities.start_time <= ?", allocation.start_time).where("availabilities.end_time >= ?", allocation.end_time).first
   end
 
   private

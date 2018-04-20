@@ -1,0 +1,7 @@
+td = activity.owner.full_name
+td
+  ' added attribute
+  strong #{activity.parameters[:attribute][:name]}
+  '  with value
+  strong #{activity.parameters[:attribute][:value]}
+td = activity.created_at.strftime("%d/%m/%Y %R")
