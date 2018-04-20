@@ -1,3 +1,5 @@
 td = activity.owner.full_name
-td deleted file "#{activity.parameters[:filename]}"
+td
+  ' deleted file
+  strong #{activity.parameters[:filename]}
 td = activity.created_at.strftime("%d/%m/%Y %R")
