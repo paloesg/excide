@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180421024517) do
+ActiveRecord::Schema.define(version: 20180421030352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -222,39 +222,6 @@ ActiveRecord::Schema.define(version: 20180421024517) do
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
-
-  create_table "projects", force: :cascade do |t|
-    t.string   "title"
-    t.integer  "project_category_id"
-    t.text     "description"
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.integer  "budget"
-    t.integer  "budget_type"
-    t.text     "remarks"
-    t.integer  "status"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.integer  "company_id"
-    t.text     "criteria"
-    t.integer  "grant"
-  end
-
-  add_index "projects", ["company_id"], name: "index_projects_on_company_id", using: :btree
-
-  create_table "proposals", force: :cascade do |t|
-    t.integer  "profile_id"
-    t.text     "qualifications"
-    t.integer  "amount"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.string   "file_url"
-    t.integer  "project_id"
-    t.integer  "status"
-  end
-
-  add_index "proposals", ["profile_id"], name: "index_proposals_on_profile_id", using: :btree
-  add_index "proposals", ["project_id"], name: "index_proposals_on_project_id", using: :btree
 
   create_table "questions", force: :cascade do |t|
     t.text     "content"
@@ -490,9 +457,6 @@ ActiveRecord::Schema.define(version: 20180421024517) do
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflows"
   add_foreign_key "profiles", "users"
-  add_foreign_key "projects", "companies"
-  add_foreign_key "proposals", "profiles"
-  add_foreign_key "proposals", "projects"
   add_foreign_key "questions", "sections", column: "survey_section_id"
   add_foreign_key "reminders", "companies"
   add_foreign_key "reminders", "company_actions"

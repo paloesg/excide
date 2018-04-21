@@ -95,9 +95,6 @@ Rails.application.routes.draw do
   get 'profile/edit', to: 'profiles#edit', as: :edit_profile
   patch 'profile', to: 'profiles#update'
 
-  get 'projects', to: 'projects#index'
-  get 'project/:id', to: 'projects#show', as: :project
-
   resources :enquiries
 
   get 'surveys/complete', to: 'surveys#complete', as: :survey_complete
@@ -109,19 +106,13 @@ Rails.application.routes.draw do
 
   resources :responses
 
-  namespace :consultant do
-    resources :proposals, except: [:new]
-    get 'proposals/new/:project_id', to: 'proposals#new', as: :new_proposal
-  end
-
   get 'company/new', to: 'companies#new', as: :new_company
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
 
   namespace :company do
-    resources :projects
-  end
+    end
 
   resources :charges, only: [:new, :create]
 
