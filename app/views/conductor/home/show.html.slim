@@ -48,3 +48,20 @@
       .panel-heading
         h3.panel-title Latest Updates
       .panel-body
+
+#popover-content
+  .panel.panel-default
+    .panel-heading New Activation
+    .panel-body
+      = form_for @activation, url: conductor_activations_path do |f|
+        = render 'conductor/activations/form', f: f
+
+javascript:
+  $(".day").popover({
+    placement:'auto left',
+    container: 'body',
+    html: true,
+    content: function() {
+      return $('#popover-content').html();
+    }
+  });
