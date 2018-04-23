@@ -63,11 +63,13 @@ javascript:
       container: 'body',
       placement:'auto left',
       content: function() {
-        return $('#popover-content').html();
+        return $('#popover-content').html()
       }
     }).on('shown.bs.popover', function () {
       $('.datetimepicker').datetimepicker({
         format: "YYYY-MM-DD HH:mm",
       });
+      date = new Date();
+      $('.datetimepicker').val($(this).attr('td-date') + ' ' + moment(date).format('hh:mm'));
     });
   });
