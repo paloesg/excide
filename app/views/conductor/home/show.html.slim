@@ -49,7 +49,7 @@
         h3.panel-title Latest Updates
       .panel-body
 
-#popover-content
+#popover-content.hide
   .panel.panel-default
     .panel-heading New Activation
     .panel-body
@@ -57,11 +57,17 @@
         = render 'form', f: f
 
 javascript:
-  $(".day").popover({
-    placement:'auto left',
-    container: 'body',
-    html: true,
-    content: function() {
-      return $('#popover-content').html();
-    }
+  $(document).ready(function () {
+    $('.day').popover({
+      html: true,
+      container: 'body',
+      placement:'auto left',
+      content: function() {
+        return $('#popover-content').html();
+      }
+    }).on('shown.bs.popover', function () {
+      $('.datetimepicker').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+      });
+    });
   });
