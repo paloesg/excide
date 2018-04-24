@@ -54,9 +54,6 @@ Rails.application.routes.draw do
       end
     end
     resources :activations do
-      collection do
-        post '/popover-create', to: 'activations#popover_create'
-      end
       member do
         get '/create-allocations/:type/:count', to: 'activations#create_allocations', as: :create_allocations
         post '/reset', to: 'activations#reset', as: :reset

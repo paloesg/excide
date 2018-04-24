@@ -5,7 +5,6 @@ class Conductor::ActivationsController < ApplicationController
   before_action :set_company_and_clients
   before_action :set_event_owners, only: [:new, :edit]
   before_action :set_activation, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
-  before_action :new_activation, only: [:create, :popover_create]
 
   # GET /conductor/activations
   # GET /conductor/activations.json
@@ -36,10 +35,14 @@ class Conductor::ActivationsController < ApplicationController
   # POST /conductor/activations
   # POST /conductor/activations.json
   def create
+    @activation = Activation.new(activation_params)
+    @activation.company = @company
+
     respond_to do |format|
       if @activation.save
         format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully created.' }
         format.json { render :show, status: :created, location: @activation }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         set_event_owners
         format.html { render :new }
@@ -94,18 +97,6 @@ class Conductor::ActivationsController < ApplicationController
     end
   end
 
-  def popover_create
-    respond_to do |format|
-      if @activation.save
-        format.json { render :show, status: :created, location: @activation }
-        format.js   { render js: 'Turbolinks.visit(location.toString());' }
-      else
-        set_event_owners
-        format.json { render json: @activation.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_activation
@@ -120,11 +111,6 @@ class Conductor::ActivationsController < ApplicationController
 
     def set_event_owners
       @event_owners = User.where(company: @company).with_role :event_owner, @company
-    end
-
-    def new_activation
-      @activation = Activation.new(activation_params)
-      @activation.company = @company
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
