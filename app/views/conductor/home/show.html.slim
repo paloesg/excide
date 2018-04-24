@@ -50,7 +50,7 @@
       .panel-body
 
 #popover-show.hide
-  = form_for @activation, url: conductor_activations_path do |f|
+  = form_for @activation, remote: true, url: popover_create_conductor_activations_path do |f|
     = render 'form', f: f
 
 javascript:
