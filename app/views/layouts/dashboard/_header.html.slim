@@ -30,7 +30,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top
                 li = link_to "Manage Users", symphony_users_path
                 li = link_to "User Details", edit_user_registration_path
                 li = link_to "Company Details", edit_company_path
-          li = link_to "Go to Conductor", conductor_root_path
+          li = link_to "Go to Conductor", conductor_root_path if ENV['APP_NAME'] == "excide-staging"
           li = link_to "Log Out", destroy_user_session_path, method: :delete
 
         - elsif controller.class.parents.include?(Conductor)
