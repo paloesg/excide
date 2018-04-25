@@ -13,9 +13,10 @@
     = month_calendar events: @activations do |date, activations|
       p = date.day
       - activations.each do |activation|
-        = activation.start_time.strftime('%k:%M') + ' - ' + activation.end_time.strftime('%k:%M ')
-        strong = activation.name
-        br
+        .row
+          .col-sm-12
+            = activation.start_time.strftime('%H:%M') + '–' + activation.end_time.strftime('%H:%M ')
+            strong = activation.name
 .row
   .col-sm-6.col-xs-12
     .panel.panel-default
