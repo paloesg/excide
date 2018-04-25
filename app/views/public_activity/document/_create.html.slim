@@ -1,3 +1,5 @@
 td = activity.owner.full_name
-td uploaded file "#{activity.parameters[:filename]}"
+td
+  ' uploaded file
+  strong #{activity.parameters[:filename]}
 td = activity.created_at.strftime("%d/%m/%Y %R")

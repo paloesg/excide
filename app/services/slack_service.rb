@@ -126,19 +126,34 @@ class SlackService
     params = {
       attachments: [
         {
-          title: 'Notification',
+          title: action.workflow.template.title,
           fallback: 'Task ID ' + action.task.id.to_s,
-          pretext: 'The following task has been completed.',
+          pretext: 'A task has been completed:',
           color: GOOD,
           fields: [
             {
+              title: 'Workflow Identifier',
+              value: action.workflow.identifier,
+              short: true
+            },
+            {
               title: 'Client',
-              value: action.company.name,
+              value: action.workflow.workflowable.name,
               short: true
             },
             {
               title: 'Task',
               value: action.task.instructions,
+            },
+            {
+              title: 'Assigned To',
+              value: action.assigned_user&.full_name || '-',
+              short: true
+            },
+            {
+              title: 'Completed By',
+              value: action.completed_user&.full_name,
+              short: true
             },
           ]
         }

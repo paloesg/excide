@@ -9,10 +9,14 @@ nav
       i.ti-menu
     .module-group.right
       .module.left
-        - if current_user && (current_user.has_role? :admin)
+        - if current_user
           ul.menu
-            li
-              a href="/admin" Admin
+            li = link_to "Symphony", symphony_root_path
+            li = link_to "Conductor", conductor_root_path if ENV['APP_NAME'] == "excide-staging"
+            - if current_user.has_role? :admin
+              li
+                a href="/admin" Admin
+            li = link_to "Log Out", destroy_user_session_path, method: :delete
         - else
           ul.menu
             li
@@ -59,3 +63,5 @@ nav
                   a href="/fund-raising" Fund Raising
             li
               a href="/blog" Blog
+            li
+              = link_to "Log In", new_user_session_path

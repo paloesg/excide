@@ -51,6 +51,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def add_role_contractor_ic(assign)
+    if assign
+      self.add_role :contractor_in_charge, self.company
+    else
+      self.remove_role :contractor_in_charge, self.company
+    end
+  end
+
   def self.from_omniauth(auth, params)
     logger.info auth
     logger.info params

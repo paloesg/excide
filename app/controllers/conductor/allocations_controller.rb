@@ -101,6 +101,19 @@ class Conductor::AllocationsController < ApplicationController
     send_data @allocations.to_csv, filename: "Allocations_#{@date_from}_to_#{@date_to}.csv"
   end
 
+  def last_minute
+    @action = Allocation.find(params[:id])
+
+    respond_to do |format|
+      if @action.update_attributes(last_minute: !@action.last_minute)
+        format.json { render json: @action.last_minute, status: :ok }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      else
+        format.json { render json: @action.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   def set_allocation
