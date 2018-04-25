@@ -17,6 +17,15 @@ class Activation < ActiveRecord::Base
   validates :start_time, :end_time, presence: true
   validate :end_must_be_after_start
 
+  include PublicActivity::Model
+  tracked owner: ->(controller, _model) { controller && controller.current_user },
+          recipient: ->(_controller, model) { model },
+          params: {
+            activation_name: ->(_controller, model) { model&.name },
+            start_time: ->(_controller, model) { model&.start_time },
+            end_time: ->(_controller, model) { model&.end_time }
+          }
+
   def name
     client.name + ' ' + activation_type.titleize
   end
