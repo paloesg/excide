@@ -11,7 +11,7 @@
       = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-xs btn-default'
         | Next Month
         i.glyphicon.glyphicon-chevron-right
-  table.table.table-striped
+  table.table.table-striped.calendar-table
     thead
       tr
         - date_range.slice(0, 7).each do |day|
