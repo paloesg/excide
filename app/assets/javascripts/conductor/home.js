@@ -21,6 +21,7 @@ $(document).ready(function () {
         dataType: "json",
         success: function (get_activation) {
           element_target = $(el.target).data("bs.popover").tip();
+          element_target.find('input, select, textarea').prop('disabled', true);
           element_target.find('.popover-title').text('Activation details');
           element_target.find('#activation_client_id').val(get_activation['activation']['client_id']);
           element_target.find('#activation_activation_type').val(get_activation['activation']['activation_type']);
