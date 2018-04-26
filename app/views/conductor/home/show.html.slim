@@ -48,5 +48,5 @@
 #new-activation.hide
   = form_for @activation, remote: true, url: conductor_activations_path do |f|
     = render 'conductor/activations/form', f: f
-#activation-details
+#activation-details.hide
   = render 'activation_details'
