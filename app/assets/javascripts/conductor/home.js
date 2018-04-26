@@ -9,6 +9,12 @@ $(document).ready(function () {
       content: function () {
         return $('#new-activation').html();
       }
+    }).on('shown.bs.popover', function () {
+      $('.datetimepicker').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        stepping: 15,
+        sideBySide: true
+      });
     }).on("show.bs.popover", function () {
       $('.popover').popover('hide');
     });
@@ -25,14 +31,8 @@ $(document).ready(function () {
       content: function () {
         return $('#activation-details').html();
       }
-    }).on('shown.bs.popover', function (el) {
-      element_target = $(el.target).data("bs.popover").tip();
-      $('.datetimepicker').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
-        stepping: 15,
-        sideBySide: true
-      });
     }).on("show.bs.popover", function (el) {
+      element_target = $(el.target).data("bs.popover").tip();
       $('.popover').popover('hide');
       $.ajax({
         type: "GET",
