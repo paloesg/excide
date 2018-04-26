@@ -19,6 +19,10 @@ class Conductor::ActivationsController < ApplicationController
   # GET /conductor/activations/1
   # GET /conductor/activations/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: { activation: @activation, address: @activation.address } }
+    end
   end
 
   # GET /conductor/activations/new
