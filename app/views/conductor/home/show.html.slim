@@ -45,7 +45,8 @@
       .panel-heading
         h3.panel-title Latest Updates
       .panel-body
-
-#popover-show.hide
+#new-activation.hide
   = form_for @activation, remote: true, url: conductor_activations_path do |f|
     = render 'conductor/activations/form', f: f
+#activation-details
+  = render 'activation_details'
