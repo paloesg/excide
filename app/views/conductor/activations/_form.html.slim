@@ -7,13 +7,13 @@
 
 .form-group
   = f.label :client_id
-  = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @activation.client_id}, class: 'form-control'
+  = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @activation.client_id, prompt: 'Select client...'}, class: 'form-control'
 .form-group
   = f.label :activation_type
-  = f.select :activation_type, Activation.activation_types.map { |key, value| [key.titleize, key] }, {selected: @activation.activation_type}, class: 'form-control'
+  = f.select :activation_type, Activation.activation_types.map { |key, value| [key.titleize, key] }, {selected: @activation.activation_type, prompt: 'Select activation type...'}, class: 'form-control'
 .form-group
   = f.label :event_owner_id, "Event Owner"
-  = f.select :event_owner_id, @event_owners.map { |key, value| [key.full_name, key.id] }, {selected: @activation.event_owner_id}, class: 'form-control'
+  = f.select :event_owner_id, @event_owners.map { |key, value| [key.full_name, key.id] }, {selected: @activation.event_owner_id, prompt: 'Select event owner...'}, class: 'form-control'
 .form-group
   = f.label :location
   = f.text_field :location, class: 'form-control'

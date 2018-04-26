@@ -1,7 +1,0 @@
-.row
-  .col.s12.l8.offset-l2
-    .card.login
-      .card-header Edit proposal
-      .card-content
-        = form_for [:consultant, @proposal], url: {action: "update"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } } do |f|
-          = render 'form', f: f

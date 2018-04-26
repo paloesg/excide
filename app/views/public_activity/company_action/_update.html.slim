@@ -1,6 +1,8 @@
 td = activity.owner.full_name
 - if activity.parameters[:completed]
-  td completed task "#{activity.parameters[:instructions]}"
+  td
+    ' completed task
+    strong #{activity.parameters[:instructions]}
 - else
   td updated task "#{activity.parameters[:instructions]}"
 td = activity.created_at.strftime("%d/%m/%Y %R")

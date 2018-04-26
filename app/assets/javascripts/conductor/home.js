@@ -10,9 +10,10 @@ $(document).ready( function () {
   }).on('shown.bs.popover', function () {
     $('.datetimepicker').datetimepicker({
       format: "YYYY-MM-DD HH:mm",
+      stepping: 15,
+      sideBySide: true
     });
-    date = new Date();
-    $('.datetimepicker').val($(this).attr('td-date') + ' ' + moment(date).format('HH:mm'));
+    $('.datetimepicker').val($(this).attr('td-date'));
   }).on("show.bs.popover", function () {
     $(this).data("bs.popover").tip().css("max-width", "none");
     $('.popover').popover('hide');

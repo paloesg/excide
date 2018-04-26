@@ -10,7 +10,7 @@ class Allocation < ActiveRecord::Base
   validate :end_must_be_after_start
 
   def self.to_csv
-    attributes = ['Activation', 'Allocation date', 'Start time', 'End time', 'User']
+    attributes = ['Activation', 'Allocation date', 'Start time', 'End time', 'User', 'Last Minute']
 
     CSV.generate do |csv|
       csv << attributes
@@ -20,7 +20,8 @@ class Allocation < ActiveRecord::Base
           allocation.allocation_date,
           allocation.start_time.in_time_zone.strftime("%H:%M"),
           allocation.end_time.in_time_zone.strftime("%H:%M"),
-          allocation.user&.full_name
+          allocation.user&.full_name,
+          allocation.last_minute
         ]
         csv << row
       end

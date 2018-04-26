@@ -30,8 +30,8 @@ nav.navbar.navbar-inverse.navbar-fixed-top
                 li = link_to "Manage Users", symphony_users_path
                 li = link_to "User Details", edit_user_registration_path
                 li = link_to "Company Details", edit_company_path
-          li = link_to "Go to Conductor", conductor_root_path
-          li = link_to "Log Out", logout_path
+          li = link_to "Go to Conductor", conductor_root_path if ENV['APP_NAME'] == "excide-staging"
+          li = link_to "Log Out", destroy_user_session_path, method: :delete
 
         - elsif controller.class.parents.include?(Conductor)
           li = link_to "Conductor Dashboard", conductor_root_path
@@ -47,11 +47,11 @@ nav.navbar.navbar-inverse.navbar-fixed-top
                 li = link_to "Manage Contractors", conductor_users_path
           li = link_to "User Details", conductor_user_path(current_user) if current_user.has_role? :contractor, @company
           li = link_to "Go to Symphony", symphony_root_path unless current_user.has_role? :contractor, @company
-          li = link_to "Log Out", logout_path
+          li = link_to "Log Out", destroy_user_session_path, method: :delete
 
         - else
           li = link_to "Company Dashboard", params[:company_name] ? admin_company_dashboard_path : dashboard_path
           li = link_to "Company Documents", params[:company_name] ? admin_company_documents_path : documents_path
           li = link_to "Company Details", params[:company_name] ? admin_company_edit_path : edit_company_path
           li = link_to "User Details", edit_profile_path
-          li = link_to "Log Out", logout_path
+          li = link_to "Log Out", destroy_user_session_path, method: :delete

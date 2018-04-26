@@ -17,24 +17,26 @@
           | No outstanding workflows at the moment. Click on a workflow to begin.
         - else
           .pull-right = page_entries_info @workflows, entry_name: 'workflow'
-          table.table
-            thead
-              tr
-                th = sortable "identifier", "Identifier"
-                th = sortable "template", "Workflow Type"
-                th = sortable "workflowable", "Client Name"
-                th = sortable "remarks", "Remarks"
-                th = sortable "deadline", "Deadline"
-                th = sortable "completed", "Status"
-            tbody
-              - @workflows.each do |w|
-                tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                  td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
-                  td = w.template.title
-                  td = w.workflowable&.name || '-'
-                  td = w.remarks || '-'
-                  td = w.deadline&.strftime("%d/%m/%Y") || '-'
-                  td = w.completed ? 'Completed' : w.current_section&.display_name
+      .table-responsive
+        table.table
+          thead
+            tr
+              th = sortable "identifier", "Identifier"
+              th = sortable "template", "Workflow Type"
+              th = sortable "workflowable", "Client Name"
+              th = sortable "remarks", "Remarks"
+              th = sortable "deadline", "Deadline"
+              th = sortable "completed", "Status"
+          tbody
+            - @workflows.each do |w|
+              tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
+                td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
+                td = w.template.title
+                td = w.workflowable&.name || '-'
+                td = w.remarks || '-'
+                td = w.deadline&.strftime("%d/%m/%Y") || '-'
+                td = w.completed ? 'Completed' : w.current_section&.display_name
+      .panel-footer
         .text-center
           = paginate @workflows, views_prefix: 'dashboards'
   - if @templates.present?
