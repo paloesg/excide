@@ -37,7 +37,6 @@ $(document).ready(function () {
         url: '//' + location.host + location.pathname + "/activations/" + $(this).attr('activation-id'),
         dataType: "json",
         success: function (get_activation) {
-          console.log(get_activation);
           element_target.find('input, select, textarea').prop('disabled', true);
           element_target.find('#activation_client_id').val(get_activation['activation']['client_id']);
           element_target.find('#activation_activation_type').val(get_activation['activation']['activation_type']);
@@ -52,6 +51,7 @@ $(document).ready(function () {
           element_target.find('#activation_end_time').val(get_activation['activation']['end_time']);
           element_target.find('#activation_remarks').val(get_activation['activation']['remarks']);
           element_target.find('.btn').hide();
+          element_target.append('<a href="conductor/activations/' + get_activation['activation']['id'] + '/edit" class="btn btn-default" role="button">Edit activation</a>');
         }
       })
     }).on("show.bs.popover", function () {
