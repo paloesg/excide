@@ -52,12 +52,20 @@
                 td = activation.remarks
               - else
                 td
+<<<<<<< Updated upstream
                   - if activation.allocations.contractor_in_charge.empty? and (current_user = activation.event_owner or current_user.has_role? :admin, @company)
+=======
+                  - if activation.allocations.contractor_in_charge.empty? and ((@user.has_role? :manpower_allocator, @company) or @user.has_role? :admin, @company)
+>>>>>>> Stashed changes
                     = select_tag('allocations', options_for_select((activation.allocations.contractor_in_charge.count..5).to_a, activation.allocations.contractor_in_charge.count), onchange: "create_allocations(#{activation.id}, 'contractor-in-charge', this);")
                   - else
                     = select_tag('allocations', options_for_select([activation.allocations.contractor_in_charge.count]), disabled: true)
                 td
+<<<<<<< Updated upstream
                   - if activation.allocations.contractor.empty? and (current_user = activation.event_owner or current_user.has_role? :admin, @company)
+=======
+                  - if activation.allocations.contractor.empty? and ((@user.has_role? :manpower_allocator, @company) or @user.has_role? :admin, @company)
+>>>>>>> Stashed changes
                     = select_tag('allocations', options_for_select((activation.allocations.contractor.count..5).to_a, activation.allocations.contractor.contractor.count), onchange: "create_allocations(#{activation.id}, 'contractor', this);")
                   - else
                     = select_tag('allocations', options_for_select([activation.allocations.count]), disabled: true)
