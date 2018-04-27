@@ -1,3 +1,4 @@
+// Show message validation in popover when creating activation
 $(document).on("ajax:error", "form", function (xhr, status, error) {
   $(this).find('.alert').hide();
   data = JSON.parse(status.responseText)
@@ -10,7 +11,6 @@ $(document).on("ajax:error", "form", function (xhr, status, error) {
     return results;
   }
 });
-
 $(document).ready(function () {
   // Create new activation
   $('.day').click(function () {
@@ -39,38 +39,34 @@ $(document).ready(function () {
   $('.activation').click(function () {
     $(this).popover({
       html: true,
-      title: 'Activation details ' + $(this).attr('activation-id'),
+      title: 'Activation details',
       container: 'body',
       placement: 'auto left',
       content: function () {
         return $('#activation-details').html();
       }
-    }).on("show.bs.popover", function (el) {
+    }).on("shown.bs.popover", function (el) {
       element_target = $(el.target).data("bs.popover").tip();
+      get_activation = JSON.parse($(this).attr('activation-data'))
+      get_activation_address = JSON.parse($(this).attr('activation-address'))
+      start_time = new Date(get_activation['start_time']);
+      end_time = new Date(get_activation['end_time']);
+      element_target.find('#client_id').text(get_activation['client_id']);
+      element_target.find('#activation_type').text(get_activation['activation_type']);
+      element_target.find('#event_owner_id').text(get_activation['event_owner_id']);
+      element_target.find('#location').text(get_activation['location']);
+      if (get_activation_address) {
+        element_target.find('#address_attributes_line_1').text(get_activation_address['line_1']);
+        element_target.find('#address_attributes_line_2').text(get_activation_address['line_2']);
+        element_target.find('#address_attributes_postal_code').text(get_activation_address['postal_code']);
+      }
+      element_target.find('#start_time').text(moment(start_time).format('YYYY-MM-DD HH:mm'));
+      element_target.find('#end_time').text(moment(end_time).format('YYYY-MM-DD HH:mm'));
+      element_target.find('#remarks').text(get_activation['remarks']);
+      element_target.find('.btn').hide();
+      element_target.find('.popover-content').append('<p><a href="conductor/activations/' + get_activation['id'] + '/edit" class="btn btn-default" role="button">Edit activation</a></p>');
+    }).on("show.bs.popover", function() {
       $('.popover').popover('hide');
-      $.ajax({
-        type: "GET",
-        url: '//' + location.host + location.pathname + "/activations/" + $(this).attr('activation-id'),
-        dataType: "json",
-        success: function (get_activation) {
-          start_time = new Date(get_activation['activation']['start_time']);
-          end_time = new Date(get_activation['activation']['end_time']);
-          element_target.find('#activation_client_id').text(get_activation['activation']['client_id']);
-          element_target.find('#activation_activation_type').text(get_activation['activation']['activation_type']);
-          element_target.find('#activation_event_owner_id').text(get_activation['activation']['event_owner_id']);
-          element_target.find('#activation_location').text(get_activation['activation']['location']);
-          if (get_activation['address'] != null) {
-            element_target.find('#activation_address_attributes_line_1').text(get_activation['address']['line_1']);
-            element_target.find('#activation_address_attributes_line_2').text(get_activation['address']['line_2']);
-            element_target.find('#activation_address_attributes_postal_code').text(get_activation['address']['postal_code']);
-          }
-          element_target.find('#activation_start_time').text(moment(start_time).format('YYYY-MM-DD HH:mm'));
-          element_target.find('#activation_end_time').text(moment(end_time).format('YYYY-MM-DD HH:mm'));
-          element_target.find('#activation_remarks').text(get_activation['activation']['remarks']);
-          element_target.find('.btn').hide();
-          element_target.find('.popover-content').append('<p><a href="conductor/activations/' + get_activation['activation']['id'] + '/edit" class="btn btn-default" role="button">Edit activation</a></p>');
-        }
-      })
     });
   })
 });

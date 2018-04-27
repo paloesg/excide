@@ -14,7 +14,7 @@
       p = date.day
       - activations.each do |activation|
         .row
-          .col-sm-12.activation activation-id="#{activation.id}"
+          .col-sm-12.activation activation-data="#{activation.to_json}" activation-address="#{activation.address.to_json}"
             = activation.start_time.strftime('%H:%M') + '–' + activation.end_time.strftime('%H:%M ')
             strong = activation.name
 .row
@@ -52,7 +52,7 @@
         tbody
           - @activities.each do |activity|
             tr = render_activity activity
-            
+
 #new-activation.hide
   = form_for @activation, remote: true, url: conductor_activations_path do |f|
     = render 'conductor/activations/form', f: f
