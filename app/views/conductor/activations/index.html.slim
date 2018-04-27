@@ -28,7 +28,7 @@
           tr
             th Activation type
             th Client
-            th Event I/C
+            th Event Owner
             th Start time
             th End time
             th Location
@@ -52,12 +52,12 @@
                 td = activation.remarks
               - else
                 td
-                  - if activation.allocations.contractor_in_charge.empty? and ((current_user.has_role? :manpower_allocator, @company) or current_user.has_role? :admin, @company)
+                  - if activation.allocations.contractor_in_charge.empty? and (current_user = activation.event_owner or current_user.has_role? :admin, @company)
                     = select_tag('allocations', options_for_select((activation.allocations.contractor_in_charge.count..5).to_a, activation.allocations.contractor_in_charge.count), onchange: "create_allocations(#{activation.id}, 'contractor-in-charge', this);")
                   - else
                     = select_tag('allocations', options_for_select([activation.allocations.contractor_in_charge.count]), disabled: true)
                 td
-                  - if activation.allocations.contractor.empty? and ((current_user.has_role? :manpower_allocator, @company) or current_user.has_role? :admin, @company)
+                  - if activation.allocations.contractor.empty? and (current_user = activation.event_owner or current_user.has_role? :admin, @company)
                     = select_tag('allocations', options_for_select((activation.allocations.contractor.count..5).to_a, activation.allocations.contractor.contractor.count), onchange: "create_allocations(#{activation.id}, 'contractor', this);")
                   - else
                     = select_tag('allocations', options_for_select([activation.allocations.count]), disabled: true)

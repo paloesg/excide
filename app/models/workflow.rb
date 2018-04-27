@@ -19,7 +19,9 @@ class Workflow < ActiveRecord::Base
   before_save :uppercase_identifier
 
   include PublicActivity::Model
-  tracked except: :update, owner: ->(controller, model) { controller && controller.current_user }, recipient: ->(controller, model) { model}
+  tracked except: :update,
+          owner: ->(controller, _model) { controller && controller.current_user },
+          recipient: ->(_controller, model) { model }
 
   def build_workflowable(params)
     self.workflowable = workflowable_type.constantize.new(params)

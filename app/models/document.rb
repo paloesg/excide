@@ -1,6 +1,10 @@
 class Document < ActiveRecord::Base
   include PublicActivity::Model
-  tracked owner: ->(controller, model) { controller&.current_user }, recipient: ->(controller, model) { model&.workflow }, params: { filename: -> (controller, model) { model&.filename }}
+  tracked owner: ->(controller, _model) { controller&.current_user },
+          recipient: ->(_controller, model) { model&.workflow },
+          params: {
+            filename: ->(_controller, model) { model&.filename }
+          }
 
   belongs_to :company
   belongs_to :workflow

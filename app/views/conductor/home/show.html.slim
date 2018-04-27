@@ -22,29 +22,37 @@
     .panel.panel-default
       .panel-heading
         h3.panel-title Upcoming Activations
-      .panel-body
-        - if @activations.present?
-          table.table
-            thead
+      - if @upcoming_activations.present?
+        table.table
+          thead
+            tr
+              th Activation Type
+              th Start Time
+              th End Time
+              th Location
+          tbody
+            - @upcoming_activations.each do |activation|
               tr
-                th Activation Type
-                th Start Time
-                th End Time
-                th Location
-            tbody
-              - @activations.each do |activation|
-                tr
-                  td = activation.activation_type.titleize
-                  td = activation.start_time.strftime('%e %b %k:%M')
-                  td = activation.end_time.strftime('%e %b %k:%M')
-                  td = activation.location
-        - else
-          | No upcoming activations this month.
+                td = activation.activation_type.titleize
+                td = activation.start_time.strftime('%e %b %k:%M')
+                td = activation.end_time.strftime('%e %b %k:%M')
+                td = activation.location
+      - else
+        .panel-body No upcoming activations for this month.
   .col-sm-6.col-xs-12
     .panel.panel-default
       .panel-heading
         h3.panel-title Latest Updates
-      .panel-body
+      table.table
+        thead
+          tr
+            th User
+            th Action
+            th Time
+        tbody
+          - @activities.each do |activity|
+            tr = render_activity activity
+            
 #new-activation.hide
   = form_for @activation, remote: true, url: conductor_activations_path do |f|
     = render 'conductor/activations/form', f: f
