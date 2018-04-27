@@ -12,7 +12,7 @@ class Conductor::HomeController < ApplicationController
 
     # Only show activations relevant to contractor if logged in as contractor
     @activations = @activations.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :contractor, :any
-    @upcoming_activations = @activations.where("activation.end_time > ?", Time.current)
+    @upcoming_activations = @activations.where("activations.end_time > ?", Time.current)
 
     @activities = PublicActivity::Activity.where(recipient_type: "Activation").order("created_at desc")
 
