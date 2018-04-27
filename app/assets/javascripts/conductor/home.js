@@ -15,6 +15,7 @@ $(document).ready(function () {
         stepping: 15,
         sideBySide: true
       });
+      $('.datetimepicker').val($(this).attr('td-date'));
     }).on("show.bs.popover", function () {
       $('.popover').popover('hide');
     });
