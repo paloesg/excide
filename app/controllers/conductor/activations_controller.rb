@@ -51,6 +51,7 @@ class Conductor::ActivationsController < ApplicationController
         set_event_owners
         format.html { render :new }
         format.json { render json: @activation.errors, status: :unprocessable_entity }
+        format.js   { render js: @activation.errors.to_json }
       end
     end
   end

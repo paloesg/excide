@@ -1,3 +1,16 @@
+$(document).on("ajax:error", "form", function (xhr, status, error) {
+  $(this).find('.alert').hide();
+  data = JSON.parse(status.responseText)
+  var message, results;
+  if (data) {
+    results = [];
+    for (var message in data) {
+      results.push($(this).prepend('<div class="alert alert-danger">' + message.replace(/_/g, ' ') + ' ' + data[message] +'</div>' ));
+    }
+    return results;
+  }
+});
+
 $(document).ready(function () {
   // Create new activation
   $('.day').click(function () {
