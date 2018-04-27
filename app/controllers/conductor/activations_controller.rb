@@ -19,6 +19,10 @@ class Conductor::ActivationsController < ApplicationController
   # GET /conductor/activations/1
   # GET /conductor/activations/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: { activation: @activation, address: @activation.address } }
+    end
   end
 
   # GET /conductor/activations/new
@@ -42,6 +46,7 @@ class Conductor::ActivationsController < ApplicationController
       if @activation.save
         format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully created.' }
         format.json { render :show, status: :created, location: @activation }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         set_event_owners
         format.html { render :new }

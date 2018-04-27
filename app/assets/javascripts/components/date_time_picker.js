@@ -1,6 +1,7 @@
 $(function () {
   $(".datetimepicker").datetimepicker({
     format: "YYYY-MM-DD HH:mm",
+    stepping: 15
   });
 
   $(".datepicker").datetimepicker({

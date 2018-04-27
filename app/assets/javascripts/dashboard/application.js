@@ -18,5 +18,6 @@
 //= require symphony/assign_ui
 //= require conductor/create_allocations
 //= require conductor/add_avaibilities
+//= require conductor/home
 
 //= require turbolinks
