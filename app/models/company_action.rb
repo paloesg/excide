@@ -1,6 +1,6 @@
 class CompanyAction < ActiveRecord::Base
   include PublicActivity::Model
-  tracked except: :create,
+  tracked except: [:create, :destroy],
           owner: ->(controller, _model) { controller&.current_user },
           recipient: ->(_controller, model) { model&.workflow },
           params: {
