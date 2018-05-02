@@ -5,6 +5,7 @@ class Conductor::ActivationsController < ApplicationController
   before_action :set_company_and_clients
   before_action :set_event_owners, only: [:new, :edit]
   before_action :set_activation, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
+  before_action :set_user, only: [:new, :create, :edit, :update, :destroy]
 
   # GET /conductor/activations
   # GET /conductor/activations.json
@@ -106,6 +107,13 @@ class Conductor::ActivationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_activation
       @activation = Activation.find(params[:id])
+    end
+
+    def set_user
+      if !current_user.has_role? :admin, @company
+        flash[:alert] = "You are not authorized to perform this action."
+        redirect_to conductor_activations_path
+      end
     end
 
     def set_company_and_clients
