@@ -20,6 +20,7 @@ class Conductor::HomeController < ApplicationController
     @activation.build_address
     @clients = Client.where(company_id: @company.id)
     @event_owners = User.where(company: @company).with_role :event_owner, @company
+    cookies[:user_contractor] = @user.has_role? :contractor, @company
   end
 
   private
