@@ -8,7 +8,7 @@
       li.active Activations
     h1.page-header
       | Activations Listing
-      = link_to 'New Activation', new_conductor_activation_path, role: 'button', class: 'btn btn-warning pull-right' if @user.has_role? :admin, @company
+      = link_to 'New Activation', new_conductor_activation_path, role: 'button', class: 'btn btn-warning pull-right' unless @user.has_role? :contractor, :any
 .row
   .col-sm-12
     .btn-group.pull-right role='group'
