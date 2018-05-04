@@ -1,14 +1,14 @@
 // Show message validation in popover when creating activation
 $(document).on("ajax:error", "form", function (xhr, status, error) {
-  $(this).find('.alert').hide();
+  $(this).find('#popover_validation').text('')
   data = JSON.parse(status.responseText)
   var message, results;
   if (data) {
     results = [];
     for (var message in data) {
-      results.push($(this).prepend('<div class="alert alert-danger">' + message.replace(/_/g, ' ') + ' ' + data[message] +'</div>' ));
+      results.push($(this).find('#popover_validation').prepend(' *' + message.replace(/_/g, ' ') + ' ' + data[message]));
     }
-    return results;
+    $(this).find('.alert').show()
   }
 });
 $(document).ready(function () {
