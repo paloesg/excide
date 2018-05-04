@@ -60,8 +60,7 @@ $(document).ready(function () {
     element_target.find('#start_time').text(moment(start_time).format('YYYY-MM-DD HH:mm'));
     element_target.find('#end_time').text(moment(end_time).format('YYYY-MM-DD HH:mm'));
     element_target.find('#remarks').text(get_activation['remarks']);
-    element_target.find('.btn').hide();
-    element_target.find('.popover-content').append('<p><a href="conductor/activations/' + get_activation['id'] + '/edit" class="btn btn-default" role="button">Edit activation</a></p>');
+    element_target.find('#edit_link').attr("href", "conductor/activations/" + get_activation['id'] + "/edit");
   }).on("show.bs.popover", function() {
     $('.popover').popover('hide');
   });
