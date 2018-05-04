@@ -28,5 +28,6 @@ p
 p
   strong Remarks :
   span#remarks
-p
-  a.btn.btn-default#edit_link href="#" Edit activation
+- unless current_user.has_role? :contractor, :any
+  p
+    a.btn.btn-default#edit_link href="#" Edit activation
