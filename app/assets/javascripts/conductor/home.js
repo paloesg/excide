@@ -12,30 +12,27 @@ $(document).on("ajax:error", "form", function (xhr, status, error) {
   }
 });
 $(document).ready(function () {
-  user_contractor = (document.cookie.replace(/(?:(?:^|.*;\s*)user_contractor\s*\=\s*([^;]*).*$)|^.*$/, "$1") === 'true');
-  if (!user_contractor) {
-    // Create new activation
-    $('.new_activation').popover({
-      html: true,
-      title: 'New activation',
-      container: 'body',
-      placement: 'auto left',
-      content: function () {
-        return $('#new-activation').html();
-      }
-    }).on('shown.bs.popover', function () {
-      $('.datetimepicker').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
-        stepping: 15,
-        sideBySide: true
-      });
-      $('.datetimepicker').val($(this).attr('td-date'));
-    }).on("show.bs.popover", function () {
-      $('.popover').popover('hide');
-    }).children().on('click', function (e) {
-      e.stopPropagation();
+  // Create new activation
+  $('.new_activation').popover({
+    html: true,
+    title: 'New activation',
+    container: 'body',
+    placement: 'auto left',
+    content: function () {
+      return $('#new-activation').html();
+    }
+  }).on('shown.bs.popover', function () {
+    $('.datetimepicker').datetimepicker({
+      format: "YYYY-MM-DD HH:mm",
+      stepping: 15,
+      sideBySide: true
     });
-  }
+    $('.datetimepicker').val($(this).attr('td-date'));
+  }).on("show.bs.popover", function () {
+    $('.popover').popover('hide');
+  }).children().on('click', function (e) {
+    e.stopPropagation();
+  });
   // Activation details
   $('.activation').popover({
     html: true,
@@ -64,9 +61,7 @@ $(document).ready(function () {
     element_target.find('#end_time').text(moment(end_time).format('YYYY-MM-DD HH:mm'));
     element_target.find('#remarks').text(get_activation['remarks']);
     element_target.find('.btn').hide();
-    if (!user_contractor) {
-      element_target.find('.popover-content').append('<p><a href="conductor/activations/' + get_activation['id'] + '/edit" class="btn btn-default" role="button">Edit activation</a></p>');
-    }
+    element_target.find('.popover-content').append('<p><a href="conductor/activations/' + get_activation['id'] + '/edit" class="btn btn-default" role="button">Edit activation</a></p>');
   }).on("show.bs.popover", function() {
     $('.popover').popover('hide');
   });
