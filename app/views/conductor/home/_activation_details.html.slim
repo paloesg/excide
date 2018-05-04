@@ -1,32 +1,42 @@
 p
-  strong Client id :
+  strong Client:
+  br
   span#client_id
 p
-  strong Activation type :
+  strong Activation type:
+  br
   span#activation_type
 p
-  strong Event owner id :
+  strong Event owner:
+  br
   span#event_owner_id
 p
-  strong Location :
+  strong Location:
+  br
   span#location
 p
-  strong Address line 1 :
+  strong Address line 1:
+  br
   span#address_attributes_line_1
 p
-  strong Address line 2 :
+  strong Address line 2:
+  br
   span#address_attributes_line_2
 p
-  strong Postal code :
+  strong Postal code:
+  br
   span#address_attributes_postal_code
 p
-  strong Start time :
+  strong Start time:
+  br
   span#start_time
 p
-  strong End time :
+  strong End time:
+  br
   span#end_time
 p
-  strong Remarks :
+  strong Remarks:
+  br
   span#remarks
 - unless current_user.has_role? :contractor, :any
   p

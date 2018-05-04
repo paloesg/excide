@@ -12,7 +12,7 @@
   = f.label :activation_type
   = f.select :activation_type, Activation.activation_types.map { |key, value| [key.titleize, key] }, {selected: @activation.activation_type, prompt: 'Select activation type...'}, class: 'form-control'
 .form-group
-  = f.label :event_owner_id, "Event Owner"
+  = f.label :event_owner_id
   = f.select :event_owner_id, @event_owners.map { |key, value| [key.full_name, key.id] }, {selected: @activation.event_owner_id, prompt: 'Select event owner...'}, class: 'form-control'
 .form-group
   = f.label :location
