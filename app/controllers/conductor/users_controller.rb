@@ -55,7 +55,8 @@ class Conductor::UsersController < ApplicationController
   def import
     @users = User.csv_to_contractors(params[:csv_file], @company)
     flash[:notice] = "#{@users["imported"]} contractors imported succesfully. "
-    flash[:notice] << "#{@users["exist"]} contractors already exist in system." if @users["exist"] != 0
+    flash[:notice] << "#{@users["exist"]} contractors already exist in system. " if @users["exist"] != 0
+    flash[:notice] << "#{@users["has_no_email"]} contractors import failed (doesn't have email) " if @users["has_no_email"] != 0
     redirect_to conductor_users_path
   end
 
