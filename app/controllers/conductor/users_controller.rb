@@ -56,7 +56,7 @@ class Conductor::UsersController < ApplicationController
     @users = User.csv_to_contractors(params[:csv_file], @company)
     flash[:notice] = "#{@users["imported"]} contractors imported succesfully. "
     flash[:notice] << "#{@users["invalid_data"]} invalid contractors data. " if @users["invalid_data"] != 0
-    flash[:notice] << "#{@users["has_no_email"]} contractors import failed (doesn't have email) " if @users["has_no_email"] != 0
+    @users["email_messages"].uniq.map{ |message| flash[:notice] << "#{@users["email_messages"].count(message)} contractors email #{message[:email][0]}. " } if @users["email_messages"]
     redirect_to conductor_users_path
   end
 
