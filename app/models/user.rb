@@ -100,6 +100,7 @@ class User < ActiveRecord::Base
       @user.company = company
       if @user.save
         @user.add_role :contractor, company
+        @user.add_role :contractor_in_charge, company if row['IC']
         @count['imported'] += 1
       else
         @count['exist'] += 1
