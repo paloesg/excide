@@ -7,8 +7,8 @@ class SlackService
   WARNING = 'warning'
   DANGER = 'danger'
 
-  def initialize(channel = ENV['SLACK_WEBHOOK_CHANNEL'])
-    @uri = URI(ENV['SLACK_WEBHOOK_URL'])
+  def initialize(uri = URI(ENV['SLACK_WEBHOOK_URL']), channel = ENV['SLACK_WEBHOOK_CHANNEL'])
+    @uri = uri
     @channel = channel
   end
 
