@@ -94,7 +94,7 @@ class User < ActiveRecord::Base
   end
 
   def self.csv_to_contractors(file, company)
-    @count = { "imported" => 0, "invalid_data" => 0, "email_messages" => []}
+    @count = { "imported" => 0, "invalid_data" => 0, "email_taken" => 0, "email_blank" => 0 }
     CSV.foreach(file.path, headers: true) do |row|
       @user = User.new( first_name: row['First Name'], last_name: row['Last Name'], email: row['Email'], contact_number: row['Phone'], nric: row['NRIC'], date_of_birth: row['Date of Birth'], max_hours_per_week: row['Max Hours Per Week'], bank_name: row['Bank Name'], bank_account_number: row['Bank Account Number'], bank_account_type: row['Bank Account Type']&.downcase )
       @user.company = company
@@ -102,7 +102,8 @@ class User < ActiveRecord::Base
         @user.add_role :contractor, company
         @count['imported'] += 1
       elsif (@user.errors[:email])
-        @count['email_messages'] << @user.errors.messages
+        @count['email_taken'] += 1 if @user.errors.messages[:email] == ["has already been taken"]
+        @count['email_blank'] += 1 if @user.errors.messages[:email] == ["can't be blank"]
       else
         @count['invalid_data'] += 1
       end
