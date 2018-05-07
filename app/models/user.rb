@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
       @user.company = company
       if @user.save
         @user.add_role :contractor, company
-        @user.add_role :contractor_in_charge, company if row['IC']
+        @user.add_role :contractor_in_charge, company if row['IC'] == true
         import_count['imported'] += 1
       elsif (@user.errors[:email])
         import_count['email_taken'] += 1 if @user.errors.messages[:email] == ["has already been taken"]
