@@ -85,7 +85,7 @@ class SlackService
             },
             {
               title: 'Link',
-              value: document.file_url,
+              value: 'https://' + ENV['HOST_DOMAIN'] + '/symphony/documents/' + document.id.to_s,
             }
           ]
         }
