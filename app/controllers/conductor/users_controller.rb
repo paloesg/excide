@@ -21,12 +21,15 @@ class Conductor::UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     @user.company = @company
-    if user_params[:max_hours_per_week].present? && @user.save
+    if user_params[:max_hours_per_week].blank?
+      @user.valid?
+      @user.errors.add(:max_hours_per_week, "must be present for contractors")
+      render :new
+    elsif @user.save
       @user.add_role :contractor, @company
       @user.add_role_contractor_ic params[:contractor_in_charge]
       redirect_to conductor_users_path, notice: 'User successfully created!'
     else
-      @user.errors[:max_hours_per_week] << "must be present for contractors" if user_params[:max_hours_per_week].blank?
       render :new
     end
   end
@@ -35,11 +38,14 @@ class Conductor::UsersController < ApplicationController
   end
 
   def update
-    if user_params[:max_hours_per_week].present? && @user.update(user_params)
+    if user_params[:max_hours_per_week].blank?
+      @user.valid?
+      @user.errors.add(:max_hours_per_week, "must be present for contractors")
+      render :edit
+    elsif @user.update(user_params)
       @user.add_role_contractor_ic params[:contractor_in_charge]
       redirect_to conductor_user_path, notice: 'User successfully updated!'
     else
-      @user.errors[:max_hours_per_week] << "must be present for contractors" if user_params[:max_hours_per_week].blank?
       render :edit
     end
   end
