@@ -49,7 +49,7 @@ $(document).ready(function () {
     start_time = new Date(get_activation['start_time']);
     end_time = new Date(get_activation['end_time']);
     element_target.find('#client_name').text($(this).attr('activation-client'));
-    element_target.find('#activation_type').text(get_activation['activation_type']);
+    element_target.find('#activation_type').text(get_activation['activation_type'].replace(/_/g, ' '));
     element_target.find('#event_owner').text($(this).attr('activation-event_owner'));
     element_target.find('#location').text(get_activation['location']);
     if (get_activation_address) {
