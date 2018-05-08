@@ -48,9 +48,9 @@ $(document).ready(function () {
     get_activation_address = JSON.parse($(this).attr('activation-address'))
     start_time = new Date(get_activation['start_time']);
     end_time = new Date(get_activation['end_time']);
-    element_target.find('#client_id').text(get_activation['client_id']);
+    element_target.find('#client_name').text($(this).attr('activation-client'));
     element_target.find('#activation_type').text(get_activation['activation_type']);
-    element_target.find('#event_owner_id').text(get_activation['event_owner_id']);
+    element_target.find('#event_owner').text($(this).attr('activation-event_owner'));
     element_target.find('#location').text(get_activation['location']);
     if (get_activation_address) {
       element_target.find('#address_attributes_line_1').text(get_activation_address['line_1']);
