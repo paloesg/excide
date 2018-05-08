@@ -57,8 +57,8 @@ $(document).ready(function () {
       element_target.find('#address_attributes_line_2').text(get_activation_address['line_2']);
       element_target.find('#address_attributes_postal_code').text(get_activation_address['postal_code']);
     }
-    element_target.find('#start_time').text(moment(start_time).format('YYYY-MM-DD HH:mm'));
-    element_target.find('#end_time').text(moment(end_time).format('YYYY-MM-DD HH:mm'));
+    element_target.find('#start_time').text(moment(start_time).format('HH:mm'));
+    element_target.find('#end_time').text(moment(end_time).format('HH:mm'));
     element_target.find('#remarks').text(get_activation['remarks']);
     element_target.find('#edit_link').attr("href", "conductor/activations/" + get_activation['id'] + "/edit");
   }).on("show.bs.popover", function() {
