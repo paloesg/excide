@@ -26,7 +26,7 @@ class Conductor::UsersController < ApplicationController
       @user.add_role_contractor_ic params[:contractor_in_charge]
       redirect_to conductor_users_path, notice: 'User successfully created!'
     else
-      @user.errors.add(:max_hours_per_week) if user_params[:max_hours_per_week].blank?
+      @user.errors[:max_hours_per_week] << "must be present for contractors" if user_params[:max_hours_per_week].blank?
       render :new
     end
   end
