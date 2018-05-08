@@ -35,10 +35,11 @@ class Conductor::UsersController < ApplicationController
   end
 
   def update
-    if @user.update(user_params)
+    if user_params[:max_hours_per_week].present? && @user.update(user_params)
       @user.add_role_contractor_ic params[:contractor_in_charge]
       redirect_to conductor_user_path, notice: 'User successfully updated!'
     else
+      @user.errors[:max_hours_per_week] << "must be present for contractors" if user_params[:max_hours_per_week].blank?
       render :edit
     end
   end
