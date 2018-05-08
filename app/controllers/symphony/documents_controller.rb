@@ -4,19 +4,7 @@ class Symphony::DocumentsController < DocumentsController
   before_action :set_workflow, only: [:new, :edit]
 
   def index
-    @documents = []
-
-    # For each workflow that a company has, retrieve all the documents present, ordered by document templates so that they can be displayed in the table
-    @workflows.each do |workflow|
-      docs = []
-      # First element of array contains the workflow so that workflow info can be retrieved for building the table
-      docs << workflow
-      @document_templates.each do |template|
-        # Rest of the elements are documents that belong to the particular workflow, ordered by the document template
-        docs << Document.find_by(company: @company, workflow: workflow, document_template: template)
-      end
-      @documents << docs
-    end
+    @documents = Kaminari.paginate_array(@company.documents).page(params[:page]).per(20)
   end
 
   def create
