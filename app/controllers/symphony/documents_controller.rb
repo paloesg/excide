@@ -27,6 +27,7 @@ class Symphony::DocumentsController < DocumentsController
     @workflow = Workflow.find_by(identifier: params[:workflow]) if params[:workflow].present?
 
     if @document.save
+      SlackService.new.new_document(@document).deliver
       redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.'
     else
       render :new
