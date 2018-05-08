@@ -58,14 +58,19 @@ class SlackService
     params = {
       attachments: [
         {
-          title: 'New Document Uploaded',
-          fallback: 'New Document Uploaded',
-          pretext: 'New Document:',
+          title: document.filename,
+          fallback: 'New document uploaded: ' + document.filename,
+          pretext: 'A new document has been uploaded:',
           color: GOOD,
           fields: [
             {
               title: 'Document Identifier',
               value: document.identifier,
+              short: true
+            },
+            {
+              title: 'Filetype',
+              value: File.extname(document.file_url),
               short: true
             },
             {
@@ -75,8 +80,12 @@ class SlackService
             },
             {
               title: 'Company',
-              value: document.company.name,
+              value: document.company&.name || '-',
               short: true
+            },
+            {
+              title: 'Link',
+              value: document.file_url,
             }
           ]
         }
