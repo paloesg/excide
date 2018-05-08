@@ -4,7 +4,7 @@ class Symphony::DocumentsController < DocumentsController
   before_action :set_workflow, only: [:new, :edit]
 
   def index
-    @documents = @company.documents
+    @documents = Kaminari.paginate_array(@company.documents).page(params[:page]).per(20)
   end
 
   def create
