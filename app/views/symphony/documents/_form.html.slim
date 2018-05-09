@@ -22,7 +22,10 @@
   = f.text_field :date_signed, class: 'form-control datepicker'
 .form-group.file-field
   = f.label :file_url, 'Upload file'
-  = f.file_field :file_url
+  - if params[:camera] == "true"
+    = f.file_field :file_url, accept: 'image/*', capture: 'camera'
+  - else
+    = f.file_field :file_url
   .file-path-wrapper
     = f.label 'File URL'
     = f.text_field :file_url, class: 'file-path form-control', disabled: true
