@@ -7,7 +7,7 @@ class Symphony::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.where(company: @company).order(:id)
+    @users = User.where(company: @company).order(:id).without_role :contractor, :any
   end
 
   def show
