@@ -30,6 +30,7 @@ $(document).ready(function () {
     $('.datetimepicker').val($(this).attr('td-date'));
   }).on("show.bs.popover", function () {
     $('.popover').popover('hide');
+    $(this).data("bs.popover").tip().css({ "max-width": "500px" });
   }).children().on('click', function (e) {
     e.stopPropagation();
   });
