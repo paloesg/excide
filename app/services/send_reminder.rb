@@ -38,7 +38,7 @@ class SendReminder
 
   def set_next_reminder
     if @reminder.repeat?
-      @reminder.next_reminder = Date.today + @reminder.freq_value.to_i.send(@reminder.freq_unit)
+      @reminder.next_reminder = Date.current + @reminder.freq_value.to_i.send(@reminder.freq_unit)
     else
       @reminder.next_reminder = nil
     end
