@@ -39,19 +39,20 @@
                 td = activation.location
       - else
         .panel-body No upcoming activations for this month.
-  .col-sm-6.col-xs-12
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Latest Updates
-      table.table
-        thead
-          tr
-            th User
-            th Action
-            th Time
-        tbody
-          - @activities.each do |activity|
-            tr = render_activity activity
+  - unless current_user.has_role? :contractor, :any
+    .col-sm-6.col-xs-12
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Latest Updates
+        table.table
+          thead
+            tr
+              th User
+              th Action
+              th Time
+          tbody
+            - @activities.each do |activity|
+              tr = render_activity activity
 
 #new-activation.hide
   = form_for @activation, remote: true, url: conductor_activations_path do |f|
