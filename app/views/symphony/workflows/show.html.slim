@@ -23,10 +23,11 @@
               th Done
               th Completed By
           tbody
-            - @tasks.each do |t|
-              - action = t.get_company_action(@company.id, @workflow.identifier)
+            - @tasks.each do |task|
               tr
-                = render "#{t.task_type}_task", t: t, action: action
+                - t = TaskDecorator.new(task)
+                - a = t.workflow_action(@workflow.identifier)
+                = render "#{task.task_type}_task", task: t, action: a
       .panel-footer
         - unless @section.first?
           = link_to "Previous Section", section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-default pull-left'
