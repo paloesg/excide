@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/hschin/administrate-field-nested_has_many.git
+  remote: https://github.com/hschin/administrate-field-nested_has_many.git
   revision: 6e8a1c1918c15451ffcbf4a8de187e17d102e365
   specs:
     administrate-field-nested_has_many (0.2.0)
@@ -55,10 +55,10 @@ GEM
       tzinfo (~> 1.1)
     acts_as_list (0.9.11)
       activerecord (>= 3.0)
-    administrate (0.9.0)
-      actionpack (>= 4.2, < 5.2)
-      actionview (>= 4.2, < 5.2)
-      activerecord (>= 4.2, < 5.2)
+    administrate (0.10.0)
+      actionpack (>= 4.2, < 6.0)
+      actionview (>= 4.2, < 6.0)
+      activerecord (>= 4.2, < 6.0)
       autoprefixer-rails (>= 6.0)
       datetime_picker_rails (~> 0.0.7)
       jquery-rails (>= 4.0)
@@ -73,7 +73,7 @@ GEM
       rails (>= 4.2, < 5.1)
     arel (6.0.4)
     ast (2.4.0)
-    autoprefixer-rails (8.3.0)
+    autoprefixer-rails (8.4.1)
       execjs
     aws-sdk (2.11.33)
       aws-sdk-resources (= 2.11.33)
@@ -271,7 +271,7 @@ GEM
     puma (3.11.4)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
-    rack (1.6.9)
+    rack (1.6.10)
     rack-proxy (0.6.4)
       rack
     rack-reverse-proxy (0.12.0)

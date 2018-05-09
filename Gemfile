@@ -107,7 +107,7 @@ gem "simple_calendar", "~> 2.0"
 # Backend admin
 gem 'administrate'
 gem 'administrate-field-image'
-gem 'administrate-field-nested_has_many', github: 'hschin/administrate-field-nested_has_many'
+gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
 gem 'administrate-field-json'
 
 # Deep cloning for cloning of template with associated sections
@@ -149,5 +149,5 @@ group :development, :test do
   gem 'factory_bot_rails'
 
   # A library for generating fake data such as names, addresses, and phone numbers.
-  gem 'faker', :git => 'https://github.com/stympy/faker.git'
+  gem 'faker', git: 'https://github.com/stympy/faker.git'
 end
