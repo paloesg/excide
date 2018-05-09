@@ -15,12 +15,12 @@
       = f.select :activation_type, Activation.activation_types.map { |key, value| [key.titleize, key] }, {selected: @activation.activation_type, prompt: 'Select activation type...'}, class: 'form-control'
   .col-sm-6
     .form-group
-      = f.label :event_owner_id
-      = f.select :event_owner_id, @event_owners.map { |key, value| [key.full_name, key.id] }, {selected: @activation.event_owner_id, prompt: 'Select event owner...'}, class: 'form-control'
-  .col-sm-6
-    .form-group
       = f.label :location
       = f.text_field :location, class: 'form-control'
+  .col-sm-6
+    .form-group
+      = f.label :event_owner_id
+      = f.select :event_owner_id, @event_owners.map { |key, value| [key.full_name, key.id] }, {selected: @activation.event_owner_id, prompt: 'Select event owner...'}, class: 'form-control'
 .row
   .col-sm-6
     .form-group
