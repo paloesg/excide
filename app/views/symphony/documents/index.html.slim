@@ -14,26 +14,27 @@
 
 .row
   .col-sm-12
-    table.table.table-hover
-      thead
-        tr
-          th Filename
-          th Identifier
-          th Workflow
-          th Template
-          th
-
-      tbody
-        - @documents.each do |document|
+    .table-responsive
+      table.table.table-hover
+        thead
           tr
-            td = document.filename
-            td = document.identifier
-            td = document.workflow&.template&.title
-            td = document.document_template&.title
-            td.btn-toolbar
-              = link_to "View", symphony_document_path(document), role: 'button', class: 'btn btn-success btn-xs'
-              = link_to "Download", document.file_url, role: 'button', class: 'btn btn-warning btn-xs'
-              = link_to 'Edit', edit_symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-xs' if current_user.has_role? :admin, @company
-              = link_to 'Destroy', symphony_document_path(document), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs' if current_user.has_role? :admin, @company
-    .text-center
-      = paginate @documents, views_prefix: 'dashboards'
+            th Filename
+            th Identifier
+            th Workflow
+            th Template
+            th
+
+        tbody
+          - @documents.each do |document|
+            tr
+              td = document.filename
+              td = document.identifier
+              td = document.workflow&.template&.title
+              td = document.document_template&.title
+              td.btn-toolbar
+                = link_to "View", symphony_document_path(document), role: 'button', class: 'btn btn-success btn-xs'
+                = link_to "Download", document.file_url, role: 'button', class: 'btn btn-warning btn-xs'
+                = link_to 'Edit', edit_symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-xs' if current_user.has_role? :admin, @company
+                = link_to 'Destroy', symphony_document_path(document), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs' if current_user.has_role? :admin, @company
+      .text-center
+        = paginate @documents, views_prefix: 'dashboards'
