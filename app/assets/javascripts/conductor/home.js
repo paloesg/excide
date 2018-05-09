@@ -43,27 +43,26 @@ $(document).ready(function () {
     content: function () {
       return $('#activation-details').html();
     }
-  }).on("shown.bs.popover", function (el) {
+  }).on("show.bs.popover", function(el) {
+    $('.popover').popover('hide');
     element_target = $(el.target).data("bs.popover").tip();
     get_activation = JSON.parse($(this).attr('activation-data'))
     get_activation_address = JSON.parse($(this).attr('activation-address'))
     start_time = new Date(get_activation['start_time']);
     end_time = new Date(get_activation['end_time']);
-    element_target.find('#client_name').text($(this).attr('activation-client'));
-    element_target.find('#activation_type').text(get_activation['activation_type'].replace(/_/g, ' '));
-    element_target.find('#event_owner').text($(this).attr('activation-event_owner'));
-    element_target.find('#location').text(get_activation['location']);
+    $('#client_name').text($(this).attr('activation-client'));
+    $('#activation_type').text(get_activation['activation_type'].replace(/_/g, ' '));
+    $('#event_owner').text($(this).attr('activation-event_owner'));
+    $('#location').text(get_activation['location']);
     if (get_activation_address) {
-      element_target.find('#address_attributes_line_1').text(get_activation_address['line_1']);
-      element_target.find('#address_attributes_line_2').text(get_activation_address['line_2']);
-      element_target.find('#address_attributes_postal_code').text(get_activation_address['postal_code']);
+      $('#address_attributes_line_1').text(get_activation_address['line_1']);
+      $('#address_attributes_line_2').text(get_activation_address['line_2']);
+      $('#address_attributes_postal_code').text(get_activation_address['postal_code']);
     }
-    element_target.find('#start_time').text(moment(start_time).format('HH:mm'));
-    element_target.find('#end_time').text(moment(end_time).format('HH:mm'));
-    element_target.find('#remarks').text(get_activation['remarks']);
-    element_target.find('#edit_link').attr("href", "conductor/activations/" + get_activation['id'] + "/edit");
-  }).on("show.bs.popover", function() {
-    $('.popover').popover('hide');
+    $('#start_time').text(moment(start_time).format('HH:mm'));
+    $('#end_time').text(moment(end_time).format('HH:mm'));
+    $('#remarks').text(get_activation['remarks']);
+    $('#edit_link').attr("href", "conductor/activations/" + get_activation['id'] + "/edit");
   });
   $('body').on('hidden.bs.popover', function (e) {
     $(e.target).data("bs.popover").inState.click = false;
