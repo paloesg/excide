@@ -1,0 +1,23 @@
+td = t.position.to_s + '.'
+td
+  = t.instructions
+  = image_tag(t.image_url, class: "img-responsive") if t.image_url.present?
+  br
+  = link_to "Download File", t.document_template.file_url, role: 'button', class: 'btn btn-primary btn-xs' if t.document_template.present?
+td
+  - if action.assigned_user.present?
+    span.glyphicon.glyphicon-user aria-hidden="true"
+    |  #{action.assigned_user&.full_name}
+  - else
+    = t.role&.name&.humanize
+td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
+td
+  / Check if task is current task AND check if it's assigned to a particular user OR whether user has the required role OR user has admin role
+  - if t == @workflow.current_task && (action.assigned_user == current_user || t.role_id == nil || (@roles.map(&:id).include? t.role_id) || (@user.has_role? :admin, @company))
+    = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: t.id), method: "POST" }, :onclick => "this.checked=true;"
+  - else
+    = check_box_tag 'completed', action.id, action.completed, disabled: true
+td
+  - if action.completed? && action.completed_user.present?
+    span.glyphicon.glyphicon-user aria-hidden="true"
+    |  #{action.completed_user&.full_name}
