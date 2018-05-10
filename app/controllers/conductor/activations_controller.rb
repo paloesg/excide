@@ -60,6 +60,7 @@ class Conductor::ActivationsController < ApplicationController
   # PATCH/PUT /conductor/activations/1
   # PATCH/PUT /conductor/activations/1.json
   def update
+    UpdateActivationTime.time_changed(activation_params, @activation)
     respond_to do |format|
       if @activation.update(activation_params)
         format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully updated.' }
