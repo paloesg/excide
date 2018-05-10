@@ -9,7 +9,25 @@
   .col-xs-12.col-sm-6.col-md-3
     .form-group
       = f.label :activation
-      = f.collection_select :activation_id, @activations, :id, :name, {include_blank: true}, class: 'form-control'
+      = f.collection_select :activation_id, @activations, :id, :name, {include_blank: true}, {class: 'form-control', disabled: 'disabled'}
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :allocation_date
+      = f.text_field :allocation_date, {class: 'form-control', disabled: 'disabled'}
+.row
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :start_time
+      = f.text_field :start_time, {value: @allocation.start_time&.strftime("%H:%M"),class: 'form-control', disabled: 'disabled'}
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :end_time
+      = f.text_field :end_time, {value: @allocation.end_time&.strftime("%H:%M"), class: 'form-control', disabled: 'disabled'}
+.row
+  .col-xs-12.col-sm-6.col-md-3
+    .form-group
+      = f.label :allocation_type
+      = f.select :allocation_type, Allocation.allocation_types.map { |key, value| [key.titleize, key] }, {selected: @allocation.allocation_type, prompt: 'Select allocation type...'}, class: 'form-control'
   .col-xs-12.col-sm-6.col-md-3
     .form-group
       = f.label :user
@@ -17,14 +35,6 @@
 .row
   .col-xs-12.col-sm-6.col-md-3
     .form-group
-      = f.label :allocation_date
-      = f.text_field :allocation_date, class: 'form-control datepicker'
-  .col-xs-12.col-sm-6.col-md-3
-    .form-group
-      = f.label :start_time
-      = f.text_field :start_time, value: @allocation.start_time&.strftime("%H:%M"), class: 'form-control timepicker'
-  .col-xs-12.col-sm-6.col-md-3
-    .form-group
-      = f.label :end_time
-      = f.text_field :end_time, value: @allocation.end_time&.strftime("%H:%M"), class: 'form-control timepicker'
+      = f.label :last_minute
+      = f.check_box :last_minute
 = f.submit 'Save Allocation', class: 'btn btn-default'

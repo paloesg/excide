@@ -19,55 +19,9 @@ RSpec.describe Symphony::DocumentsController, type: :controller do
       login_with user
     end
 
-    it "should let a user see all the posts" do
+    it "should let a user see all the documents" do
       get :index
       expect( response ).to render_template( :index )
-    end
-
-    it "should show only company documents" do
-      create_list( :template_with_workflow, 3)
-      create_list( :template_with_workflow, 3, company: user.company )
-      get :index
-      assigns( :documents ).each do |workflows_documents|
-        workflows_documents.shift.identifier
-        workflows_documents.each do |document|
-          if document.nil? # Different Document Template
-          else
-            expect( document[:company_id] ).to eq( user.company.id )
-          end
-        end
-      end
-    end
-
-    it "should create company documents" do
-      document_params = FactoryBot.attributes_for(:document)
-      expect{ post :create, :document => document_params }.to change(Document, :count).by(1)
-      expect( Document.last().company_id ).to eq( user.company.id )
-    end
-
-    it "should not show other company documents" do
-      create_list( :template_with_workflow, 3)
-      get :index
-
-      Document.all().each do |document|
-        expect( document.company.id ).not_to eq( user.company.id )
-      end
-
-      assigns( :documents ).each do |workflows_documents|
-        workflows_documents.shift.identifier
-        workflows_documents.each do |document|
-          if document.nil? # Different Document Template
-          else
-            expect( document[:company_id] ).to eq( user.company.id )
-          end
-        end
-      end
-    end
-
-    it "should not create other company documents" do
-      document_params = FactoryBot.build(:document_with_company).attributes
-      expect{ post :create, :document => document_params }.to change(Document, :count).by(1)
-      expect( Document.last().company_id ).to eq( user.company.id )
     end
   end
 end

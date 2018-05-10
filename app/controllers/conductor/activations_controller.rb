@@ -50,6 +50,7 @@ class Conductor::ActivationsController < ApplicationController
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         set_event_owners
+        @activation.build_address unless @activation.address.present?
         format.html { render :new }
         format.json { render json: @activation.errors, status: :unprocessable_entity }
         format.js   { render js: @activation.errors.to_json }
@@ -66,6 +67,7 @@ class Conductor::ActivationsController < ApplicationController
         format.json { render :show, status: :ok, location: @activation }
       else
         set_event_owners
+        @activation.build_address unless @activation.address.present?
         format.html { render :edit }
         format.json { render json: @activation.errors, status: :unprocessable_entity }
       end

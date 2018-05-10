@@ -15,5 +15,9 @@ FactoryBot.define do
     factory :company_admin do
       after(:create) { |user| user.add_role :admin, user.company }
     end
+
+    factory :event_owner do
+      after(:create) { |user| user.add_role :event_owner, user.company }
+    end
   end
 end
