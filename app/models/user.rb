@@ -83,11 +83,11 @@ class User < ActiveRecord::Base
   end
 
   def self.contractors_to_csv
-    attributes = ['ID', 'First Name', 'Last Name', 'Email', 'Phone', 'NRIC', 'Date of Birth', 'Max Hours Per Week', 'Bank Name', 'Bank Account Number', 'Bank Account Type', 'Status', 'IC']
+    attributes = ['ID', 'First Name', 'Last Name', 'Email', 'Phone', 'NRIC', 'Date of Birth', 'Max Hours Per Week', 'Bank Name', 'Bank Account Name', 'Bank Account Number', 'Bank Account Type', 'Status', 'IC']
     CSV.generate do |csv|
       csv << attributes
       all.each do |user|
-        row = [ user.id, user.first_name, user.last_name, user.email, user.contact_number, user.nric, user.date_of_birth, user.max_hours_per_week, user.bank_name, user.bank_account_number, user.bank_account_type&.titleize, user.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed', (true if user.has_role?(:contractor_in_charge, :any)) ]
+        row = [ user.id, user.first_name, user.last_name, user.email, user.contact_number, user.nric, user.date_of_birth, user.max_hours_per_week, user.bank_name, user.bank_account_name, user.bank_account_number, user.bank_account_type&.titleize, user.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed', (true if user.has_role?(:contractor_in_charge, :any)) ]
         csv << row
       end
     end
@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
   def self.csv_to_contractors(file, company)
     import_count = { "imported" => 0, "invalid_data" => 0, "email_taken" => 0, "email_blank" => 0 }
     CSV.foreach(file.path, headers: true) do |row|
-      @user = User.new( first_name: row['First Name'], last_name: row['Last Name'], email: row['Email'], contact_number: row['Phone'], nric: row['NRIC'], date_of_birth: row['Date of Birth'], max_hours_per_week: row['Max Hours Per Week'], bank_name: row['Bank Name'], bank_account_number: row['Bank Account Number'], bank_account_type: row['Bank Account Type']&.downcase )
+      @user = User.new( first_name: row['First Name'], last_name: row['Last Name'], email: row['Email'], contact_number: row['Phone'], nric: row['NRIC'], date_of_birth: row['Date of Birth'], max_hours_per_week: row['Max Hours Per Week'], bank_name: row['Bank Name'], bank_account_name: row['Bank Account Name'], bank_account_number: row['Bank Account Number'], bank_account_type: row['Bank Account Type']&.downcase)
       @user.company = company
       if @user.save
         @user.add_role :contractor, company
