@@ -2,13 +2,10 @@ require 'rails_helper'
 
 RSpec.describe "conductor/activations/edit", type: :view do
   before(:each) do
-    @activation = assign(:activation, Activation.create!(
-      :activation_type => 1,
-      :remarks => "MyText",
-      :location => "MyString",
-      :start_time => Time.now,
-      :end_time => Time.now + 1.day,
-    ))
+    @company = FactoryBot.create(:company)
+    @activation = FactoryBot.create(:activation, company: @company)
+    @clients = Client.all
+    @event_owners = User.with_role :event_owner, :any
   end
 
   it "renders the edit activation form" do
@@ -16,7 +13,7 @@ RSpec.describe "conductor/activations/edit", type: :view do
 
     assert_select "form[action=?][method=?]", conductor_activation_path(@activation), "post" do
 
-      assert_select "input#activation_activation_type[name=?]", "activation[activation_type]"
+      assert_select "select#activation_activation_type[name=?]", "activation[activation_type]"
 
       assert_select "textarea#activation_remarks[name=?]", "activation[remarks]"
 
