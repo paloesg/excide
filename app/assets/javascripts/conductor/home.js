@@ -45,7 +45,6 @@ $(document).ready(function () {
     }
   }).on("show.bs.popover", function(el) {
     $('.popover').popover('hide');
-    element_target = $(el.target).data("bs.popover").tip();
     get_activation = JSON.parse($(this).attr('activation-data'))
     get_activation_address = JSON.parse($(this).attr('activation-address'))
     start_time = new Date(get_activation['start_time']);
