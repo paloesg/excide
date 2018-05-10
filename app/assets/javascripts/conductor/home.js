@@ -37,7 +37,6 @@ $(document).ready(function () {
   // Activation details
   $('.activation').popover({
     html: true,
-    title: 'Activation details',
     container: 'body',
     placement: 'auto left',
     content: function () {
