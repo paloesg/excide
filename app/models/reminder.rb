@@ -13,7 +13,7 @@ class Reminder < ActiveRecord::Base
   validate :at_least_one_notification_method
 
   def self.today
-    reminders = Reminder.where('DATE(next_reminder) = ?', Date.current)
+    reminders = Reminder.where(next_reminder: Date.current.beginning_of_day..Date.current.end_of_day)
   end
 
   def at_least_one_notification_method
