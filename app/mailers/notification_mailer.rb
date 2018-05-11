@@ -37,6 +37,10 @@ class NotificationMailer < ApplicationMailer
     activation_notification(activation, user, 'An activation has been cancelled')
   end
 
+  def removed_from_activation(activation, user)
+    activation_notification(activation, user, 'An activation has been changed')
+  end
+
   def activation_notification(activation, user, subject)
     @user = user
     @subject = subject
