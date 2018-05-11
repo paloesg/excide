@@ -71,25 +71,26 @@ class Workflow < ActiveRecord::Base
 
   def build_data
     d = self.data.dup
-    d << Data.new({name: '', value: '', user_id: '', updated_at: ''})
+    d << Data.new({name: '', value: '', placeholder: '', user_id: '', updated_at: ''})
     self.data = d
   end
 
   def template_data(template)
     template.data_names.each do |data_name|
       d = self.data.dup
-      d << {name: data_name['name'], value: data_name['default']}
+      d << {name: data_name['name'], value: data_name['default'], placeholder: data_name['placeholder']}
       self.data = d
     end
   end
 
   class Data
-    attr_accessor :name, :value, :user_id, :updated_at
+    attr_accessor :name, :value, :placeholder, :user_id, :updated_at
     def initialize(hash)
-      @name       = hash['name']
-      @value      = hash['value']
-      @user_id       = hash['user_id']
-      @updated_at = hash['updated_at']
+      @name         = hash['name']
+      @value        = hash['value']
+      @placeholder  = hash['placeholder']
+      @user_id      = hash['user_id']
+      @updated_at   = hash['updated_at']
     end
     def persisted?() false; end
     def new_record?() false; end
