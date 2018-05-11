@@ -60,15 +60,15 @@ class Conductor::ActivationsController < ApplicationController
   # PATCH/PUT /conductor/activations/1
   # PATCH/PUT /conductor/activations/1.json
   def update
-    update_activation = UpdateActivationTime.time_changed(activation_params, @activation)
+    activation = UpdateActivationTime.run(@activation, activation_params)
     respond_to do |format|
-      if update_activation
+      if activation
         format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully updated.' }
-        format.json { render :show, status: :ok, location: update_activation }
+        format.json { render :show, status: :ok, location: activation }
       else
         set_event_owners
         format.html { render :edit }
-        format.json { render json: update_activation.errors, status: :unprocessable_entity }
+        format.json { render json: activation.errors, status: :unprocessable_entity }
       end
     end
   end

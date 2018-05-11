@@ -1,19 +1,27 @@
 class UpdateActivationTime
+  include Service
 
-  def self.time_changed(params, activation)
-    activation.transaction do
-      activation.allocations.transaction do
-        if activation.allocations.update_all(allocation_date: params['start_time'], start_time: params['start_time'], end_time: params['end_time'])
-          activation.allocations.each do |allocation|
-            if allocation.user.availabilities.where("start_time <= ?", params['start_time']).where("end_time >= ?", params['end_time']).present?
-              NotificationMailer.edit_activation(activation, allocation.user).deliver
-            else
-              NotificationMailer.removed_from_activation(activation, allocation.user).deliver
-              allocation.update_attribute(:user_id, nil)
-            end if allocation.user
-          end
+  def initialize(activation, params)
+    @activation     = activation
+    @params         = params
+    @new_start_time = params['start_time']
+    @new_end_time   = params['end_time']
+  end
+
+  def run
+    time_changed
+  end
+
+  private
+
+  def time_changed
+    @activation.transaction do
+      @activation.allocations.transaction do
+        @activation.allocations.update_all(allocation_date: @new_start_time, start_time: @new_start_time, end_time: @new_end_time)
+        @activation.allocations.each do |allocation|
+          UpdateAllocationTime.new.run(@activation, @allocation, @new_start_time, @new_end_time)
         end
-        activation.update(params)
+        @activation.update(params)
       end
     end
   end
