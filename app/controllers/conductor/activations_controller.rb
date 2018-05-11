@@ -64,11 +64,11 @@ class Conductor::ActivationsController < ApplicationController
     respond_to do |format|
       if update_activation
         format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully updated.' }
-        format.json { render :show, status: :ok, location: @activation }
+        format.json { render :show, status: :ok, location: update_activation }
       else
         set_event_owners
         format.html { render :edit }
-        format.json { render json: @activation.errors, status: :unprocessable_entity }
+        format.json { render json: update_activation.errors, status: :unprocessable_entity }
       end
     end
   end
