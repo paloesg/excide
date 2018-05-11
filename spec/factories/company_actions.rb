@@ -7,7 +7,7 @@ FactoryBot.define do
     association :assigned_user, factory: :user
 
     completed false
-    deadline Faker::Date.between(Date.today, 1.month.from_now)
+    deadline Faker::Date.between(Date.current, 1.month.from_now)
 
     factory :completed_company_action do
       association :completed_user, factory: :user

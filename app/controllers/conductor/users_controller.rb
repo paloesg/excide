@@ -57,7 +57,7 @@ class Conductor::UsersController < ApplicationController
 
   def export
     @users = User.where(company: @company).with_role :contractor, @company
-    send_data @users.contractors_to_csv, filename: "Contractors-#{Date.today}.csv"
+    send_data @users.contractors_to_csv, filename: "Contractors-#{Date.current}.csv"
   end
 
   def import
