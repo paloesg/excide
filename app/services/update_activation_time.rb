@@ -9,19 +9,19 @@ class UpdateActivationTime
   end
 
   def run
-    time_changed
+    update_activation_allocation
   end
 
   private
 
-  def time_changed
+  def update_activation_allocation
     @activation.transaction do
       @activation.allocations.transaction do
+        @activation.update!(@params)
         @activation.allocations.update_all(allocation_date: @new_start_time, start_time: @new_start_time, end_time: @new_end_time)
         @activation.allocations.each do |allocation|
-          UpdateAllocationTime.new.run(@activation, @allocation, @new_start_time, @new_end_time)
+          UpdateAllocationTime.new(@activation, @allocation, @new_start_time, @new_end_time).run
         end
-        @activation.update(params)
       end
     end
   end
