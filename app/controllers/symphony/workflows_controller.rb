@@ -31,7 +31,7 @@ class Symphony::WorkflowsController < WorkflowsController
   def show
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
-    @section = @workflow.current_section
+    @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
     @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
 
     set_tasks
@@ -56,32 +56,9 @@ class Symphony::WorkflowsController < WorkflowsController
     end
   end
 
-  def section
-    @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
-    @sections = @template.sections
-    @section = @sections.find(params[:section_id])
-    @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
-
-    set_tasks
-    set_documents
-    render :show
-  end
-
   def assign
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
-  end
-
-  def approve
-    @action = Task.find_by_id(params[:task_id]).get_company_action(@company, params[:workflow_identifier])
-
-    respond_to do |format|
-      if @action.update_attributes(approved_by: current_user.id)
-        format.json { render json: @action.completed, status: :ok }
-      else
-        format.json { render json: @action.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   def reset
