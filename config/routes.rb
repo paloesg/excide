@@ -72,6 +72,7 @@ Rails.application.routes.draw do
         get '/users/:user_id', to: 'availabilities#user', as: :user
       end
     end
+    resources :clients
 
     root to: 'home#show'
   end
