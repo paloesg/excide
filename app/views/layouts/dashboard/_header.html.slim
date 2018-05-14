@@ -36,6 +36,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top
         - elsif controller.class.parents.include?(Conductor)
           li = link_to "Conductor Dashboard", conductor_root_path
           li = link_to 'Activations', conductor_activations_path
+          li = link_to 'Clients', conductor_clients_path
           - if current_user.has_role? :admin, @company or current_user.has_role? :manpower_allocator, @company
             li.dropdown
               a.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
