@@ -2,7 +2,7 @@ class Conductor::ClientsController < ApplicationController
   layout 'dashboard/application'
 
   before_action :set_company
-  before_action :set_client, only: [:show, :edit, :update]
+  before_action :set_client, only: [:show, :edit, :update, :destroy]
 
   def index
     @clients = Client.where(company: @company).order(:id)
@@ -43,6 +43,11 @@ class Conductor::ClientsController < ApplicationController
         format.json { render json: @client.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def destroy
+    @client.destroy
+    redirect_to conductor_clients_path, notice: 'Client was successfully deleted.'
   end
 
   private
