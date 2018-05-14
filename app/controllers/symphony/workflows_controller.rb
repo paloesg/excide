@@ -61,18 +61,6 @@ class Symphony::WorkflowsController < WorkflowsController
     @sections = @template.sections
   end
 
-  def approve
-    @action = Task.find_by_id(params[:task_id]).get_company_action(@company, params[:workflow_identifier])
-
-    respond_to do |format|
-      if @action.update_attributes(approved_by: current_user.id)
-        format.json { render json: @action.completed, status: :ok }
-      else
-        format.json { render json: @action.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   def reset
     @company_actions = @company.company_actions.where(workflow_id: @workflow.id)
     @workflow.update_attribute(:completed, false)
