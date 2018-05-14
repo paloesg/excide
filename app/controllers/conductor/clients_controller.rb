@@ -2,9 +2,13 @@ class Conductor::ClientsController < ApplicationController
   layout 'dashboard/application'
 
   before_action :set_company
+  before_action :set_client, only: [:show]
 
   def index
     @clients = Client.where(company: @company).order(:id)
+  end
+
+  def show
   end
 
   def new
@@ -27,6 +31,10 @@ class Conductor::ClientsController < ApplicationController
   end
 
   private
+
+  def set_client
+    @client = Client.find_by(id: params[:id], company: @company)
+  end
 
   def set_company
     @company = current_user.company

@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Client name:
+  = @client.name
+p
+  strong Identifier:
+  = @client.identifier
+p
+  strong Created by:
+  = @client.user.full_name
+
+=> link_to 'Edit', edit_conductor_client_path(@client)
+'|
+=< link_to 'Back', conductor_clients_path
