@@ -15,16 +15,19 @@ class UpdateActivationTime
   private
 
   def update_activation
-    @activation.transaction do
-      @activation.update!(@params)
+    begin
+      @activation.transaction do
+        @activation.update!(@params)
+        @activation.allocations.update_all(allocation_date: @new_start_time, start_time: @new_start_time, end_time: @new_end_time)
+      end
       update_allocations
+    rescue ActiveRecord::StatementInvalid
     end
   end
 
   def update_allocations
     @activation.allocations.each do |allocation|
-      UpdateAllocationTime.new(@activation, allocation, @new_start_time, @new_end_time).run
+      UpdateAllocationTime.new(@activation, allocation, @new_start_time, @new_end_time).run if allocation.user
     end
   end
-
 end
