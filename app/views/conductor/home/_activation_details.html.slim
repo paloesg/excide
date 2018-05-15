@@ -39,6 +39,6 @@ p
   br
   span#remarks
 - unless current_user.has_role? :contractor, :any
-  p
+  .btn-toolbar
     a.btn.btn-default#edit_activation href="#" Edit activation
     a.btn.btn-default#edit_allocations href="#" Edit allocations
