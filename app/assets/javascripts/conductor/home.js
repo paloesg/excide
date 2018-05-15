@@ -60,7 +60,8 @@ $(document).ready(function () {
     $('#start_time').text(moment(start_time).format('HH:mm'));
     $('#end_time').text(moment(end_time).format('HH:mm'));
     $('#remarks').text(get_activation['remarks']);
-    $('#edit_link').attr("href", "conductor/activations/" + get_activation['id'] + "/edit");
+    $('#edit_activation').attr("href", "conductor/activations/" + get_activation['id'] + "/edit");
+    $('#edit_allocations').attr("href", "conductor/allocations/?start_date=" + moment(start_time).format('YYYY-MM-DD'));
   });
   $('body').on('hidden.bs.popover', function (e) {
     $(e.target).data("bs.popover").inState.click = false;
