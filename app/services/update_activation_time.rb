@@ -1,11 +1,10 @@
 class UpdateActivationTime
   include Service
 
-  def initialize(activation, params)
+  def initialize(activation, new_start_time, new_end_time)
     @activation     = activation
-    @params         = params
-    @new_start_time = params['start_time']
-    @new_end_time   = params['end_time']
+    @new_start_time = new_start_time
+    @new_end_time   = new_end_time
   end
 
   def run
@@ -18,7 +17,7 @@ class UpdateActivationTime
   private
 
   def update_activation
-    @activation.update!(@params)
+    @activation.update_attributes!(start_time: @new_start_time, end_time: @new_end_time)
   end
 
   def update_allocations
