@@ -63,7 +63,10 @@ class Conductor::ActivationsController < ApplicationController
     activation = UpdateActivationTime.new(@activation, activation_params['start_time'], activation_params['end_time']).run
     respond_to do |format|
       if activation
-        format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully updated.' }
+        flash[:notice] = 'Activation was successfully updated. '
+        flash[:notice] << "#{activation[:users]['update_time']} contractors updated allocation time. " if activation[:users]['update_time'] != 0
+        flash[:notice] << "#{activation[:users]['unassigned']} contractors is unassigned. " if activation[:users]['unassigned'] != 0
+        format.html { redirect_to conductor_activations_path }
         format.json { render :show, status: :ok, location: activation }
       else
         set_event_owners
