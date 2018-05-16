@@ -15,6 +15,7 @@ class UpdateAllocationTime
 
   def inform_user
     @allocations.each do |allocation|
+      next if allocation.user.blank?
       if allocation.user.availabilities.where(available_date: allocation.allocation_date).where("start_time <= ?", @new_start_time).where("end_time >= ?", @new_end_time).present?
         NotificationMailer.edit_activation(@activation, allocation.user).deliver
         @users['update_time'] += 1
