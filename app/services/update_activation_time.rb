@@ -5,6 +5,7 @@ class UpdateActivationTime
     @activation     = activation
     @new_start_time = new_start_time
     @new_end_time   = new_end_time
+    @users          = []
   end
 
   def run
@@ -16,6 +17,7 @@ class UpdateActivationTime
       inform_user
     rescue ActiveRecord::StatementInvalid
     end
+    return {activation: @activation, users: @users}
   end
 
   private
@@ -31,8 +33,6 @@ class UpdateActivationTime
   end
 
   def inform_user
-    @activation.allocations.each do |allocation|
-      UpdateAllocationTime.new(@activation, allocation, @new_start_time, @new_end_time).run
-    end
+    @users = UpdateAllocationTime.new(@activation, @new_start_time, @new_end_time).run
   end
 end
