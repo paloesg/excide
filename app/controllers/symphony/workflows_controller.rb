@@ -10,11 +10,11 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def create
     @workflow = Workflow.new(workflow_params)
-    @workflow.user = @user
+    @workflow.user = current_user
     @workflow.company = @company
     @workflow.template = @template
 
-    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
+    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present?
 
     if @workflow.save
       log_activity

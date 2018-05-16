@@ -1,0 +1,36 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="/" Home
+      li
+        a href="/symphony" #{@company.name}
+      li.active Clients
+    h1.page-header
+      | Manage Clients
+      .btn-toolbar.col-sm-6.pull-right
+        = link_to "New Client", new_conductor_client_path, role: 'button', class: 'btn btn-warning pull-right'
+.row
+  .col-sm-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Contractor
+      .panel-body
+        table.table
+          thead
+            tr
+              th ID
+              th Name
+              th Identifier
+              th Created by
+              th
+          tbody
+            - @clients.each do |c|
+              tr
+                td = c.id
+                td = c.name
+                td = c.identifier
+                td = c.user&.full_name
+                td.btn-toolbar
+                  = link_to 'Edit', edit_conductor_client_path(c.id), role: 'button', class: 'btn btn-primary btn-xs'
+                  = link_to 'Delete', conductor_client_path(c.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
