@@ -19,16 +19,16 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   # GET /availabilities/new
   def new
+    @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_week : Date.current.beginning_of_week
+    @date_to = @date_from.end_of_week
     @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
     @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
-    @availability = Availability.new
     if current_user.has_role? :contractor, :any
-      @availability.user_id = current_user.id
-      @disable_user_select = true
+      @user_id = current_user.id
     else
-      @availability.user_id ||= params[:user_id]
-      @disable_user_select = false
+      @user_id ||= params[:user_id]
     end
+    @availabilities = Availability.where(user_id: @user_id).where(available_date: @date_from..@date_to)
   end
 
   # GET /availabilities/1/edit
