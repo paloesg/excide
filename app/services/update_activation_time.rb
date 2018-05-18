@@ -12,9 +12,8 @@ class UpdateActivationTime
         update_allocations
       end
       send_email_activation_update
-      return {activation: @activation, users: @users}
+      return {success: true, activation: @activation, contractors: @contractors}
     rescue ActiveRecord::StatementInvalid
-      # return success: true, errors: []
     end
   end
 
@@ -26,23 +25,24 @@ class UpdateActivationTime
 
   def update_allocations
     @activation.allocations.each do |allocation|
-      allocation.update_attributes!(allocation_date: @new_start_time, start_time: @new_start_time, end_time: @new_end_time)
+      allocation.update_attributes!(allocation_date: @new_start_time, start_time: @new_start_time, end_time2: @new_end_time)
     end
   end
 
   def send_email_activation_update
-    @users = { "update_time" => 0, "unassigned" => 0 }
+    @contractors = { "update_time" => 0, "unassigned" => 0 }
+
     @activation.allocations.each do |allocation|
       next if allocation.user.blank?
       if allocation.user.availabilities.where(available_date: allocation.allocation_date).where("start_time <= ?", @new_start_time).where("end_time >= ?", @new_end_time).present?
         NotificationMailer.edit_activation(@activation, allocation.user).deliver
-        @users['update_time'] += 1
+        @contractors['update_time'] += 1
       else
         NotificationMailer.user_removed_from_activation(@activation, allocation.user).deliver
         allocation.update_attribute(:user_id, nil)
-        @users['unassigned'] += 1
+        @contractors['unassigned'] += 1
       end
     end
-    @users
+    @contractors
   end
 end
