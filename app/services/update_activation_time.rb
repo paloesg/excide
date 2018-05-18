@@ -12,7 +12,7 @@ class UpdateActivationTime
         update_allocations
       end
       send_email_activation_update
-      return {success: true, activation: @activation, contractors: @contractors}
+      return {success: true, contractors: @contractors}
     rescue ActiveRecord::RecordInvalid
     end
   end
@@ -25,7 +25,7 @@ class UpdateActivationTime
 
   def update_allocations
     @activation.allocations.each do |allocation|
-      allocation.update_attributes!(allocation_date: @new_start_time, start_time: @new_start_time, end_time2: @new_end_time)
+      allocation.update_attributes!(allocation_date: @new_start_time, start_time: @new_start_time, end_time: @new_end_time)
     end
   end
 
