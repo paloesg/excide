@@ -13,7 +13,7 @@ class UpdateActivationTime
       end
       send_email_activation_update
       return {success: true, activation: @activation, contractors: @contractors}
-    rescue ActiveRecord::StatementInvalid
+    rescue ActiveRecord::RecordInvalid
     end
   end
 
