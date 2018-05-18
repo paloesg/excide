@@ -11,7 +11,7 @@ class UpdateActivationTime
         update_activation
         update_allocations
       end
-      send_email_activation_update
+      send_email_to_contractor
       return {success: true, contractors: @contractors}
     rescue ActiveRecord::RecordInvalid
     end
@@ -29,7 +29,7 @@ class UpdateActivationTime
     end
   end
 
-  def send_email_activation_update
+  def send_email_to_contractor
     @contractors = { "update_time" => 0, "unassigned" => 0 }
 
     @activation.allocations.each do |allocation|
