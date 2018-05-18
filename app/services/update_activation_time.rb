@@ -1,11 +1,8 @@
 class UpdateActivationTime
-  include Service
-
   def initialize(activation, new_start_time, new_end_time)
     @activation     = activation
     @new_start_time = new_start_time
     @new_end_time   = new_end_time
-    @users          = []
   end
 
   def run
@@ -14,10 +11,11 @@ class UpdateActivationTime
         update_activation
         update_allocations
       end
-      inform_user
+      send_email_activation_update
+      return {activation: @activation, users: @users}
     rescue ActiveRecord::StatementInvalid
+      # return success: true, errors: []
     end
-    return {activation: @activation, users: @users}
   end
 
   private
@@ -32,7 +30,19 @@ class UpdateActivationTime
     end
   end
 
-  def inform_user
-    @users = UpdateAllocationTime.new(@activation, @new_start_time, @new_end_time).run
+  def send_email_activation_update
+    @users = { "update_time" => 0, "unassigned" => 0 }
+    @activation.allocations.each do |allocation|
+      next if allocation.user.blank?
+      if allocation.user.availabilities.where(available_date: allocation.allocation_date).where("start_time <= ?", @new_start_time).where("end_time >= ?", @new_end_time).present?
+        NotificationMailer.edit_activation(@activation, allocation.user).deliver
+        @users['update_time'] += 1
+      else
+        NotificationMailer.user_removed_from_activation(@activation, allocation.user).deliver
+        allocation.update_attribute(:user_id, nil)
+        @users['unassigned'] += 1
+      end
+    end
+    @users
   end
 end
