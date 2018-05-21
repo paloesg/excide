@@ -5,6 +5,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
   before_action :set_contractor, only: [:index, :edit]
+  before_action :set_time_header, only: [:new, :create]
 
   # GET /availabilities
   # GET /availabilities.json
@@ -19,8 +20,6 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   # GET /availabilities/new
   def new
-    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
-    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
     @availability = Availability.new
     if current_user.has_role? :contractor, :any
       @availability.user_id = current_user.id
@@ -38,8 +37,6 @@ class Conductor::AvailabilitiesController < ApplicationController
   # POST /availabilities
   # POST /availabilities.json
   def create
-    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
-    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
     # params[:available] format:
     # {"user_id"=>"52", "dates"=>{"2018-04-10"=>{"time"=>["09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]}, "2018-04-12"=>{"time"=>["10:00:00", "11:00:00", "12:00:00"]}, "2018-04-13"=>{"time"=>["14:00:00", "15:00:00", "16:00:00"]}}}
     available = params[:available]
@@ -122,6 +119,11 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   def set_contractor
     @users = User.where(company: @company).with_role :contractor, @company
+  end
+
+  def set_time_header
+    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
+    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
   end
 
   def after_save_path
