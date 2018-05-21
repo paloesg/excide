@@ -67,6 +67,10 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def data_entry
+    set_documents
+    @document = @documents.where(id: params[:document_id]).exists? ? @documents.find(params[:document_id]) : @documents.last
+    @previous_document = @documents.where('id < ?', @document.id).last
+    @next_document = @documents.where('id > ?', @document.id).first
   end
 
   private

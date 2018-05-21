@@ -9,7 +9,15 @@
     h1.page-header #{@template.title} – #{@workflow.identifier}
 .row
   .col-md-6
-    | Image
+    - if @previous_document.present?
+      = link_to 'Previous Document', data_entry_symphony_workflow_path(workflow_identifier: @workflow.identifier, document_id: @previous_document.id), class: 'btn btn-primary'
+    - if @next_document.present?
+      = link_to 'Next Document', data_entry_symphony_workflow_path(workflow_identifier: @workflow.identifier, document_id: @next_document.id), class: 'btn btn-primary pull-right'
+    - unless @documents.empty?
+      - if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
+        = image_tag(@document.file_url, class: 'img-responsive')
+      - else
+        iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
   .col-md-6
     = form_for(@workflow, url: symphony_workflow_path(workflow_identifier: params[:workflow_identifier])) do |f|
       .form-group
