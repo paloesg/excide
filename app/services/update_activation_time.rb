@@ -42,7 +42,6 @@ class UpdateActivationTime
         NotificationMailer.edit_activation(@activation, allocation.user).deliver
       else
         NotificationMailer.user_removed_from_activation(@activation, allocation.user).deliver
-        allocation.update_attribute(:user_id, nil)
       end
     end
   end
@@ -55,6 +54,7 @@ class UpdateActivationTime
         @contractors['update_time'] << allocation.user
       else
         @contractors['unassigned'] << allocation.user
+        allocation.update_attribute(:user_id, nil)
       end
     end
     @contractors
