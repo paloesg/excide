@@ -1,0 +1,31 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.breadcrumb-2
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li.active #{@template.title}
+    h1.page-header #{@template.title} – #{@workflow.identifier}
+.row
+  .col-md-6
+    | Image
+  .col-md-6
+    = form_for(@workflow, url: symphony_workflow_path(workflow_identifier: params[:workflow_identifier])) do |f|
+      .form-group
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Attributes
+          .panel-body
+            table.table
+              thead
+                tr
+                  th Name
+                  th Value
+                  th
+              tbody
+                tr
+                = f.fields_for :data do |d|
+                  = render 'data_fields', f: d
+            = link_to_add_fields "Add Attribute", f, :data
+      = f.submit 'Save Workflow', class: 'btn btn-primary pull-right'
