@@ -66,7 +66,14 @@ class Conductor::ActivationsController < ApplicationController
 
     respond_to do |format|
       if update_activation_time != nil
+        @activation.client_id           = activation_params['client_id']
+        @activation.activation_type     = activation_params['activation_type']
+        @activation.location            = activation_params['location']
+        @activation.event_owner_id      = activation_params['event_owner_id']
+        @activation.address_attributes  = activation_params['address_attributes']
+        @activation.remarks             = activation_params['remarks']
         if update_activation_time[:success]
+          @activation.save
           flash[:notice] = 'Activation was successfully updated. '
           flash[:notice] << "#{update_activation_time[:contractors_status]['update_time'].length} contractors updated allocation time. " if update_activation_time[:contractors_status]['update_time'].present?
           flash[:notice] << "#{update_activation_time[:contractors_status]['unassigned'].length} contractors is unassigned. " if update_activation_time[:contractors_status]['unassigned'].present?
