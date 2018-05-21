@@ -38,10 +38,12 @@ class Conductor::AvailabilitiesController < ApplicationController
   # POST /availabilities
   # POST /availabilities.json
   def create
+    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
+    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
     # params[:available] format:
     # {"user_id"=>"52", "dates"=>{"2018-04-10"=>{"time"=>["09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]}, "2018-04-12"=>{"time"=>["10:00:00", "11:00:00", "12:00:00"]}, "2018-04-13"=>{"time"=>["14:00:00", "15:00:00", "16:00:00"]}}}
     available = params[:available]
-    available_dates = []
+    @available_dates = []
     overlapping = []
 
     if current_user.has_role? :contractor, :any
@@ -56,7 +58,7 @@ class Conductor::AvailabilitiesController < ApplicationController
         available_date = date[0]
         start_time = time.first
         end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
-        available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+        @available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
         overlapping << User.find(user_id).availabilities.where(available_date: available_date).where("start_time <= ?", end_time).where("end_time >= ?", start_time).present?
       end
     end
@@ -64,15 +66,15 @@ class Conductor::AvailabilitiesController < ApplicationController
     respond_to do |format|
       if overlapping.any?
         flash[:alert] = "Overlapping time slot."
-        format.html { redirect_to :back }
-        format.json { render json: available_dates.errors, status: :unprocessable_entity }
-      elsif available_dates.each(&:save!) and available_dates.any?
+        format.html { render :new }
+        format.json { render json: @available_dates.errors, status: :unprocessable_entity }
+      elsif @available_dates.each(&:save!) and @available_dates.any?
         format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
         flash[:alert] = "Please fill in at least time slot."
         format.html { redirect_to :back }
-        format.json { render json: available_dates.errors, status: :unprocessable_entity }
+        format.json { render json: @available_dates.errors, status: :unprocessable_entity }
       end
     end
   end
