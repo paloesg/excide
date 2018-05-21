@@ -74,6 +74,7 @@ class Conductor::ActivationsController < ApplicationController
           format.json { render :show, status: :ok, location: @activation }
         else
           flash[:error] = update_activation_time[:errors]
+          set_event_owners
           format.html { render :edit }
           format.json { render json: @activation.errors, status: :unprocessable_entity }
         end
