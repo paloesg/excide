@@ -68,8 +68,8 @@ class Conductor::ActivationsController < ApplicationController
       if update_activation_time != nil
         if update_activation_time[:success]
           flash[:notice] = 'Activation was successfully updated. '
-          flash[:notice] << "#{update_activation_time[:contractors]['update_time'].length} contractors updated allocation time. " if update_activation_time[:contractors]['update_time'].present?
-          flash[:notice] << "#{update_activation_time[:contractors]['unassigned'].length} contractors is unassigned. " if update_activation_time[:contractors]['unassigned'].present?
+          flash[:notice] << "#{update_activation_time[:contractors_status]['update_time'].length} contractors updated allocation time. " if update_activation_time[:contractors_status]['update_time'].present?
+          flash[:notice] << "#{update_activation_time[:contractors_status]['unassigned'].length} contractors is unassigned. " if update_activation_time[:contractors_status]['unassigned'].present?
           format.html { redirect_to conductor_activations_path }
           format.json { render :show, status: :ok, location: @activation }
         else

@@ -13,7 +13,7 @@ class UpdateActivationTime
         update_allocations
       end
       send_email_to_contractor
-      return {success: true, contractors: get_contractors}
+      return {success: true, contractors_status: contractors_status}
     rescue ActiveRecord::RecordInvalid
       return {success: false, errors: 'Error update activation time.'}
     end
@@ -47,7 +47,7 @@ class UpdateActivationTime
     end
   end
 
-  def get_contractors
+  def contractors_status
     @contractors = { "update_time" => [], "unassigned" => [] }
     @activation.allocations.each do |allocation|
       next if allocation.user.blank?
