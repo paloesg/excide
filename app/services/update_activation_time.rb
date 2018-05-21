@@ -15,6 +15,7 @@ class UpdateActivationTime
       send_email_to_contractor
       return {success: true, contractors: get_contractors}
     rescue ActiveRecord::RecordInvalid
+      return {success: false, errors: 'Error update activation time.'}
     end
   end
 
