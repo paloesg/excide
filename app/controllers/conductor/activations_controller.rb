@@ -60,12 +60,12 @@ class Conductor::ActivationsController < ApplicationController
   # PATCH/PUT /conductor/activations/1
   # PATCH/PUT /conductor/activations/1.json
   def update
-    if @activation.start_time.strftime('%Y-%m-%d %H:%M') != activation_params['start_time'] || @activation.end_time.strftime('%Y-%m-%d %H:%M') != activation_params['end_time']
+    if @activation.start_time.to_datetime != activation_params['start_time'].to_datetime || @activation.end_time.to_datetime != activation_params['end_time'].to_datetime
       update_activation_time = UpdateActivationTime.new(@activation, activation_params['start_time'], activation_params['end_time']).run
     end
 
     respond_to do |format|
-      if @activation.update(activation_params) and update_activation_time[:success]
+      if @activation.update(activation_params) and update_activation_time != nil
         flash[:notice] = 'Activation was successfully updated. '
         flash[:notice] << "#{update_activation_time[:contractors]['update_time'].length} contractors updated allocation time. " if update_activation_time[:contractors]['update_time'].present?
         flash[:notice] << "#{update_activation_time[:contractors]['unassigned'].length} contractors is unassigned. " if update_activation_time[:contractors]['unassigned'].present?
