@@ -1,4 +1,5 @@
 class UpdateActivationTime
+
   def initialize(activation, new_start_time, new_end_time)
     @activation     = activation
     @new_start_time = new_start_time
@@ -12,7 +13,7 @@ class UpdateActivationTime
         update_allocations
       end
       send_email_to_contractor
-      return {success: true, contractors: @contractors}
+      return {success: true, contractors: get_contractors}
     rescue ActiveRecord::RecordInvalid
     end
   end
@@ -29,20 +30,33 @@ class UpdateActivationTime
     end
   end
 
-  def send_email_to_contractor
-    @contractors = { "update_time" => 0, "unassigned" => 0 }
+  def check_contractor_availability(allocation)
+    allocation.user.availabilities.where(available_date: allocation.allocation_date).where("start_time <= ?", @new_start_time).where("end_time >= ?", @new_end_time).present?
+  end
 
+  def send_email_to_contractor
     @activation.allocations.each do |allocation|
       next if allocation.user.blank?
-      if allocation.user.availabilities.where(available_date: allocation.allocation_date).where("start_time <= ?", @new_start_time).where("end_time >= ?", @new_end_time).present?
+      if check_contractor_availability(allocation)
         NotificationMailer.edit_activation(@activation, allocation.user).deliver
-        @contractors['update_time'] += 1
       else
         NotificationMailer.user_removed_from_activation(@activation, allocation.user).deliver
         allocation.update_attribute(:user_id, nil)
-        @contractors['unassigned'] += 1
+      end
+    end
+  end
+
+  def get_contractors
+    @contractors = { "update_time" => [], "unassigned" => [] }
+    @activation.allocations.each do |allocation|
+      next if allocation.user.blank?
+      if check_contractor_availability(allocation)
+        @contractors['update_time'] << allocation.user
+      else
+        @contractors['unassigned'] << allocation.user
       end
     end
     @contractors
   end
+
 end
