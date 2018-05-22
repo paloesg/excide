@@ -44,9 +44,9 @@ class Conductor::AvailabilitiesController < ApplicationController
     overlapping = []
 
     if current_user.has_role? :contractor, :any
-      user_id = current_user.id
+      @user_id = current_user.id
     else
-      user_id = available[:user_id]
+      @user_id = available[:user_id]
     end
 
     available[:dates]&.each do |date|
@@ -55,8 +55,8 @@ class Conductor::AvailabilitiesController < ApplicationController
         available_date = date[0]
         start_time = time.first
         end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
-        @available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-        overlapping << User.find(user_id).availabilities.where(available_date: available_date).where("start_time <= ?", end_time).where("end_time >= ?", start_time).present?
+        @available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+        overlapping << User.find(@user_id).availabilities.where(available_date: available_date).where("start_time <= ?", end_time).where("end_time >= ?", start_time).present?
       end
     end
 

@@ -17,7 +17,7 @@
               p #{time}
 .col-sm-10.col-xs-10.nopadding
   = form_tag conductor_availabilities_path do
-    = hidden_field :available, :user_id, :value => params[:user_id]
+    = hidden_field :available, :user_id, value: (params[:user_id] ||= @user_id)
     = week_calendar do |date|
       br
       p = check_box :all_day, "dates[#{date}]['all']", {:multiple => true, :onchange => 'allDay(this)', :id => 'all_day'}
