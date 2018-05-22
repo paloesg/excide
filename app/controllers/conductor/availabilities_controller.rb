@@ -56,7 +56,7 @@ class Conductor::AvailabilitiesController < ApplicationController
         start_time = time.first
         end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
         @available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-        overlapping << User.find(@user_id).availabilities.where(available_date: available_date).where("start_time <= ?", end_time).where("end_time >= ?", start_time).present?
+        overlapping << Availability.overlapping(@user_id, available_date, end_time, start_time)
       end
     end
 
