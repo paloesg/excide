@@ -43,12 +43,14 @@ class Conductor::AvailabilitiesController < ApplicationController
     available = params[:available]
     available_dates = []
 
+    @date_from = available[:start_date].present? ? available[:start_date].to_date.beginning_of_week : Date.current.beginning_of_week
+    @date_to = @date_from.end_of_week
     if current_user.has_role? :contractor, :any
       user_id = current_user.id
     else
       user_id = available[:user_id]
     end
-
+    User.find(user_id).availabilities.where(available_date: @date_from..@date_to).destroy_all
     available[:dates]&.each do |date|
       slice_time = date[1][:time].slice_when{|first, second| first.to_i+1 != second.to_i }
       slice_time.each do |time|

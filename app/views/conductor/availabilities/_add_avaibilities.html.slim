@@ -18,10 +18,11 @@
 .col-sm-10.col-xs-10.nopadding
   = form_tag conductor_availabilities_path do
     = hidden_field :available, :user_id, :value => params[:user_id]
+    = hidden_field :available, :start_date, value: params[:start_date]
     = week_calendar do |date|
       br
       p = check_box :all_day, "dates[#{date}]['all']", {:multiple => true, :onchange => 'allDay(this)', :id => 'all_day'}
       - @times_value.each_with_index do |time, i|
         hr
-        p = check_box :available, "dates[#{date}][time]", {:multiple => true,  :onchange => 'day(this)', :checked => (@availabilities.select{|a| a[:available_date] == date and (a[:start_time].strftime('%H:%M:%S') <= time and a[:end_time].strftime('%H:%M:%S') >= time)}).present?}, time, nil
+        p = check_box :available, "dates[#{date}][time]", {:multiple => true,  :onchange => 'day(this)', :checked => (@availabilities.select{|a| a[:available_date] == date and (a[:start_time].strftime('%H:%M:%S') <= time and a[:end_time].strftime('%H:%M:%S') > time)}).present?}, time, nil
     = submit_tag "Submit", class: 'btn btn-primary pull-right'
