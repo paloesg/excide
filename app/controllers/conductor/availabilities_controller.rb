@@ -5,6 +5,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
   before_action :set_contractor, only: [:index, :edit]
+  before_action :set_time_header, only: [:new, :create]
 
   # GET /availabilities
   # GET /availabilities.json
@@ -19,8 +20,6 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   # GET /availabilities/new
   def new
-    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
-    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
     @availability = Availability.new
     if current_user.has_role? :contractor, :any
       @availability.user_id = current_user.id
@@ -41,12 +40,13 @@ class Conductor::AvailabilitiesController < ApplicationController
     # params[:available] format:
     # {"user_id"=>"52", "dates"=>{"2018-04-10"=>{"time"=>["09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]}, "2018-04-12"=>{"time"=>["10:00:00", "11:00:00", "12:00:00"]}, "2018-04-13"=>{"time"=>["14:00:00", "15:00:00", "16:00:00"]}}}
     available = params[:available]
-    available_dates = []
+    @available_dates = []
+    overlapping = []
 
     if current_user.has_role? :contractor, :any
-      user_id = current_user.id
+      @user_id = current_user.id
     else
-      user_id = available[:user_id]
+      @user_id = available[:user_id]
     end
 
     available[:dates]&.each do |date|
@@ -55,18 +55,23 @@ class Conductor::AvailabilitiesController < ApplicationController
         available_date = date[0]
         start_time = time.first
         end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
-        available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+        @available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+        overlapping << Availability.overlapping(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
       end
     end
 
     respond_to do |format|
-      if available_dates.each(&:save!) and available_dates.any?
+      if overlapping.any?
+        flash[:alert] = "The selected time slots overlap with an existing availability. Please select different time slots."
+        format.html { render :new }
+        format.json { render json: @available_dates.errors, status: :unprocessable_entity }
+      elsif @available_dates.each(&:save!) and @available_dates.any?
         format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
-        flash[:alert] = "Please fill in at least time slot."
-        format.html { redirect_to :back }
-        format.json { render json: available_dates.errors, status: :unprocessable_entity }
+        flash[:alert] = "Please select at least one time slot."
+        format.html { render :new }
+        format.json { render json: @available_dates.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -114,6 +119,11 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   def set_contractor
     @users = User.where(company: @company).with_role :contractor, @company
+  end
+
+  def set_time_header
+    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
+    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
   end
 
   def after_save_path
