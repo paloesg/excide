@@ -1,0 +1,43 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.breadcrumb-2
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li.active #{@template.title}
+    h1.page-header #{@template.title} – #{@workflow.identifier}
+.row
+  .col-md-6
+    - unless @documents.empty?
+      - if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
+        = image_tag(@document.file_url, class: 'img-responsive')
+      - else
+        iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
+  .col-md-6
+    .btn-group role='group' style='margin-bottom: 20px'
+      - if @previous_document.present?
+        = link_to data_entry_symphony_workflow_path(workflow_identifier: @workflow.identifier, document_id: @previous_document.id), class: 'btn btn-default'
+          i.glyphicon.glyphicon-chevron-left
+          | Previous Document
+      - if @next_document.present?
+        = link_to data_entry_symphony_workflow_path(workflow_identifier: @workflow.identifier, document_id: @next_document.id), class: 'btn btn-default'
+          | Next Document
+          i.glyphicon.glyphicon-chevron-right
+    = form_for(@workflow, url: symphony_workflow_path(workflow_identifier: params[:workflow_identifier])) do |f|
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title Attributes
+        .panel-body
+          table.table
+            thead
+              tr
+                th Name
+                th Value
+                th
+            tbody
+              tr
+              = f.fields_for :data do |d|
+                = render 'data_fields', f: d
+          = link_to_add_fields "Add Attribute", f, :data
+      = f.submit 'Save Data', class: 'btn btn-primary pull-right'

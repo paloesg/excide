@@ -41,6 +41,7 @@ Rails.application.routes.draw do
         get '/section/:section_id', to: 'workflows#show', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
         get '/assign', to: 'workflows#assign', as: :assign
+        get '/data-entry', to: 'workflows#data_entry', as: :data_entry
       end
     end
     root to: 'home#show'

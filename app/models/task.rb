@@ -8,7 +8,7 @@ class Task < ActiveRecord::Base
   has_many :reminders, dependent: :destroy
   has_many :company_actions, dependent: :destroy
 
-  enum task_type: [:instructions, :upload_file, :approval, :download_file, :visit_link, :upload_photo]
+  enum task_type: [:instructions, :upload_file, :approval, :download_file, :visit_link, :upload_photo, :enter_data]
 
   acts_as_list scope: :section
 

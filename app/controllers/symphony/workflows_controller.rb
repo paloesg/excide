@@ -1,6 +1,6 @@
 class Symphony::WorkflowsController < WorkflowsController
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry]
   before_action :set_attributes_metadata, only: [:create, :update]
 
   def new
@@ -29,7 +29,6 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def show
-    @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
     @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
     @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
@@ -42,7 +41,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def update
-    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present?
+    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present? or @workflow.workflowable.present?
 
     if @workflow.update(workflow_params)
       log_activity
@@ -57,7 +56,6 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def assign
-    @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
     @sections = @template.sections
   end
 
@@ -66,6 +64,13 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.update_attribute(:completed, false)
     @company_actions.update_all(completed: false, completed_user_id: nil)
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully reset.'
+  end
+
+  def data_entry
+    set_documents
+    @document = @documents.where(id: params[:document_id]).exists? ? @documents.find(params[:document_id]) : @documents.last
+    @previous_document = @documents.where('id < ?', @document.id).first
+    @next_document = @documents.where('id > ?', @document.id).last
   end
 
   private
