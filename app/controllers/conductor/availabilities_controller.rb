@@ -62,15 +62,15 @@ class Conductor::AvailabilitiesController < ApplicationController
 
     respond_to do |format|
       if overlapping.any?
-        flash[:alert] = "Overlapping time slot."
+        flash[:alert] = "The selected time slots overlap with an existing availability. Please select different time slots."
         format.html { render :new }
         format.json { render json: @available_dates.errors, status: :unprocessable_entity }
       elsif @available_dates.each(&:save!) and @available_dates.any?
         format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
-        flash[:alert] = "Please fill in at least time slot."
-        format.html { redirect_to :back }
+        flash[:alert] = "Please select at least one time slot."
+        format.html { render :new }
         format.json { render json: @available_dates.errors, status: :unprocessable_entity }
       end
     end
