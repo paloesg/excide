@@ -5,7 +5,7 @@ class Availability < ActiveRecord::Base
   validate :end_must_be_after_start
 
   def self.overlapping(user_id: user_id, available_date: available_date, start_time: start_time, end_time: end_time)
-    self.where(user_id: user_id).where(available_date: available_date).where("start_time <= ?", end_time).where("end_time >= ?", start_time).present?
+    self.where(user_id: user_id).where(available_date: available_date).where("start_time <= ?", end_time).where("end_time > ?", start_time).present?
   end
 
   private
