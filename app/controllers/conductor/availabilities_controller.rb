@@ -58,12 +58,15 @@ class Conductor::AvailabilitiesController < ApplicationController
         start_time = time.first
         end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
         user_allocations = Allocation.where(user_id: user_id).where(allocation_date: available_date)
-
         if user_allocations.present?
           user_allocations.each do |allocation|
             if allocation.start_time.strftime("%H:%M:%S") > start_time and allocation.start_time.strftime("%H:%M:%S") >= end_time
               available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+            elsif allocation.start_time.strftime("%H:%M:%S") > start_time and allocation.end_time.strftime("%H:%M:%S") == end_time
+              available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
             elsif allocation.start_time.strftime("%H:%M:%S") > start_time and allocation.end_time.strftime("%H:%M:%S") < end_time
+              available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+            elsif allocation.start_time.strftime("%H:%M:%S") == start_time and allocation.end_time.strftime("%H:%M:%S") < end_time
               available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
             elsif allocation.end_time.strftime("%H:%M:%S") <= start_time and allocation.end_time.strftime("%H:%M:%S") < end_time
               available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
