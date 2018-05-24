@@ -12,4 +12,5 @@ class Document < ActiveRecord::Base
   belongs_to :user
 
   validates :identifier, :file_url, presence: true
+  validates :file_url, uniqueness: true
 end
