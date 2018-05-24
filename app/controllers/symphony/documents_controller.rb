@@ -1,5 +1,5 @@
 class Symphony::DocumentsController < DocumentsController
-  before_action :set_templates, only: [:index, :new, :edit]
+  before_action :set_templates, only: [:index, :new, :edit, :create]
   before_action :set_company_workflows, only: [:index, :new, :edit]
   before_action :set_workflow, only: [:new, :edit]
 
