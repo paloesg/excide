@@ -41,42 +41,9 @@ class Conductor::AvailabilitiesController < ApplicationController
     # params[:available] format:
     # {"user_id"=>"52", "dates"=>{"2018-04-10"=>{"time"=>["09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]}, "2018-04-12"=>{"time"=>["10:00:00", "11:00:00", "12:00:00"]}, "2018-04-13"=>{"time"=>["14:00:00", "15:00:00", "16:00:00"]}}}
     available = params[:available]
-    available_dates = []
-
     @date_from = available[:start_date].present? ? available[:start_date].to_date.beginning_of_week : Date.current.beginning_of_week
     @date_to = @date_from.end_of_week
-    if current_user.has_role? :contractor, :any
-      user_id = current_user.id
-    else
-      user_id = available[:user_id]
-    end
-    User.find(user_id).availabilities.where(available_date: @date_from..@date_to).where('assigned != ?', true).destroy_all
-    available[:dates]&.each do |date|
-      slice_time = date[1][:time].slice_when{|first, second| first.to_i+1 != second.to_i }
-      slice_time.each do |time|
-        available_date = date[0]
-        start_time = time.first
-        end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
-        user_allocations = Allocation.where(user_id: user_id).where(allocation_date: available_date)
-        if user_allocations.present?
-          user_allocations.each do |allocation|
-            if allocation.start_time.strftime("%H:%M:%S") > start_time and allocation.start_time.strftime("%H:%M:%S") >= end_time
-              available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-            elsif allocation.start_time.strftime("%H:%M:%S") > start_time and allocation.end_time.strftime("%H:%M:%S") == end_time
-              available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-            elsif allocation.start_time.strftime("%H:%M:%S") > start_time and allocation.end_time.strftime("%H:%M:%S") < end_time
-              available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-            elsif allocation.start_time.strftime("%H:%M:%S") == start_time and allocation.end_time.strftime("%H:%M:%S") < end_time
-              available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-            elsif allocation.end_time.strftime("%H:%M:%S") <= start_time and allocation.end_time.strftime("%H:%M:%S") < end_time
-              available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-            end
-          end
-        else
-          available_dates << Availability.new(user_id: user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-        end
-      end
-    end
+    available_dates = NewAvailabilities.new(current_user, available, @date_from, @date_to).run
 
     respond_to do |format|
       if available_dates.each(&:save!) and available_dates.any?
