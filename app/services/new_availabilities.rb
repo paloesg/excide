@@ -36,15 +36,14 @@ class NewAvailabilities
         end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
         if allocation_by_day(available_date).present?
           allocation_by_day(available_date).each do |allocation|
-            new_availability = check_availability_by_allocation(allocation, available_date, start_time, end_time)
-            available_dates << new_availability if new_availability.present?
+            available_dates << check_availability_by_allocation(allocation, available_date, start_time, end_time)
           end
         else
           available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
         end
       end
     end
-    available_dates
+    available_dates.compact
   end
 
   def allocation_by_day(available_date)
