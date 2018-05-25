@@ -8,7 +8,7 @@ class NewAvailabilities
 
   def run
     set_user_id
-    destroy_before_update
+    remove_unassigned_availabilities
     get_new_availabilities
   end
 
@@ -22,7 +22,7 @@ class NewAvailabilities
     end
   end
 
-  def destroy_before_update
+  def remove_unassigned_availabilities
     User.find(@user_id).availabilities.where(available_date: @date_from..@date_to).where('assigned != ?', true).destroy_all
   end
 
