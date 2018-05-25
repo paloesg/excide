@@ -40,11 +40,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   def create
     # params[:available] format:
     # {"user_id"=>"52", "dates"=>{"2018-04-10"=>{"time"=>["09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]}, "2018-04-12"=>{"time"=>["10:00:00", "11:00:00", "12:00:00"]}, "2018-04-13"=>{"time"=>["14:00:00", "15:00:00", "16:00:00"]}}}
-    available = params[:available]
-    @date_from = available[:start_date].present? ? available[:start_date].to_date.beginning_of_week : Date.current.beginning_of_week
-    @date_to = @date_from.end_of_week
-    new_available_dates = NewAvailabilities.new(current_user, available, @date_from, @date_to).run
-
+    new_available_dates = NewAvailabilities.new(current_user, params[:available]).run
     respond_to do |format|
       if new_available_dates.each(&:save!) and new_available_dates.any?
         format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
