@@ -36,17 +36,8 @@ class NewAvailabilities
         end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
         if allocation_by_day(available_date).present?
           allocation_by_day(available_date).each do |allocation|
-            if allocation.start_time.strftime("%H:%M:%S") > start_time and allocation.start_time.strftime("%H:%M:%S") >= end_time
-              available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-            elsif allocation.start_time.strftime("%H:%M:%S") > start_time and allocation.end_time.strftime("%H:%M:%S") == end_time
-              available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-            elsif allocation.start_time.strftime("%H:%M:%S") > start_time and allocation.end_time.strftime("%H:%M:%S") < end_time
-              available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-            elsif allocation.start_time.strftime("%H:%M:%S") == start_time and allocation.end_time.strftime("%H:%M:%S") < end_time
-              available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-            elsif allocation.end_time.strftime("%H:%M:%S") <= start_time and allocation.end_time.strftime("%H:%M:%S") < end_time
-              available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-            end
+            new_availability = check_availability_by_allocation(allocation, available_date, start_time, end_time)
+            available_dates << new_availability if new_availability.present?
           end
         else
           available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
@@ -58,5 +49,21 @@ class NewAvailabilities
 
   def allocation_by_day(available_date)
     Allocation.where(user_id: @user_id).where(allocation_date: available_date)
+  end
+
+  def check_availability_by_allocation(allocation, available_date, start_time, end_time)
+    allocation_start_time = allocation.start_time.strftime("%H:%M:%S")
+    allocation_end_time = allocation.end_time.strftime("%H:%M:%S")
+    if allocation_start_time > start_time and allocation_start_time >= end_time
+      Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+    elsif allocation_start_time > start_time and allocation_end_time == end_time
+      Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+    elsif allocation_start_time > start_time and allocation_end_time < end_time
+      Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+    elsif allocation_start_time == start_time and allocation_end_time < end_time
+      Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+    elsif allocation_end_time <= start_time and allocation_end_time < end_time
+      Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+    end
   end
 end
