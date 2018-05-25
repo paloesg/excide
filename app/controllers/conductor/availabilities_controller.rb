@@ -43,16 +43,16 @@ class Conductor::AvailabilitiesController < ApplicationController
     available = params[:available]
     @date_from = available[:start_date].present? ? available[:start_date].to_date.beginning_of_week : Date.current.beginning_of_week
     @date_to = @date_from.end_of_week
-    available_dates = NewAvailabilities.new(current_user, available, @date_from, @date_to).run
+    new_available_dates = NewAvailabilities.new(current_user, available, @date_from, @date_to).run
 
     respond_to do |format|
-      if available_dates.each(&:save!) and available_dates.any?
+      if new_available_dates.each(&:save!) and new_available_dates.any?
         format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
         format.json { render :show, status: :created, location: @availability }
       else
         flash[:alert] = "Please fill in at least time slot."
         format.html { redirect_to :back }
-        format.json { render json: available_dates.errors, status: :unprocessable_entity }
+        format.json { render json: new_available_dates.errors, status: :unprocessable_entity }
       end
     end
   end
