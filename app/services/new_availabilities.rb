@@ -51,8 +51,8 @@ class NewAvailabilities
   end
 
   def check_availability_by_allocation(allocation, available_date, start_time, end_time)
-    allocation_start_time = allocation.start_time.strftime("%H:%M:%S")
-    allocation_end_time = allocation.end_time.strftime("%H:%M:%S")
+    allocation_start_time = allocation.start_time.strftime("%T")
+    allocation_end_time = allocation.end_time.strftime("%T")
     if allocation_start_time > start_time and allocation_start_time >= end_time
       new_availability_if_not_exist(available_date, start_time, end_time)
     elsif allocation_start_time > start_time and allocation_end_time == end_time
