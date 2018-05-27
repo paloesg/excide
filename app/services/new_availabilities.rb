@@ -36,14 +36,17 @@ class NewAvailabilities
         end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
         if allocation_by_day(available_date).present?
           allocation_by_day(available_date).each do |allocation|
-            available_dates << check_availability_by_allocation(allocation, available_date, start_time, end_time)
+            checked_availability = check_availability_by_allocation(allocation, available_date, start_time, end_time)
+            if checked_availability.present?
+              available_dates << checked_availability
+            end
           end
         else
           available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
         end
       end
     end
-    available_dates.compact
+    unique_new_availabilities(available_dates)
   end
 
   def allocation_by_day(available_date)
@@ -70,5 +73,12 @@ class NewAvailabilities
     if Availability.where(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time).blank?
       Availability.new(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
     end
+  end
+
+  def unique_new_availabilities(available_dates)
+    # sort assigned new availability
+    available_dates.sort_by! {|k| k[:assigned] ? 0 : 1}
+    # remove duplicate new availability
+    available_dates.uniq {|e| [e[:available_date], e[:start_time], e[:end_time]]}
   end
 end
