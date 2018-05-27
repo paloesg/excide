@@ -46,6 +46,7 @@ class NewAvailabilities
         end
       end
     end
+    remove_old_assigned_availabilities(available_dates)
     unique_new_availabilities(available_dates)
   end
 
@@ -72,6 +73,13 @@ class NewAvailabilities
   def new_availability_if_not_exist(available_date, start_time, end_time)
     if Availability.where(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time).blank?
       Availability.new(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
+    end
+  end
+
+  def remove_old_assigned_availabilities(available_dates)
+    new_assigned_availabilities = available_dates.select{|a| a[:assigned] }
+    new_assigned_availabilities.each do |availability|
+      Availability.where(user_id: @user_id, available_date: availability[:available_date], assigned: true).where('start_time >= ?', availability[:start_time]).where('end_time <= ?', availability[:end_time]).destroy_all
     end
   end
 
