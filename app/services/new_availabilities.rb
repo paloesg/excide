@@ -65,6 +65,10 @@ class NewAvailabilities
       Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
     elsif allocation_start_time == start_time and allocation_end_time < end_time
       Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
+    elsif allocation_start_time == start_time and allocation_end_time == end_time
+      if Availability.where(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time).blank?
+        Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
+      end
     elsif allocation_end_time <= start_time and allocation_end_time < end_time
       new_availability_if_not_exist(available_date, start_time, end_time)
     end
@@ -80,6 +84,7 @@ class NewAvailabilities
     new_assigned_availabilities = available_dates.select{|a| a[:assigned] }
     new_assigned_availabilities.each do |availability|
       Availability.where(user_id: @user_id, available_date: availability[:available_date], assigned: true).where('start_time >= ?', availability[:start_time]).where('end_time <= ?', availability[:end_time]).destroy_all
+      Availability.where(user_id: @user_id, available_date: availability[:available_date], assigned: true).where('start_time <= ?', availability[:start_time]).where('end_time >= ?', availability[:end_time]).destroy_all
     end
   end
 
