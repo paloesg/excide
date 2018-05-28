@@ -75,7 +75,7 @@ class NewAvailabilities
   end
 
   def new_availability_if_not_exist(available_date, start_time, end_time)
-    if Availability.where(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time).blank?
+    if Availability.where(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time).blank? || Availability.where(user_id: @user_id, available_date: available_date, assigned: true).where('start_time <= ?', start_time).where('end_time >= ?', end_time).blank?
       Availability.new(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
     end
   end
