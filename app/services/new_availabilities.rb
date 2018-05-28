@@ -26,6 +26,7 @@ class NewAvailabilities
     User.find(@user_id).availabilities.where(available_date: @date_from..@date_to).where('assigned != ?', true).destroy_all
   end
 
+  # get new availabilities
   def get_new_availabilities
     available_dates = []
     @available[:dates]&.each do |date|
@@ -50,10 +51,12 @@ class NewAvailabilities
     unique_new_availabilities(available_dates)
   end
 
+  # To check user have allocations by available_date
   def allocation_by_day(available_date)
     Allocation.where(user_id: @user_id).where(allocation_date: available_date)
   end
 
+  # Check availability by allocation
   def check_availability_by_allocation(allocation, available_date, start_time, end_time)
     allocation_start_time = allocation.start_time.strftime("%T")
     allocation_end_time = allocation.end_time.strftime("%T")
@@ -74,12 +77,14 @@ class NewAvailabilities
     end
   end
 
+  # new availability if not union from previous availability
   def new_availability_if_not_exist(available_date, start_time, end_time)
     if Availability.where(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time).blank? || Availability.where(user_id: @user_id, available_date: available_date, assigned: true).where('start_time <= ?', start_time).where('end_time >= ?', end_time).blank?
       Availability.new(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
     end
   end
 
+  # remove all previous assigned availabilities from new assigned availabilities
   def remove_old_assigned_availabilities(available_dates)
     new_assigned_availabilities = available_dates.select{|a| a[:assigned] }
     new_assigned_availabilities.each do |availability|
