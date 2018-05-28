@@ -58,9 +58,9 @@ class UpdateActivationTime
   end
 
   def success_message
-    message = 'Activation time was successfully updated.'
-    (message += " #{@contractors_updated} contractors were informed of the new activation time.") if @contractors_updated > 0
-    (message += " #{@contractors_unassigned} contractor(s) unassigned from the activation due to the time change.") if @contractors_unassigned > 0
+    message = ''
+    (message += "#{@contractors_updated} contractor(s) informed of the new activation time. ") if @contractors_updated > 0
+    (message += "#{@contractors_unassigned} contractor(s) unassigned from the activation due to the time change. ") if @contractors_unassigned > 0
     return message
   end
 end

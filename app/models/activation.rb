@@ -1,6 +1,5 @@
 class Activation < ActiveRecord::Base
   after_create :create_activation_notification
-  after_update :edit_activation_notification
   after_destroy :destroy_activation_notification
 
   belongs_to :event_owner, class_name: 'User'
@@ -30,14 +29,14 @@ class Activation < ActiveRecord::Base
     client.name + ' ' + activation_type.titleize
   end
 
+  def update_activation_notification
+    NotificationMailer.edit_activation(self, self.event_owner).deliver if self.event_owner.present?
+  end
+
   private
 
   def create_activation_notification
     NotificationMailer.create_activation(self, self.event_owner).deliver if self.event_owner.present?
-  end
-
-  def edit_activation_notification
-    NotificationMailer.edit_activation(self, self.event_owner).deliver if self.event_owner.present?
   end
 
   def destroy_activation_notification

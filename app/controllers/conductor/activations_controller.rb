@@ -60,30 +60,13 @@ class Conductor::ActivationsController < ApplicationController
   # PATCH/PUT /conductor/activations/1
   # PATCH/PUT /conductor/activations/1.json
   def update
-    if @activation.start_time.to_datetime != activation_params['start_time'].to_datetime || @activation.end_time.to_datetime != activation_params['end_time'].to_datetime
-      update_activation_time = UpdateActivationTime.new(@activation, activation_params['start_time'], activation_params['end_time']).run
-    end
+    update_activation_time = UpdateActivationTime.new(@activation, activation_params['start_time'], activation_params['end_time']).run
 
     respond_to do |format|
-      if update_activation_time != nil
-        @activation.client_id           = activation_params['client_id']
-        @activation.activation_type     = activation_params['activation_type']
-        @activation.location            = activation_params['location']
-        @activation.event_owner_id      = activation_params['event_owner_id']
-        @activation.address_attributes  = activation_params['address_attributes']
-        @activation.remarks             = activation_params['remarks']
-        if update_activation_time.success?
-          @activation.save
-          flash[:notice] = update_activation_time.message
-          format.html { redirect_to conductor_activations_path }
-          format.json { render :show, status: :ok, location: @activation }
-        else
-          set_event_owners
-          format.html { render :edit }
-          format.json { render json: @activation.errors, status: :unprocessable_entity }
-        end
-      elsif @activation.update(activation_params)
-        flash[:notice] = 'Activation was successfully updated. '
+      if update_activation_time.success? and @activation.update(activation_params)
+        @activation.update_activation_notification
+        flash[:notice] = update_activation_time.message
+        flash[:notice] << 'Activation was successfully updated.'
         format.html { redirect_to conductor_activations_path }
         format.json { render :show, status: :ok, location: @activation }
       else
