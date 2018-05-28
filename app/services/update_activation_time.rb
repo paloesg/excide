@@ -9,26 +9,38 @@ class UpdateActivationTime
   end
 
   def run
-    begin
-      @activation.transaction do
-        update_activation
-        @activation.allocations.each do |allocation|
-          old_allocation, allocation = update_allocation(allocation)
-          next if allocation.user.blank?
-          if contractor_available?(allocation)
-            notify_contractor(allocation)
-          else
-            remove_contractor(allocation, old_allocation)
+    if time_change?
+      begin
+        @activation.transaction do
+          update_activation
+          @activation.allocations.each do |allocation|
+            old_allocation, allocation = update_allocation(allocation)
+            next if allocation.user.blank?
+            if contractor_available?(allocation)
+              notify_contractor(allocation)
+            else
+              remove_contractor(allocation, old_allocation)
+            end
           end
         end
+        OpenStruct.new(success?: true, activation: @activation, message: success_message)
+      rescue ActiveRecord::RecordInvalid
+        OpenStruct.new(success?: false, activation: @activation)
       end
-      OpenStruct.new(success?: true, activation: @activation, message: success_message)
-    rescue ActiveRecord::RecordInvalid
-      OpenStruct.new(success?: false, activation: @activation)
+    else
+      OpenStruct.new(success?:true, activation: @activation, message: 'No time change. ')
     end
   end
 
   private
+
+  def time_change?
+    if @activation.start_time.to_time == @new_start_time.to_time and @activation.end_time.to_time == @new_end_time.to_time
+      false
+    else
+      true
+    end
+  end
 
   def update_activation
     @activation.update_attributes!(start_time: @new_start_time, end_time: @new_end_time)
