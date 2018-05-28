@@ -4,26 +4,27 @@ class UpdateActivationTime
     @activation     = activation
     @new_start_time = new_start_time
     @new_end_time   = new_end_time
+    @contractors_updated = 0
+    @contractors_unassigned = 0
   end
 
   def run
     begin
       @activation.transaction do
-        @contractors_status = { "update_time" => [], "unassigned" => [] }
         update_activation
         @activation.allocations.each do |allocation|
-          update_allocation(allocation)
+          old_allocation, allocation = update_allocation(allocation)
           next if allocation.user.blank?
           if contractor_available?(allocation)
             notify_contractor(allocation)
           else
-            remove_contractor(allocation)
+            remove_contractor(allocation, old_allocation)
           end
         end
       end
-      return {success: true, contractors_status: @contractors_status}
+      OpenStruct.new(success?: true, activation: @activation, message: success_message)
     rescue ActiveRecord::RecordInvalid
-      return {success: false, errors: 'Error updating activation time.'}
+      OpenStruct.new(success?: false, activation: @activation)
     end
   end
 
@@ -34,7 +35,9 @@ class UpdateActivationTime
   end
 
   def update_allocation(allocation)
+    old_allocation = allocation.dup
     allocation.update_attributes!(allocation_date: @new_start_time, start_time: @new_start_time, end_time: @new_end_time)
+    return old_allocation, allocation
   end
 
   def contractor_available?(allocation)
@@ -43,14 +46,21 @@ class UpdateActivationTime
 
   def notify_contractor(allocation)
     NotificationMailer.edit_activation(@activation, allocation.user).deliver
-    @contractors_status['update_time'] << allocation.user
+    @contractors_updated += 1
   end
 
-  def remove_contractor(allocation)
+  def remove_contractor(allocation, old_allocation)
     removed_user = allocation.user
     allocation.update_attributes!(user_id: nil)
-    removed_user.get_availability(allocation).toggle!(:assigned)
+    removed_user.get_availability(old_allocation).toggle!(:assigned)
     NotificationMailer.user_removed_from_activation(@activation, removed_user).deliver
-    @contractors_status['unassigned'] << removed_user
+    @contractors_unassigned += 1
+  end
+
+  def success_message
+    message = 'Activation time was successfully updated.'
+    (message += " #{@contractors_updated} contractors were informed of the new activation time.") if @contractors_updated > 0
+    (message += " #{@contractors_unassigned} contractor(s) unassigned from the activation due to the time change.") if @contractors_unassigned > 0
+    return message
   end
 end

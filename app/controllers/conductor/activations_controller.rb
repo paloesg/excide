@@ -72,15 +72,12 @@ class Conductor::ActivationsController < ApplicationController
         @activation.event_owner_id      = activation_params['event_owner_id']
         @activation.address_attributes  = activation_params['address_attributes']
         @activation.remarks             = activation_params['remarks']
-        if update_activation_time[:success]
+        if update_activation_time.success?
           @activation.save
-          flash[:notice] = 'Activation was successfully updated. '
-          flash[:notice] << "#{update_activation_time[:contractors_status]['update_time'].length} contractors updated allocation time. " if update_activation_time[:contractors_status]['update_time'].present?
-          flash[:notice] << "#{update_activation_time[:contractors_status]['unassigned'].length} contractors is unassigned. " if update_activation_time[:contractors_status]['unassigned'].present?
+          flash[:notice] = update_activation_time.message
           format.html { redirect_to conductor_activations_path }
           format.json { render :show, status: :ok, location: @activation }
         else
-          flash[:error] = update_activation_time[:errors]
           set_event_owners
           format.html { render :edit }
           format.json { render json: @activation.errors, status: :unprocessable_entity }
