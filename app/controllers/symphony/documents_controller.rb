@@ -1,5 +1,5 @@
 class Symphony::DocumentsController < DocumentsController
-  before_action :set_templates, only: [:index, :new, :edit, :create]
+  before_action :set_templates, only: [:index, :new, :edit]
   before_action :set_company_workflows, only: [:index, :new, :edit]
   before_action :set_workflow, only: [:new, :edit]
 
@@ -18,6 +18,7 @@ class Symphony::DocumentsController < DocumentsController
       SlackService.new.new_document(@document).deliver
       redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.'
     else
+      set_templates
       render :new
     end
   end
@@ -26,6 +27,7 @@ class Symphony::DocumentsController < DocumentsController
     if @document.update(document_params)
       redirect_to symphony_documents_path, notice: 'Document was successfully updated.'
     else
+      set_templates
       render :edit
     end
   end
