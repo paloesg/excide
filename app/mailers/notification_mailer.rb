@@ -37,6 +37,10 @@ class NotificationMailer < ApplicationMailer
     activation_notification(activation, user, 'An activation has been cancelled')
   end
 
+  def user_removed_from_activation(activation, user)
+    activation_notification(activation, user, "Unassigned: #{activation.name} #{activation.start_time.strftime("%F")} #{activation.start_time.strftime("%H:%M")} - #{activation.end_time.strftime("%H:%M")}")
+  end
+
   def activation_notification(activation, user, subject)
     @user = user
     @subject = subject
