@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.3.5'
+ruby '2.5.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.10'
@@ -85,7 +85,7 @@ gem 'mixpanel-ruby'
 
 # Error monitoring
 gem 'rollbar'
-gem 'oj', '~> 2.12.14'
+gem 'oj'
 gem 'snitcher'
 
 # Performance reporting
