@@ -79,7 +79,7 @@ class NewAvailabilities
 
   # new availability if not union from previous availability
   def new_availability_if_not_exist(available_date, start_time, end_time)
-    if Availability.where(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time).blank? || Availability.where(user_id: @user_id, available_date: available_date, assigned: true).where('start_time <= ?', start_time).where('end_time >= ?', end_time).blank?
+    if Availability.where(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time).blank?
       Availability.new(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
     end
   end
@@ -96,7 +96,26 @@ class NewAvailabilities
   def unique_new_availabilities(available_dates)
     # sort assigned new availability
     available_dates.sort_by! {|k| k[:assigned] ? 0 : 1}
+    # subtract new availabilities from overlapping new availabilities
+    new_availabilities = available_dates - get_overlapping(available_dates)
     # remove duplicate new availability
-    available_dates.uniq {|e| [e[:available_date], e[:start_time], e[:end_time]]}
+    new_availabilities.uniq {|e| [e[:available_date], e[:start_time], e[:end_time]]}
+  end
+
+  # get overlapping new availabilities from exist assigned availabilities
+  def get_overlapping(available_dates)
+    overlapping = []
+    Availability.where(user_id: @user_id, assigned: true, available_date:  @date_from..@date_to).each do |availability|
+      available_dates.each do |new_availability|
+        if new_availability.start_time <= availability.start_time and new_availability.end_time >= availability.end_time and !new_availability.assigned and new_availability.available_date == availability.available_date
+          overlapping << new_availability
+        elsif new_availability.start_time <= availability.start_time and new_availability.end_time > availability.start_time and !new_availability.assigned and new_availability.available_date == availability.available_date
+          overlapping << new_availability
+        elsif new_availability.start_time < availability.end_time and new_availability.end_time >= availability.end_time and !new_availability.assigned and new_availability.available_date == availability.available_date
+          overlapping << new_availability
+        end
+      end
+    end
+    overlapping
   end
 end
