@@ -61,7 +61,7 @@ class NewAvailabilities
     allocation_start_time = allocation.start_time.strftime("%T")
     allocation_end_time = allocation.end_time.strftime("%T")
     if allocation_start_time > start_time and allocation_start_time >= end_time
-      new_availability_if_not_exist(available_date, start_time, end_time)
+      Availability.new(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
     elsif allocation_start_time > start_time and allocation_end_time == end_time
       Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
     elsif allocation_start_time > start_time and allocation_end_time < end_time
@@ -71,15 +71,7 @@ class NewAvailabilities
     elsif allocation_start_time == start_time and allocation_end_time == end_time
       if Availability.where(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time).blank?
         Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
-      end
     elsif allocation_end_time <= start_time and allocation_end_time < end_time
-      new_availability_if_not_exist(available_date, start_time, end_time)
-    end
-  end
-
-  # new availability if not union from previous availability
-  def new_availability_if_not_exist(available_date, start_time, end_time)
-    if Availability.where(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time).blank?
       Availability.new(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
     end
   end
