@@ -5,6 +5,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
   before_action :set_contractor, only: [:index, :edit]
+  before_action :set_time_header, only: [:new, :edit]
 
   # GET /availabilities
   # GET /availabilities.json
@@ -28,8 +29,6 @@ class Conductor::AvailabilitiesController < ApplicationController
     next_week_availability = last_availability.available_date + 7
     @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_week : next_week_availability.beginning_of_week
     @date_to = @date_from.end_of_week
-    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
-    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
     @availabilities = Availability.where(user_id: @user_id).where(available_date: @date_from..@date_to)
   end
 
@@ -37,8 +36,6 @@ class Conductor::AvailabilitiesController < ApplicationController
   def edit
     @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_week : @availability.available_date.beginning_of_week
     @date_to = @date_from.end_of_week
-    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
-    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
     @availabilities = Availability.where(user_id: @availability.user_id).where(available_date: @date_from..@date_to)
   end
 
@@ -106,6 +103,11 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   def set_contractor
     @users = User.where(company: @company).with_role :contractor, @company
+  end
+
+  def set_time_header
+    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
+    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
   end
 
   def after_save_path
