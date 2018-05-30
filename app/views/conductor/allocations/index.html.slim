@@ -5,9 +5,9 @@
         a href="/symphony" Dashboard
       li
         a href="/symphony/company" #{@company.name}
-      li.active Allocations
+      li.active Allocations 
     h1.page-header
-      | Allocate Contractor
+      | Allocate Contractor - #{@date_from.strftime("%B")}
 
 .row
   .col-md-8.col-xs-12
