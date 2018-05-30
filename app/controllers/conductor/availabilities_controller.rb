@@ -24,7 +24,7 @@ class Conductor::AvailabilitiesController < ApplicationController
     else
       @user_id ||= params[:user_id]
     end
-    last_availability = Availability.where(user_id: @user_id).last
+    last_availability = Availability.where(user_id: @user_id).order('available_date ASC').last
     next_week_availability = last_availability.available_date + 7
     @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_week : next_week_availability.beginning_of_week
     @date_to = @date_from.end_of_week
