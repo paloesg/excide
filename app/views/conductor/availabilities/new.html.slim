@@ -11,4 +11,23 @@
     h1.page-header New Availability
 .container-fluid
   .row
-    = render 'add_avaibilities'
+    .col-sm-2.col-xs-2.nopadding
+      .panel.panel-default.simple-calendar
+        .panel-heading.calendar-heading
+          span.calendar-title
+            | &nbsp;
+        table.table.table-striped
+          thead
+            tr
+              th Time
+          tbody
+            tr
+              td.day.text-nowrap
+                br
+                p All day
+                - @times_header.each do |time|
+                  hr
+                  p #{time}
+    .col-sm-10.col-xs-10.nopadding
+      = form_tag conductor_availabilities_path do
+        = render 'add_avaibilities'

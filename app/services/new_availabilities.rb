@@ -1,8 +1,8 @@
 class NewAvailabilities
-  def initialize(current_user, available)
+  def initialize(current_user, available, current_date)
     @current_user = current_user
     @available = available
-    @date_from = available[:start_date].present? ? available[:start_date].to_date.beginning_of_week : Date.current.beginning_of_week
+    @date_from = available[:start_date].present? ? available[:start_date].to_date.beginning_of_week : current_date.beginning_of_week
     @date_to = @date_from.end_of_week
   end
 

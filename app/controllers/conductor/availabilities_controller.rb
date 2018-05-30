@@ -35,6 +35,11 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   # GET /availabilities/1/edit
   def edit
+    @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_week : @availability.available_date.beginning_of_week
+    @date_to = @date_from.end_of_week
+    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
+    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
+    @availabilities = Availability.where(user_id: @availability.user_id).where(available_date: @date_from..@date_to)
   end
 
   # POST /availabilities
@@ -42,7 +47,8 @@ class Conductor::AvailabilitiesController < ApplicationController
   def create
     # params[:available] format:
     # {"user_id"=>"52", "dates"=>{"2018-04-10"=>{"time"=>["09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]}, "2018-04-12"=>{"time"=>["10:00:00", "11:00:00", "12:00:00"]}, "2018-04-13"=>{"time"=>["14:00:00", "15:00:00", "16:00:00"]}}}
-    new_available_dates = NewAvailabilities.new(current_user, params[:available]).run
+    current_date = Date.current
+    new_available_dates = NewAvailabilities.new(current_user, params[:available], current_date).run
     respond_to do |format|
       if new_available_dates.each(&:save!) and new_available_dates.any?
         format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
@@ -58,14 +64,16 @@ class Conductor::AvailabilitiesController < ApplicationController
   # PATCH/PUT /availabilities/1
   # PATCH/PUT /availabilities/1.json
   def update
+    current_date = @availability.available_date
+    new_available_dates = NewAvailabilities.new(@availability.user, params[:available], current_date).run
     respond_to do |format|
-      if @availability.update(availability_params)
-        format.html { redirect_to conductor_availabilities_path, notice: 'Availability was successfully updated.' }
-        format.json { render :show, status: :ok, location: @availability }
+      if new_available_dates.each(&:save!) and new_available_dates.any?
+        format.html { redirect_to after_save_path, notice: 'Availability was successfully updated.' }
+        format.json { render :show, status: :created, location: @availability }
       else
-        set_contractor
-        format.html { render :edit }
-        format.json { render json: @availability.errors, status: :unprocessable_entity }
+        flash[:alert] = "Please fill in at least time slot."
+        format.html { redirect_to :back }
+        format.json { render json: new_available_dates.errors, status: :unprocessable_entity }
       end
     end
   end
