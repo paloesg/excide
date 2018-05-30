@@ -19,7 +19,7 @@
   = form_tag conductor_availabilities_path do
     = hidden_field :available, :user_id, :value => params[:user_id]
     = hidden_field :available, :start_date, value: params[:start_date]
-    = week_calendar do |date|
+    = week_calendar start_date: @date_from do |date|
       br
       p = check_box :all_day, "dates[#{date}]['all']", {:multiple => true, :onchange => 'allDay(this)', :id => 'all_day'}
       - @times_value.each_with_index do |time, i|
