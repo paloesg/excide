@@ -68,9 +68,8 @@ class NewAvailabilities
       Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
     elsif allocation_start_time == start_time and allocation_end_time < end_time
       Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
-    elsif allocation_start_time == start_time and allocation_end_time == end_time
-      if Availability.where(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time).blank?
-        Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
+    elsif allocation_start_time == start_time and allocation_end_time == end_time and Availability.where(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time).blank?
+      Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
     elsif allocation_end_time <= start_time and allocation_end_time < end_time
       Availability.new(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
     end
