@@ -1,4 +1,4 @@
-class CompanyAction < ActiveRecord::Base
+class WorkflowAction < ActiveRecord::Base
   include PublicActivity::Model
   tracked except: [:create, :destroy],
           owner: ->(controller, _model) { controller&.current_user },
