@@ -22,7 +22,7 @@ class Allocation < ActiveRecord::Base
             allocation.start_time.in_time_zone.strftime("%H:%M"),
             allocation.end_time.in_time_zone.strftime("%H:%M"),
             allocation.user&.full_name,
-            allocation.last_minute
+            allocation.last_minute ? "Yes" : "No"
           ]
           csv << row
         end
