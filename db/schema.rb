@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180531075707) do
+ActiveRecord::Schema.define(version: 20180531101314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,11 +68,11 @@ ActiveRecord::Schema.define(version: 20180531075707) do
     t.date     "allocation_date"
     t.time     "start_time"
     t.time     "end_time"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.integer  "allocation_type"
-    t.boolean  "last_minute",     default: false
-    t.integer  "rate"
+    t.boolean  "last_minute",               default: false
+    t.money    "rate",            scale: 2
   end
 
   add_index "allocations", ["activation_id"], name: "index_allocations_on_activation_id", using: :btree
