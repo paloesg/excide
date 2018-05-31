@@ -15,15 +15,17 @@ class Allocation < ActiveRecord::Base
     CSV.generate do |csv|
       csv << attributes
       all.each do |allocation|
-        row = [
-          allocation.activation.name,
-          allocation.allocation_date,
-          allocation.start_time.in_time_zone.strftime("%H:%M"),
-          allocation.end_time.in_time_zone.strftime("%H:%M"),
-          allocation.user&.full_name,
-          allocation.last_minute
-        ]
-        csv << row
+        if allocation.user.present?
+          row = [
+            allocation.activation.name,
+            allocation.allocation_date,
+            allocation.start_time.in_time_zone.strftime("%H:%M"),
+            allocation.end_time.in_time_zone.strftime("%H:%M"),
+            allocation.user&.full_name,
+            allocation.last_minute
+          ]
+          csv << row
+        end
       end
     end
   end
