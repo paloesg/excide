@@ -60,9 +60,9 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def reset
-    @company_actions = @company.company_actions.where(workflow_id: @workflow.id)
+    @workflow_actions = @company.workflow_actions.where(workflow_id: @workflow.id)
     @workflow.update_attribute(:completed, false)
-    @company_actions.update_all(completed: false, completed_user_id: nil)
+    @workflow_actions.update_all(completed: false, completed_user_id: nil)
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully reset.'
   end
 
