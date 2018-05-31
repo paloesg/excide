@@ -27,8 +27,8 @@ class UserDashboard < Administrate::BaseDashboard
     current_sign_in_ip: Field::String.with_options(searchable: false),
     last_sign_in_ip: Field::String.with_options(searchable: false),
     roles: HasManyRolesField,
-    assigned_tasks: Field::HasMany.with_options(class_name: CompanyAction),
-    completed_tasks: Field::HasMany.with_options(class_name: CompanyAction),
+    assigned_tasks: Field::HasMany.with_options(class_name: WorkflowAction),
+    completed_tasks: Field::HasMany.with_options(class_name: WorkflowAction),
   }.freeze
 
   # COLLECTION_ATTRIBUTES
