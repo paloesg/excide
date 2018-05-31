@@ -26,7 +26,8 @@ class Allocation < ActiveRecord::Base
             allocation.start_time.in_time_zone.strftime("%H:%M"),
             allocation.end_time.in_time_zone.strftime("%H:%M"),
             allocation.allocation_type.titleize,
-            allocation.last_minute
+            allocation.last_minute,
+            allocation.rate
           ]
           csv << row
         end
