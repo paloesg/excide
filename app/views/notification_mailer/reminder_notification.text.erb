@@ -3,7 +3,7 @@ Hi <%= @user.first_name %>,
 <%= @reminder.content %>
 
 <% if @reminder.task.present? %>
-  You can access the task from this link: <%= symphony_workflow_url(@reminder.task.section.template.slug, @reminder.company_action.workflow.identifier) %>
+  You can access the task from this link: <%= symphony_workflow_url(@reminder.task.section.template.slug, @reminder.workflow_action.workflow.identifier) %>
 <% end %>
 
 If you have any queries regarding your task, please contact your admin.
