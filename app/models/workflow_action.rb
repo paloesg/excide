@@ -22,7 +22,7 @@ class WorkflowAction < ActiveRecord::Base
   has_many :reminders, dependent: :destroy
 
   def set_deadline_and_notify(next_task)
-    next_action = next_task.get_company_action(self.company, self.workflow.identifier)
+    next_action = next_task.get_workflow_action(self.company, self.workflow.identifier)
     next_action.update_columns(deadline: (Date.current + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
 
     # Create new reminder based on deadline of action and repeat every 2 days
@@ -70,7 +70,7 @@ class WorkflowAction < ActiveRecord::Base
       freq_unit: "days",
       company_id: action.company_id,
       task_id: task.id,
-      company_action_id: action.id,
+      workflow_action_id: action.id,
       title: 'Reminder: You have a task awaiting completion.',
       content: task.instructions,
       slack: true,
