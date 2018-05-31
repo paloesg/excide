@@ -8,13 +8,13 @@ class Workflow < ActiveRecord::Base
 
   accepts_nested_attributes_for :workflowable
 
-  has_many :company_actions, dependent: :destroy
+  has_many :workflow_actions, dependent: :destroy
   has_many :documents, dependent: :destroy
 
   validates :identifier, uniqueness: true
   validate :check_data_fields
 
-  after_create :create_related_company_actions
+  after_create :create_related_workflow_actions
   after_create :trigger_first_task
   before_save :uppercase_identifier
 
@@ -31,7 +31,7 @@ class Workflow < ActiveRecord::Base
     if self.completed
       self.template.sections.last
     else
-      self.template.sections.joins(tasks: :company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first || self.template.sections.first
+      self.template.sections.joins(tasks: :workflow_actions).where(workflow_actions: {workflow_id: self.id, completed: false}).first || self.template.sections.first
     end
   end
 
@@ -40,7 +40,7 @@ class Workflow < ActiveRecord::Base
   end
 
   def current_task
-    self.current_section.tasks.joins(:company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first unless self.completed
+    self.current_section.tasks.joins(:workflow_actions).where(workflow_actions: {workflow_id: self.id, completed: false}).first unless self.completed
   end
 
   def next_task
@@ -52,7 +52,7 @@ class Workflow < ActiveRecord::Base
   end
 
   def get_users
-    self.template.sections.map{|section| section.tasks.map{|task| task.company_actions.map(&:user)}}.flatten.compact.uniq
+    self.template.sections.map{|section| section.tasks.map{|task| task.workflow_actions.map(&:user)}}.flatten.compact.uniq
   end
 
   def data
@@ -103,7 +103,7 @@ class Workflow < ActiveRecord::Base
   private
 
   # Create all the actions that need to be completed for a workflow that is associated with a company
-  def create_related_company_actions
+  def create_related_workflow_actions
     sections = self.template.sections
     sections.each do |s|
       s.tasks.each do |t|
@@ -113,7 +113,7 @@ class Workflow < ActiveRecord::Base
   end
 
   def trigger_first_task
-    self.current_task.get_company_action(self.company, self.identifier).set_deadline_and_notify(current_task)
+    self.current_task.get_workflow_action(self.company, self.identifier).set_deadline_and_notify(current_task)
   end
 
   def uppercase_identifier
