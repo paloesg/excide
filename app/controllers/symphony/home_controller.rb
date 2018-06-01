@@ -5,13 +5,13 @@ class Symphony::HomeController < ApplicationController
   before_action :set_workflow, only: [:show]
 
   def show
+    @actions = CompanyAction.all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).order(:deadline)
   end
 
   private
 
   def set_workflow
-    @user = current_user
-    @company = @user.company
+    @company = current_user.company
     @templates = view_context.get_relevant_templates
     @workflows_array = @templates.map(&:current_workflows).flatten
     @workflows_sort = sort_column(@workflows_array)
