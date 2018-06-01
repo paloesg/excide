@@ -25,7 +25,7 @@
               th Task Instructions
               th Deadline
           tbody
-            - @actions.each do |action|
+            - @outstanding_actions.each do |action|
               tr
                 td = link_to action.workflow.identifier, symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier)
                 td = action.workflow.template.title
