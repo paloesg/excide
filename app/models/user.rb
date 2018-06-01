@@ -83,11 +83,11 @@ class User < ActiveRecord::Base
   end
 
   def self.contractors_to_csv
-    attributes = ['ID', 'First Name', 'Last Name', 'Email', 'Phone', 'NRIC', 'Date of Birth', 'Max Hours Per Week', 'Bank Name', 'Bank Account Name', 'Bank Account Number', 'Bank Account Type', 'Status', 'IC']
+    attributes = ['Id', 'First Name', 'Last Name', 'Email', 'Phone', 'NRIC', 'Date of Birth', 'Max Hours Per Week', 'Bank Name', 'Bank Account Name', 'Bank Account Number', 'Bank Account Type', 'Status', 'IC']
     CSV.generate do |csv|
       csv << attributes
       all.each do |user|
-        row = [ user.id, user.first_name, user.last_name, user.email, user.contact_number, user.nric, user.date_of_birth, user.max_hours_per_week, user.bank_name, user.bank_account_name, user.bank_account_number, user.bank_account_type&.titleize, user.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed', (true if user.has_role?(:contractor_in_charge, :any)) ]
+        row = [user.id, user.first_name, user.last_name, user.email, user.contact_number, user.nric, user.date_of_birth, user.max_hours_per_week, user.bank_name, user.bank_account_name, user.bank_account_number, user.bank_account_type&.titleize, user.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed', (true if user.has_role?(:contractor_in_charge, :any)) ]
         csv << row
       end
     end
