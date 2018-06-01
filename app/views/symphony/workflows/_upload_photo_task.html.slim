@@ -18,6 +18,9 @@ td
   - else
     = check_box_tag 'completed', action.id, action.completed, disabled: true
 td
+  - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+    = link_to "Send Reminder", "#", class: 'btn btn-primary'
+td
   - if action.completed? && action.completed_user.present?
     span.glyphicon.glyphicon-user aria-hidden="true"
     |  #{action.completed_user&.full_name}
