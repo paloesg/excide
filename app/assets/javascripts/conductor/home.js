@@ -47,6 +47,7 @@ $(document).ready(function () {
     get_activation_address = JSON.parse($(this).attr('activation-address'))
     start_time = new Date(get_activation['start_time']);
     end_time = new Date(get_activation['end_time']);
+    $('#allocated_users_length').text($(this).attr('get_allocated_users_length'));
     $('#client_name').text($(this).attr('activation-client'));
     $('#activation_type_popover').text(get_activation['activation_type'].replace(/_/g, ' ')).css("text-transform", "capitalize");
     $('#event_owner').text($(this).attr('activation-event_owner'));
