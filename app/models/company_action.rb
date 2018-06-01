@@ -35,6 +35,22 @@ class CompanyAction < ActiveRecord::Base
     end
   end
 
+  # Get company actions that are assigned to the user.
+  def self.assigned_actions(user)
+    where(assigned_user: user)
+  end
+
+  # Get company actions where tasks are assigned to the roles.
+  def self.role_actions(roles)
+    joins(:task).where(tasks: {role_id: roles})
+  end
+
+  # Union of company actions that are assigned to user and company actions where tasks are assigned to user role.
+  # TODO: Refactor to use ActiveRecord .or after upgrading to Rails 5
+  def self.all_user_actions(user)
+    CompanyAction.from("(#{assigned_actions(user).to_sql} UNION #{role_actions(user.roles).to_sql}) AS company_actions")
+  end
+
   private
 
   def clear_reminders
