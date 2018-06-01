@@ -64,5 +64,7 @@ $(document).ready(function () {
   });
   $('body').on('hidden.bs.popover', function (e) {
     $(e.target).data("bs.popover").inState.click = false;
+  }).on("shown.bs.popover", function (e) {
+    $('.popover-close').click(function () { $(e.target).popover('hide') });
   });
 });
