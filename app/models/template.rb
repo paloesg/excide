@@ -3,6 +3,7 @@ class Template < ActiveRecord::Base
   friendly_id :title, use: [:slugged, :finders]
 
   has_many :sections, -> { order(position: :asc) }, dependent: :destroy
+  has_many :tasks, through: :sections
   has_many :document_templates, dependent: :destroy
   has_many :workflows
 
