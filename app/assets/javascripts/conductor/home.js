@@ -15,7 +15,7 @@ $(document).ready(function () {
   // Create new activation
   $('.new_activation').popover({
     html: true,
-    title: 'New activation',
+    title: 'New activation <div class="pull-right"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span><div>',
     container: 'body',
     placement: 'auto left',
     content: function () {
