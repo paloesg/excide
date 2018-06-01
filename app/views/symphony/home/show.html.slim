@@ -26,7 +26,7 @@
               th Deadline
           tbody
             - @outstanding_actions.each do |action|
-              tr
+              tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
                 td = link_to action.workflow.identifier, symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier)
                 td = action.workflow.template.title
                 td = action.workflow.workflowable&.name || '-'
