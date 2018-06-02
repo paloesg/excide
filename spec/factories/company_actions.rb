@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :company_action do
+  factory :workflow_action do
     company
     workflow
     task
@@ -9,7 +9,7 @@ FactoryBot.define do
     completed false
     deadline Faker::Date.between(Date.current, 1.month.from_now)
 
-    factory :completed_company_action do
+    factory :completed_workflow_action do
       association :completed_user, factory: :user
       completed true
     end

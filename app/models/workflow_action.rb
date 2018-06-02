@@ -1,4 +1,4 @@
-class CompanyAction < ActiveRecord::Base
+class WorkflowAction < ActiveRecord::Base
   include PublicActivity::Model
   tracked except: [:create, :destroy],
           owner: ->(controller, _model) { controller&.current_user },
@@ -22,7 +22,7 @@ class CompanyAction < ActiveRecord::Base
   has_many :reminders, dependent: :destroy
 
   def set_deadline_and_notify(next_task)
-    next_action = next_task.get_company_action(self.company, self.workflow.identifier)
+    next_action = next_task.get_workflow_action(self.company, self.workflow.identifier)
     next_action.update_columns(deadline: (Date.current + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
 
     # Create new reminder based on deadline of action and repeat every 2 days
@@ -35,20 +35,20 @@ class CompanyAction < ActiveRecord::Base
     end
   end
 
-  # Get company actions that are assigned to the user.
+  # Get workflow actions that are assigned to the user.
   def self.assigned_actions(user)
     where(assigned_user: user)
   end
 
-  # Get company actions where tasks are assigned to the roles.
+  # Get workflow actions where tasks are assigned to the roles.
   def self.role_actions(roles)
     joins(:task).where(tasks: {role_id: roles})
   end
 
-  # Union of company actions that are assigned to user and company actions where tasks are assigned to user role.
+  # Union of workflow actions that are assigned to user and workflow actions where tasks are assigned to user role.
   # TODO: Refactor to use ActiveRecord .or after upgrading to Rails 5
   def self.all_user_actions(user)
-    CompanyAction.from("(#{assigned_actions(user).to_sql} UNION #{role_actions(user.roles).to_sql}) AS company_actions")
+    WorkflowAction.from("(#{assigned_actions(user).to_sql} UNION #{role_actions(user.roles).to_sql}) AS workflow_actions")
   end
 
   private
@@ -86,7 +86,7 @@ class CompanyAction < ActiveRecord::Base
       freq_unit: "days",
       company_id: action.company_id,
       task_id: task.id,
-      company_action_id: action.id,
+      workflow_action_id: action.id,
       title: 'Reminder: You have a task awaiting completion.',
       content: task.instructions,
       slack: true,

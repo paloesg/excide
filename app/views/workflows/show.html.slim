@@ -22,7 +22,7 @@
               th Done
           tbody
             - @tasks.each do |t|
-              - action = t.get_company_action(@company.id, @workflow.identifier)
+              - action = t.get_workflow_action(@company.id, @workflow.identifier)
               tr
                 td = t.position.to_s + '.'
                 td

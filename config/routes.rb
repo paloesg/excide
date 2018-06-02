@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
   post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   resources :documents
-  patch 'company_actions/update/:id', to: 'company_actions#update', as: :company_action
+  patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
   namespace :symphony do
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
