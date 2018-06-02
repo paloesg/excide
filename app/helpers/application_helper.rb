@@ -3,14 +3,6 @@ module ApplicationHelper
     Template.where(company_id: nil)
   end
 
-  def get_relevant_templates
-    if current_user.has_role? :admin, @company
-      Template.where(company: @company)
-    else
-      Template.where(company: @company).select{|template| (template.get_roles & current_user.roles).any?}
-    end
-  end
-
   def get_cs_requests
     SurveyTemplate.corp_sec_request
   end

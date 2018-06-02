@@ -2,22 +2,20 @@ class Symphony::HomeController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_workflow, only: [:show]
 
   def show
-  end
+    @company = current_user.company
+    @templates = Template.assigned_templates(current_user)
 
-  private
-
-  def set_workflow
-    @user = current_user
-    @company = @user.company
-    @templates = view_context.get_relevant_templates
     @workflows_array = @templates.map(&:current_workflows).flatten
     @workflows_sort = sort_column(@workflows_array)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
     @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
+
+    @outstanding_actions = CompanyAction.all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).order(:deadline)
   end
+
+  private
 
   def sort_column(array)
     array.sort_by{
