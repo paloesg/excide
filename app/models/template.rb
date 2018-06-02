@@ -3,7 +3,6 @@ class Template < ActiveRecord::Base
   friendly_id :title, use: [:slugged, :finders]
 
   has_many :sections, -> { order(position: :asc) }, dependent: :destroy
-  has_many :tasks
   has_many :document_templates, dependent: :destroy
   has_many :workflows
 
@@ -52,7 +51,7 @@ class Template < ActiveRecord::Base
       Template.where(company: user.company)
     else
       # Work backwards from all user actions to get to the templates that have tasks assigned to the user
-      task_ids = CompanyAction.all_user_actions(user).pluck(:task_id).uniq
+      task_ids = WorkflowAction.all_user_actions(user).pluck(:task_id).uniq
       section_ids = Task.where(id: task_ids).pluck(:section_id).uniq
       template_ids = Section.where(id: section_ids).pluck(:template_id).uniq
       Template.where(id: template_ids, company: user.company)
