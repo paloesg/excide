@@ -17,7 +17,7 @@ td
     = check_box_tag 'completed', action.id, action.completed, disabled: true
 td
   - if task == @workflow.current_task && (@user.has_role? :admin, @company)
-    = link_to "Send Reminder", "#", class: 'btn btn-primary'
+    = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-primary'
 td
   - if action.completed? && action.completed_user.present?
     span.glyphicon.glyphicon-user aria-hidden="true"

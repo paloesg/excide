@@ -40,6 +40,7 @@ Rails.application.routes.draw do
         post '/reset', to: 'workflows#reset', as: :reset
         get '/section/:section_id', to: 'workflows#show', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
+        post '/send_reminder/:task_id', to: 'workflows#send_reminder', as: :reminder_task
         get '/assign', to: 'workflows#assign', as: :assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
       end
