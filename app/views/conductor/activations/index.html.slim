@@ -41,7 +41,7 @@
               th
         tbody
           - @activations.each do |activation|
-            tr
+            tr.activation activation-data="#{activation.to_json}" activation-address="#{activation.address.to_json}" activation-client="#{activation.client&.name}" activation-event_owner="#{activation.event_owner&.full_name}" get_allocated_users_length="#{activation.allocations.map(&:user).reject(&:blank?).length}" title="Activation Details <div class='pull-right'><span class='popover-close glyphicon glyphicon-remove' aria-hidden='true'></span></div>"
               td = activation.activation_type.titleize
               td = activation.client&.name
               td = activation.event_owner&.full_name
@@ -68,3 +68,5 @@
                   = link_to 'Edit', edit_conductor_activation_path(activation), role: 'button', class: 'btn btn-primary btn-xs'
                   = link_to 'Reset', reset_conductor_activation_path(activation), data: { confirm: 'This will remove all existing allocations for this activation. Are you sure?' }, method: :post, role: 'button', class: 'btn btn-warning btn-xs'
                   = link_to 'Delete', conductor_activation_path(activation), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
+#activation-details.hide
+  = render 'conductor/home/activation_details'
