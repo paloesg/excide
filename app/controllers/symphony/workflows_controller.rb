@@ -61,7 +61,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def send_reminder
     current_task = Task.find(params[:task_id])
-    current_action = CompanyAction.find(params[:action_id])
+    current_action = WorkflowAction.find(params[:action_id])
     respond_to do |format|
       if current_task.role.present?
         users = User.with_role(current_task.role.name.to_sym, @company)
