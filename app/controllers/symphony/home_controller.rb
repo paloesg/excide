@@ -3,7 +3,7 @@ class Symphony::HomeController < ApplicationController
 
   before_action :authenticate_user!
 
-  def show
+  def index
     @company = current_user.company
     @templates = Template.assigned_templates(current_user)
 

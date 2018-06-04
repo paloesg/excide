@@ -45,7 +45,7 @@ Rails.application.routes.draw do
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
       end
     end
-    root to: 'home#show'
+    root to: 'home#index'
   end
 
   namespace :conductor do
