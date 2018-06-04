@@ -60,7 +60,7 @@
                   - if activation.allocations.contractor.empty? and ((@user.has_role? :manpower_allocator, @company) or @user.has_role? :admin, @company)
                     = select_tag('allocations', options_for_select((activation.allocations.contractor.count..5).to_a, activation.allocations.contractor.contractor.count), onchange: "create_allocations(#{activation.id}, 'contractor', this);")
                   - else
-                    = select_tag('allocations', options_for_select([activation.allocations.count]), disabled: true)
+                    = select_tag('allocations', options_for_select([activation.allocations.contractor.count]), disabled: true)
                 td
                   i.glyphicon.glyphicon-ok.text-success style="opacity: 0;"
                   i.glyphicon.glyphicon-remove.text-danger style="opacity: 0;"
