@@ -2,8 +2,11 @@ td = task.display_position
 td
   = task.instructions
   = task.display_image
-  br
-  = link_to "Upload File", new_symphony_document_path(workflow: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-xs'
+td
+  .btn-toolbar
+    = link_to "Upload File", new_symphony_document_path(workflow: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-xs'
+    - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+      = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-xs'
 td
   - if action.assigned_user.present?
     span.glyphicon.glyphicon-user aria-hidden="true"
