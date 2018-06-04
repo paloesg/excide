@@ -2,8 +2,11 @@ td = task.display_position
 td
   = task.instructions
   = task.display_image
-  br
-  = link_to "Download File", task.document_template.file_url, role: 'button', class: 'btn btn-primary btn-xs' if task.document_template.present?
+td
+  .btn-toolbar
+    = link_to "Download File", task.document_template.file_url, role: 'button', class: 'btn btn-primary btn-xs' if task.document_template.present?
+    - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+      = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-xs'
 td
   - if action.assigned_user.present?
     span.glyphicon.glyphicon-user aria-hidden="true"
@@ -17,9 +20,6 @@ td
     = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST" }, :onclick => "this.checked=true;"
   - else
     = check_box_tag 'completed', action.id, action.completed, disabled: true
-td
-  - if task == @workflow.current_task && (@user.has_role? :admin, @company)
-    = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-primary'
 td
   - if action.completed? && action.completed_user.present?
     span.glyphicon.glyphicon-user aria-hidden="true"
