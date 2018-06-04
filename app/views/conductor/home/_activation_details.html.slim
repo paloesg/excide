@@ -6,6 +6,10 @@ p
   br
   span#client_name
 p
+  strong Remarks:
+  br
+  span#remarks  
+p
   strong Activation type:
   br
   span#activation_type_popover
@@ -37,10 +41,6 @@ p
   strong End time:
   br
   span#end_time
-p
-  strong Remarks:
-  br
-  span#remarks
 - unless current_user.has_role? :contractor, :any
   .btn-toolbar
     a.btn.btn-primary#edit_activation href="#" Edit activation
