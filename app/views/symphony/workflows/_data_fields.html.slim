@@ -1,5 +1,5 @@
 tr
-  td = f.text_field :name, class: 'form-control'
+  td = f.text_field :name, class: 'form-control', disabled: (!@user.has_role? :admin, @company)
   td = f.text_field :value, placeholder: f.object.try(:placeholder), class: 'form-control'
   td
     - if @user.has_role? :admin, @company
