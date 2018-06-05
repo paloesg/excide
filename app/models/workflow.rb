@@ -25,15 +25,15 @@ class Workflow < ActiveRecord::Base
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :identifier
+    attribute :identifier, :completed, :created_at, :updated_at, :deadline
     attribute :workflowable do
       { client_name: workflowable.name, client_identifier: workflowable.identifier }
     end
     attribute :template do
-      { template_title: template.title }
+      { title: template.title }
     end
     attribute :company do
-      { company_name: company.name, company_slug: company.slug }
+      { name: company.name, slug: company.slug }
     end
   end
 
