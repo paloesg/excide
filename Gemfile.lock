@@ -71,6 +71,12 @@ GEM
     administrate-field-json (0.0.4)
       administrate (~> 0.3)
       rails (>= 4.2, < 5.1)
+    algoliasearch (1.22.0)
+      httpclient (~> 2.8, >= 2.8.3)
+      json (>= 1.5.1)
+    algoliasearch-rails (1.20.4)
+      algoliasearch (>= 1.17.0, < 2.0.0)
+      json (>= 1.5.1)
     arel (6.0.4)
     ast (2.4.0)
     autoprefixer-rails (8.5.1)
@@ -179,6 +185,7 @@ GEM
     hashie (3.5.7)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    httpclient (2.8.3)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     ipaddress (0.8.3)
@@ -458,6 +465,7 @@ DEPENDENCIES
   administrate-field-image
   administrate-field-json
   administrate-field-nested_has_many!
+  algoliasearch-rails
   aws-sdk (~> 2)
   better_errors
   binding_of_caller

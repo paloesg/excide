@@ -103,6 +103,8 @@ gem 'trix'
 gem "datetime_picker_rails"
 # Render calendar
 gem "simple_calendar", "~> 2.0"
+# Algolia search
+gem "algoliasearch-rails"
 
 # Backend admin
 gem 'administrate'
