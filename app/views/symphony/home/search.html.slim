@@ -1,0 +1,73 @@
+.row
+  .col-sm-6.col-sm-offset-6
+    input.form-control#q type="search"
+
+.row
+  .col-sm-3#facets
+    #templates
+  .col-sm-9
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Search results
+      .panel-body
+      .table-responsive#hits
+
+script src='//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js'
+
+javascript:
+  $(document).ready(function() {
+    var hitTemplate = '<table class="table table-striped table-condensed">' +
+      '<thead><tr><th>Workflow Identifier</th>' +
+      '<th>Workflow Type</th>' +
+      '<th>Client Name</th>' +
+      '<th>Deadline</th>' +
+      '<th>Status</th></tr></thead>' +
+      '<tbody>{{#hits}}' +
+      '<tr><td>{{{_highlightResult.identifier.value}}}</td>' +
+      '<td>{{{_highlightResult.template.title.value}}}</td>' +
+      '<td>{{{_highlightResult.workflowable.client_name.value}}}</td>' +
+      '<td>{{{deadline}}}</td>' +
+      '<td>{{{_highlightResult.completed.value}}}</td></tr>' +
+      '{{/hits}}</tbody>'
+    '</div>';
+    var search = instantsearch({
+      appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
+      apiKey: '#{ENV['ALGOLIASEARCH_API_KEY_SEARCH']}',
+      indexName: '#{Workflow.index_name}',
+      urlSync: true
+    });
+    search.addWidget(
+      instantsearch.widgets.searchBox({
+        container: '#q',
+        placeholder: 'Search for workflows',
+        autofocus: false,
+        poweredBy: true
+      })
+    );
+    search.addWidget(
+      instantsearch.widgets.hits({
+        container: '#hits',
+        templates: {
+          empty: 'No matching workflows',
+          allItems: hitTemplate
+        },
+        hitsPerPage: 10
+      })
+    );
+    search.addWidget(
+      instantsearch.widgets.refinementList({
+        container: '#templates',
+        attributeName: 'template.title',
+        limit: 10,
+        templates: {
+          header: 'Templates'
+        },
+        cssClasses: {
+          root: 'list-group',
+          item: 'list-group-item',
+          count: 'badge pull-right'
+        }
+      })
+    );
+    search.start();
+  });

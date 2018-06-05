@@ -15,6 +15,9 @@ class Symphony::HomeController < ApplicationController
     @outstanding_actions = WorkflowAction.all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).order(:deadline)
   end
 
+  def search
+  end
+
   private
 
   def sort_column(array)
