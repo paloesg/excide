@@ -23,6 +23,20 @@ class Workflow < ActiveRecord::Base
           owner: ->(controller, _model) { controller && controller.current_user },
           recipient: ->(_controller, model) { model }
 
+  include AlgoliaSearch
+  algoliasearch do
+    attribute :identifier
+    attribute :workflowable do
+      { client_name: workflowable.name, client_identifier: workflowable.identifier }
+    end
+    attribute :template do
+      { template_title: template.title }
+    end
+    attribute :company do
+      { company_name: company.name, company_slug: company.slug }
+    end
+  end
+
   def build_workflowable(params)
     self.workflowable = workflowable_type.constantize.new(params)
   end
