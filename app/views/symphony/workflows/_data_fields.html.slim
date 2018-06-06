@@ -1,8 +1,9 @@
 tr
-  td = f.text_field :name, class: 'form-control'
+  td = f.text_field :name, class: 'form-control', readonly: (!@user.has_role? :admin, @company)
   td = f.text_field :value, placeholder: f.object.try(:placeholder), class: 'form-control'
   td
-    = link_to "Remove", '#', class: 'remove_fields btn btn-danger'
+    - if @user.has_role? :admin, @company
+      = link_to "Remove", '#', class: 'remove_fields btn btn-danger'
     = f.hidden_field :user_id
     = f.hidden_field :updated_at
     = f.hidden_field :_create, class: 'create'
