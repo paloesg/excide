@@ -91,8 +91,9 @@ gem 'snitcher'
 # Performance reporting
 gem "skylight"
 
+gem 'popper_js', '~> 1.12.9'
 # Frontend framework
-gem 'bootstrap-sass'
+gem 'bootstrap', '~> 4.1.1'
 # Themify icon set web fonts
 gem 'themify-icons-rails'
 # Nested form helper

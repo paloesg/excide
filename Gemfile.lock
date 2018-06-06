@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/stympy/faker.git
-  revision: 26048ab140f73c815ab4bb0d1dd8e021ff8931f0
+  revision: d369179f934ef544f491f9ef4200483805031212
   specs:
     faker (1.8.7)
       i18n (>= 0.7)
@@ -73,15 +73,15 @@ GEM
       rails (>= 4.2, < 5.1)
     arel (6.0.4)
     ast (2.4.0)
-    autoprefixer-rails (8.5.1)
+    autoprefixer-rails (8.6.0)
       execjs
-    aws-sdk (2.11.57)
-      aws-sdk-resources (= 2.11.57)
-    aws-sdk-core (2.11.57)
+    aws-sdk (2.11.62)
+      aws-sdk-resources (= 2.11.62)
+    aws-sdk-core (2.11.62)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.11.57)
-      aws-sdk-core (= 2.11.57)
+    aws-sdk-resources (2.11.62)
+      aws-sdk-core (= 2.11.62)
     aws-sigv4 (1.0.2)
     bcrypt (3.1.12)
     better_errors (2.4.0)
@@ -90,9 +90,10 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    bootstrap-sass (3.3.7)
-      autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
+    bootstrap (4.1.1)
+      autoprefixer-rails (>= 6.0.3)
+      popper_js (>= 1.12.9, < 2)
+      sass (>= 3.5.2)
     brakeman (4.3.0)
     builder (3.2.3)
     byebug (10.0.2)
@@ -140,7 +141,7 @@ GEM
       railties (>= 3.0.0)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.23)
+    ffi (1.9.25)
     fog-aws (3.0.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
@@ -245,7 +246,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
-    oj (3.6.0)
+    oj (3.6.2)
     omniauth (1.8.1)
       hashie (>= 3.4.6, < 3.6.0)
       rack (>= 1.6.2, < 3)
@@ -260,6 +261,7 @@ GEM
     parser (2.5.1.0)
       ast (~> 2.4.0)
     pg (0.20.0)
+    popper_js (1.12.9)
     powerpack (0.1.1)
     pry (0.11.3)
       coderay (~> 1.1.0)
@@ -280,7 +282,7 @@ GEM
       rack-proxy (~> 0.6, >= 0.6.1)
     rack-test (0.6.3)
       rack (>= 1.0)
-    rack-timeout (0.5.0.1)
+    rack-timeout (0.5.1)
     rails (4.2.10)
       actionmailer (= 4.2.10)
       actionpack (= 4.2.10)
@@ -394,9 +396,9 @@ GEM
       rails (>= 3.0)
     sitemap_generator (6.0.1)
       builder (~> 3.0)
-    skylight (2.0.1)
-      skylight-core (= 2.0.1)
-    skylight-core (2.0.1)
+    skylight (2.0.2)
+      skylight-core (= 2.0.2)
+    skylight-core (2.0.2)
       activesupport (>= 4.2.0)
     slim (3.0.9)
       temple (>= 0.7.6, < 0.9)
@@ -429,18 +431,18 @@ GEM
       rails (> 4.1, < 5.2)
     turbolinks (2.5.4)
       coffee-rails
-    twilio-ruby (5.10.2)
+    twilio-ruby (5.10.3)
       faraday (~> 0.9)
       jwt (>= 1.5, <= 2.5)
       nokogiri (>= 1.6, < 2.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    uglifier (4.1.10)
+    uglifier (4.1.11)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
-    unicode-display_width (1.3.2)
+    unicode-display_width (1.4.0)
     warden (1.2.7)
       rack (>= 1.0)
     web-console (3.3.0)
@@ -461,7 +463,7 @@ DEPENDENCIES
   aws-sdk (~> 2)
   better_errors
   binding_of_caller
-  bootstrap-sass
+  bootstrap (~> 4.1.1)
   brakeman
   byebug
   cocoon
@@ -486,6 +488,7 @@ DEPENDENCIES
   omniauth-linkedin-oauth2
   omniauth-oauth2 (~> 1.3.1)
   pg (= 0.20)
+  popper_js (~> 1.12.9)
   public_activity
   puma
   pundit
