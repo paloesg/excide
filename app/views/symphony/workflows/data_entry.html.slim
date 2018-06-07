@@ -9,7 +9,9 @@
     h1.page-header #{@template.title} – #{@workflow.identifier}
 .row
   .col-md-6
-    - unless @documents.empty?
+    - if @documents.empty?
+      | No documents available. Please upload documents first.
+    - else
       - if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
         = image_tag(@document.file_url, class: 'img-responsive')
       - else
