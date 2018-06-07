@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
   namespace :symphony do
+    get '/search', to: 'home#search'
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
     resources :users
     resources :document_templates
@@ -45,7 +46,7 @@ Rails.application.routes.draw do
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
       end
     end
-    root to: 'home#show'
+    root to: 'home#index'
   end
 
   namespace :conductor do

@@ -27,6 +27,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top
                 | Admin
                 span.caret
               ul.dropdown-menu
+                li = link_to "Search Workflows", symphony_search_path
                 li = link_to "Manage Users", symphony_users_path
                 li = link_to "User Details", edit_user_registration_path
                 li = link_to "Company Details", edit_company_path
