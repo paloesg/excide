@@ -1,4 +1,14 @@
 .row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" #{current_user.company.name}
+      li.active Search
+    h1.page-header Search Workflows
+
+.row
   .col-sm-6.col-sm-offset-6
     input.form-control#q type="search"
 
@@ -23,7 +33,7 @@ javascript:
       '<th>Deadline</th>' +
       '<th>Status</th></tr></thead>' +
       '<tbody>{{#hits}}' +
-      '<tr><td>{{{_highlightResult.identifier.value}}}</td>' +
+      '<tr><td><a href="/symphony/{{{template.slug}}}/{{{identifier}}}">{{{_highlightResult.identifier.value}}}</a></td>' +
       '<td>{{{_highlightResult.template.title.value}}}</td>' +
       '<td>{{{_highlightResult.workflowable.client_name.value}}}</td>' +
       '<td>{{{deadline}}}</td>' +

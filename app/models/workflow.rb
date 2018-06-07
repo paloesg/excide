@@ -30,7 +30,7 @@ class Workflow < ActiveRecord::Base
       { client_name: workflowable.name, client_identifier: workflowable.identifier }
     end
     attribute :template do
-      { title: template.title }
+      { title: template.title, slug: template.slug }
     end
     attribute :company do
       { name: company.name, slug: company.slug }
