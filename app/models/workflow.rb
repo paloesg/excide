@@ -27,7 +27,7 @@ class Workflow < ActiveRecord::Base
   algoliasearch do
     attribute :identifier, :completed, :created_at, :updated_at, :deadline
     attribute :workflowable do
-      { client_name: workflowable.name, client_identifier: workflowable.identifier }
+      { client_name: workflowable&.name, client_identifier: workflowable&.identifier }
     end
     attribute :template do
       { title: template.title, slug: template.slug }
