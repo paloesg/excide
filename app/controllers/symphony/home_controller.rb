@@ -16,6 +16,7 @@ class Symphony::HomeController < ApplicationController
   end
 
   def search
+    # TODO: Generate secured api key per user tag, only relevant users are tagged to each workflow.
     @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'company.slug:' + current_user.company.slug})
   end
 
