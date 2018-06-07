@@ -3,6 +3,10 @@ td
   = task.instructions
   = task.display_image
 td
+  .btn-toolbar
+    - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+      = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-xs'
+td
   - if action.assigned_user.present?
     span.glyphicon.glyphicon-user aria-hidden="true"
     |  #{action.assigned_user&.full_name}

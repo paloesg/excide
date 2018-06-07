@@ -59,10 +59,25 @@ class Symphony::WorkflowsController < WorkflowsController
     @sections = @template.sections
   end
 
+  def send_reminder
+    current_task = Task.find(params[:task_id])
+    current_action = WorkflowAction.find(params[:action_id])
+    respond_to do |format|
+      if current_task.role.present?
+        users = User.with_role(current_task.role.name.to_sym, @company)
+        NotificationMailer.deliver_notifications(current_task, current_action, users)
+        format.json { render json: "Sent out", status: :ok }
+      else
+        format.json { render json: "Current task has no role" }
+      end
+    end
+  end
+
   def reset
     @workflow_actions = @company.workflow_actions.where(workflow_id: @workflow.id)
     @workflow.update_attribute(:completed, false)
     @workflow_actions.update_all(completed: false, completed_user_id: nil)
+    @workflow.create_activity key: 'workflow.reset', owner: @user
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully reset.'
   end
 
