@@ -163,6 +163,30 @@ class SlackService
     self
   end
 
+  def error_send_reminder(reminder, error)
+    params = {
+      attachments: [
+        {
+          title: 'Can not send a reminder',
+          color: WARNING,
+          fallback: 'Error send a reminder ID ' + reminder.id.to_s,
+          fields: [
+            {
+              title: 'Reminder ID',
+              value: reminder.id.to_s
+            },
+            {
+              title: 'Error Message',
+              value: error.to_s
+            }
+          ]
+        }
+      ]
+    }
+    @params = generate_payload(params)
+    self
+  end
+
   def send_notification(action)
     params = {
       attachments: [

@@ -12,6 +12,7 @@ class SendReminder
       send_sms_reminder if @reminder.sms?
       send_slack_reminder if @reminder.slack?
     rescue => e
+      error_send_reminder(e)
       set_reminder_tomorrow
     end
     # TODO: Log reminders sent
@@ -38,6 +39,10 @@ class SendReminder
     @client = Twilio::REST::Client.new account_sid, auth_token
 
     message = @client.api.account.messages.create( from: from_number, to: to_number, body: message_body )
+  end
+
+  def error_send_reminder(e)
+    SlackService.new.error_send_reminder(@reminder, e).deliver
   end
 
   def set_next_reminder
