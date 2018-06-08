@@ -7,9 +7,13 @@ class SendReminder
 
   def run
     # TODO: Move into a background service
-    send_email_reminder if @reminder.email?
-    send_sms_reminder if @reminder.sms?
-    send_slack_reminder if @reminder.slack?
+    begin
+      send_email_reminder if @reminder.email?
+      send_sms_reminder if @reminder.sms?
+      send_slack_reminder if @reminder.slack?
+    rescue => e
+      set_reminder_tomorrow
+    end
     # TODO: Log reminders sent
     set_next_reminder
   end
@@ -42,6 +46,11 @@ class SendReminder
     else
       @reminder.next_reminder = nil
     end
+    @reminder.save
+  end
+
+  def set_reminder_tomorrow
+    @reminder.next_reminder = Date.current + 1
     @reminder.save
   end
 end
