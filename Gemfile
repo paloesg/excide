@@ -90,6 +90,7 @@ gem 'snitcher'
 
 # Performance reporting
 gem "skylight"
+gem 'scout_apm'
 
 # Frontend framework
 gem 'bootstrap-sass'
