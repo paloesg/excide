@@ -33,6 +33,8 @@ gem 'puma'
 gem 'rack-timeout'
 # Reverse proxy to proxy blog server to primary domain
 gem "rack-reverse-proxy", require: "rack/reverse_proxy"
+# Better Rails logging
+gem "lograge"
 
 ################################################
 #                                              #
