@@ -1,4 +1,5 @@
-$(function() {
+callDirectUpload()
+function callDirectUpload() {
   $('.directUpload').find("input:file").each(function(i, elem) {
     var fileInput    = $(elem);
     var form         = $(fileInput.parents('form:first'));
@@ -49,4 +50,4 @@ $(function() {
       }
     });
   });
-});
+}
