@@ -81,14 +81,14 @@ class WorkflowAction < ActiveRecord::Base
   def generate_archive
     workflow = self.workflow
     {
-      workflow_user: workflow.user.full_name,
-      workflow_remarks: workflow.remarks,
-      workflow_deadline: workflow.deadline,
-      workflow_company: workflow.company.name,
-      workflow_data: workflow.data,
-      workflow_client_name: workflow.workflowable.name,
-      workflow_client_identifier: workflow.workflowable.identifier,
-      workflow_client_company: workflow.workflowable.company.name,
+      user: workflow.user.full_name,
+      remarks: workflow.remarks,
+      deadline: workflow.deadline,
+      company: workflow.company.name,
+      data: workflow.data,
+      client_name: workflow.workflowable.name,
+      client_identifier: workflow.workflowable.identifier,
+      client_company: workflow.workflowable.company.name,
       template_title: workflow.template.title,
       sections: generate_archive_sections
     }
