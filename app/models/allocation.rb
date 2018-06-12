@@ -6,6 +6,8 @@ class Allocation < ActiveRecord::Base
 
   enum allocation_type: [:contractor, :contractor_in_charge]
 
+  monetize :rate_cents
+
   validates :activation, :allocation_type, :allocation_date, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
 
@@ -20,7 +22,7 @@ class Allocation < ActiveRecord::Base
           row = [
             rowcount += 1,
             allocation.user&.full_name,
-            allocation.allocation_date.strftime('%v'),            
+            allocation.allocation_date.strftime('%v'),
             allocation.activation.activation_type.titleize,
             allocation.activation.client&.name + " - " + allocation.activation.location,
             allocation.start_time.in_time_zone.strftime("%H:%M"),

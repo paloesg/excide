@@ -5,7 +5,7 @@
         a href="/symphony" Dashboard
       li
         a href="/symphony/company" #{@company.name}
-      li.active Allocations 
+      li.active Allocations
     h1.page-header
       | Allocate Contractor - #{@date_from.strftime("%B")}
 
@@ -44,7 +44,7 @@
                 td = allocation.end_time.strftime("%H:%M")
                 td = allocation.contractor_in_charge? ? 'Contractor IC' : 'Contractor'
                 td = allocation.user&.full_name
-                td = number_to_currency(allocation.rate)
+                td = allocation.rate
                 td = link_to 'Edit', edit_conductor_allocation_path(allocation)
 
   .col-md-4.col-xs-12
