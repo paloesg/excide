@@ -55,7 +55,7 @@ class SendReminder
   end
 
   def set_reminder_tomorrow
-    @reminder.next_reminder = Date.current + 1
+    @reminder.next_reminder = Date.current + 1.day
     @reminder.save
   end
 end
