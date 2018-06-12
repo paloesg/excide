@@ -27,9 +27,10 @@ Rails.application.routes.draw do
   get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
   post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   resources :documents
-  patch 'company_actions/update/:id', to: 'company_actions#update', as: :company_action
+  patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
   namespace :symphony do
+    get '/search', to: 'home#search'
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
     resources :users
     resources :document_templates
@@ -40,11 +41,12 @@ Rails.application.routes.draw do
         post '/reset', to: 'workflows#reset', as: :reset
         get '/section/:section_id', to: 'workflows#show', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
+        post '/send_reminder/:task_id', to: 'workflows#send_reminder', as: :reminder_task
         get '/assign', to: 'workflows#assign', as: :assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
       end
     end
-    root to: 'home#show'
+    root to: 'home#index'
   end
 
   namespace :conductor do

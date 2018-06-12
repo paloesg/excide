@@ -33,6 +33,8 @@ gem 'puma'
 gem 'rack-timeout'
 # Reverse proxy to proxy blog server to primary domain
 gem "rack-reverse-proxy", require: "rack/reverse_proxy"
+# Better Rails logging
+gem "lograge"
 
 ################################################
 #                                              #
@@ -92,6 +94,7 @@ gem 'snitcher'
 
 # Performance reporting
 gem "skylight"
+gem 'scout_apm'
 
 # Frontend framework
 gem 'bootstrap-sass'
@@ -105,6 +108,8 @@ gem 'trix'
 gem "datetime_picker_rails"
 # Render calendar
 gem "simple_calendar", "~> 2.0"
+# Algolia search
+gem "algoliasearch-rails"
 
 # Backend admin
 gem 'administrate'

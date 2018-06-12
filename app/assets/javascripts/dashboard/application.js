@@ -11,6 +11,7 @@
 //= require init
 //= require jquery.ui.widget
 //= require z.jquery.fileupload
+//= require algolia/v3/algoliasearch.min
 
 //= require symphony
 //= require components/date_time_picker

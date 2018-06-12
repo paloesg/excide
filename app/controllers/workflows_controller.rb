@@ -29,7 +29,7 @@ class WorkflowsController < ApplicationController
   end
 
   def toggle
-    @action = Task.find_by_id(params[:task_id]).get_company_action(@company.id, params[:workflow_identifier])
+    @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_identifier])
 
     respond_to do |format|
       if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id)

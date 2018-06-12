@@ -9,7 +9,7 @@ class TaskDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     section: Field::BelongsTo,
-    company_actions: Field::HasMany,
+    workflow_actions: Field::HasMany,
     id: Field::Number,
     role: Field::BelongsTo,
     task_type: EnumField,
@@ -38,7 +38,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :document_template,
     :days_to_complete,
     :set_reminder,
-    :company_actions,
+    :workflow_actions,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -55,7 +55,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :link_url,
     :days_to_complete,
     :set_reminder,
-    :company_actions,
+    :workflow_actions,
     :created_at,
     :updated_at,
   ].freeze
@@ -74,7 +74,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :link_url,
     :days_to_complete,
     :set_reminder,
-    :company_actions,
+    :workflow_actions,
   ].freeze
 
   # Overwrite this method to customize how tasks are displayed

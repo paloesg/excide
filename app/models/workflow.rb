@@ -8,13 +8,13 @@ class Workflow < ActiveRecord::Base
 
   accepts_nested_attributes_for :workflowable
 
-  has_many :company_actions, dependent: :destroy
+  has_many :workflow_actions, dependent: :destroy
   has_many :documents, dependent: :destroy
 
   validates :identifier, uniqueness: true
   validate :check_data_fields
 
-  after_create :create_related_company_actions
+  after_create :create_related_workflow_actions
   after_create :trigger_first_task
   before_save :uppercase_identifier
 
@@ -22,6 +22,20 @@ class Workflow < ActiveRecord::Base
   tracked except: :update,
           owner: ->(controller, _model) { controller && controller.current_user },
           recipient: ->(_controller, model) { model }
+
+  include AlgoliaSearch
+  algoliasearch do
+    attribute :identifier, :completed, :created_at, :updated_at, :deadline
+    attribute :workflowable do
+      { client_name: workflowable&.name, client_identifier: workflowable&.identifier }
+    end
+    attribute :template do
+      { title: template.title, slug: template.slug }
+    end
+    attribute :company do
+      { name: company.name, slug: company.slug }
+    end
+  end
 
   def build_workflowable(params)
     self.workflowable = workflowable_type.constantize.new(params)
@@ -31,7 +45,7 @@ class Workflow < ActiveRecord::Base
     if self.completed
       self.template.sections.last
     else
-      self.template.sections.joins(tasks: :company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first || self.template.sections.first
+      self.template.sections.joins(tasks: :workflow_actions).where(workflow_actions: {workflow_id: self.id, completed: false}).first || self.template.sections.first
     end
   end
 
@@ -40,7 +54,7 @@ class Workflow < ActiveRecord::Base
   end
 
   def current_task
-    self.current_section.tasks.joins(:company_actions).where(company_actions: {workflow_id: self.id, completed: false}).first unless self.completed
+    self.current_section.tasks.joins(:workflow_actions).where(workflow_actions: {workflow_id: self.id, completed: false}).first unless self.completed
   end
 
   def next_task
@@ -52,7 +66,7 @@ class Workflow < ActiveRecord::Base
   end
 
   def get_users
-    self.template.sections.map{|section| section.tasks.map{|task| task.company_actions.map(&:user)}}.flatten.compact.uniq
+    self.template.sections.map{|section| section.tasks.map{|task| task.workflow_actions.map(&:user)}}.flatten.compact.uniq
   end
 
   def data
@@ -103,17 +117,17 @@ class Workflow < ActiveRecord::Base
   private
 
   # Create all the actions that need to be completed for a workflow that is associated with a company
-  def create_related_company_actions
+  def create_related_workflow_actions
     sections = self.template.sections
     sections.each do |s|
       s.tasks.each do |t|
-        CompanyAction.create!(task: t, company: self.company, completed: false, workflow: self)
+        WorkflowAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
   end
 
   def trigger_first_task
-    self.current_task.get_company_action(self.company, self.identifier).set_deadline_and_notify(current_task)
+    self.current_task.get_workflow_action(self.company, self.identifier).set_deadline_and_notify(current_task)
   end
 
   def uppercase_identifier
