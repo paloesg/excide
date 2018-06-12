@@ -69,13 +69,54 @@ class WorkflowAction < ActiveRecord::Base
         next_task = next_section.tasks.find_by(position: 1)
         set_deadline_and_notify(next_task)
       else
-        self.workflow.update_attributes(completed: true)
+        self.workflow.update_attributes(completed: true, archive: generate_archive)
       end
     elsif self.completed
       # Find next action in line and set deadline if not the last task in section
       next_task = self.task.lower_item
       set_deadline_and_notify(next_task)
     end
+  end
+
+  def generate_archive
+    workflow = self.workflow
+    {
+      workflow_user: workflow.user.full_name,
+      workflow_remarks: workflow.remarks,
+      workflow_deadline: workflow.deadline,
+      workflow_company: workflow.company.name,
+      workflow_data: workflow.data,
+      workflow_client_name: workflow.workflowable.name,
+      workflow_client_identifier: workflow.workflowable.identifier,
+      workflow_client_company: workflow.workflowable.company.name,
+      template_title: workflow.template.title,
+      sections: generate_archive_sections
+    }
+  end
+
+  def generate_archive_sections
+    archive_sections = []
+    sections = self.workflow.template.sections
+    sections.each do |section|
+      archive_section = Hash.new
+      archive_section[:tasks] = []
+      archive_section[:unique_name] = section.unique_name
+      archive_section[:display_name] = section.display_name
+      archive_section[:position] = section.position
+      workflow_actions = WorkflowAction.where(workflow: self.workflow).joins(:task).where(tasks: { section_id: section.id })
+      workflow_actions.each do |action|
+        archive_task = Hash.new
+        archive_task[:instructions] = action.task.instructions
+        archive_task[:position] = action.task.position
+        archive_task[:image_url] = action.task.image_url
+        archive_task[:link_url] = action.task.link_url
+        archive_task[:role_id] = action.task.role_id
+        archive_task[:task_type] = action.task.task_type
+        archive_section[:tasks] << archive_task
+      end
+      archive_sections << archive_section
+    end
+    archive_sections
   end
 
   def create_reminder(task, action)
