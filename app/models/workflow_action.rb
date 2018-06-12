@@ -88,25 +88,27 @@ class WorkflowAction < ActiveRecord::Base
     sections = self.workflow.template.sections
     sections.each do |section|
       archive_section = Hash.new
-      archive_section[:tasks] = []
-      archive_section[:unique_name] = section.unique_name
-      archive_section[:display_name] = section.display_name
-      archive_section[:position] = section.position
-      workflow_actions = WorkflowAction.where(workflow: self.workflow).joins(:task).where(tasks: { section_id: section.id })
-      workflow_actions.each do |action|
-        archive_task = Hash.new
-        archive_task[:instructions] = action.task.instructions
-        archive_task[:position] = action.task.position
-        archive_task[:image_url] = action.task.image_url
-        archive_task[:link_url] = action.task.link_url
-        archive_task[:role_id] = action.task.role_id
-        archive_task[:task_type] = action.task.task_type
-        archive_task[:workflow_actions] = { completed: action.completed, deadline: action.deadline, company: action.company.name, assigned_user: action.assigned_user&.full_name, completed_user: action.completed_user&.full_name }
-        archive_section[:tasks] << archive_task
-      end
+      archive_section = { unique_name: section.unique_name, display_name: section.display_name, position: section.position, tasks: generate_archive_tasks(section) }
       archive_sections << archive_section
     end
     archive_sections
+  end
+
+  def generate_archive_tasks(section)
+    archive_tasks = []
+    workflow_actions = WorkflowAction.where(workflow: self.workflow).joins(:task).where(tasks: { section_id: section.id })
+    workflow_actions.each do |action|
+      archive_task = Hash.new
+      archive_task[:instructions] = action.task.instructions
+      archive_task[:position] = action.task.position
+      archive_task[:image_url] = action.task.image_url
+      archive_task[:link_url] = action.task.link_url
+      archive_task[:role_id] = action.task.role_id
+      archive_task[:task_type] = action.task.task_type
+      archive_task[:workflow_actions] = { completed: action.completed, deadline: action.deadline, company: action.company.name, assigned_user: action.assigned_user&.full_name, completed_user: action.completed_user&.full_name }
+      archive_tasks << archive_task
+    end
+    archive_tasks
   end
 
   def create_reminder(task, action)
