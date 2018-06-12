@@ -79,6 +79,8 @@ gem 'fog-aws'
 gem 'meta-tags'
 # Activity feed
 gem 'public_activity'
+# Handle money
+gem 'money-rails', '~>1'
 
 # Analytics
 gem 'mixpanel-ruby'
