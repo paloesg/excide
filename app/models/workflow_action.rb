@@ -87,7 +87,6 @@ class WorkflowAction < ActiveRecord::Base
     archive_sections = []
     sections = self.workflow.template.sections
     sections.each do |section|
-      archive_section = Hash.new
       archive_section = { unique_name: section.unique_name, display_name: section.display_name, position: section.position, tasks: generate_archive_tasks(section) }
       archive_sections << archive_section
     end
@@ -98,7 +97,6 @@ class WorkflowAction < ActiveRecord::Base
     archive_tasks = []
     workflow_actions = WorkflowAction.where(workflow: self.workflow).joins(:task).where(tasks: { section_id: section.id })
     workflow_actions.each do |action|
-      archive_task = Hash.new
       archive_task = { instructions: action.task.instructions, position: action.task.position, image_url: action.task.image_url, link_url: action.task.link_url, role_id: action.task.role_id, task_type: action.task.task_type, workflow_actions: { completed: action.completed, deadline: action.deadline, company: action.company.name, assigned_user: action.assigned_user&.full_name, completed_user: action.completed_user&.full_name } }
       archive_tasks << archive_task
     end
