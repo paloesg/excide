@@ -112,6 +112,7 @@ class WorkflowAction < ActiveRecord::Base
         archive_task[:link_url] = action.task.link_url
         archive_task[:role_id] = action.task.role_id
         archive_task[:task_type] = action.task.task_type
+        archive_task[:workflow_actions] = { completed: action.completed, deadline: action.deadline, company: action.company.name, assigned_user: action.assigned_user&.full_name, completed_user: action.completed_user&.full_name }
         archive_section[:tasks] << archive_task
       end
       archive_sections << archive_section
