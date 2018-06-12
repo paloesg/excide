@@ -12,7 +12,7 @@ class SendReminder
       send_sms_reminder if @reminder.sms?
       send_slack_reminder if @reminder.slack?
     rescue => e
-      error_send_reminder(e)
+      reminder_error_notification(e)
       set_reminder_tomorrow
     end
     # TODO: Log reminders sent
@@ -41,8 +41,8 @@ class SendReminder
     message = @client.api.account.messages.create( from: from_number, to: to_number, body: message_body )
   end
 
-  def error_send_reminder(e)
-    SlackService.new.error_send_reminder(@reminder, e).deliver
+  def reminder_error_notification(e)
+    SlackService.new.send_reminder_error(@reminder, e).deliver
   end
 
   def set_next_reminder

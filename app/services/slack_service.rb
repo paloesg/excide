@@ -163,13 +163,13 @@ class SlackService
     self
   end
 
-  def error_send_reminder(reminder, error)
+  def send_reminder_error(reminder, error)
     params = {
       attachments: [
         {
-          title: 'Can not send a reminder',
+          title: 'Error sending reminder',
           color: WARNING,
-          fallback: 'Error send a reminder ID ' + reminder.id.to_s,
+          fallback: 'Error sending reminder ID ' + reminder.id.to_s,
           fields: [
             {
               title: 'Reminder ID',
