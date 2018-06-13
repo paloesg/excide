@@ -71,6 +71,12 @@ GEM
     administrate-field-json (0.0.4)
       administrate (~> 0.3)
       rails (>= 4.2, < 5.1)
+    algoliasearch (1.22.0)
+      httpclient (~> 2.8, >= 2.8.3)
+      json (>= 1.5.1)
+    algoliasearch-rails (1.20.4)
+      algoliasearch (>= 1.17.0, < 2.0.0)
+      json (>= 1.5.1)
     arel (6.0.4)
     ast (2.4.0)
     autoprefixer-rails (8.5.1)
@@ -179,6 +185,7 @@ GEM
     hashie (3.5.7)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    httpclient (2.8.3)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     ipaddress (0.8.3)
@@ -211,6 +218,11 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
+    lograge (0.10.0)
+      actionpack (>= 4)
+      activesupport (>= 4)
+      railties (>= 4)
+      request_store (~> 1.0)
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -229,6 +241,15 @@ GEM
     mixpanel-ruby (2.2.0)
     momentjs-rails (2.20.1)
       railties (>= 3.1)
+    monetize (1.7.0)
+      money (~> 6.9)
+    money (6.11.3)
+      i18n (>= 0.6.4, < 1.1)
+    money-rails (1.11.0)
+      activesupport (>= 3.0)
+      monetize (~> 1.7.0)
+      money (~> 6.11.0)
+      railties (>= 3.0)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
@@ -326,6 +347,8 @@ GEM
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
     rdoc (4.3.0)
+    request_store (1.4.1)
+      rack (>= 1.4)
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
@@ -379,6 +402,7 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    scout_apm (2.4.12)
     sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -458,6 +482,7 @@ DEPENDENCIES
   administrate-field-image
   administrate-field-json
   administrate-field-nested_has_many!
+  algoliasearch-rails
   aws-sdk (~> 2)
   better_errors
   binding_of_caller
@@ -479,8 +504,10 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
+  lograge
   meta-tags
   mixpanel-ruby
+  money-rails (~> 1)
   oj
   omniauth
   omniauth-linkedin-oauth2
@@ -500,6 +527,7 @@ DEPENDENCIES
   rspec-rails
   rubocop
   sass-rails (~> 5.0)
+  scout_apm
   sdoc (~> 0.4.0)
   shoulda
   simple_calendar (~> 2.0)
