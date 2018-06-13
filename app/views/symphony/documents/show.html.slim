@@ -53,4 +53,4 @@
         .btn-toolbar
           = link_to "Download", @document.file_url, role: 'button', class: 'btn btn-warning btn-xs'
           = link_to 'Edit', edit_symphony_document_path(@document), role: 'button', class: 'btn btn-danger btn-xs'
-          = link_to 'Back', symphony_documents_path, role: 'button', class: 'btn btn-primary btn-xs'
+          = link_to 'Back', symphony_workflow_path(@document.workflow.template.slug, @document.workflow.identifier), role: 'button', class: 'btn btn-primary btn-xs'
