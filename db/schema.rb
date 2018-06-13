@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20180531080852) do
     t.datetime "updated_at",                      null: false
     t.integer  "allocation_type"
     t.boolean  "last_minute",     default: false
+    t.integer  "rate_cents"
   end
 
   add_index "allocations", ["activation_id"], name: "index_allocations_on_activation_id", using: :btree
