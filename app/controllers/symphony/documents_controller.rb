@@ -25,8 +25,7 @@ class Symphony::DocumentsController < DocumentsController
 
   def update
     if @document.update(document_params)
-      flash[:notice] = 'Document was successfully updated.'
-      render :show
+      redirect_to symphony_document_path, notice: 'Document was successfully updated.'
     else
       set_templates
       render :edit
