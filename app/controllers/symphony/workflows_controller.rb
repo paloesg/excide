@@ -74,6 +74,13 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def archive
+    set_workflow
+    generate_archive = GenerateArchive.new(@workflow).run
+    if @workflow.update_attribute(:archive, generate_archive)
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully archive.'
+    else
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier)
+    end
   end
 
   def reset

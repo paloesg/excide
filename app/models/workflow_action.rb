@@ -69,38 +69,13 @@ class WorkflowAction < ActiveRecord::Base
         next_task = next_section.tasks.find_by(position: 1)
         set_deadline_and_notify(next_task)
       else
-        self.workflow.update_attributes(completed: true, archive: generate_archive)
+        self.workflow.update_attributes(completed: true)
       end
     elsif self.completed
       # Find next action in line and set deadline if not the last task in section
       next_task = self.task.lower_item
       set_deadline_and_notify(next_task)
     end
-  end
-
-  def generate_archive
-    workflow = self.workflow
-    { user: workflow.user.full_name, remarks: workflow.remarks, deadline: workflow.deadline, company: workflow.company.name, data: workflow.data, client_name: workflow.workflowable.name, client_identifier: workflow.workflowable.identifier, client_company: workflow.workflowable.company.name, template_title: workflow.template.title, sections: generate_archive_sections }
-  end
-
-  def generate_archive_sections
-    archive_sections = []
-    sections = self.workflow.template.sections
-    sections.each do |section|
-      archive_section = { unique_name: section.unique_name, display_name: section.display_name, position: section.position, tasks: generate_archive_tasks(section) }
-      archive_sections << archive_section
-    end
-    archive_sections
-  end
-
-  def generate_archive_tasks(section)
-    archive_tasks = []
-    workflow_actions = WorkflowAction.where(workflow: self.workflow).joins(:task).where(tasks: { section_id: section.id })
-    workflow_actions.each do |action|
-      archive_task = { instructions: action.task.instructions, position: action.task.position, image_url: action.task.image_url, link_url: action.task.link_url, role_id: action.task.role_id, task_type: action.task.task_type, workflow_actions: { completed: action.completed, deadline: action.deadline, company: action.company.name, assigned_user: action.assigned_user&.full_name, completed_user: action.completed_user&.full_name } }
-      archive_tasks << archive_task
-    end
-    archive_tasks
   end
 
   def create_reminder(task, action)
