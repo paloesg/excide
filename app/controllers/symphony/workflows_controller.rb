@@ -73,6 +73,9 @@ class Symphony::WorkflowsController < WorkflowsController
     end
   end
 
+  def archive
+  end
+
   def reset
     @workflow_actions = @company.workflow_actions.where(workflow_id: @workflow.id)
     @workflow.update_attribute(:completed, false)
