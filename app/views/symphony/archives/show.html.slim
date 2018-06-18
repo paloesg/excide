@@ -1,0 +1,135 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.breadcrumb-2
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li.active #{@template['title']}
+    h1.page-header #{@template['title']} – #{@workflow.identifier}
+.row
+  .col-md-9.col-sm-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title = @section[:display_name]
+      .table-responsive
+        table.table
+          thead
+            tr
+              th No.
+              th Instructions
+              th Actions
+              th Assigned To
+              th Deadline
+              th Done
+              th Completed By
+          tbody
+            - @tasks.each do |task|
+              tr
+                td No
+                td = task['instructions']
+                td
+                td = task['workflow_actions']['assigned_user']
+                td = Date.parse(task['workflow_actions']['deadline']).strftime("%d/%m/%Y") if task['workflow_actions']['deadline']
+                td = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
+                td = task['workflow_actions']['completed_user']
+      .panel-footer
+        - unless @sections.first['unique_name'] == @section['unique_name']
+          = link_to "?section=#{@sections[@section_index - 1]['unique_name']}", class: 'btn btn-default pull-left'
+            i.glyphicon.glyphicon-chevron-left
+            | Previous Section
+        - unless @sections.last['unique_name'] == @section['unique_name']
+          = link_to "?section=#{@sections[@section_index + 1]['unique_name']}", class: 'btn btn-default pull-right'
+            | Next Section
+            i.glyphicon.glyphicon-chevron-right
+        .clearfix
+    .row
+      .col-sm-6
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Attributes
+          table.table.table-condensed
+            thead
+              tr
+                th Name
+                th Value
+                th Updated By
+                th Updated At
+            tbody
+              - @workflow.data.each do |d|
+                tr
+                  td = d.name
+                  td = d.value
+                  td = User.find_by(id: d.user_id)&.full_name
+                  td = d.updated_at&.to_time&.strftime("%d/%m/%Y %R")
+      .col-sm-6
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title Activity
+          table.table.table-condensed
+            thead
+              tr
+                th User
+                th Action
+                th Time
+            tbody
+              - @activities.each do |activity|
+                tr = render_activity activity
+  .col-md-3.col-sm-6
+    = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
+    = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
+    - if @user.has_role? :admin
+      = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
+    br
+  .col-md-3.col-sm-6
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title #{@workflow.workflowable_type}
+      .panel-body
+        | Name: #{@workflow.workflowable&.name}
+        br
+        | Identifier: #{@workflow.workflowable&.identifier}
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Remarks
+      .panel-body = @workflow.remarks.present? ? @workflow.remarks : '-'
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Deadline
+      .panel-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Documents
+      .panel-body
+        - if @documents.empty?
+          | No documents yet.
+        - else
+          - @documents.each do |d|
+            .media
+              .media-left.media-middle
+                = link_to symphony_document_path(d)
+                  i.ti-file.icon style="font-size: 50px"
+              .media-body
+                h4.media-heading = d.filename
+                = File.basename(d.file_url)
+                br
+                = d.created_at.strftime("Uploaded at %d/%m/%Y %R by ")
+                = d.user&.full_name
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Document Templates
+      .panel-body
+        - if @document_templates.empty?
+          | No documents yet.
+        - else
+          - @document_templates.each do |d|
+            .media
+              .media-left.media-middle
+                a href="#{d.file_url}"
+                  i.ti-file.icon style="font-size: 50px"
+              .media-body
+                h4.media-heading = d.title
+                a href="#{d.file_url}"
+                = File.basename(d.file_url)
+                br
+                = d.created_at.strftime("Uploaded at %d/%m/%Y %R")

@@ -22,6 +22,25 @@ class Symphony::ArchivesController < ApplicationController
     @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
   end
 
+  def show
+    @user = current_user
+    @company = @user.company
+
+    @template = @workflow[:archive]['template']
+    @document_templates = DocumentTemplate.where(template: @workflow.template)
+    @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
+    
+    @workflows = @company.workflows
+    @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
+
+    @sections = @workflow[:archive]['sections']
+    @section = params[:section] ? @sections.select{|section| section['unique_name'] == params[:section]}.first : @workflow[:archive]['sections'].last
+    @tasks = @section['tasks']
+    @section_index = @sections.index(@section)
+
+    @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+  end
+
   private
 
   def sort_column(array)
