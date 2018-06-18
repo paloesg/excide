@@ -5,9 +5,10 @@ class GenerateArchive
   end
 
   def run
-    return generate_archive
+    archive = generate_archive
     delete_reminders
     delete_workflow_actions
+    return archive
   end
 
   def generate_archive
@@ -35,9 +36,13 @@ class GenerateArchive
   end
 
   def delete_reminders
+    @workflow.workflow_actions.each do |action|
+      action.reminders.destroy_all if action.reminders
+    end
   end
 
   def delete_workflow_actions
+    @workflow.workflow_actions.destroy_all
   end
 
 end
