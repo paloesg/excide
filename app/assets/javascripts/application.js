@@ -1,6 +1,6 @@
 //= require jquery3
 //= require popper
-//= require bootstrap-sprockets
+//= require bootstrap
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require moment

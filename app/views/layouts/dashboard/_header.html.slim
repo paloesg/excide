@@ -1,59 +1,60 @@
-nav.navbar.navbar-inverse.navbar-fixed-top
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   .container-fluid
-    .navbar-header
-      button.navbar-toggle.collapsed type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"
-        .sr-only Toggle navigation
-        .icon-bar
-        .icon-bar
-        .icon-bar
+    .navbar-brand  
       - if controller.class.parents.include?(Symphony) || controller.class.parents.include?(Conductor) || controller.class == CompaniesController
         = link_to(symphony_root_path, class: "navbar-brand") do
           ' #{current_user.company.name}
-          = content_tag :span, "Staging", class: "label label-danger" if ENV['APP_NAME'] == "excide-staging"
+          = content_tag :span, "Staging", class: "badge badge-secondary" if ENV['APP_NAME'] == "excide-staging"
       - else
         = link_to(dashboard_path, class: "navbar-brand") do
           ' Excide
           = content_tag :span, "Staging", class: "label label-danger" if ENV['APP_NAME'] == "excide-staging"
-    #navbar.navbar-collapse.collapse
-      ul.nav.navbar-nav.navbar-right
+
+    button.navbar-toggler type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-expanded="false" aria-controls="navbarNavDropdown" aria-label="Toggle navigation"
+      span.navbar-toggler-icon
+
+    #navbarNavDropdown.collapse.navbar-collapse
+      ul.navbar-nav
         - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
-          li = link_to "Dashboard", symphony_root_path
-          li = link_to "Documents", symphony_documents_path
-          li = link_to "Document Templates", symphony_document_templates_path
-          li = link_to "Archives", symphony_archives_path
+          li.nav-item.nav-link href="#" = link_to "Dashboard", symphony_root_path
+          li.nav-item.nav-link href="#" = link_to "Documents", symphony_documents_path
+          li.nav-item.nav-link href="#" = link_to "Document Templates", symphony_document_templates_path
+          li.nav-item.nav-link href="#" = link_to "Archives", symphony_archives_path
           - if current_user.has_role? :admin, @company
-            li.dropdown
-              a.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
                 | Admin
                 span.caret
-              ul.dropdown-menu
-                li = link_to "Search Workflows", symphony_search_path
-                li = link_to "Manage Users", symphony_users_path
-                li = link_to "User Details", edit_user_registration_path
-                li = link_to "Company Details", edit_company_path
-          li = link_to "Go to Conductor", conductor_root_path if ENV['APP_NAME'] == "excide-staging"
-          li = link_to "Log Out", destroy_user_session_path, method: :delete
+
+              .dropdown-menu aria-labelledby="navbarDropdownMenuLink"
+                a.dropdown-item = link_to "Search Workflows", symphony_search_path
+                a.dropdown-item = link_to "Manage Users", symphony_users_path
+                a.dropdown-item = link_to "User Details", edit_user_registration_path
+                a.dropdown-item = link_to "Company Details", edit_company_path
+                
+          li.nav-item.nav-link = link_to "Go to Conductor", conductor_root_path if ENV['APP_NAME'] == "excide-staging"
+          li.nav-item.nav-link = link_to "Log Out", destroy_user_session_path, method: :delete
 
         - elsif controller.class.parents.include?(Conductor)
-          li = link_to "Conductor Dashboard", conductor_root_path
-          li = link_to 'Activations', conductor_activations_path
+          li.nav-item.nav-link = link_to "Conductor Dashboard", conductor_root_path
+          li.nav-item.nav-link = link_to 'Activations', conductor_activations_path
           - if current_user.has_role? :admin, @company or current_user.has_role? :manpower_allocator, @company
             li.dropdown
               a.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
                 | Contractors
                 span.caret
               ul.dropdown-menu
-                li = link_to 'Contractor Availability', conductor_availabilities_path
-                li = link_to 'Allocate Contractor', conductor_allocations_path
-                li = link_to "Manage Contractors", conductor_users_path
-          li = link_to 'Clients', conductor_clients_path unless current_user.has_role? :contractor, @company
-          li = link_to "User Details", conductor_user_path(current_user) if current_user.has_role? :contractor, @company
-          li = link_to "Go to Symphony", symphony_root_path unless current_user.has_role? :contractor, @company
-          li = link_to "Log Out", destroy_user_session_path, method: :delete
+                li.nav-item.nav-link = link_to 'Contractor Availability', conductor_availabilities_path
+                li.nav-item.nav-link = link_to 'Allocate Contractor', conductor_allocations_path
+                li.nav-item.nav-link = link_to "Manage Contractors", conductor_users_path
+          li.nav-item.nav-link = link_to 'Clients', conductor_clients_path unless current_user.has_role? :contractor, @company
+          li.nav-item.nav-link = link_to "User Details", conductor_user_path(current_user) if current_user.has_role? :contractor, @company
+          li.nav-item.nav-link = link_to "Go to Symphony", symphony_root_path unless current_user.has_role? :contractor, @company
+          li.nav-item.nav-link = link_to "Log Out", destroy_user_session_path, method: :delete
 
         - else
-          li = link_to "Company Dashboard", params[:company_name] ? admin_company_dashboard_path : dashboard_path
-          li = link_to "Company Documents", params[:company_name] ? admin_company_documents_path : documents_path
-          li = link_to "Company Details", params[:company_name] ? admin_company_edit_path : edit_company_path
-          li = link_to "User Details", edit_profile_path
-          li = link_to "Log Out", destroy_user_session_path, method: :delete
+          li.nav-item.nav-link = link_to "Company Dashboard", params[:company_name] ? admin_company_dashboard_path : dashboard_path
+          li.nav-item.nav-link = link_to "Company Documents", params[:company_name] ? admin_company_documents_path : documents_path
+          li.nav-item.nav-link = link_to "Company Details", params[:company_name] ? admin_company_edit_path : edit_company_path
+          li.nav-item.nav-link = link_to "User Details", edit_profile_path
+          li.nav-item.nav-link = link_to "Log Out", destroy_user_session_path, method: :delete
