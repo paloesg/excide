@@ -24,9 +24,9 @@ class Symphony::ArchivesController < ApplicationController
   def show
     @workflows = @company.workflows
     @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
-    @archive = @workflow.archive
+    @archive = @workflow.archive['workflow']
     @template = @archive['template']
-    @sections = @archive['sections']
+    @sections = @template['sections']
     @section = params[:section] ? @sections.select{|section| section['unique_name'] == params[:section]}.first : @sections.last
     @tasks = @section['tasks']
     @section_index = @sections.index(@section)
