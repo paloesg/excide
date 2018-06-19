@@ -11,7 +11,7 @@
   .col-md-9.col-sm-12
     .panel.panel-default
       .panel-heading
-        h3.panel-title = @section[:display_name]
+        h3.panel-title = @section['display_name']
       .table-responsive
         table.table
           thead
@@ -30,7 +30,7 @@
                 td = task['instructions']
                 td
                 td = task['workflow_actions']['assigned_user']
-                td = Date.parse(task['workflow_actions']['deadline']).strftime("%d/%m/%Y") if task['workflow_actions']['deadline']
+                td = task['workflow_actions']['deadline'] ? Date.parse(task['workflow_actions']['deadline']).strftime("%d/%m/%Y") : '-'
                 td = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
                 td = task['workflow_actions']['completed_user']
       .panel-footer
@@ -77,7 +77,6 @@
                 tr = render_activity activity
   .col-md-3.col-sm-6
     = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
-    = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
     - if @user.has_role? :admin
       = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
     br
@@ -86,17 +85,17 @@
       .panel-heading
         h3.panel-title #{@archive['client_type']}
       .panel-body
-        | Name: #{@workflow.workflowable&.name}
+        | Name: #{@archive['client_name']}
         br
-        | Identifier: #{@workflow.workflowable&.identifier}
+        | Identifier: #{@archive['identifier'] ? @archive['identifier'] : '-'}
     .panel.panel-default
       .panel-heading
         h3.panel-title Remarks
-      .panel-body = @workflow.remarks.present? ? @workflow.remarks : '-'
+      .panel-body #{@archive['remarks']}
     .panel.panel-default
       .panel-heading
         h3.panel-title Deadline
-      .panel-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
+      .panel-body = @archive['deadline'] ? Date.parse(@archive['deadline']).strftime("%d/%m/%Y") : '-'
     .panel.panel-default
       .panel-heading
         h3.panel-title Documents
