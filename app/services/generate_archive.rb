@@ -12,7 +12,7 @@ class GenerateArchive
   end
 
   def generate_archive
-    { workflow: { user: @workflow.user.full_name, remarks: @workflow.remarks, deadline: @workflow.deadline, company: @workflow.company.name, data: @workflow.data, client_type: @workflow.workflowable_type, client_name: @workflow.workflowable.name, client_identifier: @workflow.workflowable.identifier, client_company: @workflow.workflowable.company.name, template: generate_archive_template } }
+    { workflow: { user: @workflow.user.full_name, remarks: @workflow.remarks, deadline: @workflow.deadline, company: @workflow.company.name, data: @workflow.data, client_type: @workflow.workflowable_type, client_name: @workflow.workflowable.name, client_identifier: @workflow.workflowable.identifier, client_company: @workflow.workflowable.company.name, template: generate_archive_template }, activity_log: generate_activity_log }
   end
 
   def generate_archive_template
@@ -37,6 +37,10 @@ class GenerateArchive
       archive_tasks << archive_task
     end
     archive_tasks
+  end
+
+  def generate_activity_log
+    PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc").to_a
   end
 
   def delete_reminders
