@@ -12,7 +12,11 @@ class GenerateArchive
   end
 
   def generate_archive
-    { user: @workflow.user.full_name, remarks: @workflow.remarks, deadline: @workflow.deadline, company: @workflow.company.name, data: @workflow.data, client_type: @workflow.workflowable_type, client_name: @workflow.workflowable.name, client_identifier: @workflow.workflowable.identifier, client_company: @workflow.workflowable.company.name, template: @workflow.template, sections: generate_archive_sections }
+    { workflow: { user: @workflow.user.full_name, remarks: @workflow.remarks, deadline: @workflow.deadline, company: @workflow.company.name, data: @workflow.data, client_type: @workflow.workflowable_type, client_name: @workflow.workflowable.name, client_identifier: @workflow.workflowable.identifier, client_company: @workflow.workflowable.company.name, template: generate_archive_template } }
+  end
+
+  def generate_archive_template
+    { title: @workflow.template.title, business_model: @workflow.template.business_model, slug: @workflow.template.slug, sections: generate_archive_sections }
   end
 
   def generate_archive_sections
