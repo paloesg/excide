@@ -35,8 +35,8 @@ Rails.application.routes.draw do
     resources :users
     resources :document_templates
     resources :documents
-    resources :archives, param: :workflow_identifier, path: '/archives/:workflow_name' do
-    end
+    get '/archives', to: 'archives#index', as: :archives
+    get '/archives/:workflow_name/:workflow_identifier', to: 'archives#show', as: :archive
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
       member do
         post '/archive', to: 'workflows#archive', as: :archive
