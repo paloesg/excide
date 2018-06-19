@@ -30,7 +30,7 @@
                 td = task['instructions']
                 td
                 td = task['workflow_actions']['assigned_user']
-                td = task['workflow_actions']['deadline'] ? Date.parse(task['workflow_actions']['deadline']).strftime("%d/%m/%Y") : '-'
+                td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
                 td = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
                 td = task['workflow_actions']['completed_user']
       .panel-footer
@@ -95,7 +95,7 @@
     .panel.panel-default
       .panel-heading
         h3.panel-title Deadline
-      .panel-body = @archive['deadline'] ? Date.parse(@archive['deadline']).strftime("%d/%m/%Y") : '-'
+      .panel-body = @archive['deadline'] ? @archive['deadline'].to_time.strftime("%d/%m/%Y") : '-'
     .panel.panel-default
       .panel-heading
         h3.panel-title Documents
