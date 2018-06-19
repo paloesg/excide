@@ -14,7 +14,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
       span.navbar-toggler-icon
 
     #navbarNavDropdown.collapse.navbar-collapse
-      ul.navbar-nav
+      ul.navbar-nav.ml-auto
         - if controller.class.parents.include?(Symphony) || controller.class == CompaniesController
           li.nav-item.nav-link href="#" = link_to "Dashboard", symphony_root_path
           li.nav-item.nav-link href="#" = link_to "Documents", symphony_documents_path

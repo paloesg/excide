@@ -2,11 +2,11 @@
   #accordion
     .card
       .card-header id="#collapse-#{t.slug}-heading"
-        a.collapsed.card-link data-toggle="collapse" href="#collapse-#{t.slug}" aria-expanded="false" aria-controls="collapse-#{t.slug}" role="button"
+        button.btn.btn-link.collapsed data-toggle="collapse" href="#collapse-#{t.slug}" aria-expanded="false" aria-controls="collapse-#{t.slug}"
           = t.title
           span.caret
 
-      .card.card-link id="collapse-#{t.slug}" role="tabpanel" aria-labelledby="#collapse-#{t.slug}-heading" class=('in' if t.slug == @workflow&.template&.slug)
+      . id="collapse-#{t.slug}" role="tabpanel" aria-labelledby="#collapse-#{t.slug}-heading" class="collapse" data-parent="#accordion"
         ul.list-group
         - t.workflows.order(created_at: :desc).each do |w|
           li.list-group-item class=('active' if w.identifier == @workflow&.identifier) = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)

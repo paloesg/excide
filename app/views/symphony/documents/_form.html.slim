@@ -18,13 +18,11 @@
 .form-group
   = f.label :remarks
   = f.text_area :remarks, class: 'form-control'
-.form-group.file-field
+.form-group
   = f.label :file_url, 'Upload file'
   - if params[:camera] == "true"
-    = f.file_field :file_url, accept: 'image/*', capture: 'camera'
+    = f.file_field :file_url, accept: 'image/*', capture: 'camera', class: "form-control-file"
   - else
-    = f.file_field :file_url
-  .file-path-wrapper
-    = f.label 'File URL'
-    = f.text_field :file_url, class: 'file-path form-control', disabled: true
+    = f.file_field :file_url, class: "form-control-file"
+    
 = f.submit 'Save Document', class: 'btn btn-default'

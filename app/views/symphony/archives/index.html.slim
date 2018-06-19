@@ -1,18 +1,18 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Home
-      li
+      li.breadcrumb-item
         a href="#" #{@company.name}
-      li.active Archives
-    h1.page-header Archives
+      li.breadcrumb-item.active Archives
+    h1.border-bottom Archives
 .row
   .col-md-8.col-sm-6
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Completed workflows
-      .panel-body
+    .card
+      .card-header
+        | Completed workflows
+      .card-body
         .row
           .col-md-4
             = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'pull-left')
@@ -37,17 +37,17 @@
                 td = w.remarks || '-'
                 td = w.deadline&.strftime("%d/%m/%Y") || '-'
                 td = w.completed ? 'Completed' : w.current_section&.display_name
-      .panel-footer
+      .card-footer
         .text-center
           = paginate @workflows, views_prefix: 'dashboards'
         .clearfix
   - if @templates.present?
     .col-md-4.col-sm-6
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title New Workflow
-        .panel-body
+      .card
+        .card-header
+          | New Workflow
+        .card-body
           .form-group
             = label_tag "template", "Select workflow type"
             = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), class: "form-control template-dropdown", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-          = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-default', id: 'new-workflow'
+          = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-light', id: 'new-workflow'

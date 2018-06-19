@@ -1,14 +1,14 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Home
-      li
+      li.breadcrumb-item
         a href="#" Company
-      li
+      li.breadcrumb-item
         a href="#" Documents
-      li.active New
-    h1.page-header Upload New Document
+      li.breadcrumb-item.active New
+    h1.border-bottom Upload New Document
 .row
   .col-sm-12
     = form_for(@document, url: symphony_documents_path(workflow: params[:workflow]), html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
