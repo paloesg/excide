@@ -8,7 +8,7 @@
 .form-group#identifier_form
   = f.label :identifier
   = f.text_field :identifier, class: 'form-control'
-  span.help-block.hidden#identifier_exist
+  span.help-block.hidden-xs-down#identifier_exist
     .glyphicon.glyphicon-remove aria-hidden="true"
     |  This identifier is already in use.
   span.help-block.hidden#identifier_unique

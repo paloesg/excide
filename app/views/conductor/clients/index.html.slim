@@ -1,12 +1,12 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="/" Home
-      li
+      li.breadcrumb-item
         a href="/symphony" #{@company.name}
-      li.active Clients
-    h1.page-header
+      li.breadcrumb-item.active Clients
+    h1.border-bottom
       | Manage Clients
       .btn-toolbar.col-sm-6.pull-right
         = link_to "New Client", new_conductor_client_path, role: 'button', class: 'btn btn-warning pull-right'
@@ -14,8 +14,8 @@
   .col-sm-12
     .card
       .card-header
-        h3.panel-title Contractor
-      .panel-body
+        | Contractor
+      .card-body
         table.table
           thead
             tr

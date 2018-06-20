@@ -1,12 +1,12 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="/symphony" Dashboard
-      li
+      li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
-      li.active Document Templates
-    h1.boorder-bottom
+      li.breadcrumb-item.active Document Templates
+    h1.border-bottom
       | Document Templates Listing
       = link_to 'New Document Template', new_symphony_document_template_path, role: 'button', class: 'btn btn-warning pull-right'
 
