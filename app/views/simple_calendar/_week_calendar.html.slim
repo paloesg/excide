@@ -1,12 +1,12 @@
-.panel.panel-default.simple-calendar
-  .panel-heading.calendar-heading
+.card.simple-calendar
+  .card-header.calendar-heading
     span.calendar-title
       | Week #{calendar.week_number}
     .btn-group.pull-right role='group'
-      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-xs btn-default'
+      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-sm'
         i.glyphicon.glyphicon-chevron-left
         | Previous Week
-      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-xs btn-default'
+      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-sm'
         | Next Week
         i.glyphicon.glyphicon-chevron-right
   .table-responsive

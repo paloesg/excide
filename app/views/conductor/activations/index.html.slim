@@ -1,23 +1,23 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="/symphony" Dashboard
-      li
+      li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
-      li.active Activations
-    h1.page-header
+      li.breadcrumb-item.active Activations
+    h1.border-bottom
       | Activations Listing - #{@date_from.strftime("%B")}
       = link_to 'New Activation', new_conductor_activation_path, role: 'button', class: 'btn btn-warning pull-right' unless @user.has_role? :contractor, :any
 .row
   .col-sm-12
     .btn-group.pull-right role='group'
-      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-xs btn-default'
+      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm'
         i.glyphicon.glyphicon-chevron-left
         | Previous Month
-      = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-xs btn-default'
+      = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm'
         | Current Month
-      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-xs btn-default'
+      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm'
         | Next Month
         i.glyphicon.glyphicon-chevron-right
 .row

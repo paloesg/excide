@@ -1,14 +1,14 @@
-.panel.panel-default.simple-calendar
-  .panel-heading.calendar-heading
+.card.simple-calendar
+  .card-header.calendar-heading
     span.calendar-title
       = t('date.month_names')[start_date.month]
       '
       = start_date.year
     .btn-group.pull-right role='group'
-      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-xs btn-default'
+      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-sm'
         i.glyphicon.glyphicon-chevron-left
         | Previous Month
-      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-xs btn-default'
+      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-sm'
         | Next Month
         i.glyphicon.glyphicon-chevron-right
   table.table.table-striped.calendar-table
