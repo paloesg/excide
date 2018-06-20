@@ -8,11 +8,14 @@ class GenerateArchive
     archive = generate_archive
     delete_reminders
     delete_workflow_actions
+    delete_activities
     return archive
   end
 
+  private
+
   def generate_archive
-    { workflow: { user: @workflow.user.full_name, remarks: @workflow.remarks, deadline: @workflow.deadline, company: @workflow.company.name, data: @workflow.data, client_type: @workflow.workflowable_type, client_name: @workflow.workflowable.name, client_identifier: @workflow.workflowable.identifier, client_company: @workflow.workflowable.company.name, template: generate_archive_template }, activity_log: generate_activity_log }
+    { workflow: { user: @workflow.user.full_name, remarks: @workflow.remarks, deadline: @workflow.deadline, company: @workflow.company.name, data: @workflow.data, client_type: @workflow.workflowable_type, client_name: @workflow.workflowable.name, client_identifier: @workflow.workflowable.identifier, client_company: @workflow.workflowable.company.name, template: generate_archive_template }, activity_log: activity_log.to_a }
   end
 
   def generate_archive_template
@@ -39,8 +42,8 @@ class GenerateArchive
     archive_tasks
   end
 
-  def generate_activity_log
-    PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc").to_a
+  def activity_log
+    PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
   end
 
   def delete_reminders
@@ -53,4 +56,7 @@ class GenerateArchive
     @workflow.workflow_actions.destroy_all
   end
 
+  def delete_activities
+    activity_log.destroy_all
+  end
 end
