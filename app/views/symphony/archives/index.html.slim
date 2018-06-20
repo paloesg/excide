@@ -31,7 +31,7 @@
           tbody
             - @workflows.each do |w|
               tr.success
-                td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
+                td = link_to w.identifier, symphony_archive_path(w.template.slug, w.identifier)
                 td = w.template.title
                 td = w.workflowable&.name || '-'
                 td = w.remarks || '-'
