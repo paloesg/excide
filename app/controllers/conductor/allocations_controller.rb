@@ -141,6 +141,6 @@ class Conductor::AllocationsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def allocation_params
-    params.require(:allocation).permit(:user_id, :activation_id, :allocation_date, :start_time, :end_time, :allocation_type, :last_minute)
+    params.require(:allocation).permit(:user_id, :activation_id, :allocation_date, :start_time, :end_time, :allocation_type, :last_minute, :rate)
   end
 end

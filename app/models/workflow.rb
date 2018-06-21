@@ -136,6 +136,5 @@ class Workflow < ActiveRecord::Base
 
   def check_data_fields
     self.errors.add(:data, "attribute name cannot be blank") if self.data.map(&:name).include? ""
-    self.errors.add(:data, "attribute value cannot be blank") if self.data.map(&:value).include? ""
   end
 end

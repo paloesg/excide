@@ -33,6 +33,8 @@ gem 'puma'
 gem 'rack-timeout'
 # Reverse proxy to proxy blog server to primary domain
 gem "rack-reverse-proxy", require: "rack/reverse_proxy"
+# Better Rails logging
+gem "lograge"
 
 ################################################
 #                                              #
@@ -79,6 +81,8 @@ gem 'fog-aws'
 gem 'meta-tags'
 # Activity feed
 gem 'public_activity'
+# Handle money
+gem 'money-rails', '~>1'
 
 # Analytics
 gem 'mixpanel-ruby'
