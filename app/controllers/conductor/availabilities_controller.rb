@@ -87,7 +87,7 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   def user
     @user = User.find_by(id: params[:user_id])
-    @availabilities = @user.availabilities.order(available_date: :asc, start_time: :asc)
+    @availabilities = @user.availabilities.order(:available_date, :start_time)
   end
 
   private
