@@ -20,6 +20,6 @@
 //= require conductor/create_allocations
 //= require conductor/add_avaibilities
 //= require conductor/home
-//= require components/dropzone
+//= require dropzone
 
 //= require turbolinks
