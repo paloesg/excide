@@ -2,10 +2,12 @@
   .col-sm-12
     ol.breadcrumb.breadcrumb-2
       li
-        a href="#" Home
+        a href="/symphony" Symphony
       li
-        a href="#" Company
-      li.active #{@template.title}
+        a href="#" #{@template.title}
+      li
+        = link_to @workflow.identifier, symphony_workflow_path(@template.slug, @workflow.identifier)
+      li.active Data Entry
     h1.page-header #{@template.title} – #{@workflow.identifier}
 .row
   .col-md-6
