@@ -21,6 +21,6 @@
 //= require conductor/add_avaibilities
 //= require conductor/home
 //= require dropzone
-//= require uploads
+//= require components/multiple_uploads
 
 //= require turbolinks
