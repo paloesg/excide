@@ -147,6 +147,10 @@ Rails.application.routes.draw do
   get 'accounting-services', to: 'home#accounting-services', as: :accounting
   get 'annual-return-filing', to: 'home#annual-return-filing', as: :return
   get 'bookkeeping', to: 'home#bookkeeping', as: :bookkeeping
+  get 'products-symphony', to: 'home#symphony', as: :product_symphony
+  get 'products-conductor', to: 'home#conductor', as: :product_conductor
+
+
 
   get '/robots.txt' => 'home#robots'
 
