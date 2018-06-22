@@ -11,7 +11,10 @@
     h1.page-header
       | Documents Listing
       = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-warning pull-right'
-
+.well
+  = form_tag @s3_direct_post.url, class: 'dropzone', id: 'uploader'
+    - @s3_direct_post.fields.each do |key, value|
+      = hidden_field_tag key, value
 .row
   .col-sm-12
     .table-responsive

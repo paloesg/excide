@@ -5,6 +5,7 @@ class Symphony::DocumentsController < DocumentsController
 
   def index
     @documents = Kaminari.paginate_array(@company.documents).page(params[:page]).per(20)
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
   def create
