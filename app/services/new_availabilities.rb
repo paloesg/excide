@@ -94,14 +94,16 @@ class NewAvailabilities
   # get overlapping new availabilities from exist assigned availabilities
   def get_overlapping(available_dates)
     overlapping = []
-    Availability.where(user_id: @user_id, assigned: true, available_date:  @date_from..@date_to).each do |availability|
+    Availability.where(user_id: @user_id, assigned: true, available_date: @date_from..@date_to).each do |availability|
       available_dates.each do |new_availability|
-        if new_availability.start_time <= availability.start_time and new_availability.end_time >= availability.end_time and !new_availability.assigned and new_availability.available_date == availability.available_date
-          overlapping << new_availability
-        elsif new_availability.start_time <= availability.start_time and new_availability.end_time > availability.start_time and !new_availability.assigned and new_availability.available_date == availability.available_date
-          overlapping << new_availability
-        elsif new_availability.start_time < availability.end_time and new_availability.end_time >= availability.end_time and !new_availability.assigned and new_availability.available_date == availability.available_date
-          overlapping << new_availability
+        if !new_availability.assigned and new_availability.available_date == availability.available_date
+          if new_availability.start_time <= availability.start_time and new_availability.end_time >= availability.end_time
+            overlapping << new_availability
+          elsif new_availability.start_time <= availability.start_time and new_availability.end_time > availability.start_time
+            overlapping << new_availability
+          elsif new_availability.start_time < availability.end_time and new_availability.end_time >= availability.end_time
+            overlapping << new_availability
+          end
         end
       end
     end
