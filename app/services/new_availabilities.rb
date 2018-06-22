@@ -9,7 +9,9 @@ class NewAvailabilities
   def run
     set_user_id
     remove_unassigned_availabilities
-    get_new_availabilities
+    available_dates = get_new_availabilities
+    remove_old_assigned_availabilities(available_dates)
+    unique_new_availabilities(available_dates)
   end
 
   private
@@ -36,22 +38,25 @@ class NewAvailabilities
         start_time = time.first
         end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
         if allocation_by_day(available_date).present?
+          # If user have allocations on that day, check if the allocations overlap with the new availability. If overlap, availability can be assigned.
           allocation_by_day(available_date).each do |allocation|
-            checked_availability = check_availability_by_allocation(allocation, available_date, start_time, end_time)
-            if checked_availability.present?
-              available_dates << checked_availability
+            available = check_availability_by_allocation(allocation, available_date, start_time, end_time)
+            if available = true
+              available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time, assign: true)
+            else
+              available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
             end
           end
         else
+          # If user have no allocations on that day, can just add new availability.
           available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
         end
       end
     end
-    remove_old_assigned_availabilities(available_dates)
-    unique_new_availabilities(available_dates)
+    return available_dates
   end
 
-  # To check user have allocations by available_date
+  # To check user have allocations on that day
   def allocation_by_day(available_date)
     Allocation.where(user_id: @user_id).where(allocation_date: available_date)
   end
@@ -60,19 +65,12 @@ class NewAvailabilities
   def check_availability_by_allocation(allocation, available_date, start_time, end_time)
     allocation_start_time = allocation.start_time.strftime("%T")
     allocation_end_time = allocation.end_time.strftime("%T")
-    if allocation_start_time > start_time and allocation_start_time >= end_time
-      Availability.new(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
-    elsif allocation_start_time > start_time and allocation_end_time == end_time
-      Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
-    elsif allocation_start_time > start_time and allocation_end_time < end_time
-      Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
-    elsif allocation_start_time == start_time and allocation_end_time < end_time
-      Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
-    elsif allocation_start_time == start_time and allocation_end_time == end_time and Availability.where(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time).blank?
-      Availability.new(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time)
-    elsif allocation_end_time <= start_time and allocation_end_time < end_time
-      Availability.new(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
+    if (allocation_start_time > start_time and allocation_start_time >= end_time) or (allocation_end_time <= start_time and allocation_end_time < end_time)
+      available = false
+    elsif allocation_start_time >= start_time and allocation_end_time <= end_time
+      available = true unless allocation_start_time == start_time and allocation_end_time == end_time and Availability.where(user_id: @user_id, available_date: available_date, assigned: true, start_time: start_time, end_time: end_time).present?
     end
+    return available
   end
 
   # remove all previous assigned availabilities from new assigned availabilities
