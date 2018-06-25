@@ -8,7 +8,9 @@ class NewAvailabilities
 
   def run
     set_user_id
-    remove_unassigned_availabilities
+    current_availabilities = get_current_availabilities
+    assigned_dates = collect_assigned_dates(current_availabilities)
+    remove_unassigned_availabilities(current_availabilities, assigned_dates)
     get_new_availabilities
   end
 
@@ -23,17 +25,17 @@ class NewAvailabilities
   end
 
   # Remove availabilities if not assign and not on any availability assigned dates
-  def remove_unassigned_availabilities
+  def remove_unassigned_availabilities(current_availabilities, assigned_dates)
     current_availabilities.where('assigned != ?', true).where.not(available_date: assigned_dates).destroy_all
   end
 
   # Collect the dates of assigned availabilities
-  def assigned_dates
+  def collect_assigned_dates(current_availabilities)
     current_availabilities.where(assigned: true).map{|a| a[:available_date]}
   end
 
   # Get availabilities from depend by start date (in a week)
-  def current_availabilities
+  def get_current_availabilities
     User.find(@user_id).availabilities.where(available_date: @date_from..@date_to)
   end
 
