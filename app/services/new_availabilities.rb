@@ -39,17 +39,17 @@ class NewAvailabilities
 
   # Get new availabilities from params `@available[:dates]`
   def get_new_availabilities
-    available_dates = []
+    new_availabilities = []
     @available[:dates]&.each do |date|
       slice_time = date[1][:time].slice_when{|first, second| first.to_i+1 != second.to_i }
       slice_time.each do |time|
         available_date = date[0]
         start_time = time.first
         end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
-        available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
+        new_availabilities << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
       end
     end
-    return available_dates
+    return new_availabilities
   end
 
 end
