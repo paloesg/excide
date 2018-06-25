@@ -24,7 +24,7 @@ class NewAvailabilities
     end
   end
 
-  # Remove availabilities if not assign and not on any availability assigned dates
+  # Remove availabilities if not assign and not on any assigned availability dates
   def remove_unassigned_availabilities(current_availabilities, assigned_dates)
     current_availabilities.where('assigned != ?', true).where.not(available_date: assigned_dates).destroy_all
   end
