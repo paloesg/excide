@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.3.5'
+ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.10'
@@ -33,6 +33,8 @@ gem 'puma'
 gem 'rack-timeout'
 # Reverse proxy to proxy blog server to primary domain
 gem "rack-reverse-proxy", require: "rack/reverse_proxy"
+# Better Rails logging
+gem "lograge"
 
 ################################################
 #                                              #
@@ -79,17 +81,20 @@ gem 'fog-aws'
 gem 'meta-tags'
 # Activity feed
 gem 'public_activity'
+# Handle money
+gem 'money-rails', '~>1'
 
 # Analytics
 gem 'mixpanel-ruby'
 
 # Error monitoring
 gem 'rollbar'
-gem 'oj', '~> 2.12.14'
+gem 'oj'
 gem 'snitcher'
 
 # Performance reporting
 gem "skylight"
+gem 'scout_apm'
 
 # Frontend framework
 gem 'bootstrap-sass'
@@ -103,6 +108,8 @@ gem 'trix'
 gem "datetime_picker_rails"
 # Render calendar
 gem "simple_calendar", "~> 2.0"
+# Algolia search
+gem "algoliasearch-rails"
 
 # Backend admin
 gem 'administrate'

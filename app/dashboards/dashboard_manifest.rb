@@ -16,7 +16,7 @@ class DashboardManifest
     :sections,
     :tasks,
     :clients,
-    :company_actions,
+    :workflow_actions,
     :companies,
     :addresses,
     :document_templates,

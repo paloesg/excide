@@ -15,7 +15,6 @@ $(document).ready(function () {
   // Create new activation
   $('.new_activation').popover({
     html: true,
-    title: 'New activation',
     container: 'body',
     placement: 'auto left',
     content: function () {
@@ -38,7 +37,6 @@ $(document).ready(function () {
   $('.activation').popover({
     html: true,
     container: 'body',
-    placement: 'auto left',
     content: function () {
       return $('#activation-details').html();
     }
@@ -48,6 +46,7 @@ $(document).ready(function () {
     get_activation_address = JSON.parse($(this).attr('activation-address'))
     start_time = new Date(get_activation['start_time']);
     end_time = new Date(get_activation['end_time']);
+    $('#allocated_users_length').text($(this).attr('get_allocated_users_length'));
     $('#client_name').text($(this).attr('activation-client'));
     $('#activation_type_popover').text(get_activation['activation_type'].replace(/_/g, ' ')).css("text-transform", "capitalize");
     $('#event_owner').text($(this).attr('activation-event_owner'));
@@ -65,5 +64,7 @@ $(document).ready(function () {
   });
   $('body').on('hidden.bs.popover', function (e) {
     $(e.target).data("bs.popover").inState.click = false;
+  }).on("shown.bs.popover", function (e) {
+    $('.popover-close').click(function () { $(e.target).popover('hide') });
   });
 });

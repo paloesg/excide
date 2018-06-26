@@ -3,5 +3,5 @@
 </div>
 <div class="field-unit__field">
   <%= f.text_field field.attribute %>
-  <%= f.file_field field.attribute %>
+  <%= f.file_field field.attribute, onclick: 'callDirectUpload()'%>
 </div>

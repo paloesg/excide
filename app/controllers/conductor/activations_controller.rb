@@ -61,9 +61,14 @@ class Conductor::ActivationsController < ApplicationController
   # PATCH/PUT /conductor/activations/1
   # PATCH/PUT /conductor/activations/1.json
   def update
+    update_activation_time = UpdateActivationTime.new(@activation, activation_params['start_time'], activation_params['end_time']).run
+
     respond_to do |format|
-      if @activation.update(activation_params)
-        format.html { redirect_to conductor_activations_path, notice: 'Activation was successfully updated.' }
+      if update_activation_time.success? and @activation.update(activation_params)
+        @activation.update_activation_notification
+        flash[:notice] = update_activation_time.message
+        flash[:notice] << 'Activation was successfully updated.'
+        format.html { redirect_to conductor_activations_path }
         format.json { render :show, status: :ok, location: @activation }
       else
         set_event_owners

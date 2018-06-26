@@ -5,7 +5,7 @@ class Reminder < ActiveRecord::Base
   belongs_to :user
   belongs_to :company
   belongs_to :task
-  belongs_to :company_action
+  belongs_to :workflow_action
 
   enum freq_unit: [:days, :weeks, :months, :years]
 

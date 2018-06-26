@@ -7,9 +7,14 @@ class SendReminder
 
   def run
     # TODO: Move into a background service
-    send_email_reminder if @reminder.email?
-    send_sms_reminder if @reminder.sms?
-    send_slack_reminder if @reminder.slack?
+    begin
+      send_email_reminder if @reminder.email?
+      send_sms_reminder if @reminder.sms?
+      send_slack_reminder if @reminder.slack?
+    rescue => e
+      reminder_error_notification(e)
+      set_reminder_tomorrow
+    end
     # TODO: Log reminders sent
     set_next_reminder
   end
@@ -36,12 +41,21 @@ class SendReminder
     message = @client.api.account.messages.create( from: from_number, to: to_number, body: message_body )
   end
 
+  def reminder_error_notification(e)
+    SlackService.new.send_reminder_error(@reminder, e).deliver
+  end
+
   def set_next_reminder
     if @reminder.repeat?
       @reminder.next_reminder = Date.current + @reminder.freq_value.to_i.send(@reminder.freq_unit)
     else
       @reminder.next_reminder = nil
     end
+    @reminder.save
+  end
+
+  def set_reminder_tomorrow
+    @reminder.next_reminder = Date.current + 1.day
     @reminder.save
   end
 end

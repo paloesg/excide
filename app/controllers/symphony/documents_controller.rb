@@ -18,14 +18,16 @@ class Symphony::DocumentsController < DocumentsController
       SlackService.new.new_document(@document).deliver
       redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.'
     else
+      set_templates
       render :new
     end
   end
 
   def update
     if @document.update(document_params)
-      redirect_to symphony_documents_path, notice: 'Document was successfully updated.'
+      redirect_to symphony_document_path, notice: 'Document was successfully updated.'
     else
+      set_templates
       render :edit
     end
   end

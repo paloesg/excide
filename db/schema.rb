@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180510075200) do
+ActiveRecord::Schema.define(version: 20180531080852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20180510075200) do
     t.datetime "updated_at",                      null: false
     t.integer  "allocation_type"
     t.boolean  "last_minute",     default: false
+    t.integer  "rate_cents"
   end
 
   add_index "allocations", ["activation_id"], name: "index_allocations_on_activation_id", using: :btree
@@ -130,25 +131,6 @@ ActiveRecord::Schema.define(version: 20180510075200) do
     t.date     "financial_year_end"
     t.string   "slug"
   end
-
-  create_table "company_actions", force: :cascade do |t|
-    t.integer  "task_id"
-    t.boolean  "completed"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.datetime "deadline"
-    t.integer  "company_id"
-    t.integer  "approved_by"
-    t.integer  "workflow_id"
-    t.integer  "assigned_user_id"
-    t.integer  "completed_user_id"
-  end
-
-  add_index "company_actions", ["assigned_user_id"], name: "index_company_actions_on_assigned_user_id", using: :btree
-  add_index "company_actions", ["company_id"], name: "index_company_actions_on_company_id", using: :btree
-  add_index "company_actions", ["completed_user_id"], name: "index_company_actions_on_completed_user_id", using: :btree
-  add_index "company_actions", ["task_id"], name: "index_company_actions_on_task_id", using: :btree
-  add_index "company_actions", ["workflow_id"], name: "index_company_actions_on_workflow_id", using: :btree
 
   create_table "document_templates", force: :cascade do |t|
     t.string   "title"
@@ -239,24 +221,24 @@ ActiveRecord::Schema.define(version: 20180510075200) do
     t.boolean  "repeat"
     t.integer  "freq_value"
     t.integer  "freq_unit"
-    t.datetime "past_reminders",    default: [],              array: true
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "past_reminders",     default: [],              array: true
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.integer  "user_id"
     t.integer  "company_id"
     t.string   "title"
     t.text     "content"
     t.integer  "task_id"
-    t.integer  "company_action_id"
+    t.integer  "workflow_action_id"
     t.boolean  "email"
     t.boolean  "sms"
     t.boolean  "slack"
   end
 
-  add_index "reminders", ["company_action_id"], name: "index_reminders_on_company_action_id", using: :btree
   add_index "reminders", ["company_id"], name: "index_reminders_on_company_id", using: :btree
   add_index "reminders", ["task_id"], name: "index_reminders_on_task_id", using: :btree
   add_index "reminders", ["user_id"], name: "index_reminders_on_user_id", using: :btree
+  add_index "reminders", ["workflow_action_id"], name: "index_reminders_on_workflow_action_id", using: :btree
 
   create_table "responses", force: :cascade do |t|
     t.text     "content"
@@ -418,6 +400,25 @@ ActiveRecord::Schema.define(version: 20180510075200) do
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
+  create_table "workflow_actions", force: :cascade do |t|
+    t.integer  "task_id"
+    t.boolean  "completed"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.datetime "deadline"
+    t.integer  "company_id"
+    t.integer  "approved_by"
+    t.integer  "workflow_id"
+    t.integer  "assigned_user_id"
+    t.integer  "completed_user_id"
+  end
+
+  add_index "workflow_actions", ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id", using: :btree
+  add_index "workflow_actions", ["company_id"], name: "index_workflow_actions_on_company_id", using: :btree
+  add_index "workflow_actions", ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id", using: :btree
+  add_index "workflow_actions", ["task_id"], name: "index_workflow_actions_on_task_id", using: :btree
+  add_index "workflow_actions", ["workflow_id"], name: "index_workflow_actions_on_workflow_id", using: :btree
+
   create_table "workflows", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "company_id"
@@ -446,11 +447,6 @@ ActiveRecord::Schema.define(version: 20180510075200) do
   add_foreign_key "availabilities", "users"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
-  add_foreign_key "company_actions", "companies"
-  add_foreign_key "company_actions", "tasks"
-  add_foreign_key "company_actions", "users", column: "assigned_user_id"
-  add_foreign_key "company_actions", "users", column: "completed_user_id"
-  add_foreign_key "company_actions", "workflows"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
@@ -460,9 +456,9 @@ ActiveRecord::Schema.define(version: 20180510075200) do
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"
   add_foreign_key "reminders", "companies"
-  add_foreign_key "reminders", "company_actions"
   add_foreign_key "reminders", "tasks"
   add_foreign_key "reminders", "users"
+  add_foreign_key "reminders", "workflow_actions"
   add_foreign_key "responses", "choices"
   add_foreign_key "responses", "questions"
   add_foreign_key "responses", "segments"
@@ -478,6 +474,11 @@ ActiveRecord::Schema.define(version: 20180510075200) do
   add_foreign_key "tasks", "sections"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
+  add_foreign_key "workflow_actions", "companies"
+  add_foreign_key "workflow_actions", "tasks"
+  add_foreign_key "workflow_actions", "users", column: "assigned_user_id"
+  add_foreign_key "workflow_actions", "users", column: "completed_user_id"
+  add_foreign_key "workflow_actions", "workflows"
   add_foreign_key "workflows", "companies"
   add_foreign_key "workflows", "templates"
   add_foreign_key "workflows", "users"

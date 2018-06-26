@@ -1,7 +1,14 @@
+.pull-right
+  .glyphicon.glyphicon-user aria-hidden='true'
+  span#allocated_users_length
 p
   strong Client:
   br
   span#client_name
+p
+  strong Remarks:
+  br
+  span#remarks
 p
   strong Activation type:
   br
@@ -34,11 +41,7 @@ p
   strong End time:
   br
   span#end_time
-p
-  strong Remarks:
-  br
-  span#remarks
-- unless current_user.has_role? :contractor, :any
+- unless (current_user.has_role? :contractor, :any) or (current_page? controller: 'activations', action: 'index')
   .btn-toolbar
     a.btn.btn-primary#edit_activation href="#" Edit activation
     a.btn.btn-primary#edit_allocations href="#" Edit allocations

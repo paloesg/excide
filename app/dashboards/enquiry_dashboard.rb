@@ -16,6 +16,7 @@ class EnquiryDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     source: Field::String,
+    responded: Field::Boolean,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -29,6 +30,7 @@ class EnquiryDashboard < Administrate::BaseDashboard
     :contact,
     :email,
     :source,
+    :responded,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -42,6 +44,7 @@ class EnquiryDashboard < Administrate::BaseDashboard
     :created_at,
     :updated_at,
     :source,
+    :responded,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -53,6 +56,7 @@ class EnquiryDashboard < Administrate::BaseDashboard
     :email,
     :comments,
     :source,
+    :responded,
   ].freeze
 
   # Overwrite this method to customize how enquiries are displayed

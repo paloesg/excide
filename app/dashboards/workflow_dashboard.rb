@@ -15,7 +15,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
     id: Field::Number,
     completed: Field::Boolean,
     workflowable: Field::Polymorphic,
-    company_actions: Field::HasMany,
+    workflow_actions: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -42,7 +42,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
     :identifier,
     :template,
     :workflowable,
-    :company_actions,
+    :workflow_actions,
     :id,
     :completed,
     :created_at,

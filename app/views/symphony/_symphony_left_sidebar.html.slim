@@ -1,4 +1,4 @@
-- get_relevant_templates.each do |t|
+- ::Template.assigned_templates(current_user).each do |t|
   .panel-group role="tablist"
     .panel.panel-default
       .panel-heading role="tab" id="#collapse-#{t.slug}-heading"
