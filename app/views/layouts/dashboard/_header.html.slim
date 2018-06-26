@@ -29,12 +29,13 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                 = link_to "User Details", edit_user_registration_path, class: 'dropdown-item'
                 = link_to "Company Details", edit_company_path, class: 'dropdown-item'
 
-          li.nav-item = link_to "Go to Conductor", conductor_root_path, class: 'nav-link' if ENV['APP_NAME'] == "excide-staging"
+          - if ENV['APP_NAME'] == "excide-staging"
+            li.nav-item = link_to "Go to Conductor", conductor_root_path, class: 'nav-link'
           li.nav-item = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'nav-link'}
 
         - elsif controller.class.parents.include?(Conductor)
-          li.nav-item.nav-link = link_to "Conductor Dashboard", conductor_root_path, class: 'nav-link'
-          li.nav-item.nav-link = link_to 'Activations', conductor_activations_path, class: 'nav-link'
+          li.nav-item = link_to "Conductor Dashboard", conductor_root_path, class: 'nav-link'
+          li.nav-item = link_to 'Activations', conductor_activations_path, class: 'nav-link'
           - if current_user.has_role? :admin, @company or current_user.has_role? :manpower_allocator, @company
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Contractors
@@ -42,10 +43,12 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                 = link_to 'Contractor Availability', conductor_availabilities_path, class: 'dropdown-item'
                 = link_to 'Allocate Contractor', conductor_allocations_path, class: 'dropdown-item'
                 = link_to "Manage Contractors", conductor_users_path, class: 'dropdown-item'
-
-          li.nav-item = link_to 'Clients', conductor_clients_path, class: 'nav-link' unless current_user.has_role? :contractor, @company
-          li.nav-item = link_to "User Details", conductor_user_path(current_user), class: 'nav-link' if current_user.has_role? :contractor, @company
-          li.nav-item = link_to "Go to Symphony", symphony_root_path, class: 'nav-link' unless current_user.has_role? :contractor, @company
+          - unless current_user.has_role? :contractor, @company
+            li.nav-item = link_to 'Clients', conductor_clients_path, class: 'nav-link'
+          - if current_user.has_role? :contractor, @company
+            li.nav-item = link_to "User Details", conductor_user_path(current_user), class: 'nav-link'
+          - unless current_user.has_role? :contractor, @company
+            li.nav-item = link_to "Go to Symphony", symphony_root_path, class: 'nav-link'
           li.nav-item = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'nav-link'}
 
         - else
