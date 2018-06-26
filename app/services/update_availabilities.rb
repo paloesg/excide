@@ -1,4 +1,4 @@
-class NewAvailabilities
+class UpdateAvailabilities
   def initialize(current_user, available, current_date)
     @current_user = current_user
     @available = available
@@ -11,7 +11,10 @@ class NewAvailabilities
     current_availabilities = get_current_availabilities
     assigned_dates = collect_assigned_dates(current_availabilities)
     remove_unassigned_availabilities(current_availabilities, assigned_dates)
-    get_new_availabilities
+    new_availabilities = get_new_availabilities
+    status = save_new_availabilities(new_availabilities)
+
+    return status
   end
 
   private
@@ -52,6 +55,19 @@ class NewAvailabilities
       end
     end
     return new_availabilities
+  end
+
+  def save_new_availabilities(new_availabilities)
+    begin
+      Availability.transaction do
+        new_availabilities.each do |availability|
+          availability.save!
+        end
+      end
+      OpenStruct.new(success?: true, availabilities: new_availabilities, message: 'Availabilities were successfully updated.')
+    rescue ActiveRecord::RecordInvalid
+      OpenStruct.new(success?: false, availabilities: new_availabilities, message: 'Error saving availabilities.')
+    end
   end
 
 end
