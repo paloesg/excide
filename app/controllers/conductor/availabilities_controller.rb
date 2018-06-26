@@ -40,8 +40,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   def create
     # params[:available] format:
     # {"user_id"=>"52", "dates"=>{"2018-04-10"=>{"time"=>["09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]}, "2018-04-12"=>{"time"=>["10:00:00", "11:00:00", "12:00:00"]}, "2018-04-13"=>{"time"=>["14:00:00", "15:00:00", "16:00:00"]}}}
-    current_date = Date.current
-    new_available_dates = NewAvailabilities.new(current_user, params[:available], current_date).run
+    new_available_dates = NewAvailabilities.new(current_user, params[:available], Date.current).run
     respond_to do |format|
       if new_available_dates.each(&:save!) and new_available_dates.any?
         format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
@@ -57,8 +56,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   # PATCH/PUT /availabilities/1
   # PATCH/PUT /availabilities/1.json
   def update
-    current_date = @availability.available_date
-    new_available_dates = NewAvailabilities.new(@availability.user, params[:available], current_date).run
+    new_available_dates = NewAvailabilities.new(@availability.user, params[:available], @availability.available_date).run
     respond_to do |format|
       if new_available_dates.each(&:save!) and new_available_dates.any?
         format.html { redirect_to after_save_path, notice: 'Availability was successfully updated.' }
