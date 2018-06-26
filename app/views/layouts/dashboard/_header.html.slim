@@ -27,10 +27,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                 span.caret
 
               .dropdown-menu aria-labelledby="navbarDropdownMenuLink"
-                a.dropdown-item = link_to "Search Workflows", symphony_search_path
-                a.dropdown-item = link_to "Manage Users", symphony_users_path
-                a.dropdown-item = link_to "User Details", edit_user_registration_path
-                a.dropdown-item = link_to "Company Details", edit_company_path
+                = link_to "Search Workflows", symphony_search_path, class: 'dropdown-item'
+                = link_to "Manage Users", symphony_users_path, class: 'dropdown-item'
+                = link_to "User Details", edit_user_registration_path, class: 'dropdown-item'
+                = link_to "Company Details", edit_company_path, class: 'dropdown-item'
 
           li.nav-item = link_to "Go to Conductor", conductor_root_path, class: 'nav-link' if ENV['APP_NAME'] == "excide-staging"
           li.nav-item = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'nav-link'}
@@ -45,9 +45,9 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                 span.caret
 
               .dropdown-menu aria-labelledby="navbarDropdownMenuLink"
-                a.dropdown-item = link_to 'Contractor Availability', conductor_availabilities_path
-                a.dropdown-item = link_to 'Allocate Contractor', conductor_allocations_path
-                a.dropdown-item = link_to "Manage Contractors", conductor_users_path
+                = link_to 'Contractor Availability', conductor_availabilities_path, class: 'dropdown-item'
+                = link_to 'Allocate Contractor', conductor_allocations_path, class: 'dropdown-item'
+                = link_to "Manage Contractors", conductor_users_path, class: 'dropdown-item'
 
           li.nav-item.nav-link = link_to 'Clients', conductor_clients_path, class: 'nav-link' unless current_user.has_role? :contractor, @company
           li.nav-item.nav-link = link_to "User Details", conductor_user_path(current_user), class: 'nav-link' if current_user.has_role? :contractor, @company
