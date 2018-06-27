@@ -21,6 +21,7 @@ class Symphony::DocumentsController < DocumentsController
         SlackService.new.new_document(@document).deliver
         if params[:document_type] == 'invoice'
           @workflow = Workflow.create(user: current_user, company: @company, template: Template.find_by(slug: 'payable-invoices'), identifier: @document.identifier)
+          @document.update_attributes(workflow: @workflow)
         end
 
         format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
