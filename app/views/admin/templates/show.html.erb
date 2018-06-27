@@ -51,4 +51,13 @@ as well as a link to its edit page.
           ><%= render_field attribute %></dd>
     <% end %>
   </dl>
+
+  <div>
+    <%= form_tag({action: 'import'}, method: 'post') do %>
+      <%= label_tag 'csv_file', 'Upload workflows CSV file' %>
+      <%= file_field_tag 'csv_file' %>
+      <br>
+      <%= submit_tag 'Submit' %>
+    <% end %>
+  </div>
 </section>

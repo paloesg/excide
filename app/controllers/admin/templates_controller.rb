@@ -24,6 +24,9 @@ module Admin
       send_data @template.workflows_to_csv, filename: "#{@template.title}-#{Date.current}.csv"
     end
 
+    def import
+    end
+
     private
 
     def set_s3_direct_post
