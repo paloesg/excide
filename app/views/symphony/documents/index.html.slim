@@ -10,11 +10,11 @@
       li.active Edit
     h1.page-header
       | Documents Listing
-      = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-warning pull-right'
-.well
-  = form_tag @s3_direct_post.url, class: 'dropzone', id: 'uploader'
-    - @s3_direct_post.fields.each do |key, value|
-      = hidden_field_tag key, value
+.row
+  .col-sm-12
+    .btn-toolbar.pull-right
+      = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary'
+      = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning'
 .row
   .col-sm-12
     .table-responsive
@@ -23,8 +23,8 @@
           tr
             th Filename
             th Identifier
+            th Document Template
             th Workflow
-            th Template
             th
 
         tbody
@@ -32,8 +32,8 @@
             tr
               td = document.filename
               td = document.identifier
-              td = document.workflow&.template&.title
               td = document.document_template&.title
+              td = document.workflow&.template&.title
               td.btn-toolbar
                 = link_to "View", symphony_document_path(document), role: 'button', class: 'btn btn-success btn-xs'
                 = link_to "Download", document.file_url, role: 'button', class: 'btn btn-warning btn-xs'

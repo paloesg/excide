@@ -34,7 +34,11 @@ Rails.application.routes.draw do
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
     resources :users
     resources :document_templates
-    resources :documents
+    resources :documents do
+      collection do
+        get '/upload-invoice', to: 'documents#upload_invoice', as: :upload_invoice
+      end
+    end
     resources :archives
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
       member do

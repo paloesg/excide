@@ -38,6 +38,10 @@ class Symphony::DocumentsController < DocumentsController
     redirect_to symphony_documents_path, notice: 'Document was successfully destroyed.'
   end
 
+  def upload_invoice
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
+  end
+
   private
 
   def set_company
