@@ -5,7 +5,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
   before_action :set_contractor, only: [:index, :edit]
-  before_action :set_time_header, only: [:new, :create]
+  before_action :set_time_header, only: [:new, :edit]
 
   # GET /availabilities
   # GET /availabilities.json
@@ -20,18 +20,19 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   # GET /availabilities/new
   def new
-    @availability = Availability.new
-    if current_user.has_role? :contractor, :any
-      @availability.user_id = current_user.id
-      @disable_user_select = true
-    else
-      @availability.user_id ||= params[:user_id]
-      @disable_user_select = false
-    end
+    (current_user.has_role? :contractor, :any) ? user_id = current_user.id : user_id = params[:user_id]
+    last_availability = Availability.where(user_id: user_id).order('available_date ASC').last
+
+    @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_week : last_availability.available_date.next_week
+    @date_to = @date_from.end_of_week
+    @availabilities = Availability.where(user_id: user_id).where(available_date: @date_from..@date_to)
   end
 
   # GET /availabilities/1/edit
   def edit
+    @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_week : @availability.available_date.beginning_of_week
+    @date_to = @date_from.end_of_week
+    @availabilities = Availability.where(user_id: @availability.user_id).where(available_date: @date_from..@date_to)
   end
 
   # POST /availabilities
@@ -39,39 +40,15 @@ class Conductor::AvailabilitiesController < ApplicationController
   def create
     # params[:available] format:
     # {"user_id"=>"52", "dates"=>{"2018-04-10"=>{"time"=>["09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"]}, "2018-04-12"=>{"time"=>["10:00:00", "11:00:00", "12:00:00"]}, "2018-04-13"=>{"time"=>["14:00:00", "15:00:00", "16:00:00"]}}}
-    available = params[:available]
-    @available_dates = []
-    overlapping = []
-
-    if current_user.has_role? :contractor, :any
-      @user_id = current_user.id
-    else
-      @user_id = available[:user_id]
-    end
-
-    available[:dates]&.each do |date|
-      slice_time = date[1][:time].slice_when{|first, second| first.to_i+1 != second.to_i }
-      slice_time.each do |time|
-        available_date = date[0]
-        start_time = time.first
-        end_time = (Time.parse(time.last) + 1.hour).strftime("%T")
-        @available_dates << Availability.new(user_id: @user_id, available_date: available_date , start_time: start_time, end_time: end_time)
-        overlapping << Availability.overlapping(user_id: @user_id, available_date: available_date, start_time: start_time, end_time: end_time)
-      end
-    end
-
+    update_availabilities = UpdateAvailabilities.new(current_user, params[:available], Date.current).run
     respond_to do |format|
-      if overlapping.any?
-        flash[:alert] = "The selected time slots overlap with an existing availability. Please select different time slots."
-        format.html { render :new }
-        format.json { render json: @available_dates.errors, status: :unprocessable_entity }
-      elsif @available_dates.each(&:save!) and @available_dates.any?
-        format.html { redirect_to after_save_path, notice: 'Availabilities were successfully created.' }
+      if update_availabilities.success?
+        format.html { redirect_to after_save_path, notice: update_availabilities.message }
         format.json { render :show, status: :created, location: @availability }
       else
-        flash[:alert] = "Please select at least one time slot."
+        flash[:alert] = update_availabilities.message
         format.html { render :new }
-        format.json { render json: @available_dates.errors, status: :unprocessable_entity }
+        format.json { render json: new_available_dates.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -79,14 +56,15 @@ class Conductor::AvailabilitiesController < ApplicationController
   # PATCH/PUT /availabilities/1
   # PATCH/PUT /availabilities/1.json
   def update
+    update_availabilities = UpdateAvailabilities.new(@availability.user, params[:available], @availability.available_date).run
     respond_to do |format|
-      if @availability.update(availability_params)
-        format.html { redirect_to conductor_availabilities_path, notice: 'Availability was successfully updated.' }
-        format.json { render :show, status: :ok, location: @availability }
+      if update_availabilities.success?
+        format.html { redirect_to after_save_path, notice: update_availabilities.message }
+        format.json { render :show, status: :created, location: @availability }
       else
-        set_contractor
+        flash[:alert] = update_availabilities.message
         format.html { render :edit }
-        format.json { render json: @availability.errors, status: :unprocessable_entity }
+        format.json { render json: new_available_dates.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -103,7 +81,7 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   def user
     @user = User.find_by(id: params[:user_id])
-    @availabilities = @user.availabilities.order(available_date: :asc, start_time: :asc)
+    @availabilities = @user.availabilities.order(:available_date, :start_time)
   end
 
   private
@@ -122,8 +100,8 @@ class Conductor::AvailabilitiesController < ApplicationController
   end
 
   def set_time_header
-    @times_header = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
-    @times_value = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
+    @time_headers = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM' ]
+    @time_values = ['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00']
   end
 
   def after_save_path

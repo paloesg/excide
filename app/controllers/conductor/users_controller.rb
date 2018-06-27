@@ -11,7 +11,7 @@ class Conductor::UsersController < ApplicationController
   end
 
   def show
-    @availabilities = Availability.where(user: @user)
+    @availabilities = Availability.where(user: @user).order(:available_date, :start_time)
   end
 
   def new

@@ -41,6 +41,14 @@ class Workflow < ActiveRecord::Base
     self.workflowable = workflowable_type.constantize.new(params)
   end
 
+  def next_workflow
+    Workflow.where(template: self.template).where('id > ?', self.id).first
+  end
+
+  def previous_workflow
+    Workflow.where(template: self.template).where('id < ?', self.id).last
+  end  
+
   def current_section
     if self.completed
       self.template.sections.last

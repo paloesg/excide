@@ -2,10 +2,12 @@
   .col-sm-12
     ol.breadcrumb.breadcrumb-2
       li
-        a href="#" Home
+        a href="/symphony" Symphony
       li
-        a href="#" Company
-      li.active #{@template.title}
+        a href="#" #{@template.title}
+      li
+        = link_to @workflow.identifier, symphony_workflow_path(@template.slug, @workflow.identifier)
+      li.active Data Entry
     h1.page-header #{@template.title} – #{@workflow.identifier}
 .row
   .col-md-6
@@ -17,15 +19,6 @@
       - else
         iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
   .col-md-6
-    .btn-group role='group' style='margin-bottom: 20px'
-      - if @previous_document.present?
-        = link_to data_entry_symphony_workflow_path(workflow_identifier: @workflow.identifier, document_id: @previous_document.id), class: 'btn btn-default'
-          i.glyphicon.glyphicon-chevron-left
-          | Previous Document
-      - if @next_document.present?
-        = link_to data_entry_symphony_workflow_path(workflow_identifier: @workflow.identifier, document_id: @next_document.id), class: 'btn btn-default'
-          | Next Document
-          i.glyphicon.glyphicon-chevron-right
     = form_for(@workflow, url: symphony_workflow_path(workflow_identifier: params[:workflow_identifier])) do |f|
       .panel.panel-default
         .panel-heading
@@ -42,4 +35,13 @@
               = f.fields_for :data do |d|
                 = render 'data_fields', f: d
           = link_to_add_fields "Add Attribute", f, :data
-      = f.submit 'Save Data', class: 'btn btn-primary pull-right'
+      .btn-group role='group'
+        - if @previous_document.present?
+          = f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-default'
+            i.glyphicon.glyphicon-chevron-left
+            | Previous Document
+        - if @next_document.present?
+          = f.button name: 'document_id', value: @next_document.id, class: 'btn btn-default'
+            | Next Document
+            i.glyphicon.glyphicon-chevron-right
+      = f.submit 'Finish Data Entry', class: 'btn btn-primary pull-right'

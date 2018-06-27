@@ -47,6 +47,8 @@ class Symphony::WorkflowsController < WorkflowsController
       log_activity
       if params[:assign]
         redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
+      elsif params[:document_id]
+        redirect_to data_entry_symphony_workflow_path(@template.slug, @workflow.identifier, document_id: params[:document_id]), notice: 'Attributes were successfully saved.'
       else
         redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
       end
