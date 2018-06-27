@@ -1,0 +1,18 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.text-right
+      li
+        a href="#" Home
+      li
+        a href="#" Company
+      li
+        a href="#" Documents
+      li.active Edit
+    h1.page-header
+      | Upload Invoices
+.row
+  .col-sm-12
+    .well
+      = form_tag @s3_direct_post.url, class: 'dropzone', id: 'uploader'
+        - @s3_direct_post.fields.each do |key, value|
+          = hidden_field_tag key, value

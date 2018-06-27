@@ -13,6 +13,7 @@
  *= require trix
  *= require_self
  *= require_tree ./dashboard
+ *= require dropzone
  */
 
 @import "bootstrap-sprockets";
