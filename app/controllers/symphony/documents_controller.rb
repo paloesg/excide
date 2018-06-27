@@ -12,15 +12,25 @@ class Symphony::DocumentsController < DocumentsController
     @document = Document.new(document_params)
     @document.company = @company
     @document.user = @user
+    @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
 
     @workflow = Workflow.find_by(identifier: params[:workflow]) if params[:workflow].present?
 
-    if @document.save
-      SlackService.new.new_document(@document).deliver
-      redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.'
-    else
-      set_templates
-      render :new
+    respond_to do |format|
+      if @document.save
+        SlackService.new.new_document(@document).deliver
+        if params[:document_type] == 'invoice'
+          @workflow = Workflow.create(user: current_user, company: @company, template: Template.find_by(slug: 'payable-invoices'), identifier: @document.identifier)
+        end
+
+        format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
+        format.json { render :show, status: :created, location: @document}
+      else
+        set_templates
+
+        format.html { render :new }
+        format.json { render json: @document.errors, status: :unprocessable_entity }
+      end
     end
   end
 
