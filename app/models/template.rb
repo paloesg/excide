@@ -43,7 +43,7 @@ class Template < ActiveRecord::Base
   end
 
   def self.csv_to_workflows(file)
-    imports = {update: [], unchanged: [], not_found: 0}
+    imports = {update: [], unchanged: [], not_found: []}
     CSV.foreach(file.path, headers: true) do |row|
       workflow = Workflow.find_by_identifier(row['Identifier'])
       if workflow
@@ -64,7 +64,7 @@ class Template < ActiveRecord::Base
           imports[:unchanged] << workflow
         end
       else
-        imports[:not_found] += 1
+        imports[:not_found] << row['Identifier']
       end
     end
     imports
