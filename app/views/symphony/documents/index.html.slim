@@ -34,7 +34,8 @@
               td = document.filename
               td = document.identifier
               td = document.document_template&.title
-              td = document.workflow&.template&.title
+              td
+                = link_to document.workflow.template.title, symphony_workflow_path(document.workflow.template.slug, document.workflow.identifier) if document.workflow.present?
               td = document.created_at.strftime("%d/%m/%Y %R")
               td.btn-toolbar
                 = link_to "View", symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-xs'
