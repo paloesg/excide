@@ -25,6 +25,7 @@ module Admin
     end
 
     def import
+      imports = Template.csv_to_workflows(params[:csv_file])
     end
 
     private
