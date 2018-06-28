@@ -26,7 +26,11 @@ module Admin
 
     def import
       imports = Template.csv_to_workflows(params[:csv_file])
-      redirect_to admin_template_path, notice: 'Workflows was successfully updated.'
+      flash[:notice] = "Workflows imported succesfully. "
+      flash[:notice] << "#{imports[:update].length} workflows succesfully updated. " if imports[:update].length != 0
+      flash[:notice] << "#{imports[:unchanged].length} workflows unchanged. " if imports[:unchanged].length != 0
+      flash[:notice] << "#{imports[:not_found].length} workflows not found. " if imports[:not_found].length != 0
+      redirect_to admin_template_path
     end
 
     private
