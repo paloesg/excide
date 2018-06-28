@@ -17,4 +17,8 @@ $(document).ready(function () {
       }
     });
   });
+
+  documentUpload.on("queuecomplete", function (file, request) {
+    $('#view-invoices-button').show();
+  });
 });
