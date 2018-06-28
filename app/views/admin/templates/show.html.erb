@@ -53,7 +53,7 @@ as well as a link to its edit page.
   </dl>
 
   <div>
-    <%= form_tag({action: 'import'}, method: 'post') do %>
+    <%= form_tag({action: 'import'}, multipart: true, method: 'post') do %>
       <%= label_tag 'csv_file', 'Upload workflows CSV file' %>
       <%= file_field_tag 'csv_file' %>
       <br>
