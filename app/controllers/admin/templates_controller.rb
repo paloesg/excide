@@ -26,6 +26,7 @@ module Admin
 
     def import
       imports = Template.csv_to_workflows(params[:csv_file])
+      redirect_to admin_template_path, notice: 'Workflows was successfully updated.'
     end
 
     private
