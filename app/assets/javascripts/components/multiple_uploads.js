@@ -12,7 +12,7 @@ $(document).ready(function () {
       document_type: 'invoice',
       document: {
         filename: file.name,
-        identifier: file.name + '-' + Date.now(),
+        identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.name,
         file_url: '//' + location['host'] + '/' + filePath,
       }
     });
