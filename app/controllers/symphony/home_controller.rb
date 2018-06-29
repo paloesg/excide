@@ -12,7 +12,7 @@ class Symphony::HomeController < ApplicationController
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
     @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
 
-    @outstanding_actions = WorkflowAction.all_user_actions(current_user).where.not(completed: true).order(:deadline)
+    @outstanding_actions = WorkflowAction.all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).order(:deadline)
   end
 
   def search
