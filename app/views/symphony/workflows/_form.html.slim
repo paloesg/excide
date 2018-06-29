@@ -5,13 +5,13 @@
       - @workflow.errors.full_messages.each do |message|
         li = message
 = f.hidden_field(:workflowable_type, value: 'Client')
-.form-group#identifier_form
+.form-group
   = f.label :identifier
   = f.text_field :identifier, class: 'form-control'
-  span.help-block.hidden-xs-down#identifier_exist
+  span.help-block.d-none#identifier_exist
     .glyphicon.glyphicon-remove aria-hidden="true"
     |  This identifier is already in use.
-  span.help-block.hidden#identifier_unique
+  span.help-block.d-none#identifier_unique
     .glyphicon.glyphicon-ok aria-hidden="true"
     |  This identifier is unique.
 .form-group
