@@ -25,7 +25,8 @@
       = f.file_field :file_url, accept: 'image/*', capture: 'camera'
     - else
       = f.file_field :file_url
-  .file-path-wrapper
-    = f.label 'File URL'
-    = f.text_field :file_url, class: 'file-path form-control', disabled: true
+  - else
+    .file-path-wrapper
+      = f.label 'File URL'
+      = f.text_field :file_url, class: 'file-path form-control', disabled: true
 = f.submit 'Save Document', class: 'btn btn-default'
