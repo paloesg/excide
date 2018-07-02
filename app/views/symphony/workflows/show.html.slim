@@ -78,22 +78,22 @@
     br
     .card.mb-3
       .card-header
-        #{@workflow.workflowable_type}
+        | #{@workflow.workflowable_type}
       .card-body
         | Name: #{@workflow.workflowable&.name}
         br
         | Identifier: #{@workflow.workflowable&.identifier}
     .card.mb-3
       .card-header
-        Remarks
+        | Remarks
       .card-body = @workflow.remarks.present? ? @workflow.remarks : '-'
     .card.mb-3
       .card-header
-        Deadline
+        | Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
     .card.mb-3
       .card-header
-        Documents
+        | Documents
       .card-body
         - if @documents.empty?
           | No documents yet.
@@ -111,7 +111,7 @@
                 = d.user&.full_name
     .card.mb-3
       .card-header
-        Document Templates
+        | Document Templates
       .card-body
         - if @document_templates.empty?
           | No documents yet.
