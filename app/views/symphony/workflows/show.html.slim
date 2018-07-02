@@ -9,9 +9,9 @@
     h1.page-header #{@template.title} – #{@workflow.identifier}
 .row
   .col-md-9.col-sm-12
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title = @section.display_name
+    .card
+      .card-header
+        = @section.display_name
       .table-responsive
         table.table
           thead
@@ -29,7 +29,7 @@
                 - t = TaskDecorator.new(task)
                 - a = t.workflow_action(@workflow.identifier)
                 = render "#{task.task_type}_task", task: t, action: a
-      .panel-footer
+      .card-footer
         - unless @section.first?
           = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-default pull-left'
             i.glyphicon.glyphicon-chevron-left
@@ -41,9 +41,9 @@
         .clearfix
     .row
       .col-sm-6
-        .panel.panel-default
-          .panel-heading
-            h3.panel-title Attributes
+        .card
+          .card-header
+            | Attributes
           table.table.table-condensed
             thead
               tr
@@ -59,9 +59,9 @@
                   td = User.find_by(id: d.user_id)&.full_name
                   td = d.updated_at&.to_time&.strftime("%d/%m/%Y %R")
       .col-sm-6
-        .panel.panel-default
-          .panel-heading
-            h3.panel-title Activity
+        .card
+          .card-header
+            Activity
           table.table.table-condensed
             thead
               tr
@@ -77,25 +77,25 @@
       = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
     br
   .col-md-3.col-sm-6
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title #{@workflow.workflowable_type}
-      .panel-body
+    .card
+      .card-header
+        #{@workflow.workflowable_type}
+      .card-body
         | Name: #{@workflow.workflowable&.name}
         br
         | Identifier: #{@workflow.workflowable&.identifier}
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Remarks
-      .panel-body = @workflow.remarks.present? ? @workflow.remarks : '-'
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Deadline
-      .panel-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Documents
-      .panel-body
+    .card
+      .card-header
+        Remarks
+      .card-body = @workflow.remarks.present? ? @workflow.remarks : '-'
+    .card
+      .card-header
+        Deadline
+      .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
+    .card
+      .card-header
+        Documents
+      .card-body
         - if @documents.empty?
           | No documents yet.
         - else
@@ -110,10 +110,10 @@
                 br
                 = d.created_at.strftime("Uploaded at %d/%m/%Y %R by ")
                 = d.user&.full_name
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Document Templates
-      .panel-body
+    .card
+      .card-header
+        Document Templates
+      .card-body
         - if @document_templates.empty?
           | No documents yet.
         - else
