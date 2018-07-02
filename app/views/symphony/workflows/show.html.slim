@@ -102,8 +102,8 @@
             .media
               .media-left.media-middle
                 = link_to symphony_document_path(d)
-                  i.ti-file.icon style="font-size: 50px"
-              .media-body
+                  i.ti-file.icon.mr-3 style="font-size: 50px"
+              .media-body.text-truncate
                 h4.media-heading = d.filename
                 = File.basename(d.file_url)
                 br
@@ -120,8 +120,8 @@
             .media
               .media-left.media-middle
                 a href="#{d.file_url}"
-                  i.ti-file.icon style="font-size: 50px"
-              .media-body
+                  i.ti-file.icon.mr-3 style="font-size: 50px"
+              .media-body.text-truncate
                 h4.media-heading = d.title
                 a href="#{d.file_url}"
                 = File.basename(d.file_url)
