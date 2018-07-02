@@ -9,7 +9,7 @@
     h1.page-header #{@template.title} – #{@workflow.identifier}
 .row
   .col-md-9.col-sm-12
-    .card
+    .card.mb-3
       .card-header
         = @section.display_name
       .table-responsive
@@ -41,7 +41,7 @@
         .clearfix
     .row
       .col-sm-6
-        .card
+        .card.mb-3
           .card-header
             | Attributes
           table.table.table-condensed
@@ -61,7 +61,7 @@
       .col-sm-6
         .card
           .card-header
-            Activity
+            | Activity
           table.table.table-condensed
             thead
               tr
@@ -76,23 +76,22 @@
     - if @user.has_role? :admin
       = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
     br
-  .col-md-3.col-sm-6
-    .card
+    .card.mb-3
       .card-header
         #{@workflow.workflowable_type}
       .card-body
         | Name: #{@workflow.workflowable&.name}
         br
         | Identifier: #{@workflow.workflowable&.identifier}
-    .card
+    .card.mb-3
       .card-header
         Remarks
       .card-body = @workflow.remarks.present? ? @workflow.remarks : '-'
-    .card
+    .card.mb-3
       .card-header
         Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
-    .card
+    .card.mb-3
       .card-header
         Documents
       .card-body
@@ -110,7 +109,7 @@
                 br
                 = d.created_at.strftime("Uploaded at %d/%m/%Y %R by ")
                 = d.user&.full_name
-    .card
+    .card.mb-3
       .card-header
         Document Templates
       .card-body
