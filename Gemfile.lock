@@ -100,6 +100,9 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
+    bootstrap4-datetime-picker-rails (0.1.7)
+      jquery-rails (~> 4.2, >= 4.2.0)
+      momentjs-rails (~> 2.10, >= 2.10.5)
     brakeman (4.3.0)
     builder (3.2.3)
     byebug (10.0.2)
@@ -489,11 +492,11 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap (~> 4.1.1)
+  bootstrap4-datetime-picker-rails
   brakeman
   byebug
   cocoon
   coffee-rails (~> 4.1.1)
-  datetime_picker_rails
   deep_cloneable (~> 2.3.0)
   devise
   docusign_rest
