@@ -11,7 +11,7 @@ class TaskDecorator < SimpleDelegator
   end
 
   def display_image
-    helpers.image_tag(image_url, class: "img-responsive") if image_url.present?
+    helpers.image_tag(image_url, class: "img-fluid") if image_url.present?
   end
 
   def display_role
