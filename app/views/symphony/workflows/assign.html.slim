@@ -1,21 +1,21 @@
 .row
   .col-sm-12
     ol.breadcrumb.breadcrumb-2
-      li
+      li.breadcrumb-item.ml-auto
         a href="#" Home
-      li
+      li.breadcrumb-item
         a href="#" Company
-      li
+      li.breadcrumb-item
         a href="#" #{@template.title}
-      li.active #{@workflow.identifier}
+      li.breadcrumb-item.active #{@workflow.identifier}
     h1.page-header User Assignment
 .row
   .col-md-8.col-sm-6
     - @sections.each do |section|
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title = section.display_name
-        .panel-body
+      .card
+        .card-header
+          = section.display_name
+        .card-body
           table.table
             thead
               tr
@@ -42,10 +42,10 @@
     br
   - @workflow.get_roles.each do |role|
     .col-md-4.col-sm-6
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title = role.name.titleize
-        .panel-body
+      .card
+        .card-header
+          = role.name.titleize
+        .card-body
           - (User.with_role role.name, @company).each do |user|
             span.glyphicon.glyphicon-user aria-hidden="true"
             |  #{user.full_name}
