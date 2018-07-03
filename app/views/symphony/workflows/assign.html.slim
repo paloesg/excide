@@ -12,7 +12,7 @@
 .row
   .col-md-8.col-sm-6
     - @sections.each do |section|
-      .card
+      .card.mb-3
         .card-header
           = section.display_name
         .card-body
@@ -40,9 +40,8 @@
   .col-md-4.col-sm-6
     = link_to "Finish Assignment", symphony_workflow_path(@template.slug, @workflow.identifier), class: 'btn btn-primary btn-block'
     br
-  - @workflow.get_roles.each do |role|
-    .col-md-4.col-sm-6
-      .card
+    - @workflow.get_roles.each do |role|
+      .card.mb-3
         .card-header
           = role.name.titleize
         .card-body
