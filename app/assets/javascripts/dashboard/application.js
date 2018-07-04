@@ -3,9 +3,9 @@
 //= require bootstrap
 //= require_tree
 //= require jquery.turbolinks
-//= require jquery_ujs	
+//= require jquery_ujs
 //= require moment
-//= require datetime_picker
+//= require tempusdominus-bootstrap-4.js
 
 //= require trix
 //= require cocoon

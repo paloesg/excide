@@ -4,7 +4,7 @@
 //= require jquery_ujs
 //= require selectize
 //= require moment
-//= require datetime_picker
+//= require tempusdominus-bootstrap-4.js
 //= require jquery.ui.widget
 //= require z.jquery.fileupload
 //= require_tree .
