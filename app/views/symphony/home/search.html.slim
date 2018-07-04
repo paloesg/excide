@@ -1,11 +1,11 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Home
-      li
+      li.breadcrumb-item
         a href="#" #{current_user.company.name}
-      li.active Search
+      li.breadcrumb-item.active Search
     h1.page-header Search Workflows
 
 .row
@@ -16,12 +16,11 @@
   .col-sm-3#facets
     #templates
 
-.row      
+.row
   .col-sm-9
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Search results
-      .panel-body
+    .card
+      .card-header
+        h3. Search results
       .table-responsive#hits
 
 script src='//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js'
@@ -75,7 +74,7 @@ javascript:
           header: '<h3>Templates</h3>'
         },
         cssClasses: {
-          root: 'list-group',
+          root: 'list-group mb-3',
           item: 'list-group-item',
           count: 'badge pull-right'
         }
