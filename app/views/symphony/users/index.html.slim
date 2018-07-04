@@ -1,20 +1,20 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="/" Home
-      li
+      li.breadcrumb-item
         a href="/symphony" #{@company.name}
-      li.active Users
-    h1.page-header
+      li.breadcrumb-item.active Users
+    h1
       | Manage Users
-      = link_to "New User", new_symphony_user_path, role: 'button', class: 'btn btn-warning pull-right'
+      = link_to "New User", new_symphony_user_path, role: 'button', class: 'btn btn-warning float-right'
 .row
   .col-sm-12
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Users
-      .panel-body
+    .card
+      .card-header
+        | Users
+      .card-body
         table.table
           thead
             tr
@@ -37,5 +37,5 @@
                 td = u.contact_number
                 td = u.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed'
                 td.btn-toolbar
-                  = link_to 'Edit', edit_symphony_user_path(u.id), role: 'button', class: 'btn btn-primary btn-xs'
-                  = link_to 'Delete', symphony_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
+                  = link_to 'Edit', edit_symphony_user_path(u.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                  = link_to 'Delete', symphony_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
