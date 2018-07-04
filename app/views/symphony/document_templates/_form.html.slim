@@ -17,5 +17,5 @@
 .form-group.file-field
   = f.label :file_url, 'Upload file'
   = f.file_field :file_url, class: "form-control-file"
-= f.submit class: 'btn btn-primary'
+= f.submit class: 'btn btn-primary mr-1'
 = link_to 'Cancel', symphony_document_templates_path, role: 'button', data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
