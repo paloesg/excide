@@ -59,7 +59,7 @@ class Template < ActiveRecord::Base
             new_data = Workflow::Data.new({})
             new_data.name = row_headers[index]
             new_data.value = new_value
-            workflow_data_attributes << new_data if new_value
+            workflow_data_attributes << new_data if new_value and row_headers[index]
           # Fields in row with index greater than 3 is data attributes
           end if index > 3
         end
