@@ -54,10 +54,10 @@ as well as a link to its edit page.
 
   <div>
     <%= form_tag({action: 'import'}, multipart: true, method: 'post') do %>
-      <%= label_tag 'csv_file', 'Upload workflows CSV file' %>
+      <%= label_tag 'csv_file', 'Upload CSV file' %>
       <%= file_field_tag 'csv_file' %>
       <br>
-      <%= submit_tag 'Submit' %>
+      <%= submit_tag 'Import Workflows' %>
     <% end %>
   </div>
 </section>
