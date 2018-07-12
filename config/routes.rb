@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       resources dashboard_resource do
         member do
           get :export
+          post :import
         end
       end
     end
