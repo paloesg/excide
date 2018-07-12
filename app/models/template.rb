@@ -19,11 +19,12 @@ class Template < ActiveRecord::Base
   end
 
   def workflows_to_csv
-    data_names = workflows.map{|workflow| workflow.data.map(&:name)}.flatten.uniq
-    attributes = %w{Identifier Created Status Remarks} + data_names
+    ordered_workflows = workflows.order(created_at: :asc)
+    data_names = ordered_workflows.map{|workflow| workflow.data.map(&:name)}.flatten.uniq
+    attributes = %w{Identifier Created\ At Status Remarks} + data_names
     CSV.generate(headers: true) do |csv|
       csv << attributes
-      workflows.each do |workflow|
+      ordered_workflows.each do |workflow|
         row = [
           workflow['identifier'],
           workflow['created_at'],
