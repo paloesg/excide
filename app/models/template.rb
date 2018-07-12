@@ -51,7 +51,7 @@ class Template < ActiveRecord::Base
         workflow_data_attributes = workflow.data
         # Row with fields (column)
         row.fields.each_with_index do |new_value, index|
-          # Find data attributes with same name of data, fields in row with index greater than 3 is data attributes
+          # Find current data attributes with same name of new data attributes name (CSV)
           current_data = workflow_data_attributes.select {|data| data.name == row_headers[index]}.first
           if current_data.present?
             current_data.value = new_value
@@ -60,6 +60,7 @@ class Template < ActiveRecord::Base
             new_data.name = row_headers[index]
             new_data.value = new_value
             workflow_data_attributes << new_data if new_value
+          # Fields in row with index greater than 3 is data attributes
           end if index > 3
         end
         workflow.remarks = row['Remarks']
