@@ -44,17 +44,23 @@ class Template < ActiveRecord::Base
 
   def self.csv_to_workflows(file)
     imports = {update: [], unchanged: [], not_found: []}
-    CSV.foreach(file.path, headers: true) do |row|
+    CSV.foreach(file.path, headers: true, skip_blanks: true) do |row|
       workflow = Workflow.find_by_identifier(row['Identifier'])
       if workflow
         row_headers = row.headers
         workflow_data_attributes = workflow.data
         # Row with fields (column)
-        row.fields.each_with_index do |value, index|
+        row.fields.each_with_index do |new_value, index|
           # Find data attributes with same name of data, fields in row with index greater than 3 is data attributes
-          workflow_data_attributes.each do |data|
-            data.value = value if index > 3 and data.name == row_headers[index]
-          end
+          current_data = workflow_data_attributes.select {|data| data.name == row_headers[index]}.first
+          if current_data.present?
+            current_data.value = new_value
+          else
+            new_data = Workflow::Data.new({})
+            new_data.name = row_headers[index]
+            new_data.value = new_value
+            workflow_data_attributes << new_data if new_value
+          end if index > 3
         end
         workflow.remarks = row['Remarks']
         workflow.data = workflow_data_attributes
