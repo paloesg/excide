@@ -19,7 +19,7 @@
   = f.text_area :remarks, class: 'form-control'
 .form-group
   = f.label :deadline
-  = f.text_field :deadline, class: 'form-control datepicker'
+  = f.text_field :deadline, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
 .form-group
   .card
     .card-header
