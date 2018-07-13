@@ -6,7 +6,7 @@
       li.breadcrumb-item
         a href="#" #{@company.name}
       li.breadcrumb-item.active Edit Activation
-    h1.page-header Edit Activation
+    h1 Edit Activation
 .row
   .col-md-12
     = form_for @activation, url: conductor_activation_path(@activation.id) do |f|

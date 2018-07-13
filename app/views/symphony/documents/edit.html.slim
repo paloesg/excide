@@ -8,7 +8,7 @@
       li.breadcrumb-item
         a href="#" Documents
       li.breadcrumb-item.active Edit
-    h1.page-header Edit Document Information
+    h1 Edit Document Information
 .row
   .col-sm-12
     = form_for(@document, url: symphony_document_path(@document.id), html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|

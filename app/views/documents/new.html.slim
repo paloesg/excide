@@ -8,7 +8,7 @@
       li
         a href="#" Documents
       li.active New
-    h1.page-header Document Information
+    h1 Document Information
 .row
   .col-sm-12
     = form_for(@document, url: (current_user.has_role? :admin) ? admin_company_documents_path(@company.id) : documents_path, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|

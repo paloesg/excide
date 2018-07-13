@@ -6,7 +6,7 @@
       li.breadcrumb-item
         a href="#" #{@company.name}
       li.breadcrumb-item.active Edit Workflow
-    h1.page-header Edit Workflow
+    h1 Edit Workflow
 .row
   .col-md-12
     = form_for(@workflow, url: symphony_workflow_path(workflow_identifier: params[:workflow_identifier])) do |f|

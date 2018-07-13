@@ -6,7 +6,7 @@
       li.breadcrumb-item
         a href="#" #{@template.title}
       li.breadcrumb-item.active #{@workflow.identifier}
-    h1.page-header
+    h1
       | #{@template.title} – #{@workflow.identifier}
       .btn-group.float-right role='group'
         - if @workflow.previous_workflow.present?
