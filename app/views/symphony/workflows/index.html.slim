@@ -1,0 +1,34 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item.active #{@template.title}
+    h1.page-header
+      | #{@template.title}
+.row
+  .col-sm-12
+    .card
+      .card-header
+        card-title Workflows
+      - if @workflows.blank?
+        .card-body No outstanding #{@template.title} workflows at the moment.
+      .table-responsive
+        table.table
+          thead
+            tr
+              th = sortable "identifier", "Identifier"
+              th = sortable "template", "Workflow Type"
+              th = sortable "workflowable", "Client Name"
+              th = sortable "remarks", "Remarks"
+              th = sortable "deadline", "Deadline"
+              th = sortable "completed", "Status"
+          tbody
+            - @workflows.each do |w|
+              tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
+                td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
+                td = w.template.title
+                td = w.workflowable&.name || '-'
+                td = w.remarks || '-'
+                td = w.deadline&.strftime("%d/%m/%Y") || '-'
+                td = w.completed ? 'Completed' : w.current_section&.display_name

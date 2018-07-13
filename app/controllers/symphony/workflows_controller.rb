@@ -3,6 +3,11 @@ class Symphony::WorkflowsController < WorkflowsController
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry]
   before_action :set_attributes_metadata, only: [:create, :update]
 
+  def index
+    template = Template.find(params[:workflow_name])
+    @workflows = @company.workflows.where(template: template).order(created_at: :desc)
+  end
+
   def new
     @workflow = Workflow.new
     @workflow.template_data(@template)
