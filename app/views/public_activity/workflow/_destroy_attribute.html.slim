@@ -1,4 +1,4 @@
-td = activity.owner.full_name
+td = activity.owner&.full_name or 'Unknown'
 td
   ' removed attribute
   strong #{activity.parameters[:attribute][:name]}

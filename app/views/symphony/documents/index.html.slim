@@ -10,8 +10,11 @@
       li.breadcrumb-item.active Edit
     h1
       | Documents Listing
-      = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-warning float-right'
-
+.row
+  .col-sm-12
+    .btn-toolbar.float-right
+      = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary'
+      = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning' if ::Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').present?
 .row
   .col-sm-12
     .table-responsive
@@ -20,8 +23,9 @@
           tr
             th Filename
             th Identifier
+            th Document Template
             th Workflow
-            th Template
+            th Uploaded At
             th
 
         tbody
@@ -29,12 +33,11 @@
             tr
               td = document.filename
               td = document.identifier
-              td = document.workflow&.template&.title
               td = document.document_template&.title
-              td
-                = link_to "View", symphony_document_path(document), role: 'button', class: 'btn btn-success btn-sm mr-1'
-                = link_to "Download", document.file_url, role: 'button', class: 'btn btn-warning btn-sm mr-1'
-                = link_to 'Edit', edit_symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-sm mr-1' if current_user.has_role? :admin, @company
-                = link_to 'Destroy', symphony_document_path(document), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm' if current_user.has_role? :admin, @company
+              td = link_to document.workflow.template.title, symphony_workflow_path(document.workflow.template.slug, document.workflow.identifier) if document.workflow.present?
+              td = document.created_at.strftime("%d/%m/%Y %R")
+              td.btn-toolbar
+                = link_to "View", symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                = link_to "Download", document.file_url, role: 'button', class: 'btn btn-warning btn-xs btn-sm mr-1'
       .text-center
         = paginate @documents, views_prefix: 'dashboards'

@@ -1,1 +1,5 @@
-|  updated company details
+td = activity.owner&.full_name or 'Unknown'
+td
+  ' updated company details for
+  strong #{activity.trackable.name}
+td = activity.created_at.strftime("%d/%m/%Y %R")

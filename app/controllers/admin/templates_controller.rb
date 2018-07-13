@@ -24,6 +24,15 @@ module Admin
       send_data @template.workflows_to_csv, filename: "#{@template.title}-#{Date.current}.csv"
     end
 
+    def import
+      imports = Template.csv_to_workflows(params[:csv_file])
+      flash[:notice] = "Workflows imported succesfully. "
+      flash[:notice] << "#{imports[:update].length} workflows succesfully updated. " if imports[:update].length != 0
+      flash[:notice] << "#{imports[:unchanged].length} workflows unchanged. " if imports[:unchanged].length != 0
+      flash[:notice] << "#{imports[:not_found].length} workflows not found. " if imports[:not_found].length != 0
+      redirect_to admin_template_path
+    end
+
     private
 
     def set_s3_direct_post

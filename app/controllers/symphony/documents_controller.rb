@@ -4,28 +4,40 @@ class Symphony::DocumentsController < DocumentsController
   before_action :set_workflow, only: [:new, :edit]
 
   def index
-    @documents = Kaminari.paginate_array(@company.documents).page(params[:page]).per(20)
+    @documents = Kaminari.paginate_array(@company.documents.order(created_at: :desc)).page(params[:page]).per(20)
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
   def create
     @document = Document.new(document_params)
     @document.company = @company
     @document.user = @user
+    @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
 
     @workflow = Workflow.find_by(identifier: params[:workflow]) if params[:workflow].present?
 
-    if @document.save
-      SlackService.new.new_document(@document).deliver
-      redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.'
-    else
-      set_templates
-      render :new
+    respond_to do |format|
+      if @document.save
+        SlackService.new.new_document(@document).deliver
+        if params[:document_type] == 'invoice'
+          @workflow = Workflow.create(user: current_user, company: @company, template: Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').take, identifier: @document.identifier)
+          @document.update_attributes(workflow: @workflow)
+        end
+
+        format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
+        format.json { render :show, status: :created, location: @document}
+      else
+        set_templates
+
+        format.html { render :new }
+        format.json { render json: @document.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def update
     if @document.update(document_params)
-      redirect_to symphony_documents_path, notice: 'Document was successfully updated.'
+      redirect_to symphony_document_path, notice: 'Document was successfully updated.'
     else
       set_templates
       render :edit
@@ -35,6 +47,10 @@ class Symphony::DocumentsController < DocumentsController
   def destroy
     @document.destroy
     redirect_to symphony_documents_path, notice: 'Document was successfully destroyed.'
+  end
+
+  def upload_invoice
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
   private

@@ -203,7 +203,7 @@ class SlackService
             },
             {
               title: 'Client',
-              value: action.workflow.workflowable.name,
+              value: action.workflow.workflowable&.name,
               short: true
             },
             {

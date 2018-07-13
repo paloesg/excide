@@ -1,4 +1,4 @@
-td = activity.owner.full_name
+td = activity.owner&.full_name or 'Unknown'
 td
   ' updated file
   strong #{activity.parameters[:filename]}

@@ -3,6 +3,11 @@ class Symphony::WorkflowsController < WorkflowsController
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry]
   before_action :set_attributes_metadata, only: [:create, :update]
 
+  def index
+    template = Template.find(params[:workflow_name])
+    @workflows = @company.workflows.where(template: template).order(created_at: :desc)
+  end
+
   def new
     @workflow = Workflow.new
     @workflow.template_data(@template)
@@ -47,6 +52,8 @@ class Symphony::WorkflowsController < WorkflowsController
       log_activity
       if params[:assign]
         redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
+      elsif params[:document_id]
+        redirect_to data_entry_symphony_workflow_path(@template.slug, @workflow.identifier, document_id: params[:document_id]), notice: 'Attributes were successfully saved.'
       else
         redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
       end

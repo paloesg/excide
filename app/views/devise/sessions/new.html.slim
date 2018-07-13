@@ -6,8 +6,6 @@ section.cover.fullscreen.image-bg.overlay
       .col-md-4.offset-md-4.col-sm-8.offset-sm-2
         .feature.boxed
           h4.uppercase Log In
-          = link_to "Log in with LinkedIn", user_linkedin_omniauth_authorize_path(role: params[:role]), class: 'linkedin-login'
-          hr
           = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
             = f.email_field :email, placeholder: "Email"
             = f.password_field :password, placeholder: "Password", autocomplete: "off"

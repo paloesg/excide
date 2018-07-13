@@ -6,7 +6,7 @@ class Allocation < ActiveRecord::Base
 
   enum allocation_type: [:contractor, :contractor_in_charge]
 
-  monetize :rate_cents
+  monetize :rate_cents, allow_nil: true
 
   validates :activation, :allocation_type, :allocation_date, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
