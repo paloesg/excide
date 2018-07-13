@@ -1,22 +1,22 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="/" Home
-      li
+      li.breadcrumb-item
         a href="/symphony" #{@company.name}
-      li.active Contractor
-    h1.page-header
+      li.breadcrumb-item.active Contractor
+    h1
       | Manage Contractors
-      .btn-toolbar.col-sm-6.pull-right
-        = link_to 'Export Contractors', {action: :export}, class: 'btn btn-success pull-right'
-        = link_to "New Contractor", new_conductor_user_path, role: 'button', class: 'btn btn-warning pull-right'
-.row
+      .btn-toolbar.float-right
+        = link_to 'Export Contractors', {action: :export}, class: 'btn btn-success mr-1'
+        = link_to "New Contractor", new_conductor_user_path, role: 'button', class: 'btn btn-warning'
+.row.mb-3
   .col-sm-12
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Contractor
-      .panel-body
+    .card
+      .card-header
+        h3.card-title Contractor
+      .card-body
         table.table
           thead
             tr
@@ -39,17 +39,17 @@
                 td = u.max_hours_per_week
                 td = u.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed'
                 td.btn-toolbar
-                  = link_to 'Edit', edit_conductor_user_path(u.id), role: 'button', class: 'btn btn-primary btn-xs'
-                  = link_to 'Delete', conductor_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
+                  = link_to 'Edit', edit_conductor_user_path(u.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                  = link_to 'Delete', conductor_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
 - if current_user.has_role? :admin, @company
   .row
     .col-md-4.col-sm-6
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title Import Contractors
-        .panel-body
+      .card
+        .card-header
+          h3.card-title Import Contractors
+        .card-body
           = form_tag({action: :import}, multipart: true, class: 'form-inline') do
             .form-group.file-field
               = label_tag 'csv_file', 'Upload contractor CSV file'
               = file_field_tag 'csv_file'
-            = submit_tag "Import", class: 'btn btn-primary pull-right'
+            = submit_tag "Import", class: 'btn btn-primary float-right'
