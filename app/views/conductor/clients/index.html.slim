@@ -8,8 +8,8 @@
       li.breadcrumb-item.active Clients
     h1.border-bottom
       | Manage Clients
-      .btn-toolbar.col-sm-6.pull-right
-        = link_to "New Client", new_conductor_client_path, role: 'button', class: 'btn btn-warning pull-right'
+      .btn-toolbar.float-right
+        = link_to "New Client", new_conductor_client_path, role: 'button', class: 'btn btn-warning'
 .row
   .col-sm-12
     .card
@@ -32,5 +32,5 @@
                 td = c.identifier
                 td = c.user&.full_name
                 td.btn-toolbar
-                  = link_to 'Edit', edit_conductor_client_path(c.id), role: 'button', class: 'btn btn-primary btn-xs'
-                  = link_to 'Delete', conductor_client_path(c.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-xs'
+                  = link_to 'Edit', edit_conductor_client_path(c.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                  = link_to 'Delete', conductor_client_path(c.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
