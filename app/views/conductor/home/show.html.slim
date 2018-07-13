@@ -7,14 +7,15 @@
         a href="#" Company
       li.breadcrumb-item.active Conductor
     h1.border-bottom Conductor
-    = select_tag('activation_type', options_for_select(Activation.activation_types.map {|k,v| [k.titleize, k] }, selected: params[:activation_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?activation_type=' + $(this).val());", include_blank: 'All', class: 'pull-right')
+    .col-sm-3.float-right
+      = select_tag('activation_type', options_for_select(Activation.activation_types.map {|k,v| [k.titleize, k] }, selected: params[:activation_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?activation_type=' + $(this).val());", include_blank: 'All', class: 'form-control form-control-sm mx-auto mb-2')
 .row
-  .col-sm-12
+  .col-sm-12.mb-3
     = month_calendar events: @activations do |date, activations|
       p = date.day
       - activations.each do |activation|
         .row
-          .col-sm-12.activation activation-data="#{activation.to_json}" activation-address="#{activation.address.to_json}" activation-client="#{activation.client&.name}" activation-event_owner="#{activation.event_owner&.full_name}" get_allocated_users_length="#{activation.allocations.map(&:user).reject(&:blank?).length}" title="Activation Details <div class='pull-right'><span class='popover-close glyphicon glyphicon-remove' aria-hidden='true'></span></div>" data-placement="auto left"
+          .col-sm-12.activation activation-data="#{activation.to_json}" activation-address="#{activation.address.to_json}" activation-client="#{activation.client&.name}" activation-event_owner="#{activation.event_owner&.full_name}" get_allocated_users_length="#{activation.allocations.map(&:user).reject(&:blank?).length}" title="Activation Details <div class='float-right'><span class='popover-close glyphicon glyphicon-remove' aria-hidden='true'></span></div>" data-placement="auto left"
             = activation.start_time.strftime('%H:%M') + '–' + activation.end_time.strftime('%H:%M ')
             strong = activation.name
 .row
@@ -54,9 +55,9 @@
             - @activities.each do |activity|
               tr = render_activity activity
 
-#new-activation.hide
+#new-activation.d-none
   = form_for @activation, remote: true, url: conductor_activations_path do |f|
     .alert.alert-danger#popover_validation style="display:none;"
     = render 'conductor/activations/form', f: f
-#activation-details.hide
+#activation-details.d-none
   = render 'activation_details'

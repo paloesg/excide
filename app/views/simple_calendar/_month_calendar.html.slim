@@ -4,14 +4,14 @@
       = t('date.month_names')[start_date.month]
       '
       = start_date.year
-    .btn-group.pull-right role='group'
+    .btn-group.float-right role='group'
       = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-sm'
         i.glyphicon.glyphicon-chevron-left
         | Previous Month
       = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-sm'
         | Next Month
         i.glyphicon.glyphicon-chevron-right
-  table.table.table-striped.calendar-table
+  table.table.table-striped.calendar-table.mb-0
     thead
       tr
         - date_range.slice(0, 7).each do |day|
@@ -20,7 +20,7 @@
       - date_range.each_slice(7) do |week|
         tr
           - week.each do |day|
-            = content_tag :td, class: ((calendar.td_classes_for(day)).push('new_activation') unless current_user.has_role?(:contractor, :any)), 'td-date': day, title: 'New activation <div class="pull-right"><span class="popover-close glyphicon glyphicon-remove" aria-hidden="true"></span><div>' do
+            = content_tag :td, class: ((calendar.td_classes_for(day)).push('new_activation') unless current_user.has_role?(:contractor, :any)), 'td-date': day, title: 'New activation <div class="float-right"><span class="popover-close glyphicon glyphicon-remove" aria-hidden="true"></span><div>' do
               - if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(block)
                 - capture_haml(day, sorted_events.fetch(day, []), &block)
               - else
