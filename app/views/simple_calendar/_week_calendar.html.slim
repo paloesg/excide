@@ -1,8 +1,8 @@
-.card.simple-calendar
+.card.simple-calendar.mb-3
   .card-header.calendar-heading
     span.calendar-title
       | Week #{calendar.week_number}
-    .btn-group.pull-right role='group'
+    .btn-group.float-right role='group'
       = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-sm'
         i.glyphicon.glyphicon-chevron-left
         | Previous Week
@@ -10,7 +10,7 @@
         | Next Week
         i.glyphicon.glyphicon-chevron-right
   .table-responsive
-    table.table.table-striped
+    table.table.table-striped.mb-0
       thead
         tr
           - date_range.slice(0, 7).each do |day|
