@@ -2,11 +2,21 @@
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
-        a href="#" Home
+        a href="/symphony" Symphony
       li.breadcrumb-item
-        a href="#" Company
-      li.breadcrumb-item.active #{@template.title}
-    h1.page-header #{@template.title} – #{@workflow.identifier}
+        a href="#" #{@template.title}
+      li.breadcrumb-item.active #{@workflow.identifier}
+    h1.page-header
+      | #{@template.title} – #{@workflow.identifier}
+      .btn-group.pull-right role='group'
+        - if @workflow.previous_workflow.present?
+          = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-default'
+            i.glyphicon.glyphicon-chevron-left
+            | Earlier Workflow
+        - if @workflow.next_workflow.present?
+          = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-default'
+            | Later Workflow
+            i.glyphicon.glyphicon-chevron-right
 .row
   .col-md-9.col-sm-12
     .card.mb-3

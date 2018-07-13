@@ -41,6 +41,14 @@ class Workflow < ActiveRecord::Base
     self.workflowable = workflowable_type.constantize.new(params)
   end
 
+  def next_workflow
+    Workflow.where(template: self.template).where('id > ?', self.id).first
+  end
+
+  def previous_workflow
+    Workflow.where(template: self.template).where('id < ?', self.id).last
+  end  
+
   def current_section
     if self.completed
       self.template.sections.last
@@ -136,6 +144,5 @@ class Workflow < ActiveRecord::Base
 
   def check_data_fields
     self.errors.add(:data, "attribute name cannot be blank") if self.data.map(&:name).include? ""
-    self.errors.add(:data, "attribute value cannot be blank") if self.data.map(&:value).include? ""
   end
 end
