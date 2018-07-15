@@ -16,7 +16,7 @@ $(document).ready(function () {
   $('.new_activation').popover({
     html: true,
     container: 'body',
-    placement: 'auto left',
+    placement: 'auto',
     content: function () {
       return $('#new-activation').html();
     }
@@ -29,7 +29,7 @@ $(document).ready(function () {
     $('.datetimepicker').val($(this).attr('td-date'));
   }).on("show.bs.popover", function () {
     $('.popover').popover('hide');
-    $(this).data("bs.popover").tip().css({ "max-width": "500px" });
+    $($(this).data("bs.popover").tip).css({ "max-width": "500px" })
   }).children().on('click', function (e) {
     e.stopPropagation();
   });
