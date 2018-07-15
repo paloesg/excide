@@ -62,9 +62,7 @@ $(document).ready(function () {
     $('#edit_activation').attr("href", "conductor/activations/" + get_activation['id'] + "/edit");
     $('#edit_allocations').attr("href", "conductor/allocations/?start_date=" + moment(start_time).format('YYYY-MM-DD'));
   });
-  $('body').on('hidden.bs.popover', function (e) {
-    $(e.target).data("bs.popover").inState.click = false;
-  }).on("shown.bs.popover", function (e) {
+  $('body').on("shown.bs.popover", function (e) {
     $('.popover-close').click(function () { $(e.target).popover('hide') });
   });
 });
