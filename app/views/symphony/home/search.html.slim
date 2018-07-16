@@ -11,16 +11,15 @@
 .row
   .col-sm-6.offset-sm-6
     input.form-control#q type="search"
+    br
 
 .row
   .col-sm-3#facets
     #templates
-
-.row
   .col-sm-9
     .card
       .card-header
-        h3. Search results
+        h5 Search results
       .table-responsive#hits
 
 script src='//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js'
@@ -71,12 +70,13 @@ javascript:
         attributeName: 'template.title',
         limit: 10,
         templates: {
-          header: '<h3>Templates</h3>'
+          header: '<div class="card-header"><h5>Templates</h3></div>'
         },
         cssClasses: {
-          root: 'list-group mb-3',
+          root: 'card',
+          body: 'list-group list-group-flush',
           item: 'list-group-item',
-          count: 'badge pull-right'
+          count: 'badge badge-pill badge-secondary'
         }
       })
     );
