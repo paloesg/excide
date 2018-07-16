@@ -1,4 +1,4 @@
-.pull-right
+.float-right
   .glyphicon.glyphicon-user aria-hidden='true'
   span#allocated_users_length
 p
@@ -43,5 +43,5 @@ p
   span#end_time
 - unless (current_user.has_role? :contractor, :any) or (current_page? controller: 'activations', action: 'index')
   .btn-toolbar
-    a.btn.btn-primary#edit_activation href="#" Edit activation
-    a.btn.btn-primary#edit_allocations href="#" Edit allocations
+    a.btn.btn-primary.btn-sm.mr-1#edit_activation href="#" Edit activation
+    a.btn.btn-primary.btn-sm#edit_allocations href="#" Edit allocations
