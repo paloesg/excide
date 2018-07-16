@@ -10,8 +10,7 @@
 .row
   .col-md-8.col-sm-6
     .card
-      .card-header
-        Your Outstanding Tasks
+      h5.card-header Your Outstanding Tasks
       - if @outstanding_actions.blank?
         .card-body
         | No outstanding tasks for you at the moment.
@@ -36,8 +35,7 @@
   - if @templates.present?
     .col-md-4.col-sm-6
       .card
-        .card-header
-          New Workflow
+        h5.card-header New Workflow
         .card-body
           .form-group
             = label_tag "template", "Select workflow type"
@@ -47,8 +45,7 @@
 .row
   .col-md-8.col-sm-6
     .card.mt-3
-      .card-header
-        card-title Workflows
+      h5.card-header Workflows In Progress
       .card-body
         - if @workflows.blank?
           | No outstanding workflows at the moment. Click on a workflow to begin.
