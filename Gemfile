@@ -101,6 +101,8 @@ gem 'popper_js', '~> 1.12.9'
 gem 'bootstrap', '~> 4.1.1'
 # Themify icon set web fonts
 gem 'themify-icons-rails'
+# Font Awesome Rails
+gem "font-awesome-rails"
 # Nested form helper
 gem "cocoon"
 # WYSIWYG editor

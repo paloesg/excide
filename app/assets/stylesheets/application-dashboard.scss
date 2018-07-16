@@ -14,10 +14,12 @@
  *= require_self
  *= require_tree ./dashboard
  *= require dropzone
+ *= require font-awesome
  */
 
 @import "bootstrap";
 @import "themify-icons";
+@import "font-awesome";
 @import "tempusdominus-bootstrap-4.css";
 @import "simple_calendar";
 @import "conductor/availabilities";
