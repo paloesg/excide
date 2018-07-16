@@ -12,9 +12,9 @@
     .card
       .card-header
         Your Outstanding Tasks
-      .card-body
-        - if @outstanding_actions.blank?
-          | No outstanding tasks for you at the moment.
+      - if @outstanding_actions.blank?
+        .card-body
+        | No outstanding tasks for you at the moment.
       .table-responsive
         table.table
           thead
@@ -46,7 +46,7 @@
 
 .row
   .col-md-8.col-sm-6
-    .card
+    .card.mt-3
       .card-header
         card-title Workflows
       .card-body
