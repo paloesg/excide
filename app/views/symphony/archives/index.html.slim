@@ -38,6 +38,5 @@
                 td = w.deadline&.strftime("%d/%m/%Y") || '-'
                 td = w.completed ? 'Completed' : w.current_section&.display_name
       .card-footer
-        .text-center
-          = paginate @workflows, views_prefix: 'dashboards'
+        = paginate @workflows, views_prefix: 'dashboards'
         .clearfix
