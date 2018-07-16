@@ -57,9 +57,9 @@ class RoleDashboard < Administrate::BaseDashboard
   #
   def display_resource(role)
     if role.resource_type.present?
-      role.resource_type.constantize.find(role.resource_id).name + " " + role.name.titleize
+       role.name.titleize + " - " + role.resource_type.constantize.find(role.resource_id).name
     else
-      "Global " + role.name.titleize
+      role.name.titleize + ' – Global'
     end
   end
 end

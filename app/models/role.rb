@@ -21,9 +21,9 @@ class Role < ActiveRecord::Base
 
   def display_name
     if self.resource_type == "Company"
-      self.resource_type.constantize.find(self.resource_id).name + " " + self.name.humanize
+      self.name.humanize + ' – ' + self.resource_type.constantize.find(self.resource_id).name
     else
-      "Global " + self.name
+      self.name.humanize + ' – Global'
     end
   end
 end
