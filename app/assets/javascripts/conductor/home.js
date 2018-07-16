@@ -13,7 +13,7 @@ $(document).on("ajax:error", "form", function (xhr, status, error) {
 });
 $(document).ready(function () {
   // Create new activation
-  $('.new_activation').popover({
+  $('.new_activations').popover({
     html: true,
     container: 'body',
     placement: 'auto',
