@@ -20,8 +20,7 @@
 .row
   .col-md-9.col-sm-12
     .card.mb-3
-      .card-header
-        = @section.display_name
+      h5.card-header = @section.display_name
       .table-responsive
         table.table
           thead
@@ -52,8 +51,7 @@
     .row
       .col-sm-6
         .card.mb-3
-          .card-header
-            | Attributes
+          h5.card-header Attributes
           table.table.table-condensed
             thead
               tr
@@ -70,8 +68,7 @@
                   td = d.updated_at&.to_time&.strftime("%d/%m/%Y %R")
       .col-sm-6
         .card
-          .card-header
-            | Activity
+          h5.card-header History
           table.table.table-condensed
             thead
               tr
@@ -87,23 +84,19 @@
       = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
     br
     .card.mb-3
-      .card-header
-        | #{@workflow.workflowable_type}
+      h6.card-header = @workflow.workflowable_type
       .card-body
         | Name: #{@workflow.workflowable&.name}
         br
         | Identifier: #{@workflow.workflowable&.identifier}
     .card.mb-3
-      .card-header
-        | Remarks
+      h6.card-header Remarks
       .card-body = @workflow.remarks.present? ? @workflow.remarks : '-'
     .card.mb-3
-      .card-header
-        | Deadline
+      h6.card-header Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
     .card.mb-3
-      .card-header
-        | Documents
+      h6.card-header Documents
       .card-body
         - if @documents.empty?
           | No documents yet.
@@ -120,8 +113,7 @@
                 = d.created_at.strftime("Uploaded at %d/%m/%Y %R by ")
                 = d.user&.full_name
     .card.mb-3
-      .card-header
-        | Document Templates
+      h6.card-header Document Templates
       .card-body
         - if @document_templates.empty?
           | No documents yet.
