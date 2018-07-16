@@ -8,16 +8,16 @@
       li.breadcrumb-item.active Archives
     h1.border-bottom Archives
 .row
-  .col-md-8.col-sm-6
+  .col-sm-12
     .card
       .card-header
         | Completed workflows
       .card-body
         .row
-          .col-md-4
+          .col-sm-3
             = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'form-control form-control-sm pull-left')
-          .col-md-offset-2.col-md-6
-            .pull-right = page_entries_info @workflows, entry_name: 'workflow'
+          .offset-sm-6.col-sm-3
+            .float-right = page_entries_info @workflows, entry_name: 'workflow'
       .table-responsive
         table.table
           thead
@@ -41,13 +41,3 @@
         .text-center
           = paginate @workflows, views_prefix: 'dashboards'
         .clearfix
-  - if @templates.present?
-    .col-md-4.col-sm-6
-      .card
-        .card-header
-          | New Workflow
-        .card-body
-          .form-group
-            = label_tag "template", "Select workflow type"
-            = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), class: "form-control template-dropdown", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-          = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-primary', id: 'new-workflow'
