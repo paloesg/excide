@@ -9,7 +9,7 @@ td
       = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-xs'
 td
   - if action.assigned_user.present?
-    span.glyphicon.glyphicon-user aria-hidden="true"
+    span.fa.fa-user aria-hidden="true"
     |  #{action.assigned_user&.full_name}
   - else
     = task.display_role
@@ -22,5 +22,5 @@ td
     = check_box_tag 'completed', action.id, action.completed, disabled: true
 td
   - if action.completed? && action.completed_user.present?
-    span.glyphicon.glyphicon-user aria-hidden="true"
+    span.fa.fa-user aria-hidden="true"
     |  #{action.completed_user&.full_name}

@@ -9,10 +9,10 @@
   = f.label :identifier
   = f.text_field :identifier, class: 'form-control'
   span.help-block.d-none#identifier_exist
-    .glyphicon.glyphicon-remove aria-hidden="true"
+    .fa.fa-times aria-hidden="true"
     |  This identifier is already in use.
   span.help-block.d-none#identifier_unique
-    .glyphicon.glyphicon-ok aria-hidden="true"
+    .fa.fa-check aria-hidden="true"
     |  This identifier is unique.
 .form-group
   = f.label :remarks

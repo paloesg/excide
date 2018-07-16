@@ -4,11 +4,11 @@
       | Week #{calendar.week_number}
     .btn-group.float-right role='group'
       = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-sm'
-        i.glyphicon.glyphicon-chevron-left
+        i.fa.fa-chevron-left
         | Previous Week
       = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-sm'
         | Next Week
-        i.glyphicon.glyphicon-chevron-right
+        i.fa.fa-chevron-right
   .table-responsive
     table.table.table-striped.mb-0
       thead

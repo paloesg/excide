@@ -11,12 +11,12 @@
       .btn-group.float-right role='group'
         - if @workflow.previous_workflow.present?
           = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-default'
-            i.glyphicon.glyphicon-chevron-left
+            i.fa.fa-chevron-left
             | Earlier Workflow
         - if @workflow.next_workflow.present?
           = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-default'
             | Later Workflow
-            i.glyphicon.glyphicon-chevron-right
+            i.fa.fa-chevron-right
 .row
   .col-md-9.col-sm-12
     .card.mb-3
@@ -42,12 +42,12 @@
       .card-footer
         - unless @section.first?
           = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-default pull-left'
-            i.glyphicon.glyphicon-chevron-left
+            i.fa.fa-chevron-left
             | Previous Section
         - unless @section.last?
           = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.lower_item.id), class: 'btn btn-default pull-right'
             | Next Section
-            i.glyphicon.glyphicon-chevron-right
+            i.fa.fa-chevron-right
         .clearfix
     .row
       .col-sm-6

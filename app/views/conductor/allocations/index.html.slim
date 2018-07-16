@@ -14,13 +14,13 @@
     .row.mb-3
       .btn-group.ml-auto role='group'
         = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm btn-default'
-          i.glyphicon.glyphicon-chevron-left
+          i.fa.fa-chevron-left
           | Previous Month
         = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm btn-default'
           | Current Month
         = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm btn-default'
           | Next Month
-          i.glyphicon.glyphicon-chevron-right
+          i.fa.fa-chevron-right
     .row
       .table-responsive
         table.table.table-hover
@@ -62,7 +62,7 @@
           li.list-group-item.clearfix
             .row
               .col-sm-8.col-xs-12
-                span.glyphicon.glyphicon-user aria-hidden="true"
+                span.fa.fa-user aria-hidden="true"
                 ' #{user.full_name}
                 - if user.has_role? :contractor_in_charge, :any
                   span.badge.badge-secondary IC
