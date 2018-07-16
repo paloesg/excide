@@ -13,13 +13,13 @@
   .col-sm-12.mb-3
     .btn-group.float-right role='group'
       = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm'
-        i.glyphicon.glyphicon-chevron-left
+        i.fa.fa-chevron-left
         | Previous Month
       = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm'
         | Current Month
       = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm'
         | Next Month
-        i.glyphicon.glyphicon-chevron-right
+        i.fa.fa-chevron-right
 .row
   .col-sm-12
     .table-responsive
@@ -62,8 +62,8 @@
                   - else
                     = select_tag('allocations', options_for_select([activation.allocations.contractor.count]), disabled: true)
                 td
-                  i.glyphicon.glyphicon-ok.text-success style="opacity: 0;"
-                  i.glyphicon.glyphicon-remove.text-danger style="opacity: 0;"
+                  i.fa.fa-check.text-success style="opacity: 0;"
+                  i.fa.fa-times.text-danger style="opacity: 0;"
                 td.btn-toolbar
                   = link_to 'Details', '#', role: 'button', class: 'btn btn-success btn-sm mr-1 activation', 'activation-data': "#{activation.to_json}", 'activation-address': "#{activation.address.to_json}", 'activation-client': "#{activation.client&.name}", 'activation-event_owner': "#{activation.event_owner&.full_name}", get_allocated_users_length: "#{activation.allocations.map(&:user).reject(&:blank?).length}", title: "Activation Details <div class='float-right'><span class='popover-close glyphicon glyphicon-remove' aria-hidden='true'></span></div>", 'data-placement': "left"
                   = link_to 'Edit', edit_conductor_activation_path(activation), role: 'button', class: 'btn btn-primary btn-sm mr-1'
