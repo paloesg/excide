@@ -36,5 +36,5 @@
               td = document.created_at.strftime("%d/%m/%Y %R")
               td style="min-width: 165px;"
                 = link_to "View", symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-sm mr-1'
-                = link_to "Download", document.file_url, role: 'button', class: 'btn btn-warning btn-xs btn-sm mr-1'
+                = link_to "Download", document.file_url, role: 'button', class: 'btn btn-warning btn-sm mr-1'
       = paginate @documents, views_prefix: 'dashboards'
