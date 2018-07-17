@@ -21,7 +21,17 @@ $(document).ready(function () {
       return $('#new-activation').html();
     }
   }).on('shown.bs.popover', function () {
-    $('.datetimepicker').datetimepicker({
+    datetimepickers = $('.datetimepicker')
+    // create new id for new datetimepicker
+    time = (new Date % 9e6).toString(36)
+    time1 = (new Date % 9e6).toString(32)
+    // get last of .datetimepicker
+    datetimepickers.eq(datetimepickers.length - 1).attr('id', time)
+    datetimepickers.eq(datetimepickers.length - 1).attr('data-target', "#" + time)
+    // get second from last of .datetimepicker
+    datetimepickers.eq(datetimepickers.length - 2).attr('id', time1)
+    datetimepickers.eq(datetimepickers.length - 2).attr('data-target', "#" + time1)
+    datetimepickers.datetimepicker({
       format: "YYYY-MM-DD HH:mm",
       stepping: 15,
       sideBySide: true
