@@ -14,9 +14,8 @@
 .row.mb-3
   .col-sm-12
     .card
-      .card-header
-        h3.card-title Contractor
-      .card-body
+      h4.card-header Contractors
+      .table-responsive
         table.table
           thead
             tr
@@ -45,11 +44,10 @@
   .row
     .col-md-4.col-sm-6
       .card
-        .card-header
-          h3.card-title Import Contractors
+        h5.card-header Import Contractors
         .card-body
-          = form_tag({action: :import}, multipart: true, class: 'form-inline') do
-            .form-group.file-field
-              = label_tag 'csv_file', 'Upload contractor CSV file'
-              = file_field_tag 'csv_file'
-            = submit_tag "Import", class: 'btn btn-primary float-right'
+          = form_tag({action: :import}, multipart: true) do
+            .custom-file
+              = file_field_tag 'csv_file', class: 'custom-file-input'
+              = label_tag 'csv_file', 'Upload contractor CSV file', class: 'custom-file-label'
+            = submit_tag "Import", class: 'btn btn-primary mt-3'
