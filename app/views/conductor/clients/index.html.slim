@@ -12,25 +12,22 @@
         = link_to "New Client", new_conductor_client_path, role: 'button', class: 'btn btn-warning'
 .row
   .col-sm-12
-    .card
-      .card-header
-        | Contractor
-      .card-body
-        table.table
-          thead
+    .table-responsive
+      table.table
+        thead
+          tr
+            th ID
+            th Name
+            th Identifier
+            th Created by
+            th
+        tbody
+          - @clients.each do |c|
             tr
-              th ID
-              th Name
-              th Identifier
-              th Created by
-              th
-          tbody
-            - @clients.each do |c|
-              tr
-                td = c.id
-                td = c.name
-                td = c.identifier
-                td = c.user&.full_name
-                td.btn-toolbar
-                  = link_to 'Edit', edit_conductor_client_path(c.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
-                  = link_to 'Delete', conductor_client_path(c.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
+              td = c.id
+              td = c.name
+              td = c.identifier
+              td = c.user&.full_name
+              td.btn-toolbar
+                = link_to 'Edit', edit_conductor_client_path(c.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                = link_to 'Delete', conductor_client_path(c.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
