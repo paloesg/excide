@@ -21,8 +21,7 @@
 .row
   .col-sm-6.col-xs-12
     .card
-      .card-header
-        | Upcoming Activations
+      h6.card-header Upcoming Activations
       - if @upcoming_activations.present?
         table.table
           thead
@@ -43,8 +42,7 @@
   - unless current_user.has_role? :contractor, :any
     .col-sm-6.col-xs-12
       .card
-        .card-header
-          | Latest Updates
+        h6.card-header Activation History
         table.table
           thead
             tr

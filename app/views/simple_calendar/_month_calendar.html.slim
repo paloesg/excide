@@ -1,15 +1,14 @@
 .card.simple-calendar
-  .card-header.calendar-heading
-    span.calendar-title
-      = t('date.month_names')[start_date.month]
-      '
-      = start_date.year
+  h4.card-header.calendar-heading.calendar-title
+    = t('date.month_names')[start_date.month]
+    '
+    = start_date.year
     .btn-group.float-right role='group'
-      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-sm'
+      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-sm btn-outline-secondary'
         i.fa.fa-chevron-left
-        | Previous Month
-      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-sm'
-        | Next Month
+        |  Previous Month
+      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-sm btn-outline-secondary'
+        ' Next Month
         i.fa.fa-chevron-right
   table.table.table-striped.calendar-table.mb-0
     thead
