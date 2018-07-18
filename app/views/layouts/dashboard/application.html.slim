@@ -35,4 +35,5 @@ html lang="en"
       = render 'layouts/dashboard/footer'
 
     - if current_user
-      script src="https://embed.small.chat/T08DWBQB0G6L32P0CX.js" async
+      javascript:
+        window.Smallchat={config:{slackTeamId:"T08DWBQB0",scChannelId:"-KqvvQe8SGHuePqkk0OL",slackChannelId:"G6L32P0CX",uid:"-KqvvHgguYDkWDkNBcq_",planId:null,accountCreated:1502096468804},appearance:{brand_color:"#2C2C46",contact_dismissible:false,contact_enabled:true,contact_immediately:false,contact_prompt:"Add your name and email to make sure you see our reply:",hide_logo:false,hide_team_icon:false,launcher_pos:"left",launcher_prompt:"Need help?",launcher_type:"button",messenger_blank:"Send a message, and we’ll reply as soon as we can.",messenger_entry:"Send a message...",messenger_prompt:"How can we help you?",offline_greeting:"We’re offline right now but typically respond in about an hr.",text_color:"#FFFFFF"},behavior:{avatar_config:1,timezone:"Asia/Singapore"}};var styles=document.createElement("link");styles.rel="stylesheet";styles.href="https://static.small.chat/messenger.css";document.head.appendChild(styles);var script=document.createElement("script");script.async=true;script.src="https://static.small.chat/messenger.js";document.body.appendChild(script);
