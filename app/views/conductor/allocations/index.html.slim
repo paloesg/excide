@@ -7,21 +7,22 @@
         a href="/symphony/company" #{@company.name}
       li.breadcrumb-item.active Allocations
     h1
-      | Allocate Contractor - #{@date_from.strftime("%B")}
+      | Allocate Contractor
 
 .row
   .col-md-8.col-xs-12
-    .row.mb-3
-      .btn-group.ml-auto role='group'
-        = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm btn-default'
-          i.fa.fa-chevron-left
-          | Previous Month
-        = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm btn-default'
-          | Current Month
-        = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm btn-default'
-          | Next Month
-          i.fa.fa-chevron-right
-    .row
+    .card
+      h4.card-header
+        = @date_from.strftime("%B %Y")
+        .btn-group.float-right role='group'
+          = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
+            i.fa.fa-chevron-left
+            | Previous Month
+          = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
+            | Current Month
+          = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
+            | Next Month
+            i.fa.fa-chevron-right
       .table-responsive
         table.table.table-hover
           thead
@@ -51,8 +52,7 @@
     = link_to 'Export ' + @date_from.strftime("%B") + ' Allocations', {action: :export, start_date: params[:start_date]} ,class: 'btn btn-success btn-block'
     br
     .card
-      .card-header
-        h3 Available Contractors
+      h5.card-header Available Contractors
       ul.list-group
         - if params[:allocation].nil?
           li.list-group-item.clearfix Select an allocation on the left to assign contractor.
@@ -61,7 +61,7 @@
         - @users.each do |user|
           li.list-group-item.clearfix
             .row
-              .col-sm-8.col-xs-12
+              .col-sm-8.col-12
                 span.fa.fa-user aria-hidden="true"
                 ' #{user.full_name}
                 - if user.has_role? :contractor_in_charge, :any
@@ -72,13 +72,13 @@
                 - if @allocation.user == user
                   span.badge.badge-success Assigned
               - if @allocation.user == user
-                .col-sm-4.col-xs-12
+                .col-sm-4.col-12
                   = label_tag 'last_minute', class: 'checkbox-inline float-left' do
                     = check_box_tag 'last_minute', @allocation.id, @allocation.last_minute, data: { remote: true, url: url_for(action: :last_minute, id: @allocation.id), method: "POST" }, :onclick => "this.checked=true;"
-                    | Last Minute
+                    |  Last Min.
                   = button_to 'Remove', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-danger btn-sm float-right', params: { 'allocation[user_id]': nil}
               - else
-                .col-sm-4.col-xs-12
+                .col-sm-4.col-12
                   - if user.max_hours_per_week.present? and (user.max_hours_per_week <= (user.weekly_allocated_hours(@allocation) + @allocation.hours))
                     = button_to 'Hours Exceeded', {}, disabled: true, role: 'button', class: 'btn btn-sm float-right'
                   - elsif @allocation.user.present? or user.get_availability(@allocation).assigned == true
