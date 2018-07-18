@@ -21,63 +21,68 @@
       h5.card-header Search results
       .table-responsive#hits
 
-script src='//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js'
-
 javascript:
-  $(document).ready(function() {
+  function loadExtJS(src, callback) {
+    var s = document.createElement('script');
+    s.src = src;
+    document.body.appendChild(s);
+    s.onload = callback
+  }
+
+  loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
     var hitTemplate = '<table class="table table-striped">' +
-      '<thead><tr><th>Workflow Identifier</th>' +
-      '<th>Workflow Type</th>' +
-      '<th>Client Name</th>' +
-      '<th>Deadline</th>' +
-      '<th>Status</th></tr></thead>' +
-      '<tbody>{{#hits}}' +
-      '<tr><td><a href="/symphony/{{{template.slug}}}/{{{identifier}}}">{{{_highlightResult.identifier.value}}}</a></td>' +
-      '<td>{{{_highlightResult.template.title.value}}}</td>' +
-      '<td>{{{_highlightResult.workflowable.client_name.value}}}</td>' +
-      '<td>{{{deadline}}}</td>' +
-      '<td>{{{completed}}}</td></tr>' +
-      '{{/hits}}</tbody>'
-    '</div>';
-    var search = instantsearch({
-      appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
-      apiKey: '#{@public_key}',
-      indexName: '#{Workflow.index_name}',
-      urlSync: true
-    });
-    search.addWidget(
-      instantsearch.widgets.searchBox({
-        container: '#q',
-        placeholder: 'Search for workflows',
-        autofocus: false,
-        poweredBy: true
-      })
-    );
-    search.addWidget(
-      instantsearch.widgets.hits({
-        container: '#hits',
-        templates: {
-          empty: 'No matching workflows',
-          allItems: hitTemplate
-        },
-        hitsPerPage: 10
-      })
-    );
-    search.addWidget(
-      instantsearch.widgets.refinementList({
-        container: '#templates',
-        attributeName: 'template.title',
-        limit: 10,
-        templates: {
-          header: '<h5 class="card-header">Templates</h5>'
-        },
-        cssClasses: {
-          root: 'card',
-          body: 'list-group list-group-flush',
-          item: 'list-group-item',
-          count: 'badge badge-pill badge-secondary'
-        }
-      })
-    );
-    search.start();
-  });
+        '<thead><tr><th>Workflow Identifier</th>' +
+        '<th>Workflow Type</th>' +
+        '<th>Client Name</th>' +
+        '<th>Deadline</th>' +
+        '<th>Status</th></tr></thead>' +
+        '<tbody>{{#hits}}' +
+        '<tr><td><a href="/symphony/{{{template.slug}}}/{{{identifier}}}">{{{_highlightResult.identifier.value}}}</a></td>' +
+        '<td>{{{_highlightResult.template.title.value}}}</td>' +
+        '<td>{{{_highlightResult.workflowable.client_name.value}}}</td>' +
+        '<td>{{{deadline}}}</td>' +
+        '<td>{{{completed}}}</td></tr>' +
+        '{{/hits}}</tbody>'
+      '</div>';
+      var search = instantsearch({
+        appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
+        apiKey: '#{@public_key}',
+        indexName: '#{Workflow.index_name}',
+        urlSync: true
+      });
+      search.addWidget(
+        instantsearch.widgets.searchBox({
+          container: '#q',
+          placeholder: 'Search for workflows',
+          autofocus: false,
+          poweredBy: true
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.hits({
+          container: '#hits',
+          templates: {
+            empty: 'No matching workflows',
+            allItems: hitTemplate
+          },
+          hitsPerPage: 10
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.refinementList({
+          container: '#templates',
+          attributeName: 'template.title',
+          limit: 10,
+          templates: {
+            header: '<h5 class="card-header">Templates</h5>'
+          },
+          cssClasses: {
+            root: 'card',
+            body: 'list-group list-group-flush',
+            item: 'list-group-item',
+            count: 'badge badge-pill badge-secondary'
+          }
+        })
+      );
+      search.start();
+  })
