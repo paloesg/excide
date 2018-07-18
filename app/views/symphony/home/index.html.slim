@@ -13,24 +13,25 @@
       h5.card-header Your Outstanding Tasks
       - if @outstanding_actions.blank?
         .card-body
-        | No outstanding tasks for you at the moment.
-      .table-responsive
-        table.table
-          thead
-            tr
-              th Workflow Identifier
-              th Workflow Type
-              th Client Name
-              th Task Instructions
-              th Deadline
-          tbody
-            - @outstanding_actions.each do |action|
-              tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
-                td = link_to action.workflow.identifier, symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier)
-                td = action.workflow.template.title
-                td = action.workflow.workflowable&.name || '-'
-                td = action.task.instructions
-                td = action.deadline&.strftime("%d/%m/%Y")
+          | No outstanding tasks for you at the moment.
+      - else
+        .table-responsive
+          table.table
+            thead
+              tr
+                th Workflow Identifier
+                th Workflow Type
+                th Client Name
+                th Task Instructions
+                th Deadline
+            tbody
+              - @outstanding_actions.each do |action|
+                tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
+                  td = link_to action.workflow.identifier, symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier)
+                  td = action.workflow.template.title
+                  td = action.workflow.workflowable&.name || '-'
+                  td = action.task.instructions
+                  td = action.deadline&.strftime("%d/%m/%Y")
 
   - if @templates.present?
     .col-md-4.col-sm-6
