@@ -141,3 +141,19 @@ body {
   font-weight: 500;
   color: #343a40;
 }
+
+.footer {
+  bottom: 0;
+  width: 100%;
+  padding-top: 30px;
+  line-height: 60px;
+  background-color: #f8f9fa;;
+}
+
+.footer .logo {
+  max-height: 30px;
+}
+
+.footer a, small {
+  color: #6c757d;
+}
