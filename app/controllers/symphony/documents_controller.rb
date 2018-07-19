@@ -1,11 +1,15 @@
 class Symphony::DocumentsController < DocumentsController
   before_action :set_templates, only: [:index, :new, :edit]
   before_action :set_company_workflows, only: [:index, :new, :edit]
-  before_action :set_workflow, only: [:new, :edit]
+  before_action :set_workflow, only: [:new]
 
   def index
     @documents = Kaminari.paginate_array(@company.documents.order(created_at: :desc)).page(params[:page]).per(20)
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
+  end
+
+  def edit
+    @workflow = @workflows.find(@document.workflow_id)
   end
 
   def create
