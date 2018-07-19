@@ -21,7 +21,7 @@ html lang="en"
 
   body[class="#{controller_name} #{action_name} scroll-assist"]
     = render 'layouts/dashboard/header'
-    .container-fluid
+    .container-fluid.content
       .row
         - if controller.class.parents.include?(Conductor)
           .col-sm-12.main
@@ -31,7 +31,7 @@ html lang="en"
           .col-sm-12.main
             = render 'layouts/messages'
             = yield
-    .page-footer
+    footer.footer
       = render 'layouts/dashboard/footer'
 
     - if current_user

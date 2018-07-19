@@ -2,11 +2,20 @@
  * Base structure
  */
 
+html, body {
+  height: 100%;
+}
+
 /* Move down content because we have a fixed navbar that is 56px tall */
 body {
   padding-top: 56px;
+  display: flex;
+  flex-direction: column;
 }
 
+.content {
+  flex: 1 0 auto;
+}
 
 /*
  * Global add-ons
@@ -143,7 +152,7 @@ body {
 }
 
 .footer {
-  bottom: 0;
+  flex-shrink: 0;
   width: 100%;
   padding-top: 30px;
   line-height: 60px;
