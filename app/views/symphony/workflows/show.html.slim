@@ -81,6 +81,8 @@
             tbody
               - @activities.each do |activity|
                 tr = render_activity activity
+          .panel-footer
+            = link_to "View more", activities_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-default'
   .col-md-3.col-sm-6
     = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
     - if @user.has_role? :admin
