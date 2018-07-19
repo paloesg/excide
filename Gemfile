@@ -96,16 +96,19 @@ gem 'snitcher'
 gem "skylight"
 gem 'scout_apm'
 
+gem 'popper_js', '~> 1.12.9'
 # Frontend framework
-gem 'bootstrap-sass'
+gem 'bootstrap', '~> 4.1.1'
 # Themify icon set web fonts
 gem 'themify-icons-rails'
+# Font Awesome Rails
+gem "font-awesome-rails"
 # Nested form helper
 gem "cocoon"
 # WYSIWYG editor
 gem 'trix'
-# Date time picker
-gem "datetime_picker_rails"
+# Bootstrap4 datetime picker rails
+gem 'bootstrap4-datetime-picker-rails'
 # Render calendar
 gem "simple_calendar", "~> 2.0"
 # Algolia search

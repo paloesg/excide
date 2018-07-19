@@ -18,13 +18,13 @@
 .form-group
   = f.label :remarks
   = f.text_area :remarks, class: 'form-control'
-.form-group.file-field
+.form-group
   - if @document.new_record?
     = f.label :file_url, 'Upload file'
     - if params[:camera] == "true"
-      = f.file_field :file_url, accept: 'image/*', capture: 'camera'
+      = f.file_field :file_url, accept: 'image/*', capture: 'camera', class: "form-control-file"
     - else
-      = f.file_field :file_url
+      = f.file_field :file_url, class: "form-control-file"
   - else
     .file-path-wrapper
       = f.label 'File URL'

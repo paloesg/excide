@@ -8,7 +8,7 @@ module ApplicationHelper
   end
 
   def sortable(column, title=nil)
-    arrow = params[:direction] == "asc" ? "glyphicon glyphicon-triangle-bottom" : "glyphicon glyphicon-triangle-top"
+    arrow = params[:direction] == "asc" ? "fa fa-caret-down" : "fa fa-caret-up"
     css_class = column == params[:sort] ? "current #{arrow}" : nil
     direction_sort = column == params[:sort] && params[:direction] == "asc" ? "desc" : "asc"
     link_to "?page=#{params[:page]}&sort=#{column}&direction=#{direction_sort}" do

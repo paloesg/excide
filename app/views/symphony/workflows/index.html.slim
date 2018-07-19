@@ -2,21 +2,16 @@
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
-        a href="#" Home
-      li.breadcrumb-item
-        a href="#" #{@company.name}
-      li.breadcrumb-item.active Archives
-    h1.border-bottom Archives
+        a href="/symphony" Symphony
+      li.breadcrumb-item.active #{@template.title}
+    h1
+      | #{@template.title}
 .row
   .col-sm-12
     .card
-      h5.card-header Completed workflows
-      .card-body
-        .row
-          .col-sm-3
-            = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'form-control form-control-sm pull-left')
-          .offset-sm-6.col-sm-3
-            .float-right = page_entries_info @workflows, entry_name: 'workflow'
+      h5.card-header Workflows
+      - if @workflows.blank?
+        .card-body No outstanding #{@template.title} workflows at the moment.
       .table-responsive
         table.table
           thead
@@ -29,13 +24,12 @@
               th = sortable "completed", "Status"
           tbody
             - @workflows.each do |w|
-              tr.success
+              tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
                 td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
                 td = w.template.title
                 td = w.workflowable&.name || '-'
                 td = w.remarks || '-'
                 td = w.deadline&.strftime("%d/%m/%Y") || '-'
                 td = w.completed ? 'Completed' : w.current_section&.display_name
-      .card-footer
-        = paginate @workflows, views_prefix: 'dashboards'
-        .clearfix
+        .card-footer.pt-4
+          = paginate @workflows, views_prefix: 'dashboards'

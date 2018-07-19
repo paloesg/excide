@@ -12,7 +12,7 @@
   = f.text_area :remarks, class: 'form-control'
 .form-group
   = f.label :date_signed
-  = f.text_field :date_signed, class: 'form-control datepicker'
+  = f.text_field :date_signed, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
 .form-group.file-field
   = f.label :file_url, 'Upload file'
   = f.file_field :file_url
