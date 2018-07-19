@@ -83,6 +83,12 @@ class Symphony::WorkflowsController < WorkflowsController
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully reset.'
   end
 
+  def activities
+    set_workflow
+    @get_activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
+  end
+
   def data_entry
     set_documents
     unless @documents.empty?
