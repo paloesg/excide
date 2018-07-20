@@ -1,20 +1,17 @@
 .row
   .col-sm-12
-    ol.breadcrumb.breadcrumb-2
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
-      li
+      li.breadcrumb-item
         a href="#" #{@template.title}
-      li
-        a href="#" #{@workflow.identifier}
-      li.active Activities
-    h1.page-header
-      | #{@workflow.identifier} Activities
+      li.breadcrumb-item
+        = link_to @workflow.identifier, symphony_workflow_path(@template.slug, @workflow.identifier)
+      li.breadcrumb-item.active History
+    h1 #{@template.title} – #{@workflow.identifier} Workflow History
 .row
   .col-sm-12
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Activity
+    .responsive-table
       table.table.table-condensed
         thead
           tr
