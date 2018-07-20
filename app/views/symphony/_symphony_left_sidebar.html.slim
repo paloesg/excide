@@ -1,12 +1,12 @@
-- ::Template.assigned_templates(current_user).each do |t|
-  .panel-group role="tablist"
-    .panel.panel-default
-      .panel-heading role="tab" id="#collapse-#{t.slug}-heading"
-        h4.panel-title
-          a data-toggle="collapse" href="#collapse-#{t.slug}" aria-expanded="false" aria-controls="collapse-#{t.slug}" role="button"
-            = t.title
-            span.caret
-      .panel-collapse.collapse id="collapse-#{t.slug}" role="tabpanel" aria-labelledby="#collapse-#{t.slug}-heading" class=('in' if t.slug == @workflow&.template&.slug)
+#accordion
+  - ::Template.assigned_templates(current_user).each do |t|
+    .card
+      .card-header
+        a.btn.btn-link data-toggle="collapse" href="#collapse-#{t.slug}" aria-expanded="false" aria-controls="collapse-#{t.slug}"
+          = t.title
+          span.caret
+
+      .collapse id="collapse-#{t.slug}" role="tabpanel" aria-labelledby="#collapse-#{t.slug}" data-parent="#accordion"
         ul.list-group
-        - t.workflows.order(created_at: :desc).each do |w|
-          li.list-group-item class=('active' if w.identifier == @workflow&.identifier) = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)
+          - t.workflows.order(created_at: :desc).each do |w|
+            li.list-group-item class=('active' if w.identifier == @workflow&.identifier) = link_to w.identifier, params[:company_name] ? admin_company_workflow_path(params[:company_name], t.slug) : symphony_workflow_path(w.template.slug, w.identifier)

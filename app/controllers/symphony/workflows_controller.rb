@@ -3,6 +3,15 @@ class Symphony::WorkflowsController < WorkflowsController
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry]
   before_action :set_attributes_metadata, only: [:create, :update]
 
+  def index
+    template = Template.find(params[:workflow_name])
+    @workflows = @company.workflows.where(template: template).order(created_at: :desc)
+
+    @workflows_sort = sort_column(@workflows.flatten)
+    params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
+    @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
+  end
+
   def new
     @workflow = Workflow.new
     @workflow.template_data(@template)
@@ -144,5 +153,17 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def set_documents
     @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
+  end
+
+  def sort_column(array)
+    array.sort_by{
+      |item| if params[:sort] == "template" then item.template.title.upcase
+      elsif params[:sort] == "remarks" then item.remarks ? item.remarks.upcase : ""
+      elsif params[:sort] == "deadline" then item.deadline ? item.deadline : Time.at(0)
+      elsif params[:sort] == "workflowable" then item.workflowable ? item.workflowable&.name.upcase : ""
+      elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.display_name
+      elsif params[:sort] == "identifier" then item.identifier ? item.identifier.upcase : ""
+      end
+    }
   end
 end

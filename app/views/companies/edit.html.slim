@@ -1,12 +1,12 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Home
-      li
+      li.breadcrumb-item
         a href="#" #{@company.name}
-      li.active Update
-    h1.page-header Update Company
+      li.breadcrumb-item.active Update
+    h1 Update Company
 .row
   .col-md-12
     = form_for(@company, url: {action: "update"}, html: { class: '', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|

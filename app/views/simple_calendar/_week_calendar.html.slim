@@ -1,16 +1,15 @@
-.panel.panel-default.simple-calendar
-  .panel-heading.calendar-heading
-    span.calendar-title
-      | Week #{calendar.week_number}
-    .btn-group.pull-right role='group'
-      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-xs btn-default'
-        i.glyphicon.glyphicon-chevron-left
-        | Previous Week
-      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-xs btn-default'
-        | Next Week
-        i.glyphicon.glyphicon-chevron-right
+.card.simple-calendar.mb-3
+  h4.card-header.calendar-heading.calendar-title
+    | Week #{calendar.week_number}
+    .btn-group.float-right role='group'
+      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-sm btn-outline-secondary'
+        i.fa.fa-chevron-left
+        |  Previous Week
+      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-sm btn-outline-secondary'
+        ' Next Week
+        i.fa.fa-chevron-right
   .table-responsive
-    table.table.table-striped
+    table.table.table-striped.mb-0
       thead
         tr
           - date_range.slice(0, 7).each do |day|

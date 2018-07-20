@@ -6,13 +6,13 @@ function create_allocations(id, type, element) {
     dataType: "json",
     success: function () {
       $(element).prop('disabled', 'disabled');
-      $(element).closest("tr").find(".glyphicon-ok").fadeTo(500, 1, function () {
-        $(element).closest("tr").find(".glyphicon-ok").fadeTo(2000, 0)
+      $(element).closest("tr").find(".fa-check").fadeTo(500, 1, function () {
+        $(element).closest("tr").find(".fa-check").fadeTo(2000, 0)
       })
     },
     error: function () {
-      $(element).closest("tr").find(".glyphicon-remove").show().fadeTo(500, 1, function () {
-        $(element).closest("tr").find(".glyphicon-remove").fadeTo(2000, 0)
+      $(element).closest("tr").find(".fa-times").show().fadeTo(500, 1, function () {
+        $(element).closest("tr").find(".fa-times").fadeTo(2000, 0)
       })
     }
   })

@@ -1,27 +1,26 @@
 .row
   .col-sm-12
-    ol.breadcrumb.breadcrumb-2
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
-      li
+      li.breadcrumb-item
         a href="#" #{@template.title}
-      li.active #{@workflow.identifier}
-    h1.page-header
+      li.breadcrumb-item.active #{@workflow.identifier}
+    h1
       | #{@template.title} – #{@workflow.identifier}
-      .btn-group.pull-right role='group'
+      .btn-group.float-right role='group'
         - if @workflow.previous_workflow.present?
-          = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-default'
-            i.glyphicon.glyphicon-chevron-left
-            | Earlier Workflow
+          = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-sm btn-outline-secondary'
+            i.fa.fa-chevron-left
+            |  Earlier Workflow
         - if @workflow.next_workflow.present?
-          = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-default'
-            | Later Workflow
-            i.glyphicon.glyphicon-chevron-right
+          = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-sm btn-outline-secondary'
+            ' Later Workflow
+            i.fa.fa-chevron-right
 .row
   .col-md-9.col-sm-12
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title = @section.display_name
+    .card.mb-3
+      h5.card-header = @section.display_name
       .table-responsive
         table.table
           thead
@@ -39,21 +38,20 @@
                 - t = TaskDecorator.new(task)
                 - a = t.workflow_action(@workflow.identifier)
                 = render "#{task.task_type}_task", task: t, action: a
-      .panel-footer
+      .card-footer
         - unless @section.first?
-          = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-default pull-left'
-            i.glyphicon.glyphicon-chevron-left
-            | Previous Section
+          = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-sm btn-outline-secondary float-left'
+            i.fa.fa-chevron-left
+            |  Previous Section
         - unless @section.last?
-          = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.lower_item.id), class: 'btn btn-default pull-right'
-            | Next Section
-            i.glyphicon.glyphicon-chevron-right
+          = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.lower_item.id), class: 'btn btn-sm btn-outline-secondary float-right'
+            ' Next Section
+            i.fa.fa-chevron-right
         .clearfix
     .row
       .col-sm-6
-        .panel.panel-default
-          .panel-heading
-            h3.panel-title Attributes
+        .card.mb-3
+          h5.card-header Attributes
           table.table.table-condensed
             thead
               tr
@@ -69,9 +67,8 @@
                   td = User.find_by(id: d.user_id)&.full_name
                   td = d.updated_at&.to_time&.strftime("%d/%m/%Y %R")
       .col-sm-6
-        .panel.panel-default
-          .panel-heading
-            h3.panel-title Activity
+        .card
+          h5.card-header History
           table.table.table-condensed
             thead
               tr
@@ -88,55 +85,48 @@
     - if @user.has_role? :admin
       = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
     br
-  .col-md-3.col-sm-6
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title #{@workflow.workflowable_type}
-      .panel-body
+    .card.mb-3
+      h6.card-header = @workflow.workflowable_type
+      .card-body
         | Name: #{@workflow.workflowable&.name}
         br
         | Identifier: #{@workflow.workflowable&.identifier}
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Remarks
-      .panel-body = @workflow.remarks.present? ? @workflow.remarks : '-'
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Deadline
-      .panel-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Documents
-      .panel-body
-        - if @documents.empty?
-          | No documents yet.
-        - else
-          - @documents.each do |d|
-            .media
-              .media-left.media-middle
-                = link_to symphony_document_path(d)
-                  i.ti-file.icon style="font-size: 50px"
-              .media-body
-                h4.media-heading = d.filename
-                = File.basename(d.file_url)
-                br
-                = d.created_at.strftime("Uploaded at %d/%m/%Y %R by ")
-                = d.user&.full_name
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Document Templates
-      .panel-body
-        - if @document_templates.empty?
-          | No documents yet.
-        - else
-          - @document_templates.each do |d|
-            .media
-              .media-left.media-middle
-                a href="#{d.file_url}"
-                  i.ti-file.icon style="font-size: 50px"
-              .media-body
-                h4.media-heading = d.title
-                a href="#{d.file_url}"
-                = File.basename(d.file_url)
-                br
-                = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+    .card.mb-3
+      h6.card-header Remarks
+      .card-body = @workflow.remarks.present? ? @workflow.remarks : '-'
+    .card.mb-3
+      h6.card-header Deadline
+      .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
+    .card.mb-3
+      h6.card-header Documents
+      - if @documents.empty?
+        .card-body No documents yet.
+      - else
+        - @documents.each do |d|
+          ul.list-group.list-group-flush
+            li.list-group-item
+              .media
+                .align-self-center
+                  = link_to symphony_document_path(d)
+                    i.ti-file.icon.mr-3 style="font-size: 50px"
+                .media-body
+                  h5.card-title = d.filename
+                  h6.card-subtitle = d.user&.full_name
+                  .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+
+    .card.mb-3
+      h6.card-header Document Templates
+      - if @document_templates.empty?
+        .card-body No documents yet.
+      - else
+        - @document_templates.each do |d|
+          ul.list-group.list-group-flush
+            li.list-group-item
+              .media
+                .align-self-center
+                  a href = d.file_url
+                    i.ti-file.icon.mr-3 style="font-size: 50px"
+                .media-body
+                  h5.card-title = d.title
+                  h6.card-subtitle = File.basename(d.file_url)
+                  .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")

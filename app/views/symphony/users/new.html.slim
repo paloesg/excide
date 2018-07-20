@@ -1,14 +1,14 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Home
-      li
+      li.breadcrumb-item
         a href="#" Company
-      li
+      li.breadcrumb-item
         a href="#" Users
-      li.active New
-    h1.page-header New User
+      li.breadcrumb-item.active New
+    h1 New User
 .row
   .col-sm-12
     = form_for(@user, url: symphony_users_path) do |f|

@@ -1,12 +1,12 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="/conductor" Conductor
-      li
+      li.breadcrumb-item
         a href="/conductor/clients/#{@client.id}" Client Details
-      li.active Edit
-    h1.page-header Edit Client Details
+      li.breadcrumb-item.active Edit
+    h1 Edit Client Details
 .row
   .col-sm-12
     = form_for(@client, url: conductor_client_path) do |f|

@@ -1,14 +1,14 @@
 .row
   .col-sm-12
-    ol.breadcrumb.breadcrumb-2
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
-      li
+      li.breadcrumb-item
         a href="#" #{@template.title}
-      li
+      li.breadcrumb-item
         = link_to @workflow.identifier, symphony_workflow_path(@template.slug, @workflow.identifier)
-      li.active Data Entry
-    h1.page-header #{@template.title} – #{@workflow.identifier}
+      li.breadcrumb-item.active Data Entry
+    h1 #{@template.title} – #{@workflow.identifier}
 .row
   .col-md-6
     - if @documents.empty?
@@ -20,10 +20,10 @@
         iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
   .col-md-6
     = form_for(@workflow, url: symphony_workflow_path(workflow_identifier: params[:workflow_identifier])) do |f|
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title Attributes
-        .panel-body
+      .card.mb-3
+        .card-header
+          | Attributes
+        .card-body
           table.table
             thead
               tr
@@ -38,10 +38,10 @@
       .btn-group role='group'
         - if @previous_document.present?
           = f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-default'
-            i.glyphicon.glyphicon-chevron-left
+            i.fa.fa-chevron-left
             | Previous Document
         - if @next_document.present?
           = f.button name: 'document_id', value: @next_document.id, class: 'btn btn-default'
             | Next Document
-            i.glyphicon.glyphicon-chevron-right
+            i.fa.fa-chevron-right
       = f.submit 'Finish Data Entry', class: 'btn btn-primary pull-right'

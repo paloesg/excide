@@ -4,22 +4,22 @@ $(function () {
     $.get('/symphony/check-identifier?identifier=' + $('#workflow_identifier').val(), function (data) {
       new_workflow_identifier_value = $('#workflow_identifier').val().toUpperCase()
       if (workflow_identifier_value == new_workflow_identifier_value || $('#workflow_identifier').val() == '') {
-        $('#identifier_form').removeClass('has-error');
-        $('#identifier_form').removeClass('has-success');
-        $('#identifier_unique').addClass('hidden');
-        $('#identifier_exist').addClass('hidden');
+        $('#workflow_identifier').removeClass('is-invalid');
+        $('#workflow_identifier').removeClass('is-valid');
+        $('#identifier_unique').addClass('d-none');
+        $('#identifier_exist').addClass('d-none');
         $('input[type="submit"]').prop('disabled', false);
       } else if (data.unique) {
-        $('#identifier_form').removeClass('has-error');
-        $('#identifier_form').addClass('has-success');
-        $('#identifier_unique').removeClass('hidden');
-        $('#identifier_exist').addClass('hidden');
+        $('#workflow_identifier').removeClass('is-invalid');
+        $('#workflow_identifier').addClass('is-valid');
+        $('#identifier_unique').removeClass('d-none');
+        $('#identifier_exist').addClass('d-none');
         $('input[type="submit"]').prop('disabled', false);
       } else {
-        $('#identifier_form').addClass('has-error');
-        $('#identifier_form').removeClass('has-success');
-        $('#identifier_unique').addClass('hidden');
-        $('#identifier_exist').removeClass('hidden');
+        $('#workflow_identifier').addClass('is-invalid');
+        $('#workflow_identifier').removeClass('is-valid');
+        $('#identifier_unique').addClass('d-none');
+        $('#identifier_exist').removeClass('d-none');
         $('input[type="submit"]').prop('disabled', true);
       }
     });
