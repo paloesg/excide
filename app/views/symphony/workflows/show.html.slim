@@ -76,8 +76,11 @@
                 th Action
                 th Time
             tbody
-              - @activities.each do |activity|
+              - @activities.take(10).each do |activity|
                 tr = render_activity activity
+          - if @activities.count > 10
+            .card-footer
+              = link_to "View more...", activities_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-sm btn-outline-secondary float-right'
   .col-md-3.col-sm-6
     = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
     - if @user.has_role? :admin
