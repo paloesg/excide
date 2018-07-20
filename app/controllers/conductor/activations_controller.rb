@@ -97,6 +97,11 @@ class Conductor::ActivationsController < ApplicationController
     end
   end
 
+  def activities
+    @get_activities = PublicActivity::Activity.where(recipient_type: "Activation").order("created_at desc")
+    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
+  end
+
   def create_allocations
     count = params[:count].to_i
     count.times do

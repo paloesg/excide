@@ -50,8 +50,11 @@
               th Action
               th Time
           tbody
-            - @activities.each do |activity|
+            - @activities.take(10).each do |activity|
               tr = render_activity activity
+        - if @activities.count > 10
+          .card-footer
+            = link_to "View more...", activities_conductor_activations_path, class: 'btn btn-sm btn-outline-secondary float-right'
 
 #new-activation.d-none
   = form_for @activation, remote: true, url: conductor_activations_path do |f|
