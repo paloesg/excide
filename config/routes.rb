@@ -43,7 +43,7 @@ Rails.application.routes.draw do
     resources :archives
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
       member do
-        get '/activities', to: 'workflows#activities', as: :activities
+        get '/history', to: 'workflows#activities', as: :activities
         post '/reset', to: 'workflows#reset', as: :reset
         get '/section/:section_id', to: 'workflows#show', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
