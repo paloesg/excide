@@ -99,8 +99,8 @@ class Workflow < ActiveRecord::Base
 
   def template_data(template)
     data_attributes = []
-    template.data_names.each do |data_name|
-      data_attributes << {name: data_name['name'], value: data_name['default'], placeholder: data_name['placeholder']}
+    template.data_names.each do |data|
+      data_attributes << {name: data['name'], value: data['default'], placeholder: data['placeholder']}
     end
     self.data = data_attributes
   end
