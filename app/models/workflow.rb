@@ -47,7 +47,7 @@ class Workflow < ActiveRecord::Base
 
   def previous_workflow
     Workflow.where(template: self.template).where('id < ?', self.id).last
-  end  
+  end
 
   def current_section
     if self.completed
@@ -98,11 +98,11 @@ class Workflow < ActiveRecord::Base
   end
 
   def template_data(template)
-    template.data_names.each do |data_name|
-      d = self.data.dup
-      d << {name: data_name['name'], value: data_name['default'], placeholder: data_name['placeholder']}
-      self.data = d
+    data_attributes = []
+    template.data_names.each do |data|
+      data_attributes << {name: data['name'], value: data['default'], placeholder: data['placeholder']}
     end
+    self.data = data_attributes
   end
 
   class Data
