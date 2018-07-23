@@ -21,11 +21,7 @@ class Symphony::DocumentsController < DocumentsController
         SlackService.new.new_document(@document).deliver
         if params[:document_type] == 'invoice'
           @template = Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').take
-          @workflow = Workflow.new
-          @workflow.user = current_user
-          @workflow.company = @company
-          @workflow.template = @template
-          @workflow.identifier = @document.identifier
+          @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: @document.identifier)
           @workflow.template_data(@template)
           @workflow.save
           @document.update_attributes(workflow: @workflow)
