@@ -21,6 +21,5 @@ td
   - else
     = check_box_tag 'completed', action.id, action.completed, disabled: true
 td
-  - if action.completed? && action.completed_user.present?
-    span.fa.fa-user aria-hidden="true"
-    |  #{action.completed_user&.full_name}
+  a data-toggle="popover" rel="popover" title="Task details" data-content="Content"
+    i.fa.fa-chevron-circle-down

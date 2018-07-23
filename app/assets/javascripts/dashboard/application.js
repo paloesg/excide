@@ -24,5 +24,6 @@
 //= require conductor/home
 //= require dropzone
 //= require components/multiple_uploads
+//= require components/popover_initialize
 
 //= require turbolinks
