@@ -48,10 +48,14 @@
     .card.mt-3
       h5.card-header Workflows In Progress
       .card-body
-        - if @workflows.blank?
+        - if @workflows_array.blank?
           | No outstanding workflows at the moment. Click on a workflow to begin.
         - else
-          .pull-right = page_entries_info @workflows, entry_name: 'workflow'
+          .row
+            .col-sm-3
+              = select_tag('workflow_type', options_for_select(@templates.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'form-control form-control-sm pull-left')
+            .offset-sm-3.col-sm-6
+              .float-right = page_entries_info @workflows, entry_name: 'workflow'
       .table-responsive
         table.table
           thead
