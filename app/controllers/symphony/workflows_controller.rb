@@ -89,6 +89,7 @@ class Symphony::WorkflowsController < WorkflowsController
     action.reminders.each { |reminder| reminder.update_attributes(next_reminder: nil) }
     respond_to do |format|
       format.json { render json: "Reminder stopped", status: :ok }
+      format.js   { render js: 'Turbolinks.visit(location.toString());' }
     end
   end
 
