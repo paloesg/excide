@@ -16,7 +16,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     address: Field::HasOne,
     users: Field::HasMany,
     ssic_code: Field::String,
-    financial_year_end: Field::DateTime,
+    financial_year_end: DatetimeField,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }

@@ -12,7 +12,7 @@ class WorkflowActionDashboard < Administrate::BaseDashboard
     task: Field::BelongsTo,
     company: Field::BelongsTo,
     workflow: Field::BelongsTo,
-    deadline: Field::DateTime,
+    deadline: DatetimeField,
     reminders: Field::HasMany,
     assigned_user: Field::BelongsTo.with_options(class_name: 'User'),
     completed_user: Field::BelongsTo.with_options(class_name: 'User'),
