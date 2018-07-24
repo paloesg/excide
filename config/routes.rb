@@ -48,6 +48,7 @@ Rails.application.routes.draw do
         get '/section/:section_id', to: 'workflows#show', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
         post '/send_reminder/:task_id', to: 'workflows#send_reminder', as: :reminder_task
+        post '/stop_reminder/:task_id', to: 'workflows#stop_reminder', as: :stop_reminder
         get '/assign', to: 'workflows#assign', as: :assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
       end
