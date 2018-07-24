@@ -50,7 +50,7 @@ class SendUserReminders
   def send_slack_reminders
     slack_reminders = @reminders.where(slack: true)
 
-    SlackService.new.send_reminders(slack_reminders).deliver
+    SlackService.new.send_reminders(slack_reminders, @user).deliver
   end
 
   def set_next_reminder

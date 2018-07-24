@@ -163,32 +163,19 @@ class SlackService
     self
   end
 
-  def send_reminders(reminders)
+  def send_reminders(reminders, user)
+    fields = []
+    reminders.each do |reminder|
+      fields << { title: reminder.title, value: reminder.content }
+    end
+
     params = {
       attachments: [
-        reminders.each do |reminder|
-          {
-            title: 'Reminder',
-            title_link: 'https://' + ENV['HOST_DOMAIN'] + '/admin/reminders/' + reminder.id.to_s,
-            fallback: 'Reminder ID ' + reminder.id.to_s,
-            pretext: 'Please send a reminder to the following client.',
-            color: WARNING,
-            fields: [
-              {
-                title: 'Client',
-                value: reminder.company.name,
-              },
-              {
-                title: 'Title',
-                value: reminder.title,
-              },
-              {
-                title: 'Message',
-                value: reminder.content,
-              },
-            ]
-          }
-        end
+        {
+          pretext: 'Reminders for ' + user.first_name + ' today:',
+          color: WARNING,
+          fields: fields
+        }
       ]
     }
     @params = generate_payload(params)
