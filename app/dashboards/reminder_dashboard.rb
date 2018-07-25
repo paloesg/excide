@@ -9,7 +9,7 @@ class ReminderDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     id: Field::Number,
-    next_reminder: DatetimeField,
+    next_reminder: Field::DateTime,
     repeat: Field::Boolean,
     freq_value: Field::Number,
     freq_unit: EnumField,

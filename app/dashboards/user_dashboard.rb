@@ -17,7 +17,7 @@ class UserDashboard < Administrate::BaseDashboard
     id: Field::Number,
     provider: Field::String,
     uid: Field::String,
-    confirmed_at: DatetimeField,
+    confirmed_at: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     reset_password_sent_at: Field::DateTime,

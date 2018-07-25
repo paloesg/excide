@@ -12,7 +12,7 @@ class DocumentDashboard < Administrate::BaseDashboard
     id: Field::Number,
     filename: Field::String,
     remarks: Field::Text,
-    date_signed: DatetimeField,
+    date_signed: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     file_url: Field::String,
