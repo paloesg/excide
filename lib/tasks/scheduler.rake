@@ -3,9 +3,8 @@ namespace :scheduler do
 
   task :daily_reminders => :environment do
     time = Benchmark.realtime {
-      reminders = Reminder.today
-      reminders.each do |reminder|
-        SendReminder.run(reminder)
+      User.all.each do |user|
+        SendUserReminders.run(user)
       end
     }
 
