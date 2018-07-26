@@ -7,7 +7,6 @@ $(document).ready(function () {
       return $('#task-popover-content').html();
     }
   }).on("show.bs.popover", function () {
-    $('.popover').popover('hide')
     task_details = JSON.parse($(this).attr('task-details'))
     $('#next_reminder').text(task_details['next_reminder'])
     $('#completed_by').text(task_details['completed_by'])
