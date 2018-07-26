@@ -2,6 +2,7 @@ $(document).ready(function () {
   $('[data-toggle="task_popover"]').popover({
     html: true,
     container: 'body',
+    trigger: 'focus',
     content: function () {
       return $('#task-popover-content').html();
     }
