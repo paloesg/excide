@@ -1,10 +1,8 @@
-//= require jquery3
-//= require popper
-//= require bootstrap
+//= require jquery
 //= require jquery_ujs
 //= require selectize
 //= require moment
-//= require tempusdominus-bootstrap-4.js
+//= require datetime_picker
 //= require jquery.ui.widget
 //= require z.jquery.fileupload
 //= require_tree .
