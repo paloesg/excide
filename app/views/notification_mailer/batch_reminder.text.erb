@@ -7,6 +7,7 @@ Good day! You have <%= @reminders.count %> reminders today.
 <% end %>
 
 <% @reminders.each do |reminder| %>
+<%= reminder.title %>
 <%= reminder.content %>
 <% if reminder.task.present? %>
 You can access the task from this URL: <%= symphony_workflow_url(reminder.task.section.template.slug, reminder.workflow_action.workflow.identifier) %>
