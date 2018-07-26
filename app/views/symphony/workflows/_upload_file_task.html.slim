@@ -22,4 +22,4 @@ td
     = check_box_tag 'completed', action.id, action.completed, disabled: true
 td
   a data-toggle="task_popover" rel="popover" title="Task details" task-details="{ "next_reminder" : "#{action.reminders.take&.next_reminder&.strftime('%F')}", "completed_by" : "#{action.completed_user&.full_name}", "completed_on" : "#{action.updated_at.strftime('%F %R') if action.completed }", "task_id": "#{task.id}", "action_id": "#{action.id}", "set_reminder": #{task.set_reminder} }"
-    i.fa.fa-chevron-circle-down
+    i.fa.fa-angle-down
