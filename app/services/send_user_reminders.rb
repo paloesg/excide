@@ -54,6 +54,9 @@ class SendUserReminders
   end
 
   def set_next_reminder
-
+    @reminders.each do |reminder|
+      reminder.next_reminder = Date.current + 1.day
+      reminder.save
+    end
   end
 end
