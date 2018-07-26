@@ -84,6 +84,15 @@ class Symphony::WorkflowsController < WorkflowsController
     end
   end
 
+  def stop_reminder
+    action = Task.find(params[:task_id])
+    action.reminders.each { |reminder| reminder.update_attributes(next_reminder: nil) }
+    respond_to do |format|
+      format.json { render json: "Reminder stopped", status: :ok }
+      format.js   { render js: 'Turbolinks.visit(location.toString());' }
+    end
+  end
+
   def reset
     @workflow_actions = @company.workflow_actions.where(workflow_id: @workflow.id)
     @workflow.update_attribute(:completed, false)

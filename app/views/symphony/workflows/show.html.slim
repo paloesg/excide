@@ -31,7 +31,7 @@
               th Assigned To
               th Deadline
               th Done
-              th Completed By
+              th
           tbody
             - @tasks.each do |task|
               tr
@@ -131,3 +131,17 @@
                   h5.card-title = d.title
                   h6.card-subtitle = File.basename(d.file_url)
                   .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+#task-popover-content.d-none
+  p.pt-2
+    strong
+      ' Next reminder:
+    span#next_reminder
+    a.btn.btn-warning.btn-sm.btn-block#stop_reminder data-remote="true" data-method="post" href="#" Stop reminder
+  p
+    strong
+      ' Completed by:
+    span#completed_by
+  p.pb-0
+    strong
+      ' Completed on:
+    span#completed_on &mdash;
