@@ -132,14 +132,16 @@
                   h6.card-subtitle = File.basename(d.file_url)
                   .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
 #task-popover-content.d-none
-  p
-    ' Next reminder :
+  p.pt-2
+    strong
+      ' Next reminder:
     span#next_reminder
-  p
     a.btn.btn-warning.btn-sm.btn-block#stop_reminder data-remote="true" data-method="post" href="#" Stop reminder
   p
-    ' Completed by :
+    strong
+      ' Completed by:
     span#completed_by
-  p
-    ' Completed on :
-    span#completed_on
+  p.pb-0
+    strong
+      ' Completed on:
+    span#completed_on &mdash;
