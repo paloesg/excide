@@ -56,6 +56,7 @@ Rails.application.routes.draw do
   end
 
   namespace :conductor do
+    resources :activation_types
     resources :users do
       collection do
         get :export, to: 'users#export'
