@@ -15,7 +15,7 @@
       p = date.day
       - activations.each do |activation|
         .row
-          .col-sm-12.activation activation-data="#{activation.to_json}" activation-address="#{activation.address.to_json}" activation-client="#{activation.client&.name}" activation-event_owner="#{activation.event_owner&.full_name}" get_allocated_users_length="#{activation.allocations.map(&:user).reject(&:blank?).length}" title="Activation Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>" data-placement="auto"
+          .col-sm-12.activation activation-data="#{activation.to_json}" activation-address="#{activation.address.to_json}" activation-client="#{activation.client&.name}" activation-event_owner="#{activation.event_owner&.full_name}" get_allocated_users_length="#{activation.allocations.map(&:user).reject(&:blank?).length}" activation-type="#{activation.activation_type.name}" title="Activation Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>" data-placement="auto"
             = activation.start_time.strftime('%H:%M') + '–' + activation.end_time.strftime('%H:%M ')
             strong = activation.name
 .row
