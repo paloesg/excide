@@ -18,9 +18,12 @@
             th Name
             th Slug
             th Colour
+            th
         tbody
           - @activation_types.each do |activation_type|
             tr
               td = activation_type.name
               td = activation_type.slug
               td = activation_type.colour
+              td
+                = link_to 'Edit', edit_conductor_activation_type_path(activation_type.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
