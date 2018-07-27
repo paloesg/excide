@@ -39,4 +39,4 @@
     = label_tag do
       = check_box_tag :contractor_in_charge, 'assign', (@user.has_role? :contractor_in_charge, @company)
       | Contractor in charge
-= f.submit 'Save User', class: 'btn btn-default'
+= f.submit 'Save User', class: 'btn btn-primary'
