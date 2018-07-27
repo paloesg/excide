@@ -5,8 +5,8 @@ App.init = ->
     fileInput = $(elem)
     form = $(fileInput.parents('form:first'))
     submitButton = form.find('input[type="submit"]')
-    progressBar = $('<div class=\'bar\'></div>')
-    barContainer = $('<div class=\'progress\'></div>').append(progressBar)
+    progressBar = $('<div class=\'progress-bar progress-bar-striped bg-success\'></div>')
+    barContainer = $('<div class=\'progress mt-2\'></div>').append(progressBar)
     fileInput.after barContainer
     fileInput.fileupload
       fileInput: fileInput
@@ -23,12 +23,11 @@ App.init = ->
         return
       start: (e) ->
         submitButton.prop 'disabled', true
-        progressBar.css('background', 'green').css('display', 'block').css('width', '0%').text 'Loading...'
         barContainer.css('display', 'block')
         return
       done: (e, data) ->
         submitButton.prop 'disabled', false
-        progressBar.text 'Uploading done'
+        progressBar.text 'File uploaded'
         # extract key and generate URL from response
         key = $(data.jqXHR.responseXML).find('Key').text()
         url = '//' + form.data('host') + '/' + key
