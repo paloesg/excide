@@ -24,7 +24,7 @@
             tr
               td = activation_type.name
               td = activation_type.slug
-              td = activation_type.colour
+              td bgcolor="#{activation_type.colour}"
               td
                 = link_to 'Show', conductor_activation_type_path(activation_type.id), role: 'button', class: 'btn btn-success btn-sm mr-1'
                 = link_to 'Edit', edit_conductor_activation_type_path(activation_type.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
