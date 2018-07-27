@@ -8,7 +8,7 @@
       li.breadcrumb-item.active Conductor
     h1.border-bottom Conductor
     .col-sm-3.float-right
-      = select_tag('activation_type', options_for_select(Activation.activation_types.map {|k,v| [k.titleize, k] }, selected: params[:activation_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?activation_type=' + $(this).val());", include_blank: 'All', class: 'form-control form-control-sm mx-auto mb-2')
+      = select_tag('activation_type', options_for_select(ActivationType.all.map {|k,v| [k.name, k.slug] }, selected: params[:activation_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?activation_type=' + $(this).val());", include_blank: 'All', class: 'form-control form-control-sm mx-auto mb-2')
 .row
   .col-sm-12.mb-3
     = month_calendar events: @activations do |date, activations|

@@ -42,7 +42,7 @@
         tbody
           - @activations.each do |activation|
             tr
-              td = activation.activation_type.titleize
+              td = activation.activation_type.name
               td = activation.client&.name
               td = activation.event_owner&.full_name
               td = activation.start_time.strftime("%d/%m/%y %H:%M")

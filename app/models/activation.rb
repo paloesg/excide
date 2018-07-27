@@ -25,7 +25,7 @@ class Activation < ActiveRecord::Base
           }
 
   def name
-    client.name + ' ' + activation_type.titleize
+    client.name + ' ' + activation_type.name
   end
 
   def update_activation_notification
