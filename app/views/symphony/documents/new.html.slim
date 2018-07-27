@@ -8,7 +8,7 @@
       li.breadcrumb-item
         a href="#" Documents
       li.breadcrumb-item.active New
-    h1.border-bottom Upload New Document
+    h1 Upload New Document
 .row
   .col-sm-12
     = form_for(@document, url: symphony_documents_path(workflow: params[:workflow]), html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|

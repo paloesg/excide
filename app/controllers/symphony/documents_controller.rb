@@ -9,7 +9,7 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def edit
-    @workflow = @workflows.find(@document.workflow_id)
+    @workflow = @workflows.find(@document.workflow_id) if @document.workflow_id.present?
   end
 
   def create

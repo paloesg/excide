@@ -6,6 +6,18 @@
         li = message
 = f.hidden_field(:workflow_id, value: @workflow&.id)
 .form-group
+  - if @document.new_record?
+    .custom-file.mt-3
+      = f.label :file_url, 'Choose file', class: 'custom-file-label'
+      - if params[:camera] == "true"
+        = f.file_field :file_url, accept: 'image/*', capture: 'camera', class: 'custom-file-input', id: 'customFile'
+      - else
+        = f.file_field :file_url, class: 'custom-file-input', id: 'customFile'
+  - else
+    .file-path-wrapper
+      = f.label 'File URL'
+      = f.text_field :file_url, class: 'file-path form-control', disabled: true
+.form-group
   = f.label :identifier, 'Document Identifier'
   = f.text_field :identifier, class: 'form-control'
 .form-group
@@ -18,15 +30,4 @@
 .form-group
   = f.label :remarks
   = f.text_area :remarks, class: 'form-control'
-.form-group
-  - if @document.new_record?
-    = f.label :file_url, 'Upload file'
-    - if params[:camera] == "true"
-      = f.file_field :file_url, accept: 'image/*', capture: 'camera', class: "form-control-file"
-    - else
-      = f.file_field :file_url, class: "form-control-file"
-  - else
-    .file-path-wrapper
-      = f.label 'File URL'
-      = f.text_field :file_url, class: 'file-path form-control', disabled: true
 = f.submit 'Save Document', class: 'btn btn-primary'
