@@ -1,10 +1,13 @@
 class Conductor::ActivationTypesController < ApplicationController
   layout 'dashboard/application'
-  before_action :set_user_and_company, only: [:new, :edit, :create, :index]
-  before_action :set_activation_type, only: [:edit, :update]
+  before_action :set_user_and_company, only: [:show, :new, :edit, :create, :index]
+  before_action :set_activation_type, only: [:show, :edit, :update]
 
   def index
     @activation_types = ActivationType.all
+  end
+
+  def show
   end
 
   def new

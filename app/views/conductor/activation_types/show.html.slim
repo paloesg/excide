@@ -1,0 +1,24 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Dashboard
+      li.breadcrumb-item
+        a href="/symphony/company" #{@company.name}
+      li.breadcrumb-item.active Activation type
+    h1 #{@activation_type.name} activation type
+.row
+  .col-sm-12
+    p
+      strong Name :
+      = @activation_type.name
+    p
+      strong Slug :
+      = @activation_type.slug
+    p
+      strong Colour :
+      = @activation_type.colour
+
+    => link_to 'Edit', edit_conductor_activation_type_path(@activation_type.id)
+    '|
+    =< link_to 'Back', conductor_activation_types_path
