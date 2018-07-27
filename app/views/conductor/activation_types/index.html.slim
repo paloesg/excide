@@ -6,7 +6,9 @@
       li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
       li.breadcrumb-item.active Activation type
-    h1 Activation type Listing
+    h1
+      | Activation type Listing
+      = link_to 'New Activation Type', new_conductor_activation_type_path, role: 'button', class: 'btn btn-warning float-right' unless @user.has_role? :contractor, :any
 .row
   .col-sm-12
     .table-responsive
