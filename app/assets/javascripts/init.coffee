@@ -1,6 +1,5 @@
-window.App ||= {}
-
-App.init = ->
+app_init = ->
+  mixpanel.track("Page view")
   $('.directUpload').find('input:file').each (i, elem) ->
     fileInput = $(elem)
     form = $(fileInput.parents('form:first'))
@@ -45,6 +44,4 @@ App.init = ->
     return
   return
 
-$(document).on 'ready page:load', ->
-  mixpanel.track("Page view")
-  App.init()
+$(document).ready(app_init)
