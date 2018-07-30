@@ -27,6 +27,7 @@
       table.table.table-hover
         thead
           tr
+            th
             th Activation type
             th Client
             th Event Owner
@@ -43,6 +44,8 @@
         tbody
           - @activations.each do |activation|
             tr
+              td
+                i.fa.fa-circle.mr-1 style="color: #{activation.activation_type.colour};"
               td = activation.activation_type.name
               td = activation.client&.name
               td = activation.event_owner&.full_name
