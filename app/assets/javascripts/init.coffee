@@ -17,6 +17,15 @@ App.init = ->
       paramName: 'file'
       dataType: 'XML'
       replaceFileInput: false
+      add: (e, data) ->
+        # Get s3 key url
+        s3_url_key = form.data('form-data')['key']
+        # Remove filename from url
+        regex_remove_filename = /[^\/]*$/;
+        # The new filename with key url
+        form.data('form-data')['key'] = s3_url_key.replace(regex_remove_filename, '') + 'filename.jpg'
+        data.formData = form.data('form-data')
+        data.submit();
       progressall: (e, data) ->
         progress = parseInt(data.loaded / data.total * 100, 10)
         progressBar.css 'width', progress + '%'
