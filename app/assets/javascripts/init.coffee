@@ -20,9 +20,9 @@ App.init = ->
       add: (e, data) ->
         # Get s3 key url
         s3_url_key = form.data('form-data')['key']
-        # Remove filename from url
+        # Remove filename from s3 key url
         regex_remove_filename = /[^\/]*$/;
-        # The new filename with key url
+        # The new filename with s3 key url
         form.data('form-data')['key'] = s3_url_key.replace(regex_remove_filename, '') + 'filename.jpg'
         data.formData = form.data('form-data')
         data.submit();
