@@ -16,6 +16,21 @@ function callDirectUpload() {
       paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
       dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
       replaceFileInput: false,
+      add: function (e, data) {
+        rawFileName = e.target.files[0].name
+        fileName = rawFileName.split('.').slice(0, -1).join('.')
+        get_extension = rawFileName.substring(rawFileName.lastIndexOf(".") + 1)
+        // Filter out special character in filename
+        filter_filename = fileName.replace(/[^\w\s]/gi, '')
+        // Get s3 key url
+        s3_url_key_with_filename = form.data('form-data')['key']
+        // Remove default filename from s3 key url
+        s3_url_key = s3_url_key_with_filename.replace(/[^\/]*$/, '')
+        // The new filename with s3 key url
+        form.data('form-data')['key'] = s3_url_key + filter_filename + '.' + get_extension
+        data.formData = form.data('form-data')
+        data.submit();
+      },
       progressall: function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
         progressBar.css('width', progress + '%')
