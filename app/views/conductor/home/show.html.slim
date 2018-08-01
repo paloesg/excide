@@ -34,7 +34,7 @@
           tbody
             - @upcoming_activations.each do |activation|
               tr
-                td = activation.activation_type.titleize
+                td = activation.activation_type.name
                 td = activation.start_time.strftime('%e %b %k:%M')
                 td = activation.end_time.strftime('%e %b %k:%M')
                 td = activation.location
