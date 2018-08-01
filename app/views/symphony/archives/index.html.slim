@@ -14,7 +14,7 @@
       .card-body
         .row
           .col-sm-3
-            = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'form-control form-control-sm pull-left')
+            = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'selectize')
           .offset-sm-6.col-sm-3
             .float-right = page_entries_info @workflows, entry_name: 'workflow'
       .table-responsive
