@@ -59,6 +59,6 @@ class Conductor::ActivationTypesController < ApplicationController
   end
 
   def activation_type_params
-    params.require(:activation_type).permit(:name, :slug, :colour)
+    params.require(:activation_type).permit(:name, :colour)
   end
 end
