@@ -538,6 +538,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   scout_apm
   sdoc (~> 0.4.0)
+  selectize-rails
   shoulda
   simple_calendar (~> 2.0)
   sitemap_generator
