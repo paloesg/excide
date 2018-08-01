@@ -17,8 +17,8 @@
         = render 'companies/address_fields', f: a
   .col-sm-6
     .form-group
-      = f.label :activation_type
-      = f.select :activation_type, ActivationType.all.map { |key, value| [key.name, key.slug] }, {selected: @activation.activation_type, prompt: 'Select activation type...'}, class: 'form-control'
+      = f.label :activation_type_id
+      = f.select :activation_type_id, ActivationType.all.map { |key, value| [key.name, key.id] }, {selected: @activation.activation_type, prompt: 'Select activation type...'}, class: 'form-control'
     .form-group
       = f.label :event_owner_id
       = f.select :event_owner_id, @event_owners.map { |key, value| [key.full_name, key.id] }, {selected: @activation.event_owner_id, prompt: 'Select event owner...'}, class: 'form-control'
