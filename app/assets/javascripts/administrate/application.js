@@ -5,5 +5,5 @@
 //= require datetime_picker
 //= require jquery.ui.widget
 //= require z.jquery.fileupload
-//= require components/selectize_initialize
+//= require administrate/components/selectize_initialize
 //= require_tree .
