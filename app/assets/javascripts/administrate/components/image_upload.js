@@ -27,7 +27,7 @@ function callDirectUpload() {
         // Remove default filename from s3 key url
         s3_url_key = s3_url_key_with_filename.replace(/[^\/]*$/, '')
         // The new filename with s3 key url
-        form.data('form-data')['key'] = s3_url_key + '' + filter_filename + '.' + get_extension
+        form.data('form-data')['key'] = s3_url_key + filter_filename + '.' + get_extension
         data.formData = form.data('form-data')
         data.submit();
       },
