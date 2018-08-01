@@ -26,5 +26,6 @@
 //= require dropzone
 //= require components/multiple_uploads
 //= require components/popover_initialize
+//= require components/selectize_initialze
 
 //= require turbolinks
