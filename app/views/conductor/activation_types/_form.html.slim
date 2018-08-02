@@ -1,0 +1,17 @@
+- if @activation_type.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@activation_type.errors.count, "error")} prohibited this activation from being saved:"
+    ul
+      - @activation_type.errors.full_messages.each do |message|
+        li = message
+.row
+  .col-sm-6
+    .form-group
+      = f.label :name
+      = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label :colour
+      = f.color_field :colour, class: 'w-100'
+.row
+  .col-sm-12
+    = f.submit 'Save Activation Type', class: 'btn btn-primary'

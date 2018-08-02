@@ -16,6 +16,20 @@ app_init = ->
       paramName: 'file'
       dataType: 'XML'
       replaceFileInput: false
+      add: (e, data) ->
+        rawFileName = e.target.files[0].name
+        fileName = rawFileName.split('.').slice(0, -1).join('.')
+        get_extension = rawFileName.substring(rawFileName.lastIndexOf(".")+1)
+        # Filter out special character in filename
+        filter_filename = fileName.replace(/[^\w\s]/gi, '')
+        # Get s3 key url
+        s3_url_key_with_filename = form.data('form-data')['key']
+        # Remove default filename from s3 key url
+        s3_url_key = s3_url_key_with_filename.replace(/[^\/]*$/, '')
+        # The new filename with s3 key url
+        form.data('form-data')['key'] = s3_url_key + filter_filename + '.' + get_extension
+        data.formData = form.data('form-data')
+        data.submit();
       progressall: (e, data) ->
         progress = parseInt(data.loaded / data.total * 100, 10)
         progressBar.css 'width', progress + '%'
