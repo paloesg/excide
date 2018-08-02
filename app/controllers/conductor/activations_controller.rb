@@ -140,6 +140,6 @@ class Conductor::ActivationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def activation_params
-      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location, :client_id, :event_owner_id, address_attributes: [:line_1, :line_2, :postal_code])
+      params.require(:activation).permit(:activation_type_id, :start_time, :end_time, :remarks, :location, :client_id, :event_owner_id, address_attributes: [:line_1, :line_2, :postal_code])
     end
 end

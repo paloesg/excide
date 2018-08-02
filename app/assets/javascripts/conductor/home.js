@@ -55,7 +55,7 @@ $(document).ready(function () {
     end_time = new Date(get_activation['end_time']);
     $('#allocated_users_length').text($(this).attr('get_allocated_users_length'));
     $('#client_name').text($(this).attr('activation-client'));
-    $('#activation_type_popover').text(get_activation['activation_type'].replace(/_/g, ' ')).css("text-transform", "capitalize");
+    $('#activation_type_popover').text($(this).attr('activation-type'));
     $('#event_owner').text($(this).attr('activation-event_owner'));
     $('#location').text(get_activation['location']);
     if (get_activation_address) {
