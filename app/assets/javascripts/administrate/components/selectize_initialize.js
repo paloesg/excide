@@ -3,8 +3,8 @@ function callSelectize() {
   $('select').selectize({
     sortField: 'text'
   });
-  // Initialize selectize when add fields (nested fields)
-  $(document).on('click', '.add_fields', function () {
-    callSelectize();
-  });
 }
+// Initialize selectize after add fields (nested fields)
+$(document).on('cocoon:after-insert', function (e, insertedItem) {
+  callSelectize()
+});
