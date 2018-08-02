@@ -58,7 +58,7 @@
       .card-body
         .form-group
           = f.label :workflowable_id, 'Client'
-          = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'form-control'
+          = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'selectize'
 .row
   .col-sm-12
     = f.submit 'Save Workflow', class: 'btn btn-primary'

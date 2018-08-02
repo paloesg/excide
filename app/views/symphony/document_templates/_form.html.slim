@@ -13,7 +13,7 @@
   = f.text_area :description, class: 'form-control'
 .form-group
   = f.label :template_id, 'Workflow Template'
-  = f.collection_select :template_id, @templates, :id, :title, {include_blank: true}, class: 'form-control'
+  = f.collection_select :template_id, @templates, :id, :title, {include_blank: true}, class: 'selectize'
 .form-group.file-field
   = f.label :file_url, 'Upload file'
   = f.file_field :file_url, class: "form-control-file"
