@@ -14,12 +14,13 @@
  *= require_self
  *= require_tree ./dashboard
  *= require dropzone
+ *= require font-awesome
  */
 
-@import "bootstrap-sprockets";
 @import "bootstrap";
 @import "themify-icons";
-@import "datetime_picker";
+@import "font-awesome";
+@import "tempusdominus-bootstrap-4";
 @import "simple_calendar";
 @import "conductor/availabilities";
 @import "conductor/home";

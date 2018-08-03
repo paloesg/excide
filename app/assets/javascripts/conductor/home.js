@@ -13,15 +13,22 @@ $(document).on("ajax:error", "form", function (xhr, status, error) {
 });
 $(document).ready(function () {
   // Create new activation
-  $('.new_activation').popover({
+  $('.new_activations').popover({
     html: true,
     container: 'body',
-    placement: 'auto left',
+    placement: 'auto',
     content: function () {
       return $('#new-activation').html();
     }
   }).on('shown.bs.popover', function () {
-    $('.datetimepicker').datetimepicker({
+    datetimepickers = $('.datetimepicker')
+    // get last of .datetimepicker
+    datetimepickers.eq(datetimepickers.length - 1).attr('id', 'newdatetimepicker')
+    datetimepickers.eq(datetimepickers.length - 1).attr('data-target', "#" + 'newdatetimepicker')
+    // get second from last of .datetimepicker
+    datetimepickers.eq(datetimepickers.length - 2).attr('id', 'newdatetimepicker1')
+    datetimepickers.eq(datetimepickers.length - 2).attr('data-target', "#" + 'newdatetimepicker1')
+    datetimepickers.datetimepicker({
       format: "YYYY-MM-DD HH:mm",
       stepping: 15,
       sideBySide: true
@@ -29,7 +36,7 @@ $(document).ready(function () {
     $('.datetimepicker').val($(this).attr('td-date'));
   }).on("show.bs.popover", function () {
     $('.popover').popover('hide');
-    $(this).data("bs.popover").tip().css({ "max-width": "500px" });
+    $($(this).data("bs.popover").tip).css({ "max-width": "500px" })
   }).children().on('click', function (e) {
     e.stopPropagation();
   });
@@ -48,7 +55,7 @@ $(document).ready(function () {
     end_time = new Date(get_activation['end_time']);
     $('#allocated_users_length').text($(this).attr('get_allocated_users_length'));
     $('#client_name').text($(this).attr('activation-client'));
-    $('#activation_type_popover').text(get_activation['activation_type'].replace(/_/g, ' ')).css("text-transform", "capitalize");
+    $('#activation_type_popover').text($(this).attr('activation-type'));
     $('#event_owner').text($(this).attr('activation-event_owner'));
     $('#location').text(get_activation['location']);
     if (get_activation_address) {
@@ -62,9 +69,7 @@ $(document).ready(function () {
     $('#edit_activation').attr("href", "conductor/activations/" + get_activation['id'] + "/edit");
     $('#edit_allocations').attr("href", "conductor/allocations/?start_date=" + moment(start_time).format('YYYY-MM-DD'));
   });
-  $('body').on('hidden.bs.popover', function (e) {
-    $(e.target).data("bs.popover").inState.click = false;
-  }).on("shown.bs.popover", function (e) {
+  $('body').on("shown.bs.popover", function (e) {
     $('.popover-close').click(function () { $(e.target).popover('hide') });
   });
 });

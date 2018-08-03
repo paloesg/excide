@@ -1,0 +1,19 @@
+p Hi #{@user.first_name},
+
+- if @reminders.count == 1
+  p Good day! You only have 1 reminder today.
+- else
+  p Good day! You have #{@reminders.count} reminders today.
+
+- @reminders.each do |reminder|
+  p
+    strong #{reminder.title}
+    br
+    | #{reminder.content}
+    br
+    - if reminder.task.present?
+      em
+        ' You can access the task from this link:
+        a href="#{symphony_workflow_url(reminder.task.section.template.slug, reminder.workflow_action.workflow.identifier)}" #{reminder.task.section.template.title} - #{reminder.workflow_action.workflow.identifier}
+
+p If you have any queries regarding your task, please contact your admin.

@@ -5,26 +5,26 @@
       - @workflow.errors.full_messages.each do |message|
         li = message
 = f.hidden_field(:workflowable_type, value: 'Client')
-.form-group#identifier_form
+.form-group
   = f.label :identifier
   = f.text_field :identifier, class: 'form-control'
-  span.help-block.hidden#identifier_exist
-    .glyphicon.glyphicon-remove aria-hidden="true"
+  span.help-block.d-none#identifier_exist
+    .fa.fa-times aria-hidden="true"
     |  This identifier is already in use.
-  span.help-block.hidden#identifier_unique
-    .glyphicon.glyphicon-ok aria-hidden="true"
+  span.help-block.d-none#identifier_unique
+    .fa.fa-check aria-hidden="true"
     |  This identifier is unique.
 .form-group
   = f.label :remarks
   = f.text_area :remarks, class: 'form-control'
 .form-group
   = f.label :deadline
-  = f.text_field :deadline, class: 'form-control datepicker'
+  = f.text_field :deadline, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
 .form-group
-  .panel.panel-default
-    .panel-heading
-      h3.panel-title Attributes
-    .panel-body
+  .card
+    .card-header
+      | Attributes
+    .card-body
       table.table
         thead
           tr
@@ -40,10 +40,10 @@
 .row
   - if @workflow.workflowable.blank?
     .col-md-6.col-sm-12
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title New Client
-        .panel-body
+      .card
+        .card-header
+          | New Client
+        .card-body
           = f.fields_for :client do |c|
             .form-group
               = c.label :name, 'Client Name'
@@ -51,16 +51,16 @@
             .form-group
               = c.label :identifier, 'Client Identifier'
               = c.text_field :identifier, class: 'form-control'
-  .col-md-6.col-sm-12
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Existing Client
-      .panel-body
+  .col-md-6.col-sm-12.mb-3
+    .card
+      .card-header
+        | Existing Client
+      .card-body
         .form-group
           = f.label :workflowable_id, 'Client'
           = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'form-control'
 .row
   .col-sm-12
-    = f.submit 'Save Workflow', class: 'btn btn-default'
+    = f.submit 'Save Workflow', class: 'btn btn-primary'
     '
-    = f.submit 'Save & Assign Tasks', name: 'assign', class: 'btn btn-default'
+    = f.submit 'Save & Assign Tasks', name: 'assign', class: 'btn btn-primary'

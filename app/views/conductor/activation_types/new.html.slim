@@ -1,0 +1,13 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Dashboard
+      li.breadcrumb-item
+        a href="/symphony/company" #{@company.name}
+      li.breadcrumb-item.active Activation type
+    h1 New activation type
+.row
+  .col-sm-12
+    = form_for @activation_type, url: conductor_activation_types_path do |f|
+      = render 'form', f: f

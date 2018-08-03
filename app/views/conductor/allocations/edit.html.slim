@@ -1,14 +1,14 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Dashboard
-      li
+      li.breadcrumb-item
         a href="#" #{@company.name}
-      li
+      li.breadcrumb-item
         a href="/conductor/allocations" Allocations
-      li.active Edit
-    h1.page-header Edit Allocation
+      li.breadcrumb-item.active Edit
+    h1.border-bottom Edit Allocation
 .row
   .col-sm-12
     = form_for @allocation, url: conductor_allocation_path(@allocation.id) do |f|

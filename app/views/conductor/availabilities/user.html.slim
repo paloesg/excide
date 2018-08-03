@@ -1,14 +1,14 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="/symphony" Dashboard
-      li
+      li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
-      li.active Manpower
-    h1.page-header
+      li.breadcrumb-item.active Manpower
+    h1
       | #{@user.full_name} Availabilities
-      = link_to 'Add Availability', new_conductor_availability_path(user_id: @user.id), role: 'button', class: 'btn btn-warning pull-right'
+      = link_to 'Add Availability', new_conductor_availability_path(user_id: @user.id), role: 'button', class: 'btn btn-warning float-right'
 
 .row
   .col-sm-12

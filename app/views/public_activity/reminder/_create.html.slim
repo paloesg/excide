@@ -1,1 +1,4 @@
-= " created a new reminder."
+td = activity.owner&.full_name or 'Unknown'
+td
+  ' created a new reminder
+td = activity.created_at.strftime("%d/%m/%Y %R")

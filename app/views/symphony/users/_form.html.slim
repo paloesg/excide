@@ -21,4 +21,4 @@
     label
       = check_box_tag 'user[role_ids][]', role.id, (@user.roles.include? role)
       = role.display_name
-= f.submit 'Save User', class: 'btn btn-default'
+= f.submit 'Save User', class: 'btn btn-primary'

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       resources dashboard_resource do
         member do
           get :export
+          post :import
         end
       end
     end
@@ -42,10 +43,12 @@ Rails.application.routes.draw do
     resources :archives
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
       member do
+        get '/history', to: 'workflows#activities', as: :activities
         post '/reset', to: 'workflows#reset', as: :reset
         get '/section/:section_id', to: 'workflows#show', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
         post '/send_reminder/:task_id', to: 'workflows#send_reminder', as: :reminder_task
+        post '/stop_reminder/:task_id', to: 'workflows#stop_reminder', as: :stop_reminder
         get '/assign', to: 'workflows#assign', as: :assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
       end
@@ -54,6 +57,7 @@ Rails.application.routes.draw do
   end
 
   namespace :conductor do
+    resources :activation_types
     resources :users do
       collection do
         get :export, to: 'users#export'
@@ -61,6 +65,9 @@ Rails.application.routes.draw do
       end
     end
     resources :activations do
+      collection do
+        get :history, to: 'activations#activities', as: :activities
+      end
       member do
         get '/create-allocations/:type/:count', to: 'activations#create_allocations', as: :create_allocations
         post '/reset', to: 'activations#reset', as: :reset

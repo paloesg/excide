@@ -3,7 +3,7 @@ section.cover.fullscreen.image-bg.overlay
     img.background-image alt="Growing your business" src=image_path('hero-image.jpg')
   .container.v-align-transform
     .row
-      .col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2
+      .col-md-4.offset-md-4.col-sm-8.offset-sm-2
         .feature.boxed
           h4.uppercase Account recovery
           = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|

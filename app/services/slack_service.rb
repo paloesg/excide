@@ -163,6 +163,25 @@ class SlackService
     self
   end
 
+  def send_reminders(reminders, user)
+    fields = []
+    reminders.each do |reminder|
+      fields << { title: reminder.title, value: reminder.content }
+    end
+
+    params = {
+      attachments: [
+        {
+          pretext: 'Reminders for ' + user.first_name + ' today:',
+          color: WARNING,
+          fields: fields
+        }
+      ]
+    }
+    @params = generate_payload(params)
+    self
+  end
+
   def send_reminder_error(reminder, error)
     params = {
       attachments: [
@@ -203,7 +222,7 @@ class SlackService
             },
             {
               title: 'Client',
-              value: action.workflow.workflowable.name,
+              value: action.workflow.workflowable&.name,
               short: true
             },
             {

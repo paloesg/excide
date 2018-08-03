@@ -1,9 +1,11 @@
-//= require jquery
+//= require jquery3
+//= require popper
+//= require bootstrap
+//= require_tree
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require bootstrap-sprockets
 //= require moment
-//= require datetime_picker
+//= require tempusdominus-bootstrap-4.js
 
 //= require trix
 //= require cocoon
@@ -22,5 +24,6 @@
 //= require conductor/home
 //= require dropzone
 //= require components/multiple_uploads
+//= require components/popover_initialize
 
 //= require turbolinks

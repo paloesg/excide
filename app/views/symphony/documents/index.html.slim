@@ -1,20 +1,18 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Home
-      li
+      li.breadcrumb-item
         a href="#" Company
-      li
+      li.breadcrumb-item
         a href="#" Documents
-      li.active Edit
-    h1.page-header
+      li.breadcrumb-item.active Edit
+    h1
       | Documents Listing
-.row
-  .col-sm-12
-    .btn-toolbar.pull-right
-      = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary'
-      = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning'
+      .btn-toolbar.float-right
+        = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
+        = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning' if ::Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').present?
 .row
   .col-sm-12
     .table-responsive
@@ -26,7 +24,7 @@
             th Document Template
             th Workflow
             th Uploaded At
-            th
+            th Actions
 
         tbody
           - @documents.each do |document|
@@ -34,11 +32,9 @@
               td = document.filename
               td = document.identifier
               td = document.document_template&.title
-              td
-                = link_to document.workflow.template.title, symphony_workflow_path(document.workflow.template.slug, document.workflow.identifier) if document.workflow.present?
+              td = link_to document.workflow.template.title, symphony_workflow_path(document.workflow.template.slug, document.workflow.identifier) if document.workflow.present?
               td = document.created_at.strftime("%d/%m/%Y %R")
-              td.btn-toolbar
-                = link_to "View", symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-xs'
-                = link_to "Download", document.file_url, role: 'button', class: 'btn btn-warning btn-xs'
-      .text-center
-        = paginate @documents, views_prefix: 'dashboards'
+              td style="min-width: 165px;"
+                = link_to "View", symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                = link_to "Download", document.file_url, role: 'button', class: 'btn btn-warning btn-sm mr-1'
+      = paginate @documents, views_prefix: 'dashboards'

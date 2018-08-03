@@ -97,6 +97,11 @@ class Conductor::ActivationsController < ApplicationController
     end
   end
 
+  def activities
+    @get_activities = PublicActivity::Activity.where(recipient_type: "Activation").order("created_at desc")
+    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
+  end
+
   def create_allocations
     count = params[:count].to_i
     count.times do
@@ -135,6 +140,6 @@ class Conductor::ActivationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def activation_params
-      params.require(:activation).permit(:activation_type, :start_time, :end_time, :remarks, :location, :client_id, :event_owner_id, address_attributes: [:line_1, :line_2, :postal_code])
+      params.require(:activation).permit(:activation_type_id, :start_time, :end_time, :remarks, :location, :client_id, :event_owner_id, address_attributes: [:line_1, :line_2, :postal_code])
     end
 end
