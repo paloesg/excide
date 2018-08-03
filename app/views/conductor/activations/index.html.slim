@@ -8,7 +8,7 @@
       li.breadcrumb-item.active Activations
     h1
       | Activations Listing - #{@date_from.strftime("%B")}
-      = link_to 'Activation Types', conductor_activation_types_path, role: 'button', class: 'btn btn-success float-right mr-1' unless @user.has_role? :contractor, :any
+      = link_to 'Activation Types', conductor_activation_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, :any
       = link_to 'New Activation', new_conductor_activation_path, role: 'button', class: 'btn btn-warning float-right mr-1' unless @user.has_role? :contractor, :any
 .row
   .col-sm-12.mb-3
