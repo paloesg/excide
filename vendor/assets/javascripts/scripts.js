@@ -139,7 +139,7 @@ $(document).ready(function() {
         $(this).toggleClass('active');
     });
 
-    $('.menu li').click(function(e) {
+    $('.menu li:not(.log-out)').click(function(e) {
         if (!e) e = window.event;
         e.stopPropagation();
         if ($(this).find('ul').length) {
