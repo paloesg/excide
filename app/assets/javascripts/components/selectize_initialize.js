@@ -1,5 +1,6 @@
 $(document).ready(function () {
   $('select.selectize').selectize({
-    sortField: 'text'
+    allowEmptyOption: true,
+    sortField: { field: '$score' }
   });
 })
