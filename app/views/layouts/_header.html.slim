@@ -16,7 +16,7 @@ nav
             - if current_user.has_role? :admin
               li
                 a href="/admin" Admin
-            li.skip_stop-propagation = link_to "Log Out", destroy_user_session_path, method: :delete
+            li.log-out = link_to "Log Out", destroy_user_session_path, method: :delete
         - else
           ul.menu
             li
