@@ -17,12 +17,12 @@ management.add_role :management, gobbler
 vp_sales = User.create(email: 'vp_sales@gobbler.com', password: 'password', first_name: 'VP Sales', last_name: 'Gobbler', contact_number: '12341234', company: gobbler)
 vp_sales.add_role :vp_sales, gobbler
 
-#creating template
-test_template = Template.create(title: 'Template 1', company: gobbler)
+# Create template
+template_1 = Template.create(title: 'Template 1', company: gobbler)
 
-sect_list1 = [['Section 1', 'Finance', 1, test_template], ['Section 2', 'Paper Work', 2, test_template], ['Section 3', 'Project Work', 3, test_template]]
+sections = [['Section 1', 'Finance', 1, template_1], ['Section 2', 'Paper Work', 2, template_1], ['Section 3', 'Project Work', 3, template_1]]
 
-sect_list1.each do |u_name, d_name, pos, template|
+sections.each do |u_name, d_name, pos, template|
   Section.create(unique_name: u_name, display_name: d_name, position: pos, template: template)
 end
 
@@ -48,30 +48,30 @@ task_list.each do |instruct, pos, completion, remind, role, task, sect|
   Task.create(instructions: instruct, position: pos, days_to_complete: completion, set_reminder: remind, role_id: role, task_type: task, section: sect)
 end
 
-work_flow_list1 = [
-  [1, 1, 1, false, 'W_flow1', 1, "Client", "EFGHIJ", test_template],
-  [2, 1, 1, false, 'W_flow2', 1, "Client", "sdjdf", test_template],
-  [3, 1, 1, false, 'W_flow3', 1, "Client", "jsjdhjsjf", test_template]
+workflows = [
+  [1, 1, 1, false, 'W_flow1', 1, "Client", "EFGHIJ", template_1],
+  [2, 1, 1, false, 'W_flow2', 1, "Client", "sdjdf", template_1],
+  [3, 1, 1, false, 'W_flow3', 1, "Client", "jsjdhjsjf", template_1]
 ]
 
-work_flow_list1.each do |user_id, comp_id, templateid, completion, identifier, workflowid, workflowtype, remarks, template|
+workflows.each do |user_id, comp_id, templateid, completion, identifier, workflowid, workflowtype, remarks, template|
   Workflow.create(user_id: user_id, company_id: comp_id, template_id: templateid, completed: completion, identifier: identifier, workflowable_id: workflowid, workflowable_type: workflowtype, remarks: remarks, template: template)
 end
 
-#create document-template
-doc_tem_1 = DocumentTemplate.create(title: 'Doc template 1', description: 'Describe the template of the first document', file_url: 'http://www.doc_sksij.com', template_id: 2, user_id: 1, template: test_template)
+# Create document template
+document_template_1 = DocumentTemplate.create(title: 'Doc template 1', description: 'Describe the template of the first document', file_url: 'http://www.doc_sksij.com', template_id: 2, user_id: 1, template: template_1)
 
-document_list = [
-  ['June Balance Sheet', 'Balance sheet in the month of June', 1, 'wjjkskkdkl', 3, 1, 'doc_june', 1, Workflow.find(1), doc_tem_1],
-  ['July Balance sheet', 'Balance sheet in the month of July', 1, 'hasilwoqp', 3, 1, 'doc_july', 5, Workflow.find(2), doc_tem_1],
-  ['Aug Balance sheet', 'Balance sheet in the month of Aug', 1, 'bewormknjvjp', 3, 1,'doc_aug', 5, Workflow.find(3), doc_tem_1]
+documents = [
+  ['June Balance Sheet', 'Balance sheet in the month of June', 1, 'wjjkskkdkl', 3, 1, 'doc_june', 1, Workflow.find(1), document_template_1],
+  ['July Balance sheet', 'Balance sheet in the month of July', 1, 'hasilwoqp', 3, 1, 'doc_july', 5, Workflow.find(2), document_template_1],
+  ['Aug Balance sheet', 'Balance sheet in the month of Aug', 1, 'bewormknjvjp', 3, 1,'doc_aug', 5, Workflow.find(3), document_template_1]
 ]
 
-document_list.each do |file_name, remarks, comp_id, f_url, workflowid, doc_templateid, identifier, user_id, workflow, doc_template|
+documents.each do |file_name, remarks, comp_id, f_url, workflowid, doc_templateid, identifier, user_id, workflow, doc_template|
   Document.create(filename: file_name, remarks: remarks, company_id: comp_id, file_url:f_url, workflow_id: workflowid, document_template_id: doc_templateid, identifier:identifier, user_id: user_id, workflow: workflow, document_template: doc_template )
 end
 
-#create client
+# Create clients
 client_list = [
   ['Harry Lee', 'HL', 1, 1],
   ['Emma Taylor', 'ET', 3, 1],
@@ -87,70 +87,70 @@ client_list.each do |name, identifier, user_id, comp_id|
   Client.create(name: name, identifier: identifier, user_id: user_id, company_id: comp_id)
 end
 
-reminders_list = [
+reminders = [
   [20180629, false, 1, 2, 5, 1,'Reminder for task 1','please remember to do task 1', 3, true, false, true, Task.find(1)],
   [20180702, true, 1, 1, 5, 1, 'Reminder for task 2', 'Please do task 2 by the next reminder', 4, false, true, false, Task.find(2)]
 ]
 
-reminders_list.each do |next_remind, repeat, freq_value, freq_unit, user_id, comp_id, title, content, taskid, email, sms, slack, task|
+reminders.each do |next_remind, repeat, freq_value, freq_unit, user_id, comp_id, title, content, taskid, email, sms, slack, task|
   Reminder.create(next_reminder: next_remind, repeat: repeat, freq_value: freq_value, freq_unit: freq_unit, user_id: user_id, company_id: comp_id, title: title, content:content, task_id: taskid, email: email, sms: sms, slack: slack, task: task)
 end
 
 =begin
 
 #Creating sections
-#section_1 = Section.create(unique_name: 'Section 1', display_name: 'Finance', position: 1, template: test_template) #Id section 6
-#section_2 = Section.create(unique_name: 'Section 2', display_name: 'Paper Work', position:2, template: test_template) #Id section 7
-#section_3 = Section.create(unique_name: 'Section 3', display_name: 'Project Work', position: 3, template: test_template) #Id section 8
+#section_1 = Section.create(unique_name: 'Section 1', display_name: 'Finance', position: 1, template: template_1) #Id section 6
+#section_2 = Section.create(unique_name: 'Section 2', display_name: 'Paper Work', position:2, template: template_1) #Id section 7
+#section_3 = Section.create(unique_name: 'Section 3', display_name: 'Project Work', position: 3, template: template_1) #Id section 8
 
 
 #Creating tasks
-task_1 = Task.create(instructions: 'Calculate the amount of expenditure', position: 1, days_to_complete: 6, set_reminder: false, role_id: 1, task_type: 1, section: sect_list1)
+task_1 = Task.create(instructions: 'Calculate the amount of expenditure', position: 1, days_to_complete: 6, set_reminder: false, role_id: 1, task_type: 1, section: sections)
 #task id 3
-task_2 = Task.create(instructions: 'Calculate the payroll of employees', position: 2, section_id: 6, image_url: '', days_to_complete: 4, set_reminder: false, role_id:1, task_type:1, link_url: '', section: sect_list1)
+task_2 = Task.create(instructions: 'Calculate the payroll of employees', position: 2, section_id: 6, image_url: '', days_to_complete: 4, set_reminder: false, role_id:1, task_type:1, link_url: '', section: sections)
 #task id 4
-task_3 = Task.create(instructions: 'File all the papers since 1989', position: 3, section_id: 7, image_url: '', days_to_complete: 1, set_reminder: true, role_id: 2, task_type: 2, link_url: '', section: sect_list1)
+task_3 = Task.create(instructions: 'File all the papers since 1989', position: 3, section_id: 7, image_url: '', days_to_complete: 1, set_reminder: true, role_id: 2, task_type: 2, link_url: '', section: sections)
 #task id 5
-task_4 = Task.create(instructions: 'Shredding the papers', position: 4, section_id: 7, image_url: '', days_to_complete: 1, set_reminder: false, role_id: 2, task_type: 2, link_url: '', section: sect_list1)
+task_4 = Task.create(instructions: 'Shredding the papers', position: 4, section_id: 7, image_url: '', days_to_complete: 1, set_reminder: false, role_id: 2, task_type: 2, link_url: '', section: sections)
 #task id 6
-task_5 = Task.create(instructions: 'Do powerpoint slides for presentation', position: 4, section_id: 8, image_url: '', days_to_complete: 12, set_reminder: false, role_id: 3, task_type: 3, link_url: '', section: sect_list1)
+task_5 = Task.create(instructions: 'Do powerpoint slides for presentation', position: 4, section_id: 8, image_url: '', days_to_complete: 12, set_reminder: false, role_id: 3, task_type: 3, link_url: '', section: sections)
 #task id 7
-task_6 = Task.create(instructions: 'Communicate with project group friend for some correction', position: 5, section_id: 8, image_url: ' ', days_to_complete: 1, set_reminder: false, role_id: 3, task_type: 3, link_url: '', section: sect_list1)
+task_6 = Task.create(instructions: 'Communicate with project group friend for some correction', position: 5, section_id: 8, image_url: ' ', days_to_complete: 1, set_reminder: false, role_id: 3, task_type: 3, link_url: '', section: sections)
 #task id 8
-task_7 = Task.create(instructions: 'Check the balance sheet of the accountants', position: 6, section_id: 6, days_to_complete: 7, set_reminder: false, role_id: 1, task_type: 0, section: sect_list1)
+task_7 = Task.create(instructions: 'Check the balance sheet of the accountants', position: 6, section_id: 6, days_to_complete: 7, set_reminder: false, role_id: 1, task_type: 0, section: sections)
 #task id 9
-task_8 = Task.create(instructions: 'Get approval signature from the finance manager', position: 7, section_id: 6, days_to_complete: 1, set_reminder: true, role_id: 1, task_type: 2, section: sect_list1)
+task_8 = Task.create(instructions: 'Get approval signature from the finance manager', position: 7, section_id: 6, days_to_complete: 1, set_reminder: true, role_id: 1, task_type: 2, section: sections)
 #task id 10
-task_9 = Task.create(instructions: 'Upload accounting data into company"s excel sheet', position: 8, section_id: 6, days_to_complete: 5, set_reminder: false, role_id: 1, task_type: 6, section: sect_list1)
+task_9 = Task.create(instructions: 'Upload accounting data into company"s excel sheet', position: 8, section_id: 6, days_to_complete: 5, set_reminder: false, role_id: 1, task_type: 6, section: sections)
 #task id 11
-task_10 = Task.create(instructions: 'Get the supervisor of the finance department to sign important documents', position: 9, section_id: 7, days_to_complete: 2, set_reminder: false, role_id: 1, task_type: 2, section: sect_list1)
+task_10 = Task.create(instructions: 'Get the supervisor of the finance department to sign important documents', position: 9, section_id: 7, days_to_complete: 2, set_reminder: false, role_id: 1, task_type: 2, section: sections)
 #task id 12
-task_11 = Task.create(instructions: 'Enter the data from the papers onto the excel sheet', position: 10, section_id: 7, days_to_complete: 3, set_reminder: true, role_id: 2, task_type: 6, section: sect_list1)
+task_11 = Task.create(instructions: 'Enter the data from the papers onto the excel sheet', position: 10, section_id: 7, days_to_complete: 3, set_reminder: true, role_id: 2, task_type: 6, section: sections)
 #task id 13
-task_12 = Task.create(instructions: 'Allocate project work to team members', position: 11, section_id: 8, days_to_complete: 1, set_reminder: false, role_id: 3, task_type: 0, section: sect_list1)
+task_12 = Task.create(instructions: 'Allocate project work to team members', position: 11, section_id: 8, days_to_complete: 1, set_reminder: false, role_id: 3, task_type: 0, section: sections)
 #task id 14
-task_13 = Task.create(instructions: 'Upload the main HTML document needed for the project', position: 12, section_id: 8, days_to_complete: 6, set_reminder: true, role_id: 3, task_type: 1, section: sect_list1[2])
+task_13 = Task.create(instructions: 'Upload the main HTML document needed for the project', position: 12, section_id: 8, days_to_complete: 6, set_reminder: true, role_id: 3, task_type: 1, section: sections[2])
 #task id 15
-task_14 = Task.create(instructions: 'Upload profile pictures of the team members', position: 13, section_id: 8, days_to_complete: 10, set_reminder: false, role_id: 3, task_type: 5, section: sect_list1)
+task_14 = Task.create(instructions: 'Upload profile pictures of the team members', position: 13, section_id: 8, days_to_complete: 10, set_reminder: false, role_id: 3, task_type: 5, section: sections)
 #task id 16
-task_15 = Task.create(instructions: 'Fold paper planes with the excess paper', position: 14, section_id: 7, days_to_complete: 4, set_reminder: false, role_id: 2, task_type: 0, section: sect_list1)
+task_15 = Task.create(instructions: 'Fold paper planes with the excess paper', position: 14, section_id: 7, days_to_complete: 4, set_reminder: false, role_id: 2, task_type: 0, section: sections)
 #task id 17
 
 
 
 #Creating workflow
-work_flow1 = Workflow.create(user_id: 1, company_id: 1, template_id: 2, completed: false, identifier: 'W_flow1', workflowable_id: 1, workflowable_type: "Client", remarks: "EFGHIJ", template: test_template) #workflow id 3
-work_flow2 = Workflow.create(user_id: 2, company_id: 1, template_id: 2, completed: false, identifier:'W_flow2', workflowable_id: 1, workflowable_type: 'Client', remarks: 'sdjdf', template: test_template) #workflow id 16
-work_flow3 = Workflow.create(user_id: 3, company_id: 1, template_id: 2, completed: false, identifier:'W_flow3', workflowable_id: 1, workflowable_type: 'Client', remarks: 'jsjdhjsjf', template: test_template) #workflow id 15
+work_flow1 = Workflow.create(user_id: 1, company_id: 1, template_id: 2, completed: false, identifier: 'W_flow1', workflowable_id: 1, workflowable_type: "Client", remarks: "EFGHIJ", template: template_1) #workflow id 3
+work_flow2 = Workflow.create(user_id: 2, company_id: 1, template_id: 2, completed: false, identifier:'W_flow2', workflowable_id: 1, workflowable_type: 'Client', remarks: 'sdjdf', template: template_1) #workflow id 16
+work_flow3 = Workflow.create(user_id: 3, company_id: 1, template_id: 2, completed: false, identifier:'W_flow3', workflowable_id: 1, workflowable_type: 'Client', remarks: 'jsjdhjsjf', template: template_1) #workflow id 15
 
 
 
 #creating document
-doc_1 = Document.create(filename: 'June Balance sheet', remarks: 'Balance sheet in the month of June', company_id: 1, file_url: 'wjjkskkdkl', workflow_id: 3, document_template_id: 1, identifier: 'doc_june', user_id: 1, workflow: work_flow1, document_template: doc_tem_1)
+doc_1 = Document.create(filename: 'June Balance sheet', remarks: 'Balance sheet in the month of June', company_id: 1, file_url: 'wjjkskkdkl', workflow_id: 3, document_template_id: 1, identifier: 'doc_june', user_id: 1, workflow: work_flow1, document_template: document_template_1)
 #document id 2
-doc_2 = Document.create(filename: 'July Balance sheet', remarks: 'Balance sheet in the month of July', company_id: 1, file_url: 'hasilwoqp', workflow_id: 3, document_template_id: 1, identifier: 'doc_july', user_id: 5, workflow: work_flow1, document_template: doc_tem_1 )
+doc_2 = Document.create(filename: 'July Balance sheet', remarks: 'Balance sheet in the month of July', company_id: 1, file_url: 'hasilwoqp', workflow_id: 3, document_template_id: 1, identifier: 'doc_july', user_id: 5, workflow: work_flow1, document_template: document_template_1 )
 #document id 3
-doc_3 = Document.create(filename: 'Aug Balance sheet', remarks: 'Balance sheet in the month of Aug', company_id: 1, file_url: 'bewormknjvjp', workflow_id: 3, document_template_id: 1, identifier: 'doc_aug', user_id: 5, workflow: work_flow1, document_template: doc_tem_1 )
+doc_3 = Document.create(filename: 'Aug Balance sheet', remarks: 'Balance sheet in the month of Aug', company_id: 1, file_url: 'bewormknjvjp', workflow_id: 3, document_template_id: 1, identifier: 'doc_aug', user_id: 5, workflow: work_flow1, document_template: document_template_1 )
 #document id 4
 
 
