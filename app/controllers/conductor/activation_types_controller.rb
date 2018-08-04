@@ -1,7 +1,7 @@
 class Conductor::ActivationTypesController < ApplicationController
   layout 'dashboard/application'
   before_action :set_user_and_company, only: [:show, :new, :edit, :create, :index]
-  before_action :set_activation_type, only: [:show, :edit, :update]
+  before_action :set_activation_type, only: [:show, :edit, :update, :destroy]
 
   def index
     @activation_types = ActivationType.all
@@ -22,7 +22,7 @@ class Conductor::ActivationTypesController < ApplicationController
 
     respond_to do |format|
       if @activation_type.save
-        format.html { redirect_to conductor_activation_types_path, notice: 'Activation was successfully created.' }
+        format.html { redirect_to conductor_activation_types_path, notice: 'Activation type was successfully created.' }
         format.json { render :show, status: :created, location: @activation_type }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
@@ -44,6 +44,14 @@ class Conductor::ActivationTypesController < ApplicationController
         format.json { render json: @activation_type.errors, status: :unprocessable_entity }
         format.js   { render js: @activation_type.errors.to_json }
       end
+    end
+  end
+
+  def destroy
+    @activation_type.destroy
+    respond_to do |format|
+      format.html { redirect_to conductor_activation_types_url, notice: 'Activation type was successfully destroyed.' }
+      format.json { head :no_content }
     end
   end
 
