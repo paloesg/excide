@@ -13,7 +13,5 @@ $(document).ready(function () {
     }
   });
 
-  $('select.selectize').selectize({
-    allowEmptyOption: true,
-  });
+  $('select.selectize').selectize();
 })
