@@ -3,6 +3,9 @@ $(document).ready(function () {
     allowEmptyOption: true,
     onItemAdd: function (value, $item) {
       Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + value);
+    },
+    onFocus: function () {
+      $(".selectize-input input#workflow_type-selectized").attr("style", "width: auto;");
     }
   });
 
@@ -10,6 +13,9 @@ $(document).ready(function () {
     allowEmptyOption: true,
     onItemAdd: function (value, $item) {
       Turbolinks.visit('//' + location.host + location.pathname + '?activation_type=' + value);
+    },
+    onFocus: function () {
+      $(".selectize-input input#activation_type-selectized").attr("style", "width: auto;");
     }
   });
 
