@@ -5,7 +5,7 @@
         a href="#" Home
       li
         - if current_user.has_role? :admin
-          = select_tag "company", options_from_collection_for_select(@companies, "id", "name", @company.id), class: "company-dropdown", onchange: "window.location.href = '/admin/companies/' + this.value + '/dashboard';"
+          = select_tag "company", options_from_collection_for_select(@companies, "id", "name", @company.id), class: "selectize company-dropdown", onchange: "window.location.href = '/admin/companies/' + this.value + '/dashboard';"
         - else
           a href="#" #{@company.name}
       li.active Dashboard

@@ -113,6 +113,8 @@ gem 'bootstrap4-datetime-picker-rails'
 gem "simple_calendar", "~> 2.0"
 # Algolia search
 gem "algoliasearch-rails"
+# Selectize autocomplete selection
+gem "selectize-rails"
 
 # Backend admin
 gem 'administrate'

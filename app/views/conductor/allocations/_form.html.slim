@@ -9,7 +9,7 @@
   .col-xs-12.col-sm-6.col-md-3
     .form-group
       = f.label :activation
-      = f.collection_select :activation_id, @activations, :id, :name, {include_blank: true}, {class: 'form-control', disabled: 'disabled'}
+      = f.collection_select :activation_id, @activations, :id, :name, {include_blank: true}, {class: 'selectize', disabled: 'disabled'}
   .col-xs-12.col-sm-6.col-md-3
     .form-group
       = f.label :allocation_date
@@ -27,11 +27,11 @@
   .col-xs-12.col-sm-6.col-md-3
     .form-group
       = f.label :allocation_type
-      = f.select :allocation_type, Allocation.allocation_types.map { |key, value| [key.titleize, key] }, {selected: @allocation.allocation_type, prompt: 'Select allocation type...'}, class: 'form-control'
+      = f.select :allocation_type, Allocation.allocation_types.map { |key, value| [key.titleize, key] }, {selected: @allocation.allocation_type, prompt: 'Select allocation type...'}, class: 'selectize'
   .col-xs-12.col-sm-6.col-md-3
     .form-group
       = f.label :user
-      = f.collection_select :user_id, @users, :id, :first_name, {include_blank: true}, class: 'form-control'
+      = f.collection_select :user_id, @users, :id, :first_name, {include_blank: true}, class: 'selectize'
 
 .row
   .col-xs-12.col-sm-6.col-md-3

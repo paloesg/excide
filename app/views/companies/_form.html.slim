@@ -12,7 +12,7 @@
   .col-md-12
     .form-group
       = f.label :company_type, 'Company Type'
-      = f.select :company_type, Company.company_types.keys.map { |c| [c, c] }, {:include_blank => true}, class: 'form-control'
+      = f.select :company_type, Company.company_types.keys.map { |c| [c, c] }, {:include_blank => true}, class: 'selectize'
 .row
   .col-md-12
     .form-group

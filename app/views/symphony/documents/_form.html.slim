@@ -26,7 +26,7 @@
 - unless params[:camera] == "true"
   .form-group
     = f.label :document_template_id, 'Template'
-    = f.collection_select :document_template_id, @document_templates, :id, :title, {include_blank: true}, {class: 'form-control'}
+    = f.collection_select :document_template_id, @document_templates, :id, :title, {include_blank: true}, {class: 'selectize'}
 .form-group
   = f.label :remarks
   = f.text_area :remarks, class: 'form-control'
