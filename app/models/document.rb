@@ -6,6 +6,8 @@ class Document < ActiveRecord::Base
             filename: ->(_controller, model) { model&.filename }
           }
 
+  after_destroy :delete_on_s3_too
+
   belongs_to :company
   belongs_to :workflow
   belongs_to :document_template
@@ -13,4 +15,9 @@ class Document < ActiveRecord::Base
 
   validates :identifier, :file_url, presence: true
   validates :file_url, uniqueness: true
+
+  def delete_on_s3_too
+    key = self.file_url.split('amazonaws.com/')[1]
+    S3_BUCKET.object(key).delete
+  end
 end
