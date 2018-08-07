@@ -16,10 +16,6 @@
   = f.collection_select :template_id, @templates, :id, :title, {include_blank: true}, class: 'form-control'
 .form-group.file-field
   = f.label :file_url, 'Upload file'
-  = f.file_field :file_url
-  .file-path-wrapper
-    = f.label 'File URL'
-    = f.text_field :file_url, class: 'file-path form-control', disabled: true
-= f.submit class: 'btn btn-primary'
-'
+  = f.file_field :file_url, class: "form-control-file"
+= f.submit class: 'btn btn-primary mr-1'
 = link_to 'Cancel', symphony_document_templates_path, role: 'button', data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'

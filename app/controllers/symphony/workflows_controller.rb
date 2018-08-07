@@ -3,6 +3,15 @@ class Symphony::WorkflowsController < WorkflowsController
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry]
   before_action :set_attributes_metadata, only: [:create, :update]
 
+  def index
+    template = Template.find(params[:workflow_name])
+    @workflows = @company.workflows.where(template: template).order(created_at: :desc)
+
+    @workflows_sort = sort_column(@workflows.flatten)
+    params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
+    @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
+  end
+
   def new
     @workflow = Workflow.new
     @workflow.template_data(@template)
@@ -47,6 +56,8 @@ class Symphony::WorkflowsController < WorkflowsController
       log_activity
       if params[:assign]
         redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
+      elsif params[:document_id]
+        redirect_to data_entry_symphony_workflow_path(@template.slug, @workflow.identifier, document_id: params[:document_id]), notice: 'Attributes were successfully saved.'
       else
         redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
       end
@@ -84,12 +95,27 @@ class Symphony::WorkflowsController < WorkflowsController
     end
   end
 
+  def stop_reminder
+    action = Task.find(params[:task_id])
+    action.reminders.each { |reminder| reminder.update_attributes(next_reminder: nil) }
+    respond_to do |format|
+      format.json { render json: "Reminder stopped", status: :ok }
+      format.js   { render js: 'Turbolinks.visit(location.toString());' }
+    end
+  end
+
   def reset
     @workflow_actions = @company.workflow_actions.where(workflow_id: @workflow.id)
     @workflow.update_attribute(:completed, false)
     @workflow_actions.update_all(completed: false, completed_user_id: nil)
     @workflow.create_activity key: 'workflow.reset', owner: @user
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully reset.'
+  end
+
+  def activities
+    set_workflow
+    @get_activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
   end
 
   def data_entry
@@ -147,5 +173,17 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def set_documents
     @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
+  end
+
+  def sort_column(array)
+    array.sort_by{
+      |item| if params[:sort] == "template" then item.template.title.upcase
+      elsif params[:sort] == "remarks" then item.remarks ? item.remarks.upcase : ""
+      elsif params[:sort] == "deadline" then item.deadline ? item.deadline : Time.at(0)
+      elsif params[:sort] == "workflowable" then item.workflowable ? item.workflowable&.name.upcase : ""
+      elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.display_name
+      elsif params[:sort] == "identifier" then item.identifier ? item.identifier.upcase : ""
+      end
+    }
   end
 end

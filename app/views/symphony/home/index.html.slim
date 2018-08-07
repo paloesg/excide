@@ -1,59 +1,61 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Home
-      li
+      li.breadcrumb-item
         a href="#" #{@company.name}
-      li.active Dashboard
-    h1.page-header Dashboard
+      li.breadcrumb-item.active Dashboard
+    h1.border-bottom Dashboard
 .row
   .col-md-8.col-sm-6
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Your Oustanding Tasks
-      .panel-body
-        - if @outstanding_actions.blank?
+    .card
+      h5.card-header Your Outstanding Tasks
+      - if @outstanding_actions.blank?
+        .card-body
           | No outstanding tasks for you at the moment.
-      .table-responsive
-        table.table
-          thead
-            tr
-              th Workflow Identifier
-              th Workflow Type
-              th Client Name
-              th Task Instructions
-              th Deadline
-          tbody
-            - @outstanding_actions.each do |action|
-              tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
-                td = link_to action.workflow.identifier, symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier)
-                td = action.workflow.template.title
-                td = action.workflow.workflowable&.name || '-'
-                td = action.task.instructions
-                td = action.deadline&.strftime("%d/%m/%Y")
+      - else
+        .table-responsive
+          table.table
+            thead
+              tr
+                th Workflow Identifier
+                th Workflow Type
+                th Client Name
+                th Task Instructions
+                th Deadline
+            tbody
+              - @outstanding_actions.each do |action|
+                tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
+                  td = link_to action.workflow.identifier, symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier)
+                  td = action.workflow.template.title
+                  td = action.workflow.workflowable&.name || '-'
+                  td = action.task.instructions
+                  td = action.deadline&.strftime("%d/%m/%Y")
 
   - if @templates.present?
     .col-md-4.col-sm-6
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title New Workflow
-        .panel-body
+      .card
+        h5.card-header New Workflow
+        .card-body
           .form-group
             = label_tag "template", "Select workflow type"
             = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), class: "form-control template-dropdown", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-          = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-default', id: 'new-workflow'
+          = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-primary', id: 'new-workflow'
 
 .row
   .col-md-8.col-sm-6
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title Workflows
-      .panel-body
-        - if @workflows.blank?
+    .card.mt-3
+      h5.card-header Workflows In Progress
+      .card-body
+        - if @workflows_array.blank?
           | No outstanding workflows at the moment. Click on a workflow to begin.
         - else
-          .pull-right = page_entries_info @workflows, entry_name: 'workflow'
+          .row
+            .col-sm-3
+              = select_tag('workflow_type', options_for_select(@templates.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'form-control form-control-sm pull-left')
+            .offset-sm-3.col-sm-6
+              .float-right = page_entries_info @workflows, entry_name: 'workflow'
       .table-responsive
         table.table
           thead
@@ -73,6 +75,5 @@
                 td = w.remarks || '-'
                 td = w.deadline&.strftime("%d/%m/%Y") || '-'
                 td = w.completed ? 'Completed' : w.current_section&.display_name
-      .panel-footer
-        .text-center
-          = paginate @workflows, views_prefix: 'dashboards'
+      .card-footer.pt-4
+        = paginate @workflows, views_prefix: 'dashboards'

@@ -6,11 +6,11 @@
       li
         a href="#" #{@company.name}
       li.active Company
-    h1.page-header Register Company
+    h1 Register Company
 .row
   .col-md-12
     = form_for(@company, url: {action: "create"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
         = render 'form', f: f
         .row
           .col-md-4.col-sm-6
-            = f.submit "Save details", class: 'btn btn-default'
+            = f.submit "Save details", class: 'btn btn-primary'

@@ -5,11 +5,10 @@ class Activation < ActiveRecord::Base
   belongs_to :event_owner, class_name: 'User'
   belongs_to :company
   belongs_to :client
+  belongs_to :activation_type
 
   has_one :address, as: :addressable, dependent: :destroy
   has_many :allocations, dependent: :destroy
-
-  enum activation_type: [:happy_cart, :flash_sale, :brand_activation, :in_store_activation, :g5_cart]
 
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
 
@@ -26,7 +25,7 @@ class Activation < ActiveRecord::Base
           }
 
   def name
-    client.name + ' ' + activation_type.titleize
+    client.name + ' ' + activation_type.name
   end
 
   def update_activation_notification

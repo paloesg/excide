@@ -6,7 +6,7 @@
       li
         a href="#" Surveys
       li.active New Survey
-    h1.page-header New Section
+    h1 New Section
 
 .row
   .col-sm-12
@@ -38,6 +38,6 @@
                   = r.text_field :content, class: 'form-control'
       .row
         .col-md-4.col-sm-6
-          = f.submit "Save & Add Another", formaction: segment_create_and_new_path, class: 'btn btn-default'
+          = f.submit "Save & Add Another", formaction: segment_create_and_new_path, class: 'btn btn-primary'
         .col-md-4.col-md-offset-4.col-sm-6
-          = f.submit "Save & Next Section", class: 'btn btn-default pull-right'
+          = f.submit "Save & Next Section", class: 'btn btn-primary pull-right'

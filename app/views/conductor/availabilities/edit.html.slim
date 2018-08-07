@@ -1,15 +1,31 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Dashboard
-      li
+      li.breadcrumb-item
         a href="#" #{@company.name}
-      li
+      li.breadcrumb-item
         a href="#" Manpower
-      li.active Edit
-    h1.page-header Edit Availability
-.row
-  .col-sm-12
-    = form_for @availability, url: conductor_availability_path(@availability.id) do |f|
-      = render 'form', f: f
+      li.breadcrumb-item.active Edit
+    h1 Edit Availability
+.container-fluid
+  .row
+    .col-sm-2.col-xs-2.nopadding
+      .panel.panel-default.simple-calendar
+        .panel-heading.calendar-heading.mb-5
+        table.table.table-striped
+          thead
+            tr
+              th Time
+          tbody
+            tr
+              td.day.text-nowrap
+                br
+                p All day
+                - @time_headers.each do |time|
+                  hr
+                  p #{time}
+    .col-sm-10.col-xs-10.nopadding
+      = form_tag conductor_availability_path(@availability.id), method: :patch do
+        = render 'add_availabilities'

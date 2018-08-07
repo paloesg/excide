@@ -5,10 +5,10 @@ td
 td
   .btn-toolbar
     - if task == @workflow.current_task && (@user.has_role? :admin, @company)
-      = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-xs'
+      = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
 td
   - if action.assigned_user.present?
-    span.glyphicon.glyphicon-user aria-hidden="true"
+    span.fa.fa-user aria-hidden="true"
     |  #{action.assigned_user&.full_name}
   - else
     = task.display_role
@@ -20,6 +20,5 @@ td
   - else
     = check_box_tag 'completed', action.id, action.completed, disabled: true
 td
-  - if action.completed? && action.completed_user.present?
-    span.glyphicon.glyphicon-user aria-hidden="true"
-    |  #{action.completed_user&.full_name}
+  a data-toggle="task_popover" tabindex="0" rel="popover" title="Task details" task-details="{ "next_reminder" : "#{action.reminders.take&.next_reminder&.strftime('%F')}", "completed_by" : "#{action.completed_user&.full_name}", "completed_on" : "#{action.updated_at.strftime('%F %R') if action.completed }", "task_id": "#{task.id}", "action_id": "#{action.id}", "set_reminder": #{task.set_reminder} }"
+    i.fa.fa-angle-down

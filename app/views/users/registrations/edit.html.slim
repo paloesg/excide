@@ -1,29 +1,28 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Home
-      li
+      li.breadcrumb-item
         a href="#" #{resource_name.to_s.humanize}
-      li.active Update
-    h1.page-header Edit User
+      li.breadcrumb-item.active Update
+    h1 Edit User
 
 .row
   .col-md-12
     = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
       = devise_error_messages!
       .row
-        .col-md-12
+        .col-md-6
           .form-group
             = f.label :first_name
             = f.text_field :first_name, class: 'form-control'
-      .row
-        .col-md-12
+        .col-md-6
           .form-group
             = f.label :last_name
             = f.text_field :last_name, class: 'form-control'
       .row
-        .col-md-12
+        .col-md-6
           .form-group
             = f.label :email
             = f.email_field :email, class: 'form-control'
@@ -31,27 +30,37 @@
             div
               | Currently waiting confirmation for:
               = resource.unconfirmed_email
-      .row
-        .col-md-12
+        .col-md-6
           .form-group
             = f.label :contact_number
             = f.text_field :contact_number, class: 'form-control'
+      - if current_user.has_role? :admin
+        .row
+          .col-md-6
+            .form-group
+              = f.label :company_id
+              = f.select :company_id, Company.all.map{|company| [company.name, company.id]}, {selected: resource.company.id}, class: 'selectize'
+      .row
+        .col-md-6
+          .card
+            .card-header Confirm Password
+            .card-body
+              em We need your current password to confirm your changes.
+              .form-group
+              = f.label :current_password, "Current password"
+              = f.password_field :current_password, autocomplete: "off", class: 'form-control'
+        .col-md-6
+          .card
+            .card-header Change Password
+            .card-body
+              em Leave blank if you don't want to change your password.
+              .form-group
+              = f.label :password, "New Password"
+              = f.password_field :password, autocomplete: "off", class: 'form-control'
+              .form-group
+              = f.label :password_confirmation
+              = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
       .row
         .col-md-12
           .form-group
-          = f.label :password, "Password (leave blank if you don't want to change it)"
-          = f.password_field :password, autocomplete: "off", class: 'form-control'
-      .row
-        .col-md-12
-          .form-group
-          = f.label :password_confirmation
-          = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
-      .row
-        .col-md-12
-          .form-group
-          = f.label :current_password, "Current password (we need your current password to confirm your changes)"
-          = f.password_field :current_password, autocomplete: "off", class: 'form-control'
-      .row
-        .col-md-12
-          .form-group
-          = f.submit "Update", class: "btn green darken-3", class: 'btn btn-default'
+          = f.submit "Update", class: "btn green darken-3", class: 'btn btn-primary'

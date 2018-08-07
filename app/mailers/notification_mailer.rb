@@ -25,6 +25,15 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: @reminder.title)
   end
 
+  def batch_reminder(reminders, user)
+    @reminders = reminders
+    @user = user
+
+    address = Mail::Address.new @user.email
+    address.display_name = @user.first_name
+    mail(to: address.format, subject: 'Here are your reminders for today')
+  end
+
   def create_activation(activation, user)
     activation_notification(activation, user, 'A new activation has been created')
   end

@@ -1,21 +1,21 @@
 .row
   .col-sm-12
-    ol.breadcrumb.breadcrumb-2
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Home
-      li
+      li.breadcrumb-item
         a href="#" Company
-      li
+      li.breadcrumb-item
         a href="#" #{@template.title}
-      li.active #{@workflow.identifier}
-    h1.page-header User Assignment
+      li.breadcrumb-item.active #{@workflow.identifier}
+    h1 User Assignment
 .row
   .col-md-8.col-sm-6
     - @sections.each do |section|
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title = section.display_name
-        .panel-body
+      .card.mb-3
+        .card-header
+          = section.display_name
+        .card-body
           table.table
             thead
               tr
@@ -35,18 +35,17 @@
                   td = form_for action, remote: true do |f|
                     = f.collection_select(:assigned_user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = {data: {action_id: action.id}, class: 'form-control', onchange: 'assign(this)'})
                   td
-                    i.glyphicon.glyphicon-ok.text-success style="opacity: 0;"
-                    i.glyphicon.glyphicon-remove.text-danger style="opacity: 0;"
+                    i.fa.fa-check.text-success style="opacity: 0;"
+                    i.fa.fa-times.text-danger style="opacity: 0;"
   .col-md-4.col-sm-6
     = link_to "Finish Assignment", symphony_workflow_path(@template.slug, @workflow.identifier), class: 'btn btn-primary btn-block'
     br
-  - @workflow.get_roles.each do |role|
-    .col-md-4.col-sm-6
-      .panel.panel-default
-        .panel-heading
-          h3.panel-title = role.name.titleize
-        .panel-body
+    - @workflow.get_roles.each do |role|
+      .card.mb-3
+        .card-header
+          = role.name.titleize
+        .card-body
           - (User.with_role role.name, @company).each do |user|
-            span.glyphicon.glyphicon-user aria-hidden="true"
+            span.fa.fa-user aria-hidden="true"
             |  #{user.full_name}
             br

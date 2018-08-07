@@ -23,7 +23,7 @@ class Allocation < ActiveRecord::Base
             rowcount += 1,
             allocation.user&.full_name,
             allocation.allocation_date.strftime('%v'),
-            allocation.activation.activation_type.titleize,
+            allocation.activation.activation_type.name,
             allocation.activation.client&.name + " - " + allocation.activation.location,
             allocation.start_time.in_time_zone.strftime("%H:%M"),
             allocation.end_time.in_time_zone.strftime("%H:%M"),

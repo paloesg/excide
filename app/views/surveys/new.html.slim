@@ -20,4 +20,4 @@
           = f.collection_select(:company_id, Company.all, :id, :name, {include_blank: 'Company Name'}, class: 'form-control')
         .form-group
           = f.text_area :remarks, placeholder: 'Remarks', class: 'form-control'
-        = f.submit 'Create Survey', class: 'btn btn-default pull-right'
+        = f.submit 'Create Survey', class: 'btn btn-primary pull-right'

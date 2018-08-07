@@ -10,9 +10,15 @@ class Symphony::HomeController < ApplicationController
     @workflows_array = @templates.map(&:current_workflows).flatten
     @workflows_sort = sort_column(@workflows_array)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
-    @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
 
-    @outstanding_actions = WorkflowAction.all_user_actions(current_user).where.not(completed: true).order(:deadline)
+    if params[:workflow_type].blank?
+      @templates_type = @workflows_sort
+    else
+      @templates_type = @workflows_sort.select{ |t| t.template.slug == params[:workflow_type] }
+    end
+
+    @workflows = Kaminari.paginate_array(@templates_type).page(params[:page]).per(10)
+    @outstanding_actions = WorkflowAction.all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).order(:deadline)
   end
 
   def search

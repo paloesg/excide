@@ -1,14 +1,30 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
         a href="#" Dashboard
-      li
+      li.breadcrumb-item
         a href="#" #{@company.name}
-      li
+      li.breadcrumb-item
         a href="#" Manpower
-      li.active New
-    h1.page-header New Availability
+      li.breadcrumb-item.active Add
+    h1 Add Availability
 .container-fluid
   .row
-    = render 'add_avaibilities'
+    .col-2.nopadding
+      .simple-calendar style="margin-top: 57px"
+        table.table.table-striped
+          thead
+            tr
+              th Time
+          tbody
+            tr
+              td.day.text-nowrap
+                br
+                p All day
+                - @time_headers.each do |time|
+                  hr
+                  p #{time}
+    .col-10.nopadding
+      = form_tag conductor_availabilities_path do
+        = render 'add_availabilities'

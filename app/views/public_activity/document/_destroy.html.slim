@@ -1,4 +1,4 @@
-td = activity.owner.full_name
+td = activity.owner&.full_name or 'Unknown'
 td
   ' deleted file
   strong #{activity.parameters[:filename]}
