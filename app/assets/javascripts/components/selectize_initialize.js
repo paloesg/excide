@@ -4,9 +4,7 @@ $(document).ready(function () {
     onItemAdd: function (value, $item) {
       Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + value);
     },
-    onFocus: function () {
-      $(".selectize-input input#workflow_type-selectized").attr("style", "width: auto;");
-    }
+    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
   $('select.selectize-activation-type').selectize({
@@ -14,9 +12,7 @@ $(document).ready(function () {
     onItemAdd: function (value, $item) {
       Turbolinks.visit('//' + location.host + location.pathname + '?activation_type=' + value);
     },
-    onFocus: function () {
-      $(".selectize-input input#activation_type-selectized").attr("style", "width: auto;");
-    }
+    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
   $('select.selectize').selectize();
