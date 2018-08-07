@@ -28,7 +28,7 @@ class Symphony::ArchivesController < ApplicationController
     @template = @archive['template']
     @sections = @template['sections']
     @section = params[:section] ? @sections.select{|section| section['unique_name'] == params[:section]}.first : @sections.last
-    @tasks = @section['tasks']
+    @tasks = @section['tasks'].sort_by{|task| task['position']}
     @section_index = @sections.index(@section)
     @document_templates = DocumentTemplate.where(template: @workflow.template)
     @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)

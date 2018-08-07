@@ -24,7 +24,7 @@
           tbody
             - @tasks.each do |task|
               tr
-                td No
+                td = task['position']
                 td = task['instructions']
                 td = task['workflow_actions']['assigned_user']
                 td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
