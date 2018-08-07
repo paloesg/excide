@@ -15,5 +15,7 @@ $(document).ready(function () {
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
-  $('select.selectize').selectize();
+  $('select.selectize').selectize({
+    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
+  });
 })
