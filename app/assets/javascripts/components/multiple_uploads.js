@@ -22,6 +22,8 @@ $(document).ready(function () {
           filename: file.upload.filename,
           identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
           file_url: '//' + location['host'] + '/' + filePath,
+          client_id: $('#client_id').val(),
+          template_id: $('#template_id').val(),
         }
       });
     });

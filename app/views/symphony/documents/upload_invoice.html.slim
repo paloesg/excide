@@ -13,6 +13,10 @@
 .row
   .col-sm-12
     .well
+      = label_tag "Client"
+      = select_tag('client_id', options_for_select(@clients.map{|k,v| [k.name, k.id]}), include_blank: true, class: 'selectize')
+      = label_tag "Template"
+      = select_tag('template_id', options_for_select(@document_templates.map {|k,v| [k.title, k.id] }), include_blank: true, class: 'selectize')
       = form_tag @s3_direct_post.url, class: 'dropzone', id: 'uploader'
         - @s3_direct_post.fields.each do |key, value|
           = hidden_field_tag key, value
