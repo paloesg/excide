@@ -11,6 +11,12 @@ $(document).ready(function () {
       return filter_filename + '.' + get_extension;
     };
     var documentUpload = new Dropzone('#uploader', { timeout: 0, renameFilename: cleanFilename });
+    documentUpload.on("sending", function(file) {
+      if ($('#client_id').val() == "" || $('#template_id').val() == "") {
+        alert('Client and Template is required.');
+        this.removeFile(file);
+      }
+    })
     documentUpload.on("success", function (file, request) {
       var resp = $.parseXML(request);
       var filePath = $(resp).find("Key").text();
