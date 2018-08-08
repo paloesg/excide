@@ -266,6 +266,7 @@ GEM
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oauth (0.5.4)
     oauth2 (1.4.0)
       faraday (>= 0.8, < 0.13)
       jwt (~> 1.0)
@@ -279,9 +280,14 @@ GEM
     omniauth-linkedin-oauth2 (0.2.5)
       omniauth (~> 1.0)
       omniauth-oauth2
+    omniauth-oauth (1.1.0)
+      oauth
+      omniauth (~> 1.0)
     omniauth-oauth2 (1.3.1)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
+    omniauth-xero (1.0.2)
+      omniauth-oauth (~> 1.0)
     orm_adapter (0.5.0)
     parallel (1.12.1)
     parser (2.5.1.0)
@@ -478,6 +484,13 @@ GEM
       activemodel (>= 4.2)
       debug_inspector
       railties (>= 4.2)
+    xeroizer (2.18.1)
+      activesupport
+      builder (>= 2.1.2)
+      i18n
+      nokogiri
+      oauth (>= 0.4.5)
+      tzinfo
 
 PLATFORMS
   ruby
@@ -520,6 +533,7 @@ DEPENDENCIES
   omniauth
   omniauth-linkedin-oauth2
   omniauth-oauth2 (~> 1.3.1)
+  omniauth-xero
   pg (= 0.20)
   popper_js (~> 1.12.9)
   public_activity
@@ -555,6 +569,7 @@ DEPENDENCIES
   twilio-ruby
   uglifier (>= 1.3.0)
   web-console
+  xeroizer
 
 RUBY VERSION
    ruby 2.5.1p57

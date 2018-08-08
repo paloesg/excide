@@ -52,6 +52,9 @@ gem 'pundit'
 gem 'omniauth'
 gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-linkedin-oauth2'
+# Xero API integration
+gem 'omniauth-xero'
+gem 'xeroizer'
 
 ################################################
 #                                              #

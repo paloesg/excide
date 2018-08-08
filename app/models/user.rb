@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:linkedin]
+         :omniauthable, :omniauth_providers => [:linkedin, :xero]
 
   has_one :profile, dependent: :destroy
   has_one :address, as: :addressable
