@@ -4,10 +4,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     session[:xero_auth] = {
       :access_token => auth.credentials.token,
-      :access_key => auth.credentials.secret }
+      :access_key => auth.credentials.secret
+    }
 
     set_flash_message(:notice, :success, :kind => "Xero")
-    redirect_to edit_user_registration_path
+    redirect_to session[:previous_url]
   end
 
   def linkedin
