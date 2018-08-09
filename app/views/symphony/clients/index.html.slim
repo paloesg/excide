@@ -1,0 +1,23 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/" Home
+      li.breadcrumb-item
+        a href="/symphony" #{@company.name}
+      li.breadcrumb-item.active Clients
+    h1
+      | Manage Clients
+.row
+  .col-sm-12
+    .table-responsive
+      table.table
+        thead
+          tr
+            th ID
+            th Name
+        tbody
+          - @contacts.each do |contact|
+            tr
+              td = contact.contact_id
+              td = contact.name
