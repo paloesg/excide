@@ -34,6 +34,7 @@ $(document).ready(function () {
       sideBySide: true
     });
     $('.datetimepicker').val($(this).attr('td-date'));
+    $($(this).data("bs.popover").tip).find('select').selectize();
   }).on("show.bs.popover", function () {
     $('.popover').popover('hide');
     $($(this).data("bs.popover").tip).css({ "max-width": "500px" })
