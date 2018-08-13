@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     get '/search', to: 'home#search'
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
     resources :users
+    resources :reminders
     resources :document_templates
     resources :documents do
       collection do

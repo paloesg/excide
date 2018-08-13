@@ -1,0 +1,26 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Dashboard
+      li.breadcrumb-item
+        a href="/symphony/company" #{@company.name}
+      li.breadcrumb-item.active Reminders
+    h1
+      | #{@user.full_name} Reminders
+
+.row
+  .col-sm-12
+    table.table.table-hover
+      thead
+        tr
+          th Task
+          th Next Reminder
+          th Repeat
+      tbody
+        - @reminders.each do |reminder|
+          tr
+            td
+              a href="#{symphony_workflow_url(reminder.task.section.template.slug, reminder.workflow_action.workflow.identifier)}" #{reminder.task.section.template.title}
+            td = reminder.next_reminder&.strftime("%F")
+            td = reminder.repeat
