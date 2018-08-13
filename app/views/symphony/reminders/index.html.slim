@@ -15,6 +15,7 @@
       thead
         tr
           th Task
+          th Instructions
           th Next Reminder
           th Repeat
       tbody
@@ -22,5 +23,6 @@
           tr
             td
               a href="#{symphony_workflow_url(reminder.task.section.template.slug, reminder.workflow_action.workflow.identifier)}" #{reminder.task.section.template.title}
+            td = reminder.task.instructions
             td = reminder.next_reminder&.strftime("%F")
             td = reminder.repeat
