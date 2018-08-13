@@ -41,8 +41,8 @@
           .form-group
             = label_tag "template", "Select workflow type"
             = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-          = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-primary', id: 'new-workflow'
-
+          = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
+          = link_to "Reminders", symphony_reminders_path, class: 'btn btn-success d-block'
 .row
   .col-md-8.col-sm-6
     .card.mt-3
