@@ -32,4 +32,4 @@
               td = reminder.repeat
               td
                 = link_to 'Edit', edit_symphony_reminder_path(reminder.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
-                = link_to 'Cancel', '#', role: 'button', class: 'btn btn-warning btn-sm mr-1'
+                = link_to 'Cancel', cancel_symphony_reminder_path(reminder.id), method: :post, role: 'button', class: 'btn btn-warning btn-sm mr-1'

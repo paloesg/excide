@@ -1,6 +1,6 @@
 class Symphony::RemindersController < ApplicationController
   layout 'dashboard/application'
-  before_action :set_reminder, only: [:edit, :update]
+  before_action :set_reminder, only: [:edit, :update, :cancel]
 
   def index
     @user = current_user
@@ -14,6 +14,14 @@ class Symphony::RemindersController < ApplicationController
   def update
     if @reminder.update(reminder_params)
       redirect_to symphony_reminders_path, notice: 'Reminder was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
+  def cancel
+    if @reminder.update(next_reminder: nil)
+      redirect_to symphony_reminders_path, notice: 'Reminder was cancelled.'
     else
       render :edit
     end
