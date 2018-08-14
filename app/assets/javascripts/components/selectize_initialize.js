@@ -15,7 +15,9 @@ $(document).ready(function () {
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
-  $('select.selectize').selectize({
-    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
-  });
+  if ($('#new-activation.d-none')[0] == undefined) {
+    $('select.selectize').selectize({
+      onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
+    });
+  }
 })
