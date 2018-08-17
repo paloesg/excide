@@ -22,7 +22,6 @@ class Symphony::DocumentsController < DocumentsController
 
     respond_to do |format|
       if @document.save
-        SlackService.new.new_document(@document).deliver
         if params[:document_type] == 'invoice'
           @client = Client.find(params[:document][:client_id])
           @template = Template.find(params[:document][:template_id])
@@ -31,6 +30,7 @@ class Symphony::DocumentsController < DocumentsController
           @workflow.save
           @document.update_attributes(workflow: @workflow)
         end
+        SlackService.new.new_document(@document).deliver
 
         format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
         format.json { render :show, status: :created, location: @document}
