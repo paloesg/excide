@@ -31,7 +31,7 @@ class WorkflowAction < ActiveRecord::Base
     # Trigger email notification for next task if role present
     if next_task.role.present?
       users = User.with_role(next_task.role.name.to_sym, self.company)
-      NotificationMailer.deliver_notifications(next_task, next_action, users)
+      EmailJob.perform_async(NotificationMailer.deliver_notifications(next_task, next_action, users))
     end
   end
 

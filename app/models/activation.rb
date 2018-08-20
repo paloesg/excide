@@ -29,17 +29,17 @@ class Activation < ActiveRecord::Base
   end
 
   def update_activation_notification
-    NotificationMailer.edit_activation(self, self.event_owner).deliver if self.event_owner.present?
+    EmailJob.perform_async(NotificationMailer.edit_activation(self, self.event_owner).deliver) if self.event_owner.present?
   end
 
   private
 
   def create_activation_notification
-    NotificationMailer.create_activation(self, self.event_owner).deliver if self.event_owner.present?
+    EmailJob.perform_async(NotificationMailer.create_activation(self, self.event_owner).deliver) if self.event_owner.present?
   end
 
   def destroy_activation_notification
-    NotificationMailer.destroy_activation(self, self.event_owner).deliver if self.event_owner.present?
+    EmailJob.perform_async(NotificationMailer.destroy_activation(self, self.event_owner).deliver) if self.event_owner.present?
   end
 
   def end_must_be_after_start

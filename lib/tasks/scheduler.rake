@@ -28,7 +28,7 @@ namespace :scheduler do
   task :contractor_reminders => :environment do
     users = User.with_role(:contractor, :any)
     users.each do |user|
-      NotificationMailer.contractor_notification(user).deliver_now
+      EmailJob.perform_async(NotificationMailer.contractor_notification(user).deliver_now)
     end
   end
 end
