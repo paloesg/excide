@@ -1,6 +1,13 @@
 Dropzone.autoDiscover = false;
 
 $(document).ready(function () {
+  // Show dropzone after client and template selected
+  $("#client_id,#template_id").on('change', function() {
+    if ($("#client_id").val() && $("#template_id").val()) {
+      $("#uploader").collapse();
+    }
+  })
+
   // $("#uploader").length 'To check #uploader is exists'
   if ($("#uploader").length) {
     var cleanFilename = function (name) {
