@@ -1,9 +1,5 @@
-class Symphony::ClientsController < ApplicationController
+class Symphony::ClientsController < ClientsController
   include Adapter
-  layout 'dashboard/application'
-
-  before_action :authenticate_user!
-  before_action :set_company
 
   def index
     @clients = Client.where(company: @company).order(:id)
@@ -14,11 +10,5 @@ class Symphony::ClientsController < ApplicationController
     rescue Xeroizer::OAuth::TokenExpired
       redirect_to user_xero_omniauth_authorize_path
     end
-  end
-
-  private
-
-  def set_company
-    @company = current_user.company
   end
 end
