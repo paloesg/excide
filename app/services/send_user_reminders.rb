@@ -23,7 +23,7 @@ class SendUserReminders
 
   def send_email_reminders
     email_reminders = @reminders.where(email: true)
-    EmailJob.perform_async(NotificationMailer.batch_reminder(email_reminders, @user).deliver_now)
+    NotificationMailer.batch_reminder(email_reminders, @user).deliver_later
   end
 
   def send_sms_reminders

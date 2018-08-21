@@ -26,7 +26,7 @@ class SendReminder
   end
 
   def send_email_reminder
-    EmailJob.perform_async(NotificationMailer.reminder_notification(@reminder).deliver_now)
+    NotificationMailer.reminder_notification(@reminder).deliver_latenowr
   end
 
   def send_sms_reminder

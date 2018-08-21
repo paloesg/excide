@@ -76,7 +76,7 @@ class Symphony::WorkflowsController < WorkflowsController
     respond_to do |format|
       if current_task.role.present?
         users = User.with_role(current_task.role.name.to_sym, @company)
-        EmailJob.perform_async(NotificationMailer.deliver_notifications(current_task, current_action, users))
+        NotificationMailer.deliver_notifications(current_task, current_action, users)
         format.json { render json: "Sent out", status: :ok }
       else
         format.json { render json: "Current task has no role" }
