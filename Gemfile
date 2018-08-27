@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.10'
+gem 'rails', '5.0.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '0.20'
 # Use SCSS for stylesheets
@@ -102,7 +102,7 @@ gem 'popper_js', '~> 1.12.9'
 # Frontend framework
 gem 'bootstrap', '~> 4.1.1'
 # Themify icon set web fonts
-gem 'themify-icons-rails'
+gem 'themify-icons-rails', github: 'scratch-soft/themify-icons-rails'
 # Font Awesome Rails
 gem "font-awesome-rails"
 # Nested form helper
