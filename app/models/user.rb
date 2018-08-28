@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :availabilities
   has_many :allocations
   has_many :documents
+  has_many :reminders
 
   has_many :owned_events, class_name: 'Activation', foreign_key: 'event_owner_id'
   has_many :assigned_tasks, class_name: 'WorkflowAction', foreign_key: 'assigned_user_id'
