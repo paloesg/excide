@@ -25,7 +25,7 @@
           - @reminders.each do |reminder|
             tr
               td = reminder.content
-              td = link_to reminder.task.section.template.title, symphony_workflow_path(reminder.task.section.template.slug, reminder.workflow_action.workflow.identifier)
+              td = reminder.task.present? ? link_to(reminder.task.section.template.title, symphony_workflow_path(reminder.task.section.template.slug, reminder.workflow_action.workflow.identifier)) : '-'
               td = reminder.next_reminder&.strftime("%F")
               td = reminder.repeat ? 'Yes' : 'No'
               td
