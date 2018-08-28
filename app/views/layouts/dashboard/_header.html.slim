@@ -13,32 +13,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
 
   #navbarNavDropdown.collapse.navbar-collapse
     ul.navbar-nav.ml-auto
-      - if controller.class.parents.include?(Symphony) or controller.class == CompaniesController
-        li.nav-item.text-nowrap = link_to "Dashboard", symphony_root_path, class: 'nav-link'
-        li.nav-item.dropdown
-          a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Workflows
-          .dropdown-menu
-            - ::Template.assigned_templates(current_user).each do |t|
-              = link_to symphony_workflows_path(t.slug), class: 'dropdown-item'
-                ' #{t.title}
-                .badge.badge-pill.badge-secondary.align-text-bottom = t.workflows.count
-        li.nav-item = link_to "Documents", symphony_documents_path, class: 'nav-link'
-        li.nav-item = link_to "Document Templates", symphony_document_templates_path, class: 'nav-link'
-        li.nav-item = link_to "Archives", symphony_archives_path, class: 'nav-link'
-        - if current_user.has_role? :admin, @company
-          li.nav-item.dropdown
-            a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Admin
-            .dropdown-menu
-              = link_to "Search Workflows", symphony_search_path, class: 'dropdown-item'
-              = link_to "Manage Users", symphony_users_path, class: 'dropdown-item'
-              = link_to "User Details", edit_user_registration_path, class: 'dropdown-item'
-              = link_to "Company Details", edit_company_path, class: 'dropdown-item'
-
-        - if ENV['APP_NAME'] == "excide-staging"
-          li.nav-item = link_to "Go to Conductor", conductor_root_path, class: 'nav-link'
-        li.nav-item = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'nav-link'}
-
-      - elsif controller.class.parents.include?(Conductor)
+      - if controller.class.parents.include?(Conductor)
         li.nav-item = link_to "Conductor Dashboard", conductor_root_path, class: 'nav-link'
         li.nav-item = link_to 'Activations', conductor_activations_path, class: 'nav-link'
         - if current_user.has_role? :admin, @company or current_user.has_role? :manpower_allocator, @company
@@ -56,11 +31,33 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
         li.nav-item = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'nav-link'}
 
       - else
-        li.nav-item = link_to "Company Dashboard", params[:company_name] ? admin_company_dashboard_path : dashboard_path, class: 'nav-link'
-        li.nav-item = link_to "Company Documents", params[:company_name] ? admin_company_documents_path : documents_path, class: 'nav-link'
-        li.nav-item = link_to "Company Details", params[:company_name] ? admin_company_edit_path : edit_company_path, class: 'nav-link'
-        li.nav-item = link_to "User Details", edit_profile_path, class: 'nav-link'
-        li.nav-item = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'nav-link'}
+        li.nav-item.text-nowrap = link_to "Dashboard", symphony_root_path, class: 'nav-link'
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Workflows
+          .dropdown-menu
+            - ::Template.assigned_templates(current_user).each do |t|
+              = link_to symphony_workflows_path(t.slug), class: 'dropdown-item'
+                ' #{t.title}
+                .badge.badge-pill.badge-secondary.align-text-bottom = t.workflows.count
+        li.nav-item = link_to "Documents", symphony_documents_path, class: 'nav-link'
+        li.nav-item = link_to "Document Templates", symphony_document_templates_path, class: 'nav-link'
+        li.nav-item = link_to "Archives", symphony_archives_path, class: 'nav-link'
+        - if current_user.has_role? :admin, @company
+          li.nav-item.dropdown
+            a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Admin
+            .dropdown-menu
+              = link_to "Search Workflows", symphony_search_path, class: 'dropdown-item'
+              = link_to "Manage Users", symphony_users_path, class: 'dropdown-item'
+              = link_to "Company Details", edit_company_path, class: 'dropdown-item'
+
+        - if ENV['APP_NAME'] == "excide-staging"
+          li.nav-item = link_to "Go to Conductor", conductor_root_path, class: 'nav-link'
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" #{current_user.first_name}
+          .dropdown-menu.dropdown-menu-right
+            = link_to "User Details", edit_user_registration_path, class: 'dropdown-item'
+            = link_to "Manage Reminders", symphony_reminders_path, class: 'dropdown-item'
+            = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'dropdown-item'}
 
 - if controller.controller_name == "workflows"
   .nav-scroller.bg-white.box-shadow
