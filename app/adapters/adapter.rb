@@ -15,6 +15,10 @@ module Adapter
       @xero_client.Contact.all
     end
 
+    def get_contact(xero_contact_id)
+      return contact = @xero.Contact.find(xero_contact_id)
+    end
+
     def create_contact(client)
       xero_contact = @xero_client.Contact.build(name: client[:name])
       xero_contact.save!
