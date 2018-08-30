@@ -39,6 +39,11 @@ Rails.application.routes.draw do
       end
     end
     resources :users
+    resources :reminders do
+      member do
+        post '/cancel', to: 'reminders#cancel'
+      end
+    end
     resources :document_templates
     resources :documents do
       collection do

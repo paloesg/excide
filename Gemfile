@@ -86,6 +86,8 @@ gem 'meta-tags'
 gem 'public_activity'
 # Handle money
 gem 'money-rails', '~>1'
+# Ruby asynchronous processing
+gem 'sucker_punch', '~> 2.0'
 
 # Analytics
 gem 'mixpanel-ruby'
