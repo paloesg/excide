@@ -3,12 +3,8 @@ class Symphony::ClientsController < ClientsController
 
   def index
     @clients = Client.where(company: @company).order(:id)
-    @xero = Xero.new(session)
+    @xero = Xero.new(session[:xero_auth])
 
-    begin
-      @contacts = @xero.get_contacts
-    rescue Xeroizer::OAuth::TokenExpired
-      redirect_to user_xero_omniauth_authorize_path
-    end
+    @contacts = @xero.get_contacts
   end
 end

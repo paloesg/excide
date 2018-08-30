@@ -7,6 +7,8 @@ class ClientsController < ApplicationController
   before_action :set_company
   before_action :set_client, only: [:show, :edit, :update, :destroy]
 
+  rescue_from Xeroizer::OAuth::TokenExpired, with: :xero_login
+
   def index
     @clients = Client.where(company: @company).order(:id)
   end
@@ -22,11 +24,7 @@ class ClientsController < ApplicationController
     @client = Client.new(client_params)
     @xero = Xero.new(session[:xero_auth])
 
-    begin
-      contact_id = @xero.create_contact(client_params)
-    rescue Xeroizer::OAuth::TokenExpired
-      redirect_to user_xero_omniauth_authorize_path and return
-    end
+    contact_id = @xero.create_contact(client_params)
 
     @client.xero_contact_id = contact_id
     @client.company = @company
@@ -64,6 +62,10 @@ class ClientsController < ApplicationController
   end
 
   private
+
+  def xero_login
+    redirect_to user_xero_omniauth_authorize_path and return
+  end
 
   def set_client
     @client = Client.find_by(id: params[:id], company: @company)
