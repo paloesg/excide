@@ -1,7 +1,11 @@
 class Symphony::WorkflowsController < WorkflowsController
+  include Adapter
+
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
   before_action :set_attributes_metadata, only: [:create, :update]
+
+  rescue_from Xeroizer::OAuth::TokenExpired, with: :xero_login
 
   def index
     template = Template.find(params[:workflow_name])
@@ -116,6 +120,12 @@ class Symphony::WorkflowsController < WorkflowsController
     end
   end
 
+  def xero_create_invoice_payable
+    @xero = Xero.new(session[:xero_auth])
+    supplier = @xero.get_contact(@workflow.workflowable.xero_contact_id)
+    invoice_id = @xero.create_invoice_payable(supplier, params[:date], params[:due_date], params[:item_code], params[:description], params[:quantity], params[:price], params[:account])
+  end
+
   private
 
   def set_company_and_roles
@@ -174,5 +184,9 @@ class Symphony::WorkflowsController < WorkflowsController
       elsif params[:sort] == "identifier" then item.identifier ? item.identifier.upcase : ""
       end
     }
+  end
+
+  def xero_login
+    redirect_to user_xero_omniauth_authorize_path and return
   end
 end
