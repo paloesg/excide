@@ -33,7 +33,11 @@ Rails.application.routes.draw do
   namespace :symphony do
     get '/search', to: 'home#search'
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
-    resources :clients
+    resources :clients do
+      member do
+        post '/xero_create', to: 'clients#xero_create', as: :xero_create
+      end
+    end
     resources :users
     resources :document_templates
     resources :documents do

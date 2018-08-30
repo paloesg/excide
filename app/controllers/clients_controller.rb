@@ -5,7 +5,7 @@ class ClientsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_client, only: [:show, :edit, :update, :destroy]
+  before_action :set_client, only: [:show, :edit, :update, :destroy, :xero_create]
 
   rescue_from Xeroizer::OAuth::TokenExpired, with: :xero_login
 
@@ -32,7 +32,7 @@ class ClientsController < ApplicationController
 
     respond_to do |format|
       if @client.save
-        format.html { redirect_to conductor_clients_path, notice: 'Client successfully created!' }
+        format.html { redirect_to symphony_clients_path, notice: 'Client successfully created!' }
         format.json { render :show, status: :ok, location: @client }
       else
         format.html { render :new }
@@ -61,6 +61,22 @@ class ClientsController < ApplicationController
     redirect_to conductor_clients_path, notice: 'Client was successfully deleted.'
   end
 
+  def xero_create
+    @xero = Xero.new(session[:xero_auth])
+    contact_id = @xero.create_contact(name: @client.name)
+    @client.xero_contact_id = contact_id
+
+    respond_to do |format|
+      if @client.save
+        format.html { redirect_to symphony_clients_path, notice: 'Client successfully updated!' }
+        format.json { render :show, status: :ok, location: @client }
+      else
+        format.html { render :new }
+        format.json { render json: @client.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   def xero_login
@@ -76,6 +92,6 @@ class ClientsController < ApplicationController
   end
 
   def client_params
-    params.require(:client).permit(:name, :identifier)
+    params.require(:client).permit(:name, :identifier, :xero_contact_id)
   end
 end

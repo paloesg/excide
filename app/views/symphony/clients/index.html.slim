@@ -14,10 +14,12 @@
       table.table
         thead
           tr
-            th ID
+            th Identifier
             th Name
+            th Xero ID
         tbody
-          - @contacts.each do |contact|
+          - @clients.each do |client|
             tr
-              td = contact.contact_id
-              td = contact.name
+              td = client.identifier
+              td = client.name
+              td = client.xero_contact_id.present? ? client.xero_contact_id : link_to('Add to Xero', xero_create_symphony_client_path(client.id), method: 'post', class: 'btn btn-primary btn-sm')
