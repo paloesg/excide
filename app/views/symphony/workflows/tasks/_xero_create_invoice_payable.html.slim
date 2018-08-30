@@ -23,7 +23,15 @@ tr id="task_#{task.id}" class="#{'collapse' if task != @workflow.current_task}"
     h6 Actions:
     .btn-toolbar role="toolbar"
       .btn-group.mr-2 role="group" aria-label="Task actions"
-        = link_to "Create Xero Invoice", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier), method: 'post', role: 'button', class: 'btn btn-primary btn-sm'
+        - params = {\
+          date: @workflow.data.select {|attribute| attribute.name == "*InvoiceDate"}.first&.value,
+          due_date: @workflow.data.select {|attribute| attribute.name == "*DueDate"}.first&.value,
+          description: @workflow.data.select {|attribute| attribute.name == "Description"}.first&.value,
+          quantity: @workflow.data.select {|attribute| attribute.name == "*Quantity"}.first&.value,
+          price: @workflow.data.select {|attribute| attribute.name == "*UnitAmount"}.first&.value,
+          account: @workflow.data.select {|attribute| attribute.name == "*AccountCode"}.first&.value,
+          }
+        = link_to "Create Xero Invoice", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, params), method: 'post', role: 'button', class: 'btn btn-primary btn-sm'
       .btn-group.mr-2 role="group" aria-label="Reminder actions"
         - if action.reminders.present?
           = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
