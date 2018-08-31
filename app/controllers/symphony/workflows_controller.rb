@@ -5,7 +5,7 @@ class Symphony::WorkflowsController < WorkflowsController
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
   before_action :set_attributes_metadata, only: [:create, :update]
 
-  rescue_from Xeroizer::OAuth::TokenExpired, with: :xero_login
+  rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
   def index
     template = Template.find(params[:workflow_name])
@@ -124,6 +124,12 @@ class Symphony::WorkflowsController < WorkflowsController
     @xero = Xero.new(session[:xero_auth])
     supplier = @xero.get_contact(@workflow.workflowable.xero_contact_id)
     invoice_id = @xero.create_invoice_payable(supplier, params[:date], params[:due_date], params[:item_code], params[:description], params[:quantity], params[:price], params[:account])
+
+    if invoice_id.present?
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
+    else
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'There was an error creating Xero invoice. Please ensure the data is correct.'
+    end
   end
 
   private
@@ -187,6 +193,6 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def xero_login
-    redirect_to user_xero_omniauth_authorize_path and return
+    redirect_to user_xero_omniauth_authorize_path
   end
 end
