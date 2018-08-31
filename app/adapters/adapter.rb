@@ -30,7 +30,7 @@ module Adapter
       ap = @xero_client.Invoice.build(type: "ACCPAY", contact: supplier, date: Date.strptime(date, '%d-%b-%y'), due_date: Date.strptime(due_date, '%d-%b-%y'), invoice_number: identifier)
       ap.add_line_item(item_code: item_code, description: description, quantity: quantity, unit_amount: price, account_code: account)
       ap.save
-      return ap.invoice_id
+      return ap
     end
 
     def create_invoice_receivable(type, contact, date, due_date, reference, order, account)
