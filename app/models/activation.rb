@@ -39,7 +39,7 @@ class Activation < ActiveRecord::Base
   end
 
   def destroy_activation_notification
-    NotificationMailer.destroy_activation(self, self.event_owner).deliver_later if self.event_owner.present?
+    NotificationMailer.destroy_activation(self, self.event_owner).deliver if self.event_owner.present?
   end
 
   def end_must_be_after_start
