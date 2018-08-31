@@ -8,7 +8,7 @@ class Task < ActiveRecord::Base
   has_many :reminders, dependent: :destroy
   has_many :workflow_actions, dependent: :destroy
 
-  enum task_type: [:instructions, :upload_file, :approval, :download_file, :visit_link, :upload_photo, :enter_data]
+  enum task_type: [:instructions, :upload_file, :approval, :download_file, :visit_link, :upload_photo, :enter_data, :xero_create_invoice_payable]
 
   acts_as_list scope: :section
 

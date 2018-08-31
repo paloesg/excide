@@ -1,7 +1,11 @@
 class Symphony::WorkflowsController < WorkflowsController
+  include Adapter
+
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
   before_action :set_attributes_metadata, only: [:create, :update]
+
+  rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
   def index
     template = Template.find(params[:workflow_name])
@@ -116,6 +120,20 @@ class Symphony::WorkflowsController < WorkflowsController
     end
   end
 
+  def xero_create_invoice_payable
+    @xero = Xero.new(session[:xero_auth])
+    invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, params[:date], params[:due_date], @workflow.identifier, params[:item_code], params[:description], params[:quantity], params[:price], params[:account])
+    @workflow.documents.each do |document|
+      invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, 'application/pdf')
+    end
+
+    if invoice.invoice_id.present?
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
+    else
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'There was an error creating Xero invoice. Please ensure the data is correct.'
+    end
+  end
+
   private
 
   def set_company_and_roles
@@ -174,5 +192,9 @@ class Symphony::WorkflowsController < WorkflowsController
       elsif params[:sort] == "identifier" then item.identifier ? item.identifier.upcase : ""
       end
     }
+  end
+
+  def xero_login
+    redirect_to user_xero_omniauth_authorize_path
   end
 end

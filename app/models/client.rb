@@ -5,5 +5,5 @@ class Client < ActiveRecord::Base
   has_many :workflows, as: :workflowable
   has_many :activations
 
-  validates :name, presence: true
+  validates :name, :xero_contact_id, presence: true
 end
