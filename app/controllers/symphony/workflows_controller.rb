@@ -7,7 +7,7 @@ class Symphony::WorkflowsController < WorkflowsController
     template = Template.find(params[:workflow_name])
     @workflows = @company.workflows.where(template: template).order(created_at: :desc)
 
-    @workflows_sort = sort_column(@workflows.flatten)
+    @workflows_sort = sort_column(@workflows)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
     @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
   end
