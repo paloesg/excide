@@ -122,8 +122,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def xero_create_invoice_payable
     @xero = Xero.new(session[:xero_auth])
-    supplier = @xero.get_contact(@workflow.workflowable.xero_contact_id)
-    invoice_id = @xero.create_invoice_payable(supplier, params[:date], params[:due_date], @workflow.identifier, params[:item_code], params[:description], params[:quantity], params[:price], params[:account])
+    invoice_id = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, params[:date], params[:due_date], @workflow.identifier, params[:item_code], params[:description], params[:quantity], params[:price], params[:account])
 
     if invoice_id.present?
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
