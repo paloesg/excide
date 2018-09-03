@@ -290,6 +290,7 @@ GEM
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oauth (0.5.4)
     oauth2 (1.4.0)
       faraday (>= 0.8, < 0.13)
       jwt (~> 1.0)
@@ -303,9 +304,14 @@ GEM
     omniauth-linkedin-oauth2 (0.2.5)
       omniauth (~> 1.0)
       omniauth-oauth2
+    omniauth-oauth (1.1.0)
+      oauth
+      omniauth (~> 1.0)
     omniauth-oauth2 (1.3.1)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
+    omniauth-xero (1.0.2)
+      omniauth-oauth (~> 1.0)
     orm_adapter (0.5.0)
     parallel (1.12.1)
     parser (2.5.1.2)
@@ -316,6 +322,14 @@ GEM
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
+    pry-byebug (3.6.0)
+      byebug (~> 10.0)
+      pry (~> 0.10)
+    pry-rails (0.3.6)
+      pry (>= 0.10.4)
+    pry-remote (0.1.8)
+      pry (~> 0.9)
+      slop (~> 3.0)
     public_activity (1.6.1)
       actionpack (>= 3.0.0)
       activerecord (>= 3.0)
@@ -461,6 +475,7 @@ GEM
       actionpack (>= 3.1)
       railties (>= 3.1)
       slim (~> 3.0)
+    slop (3.6.0)
     snitcher (0.4.1)
     spring (2.0.2)
       activesupport (>= 4.2)
@@ -507,6 +522,13 @@ GEM
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
+    xeroizer (2.18.1)
+      activesupport
+      builder (>= 2.1.2)
+      i18n
+      nokogiri
+      oauth (>= 0.4.5)
+      tzinfo
 
 PLATFORMS
   ruby
@@ -549,8 +571,12 @@ DEPENDENCIES
   omniauth
   omniauth-linkedin-oauth2
   omniauth-oauth2 (~> 1.3.1)
+  omniauth-xero
   pg (= 0.20)
   popper_js (~> 1.12.9)
+  pry-byebug
+  pry-rails
+  pry-remote
   public_activity
   puma
   pundit
@@ -585,6 +611,7 @@ DEPENDENCIES
   twilio-ruby
   uglifier (>= 1.3.0)
   web-console
+  xeroizer
 
 RUBY VERSION
    ruby 2.5.1p57

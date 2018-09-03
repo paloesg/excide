@@ -7,7 +7,7 @@
         a href="#" #{resource_name.to_s.humanize}
       li.breadcrumb-item.active Update
     h1 Edit User
-
+    = link_to "Connect to Xero", user_xero_omniauth_authorize_path, class: 'float-right'
 .row
   .col-md-12
     = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|

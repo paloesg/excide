@@ -22,14 +22,15 @@ class Symphony::DocumentsController < DocumentsController
 
     respond_to do |format|
       if @document.save
-        SlackService.new.new_document(@document).deliver
         if params[:document_type] == 'invoice'
-          @template = Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').take
-          @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: @document.identifier)
+          @client = Client.find(params[:document][:client_id])
+          @template = Template.find(params[:document][:template_id])
+          @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: @document.identifier, workflowable: @client)
           @workflow.template_data(@template)
           @workflow.save
           @document.update_attributes(workflow: @workflow)
         end
+        SlackService.new.new_document(@document).deliver
 
         format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
         format.json { render :show, status: :created, location: @document}
@@ -57,7 +58,10 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def upload_invoice
+    set_company
     set_company_workflows
+    @clients = @company.clients
+    @templates = Template.assigned_templates(current_user)
     @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 

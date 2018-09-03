@@ -52,6 +52,9 @@ gem 'pundit'
 gem 'omniauth'
 gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-linkedin-oauth2'
+# Xero API integration
+gem 'omniauth-xero'
+gem 'xeroizer'
 
 ################################################
 #                                              #
@@ -134,9 +137,13 @@ group :development do
   gem 'rails_real_favicon'
   gem 'rubocop', require: false
   gem 'brakeman', require: false
+  gem 'pry-rails'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  gem 'pry-byebug'
+  # Run pry remotely
+  gem 'pry-remote'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console'
