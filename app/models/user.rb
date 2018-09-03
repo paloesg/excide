@@ -1,6 +1,6 @@
 require 'csv'
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   rolify
 
   devise :database_authenticatable, :registerable, :confirmable,

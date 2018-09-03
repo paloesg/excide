@@ -1,4 +1,4 @@
-class Activation < ActiveRecord::Base
+class Activation < ApplicationRecord
   after_create :create_activation_notification
   after_destroy :destroy_activation_notification
 
