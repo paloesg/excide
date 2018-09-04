@@ -63,7 +63,7 @@ class Conductor::ActivationTypesController < ApplicationController
 
   def set_user_and_company
     @user = current_user
-    @company = Company.find(@user.company)
+    @company = Company.find(@user.company.id)
   end
 
   def activation_type_params
