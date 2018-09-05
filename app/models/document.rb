@@ -1,4 +1,4 @@
-class Document < ActiveRecord::Base
+class Document < ApplicationRecord
   include PublicActivity::Model
   tracked owner: ->(controller, _model) { controller&.current_user },
           recipient: ->(_controller, model) { model&.workflow },

@@ -11,7 +11,7 @@ class Symphony::WorkflowsController < WorkflowsController
     template = Template.find(params[:workflow_name])
     @workflows = @company.workflows.where(template: template).order(created_at: :desc)
 
-    @workflows_sort = sort_column(@workflows.flatten)
+    @workflows_sort = sort_column(@workflows)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
     @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
   end
@@ -154,7 +154,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def set_attributes_metadata
-    params[:workflow][:data_attributes].to_a.each do |key, value|
+    params[:workflow][:data_attributes].each do |key, value|
       if value[:_create] == '1' or value[:_update] == '1' or value[:_destroy] == '1'
         value[:user_id] = @user.id
         value[:updated_at] = Time.current
@@ -163,7 +163,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def log_activity
-    params[:workflow][:data_attributes].to_a.each do |key, value|
+    params[:workflow][:data_attributes].each do |key, value|
       if value[:_create] == '1'
         @workflow.create_activity key: 'workflow.create_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
       elsif value[:_update] == '1'

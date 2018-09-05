@@ -2,3 +2,11 @@
   height: 100% !important;
   width: 80% !important;
 }
+
+[data-toggle="collapse"] .fa:before {
+  content: "\f107";
+}
+
+[data-toggle="collapse"].collapsed .fa:before {
+  content: "\f106";
+}
