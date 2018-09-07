@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         post '/send_reminder/:task_id', to: 'workflows#send_reminder', as: :reminder_task
         post '/stop_reminder/:task_id', to: 'workflows#stop_reminder', as: :stop_reminder
         get '/assign', to: 'workflows#assign', as: :assign
+        post '/finish_assign', to: 'workflows#finish_assign', as: :finish_assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
         post '/xero_create_invoice_payable', to: 'workflows#xero_create_invoice_payable', as: :xero_create_invoice_payable
       end
