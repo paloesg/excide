@@ -15,7 +15,6 @@ class Workflow < ActiveRecord::Base
   validate :check_data_fields
 
   after_create :create_related_workflow_actions
-  after_create :trigger_first_task
   before_save :uppercase_identifier
 
   include PublicActivity::Model
@@ -132,10 +131,6 @@ class Workflow < ActiveRecord::Base
         WorkflowAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
-  end
-
-  def trigger_first_task
-    self.current_task.get_workflow_action(self.company, self.identifier).set_deadline_and_notify(current_task)
   end
 
   def uppercase_identifier
