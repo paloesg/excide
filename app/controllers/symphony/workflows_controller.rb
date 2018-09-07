@@ -31,11 +31,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
     if @workflow.save
       log_activity
-      if params[:assign]
-        redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
-      else
-        redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
-      end
+      redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
     else
       render :new
     end
