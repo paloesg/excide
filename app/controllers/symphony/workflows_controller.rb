@@ -2,7 +2,7 @@ class Symphony::WorkflowsController < WorkflowsController
   include Adapter
 
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable, :finish_assign]
   before_action :set_attributes_metadata, only: [:create, :update]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
@@ -72,6 +72,13 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def assign
     @sections = @template.sections
+  end
+
+  def finish_assign
+    if @workflow.current_task == @workflow.workflow_actions.first.task
+      @workflow.current_task.get_workflow_action(@workflow.company, @workflow.identifier).set_deadline_and_notify(@workflow.current_task)
+    end
+    redirect_to symphony_workflow_path(@template.slug, @workflow.identifier)
   end
 
   def send_reminder
