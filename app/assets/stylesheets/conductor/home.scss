@@ -10,3 +10,7 @@
 span#allocated_users_length {
     padding: 0px 5px;
 }
+
+html.turbolinks-progress-bar::before {
+  height: 5px !important;
+}
