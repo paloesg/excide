@@ -19,5 +19,6 @@ $(document).ready(function () {
     $('select.selectize').selectize({
       onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
     });
+    $('select.selectize-user-assignment').selectize();
   }
 })
