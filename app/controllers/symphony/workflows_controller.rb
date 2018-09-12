@@ -166,7 +166,11 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.previous_changes.each do |key, value|
       next if key == 'updated_at'
       next if key == 'data'
-      @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last} }
+      if key == "deadline"
+        @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last.strftime('%F') } }
+      else
+        @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last} }
+      end
     end
     params[:workflow][:data_attributes].to_a.each do |key, value|
       if value[:_create] == '1'
