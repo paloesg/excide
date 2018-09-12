@@ -164,8 +164,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def log_activity
     @workflow.previous_changes.each do |key, value|
-      next if key == 'updated_at'
-      next if key == 'data'
+      next if key == 'updated_at' or key == 'data'
       if key == "deadline"
         @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last.strftime('%F') } }
       else
