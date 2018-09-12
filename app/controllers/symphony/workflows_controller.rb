@@ -163,6 +163,9 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def log_activity
+    @workflow.previous_changes.each do |key, value|
+      @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last} }
+    end
     params[:workflow][:data_attributes].to_a.each do |key, value|
       if value[:_create] == '1'
         @workflow.create_activity key: 'workflow.create_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
