@@ -29,3 +29,4 @@
 //= require components/selectize_initialize
 
 //= require turbolinks
+//= require turbolinks-compatibility
