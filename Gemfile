@@ -18,7 +18,7 @@ gem "slim-rails"
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '< 5'
+gem 'turbolinks', '~> 5.1.0'
 # Fix issues with jquery caused by turbolinks
 gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
