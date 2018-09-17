@@ -87,7 +87,7 @@ class WorkflowAction < ActiveRecord::Base
       company_id: action.company_id,
       task_id: task.id,
       workflow_action_id: action.id,
-      title: 'You have a task awaiting completion.',
+      title: '[Reminder] in ' + task.section.template.title + ' - ' + action.workflow.identifier,
       content: task.instructions,
       slack: true,
       email: true
