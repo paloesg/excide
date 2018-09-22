@@ -16,18 +16,20 @@ tr
     - else
       = check_box_tag 'completed', action.id, action.completed, disabled: true
   td
-    a data-toggle="collapse" href="#task_#{task.id}"
-      i.fa.fa-angle-down
-tr id="task_#{task.id}" class="#{'collapse' if task != @workflow.current_task}"
-  td colspan="6"
-    h6 Actions:
-    .btn-toolbar role="toolbar"
-      .btn-group.mr-2 role="group" aria-label="Task actions"
-        = link_to "Take Photo", new_symphony_document_path(workflow: @workflow.identifier, params: {camera: true}), role: 'button', class: 'btn btn-primary btn-sm'
-      .btn-group.mr-2 role="group" aria-label="Reminder actions"
-        - if action.reminders.present?
-          = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
-        - if task == @workflow.current_task && (@user.has_role? :admin, @company)
-          = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
-    br
-    = task.display_image
+    a data-toggle="collapse" href="#task_#{task.id}" aria-expanded="#{task == @workflow.current_task ? 'true' : 'false'}" class="#{task == @workflow.current_task ? '' : 'collapsed'}"
+      i.fa aria-hidden="true"
+tr
+  td.p-0.border-top-0 colspan="6"
+    div id="task_#{task.id}" class="#{task == @workflow.current_task ? 'collapse show' : 'collapse'}"
+      .m-3
+        h6 Actions:
+        .btn-toolbar role="toolbar"
+          .btn-group.mr-2 role="group" aria-label="Task actions"
+            = link_to "Take Photo", new_symphony_document_path(workflow: @workflow.identifier, params: {camera: true}), role: 'button', class: 'btn btn-primary btn-sm'
+          .btn-group.mr-2 role="group" aria-label="Reminder actions"
+            - if action.reminders.present?
+              = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+            - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+              = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
+        br
+        = task.display_image
