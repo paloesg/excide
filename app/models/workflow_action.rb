@@ -87,7 +87,7 @@ class WorkflowAction < ApplicationRecord
       company_id: action.company_id,
       task_id: task.id,
       workflow_action_id: action.id,
-      title: '[Reminder] in ' + task.section.template.title + ' - ' + action.workflow.identifier,
+      title: '[Reminder] ' + task.section.template.title + ' - ' + action.workflow.identifier,
       content: task.instructions,
       slack: true,
       email: true
