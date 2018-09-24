@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :workflow do |workflow|
     association :workflowable, factory: :client
 
-    workflow.identifier { Faker::Name.title}
+    workflow.identifier { Faker::Job.title}
 
     company
 

@@ -1,4 +1,4 @@
-class Task < ActiveRecord::Base
+class Task < ApplicationRecord
   after_create :add_workflow_action
 
   belongs_to :section

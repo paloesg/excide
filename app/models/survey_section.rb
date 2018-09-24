@@ -1,4 +1,4 @@
-class SurveySection < ActiveRecord::Base
+class SurveySection < ApplicationRecord
   belongs_to :survey_template
   acts_as_list scope: :survey_template
 

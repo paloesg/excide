@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :section do
-    unique_name Faker::Name.title
-    display_name Faker::Name.title
+    unique_name Faker::Job.title
+    display_name Faker::Job.title
     sequence(:position) { |n| n }
     template
 

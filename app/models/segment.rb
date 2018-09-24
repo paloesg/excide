@@ -1,4 +1,4 @@
-class Segment < ActiveRecord::Base
+class Segment < ApplicationRecord
   belongs_to :survey_section
   belongs_to :survey
 

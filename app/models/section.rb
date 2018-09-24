@@ -1,4 +1,4 @@
-class Section < ActiveRecord::Base
+class Section < ApplicationRecord
   belongs_to :template
   acts_as_list scope: :template
 
