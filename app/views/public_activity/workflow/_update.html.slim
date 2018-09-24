@@ -1,7 +1,5 @@
 td = activity.owner&.full_name or 'Unknown'
 td
-  ' updated workflow
-  strong #{activity.parameters[:attribute][:name]}
-  '  changed to
+  ' updated workflow #{activity.parameters[:attribute][:name]} to
   strong #{activity.parameters[:attribute][:value]}
 td = activity.created_at.strftime("%d/%m/%Y %R")
