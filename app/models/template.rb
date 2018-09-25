@@ -1,4 +1,4 @@
-class Template < ActiveRecord::Base
+class Template < ApplicationRecord
   include FriendlyId
   friendly_id :title, use: [:slugged, :finders]
 

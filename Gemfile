@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.10'
+gem 'rails', '5.2.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '0.20'
 # Use SCSS for stylesheets
@@ -11,14 +11,14 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.1'
+gem 'coffee-rails', '~> 4.2.2'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 gem "slim-rails"
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '< 5'
+gem 'turbolinks', '~> 5.1.0'
 # Fix issues with jquery caused by turbolinks
 gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -73,7 +73,7 @@ gem 'twilio-ruby'
 # Manage ordering for survey objects
 gem 'acts_as_list'
 # Use user friendly slugs
-gem 'friendly_id', '~> 5.1.0'
+gem 'friendly_id', '~> 5.2.0'
 # Amazon S3 SDK
 gem 'aws-sdk', '~> 2'
 # Sitemap generator
@@ -105,7 +105,7 @@ gem 'popper_js', '~> 1.12.9'
 # Frontend framework
 gem 'bootstrap', '~> 4.1.1'
 # Themify icon set web fonts
-gem 'themify-icons-rails'
+gem 'themify-icons-rails', github: 'scratch-soft/themify-icons-rails'
 # Font Awesome Rails
 gem "font-awesome-rails"
 # Nested form helper
@@ -125,7 +125,7 @@ gem "selectize-rails"
 gem 'administrate'
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
-gem 'administrate-field-json'
+gem 'administrate-field-json', git: 'https://github.com/eddietejeda/administrate-field-json.git'
 
 # Deep cloning for cloning of template with associated sections
 gem 'deep_cloneable', '~> 2.3.0'

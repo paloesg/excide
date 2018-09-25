@@ -1,4 +1,4 @@
-class Availability < ActiveRecord::Base
+class Availability < ApplicationRecord
   belongs_to :user
 
   validates :user, :available_date, :start_time, :end_time, presence: true
