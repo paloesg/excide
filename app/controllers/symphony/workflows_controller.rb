@@ -180,6 +180,8 @@ class Symphony::WorkflowsController < WorkflowsController
       next if key == 'updated_at' or key == 'data'
       if key == "deadline"
         @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last.strftime('%F') } }
+      elsif key == "workflowable_id"
+        @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: @workflow.workflowable_type, value: @workflow.workflowable.name, workflowable_id: value.last } }
       else
         @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last} }
       end
