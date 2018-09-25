@@ -30,7 +30,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present?
 
     if @workflow.save
-      log_activity
+      log_data_activity
       if params[:assign]
         redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
       else
@@ -57,7 +57,8 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present? or @workflow.workflowable.present?
 
     if @workflow.update(workflow_params)
-      log_activity
+      log_data_activity
+      log_workflow_activity
       if params[:assign]
         redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
       elsif params[:document_id]
@@ -162,7 +163,7 @@ class Symphony::WorkflowsController < WorkflowsController
     end
   end
 
-  def log_activity
+  def log_data_activity
     params[:workflow][:data_attributes].each do |key, value|
       if value[:_create] == '1'
         @workflow.create_activity key: 'workflow.create_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
@@ -170,6 +171,19 @@ class Symphony::WorkflowsController < WorkflowsController
         @workflow.create_activity key: 'workflow.update_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
       elsif value[:_destroy] == '1'
         @workflow.create_activity key: 'workflow.destroy_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
+      end
+    end
+  end
+
+  def log_workflow_activity
+    @workflow.previous_changes.each do |key, value|
+      next if key == 'updated_at' or key == 'data'
+      if key == "deadline"
+        @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last.strftime('%F') } }
+      elsif key == "workflowable_id"
+        @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: @workflow.workflowable_type.downcase, value: @workflow.workflowable.name, workflowable_id: value.last } }
+      else
+        @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last} }
       end
     end
   end
