@@ -54,7 +54,8 @@ class SendUserReminders
 
   def set_next_reminder
     @reminders.each do |reminder|
-      reminder.next_reminder = Date.current + 1.day
+      day = Date.current + 1.day
+      reminder.next_reminder = day.on_weekday? ? day : day.next_weekday
       reminder.save
     end
   end
