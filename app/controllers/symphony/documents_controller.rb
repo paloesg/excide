@@ -4,7 +4,9 @@ class Symphony::DocumentsController < DocumentsController
   before_action :set_workflow, only: [:new]
 
   def index
-    @documents = Kaminari.paginate_array(@company.documents.order(created_at: :desc)).page(params[:page]).per(20)
+    # Show the documents by current user roles and documents without a workflow.
+    @get_documents = @company.documents.select{ |d| d.workflow ? (( d.workflow.get_roles & @user.roles).any? ) : true  }
+    @documents = Kaminari.paginate_array(@get_documents.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(20)
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
