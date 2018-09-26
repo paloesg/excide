@@ -105,7 +105,7 @@ gem 'popper_js', '~> 1.12.9'
 # Frontend framework
 gem 'bootstrap', '~> 4.1.1'
 # Themify icon set web fonts
-gem 'themify-icons-rails', github: 'scratch-soft/themify-icons-rails'
+gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
 # Font Awesome Rails
 gem "font-awesome-rails"
 # Nested form helper

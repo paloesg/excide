@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/scratch-soft/themify-icons-rails.git
-  revision: af9160153187b577d32011fb3cf698a92d81a820
-  specs:
-    themify-icons-rails (1.0.1.2)
-      rails
-
-GIT
   remote: https://github.com/eddietejeda/administrate-field-json.git
   revision: 53b1099be0298b2384bf3ff3d168e168d5fbd875
   specs:
@@ -21,6 +14,13 @@ GIT
       administrate (>= 0.7.0)
       cocoon (~> 1.2)
       rails (>= 4.2)
+
+GIT
+  remote: https://github.com/scratch-soft/themify-icons-rails.git
+  revision: af9160153187b577d32011fb3cf698a92d81a820
+  specs:
+    themify-icons-rails (1.0.1.2)
+      rails
 
 GIT
   remote: https://github.com/stympy/faker.git
@@ -436,7 +436,7 @@ GEM
     ruby-graphviz (1.2.3)
     ruby-progressbar (1.10.0)
     ruby_dep (1.5.0)
-    rubyzip (1.2.1)
+    rubyzip (1.2.2)
     sass (3.5.7)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
