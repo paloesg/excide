@@ -80,7 +80,7 @@ class WorkflowAction < ApplicationRecord
 
   def create_reminder(task, action)
     reminder = Reminder.new(
-      next_reminder: action.deadline,
+      next_reminder: check_week_day(action.deadline),
       repeat: true,
       freq_value: 2,
       freq_unit: "days",
@@ -109,5 +109,9 @@ class WorkflowAction < ApplicationRecord
     if self.completed
       SlackService.new.send_notification(self).deliver
     end
+  end
+
+  def check_week_day(day)
+    day.on_weekday? ? day : day.next_weekday
   end
 end
