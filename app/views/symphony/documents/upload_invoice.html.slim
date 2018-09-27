@@ -10,6 +10,8 @@
       li.breadcrumb-item.active Edit
     h1
       | Upload Invoices
+      .btn-toolbar.float-right
+        = link_to "Add New Client", new_symphony_client_path, role: 'button', class: 'btn btn-warning'
 .row
   .col-sm-6
     = label_tag "Client"

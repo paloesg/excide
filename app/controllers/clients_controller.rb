@@ -68,7 +68,7 @@ class ClientsController < ApplicationController
 
     respond_to do |format|
       if @client.save
-        format.html { redirect_to symphony_clients_path, notice: 'Client successfully updated!' }
+        format.html { redirect_to session[:previous_url], notice: 'Client successfully added to Xero!' }
         format.json { render :show, status: :ok, location: @client }
       else
         format.html { render :new }
