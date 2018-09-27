@@ -32,7 +32,7 @@ class Symphony::ArchivesController < ApplicationController
     @section_index = @sections.index(@section)
     @document_templates = DocumentTemplate.where(template: @workflow.template)
     @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
-    @activities = @workflow.archive['activity_log']
+    @activities = @archive['activity_log']
   end
 
   private
