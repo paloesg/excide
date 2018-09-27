@@ -8,6 +8,8 @@
       li.breadcrumb-item.active Clients
     h1
       | Manage Clients
+      .btn-toolbar.float-right
+        = link_to "New Client", new_symphony_client_path, role: 'button', class: 'btn btn-warning'
 .row
   .col-sm-12
     .table-responsive

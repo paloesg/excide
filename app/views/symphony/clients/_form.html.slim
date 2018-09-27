@@ -1,0 +1,13 @@
+- if @client.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@client.errors.count, "error")} prohibited this client from being saved:"
+    ul
+      - @client.errors.full_messages.each do |message|
+        li = message
+.form-group
+  = f.label :name
+  = f.text_field :name, class: 'form-control'
+.form-group
+  = f.label :identifier
+  = f.text_field :identifier, class: 'form-control'
+= f.submit 'Save Client', class: 'btn btn-primary'
