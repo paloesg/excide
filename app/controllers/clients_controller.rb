@@ -7,7 +7,7 @@ class ClientsController < ApplicationController
   before_action :set_company
   before_action :set_client, only: [:show, :edit, :update, :destroy, :xero_create]
 
-  rescue_from Xeroizer::OAuth::TokenExpired, with: :xero_login
+  rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
   def index
     @clients = Client.where(company: @company).order(:id)
