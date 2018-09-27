@@ -236,6 +236,7 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   config.omniauth :linkedin, ENV['LINKEDIN_KEY'], ENV['LINKEDIN_SECRET'], :fields => ['id', 'email-address', 'first-name', 'last-name', 'headline', 'location', 'industry', 'summary', 'specialties', 'picture-url', 'picture-urls::(original)', 'public-profile-url', 'positions']
+  config.omniauth :xero, ENV['XERO_CONSUMER_KEY'], ENV['XERO_CONSUMER_SECRET']
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

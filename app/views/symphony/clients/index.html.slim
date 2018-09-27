@@ -1,0 +1,25 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/" Home
+      li.breadcrumb-item
+        a href="/symphony" #{@company.name}
+      li.breadcrumb-item.active Clients
+    h1
+      | Manage Clients
+.row
+  .col-sm-12
+    .table-responsive
+      table.table
+        thead
+          tr
+            th Identifier
+            th Name
+            th Xero ID
+        tbody
+          - @clients.each do |client|
+            tr
+              td = client.identifier
+              td = client.name
+              td = client.xero_contact_id.present? ? client.xero_contact_id : link_to('Add to Xero', xero_create_symphony_client_path(client.id), method: 'post', class: 'btn btn-primary btn-sm')

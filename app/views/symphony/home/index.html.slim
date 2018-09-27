@@ -6,7 +6,7 @@
       li.breadcrumb-item
         a href="#" #{@company.name}
       li.breadcrumb-item.active Dashboard
-    h1.border-bottom Dashboard
+    h1 Dashboard
 .row
   .col-md-8.col-sm-6
     .card
@@ -35,14 +35,13 @@
 
   - if @templates.present?
     .col-md-4.col-sm-6
-      .card
+      .card.mb-3
         h5.card-header New Workflow
         .card-body
           .form-group
             = label_tag "template", "Select workflow type"
-            = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), class: "form-control template-dropdown", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-          = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-primary', id: 'new-workflow'
-
+            = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
+          = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
 .row
   .col-md-8.col-sm-6
     .card.mt-3
@@ -52,9 +51,9 @@
           | No outstanding workflows at the moment. Click on a workflow to begin.
         - else
           .row
-            .col-sm-3
-              = select_tag('workflow_type', options_for_select(@templates.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), onchange: "Turbolinks.visit('//' + location.host + location.pathname + '?workflow_type=' + $(this).val());", include_blank: 'All', class: 'form-control form-control-sm pull-left')
-            .offset-sm-3.col-sm-6
+            .col-sm-5
+              = select_tag('workflow_type', options_for_select(@templates.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'selectize-workflow-type')
+            .offset-sm-1.col-sm-6
               .float-right = page_entries_info @workflows, entry_name: 'workflow'
       .table-responsive
         table.table

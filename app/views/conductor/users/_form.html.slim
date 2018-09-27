@@ -33,7 +33,7 @@
   = f.text_field :bank_account_number, class: 'form-control'
 .form-group
   = f.label :bank_account_type
-  = f.select :bank_account_type, User.bank_account_types.map { |key, value| [key.titleize, key] }, {selected: @user.bank_account_type}, class: 'form-control'
+  = f.select :bank_account_type, User.bank_account_types.map { |key, value| [key.titleize, key] }, {selected: @user.bank_account_type}, class: 'selectize'
 .form-group
   .checkbox
     = label_tag do

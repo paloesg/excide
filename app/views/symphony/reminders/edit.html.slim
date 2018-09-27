@@ -1,0 +1,47 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="#" Home
+      li.breadcrumb-item
+        a href="#" Company
+      li.breadcrumb-item
+        a href="#" Reminders
+      li.breadcrumb-item.active Edit
+    h1 Edit Reminder
+.row
+  .col-sm-12
+    = form_for(@reminder, url: symphony_reminder_path(@reminder.id)) do |f|
+      .row
+        .col-sm-6
+          .form-group
+            = f.label :next_reminder
+            = f.text_field :next_reminder, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
+      .row
+        .col-sm-3
+          .form-check
+            = f.check_box :repeat, class: 'form-check-input'
+            = f.label "Repeat every", class: 'form-check-label'
+      .row
+        .col-sm-3
+          .form-group
+            = f.number_field :freq_value, class: 'form-control'
+        .col-sm-3
+          .form-group
+            = f.select :freq_unit, Reminder.freq_units.map { |key, value| [key.titleize, key] }, {selected: @reminder.freq_unit}, class: 'form-control'
+      .row
+        .col-sm-3
+          .form-group
+            | Send notification through
+            .form-check
+              = f.check_box :email, class: 'form-check-input'
+              = f.label :email, class: 'form-check-label'
+            .form-check
+              = f.check_box :sms, class: 'form-check-input'
+              = f.label :sms, class: 'form-check-label'
+            .form-check
+              = f.check_box :slack, class: 'form-check-input'
+              = f.label :slack, class: 'form-check-label'
+      .row
+        .col-sm-6
+          = f.submit 'Save Reminder', class: 'btn btn-primary'

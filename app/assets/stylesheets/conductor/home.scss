@@ -10,3 +10,10 @@
 span#allocated_users_length {
     padding: 0px 5px;
 }
+
+@include media-breakpoint-down(sm) {
+  .fixed-top .navbar-collapse {
+    max-height: 340px;
+    overflow-y: auto;
+  }
+}

@@ -57,7 +57,7 @@ class UpdateActivationTime
   end
 
   def notify_contractor(allocation)
-    NotificationMailer.edit_activation(@activation, allocation.user).deliver
+    NotificationMailer.edit_activation(@activation, allocation.user).deliver_later
     @contractors_updated += 1
   end
 
@@ -65,7 +65,7 @@ class UpdateActivationTime
     removed_user = allocation.user
     allocation.update_attributes!(user_id: nil)
     removed_user.get_availability(old_allocation).toggle!(:assigned)
-    NotificationMailer.user_removed_from_activation(@activation, removed_user).deliver
+    NotificationMailer.user_removed_from_activation(@activation, removed_user).deliver_later
     @contractors_unassigned += 1
   end
 

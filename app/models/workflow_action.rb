@@ -1,4 +1,4 @@
-class WorkflowAction < ActiveRecord::Base
+class WorkflowAction < ApplicationRecord
   include PublicActivity::Model
   tracked except: [:create, :destroy],
           owner: ->(controller, _model) { controller&.current_user },
@@ -8,9 +8,9 @@ class WorkflowAction < ActiveRecord::Base
             completed: ->(_controller, model) { model&.completed? }
           }
 
-  after_save :clear_reminders, if: :completed_changed?
-  after_save :trigger_next_task, if: :completed_changed?
-  after_save :send_notification, if: :completed_changed?
+  after_save :clear_reminders, if: :saved_change_to_completed?
+  after_save :trigger_next_task, if: :saved_change_to_completed?
+  after_save :send_notification, if: :saved_change_to_completed?
 
   belongs_to :task
   belongs_to :company
@@ -85,7 +85,7 @@ class WorkflowAction < ActiveRecord::Base
       company_id: action.company_id,
       task_id: task.id,
       workflow_action_id: action.id,
-      title: 'You have a task awaiting completion.',
+      title: '[Reminder] ' + task.section.template.title + ' - ' + action.workflow.identifier,
       content: task.instructions,
       slack: true,
       email: true

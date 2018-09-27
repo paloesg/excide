@@ -26,7 +26,7 @@ class SendReminder
   end
 
   def send_email_reminder
-    NotificationMailer.reminder_notification(@reminder).deliver_now
+    NotificationMailer.reminder_notification(@reminder).deliver_later
   end
 
   def send_sms_reminder

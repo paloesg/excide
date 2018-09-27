@@ -1,4 +1,4 @@
-class DocumentTemplate < ActiveRecord::Base
+class DocumentTemplate < ApplicationRecord
   belongs_to :template
   belongs_to :user
 

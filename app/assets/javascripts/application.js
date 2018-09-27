@@ -11,6 +11,7 @@
 //= require analytics
 //= require jquery.ui.widget
 //= require z.jquery.fileupload
+//= require selectize
 
 //= require flexslider.min
 //= require lightbox.min

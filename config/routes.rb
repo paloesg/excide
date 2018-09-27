@@ -33,7 +33,17 @@ Rails.application.routes.draw do
   namespace :symphony do
     get '/search', to: 'home#search'
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
+    resources :clients do
+      member do
+        post '/xero_create', to: 'clients#xero_create', as: :xero_create
+      end
+    end
     resources :users
+    resources :reminders do
+      member do
+        post '/cancel', to: 'reminders#cancel'
+      end
+    end
     resources :document_templates
     resources :documents do
       collection do
@@ -53,6 +63,7 @@ Rails.application.routes.draw do
         post '/stop_reminder/:task_id', to: 'workflows#stop_reminder', as: :stop_reminder
         get '/assign', to: 'workflows#assign', as: :assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
+        post '/xero_create_invoice_payable', to: 'workflows#xero_create_invoice_payable', as: :xero_create_invoice_payable
       end
     end
     root to: 'home#index'

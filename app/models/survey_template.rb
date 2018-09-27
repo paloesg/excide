@@ -1,4 +1,4 @@
-class SurveyTemplate < ActiveRecord::Base
+class SurveyTemplate < ApplicationRecord
   include FriendlyId
   friendly_id :title, use: [:slugged, :finders]
 

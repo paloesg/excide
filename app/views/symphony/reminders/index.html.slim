@@ -1,0 +1,33 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Dashboard
+      li.breadcrumb-item
+        a href="/symphony/company" #{@company.name}
+      li.breadcrumb-item.active Reminders
+    h1 Manage Your Reminders
+
+.row
+  .col-sm-12
+    - if @reminders.blank?
+      | No reminders at the moment.
+    - else
+      table.table.table-hover
+        thead
+          tr
+            th Content
+            th Task
+            th Next Reminder
+            th Repeat
+            th
+        tbody
+          - @reminders.each do |reminder|
+            tr
+              td = reminder.content
+              td = reminder.task.present? ? link_to(reminder.task.section.template.title, symphony_workflow_path(reminder.task.section.template.slug, reminder.workflow_action.workflow.identifier)) : '-'
+              td = reminder.next_reminder&.strftime("%F")
+              td = reminder.repeat ? 'Yes' : 'No'
+              td
+                = link_to 'Stop', cancel_symphony_reminder_path(reminder.id), method: :post, role: 'button', class: 'btn btn-danger btn-sm mr-2' if reminder.next_reminder.present?
+                = link_to 'Edit', edit_symphony_reminder_path(reminder.id), role: 'button', class: 'btn btn-primary btn-sm mr-2'

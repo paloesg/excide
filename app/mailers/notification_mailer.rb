@@ -3,7 +3,7 @@ class NotificationMailer < ApplicationMailer
 
   def self.deliver_notifications(task, action, users)
     users.each do |user|
-      task_notification(task, action, user).deliver_now
+      task_notification(task, action, user).deliver_later
     end
   end
 
@@ -13,7 +13,7 @@ class NotificationMailer < ApplicationMailer
     @user = user
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
-    mail(to: address.format, subject: 'You have a new task in ' + @task.section.template.title + ' (' + @action.workflow.identifier + ')')
+    mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.identifier)
   end
 
   def reminder_notification(reminder)

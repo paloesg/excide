@@ -1,4 +1,4 @@
-class Activation < ActiveRecord::Base
+class Activation < ApplicationRecord
   after_create :create_activation_notification
   after_destroy :destroy_activation_notification
 
@@ -29,13 +29,13 @@ class Activation < ActiveRecord::Base
   end
 
   def update_activation_notification
-    NotificationMailer.edit_activation(self, self.event_owner).deliver if self.event_owner.present?
+    NotificationMailer.edit_activation(self, self.event_owner).deliver_later if self.event_owner.present?
   end
 
   private
 
   def create_activation_notification
-    NotificationMailer.create_activation(self, self.event_owner).deliver if self.event_owner.present?
+    NotificationMailer.create_activation(self, self.event_owner).deliver_later if self.event_owner.present?
   end
 
   def destroy_activation_notification
