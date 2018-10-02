@@ -14,6 +14,8 @@ class Template < ApplicationRecord
 
   validates :title, :slug, :company, presence: true
 
+  before_save :data_names_to_json
+
   def get_roles
     self.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
   end
@@ -76,6 +78,12 @@ class Template < ApplicationRecord
       end
     end
     imports
+  end
+
+  def data_names_to_json
+    if (data_names and data_names.is_a? String)
+      self.data_names = JSON.parse(data_names)
+    end
   end
 
   def current_workflows
