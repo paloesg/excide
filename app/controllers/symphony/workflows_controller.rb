@@ -135,7 +135,7 @@ class Symphony::WorkflowsController < WorkflowsController
     if invoice.present? and invoice.invoice_id.present?
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
     else
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: 'There was an error creating Xero invoice. Please ensure you have filled in all the required data attributes.'
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: 'There was an error creating Xero invoice: ' + e.message + '. Please ensure you have filled in all the required data attributes.'
     end
   end
 
