@@ -26,7 +26,7 @@
               tr
                 td = task['position']
                 td = task['instructions']
-                td = task['workflow_actions']['assigned_user']
+                td = task['workflow_actions']['assigned_user'] || task['role_name']
                 td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
                 td = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
                 td = task['workflow_actions']['completed_user']
