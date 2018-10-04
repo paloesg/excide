@@ -15,7 +15,7 @@ class GenerateArchive
   private
 
   def generate_archive
-    { workflow: { user: @workflow.user.full_name, remarks: @workflow.remarks, deadline: @workflow.deadline, company: @workflow.company.name, activity_log: activity_log.to_a, completed_on: Time.now, data: @workflow.data, client_type: @workflow.workflowable_type, client_name: @workflow.workflowable.name, client_identifier: @workflow.workflowable.identifier, client_company: @workflow.workflowable.company.name, template: generate_archive_template } }
+    { workflow: { user: @workflow.user.full_name, remarks: @workflow.remarks, deadline: @workflow.deadline, company: @workflow.company.name, activity_log: activity_log.to_a, archived_at: Time.current, data: @workflow.data, client_type: @workflow.workflowable_type, client_name: @workflow.workflowable.name, client_identifier: @workflow.workflowable.identifier, client_company: @workflow.workflowable.company.name, template: generate_archive_template } }
   end
 
   def generate_archive_template
