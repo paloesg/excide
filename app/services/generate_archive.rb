@@ -5,11 +5,17 @@ class GenerateArchive
   end
 
   def run
-    archive = generate_archive
-    delete_reminders
-    delete_workflow_actions
-    delete_activities
-    return archive
+    begin
+      @workflow.transaction do
+        @workflow.update_columns(completed: true, archive: generate_archive)
+        delete_reminders
+        delete_workflow_actions
+        delete_activities
+      end
+      OpenStruct.new(success?: true, workflow: @workflow)
+    rescue ActiveRecord::RecordInvalid
+      OpenStruct.new(success?: false, workflow: @workflow)
+    end
   end
 
   private
