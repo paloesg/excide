@@ -50,10 +50,12 @@ Rails.application.routes.draw do
         get '/upload-invoice', to: 'documents#upload_invoice', as: :upload_invoice
       end
     end
-    resources :archives
+    get '/archives', to: 'archives#index', as: :archives
+    get '/archives/:workflow_name/:workflow_identifier', to: 'archives#show', as: :archive
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
       member do
         get '/history', to: 'workflows#activities', as: :activities
+        post '/archive', to: 'workflows#archive', as: :archive
         post '/reset', to: 'workflows#reset', as: :reset
         get '/section/:section_id', to: 'workflows#show', as: :section
         post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle

@@ -89,6 +89,17 @@ class Symphony::WorkflowsController < WorkflowsController
     end
   end
 
+  def archive
+    set_workflow
+    generate_archive = GenerateArchive.new(@workflow).run
+    # Mark workflow as completed when workflow is archive
+    if generate_archive.success?
+      redirect_to symphony_archive_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully archived.'
+    else
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: 'There was an error archiving this workflow. Please contact your admin with details of this error.'
+    end
+  end
+
   def stop_reminder
     action = Task.find(params[:task_id])
     action.reminders.each { |reminder| reminder.update_attributes(next_reminder: nil) }

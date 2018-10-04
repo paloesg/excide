@@ -1,11 +1,10 @@
 class Symphony::ArchivesController < ApplicationController
   layout 'dashboard/application'
 
+  before_action :set_company
   before_action :authenticate_user!
 
   def index
-    @user = current_user
-    @company = @user.company
     @templates = Template.assigned_templates(current_user)
     @workflows_array = @templates.map(&:workflows).flatten
 
@@ -22,7 +21,26 @@ class Symphony::ArchivesController < ApplicationController
     @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
   end
 
+  def show
+    @workflows = @company.workflows
+    @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
+    @archive = @workflow.archive['workflow']
+    @template = @archive['template']
+    @sections = @template['sections']
+    @section = params[:section] ? @sections.select{|section| section['unique_name'] == params[:section]}.first : @sections.last
+    @tasks = @section['tasks'].sort_by{|task| task['position']}
+    @section_index = @sections.index(@section)
+    @document_templates = DocumentTemplate.where(template: @workflow.template)
+    @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
+    @activities = @archive['activity_log']
+  end
+
   private
+
+  def set_company
+    @user = current_user
+    @company = @user.company
+  end
 
   def sort_column(array)
     array.sort_by{

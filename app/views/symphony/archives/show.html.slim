@@ -1,0 +1,118 @@
+.row
+  .col-sm-12
+    ol.breadcrumb.breadcrumb-2
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item
+        a href="/symphony/archives" Archives
+      li.breadcrumb-item.active #{@workflow.identifier}
+    h1 #{@template['title']} – #{@workflow.identifier}
+.row
+  .col-md-9.col-sm-12
+    .card.mb-3
+      h5.card-header = @section['display_name']
+      .table-responsive
+        table.table
+          thead
+            tr
+              th No.
+              th Instructions
+              th Assigned To
+              th Deadline
+              th Done
+              th Completed By
+          tbody
+            - @tasks.each do |task|
+              tr
+                td = task['position']
+                td = task['instructions']
+                td = task['workflow_actions']['assigned_user'] || task['role_name']
+                td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
+                td = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
+                td = task['workflow_actions']['completed_user']
+      .card-footer
+        - unless @sections.first['unique_name'] == @section['unique_name']
+          = link_to "?section=#{@sections[@section_index - 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-left'
+            i.fa.fa-chevron-left
+            |  Previous Section
+        - unless @sections.last['unique_name'] == @section['unique_name']
+          = link_to "?section=#{@sections[@section_index + 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-right'
+            ' Next Section
+            i.fa.fa-chevron-right
+        .clearfix
+    .row
+      .col-sm-6
+        .card.mb-3
+          h5.card-header Attributes
+          table.table.table-condensed
+            thead
+              tr
+                th Name
+                th Value
+                th Updated By
+                th Updated At
+            tbody
+              - @archive['data'].each do |d|
+                tr
+                  td = d['name']
+                  td = d['value']
+                  td = User.find_by(id: d['user_id'])&.full_name
+                  td = d['updated_at']&.to_time&.strftime("%d/%m/%Y %R")
+      .col-sm-6
+        .card
+          h5.card-header History
+          table.table.table-condensed
+            thead
+              tr
+                th User
+                th Action
+                th Time
+            tbody
+              - @activities.each do |activity|
+                tr = render_activity PublicActivity::Activity.new(activity.with_indifferent_access)
+  .col-md-3.col-sm-6
+    .card.mb-3
+      h6.card-header = @archive['client_type']
+      .card-body
+        | Name: #{@archive['client_name']}
+        br
+        | Identifier: #{@archive['identifier'] ? @archive['identifier'] : '-'}
+    .card.mb-3
+      h6.card-header Remarks
+      .card-body = @archive['remarks']
+    .card.mb-3
+      h6.card-header Deadline
+      .card-body = @archive['deadline'] ? @archive['deadline'].to_time.strftime("%d/%m/%Y") : '-'
+    .card.mb-3
+      h6.card-header Documents
+      - if @documents.empty?
+        .card-body No documents yet.
+      - else
+        - @documents.each do |d|
+          ul.list-group.list-group-flush
+            li.list-group-item
+              .media
+                .align-self-center
+                  = link_to symphony_document_path(d)
+                    i.ti-file.icon.mr-3 style="font-size: 50px"
+                .media-body
+                  h5.card-title = d.filename
+                  h6.card-subtitle = d.user&.full_name
+                  .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+    .card.mb-3
+      h6.card-header Document Templates
+      .panel-body
+      - if @document_templates.empty?
+        .card-body No documents yet.
+      - else
+        - @document_templates.each do |d|
+          ul.list-group.list-group-flush
+            li.list-group-item
+              .media
+                .align-self-center
+                  a href = d.file_url
+                    i.ti-file.icon.mr-3 style="font-size: 50px"
+                .media-body
+                  h5.card-title = d.title
+                  h6.card-subtitle = File.basename(d.file_url)
+                  .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
