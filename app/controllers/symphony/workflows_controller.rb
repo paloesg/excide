@@ -133,16 +133,20 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def xero_create_invoice_payable
-    @xero = Xero.new(session[:xero_auth])
-    invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, params[:date], params[:due_date], @workflow.identifier, params[:item_code], params[:description], params[:quantity], params[:price], params[:account])
-    @workflow.documents.each do |document|
-      invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, 'application/pdf')
+    begin
+      @xero = Xero.new(session[:xero_auth])
+      invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, params[:date], params[:due_date], @workflow.identifier, params[:item_code], params[:description], params[:quantity], params[:price], params[:account])
+      @workflow.documents.each do |document|
+        invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, 'application/pdf')
+      end
+    rescue => e
+      Rails.logger.error("Xero Export Error: #{e.message}")
     end
 
-    if invoice.invoice_id.present?
+    if invoice.present? and invoice.invoice_id.present?
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
     else
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'There was an error creating Xero invoice. Please ensure the data is correct.'
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: 'There was an error creating Xero invoice: ' + e.message + '. Please ensure you have filled in all the required data attributes.'
     end
   end
 

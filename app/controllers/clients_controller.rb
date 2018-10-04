@@ -7,7 +7,7 @@ class ClientsController < ApplicationController
   before_action :set_company
   before_action :set_client, only: [:show, :edit, :update, :destroy, :xero_create]
 
-  rescue_from Xeroizer::OAuth::TokenExpired, with: :xero_login
+  rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
   def index
     @clients = Client.where(company: @company).order(:id)
@@ -68,7 +68,7 @@ class ClientsController < ApplicationController
 
     respond_to do |format|
       if @client.save
-        format.html { redirect_to symphony_clients_path, notice: 'Client successfully updated!' }
+        format.html { redirect_to session[:previous_url], notice: 'Client successfully added to Xero!' }
         format.json { render :show, status: :ok, location: @client }
       else
         format.html { render :new }

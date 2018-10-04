@@ -7,7 +7,6 @@
         a href="#" #{resource_name.to_s.humanize}
       li.breadcrumb-item.active Update
     h1 Edit User
-    = link_to "Connect to Xero", user_xero_omniauth_authorize_path, class: 'float-right'
 .row
   .col-md-12
     = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
@@ -40,6 +39,11 @@
             .form-group
               = f.label :company_id
               = f.select :company_id, Company.all.map{|company| [company.name, company.id]}, {selected: resource.company.id}, class: 'selectize'
+          .col-md-6
+            .form-group
+              = f.label "Connect to company's Xero"
+              br
+              = link_to "Connect", user_xero_omniauth_authorize_path, class: 'btn btn-primary'
       .row
         .col-md-6
           .card
