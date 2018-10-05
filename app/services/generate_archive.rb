@@ -13,8 +13,8 @@ class GenerateArchive
         delete_activities
       end
       OpenStruct.new(success?: true, workflow: @workflow)
-    rescue ActiveRecord::RecordInvalid
-      OpenStruct.new(success?: false, workflow: @workflow)
+    rescue => e
+      OpenStruct.new(success?: false, workflow: @workflow, message: e.message)
     end
   end
 

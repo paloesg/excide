@@ -14,7 +14,7 @@ namespace :update do
       if generate_archive.success?
         puts 'Workflow ID ' + workflow.id.to_s + ' has been archived.'
       else
-        puts 'Unable to archive workflow ID ' + workflow.id
+        puts 'Error archiving workflow ID ' + workflow.id + ': ' + generate_archive.message
       end
     end
   end
