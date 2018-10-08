@@ -47,7 +47,7 @@ class SendReminder
 
   def set_next_reminder
     if @reminder.repeat?
-      @reminder.next_reminder = Date.current + @reminder.freq_value.to_i.send(@reminder.freq_unit)
+      @reminder.next_reminder = check_week_day(Date.current + @reminder.freq_value.to_i.send(@reminder.freq_unit))
     else
       @reminder.next_reminder = nil
     end
@@ -55,7 +55,11 @@ class SendReminder
   end
 
   def set_reminder_tomorrow
-    @reminder.next_reminder = Date.current + 1.day
+    @reminder.next_reminder = check_week_day(Date.current + 1.day)
     @reminder.save
+  end
+
+  def check_week_day(day)
+    day.on_weekday? ? day : day.next_weekday
   end
 end
