@@ -6,7 +6,9 @@
       li.breadcrumb-item
         a href="/symphony/archives" Archives
       li.breadcrumb-item.active #{@workflow.identifier}
-    h1 #{@template['title']} – #{@workflow.identifier}
+    h1
+      | #{@template['title']} – #{@workflow.identifier}
+      = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row
   .col-md-9.col-sm-12
     .card.mb-3
