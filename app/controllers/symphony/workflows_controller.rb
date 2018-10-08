@@ -42,12 +42,16 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def show
-    @sections = @template.sections
-    @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
-    @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+    if @workflow.completed?
+      redirect_to symphony_archive_path(@workflow.template.slug, @workflow.identifier)
+    else
+      @sections = @template.sections
+      @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
+      @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
 
-    set_tasks
-    set_documents
+      set_tasks
+      set_documents
+    end
   end
 
   def edit
