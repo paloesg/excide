@@ -21,9 +21,8 @@
   .col-md-6
     = form_for(@workflow, url: symphony_workflow_path(workflow_identifier: params[:workflow_identifier])) do |f|
       .card.mb-3
-        .card-header
-          | Attributes
-        .card-body
+        h5.card-header Data Attributes
+        .table-responsive
           table.table
             thead
               tr
@@ -32,8 +31,9 @@
                 th
             tbody
               tr
-              = f.fields_for :data do |d|
-                = render 'data_fields', f: d
+                = f.fields_for :data do |d|
+                  = render 'data_fields', f: d
+        .card-body
           = link_to_add_fields "Add Attribute", f, :data
       .btn-group role='group'
         - if @previous_document.present?
