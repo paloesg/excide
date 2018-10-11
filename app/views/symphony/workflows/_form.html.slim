@@ -5,60 +5,69 @@
       - @workflow.errors.full_messages.each do |message|
         li = message
 = f.hidden_field(:workflowable_type, value: 'Client')
-.form-group
-  = f.label :identifier
-  = f.text_field :identifier, class: 'form-control'
-  span.help-block.d-none#identifier_exist
-    .fa.fa-times aria-hidden="true"
-    |  This identifier is already in use.
-  span.help-block.d-none#identifier_unique
-    .fa.fa-check aria-hidden="true"
-    |  This identifier is unique.
-.form-group
-  = f.label :remarks
-  = f.text_area :remarks, class: 'form-control'
-.form-group
-  = f.label :deadline
-  = f.text_field :deadline, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
-.form-group
-  .card
-    .card-header
-      | Attributes
-    .card-body
-      table.table
-        thead
-          tr
-            th Name
-            th Value
-            th
-        tbody
-          tr
-          = f.fields_for :data do |d|
-            = render 'data_fields', f: d
-      - if @user.has_role? :admin, @company
-        = link_to_add_fields "Add Attribute", f, :data
 .row
-  - if @workflow.workflowable.blank?
-    .col-md-6.col-sm-12
-      .card
-        .card-header
-          | New Client
-        .card-body
-          = f.fields_for :client do |c|
+  .col-md-6.col-sm-12
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Workflow Details
+          .card-body
             .form-group
-              = c.label :name, 'Client Name'
-              = c.text_field :name, class: 'form-control'
+              = f.label :identifier
+              = f.text_field :identifier, class: 'form-control'
+              span.help-block.d-none#identifier_exist
+                .fa.fa-times aria-hidden="true"
+                |  This identifier is already in use.
+              span.help-block.d-none#identifier_unique
+                .fa.fa-check aria-hidden="true"
+                |  This identifier is unique.
             .form-group
-              = c.label :identifier, 'Client Identifier'
-              = c.text_field :identifier, class: 'form-control'
-  .col-md-6.col-sm-12.mb-3
-    .card
-      .card-header
-        | Existing Client
-      .card-body
+              = f.label :remarks
+              = f.text_area :remarks, class: 'form-control'
+            .form-group
+              = f.label :deadline
+              = f.text_field :deadline, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
+    .row
+      .col-sm-12
         .form-group
-          = f.label :workflowable_id, 'Client'
-          = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'selectize'
+          .card
+            h5.card-header Data Attributes
+            .table-responsive
+              table.table
+                thead
+                  tr
+                    th Name
+                    th Value
+                    th
+                tbody
+                  tr
+                  = f.fields_for :data do |d|
+                    = render 'data_fields', f: d
+            .card-body
+              - if @user.has_role? :admin, @company
+                = link_to_add_fields "Add Attribute", f, :data
+  .col-md-6.col-sm-12
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Existing Client
+          .card-body
+            .form-group
+              = f.label :workflowable_id, 'Client'
+              = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'selectize'
+    - if @workflow.workflowable.blank?
+      .row
+        .col-sm-12
+          .card
+            h5.card-header New Client
+            .card-body
+              = f.fields_for :client do |c|
+                .form-group
+                  = c.label :name, 'Client Name'
+                  = c.text_field :name, class: 'form-control'
+                .form-group
+                  = c.label :identifier, 'Client Identifier'
+                  = c.text_field :identifier, class: 'form-control'
 .row
   .col-sm-12
     = f.submit 'Save Workflow', class: 'btn btn-primary'

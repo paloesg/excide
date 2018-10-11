@@ -122,7 +122,7 @@ gem "algoliasearch-rails"
 gem "selectize-rails"
 
 # Backend admin
-gem 'administrate'
+gem 'administrate', '0.10.0'
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
 gem 'administrate-field-json', git: 'https://github.com/eddietejeda/administrate-field-json.git'

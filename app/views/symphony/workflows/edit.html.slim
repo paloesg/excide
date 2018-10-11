@@ -2,9 +2,11 @@
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
-        a href="/symphony/" Home
+        a href="/symphony" Symphony
       li.breadcrumb-item
-        a href="#" #{@company.name}
+        = link_to @template.title, symphony_workflows_path(@template.slug)
+      li.breadcrumb-item
+        = link_to @workflow.identifier, symphony_workflow_path(@template.slug, @workflow.identifier)
       li.breadcrumb-item.active Edit Workflow
     h1 Edit Workflow
 .row
