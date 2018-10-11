@@ -1,6 +1,6 @@
 tr
   td = f.text_field(:name, value: 'Account', class: 'form-control account-field', readonly: true)
-  td = f.collection_select :value, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, class: 'form-control'
+  td = f.collection_select :value, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, include_blank: true, class: 'form-control'
   td
     - if @user.has_role? :admin, @company
       = link_to "Remove", '#', class: 'remove_fields btn btn-danger'
