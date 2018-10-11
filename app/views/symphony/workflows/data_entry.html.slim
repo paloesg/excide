@@ -31,10 +31,11 @@
                 th
             tbody
               tr
-                = f.fields_for :data do |d|
-                  = render 'data_fields', f: d
+              = f.fields_for :data do |d|
+                = render 'data_fields', f: d
         .card-body
           = link_to_add_fields "Add Attribute", f, :data
+          = link_to_add_account "Add Account Code", f, :data
       .btn-group role='group'
         - if @previous_document.present?
           = f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-primary'

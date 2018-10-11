@@ -25,6 +25,10 @@ module Adapter
       return xero_contact.contact_id
     end
 
+    def get_accounts
+      @xero_client.Account.all
+    end
+
     def create_invoice_payable(contact_id, date, due_date, identifier, item_code, description, quantity, price, account)
       supplier = get_contact(contact_id)
       ap = @xero_client.Invoice.build(type: "ACCPAY", contact: supplier, date: Date.strptime(date, '%d-%b-%y'), due_date: Date.strptime(due_date, '%d-%b-%y'), invoice_number: identifier)
