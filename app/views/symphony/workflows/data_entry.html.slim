@@ -4,7 +4,7 @@
       li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
       li.breadcrumb-item
-        a href="#" #{@template.title}
+        = link_to @template.title, symphony_workflows_path(@template.slug)
       li.breadcrumb-item
         = link_to @workflow.identifier, symphony_workflow_path(@template.slug, @workflow.identifier)
       li.breadcrumb-item.active Data Entry
