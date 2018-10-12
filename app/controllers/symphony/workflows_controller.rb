@@ -187,6 +187,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def log_data_activity
     params[:workflow][:data_attributes]&.each do |key, value|
+      next if value[:name].empty? and value[:value].empty?
       if value[:_create] == '1'
         @workflow.create_activity key: 'workflow.create_attribute', owner: User.find_by(id: value[:user_id]), params: { attribute: {name: value[:name], value: value[:value]} }
       elsif value[:_update] == '1'
