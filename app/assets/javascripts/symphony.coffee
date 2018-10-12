@@ -18,7 +18,7 @@ jQuery ->
     else
       $(".add_account").addClass("disabled")
       $("select[id$='"+time+"_value']").selectize()
-    $(this).prev().find('tr:last-child').find('.create').val('1')
+    $('.data-attributes').find('tr:last-child').find('.create').val('1')
     event.preventDefault()
 
   $('input').change (event) ->
