@@ -9,7 +9,7 @@ jQuery ->
     $(this).closest('tr').hide()
     event.preventDefault()
 
-  $('form').on 'click', '.add_fields', (event) ->
+  $('form').on 'click', '.add_attribute_fields', (event) ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
     $(".table>tbody>tr:last-child").after($(this).data('fields').replace(regexp, time))
