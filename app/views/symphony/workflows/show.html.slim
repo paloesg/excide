@@ -5,18 +5,21 @@
         a href="/symphony" Symphony
       li.breadcrumb-item
         = link_to @template.title, symphony_workflows_path(@template.slug)
-      li.breadcrumb-item.active #{@workflow.identifier}
-    h1
+      li.breadcrumb-item.active.text-truncate #{@workflow.identifier}
+.row
+  .col-md-9.col-sm-12
+    h1.text-truncate
       | #{@template.title} – #{@workflow.identifier}
-      .btn-group.float-right role='group'
-        - if @workflow.previous_workflow.present?
-          = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-sm btn-outline-secondary'
-            i.fa.fa-chevron-left
-            |  Earlier Workflow
-        - if @workflow.next_workflow.present?
-          = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-sm btn-outline-secondary'
-            ' Later Workflow
-            i.fa.fa-chevron-right
+  .col-md-3.col-sm-6
+    .btn-group.float-right role='group'
+      - if @workflow.previous_workflow.present?
+        = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-outline-secondary'
+          i.fa.fa-chevron-left
+          |  Earlier Workflow
+      - if @workflow.next_workflow.present?
+        = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-outline-secondary'
+          ' Later Workflow
+          i.fa.fa-chevron-right
 .row
   .col-md-9.col-sm-12
     .card.mb-3
@@ -47,39 +50,41 @@
             i.fa.fa-chevron-right
         .clearfix
     .row
-      .col-sm-6
+      .col-lg-6.col-sm-12
         .card.mb-3
           h5.card-header Attributes
-          table.table.table-condensed
-            thead
-              tr
-                th Name
-                th Value
-                th Updated By
-                th Updated At
-            tbody
-              - @workflow.data.each do |d|
+          .table-responsive
+            table.table.table-condensed
+              thead
                 tr
-                  td = d.name
-                  td = d.value
-                  td = User.find_by(id: d.user_id)&.full_name
-                  td = d.updated_at&.to_time&.strftime("%d/%m/%Y %R")
-      .col-sm-6
+                  th Name
+                  th Value
+                  th Updated By
+                  th Updated At
+              tbody
+                - @workflow.data.each do |d|
+                  tr
+                    td = d.name
+                    td = d.value
+                    td = User.find_by(id: d.user_id)&.full_name
+                    td = d.updated_at&.to_time&.strftime("%d/%m/%Y %R")
+      .col-lg-6.col-sm-12
         .card
           h5.card-header History
-          table.table.table-condensed
-            thead
-              tr
-                th User
-                th Action
-                th Time
-            tbody
-              - @activities.take(10).each do |activity|
-                tr = render_activity activity
+          .table-responsive
+            table.table.table-condensed
+              thead
+                tr
+                  th User
+                  th Action
+                  th Time
+              tbody
+                - @activities.take(10).each do |activity|
+                  tr = render_activity activity
           - if @activities.count > 10
             .card-footer
               = link_to "View more...", activities_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-sm btn-outline-secondary float-right'
-  .col-md-3.col-sm-6
+  .col-md-3.col-sm-12
     = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
     = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
     - if @user.has_role? :admin
