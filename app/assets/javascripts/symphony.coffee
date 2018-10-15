@@ -9,7 +9,7 @@ jQuery ->
     $(this).closest('tr').hide()
     event.preventDefault()
 
-  $('form').on 'click', '.add_fields', (event) ->
+  $('form').on 'click', '.add_attribute_fields', (event) ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
     $(".table>tbody>tr:last-child").after($(this).data('fields').replace(regexp, time))
@@ -17,8 +17,10 @@ jQuery ->
       $("input[id$='"+time+"_name']").removeAttr('readonly')
     else
       $(".add_account").addClass("disabled")
-      $("select[id$='"+time+"_value']").selectize()
-    $(this).prev().find('tr:last-child').find('.create').val('1')
+      $("select[id$='"+time+"_value']").selectize({
+        dropdownParent: "body"
+      })
+    $('.data-attributes').find('tr:last-child').find('.create').val('1')
     event.preventDefault()
 
   $('input').change (event) ->
