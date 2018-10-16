@@ -6,6 +6,7 @@ class Symphony::HomeController < ApplicationController
   def index
     @company = current_user.company
     @templates = Template.assigned_templates(current_user)
+    @clients = @company.clients
 
     @workflows_array = @templates.map(&:current_workflows).flatten
     @workflows_sort = sort_column(@workflows_array)
@@ -19,6 +20,8 @@ class Symphony::HomeController < ApplicationController
 
     @workflows = Kaminari.paginate_array(@templates_type).page(params[:page]).per(10)
     @outstanding_actions = WorkflowAction.all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).order(:deadline)
+
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
   def search
