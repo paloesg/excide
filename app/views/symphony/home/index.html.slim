@@ -22,12 +22,9 @@
         .card-body
          h5.card-title Reminders
          h1.card-text = link_to @reminder_count, symphony_reminders_path, class: 'text-dark'
-    .card
-      h5.card-header Your Outstanding Tasks
-      - if @outstanding_actions.blank?
-        .card-body
-          | No outstanding tasks for you at the moment.
-      - else
+    - unless @outstanding_actions.blank?
+      .card
+        h5.card-header Your Outstanding Tasks
         .table-responsive
           table.table
             thead
