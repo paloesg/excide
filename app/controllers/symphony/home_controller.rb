@@ -21,6 +21,8 @@ class Symphony::HomeController < ApplicationController
     @workflows = Kaminari.paginate_array(@templates_type).page(params[:page]).per(10)
     @outstanding_actions = WorkflowAction.all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).order(:deadline)
 
+    @reminder_count = current_user.reminders.count
+
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 

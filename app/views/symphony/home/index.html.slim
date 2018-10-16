@@ -6,9 +6,22 @@
       li.breadcrumb-item
         a href="#" #{@company.name}
       li.breadcrumb-item.active Dashboard
-    h1 Dashboard
+    h1 Symphony Dashboard
 .row
   .col-md-8.col-sm-6
+    .card-deck.mb-3
+      .card.text-center.bg-light
+        .card-body
+         h5.card-title Tasks
+         h1.card-text = @outstanding_actions.count
+      .card.text-center.bg-light
+        .card-body
+         h5.card-title Workflows
+         h1.card-text = @workflows.count
+      .card.text-center.bg-light
+        .card-body
+         h5.card-title Reminders
+         h1.card-text = link_to @reminder_count, symphony_reminders_path, class: 'text-dark'
     .card
       h5.card-header Your Outstanding Tasks
       - if @outstanding_actions.blank?
@@ -73,7 +86,7 @@
             = label_tag "template", "Workflow type"
             = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
           = link_to 'New Workflow', new_symphony_workflow_path(@templates.first.slug), class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
-      .card
+      .card.mb-3
         h5.card-header Upload Invoices
         .card-body
           .form-group
