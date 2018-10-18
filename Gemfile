@@ -120,6 +120,8 @@ gem "simple_calendar", "~> 2.0"
 gem "algoliasearch-rails"
 # Selectize autocomplete selection
 gem "selectize-rails"
+# Get mime type from filename
+gem 'mini_mime'
 
 # Backend admin
 gem 'administrate', '0.10.0'

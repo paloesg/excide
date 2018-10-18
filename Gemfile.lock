@@ -566,6 +566,7 @@ DEPENDENCIES
   jquery-turbolinks
   lograge
   meta-tags
+  mini_mime
   mixpanel-ruby
   money-rails (~> 1)
   oj

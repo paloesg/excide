@@ -144,9 +144,9 @@ class Symphony::WorkflowsController < WorkflowsController
       @xero = Xero.new(session[:xero_auth])
       invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, params[:date], params[:due_date], @workflow.identifier, params[:item_code], params[:description], params[:quantity], params[:price], params[:account])
       @workflow.documents.each do |document|
-        invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, 'application/pdf')
+        invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, 'MiniMime.lookup_by_filename(document.file_url).content_type')
       end
-    rescue => e
+    rescue ArgumentError => e
       Rails.logger.error("Xero Export Error: #{e.message}")
     end
 
