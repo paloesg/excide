@@ -141,19 +141,29 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def xero_create_invoice_payable
     begin
+      xero_error = false
       @xero = Xero.new(session[:xero_auth])
       invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, params[:date], params[:due_date], @workflow.identifier, params[:item_code], params[:description], params[:quantity], params[:price], params[:account])
       @workflow.documents.each do |document|
-        invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, 'MiniMime.lookup_by_filename(document.file_url).content_type')
+        invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
       end
     rescue ArgumentError => e
-      Rails.logger.error("Xero Export Error: #{e.message}")
+      xero_error = true
+      message = 'There was an error creating Xero invoice: ' + e.message + '. Please ensure you have filled in all the required data attributes.'
+    rescue Xeroizer::ApiException, URI::InvalidURIError => e
+      xero_error = true
+      if invoice.present? and invoice.invoice_id.present?
+        message = 'Xero invoice was successfully created but there was an error uploading attachements: ' + e.message + '. Please upload the attachment manually in Xero.'
+      else
+        message = 'There was an error creating Xero invoice: ' + e.message + '. Please ensure you have filled in all the required data attributes.'
+      end
     end
 
-    if invoice.present? and invoice.invoice_id.present?
+    if xero_error = false
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
     else
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: 'There was an error creating Xero invoice: ' + e.message + '. Please ensure you have filled in all the required data attributes.'
+      Rails.logger.error("Xero Export Error: #{e.message}")
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: message
     end
   end
 
