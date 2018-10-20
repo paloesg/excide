@@ -162,7 +162,7 @@ class Symphony::WorkflowsController < WorkflowsController
     if xero_error = false
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
     else
-      Rails.logger.error("Xero Export Error: #{e.message}")
+      Rails.logger.error("Xero Export Error: #{message}")
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: message
     end
   end
