@@ -17,7 +17,7 @@ $(document).ready(function () {
       filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       return filter_filename + '.' + get_extension;
     };
-    var documentUpload = new Dropzone('#uploader', { timeout: 0, renameFilename: cleanFilename });
+    var documentUpload = new Dropzone('#uploader', { timeout: 0, renameFile: cleanFilename });
     documentUpload.on("sending", function(file) {
       if ($('#client_id').val() == "" || $('#template_id').val() == "") {
         alert('Client and Template is required.');
