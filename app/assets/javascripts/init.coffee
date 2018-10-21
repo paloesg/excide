@@ -20,8 +20,8 @@ app_init = ->
         rawFileName = e.target.files[0].name
         fileName = rawFileName.split('.').slice(0, -1).join('.')
         get_extension = rawFileName.substring(rawFileName.lastIndexOf(".")+1)
-        # Filter out special character in filename
-        filter_filename = fileName.replace(/[^\w\s]/gi, '')
+        # Filter out special characters and spaces in filename (same as parametrize function in rails)
+        filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')
         # Get s3 key url
         s3_url_key_with_filename = form.data('form-data')['key']
         # Remove default filename from s3 key url

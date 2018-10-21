@@ -13,8 +13,8 @@ $(document).ready(function () {
     var cleanFilename = function (name) {
       fileName = name.split('.').slice(0, -1).join('.')
       get_extension = name.substring(name.lastIndexOf(".") + 1)
-      // Filter out special character in filename
-      filter_filename = fileName.replace(/[^\w\s]/gi, '')
+      // Filter out special characters and spaces in filename (same as parametrize function in rails)
+      filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       return filter_filename + '.' + get_extension;
     };
     var documentUpload = new Dropzone('#uploader', { timeout: 0, renameFilename: cleanFilename });
