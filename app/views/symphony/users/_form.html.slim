@@ -4,21 +4,29 @@
     ul
       - @user.errors.full_messages.each do |message|
         li = message
-.form-group
-  = f.label :first_name
-  = f.text_field :first_name, class: 'form-control'
-.form-group
-  = f.label :last_name
-  = f.text_field :last_name, class: 'form-control'
-.form-group
-  = f.label :email
-  = f.text_field :email, class: 'form-control'
-.form-group
-  = f.label :contact_number
-  = f.text_field :contact_number, class: 'form-control'
-- @company_roles.each do |role|
-  .checkbox
-    label
-      = check_box_tag 'user[role_ids][]', role.id, (@user.roles.include? role)
-      = role.display_name
-= f.submit 'Save User', class: 'btn btn-primary'
+.row.mb-3
+  .col-sm-6
+    .card
+      h5.card-header User Details
+      .card-body
+        .form-group
+          = f.label :first_name
+          = f.text_field :first_name, class: 'form-control'
+        .form-group
+          = f.label :last_name
+          = f.text_field :last_name, class: 'form-control'
+        .form-group
+          = f.label :email
+          = f.text_field :email, class: 'form-control'
+        .form-group
+          = f.label :contact_number
+          = f.text_field :contact_number, class: 'form-control'
+  .col-sm-6
+    .card
+      h5.card-header #{@company.name} User Roles
+      .card-body
+        - @company_roles.each do |role|
+          .form-group.form-check
+            label.form-check-label
+              = check_box_tag 'user[role_ids][]', role.id, (@user.roles.include? role), class: 'form-check-input'
+              = role.name.humanize
