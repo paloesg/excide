@@ -32,9 +32,8 @@ For rails version 4 and below;
 
 Rails 5 and above:
 
-```
 		rails db:setup
-```
+
 
 Start the application server.
 
@@ -57,9 +56,9 @@ Or have them run automatically with [Guard](https://github.com/guard/guard-rspec
 * `master` is the active development branch
 
 Make a new branch to work on your development:
-```
+
 		git checkout -b <name_of_branch>
-```
+
 
 You can check the location of your branch using `git branch` command.
 
