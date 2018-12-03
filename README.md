@@ -30,10 +30,7 @@ For rails version 4 and below;
 
     rake db:setup
 
-Rails 5 and above:
-
-		rails db:setup
-
+    rails db:setup
 
 Start the application server.
 
