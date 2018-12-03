@@ -66,7 +66,7 @@ All local development should be done in the appropriately named branches:
 **WARNING: Do not merge your changes directly into your local master
 branch and push to GitHub!!!**
 
-If you are done developing the component you are working on, push your branch to github
+If you are done developing the component you are working on, push your branch to GitHub
 and open a [pull request](https://help.github.com/articles/creating-a-pull-request/) to the `master` branch.
 
 Give your pull request a title and describe what you are trying to
