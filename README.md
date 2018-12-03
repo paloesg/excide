@@ -26,9 +26,7 @@ Create a `.env` file from the sample so [dotenv](https://github.com/bkeepers/dot
     cp .env.sample .env
 
 Create and initialize the database.
-For rails version 4 and below;
-
-    rake db:setup
+For rails 5 and above:
 
     rails db:setup
 
@@ -54,8 +52,7 @@ Or have them run automatically with [Guard](https://github.com/guard/guard-rspec
 
 Make a new branch to work on your development:
 
-		git checkout -b <name_of_branch>
-
+    git checkout -b <name_of_branch>
 
 You can check the location of your branch using `git branch` command.
 
