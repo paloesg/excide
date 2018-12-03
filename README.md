@@ -52,16 +52,16 @@ Or have them run automatically with [Guard](https://github.com/guard/guard-rspec
 
 Make a new branch to work on your development:
 
-    git checkout -b <name_of_branch>
+    git checkout -b <branch-name>
 
 You can check the location of your branch using `git branch` command.
 
 All local development should be done in the appropriately named branches:
 
-* `feature/<branch_name>` for substantial new features or functions
-* `enhance/<branch_name>` for minor feature or function enhancement
-* `refactor/<branch_name>` for code refactoring of existing functions
-* `bugfix/<branch_name>` for bug fixes
+* `feature/<branch-name>` for substantial new features or functions
+* `enhance/<branch-name>` for minor feature or function enhancement
+* `refactor/<branch-name>` for code refactoring of existing functions
+* `bugfix/<branch-name>` for bug fixes
 
 **WARNING: Do not merge your changes directly into your local master
 branch and push to GitHub!!!**
