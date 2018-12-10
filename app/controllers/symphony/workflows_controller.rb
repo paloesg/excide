@@ -27,7 +27,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.company = @company
     @workflow.template = @template
 
-    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present?
+    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], xero_email: params[:workflow][:client][:xero_email], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present?
 
     if @workflow.save
       log_data_activity
