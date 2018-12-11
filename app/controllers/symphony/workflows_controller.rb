@@ -4,6 +4,7 @@ class Symphony::WorkflowsController < WorkflowsController
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
   before_action :set_attributes_metadata, only: [:create, :update]
+  before_action :set_s3_direct_post, only: [:show]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
@@ -168,6 +169,9 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   private
+  def set_s3_direct_post
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
+  end
 
   def set_company_and_roles
     @user = current_user
