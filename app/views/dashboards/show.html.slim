@@ -4,7 +4,7 @@
       li
         a href="#" Home
       li
-        - if current_user.has_role? :admin
+        - if current_user.has_role? :superadmin
           = select_tag "company", options_from_collection_for_select(@companies, "id", "name", @company.id), class: "selectize company-dropdown", onchange: "window.location.href = '/admin/companies/' + this.value + '/dashboard';"
         - else
           a href="#" #{@company.name}
@@ -12,7 +12,7 @@
     h1 Dashboard
 .row
   .col-md-8.col-sm-6
-    - if current_user.has_role? :admin
+    - if current_user.has_role? :superadmin
       .panel.panel-default
         .panel-heading
           h3.panel-title Outstanding Tasks

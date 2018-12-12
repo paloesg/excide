@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.has_role? :admin
+    if current_user.has_role? :superadmin
       stored_location_for(resource) || admin_root_path
     elsif current_user.has_role? :contractor, :any
       conductor_user_path current_user
