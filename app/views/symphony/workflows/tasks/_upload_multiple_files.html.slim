@@ -28,15 +28,8 @@ tr
         = form_tag @s3_direct_post.url, class: 'dropzone', id: 'uploader'
         	- @s3_direct_post.fields.each do |key, value|
         		= hidden_field_tag key, value
-        / .form-group
-        /     = label_tag "Some label"
-        /     = select_tag('template_id', options_for_select(@tasks.map {|k,v| [k.title, k.id] }), include_blank: true, class: 'selectize')
-        /   = form_tag @s3_direct_post.url, class: 'dropzone collapse', id: 'uploader'
-        /     - @s3_direct_post.fields.each do |key, value|
-        /       = hidden_field_tag key, value
+        br
         .btn-toolbar role="toolbar"
-          .btn-group.mr-2 role="group" aria-label="Task actions"
-            = link_to "Enter Data", data_entry_symphony_workflow_path(workflow_identifier: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-sm'
           .btn-group.mr-2 role="group" aria-label="Reminder actions"
             - if action.reminders.present?
               = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
