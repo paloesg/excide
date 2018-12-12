@@ -5,6 +5,7 @@ class Symphony::WorkflowsController < WorkflowsController
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
   before_action :set_attributes_metadata, only: [:create, :update]
   before_action :set_s3_direct_post, only: [:show]
+  before_action :send_email_to_xero, only: [:show]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
@@ -166,6 +167,13 @@ class Symphony::WorkflowsController < WorkflowsController
       Rails.logger.error("Xero Export Error: #{message}")
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: message
     end
+  end
+
+  def send_email_to_xero
+    @workflow = Workflow.find(23)
+    WorkflowMailer.welcome_email(@workflow).deliver
+    flash[:notice] = "Sent to Xero"
+    redirect_to symphony_root_path
   end
 
   private

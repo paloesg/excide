@@ -66,6 +66,7 @@ Rails.application.routes.draw do
         post '/xero_create_invoice_payable', to: 'workflows#xero_create_invoice_payable', as: :xero_create_invoice_payable
       end
     end
+    get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero
     root to: 'home#index'
   end
 
