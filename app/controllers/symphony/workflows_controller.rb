@@ -169,6 +169,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   private
+
   def set_s3_direct_post
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
