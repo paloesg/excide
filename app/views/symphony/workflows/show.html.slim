@@ -87,7 +87,7 @@
   .col-md-3.col-sm-12
     = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
     = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
-    - if @user.has_role? :admin
+    - if @user.has_role? :superadmin
       = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
     br
     .card.mb-3

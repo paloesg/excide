@@ -33,7 +33,7 @@
           .form-group
             = f.label :contact_number
             = f.text_field :contact_number, class: 'form-control'
-      - if current_user.has_role? :admin
+      - if current_user.has_role? :superadmin
         .row
           .col-md-6
             .form-group

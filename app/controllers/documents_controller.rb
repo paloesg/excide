@@ -33,7 +33,7 @@ class DocumentsController < ApplicationController
     @document.company = @company
 
     if @document.save
-      redirect_to (current_user.has_role? :admin) ? admin_company_documents_path(@company.id) : documents_path, notice: 'Document was successfully created.'
+      redirect_to (current_user.has_role? :superadmin) ? admin_company_documents_path(@company.id) : documents_path, notice: 'Document was successfully created.'
     else
       render :new
     end
@@ -43,7 +43,7 @@ class DocumentsController < ApplicationController
   # PATCH/PUT /documents/1.json
   def update
     if @document.update(document_params)
-      redirect_to (current_user.has_role? :admin) ? admin_company_documents_path(@company.id) : documents_path, notice: 'Document was successfully updated.'
+      redirect_to (current_user.has_role? :superadmin) ? admin_company_documents_path(@company.id) : documents_path, notice: 'Document was successfully updated.'
     else
       render :edit
     end
@@ -54,7 +54,7 @@ class DocumentsController < ApplicationController
   def destroy
     @document.destroy
     respond_to do |format|
-      redirect_to (current_user.has_role? :admin) ? admin_company_documents(@company.id) : documents_path, notice: 'Document was successfully destroyed.'
+      redirect_to (current_user.has_role? :superadmin) ? admin_company_documents(@company.id) : documents_path, notice: 'Document was successfully destroyed.'
     end
   end
 
@@ -63,7 +63,7 @@ class DocumentsController < ApplicationController
   def set_company
     @user = current_user
 
-    if current_user.has_role? :admin
+    if current_user.has_role? :superadmin
       @companies = Company.all
       @company = Company.friendly.find(params[:company_name])
     elsif params[:company_name].present?

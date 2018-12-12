@@ -12,22 +12,23 @@ The following are needed by this project:
 
 Clone this repository and bundle.
 
-    git clone git@bitbucket.org:hschin/excide.git
+    git clone https://github.com/hschin/excide.git
     cd excide
     bundle install
 
 Create a `database.yml` file from the sample and modify if necessary.
 The defaults should be fine.
 
-    cp config/database.yml.sample config/database.yml
+    cp config/database.yml.example config/database.yml
 
-Create a `.env` file from the sample so [dotenv](https://github.com/bkeepers/dotenv) can set the required environment variables. Please obtain any missing values from the project administrator.
+Create a `.env` file from the sample so [dotenv](https://github.com/bkeepers/dotenv) can set the required environment variables. Please obtain the missing values in the `.env` file with the project administrator.
 
     cp .env.sample .env
 
 Create and initialize the database.
+For rails 5 and above:
 
-    rake db:setup
+    rails db:setup
 
 Start the application server.
 
@@ -49,20 +50,24 @@ Or have them run automatically with [Guard](https://github.com/guard/guard-rspec
 
 * `master` is the active development branch
 
+Make a new branch to work on your development:
+
+    git checkout -b <branch-name>
+
+You can check the location of your branch using `git branch` command.
+
 All local development should be done in the appropriately named branches:
 
-* `feature/<branch_name>` for substantial new features or functions
-* `enhance/<branch_name>` for minor feature or function enhancement
-* `refactor/<branch_name>` for code refactoring of existing functions
-* `bugfix/<branch_name>` for bug fixes
+* `feature/<branch-name>` for substantial new features or functions
+* `enhance/<branch-name>` for minor feature or function enhancement
+* `refactor/<branch-name>` for code refactoring of existing functions
+* `bugfix/<branch-name>` for bug fixes
 
 **WARNING: Do not merge your changes directly into your local master
 branch and push to GitHub!!!**
 
-If you are done developing the component you are working on, push your
-branch to Bitbucket, visit the
-[Bitbucket repository page](////bitbucket.org/hschin/excide/) and open a
-pull request to the `master` branch.
+If you are done developing the component you are working on, push your branch to GitHub
+and open a [pull request](https://help.github.com/articles/creating-a-pull-request/) to the `master` branch.
 
 Give your pull request a title and describe what you are trying to
 achieve with your code. The branch or release manager will review your
