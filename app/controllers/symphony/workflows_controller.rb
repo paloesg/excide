@@ -175,7 +175,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.documents.each do |workflow_docs|
         WorkflowMailer.welcome_email(@workflow, workflow_docs).deliver
     end
-    flash[:notice] = "#{@workflow.documents.count} email/s have been generated for Xero. Please check Xero in a few minutes.}"
+    flash[:notice] = "#{@workflow.documents.count} email/s have been generated for Xero. Please check Xero in a few minutes."
     redirect_to symphony_root_path
   end
 
