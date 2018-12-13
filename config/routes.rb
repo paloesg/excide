@@ -64,9 +64,9 @@ Rails.application.routes.draw do
         get '/assign', to: 'workflows#assign', as: :assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
         post '/xero_create_invoice_payable', to: 'workflows#xero_create_invoice_payable', as: :xero_create_invoice_payable
+        get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero
       end
     end
-    get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero
     root to: 'home#index'
   end
 
