@@ -172,10 +172,11 @@ class Symphony::WorkflowsController < WorkflowsController
   def send_email_to_xero
     @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
 
-    if WorkflowMailer.welcome_email(@workflow).deliver
-      flash[:notice] = "Sent to Xero"
-      redirect_to symphony_root_path
+    @workflow.documents.each do |workflow_docs|
+        WorkflowMailer.welcome_email(@workflow, workflow_docs).deliver
     end
+    flash[:notice] = "Sent to Xero"
+    redirect_to symphony_root_path
   end
 
   private
