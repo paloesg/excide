@@ -30,8 +30,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.template = @template
 
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], xero_email: params[:workflow][:client][:xero_email], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present?
-    @workflow.workflowable.update(xero_email: "RON@gmail.com")
-
+    @workflow.workflowable.update(xero_email: params[:workflow][:client][:xero_email])
 
     if @workflow.save
       log_data_activity
@@ -175,7 +174,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
 
     @workflow.documents.each do |workflow_docs|
-        WorkflowMailer.welcome_email(@workflow, workflow_docs).deliver
+        WorkflowMailer.welcome_email(@workflow, workflow_docs).deliver_later
     end
     flash[:notice] = "#{@workflow.documents.count} email/s have been generated for Xero. Please check Xero in a few minutes."
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier)
