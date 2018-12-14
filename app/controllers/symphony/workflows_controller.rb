@@ -30,6 +30,8 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.template = @template
 
     @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], xero_email: params[:workflow][:client][:xero_email], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present?
+    @workflow.workflowable.update(xero_email: "RON@gmail.com")
+
 
     if @workflow.save
       log_data_activity
@@ -176,7 +178,7 @@ class Symphony::WorkflowsController < WorkflowsController
         WorkflowMailer.welcome_email(@workflow, workflow_docs).deliver
     end
     flash[:notice] = "#{@workflow.documents.count} email/s have been generated for Xero. Please check Xero in a few minutes."
-    redirect_to symphony_root_path
+    redirect_to symphony_workflow_path(@template.slug, @workflow.identifier)
   end
 
   private
@@ -238,7 +240,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :workflowable, :remarks, data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :remarks,workflowable_attributes: [:id, :name, :identifier, :user_id, :company_id, :xero_contact_id, :xero_email], data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
   end
 
   def set_documents
