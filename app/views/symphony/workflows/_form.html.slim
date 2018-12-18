@@ -49,30 +49,37 @@
   .col-md-6.col-sm-12
     .row
       .col-sm-12
-        .card.mb-3
-          h5.card-header Existing Client
-          .card-body
-            .form-group
-              = f.label :workflowable_id, 'Client'
-              = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'selectize'
+      	#accordionExample.accordion
+					.card.mb-3
+						.card-header#headingOne
+							h5
+								button.btn.btn-link aria-controls="collapseOne" aria-expanded="true" data-target="#collapseOne" data-toggle="collapse" type="button" Existing Client
+						.collapse.show#collapseOne aria-labelledby="headingOne" data-parent="#accordionExample"
+							.card-body
+								.form-group
+									= f.label :workflowable_id, 'Client'
+									= f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'selectize', id: 'new-workflow-value'
+									= f.fields_for :client do |c|
+										= c.label :xero_email, 'Xero Email'
+										= c.text_field :xero_email, method: 'post', class: 'form-control', id: 'hidden'
     - if @workflow.workflowable.blank?
       .row
         .col-sm-12
-          .card
-            h5.card-header New Client
-            .card-body
-              = f.fields_for :client do |c|
-                .form-group
-                  = c.label :name, 'Client Name'
-                  = c.text_field :name, class: 'form-control'
-                .form-group
-                  = c.label :identifier, 'Client Identifier'
-                  = c.text_field :identifier, class: 'form-control'
-                - if @template.slug == "mass-ap-uploads"
-                	.form-group
-                  	= c.label :xero_email, 'Xero Email'
-                   	= c.text_field :xero_email, class: 'form-control'
-
+					.card
+						.card-header#headingTwo
+							h5
+								button.btn.btn-link.collapsed aria-controls="collapseTwo" aria-expanded="false" data-target="#collapseTwo" data-toggle="collapse" type="button" New Client
+						#collapseTwo.collapse aria-labelledby="headingTwo" data-parent="#accordionExample"
+							.card-body
+								.form-group
+									- if @template.slug == "test-3"
+										= f.fields_for :client do |c|
+											= c.label :name, 'Client Name'
+											= c.text_field :name, class: 'form-control'
+											= c.label :identifier, 'Client Identifier'
+											= c.text_field :identifier, class: 'form-control'
+											= c.label :xero_email, 'Xero Email'
+											= c.text_field :xero_email, class: 'form-control'
 .row
   .col-sm-12
     = f.submit 'Save Workflow', class: 'btn btn-primary'
