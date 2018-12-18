@@ -11,6 +11,12 @@ Bundler.require(*Rails.groups)
 
 module Excide
   class Application < Rails::Application
+    # Reverse proxy to point subdirectory to a different server.
+    config.middleware.insert(0, Rack::ReverseProxy) do
+      reverse_proxy_options preserve_host: true
+      reverse_proxy /^\/blog(\/.*)$/, 'http://blog.excide.co$1'
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
