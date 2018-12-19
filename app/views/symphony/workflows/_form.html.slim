@@ -62,9 +62,7 @@
 									= f.fields_for :client do |c|
 										= c.label :xero_email, 'Xero Email'
 										= c.text_field :xero_email, method: 'post', class: 'form-control', id: 'hidden'
-    - if @workflow.workflowable.blank?
-      .row
-        .col-sm-12
+					- if @workflow.workflowable.blank?
 					.card
 						.card-header#headingTwo
 							h5
