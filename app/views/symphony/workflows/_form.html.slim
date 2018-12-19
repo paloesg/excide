@@ -63,21 +63,24 @@
 										= c.label :xero_email, 'Xero Email'
 										= c.text_field :xero_email, method: 'post', class: 'form-control', id: 'hidden'
 					- if @workflow.workflowable.blank?
-					.card
-						.card-header#headingTwo
-							h5
-								button.btn.btn-link.collapsed aria-controls="collapseTwo" aria-expanded="false" data-target="#collapseTwo" data-toggle="collapse" type="button" New Client
-						#collapseTwo.collapse aria-labelledby="headingTwo" data-parent="#accordionExample"
-							.card-body
-								.form-group
-									- if @template.slug == "test-3"
+						.card
+							.card-header#headingTwo
+								h5
+									button.btn.btn-link.collapsed aria-controls="collapseTwo" aria-expanded="false" data-target="#collapseTwo" data-toggle="collapse" type="button" New Client
+							#collapseTwo.collapse aria-labelledby="headingTwo" data-parent="#accordionExample"
+								.card-body
+									.form-group
 										= f.fields_for :client do |c|
-											= c.label :name, 'Client Name'
-											= c.text_field :name, class: 'form-control'
-											= c.label :identifier, 'Client Identifier'
-											= c.text_field :identifier, class: 'form-control'
-											= c.label :xero_email, 'Xero Email'
-											= c.text_field :xero_email, class: 'form-control'
+											.form-group
+												= c.label :name, 'Client Name'
+												= c.text_field :name, class: 'form-control'
+											.form-group
+												= c.label :identifier, 'Client Identifier'
+												= c.text_field :identifier, class: 'form-control'
+											.form-group
+												- if @template.slug == "test-3"
+													= c.label :xero_email, 'Xero Email'
+													= c.text_field :xero_email, class: 'form-control'
 .row
   .col-sm-12
     = f.submit 'Save Workflow', class: 'btn btn-primary'
