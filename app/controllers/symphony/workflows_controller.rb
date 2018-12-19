@@ -29,11 +29,14 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.company = @company
     @workflow.template = @template
 
-    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user, xero_email: params[:workflow][:client][:xero_email]) unless params[:workflow][:workflowable_id].present?
-
-    @xero = Xero.new(session[:xero_auth])
-    contact_id = @xero.create_contact(@workflow.workflowable)
-    @workflow.workflowable.xero_contact_id = contact_id
+    if params[:workflow][:workflowable_id].present?
+      @workflow.workflowable.update_attribute(:xero_email, params[:workflow][:client][:xero_email])
+    else
+      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user, xero_email: params[:workflow][:client][:xero_email])
+      @xero = Xero.new(session[:xero_auth])
+      contact_id = @xero.create_contact(@workflow.workflowable)
+      @workflow.workflowable.xero_contact_id = contact_id
+    end
 
     if @workflow.save
       log_data_activity
