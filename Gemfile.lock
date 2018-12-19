@@ -342,11 +342,6 @@ GEM
     pundit (2.0.0)
       activesupport (>= 3.0.0)
     rack (2.0.6)
-    rack-proxy (0.6.5)
-      rack
-    rack-reverse-proxy (0.12.0)
-      rack (>= 1.0.0)
-      rack-proxy (~> 0.6, >= 0.6.1)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rack-timeout (0.5.1)
@@ -586,7 +581,6 @@ DEPENDENCIES
   public_activity
   puma
   pundit
-  rack-reverse-proxy
   rack-timeout
   rails (= 5.2.0)
   rails-erd

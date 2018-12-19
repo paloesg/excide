@@ -31,8 +31,6 @@ gem 'sprockets-rails', '2.3.3'
 gem 'puma'
 # Set timeout for long running processes
 gem 'rack-timeout'
-# Reverse proxy to proxy blog server to primary domain
-gem "rack-reverse-proxy", require: "rack/reverse_proxy"
 # Better Rails logging
 gem "lograge"
 
