@@ -180,7 +180,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
 
     @workflow.documents.each do |workflow_docs|
-        WorkflowMailer.welcome_email(@workflow, workflow_docs).deliver_later
+        WorkflowMailer.send_invoice_email(@workflow, workflow_docs).deliver_later
     end
     flash[:notice] = "#{@workflow.documents.count} email/s have been generated for Xero. Please check Xero in a few minutes."
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier)

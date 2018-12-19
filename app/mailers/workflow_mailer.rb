@@ -2,11 +2,11 @@ class WorkflowMailer < ApplicationMailer
   require 'open-uri'
   default from: 'notifications@example.com'
 
-  def welcome_email(workflow, workflow_docs)
+  def send_invoice_email(workflow, workflow_document)
     @workflow = workflow
 
-    uri = URI("http:"+ workflow_docs.file_url.to_s)
-    attachments[workflow_docs.filename] = open(uri).read
+    uri = URI("http:"+ workflow_document.file_url.to_s)
+    attachments[workflow_document.filename] = open(uri).read
 
     # @url  = 'bills.cl7rd.26i7pbxgzjw8sgdk@xerofiles.com'
     @url = ENV['XERO_ADDRESS_TO_SEND_EMAIL']
