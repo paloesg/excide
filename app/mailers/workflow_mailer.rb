@@ -9,7 +9,7 @@ class WorkflowMailer < ApplicationMailer
     attachments[workflow_document.filename] = open(uri).read
 
     # @url  = 'bills.cl7rd.26i7pbxgzjw8sgdk@xerofiles.com'
-    @url = ENV['XERO_ADDRESS_TO_SEND_EMAIL']
+    @url = @workflow.workflowable.xero_email
     mail(to: @url, subject: 'Xero bill invoice')
   end
 end
