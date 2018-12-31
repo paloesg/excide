@@ -20,8 +20,10 @@ class Symphony::DocumentsController < DocumentsController
     @document.company = @company
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
-
-    @workflow = Workflow.find_by(identifier: params[:workflow]) if params[:workflow].present?
+    if params[:workflow].present?
+      @workflow = Workflow.find_by(identifier: params[:workflow])
+      @document.workflow = @workflow
+    end
 
     respond_to do |format|
       if @document.save

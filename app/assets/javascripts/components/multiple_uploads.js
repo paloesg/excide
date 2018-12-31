@@ -4,12 +4,12 @@ $(document).ready(function () {
   // Show dropzone after client and template selected
   $("#client_id,#template_id").on('change', function() {
     if ($("#client_id").val() && $("#template_id").val()) {
-      $("#uploader").collapse();
+      $(".multiple_uploads").collapse();
     }
   })
 
   // $("#uploader").length 'To check #uploader is exists'
-  if ($("#uploader").length) {
+  if ($(".multiple_uploads").length) {
     var cleanFilename = function (name) {
       fileName = name.split('.').slice(0, -1).join('.')
       get_extension = name.substring(name.lastIndexOf(".") + 1)
@@ -17,7 +17,7 @@ $(document).ready(function () {
       filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       return filter_filename + '.' + get_extension;
     };
-    var documentUpload = new Dropzone('#uploader', { timeout: 0, renameFilename: cleanFilename });
+    var documentUpload = new Dropzone('.multiple_uploads', { timeout: 0, renameFilename: cleanFilename });
     documentUpload.on("sending", function(file) {
       if ($('#client_id').val() == "" || $('#template_id').val() == "") {
         alert('Client and Template is required.');
@@ -28,17 +28,30 @@ $(document).ready(function () {
       var resp = $.parseXML(request);
       var filePath = $(resp).find("Key").text();
       var location = new URL($(resp).find("Location").text())
-      $.post('/symphony/documents', {
-        authenticity_token: $.rails.csrfToken(),
-        document_type: 'invoice',
-        document: {
-          filename: file.upload.filename,
-          identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
-          file_url: '//' + location['host'] + '/' + filePath,
-          client_id: $('#client_id').val(),
-          template_id: $('#template_id').val(),
-        }
-      });
+      if ($("#uploader").length){
+        $.post('/symphony/documents', {
+          authenticity_token: $.rails.csrfToken(),
+          document_type: 'invoice',
+          document: {
+            filename: file.upload.filename,
+            identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
+            file_url: '//' + location['host'] + '/' + filePath,
+            client_id: $('#client_id').val(),
+            template_id: $('#template_id').val(),
+          }
+        });
+      }
+      else if($("#uploadToXero").length){
+        $.post('/symphony/documents', {
+          authenticity_token: $.rails.csrfToken(),
+          workflow: $('#workflow_identifier').val(),
+          document: {
+            filename: file.upload.filename,
+            identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
+            file_url: '//' + location['host'] + '/' + filePath
+          }
+        });
+      }
     });
     // Check if file name are same & rename the file
     documentUpload.on("addedfile", function (file) {

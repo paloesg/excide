@@ -92,6 +92,6 @@ class ClientsController < ApplicationController
   end
 
   def client_params
-    params.require(:client).permit(:name, :identifier, :xero_contact_id)
+    params.require(:client).permit(:name, :identifier, :xero_contact_id, :xero_email)
   end
 end

@@ -4,6 +4,7 @@ class Symphony::WorkflowsController < WorkflowsController
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
   before_action :set_attributes_metadata, only: [:create, :update]
+  before_action :set_s3_direct_post, only: [:show]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
@@ -27,7 +28,14 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.company = @company
     @workflow.template = @template
 
-    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present?
+    if params[:workflow][:workflowable_id].present?
+      @workflow.workflowable.update_attribute(:xero_email, params[:workflow][:client][:xero_email])
+    else
+      @xero = Xero.new(session[:xero_auth])
+      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user, xero_email: params[:workflow][:client][:xero_email])
+      contact_id = @xero.create_contact(@workflow.workflowable)
+      @workflow.workflowable.xero_contact_id = contact_id
+    end
 
     if @workflow.save
       log_data_activity
@@ -167,7 +175,25 @@ class Symphony::WorkflowsController < WorkflowsController
     end
   end
 
+  def send_email_to_xero
+    @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
+
+    @workflow.documents.each do |workflow_docs|
+        WorkflowMailer.send_invoice_email(@workflow, workflow_docs).deliver_later
+    end
+    flash[:notice] = "#{@workflow.documents.count} email/s have been generated for Xero. Please check Xero in a few minutes."
+    redirect_to symphony_workflow_path(@template.slug, @workflow.identifier)
+  end
+
+  # def get_json
+
+  # end
+
   private
+
+  def set_s3_direct_post
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
+  end
 
   def set_company_and_roles
     @user = current_user
@@ -222,7 +248,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :workflowable, :remarks, data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :remarks,workflowable_attributes: [:id, :name, :identifier, :user_id, :company_id, :xero_email], data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
   end
 
   def set_documents
