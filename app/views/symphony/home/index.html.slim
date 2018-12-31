@@ -92,6 +92,6 @@
           .form-group
             = label_tag "Workflow template"
             = select_tag('template_id', options_for_select(@templates.map {|k,v| [k.title, k.id] }), include_blank: true, class: 'selectize')
-          = form_tag @s3_direct_post.url, class: 'dropzone collapse', id: 'uploader'
+          = form_tag @s3_direct_post.url, class: 'dropzone collapse multiple_uploads', id: 'uploader'
             - @s3_direct_post.fields.each do |key, value|
               = hidden_field_tag key, value

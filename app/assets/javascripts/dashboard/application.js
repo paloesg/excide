@@ -25,7 +25,6 @@
 //= require conductor/add_availabilities
 //= require conductor/home
 //= require dropzone
-//= require components/multiple_uploads_to_xero
 //= require components/multiple_uploads
 //= require components/popover_initialize
 //= require components/selectize_initialize
