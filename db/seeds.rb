@@ -3,7 +3,7 @@
 #
 gobbler = Company.create(name: 'Gobbler')
 global_admin = User.create(email: 'hschin@gmail.com', password: 'password', first_name: 'Admin', last_name: 'Global', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
-global_admin.add_role :admin
+global_admin.add_role :superadmin
 admin = User.create(email: 'admin@gobbler.com', password: 'password', first_name: 'Admin', last_name: 'Gobbler', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
 admin.add_role :admin, gobbler
 sales = User.create(email: 'sales@gobbler.com', password: 'password', first_name: 'Sales', last_name: 'Gobbler', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)

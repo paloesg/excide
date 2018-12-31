@@ -3,9 +3,9 @@ source 'https://rubygems.org'
 ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.0'
+gem 'rails', '5.2.2'
 # Use postgresql as the database for Active Record
-gem 'pg', '0.20'
+gem 'pg', '>= 0.18', '< 2.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -31,8 +31,6 @@ gem 'sprockets-rails', '2.3.3'
 gem 'puma'
 # Set timeout for long running processes
 gem 'rack-timeout'
-# Reverse proxy to proxy blog server to primary domain
-gem "rack-reverse-proxy", require: "rack/reverse_proxy"
 # Better Rails logging
 gem "lograge"
 

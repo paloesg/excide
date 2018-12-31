@@ -23,7 +23,7 @@ class DashboardsController < ApplicationController
   def set_dashboard
     @user = current_user
 
-    if current_user.has_role? :admin
+    if current_user.has_role? :superadmin
       @companies = Company.all
       @company = Company.friendly.find(params[:company_name])
     elsif params[:company_name].present?
