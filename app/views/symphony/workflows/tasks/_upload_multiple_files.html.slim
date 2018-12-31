@@ -26,7 +26,7 @@ tr
         .form-group
         	= label_tag "Drag and Drop"
         = hidden_field_tag 'workflow', @workflow.identifier, id: 'workflow_identifier'
-        = form_tag @s3_direct_post.url, class: 'dropzone', id: 'uploadToXero'
+        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads', id: 'uploadToXero'
         	- @s3_direct_post.fields.each do |key, value|
         		= hidden_field_tag key, value
         br
