@@ -32,8 +32,8 @@ class Symphony::WorkflowsController < WorkflowsController
     if params[:workflow][:workflowable_id].present?
       @workflow.workflowable.update_attribute(:xero_email, params[:workflow][:client][:xero_email])
     else
-      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user, xero_email: params[:workflow][:client][:xero_email])
       @xero = Xero.new(session[:xero_auth])
+      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user, xero_email: params[:workflow][:client][:xero_email])
       contact_id = @xero.create_contact(@workflow.workflowable)
       @workflow.workflowable.xero_contact_id = contact_id
     end
@@ -185,6 +185,10 @@ class Symphony::WorkflowsController < WorkflowsController
     flash[:notice] = "#{@workflow.documents.count} email/s have been generated for Xero. Please check Xero in a few minutes."
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier)
   end
+
+  # def get_json
+
+  # end
 
   private
 

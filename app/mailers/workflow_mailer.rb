@@ -1,6 +1,6 @@
 class WorkflowMailer < ApplicationMailer
   require 'open-uri'
-  default from: 'notifications@example.com'
+  default from: 'noreply@excide.com'
 
   def send_invoice_email(workflow, workflow_document)
     @workflow = workflow
