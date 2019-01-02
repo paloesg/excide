@@ -28,9 +28,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.company = @company
     @workflow.template = @template
 
-    if params[:workflow][:workflowable_id].present?
-      @workflow.workflowable.update_attribute(:xero_email, @workflow.company.xero_email)
-    else
+    if !params[:workflow][:workflowable_id].present?
       @xero = Xero.new(session[:xero_auth])
       @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user)
       contact_id = @xero.create_contact(@workflow.workflowable)
