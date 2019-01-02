@@ -57,11 +57,8 @@
             .collapse.show#collapseOne aria-labelledby="headingOne" data-parent="#accordionExample"
               .card-body
                 .form-group
-                  = f.label :workflowable_id, 'Client'
+                  = f.label :workflowable_id, 'Client Name'
                   = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'selectize', id: 'new-workflow-value'
-                  = f.fields_for :client do |c|
-                    = c.label :xero_email, 'Xero Email'
-                    = c.text_field :xero_email, method: 'post', class: 'form-control'
           - if @workflow.workflowable.blank?
             .card
               .card-header#headingTwo aria-controls="collapseTwo" aria-expanded="false" data-target="#collapseTwo" data-toggle="collapse"
@@ -74,10 +71,6 @@
                       .form-group
                         = c.label :name, 'Client Name'
                         = c.text_field :name, class: 'form-control'
-                      .form-group
-                        - if @template.slug == "test-3"
-                          = c.label :xero_email, 'Xero Email'
-                          = c.text_field :xero_email, class: 'form-control'
 .row
   .col-sm-12
     = f.submit 'Save Workflow', class: 'btn btn-primary'

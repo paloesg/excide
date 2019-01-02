@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_10_065010) do
+ActiveRecord::Schema.define(version: 2019_01_02_040811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 2018_12_10_065010) do
     t.string "ssic_code"
     t.date "financial_year_end"
     t.string "slug"
+    t.string "xero_email"
   end
 
   create_table "document_templates", id: :serial, force: :cascade do |t|
