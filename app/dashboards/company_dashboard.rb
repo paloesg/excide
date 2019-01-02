@@ -17,6 +17,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     users: Field::HasMany,
     ssic_code: Field::String,
     financial_year_end: Field::DateTime,
+    xero_email: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }
@@ -49,6 +50,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :users,
     :ssic_code,
     :financial_year_end,
+    :xero_email,
   ]
 
   # Overwrite this method to customize how profiles are displayed
