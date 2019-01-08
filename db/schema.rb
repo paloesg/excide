@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_02_040811) do
+ActiveRecord::Schema.define(version: 2019_01_08_085234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "activation_types", id: :serial, force: :cascade do |t|
+  create_table "activation_types", force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.string "colour"
@@ -398,6 +398,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_040811) do
     t.integer "workflow_id"
     t.integer "assigned_user_id"
     t.integer "completed_user_id"
+    t.string "remarks"
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
     t.index ["company_id"], name: "index_workflow_actions_on_company_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"
@@ -418,7 +419,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_040811) do
     t.string "workflowable_type"
     t.text "remarks"
     t.json "data", default: []
-    t.json "archive", default: []
+    t.json "archive", default: "[]"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["template_id"], name: "index_workflows_on_template_id"
     t.index ["user_id"], name: "index_workflows_on_user_id"

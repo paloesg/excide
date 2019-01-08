@@ -1,7 +1,10 @@
-form
-	.form-group
-	  h6.mt-2 Remarks:
-	.form-group
-		input.form-control placeholder="Enter remarks for this task here..." type="text"
-	.form-group
-		button.btn.btn-info type="submit" submit
+.row
+  .col-md-12
+    = form_for(@workflow_action, workflow_action_remarks_path(id: @workflow_action.id)) do |f|
+      .form-group
+        = f.label 'Remark:', class: 'h6'
+        = f.text_field :remarks, class: 'form-control', placeholder: 'Enter remarks here...'
+      .form-group
+        = f.submit 'Submit', class: 'btn btn-primary'
+
+

@@ -11,6 +11,10 @@ class WorkflowActionsController < ApplicationController
       end
     end
   end
+  
+  def remarks
+    @workflow_action.update_attributes(remarks: params[:])
+  end
 
   private
 
