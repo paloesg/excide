@@ -29,7 +29,6 @@ Rails.application.routes.draw do
   post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   resources :documents
   patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
-  post 'workflow_actions/remarks/:id', to: 'workflow_actions#remarks', as: :workflow_action_remarks
 
   namespace :symphony do
     get '/search', to: 'home#search'
