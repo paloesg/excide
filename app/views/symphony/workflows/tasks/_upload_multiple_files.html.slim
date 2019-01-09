@@ -29,6 +29,7 @@ tr
         = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads', id: 'uploadToXero'
         	- @s3_direct_post.fields.each do |key, value|
         		= hidden_field_tag key, value
+        br
         = render "symphony/workflows/remarks"
         br
         .btn-toolbar role="toolbar"
