@@ -32,6 +32,6 @@ tr
             - if task == @workflow.current_task && (@user.has_role? :admin, @company)
               = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
         br
-        = render "symphony/workflows/remarks"
+        = render "symphony/workflows/remarks", action: action
         br
         = task.display_image
