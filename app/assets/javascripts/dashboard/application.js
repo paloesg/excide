@@ -28,6 +28,7 @@
 //= require components/multiple_uploads
 //= require components/popover_initialize
 //= require components/selectize_initialize
+//= require components/remarks
 
 //= require turbolinks
 //= require turbolinks-compatibility

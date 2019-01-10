@@ -1,8 +1,8 @@
 .row
   .col-md-12
-    = form_for(:workflow_action, url:workflow_action_path(id: action.id), method: :patch, remote: true) do |f|
+    = form_for(:workflow_action, url:workflow_action_path(id: action.id), method: :patch, id: 'remark', remote: true) do |f|
       .form-group
         = f.label 'Remark:', class: 'h6'
         = f.text_field :remarks, class: 'form-control', placeholder: 'Enter remarks here...'
-      .form-group
-        = f.submit 'Submit', class: 'btn btn-primary btn-sm'
+      .form-group.special
+        = f.submit 'Submit', class: 'btn btn-primary btn-sm remark-button'
