@@ -4,5 +4,8 @@
       .form-group
         = f.label 'Remark:', class: 'h6'
         = f.text_field :remarks, class: 'form-control', placeholder: 'Enter remarks here...'
-      .form-group.special
-        = f.submit 'Submit', class: 'btn btn-primary btn-sm remark-button'
+      .form-group.(class="special-#{action.id}")
+        = f.submit 'Submit', class: 'btn btn-primary btn-sm'
+    - if action.remarks.present?
+			.remarks-update
+				p = action.remarks

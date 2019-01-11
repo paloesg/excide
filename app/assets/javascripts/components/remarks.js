@@ -1,5 +1,6 @@
 $(document).ready(function(){
   $( document ).ajaxSuccess(function(){
-    $(".special").text("AJAX SUCCESSFULY DONE!");
+    $(".special-626").text("Remark submitted!");
+    $(".remarks-update").innerHTML("Changed!")
   })
 })
