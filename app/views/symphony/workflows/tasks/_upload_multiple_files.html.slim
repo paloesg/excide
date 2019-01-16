@@ -30,7 +30,7 @@ tr
         	- @s3_direct_post.fields.each do |key, value|
         		= hidden_field_tag key, value
         br
-        = render "symphony/workflows/remarks", action: action
+        = render "symphony/workflows/tasks/remarks", action: action
         br
         .btn-toolbar role="toolbar"
           .btn-group.mr-2 role="group" aria-label="Reminder actions"
