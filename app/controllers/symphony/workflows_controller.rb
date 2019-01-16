@@ -101,6 +101,10 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def archive
     set_workflow
+    #When workflow is archived, send an email summary to the creator of the workflow
+    @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
+    @user = @workflow.user
+    WorkflowMailer.email_summary(@workflow, @user).deliver_now
     generate_archive = GenerateArchive.new(@workflow).run
     # Mark workflow as completed when workflow is archive
     if generate_archive.success?
