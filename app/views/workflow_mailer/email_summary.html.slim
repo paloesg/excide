@@ -1,5 +1,4 @@
 p Hi #{@user.first_name},
-
 p
 	| The workflow #{@workflow.identifier} has been completed!
 	br
@@ -23,5 +22,4 @@ table.table.table-bordered
 
 p
 	|	To follow the archived workflow, please click the following link:
-	br
-	a href="#{symphony_archive_url(@workflow.template.slug, @workflow.identifier)}"
+	a href="#{symphony_archive_url(@workflow.template.slug, @workflow.identifier)}" #{@workflow.identifier}
