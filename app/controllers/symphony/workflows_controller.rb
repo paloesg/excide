@@ -183,10 +183,6 @@ class Symphony::WorkflowsController < WorkflowsController
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier)
   end
 
-  # def get_json
-
-  # end
-
   private
 
   def set_s3_direct_post
