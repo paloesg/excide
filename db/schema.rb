@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_08_085234) do
+ActiveRecord::Schema.define(version: 2019_01_20_144115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -398,7 +398,7 @@ ActiveRecord::Schema.define(version: 2019_01_08_085234) do
     t.integer "workflow_id"
     t.integer "assigned_user_id"
     t.integer "completed_user_id"
-    t.string "remarks"
+    t.text "remarks"
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
     t.index ["company_id"], name: "index_workflow_actions_on_company_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"
