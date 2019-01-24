@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_02_040811) do
+ActiveRecord::Schema.define(version: 2019_01_24_011850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_040811) do
     t.datetime "updated_at", null: false
     t.integer "company_id"
     t.string "xero_contact_id"
-    t.string "xero_email"
+    t.string "add_to_xero"
     t.index ["company_id"], name: "index_clients_on_company_id"
     t.index ["user_id"], name: "index_clients_on_user_id"
   end
@@ -398,6 +398,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_040811) do
     t.integer "workflow_id"
     t.integer "assigned_user_id"
     t.integer "completed_user_id"
+    t.text "remarks"
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
     t.index ["company_id"], name: "index_workflow_actions_on_company_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"
