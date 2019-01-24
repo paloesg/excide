@@ -22,16 +22,13 @@ class ClientsController < ApplicationController
 
   def create
     @client = Client.new(client_params)
+    @client.company = @company
+    @client.user = current_user
 
     if params[:client][:xero_email].present?
       @xero = Xero.new(session[:xero_auth])
       contact_id = @xero.create_contact(client_params)
       @client.xero_contact_id = contact_id
-      @client.company = @company
-      @client.user = current_user
-    else
-      @client.company = @company
-      @client.user = current_user
     end
 
     respond_to do |format|
