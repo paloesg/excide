@@ -4,16 +4,18 @@
       .form-group
         = f.label 'Remark:', class: 'h6'
         = f.text_field :remarks, class: 'form-control', id: "remark-post-#{action.id}",placeholder: 'Enter remarks here...'
-      .form-group.(id="special-#{action.id}")
-        = f.submit 'Submit', class: 'btn btn-primary btn-sm', id: "button-special-#{action.id}", data: {toggle: "modal", target: "#exampleModal"}
-        i.fa.fa-check.text-success.ml-3 style="opacity: 0;"
+      .form-group
+        = f.submit 'Submit', class: 'btn btn-primary btn-sm', data: {toggle: "modal", target: "#exampleModal"}
+        i.fa.fa-check.text-success.ml-3 style="opacity: 0;" id="check-#{action.id}"
       .newDiv.text-success.(id="remarks-#{action.id}")
 
 javascript:
-	$( document ).ajaxSuccess(function(){
-		$(".fa-check").show().fadeTo(500, 200, function(){
-			$(".fa-check").fadeTo(200, 0);
-		})
-		var value = $("#remark-post-#{action.id}").val();
-		$("#remarks-#{action.id}").text(value)
-	})
+	$( document ).ajaxSuccess(function( event, xhr, settings ) {
+		console.log("XHR IS: ", xhr.responseText);
+		var data = xhr.responseText;
+		var jsonData = JSON.parse(data);
+		console.log("the JSON data is: ", jsonData.id);
+		$("#check-" + jsonData.id).show().fadeTo(500, 200, function(){
+			$("#check-" + jsonData.id).fadeTo(200, 0);
+		});
+	});
