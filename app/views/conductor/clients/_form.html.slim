@@ -12,5 +12,5 @@
   = f.text_field :identifier, class: 'form-control'
 .form-group
 	= f.label "Add to Xero"
-	= f.check_box :xero_email, {class: 'ml-2'}, true, false
+	= f.check_box :add_to_xero, {class: 'ml-2'}, checked_value = "true", unchecked_value = "false"
 = f.submit 'Save Client', class: 'btn btn-primary'

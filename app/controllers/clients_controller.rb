@@ -25,7 +25,7 @@ class ClientsController < ApplicationController
     @client.company = @company
     @client.user = current_user
 
-    if params[:client][:xero_email].present?
+    if params[:client][:add_to_xero] == "true"
       @xero = Xero.new(session[:xero_auth])
       contact_id = @xero.create_contact(client_params)
       @client.xero_contact_id = contact_id
@@ -93,6 +93,6 @@ class ClientsController < ApplicationController
   end
 
   def client_params
-    params.require(:client).permit(:name, :identifier, :xero_contact_id, :xero_email)
+    params.require(:client).permit(:name, :identifier, :xero_contact_id, :add_to_xero)
   end
 end
