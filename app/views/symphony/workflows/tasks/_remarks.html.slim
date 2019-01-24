@@ -8,15 +8,3 @@
         = f.submit 'Submit', class: 'btn btn-primary btn-sm', data: {toggle: "modal", target: "#exampleModal"}
         i.fa.fa-check.text-success.ml-3 style="opacity: 0;" id="check-#{action.id}"
       .newDiv.text-success.(id="remarks-#{action.id}")
-
-javascript:
-	$( document ).ajaxSuccess(function( event, xhr, settings ) {
-		console.log("XHR IS: ", xhr.responseText);
-		var data = xhr.responseText;
-		var jsonData = JSON.parse(data);
-		console.log("the JSON data is: ", jsonData);
-		$("#check-" + jsonData.id).show().fadeTo(500, 200, function(){
-			$("#check-" + jsonData.id).fadeTo(200, 0);
-		});
-		$("#remarks-" + jsonData.id).text(jsonData.remarks);
-	});
