@@ -27,5 +27,4 @@
             td = user.availabilities.count
             td = link_to 'View', user_conductor_availabilities_path(user.id)
             td = user.allocations.count
-            - user.allocations.each do |allocation|
-            	td = link_to 'View', conductor_allocation_path(allocation.id)
+            td = link_to 'View allocations', user_conductor_allocations_path(user.id)
