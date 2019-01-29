@@ -98,9 +98,10 @@
         | Identifier: #{@workflow.workflowable&.identifier}
         br
         = 'Xero Contact ID: ' + @workflow.workflowable.xero_contact_id if @workflow.workflowable.xero_contact_id.present?
-    .card.mb-3
-      h6.card-header Remarks
-      .card-body = @workflow.remarks.present? ? @workflow.remarks : '-'
+    - if @workflow.remarks.present?
+      .card.mb-3
+        h6.card-header Remarks
+        .card-body =@workflow.remarks
     .card.mb-3
       h6.card-header Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
