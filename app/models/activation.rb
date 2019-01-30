@@ -12,7 +12,7 @@ class Activation < ApplicationRecord
 
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
 
-  validates :company, :client, :event_owner, :activation_type, :start_time, :end_time, presence: true
+  validates :company, :client, :activation_type, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
 
   include PublicActivity::Model

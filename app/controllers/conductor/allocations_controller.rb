@@ -115,6 +115,10 @@ class Conductor::AllocationsController < ApplicationController
     end
   end
 
+  def user_allocations
+    @user = User.find(params[:user_id])
+  end
+
   private
 
   def set_allocation

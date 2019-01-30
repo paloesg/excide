@@ -21,7 +21,6 @@ class ActivationDashboard < Administrate::BaseDashboard
     location: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    event_owner_id: Field::Number,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -52,7 +51,6 @@ class ActivationDashboard < Administrate::BaseDashboard
     :location,
     :created_at,
     :updated_at,
-    :event_owner_id,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -69,7 +67,6 @@ class ActivationDashboard < Administrate::BaseDashboard
     :end_time,
     :remarks,
     :location,
-    :event_owner_id,
   ].freeze
 
   # Overwrite this method to customize how activations are displayed

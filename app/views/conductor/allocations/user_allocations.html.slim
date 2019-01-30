@@ -1,0 +1,29 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/conductor" Dashboard
+      li.breadcrumb-item
+        a href="/symphony/company" #{@company.name}
+      li.breadcrumb-item.active Manpower
+    h1
+      | #{@user.full_name}'s allocations
+.row
+  .col-sm-12
+    table.table.table-hover
+      thead
+        tr
+          th User
+          th Activation
+          th Allocation Date
+          th Start Time
+          th End Time
+
+      tbody
+      	- @user.allocations.each do |allocation|
+      		tr
+            td = @user.full_name
+            td = allocation.activation.id
+            td = allocation.allocation_date
+            td = allocation.start_time.strftime("%I:%M%p")
+            td = allocation.end_time.strftime("%I:%M%p")
