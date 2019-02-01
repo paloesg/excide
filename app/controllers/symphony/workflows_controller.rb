@@ -33,7 +33,6 @@ class Symphony::WorkflowsController < WorkflowsController
       @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user)
       contact_id = @xero.create_contact(@workflow.workflowable)
       @workflow.workflowable.xero_contact_id = contact_id
-      @workflow.workflowable.add_to_xero = true
     end
 
     if @workflow.save
