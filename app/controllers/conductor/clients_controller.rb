@@ -14,7 +14,7 @@ class Conductor::ClientsController < ClientsController
   end
 
   def update
-    if params[:Add_to_Xero] == "1"
+    if params[:add_to_xero] == 'true'
       @xero = Xero.new(session[:xero_auth])
       contact_id = @xero.create_contact(client_params)
       @client.xero_contact_id = contact_id

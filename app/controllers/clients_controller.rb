@@ -26,7 +26,7 @@ class ClientsController < ApplicationController
     @client.user = current_user
 
     #if there is a params[:Add_to_Xero], it indicates that the checkbox in the _form has been checked, hence the value of 1.
-    if params[:Add_to_Xero] == "1"
+    if params[:add_to_xero] == 'true'
       @xero = Xero.new(session[:xero_auth])
       contact_id = @xero.create_contact(client_params)
       @client.xero_contact_id = contact_id
