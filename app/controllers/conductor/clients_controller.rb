@@ -14,6 +14,11 @@ class Conductor::ClientsController < ClientsController
   end
 
   def update
+    if params[:add_to_xero] == 'true'
+      @xero = Xero.new(session[:xero_auth])
+      contact_id = @xero.create_contact(client_params)
+      @client.xero_contact_id = contact_id
+    end
     respond_to do |format|
       if @client.update(client_params)
         format.html { redirect_to conductor_clients_path, notice: 'Client successfully updated!.' }

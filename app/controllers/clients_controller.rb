@@ -22,17 +22,18 @@ class ClientsController < ApplicationController
 
   def create
     @client = Client.new(client_params)
-    @xero = Xero.new(session[:xero_auth])
-
-    contact_id = @xero.create_contact(client_params)
-
-    @client.xero_contact_id = contact_id
     @client.company = @company
     @client.user = current_user
 
+    if params[:add_to_xero] == 'true'
+      @xero = Xero.new(session[:xero_auth])
+      contact_id = @xero.create_contact(client_params)
+      @client.xero_contact_id = contact_id
+    end
+
     respond_to do |format|
       if @client.save
-        format.html { redirect_to symphony_clients_path, notice: 'Client successfully created!' }
+        format.html { redirect_to conductor_clients_path, notice: 'Client successfully created!' }
         format.json { render :show, status: :ok, location: @client }
       else
         format.html { render :new }
@@ -92,6 +93,6 @@ class ClientsController < ApplicationController
   end
 
   def client_params
-    params.require(:client).permit(:name, :identifier, :xero_contact_id, :xero_email)
+    params.require(:client).permit(:name, :identifier, :xero_contact_id)
   end
 end

@@ -10,4 +10,7 @@
 .form-group
   = f.label :identifier
   = f.text_field :identifier, class: 'form-control'
+.form-group.form-check
+  = check_box_tag 'add_to_xero', true, false, class: 'form-check-input'
+  = label_tag 'add_to_xero', 'Add to Xero'
 = f.submit 'Save Client', class: 'btn btn-primary'
