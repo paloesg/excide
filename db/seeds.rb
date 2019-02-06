@@ -18,6 +18,12 @@ management = User.create(email: 'management@gobbler.com', password: 'password', 
 management.add_role :management, gobbler
 vp_sales = User.create(email: 'vp_sales@gobbler.com', password: 'password', first_name: 'VP Sales', last_name: 'Gobbler', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
 vp_sales.add_role :vp_sales, gobbler
+event_owner = User.create(email: 'event_owner@gobbler.com', password: 'password', first_name: 'Event', last_name: 'Owner', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
+event_owner.add_role :event_owner, gobbler
+contractor = User.create(email: 'contractor@gobbler.com', password: 'password', first_name: 'Con', last_name: 'Tractor', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
+contractor.add_role :contractor, gobbler
+contractor_in_charge = User.create(email: 'contractorIC@gobbler.com', password: 'password', first_name: 'Contractor', last_name: 'IC', contact_number: '12341234', company: gobbler. confirmed_at: Time.now)
+contractor_in_charge.add_role :contractor_id, gobbler
 
 # Create template
 template_1 = Template.create(title: 'Template 1', company: gobbler)

@@ -19,6 +19,6 @@ class WorkflowActionsController < ApplicationController
   end
 
   def workflow_action_params
-    params.require(:workflow_action).permit(:assigned_user_id)
+    params.require(:workflow_action).permit(:assigned_user_id, :remarks)
   end
 end
