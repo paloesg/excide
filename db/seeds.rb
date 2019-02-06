@@ -22,7 +22,7 @@ event_owner = User.create(email: 'event_owner@gobbler.com', password: 'password'
 event_owner.add_role :event_owner, gobbler
 contractor = User.create(email: 'contractor@gobbler.com', password: 'password', first_name: 'Con', last_name: 'Tractor', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
 contractor.add_role :contractor, gobbler
-contractor_in_charge = User.create(email: 'contractorIC@gobbler.com', password: 'password', first_name: 'Contractor', last_name: 'IC', contact_number: '12341234', company: gobbler. confirmed_at: Time.now)
+contractor_in_charge = User.create(email: 'contractorIC@gobbler.com', password: 'password', first_name: 'Contractor', last_name: 'IC', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
 contractor_in_charge.add_role :contractor_id, gobbler
 
 # Create template
