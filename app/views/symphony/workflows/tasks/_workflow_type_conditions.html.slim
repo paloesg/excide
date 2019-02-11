@@ -1,0 +1,9 @@
+/ Check if task is current task AND check if it's assigned to a particular user OR whether user has the required role OR user has admin role.
+- if @workflow.workflow_type == "sequential"
+  - if task == @workflow.current_task && (action.assigned_user == current_user || task.role_id == nil || (@roles.map(&:id).include? task.role_id) || (@user.has_role? :admin, @company))
+  	= check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST" }, :onclick => "this.checked=true;"
+  - else
+  	= check_box_tag 'completed', action.id, action.completed, disabled: true
+- else
+	- if (action.assigned_user == current_user || task.role_id == nil || (@roles.map(&:id).include? task.role_id) || (@user.has_role? :admin, @company))
+		= check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST"}
