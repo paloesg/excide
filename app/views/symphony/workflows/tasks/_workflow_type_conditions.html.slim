@@ -6,4 +6,4 @@
   	= check_box_tag 'completed', action.id, action.completed, disabled: true
 - else
 	- if (action.assigned_user == current_user || task.role_id == nil || (@roles.map(&:id).include? task.role_id) || (@user.has_role? :admin, @company))
-		= check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST"}
+		= check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST"}, onclick: "this.checked=true;"
