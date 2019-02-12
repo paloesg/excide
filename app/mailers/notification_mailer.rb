@@ -5,7 +5,7 @@ class NotificationMailer < ApplicationMailer
     #send_reminder is to indicate that a "send reminder" button is clicked -> Workflow controller method: send_reminder
     users.each do |user|
       if workflow_type == "sequential" || send_reminder == true
-        task_notification(workflow_type, task, action, user).deliver_later
+        task_notification(workflow_type, next_task, action, user).deliver_later
       elsif workflow_type == "nonsequential"
         workflow_nonsequential_notification(workflow_type, task, action, user).deliver_later
       end
@@ -27,7 +27,7 @@ class NotificationMailer < ApplicationMailer
     @user = user
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
-    mail(to: address.format, subject: 'Current task completed')
+    mail(to: address.format, subject: '[Current task] ' + @task.section.template.title + ' completed')
   end
 
   def reminder_notification(reminder)
