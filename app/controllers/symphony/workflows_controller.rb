@@ -2,7 +2,7 @@ class Symphony::WorkflowsController < WorkflowsController
   include Adapter
 
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable, :send_reminder]
   before_action :set_attributes_metadata, only: [:create, :update]
   before_action :set_s3_direct_post, only: [:show]
 
@@ -91,7 +91,8 @@ class Symphony::WorkflowsController < WorkflowsController
     respond_to do |format|
       if current_task.role.present?
         users = User.with_role(current_task.role.name.to_sym, @company)
-        NotificationMailer.deliver_notifications(current_task, current_action, users)
+        #added a true to the deliver_notifications last params to indicate that a send_reminder button is pressed
+        NotificationMailer.deliver_notifications(@workflow.workflow_type, current_task, current_action, users, true)
         format.json { render json: "Sent out", status: :ok }
       else
         format.json { render json: "Current task has no role" }
