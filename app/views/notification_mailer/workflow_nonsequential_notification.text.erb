@@ -1,0 +1,5 @@
+Hi <%= @user.full_name %>,
+
+The current task: "<%=@task.instructions%>" has been completed on <%=Time.now%>.
+
+If you have any queries regarding your task, please contact the workflow creator: <%=@action.workflow.user.full_name%>

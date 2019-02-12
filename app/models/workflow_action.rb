@@ -22,6 +22,7 @@ class WorkflowAction < ApplicationRecord
   has_many :reminders, dependent: :destroy
 
   def set_deadline_and_notify(next_task)
+    current_task = self.task
     next_action = next_task.get_workflow_action(self.company, self.workflow.identifier)
     next_action.update_columns(deadline: check_week_day(Date.current + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
 
@@ -32,7 +33,7 @@ class WorkflowAction < ApplicationRecord
     if next_task.role.present?
       users = User.with_role(next_task.role.name.to_sym, self.company)
       #false indicates (on deliver_notifications param) that it is not called from the send_reminder button
-      NotificationMailer.deliver_notifications(workflow.workflow_type, next_task, next_action, users, false)
+      NotificationMailer.deliver_notifications(workflow.workflow_type, next_task, next_action, current_task, users, false)
     end
   end
 
