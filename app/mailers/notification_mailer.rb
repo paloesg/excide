@@ -1,13 +1,11 @@
 class NotificationMailer < ApplicationMailer
   default from: 'Excide Symphony <admin@excide.co>'
 
-  def self.deliver_notifications(workflow_type, next_task, action, current_task, users, send_reminder)
+  def self.deliver_notifications(workflow_type, next_task, action, users, send_reminder)
     #send_reminder is to indicate that a "send reminder" button is clicked -> Workflow controller method: send_reminder
     users.each do |user|
-      if workflow_type == "sequential" || send_reminder == true
+      if workflow_type == "sequential" or send_reminder == true
         task_notification(workflow_type, next_task, action, user).deliver_later
-      elsif workflow_type == "nonsequential"
-        workflow_nonsequential_notification(workflow_type, current_task, action, user).deliver_later
       end
     end
   end
@@ -19,15 +17,6 @@ class NotificationMailer < ApplicationMailer
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
     mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.identifier)
-  end
-
-  def workflow_nonsequential_notification(workflow_type, task, action, user)
-    @task = task
-    @action = action
-    @user = user
-    address = Mail::Address.new @user.email
-    address.display_name = @user.full_name
-    mail(to: address.format, subject: '[Current task] ' + @task.section.template.title + ' completed')
   end
 
   def reminder_notification(reminder)

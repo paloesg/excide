@@ -1,8 +1,0 @@
-p Hi #{@user.full_name},
-
-p
-  | The current task: "#{@task.instructions}" has been completed on #{Time.now}.
-  - if @action.deadline.present?
-		| The deadline of this workflow is #{@action.deadline.strftime("%d/%m/%Y")}
-
-p If you have any queries regarding your task, please contact the workflow creator: #{@action.workflow.user.full_name}.
