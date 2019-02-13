@@ -13,7 +13,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     slug: Field::String,
     business_model: EnumField,
     company: Field::BelongsTo,
-    workflow_type: Field::String,
+    workflow_type: Field::Select.with_options(collection: ["sequential", "non-sequential"]),
     workflows: Field::HasMany,
     sections: Field::NestedHasMany.with_options(skip: [:template]),
     created_at: Field::DateTime,
