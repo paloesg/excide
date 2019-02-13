@@ -93,7 +93,7 @@ class Symphony::WorkflowsController < WorkflowsController
         users = User.with_role(current_task.role.name.to_sym, @company)
         #added a true to the deliver_notifications last params to indicate that a send_reminder button is pressed
         #since sending reminder sends the current task, the next_task params of deliver_notifications will both be current_task
-        NotificationMailer.deliver_notifications(@workflow.workflow_type, current_task, current_action, users, true)
+        NotificationMailer.deliver_notifications(@workflow.template.workflow_type, current_task, current_action, users, true)
         format.json { render json: "Sent out", status: :ok }
       else
         format.json { render json: "Current task has no role" }
@@ -248,7 +248,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :remarks, :workflow_type, workflowable_attributes: [:id, :name, :identifier, :user_id, :company_id, :xero_email], data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :remarks, workflowable_attributes: [:id, :name, :identifier, :user_id, :company_id, :xero_email], data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
   end
 
   def set_documents

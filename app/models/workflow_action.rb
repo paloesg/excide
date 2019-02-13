@@ -32,7 +32,7 @@ class WorkflowAction < ApplicationRecord
     if next_task.role.present?
       users = User.with_role(next_task.role.name.to_sym, self.company)
       #false indicates (on deliver_notifications param) that it is not called from the send_reminder button
-      NotificationMailer.deliver_notifications(workflow.workflow_type, next_task, next_action, users, false)
+      NotificationMailer.deliver_notifications(workflow.template.workflow_type, next_task, next_action, users, false)
     end
   end
 

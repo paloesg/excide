@@ -71,17 +71,6 @@
                       .form-group
                         = c.label :name, 'Client Name'
                         = c.text_field :name, class: 'form-control'
-    .row
-    	.col-sm-12
-    		.card.mt-3
-    			h5.card-header Type of Workflow
-    			.card-body
-    				.form-group.form-check
-    					= f.radio_button :workflow_type, 'sequential', class: 'mr-2'
-    					= f.label :workflow_type, 'Sequential'
-    				.form-group.form-check
-    					= f.radio_button :workflow_type, 'nonsequential', class: 'mr-2'
-    					= f.label :workflow_type, 'Non-sequential'
 .row
   .col-sm-12
     = f.submit 'Save Workflow', class: 'btn btn-primary'

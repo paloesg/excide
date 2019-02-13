@@ -83,6 +83,6 @@ class WorkflowsController < ApplicationController
   end
 
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflow_type)
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier)
   end
 end

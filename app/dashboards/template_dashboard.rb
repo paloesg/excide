@@ -13,6 +13,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     slug: Field::String,
     business_model: EnumField,
     company: Field::BelongsTo,
+    workflow_type: Field::String,
     workflows: Field::HasMany,
     sections: Field::NestedHasMany.with_options(skip: [:template]),
     created_at: Field::DateTime,
@@ -30,6 +31,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     :title,
     :slug,
     :company,
+    :workflow_type,
     :workflows,
   ].freeze
 
@@ -40,6 +42,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     :title,
     :slug,
     :company,
+    :workflow_type,
     :created_at,
     :updated_at,
     :sections,
@@ -53,6 +56,7 @@ class TemplateDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :title,
     :company,
+    :workflow_type,
     :data_names,
     :sections,
   ].freeze
