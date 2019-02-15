@@ -1,5 +1,5 @@
 tr
-  td = f.text_field :name, class: 'form-control', readonly: (!@user.has_role? :admin, @company)
+  td = f.select :name, [["*InvoiceDate"], ["*DueDate"], ["Description"], ["*Quantity"], ["*UnitAmount"]], {include_blank: "Select..."}, class: 'selectize-input', readonly: (!@user.has_role? :admin, @company)
   td = f.text_field :value, placeholder: f.object.try(:placeholder), class: 'form-control'
   td
     - if @user.has_role? :admin, @company
