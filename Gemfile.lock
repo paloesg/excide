@@ -342,6 +342,8 @@ GEM
     pundit (2.0.0)
       activesupport (>= 3.0.0)
     rack (2.0.6)
+    rack-attack (5.4.2)
+      rack (>= 1.0, < 3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rack-timeout (0.5.1)
@@ -581,6 +583,7 @@ DEPENDENCIES
   public_activity
   puma
   pundit
+  rack-attack
   rack-timeout
   rails (= 5.2.2)
   rails-erd
