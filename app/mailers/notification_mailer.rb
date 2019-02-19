@@ -1,13 +1,13 @@
 class NotificationMailer < ApplicationMailer
   default from: 'Excide Symphony <admin@excide.co>'
 
-  def self.deliver_notifications(workflow_type, next_task, action, users)
+  def self.deliver_notifications(next_task, action, users)
     users.each do |user|
-      task_notification(workflow_type, next_task, action, user).deliver_later
+      task_notification(next_task, action, user).deliver_later
     end
   end
 
-  def task_notification(workflow_type, task, action, user)
+  def task_notification(task, action, user)
     @task = task
     @action = action
     @user = user

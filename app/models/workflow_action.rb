@@ -32,7 +32,7 @@ class WorkflowAction < ApplicationRecord
     if next_task.role.present?
       users = User.with_role(next_task.role.name.to_sym, self.company)
       if workflow.template.ordered?
-        NotificationMailer.deliver_notifications(workflow.template.workflow_type, next_task, next_action, users)
+        NotificationMailer.deliver_notifications(next_task, next_action, users)
       end
     end
   end
