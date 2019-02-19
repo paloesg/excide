@@ -1,7 +1,15 @@
 class Invoice < ApplicationRecord
-  belongs_to :workflow_actions
+  belongs_to :workflow
+  # validates :invoice_identifier, uniqueness: true
 
-  validates :invoice_identifier, uniqueness: true
+  # def line_items=(attributes)
+  #   lineitems = []
+  #   attributes.each do |index, attrs|
+  #     next if attrs['description'].empty? && attrs['quantity'].empty? && attrs['price'].empty? && attrs['account'].empty?
+  #     lineitems << attrs
+  #   end
+  #   write_attribute(:line_items, lineitems)
+  # end
 
   def build_lineitems
     lineitem = self.line_items.dup
@@ -17,4 +25,5 @@ class Invoice < ApplicationRecord
       @price = hash['price']
       @account = hash['account']
     end
+  end
 end

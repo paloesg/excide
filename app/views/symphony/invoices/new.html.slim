@@ -1,0 +1,60 @@
+.row
+	.col-sm-12
+		ol.breadcrumb
+			li.breadcrumb-item.ml-auto
+				a href="/symphony" Symphony
+			li.breadcrumb-item
+				= link_to @workflow.identifier, symphony_workflow_path(workflow_identifier: @workflow.identifier)
+			li.breadcrumb-item Invoices
+			li.breadcrumb-item.active New
+		h1 Create Invoice
+.row
+	.col-md-4
+		- if @documents.empty?
+			| No documents available. Please upload documents first.
+		- else
+			- if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
+				= image_tag(@document.file_url, class: 'img-responsive')
+			- else
+				iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
+	.col-md-8
+		= form_for(@invoice, url: symphony_invoices_path(workflow_identifier: params[:workflow_identifier])) do |f|
+			.row
+				.col-md-12
+					.card.mb-3
+						h5.card-header Invoice
+						.form-group.m-3
+							= f.label :invoice_date, 'Invoice Date'
+							= f.date_field :invoice_date, value: f.object.try(:strftime,"%d-%b-%y"), class: 'form-control'
+						.form-group.m-3
+							= f.label :due_date, 'Due Date'
+							= f.date_field :due_date, value: f.object.try(:strftime,"%d-%b-%y"), class: 'form-control'
+			.row
+				.col-md-12
+					.card.mb-3
+						h5.card-header Add Line Items
+						.table-responsive
+							table.table
+								thead
+									tr
+										th Description
+										th Quantity
+										th Price
+										th Account
+										th
+								tbody.data-attributes
+									tr
+										= f.fields_for :line_items do |lineitem|
+											= render 'line_items', f: lineitem
+						.card-body
+							= link_to_add_lineitems "Add Line Items", f, :line_items
+			.btn-group role='group'
+				- if @previous_document.present?
+					= f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-primary'
+						i.fa.fa-chevron-left
+						| Previous Document
+				- if @next_document.present?
+					= f.button name: 'document_id', value: @next_document.id, class: 'btn btn-primary'
+						| Next Document
+						i.fa.fa-chevron-right
+			= f.submit 'Create Invoice', class: 'btn btn-primary pull-right'
