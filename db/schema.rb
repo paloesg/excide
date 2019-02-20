@@ -337,7 +337,7 @@ ActiveRecord::Schema.define(version: 2019_02_13_010320) do
     t.string "slug"
     t.integer "company_id"
     t.json "data_names", default: []
-    t.string "workflow_type"
+    t.integer "workflow_type", default: 0
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end

@@ -1,5 +1,4 @@
 / Check if task is current task AND check if it's assigned to a particular user OR whether user has the required role OR user has admin role.
-			/0 means ordered workflow
 - if @workflow.template.ordered?
   - if task == @workflow.current_task && (action.assigned_user == current_user || task.role_id == nil || (@roles.map(&:id).include? task.role_id) || (@user.has_role? :admin, @company))
   	= check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST" }, :onclick => "this.checked=true;"

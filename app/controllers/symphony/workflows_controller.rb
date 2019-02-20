@@ -2,7 +2,7 @@ class Symphony::WorkflowsController < WorkflowsController
   include Adapter
 
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable, :send_reminder]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
   before_action :set_attributes_metadata, only: [:create, :update]
   before_action :set_s3_direct_post, only: [:show]
 
