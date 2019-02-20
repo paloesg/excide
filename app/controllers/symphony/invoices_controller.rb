@@ -2,7 +2,7 @@ class Symphony::InvoicesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_workflow, only: [:new, :create]
+  before_action :set_workflow, only: [:new, :create, :show]
   before_action :set_documents
 
   def new
@@ -12,7 +12,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def create
     @invoice = Invoice.new(invoice_params)
-    @invoice.invoice_identifier = "Link to Xero later on!"
+    @invoice.invoice_identifier = "LINK-TO-XERO-LATER-ON!"
     respond_to do |format|
       if @invoice.save
         format.html{redirect_to root_path, notice: "Invoice created successfully!"}
@@ -22,6 +22,10 @@ class Symphony::InvoicesController < ApplicationController
         format.json{render json: @invoice.errors, status: :unprocessable_entity}
       end
     end
+  end
+
+  def show
+    @invoice = Invoice.find_by(invoice_identifier: params[:invoice_identifier])
   end
 
   private

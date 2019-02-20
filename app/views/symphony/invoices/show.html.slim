@@ -1,0 +1,35 @@
+.row
+	.col-sm-12
+		ol.breadcrumb
+			li.breadcrumb-item.ml-auto
+				a href="/symphony" Symphony
+			li.breadcrumb-item
+				= link_to @workflow.identifier, symphony_workflow_path(workflow_identifier: @workflow.identifier)
+			li.breadcrumb-item Invoices
+		h1 Invoice - #{@invoice.invoice_identifier}
+.row
+	.col-sm-12
+		.container
+			p Invoice Date: #{@invoice.invoice_date}
+			p Due Date: #{@invoice.due_date}
+			p From: #{@workflow.workflowable.name}
+.row
+	.col-sm-12
+		.table-responsive
+			table.table
+				thead
+					tr
+						th Item
+						th Description
+						th Qty
+						th Unit Price($)
+						th Account
+						th
+				tbody
+					- @invoice.lineitems.each do |lineitem|
+						tr
+							td = 1
+							td = lineitem.description
+							td = lineitem.quantity
+							td = lineitem.price
+							td = lineitem.account
