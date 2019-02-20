@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_17_012044) do
+ActiveRecord::Schema.define(version: 2019_02_20_140918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -195,6 +195,8 @@ ActiveRecord::Schema.define(version: 2019_02_17_012044) do
     t.json "lineitems", default: []
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "workflow_id"
+    t.index ["workflow_id"], name: "index_invoices_on_workflow_id"
   end
 
   create_table "profiles", id: :serial, force: :cascade do |t|
@@ -346,7 +348,7 @@ ActiveRecord::Schema.define(version: 2019_02_17_012044) do
     t.string "slug"
     t.integer "company_id"
     t.json "data_names", default: []
-    t.string "workflow_type"
+    t.integer "workflow_type", default: 0
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
@@ -450,6 +452,7 @@ ActiveRecord::Schema.define(version: 2019_02_17_012044) do
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflows"
+  add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"
   add_foreign_key "reminders", "companies"

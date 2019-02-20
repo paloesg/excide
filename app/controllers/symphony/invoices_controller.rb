@@ -1,4 +1,5 @@
 class Symphony::InvoicesController < ApplicationController
+  include Adapter
   layout 'dashboard/application'
 
   before_action :authenticate_user!
@@ -13,6 +14,7 @@ class Symphony::InvoicesController < ApplicationController
   def create
     @invoice = Invoice.new(invoice_params)
     @invoice.invoice_identifier = "LINK-TO-XERO-LATER-ON!"
+    @invoice.workflow_id = @workflow.id
     respond_to do |format|
       if @invoice.save
         format.html{redirect_to root_path, notice: "Invoice created successfully!"}
