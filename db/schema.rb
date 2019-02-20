@@ -188,15 +188,6 @@ ActiveRecord::Schema.define(version: 2019_02_13_010320) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
-  create_table "invoices", force: :cascade do |t|
-    t.string "invoice_identifier"
-    t.datetime "invoice_date"
-    t.datetime "due_date"
-    t.json "line_items", default: []
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "profiles", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -346,7 +337,7 @@ ActiveRecord::Schema.define(version: 2019_02_13_010320) do
     t.string "slug"
     t.integer "company_id"
     t.json "data_names", default: []
-    t.integer "workflow_type", default: 0
+    t.string "workflow_type"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
