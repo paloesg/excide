@@ -7,7 +7,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def new
     @invoice = Invoice.new
-    @invoice.build_lineitems
+    @invoice.build_lineitem
   end
 
   def create
@@ -39,7 +39,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_identifier, :invoice_date, :due_date, line_items: [:description, :quantity, :price, :account])
+    params.require(:invoice).permit(:invoice_identifier, :invoice_date, :due_date, lineitems_attributes: [:description, :quantity, :price, :account, :_destroy])
   end
 
 end

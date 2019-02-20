@@ -192,7 +192,7 @@ ActiveRecord::Schema.define(version: 2019_02_17_012044) do
     t.string "invoice_identifier"
     t.datetime "invoice_date"
     t.datetime "due_date"
-    t.json "line_items", default: []
+    t.json "lineitems", default: []
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

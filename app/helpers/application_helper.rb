@@ -39,7 +39,7 @@ module ApplicationHelper
   end
 
   def link_to_add_lineitems(name, f, association)
-    new_object = f.object.build_lineitems.last()
+    new_object = f.object.build_lineitem.last()
     id = new_object.object_id
     fields = f.fields_for(association, new_object, child_index: id) do |builder|
       render "line_items", f: builder
