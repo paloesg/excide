@@ -48,6 +48,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def show
+    @invoice = Invoice.find_by(workflow_id: @workflow.id)
     if @workflow.completed?
       redirect_to symphony_archive_path(@workflow.template.slug, @workflow.identifier)
     else
@@ -152,9 +153,9 @@ class Symphony::WorkflowsController < WorkflowsController
       @workflow.invoices.each do |invoice|
         @invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, invoice.invoice_date, invoice.due_date, invoice.invoice_identifier, invoice.lineitems)
       end
-      # @workflow.documents.each do |document|
-      #   @invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
-      # end
+      @workflow.documents.each do |document|
+        @invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+      end
     rescue ArgumentError => e
       xero_error = true
       message = 'There was an error creating Xero invoice: ' + e.message + '. Please ensure you have filled in all the required data attributes.'

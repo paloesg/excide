@@ -6,13 +6,17 @@
 			li.breadcrumb-item
 				= link_to @workflow.identifier, symphony_workflow_path(workflow_identifier: @workflow.identifier)
 			li.breadcrumb-item Invoices
-		h1 Invoice - #{@invoice.invoice_identifier}
-.row
-	.col-sm-12
-		.container
-			p Invoice Date: #{@invoice.invoice_date}
-			p Due Date: #{@invoice.due_date}
-			p From: #{@workflow.workflowable.name}
+		h1 Invoice - #{@invoice.id}
+.row.m-3
+	.col-sm-4
+		strong Invoice Date:
+		p #{@invoice.invoice_date}
+	.col-sm-4
+		strong Due Date:
+		p #{@invoice.due_date}
+	.col-sm-4
+		strong From:
+		p #{@workflow.workflowable.name}
 .row
 	.col-sm-12
 		.table-responsive
@@ -26,10 +30,15 @@
 						th Account
 						th
 				tbody
-					- @invoice.lineitems.each do |lineitem|
+					- @invoice.lineitems.each_with_index do |lineitem, index|
 						tr
-							td = 1
+							td = index + 1
 							td = lineitem.description
 							td = lineitem.quantity
 							td = lineitem.price
 							td = lineitem.account
+.row
+	.col-sm-12
+		= link_to "Edit Invoice", root_path, class: 'btn btn-success m-1'
+		= link_to "Delete Invoice", root_path, class: 'btn btn-danger m-1'
+		= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary'

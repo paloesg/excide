@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_20_140918) do
+ActiveRecord::Schema.define(version: 2019_02_21_075343) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "activation_types", id: :serial, force: :cascade do |t|
@@ -188,7 +189,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_140918) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
-  create_table "invoices", force: :cascade do |t|
+  create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "invoice_identifier"
     t.date "invoice_date"
     t.date "due_date"

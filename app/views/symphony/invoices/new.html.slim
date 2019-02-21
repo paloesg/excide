@@ -22,32 +22,34 @@
 			.row
 				.col-md-12
 					.card.mb-3
-						h5.card-header Invoice
-						.form-group.m-3
-							= f.label :invoice_date, 'Invoice Date'
-							= f.date_field :invoice_date, class: 'form-control'
-						.form-group.m-3
-							= f.label :due_date, 'Due Date'
-							= f.date_field :due_date, class: 'form-control'
+						.media-body
+							h5.card-header Invoice
+							.form-group.m-3
+								= f.label :invoice_date, 'Invoice Date'
+								= f.date_field :invoice_date, class: 'form-control'
+							.form-group.m-3
+								= f.label :due_date, 'Due Date'
+								= f.date_field :due_date, class: 'form-control'
 			.row
 				.col-md-12
 					.card.mb-3
-						h5.card-header Add Line Items
-						.table-responsive
-							table.table
-								thead
-									tr
-										th Description
-										th Quantity
-										th Price
-										th Account
-										th
-								tbody.data-attributes
-									tr
-										= f.fields_for :lineitems do |lineitem|
-											= render 'line_items', f: lineitem
-						.card-body
-							= link_to_add_lineitems "Add Line Items", f, :lineitems
+						.media-body
+							h5.card-header Add Line Items
+							.table-responsive
+								table.table
+									thead
+										tr
+											th Description
+											th Quantity
+											th Price
+											th Account
+											th
+									tbody.data-attributes
+										tr
+											= f.fields_for :lineitems do |lineitem|
+												= render 'line_items', f: lineitem
+							.card-body
+								= link_to_add_lineitems "Add Line Items", f, :lineitems
 			.btn-group role='group'
 				- if @previous_document.present?
 					= f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-primary'

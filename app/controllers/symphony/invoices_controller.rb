@@ -13,11 +13,10 @@ class Symphony::InvoicesController < ApplicationController
 
   def create
     @invoice = Invoice.new(invoice_params)
-    @invoice.invoice_identifier = "LINK-TO-XERO-LATER-ON!"
     @invoice.workflow_id = @workflow.id
     respond_to do |format|
       if @invoice.save
-        format.html{redirect_to root_path, notice: "Invoice created successfully!"}
+        format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully!"}
         format.json{render :show, status: :ok, location: @invoice}
       else
         format.html{render 'new'}
