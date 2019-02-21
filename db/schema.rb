@@ -190,8 +190,8 @@ ActiveRecord::Schema.define(version: 2019_02_20_140918) do
 
   create_table "invoices", force: :cascade do |t|
     t.string "invoice_identifier"
-    t.datetime "invoice_date"
-    t.datetime "due_date"
+    t.date "invoice_date"
+    t.date "due_date"
     t.json "lineitems", default: []
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
