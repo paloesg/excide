@@ -25,10 +25,10 @@
 						h5.card-header Invoice
 						.form-group.m-3
 							= f.label :invoice_date, 'Invoice Date'
-							= f.date_field :invoice_date, value: f.object.try(:strftime,"%d-%b-%y"), class: 'form-control'
+							= f.date_field :invoice_date, class: 'form-control'
 						.form-group.m-3
 							= f.label :due_date, 'Due Date'
-							= f.date_field :due_date, value: f.object.try(:strftime,"%d-%b-%y"), class: 'form-control'
+							= f.date_field :due_date, class: 'form-control'
 			.row
 				.col-md-12
 					.card.mb-3
