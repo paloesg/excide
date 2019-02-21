@@ -150,7 +150,7 @@ class Symphony::WorkflowsController < WorkflowsController
       xero_error = false
       @xero = Xero.new(session[:xero_auth])
       @workflow.invoices.each do |invoice|
-        @invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, "13-Feb-19", "28-Feb-19", invoice.invoice_identifier, invoice.lineitems)
+        @invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, invoice.invoice_date, invoice.due_date, invoice.invoice_identifier, invoice.lineitems)
       end
       # @workflow.documents.each do |document|
       #   @invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
