@@ -3,7 +3,7 @@ class Symphony::InvoicesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_workflow, only: [:new, :create, :show]
+  before_action :set_workflow, only: [:new, :create, :show, :edit, :update]
   before_action :set_documents
 
   def new
@@ -17,6 +17,23 @@ class Symphony::InvoicesController < ApplicationController
     respond_to do |format|
       if @invoice.save
         format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully!"}
+        format.json{render :show, status: :ok, location: @invoice}
+      else
+        format.html{render 'new'}
+        format.json{render json: @invoice.errors, status: :unprocessable_entity}
+      end
+    end
+  end
+
+  def edit
+    @invoice = Invoice.find_by(id: params[:id])
+  end
+
+  def update
+    @invoice = Invoice.find_by(id: params[:id])
+    respond_to do |format|
+      if @invoice.update(invoice_params)
+        format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice updated successfully!"}
         format.json{render :show, status: :ok, location: @invoice}
       else
         format.html{render 'new'}
