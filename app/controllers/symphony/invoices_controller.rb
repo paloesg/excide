@@ -43,7 +43,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def show
-    @invoice = Invoice.find_by(invoice_identifier: params[:invoice_identifier])
+    @invoice = Invoice.find_by(id: params[:id])
   end
 
   private
@@ -61,7 +61,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_identifier, :invoice_date, :due_date, lineitems_attributes: [:description, :quantity, :price, :account, :_destroy])
+    params.require(:invoice).permit(:invoice_identifier, :invoice_date, :due_date, :workflow_id, lineitems_attributes: [:description, :quantity, :price, :account, :_destroy])
   end
 
 end

@@ -8,6 +8,8 @@ class Workflow < ApplicationRecord
 
   accepts_nested_attributes_for :workflowable
 
+  has_one :invoice
+
   has_many :workflow_actions, dependent: :destroy
   has_many :documents, dependent: :destroy
 

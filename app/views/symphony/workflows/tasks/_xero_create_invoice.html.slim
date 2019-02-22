@@ -26,7 +26,7 @@ tr
 				.btn-toolbar role="toolbar"
 					.btn-group.mr-2 role="group" aria-label="Task actions"
 						= @workflow.workflowable.xero_contact_id.present? ? link_to("Send Invoice to Xero", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier), method: 'post', role: 'button', class: 'btn btn-primary btn-sm') : link_to('Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm')
-						= link_to "Create Invoice", new_symphony_invoice_path(workflow_identifier: @workflow.identifier), role: 'button', class: 'btn btn-danger btn-sm ml-2'
+						= link_to "Create Invoice", new_symphony_invoice_path(workflow_identifier: @workflow.identifier), role: 'button', class: 'btn btn-success btn-sm ml-2'
 					.btn-group.mr-2 role="group" aria-label="Reminder actions"
 						- if action.reminders.present?
 							= link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
