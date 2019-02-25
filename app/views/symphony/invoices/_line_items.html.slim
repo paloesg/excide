@@ -2,8 +2,8 @@ tr
 	td = f.text_field :description, class: 'form-control'
 	td = f.text_field :quantity, class: 'form-control'
 	td = f.text_field :price, class: 'form-control'
-	td = f.text_field :account, class: 'form-control'
+	td = f.collection_select :account, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, include_blank: true, class: 'form-control selectize'
 	td
     - if @workflow.user.has_role? :admin, @company
-      = link_to "Remove", '#', class: 'remove_fields btn btn-danger'
+      / = link_to "Remove", '#', class: 'remove_fields btn btn-danger'
   	/ = f.hidden_field :destroy, class: 'destroy'

@@ -7,6 +7,8 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_documents
 
   def new
+    @xero = Xero.new(session[:xero_auth])
+    @accounts = @xero.get_accounts
     @invoice = Invoice.new
     @invoice.build_lineitem
   end
@@ -26,6 +28,8 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def edit
+    @xero = Xero.new(session[:xero_auth])
+    @accounts = @xero.get_accounts
     @invoice = Invoice.find_by(id: params[:id])
   end
 
