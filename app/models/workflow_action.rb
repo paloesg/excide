@@ -8,9 +8,9 @@ class WorkflowAction < ApplicationRecord
             completed: ->(_controller, model) { model&.completed? }
           }
 
-  after_save :clear_reminders, if: :saved_change_to_completed?
-  after_save :trigger_next_task, if: :saved_change_to_completed?
-  after_save :send_notification, if: :saved_change_to_completed?
+  after_save :clear_reminders, if: :ordered_workflow_task_completed?
+  after_save :trigger_next_task, if: :ordered_workflow_task_completed?
+  after_save :send_notification, if: :ordered_workflow_task_completed?
 
   belongs_to :task
   belongs_to :company
@@ -29,7 +29,7 @@ class WorkflowAction < ApplicationRecord
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
 
     # Trigger email notification for next task if role present
-    if workflow.template.ordered? and next_task.role.present?
+    if next_task.role.present?
       users = User.with_role(next_task.role.name.to_sym, self.company)
       NotificationMailer.deliver_notifications(next_task, next_action, users)
     end
@@ -111,5 +111,10 @@ class WorkflowAction < ApplicationRecord
 
   def check_week_day(day)
     day.on_weekday? ? day : day.next_weekday
+  end
+
+  # Callback conditional to check whether the template is of type ordered and whether the task is completed before triggering callback
+  def ordered_workflow_task_completed?
+    self.workflow.template.ordered? && self.completed?
   end
 end
