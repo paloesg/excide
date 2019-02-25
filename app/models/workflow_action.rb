@@ -10,7 +10,6 @@ class WorkflowAction < ApplicationRecord
 
   after_save :clear_reminders, if: :ordered_workflow_task_completed?
   after_save :trigger_next_task, if: :ordered_workflow_task_completed?
-  after_save :send_notification, if: :ordered_workflow_task_completed?
 
   belongs_to :task
   belongs_to :company
