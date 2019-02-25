@@ -8,9 +8,9 @@ class WorkflowAction < ApplicationRecord
             completed: ->(_controller, model) { model&.completed? }
           }
 
-  after_save :clear_reminders, if: :saved_change_to_completed?
-  after_save :trigger_next_task, if: :saved_change_to_completed?
-  after_save :send_notification, if: :saved_change_to_completed?
+  after_save :clear_reminders, if: :ordered_workflow_task_completed?
+  after_save :trigger_next_task, if: :ordered_workflow_task_completed?
+  after_save :send_notification, if: :ordered_workflow_task_completed?
 
   belongs_to :task
   belongs_to :company
@@ -111,5 +111,10 @@ class WorkflowAction < ApplicationRecord
 
   def check_week_day(day)
     day.on_weekday? ? day : day.next_weekday
+  end
+
+  # Callback conditional to check whether the template is of type ordered and whether the task is completed before triggering callback
+  def ordered_workflow_task_completed?
+    self.workflow.template.ordered? && self.completed?
   end
 end

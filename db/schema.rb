@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_24_020103) do
+ActiveRecord::Schema.define(version: 2019_02_13_010320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -337,6 +337,7 @@ ActiveRecord::Schema.define(version: 2019_01_24_020103) do
     t.string "slug"
     t.integer "company_id"
     t.json "data_names", default: []
+    t.integer "workflow_type", default: 0
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
