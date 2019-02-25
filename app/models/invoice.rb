@@ -18,17 +18,18 @@ class Invoice < ApplicationRecord
 
   def build_lineitem
     l = self.lineitems.dup
-    l << Lineitem.new({description: '', quantity: '', price: '', account: ''})
+    l << Lineitem.new({description: '', quantity: '', price: '', account: '', tax: ''})
     self.lineitems = l
   end
 
   class Lineitem
-    attr_accessor :description, :quantity, :price, :account
+    attr_accessor :description, :quantity, :price, :account, :tax
     def initialize(hash)
       @description = hash['description']
       @quantity = hash['quantity']
       @price = hash['price']
       @account = hash['account']
+      @tax = hash['tax']
     end
     def persisted?() false; end
     def new_record?() false; end

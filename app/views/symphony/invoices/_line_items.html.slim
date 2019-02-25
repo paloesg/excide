@@ -3,6 +3,7 @@ tr
 	td = f.text_field :quantity, class: 'form-control'
 	td = f.text_field :price, class: 'form-control'
 	td = f.collection_select :account, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, include_blank: true, class: 'form-control selectize'
+	td = f.collection_select :tax, @taxes, :tax_type, ->(tax) { tax.name + ' - (' + tax.display_tax_rate.to_s + '%)'}, include_blank: true, class: 'form-control'
 	td
     - if @workflow.user.has_role? :admin, @company
       / = link_to "Remove", '#', class: 'remove_fields btn btn-danger'
