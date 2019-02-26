@@ -9,6 +9,7 @@
       $(this).closest('tr').hide();
       return event.preventDefault();
     });
+    //removing a lineitem in the invoice
     $('form').on('click', '.remove_lineitems', function(event){
         $(this).closest('tr').find('.destroy').val('1');
         $(this).closest('tr').remove();
@@ -21,6 +22,12 @@
       $(".table>tbody>tr:last-child").after($(this).data('fields').replace(regexp, time));
       if ($("input[id$='" + time + "_name']").val() !== "Account") {
         $("input[id$='" + time + "_name']").removeAttr('readonly');
+        $("select[id$='" + time + "_account']").selectize({
+          dropdownParent: "body"
+        });
+        $("select[id$='" + time + "_tax']").selectize({
+          dropdownParent: "body"
+        });
       } else {
         $(".add_account").addClass("disabled");
         $("select[id$='" + time + "_value']").selectize({

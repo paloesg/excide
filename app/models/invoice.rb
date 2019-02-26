@@ -1,6 +1,8 @@
 class Invoice < ApplicationRecord
   belongs_to :workflow
 
+  enum line_amount_types: { Exclusive: 0, Inclusive: 1, NoTax: 2}
+
   def lineitems
     read_attribute(:lineitems).map {|l| Lineitem.new(l) }
   end

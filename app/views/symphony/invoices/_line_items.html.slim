@@ -2,7 +2,7 @@ tr
 	td = f.text_field :description, class: 'form-control'
 	td = f.text_field :quantity, class: 'form-control'
 	td = f.text_field :price, class: 'form-control'
-	td = f.collection_select :account, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, include_blank: true, class: 'form-control selectize'
+	td = f.collection_select :account, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, include_blank: true, class: 'form-control'
 	td = f.collection_select :tax, @taxes, :tax_type, ->(tax) { tax.name + ' - (' + tax.display_tax_rate.to_s + '%)'}, include_blank: true, class: 'form-control'
 	td = link_to "Remove", '#', class: 'remove_lineitems btn btn-danger' if @workflow.user.has_role? :admin, @workflow.company
 		 = f.hidden_field :_destroy, class: 'destroy'

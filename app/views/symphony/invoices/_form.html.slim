@@ -9,6 +9,9 @@
 				.form-group.m-3
 					= f.label :due_date, 'Due Date'
 					= f.date_field :due_date, class: 'form-control'
+				.form-group.m-3
+					= f.label :line_amount_types, 'Amounts are: ', class: 'mr-2'
+					= f.select :line_amount_types, options_for_select(Invoice.line_amount_types.keys), class: 'form-control'
 .row
 	.col-md-12
 		.card.mb-3
@@ -26,8 +29,8 @@
 								th
 						tbody.data-attributes
 							tr
-								= f.fields_for :lineitems do |lineitem|
-									= render 'line_items', f: lineitem
+							= f.fields_for :lineitems do |lineitem|
+								= render 'line_items', f: lineitem
 				.card-body
 					= link_to_add_lineitems "Add Line Items", f, :lineitems
 .btn-group role='group'

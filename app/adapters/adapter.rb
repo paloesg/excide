@@ -19,12 +19,6 @@ module Adapter
       return contact = @xero_client.Contact.find(xero_contact_id)
     end
 
-    def create_contact(client)
-      xero_contact = @xero_client.Contact.build(name: client[:name])
-      xero_contact.save!
-      return xero_contact.contact_id
-    end
-
     def get_accounts
       @xero_client.Account.all
     end
@@ -33,10 +27,16 @@ module Adapter
       @xero_client.TaxRate.all
     end
 
-    def create_invoice_payable(contact_id, date, due_date, identifier, lineitems)
+    def create_contact(client)
+      xero_contact = @xero_client.Contact.build(name: client[:name])
+      xero_contact.save!
+      return xero_contact.contact_id
+    end
+
+    def create_invoice_payable(contact_id, date, due_date, lineitems, line_amount_type)
       supplier = get_contact(contact_id)
       #date is in %d-%b-%y => 13-Feb-19 (Date-Month-Year in this format)
-      @ap = @xero_client.Invoice.build(type: "ACCPAY", contact: supplier, date: date, due_date: due_date, invoice_number: identifier, url: 'https://www.excide.co/symphony/')
+      @ap = @xero_client.Invoice.build(type: "ACCPAY", contact: supplier, date: date, due_date: due_date, line_amount_types: line_amount_type, url: 'https://www.excide.co/symphony/')
       lineitems.each do |lineitem|
         @ap.add_line_item(item_code: nil, description: lineitem.description, quantity: lineitem.quantity, unit_amount: lineitem.price, account_code: lineitem.account, tax_type: lineitem.tax)
       end
