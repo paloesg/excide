@@ -9,6 +9,11 @@
       $(this).closest('tr').hide();
       return event.preventDefault();
     });
+    $('form').on('click', '.remove_lineitems', function(event){
+        $(this).closest('tr').find('.destroy').val('1');
+        $(this).closest('tr').remove();
+        return event.preventDefault();
+    })
     $('form').on('click', '.add_attribute_fields', function(event) {
       var regexp, time;
       time = new Date().getTime();

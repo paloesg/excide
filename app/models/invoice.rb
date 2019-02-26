@@ -1,7 +1,5 @@
 class Invoice < ApplicationRecord
   belongs_to :workflow
-  belongs_to :user
-  # validates :invoice_identifier, uniqueness: true
 
   def lineitems
     read_attribute(:lineitems).map {|l| Lineitem.new(l) }

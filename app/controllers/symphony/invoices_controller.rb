@@ -5,7 +5,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_workflow, only: [:new, :create, :show, :edit, :update]
   before_action :set_documents
-  before_action :get_account_and_tax, only: [:new, :edit]
+  before_action :get_account_and_tax, only: [:new, :create, :edit, :update]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
@@ -70,7 +70,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_identifier, :invoice_date, :due_date, :workflow_id, lineitems_attributes: [:description, :quantity, :price, :account, :tax, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, lineitems_attributes: [:description, :quantity, :price, :account, :tax, :_destroy])
   end
 
   def xero_login

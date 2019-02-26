@@ -8,15 +8,28 @@
 			li.breadcrumb-item Invoices
 		h1 Invoice - #{@invoice.id}
 .row.m-3
-	.col-sm-4
+	.col-sm-3
 		strong Invoice Date:
 		p #{@invoice.invoice_date}
-	.col-sm-4
+	.col-sm-3
 		strong Due Date:
 		p #{@invoice.due_date}
-	.col-sm-4
+	.col-sm-3
 		strong From:
 		p #{@workflow.workflowable.name}
+	.col-sm-3
+		strong Document:
+		- if @documents.empty?
+		  | No documents yet.
+		- else
+		  - @documents.each do |d|
+		    .media
+		      .media-left.media-middle
+		        a href="#{d.file_url}"
+		          i.ti-file.icon style="font-size: 50px"
+		      .media-body
+		      	h4.media-heading = d.filename
+		      	a href="#{d.file_url}"
 .row
 	.col-sm-12
 		.table-responsive
@@ -28,7 +41,7 @@
 						th Qty
 						th Unit Price($)
 						th Account
-						th
+						th Amount($)
 				tbody
 					- @invoice.lineitems.each_with_index do |lineitem, index|
 						tr
@@ -37,8 +50,13 @@
 							td = lineitem.quantity
 							td = lineitem.price
 							td = lineitem.account
+							td = number_with_precision(lineitem.quantity.to_i * lineitem.price.to_f, precision: 2)
+	.row
+		.col-sm-12
+			p Total Amount ($)
 .row
 	.col-sm-12
 		= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary m-1 pull-right'
+		= link_to "Send to Xero", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier), method: 'post', role: 'button', class: 'btn btn-warning m-1 pull-right'
 		= link_to "Delete Invoice", root_path, class: 'btn btn-danger m-1 pull-right'
 		= link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), class: 'btn btn-success m-1 pull-right'
