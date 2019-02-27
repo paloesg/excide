@@ -45,6 +45,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def show
+    @total = @invoice.total_amount
   end
 
   private

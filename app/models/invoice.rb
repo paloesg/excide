@@ -22,6 +22,11 @@ class Invoice < ApplicationRecord
     self.lineitems = l
   end
 
+  def total_amount
+    array = self.lineitems
+    array.inject(0) { |sum, h| sum + (h.quantity.to_i * h.price.to_f)}
+  end
+
   class Lineitem
     attr_accessor :description, :quantity, :price, :account, :tax
     def initialize(hash)
