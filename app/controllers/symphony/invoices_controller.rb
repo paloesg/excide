@@ -3,6 +3,7 @@ class Symphony::InvoicesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
+  before_action :set_invoice, only: [:edit, :update, :show]
   before_action :set_workflow, only: [:new, :create, :show, :edit, :update]
   before_action :set_documents
   before_action :get_account_and_tax, only: [:new, :create, :edit, :update]
@@ -29,11 +30,9 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def edit
-    @invoice = Invoice.find_by(id: params[:id])
   end
 
   def update
-    @invoice = Invoice.find_by(id: params[:id])
     respond_to do |format|
       if @invoice.update(invoice_params)
         format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice updated successfully!"}
@@ -46,10 +45,13 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def show
-    @invoice = Invoice.find_by(id: params[:id])
   end
 
   private
+  def set_invoice
+    @invoice = Invoice.find(params[:id])
+  end
+
   def set_workflow
     @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
   end

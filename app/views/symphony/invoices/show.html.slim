@@ -8,16 +8,19 @@
 			li.breadcrumb-item Invoices
 		h1 Invoice - #{@invoice.id}
 .row.m-3
-	.col-sm-3
+	.col-sm-2
 		strong Invoice Date:
 		p #{@invoice.invoice_date}
-	.col-sm-3
+	.col-sm-2
 		strong Due Date:
 		p #{@invoice.due_date}
-	.col-sm-3
+	.col-sm-2
 		strong From:
 		p #{@workflow.workflowable.name}
-	.col-sm-3
+	.col-sm-2
+		strong Line Amount Type:
+		p #{@invoice.line_amount_types}
+	.col-sm-2
 		strong Document:
 		- if @documents.empty?
 		  | No documents yet.
