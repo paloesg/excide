@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.5.1'
+ruby '2.6.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '5.2.2'
@@ -34,11 +34,12 @@ gem 'rack-timeout'
 # Better Rails logging
 gem "lograge"
 
-################################################
-#                                              #
-# Login, authentication, roles, access-control #
-#                                              #
-################################################
+#################################################
+#                                               #
+# Login, authentication, roles, access-control, #
+# and security                                  #
+#                                               #
+#################################################
 
 # Authentication
 gem 'devise'
@@ -54,11 +55,14 @@ gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-xero'
 gem 'xeroizer'
 
-################################################
-#                                              #
-#             App specific functions           #
-#                                              #
-################################################
+# Protect app from bad clients
+gem 'rack-attack'
+
+#################################################
+#                                               #
+#             App specific functions            #
+#                                               #
+#################################################
 
 # State machine gem
 gem 'aasm'

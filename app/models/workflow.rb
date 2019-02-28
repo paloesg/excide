@@ -17,7 +17,7 @@ class Workflow < ApplicationRecord
   validate :check_data_fields
 
   after_create :create_related_workflow_actions
-  after_create :trigger_first_task
+  after_create :trigger_first_task, if: :ordered_workflow?
   before_save :uppercase_identifier
 
   include PublicActivity::Model
@@ -134,6 +134,10 @@ class Workflow < ApplicationRecord
         WorkflowAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
+  end
+
+  def ordered_workflow?
+    template.ordered?
   end
 
   def trigger_first_task
