@@ -15,6 +15,18 @@
         $(this).closest('tr').remove();
         return event.preventDefault();
     })
+    //adding selectize to line amount type dropdown select
+    $('form').find('#invoice_line_amount_types').selectize({
+        dropdownParent: "body"
+    })
+    //adding selectize to the first account code and first tax rate manually!
+    $('form').find('#invoice_lineitems_attributes_0_account').selectize({
+        dropdownParent: "body"
+    })
+    $('form').find('#invoice_lineitems_attributes_0_tax').selectize({
+        dropdownParent: "body"
+    })
+    //add attribute fields with selectize drop down (for creating invoice and data entry)
     $('form').on('click', '.add_attribute_fields', function(event) {
       var regexp, time;
       time = new Date().getTime();

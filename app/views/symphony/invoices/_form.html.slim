@@ -3,15 +3,16 @@
 		.card.mb-3
 			.media-body
 				h5.card-header Invoice
-				.form-group.m-3
-					= f.label :invoice_date, 'Invoice Date'
-					= f.date_field :invoice_date, class: 'form-control'
-				.form-group.m-3
-					= f.label :due_date, 'Due Date'
-					= f.date_field :due_date, class: 'form-control'
-				.form-group.m-3
-					= f.label :line_amount_types, 'Amounts are: ', class: 'mr-2'
-					= f.select :line_amount_types, options_for_select(Invoice.line_amount_types.keys), class: 'form-control'
+				.form-row
+					.form-group.col-md-4.m-2
+						= f.label :invoice_date, 'Invoice Date'
+						= f.date_field :invoice_date, class: 'form-control'
+					.form-group.col-md-4.m-2
+						= f.label :due_date, 'Due Date'
+						= f.date_field :due_date, class: 'form-control'
+					.form-group.col-md-3.m-2
+						= f.label :line_amount_types, 'Amounts are: ', class: 'mr-2'
+						= f.select :line_amount_types, options_for_select(Invoice.line_amount_types.keys), class: 'form-control selectize-line-amount'
 .row
 	.col-md-12
 		.card.mb-3
@@ -25,7 +26,7 @@
 								th Quantity
 								th Price
 								th Account
-								th Tax Rate
+								th Tax
 								th
 						tbody.data-attributes
 							tr
