@@ -1,17 +1,21 @@
+td.line-item-padding {
+	padding: 0.5rem 0.1rem;
+}
+
 #image-document {
 	width: 100%;
 }
 
-.description {
-	width: 300px !important;
+#description {
+	width: 230px;
 }
 
-.quantity {
-	width: 90px !important;
+#quantity {
+	width: 70px;
 }
 
-.price {
-	width: 150px !important;
+#price {
+	width: 80px;
 }
 
 .selectize-input {

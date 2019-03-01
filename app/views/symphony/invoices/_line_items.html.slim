@@ -1,8 +1,8 @@
 tr
-	td = f.text_field :description, class: 'form-control description'
-	td = f.text_field :quantity, class: 'form-control quantity'
-	td = f.text_field :price, class: 'form-control price'
-	td = f.collection_select :account, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, include_blank: true, class: 'form-control account'
-	td = f.collection_select :tax, @taxes, :tax_type, ->(tax) { tax.name + ' - (' + tax.display_tax_rate.to_s + '%)'}, include_blank: true, class: 'form-control tax'
-	td = link_to "x", '#', class: 'remove_lineitems btn btn-danger' if @workflow.user.has_role? :admin, @workflow.company
+	td.line-item-padding = f.text_field :description, class: 'form-control', id: 'description'
+	td.line-item-padding = f.text_field :quantity, class: 'form-control', id: 'quantity'
+	td.line-item-padding = f.text_field :price, class: 'form-control', id: 'price'
+	td.line-item-padding = f.collection_select :account, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, include_blank: true, class: 'form-control', id: 'account'
+	td.line-item-padding = f.collection_select :tax, @taxes, :tax_type, ->(tax) { tax.name + ' - (' + tax.display_tax_rate.to_s + '%)'}, include_blank: true, class: 'form-control', id: 'tax'
+	td.line-item-padding = link_to "x", '#', class: 'remove_lineitems line-item-padding btn btn-danger' if @workflow.user.has_role? :admin, @workflow.company
 		 = f.hidden_field :_destroy, class: 'destroy'
