@@ -1,23 +1,19 @@
 td.line-item-padding {
-	padding: 0.5rem 0.1rem;
+	padding: 0.5rem 0.4rem;
 }
 
-#image-document {
+#image-document{
 	width: 100%;
 }
 
-#description {
-	width: 230px;
+.description {
+	width: 40%;
 }
 
-#quantity {
-	width: 70px;
+.quantity, .price{
+	width: 10%;
 }
 
-#price {
-	width: 80px;
-}
-
-.selectize-input {
-	width: 150px !important;
+.account, .tax {
+	width: 20%;
 }
