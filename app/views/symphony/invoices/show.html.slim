@@ -20,7 +20,7 @@
 	.col-sm-2
 		strong Line Amount Type:
 		p #{@invoice.line_amount_types}
-	.col-sm-2
+	.col-sm-4
 		strong Document:
 		- if @documents.empty?
 		  | No documents yet.
@@ -54,12 +54,10 @@
 							td = number_with_precision(lineitem.price, precision: 2)
 							td = lineitem.account
 							td = number_with_precision(lineitem.quantity.to_i * lineitem.price.to_f, precision: 2)
-	.row
-		.col-sm-12
-			p SubTotal ($): #{number_with_precision(@total, precision: 2)}
+.row
+	.col-sm-11
+		strong.border-top.border-bottom.p-1#subtotal SubTotal ($): #{number_with_precision(@total, precision: 2)}
 .row
 	.col-sm-12
-		= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary m-1 pull-right'
-		= link_to "Send to Xero", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier), method: 'post', role: 'button', class: 'btn btn-warning m-1 pull-right'
-		= link_to "Delete Invoice", root_path, class: 'btn btn-danger m-1 pull-right'
-		= link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), class: 'btn btn-success m-1 pull-right'
+		= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary m-2 pull-right'
+		= link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), class: 'btn btn-success m-2 pull-right'

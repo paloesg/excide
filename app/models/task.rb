@@ -8,7 +8,8 @@ class Task < ApplicationRecord
   has_many :reminders, dependent: :destroy
   has_many :workflow_actions, dependent: :destroy
 
-  enum task_type: [:instructions, :upload_file, :approval, :download_file, :visit_link, :upload_photo, :enter_data, :xero_create_invoice_payable, :upload_multiple_files, :send_xero_email, :xero_create_invoice, :xero_send_invoice]
+  enum task_type: [:instructions, :upload_file, :approval, :download_file, :visit_link, :upload_photo, :enter_data, :xero_create_invoice_payable, :upload_multiple_files, :send_xero_email, :xero_create_invoice, :xero_send_invoice_payable]
+  #send_invoice_payable_in_xero
 
   acts_as_list scope: :section
 
