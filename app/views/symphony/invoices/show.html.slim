@@ -58,6 +58,6 @@
 	.col-sm-11
 		strong.border-top.border-bottom.p-1#subtotal SubTotal ($): #{number_with_precision(@total, precision: 2)}
 .row
-	.col-sm-12
-		= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary m-2 pull-right'
-		= link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), class: 'btn btn-success m-2 pull-right'
+	.col-sm-11
+		= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary mt-2 pull-right'
+		= link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), class: 'btn btn-success mt-2 mr-2 pull-right'

@@ -2,6 +2,10 @@ td.line-item-padding {
 	padding: 0.5rem 0.4rem;
 }
 
+#image-document{
+	width: 100%;
+}
+
 #subtotal{
 	float: right;
 }
@@ -12,12 +16,15 @@ td.line-item-padding {
 
 .description {
 	width: 40%;
+	text-align: center;
 }
 
 .quantity, .price{
+	text-align: center;
 	width: 10%;
 }
 
 .account, .tax {
+	text-align: center;
 	width: 20%;
 }
