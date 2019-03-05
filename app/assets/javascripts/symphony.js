@@ -15,8 +15,23 @@
         $(this).closest('tr').remove();
         return event.preventDefault();
     })
+    //dynamically changing the EXISTING dropdowns, instead of manually selectize the various dropdown
+    var current = 0;
+    $('tr.lineitems').each(function(){
+        $('#invoice_lineitems_attributes_' + current + '_account').selectize({
+            dropdownParent: 'body'
+        })
+        current++;
+    })
+    var tax_current = 0;
+    $('tr.lineitems').each(function(){
+        $('#invoice_lineitems_attributes_' + tax_current + '_tax').selectize({
+            dropdownParent: 'body'
+        })
+        tax_current++;
+    })
     //manually add selectize to the various dropdowns in invoice FORM page
-    $('#invoice_line_amount_types, #invoice_lineitems_attributes_0_account, #invoice_lineitems_attributes_0_tax').each(function(){
+    $('#invoice_line_amount_types, #invoice_invoice_type').each(function(){
         $(this).selectize({
             dropdownParent: "body"
         })
