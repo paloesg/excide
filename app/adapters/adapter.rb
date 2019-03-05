@@ -44,8 +44,9 @@ module Adapter
       return @ap
     end
 
-    def create_invoice_receivable(type, contact, date, due_date, reference, order, account)
-      ar = @xero_client.Invoice.build(type: type, contact: contact, date: date, due_date: due_date, reference: reference)
+    def create_invoice_receivable(contact_id, date, due_date, reference)
+      contact = get_contact(contact_id)
+      @ar = @xero_client.Invoice.build(type: "ACCREC", contact: contact, date: date, due_date: due_date, reference: reference)
       order.order_products.each do |op|
         ar.add_line_item(item_code: op.product.sku, description: op.product.name ,quantity: op.quantity, unit_amount: op.price, account_code: account)
       end

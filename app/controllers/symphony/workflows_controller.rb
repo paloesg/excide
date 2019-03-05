@@ -150,9 +150,14 @@ class Symphony::WorkflowsController < WorkflowsController
     begin
       xero_error = false
       @xero = Xero.new(session[:xero_auth])
-      @invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.lineitems, @workflow.invoice.line_amount_type)
-      @workflow.documents.each do |document|
-        @invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+      if @workflow.invoice.invoice_type == 'payable'
+        @invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.lineitems, @workflow.invoice.line_amount_type)
+        @workflow.documents.each do |document|
+          @invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+        end
+      else
+        #in future if we do account receivable, must modify the adapter method create_invoice_receivable
+        @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
       end
     rescue ArgumentError => e
       xero_error = true

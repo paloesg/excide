@@ -150,7 +150,7 @@
 				      		i.ti-receipt.icon.mr-3 style="font-size: 50px"
 				      .media-body
 				    		h5.card-title = @invoice.id
-				    		h6.card-subtitle Invoice Type (to be done next time)
+				    		h6.card-subtitle Invoice Type: #{@invoice.invoice_type.capitalize}
 				    		.text-muted = @invoice.created_at.strftime("Uploaded at %d/%m/%Y %R")
 #task-popover-content.d-none
   p.pt-2
