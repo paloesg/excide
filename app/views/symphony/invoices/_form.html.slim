@@ -4,15 +4,18 @@
 			.media-body
 				h5.card-header Invoice
 				.form-row
-					.form-group.col-md-4.m-2
+					.form-group.col-md-3.m-2
 						= f.label :invoice_date, 'Invoice Date'
 						= f.date_field :invoice_date, class: 'form-control'
-					.form-group.col-md-4.m-2
+					.form-group.col-md-3.m-2
 						= f.label :due_date, 'Due Date'
 						= f.date_field :due_date, class: 'form-control'
 					.form-group.col-md-3.m-2
-						= f.label :line_amount_types, 'Amounts are: ', class: 'mr-2'
-						= f.select :line_amount_types, options_for_select(Invoice.line_amount_types.keys), class: 'form-control selectize-line-amount'
+						= f.label :line_amount_type, 'Amounts are: ', class: 'mr-2'
+						= f.select :line_amount_type, options_for_select([ ["Tax Exclusive", "Exclusive"], ["Tax Inclusive", "Inclusive"], ["No Tax", "NoTax"] ]), class: 'form-control'
+					.form-group.col-md-2.m-2
+						= f.label :invoice_type, 'Invoice Type', class: 'mr-2'
+						= f.select :invoice_type, options_for_select(Invoice.invoice_types.keys), class: 'form-control'
 .row
 	.col-md-12
 		.card.mb-3

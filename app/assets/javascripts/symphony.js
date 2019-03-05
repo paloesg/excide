@@ -31,7 +31,7 @@
         tax_current++;
     })
     //manually add selectize to the various dropdowns in invoice FORM page
-    $('#invoice_line_amount_types, #invoice_invoice_type').each(function(){
+    $('#invoice_line_amount_type, #invoice_invoice_type').each(function(){
         $(this).selectize({
             dropdownParent: "body"
         })

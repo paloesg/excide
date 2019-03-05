@@ -16,7 +16,8 @@ class InvoiceDashboard < Administrate::BaseDashboard
     lineitems: Field::String.with_options(searchable: false),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    line_amount_types: EnumField,
+    line_amount_type: EnumField,
+    invoice_type: EnumField
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -42,7 +43,8 @@ class InvoiceDashboard < Administrate::BaseDashboard
     :lineitems,
     :created_at,
     :updated_at,
-    :line_amount_types,
+    :line_amount_type,
+    :invoice_type,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -54,7 +56,8 @@ class InvoiceDashboard < Administrate::BaseDashboard
     :invoice_date,
     :due_date,
     :lineitems,
-    :line_amount_types,
+    :line_amount_type,
+    :invoice_type,
   ].freeze
 
   # Overwrite this method to customize how invoices are displayed

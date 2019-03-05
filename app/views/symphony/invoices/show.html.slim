@@ -19,7 +19,10 @@
 		p #{@workflow.workflowable.name}
 	.col-sm-2
 		strong Line Amount Type:
-		p #{@invoice.line_amount_types}
+		- if @invoice.line_amount_type == 'Exclusive' || @invoice.line_amount_type == 'Inclusive'
+			p #{ 'Tax ' + @invoice.line_amount_type}
+		- else
+			p #{ @invoice.line_amount_type }
 	.col-sm-4
 		strong Document:
 		- if @documents.empty?
