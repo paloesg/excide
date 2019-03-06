@@ -25,9 +25,10 @@ tr
 				h6 Actions:
 				.btn-toolbar role="toolbar"
 					.btn-group.mr-2 role="group" aria-label="Task actions"
-						- if @workflow.invoice.present? && @workflow.invoice.invoice_type == 'payable'
-							= @workflow.workflowable.xero_contact_id.present? ? link_to("Send Invoice Payable to Xero", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier), method: 'post', role: 'button', class: 'btn btn-primary btn-sm') : link_to('Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm')
-						- elsif @workflow.invoice.present? && @workflow.invoice.invoice_type == 'receivable'
+						- if @workflow.invoice.present? && @workflow.invoice.payable?
+							= @workflow.workflowable.xero_contact_id.present? ? link_to("Send Invoice Payable to Xero", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2') : link_to('Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm')
+							= link_to "Click here to access Xero", "https://go.xero.com/AccountsPayable/Search.aspx?invoiceStatus=INVOICESTATUS%2fDRAFT", role: 'button', class: 'btn btn-warning btn-sm'
+						- elsif @workflow.invoice.present? && @workflow.invoice.receivable?
 							= link_to("Not invoice payable", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
 						- else
 						  = link_to("No invoice found. Please create an invoice", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
