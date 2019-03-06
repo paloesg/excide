@@ -5,31 +5,31 @@ class Invoice < ApplicationRecord
 
   enum invoice_type: { payable: 0, receivable: 1}
 
-  def lineitems
-    read_attribute(:lineitems).map {|l| Lineitem.new(l) }
+  def line_items
+    read_attribute(:line_items).map {|l| LineItem.new(l) }
   end
 
-  def lineitems_attributes=(attributes)
-    lineitems = []
+  def line_items_attributes=(attributes)
+    line_items = []
     attributes.each do |index, attrs|
       next if '1' == attrs.delete("_destroy")
-      lineitems << attrs
+      line_items << attrs
     end
-    write_attribute(:lineitems, lineitems)
+    write_attribute(:line_items, line_items)
   end
 
-  def build_lineitem
-    l = self.lineitems.dup
-    l << Lineitem.new({description: '', quantity: '', price: '', account: '', tax: ''})
-    self.lineitems = l
+  def build_line_item
+    l = self.line_items.dup
+    l << LineItem.new({description: '', quantity: '', price: '', account: '', tax: ''})
+    self.line_items = l
   end
 
   def total_amount
-    array = self.lineitems
+    array = self.line_items
     array.inject(0) { |sum, h| sum + (h.quantity.to_i * h.price.to_f)}
   end
 
-  class Lineitem
+  class LineItem
     attr_accessor :description, :quantity, :price, :account, :tax
     def initialize(hash)
       @description = hash['description']

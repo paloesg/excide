@@ -38,8 +38,8 @@ module ApplicationHelper
     link_to(name, '#', class: "add_attribute_fields add_account btn btn-primary", data: {id: id, fields: fields.gsub("\n", "")})
   end
 
-  def link_to_add_lineitems(name, f, association)
-    new_object = f.object.build_lineitem.last()
+  def link_to_add_line_items(name, f, association)
+    new_object = f.object.build_line_item.last()
     id = new_object.object_id
     fields = f.fields_for(association, new_object, child_index: id) do |builder|
       render "line_items", f: builder

@@ -33,10 +33,10 @@
 								th
 						tbody.data-attributes
 							tr
-							= f.fields_for :lineitems do |lineitem|
-								= render 'line_items', f: lineitem
+							= f.fields_for :line_items do |line_item|
+								= render 'line_items', f: line_item
 				.card-body
-					= link_to_add_lineitems "Add Line Items", f, :lineitems
+					= link_to_add_line_items "Add Line Items", f, :line_items
 .btn-group role='group'
 	- if @previous_document.present?
 		= f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-primary'

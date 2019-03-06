@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_05_022934) do
+ActiveRecord::Schema.define(version: 2019_03_06_083652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -193,7 +193,7 @@ ActiveRecord::Schema.define(version: 2019_03_05_022934) do
     t.string "invoice_identifier"
     t.date "invoice_date"
     t.date "due_date"
-    t.json "lineitems", default: []
+    t.json "line_items", default: []
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "workflow_id"

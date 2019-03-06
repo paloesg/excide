@@ -9,23 +9,23 @@
       $(this).closest('tr').hide();
       return event.preventDefault();
     });
-    //removing a lineitem in the invoice
-    $('form').on('click', '.remove_lineitems', function(event){
+    //removing a line_item in the invoice
+    $('form').on('click', '.remove_line_items', function(event){
         $(this).closest('tr').find('.destroy').val('1');
         $(this).closest('tr').remove();
         return event.preventDefault();
     })
     //dynamically changing the EXISTING dropdowns, instead of manually selectize the various dropdown
     var current = 0;
-    $('tr.lineitems').each(function(){
-        $('#invoice_lineitems_attributes_' + current + '_account').selectize({
+    $('tr.line_items').each(function(){
+        $('#invoice_line_items_attributes_' + current + '_account').selectize({
             dropdownParent: 'body'
         })
         current++;
     })
     var tax_current = 0;
-    $('tr.lineitems').each(function(){
-        $('#invoice_lineitems_attributes_' + tax_current + '_tax').selectize({
+    $('tr.line_items').each(function(){
+        $('#invoice_line_items_attributes_' + tax_current + '_tax').selectize({
             dropdownParent: 'body'
         })
         tax_current++;

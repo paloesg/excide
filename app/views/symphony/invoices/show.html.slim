@@ -49,14 +49,14 @@
 						th Account
 						th Amount($)
 				tbody
-					- @invoice.lineitems.each_with_index do |lineitem, index|
+					- @invoice.line_items.each_with_index do |line_item, index|
 						tr
 							td = index + 1
-							td = lineitem.description
-							td = lineitem.quantity
-							td = number_with_precision(lineitem.price, precision: 2)
-							td = lineitem.account
-							td = number_with_precision(lineitem.quantity.to_i * lineitem.price.to_f, precision: 2)
+							td = line_item.description
+							td = line_item.quantity
+							td = number_with_precision(line_item.price, precision: 2)
+							td = line_item.account
+							td = number_with_precision(line_item.quantity.to_i * line_item.price.to_f, precision: 2)
 .row
 	.col-sm-11
 		strong.border-top.border-bottom.p-1#subtotal SubTotal ($): #{number_with_precision(@total, precision: 2)}
