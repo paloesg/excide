@@ -63,7 +63,4 @@
 .row
 	.col-sm-12
 		= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary mt-2 pull-right'
-		- if @invoice.payable?
-			= link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id, invoice: 'payable'), class: 'btn btn-success mt-2 mr-2 pull-right'
-		- else
-			= link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id, invoice: 'receivable'), class: 'btn btn-success mt-2 mr-2 pull-right'
+		= link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id, invoice_type: @invoice.invoice_type), class: 'btn btn-success mt-2 mr-2 pull-right'
