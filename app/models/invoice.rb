@@ -5,6 +5,8 @@ class Invoice < ApplicationRecord
 
   enum invoice_type: { payable: 0, receivable: 1}
 
+  validates :invoice_type, inclusion: { in: invoice_types.keys }
+
   def line_items
     read_attribute(:line_items).map {|l| LineItem.new(l) }
   end

@@ -15,7 +15,10 @@
 						= f.select :line_amount_type, options_for_select([ ["Tax Exclusive", "Exclusive"], ["Tax Inclusive", "Inclusive"], ["No Tax", "NoTax"] ]), class: 'form-control'
 					.form-group.col-md-2.m-2
 						= f.label :invoice_type, 'Invoice Type', class: 'mr-2'
-						= f.select :invoice_type, options_for_select(Invoice.invoice_types.keys), class: 'form-control'
+						- if params[:invoice] == 'payable'
+							= f.text_field :invoice_type, value: 'payable', class: 'form-control', readonly: true
+						- elsif params[:invoice] == 'receivable'
+							= f.text_field :invoice_type, value: 'receivable', class: 'form-control', readonly: true
 .row
 	.col-md-12
 		.card.mb-3
