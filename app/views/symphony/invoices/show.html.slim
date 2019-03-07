@@ -19,10 +19,10 @@
 		p #{@workflow.workflowable.name}
 	.col-sm-2
 		h5 Line Amount Type:
-		- if @invoice.line_amount_type == 'Exclusive' || @invoice.line_amount_type == 'Inclusive'
+		- if @invoice.line_amount_type == 'exclusive' || @invoice.line_amount_type == 'inclusive'
 			p #{ 'Tax ' + @invoice.line_amount_type}
 		- else
-			p #{ @invoice.line_amount_type }
+			p #{ @invoice.line_amount_type.camelize }
 	.col-sm-2
 		h5 Invoice type:
 		p #{ 'Invoice ' + @invoice.invoice_type }

@@ -12,7 +12,7 @@
 						= f.date_field :due_date, class: 'form-control'
 					.form-group.col-md-3.m-2
 						= f.label :line_amount_type, 'Amounts are: ', class: 'mr-2'
-						= f.select :line_amount_type, options_for_select([ ["Tax Exclusive", "Exclusive"], ["Tax Inclusive", "Inclusive"], ["No Tax", "NoTax"] ]), class: 'form-control'
+						= f.select :line_amount_type, options_for_select([ ["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "noTax"] ]), class: 'form-control'
 					.form-group.col-md-2.m-2
 						= f.label :invoice_type, 'Invoice Type', class: 'mr-2'
 						- if params[:invoice] == 'payable'
