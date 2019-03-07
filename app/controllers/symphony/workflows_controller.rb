@@ -158,7 +158,7 @@ class Symphony::WorkflowsController < WorkflowsController
         else
           @xero_invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type.camelize)
           @workflow.invoice.xero_invoice_id = @xero_invoice.id
-          @workflow.save
+          @workflow.invoice.save
         end
         @workflow.documents.each do |document|
           @xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
