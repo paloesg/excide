@@ -73,7 +73,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, line_items_attributes: [:description, :quantity, :price, :account, :tax, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, line_items_attributes: [:description, :quantity, :price, :account, :tax, :_destroy])
   end
 
   def xero_login

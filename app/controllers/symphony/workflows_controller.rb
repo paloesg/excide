@@ -152,12 +152,16 @@ class Symphony::WorkflowsController < WorkflowsController
       @xero = Xero.new(session[:xero_auth])
       if @workflow.invoice.payable?
         if @workflow.invoice.exclusive? || @workflow.invoice.inclusive?
-          @invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type.capitalize)
+          @xero_invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type.capitalize)
+          @workflow.invoice.xero_invoice_id = @xero_invoice.id
+          @workflow.invoice.save
         else
-          @invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type.camelize)
+          @xero_invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type.camelize)
+          @workflow.invoice.xero_invoice_id = @xero_invoice.id
+          @workflow.save
         end
         @workflow.documents.each do |document|
-          @invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+          @xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
         end
       else
         #in future if we do account receivable, must modify the adapter method create_invoice_receivable
