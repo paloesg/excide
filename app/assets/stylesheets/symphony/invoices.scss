@@ -1,5 +1,5 @@
-td.line-item-padding {
-	padding: 0.5rem 0.4rem;
+td.line-item-field {
+	padding: 0.5rem 0 0.3rem 0.5rem;
 }
 
 .image-document{
@@ -12,15 +12,12 @@ td.line-item-padding {
 
 .description {
 	width: 40%;
-	text-align: center;
 }
 
 .quantity, .price{
-	text-align: center;
 	width: 10%;
 }
 
 .account, .tax {
-	text-align: center;
 	width: 20%;
 }

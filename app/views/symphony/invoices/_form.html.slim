@@ -1,19 +1,19 @@
 .row
 	.col-md-12
 		.card.mb-3
-			.media-body
-				h5.card-header Invoice
+			h5.card-header Invoice Details
+			.col-md-12.mt-2
 				.form-row
-					.form-group.col-md-3.m-2
+					.form-group.col-md-3
 						= f.label :invoice_date, 'Invoice Date'
 						= f.date_field :invoice_date, class: 'form-control'
-					.form-group.col-md-3.m-2
+					.form-group.col-md-3
 						= f.label :due_date, 'Due Date'
 						= f.date_field :due_date, class: 'form-control'
-					.form-group.col-md-3.m-2
+					.form-group.col-md-3
 						= f.label :line_amount_type, 'Amounts are: ', class: 'mr-2'
-						= f.select :line_amount_type, options_for_select([ ["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "noTax"] ]), class: 'form-control'
-					.form-group.col-md-2.m-2
+						= f.select :line_amount_type, options_for_select([ ["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "noTax"] ]), {}, {class: 'form-control'}
+					.form-group.col-md-3
 						= f.label :invoice_type, 'Invoice Type', class: 'mr-2'
 						- if params[:invoice] == 'payable'
 							= f.text_field :invoice_type, value: 'payable', class: 'form-control', readonly: true
@@ -22,24 +22,23 @@
 .row
 	.col-md-12
 		.card.mb-3
-			.media-body
-				h5.card-header Add Line Items
-				.table-responsive
-					table.table
-						thead
-							tr
-								th.description Description
-								th.quantity Quantity
-								th.price Price ($)
-								th.account Account
-								th.tax Tax
-								th
-						tbody.data-attributes
-							tr
-							= f.fields_for :line_items do |line_item|
-								= render 'line_items', f: line_item
-				.card-body
-					= link_to_add_line_items "Add Line Items", f, :line_items
+			h5.card-header Line Items
+			.table-responsive
+				table.table
+					thead
+						tr
+							th.description Description
+							th.quantity Quantity
+							th.price Price ($)
+							th.account Account
+							th.tax Tax
+							th
+					tbody.data-attributes
+						tr
+						= f.fields_for :line_items do |line_item|
+							= render 'line_items', f: line_item
+			.card-body
+				= link_to_add_line_items "Add Line Item", f, :line_items
 .btn-group role='group'
 	- if @previous_document.present?
 		= f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-primary'

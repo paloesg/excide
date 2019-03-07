@@ -1,8 +1,8 @@
 tr.line_items
-	td.line-item-padding.description = f.text_field :description, class: 'form-control'
-	td.line-item-padding.quantity = f.text_field :quantity, class: 'form-control'
-	td.line-item-padding.price = f.text_field :price, class: 'form-control'
-	td.line-item-padding.account = f.collection_select :account, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, include_blank: true, class: 'form-control', id: 'account'
-	td.line-item-padding.tax = f.collection_select :tax, @taxes, :tax_type, ->(tax) { tax.name + ' - (' + tax.display_tax_rate.to_s + '%)'}, include_blank: true, class: 'form-control', id: 'tax'
-	td.line-item-padding = link_to "x", '#', class: 'remove_line_items line-item-padding btn btn-danger' if @workflow.user.has_role? :admin, @workflow.company
-		 = f.hidden_field :_destroy, class: 'destroy'
+	td.line-item-field.description = f.text_field :description, class: 'form-control'
+	td.line-item-field.quantity = f.text_field :quantity, class: 'form-control'
+	td.line-item-field.price = f.text_field :price, class: 'form-control'
+	td.line-item-field.account = f.collection_select :account, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, include_blank: true, class: 'form-control', id: 'account'
+	td.line-item-field.tax = f.collection_select :tax, @taxes, :tax_type, ->(tax) { tax.name + ' - (' + tax.display_tax_rate.to_s + '%)'}, include_blank: true, class: 'form-control', id: 'tax'
+	td.line-item-field.pr-2 = link_to "x", '#', class: 'btn btn-danger remove_line_items'
+    = f.hidden_field :_destroy, class: 'destroy'

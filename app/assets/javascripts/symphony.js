@@ -30,12 +30,7 @@
         })
         tax_current++;
     })
-    //manually add selectize to the various dropdowns in invoice FORM page
-    $('#invoice_line_amount_type').each(function(){
-        $(this).selectize({
-            dropdownParent: "body"
-        })
-    })
+
     //add attribute fields with selectize drop down (for creating invoice and data entry)
     $('form').on('click', '.add_attribute_fields', function(event) {
       var regexp, time;
