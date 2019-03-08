@@ -68,7 +68,7 @@
 		- if @workflow.invoice&.payable?
 			- if @workflow.invoice.xero_invoice_id.present?
 				= link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning mt-2 mr-2 pull-right', target: :_blank
-		/additional condition to account for account receivables next time
+		/do additional condition to account for account receivables next time
 		- else
-			= link_to("No invoice payable created in Xero", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
+			= link_to("No invoice payable created in Xero", '#', role: 'button', class: 'btn btn-warning mt-2 mr-2 pull-right disabled')
 		= link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id, invoice_type: @invoice.invoice_type), class: 'btn btn-success mt-2 mr-2 pull-right'

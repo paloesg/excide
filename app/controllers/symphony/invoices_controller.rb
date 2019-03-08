@@ -20,11 +20,11 @@ class Symphony::InvoicesController < ApplicationController
     @invoice.workflow_id = @workflow.id
     respond_to do |format|
       if @invoice.save
-        format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully!"}
+        format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully! " }
         format.json{render :show, status: :ok, location: @invoice}
       else
-        format.html{ redirect_to symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier) }
-        format.json{render json: @invoice.errors, status: :unprocessable_entity}
+        format.html{ redirect_to symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), alert: "Invoice was not created successfully: " + @invoice.errors.full_messages.to_sentence }
+        format.json{ render json: @invoice.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -38,7 +38,7 @@ class Symphony::InvoicesController < ApplicationController
         format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice updated successfully!"}
         format.json{render :show, status: :ok, location: @invoice}
       else
-        format.html{render 'new'}
+        format.html{ redirect_to symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), alert: "Invoice was not successfully save: " + @invoice.errors.full_messages.to_sentence }
         format.json{render json: @invoice.errors, status: :unprocessable_entity}
       end
     end
