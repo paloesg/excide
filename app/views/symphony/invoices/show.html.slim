@@ -35,8 +35,9 @@
 		    .media
 		      .media-left.media-middle
 		        a href="#{d.file_url}"
-		        	p.show-invoice-document.ml-1 #{d.filename}
-		        	i.ti-file.icon.pull-left.mt-1
+		        	i.ti-file
+		        	= d.filename
+
 .row
 	.col-sm-12
 		.table-responsive
