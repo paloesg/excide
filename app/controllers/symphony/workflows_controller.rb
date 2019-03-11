@@ -20,6 +20,7 @@ class Symphony::WorkflowsController < WorkflowsController
   def new
     @workflow = Workflow.new
     @workflow.template_data(@template)
+    @workflow.identifier = (Date.current.to_s + '-' + @template.title).parameterize.upcase
   end
 
   def create
