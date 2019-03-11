@@ -11,10 +11,10 @@ class Document < ApplicationRecord
   belongs_to :document_template
   belongs_to :user
 
-  validates :identifier, :file_url, :filename, presence: true
+  validates :file_url, :filename, presence: true
   validates :file_url, uniqueness: true
 
-  before_save :set_filename
+  before_validation :set_filename
   after_destroy :delete_file_on_s3
 
   private
