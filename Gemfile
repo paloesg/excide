@@ -53,7 +53,7 @@ gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-linkedin-oauth2'
 # Xero API integration
 gem 'omniauth-xero'
-gem 'xeroizer'
+gem 'xeroizer', git: 'https://github.com/waynerobinson/xeroizer.git'
 
 # Protect app from bad clients
 gem 'rack-attack'
@@ -105,7 +105,7 @@ gem 'scout_apm'
 
 gem 'popper_js', '~> 1.12.9'
 # Frontend framework
-gem 'bootstrap', '~> 4.1.1'
+gem 'bootstrap', '~> 4.0'
 # Themify icon set web fonts
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
 # Font Awesome Rails
