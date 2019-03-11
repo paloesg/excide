@@ -7,36 +7,37 @@
 				= link_to @workflow.identifier, symphony_workflow_path(workflow_identifier: @workflow.identifier)
 			li.breadcrumb-item Invoices
 		h1 Invoice - #{@invoice.id}
-.row.m-3
-	.col-sm-2
-		h5 Invoice Date:
+.row.mt-3
+	.col-md-2.col-sm-4
+		strong Invoice Date:
 		p #{@invoice.invoice_date}
-	.col-sm-2
-		h5 Due Date:
+	.col-md-2.col-sm-4
+		strong Due Date:
 		p #{@invoice.due_date}
-	.col-sm-2
-		h5 From:
+	.col-md-2.col-sm-4
+		strong From:
 		p #{@workflow.workflowable.name}
-	.col-sm-2
-		h5 Line Amount Type:
+	.col-md-2.col-sm-4
+		strong Line Amount Type:
 		- if @invoice.line_amount_type == 'exclusive' || @invoice.line_amount_type == 'inclusive'
 			p #{ 'Tax ' + @invoice.line_amount_type}
 		- else
 			p #{ @invoice.line_amount_type.camelize }
-	.col-sm-2
-		h5 Invoice type:
+	.col-md-2.col-sm-4
+		strong Invoice type:
 		p #{ 'Invoice ' + @invoice.invoice_type }
-	.col-sm-2
-		h5 Document:
-		- if @documents.empty?
-		  | No documents yet.
-		- else
-		  - @documents.each do |d|
-		    .media
-		      .media-left.media-middle
-		        a href="#{d.file_url}"
-		        	i.ti-file
-		        	= d.filename
+	.col-md-2.col-sm-4
+		strong Attachments:
+		p
+			- if @documents.empty?
+			  | -
+			- else
+			  - @documents.each do |d|
+			    .media
+			      .media-left.media-middle
+			        a href="#{d.file_url}"
+			        	i.ti-file
+			        	= d.filename
 
 .row
 	.col-sm-12
@@ -59,9 +60,13 @@
 							td = number_with_precision(line_item.price, precision: 2)
 							td = line_item.account
 							td = number_with_precision(line_item.quantity.to_i * line_item.price.to_f, precision: 2)
-.row
-	.col-sm-12
-		strong.border-top.border-bottom.p-1#subtotal SubTotal ($): #{number_with_precision(@total, precision: 2)}
+				tfoot
+					tr
+						td colspan='4'
+						td
+							h5 Sub-total ($):
+						td
+							h5 #{number_with_precision(@total, precision: 2)}
 .row
 	.col-sm-12
 		= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary mt-2 pull-right'
