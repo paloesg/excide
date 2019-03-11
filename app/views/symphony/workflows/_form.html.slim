@@ -49,24 +49,24 @@
   .col-md-6.col-sm-12
     .row
       .col-sm-12
-        #accordionExample.accordion
+        .accordion#clientAccordion
           .card
-            .card-header.existing-client-header#headingOne aria-controls="collapseOne" aria-expanded="true" data-target="#collapseOne" data-toggle="collapse"
-              h5
-                button.btn.btn-link type="button" Existing Client
-            .collapse.show#collapseOne aria-labelledby="headingOne" data-parent="#accordionExample"
+            .card-header#headingOne
+              h2.mb-0
+                button.btn.btn-link type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" Existing Client
+            .collapse.show#collapseOne aria-labelledby="headingOne" data-parent="#clientAccordion"
               .card-body
                 .form-group
                   = f.label :workflowable_id, 'Client Name'
                   = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'selectize', id: 'new-workflow-value'
           - if @workflow.workflowable.blank?
             .card
-              .card-header#headingTwo aria-controls="collapseTwo" aria-expanded="false" data-target="#collapseTwo" data-toggle="collapse"
-                h5
-                  button.btn.btn-link.new-client-header.collapsed type="button" New Client
-              #collapseTwo.collapse aria-labelledby="headingTwo" data-parent="#accordionExample"
-                .card-body#cardBody
-                  .form-group.form-for-new-client
+              .card-header#headingTwo
+                h2.mb-0
+                  button.btn.btn-link.collapsed type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" New Client
+              .collapse#collapseTwo aria-labelledby="headingTwo" data-parent="#clientAccordion"
+                .card-body
+                  .form-group
                     = f.fields_for :client do |c|
                       .form-group
                         = c.label :name, 'Client Name'
