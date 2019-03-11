@@ -12,7 +12,7 @@
 						= f.date_field :due_date, class: 'form-control'
 					.form-group.col-md-3
 						= f.label :line_amount_type, 'Amounts are: ', class: 'mr-2'
-						= f.select :line_amount_type, options_for_select([ ["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "noTax"] ]), {include_blank: true}, {class: 'form-control'}
+						= f.select :line_amount_type, options_for_select([ ["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "no_tax"] ]), {include_blank: true}, {class: 'form-control'}
 					.form-group.col-md-3
 						= f.label :invoice_type, 'Invoice Type', class: 'mr-2'
 						= f.select :invoice_type, Invoice.invoice_types.map{|k, v| [k.humanize, k]}, {selected: params[:invoice_type], include_blank: true}, {class: 'form-control'}
