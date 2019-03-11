@@ -103,9 +103,9 @@ gem 'snitcher'
 gem "skylight"
 gem 'scout_apm'
 
-gem 'popper_js', '~> 1.12.9'
+gem 'popper_js'
 # Frontend framework
-gem 'bootstrap', '~> 4.0'
+gem 'bootstrap', '~> 4.3'
 # Themify icon set web fonts
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
 # Font Awesome Rails

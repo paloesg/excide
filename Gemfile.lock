@@ -133,10 +133,10 @@ GEM
     bindex (0.5.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    bootstrap (4.1.3)
-      autoprefixer-rails (>= 6.0.3)
-      popper_js (>= 1.12.9, < 2)
-      sass (>= 3.5.2)
+    bootstrap (4.3.1)
+      autoprefixer-rails (>= 9.1.0)
+      popper_js (>= 1.14.3, < 2)
+      sassc-rails (>= 2.0.0)
     bootstrap4-datetime-picker-rails (0.3.1)
       jquery-rails (~> 4.2, >= 4.2.0)
       moment-timezone-rails (~> 1.0)
@@ -338,7 +338,7 @@ GEM
       equatable (~> 0.5.0)
       tty-color (~> 0.4.0)
     pg (1.1.4)
-    popper_js (1.12.9)
+    popper_js (1.14.5)
     powerpack (0.1.2)
     pry (0.12.2)
       coderay (~> 1.1.0)
@@ -463,6 +463,15 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    sassc (2.0.1)
+      ffi (~> 1.9)
+      rake
+    sassc-rails (2.1.0)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     scout_apm (2.4.21)
     sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
@@ -565,7 +574,7 @@ DEPENDENCIES
   aws-sdk (~> 2)
   better_errors
   binding_of_caller
-  bootstrap (~> 4.0)
+  bootstrap (~> 4.3)
   bootstrap4-datetime-picker-rails
   brakeman
   byebug
@@ -595,7 +604,7 @@ DEPENDENCIES
   omniauth-oauth2 (~> 1.3.1)
   omniauth-xero
   pg (>= 0.18, < 2.0)
-  popper_js (~> 1.12.9)
+  popper_js
   pry-byebug
   pry-rails
   pry-remote
