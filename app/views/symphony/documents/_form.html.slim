@@ -20,9 +20,6 @@
 .form-group
   = f.label :identifier, 'Document Identifier'
   = f.text_field :identifier, class: 'form-control'
-.form-group
-  = f.label :filename
-  = f.text_field :filename, class: 'form-control'
 - unless params[:camera] == "true"
   .form-group
     = f.label :document_template_id, 'Template'
