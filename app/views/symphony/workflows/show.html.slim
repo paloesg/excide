@@ -93,11 +93,8 @@
     .card.mb-3
       h6.card-header = @workflow.workflowable_type
       .card-body
-        | Name: #{@workflow.workflowable&.name}
-        br
-        | Identifier: #{@workflow.workflowable&.identifier}
-        br
-        = 'Xero Contact ID: ' + @workflow.workflowable.xero_contact_id if @workflow.workflowable.xero_contact_id.present?
+        = @workflow.workflowable&.name
+        = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right' if @workflow.workflowable.xero_contact_id.present?
     - if @workflow.remarks.present?
       .card.mb-3
         h6.card-header Remarks
