@@ -1,0 +1,75 @@
+.row
+	.col-sm-12
+		ol.breadcrumb
+			li.breadcrumb-item.ml-auto
+				a href="/symphony" Symphony
+			li.breadcrumb-item
+				= link_to @workflow.identifier, symphony_workflow_path(workflow_identifier: @workflow.identifier)
+			li.breadcrumb-item Invoices
+		h1 Invoice - #{@invoice.id}
+.row.m-3
+	.col-sm-2
+		h5 Invoice Date:
+		p #{@invoice.invoice_date}
+	.col-sm-2
+		h5 Due Date:
+		p #{@invoice.due_date}
+	.col-sm-2
+		h5 From:
+		p #{@workflow.workflowable.name}
+	.col-sm-2
+		h5 Line Amount Type:
+		- if @invoice.line_amount_type == 'exclusive' || @invoice.line_amount_type == 'inclusive'
+			p #{ 'Tax ' + @invoice.line_amount_type}
+		- else
+			p #{ @invoice.line_amount_type.camelize }
+	.col-sm-2
+		h5 Invoice type:
+		p #{ 'Invoice ' + @invoice.invoice_type }
+	.col-sm-2
+		h5 Document:
+		- if @documents.empty?
+		  | No documents yet.
+		- else
+		  - @documents.each do |d|
+		    .media
+		      .media-left.media-middle
+		        a href="#{d.file_url}"
+		        	i.ti-file
+		        	= d.filename
+
+.row
+	.col-sm-12
+		.table-responsive
+			table.table
+				thead
+					tr
+						th Item
+						th Description
+						th Qty
+						th Unit Price($)
+						th Account
+						th Amount($)
+				tbody
+					- @invoice.line_items.each_with_index do |line_item, index|
+						tr
+							td = index + 1
+							td = line_item.description
+							td = line_item.quantity
+							td = number_with_precision(line_item.price, precision: 2)
+							td = line_item.account
+							td = number_with_precision(line_item.quantity.to_i * line_item.price.to_f, precision: 2)
+.row
+	.col-sm-12
+		strong.border-top.border-bottom.p-1#subtotal SubTotal ($): #{number_with_precision(@total, precision: 2)}
+.row
+	.col-sm-12
+		= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary mt-2 pull-right'
+		/To view xero invoice created in xero (if it is already created in Xero)
+		- if @workflow.invoice&.payable?
+			- if @workflow.invoice.xero_invoice_id.present?
+				= link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning mt-2 mr-2 pull-right', target: :_blank
+		/do additional condition to account for account receivables next time
+		- else
+			= link_to("No invoice payable created in Xero", '#', role: 'button', class: 'btn btn-warning mt-2 mr-2 pull-right disabled')
+		= link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id, invoice_type: @invoice.invoice_type), class: 'btn btn-success mt-2 mr-2 pull-right'

@@ -48,6 +48,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def show
+    @invoice = Invoice.find_by(workflow_id: @workflow.id)
     if @workflow.completed?
       redirect_to symphony_archive_path(@workflow.template.slug, @workflow.identifier)
     else
@@ -149,9 +150,16 @@ class Symphony::WorkflowsController < WorkflowsController
     begin
       xero_error = false
       @xero = Xero.new(session[:xero_auth])
-      invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, params[:date], params[:due_date], @workflow.identifier, params[:item_code], params[:description], params[:quantity], params[:price], params[:account])
-      @workflow.documents.each do |document|
-        invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+      if @workflow.invoice.payable?
+        xero_invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type)
+        @workflow.invoice.xero_invoice_id = xero_invoice.id
+        @workflow.invoice.save
+        @workflow.documents.each do |document|
+          xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+        end
+      else
+        #in future if we do account receivable, must modify the adapter method create_invoice_receivable
+        @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
       end
     rescue ArgumentError => e
       xero_error = true

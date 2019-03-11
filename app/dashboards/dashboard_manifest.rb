@@ -28,6 +28,7 @@ class DashboardManifest
     :users,
     :roles,
     :enquiries,
+    :invoices,
   ]
 
   # `ROOT_DASHBOARD`

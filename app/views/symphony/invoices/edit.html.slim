@@ -1,0 +1,25 @@
+.row
+	.col-sm-12
+		ol.breadcrumb
+			li.breadcrumb-item.ml-auto
+				a href="/symphony" Symphony
+			li.breadcrumb-item
+				= link_to @workflow.identifier, symphony_workflow_path(workflow_identifier: @workflow.identifier)
+			li.breadcrumb-item Invoices
+			li.breadcrumb-item.active Edit
+		h1 Edit Invoice
+.row
+	.col-md-4
+		- if @documents.empty?
+			| No documents available. Please upload documents first.
+		- else
+			- if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
+				= image_tag(@document.file_url, class: 'img-responsive image-document')
+			- else
+				iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
+	.col-md-8
+		= form_for(@invoice, url: symphony_invoice_path(workflow_identifier: params[:workflow_identifier])) do |f|
+			= render 'form', f: f
+			= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @workflow.identifier), role: 'button', class: 'btn btn-warning pull-right ml-2'
+			= link_to "View invoice", symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), role: 'button', class: 'btn btn-primary ml-2 pull-right'
+			= f.submit 'Save Invoice', class: 'btn btn-primary pull-right'
