@@ -35,12 +35,13 @@ module Adapter
 
     def create_invoice_payable(contact_id, date, due_date, line_items, line_amount_type)
       supplier = get_contact(contact_id)
+      xero_line_amount_type = line_amount_type.camelize
       #date is in %d-%b-%y => 13-Feb-19 (Date-Month-Year in this format)
-      @ap = @xero_client.Invoice.build(type: "ACCPAY", contact: supplier, date: date, due_date: due_date, line_amount_types: line_amount_type, url: 'https://www.excide.co/symphony/')
+      @ap = @xero_client.Invoice.build(type: "ACCPAY", contact: supplier, date: date, due_date: due_date, line_amount_types: xero_line_amount_type, url: 'https://www.excide.co/symphony/')
       line_items.each do |line_item|
         @ap.add_line_item(item_code: nil, description: line_item.description, quantity: line_item.quantity, unit_amount: line_item.price, account_code: line_item.account, tax_type: line_item.tax)
       end
-      @ap.save
+      @ap.save!
       return @ap
     end
 
