@@ -97,7 +97,7 @@
         = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right' if @workflow.workflowable.xero_contact_id.present?
     - if @workflow.remarks.present?
       .card.mb-3
-        h6.card-header Remarks
+        h6.card-header Workflow Remarks
         .card-body =@workflow.remarks
     .card.mb-3
       h6.card-header Deadline
@@ -143,7 +143,7 @@
 				  li.list-group-item
 				    .media
 				      .align-self-center
-				      	= link_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), target: :_blank
+				      	= link_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id)
 				      		i.ti-receipt.icon.mr-3 style="font-size: 50px"
 				      .media-body
 				    		h5.card-title = @invoice.id
