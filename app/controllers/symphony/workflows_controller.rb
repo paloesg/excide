@@ -7,6 +7,7 @@ class Symphony::WorkflowsController < WorkflowsController
   before_action :set_s3_direct_post, only: [:show]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
+  rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
 
   def index
     template = Template.find(params[:workflow_name])
@@ -148,38 +149,20 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def xero_create_invoice_payable
-    begin
-      xero_error = false
-      @xero = Xero.new(session[:xero_auth])
-      if @workflow.invoice.payable?
-        xero_invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type)
-        @workflow.invoice.xero_invoice_id = xero_invoice.id
-        @workflow.invoice.save
-        @workflow.documents.each do |document|
-          xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
-        end
-      else
-        #in future if we do account receivable, must modify the adapter method create_invoice_receivable
-        @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
+    @xero = Xero.new(session[:xero_auth])
+    if @workflow.invoice.payable?
+      xero_invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type)
+      @workflow.invoice.xero_invoice_id = xero_invoice.id
+      @workflow.invoice.save
+      @workflow.documents.each do |document|
+        xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
       end
-    rescue ArgumentError => e
-      xero_error = true
-      message = 'There was an error creating Xero invoice: ' + e.message + '. Please ensure you have filled in all the required data attributes.'
-    rescue Xeroizer::ApiException, URI::InvalidURIError => e
-      xero_error = true
-      if invoice.present? and invoice.invoice_id.present?
-        message = 'Xero invoice was successfully created but there was an error uploading attachements: ' + e.message + '. Please upload the attachment manually in Xero.'
-      else
-        message = 'There was an error creating Xero invoice: ' + e.message + '. Please ensure you have filled in all the required data attributes.'
-      end
+    else
+      #in future if we do account receivable, must modify the adapter method create_invoice_receivable
+      @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
 
-    if xero_error == false
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
-    else
-      Rails.logger.error("Xero Export Error: #{message}")
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: message
-    end
+    redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
   end
 
   def send_email_to_xero
@@ -276,5 +259,11 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def xero_login
     redirect_to user_xero_omniauth_authorize_path
+  end
+
+  def xero_error(e)
+    message = 'Xero returned an error: ' + e.message + '. Please ensure you have filled in all the required data in the right format.'
+    Rails.logger.error("Xero Error: #{message}")
+    redirect_to session[:previous_url], alert: message
   end
 end
