@@ -90,11 +90,12 @@
     - if @user.has_role? :superadmin
       = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
     br
-    .card.mb-3
-      h6.card-header = @workflow.workflowable_type
-      .card-body
-        = @workflow.workflowable&.name
-        = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right' if @workflow.workflowable.xero_contact_id.present?
+    - if @workflow.workflowable.present?
+	    .card.mb-3
+	      h6.card-header = @workflow.workflowable_type
+	      .card-body
+	        = @workflow.workflowable&.name
+	        = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right' if @workflow.workflowable.xero_contact_id.present?
     - if @workflow.remarks.present?
       .card.mb-3
         h6.card-header Workflow Remarks

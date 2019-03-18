@@ -29,7 +29,7 @@ tr
               price: @workflow.data.select {|attribute| attribute.name == "*UnitAmount"}.first&.value,
               account: @workflow.data.select {|attribute| attribute.name == "Account"}.first&.value,
               }
-            = @workflow.workflowable.xero_contact_id.present? ? link_to("Create Xero Invoice", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, params), method: 'post', role: 'button', class: 'btn btn-primary btn-sm') : link_to('Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm')
+            / = @workflow.workflowable.xero_contact_id.present? ? link_to("Create Xero Invoice", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, params), method: 'post', role: 'button', class: 'btn btn-primary btn-sm') : link_to('Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm')
             = link_to "Fix Data", data_entry_symphony_workflow_path(workflow_identifier: @workflow.identifier), role: 'button', class: 'btn btn-danger btn-sm ml-2'
           .btn-group.mr-2 role="group" aria-label="Reminder actions"
             - if action.reminders.present?
