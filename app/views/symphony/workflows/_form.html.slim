@@ -1,32 +1,32 @@
 - if @workflow.errors.any?
-  .alert.alert-danger role='alert'
-    strong = "#{pluralize(@workflow.errors.count, "error")} prohibited this workflow from being saved:"
-    ul
-      - @workflow.errors.full_messages.each do |message|
-        li = message
+	.alert.alert-danger role='alert'
+		strong = "#{pluralize(@workflow.errors.count, "error")} prohibited this workflow from being saved:"
+		ul
+			- @workflow.errors.full_messages.each do |message|
+				li = message
 = f.hidden_field(:workflowable_type, value: 'Client')
 .row
-  .col-md-12.col-sm-12
-    .row
-      .col-sm-12
-        .card.mb-3
-          h5.card-header Workflow Details
-          .card-body
-            .form-group
-              = f.label :identifier
-              = f.text_field :identifier, class: 'form-control'
-              span.help-block.d-none#identifier_exist
-                .fa.fa-times aria-hidden="true"
-                |  This identifier is already in use.
-              span.help-block.d-none#identifier_unique
-                .fa.fa-check aria-hidden="true"
-                |  This identifier is unique.
-            .form-group
-              = f.label :remarks
-              = f.text_area :remarks, class: 'form-control'
-            .form-group
-              = f.label :deadline
-              = f.date_field :deadline, class: 'form-control'
+	.col-md-12.col-sm-12
+		.row
+			.col-sm-12
+				.card.mb-3
+					h5.card-header Workflow Details
+					.card-body
+						.form-group
+							= f.label :identifier
+							= f.text_field :identifier, class: 'form-control'
+							span.help-block.d-none#identifier_exist
+								.fa.fa-times aria-hidden="true"
+								|  This identifier is already in use.
+							span.help-block.d-none#identifier_unique
+								.fa.fa-check aria-hidden="true"
+								|  This identifier is unique.
+						.form-group
+							= f.label :remarks
+							= f.text_area :remarks, class: 'form-control'
+						.form-group
+							= f.label :deadline
+							= f.date_field :deadline, class: 'form-control'
 	.col-md-12.col-sm-12
 		.row
 			.col-sm-12
@@ -42,13 +42,13 @@
 										th
 								tbody.data-attributes
 									tr
-									  = f.fields_for :data do |d|
-									  	= render 'data_fields', f: d
-						.card-body
-							- if @user.has_role? :admin, @company
-								= link_to_add_fields "Add Attribute", f, :data
+										= f.fields_for :data do |d|
+											= render 'data_fields', f: d
+					.card-body
+						- if @user.has_role? :admin, @company
+							= link_to_add_fields "Add Attribute", f, :data
 .row
-  .col-sm-12
-    = f.submit 'Save Workflow', class: 'btn btn-primary'
-    '
-    = f.submit 'Save & Assign Tasks', name: 'assign', class: 'btn btn-primary'
+	.col-sm-12
+		= f.submit 'Save Workflow', class: 'btn btn-primary'
+		'
+		= f.submit 'Save & Assign Tasks', name: 'assign', class: 'btn btn-primary'
