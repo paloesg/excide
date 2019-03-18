@@ -1,5 +1,17 @@
 .row
 	.col-md-12
+		.accordion#clientAccordion
+		  .card
+		    h5.card-header#headingOne
+		    	button.btn.btn-link type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" Existing Client
+		    .collapse.show#collapseOne aria-labelledby="headingOne" data-parent="#clientAccordion"
+		    .card-body
+		    	.form-group
+		    		= f.label :client_id, 'Client Name'
+		    		= f.select :client_id, @clients
+		    		/ = f.collection_select @workflow.workflowable, @workflow.workflowable, :id, :name, {include_blank: true}, class: 'selectize', id: 'new-workflow-value'
+.row
+	.col-md-12
 		.card.mb-3
 			h5.card-header Invoice Details
 			.col-md-12.mt-2
@@ -10,12 +22,15 @@
 					.form-group.col-md-3
 						= f.label :due_date, 'Due Date'
 						= f.date_field :due_date, class: 'form-control'
-					.form-group.col-md-3
+					.form-group.col-md-2
 						= f.label :line_amount_type, 'Amounts are: ', class: 'mr-2'
 						= f.select :line_amount_type, [["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "no_tax"]], {include_blank: true}, {class: 'form-control'}
-					.form-group.col-md-3
+					.form-group.col-md-2
 						= f.label :invoice_type, 'Invoice Type', class: 'mr-2'
 						= f.select :invoice_type, Invoice.invoice_types.map{|k, v| [k.humanize, k]}, {selected: params[:invoice_type], include_blank: true}, {class: 'form-control'}
+					.form-group.col-md-2
+						= f.label :reference, 'Reference No.', class: 'mr-2'
+						= f.text_field :reference, class: 'form-control'
 .row
 	.col-md-12
 		.card.mb-3
