@@ -1,17 +1,29 @@
+/ .row
+/ 	.col-md-12
+/ 		.accordion#clientAccordion
+/ 		  .card
+/ 		    .card-header#headingOne
+/ 		    	h2.mb-0
+/ 		    		button.btn.btn-link type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" Existing Client
+/ 		    .collapse.show#collapseOne aria-labelledby="headingOne" data-parent="#clientAccordion"
+/ 		    	.card-body
+/ 		    		.form-group
+/ 		    			= f.label :workflow, 'Client Name'
+/ 		    			= f.collection_select :workflow, @clients, :id, :name, {include_blank: true}, class: 'selectize'
+/ 			- if @workflow.workflowable.blank?
+/ 				.card
+/ 					.card-header#headingTwo
+/ 						h2.mb-0
+/ 							button.btn.btn-link.collapsed type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" New Client
+/ 					.collapse#collapseTwo aria-labelledby="headingTwo" data-parent="#clientAccordion"
+/ 						.card-body
+/ 							.form-group
+/ 								= f.fields_for :client do |c|
+/ 									.form-group
+/ 										= c.label :name, 'Client Name'
+/ 										= c.text_field :name, class: 'form-control'
 .row
-	.col-md-12
-		.accordion#clientAccordion
-		  .card
-		    h5.card-header#headingOne
-		    	button.btn.btn-link type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" Existing Client
-		    .collapse.show#collapseOne aria-labelledby="headingOne" data-parent="#clientAccordion"
-		    .card-body
-		    	.form-group
-		    		= f.label :client_id, 'Client Name'
-		    		= f.select :client_id, @clients
-		    		/ = f.collection_select @workflow.workflowable, @workflow.workflowable, :id, :name, {include_blank: true}, class: 'selectize', id: 'new-workflow-value'
-.row
-	.col-md-12
+	.col-md-12.mt-3
 		.card.mb-3
 			h5.card-header Invoice Details
 			.col-md-12.mt-2
@@ -29,8 +41,8 @@
 						= f.label :invoice_type, 'Invoice Type', class: 'mr-2'
 						= f.select :invoice_type, Invoice.invoice_types.map{|k, v| [k.humanize, k]}, {selected: params[:invoice_type], include_blank: true}, {class: 'form-control'}
 					.form-group.col-md-2
-						= f.label :reference, 'Reference No.', class: 'mr-2'
-						= f.text_field :reference, class: 'form-control'
+						= f.label :invoice_reference, 'Invoice No.', class: 'mr-2'
+						= f.text_field :invoice_reference, class: 'form-control'
 .row
 	.col-md-12
 		.card.mb-3
