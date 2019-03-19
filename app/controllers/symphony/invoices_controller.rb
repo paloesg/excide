@@ -13,11 +13,14 @@ class Symphony::InvoicesController < ApplicationController
   def new
     @invoice = Invoice.new
     @invoice.build_line_item
+    @clients = Client.all
   end
 
   def create
     @invoice = Invoice.new(invoice_params)
     @invoice.workflow_id = @workflow.id
+    @invoice.workflow.workflowable_id = params[:invoice][:workflow][:workflowable_id].to_i
+    @invoice.workflow.save
     respond_to do |format|
       if @invoice.save
         format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully! " }
@@ -73,7 +76,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, line_items_attributes: [:description, :quantity, :price, :account, :tax, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, line_items_attributes: [:description, :quantity, :price, :account, :tax, :_destroy])
   end
 
   def xero_login
