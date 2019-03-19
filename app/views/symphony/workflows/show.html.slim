@@ -96,7 +96,9 @@
 				.card-body
 					= @workflow.workflowable&.name
 					- if @workflow.workflowable.xero_contact_id.present?
-						= link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right' if @workflow.workflowable.xero_contact_id.present?
+						= link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right'
+					- else
+						= link_to 'Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-sm btn-primary pull-right'
 		- if @workflow.remarks.present?
 			.card.mb-3
 				h6.card-header Workflow Remarks
