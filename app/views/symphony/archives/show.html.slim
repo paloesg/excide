@@ -42,6 +42,7 @@
                     .m-3
                       = label_tag :remarks
                       = text_field_tag :remarks, task['workflow_actions']['remarks'], class: 'form-control', disabled: true
+                      = image_tag(task['image_url'], class: "img-fluid pt-4") if task['image_url'].present?
       .card-footer
         - unless @sections.first['unique_name'] == @section['unique_name']
           = link_to "?section=#{@sections[@section_index - 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-left'
