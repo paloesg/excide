@@ -48,7 +48,7 @@
                 = link_to_add_fields "Add Attribute", f, :data
   .col-md-6.col-sm-12
     .row
-      .col-sm-12
+      .col-sm-12.mb-3
         .accordion#clientAccordion
           .card
             .card-header#headingOne
@@ -71,6 +71,14 @@
                       .form-group
                         = c.label :name, 'Client Name'
                         = c.text_field :name, class: 'form-control'
+    .row
+      .col-sm-12
+        .card
+          h5.card-header User to be informed
+          .card-body
+            .form-group
+              = f.label :inform_to, 'User Name'
+              = f.collection_select :inform_to, @informed_users, :id, :full_name, {include_blank: true}, class: 'selectize', id: 'new-workflow-value'
 .row
   .col-sm-12
     = f.submit 'Save Workflow', class: 'btn btn-primary'

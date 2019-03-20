@@ -2,6 +2,7 @@ class Workflow < ApplicationRecord
   belongs_to :user
   belongs_to :company
   belongs_to :template
+  belongs_to :informed_user, :class_name => 'User', :foreign_key => 'inform_to'
 
   # Polymorphic association for any model that needs to be managed through workflows
   belongs_to :workflowable, polymorphic: true

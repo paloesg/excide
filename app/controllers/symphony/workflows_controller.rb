@@ -5,6 +5,7 @@ class Symphony::WorkflowsController < WorkflowsController
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
   before_action :set_attributes_metadata, only: [:create, :update]
   before_action :set_s3_direct_post, only: [:show]
+  before_action :set_informed_users, only: [:new, :create, :edit, :update]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
   rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
@@ -202,6 +203,10 @@ class Symphony::WorkflowsController < WorkflowsController
     @clients = Client.where(company: @company)
   end
 
+  def set_informed_users
+    @informed_users = User.where(company: @company)
+  end
+
   def set_attributes_metadata
     params[:workflow][:data_attributes]&.each do |key, value|
       if value[:_create] == '1' or value[:_update] == '1' or value[:_destroy] == '1'
@@ -238,7 +243,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :remarks, workflowable_attributes: [:id, :name, :identifier, :user_id, :company_id, :xero_email], data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :remarks, :inform_to, workflowable_attributes: [:id, :name, :identifier, :user_id, :company_id, :xero_email], data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
   end
 
   def set_documents

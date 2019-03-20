@@ -98,7 +98,7 @@
     - if @workflow.remarks.present?
       .card.mb-3
         h6.card-header Workflow Remarks
-        .card-body =@workflow.remarks
+        .card-body = @workflow.remarks
     .card.mb-3
       h6.card-header Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
@@ -118,6 +118,10 @@
                   h5.card-title = d.filename
                   h6.card-subtitle = d.user&.full_name
                   .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+    - if @workflow.informed_user.present?
+      .card.mb-3
+        h6.card-header User to be informed
+        .card-body = @workflow.informed_user.full_name
     .card.mb-3
       h6.card-header Document Templates
       - if @document_templates.empty?
