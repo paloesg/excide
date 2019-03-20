@@ -54,6 +54,24 @@
       $('.data-attributes').find('tr:last-child').find('.create').val('1');
       return event.preventDefault();
     });
+
+    //if radio button is checked, show the relevant fields
+    $('input:radio[name="radioContact"]').change(
+        function(){
+            if($(this).val() == 'existing'){
+                $('.new-disable').attr('disabled', true);
+                $('.new-contact').css('display', 'none');
+                $('.existing-disable').attr('disabled', false);
+                $('.existing-contact').css('display', 'block');
+            }
+            else{
+                $('.existing-disable').attr('disabled', true);
+                $('.existing-contact').css('display', 'none');
+                $('.new-disable').attr('disabled', false);
+                $('.new-contact').css('display', 'block');
+            }
+        }
+    )
     return $('input').change(function(event) {
       return $(this).closest('td').next().find('.update').val('1');
     });

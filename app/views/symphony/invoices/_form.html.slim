@@ -2,12 +2,20 @@
 	.row
 		.col-md-12
 			.card
-				h5.mb-0.card-header Existing Client
-				.card-body
-					-
-					.form-group
-						= f.label :xero_contact_id, 'Client Name'
-						= f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, class: 'selectize'
+				h5.mb-0.card-header Xero Contacts
+				.card-body.contact-body
+					.row.m-2
+						.form-check.form-check-inline.col-md-5
+							input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing"
+							label.form-check-label for="radioContact" Existing Contact
+						.form-check.form-check-inline.col-md-5
+							input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
+							label.form-check-label for="radioContact" New Contact
+					.row
+						.form-group.existing-contact.mt-2.col-md-12
+							= f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, class: 'selectize existing-disable', data: {placeholder: "Select a contact..."}
+						.form-group.new-contact.mt-2.col-md-12
+							= f.text_field :xero_contact_id, class: 'form-control new-disable', placeholder: 'New contact here...', disabled: true
 .row
 	.col-md-12.mt-3
 		.card.mb-3
@@ -27,7 +35,7 @@
 						= f.label :invoice_type, 'Invoice Type', class: 'mr-2'
 						= f.select :invoice_type, Invoice.invoice_types.map{|k, v| [k.humanize, k]}, {selected: params[:invoice_type], include_blank: true}, {class: 'form-control'}
 					.form-group.col-md-2
-						= f.label :invoice_reference, 'Invoice No.', class: 'mr-2'
+						= f.label :invoice_reference, 'Reference', class: 'mr-2'
 						= f.text_field :invoice_reference, class: 'form-control'
 .row
 	.col-md-12

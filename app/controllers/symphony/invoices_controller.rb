@@ -6,6 +6,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_invoice, only: [:edit, :update, :show]
   before_action :set_workflow, only: [:new, :create, :show, :edit, :update]
   before_action :set_documents
+  before_action :get_contacts_from_xero, only: [:new, :edit]
   before_action :get_account_and_tax, only: [:new, :create, :edit, :update]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
@@ -13,8 +14,6 @@ class Symphony::InvoicesController < ApplicationController
   def new
     @invoice = Invoice.new
     @invoice.build_line_item
-    @xero = Xero.new(session[:xero_auth])
-    @clients = @xero.get_contacts
   end
 
   def create
@@ -69,6 +68,11 @@ class Symphony::InvoicesController < ApplicationController
       @previous_document = @documents.where('id < ?', @document.id).first
       @next_document = @documents.where('id > ?', @document.id).last
     end
+  end
+
+  def get_contacts_from_xero
+    @xero = Xero.new(session[:xero_auth])
+    @clients = @xero.get_contacts
   end
 
   def get_account_and_tax
