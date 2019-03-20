@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_07_093917) do
+ActiveRecord::Schema.define(version: 2019_03_20_073424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -436,7 +436,9 @@ ActiveRecord::Schema.define(version: 2019_03_07_093917) do
     t.text "remarks"
     t.json "data", default: []
     t.json "archive", default: []
+    t.integer "inform_to"
     t.index ["company_id"], name: "index_workflows_on_company_id"
+    t.index ["inform_to"], name: "index_workflows_on_inform_to"
     t.index ["template_id"], name: "index_workflows_on_template_id"
     t.index ["user_id"], name: "index_workflows_on_user_id"
     t.index ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id"
