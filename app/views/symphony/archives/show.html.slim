@@ -23,6 +23,7 @@
               th Deadline
               th Done
               th Completed By
+              th Remarks
           tbody
             - @tasks.each do |task|
               tr
@@ -32,6 +33,7 @@
                 td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
                 td = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
                 td = task['workflow_actions']['completed_user']
+                td = task['workflow_actions']['remarks']
       .card-footer
         - unless @sections.first['unique_name'] == @section['unique_name']
           = link_to "?section=#{@sections[@section_index - 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-left'
