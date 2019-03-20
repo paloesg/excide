@@ -4,10 +4,10 @@
 			.card
 				h5.mb-0.card-header Existing Client
 				.card-body
+					-
 					.form-group
-						= f.fields_for :workflow do |wf|
-							= wf.label :workflowable_id, 'Client Name'
-							= wf.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'selectize'
+						= f.label :xero_contact_id, 'Client Name'
+						= f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, class: 'selectize'
 .row
 	.col-md-12.mt-3
 		.card.mb-3

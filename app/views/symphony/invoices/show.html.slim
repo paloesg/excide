@@ -16,7 +16,8 @@
 		p #{@invoice.due_date}
 	.col-md-2.col-sm-4
 		strong From:
-		p #{@workflow.workflowable.name}
+		- if @workflow.workflowable.present?
+			p #{@workflow.workflowable.name}
 	.col-md-2.col-sm-4
 		strong Line Amount Type:
 		- case @invoice.line_amount_type
@@ -41,7 +42,6 @@
 			        a href="#{d.file_url}"
 			        	i.ti-file
 			        	= d.filename
-
 .row
 	.col-sm-12
 		.table-responsive

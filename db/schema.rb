@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_19_025052) do
+ActiveRecord::Schema.define(version: 2019_03_20_015533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -201,6 +201,7 @@ ActiveRecord::Schema.define(version: 2019_03_19_025052) do
     t.integer "invoice_type"
     t.string "xero_invoice_id"
     t.string "invoice_reference"
+    t.string "xero_contact_id"
     t.index ["workflow_id"], name: "index_invoices_on_workflow_id"
   end
 
