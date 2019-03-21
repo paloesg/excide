@@ -8,6 +8,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_documents
   before_action :get_contacts_from_xero, only: [:new, :edit]
   before_action :get_account_and_tax, only: [:new, :create, :edit, :update]
+  before_action :get_currency, only: [:new, :create, :edit, :update]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
@@ -96,8 +97,13 @@ class Symphony::InvoicesController < ApplicationController
     @taxes = @xero.get_tax_rates
   end
 
+  def get_currency
+    @xero = Xero.new(session[:xero_auth])
+    @currencies = @xero.get_currencies
+  end
+
   def invoice_params
-    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, line_items_attributes: [:description, :quantity, :price, :account, :tax, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, line_items_attributes: [:description, :quantity, :price, :account, :tax, :tracking, :_destroy])
   end
 
   def xero_login

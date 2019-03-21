@@ -23,10 +23,10 @@
 			h5.card-header Invoice Details
 			.col-md-12.mt-2
 				.form-row
-					.form-group.col-md-3
+					.form-group.col-md-2
 						= f.label :invoice_date, 'Invoice Date'
 						= f.date_field :invoice_date, class: 'form-control'
-					.form-group.col-md-3
+					.form-group.col-md-2
 						= f.label :due_date, 'Due Date'
 						= f.date_field :due_date, class: 'form-control'
 					.form-group.col-md-2
@@ -38,6 +38,9 @@
 					.form-group.col-md-2
 						= f.label :invoice_reference, 'Reference', class: 'mr-2'
 						= f.text_field :invoice_reference, class: 'form-control'
+					.form-group.col-md-2
+						= f.label :currency, 'Currency', class: 'mr-2'
+						= f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'selectize'
 .row
 	.col-md-12
 		.card.mb-3
@@ -46,11 +49,13 @@
 				table.table
 					thead
 						tr
-							th.description Description
-							th.quantity Quantity
-							th.price Price ($)
-							th.account Account
-							th.tax Tax
+							th Description
+							th Quantity
+							th Price ($)
+							th Account
+							th Tax
+							th Tracking 1
+							th Tracking 2
 							th
 					tbody.data-attributes
 						tr

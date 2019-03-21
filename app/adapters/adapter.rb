@@ -27,6 +27,10 @@ module Adapter
       @xero_client.TaxRate.all
     end
 
+    def get_currencies
+      @xero_client.Currency.all
+    end
+
     def create_contact(client)
       xero_contact = @xero_client.Contact.build(name: client[:name])
       xero_contact.save!
