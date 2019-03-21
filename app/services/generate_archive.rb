@@ -42,7 +42,7 @@ class GenerateArchive
     archive_tasks = []
     workflow_actions = WorkflowAction.where(workflow: @workflow).joins(:task).where(tasks: { section_id: section.id })
     workflow_actions.each do |action|
-      archive_task = { instructions: action.task.instructions, position: action.task.position, image_url: action.task.image_url, link_url: action.task.link_url, role_name: action.task.role&.display_name, task_type: action.task.task_type, workflow_actions: { completed: action.completed, deadline: action.deadline, company: action.company.name, assigned_user: action.assigned_user&.full_name, completed_user: action.completed_user&.full_name } }
+      archive_task = { instructions: action.task.instructions, position: action.task.position, image_url: action.task.image_url, link_url: action.task.link_url, role_name: action.task.role&.display_name, task_type: action.task.task_type, workflow_actions: { completed: action.completed, deadline: action.deadline, company: action.company.name, assigned_user: action.assigned_user&.full_name, completed_user: action.completed_user&.full_name, remarks: action.remarks } }
       archive_tasks << archive_task
     end
     archive_tasks
