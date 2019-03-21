@@ -16,8 +16,7 @@
 		p #{@invoice.due_date}
 	.col-md-2.col-sm-4
 		strong From:
-		- if @workflow.workflowable.present?
-			p #{@workflow.workflowable.name}
+		p #{@invoice.xero_contact_name}
 	.col-md-2.col-sm-4
 		strong Line Amount Type:
 		- case @invoice.line_amount_type
