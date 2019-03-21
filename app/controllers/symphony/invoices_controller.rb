@@ -19,9 +19,15 @@ class Symphony::InvoicesController < ApplicationController
   def create
     @invoice = Invoice.new(invoice_params)
     @invoice.workflow_id = @workflow.id
-    #save client details created from invoice to the workflow
-    # @invoice.workflow.workflowable_id = params[:invoice][:workflow][:workflowable_id].to_i
-    # @invoice.workflow.save
+    @xero = Xero.new(session[:xero_auth])
+    if @invoice.xero_contact_id.present?
+      @invoice.xero_contact_name = @xero.get_contact(@invoice.xero_contact_id).name
+    else
+      #if invoice.xero_contact_id is not present, then create a contact in Xero
+      contact_id = @xero.create_contact(name: @invoice.xero_contact_name)
+      @invoice.xero_contact_id = contact_id
+    end
+
     respond_to do |format|
       if @invoice.save
         format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully! " }
@@ -37,8 +43,17 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def update
+    @invoice.update(invoice_params)
+    @xero = Xero.new(session[:xero_auth])
+    if @invoice.xero_contact_name.blank?
+      @invoice.xero_contact_name = @xero.get_contact(@invoice.xero_contact_id).name
+    else
+      contact_id = @xero.create_contact(name: @invoice.xero_contact_name)
+      @invoice.xero_contact_id = contact_id
+    end
+
     respond_to do |format|
-      if @invoice.update(invoice_params)
+      if @invoice.save
         format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice updated successfully!"}
         format.json{render :show, status: :ok, location: @invoice}
       else
@@ -82,7 +97,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, line_items_attributes: [:description, :quantity, :price, :account, :tax, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, line_items_attributes: [:description, :quantity, :price, :account, :tax, :_destroy])
   end
 
   def xero_login
