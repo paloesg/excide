@@ -32,19 +32,18 @@
     })
     var tracking1_current = 0;
     $('tr.line_items').each(function(){
-        $('#invoice_line_items_attributes_' + tracking1_current + '_tracking1').selectize({
+        $('#invoice_line_items_attributes_' + tracking1_current + '_tracking_option1').selectize({
             dropdownParent: 'body'
         })
         tracking1_current++;
     })
     var tracking2_current = 0;
     $('tr.line_items').each(function(){
-        $('#invoice_line_items_attributes_' + tracking2_current + '_tracking2').selectize({
+        $('#invoice_line_items_attributes_' + tracking2_current + '_tracking_option2').selectize({
             dropdownParent: 'body'
         })
         tracking2_current++;
     })
-
     //add attribute fields with selectize drop down (for creating invoice and data entry)
     $('form').on('click', '.add_attribute_fields', function(event) {
       var regexp, time;
@@ -57,6 +56,12 @@
           dropdownParent: "body"
         });
         $("select[id$='" + time + "_tax']").selectize({
+          dropdownParent: "body"
+        });
+        $("select[id$='" + time + "_tracking_option1']").selectize({
+          dropdownParent: "body"
+        });
+        $("select[id$='" + time + "_tracking_option2']").selectize({
           dropdownParent: "body"
         });
       } else {

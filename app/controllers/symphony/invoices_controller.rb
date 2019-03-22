@@ -105,12 +105,13 @@ class Symphony::InvoicesController < ApplicationController
 
   def get_tracking_options
     @xero = Xero.new(session[:xero_auth])
-    @tracking_categories_1 = @xero.get_tracking_options[0]
-    @tracking_categories_2 = @xero.get_tracking_options[1]
+    @tracking_name = @xero.get_tracking_options
+    @tracking_categories_1 = @xero.get_tracking_options[0].options.map{|option| option}
+    @tracking_categories_2 = @xero.get_tracking_options[1].options.map{|option| option}
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, line_items_attributes: [:description, :quantity, :price, :account, :tax, :tracking1, :tracking2, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, line_items_attributes: [:description, :quantity, :price, :account, :tax, :tracking_option1, :tracking_option2, :tracking_name1, :tracking_name2, :_destroy])
   end
 
   def xero_login
