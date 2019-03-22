@@ -14,9 +14,10 @@
 					.row
 						.form-group.existing-contact.mt-2.col-md-12
 							= f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, class: 'selectize existing-disable', data: {placeholder: "Select a contact..."}
+							/Added hidden field to overwrite the xero_contact_name
 							= f.hidden_field :xero_contact_name, value: nil
 						.form-group.new-contact.mt-2.col-md-12
-							= f.text_field :xero_contact_name, class: 'form-control new-disable', placeholder: 'New contact here...', disabled: true
+							= f.text_field :xero_contact_name, class: 'form-control new-disable', placeholder: 'New contact here...', value: nil, disabled: true
 .row
 	.col-md-12.mt-3
 		.card.mb-3
