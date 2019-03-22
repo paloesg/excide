@@ -30,6 +30,20 @@
         })
         tax_current++;
     })
+    var tracking1_current = 0;
+    $('tr.line_items').each(function(){
+        $('#invoice_line_items_attributes_' + tracking1_current + '_tracking1').selectize({
+            dropdownParent: 'body'
+        })
+        tracking1_current++;
+    })
+    var tracking2_current = 0;
+    $('tr.line_items').each(function(){
+        $('#invoice_line_items_attributes_' + tracking2_current + '_tracking2').selectize({
+            dropdownParent: 'body'
+        })
+        tracking2_current++;
+    })
 
     //add attribute fields with selectize drop down (for creating invoice and data entry)
     $('form').on('click', '.add_attribute_fields', function(event) {
