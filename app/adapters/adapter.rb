@@ -31,19 +31,24 @@ module Adapter
       @xero_client.Currency.all
     end
 
+    def get_tracking_options
+      @xero_client.TrackingCategory.all
+    end
+
     def create_contact(client)
       xero_contact = @xero_client.Contact.build(name: client[:name])
       xero_contact.save!
       return xero_contact.contact_id
     end
 
-    def create_invoice_payable(contact_id, date, due_date, line_items, line_amount_type)
+    def create_invoice_payable(contact_id, date, due_date, line_items, line_amount_type, reference, currency)
       supplier = get_contact(contact_id)
       xero_line_amount_type = line_amount_type.camelize
       #date is in %d-%b-%y => 13-Feb-19 (Date-Month-Year in this format)
-      @ap = @xero_client.Invoice.build(type: "ACCPAY", contact: supplier, date: date, due_date: due_date, line_amount_types: xero_line_amount_type, url: 'https://www.excide.co/symphony/')
+      @ap = @xero_client.Invoice.build(type: "ACCPAY", contact: supplier, date: date, due_date: due_date, line_amount_types: xero_line_amount_type, url: 'https://www.excide.co/symphony/', invoice_number: reference, currency_code: currency[0..2])
       line_items.each do |line_item|
-        @ap.add_line_item(item_code: nil, description: line_item.description, quantity: line_item.quantity, unit_amount: line_item.price, account_code: line_item.account, tax_type: line_item.tax)
+        @tracking = [{name: line_item.tracking_name1, option: line_item.tracking_option1}, {name: line_item.tracking_name2, option: line_item.tracking_option2}]
+        @ap.add_line_item(item_code: nil, description: line_item.description, quantity: line_item.quantity, unit_amount: line_item.price, account_code: line_item.account, tax_type: line_item.tax, tracking: @tracking)
       end
       @ap.save!
       return @ap

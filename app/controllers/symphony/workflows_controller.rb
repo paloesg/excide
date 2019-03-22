@@ -151,7 +151,7 @@ class Symphony::WorkflowsController < WorkflowsController
   def xero_create_invoice_payable
     @xero = Xero.new(session[:xero_auth])
     if @workflow.invoice.payable?
-      xero_invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type)
+      xero_invoice = @xero.create_invoice_payable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency)
       @workflow.invoice.xero_invoice_id = xero_invoice.id
       @workflow.invoice.save
       @workflow.documents.each do |document|
