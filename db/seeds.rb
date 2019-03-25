@@ -24,6 +24,8 @@ contractor = User.create(email: 'contractor@gobbler.com', password: 'password', 
 contractor.add_role :contractor, gobbler
 contractor_in_charge = User.create(email: 'contractorIC@gobbler.com', password: 'password', first_name: 'Contractor', last_name: 'IC', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
 contractor_in_charge.add_role :contractor_id, gobbler
+associate_in_charge = User.create(email: 'associate@gobbler.com', password: 'password', first_name: 'Associate', last_name: 'Guy', contact_number: "12341234", company: gobbler, confirmed_at: Time.now)
+associate_in_charge.add_role :associate, gobbler
 
 # Create template
 template_1 = Template.create(title: 'Template 1', company: gobbler)
