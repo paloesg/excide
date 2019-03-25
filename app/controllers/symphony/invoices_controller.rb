@@ -16,12 +16,12 @@ class Symphony::InvoicesController < ApplicationController
   def new
     @invoice = Invoice.new
     @invoice.build_line_item
+    @xero = Xero.new(session[:xero_auth])
   end
 
   def create
     @invoice = Invoice.new(invoice_params)
     @invoice.workflow_id = @workflow.id
-    @xero = Xero.new(session[:xero_auth])
     if @invoice.xero_contact_id.present?
       @invoice.xero_contact_name = @xero.get_contact(@invoice.xero_contact_id).name
     else
