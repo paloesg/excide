@@ -2,7 +2,7 @@ class Symphony::WorkflowsController < WorkflowsController
   include Adapter
 
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :reset, :data_entry, :xero_create_invoice_payable]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :archive, :reset, :data_entry, :xero_create_invoice_payable]
   before_action :set_attributes_metadata, only: [:create, :update]
   before_action :set_s3_direct_post, only: [:show]
 
@@ -100,13 +100,9 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def archive
-    set_workflow
-    #When workflow is archived, send an email summary to the creator of the workflow
-    @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
-    @user = @workflow.user
-    WorkflowMailer.email_summary(@workflow, @user).deliver_now
+    WorkflowMailer.email_summary(@workflow, @workflow.user).deliver_now
     generate_archive = GenerateArchive.new(@workflow).run
-    # Mark workflow as completed when workflow is archive
+    # Mark workflow as completed when workflow is archived
     if generate_archive.success?
       redirect_to symphony_archive_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully archived.'
     else
