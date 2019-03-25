@@ -16,8 +16,7 @@ class Workflow < ApplicationRecord
   validates :identifier, uniqueness: true
   validate :check_data_fields
 
-  after_create :create_related_workflow_actions
-  after_create :trigger_first_task, if: :ordered_workflow?
+  after_create :create_actions_and_trigger_first_task
   before_save :uppercase_identifier
 
   include PublicActivity::Model
@@ -127,13 +126,14 @@ class Workflow < ApplicationRecord
   private
 
   # Create all the actions that need to be completed for a workflow that is associated with a company
-  def create_related_workflow_actions
+  def create_actions_and_trigger_first_task
     sections = self.template.sections
     sections.each do |s|
       s.tasks.each do |t|
         WorkflowAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
+    trigger_first_task if ordered_workflow?
   end
 
   def ordered_workflow?
