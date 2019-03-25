@@ -6,10 +6,8 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_invoice, only: [:edit, :update, :show]
   before_action :set_workflow, only: [:new, :create, :show, :edit, :update]
   before_action :set_documents
-  before_action :get_contacts_from_xero, only: [:new, :edit]
-  before_action :get_account_and_tax, only: [:new, :create, :edit, :update]
-  before_action :get_tracking_options, only: [:new, :create, :edit, :update]
-  before_action :get_currency, only: [:new, :create, :edit, :update]
+  before_action :set_company
+  before_action :get_xero_details, only: [:new, :create, :edit, :update]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
@@ -78,6 +76,10 @@ class Symphony::InvoicesController < ApplicationController
     @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
   end
 
+  def set_company
+    @company = current_user.company
+  end
+
   def set_documents
     @documents = @workflow.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
     unless @documents.empty?
@@ -87,24 +89,12 @@ class Symphony::InvoicesController < ApplicationController
     end
   end
 
-  def get_contacts_from_xero
+  def get_xero_details
     @xero = Xero.new(session[:xero_auth])
     @clients = @xero.get_contacts
-  end
-
-  def get_account_and_tax
-    @xero = Xero.new(session[:xero_auth])
     @accounts = @xero.get_accounts
     @taxes = @xero.get_tax_rates
-  end
-
-  def get_currency
-    @xero = Xero.new(session[:xero_auth])
     @currencies = @xero.get_currencies
-  end
-
-  def get_tracking_options
-    @xero = Xero.new(session[:xero_auth])
     @tracking_name = @xero.get_tracking_options
     @tracking_categories_1 = @xero.get_tracking_options[0].options.map{|option| option}
     @tracking_categories_2 = @xero.get_tracking_options[1].options.map{|option| option}
