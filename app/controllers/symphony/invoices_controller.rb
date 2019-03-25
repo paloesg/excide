@@ -7,7 +7,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflow, only: [:new, :create, :show, :edit, :update]
   before_action :set_documents
   before_action :set_company
-  before_action :get_xero_details, only: [:new, :create, :edit, :update]
+  before_action :get_xero_details, only: [:new, :create, :edit, :update, :show]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
@@ -96,8 +96,15 @@ class Symphony::InvoicesController < ApplicationController
     @taxes = @xero.get_tax_rates
     @currencies = @xero.get_currencies
     @tracking_name = @xero.get_tracking_options
-    @tracking_categories_1 = @xero.get_tracking_options[0].options.map{|option| option}
-    @tracking_categories_2 = @xero.get_tracking_options[1].options.map{|option| option}
+    #cases when there are 2 trackings, 1 tracking and no tracking
+    if @tracking_name.length == 2
+      @tracking_categories_1 = @tracking_name[0].options.map{|option| option}
+      @tracking_categories_2 = @tracking_name[1].options.map{|option| option}
+    elsif @tracking_name.length == 1
+      @tracking_categories_1 = @tracking_name[0].options.map{|option| option}
+    else
+      @tracking_categories = nil
+    end
   end
 
   def invoice_params

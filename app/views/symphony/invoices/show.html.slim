@@ -59,8 +59,11 @@
 						th Qty
 						th Unit Price ($)
 						th Account
-						th Tracking 1 (name: option)
-						th Tracking 2 (name: option)
+						- if @tracking_categories_2.present?
+							th #{@tracking_name[0].name}
+							th #{@tracking_name[1].name}
+						- elsif @tracking_categories_1.present? and @tracking_categories_2.nil?
+							th #{@tracking_name[0].name}
 						th Amount ($)
 				tbody
 					- @invoice.line_items.each_with_index do |line_item, index|
@@ -70,12 +73,20 @@
 							td = line_item.quantity
 							td = number_with_precision(line_item.price, precision: 2, delimiter: ',')
 							td = line_item.account
-							td = line_item.tracking_name1 + ': ' + line_item.tracking_option1
-							td = line_item.tracking_name2 + ': ' + line_item.tracking_option2
+							- if line_item.tracking_option2.present?
+								td = line_item.tracking_option1
+								td = line_item.tracking_option2
+							- elsif line_item.tracking_option1.present? and line_item.tracking_option2.nil?
+								td = line_item.tracking_option1
 							td = number_with_precision(line_item.quantity.to_i * line_item.price.to_f, precision: 2, delimiter: ',')
 				tfoot
 					tr
-						td colspan='6'
+						- if @tracking_categories_2.present?
+							td colspan='6'
+						- elsif @tracking_categories_1.present? and @tracking_categories_2.nil?
+							td colspan='5'
+						- else
+						  td colspan='4'
 						td.pull-right
 							h5 Sub-total ($):
 						td
