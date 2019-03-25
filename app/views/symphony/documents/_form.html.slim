@@ -5,29 +5,28 @@
       - @document.errors.full_messages.each do |message|
         li = message
 = f.hidden_field(:workflow_id, value: @workflow&.id)
-.form-group
-  - if @document.new_record?
-    .custom-file.mt-3
-      = f.label :file_url, 'Choose file', class: 'custom-file-label'
-      - if params[:camera] == "true"
-        = f.file_field :file_url, accept: 'image/*', capture: 'camera', class: 'custom-file-input', id: 'customFile'
+.row
+  .col-md-6
+    .form-group
+      - if @document.new_record?
+        .custom-file.mt-3
+          = f.label :file_url, 'Choose file', class: 'custom-file-label'
+          - if params[:camera] == "true"
+            = f.file_field :file_url, accept: 'image/*', capture: 'camera', class: 'custom-file-input', id: 'customFile'
+          - else
+            = f.file_field :file_url, class: 'custom-file-input', id: 'customFile'
       - else
-        = f.file_field :file_url, class: 'custom-file-input', id: 'customFile'
-  - else
-    .file-path-wrapper
-      = f.label 'File URL'
-      = f.text_field :file_url, class: 'file-path form-control', disabled: true
-.form-group
-  = f.label :identifier, 'Document Identifier'
-  = f.text_field :identifier, class: 'form-control'
-.form-group
-  = f.label :filename
-  = f.text_field :filename, class: 'form-control'
-- unless params[:camera] == "true"
-  .form-group
-    = f.label :document_template_id, 'Template'
-    = f.collection_select :document_template_id, @document_templates, :id, :title, {include_blank: true}, {class: 'selectize'}
-.form-group
-  = f.label :remarks
-  = f.text_area :remarks, class: 'form-control'
-= f.submit 'Save Document', class: 'btn btn-primary'
+        .file-path-wrapper
+          = f.label 'File URL'
+          = f.text_field :file_url, class: 'file-path form-control', disabled: true
+    - unless params[:camera] == "true"
+      .form-group
+        = f.label :document_template_id, 'Template'
+        = f.collection_select :document_template_id, @document_templates, :id, :title, {include_blank: true}, {class: 'selectize'}
+    .form-group
+      = f.label :identifier, 'Document Identifier'
+      = f.text_field :identifier, class: 'form-control'
+    .form-group
+      = f.label :remarks
+      = f.text_area :remarks, class: 'form-control'
+    = f.submit 'Save Document', class: 'btn btn-primary'

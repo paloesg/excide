@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_02_040811) do
+ActiveRecord::Schema.define(version: 2019_03_07_093917) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "activation_types", id: :serial, force: :cascade do |t|
@@ -188,6 +189,20 @@ ActiveRecord::Schema.define(version: 2019_01_02_040811) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "invoice_identifier"
+    t.date "invoice_date"
+    t.date "due_date"
+    t.json "line_items", default: []
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "workflow_id"
+    t.integer "line_amount_type"
+    t.integer "invoice_type"
+    t.string "xero_invoice_id"
+    t.index ["workflow_id"], name: "index_invoices_on_workflow_id"
+  end
+
   create_table "profiles", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -337,6 +352,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_040811) do
     t.string "slug"
     t.integer "company_id"
     t.json "data_names", default: []
+    t.integer "workflow_type", default: 0
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
@@ -398,6 +414,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_040811) do
     t.integer "workflow_id"
     t.integer "assigned_user_id"
     t.integer "completed_user_id"
+    t.text "remarks"
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
     t.index ["company_id"], name: "index_workflow_actions_on_company_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"
@@ -439,6 +456,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_040811) do
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflows"
+  add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"
   add_foreign_key "reminders", "companies"

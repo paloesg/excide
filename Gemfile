@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.5.1'
+ruby '2.6.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '5.2.2'
@@ -34,11 +34,12 @@ gem 'rack-timeout'
 # Better Rails logging
 gem "lograge"
 
-################################################
-#                                              #
-# Login, authentication, roles, access-control #
-#                                              #
-################################################
+#################################################
+#                                               #
+# Login, authentication, roles, access-control, #
+# and security                                  #
+#                                               #
+#################################################
 
 # Authentication
 gem 'devise'
@@ -52,13 +53,16 @@ gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-linkedin-oauth2'
 # Xero API integration
 gem 'omniauth-xero'
-gem 'xeroizer'
+gem 'xeroizer', git: 'https://github.com/waynerobinson/xeroizer.git'
 
-################################################
-#                                              #
-#             App specific functions           #
-#                                              #
-################################################
+# Protect app from bad clients
+gem 'rack-attack'
+
+#################################################
+#                                               #
+#             App specific functions            #
+#                                               #
+#################################################
 
 # State machine gem
 gem 'aasm'
@@ -99,9 +103,9 @@ gem 'snitcher'
 gem "skylight"
 gem 'scout_apm'
 
-gem 'popper_js', '~> 1.12.9'
+gem 'popper_js'
 # Frontend framework
-gem 'bootstrap', '~> 4.1.1'
+gem 'bootstrap', '~> 4.3'
 # Themify icon set web fonts
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
 # Font Awesome Rails

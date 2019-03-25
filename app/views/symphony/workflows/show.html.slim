@@ -93,14 +93,12 @@
     .card.mb-3
       h6.card-header = @workflow.workflowable_type
       .card-body
-        | Name: #{@workflow.workflowable&.name}
-        br
-        | Identifier: #{@workflow.workflowable&.identifier}
-        br
-        = 'Xero Contact ID: ' + @workflow.workflowable.xero_contact_id if @workflow.workflowable.xero_contact_id.present?
-    .card.mb-3
-      h6.card-header Remarks
-      .card-body = @workflow.remarks.present? ? @workflow.remarks : '-'
+        = @workflow.workflowable&.name
+        = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right' if @workflow.workflowable.xero_contact_id.present?
+    - if @workflow.remarks.present?
+      .card.mb-3
+        h6.card-header Workflow Remarks
+        .card-body =@workflow.remarks
     .card.mb-3
       h6.card-header Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
@@ -120,7 +118,6 @@
                   h5.card-title = d.filename
                   h6.card-subtitle = d.user&.full_name
                   .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
-
     .card.mb-3
       h6.card-header Document Templates
       - if @document_templates.empty?
@@ -137,6 +134,21 @@
                   h5.card-title = d.title
                   h6.card-subtitle = File.basename(d.file_url)
                   .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+    .card.mb-3
+    	h6.card-header Invoice
+    	- if @invoice.blank?
+    		.card-body No invoice yet.
+    	- else
+				ul.list-group.list-group-flush
+				  li.list-group-item
+				    .media
+				      .align-self-center
+				      	= link_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id)
+				      		i.ti-receipt.icon.mr-3 style="font-size: 50px"
+				      .media-body
+				    		h5.card-title = @invoice.id
+				    		h6.card-subtitle Invoice Type: #{@invoice.invoice_type.capitalize}
+				    		.text-muted = @invoice.created_at.strftime("Uploaded at %d/%m/%Y %R")
 #task-popover-content.d-none
   p.pt-2
     strong

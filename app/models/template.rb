@@ -2,6 +2,8 @@ class Template < ApplicationRecord
   include FriendlyId
   friendly_id :title, use: [:slugged, :finders]
 
+  enum workflow_type: { ordered: 0, unordered: 1 }
+
   has_many :sections, -> { order(position: :asc) }, dependent: :destroy
   has_many :document_templates, dependent: :destroy
   has_many :workflows

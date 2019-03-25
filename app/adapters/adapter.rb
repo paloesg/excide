@@ -19,26 +19,35 @@ module Adapter
       return contact = @xero_client.Contact.find(xero_contact_id)
     end
 
+    def get_accounts
+      @xero_client.Account.all
+    end
+
+    def get_tax_rates
+      @xero_client.TaxRate.all
+    end
+
     def create_contact(client)
       xero_contact = @xero_client.Contact.build(name: client[:name])
       xero_contact.save!
       return xero_contact.contact_id
     end
 
-    def get_accounts
-      @xero_client.Account.all
-    end
-
-    def create_invoice_payable(contact_id, date, due_date, identifier, item_code, description, quantity, price, account)
+    def create_invoice_payable(contact_id, date, due_date, line_items, line_amount_type)
       supplier = get_contact(contact_id)
-      ap = @xero_client.Invoice.build(type: "ACCPAY", contact: supplier, date: Date.strptime(date, '%d-%b-%y'), due_date: Date.strptime(due_date, '%d-%b-%y'), invoice_number: identifier, url: 'https://www.excide.co/symphony/')
-      ap.add_line_item(item_code: item_code, description: description, quantity: quantity, unit_amount: price, account_code: account)
-      ap.save
-      return ap
+      xero_line_amount_type = line_amount_type.camelize
+      #date is in %d-%b-%y => 13-Feb-19 (Date-Month-Year in this format)
+      @ap = @xero_client.Invoice.build(type: "ACCPAY", contact: supplier, date: date, due_date: due_date, line_amount_types: xero_line_amount_type, url: 'https://www.excide.co/symphony/')
+      line_items.each do |line_item|
+        @ap.add_line_item(item_code: nil, description: line_item.description, quantity: line_item.quantity, unit_amount: line_item.price, account_code: line_item.account, tax_type: line_item.tax)
+      end
+      @ap.save!
+      return @ap
     end
 
-    def create_invoice_receivable(type, contact, date, due_date, reference, order, account)
-      ar = @xero_client.Invoice.build(type: type, contact: contact, date: date, due_date: due_date, reference: reference)
+    def create_invoice_receivable(contact_id, date, due_date, reference)
+      contact = get_contact(contact_id)
+      @ar = @xero_client.Invoice.build(type: "ACCREC", contact: contact, date: date, due_date: due_date, reference: reference)
       order.order_products.each do |op|
         ar.add_line_item(item_code: op.product.sku, description: op.product.name ,quantity: op.quantity, unit_amount: op.price, account_code: account)
       end

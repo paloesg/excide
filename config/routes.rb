@@ -65,6 +65,7 @@ Rails.application.routes.draw do
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
         post '/xero_create_invoice_payable', to: 'workflows#xero_create_invoice_payable', as: :xero_create_invoice_payable
         get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero
+        resources :invoices
       end
     end
     root to: 'home#index'
@@ -90,6 +91,7 @@ Rails.application.routes.draw do
     resources :allocations do
       collection do
         get :export, to: 'allocations#export'
+        get '/users/:user_id', to: 'allocations#user_allocations', as: :user
       end
       member do
         post :last_minute, to: 'allocations#last_minute'

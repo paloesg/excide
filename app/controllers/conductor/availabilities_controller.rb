@@ -23,8 +23,13 @@ class Conductor::AvailabilitiesController < ApplicationController
     (current_user.has_role? :contractor, :any) ? user_id = current_user.id : user_id = params[:user_id]
     last_availability = Availability.where(user_id: user_id).order('available_date ASC').last
 
-    @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_week : last_availability.available_date.next_week
-    @date_to = @date_from.end_of_week
+    if last_availability.present?
+      @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_week : last_availability.available_date.next_week
+      @date_to = @date_from.end_of_week
+    else
+      @date_from = Date.current.beginning_of_week
+      @date_to = @date_from.end_of_week
+    end
     @availabilities = Availability.where(user_id: user_id).where(available_date: @date_from..@date_to)
   end
 

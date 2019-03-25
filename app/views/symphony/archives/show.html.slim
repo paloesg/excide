@@ -23,6 +23,7 @@
               th Deadline
               th Done
               th Completed By
+              th
           tbody
             - @tasks.each do |task|
               tr
@@ -32,6 +33,16 @@
                 td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
                 td = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
                 td = task['workflow_actions']['completed_user']
+                td
+                  a data-toggle="collapse" href="#task_#{task['position']}" aria-expanded="false" class="collapsed"
+                    i.fa aria-hidden="true"
+              tr
+                td.p-0.border-top-0 colspan="6"
+                  div id="task_#{task['position']}" class="collapse"
+                    .m-3
+                      = label_tag :remarks
+                      = text_field_tag :remarks, task['workflow_actions']['remarks'], class: 'form-control', disabled: true
+                      = image_tag(task['image_url'], class: "img-fluid pt-4") if task['image_url'].present?
       .card-footer
         - unless @sections.first['unique_name'] == @section['unique_name']
           = link_to "?section=#{@sections[@section_index - 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-left'
