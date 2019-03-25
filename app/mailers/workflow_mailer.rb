@@ -1,6 +1,6 @@
 class WorkflowMailer < ApplicationMailer
   require 'open-uri'
-  default from: 'noreply@excide.com'
+  default from: 'noreply@excide.co'
 
   def send_invoice_email(workflow, workflow_document)
     @workflow = workflow
@@ -9,5 +9,13 @@ class WorkflowMailer < ApplicationMailer
 
     @url = @workflow.company.xero_email
     mail(to: @url, subject: 'Xero bill invoice')
+  end
+
+  def email_summary(workflow, user)
+    @workflow = workflow
+    @user = user
+
+    @url = user.email
+    mail(to: @url, subject: '[Completed] ' + workflow.template.title + ' - ' + workflow.identifier + ' completed')
   end
 end

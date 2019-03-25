@@ -30,7 +30,6 @@ class WorkflowsController < ApplicationController
 
   def toggle
     @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_identifier])
-
     respond_to do |format|
       if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id)
         format.json { render json: @action.completed, status: :ok }

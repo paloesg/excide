@@ -1,0 +1,28 @@
+p Hi #{@user.first_name},
+p
+	| The workflow #{@workflow.identifier} has been completed.
+	br
+	br
+	| Below is a summary of the workflow completed,
+
+table.table.table-bordered
+	thead
+		tr
+			th Instruction
+			th Date Completed
+			th Completed By
+			th Remark
+	tbody
+		- @workflow.workflow_actions.each do |wfa|
+			tr
+				td= wfa.task.instructions
+				td= Time.current
+				- if wfa.completed_user.nil?
+					td Not completed
+				- else
+					td= wfa.completed_user.first_name.to_s + ' ' + wfa.completed_user.last_name.to_s
+				td= wfa.remarks
+
+p
+	|	To follow the archived workflow, please click the following link:
+	a href="#{symphony_archive_url(@workflow.template.slug, @workflow.identifier)}"  #{@workflow.identifier}
