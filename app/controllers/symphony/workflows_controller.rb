@@ -33,8 +33,6 @@ class Symphony::WorkflowsController < WorkflowsController
     if params[:workflow][:client][:name].present?
       @xero = Xero.new(session[:xero_auth])
       @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user)
-      contact_id = @xero.create_contact(@workflow.workflowable)
-      @workflow.workflowable.xero_contact_id = contact_id
     end
 
     if @workflow.save
@@ -67,9 +65,9 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def update
-    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present? or @workflow.workflowable.present?
-
     if @workflow.update(workflow_params)
+      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present? or @workflow.workflowable.present?
+      @workflow.save
       log_data_activity
       log_workflow_activity
       if params[:assign]
