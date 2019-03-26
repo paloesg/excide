@@ -59,11 +59,8 @@
 						th Qty
 						th Unit Price ($)
 						th Account
-						- if @tracking_categories_2.present?
-							th #{@tracking_name[0].name}
-							th #{@tracking_name[1].name}
-						- elsif @tracking_categories_1.present? and @tracking_categories_2.nil?
-							th #{@tracking_name[0].name}
+						th = @tracking_name[0]&.name or 'No Tracking'
+						th = @tracking_name[1]&.name or 'No Tracking'
 						th Amount ($)
 				tbody
 					- @invoice.line_items.each_with_index do |line_item, index|
@@ -73,24 +70,12 @@
 							td = line_item.quantity
 							td = number_with_precision(line_item.price, precision: 2, delimiter: ',')
 							td = line_item.account
-							- if line_item.tracking_option2.present?
-								td = line_item.tracking_option1
-								td = line_item.tracking_option2
-							- elsif line_item.tracking_option1.present? and line_item.tracking_option2.nil?
-								td = line_item.tracking_option1
+							td = line_item.tracking_option_1 or '-'
+							td = line_item.tracking_option_2 or '-'
 							td = number_with_precision(line_item.quantity.to_i * line_item.price.to_f, precision: 2, delimiter: ',')
-				tfoot
-					tr
-						- if @tracking_categories_2.present?
-							td colspan='6'
-						- elsif @tracking_categories_1.present? and @tracking_categories_2.nil?
-							td colspan='5'
-						- else
-						  td colspan='4'
-						td.pull-right
-							h5 Sub-total ($):
-						td
-							h5 = number_with_precision(@total, precision: 2, delimiter: ',')
+.row
+	.col-sm-12
+		strong.pull-right.m-3.subtotal Sub-total ($): #{number_with_precision(@total, precision: 2, delimiter: ',')}
 .row
 	.col-sm-12
 		= link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary pull-right'

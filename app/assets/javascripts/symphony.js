@@ -15,6 +15,7 @@
         $(this).closest('tr').remove();
         return event.preventDefault();
     })
+    //dropdownParent is required to avoid dropdown clipping issue so that the dropdown isn't a child of an element with clipping
     $('.new-workflow-value').selectize({
         dropdownParent: "body"
     })
@@ -32,10 +33,10 @@
         $("select[id$='" + time + "_tax']").selectize({
           dropdownParent: "body"
         });
-        $("select[id$='" + time + "_tracking_option1']").selectize({
+        $("select[id$='" + time + "_tracking_option_1']").selectize({
           dropdownParent: "body"
         });
-        $("select[id$='" + time + "_tracking_option2']").selectize({
+        $("select[id$='" + time + "_tracking_option_2']").selectize({
           dropdownParent: "body"
         });
       } else {
