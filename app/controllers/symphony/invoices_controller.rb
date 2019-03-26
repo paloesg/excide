@@ -43,17 +43,16 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def update
-    @invoice.update(invoice_params)
     @xero = Xero.new(session[:xero_auth])
-    if @invoice.xero_contact_name.blank?
-      @invoice.xero_contact_name = @xero.get_contact(@invoice.xero_contact_id).name
+    if params[:invoice][:xero_contact_name].blank?
+      @invoice.xero_contact_name = @xero.get_contact(params[:invoice][:xero_contact_id]).name
     else
-      contact_id = @xero.create_contact(name: @invoice.xero_contact_name)
+      contact_id = @xero.create_contact(name: params[:invoice][:xero_contact_name])
       @invoice.xero_contact_id = contact_id
     end
-
+    @invoice.save
     respond_to do |format|
-      if @invoice.save
+      if @invoice.update(invoice_params)
         format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice updated successfully!"}
         format.json{render :show, status: :ok, location: @invoice}
       else

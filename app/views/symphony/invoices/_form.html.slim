@@ -6,11 +6,9 @@
 				.row.m-2
 					.form-inline.col-md-12
 						.form-group.col-md-6.p-0
-							input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing"
+							input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing" checked="checked"
 							label.form-check-label.mr-2 for="radioContact" Existing Contact:
 							= f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, class: 'selectize existing-contact-width existing-contact-disable'
-							/Added hidden field to overwrite the xero_contact_name
-							= f.hidden_field :xero_contact_name, value: nil
 						.form-group.col-md-6.p-0
 							input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
 							label.form-check-label.mr-2 for="radioContact" New Contact:
