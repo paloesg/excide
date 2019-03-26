@@ -14,6 +14,9 @@ class CompanyDashboard < Administrate::BaseDashboard
     image_url: Field::Image,
     description: Field::Text,
     address: Field::HasOne,
+    workflows: Field::HasMany,
+    templates: Field::HasMany,
+    documents: Field::HasMany,
     users: Field::HasMany,
     ssic_code: Field::String,
     financial_year_end: Field::DateTime,
@@ -30,7 +33,9 @@ class CompanyDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :name,
-    :company_type,
+    :workflows,
+    :templates,
+    :documents,
     :users,
   ]
 
