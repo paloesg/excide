@@ -3,12 +3,12 @@ tr.line_items
 	td.line-item-field = f.text_field :quantity, class: 'form-control minimize-text'
 	td.line-item-field = f.text_field :price, class: 'form-control minimize-text'
 	- if current_user.has_role? :associate, @company
-		td.line-item-field = f.collection_select :account, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, include_blank: true, class: 'form-control minimize-text'
-		td.line-item-field.tax = f.collection_select :tax, @taxes, :tax_type, ->(tax) { tax.name + ' - (' + tax.display_tax_rate.to_s + '%)'}, include_blank: true, class: 'form-control minimize-text'
+		td.line-item-field = f.collection_select :account, @accounts, :code, ->(account) { account.code + ' - '+ account.name }, { include_blank: 'Choose an account code...' }, { class: 'selectize minimize-text' }
+		td.line-item-field.tax = f.collection_select :tax, @taxes, :tax_type, ->(tax) { tax.name + ' - (' + tax.display_tax_rate.to_s + '%)'}, { include_blank: 'Choose tax code...' }, { class: 'selectize minimize-text' }
 		- if @tracking_categories_2.present?
-			td.line-item-field = f.collection_select :tracking_option1, @tracking_categories_1, :name, ->(option){ option.name }, include_blank: true, class: 'form-control minimize-text'
-			td.line-item-field = f.collection_select :tracking_option2, @tracking_categories_2, :name, ->(option){ option.name }, include_blank: true, class: 'form-control minimize-text'
+			td.line-item-field = f.collection_select :tracking_option1, @tracking_categories_1, :name, ->(option){ option.name }, { include_blank: 'Select...' }, { class: 'selectize minimize-text' }
+			td.line-item-field = f.collection_select :tracking_option2, @tracking_categories_2, :name, ->(option){ option.name }, { include_blank: 'Select...' }, { class: 'selectize minimize-text' }
 		- elsif @tracking_categories_1.present? and @tracking_categories_2.nil?
-			td.line-item-field = f.collection_select :tracking_option1, @tracking_categories_1, :name, ->(option){ option.name }, include_blank: true, class: 'form-control minimize-text'
+			td.line-item-field = f.collection_select :tracking_option1, @tracking_categories_1, :name, ->(option){ option.name }, { include_blank: 'Select...' }, { class: 'selectize minimize-text' }
 	td.line-item-field.pr-2 = link_to "x", '#', class: 'btn btn-danger remove_line_items'
 	= f.hidden_field :_destroy, class: 'destroy'

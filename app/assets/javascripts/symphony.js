@@ -15,35 +15,6 @@
         $(this).closest('tr').remove();
         return event.preventDefault();
     })
-    //dynamically changing the EXISTING dropdowns, instead of manually selectize the various dropdown
-    var current = 0;
-    $('tr.line_items').each(function(){
-        $('#invoice_line_items_attributes_' + current + '_account').selectize({
-            dropdownParent: 'body'
-        })
-        current++;
-    })
-    var tax_current = 0;
-    $('tr.line_items').each(function(){
-        $('#invoice_line_items_attributes_' + tax_current + '_tax').selectize({
-            dropdownParent: 'body'
-        })
-        tax_current++;
-    })
-    var tracking1_current = 0;
-    $('tr.line_items').each(function(){
-        $('#invoice_line_items_attributes_' + tracking1_current + '_tracking_option1').selectize({
-            dropdownParent: 'body'
-        })
-        tracking1_current++;
-    })
-    var tracking2_current = 0;
-    $('tr.line_items').each(function(){
-        $('#invoice_line_items_attributes_' + tracking2_current + '_tracking_option2').selectize({
-            dropdownParent: 'body'
-        })
-        tracking2_current++;
-    })
     //add attribute fields with selectize drop down (for creating invoice and data entry)
     $('form').on('click', '.add_attribute_fields', function(event) {
       var regexp, time;
@@ -73,21 +44,16 @@
       $('.data-attributes').find('tr:last-child').find('.create').val('1');
       return event.preventDefault();
     });
-
-    //if radio button is checked, show the relevant fields
-    $('input:radio[name="radioContact"]').change(
+    //if radio button is checked, disable or enable the relevant fields
+    $('input:radio[name="radioContact"]').click(
         function(){
             if($(this).val() == 'existing'){
                 $('.new-disable').attr('disabled', true);
-                $('.new-contact').css('display', 'none');
-                $('.existing-disable').attr('disabled', false);
-                $('.existing-contact').css('display', 'block');
+                $('.existing-contact-disable')[0].selectize.enable();
             }
             else{
-                $('.existing-disable').attr('disabled', true);
-                $('.existing-contact').css('display', 'none');
+                $('.existing-contact-disable')[0].selectize.disable();
                 $('.new-disable').attr('disabled', false);
-                $('.new-contact').css('display', 'block');
             }
         }
     )
@@ -95,5 +61,4 @@
       return $(this).closest('td').next().find('.update').val('1');
     });
   });
-
 }).call(this);

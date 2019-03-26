@@ -55,7 +55,6 @@ module Adapter
         else
           @tracking = nil
         end
-
         @ap.add_line_item(item_code: nil, description: line_item.description, quantity: line_item.quantity, unit_amount: line_item.price, account_code: line_item.account, tax_type: line_item.tax, tracking: @tracking)
       end
       @ap.save!

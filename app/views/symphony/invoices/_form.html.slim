@@ -4,19 +4,17 @@
 			h5.mb-0.card-header Xero Contact
 			.card-body.contact-body
 				.row.m-2
-					.form-check.form-check-inline.col-md-5
-						input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing"
-						label.form-check-label for="radioContact" Existing Contact
-					.form-check.form-check-inline.col-md-5
-						input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
-						label.form-check-label for="radioContact" New Contact
-				.row
-					.form-group.existing-contact.mt-2.col-md-12
-						= f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, class: 'selectize existing-disable', data: {placeholder: "Select a contact..."}
-						/Added hidden field to overwrite the xero_contact_name
-						= f.hidden_field :xero_contact_name, value: nil
-					.form-group.new-contact.mt-2.col-md-12
-						= f.text_field :xero_contact_name, class: 'form-control new-disable', placeholder: 'New contact here...', value: nil, disabled: true
+					.form-inline.col-md-12
+						.form-group.col-md-6.p-0
+							input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing"
+							label.form-check-label.mr-2 for="radioContact" Existing Contact:
+							= f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, class: 'selectize existing-contact-width existing-contact-disable'
+							/Added hidden field to overwrite the xero_contact_name
+							= f.hidden_field :xero_contact_name, value: nil
+						.form-group.col-md-6.p-0
+							input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
+							label.form-check-label.mr-2 for="radioContact" New Contact:
+							= f.text_field :xero_contact_name, class: 'form-control new-disable', placeholder: 'New contact here...', value: nil, disabled: true
 .row
 	.col-md-12.mt-3
 		.card.mb-3
