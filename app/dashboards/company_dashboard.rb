@@ -8,16 +8,16 @@ class CompanyDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    name: Field::String,
     id: Field::Number,
-    company_type: EnumField,
-    image_url: Field::Image,
-    description: Field::Text,
-    address: Field::HasOne,
+    name: Field::String,
     workflows: Field::HasMany,
     templates: Field::HasMany,
     documents: Field::HasMany,
     users: Field::HasMany,
+    address: Field::HasOne,
+    description: Field::Text,
+    image_url: Field::Image,
+    company_type: EnumField,
     ssic_code: Field::String,
     financial_year_end: Field::DateTime,
     xero_email: Field::String,
