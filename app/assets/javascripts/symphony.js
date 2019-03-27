@@ -16,7 +16,7 @@
         return event.preventDefault();
     })
     //dropdownParent is required to avoid dropdown clipping issue so that the dropdown isn't a child of an element with clipping
-    $('.new-workflow-value').selectize({
+    $('.dropdown-overlay').selectize({
         dropdownParent: "body"
     })
     //add attribute fields with selectize drop down (for creating invoice and data entry)
