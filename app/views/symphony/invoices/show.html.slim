@@ -69,7 +69,7 @@
 							td = line_item.description
 							td = line_item.quantity
 							td = number_with_precision(line_item.price, precision: 2, delimiter: ',')
-							td = line_item.account
+							td = line_item.account or '-'
 							td = line_item.tracking_option_1 or '-'
 							td = line_item.tracking_option_2 or '-'
 							td = number_with_precision(line_item.quantity.to_i * line_item.price.to_f, precision: 2, delimiter: ',')
