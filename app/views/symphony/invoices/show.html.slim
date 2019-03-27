@@ -25,16 +25,15 @@
 		p #{ 'Invoice ' + @invoice.invoice_type }
 	.col-md-2.col-sm-4
 		strong Attachments:
-		p
-			- if @documents.empty?
-			  | -
-			- else
-			  - @documents.each do |d|
-			    .media
-			      .media-left.media-middle
-			        a href="#{d.file_url}"
-			        	i.ti-file
-			        	= d.filename
+		- if @documents.empty?
+		  | -
+		- else
+		  - @documents.each do |d|
+		    .media
+		      .media-left.media-middle
+		        a href="#{d.file_url}"
+		        	i.ti-file
+		        	= d.filename
 .row
 	.col-md-2.col-sm-4
 		strong Invoice Currency:
@@ -54,25 +53,31 @@
 			table.table
 				thead
 					tr
-						th Item
-						th Description
-						th Qty
-						th Unit Price ($)
-						th Account
-						th = @tracking_name[0]&.name or 'No Tracking'
-						th = @tracking_name[1]&.name or 'No Tracking'
-						th Amount ($)
+						th.text-center Item
+						th.text-center Description
+						th.text-center Qty
+						th.text-center Unit Price ($)
+						th.text-center Account
+						- if @tracking_name[1]&.name.present?
+							th.text-center = @tracking_name[0]&.name
+							th.text-center = @tracking_name[1]&.name
+						- elsif @tracking_name[0]&.name.present? and @tracking_name[1]&.name.nil?
+							th.text-center = @tracking_name[0]&.name
+						th.text-center Amount ($)
 				tbody
 					- @invoice.line_items.each_with_index do |line_item, index|
 						tr
-							td = index + 1
-							td = line_item.description
-							td = line_item.quantity
-							td = number_with_precision(line_item.price, precision: 2, delimiter: ',')
-							td = line_item.account or '-'
-							td = line_item.tracking_option_1 or '-'
-							td = line_item.tracking_option_2 or '-'
-							td = number_with_precision(line_item.quantity.to_i * line_item.price.to_f, precision: 2, delimiter: ',')
+							td.text-center = index + 1
+							td.text-center = line_item.description
+							td.text-center = line_item.quantity
+							td.text-center = number_with_precision(line_item.price, precision: 2, delimiter: ',')
+							td.text-center = line_item.account or '-'
+							- if @tracking_name[1]&.name.present?
+								td.text-center = line_item.tracking_option_1 or '-'
+								td.text-center = line_item.tracking_option_2 or '-'
+							- elsif @tracking_name[0]&.name.present? and @tracking_name[1]&.name.nil?
+								td.text-center = line_item.tracking_option_1 or '-'
+							td.text-center = number_with_precision(line_item.quantity.to_i * line_item.price.to_f, precision: 2, delimiter: ',')
 .row
 	.col-sm-12
 		strong.pull-right.m-3.subtotal Sub-total ($): #{number_with_precision(@total, precision: 2, delimiter: ',')}
