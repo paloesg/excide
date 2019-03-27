@@ -7,7 +7,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflow, only: [:new, :create, :show, :edit, :update]
   before_action :set_documents
   before_action :set_company
-  before_action :get_xero_details, only: [:new, :create, :edit, :update, :show]
+  before_action :get_xero_details
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
