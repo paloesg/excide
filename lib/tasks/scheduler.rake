@@ -31,4 +31,11 @@ namespace :scheduler do
       NotificationMailer.contractor_notification(user).deliver_later
     end
   end
+
+  task :workflow_inform_to_deadline_reminders => :environment do
+    workflows = Workflow.where(completed: nil).where('deadline BETWEEN ? AND ?', Date.current.beginning_of_day, Date.current.end_of_day).all
+    workflows.each do |workflow|
+      NotificationMailer.inform_to_notification(workflow, 'deadline').deliver_later
+    end
+  end
 end

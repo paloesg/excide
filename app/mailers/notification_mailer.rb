@@ -16,12 +16,14 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.identifier)
   end
 
-  def inform_to_notification(workflow)
+  def inform_to_notification(workflow, type)
     @workflow = workflow
+    @type = type
     @informed_user = @workflow.informed_user
     address = Mail::Address.new @informed_user.email
     address.display_name = @informed_user.full_name
-    mail(to: address.format, subject: '[Workflow Completed] ' + @workflow.identifier)
+    @subject = type == 'completed' ? 'Completed' : 'Deadline is reached'
+    mail(to: address.format, subject: '[Workflow '+ @subject +'] ' + @workflow.identifier)
   end
 
   def reminder_notification(reminder)
