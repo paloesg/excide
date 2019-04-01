@@ -28,7 +28,6 @@ class Symphony::DocumentsController < DocumentsController
     respond_to do |format|
       if @document.save
         if params[:document_type] == 'invoice'
-          @client = Client.find(params[:document][:client_id])
           @template = Template.find(params[:document][:template_id])
           @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: @document.identifier, workflowable: @client)
           @workflow.template_data(@template)
