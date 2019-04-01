@@ -21,7 +21,7 @@ class Symphony::WorkflowsController < WorkflowsController
   def new
     @workflow = Workflow.new
     @workflow.template_data(@template)
-    @workflow.identifier = (Date.current.to_s + '-' + @template.title).parameterize.upcase
+    @workflow.identifier = (Date.current.to_s + '-' + @template.title + SecureRandom.hex).parameterize.upcase
   end
 
   def create
@@ -30,11 +30,9 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.company = @company
     @workflow.template = @template
 
-    if params[:workflow][:workflowable_id].blank?
+    if params[:workflow][:client][:name].present?
       @xero = Xero.new(session[:xero_auth])
       @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user)
-      contact_id = @xero.create_contact(@workflow.workflowable)
-      @workflow.workflowable.xero_contact_id = contact_id
     end
 
     if @workflow.save
@@ -67,9 +65,9 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def update
-    @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company) unless params[:workflow][:workflowable_id].present? or @workflow.workflowable.present?
-
     if @workflow.update(workflow_params)
+      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present? or @workflow.workflowable.present?
+      @workflow.save
       log_data_activity
       log_workflow_activity
       if params[:assign]
@@ -151,7 +149,7 @@ class Symphony::WorkflowsController < WorkflowsController
   def xero_create_invoice_payable
     @xero = Xero.new(session[:xero_auth])
     if @workflow.invoice.payable?
-      xero_invoice = @xero.create_invoice_payable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type)
+      xero_invoice = @xero.create_invoice_payable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency)
       @workflow.invoice.xero_invoice_id = xero_invoice.id
       @workflow.invoice.save
       @workflow.documents.each do |document|

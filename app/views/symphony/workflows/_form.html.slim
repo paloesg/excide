@@ -50,29 +50,28 @@
     .row
       .col-sm-12
         .accordion#clientAccordion
-          .card
-            .card-header#headingOne
-              h2.mb-0
-                button.btn.btn-link type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" Existing Client
-            .collapse.show#collapseOne aria-labelledby="headingOne" data-parent="#clientAccordion"
-              .card-body
-                .form-group
-                  = f.label :workflowable_id, 'Client Name'
-                  = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'selectize', id: 'new-workflow-value'
-          - if @workflow.workflowable.blank?
-            .card
-              .card-header#headingTwo
-                h2.mb-0
-                  button.btn.btn-link.collapsed type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" New Client
-              .collapse#collapseTwo aria-labelledby="headingTwo" data-parent="#clientAccordion"
-                .card-body
-                  .form-group
-                    = f.fields_for :client do |c|
-                      .form-group
-                        = c.label :name, 'Client Name'
-                        = c.text_field :name, class: 'form-control'
+        	.card
+        	  .card-header#headingOne
+        	    h2.mb-0
+        	      button.btn.btn-link type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" Existing Client
+        	  .collapse.show#collapseOne aria-labelledby="headingOne" data-parent="#clientAccordion"
+        	    .card-body
+        	      .form-group
+        	        = f.label :workflowable_id, 'Client Name'
+        	        = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'dropdown-overlay'
+        	- if @workflow.workflowable.blank?
+        	  .card
+        	    .card-header#headingTwo
+        	      h2.mb-0
+        	        button.btn.btn-link.collapsed type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" New Client
+        	    .collapse#collapseTwo aria-labelledby="headingTwo" data-parent="#clientAccordion"
+        	      .card-body
+        	      	.form-group
+	      	          = f.fields_for :client do |c|
+	      	            .form-group
+	      	              = c.label :name, 'Client Name'
+	      	              = c.text_field :name, class: 'form-control'
 .row
   .col-sm-12
     = f.submit 'Save Workflow', class: 'btn btn-primary'
-    '
-    = f.submit 'Save & Assign Tasks', name: 'assign', class: 'btn btn-primary'
+		= f.submit 'Save & Assign Tasks', name: 'assign', class: 'btn btn-primary'
