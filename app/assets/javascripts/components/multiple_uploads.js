@@ -2,8 +2,8 @@ Dropzone.autoDiscover = false;
 
 $(document).ready(function () {
   // Show dropzone after client and template selected
-  $("#client_id,#template_id").on('change', function() {
-    if ($("#client_id").val() && $("#template_id").val()) {
+  $("#template_id").on('change', function() {
+    if ( $("#template_id").val() ) {
       $(".multiple_uploads").collapse();
     }
   })
@@ -19,8 +19,8 @@ $(document).ready(function () {
     };
     var documentUpload = new Dropzone('.multiple_uploads', { timeout: 0, renameFilename: cleanFilename });
     documentUpload.on("sending", function(file) {
-      if ($('#client_id').val() == "" || $('#template_id').val() == "") {
-        alert('Client and Template is required.');
+      if ( $('#template_id').val() == "" ) {
+        alert('Template is required.');
         this.removeFile(file);
       }
     })
@@ -36,7 +36,6 @@ $(document).ready(function () {
             filename: file.upload.filename,
             identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,
-            client_id: $('#client_id').val(),
             template_id: $('#template_id').val(),
           }
         });

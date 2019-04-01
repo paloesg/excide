@@ -87,9 +87,6 @@
         h5.card-header Upload Invoices
         .card-body
           .form-group
-            = label_tag "Client"
-            = select_tag('client_id', options_for_select(@clients.map{|k,v| [k.name, k.id]}), include_blank: true, class: 'selectize')
-          .form-group
             = label_tag "Workflow template"
             = select_tag('template_id', options_for_select(@templates.map {|k,v| [k.title, k.id] }), include_blank: true, class: 'selectize')
           = form_tag @s3_direct_post.url, class: 'dropzone collapse multiple_uploads', id: 'uploader'
