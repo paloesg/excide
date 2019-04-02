@@ -71,7 +71,10 @@
 							td.text-center = line_item.description
 							td.text-center = line_item.quantity
 							td.text-center = number_with_precision(line_item.price, precision: 2, delimiter: ',')
-							td.text-center = (line_item.account + ' - ' + @account_names[index]) or '-'
+							td.text-center
+								- @xero.get_account_attributes(line_item.account).each do |acc|
+									= (line_item.account + ' - ' + acc.name) or '-'
+								end
 							- if @tracking_name[1]&.name.present?
 								td.text-center = line_item.tracking_option_1 or '-'
 								td.text-center = line_item.tracking_option_2 or '-'
