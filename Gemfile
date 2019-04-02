@@ -66,8 +66,6 @@ gem 'rack-attack'
 
 # State machine gem
 gem 'aasm'
-# Payments integration with Stripe
-gem 'stripe'
 # Docusign gem for e-signature
 gem 'docusign_rest'
 # SMS integration with Twilio

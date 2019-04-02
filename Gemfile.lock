@@ -156,7 +156,6 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.5)
-    connection_pool (2.2.2)
     crass (1.0.4)
     datetime_picker_rails (0.0.7)
       momentjs-rails (>= 2.8.1)
@@ -302,8 +301,6 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     nenv (0.3.0)
-    net-http-persistent (3.0.0)
-      connection_pool (~> 2.2)
     nio4r (2.3.1)
     nokogiri (1.10.2)
       mini_portile2 (~> 2.4.0)
@@ -516,9 +513,6 @@ GEM
       unicode-display_width (~> 1.4.0)
       unicode_utils (~> 1.4.0)
     strings-ansi (0.1.0)
-    stripe (4.10.0)
-      faraday (~> 0.13)
-      net-http-persistent (~> 3.0)
     sucker_punch (2.1.1)
       concurrent-ruby (~> 1.0)
     temple (0.8.1)
@@ -633,7 +627,6 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   sprockets-rails (= 2.3.3)
-  stripe
   sucker_punch (~> 2.0)
   themify-icons-rails!
   trix
