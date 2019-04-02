@@ -27,6 +27,10 @@ module Adapter
       @xero_client.Account.all
     end
 
+    def get_account_attributes(account_code)
+      @xero_client.Account.all(:where => {:code => account_code})
+    end
+
     def get_tax_rates
       @xero_client.TaxRate.all
     end

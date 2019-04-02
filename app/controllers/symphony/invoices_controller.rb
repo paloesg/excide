@@ -64,6 +64,13 @@ class Symphony::InvoicesController < ApplicationController
 
   def show
     @total = @invoice.total_amount
+    @account_names = []
+    @invoice.line_items.each do |lineitem|
+      @accounts = @xero.get_account_attributes(lineitem.account)
+      @accounts.each do |acc|
+        @account_names << acc.name
+      end
+    end
   end
 
   def destroy
