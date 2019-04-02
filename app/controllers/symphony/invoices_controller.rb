@@ -3,8 +3,8 @@ class Symphony::InvoicesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_invoice, only: [:edit, :update, :show]
-  before_action :set_workflow, only: [:new, :create, :show, :edit, :update]
+  before_action :set_invoice, only: [:edit, :update, :show, :destroy]
+  before_action :set_workflow
   before_action :set_documents
   before_action :set_company
   before_action :get_xero_details
@@ -64,6 +64,23 @@ class Symphony::InvoicesController < ApplicationController
 
   def show
     @total = @invoice.total_amount
+  end
+
+  def destroy
+    #if invoice is sent to xero already, then set xero invoice status to deleted or voided, depending on the current status
+    if @invoice.xero_invoice_id.present?
+      @delete_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
+      if (@delete_invoice.status == "DRAFT" or @delete_invoice.status == "SUBMITTED")
+        @delete_invoice.status = "DELETED"
+      else
+        @delete_invoice.status = "VOIDED"
+      end
+      @delete_invoice.save
+    end
+    @invoice.destroy!
+    respond_to do |format|
+      format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Invoice has been deleted successfully"}
+    end
   end
 
   private

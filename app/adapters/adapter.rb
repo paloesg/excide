@@ -19,6 +19,10 @@ module Adapter
       return contact = @xero_client.Contact.find(xero_contact_id)
     end
 
+    def get_invoice(xero_invoice_id)
+      return invoice = @xero_client.Invoice.find(xero_invoice_id)
+    end
+
     def get_accounts
       @xero_client.Account.all
     end
