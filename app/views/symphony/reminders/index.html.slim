@@ -6,8 +6,10 @@
       li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
       li.breadcrumb-item.active Reminders
-    h1 Manage Your Reminders
-
+    h1
+      | Manage Your Reminders
+      .btn-toolbar.float-right
+        = link_to 'Create Reminder', new_symphony_reminder_path, role: 'button', class: 'btn btn-primary'
 .row
   .col-sm-12
     - if @reminders.blank?
@@ -16,6 +18,7 @@
       table.table.table-hover
         thead
           tr
+            th Title
             th Content
             th Task
             th Next Reminder
@@ -24,10 +27,11 @@
         tbody
           - @reminders.each do |reminder|
             tr
+              td = reminder.title
               td = reminder.content
               td = reminder.task.present? ? link_to(reminder.task.section.template.title, symphony_workflow_path(reminder.task.section.template.slug, reminder.workflow_action.workflow.identifier)) : '-'
               td = reminder.next_reminder&.strftime("%F")
-              td = reminder.repeat ? 'Yes' : 'No'
+              td = reminder.repeat ? "Every #{reminder.freq_value} #{reminder.freq_unit}" : "No repeat"
               td
                 = link_to 'Stop', cancel_symphony_reminder_path(reminder.id), method: :post, role: 'button', class: 'btn btn-danger btn-sm mr-2' if reminder.next_reminder.present?
                 = link_to 'Edit', edit_symphony_reminder_path(reminder.id), role: 'button', class: 'btn btn-primary btn-sm mr-2'
