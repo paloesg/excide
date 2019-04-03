@@ -91,8 +91,20 @@ class Symphony::InvoicesController < ApplicationController
   def get_xero_details
     @xero = Xero.new(session[:xero_auth])
     @clients = @xero.get_contacts
-    @accounts = @xero.get_accounts
-    @taxes = @xero.get_tax_rates
+    #saving all the acocunt code + name in an empty array
+    @xero_accounts = @xero.get_accounts
+    @full_account_code = []
+    @xero_accounts.each do |account|
+      @full_account_code << account.code + ' - ' + account.name
+    end
+    #saving all the tax code + name in an empty array
+    @xero_taxes = @xero.get_tax_rates
+    @full_tax_code = []
+    @xero_taxes.each do |tax|
+      tax.tax_components.each do |tax_component|
+        @full_tax_code << tax.name + ' (' + tax.display_tax_rate.to_s + '%) - ' + tax.tax_type
+      end
+    end
     @currencies = @xero.get_currencies
     @tracking_name = @xero.get_tracking_options
     @tracking_categories_1 = @tracking_name[0]&.options&.map{|option| option}
