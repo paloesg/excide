@@ -7,7 +7,17 @@
 .row
   .col-sm-6
     .form-group
-      = f.label :next_reminder
+      = f.label :title, "Reminder title"
+      = f.text_field :title, class: 'form-control'
+.row
+  .col-sm-6
+    .form-group
+      = f.label :content, "Reminder content"
+      = f.text_area :content, class: 'form-control'
+.row
+  .col-sm-6
+    .form-group
+      = f.label :next_reminder, "Next reminder date"
       = f.text_field :next_reminder, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
 .row
   .col-sm-3

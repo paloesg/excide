@@ -54,6 +54,6 @@ class Symphony::RemindersController < ApplicationController
   end
 
   def reminder_params
-    params.require(:reminder).permit(:next_reminder, :repeat, :freq_value, :freq_unit, :email, :sms, :slack)
+    params.require(:reminder).permit(:title, :content, :next_reminder, :repeat, :freq_value, :freq_unit, :email, :sms, :slack)
   end
 end
