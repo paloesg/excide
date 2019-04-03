@@ -8,6 +8,26 @@ class Symphony::RemindersController < ApplicationController
     @reminders = @user.reminders
   end
 
+  def new
+    @reminder = Reminder.new
+  end
+
+  def create
+    @reminder = Reminder.new(reminder_params)
+    @reminder.user = current_user
+    @reminder.company = current_user.company
+
+    respond_to do |format|
+      if @reminder.save
+        format.html { redirect_to symphony_reminders_path, notice: 'Reminder was successfully created.' }
+        format.json { render :show, status: :created, location: @reminder }
+      else
+        format.html { render :new }
+        format.json { render json: @reminder.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def edit
   end
 
@@ -34,6 +54,6 @@ class Symphony::RemindersController < ApplicationController
   end
 
   def reminder_params
-    params.require(:reminder).permit(:next_reminder, :repeat, :freq_value, :freq_unit, :email, :sms, :slack)
+    params.require(:reminder).permit(:title, :content, :next_reminder, :repeat, :freq_value, :freq_unit, :email, :sms, :slack)
   end
 end

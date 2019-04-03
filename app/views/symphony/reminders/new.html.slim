@@ -7,9 +7,9 @@
         a href="#" Company
       li.breadcrumb-item
         a href="#" Reminders
-      li.breadcrumb-item.active Edit
-    h1 Edit Reminder
+      li.breadcrumb-item.active Create
+    h1 Create Reminder
 .row
   .col-sm-12
-    = form_for(@reminder, url: symphony_reminder_path(@reminder.id)) do |f|
+    = form_for(@reminder, url: symphony_reminders_path) do |f|
       = render 'form', f: f
