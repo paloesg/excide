@@ -48,11 +48,10 @@
 							th.minimize-header-text Description
 							th.minimize-header-text Quantity
 							th.minimize-header-text Price ($)
-							- if current_user.has_role? :associate, @company
-								th.minimize-header-text Account
-								th.minimize-header-text Tax
-								th.minimize-header-text #{@tracking_name[0]&.name}
-								th.minimize-header-text #{@tracking_name[1]&.name}
+							th.minimize-header-text Account
+							th.minimize-header-text Tax
+							th.minimize-header-text #{@tracking_name[0]&.name}
+							th.minimize-header-text #{@tracking_name[1]&.name}
 					tbody.data-attributes
 						tr
 						= f.fields_for :line_items do |line_item|
