@@ -58,6 +58,7 @@
 						th.text-center Qty
 						th.text-center Unit Price ($)
 						th.text-center Account
+						th.text-center Tax
 						- if @tracking_name[1]&.name.present?
 							th.text-center = @tracking_name[0]&.name
 							th.text-center = @tracking_name[1]&.name
@@ -72,6 +73,7 @@
 							td.text-center = line_item.quantity
 							td.text-center = number_with_precision(line_item.price, precision: 2, delimiter: ',')
 							td.text-center = line_item.account or '-'
+							td.text-center = line_item.tax.split(" -").first
 							- if @tracking_name[1]&.name.present?
 								td.text-center = line_item.tracking_option_1 or '-'
 								td.text-center = line_item.tracking_option_2 or '-'
