@@ -143,9 +143,6 @@ class Symphony::WorkflowsController < WorkflowsController
       @previous_document = @documents.where('id < ?', @document.id).first
       @next_document = @documents.where('id > ?', @document.id).last
     end
-
-    @xero = Xero.new(session[:xero_auth])
-    @accounts = @xero.get_accounts
   end
 
   def xero_create_invoice_payable
