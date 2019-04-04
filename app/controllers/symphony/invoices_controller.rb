@@ -89,18 +89,14 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def get_xero_details
-    @xero = Xero.new(session[:xero_auth])
-    @clients = @xero.get_contacts
-    #saving all the acocunt code + name in an empty array
-    @xero_accounts = @xero.get_accounts
-    @full_account_code = @xero_accounts.map{|account| account.code + ' - ' + account.name }
-    #saving all the tax code + name in an empty array
-    @xero_taxes = @xero.get_tax_rates
-    @full_tax_code = @xero_taxes.map{|tax| tax.name + ' (' + tax.display_tax_rate.to_s + '%) - ' + tax.tax_type}
-    @currencies = @xero.get_currencies
-    @tracking_name = @xero.get_tracking_options
-    @tracking_categories_1 = @tracking_name[0]&.options&.map{|option| option}
-    @tracking_categories_2 = @tracking_name[1]&.options&.map{|option| option}
+    @xero                   = Xero.new(session[:xero_auth])
+    @clients                = @xero.get_contacts
+    @full_account_code      = @xero.get_accounts.map{|account| account.code + ' - ' + account.name } # Combine account codes and account names as a string
+    @full_tax_code          = @xero.get_tax_rates.map{|tax| tax.name + ' (' + tax.display_tax_rate.to_s + '%) - ' + tax.tax_type} # Combine tax codes and tax names as a string
+    @currencies             = @xero.get_currencies
+    @tracking_name          = @xero.get_tracking_options
+    @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| option}
+    @tracking_categories_2  = @tracking_name[1]&.options&.map{|option| option}
   end
 
   def invoice_params
