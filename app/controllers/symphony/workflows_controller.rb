@@ -66,8 +66,10 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def update
     if @workflow.update(workflow_params)
-      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present? or @workflow.workflowable.present?
-      @workflow.save
+      if params[:workflow][:client].present?
+        @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present? or @workflow.workflowable.present?
+        @workflow.save
+      end
       log_data_activity
       log_workflow_activity
       if params[:assign]
