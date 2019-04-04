@@ -5,7 +5,7 @@ class Symphony::RemindersController < ApplicationController
   def index
     @user = current_user
     @company = @user.company
-    @reminders = @user.reminders
+    @reminders = @company.reminders.where(user: @user)
 
     @activities = PublicActivity::Activity.where(trackable_type: "Reminder", recipient_id: current_user.id).order("created_at desc")
   end
