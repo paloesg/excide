@@ -1,6 +1,7 @@
 class Reminder < ApplicationRecord
   include PublicActivity::Model
-  tracked owner: ->(controller, model) { controller && controller.current_user }
+  tracked owner: ->(controller, model) { controller && controller.current_user },
+          recipient: ->(_controller, model) { model&.user }
 
   belongs_to :user
   belongs_to :company
