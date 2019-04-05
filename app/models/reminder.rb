@@ -1,6 +1,7 @@
 class Reminder < ApplicationRecord
   include PublicActivity::Model
-  tracked owner: ->(controller, model) { controller && controller.current_user }
+  tracked owner: ->(controller, model) { controller && controller.current_user },
+          recipient: ->(_controller, model) { model&.user }
 
   belongs_to :user
   belongs_to :company
@@ -9,7 +10,7 @@ class Reminder < ApplicationRecord
 
   enum freq_unit: [:days, :weeks, :months, :years]
 
-  validates :user, :company, presence: true
+  validates :user, :company, :title, presence: true
   validate :at_least_one_notification_method
 
   def self.today
