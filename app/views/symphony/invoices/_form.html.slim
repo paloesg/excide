@@ -8,11 +8,11 @@
 						.form-group.col-md-6.p-0
 							input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing" checked="checked"
 							label.form-check-label.mr-2 for="radioContact" Existing Contact:
-							= f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, class: 'selectize existing-contact-width existing-contact-disable'
+							= f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'selectize existing-contact-width existing-contact-disable', required: true }
 						.form-group.col-md-6.p-0
 							input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
 							label.form-check-label.mr-2 for="radioContact" New Contact:
-							= f.text_field :xero_contact_name, class: 'form-control new-disable', placeholder: 'New contact here...', value: nil, disabled: true
+							= f.text_field :xero_contact_name, class: 'form-control new-disable', required: true, placeholder: 'New contact here...', value: nil, disabled: true
 .row
 	.col-md-12.mt-3
 		.card.mb-3
@@ -21,16 +21,16 @@
 				.form-row
 					.form-group.col-md-2
 						= f.label :invoice_date, 'Invoice Date'
-						= f.date_field :invoice_date, class: 'form-control'
+						= f.date_field :invoice_date, required: true, class: 'form-control'
 					.form-group.col-md-2
 						= f.label :due_date, 'Due Date'
 						= f.date_field :due_date, class: 'form-control'
 					.form-group.col-md-2
 						= f.label :line_amount_type, 'Amounts are: ', class: 'mr-2'
-						= f.select :line_amount_type, [["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "no_tax"]], {include_blank: true}, {class: 'form-control'}
+						= f.select :line_amount_type, [["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "no_tax"]], {include_blank: true}, {class: 'form-control', required: true}
 					.form-group.col-md-2
 						= f.label :invoice_type, 'Invoice Type', class: 'mr-2'
-						= f.select :invoice_type, Invoice.invoice_types.map{|k, v| [k.humanize, k]}, {selected: params[:invoice_type], include_blank: true}, {class: 'form-control'}
+						= f.select :invoice_type, Invoice.invoice_types.map{|k, v| [k.humanize, k]}, {selected: params[:invoice_type], include_blank: true}, {class: 'form-control', required: true}
 					.form-group.col-md-2
 						= f.label :invoice_reference, 'Reference', class: 'mr-2'
 						= f.text_field :invoice_reference, class: 'form-control'
