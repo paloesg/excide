@@ -10,7 +10,7 @@ class Reminder < ApplicationRecord
 
   enum freq_unit: [:days, :weeks, :months, :years]
 
-  validates :user, :company, presence: true
+  validates :user, :company, :title, presence: true
   validate :at_least_one_notification_method
 
   def self.today
