@@ -66,10 +66,9 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def update
     if @workflow.update(workflow_params)
-      if params[:workflow][:client].present?
-        @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present? or @workflow.workflowable.present?
-        @workflow.save
-      end
+      #if workflow.workflowable is present, don't need to create client. If no workflowable params is posted(such as in the case of data-entry), no client is created too.
+      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless @workflow.workflowable.present? or params[:workflow][:workflowable].nil?
+      @workflow.save
       log_data_activity
       log_workflow_activity
       if params[:assign]
