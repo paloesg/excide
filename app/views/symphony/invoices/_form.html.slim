@@ -3,16 +3,20 @@
 		.card
 			h5.mb-0.card-header Xero Contact
 			.card-body.contact-body
-				.row.m-2
+				.row.m-1
 					.form-inline.col-md-12
-						.form-group.col-md-6.p-0
+						.form-group.col-md-5.p-0
 							input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing" checked="checked"
 							label.form-check-label.mr-2 for="radioContact" Existing Contact:
 							= f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'selectize existing-contact-width existing-contact-disable', required: true }
-						.form-group.col-md-6.p-0
+						.form-group.col-md-5.p-0
 							input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
 							label.form-check-label.mr-2 for="radioContact" New Contact:
 							= f.text_field :xero_contact_name, class: 'form-control new-disable', required: true, placeholder: 'New contact here...', value: nil, disabled: true
+						.form-group.col-md-2.p-0
+							.custom-control.custom-switch
+								= f.check_box :approved, class: 'form-control custom-control-input', id: 'approve-invoice'
+								label.custom-control-label for="approve-invoice" Approved
 .row
 	.col-md-12.mt-3
 		.card.mb-3
