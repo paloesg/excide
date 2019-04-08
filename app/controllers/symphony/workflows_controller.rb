@@ -155,11 +155,19 @@ class Symphony::WorkflowsController < WorkflowsController
       @workflow.documents.each do |document|
         xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
       end
+      @invoice_payable = @xero.get_invoice(@workflow.invoice.xero_invoice_id)
+      #this is to send invoice to xero 'awaiting approval'
+      if params[:approved].present?
+        @invoice_payable.status = "SUBMITTED"
+      #this is to send invoice to xero 'awaiting payment'
+      elsif params[:payment].present?
+        @invoice_payable.status = "AUTHORISED"
+      end
+      @invoice_payable.save
     else
       #in future if we do account receivable, must modify the adapter method create_invoice_receivable
       @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
-
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
   end
 

@@ -25,17 +25,25 @@ tr
 				h6 Actions:
 				.btn-toolbar role="toolbar"
 					.btn-group.mr-2 role="group" aria-label="Task actions"
+						- params1 = {\
+								approved: "approved",
+							}
+						- params2 = {\
+								payment: "payment",
+							}
 						- if @workflow.invoice&.payable?
 							/ If xero invoice is present, only show button to view Xero invoice
 							- if @workflow.invoice.xero_invoice_id.present?
 								= link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm', target: :_blank
 							/ Else, check if workflow client is already on Xero if not show button to add client to Xero first. After client is on Xero, show button to send invoice to Xero.
 							- else
-								= @workflow.invoice.xero_contact_id.present? ? link_to("Send Invoice Payable to Xero", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2') : link_to('Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm')
+								= link_to('Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm') if @workflow.invoice.xero_contact_id.nil?
+								= link_to("Send to Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, params1), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
+								= link_to("Send to Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, params2), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
 						- elsif @workflow.invoice&.receivable?
 							= link_to("Not invoice payable", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
 						- else
-						  = link_to("No invoice found", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
+							= link_to("No invoice found", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
 					.btn-group.mr-2 role="group" aria-label="Reminder actions"
 						- if action.reminders.present?
 							= link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
