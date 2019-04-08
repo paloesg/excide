@@ -153,6 +153,10 @@
 								h5.card-title = @invoice.id
 								h6.card-subtitle Invoice Type: #{@invoice.invoice_type.capitalize}
 								h6.card-subtitle.mt-1 Invoice Contact: #{@invoice.xero_contact_name.capitalize}
+								- if @invoice.approved?
+									h6.card-subtitle.mt-1 Invoice Status: Approved
+								- else
+									h6.card-subtitle.mt-1 Invoice Status: Not Approved
 								.text-muted = @invoice.created_at.strftime("Uploaded at %d/%m/%Y %R")
 #task-popover-content.d-none
 	p.pt-2
