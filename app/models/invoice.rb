@@ -7,6 +7,8 @@ class Invoice < ApplicationRecord
 
   validates :invoice_type, inclusion: { in: invoice_types.keys }
 
+  validate :check_line_item_fields, if: :invoice_approval_status
+
   def line_items
     read_attribute(:line_items).map {|l| LineItem.new(l) }
   end
@@ -46,5 +48,17 @@ class Invoice < ApplicationRecord
     def new_record?() false; end
     def marked_for_destruction?() false; end
     def _destroy() false; end
+  end
+
+  private
+  def check_line_item_fields
+    self.errors.add(:line_items, "account cannot be blank") if self.line_items.map(&:account).include? ""
+    self.errors.add(:line_items, "tax cannot be blank") if self.line_items.map(&:tax).include? ""
+    self.errors.add(:line_items, "tracking option cannot be blank") if self.line_items.map(&:tracking_option_1).include? ""
+    self.errors.add(:line_items, "tracking option cannot be blank") if self.line_items.map(&:tracking_option_2).include? ""
+  end
+
+  def invoice_approval_status
+    self.approved?
   end
 end
