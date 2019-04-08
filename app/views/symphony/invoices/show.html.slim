@@ -38,7 +38,7 @@
 	.col-md-2.col-sm-4
 		strong Invoice Currency:
 		p #{@invoice.currency}
-	.col-md-10.col-sm-4
+	.col-md-2.col-sm-4
 		strong Line Amount Type:
 		- case @invoice.line_amount_type
 		- when 'exclusive'
@@ -47,6 +47,12 @@
 			p Tax Inclusive
 		- when 'no_tax'
 			p No Tax
+	.col-md-2.col-sm-4
+		strong Status:
+		- if @invoice.approved == true
+			p Approved
+		- else
+			p Not approved
 .row
 	.col-sm-12
 		.table-responsive
