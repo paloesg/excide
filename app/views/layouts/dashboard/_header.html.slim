@@ -50,18 +50,17 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
               = link_to "Manage Users", symphony_users_path, class: 'dropdown-item'
               = link_to "Company Details", edit_company_path, class: 'dropdown-item'
 
-        - if ENV['APP_NAME'] == "excide-staging"
-          li.nav-item = link_to "Go to Conductor", conductor_root_path, class: 'nav-link'
         li.nav-item.dropdown
           a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" #{current_user.first_name}
           .dropdown-menu.dropdown-menu-right
             = link_to "User Details", edit_user_registration_path, class: 'dropdown-item'
             = link_to "Manage Reminders", symphony_reminders_path, class: 'dropdown-item'
             - if Company.assigned_companies(current_user).present?
-              .dropdown-divider
-              .dropdown-item Switch Company
-              - Company.assigned_companies(current_user).each do |company|
-                = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item'
+              .dropdown-submenu
+                a.dropdown-item.dropdown-toggle href="#" Switch Company
+                .dropdown-menu.dropdown-menu-right
+                  - Company.assigned_companies(current_user).each do |company|
+                    = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
             .dropdown-divider
             = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'dropdown-item'}
 
