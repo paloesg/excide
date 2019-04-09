@@ -7,7 +7,7 @@ class Invoice < ApplicationRecord
 
   validates :invoice_type, inclusion: { in: invoice_types.keys }
 
-  validate :check_line_item_fields, if: :invoice_approval_status
+  validate :check_line_item_fields, if: :invoice_approved
 
   def line_items
     read_attribute(:line_items).map {|l| LineItem.new(l) }
@@ -58,7 +58,7 @@ class Invoice < ApplicationRecord
     self.errors.add(:line_items, "tracking option cannot be blank") if self.line_items.map(&:tracking_option_2).include? ""
   end
 
-  def invoice_approval_status
+  def invoice_approved
     self.approved?
   end
 end
