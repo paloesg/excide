@@ -38,7 +38,11 @@ Rails.application.routes.draw do
         post '/xero_create', to: 'clients#xero_create', as: :xero_create
       end
     end
-    resources :users
+    resources :users do
+      member do
+        patch '/change_company', to: 'users#change_company', as: :change_company
+      end
+    end
     resources :reminders do
       member do
         post '/cancel', to: 'reminders#cancel'

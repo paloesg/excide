@@ -4,7 +4,7 @@ class Symphony::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles, only: [:new, :create, :edit]
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :change_company]
 
   def index
     @users = User.where(company: @company).order(:id).without_role :contractor, :any
@@ -44,6 +44,14 @@ class Symphony::UsersController < ApplicationController
     redirect_to symphony_users_path, notice: 'User was successfully deleted.'
   end
 
+  def change_company
+    if @user.update(user_params)
+      redirect_to symphony_root_path, notice: "Company changed to #{@company.name}."
+    else
+      redirect_to symphony_root_path, error: 'Unable to switch companies.'
+    end
+  end
+
   private
 
   def set_company
@@ -59,6 +67,6 @@ class Symphony::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :password, :email, :contact_number, :company_id, :role_ids => [])
+    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :role_ids => [])
   end
 end
