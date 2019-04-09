@@ -159,7 +159,7 @@ class Symphony::WorkflowsController < WorkflowsController
       #this is to send invoice to xero 'awaiting approval'
       if params[:approved].present?
         @invoice_payable.status = "SUBMITTED"
-      #this is to send invoice to xero 'awaiting payment'
+      #this is to send invoice to xero 'awaiting payment', default status will be 'draft'
       elsif params[:payment].present?
         @invoice_payable.status = "AUTHORISED"
       end
