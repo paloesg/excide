@@ -26,14 +26,14 @@
 	.col-md-2.col-sm-4
 		strong Attachments:
 		- if @documents.empty?
-		  | -
+			| -
 		- else
-		  - @documents.each do |d|
-		    .media
-		      .media-left.media-middle
-		        a href="#{d.file_url}"
-		        	i.ti-file
-		        	= d.filename
+			- @documents.each do |d|
+				.media
+					.media-left.media-middle
+						a href="#{d.file_url}"
+							i.ti-file
+							= d.filename
 .row
 	.col-md-2.col-sm-4
 		strong Invoice Currency:
