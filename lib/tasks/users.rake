@@ -1,3 +1,11 @@
+############################################################################################################################
+#                                                                                                                          #
+#    Please ensure there is a database backup before running the rake task in case there is any unintended consequences.   #
+#    Double check the target user accounts id (first argument) and destination user account id (second argument) to make   #
+#    sure they are not mixed up.                                                                                           #
+#                                                                                                                          #
+############################################################################################################################
+
 namespace :users do
   desc "Transfer all associations from target user account to destination user account and delete target user account"
   task :merge, [:target_user_id, :destination_user_id] => :environment do |task, args|
