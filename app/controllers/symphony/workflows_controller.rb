@@ -149,7 +149,6 @@ class Symphony::WorkflowsController < WorkflowsController
     if @workflow.invoice.payable?
       xero_invoice = @xero.create_invoice_payable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency)
       @workflow.invoice.xero_invoice_id = xero_invoice.id
-      @workflow.invoice.save
       @workflow.documents.each do |document|
         xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
       end
@@ -157,8 +156,18 @@ class Symphony::WorkflowsController < WorkflowsController
       #in future if we do account receivable, must modify the adapter method create_invoice_receivable
       @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
-
-    redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
+    @xero_invoice = @xero.get_invoice(@workflow.invoice.xero_invoice_id)
+    respond_to do |format|
+      if @workflow.invoice.save
+        if @xero_invoice.total == @workflow.invoice.total
+          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Xero invoice is successfully created and is send to Xero correctly." }
+        else
+          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice is successfully created but the invoice's total do not match. Please check invoice in Xero!" }
+        end
+      else
+        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice is not sent to Xero!" }
+      end
+    end
   end
 
   def send_email_to_xero
