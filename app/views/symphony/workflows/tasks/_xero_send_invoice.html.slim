@@ -29,6 +29,7 @@ tr
 							/ If xero invoice is present, only show button to view Xero invoice
 							- if @workflow.invoice.xero_invoice_id.present?
 								= link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm mr-2', target: :_blank
+								/Let user check if xero's invoice total is equals to symphony invoice total
 								= link_to "Check validity of invoice", check_total_validity_symphony_workflow_path(@workflow.template.slug, @workflow.identifier), role: 'button', class: 'btn btn-warning btn-sm'
 							/ Else, check if workflow client is already on Xero if not show button to add client to Xero first. After client is on Xero, show button to send invoice to Xero.
 							- else
@@ -36,7 +37,7 @@ tr
 						- elsif @workflow.invoice&.receivable?
 							= link_to("Not invoice payable", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
 						- else
-						  = link_to("No invoice found", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
+							= link_to("No invoice found", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
 					.btn-group.mr-2 role="group" aria-label="Reminder actions"
 						- if action.reminders.present?
 							= link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
