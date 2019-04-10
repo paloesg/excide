@@ -89,7 +89,7 @@ class Symphony::InvoicesController < ApplicationController
       if @xero_invoice.total == @workflow.invoice.total
         format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Invoice is send to Xero correctly." }
       else
-        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Invoice is send to Xero wrongly. Please check invoice in Xero!" }
+        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Invoice's total in Symphony and the total in Xero does not tally. Please check invoice in Xero!" }
       end
     end
   end
