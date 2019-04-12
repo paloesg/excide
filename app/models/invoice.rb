@@ -5,9 +5,11 @@ class Invoice < ApplicationRecord
 
   enum invoice_type: { payable: 0, receivable: 1}
 
+  validates :invoice_date, :xero_contact_id, :xero_contact_name, presence: true
   validates :invoice_type, inclusion: { in: invoice_types.keys }
 
-  validate :check_line_item_fields, if: :approved?
+  validate :check_basic_line_item_fields
+  validate :check_additional_line_item_fields, if: :approved?
 
   def line_items
     read_attribute(:line_items).map {|l| LineItem.new(l) }
@@ -51,10 +53,16 @@ class Invoice < ApplicationRecord
   end
 
   private
-  
-  def check_line_item_fields
-    self.errors.add(:line_items, ": account code cannot be blank") if self.line_items.map(&:account).include? ""
-    self.errors.add(:line_items, ": tax cannot be blank") if self.line_items.map(&:tax).include? ""
-    self.errors.add(:line_items, ": tracking option cannot be blank") if self.line_items.map(&:tracking_option_1).include? "" or self.line_items.map(&:tracking_option_2).include? ""
+
+  def check_basic_line_item_fields
+    self.errors.add(:line_items, "description cannot be blank") if self.line_items.map(&:description).include? ""
+    self.errors.add(:line_items, "quantity cannot be blank") if self.line_items.map(&:quantity).include? ""
+    self.errors.add(:line_items, "price cannot be blank") if self.line_items.map(&:price).include? ""
+  end
+
+  def check_additional_line_item_fields
+    self.errors.add(:line_items, "account code cannot be blank") if self.line_items.map(&:account).include? ""
+    self.errors.add(:line_items, "tax type cannot be blank") if self.line_items.map(&:tax).include? ""
+    self.errors.add(:line_items, "tracking cannot be blank") if self.line_items.map(&:tracking_option_1).include? "" or self.line_items.map(&:tracking_option_2).include? ""
   end
 end
