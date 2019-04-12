@@ -49,6 +49,13 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def show
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
+    #declare 2 variables to pass into the link_to button in _xero_send_invoice.html.slim. @send_awaiting_approval's presence will cause the button to send to xero's invoice status 'AWAITING APPROVAL'. Likewise, @send_awaiting_payment will link to xero's invoice status 'AWAITING PAYMENT'
+    @send_awaiting_approval = {
+      approved: "approved"
+    }
+    @send_awaiting_payment = {
+      payment: "payment"
+    }
     if @workflow.completed?
       redirect_to symphony_archive_path(@workflow.template.slug, @workflow.identifier)
     else
@@ -153,11 +160,19 @@ class Symphony::WorkflowsController < WorkflowsController
       @workflow.documents.each do |document|
         xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
       end
+      @invoice_payable = @xero.get_invoice(@workflow.invoice.xero_invoice_id)
+      #this is to send invoice to xero 'awaiting approval'
+      if params[:approved].present?
+        @invoice_payable.status = "SUBMITTED"
+      #this is to send invoice to xero 'awaiting payment', default status will be 'draft'
+      elsif params[:payment].present?
+        @invoice_payable.status = "AUTHORISED"
+      end
+      @invoice_payable.save
     else
       #in future if we do account receivable, must modify the adapter method create_invoice_receivable
       @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
-
     redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Xero invoice was successfully created.'
   end
 

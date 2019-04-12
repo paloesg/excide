@@ -28,14 +28,10 @@ class Symphony::InvoicesController < ApplicationController
       @invoice.xero_contact_id = contact_id
     end
 
-    respond_to do |format|
-      if @invoice.save
-        format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully! " }
-        format.json{render :show, status: :ok, location: @invoice}
-      else
-        format.html{ redirect_to symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), alert: "Invoice was not created successfully: " + @invoice.errors.full_messages.to_sentence }
-        format.json{ render json: @invoice.errors, status: :unprocessable_entity }
-      end
+    if @invoice.save
+      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully!"
+    else
+      render 'new'
     end
   end
 
@@ -51,14 +47,10 @@ class Symphony::InvoicesController < ApplicationController
       @invoice.xero_contact_id = contact_id
     end
     @invoice.save
-    respond_to do |format|
-      if @invoice.update(invoice_params)
-        format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice updated successfully!"}
-        format.json{render :show, status: :ok, location: @invoice}
-      else
-        format.html{ redirect_to symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), alert: "Invoice was not successfully save: " + @invoice.errors.full_messages.to_sentence }
-        format.json{render json: @invoice.errors, status: :unprocessable_entity}
-      end
+    if @invoice.update(invoice_params)
+      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id)
+    else
+      render 'edit'
     end
   end
 
@@ -70,8 +62,9 @@ class Symphony::InvoicesController < ApplicationController
     #if invoice is sent to xero already, then set xero invoice status to deleted or voided, depending on the current status
     if @invoice.xero_invoice_id.present?
       @delete_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
-      if (@delete_invoice.status == "DRAFT" or @delete_invoice.status == "SUBMITTED")
+      if (@delete_invoice.status == "SUBMITTED")
         @delete_invoice.status = "DELETED"
+      #if invoice is "AUTHORISED", it could only be voided
       else
         @delete_invoice.status = "VOIDED"
       end
@@ -79,7 +72,7 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.destroy!
     respond_to do |format|
-      format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Invoice has been deleted successfully"}
+      format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Invoice has been deleted successfully."}
     end
   end
 
@@ -117,7 +110,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, line_items_attributes: [:description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :approved, line_items_attributes: [:description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :_destroy])
   end
 
   def xero_login
