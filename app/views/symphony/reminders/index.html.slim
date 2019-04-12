@@ -11,27 +11,44 @@
       .btn-toolbar.float-right
         = link_to 'Create Reminder', new_symphony_reminder_path, role: 'button', class: 'btn btn-primary'
 .row
-  .col-sm-12
-    - if @reminders.blank?
-      | No reminders at the moment.
-    - else
-      table.table.table-hover
-        thead
-          tr
-            th Title
-            th Content
-            th Task
-            th Next Reminder
-            th Repeat
-            th
-        tbody
-          - @reminders.each do |reminder|
+  .col-sm-8
+    .card
+      h5.card-header Upcoming Reminders
+      .table-responsive
+          table.table.table-hover
+            thead
+              tr
+                th Date
+                th Title
+                th Content
+                th Task
+                th Repeat
+                th
+            tbody
+              - if @reminders.blank?
+                tr
+                  td colspan="6" No upcoming reminders at the moment.
+              - else
+                - @reminders.each do |reminder|
+                  tr
+                    td = reminder.next_reminder&.strftime("%F") || '-'
+                    td = reminder.title || '-'
+                    td = reminder.content || '-'
+                    td = reminder.task.present? ? link_to(reminder.task.section.template.title, symphony_workflow_path(reminder.task.section.template.slug, reminder.workflow_action.workflow.identifier)) : '-'
+                    td = reminder.repeat ? "Every #{reminder.freq_value} #{reminder.freq_unit}" : "No repeat"
+                    td
+                      = link_to 'Stop', cancel_symphony_reminder_path(reminder.id), method: :post, role: 'button', class: 'btn btn-danger btn-sm mr-2' if reminder.next_reminder.present?
+                      = link_to 'Edit', edit_symphony_reminder_path(reminder.id), role: 'button', class: 'btn btn-primary btn-sm mr-2'
+  .col-sm-4
+    .card
+      h5.card-header Reminder History
+      .table-responsive
+        table.table.table-condensed
+          thead
             tr
-              td = reminder.title || '-'
-              td = reminder.content || '-'
-              td = reminder.task.present? ? link_to(reminder.task.section.template.title, symphony_workflow_path(reminder.task.section.template.slug, reminder.workflow_action.workflow.identifier)) : '-'
-              td = reminder.next_reminder&.strftime("%F") || '-'
-              td = reminder.repeat ? "Every #{reminder.freq_value} #{reminder.freq_unit}" : "No repeat"
-              td
-                = link_to 'Stop', cancel_symphony_reminder_path(reminder.id), method: :post, role: 'button', class: 'btn btn-danger btn-sm mr-2' if reminder.next_reminder.present?
-                = link_to 'Edit', edit_symphony_reminder_path(reminder.id), role: 'button', class: 'btn btn-primary btn-sm mr-2'
+              th User
+              th Action
+              th Time
+          tbody
+            - @activities.take(10).each do |activity|
+              tr = render_activity activity

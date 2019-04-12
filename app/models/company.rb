@@ -41,9 +41,15 @@ class Company < ApplicationRecord
   has_many :workflow_actions
   has_many :clients
   has_many :activations
+  has_many :reminders, dependent: :destroy
   has_one :address, as: :addressable
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
 
   enum company_type: ["Exempt Private Company Limited By Shares", "Private Company Limited By Shares", "Public Company Limited By Guarantee", "Public Company Limited By Shares", "Unlimited Exempt Private Company", "Unlimited Public Company"]
+
+  # Get all other companies that user has roles for excpet the current company that user belongs to
+  def self.assigned_companies(user)
+    user.roles.map(&:resource).compact.reject{ |c| c == user.company }
+  end
 end

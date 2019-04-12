@@ -51,6 +51,7 @@ class Invoice < ApplicationRecord
   end
 
   private
+  
   def check_line_item_fields
     self.errors.add(:line_items, "account cannot be blank") if self.line_items.map(&:account).include? ""
     self.errors.add(:line_items, "tax cannot be blank") if self.line_items.map(&:tax).include? ""

@@ -73,7 +73,8 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def update
     if @workflow.update(workflow_params)
-      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless params[:workflow][:workflowable_id].present? or @workflow.workflowable.present?
+      #if workflow.workflowable is present, don't need to create client. If no workflowable params is posted(such as in the case of data-entry), no client is created too.
+      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless @workflow.workflowable.present? or params[:workflow][:workflowable].nil?
       @workflow.save
       log_data_activity
       log_workflow_activity
@@ -148,9 +149,6 @@ class Symphony::WorkflowsController < WorkflowsController
       @previous_document = @documents.where('id < ?', @document.id).first
       @next_document = @documents.where('id > ?', @document.id).last
     end
-
-    @xero = Xero.new(session[:xero_auth])
-    @accounts = @xero.get_accounts
   end
 
   def xero_create_invoice_payable

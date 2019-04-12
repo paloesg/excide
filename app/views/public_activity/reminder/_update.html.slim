@@ -1,4 +1,7 @@
-td = activity.owner&.full_name or 'Unknown'
-td
-  ' updated a reminder
+- if activity.owner&.full_name
+  td = activity.owner&.full_name
+  td updated reminder '#{activity.trackable&.title}'
+- else
+  td Symphony
+  td sent reminder '#{activity.trackable&.title}'
 td = activity.created_at.strftime("%d/%m/%Y %R")
