@@ -96,5 +96,5 @@
     /do additional condition to account for account receivables next time
     - else
       = link_to("No invoice payable created in Xero", '#', role: 'button', class: 'btn btn-warning mr-2 pull-right disabled')
-    = link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id, invoice_type: @invoice.invoice_type), class: 'btn btn-success mr-2 pull-right'
+    = link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), class: 'btn btn-success mr-2 pull-right'
     = link_to "Delete Invoice", symphony_invoice_path(workflow_identifier: params[:workflow_identifier]), method: :delete, class: 'btn btn-danger mr-2 pull-right', data: { confirm: 'Are you sure you want to delete this invoice?' }

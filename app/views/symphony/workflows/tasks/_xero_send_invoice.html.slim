@@ -36,7 +36,7 @@ tr
                   = link_to("Send to Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, @send_awaiting_approval), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
                   = link_to("Send to Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, @send_awaiting_payment), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
                 - else
-                  = link_to('Approve invoice', edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id, invoice_type: @invoice.invoice_type), role: 'button', class: 'btn btn-success btn-sm')
+                  = link_to('Approve invoice', edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), role: 'button', class: 'btn btn-success btn-sm')
             - elsif @workflow.invoice&.receivable?
               = link_to("Not invoice payable", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
             - else
