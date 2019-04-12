@@ -33,12 +33,14 @@ class Symphony::DocumentsController < DocumentsController
           @workflow.template_data(@template)
           @workflow.save
           @document.update_attributes(workflow: @workflow)
+          #number of documents uploaded in the dropzone
+          @number_of_documents = params[:count]
+          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: @number_of_documents + ' documents were successfully created.' }
+          format.json { render :show, status: :created, location: @document}
         end
         SlackService.new.new_document(@document).deliver
-        
-        #number of documents uploaded in the dropzone
-        @number_of_documents = params[:count]
-        format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: @number_of_documents + ' documents were successfully created.' }
+
+        format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
         format.json { render :show, status: :created, location: @document}
       else
         set_templates
