@@ -5,7 +5,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :set_workflow
-  before_action :set_documents, except: [:check_total_validity]
+  before_action :set_documents
   before_action :set_company
   before_action :get_xero_details
 
@@ -80,17 +80,6 @@ class Symphony::InvoicesController < ApplicationController
     @invoice.destroy!
     respond_to do |format|
       format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Invoice has been deleted successfully"}
-    end
-  end
-
-  def check_total_validity
-    @xero_invoice = @xero.get_invoice(@workflow.invoice.xero_invoice_id)
-    respond_to do |format|
-      if @xero_invoice.total == @workflow.invoice.total
-        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Invoice is send to Xero correctly." }
-      else
-        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Invoice's total in Symphony and the total in Xero does not tally. Please check invoice in Xero!" }
-      end
     end
   end
 

@@ -66,7 +66,6 @@ Rails.application.routes.draw do
         post '/xero_create_invoice_payable', to: 'workflows#xero_create_invoice_payable', as: :xero_create_invoice_payable
         get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero
         resources :invoices
-        get '/check-total-validity', to: 'invoices#check_total_validity', as: :check_total_validity
       end
     end
     root to: 'home#index'
