@@ -28,14 +28,10 @@ class Symphony::InvoicesController < ApplicationController
       @invoice.xero_contact_id = contact_id
     end
 
-    respond_to do |format|
-      if @invoice.save
-        format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully! " }
-        format.json{render :show, status: :ok, location: @invoice}
-      else
-        format.html{ redirect_to symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), alert: "Invoice was not created successfully: " + @invoice.errors.full_messages.to_sentence }
-        format.json{ render json: @invoice.errors, status: :unprocessable_entity }
-      end
+    if @invoice.save
+      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully!"
+    else
+      render 'new'
     end
   end
 
@@ -76,7 +72,7 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.destroy!
     respond_to do |format|
-      format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Invoice has been deleted successfully"}
+      format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Invoice has been deleted successfully."}
     end
   end
 
