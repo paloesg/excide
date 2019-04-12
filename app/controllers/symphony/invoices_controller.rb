@@ -51,14 +51,10 @@ class Symphony::InvoicesController < ApplicationController
       @invoice.xero_contact_id = contact_id
     end
     @invoice.save
-    respond_to do |format|
-      if @invoice.update(invoice_params)
-        format.html{redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice updated successfully!"}
-        format.json{render :show, status: :ok, location: @invoice}
-      else
-        format.html{ redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id, invoice_type: @invoice.invoice_type), alert: "Invoice was not successfully save: " + @invoice.errors.full_messages.to_sentence }
-        format.json{render json: @invoice.errors, status: :unprocessable_entity}
-      end
+    if @invoice.update(invoice_params)
+      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id)
+    else
+      render 'edit'
     end
   end
 

@@ -1,3 +1,9 @@
+- if @invoice.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@invoice.errors.count, "error")} prohibited this invoice from being saved:"
+    ul
+      - @invoice.errors.full_messages.each do |message|
+        li = message
 .row
   .col-md-12
     .card
