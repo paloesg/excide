@@ -156,10 +156,10 @@ class Symphony::WorkflowsController < WorkflowsController
       #in future if we do account receivable, must modify the adapter method create_invoice_receivable
       @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
-    @xero_invoice = @xero.get_invoice(@workflow.invoice.xero_invoice_id)
     respond_to do |format|
       if @workflow.invoice.save
-        if @xero_invoice.total == @workflow.invoice.total
+        #matching the total of Symphony's invoice to the total of xero's invoice total
+        if xero_invoice.total == @workflow.invoice.total
           format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Xero invoice is successfully created and it's invoice matches xero's invoice total." }
         else
           format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice is successfully created but the invoice's total do not match. Please check invoice in Xero!" }
