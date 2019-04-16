@@ -160,9 +160,9 @@ class Symphony::WorkflowsController < WorkflowsController
       if @workflow.invoice.save
         #matching the total of Symphony's invoice to the total of xero's invoice total
         if xero_invoice.total == @workflow.invoice.total
-          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Xero invoice is successfully created and it's invoice matches xero's invoice total." }
+          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Xero invoice has been created successfully and the invoice totals match." }
         else
-          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice is successfully created but the invoice's total do not match. Please check invoice in Xero!" }
+          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!" }
         end
       else
         format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice is not sent to Xero!" }
