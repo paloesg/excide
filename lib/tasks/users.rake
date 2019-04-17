@@ -12,7 +12,7 @@ namespace :users do
     target_user = User.find(args[:target_user_id])
     destination_user = User.find(args[:destination_user_id])
 
-    puts "You are deleting #{target_user.first_name} and merging existing data into #{destination_user.first_name}. Are you sure? (y/n)"
+    puts "You are deleting #{target_user.email} and merging existing data into #{destination_user.email}. Are you sure? (y/n)"
 
     begin
       input = STDIN.gets.strip.downcase
