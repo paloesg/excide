@@ -165,7 +165,7 @@ class Symphony::WorkflowsController < WorkflowsController
           format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!" }
         end
       else
-        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice is not sent to Xero!" }
+        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice is not created successfully!" }
       end
     end
   end
