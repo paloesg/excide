@@ -157,15 +157,17 @@ class Symphony::WorkflowsController < WorkflowsController
       @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
     respond_to do |format|
-      if @workflow.invoice.save
-        #matching the total of Symphony's invoice to the total of xero's invoice total
-        if xero_invoice.total == @workflow.invoice.total
+      if @workflow.invoice.errors.empty?
+        #check for any errors when sending the invoice to xero, before matching the totals
+        if xero_invoice.errors.any?
+          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice was not sent to Xero!" }
+        elsif xero_invoice.total == @workflow.invoice.total
           format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Xero invoice has been created successfully and the invoice totals match." }
         else
           format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!" }
         end
       else
-        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice is not created successfully!" }
+        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Invoice is not save in Symphony successfully!" }
       end
     end
   end
