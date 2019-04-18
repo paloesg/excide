@@ -32,6 +32,7 @@ $(document).ready(function () {
         $.post('/symphony/documents', {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'invoice',
+          count: this.files.length,
           document: {
             filename: file.upload.filename,
             identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
