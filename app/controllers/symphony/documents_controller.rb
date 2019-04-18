@@ -6,7 +6,7 @@ class Symphony::DocumentsController < DocumentsController
   def index
     # Show the documents by current user roles and documents without a workflow.
     relevant_workflow_ids = @workflows.map{|w| w.id if (w.get_roles & @user.roles).any?}.compact
-    @get_documents = @company.documents.where(workflow: relevant_workflow_ids).or(@company.documents.where(workflow: nil))
+    @get_documents = @company.documents.where(workflow: relevant_workflow_ids).or(@company.documents.where(workflow: nil)).includes(:document_template, :workflow)
     @documents = Kaminari.paginate_array(@get_documents.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(20)
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
@@ -84,7 +84,7 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def set_company_workflows
-    @workflows = @company.workflows
+    @workflows = @company.workflows.includes(template: [{ sections: [{ tasks: :role }] }])
   end
 
   def set_workflow
