@@ -41,7 +41,6 @@ class Symphony::DocumentsController < DocumentsController
           format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
           format.json { render :show, status: :created, location: @document}
         end
-        SlackService.new.new_document(@document).deliver
       else
         set_templates
 
