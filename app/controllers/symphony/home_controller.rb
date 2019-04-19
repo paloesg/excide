@@ -8,7 +8,7 @@ class Symphony::HomeController < ApplicationController
     @templates = Template.assigned_templates(current_user)
     @clients = @company.clients
 
-    @workflows_array = @templates.map(&:current_workflows).flatten
+    @workflows_array = @templates.includes(workflows: [:workflowable]).map(&:current_workflows).flatten
     @workflows_sort = sort_column(@workflows_array)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
 
@@ -19,7 +19,7 @@ class Symphony::HomeController < ApplicationController
     end
 
     @workflows = Kaminari.paginate_array(@templates_type).page(params[:page]).per(10)
-    @outstanding_actions = WorkflowAction.all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).order(:deadline)
+    @outstanding_actions = WorkflowAction.includes(workflow: [:template]).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).order(:deadline).includes(:task)
 
     @reminder_count = current_user.reminders.count
 

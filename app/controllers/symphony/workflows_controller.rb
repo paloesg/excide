@@ -11,7 +11,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def index
     template = Template.find(params[:workflow_name])
-    @workflows = @company.workflows.where(template: template).order(created_at: :desc)
+    @workflows = @company.workflows.includes(:template, :workflowable).where(template: template).order(created_at: :desc)
 
     @workflows_sort = sort_column(@workflows)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
@@ -61,7 +61,7 @@ class Symphony::WorkflowsController < WorkflowsController
     else
       @sections = @template.sections
       @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
-      @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+      @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
 
       set_tasks
       set_documents
@@ -138,7 +138,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def activities
     set_workflow
-    @get_activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+    @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
     @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
   end
 
@@ -249,7 +249,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def set_documents
-    @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
+    @documents = @company.documents.includes(:user).where(workflow_id: @workflow.id).order(created_at: :desc)
   end
 
   def sort_column(array)

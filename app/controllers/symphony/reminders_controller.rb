@@ -7,7 +7,7 @@ class Symphony::RemindersController < ApplicationController
     @company = @user.company
     @reminders = @company.reminders.where(user: @user)
 
-    @activities = PublicActivity::Activity.where(trackable_type: "Reminder", recipient_id: current_user.id).order("created_at desc")
+    @activities = PublicActivity::Activity.includes(:owner, :trackable).where(trackable_type: "Reminder", recipient_id: current_user.id).order("created_at desc")
   end
 
   def new
