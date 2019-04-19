@@ -6,7 +6,7 @@ class Symphony::ArchivesController < ApplicationController
 
   def index
     @templates = Template.assigned_templates(current_user)
-    @workflows_array = @templates.map(&:workflows).flatten
+    @workflows_array = @templates.includes(workflows: [:workflowable]).map(&:workflows).flatten
 
     if params[:workflow_type].blank?
       @templates_type = @workflows_array
