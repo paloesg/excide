@@ -10,10 +10,9 @@ class CompaniesController < ApplicationController
 
   def create
     @company = Company.new(company_params)
-    @company.submit_details
 
     if @company.save
-       render :edit
+       redirect_to symphony_root_path
     end
   end
 
