@@ -91,3 +91,12 @@
         = form_tag @s3_direct_post.url, class: 'dropzone collapse multiple_uploads', id: 'uploader'
           - @s3_direct_post.fields.each do |key, value|
             = hidden_field_tag key, value
+    .card.mb-3
+      h5.card-header New Recurring Workflow
+      .card-body
+        .form-group
+          = label_tag "template", "Select template:"
+          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring/' + $(this).val() + '/new')"
+        = link_to 'New Recurring Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-recurring-workflow'
+
+
