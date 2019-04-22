@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_09_092248) do
+ActiveRecord::Schema.define(version: 2019_04_22_083648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -235,6 +235,16 @@ ActiveRecord::Schema.define(version: 2019_04_09_092248) do
     t.index ["survey_section_id"], name: "index_questions_on_survey_section_id"
   end
 
+  create_table "recurring_workflows", force: :cascade do |t|
+    t.boolean "recurring"
+    t.integer "freq_value"
+    t.integer "freq_unit"
+    t.bigint "template_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["template_id"], name: "index_recurring_workflows_on_template_id"
+  end
+
   create_table "reminders", id: :serial, force: :cascade do |t|
     t.datetime "next_reminder"
     t.boolean "repeat"
@@ -359,6 +369,8 @@ ActiveRecord::Schema.define(version: 2019_04_09_092248) do
     t.integer "company_id"
     t.json "data_names", default: []
     t.integer "workflow_type", default: 0
+    t.date "recurring_start_date"
+    t.date "recurring_end_date"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
@@ -441,8 +453,10 @@ ActiveRecord::Schema.define(version: 2019_04_09_092248) do
     t.string "workflowable_type"
     t.text "remarks"
     t.json "data", default: []
-    t.json "archive", default: []
+    t.json "archive", default: "[]"
+    t.bigint "recurring_workflow_id"
     t.index ["company_id"], name: "index_workflows_on_company_id"
+    t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
     t.index ["template_id"], name: "index_workflows_on_template_id"
     t.index ["user_id"], name: "index_workflows_on_user_id"
     t.index ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id"
@@ -465,6 +479,7 @@ ActiveRecord::Schema.define(version: 2019_04_09_092248) do
   add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"
+  add_foreign_key "recurring_workflows", "templates"
   add_foreign_key "reminders", "companies"
   add_foreign_key "reminders", "tasks"
   add_foreign_key "reminders", "users"
@@ -490,6 +505,7 @@ ActiveRecord::Schema.define(version: 2019_04_09_092248) do
   add_foreign_key "workflow_actions", "users", column: "completed_user_id"
   add_foreign_key "workflow_actions", "workflows"
   add_foreign_key "workflows", "companies"
+  add_foreign_key "workflows", "recurring_workflows"
   add_foreign_key "workflows", "templates"
   add_foreign_key "workflows", "users"
 end
