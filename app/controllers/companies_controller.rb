@@ -2,7 +2,7 @@ class CompaniesController < ApplicationController
   layout "dashboard/application"
 
   before_action :authenticate_user!
-  before_action :set_company, only: [:edit, :update, :name_reservation, :incorporation]
+  before_action :set_company, only: [:edit, :update]
 
   def new
     @company = Company.new
@@ -29,12 +29,6 @@ class CompaniesController < ApplicationController
     end
   end
 
-  def name_reservation
-  end
-
-  def incorporation
-  end
-
   private
 
   def set_company
@@ -51,10 +45,5 @@ class CompaniesController < ApplicationController
     if @company.address.blank?
       @company.address = @company.build_address
     end
-  end
-
-  def set_s3_direct_post
-    set_company
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
   end
 end
