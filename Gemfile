@@ -140,6 +140,7 @@ group :development do
   gem 'rubocop', require: false
   gem 'brakeman', require: false
   gem 'pry-rails'
+  gem 'bullet'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

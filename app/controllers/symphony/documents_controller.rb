@@ -6,7 +6,7 @@ class Symphony::DocumentsController < DocumentsController
   def index
     # Show the documents by current user roles and documents without a workflow.
     relevant_workflow_ids = @workflows.map{|w| w.id if (w.get_roles & @user.roles).any?}.compact
-    @get_documents = @company.documents.where(workflow: relevant_workflow_ids).or(@company.documents.where(workflow: nil))
+    @get_documents = @company.documents.where(workflow: relevant_workflow_ids).or(@company.documents.where(workflow: nil)).includes(:document_template, :workflow)
     @documents = Kaminari.paginate_array(@get_documents.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(20)
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
@@ -33,11 +33,14 @@ class Symphony::DocumentsController < DocumentsController
           @workflow.template_data(@template)
           @workflow.save
           @document.update_attributes(workflow: @workflow)
+          #number of documents uploaded in the dropzone
+          @number_of_documents = params[:count]
+          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: @number_of_documents + ' documents were successfully created.' }
+          format.json { render :show, status: :created, location: @document}
+        else
+          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
+          format.json { render :show, status: :created, location: @document}
         end
-        SlackService.new.new_document(@document).deliver
-
-        format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
-        format.json { render :show, status: :created, location: @document}
       else
         set_templates
 
@@ -81,7 +84,7 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def set_company_workflows
-    @workflows = @company.workflows
+    @workflows = @company.workflows.includes(template: [{ sections: [{ tasks: :role }] }])
   end
 
   def set_workflow

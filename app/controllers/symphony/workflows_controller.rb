@@ -11,7 +11,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def index
     template = Template.find(params[:workflow_name])
-    @workflows = @company.workflows.where(template: template).order(created_at: :desc)
+    @workflows = @company.workflows.includes(:template, :workflowable).where(template: template).order(created_at: :desc)
 
     @workflows_sort = sort_column(@workflows)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
@@ -49,12 +49,19 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def show
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
+    #declare 2 variables to pass into the link_to button in _xero_send_invoice.html.slim. @send_awaiting_approval's presence will cause the button to send to xero's invoice status 'AWAITING APPROVAL'. Likewise, @send_awaiting_payment will link to xero's invoice status 'AWAITING PAYMENT'
+    @send_awaiting_approval = {
+      approved: "approved"
+    }
+    @send_awaiting_payment = {
+      payment: "payment"
+    }
     if @workflow.completed?
       redirect_to symphony_archive_path(@workflow.template.slug, @workflow.identifier)
     else
       @sections = @template.sections
       @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
-      @activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+      @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
 
       set_tasks
       set_documents
@@ -131,7 +138,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def activities
     set_workflow
-    @get_activities = PublicActivity::Activity.where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+    @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
     @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
   end
 
@@ -152,10 +159,20 @@ class Symphony::WorkflowsController < WorkflowsController
       @workflow.documents.each do |document|
         xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
       end
+      @invoice_payable = @xero.get_invoice(@workflow.invoice.xero_invoice_id)
+      #this is to send invoice to xero 'awaiting approval'
+      if params[:approved].present?
+        @invoice_payable.status = "SUBMITTED"
+      #this is to send invoice to xero 'awaiting payment', default status will be 'draft'
+      elsif params[:payment].present?
+        @invoice_payable.status = "AUTHORISED"
+      end
+      @invoice_payable.save
     else
       #in future if we do account receivable, must modify the adapter method create_invoice_receivable
       @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
+
     respond_to do |format|
       if @workflow.invoice.errors.empty?
         #check for any errors when sending the invoice to xero, before matching the totals
@@ -245,7 +262,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def set_documents
-    @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
+    @documents = @company.documents.includes(:user).where(workflow_id: @workflow.id).order(created_at: :desc)
   end
 
   def sort_column(array)

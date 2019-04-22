@@ -22,4 +22,8 @@
       = render 'form', f: f
       = link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @workflow.identifier), role: 'button', class: 'btn btn-warning pull-right ml-2'
       = link_to "View invoice", symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), role: 'button', class: 'btn btn-primary ml-2 pull-right'
-      = f.submit 'Save Invoice', class: 'btn btn-primary pull-right'
+      - if current_user.has_role? :associate, @company or current_user.has_role? :admin, @company or current_user.has_role? :consultant, @company
+        = f.hidden_field :approved, value: true
+        = f.submit 'Approve Invoice', class: 'btn btn-primary pull-right' 
+      - else
+        = f.submit 'Save Invoice', class: 'btn btn-primary pull-right' 

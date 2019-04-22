@@ -1,31 +1,36 @@
 td.line-item-field {
-	padding: 0.3rem 0 0.3rem 0.3rem;
+  padding: 0.3rem 0 0.3rem 0.3rem;
 }
 
 .line-items-dropdown-width{
-	width: 110px;
+  width: 100%;
+  min-width: 150px;
 }
 
 .minimize-text{
-	font-size: 0.8rem
+  font-size: 0.8rem
 }
 
 .minimize-header-text{
-	font-size: 0.8rem
+  font-size: 0.8rem
 }
 
 .item{
-	font-size: 0.8rem
+  font-size: 0.8rem
 }
 
 .existing-contact-width{
-	width: 50%;
+  width: 50%;
 }
 
 .image-document{
-	width: 100%;
+  width: 100%;
 }
 
 .invoice-total-subtotal-size{
 	font-size: 1.5rem;
+}
+
+.subtotal{
+  font-size: 1.5rem;
 }
