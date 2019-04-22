@@ -50,7 +50,7 @@ class CompaniesController < ApplicationController
 
   def build_addresses
     if @company.address.blank?
-      @company.address = @company.address.build
+      @company.address = @company.build_address
     end
   end
 
