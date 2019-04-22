@@ -61,9 +61,9 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
                 .dropdown-menu.dropdown-menu-right
                   - Company.assigned_companies(current_user).each do |company|
                     = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
-                    - if current_user.has_role? :superadmin
-                      .dropdown-divider
-                      = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
+                  - if current_user.has_role? :superadmin
+                    .dropdown-divider
+                    = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
             .dropdown-divider
             = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'dropdown-item'}
 
