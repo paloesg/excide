@@ -83,9 +83,13 @@
               - elsif @tracking_name[0]&.name.present? and @tracking_name[1]&.name.nil?
                 td.text-center = line_item.tracking_option_1 or '-'
               td.text-center = number_with_precision(line_item.quantity.to_i * line_item.price.to_f, precision: 2, delimiter: ',')
+hr
 .row
   .col-sm-12
-    strong.pull-right.m-3.subtotal Sub-total ($): #{number_with_precision(@total, precision: 2, delimiter: ',')}
+    strong.pull-right.invoice-total-subtotal-size Sub-total ($): #{number_with_precision(@total, precision: 2, delimiter: ',')}
+.row
+  .col-sm-12
+    strong.pull-right.mb-3.invoice-total-subtotal-size Total($): #{number_with_precision(@invoice.total, precision: 2, delimiter: ',')}
 .row
   .col-sm-12
     = link_to "Back to Workflow", symphony_workflow_path(workflow_identifier: @invoice.workflow.identifier), role: 'button', class: 'btn btn-primary pull-right'
