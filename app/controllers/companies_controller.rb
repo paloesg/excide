@@ -3,7 +3,6 @@ class CompaniesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company, only: [:edit, :update, :name_reservation, :incorporation]
-  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
   def new
     @company = Company.new
@@ -44,7 +43,7 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:id, :name, :industry, :company_type, :image_url, :description, :ssic_code, :financial_year_end, :xero_email, address_attributes: [:line_1, :line_2, :postal_code]
+    params.require(:company).permit(:id, :name, :uen, :contact_details, :financial_year_end, :gst_quarter, :agm_date, :ar_date, :eci_date, :form_cs_date, :project_start_date, :consultant_id, :associate_id, :shared_service_id, :designated_working_time, :xero_email, address_attributes: [:line_1, :line_2, :postal_code]
     )
   end
 
