@@ -1,15 +1,13 @@
 .row
   .col-sm-12
-    ol.breadcrumb.text-right
-      li
-        a href="#" Home
-      li
-        a href="#" #{@company.name}
-      li.active Company
-    h1 Register Company
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item.active New Company
+    h1 Add New Company
 .row
   .col-md-12
-    = form_for(@company, url: {action: "create"}, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
+    = form_for(@company, url: {action: "create"}) do |f|
         = render 'form', f: f
         .row
           .col-md-4.col-sm-6
