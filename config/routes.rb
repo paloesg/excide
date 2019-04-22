@@ -72,6 +72,7 @@ Rails.application.routes.draw do
         resources :invoices
       end
     end
+    resources :recurring_workflows, path: '/recurring/:recurring_workflow_name', only: [:new, :create]
     root to: 'home#index'
   end
 
