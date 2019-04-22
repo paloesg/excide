@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_09_092248) do
+ActiveRecord::Schema.define(version: 2019_04_22_101531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -134,6 +134,21 @@ ActiveRecord::Schema.define(version: 2019_04_09_092248) do
     t.date "financial_year_end"
     t.string "slug"
     t.string "xero_email"
+    t.string "uen"
+    t.text "contact_details"
+    t.date "agm_date"
+    t.date "ar_date"
+    t.date "eci_date"
+    t.date "form_cs_date"
+    t.integer "gst_quarter"
+    t.date "project_start_date"
+    t.bigint "consultant_id"
+    t.bigint "associate_id"
+    t.bigint "shared_service_id"
+    t.string "designated_working_time"
+    t.index ["associate_id"], name: "index_companies_on_associate_id"
+    t.index ["consultant_id"], name: "index_companies_on_consultant_id"
+    t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
   end
 
   create_table "document_templates", id: :serial, force: :cascade do |t|
@@ -456,6 +471,9 @@ ActiveRecord::Schema.define(version: 2019_04_09_092248) do
   add_foreign_key "availabilities", "users"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
+  add_foreign_key "companies", "users", column: "associate_id"
+  add_foreign_key "companies", "users", column: "consultant_id"
+  add_foreign_key "companies", "users", column: "shared_service_id"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
