@@ -102,7 +102,11 @@
     - if @workflow.remarks.present?
       .card.mb-3
         h6.card-header Workflow Remarks
-        .card-body =@workflow.remarks
+        .card-body = @workflow.remarks
+    - if @workflow.recurring_workflow.present?
+      .card.mb-3
+        h6.card-header Next Recurring Workflow
+        .card-body = @workflow.next_workflow_date
     .card.mb-3
       h6.card-header Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
