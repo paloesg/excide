@@ -13,5 +13,5 @@
               = f.select :freq_unit, RecurringWorkflow.freq_units.map { |key, value| [key.titleize, key] }, {selected: @recurring_workflow.freq_unit}, class: 'form-control'
 .row
   .col-sm-12
-    = f.submit 'Save Workflow', class: 'btn btn-primary'
+    = f.submit 'Save Recurring Workflow', class: 'btn btn-primary mr-2'
     = f.submit 'Save & Assign Tasks', name: 'assign', class: 'btn btn-primary'
