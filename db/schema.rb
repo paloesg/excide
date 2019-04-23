@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_22_083648) do
+ActiveRecord::Schema.define(version: 2019_04_23_073718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -455,6 +455,7 @@ ActiveRecord::Schema.define(version: 2019_04_22_083648) do
     t.json "data", default: []
     t.json "archive", default: "[]"
     t.bigint "recurring_workflow_id"
+    t.date "next_workflow_date"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
     t.index ["template_id"], name: "index_workflows_on_template_id"
