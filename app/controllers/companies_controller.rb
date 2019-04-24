@@ -45,17 +45,17 @@ class CompaniesController < ApplicationController
 
   def set_company_roles
     # Set company admin role only if old roles is not defined i.e. creating new company
-    current_user.add_role :admin, @company unless defined?(@old_roles)
+    current_user.add_role(:admin, @company) unless defined?(@old_roles)
 
-    @company.consultant.add_role :consultant, @company if @company.consultant.present?
-    @company.associate.add_role :associate, @company if @company.associate.present?
-    @company.shared_service.add_role :shared_service, @company if @company.shared_service.present?
+    @company.consultant.add_role(:consultant, @company) if @company.consultant.present?
+    @company.associate.add_role(:associate, @company) if @company.associate.present?
+    @company.shared_service.add_role(:shared_service, @company) if @company.shared_service.present?
   end
 
   def remove_company_roles
-    @old_roles[:consultant].remove_role :consultant, @company
-    @old_roles[:associate].remove_role :associate, @company
-    @old_roles[:shared_service].remove_role :shared_service, @company
+    @old_roles[:consultant]&.remove_role(:consultant, @company)
+    @old_roles[:associate]&.remove_role(:associate, @company)
+    @old_roles[:shared_service]&.remove_role(:shared_service, @company)
   end
 
   def company_params
