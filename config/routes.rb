@@ -141,24 +141,16 @@ Rails.application.routes.draw do
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
 
-  namespace :company do
-    end
-
-  resources :charges, only: [:new, :create]
-
   # Hosted files
-
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
 
   # Static pages
-
   get 'faq', to: 'home#faq'
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
   get 'about-us', to: 'home#about', as: :about
 
   # VFO services
-
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
   get 'financial-analytics-reporting', to: 'home#financial-analytics-reporting', as: :financial_analytics_reporting
   get 'business-plan-assistance', to: 'home#business-plan-assistance', as: :business_plan_assistance
@@ -172,7 +164,6 @@ Rails.application.routes.draw do
   get 'fund-raising', to: 'home#fund-raising', as: :fund_raising
 
   # Corp sec services
-
   get 'corporate-secretary', to: 'home#corp-sec', as: :corp_sec
   get 'services', to: 'home#services', as: :services
   get 'accounting-services', to: 'home#accounting-services', as: :accounting
