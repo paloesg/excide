@@ -21,7 +21,7 @@
       .card.text-center.bg-light
         .card-body
          h5.card-title Recurring Workflows
-         h1.card-text = @recurring_workflows_array.count
+         h1.card-text = link_to @recurring_workflows_array.count, symphony_workflows_recurring_path, class: 'text-dark'
       .card.text-center.bg-light
         .card-body
          h5.card-title Reminders
@@ -100,7 +100,7 @@
       .card-body
         .form-group
           = label_tag "template", "Select template:"
-          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring/' + $(this).val() + '/new')"
+          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
         = link_to 'New Recurring Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-recurring-workflow'
 
 

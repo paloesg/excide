@@ -3,6 +3,12 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   
   before_action :authenticate_user!
   before_action :set_company
+  before_action :get_recurring_workflow, only: [:update, :stop_recurring]
+
+  def index
+    @recurring_workflows = RecurringWorkflow.all
+    @templates = Template.assigned_templates(current_user)
+  end
 
   def new
     @recurring_workflow = RecurringWorkflow.new
@@ -23,7 +29,28 @@ class Symphony::RecurringWorkflowsController < ApplicationController
     end
   end
 
+  def update
+    if @recurring_workflow.update(recurring_workflow_params)
+      redirect_to symphony_workflows_recurring_path, notice: 'Recurring Workflow is successfully updated.'
+    else
+      edirect_to symphony_root
+    end
+  end
+
+  def stop_recurring
+    if @recurring_workflow.update(next_workflow_date: nil)
+      redirect_to symphony_workflows_recurring_path, notice: 'Recurring Workflow stopped.'
+    else
+      redirect_to symphony_root
+    end
+  end
+
   private
+
+  def get_recurring_workflow
+    @recurring_workflow = RecurringWorkflow.find(params[:id])
+  end
+
   def recurring_workflow_params
     params.require(:recurring_workflow).permit(:recurring, :freq_value, :freq_unit, :template_id, :next_workflow_date)
   end
