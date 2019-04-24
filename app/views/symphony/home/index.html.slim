@@ -20,6 +20,10 @@
          h1.card-text = @workflows_array.count
       .card.text-center.bg-light
         .card-body
+         h5.card-title Recurring Workflows
+         h1.card-text = @recurring_workflows_array.count
+      .card.text-center.bg-light
+        .card-body
          h5.card-title Reminders
          h1.card-text = link_to @reminder_count, symphony_reminders_path, class: 'text-dark'
     - unless @outstanding_actions.blank?
