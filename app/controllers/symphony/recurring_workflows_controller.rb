@@ -10,7 +10,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
 
   def create
     @recurring_workflow = RecurringWorkflow.new(recurring_workflow_params)
-    @recurring_workflow.template = Template.find(params[:recurring_workflow_name])
+    @recurring_workflow.template = Template.find_by(slug: params[:recurring_workflow_name])
     @recurring_workflow.recurring = true
     if @recurring_workflow.save
       #creating the first workflow before recurring it through calling the service object
