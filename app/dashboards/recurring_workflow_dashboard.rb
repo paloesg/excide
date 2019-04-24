@@ -14,6 +14,7 @@ class RecurringWorkflowDashboard < Administrate::BaseDashboard
     recurring: Field::Boolean,
     freq_value: Field::Number,
     freq_unit: EnumField,
+    next_workflow_date: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -52,6 +53,7 @@ class RecurringWorkflowDashboard < Administrate::BaseDashboard
     :recurring,
     :freq_value,
     :freq_unit,
+    :next_workflow_date,
   ].freeze
 
   # Overwrite this method to customize how recurring workflows are displayed

@@ -17,7 +17,6 @@ class WorkflowDashboard < Administrate::BaseDashboard
     completed: Field::Boolean,
     workflowable: Field::Polymorphic,
     workflow_actions: Field::HasMany,
-    next_workflow_date: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -48,7 +47,6 @@ class WorkflowDashboard < Administrate::BaseDashboard
     :workflow_actions,
     :id,
     :completed,
-    :next_workflow_date,
     :created_at,
     :updated_at,
   ].freeze
@@ -62,7 +60,6 @@ class WorkflowDashboard < Administrate::BaseDashboard
     :identifier,
     :template,
     :recurring_workflow,
-    :next_workflow_date,
     :completed,
   ].freeze
 

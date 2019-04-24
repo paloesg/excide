@@ -51,10 +51,6 @@ class Workflow < ApplicationRecord
     Workflow.where(template: self.template).where('id < ?', self.id).last
   end
 
-  def self.today
-    Workflow.where(next_workflow_date: Date.current.beginning_of_day..Date.current.end_of_day)
-  end
-
   def current_section
     if self.completed
       self.template.sections.last
