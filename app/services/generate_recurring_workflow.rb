@@ -18,16 +18,7 @@ class GenerateRecurringWorkflow
   end
 
   def set_next_recurring_workflow
-    case @recurring_workflow.freq_unit
-    when 'days'
-      @next_workflow.next_workflow_date = Date.current + @next_workflow.recurring_workflow.freq_value.days
-    when 'weeks'
-      @next_workflow.next_workflow_date = Date.current + @next_workflow.recurring_workflow.freq_value.weeks
-    when 'months'
-      @next_workflow.next_workflow_date = Date.current + @next_workflow.recurring_workflow.freq_value.months
-    when 'years'
-      @next_workflow.next_workflow_date = Date.current + @next_workflow.recurring_workflow.freq_value.years
-    end
-    @next_workflow.save   
+    @recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
+    @recurring_workflow.save   
   end
 end
