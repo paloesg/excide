@@ -2,7 +2,6 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   layout "dashboard/application"
   
   before_action :authenticate_user!
-  before_action :set_template
   before_action :set_company
 
   def new
@@ -11,11 +10,11 @@ class Symphony::RecurringWorkflowsController < ApplicationController
 
   def create
     @recurring_workflow = RecurringWorkflow.new(recurring_workflow_params)
-    @recurring_workflow.template = @template
+    @recurring_workflow.template = Template.find(params[:recurring_workflow_name])
     @recurring_workflow.recurring = true
     if @recurring_workflow.save
       #creating the first workflow before recurring it through calling the service object
-      @workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @template.id, identifier: (Date.current.to_s + '-' + @template.title + '-' +SecureRandom.hex).parameterize.upcase)
+      @workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase)
       #a case statement to store the first next_workflow_date when workflow is being created through the recurring_workflow form.
       case @recurring_workflow.freq_unit
       when 'days'  
@@ -29,17 +28,13 @@ class Symphony::RecurringWorkflowsController < ApplicationController
       end
       @workflow.recurring_workflow = @recurring_workflow
       @workflow.save
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
+      redirect_to symphony_workflow_path(@recurring_workflow.template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
     end
   end
 
   private
   def recurring_workflow_params
     params.require(:recurring_workflow).permit(:recurring, :freq_value, :freq_unit, :template_id)
-  end
-
-  def set_template
-    @template = Template.find(params[:recurring_workflow_name])
   end
 
   def set_company

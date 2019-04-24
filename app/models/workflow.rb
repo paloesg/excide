@@ -52,7 +52,7 @@ class Workflow < ApplicationRecord
   end
 
   def self.today
-    workflow = Workflow.where(next_workflow_date: Date.current.beginning_of_day..Date.current.end_of_day)
+    Workflow.where(next_workflow_date: Date.current.beginning_of_day..Date.current.end_of_day)
   end
 
   def current_section
