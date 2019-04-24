@@ -73,7 +73,7 @@ Rails.application.routes.draw do
         resources :invoices
       end
     end
-    resources :recurring_workflows, path: '/recurring_workflows/:recurring_workflow_name', only: [:new, :create] do
+    resources :recurring_workflows, path: '/recurring_workflows/:recurring_workflow_name', except: [:index] do
       member do
         post '/stop_recurring', to: 'recurring_workflows#stop_recurring'
       end

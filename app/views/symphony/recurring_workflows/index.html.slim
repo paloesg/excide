@@ -34,7 +34,8 @@
                     td = recurring_workflow.next_workflow_date
                     td 
                       = link_to 'Stop', stop_recurring_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), method: :post, role: 'button', class: 'btn btn-danger btn-sm mr-2' if recurring_workflow.next_workflow_date.present?
-              / = link_to 'Edit', edit_symphony_reminder_path(reminder.id), role: 'button', class: 'btn btn-primary btn-sm mr-2'
+                    td
+                      = link_to 'Edit', edit_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-primary btn-sm mr-2'
   .col-sm-4
     .card.mb-3
       h5.card-header New Recurring Workflow

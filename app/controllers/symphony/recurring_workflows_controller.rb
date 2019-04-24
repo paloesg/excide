@@ -3,7 +3,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   
   before_action :authenticate_user!
   before_action :set_company
-  before_action :get_recurring_workflow, only: [:update, :stop_recurring]
+  before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring]
 
   def index
     @recurring_workflows = RecurringWorkflow.all
@@ -27,6 +27,10 @@ class Symphony::RecurringWorkflowsController < ApplicationController
       @workflow.save
       redirect_to symphony_workflow_path(@recurring_workflow.template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
     end
+  end
+
+  def edit
+
   end
 
   def update
