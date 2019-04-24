@@ -74,7 +74,7 @@ class User < ApplicationRecord
   end
 
   def full_name
-    first_name + ' ' + last_name
+    "#{first_name} #{last_name}"
   end
 
   def weekly_allocated_hours(allocation)
