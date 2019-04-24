@@ -20,10 +20,10 @@ class Role < ApplicationRecord
   end
 
   def display_name
-    if self.resource_type == "Company"
-      self.name.humanize + ' – ' + self.resource_type.constantize.find(self.resource_id).name
+    if self.resource_type.present? and self.resource_id.present?
+      "[#{self.resource_type.constantize.find(self.resource_id).name}] #{self.name.humanize}"
     else
-      self.name.humanize + ' – Global'
+      "[Global] #{self.name.humanize}"
     end
   end
 end
