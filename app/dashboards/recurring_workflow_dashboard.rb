@@ -30,6 +30,7 @@ class RecurringWorkflowDashboard < Administrate::BaseDashboard
     :workflows,
     :freq_value,
     :freq_unit,
+    :next_workflow_date,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -41,6 +42,7 @@ class RecurringWorkflowDashboard < Administrate::BaseDashboard
     :recurring,
     :freq_value,
     :freq_unit,
+    :next_workflow_date,
     :created_at,
     :updated_at,
   ].freeze
