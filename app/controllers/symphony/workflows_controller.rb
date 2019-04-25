@@ -115,7 +115,7 @@ class Symphony::WorkflowsController < WorkflowsController
     if generate_archive.success?
       redirect_to symphony_archive_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully archived.'
     else
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: 'There was an error archiving this workflow. Please contact your admin with details of this error.'
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: "There was an error archiving this workflow. Please contact your admin with details of this error: #{generate_archive.message}."
     end
   end
 
