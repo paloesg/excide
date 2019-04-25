@@ -103,10 +103,6 @@
       .card.mb-3
         h6.card-header Workflow Remarks
         .card-body = @workflow.remarks
-    - if @workflow.recurring_workflow.present?
-      .card.mb-3
-        h6.card-header Next Recurring Workflow
-        .card-body = @workflow.recurring_workflow.next_workflow_date
     .card.mb-3
       h6.card-header Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
@@ -159,6 +155,10 @@
                 h6.card-subtitle.mt-1 Invoice Contact: #{@invoice.xero_contact_name.capitalize}
                 h6.card-subtitle.mt-1 Invoice Total: $#{@invoice.total}
                 .text-muted = @invoice.created_at.strftime("Uploaded at %d/%m/%Y %R")
+    - if @workflow.recurring_workflow.present?
+      .card.mb-3
+        h6.card-header Next Recurring Workflow
+        .card-body = @workflow.recurring_workflow.next_workflow_date
 #task-popover-content.d-none
   p.pt-2
     strong
