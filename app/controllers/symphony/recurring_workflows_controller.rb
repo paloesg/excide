@@ -4,7 +4,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template
-  before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring]
+  before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring, :show]
 
   def index
     @recurring_workflows = RecurringWorkflow.all
@@ -39,6 +39,10 @@ class Symphony::RecurringWorkflowsController < ApplicationController
     else
       edirect_to symphony_root
     end
+  end
+
+  def show
+    @workflows = Kaminari.paginate_array(@recurring_workflow.workflows).page(params[:page]).per(10)
   end
 
   def stop_recurring
