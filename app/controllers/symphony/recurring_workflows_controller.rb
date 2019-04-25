@@ -3,6 +3,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   
   before_action :authenticate_user!
   before_action :set_company
+  before_action :set_template
   before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring]
 
   def index
@@ -16,14 +17,13 @@ class Symphony::RecurringWorkflowsController < ApplicationController
 
   def create
     @recurring_workflow = RecurringWorkflow.new(recurring_workflow_params)
-    @recurring_workflow.template = Template.find_by(slug: params[:recurring_workflow_name])
+    @recurring_workflow.template = @template
     @recurring_workflow.recurring = true
     #set the next recurring workflow date
     @recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
     if @recurring_workflow.save
       #creating the first workflow before recurring it through calling the service object
-      @workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase)
-      @workflow.recurring_workflow = @recurring_workflow
+      @workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, recurring_workflow: @recurring_workflow, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase)
       @workflow.save
       redirect_to symphony_workflow_path(@recurring_workflow.template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
     end
@@ -51,8 +51,12 @@ class Symphony::RecurringWorkflowsController < ApplicationController
 
   private
 
+  def set_template
+    @template = Template.find_by(slug: params[:recurring_workflow_name])
+  end
+
   def get_recurring_workflow
-    @recurring_workflow = RecurringWorkflow.find(params[:id])
+    @recurring_workflow = @template.recurring_workflows.find_by(id: params[:id])
   end
 
   def recurring_workflow_params
