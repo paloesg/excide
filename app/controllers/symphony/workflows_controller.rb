@@ -109,7 +109,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def archive
-    WorkflowMailer.email_summary(@workflow, @workflow.user).deliver_now
+    WorkflowMailer.email_summary(@workflow, @workflow.user, @workflow.company).deliver_now
     generate_archive = GenerateArchive.new(@workflow).run
     # Mark workflow as completed when workflow is archived
     if generate_archive.success?

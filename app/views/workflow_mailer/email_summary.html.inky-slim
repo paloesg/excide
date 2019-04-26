@@ -27,8 +27,13 @@ css:
   th, td{
     padding: 1%;
   }
-/*move the above styles into your custom stylesheet /
+/*move the above styles into your custom stylesheet /    
 container
+  row.collapse
+    columns small="6" valign="middle" 
+      img src="#{@company.image_url}" alt="#{@company.name}" style="width: 50%; height: 50%;"
+    columns small="6" valign="middle" 
+      p.text-right #{@company.name}
   spacer size="16" 
   row
     columns
@@ -37,14 +42,14 @@ container
         | The workflow 
         span.red #{@workflow.identifier} 
         | has been completed.
-      p.lead Below is a summary of the workflow completed
+      p.lead Below is a summary of the workflow completed:
       table border="1" 
         thead
           tr
-            th width="200"  Instruction
+            th Instruction
             th Date Completed
-            th width="150"  Completed by
-            th width="150"  Remarks
+            th Completed by
+            th Remarks
         tbody
           - @workflow.workflow_actions.each do |wfa|
             tr
