@@ -41,14 +41,83 @@ container
         span.red #{@workflow.identifier} 
         | has been archived.
       p.lead Deadline: #{@workflow&.deadline&.strftime("%d/%m/%Y")}
+      p.lead style="margin-top: 10px;" Company Details
+      table border="1"
+        thead
+          tr
+            th Name
+            th UEN
+            th Contact Details
+            th Address line 1
+            th Address line 2
+            th Postal Code
+        tbody
+          tr
+            td = @workflow.company.name
+            td = @workflow.company.uen
+            td = @workflow.company.contact_details
+            td = @workflow.company.address.line_1
+            td = @workflow.company.address.line_2
+            td = @workflow.company.address.postal_code
+      p.lead style="margin-top: 10px;" Company Project Information
+      table border="1"
+        thead
+          tr
+            th Project Start Date
+            th Project Consultant
+            th Project Associate
+            th Project Shared Service
+            th Designated Working Time
+            th Xero Email
+        tbody
+          tr
+            td = @workflow.company.project_start_date
+            td = @workflow.company.consultant
+            td = @workflow.company.associate
+            td = @workflow.company.shared_service
+            td = @workflow.company.designated_working_time
+            td = @workflow.company.xero_email
+      p.lead style="margin-top: 10px;" Company Filing Dates
+      table border="1"
+        thead
+          tr
+            th Financial Year End
+            th GST Quarter
+            th AGM Date
+            th AR Date
+            th ECI Date
+            th Form C-S Date
+        tbody
+          tr
+            td = @workflow.company.financial_year_end
+            td = @workflow.company.gst_quarter
+            td = @workflow.company.agm_date
+            td = @workflow.company.ar_date
+            td = @workflow.company.eci_date
+            td = @workflow.company.form_cs_date
+      - if @workflow.documents.present?
+        p.lead Document uploaded: 
+        ul 
+          - @workflow.documents.each do |doc|
+            li
+              a href="#{doc.file_url}" #{doc.filename}
+      - else
+        p.lead No document uploaded
+      - if @workflow.invoice.present?
+        p.lead Invoice created:
+        ul
+          li
+            = link_to @workflow.invoice.invoice_reference, symphony_invoice_url(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @workflow.invoice.id)
+      - else
+        p.lead No invoice created
       p.lead Below is a summary of the workflow completed:
       table border="1" 
         thead
           tr
-            th Instruction
-            th Date Completed
-            th Completed by
-            th Remarks
+            th width="30%" Instruction
+            th width="15%" Date Completed
+            th width="15%" Completed by
+            th width="40%" Remarks
         tbody
           - @workflow.workflow_actions.order(:id).each do |wfa|
             tr
@@ -59,5 +128,5 @@ container
               - else
                 td = wfa.completed_user.full_name.to_s
               td = wfa.remarks
-      p style="margin-top: 10px;"
+      p.lead style="margin-top: 10px;"
         a href="#{symphony_archive_url(@workflow.template.slug, @workflow.identifier)}" View the workflow
