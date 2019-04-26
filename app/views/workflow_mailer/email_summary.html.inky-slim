@@ -51,14 +51,14 @@ container
             th Completed by
             th Remarks
         tbody
-          - @workflow.workflow_actions.each do |wfa|
+          - @workflow.workflow_actions.order(:id).each do |wfa|
             tr
               td = wfa.task.instructions
               td = Date.current
               - if wfa.completed_user.nil?
                 td Not completed
               - else
-                td = wfa.completed_user.first_name.to_s + ' ' + wfa.completed_user.last_name.to_s
+                td = wfa.completed_user.full_name.to_s
               td = wfa.remarks
   / wrapper.secondary
   /   spacer size="16" 
