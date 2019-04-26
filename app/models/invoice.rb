@@ -1,5 +1,6 @@
 class Invoice < ApplicationRecord
   belongs_to :workflow
+  belongs_to :user
 
   enum line_amount_type: { exclusive: 0, inclusive: 1, no_tax: 2}
 
