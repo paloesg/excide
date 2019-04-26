@@ -1,31 +1,3 @@
-/ p Hi #{@user.first_name},
-/ p
-/   | The workflow #{@workflow.identifier} has been completed.
-/   br
-/   br
-/   | Below is a summary of the workflow completed,
-
-/ table.table.table-bordered
-/   thead
-/     tr
-/       th Instruction
-/       th Date Completed
-/       th Completed By
-/       th Remark
-/   tbody
-/     - @workflow.workflow_actions.each do |wfa|
-/       tr
-/         td= wfa.task.instructions
-/         td= Time.current
-/         - if wfa.completed_user.nil?
-/           td Not completed
-/         - else
-/           td= wfa.completed_user.first_name.to_s + ' ' + wfa.completed_user.last_name.to_s
-/         td= wfa.remarks
-
-/ p
-/   | To follow the archived workflow, please click the following link:
-/   a href="#{symphony_archive_url(@workflow.template.slug, @workflow.identifier)}"  #{@workflow.identifier} -->
 css:
   .header {
     background: #8a8a8a;
@@ -49,13 +21,22 @@ css:
   table.container{
     width: 900px;
   }
+  .red{
+    color: green;
+  }
+  th, td{
+    padding: 1%;
+  }
 /*move the above styles into your custom stylesheet /
 container
   spacer size="16" 
   row
     columns
       h1 Hi, #{@user.first_name} 
-      p.lead The workflow #{@workflow.identifier} has been completed.
+      p.lead 
+        | The workflow 
+        span.red #{@workflow.identifier} 
+        | has been completed.
       p.lead Below is a summary of the workflow completed
       table border="1" 
         thead
@@ -65,34 +46,27 @@ container
             th width="150"  Completed by
             th width="150"  Remarks
         tbody
-          | <% @workflow.workflow_actions.each do |wfa|
-          tr
-            td Content Goes Here
-            td This is longer content Donec id elit non mi porta gravida at eget metus.
-            td Content Goes Here
-            td Content Goes Here
-          tr
-            td Content Goes Here
-            td This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.
-            td Content Goes Here
-            td Content Goes Here
-          tr
-            td Content Goes Here
-            td This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.
-            td Content Goes Here
-            td Content Goes Here
-  wrapper.secondary
-    spacer size="16" 
-    row
-      columns large="6" small="12" 
-        h5 Connect With Us:
-        menu.vertical
-          item href="#" style=("text-align: left;")  Twitter
-          item href="#" style=("text-align: left;")  Facebook
-          item href="#" style=("text-align: left;")  Google +
-      columns large="6" small="12" 
-        h5 Contact Info:
-        p Phone: 408-341-0600
-        p
-          | Email:
+          - @workflow.workflow_actions.each do |wfa|
+            tr
+              td = wfa.task.instructions
+              td = Date.current
+              - if wfa.completed_user.nil?
+                td Not completed
+              - else
+                td = wfa.completed_user.first_name.to_s + ' ' + wfa.completed_user.last_name.to_s
+              td = wfa.remarks
+  / wrapper.secondary
+  /   spacer size="16" 
+  /   row
+  /     columns large="6" small="12" 
+  /       h5 Connect With Us:
+  /       menu.vertical
+  /         item href="#" style=("text-align: left;")  Twitter
+  /         item href="#" style=("text-align: left;")  Facebook
+  /         item href="#" style=("text-align: left;")  Google +
+  /     columns large="6" small="12" 
+  /       h5 Contact Info:
+  /       p Phone: 408-341-0600
+  /       p
+  /         | Email:
           a href="mailto:foundation@zurb.com"  foundation@zurb.com
