@@ -29,7 +29,5 @@ module Excide
     # config.active_record.raise_in_transactional_callbacks = true
 
     config.active_job.queue_adapter = :sucker_punch
-    #foundation_emails in the vendor folder can be individually precompile so that we can reference to it
-    config.assets.precompile += %w( foundation_emails.css )
   end
 end
