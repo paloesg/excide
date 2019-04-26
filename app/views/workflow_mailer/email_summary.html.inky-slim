@@ -31,9 +31,7 @@ css:
 container
   row.collapse
     columns small="6" valign="middle" 
-      img src="#{@company.image_url}" alt="#{@company.name}" style="width: 50%; height: 50%;"
-    columns small="6" valign="middle" 
-      p.text-right #{@company.name}
+      = image_tag("excide-logo.png", style: "width: 50%; height: 50%")
   spacer size="16" 
   row
     columns
