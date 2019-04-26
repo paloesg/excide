@@ -41,7 +41,7 @@ container
         span.red #{@workflow.identifier} 
         | has been archived.
       p.lead Deadline: #{@workflow&.deadline&.strftime("%d/%m/%Y")}
-      p.lead style="margin-top: 10px;" Company Details
+      p.lead style="margin-top: 10px;" Company Details:
       table border="1"
         thead
           tr
@@ -59,7 +59,7 @@ container
             td = @workflow.company.address.line_1
             td = @workflow.company.address.line_2
             td = @workflow.company.address.postal_code
-      p.lead style="margin-top: 10px;" Company Project Information
+      p.lead style="margin-top: 10px;" Company Project Information:
       table border="1"
         thead
           tr
@@ -77,7 +77,7 @@ container
             td = @workflow.company.shared_service
             td = @workflow.company.designated_working_time
             td = @workflow.company.xero_email
-      p.lead style="margin-top: 10px;" Company Filing Dates
+      p.lead style="margin-top: 10px;" Company Filing Dates:
       table border="1"
         thead
           tr
@@ -115,14 +115,14 @@ container
         thead
           tr
             th width="30%" Instruction
-            th width="15%" Date Completed
+            th width="15%" Time Completed
             th width="15%" Completed by
             th width="40%" Remarks
         tbody
           - @workflow.workflow_actions.order(:id).each do |wfa|
             tr
               td = wfa.task.instructions
-              td = Date.current
+              td = Time.current.strftime('%Y-%m-%d %H:%M:%S')
               - if wfa.completed_user.nil?
                 td Not completed
               - else
