@@ -21,11 +21,11 @@ css:
   table.container{
     width: 900px;
   }
-  .red{
-    color: green;
-  }
   th, td{
     padding: 1%;
+  }
+  a, .red {
+    color: #dd715e;
   }
 /*move the above styles into your custom stylesheet /    
 container
@@ -48,66 +48,42 @@ container
             th Name
             th UEN
             th Contact Details
-            th Address line 1
-            th Address line 2
-            th Postal Code
         tbody
           tr
             td = @workflow.company.name
             td = @workflow.company.uen
             td = @workflow.company.contact_details
-            td = @workflow.company.address.line_1
-            td = @workflow.company.address.line_2
-            td = @workflow.company.address.postal_code
-      p.lead style="margin-top: 10px;" Company Project Information:
-      table border="1"
-        thead
-          tr
-            th Project Start Date
-            th Project Consultant
-            th Project Associate
-            th Project Shared Service
-            th Designated Working Time
-            th Xero Email
-        tbody
-          tr
-            td = @workflow.company.project_start_date
-            td = @workflow.company.consultant
-            td = @workflow.company.associate
-            td = @workflow.company.shared_service
-            td = @workflow.company.designated_working_time
-            td = @workflow.company.xero_email
-      p.lead style="margin-top: 10px;" Company Filing Dates:
-      table border="1"
-        thead
-          tr
-            th Financial Year End
-            th GST Quarter
-            th AGM Date
-            th AR Date
-            th ECI Date
-            th Form C-S Date
-        tbody
-          tr
-            td = @workflow.company.financial_year_end
-            td = @workflow.company.gst_quarter
-            td = @workflow.company.agm_date
-            td = @workflow.company.ar_date
-            td = @workflow.company.eci_date
-            td = @workflow.company.form_cs_date
       - if @workflow.documents.present?
-        p.lead Document uploaded: 
-        ul 
-          - @workflow.documents.each do |doc|
-            li
-              a href="#{doc.file_url}" #{doc.filename}
+        p.lead style="margin-top: 10px;" Document uploaded: 
+        table border="1"
+          thead
+            tr
+              th Document Filename
+              th Uploaded By
+              th Uploaded On
+          tbody
+            - @workflow.documents.each do |doc|
+              tr
+                td 
+                  a href="#{doc.file_url}" #{doc.filename}
+                td = doc.user.full_name
+                td = doc.created_at.strftime('%Y-%m-%d %H:%M:%S')
       - else
         p.lead No document uploaded
       - if @workflow.invoice.present?
-        p.lead Invoice created:
-        ul
-          li
-            = link_to @workflow.invoice.invoice_reference, symphony_invoice_url(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @workflow.invoice.id)
+        p.lead style="margin-top: 10px;" Invoice created:
+        table border="1"
+          thead
+            tr
+              th Invoice Reference
+              th Created By
+              th Created On
+          tbody
+            tr
+              td 
+                = link_to @workflow.invoice.invoice_reference, symphony_invoice_url(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @workflow.invoice.id)
+              td = @workflow.invoice.user.full_name
+              td = @workflow.invoice.created_at.strftime('%Y-%m-%d %H:%M:%S')
       - else
         p.lead No invoice created
       p.lead Below is a summary of the workflow completed:
