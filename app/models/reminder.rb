@@ -1,6 +1,6 @@
 class Reminder < ApplicationRecord
   include PublicActivity::Model
-  tracked owner: ->(controller, model) { controller && controller.current_user },
+  tracked owner: ->(controller, _model) { controller && controller.current_user },
           recipient: ->(_controller, model) { model&.user }
 
   belongs_to :user
@@ -14,7 +14,7 @@ class Reminder < ApplicationRecord
   validate :at_least_one_notification_method
 
   def self.today
-    reminders = Reminder.where(next_reminder: Date.current.beginning_of_day..Date.current.end_of_day)
+    return Reminder.where(next_reminder: Date.current.beginning_of_day..Date.current.end_of_day)
   end
 
   def at_least_one_notification_method

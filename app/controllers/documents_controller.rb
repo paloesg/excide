@@ -53,9 +53,7 @@ class DocumentsController < ApplicationController
   # DELETE /documents/1.json
   def destroy
     @document.destroy
-    respond_to do |format|
-      redirect_to (current_user.has_role? :superadmin) ? admin_company_documents(@company.id) : documents_path, notice: 'Document was successfully destroyed.'
-    end
+    redirect_to (current_user.has_role? :superadmin) ? admin_company_documents(@company.id) : documents_path, notice: 'Document was successfully destroyed.'
   end
 
   private

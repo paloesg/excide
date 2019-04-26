@@ -84,7 +84,7 @@ class Workflow < ApplicationRecord
 
   def data_attributes=(attributes)
     data = []
-    attributes.each do |index, attrs|
+    attributes.each do |_index, attrs|
       next if '1' == attrs.delete("_destroy")
       next if attrs['name'].empty? && attrs['value'].empty?
       data << attrs
