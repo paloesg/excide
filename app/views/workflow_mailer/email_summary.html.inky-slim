@@ -41,7 +41,8 @@ container
       p.lead 
         | The workflow 
         span.red #{@workflow.identifier} 
-        | has been completed.
+        | has been archived.
+      p.lead Deadline: #{@workflow&.deadline&.strftime("%d/%m/%Y")}
       p.lead Below is a summary of the workflow completed:
       table border="1" 
         thead
@@ -60,18 +61,5 @@ container
               - else
                 td = wfa.completed_user.full_name.to_s
               td = wfa.remarks
-  / wrapper.secondary
-  /   spacer size="16" 
-  /   row
-  /     columns large="6" small="12" 
-  /       h5 Connect With Us:
-  /       menu.vertical
-  /         item href="#" style=("text-align: left;")  Twitter
-  /         item href="#" style=("text-align: left;")  Facebook
-  /         item href="#" style=("text-align: left;")  Google +
-  /     columns large="6" small="12" 
-  /       h5 Contact Info:
-  /       p Phone: 408-341-0600
-  /       p
-  /         | Email:
-          a href="mailto:foundation@zurb.com"  foundation@zurb.com
+      p style="margin-top: 10px;"
+        a href="#{symphony_archive_url(@workflow.template.slug, @workflow.identifier)}" View the workflow
