@@ -112,7 +112,6 @@ class Symphony::WorkflowsController < WorkflowsController
     generate_archive = GenerateArchive.new(@workflow).run
     # Mark workflow as completed when workflow is archived
     if generate_archive.success?
-      WorkflowMailer.email_summary(@workflow, @workflow.user, @workflow.company).deliver_later
       redirect_to symphony_archive_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully archived.'
     else
       redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: "There was an error archiving this workflow. Please contact your admin with details of this error: #{generate_archive.message}."
