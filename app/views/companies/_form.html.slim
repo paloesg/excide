@@ -1,36 +1,63 @@
 .row
-  .col-md-12
-    .form-group
-      = f.label :name, 'Company Name'
-      = f.text_field :name, class: 'form-control'
-.row
-  .col-md-12
-    .form-group
-      = f.fields_for :address do |a|
-        = render 'companies/address_fields', f: a
-.row
-  .col-md-12
-    .form-group
-      = f.label :company_type, 'Company Type'
-      = f.select :company_type, Company.company_types.keys.map { |c| [c, c] }, {:include_blank => true}, class: 'selectize'
-.row
-  .col-md-12
-    .form-group
-      = f.label :description, 'Description'
-      = f.text_area :description, class: 'form-control'
-.row
-  .col-md-12
-    .form-group
-      = f.label :ssic_code, 'SSIC Code'
-      = f.text_field :ssic_code, class: 'form-control'
-.row
-  .col-md-12
-    .form-group
-      = f.label :financial_year_end, 'Financial Year End'
-      = f.text_field :financial_year_end, class: 'form-control datetimepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
-.row
-	.col-md-12
-		.form-group
-		  = f.label :xero_email, 'Xero Email'
-		  = f.text_field :xero_email, class: 'form-control'
-
+  .col-sm-6
+    .card.mb-4
+      .card-header Company Information
+      .card-body
+        .form-group
+          = f.label :name, 'Company name'
+          = f.text_field :name, class: 'form-control'
+        .form-group
+          = f.label :uen, 'UEN'
+          = f.text_field :uen, class: 'form-control'
+        .form-group
+          = f.label :contact_details
+          = f.text_area :contact_details, class: 'form-control'
+        .form-group
+          = f.fields_for :address do |a|
+            = render 'companies/address_fields', f: a
+    .card.mb-4
+      .card-header Filing Dates
+      .card-body
+        .form-group
+          = f.label :financial_year_end
+          = f.date_field :financial_year_end, class: 'form-control'
+        fieldset.form-group
+          legend.col-form-label GST quarter
+          - Company.gst_quarters.keys.each do |gst_quarter|
+            .form-check
+              = f.radio_button :gst_quarter, gst_quarter, class: 'form-check-input'
+              = f.label "#{:gst_quarter}_#{gst_quarter.parameterize.underscore}", gst_quarter.titlecase, class: 'form-check-label'
+        .form-group
+          = f.label :agm_date, 'AGM date'
+          = f.date_field :agm_date, class: 'form-control'
+        .form-group
+          = f.label :ar_date, 'AR date'
+          = f.date_field :ar_date, class: 'form-control'
+        .form-group
+          = f.label :eci_date, 'ECI date'
+          = f.date_field :eci_date, class: 'form-control'
+        .form-group
+          = f.label :form_cs_date, 'Form C-S date'
+          = f.date_field :form_cs_date, class: 'form-control'
+  .col-sm-6
+    .card
+      .card-header Project Information
+      .card-body
+        .form-group
+          = f.label :project_start_date
+          = f.date_field :project_start_date, class: 'form-control'
+        .form-group
+          = f.label :consultant_id, 'Project consultant'
+          = f.collection_select :consultant_id, User.with_role(:consultant), :id, :full_name, {:include_blank => true}, class: 'selectize'
+        .form-group
+          = f.label :associate_id, 'Project associate'
+          = f.collection_select :associate_id, User.with_role(:associate), :id, :full_name, {:include_blank => true}, class: 'selectize'
+        .form-group
+          = f.label :shared_service_id, 'Project shared service'
+          = f.collection_select :shared_service_id, User.with_role(:shared_service), :id, :full_name, {:include_blank => true}, class: 'selectize'
+        .form-group
+          = f.label :designated_working_time
+          = f.text_field :designated_working_time, class: 'form-control'
+        .form-group
+          = f.label :xero_email
+          = f.text_field :xero_email, class: 'form-control'

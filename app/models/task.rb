@@ -16,7 +16,8 @@ class Task < ApplicationRecord
 
   def get_workflow_action(company_id, workflow_identifier = nil)
     workflow_id = workflow_identifier.present? ? Workflow.find_by(identifier: workflow_identifier).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id
-    action = self.workflow_actions.find_by(company_id: company_id, workflow_id: workflow_id)
+
+    return self.workflow_actions.find_by(company_id: company_id, workflow_id: workflow_id)
   end
 
   private

@@ -167,6 +167,7 @@ group :development, :test do
 
   # Testing framework
   gem 'rspec-rails'
+  gem 'rspec_junit_formatter'
   gem 'guard-rspec'
   gem 'spring-commands-rspec'
   gem 'shoulda'

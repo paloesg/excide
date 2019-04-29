@@ -17,7 +17,7 @@ class Workflow < ApplicationRecord
   validates :identifier, uniqueness: true
   validate :check_data_fields
 
-  after_create :create_actions_and_trigger_first_task
+  after_commit :create_actions_and_trigger_first_task, on: :create
   before_save :uppercase_identifier
 
   include PublicActivity::Model
@@ -85,7 +85,7 @@ class Workflow < ApplicationRecord
 
   def data_attributes=(attributes)
     data = []
-    attributes.each do |index, attrs|
+    attributes.each do |_index, attrs|
       next if '1' == attrs.delete("_destroy")
       next if attrs['name'].empty? && attrs['value'].empty?
       data << attrs

@@ -115,7 +115,7 @@ class Symphony::WorkflowsController < WorkflowsController
     if generate_archive.success?
       redirect_to symphony_archive_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully archived.'
     else
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: 'There was an error archiving this workflow. Please contact your admin with details of this error.'
+      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: "There was an error archiving this workflow. Please contact your admin with details of this error: #{generate_archive.message}."
     end
   end
 
@@ -223,7 +223,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def set_attributes_metadata
-    params[:workflow][:data_attributes]&.each do |key, value|
+    params[:workflow][:data_attributes]&.each do |_key, value|
       if value[:_create] == '1' or value[:_update] == '1' or value[:_destroy] == '1'
         value[:user_id] = @user.id
         value[:updated_at] = Time.current

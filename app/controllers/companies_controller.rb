@@ -2,8 +2,7 @@ class CompaniesController < ApplicationController
   layout "dashboard/application"
 
   before_action :authenticate_user!
-  before_action :set_company, only: [:edit, :update, :name_reservation, :incorporation]
-  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
+  before_action :set_company, only: [:edit, :update]
 
   def new
     @company = Company.new
@@ -11,10 +10,11 @@ class CompaniesController < ApplicationController
 
   def create
     @company = Company.new(company_params)
-    @company.submit_details
 
     if @company.save
-       render :edit
+      set_company_roles
+      current_user.update(company: @company)
+      redirect_to symphony_root_path
     end
   end
 
@@ -23,17 +23,17 @@ class CompaniesController < ApplicationController
   end
 
   def update
+    # Store old roles
+    @old_roles = { consultant: @company.consultant, associate: @company.associate, shared_service: @company.shared_service }
+
     if @company.update(company_params)
+      # Remove all company roles except admin before updating company in case company roles have changed.
+      remove_company_roles
+      set_company_roles
       redirect_to edit_company_path, notice: 'Company was successfully updated.'
     else
       render :edit
     end
-  end
-
-  def name_reservation
-  end
-
-  def incorporation
   end
 
   private
@@ -43,19 +43,29 @@ class CompaniesController < ApplicationController
     @company = @user.company
   end
 
+  def set_company_roles
+    # Set company admin role only if old roles is not defined i.e. creating new company
+    current_user.add_role(:admin, @company) unless defined?(@old_roles)
+
+    @company.consultant.add_role(:consultant, @company) if @company.consultant.present?
+    @company.associate.add_role(:associate, @company) if @company.associate.present?
+    @company.shared_service.add_role(:shared_service, @company) if @company.shared_service.present?
+  end
+
+  def remove_company_roles
+    @old_roles[:consultant]&.remove_role(:consultant, @company)
+    @old_roles[:associate]&.remove_role(:associate, @company)
+    @old_roles[:shared_service]&.remove_role(:shared_service, @company)
+  end
+
   def company_params
-    params.require(:company).permit(:id, :name, :industry, :company_type, :image_url, :description, :ssic_code, :financial_year_end, :xero_email, address_attributes: [:line_1, :line_2, :postal_code]
+    params.require(:company).permit(:id, :name, :uen, :contact_details, :financial_year_end, :gst_quarter, :agm_date, :ar_date, :eci_date, :form_cs_date, :project_start_date, :consultant_id, :associate_id, :shared_service_id, :designated_working_time, :xero_email, address_attributes: [:line_1, :line_2, :postal_code]
     )
   end
 
   def build_addresses
     if @company.address.blank?
-      @company.address = @company.address.build
+      @company.address = @company.build_address
     end
-  end
-
-  def set_s3_direct_post
-    set_company
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
   end
 end

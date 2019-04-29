@@ -26,12 +26,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
   accepts_nested_attributes_for :company, :reject_if => :all_blank, :allow_destroy => true
 
-  after_commit :create_default_profile, if: Proc.new { self.has_role? :consultant }
-  after_commit :create_default_business, if: Proc.new { self.has_role? :business }
-
   validates :company, presence: true
-
-  attr_accessor :skip_validation
 
   include AASM
 
@@ -74,7 +69,7 @@ class User < ApplicationRecord
   end
 
   def full_name
-    first_name + ' ' + last_name
+    "#{first_name} #{last_name}"
   end
 
   def weekly_allocated_hours(allocation)
@@ -153,25 +148,4 @@ class User < ApplicationRecord
     self.availabilities.where(availabilities: {available_date: allocation.allocation_date}).where("availabilities.start_time <= ?", allocation.start_time).where("availabilities.end_time >= ?", allocation.end_time).first
   end
 
-  private
-
-  def create_default_profile
-    if self.profile.nil?
-      create_profile
-    end
-  end
-
-  def create_default_business
-    if self.company.nil?
-      create_company
-    end
-  end
-
-  def skip_validation?
-    if skip_validation == true
-      true
-    else
-      false
-    end
-  end
 end

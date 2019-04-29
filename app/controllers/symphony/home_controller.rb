@@ -19,7 +19,7 @@ class Symphony::HomeController < ApplicationController
     end
 
     @workflows = Kaminari.paginate_array(@templates_type).page(params[:page]).per(10)
-    @outstanding_actions = WorkflowAction.includes(workflow: [:template]).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).order(:deadline).includes(:task)
+    @outstanding_actions = WorkflowAction.includes(workflow: [:template]).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: @company).order(:deadline).includes(:task)
 
     @reminder_count = current_user.reminders.count
 

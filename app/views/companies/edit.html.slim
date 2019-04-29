@@ -2,15 +2,13 @@
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
-        a href="#" Home
+        a href="/symphony" Symphony
       li.breadcrumb-item
         a href="#" #{@company.name}
-      li.breadcrumb-item.active Update
-    h1 Update Company
+      li.breadcrumb-item.active Update Details
+    h1 Update Company Details
 .row
   .col-md-12
-    = form_for(@company, url: {action: "update"}, html: { class: '', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
-        = render 'form', f: f
-        .row
-          .col-md-4.col-sm-6
-            = f.submit "Save details", class: 'btn btn-primary'
+    = form_for(@company, url: {action: "update"}) do |f|
+      = render 'form', f: f
+      = f.submit "Save details", class: 'btn btn-primary'

@@ -46,6 +46,8 @@ class Symphony::UsersController < ApplicationController
 
   def change_company
     if @user.update(user_params)
+      #clear xero session after switching company successfully
+      session[:xero_auth].clear
       redirect_to symphony_root_path, notice: "Company changed to #{Company.find(user_params[:company_id]).name}."
     else
       redirect_to symphony_root_path, error: 'Unable to switch companies.'
