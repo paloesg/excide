@@ -1,0 +1,30 @@
+container
+  row.collapse
+    columns small="6" valign="middle" 
+      = image_tag("excide-logo.png", style: "width: 50%; height: 50%")
+  spacer size="16" 
+  row
+    columns
+      h1 Hi #{@enquiry.name},
+
+      p Thank you for your enquiry on our website.
+
+      p
+        ' Perhaps we could arrange a one-hour session to discuss your needs if you are based in Singapore or Myanmar. Please select a time that fits your schedule from this link:
+        a href="#{@url}" #{@url}
+
+      p Talk to you soon.
+      br
+      p
+        | Best Regards,
+        br
+        | Sam Lee Chengyi
+
+      p
+        | Partner
+        br
+        | Excide Pte. Ltd.
+        br
+        | Mobile: +65 9698 1755
+        br
+        | Email: sam@excide.co
