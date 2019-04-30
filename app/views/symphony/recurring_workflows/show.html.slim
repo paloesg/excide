@@ -1,0 +1,55 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item.active #{@template.title}
+      li.breadcrumb-item.active 
+        a href="/symphony/recurring_workflows" Recurring Workflows
+
+    h1
+      | #{@template.title}
+.row
+  .col-sm-12
+    .card
+      h5.card-header Recurring Workflow
+      .table-responsive
+        table.table
+          thead
+            tr
+              th Frequency Value
+              th Frequency Unit
+              th Template
+              th Next Workflow Date
+          tbody
+            tr
+              td = @recurring_workflow.freq_value
+              td = @recurring_workflow.freq_unit
+              td = @recurring_workflow.template.title
+              td = @recurring_workflow.next_workflow_date
+.row.mt-2
+  .col-sm-12
+    .card
+      h5.card-header Workflows Generated
+      .table-responsive
+        table.table
+          thead
+            tr
+              th = sortable "identifier", "Identifier"
+              th = sortable "template", "Workflow Type"
+              th = sortable "workflowable", "Client Name"
+              th = sortable "remarks", "Remarks"
+              th = sortable "deadline", "Deadline"
+              th = sortable "completed", "Status"
+          tbody
+            - @recurring_workflow.workflows.each do |workflow|
+              tr
+                td 
+                  = link_to workflow.identifier, symphony_workflow_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier)
+                td = workflow.template.title
+                td = workflow.workflowable&.name || '-'
+                td = workflow.remarks || '-'
+                td = workflow.deadline&.strftime("%d/%m/%Y") || '-'
+                td = workflow.completed ? 'Completed' : workflow.current_section&.display_name
+        .card-footer.pt-4
+          = paginate @workflows, views_prefix: 'dashboards'

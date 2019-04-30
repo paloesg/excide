@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class TemplateDashboard < Administrate::BaseDashboard
+class RecurringWorkflowDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,17 +8,14 @@ class TemplateDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    id: Field::Number,
-    title: Field::String,
-    slug: Field::String,
-    business_model: EnumField,
-    company: Field::BelongsTo,
-    workflow_type: EnumField,
+    template: Field::BelongsTo,
     workflows: Field::HasMany,
-    sections: Field::NestedHasMany.with_options(skip: [:template]),
+    id: Field::Number,
+    freq_value: Field::Number,
+    freq_unit: EnumField,
+    next_workflow_date: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    data_names: Field::JSON,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -28,43 +25,40 @@ class TemplateDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :id,
-    :title,
-    :slug,
-    :company,
-    :workflow_type,
-    :workflows
+    :template,
+    :workflows,
+    :freq_value,
+    :freq_unit,
+    :next_workflow_date,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
+    :template,
+    :workflows,
     :id,
-    :title,
-    :slug,
-    :company,
-    :workflow_type,
+    :freq_value,
+    :freq_unit,
+    :next_workflow_date,
     :created_at,
     :updated_at,
-    :sections,
-    :workflows,
-    :data_names
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :title,
-    :company,
-    :workflow_type,
-    :data_names,
-    :sections,
+    :template,
+    :freq_value,
+    :freq_unit,
+    :next_workflow_date,
   ].freeze
 
-  # Overwrite this method to customize how templates are displayed
+  # Overwrite this method to customize how recurring workflows are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(template)
-    template.title
+  def display_resource(recurring_workflow)
+    "RecurringWorkflow ##{recurring_workflow.id}"
   end
 end

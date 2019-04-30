@@ -1,0 +1,20 @@
+.row
+  .col-md-6.col-sm-12
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Recurring Workflow Details
+          .card-body
+            .form-group
+              = f.label 'Repeat'
+              = f.number_field :freq_value, class: 'form-control'
+            .form-group
+              = f.label 'Per'
+              = f.select :freq_unit, RecurringWorkflow.freq_units.map { |key, value| [key.titleize, key] }, {selected: @recurring_workflow.freq_unit}, class: 'form-control'
+            - if params[:id].present?
+              .form-group
+                = f.label 'Select next workflow date'
+                = f.date_field :next_workflow_date, class: 'form-control'
+    .row
+      .col-sm-12
+        = f.submit 'Save Recurring Workflow', class: 'btn btn-primary mr-2'
