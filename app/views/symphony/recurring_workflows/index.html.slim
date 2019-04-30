@@ -26,7 +26,7 @@
                 tr
                   td colspan="6" No upcoming workflow at the moment.
               - else
-                - @recurring_workflows.each do |recurring_workflow|
+                - @recurring_workflows.order(created_at: :desc).each do |recurring_workflow|
                   tr 
                     td = recurring_workflow.freq_value
                     td = recurring_workflow.freq_unit
