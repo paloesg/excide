@@ -16,6 +16,7 @@
           table.table.table-hover
             thead
               tr
+                th ID
                 th Frequency Value
                 th Frequency Unit
                 th Template
@@ -28,12 +29,13 @@
               - else
                 - @recurring_workflows.each do |recurring_workflow|
                   tr
+                    td = recurring_workflow.id
                     td = recurring_workflow.freq_value
                     td = recurring_workflow.freq_unit
                     td = recurring_workflow.template.title
                     td = recurring_workflow.next_workflow_date
                     td
-                      = link_to 'Trigger', '', role: 'button', class: 'btn btn-warning btn-sm mr-2'
+                      = link_to 'Trigger', trigger_workflow_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-warning btn-sm mr-2'
                       = link_to 'Show', symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), method: :get, role: 'button', class: 'btn btn-primary btn-sm mr-2'
                       = link_to 'Edit', edit_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-success btn-sm mr-2'
                       = link_to 'Stop', stop_recurring_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), method: :post, role: 'button', class: 'btn btn-danger btn-sm mr-2' if recurring_workflow.next_workflow_date.present?
