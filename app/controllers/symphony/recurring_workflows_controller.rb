@@ -23,7 +23,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
     @recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
     if @recurring_workflow.save
       #creating the first workflow before recurring it through calling the service object
-      @workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, recurring_workflow: @recurring_workflow, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase)
+      @workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, recurring_workflow: @recurring_workflow, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase, deadline: Date.current + 1.week)
       @workflow.save
       redirect_to symphony_workflow_path(@recurring_workflow.template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
     end
