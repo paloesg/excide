@@ -221,9 +221,6 @@ ActiveRecord::Schema.define(version: 2019_04_30_084021) do
     t.string "currency"
     t.boolean "approved"
     t.decimal "total"
-    t.bigint "user_id"
-    t.boolean "workflow_archived"
-    t.index ["user_id"], name: "index_invoices_on_user_id"
     t.index ["workflow_id"], name: "index_invoices_on_workflow_id"
   end
 
@@ -389,11 +386,6 @@ ActiveRecord::Schema.define(version: 2019_04_30_084021) do
     t.integer "company_id"
     t.json "data_names", default: []
     t.integer "workflow_type", default: 0
-    t.date "recurring_start_date"
-    t.date "recurring_end_date"
-    t.boolean "recurring"
-    t.integer "freq_unit"
-    t.integer "freq_value"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
@@ -476,7 +468,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_084021) do
     t.string "workflowable_type"
     t.text "remarks"
     t.json "data", default: []
-    t.json "archive", default: "[]"
+    t.json "archive", default: []
     t.bigint "recurring_workflow_id"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
@@ -502,7 +494,6 @@ ActiveRecord::Schema.define(version: 2019_04_30_084021) do
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflows"
-  add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"
