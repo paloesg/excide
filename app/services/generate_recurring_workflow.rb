@@ -11,7 +11,7 @@ class GenerateRecurringWorkflow
 
   private
   def generate_workflow
-    Workflow.create(company_id: @recurring_workflow.template.company.id, template_id: @recurring_workflow.template.id, recurring_workflow_id: @recurring_workflow.id, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' + SecureRandom.hex).parameterize.upcase)
+    Workflow.create(company_id: @recurring_workflow.template.company.id, template_id: @recurring_workflow.template.id, recurring_workflow_id: @recurring_workflow.id, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' + SecureRandom.hex).parameterize.upcase, deadline: Date.current + 1.week)
   end
 
   def set_next_recurring_workflow

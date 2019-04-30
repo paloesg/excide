@@ -11,7 +11,6 @@ class RecurringWorkflowDashboard < Administrate::BaseDashboard
     template: Field::BelongsTo,
     workflows: Field::HasMany,
     id: Field::Number,
-    recurring: Field::Boolean,
     freq_value: Field::Number,
     freq_unit: EnumField,
     next_workflow_date: Field::DateTime,
@@ -39,7 +38,6 @@ class RecurringWorkflowDashboard < Administrate::BaseDashboard
     :template,
     :workflows,
     :id,
-    :recurring,
     :freq_value,
     :freq_unit,
     :next_workflow_date,
@@ -52,7 +50,6 @@ class RecurringWorkflowDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :template,
-    :recurring,
     :freq_value,
     :freq_unit,
     :next_workflow_date,

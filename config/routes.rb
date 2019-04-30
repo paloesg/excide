@@ -56,7 +56,14 @@ Rails.application.routes.draw do
     end
     get '/archives', to: 'archives#index', as: :archives
     get '/archives/:workflow_name/:workflow_identifier', to: 'archives#show', as: :archive
+    
     get '/recurring_workflows', to: 'recurring_workflows#index', as: :workflows_recurring
+    resources :recurring_workflows, path: '/recurring_workflows/:recurring_workflow_name', except: [:index] do
+      member do
+        post '/stop_recurring', to: 'recurring_workflows#stop_recurring'
+      end
+    end
+    
     resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
       member do
         get '/history', to: 'workflows#activities', as: :activities
@@ -73,12 +80,7 @@ Rails.application.routes.draw do
         resources :invoices
       end
     end
-    resources :recurring_workflows, path: '/recurring_workflows/:recurring_workflow_name', except: [:index] do
-      member do
-        post '/stop_recurring', to: 'recurring_workflows#stop_recurring'
-        get :trigger_workflow, to: 'recurring_workflows#trigger_workflow'
-      end
-    end
+
     root to: 'home#index'
   end
 
