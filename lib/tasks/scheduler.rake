@@ -12,7 +12,7 @@ namespace :scheduler do
   end
 
   task :deadline_send_summary_email => :environment do
-    @workflows = Workflow.where(deadline: (Date.current - 1.day).strftime("%d-%m-%Y 16:00:00"))
+    @workflows = Workflow.where(deadline: (Date.current - 1.day).beginning_of_day)
     @workflows.each do |workflow|
       WorkflowMailer.email_summary(workflow, workflow.user, workflow.company).deliver_later
     end
