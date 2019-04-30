@@ -3,9 +3,9 @@
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
-      li.breadcrumb-item.active #{@template.title}
-      li.breadcrumb-item.active 
+      li.breadcrumb-item.active
         a href="/symphony/recurring_workflows" Recurring Workflows
+      li.breadcrumb-item.active #{@template.title}
 
     h1
       | #{@template.title}
@@ -17,15 +17,13 @@
         table.table
           thead
             tr
-              th Frequency Value
-              th Frequency Unit
               th Template
-              th Next Workflow Date
+              th Repeats Every
+              th Next Repeat Date
           tbody
             tr
-              td = @recurring_workflow.freq_value
-              td = @recurring_workflow.freq_unit
               td = @recurring_workflow.template.title
+              td = pluralize(@recurring_workflow.freq_value, @recurring_workflow.freq_unit.singularize)
               td = @recurring_workflow.next_workflow_date
 .row.mt-2
   .col-sm-12
@@ -44,7 +42,7 @@
           tbody
             - @recurring_workflow.workflows.each do |workflow|
               tr
-                td 
+                td
                   = link_to workflow.identifier, symphony_workflow_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier)
                 td = workflow.template.title
                 td = workflow.workflowable&.name || '-'

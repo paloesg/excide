@@ -4,7 +4,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template
-  before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring, :show]
+  before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring, :show, :trigger_workflow]
 
   def index
     @recurring_workflows = RecurringWorkflow.where(company_id: @company.id)
@@ -50,6 +50,16 @@ class Symphony::RecurringWorkflowsController < ApplicationController
       redirect_to symphony_workflows_recurring_path, notice: 'Recurring Workflow stopped.'
     else
       redirect_to symphony_root
+    end
+  end
+
+  def trigger_workflow
+    @new_workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, recurring_workflow: @recurring_workflow, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase)
+    @new_workflow.recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
+    if @new_workflow.recurring_workflow.save
+      redirect_to symphony_workflow_path(@new_workflow.template.slug, @new_workflow.identifier)
+    else
+      redirect_to symphony_workflows_recurring_path, alert: "Workflow is not generated. Please try again!"
     end
   end
 
