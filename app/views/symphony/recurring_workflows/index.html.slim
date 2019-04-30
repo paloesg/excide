@@ -16,7 +16,6 @@
           table.table.table-hover
             thead
               tr
-                th ID
                 th Frequency Value
                 th Frequency Unit
                 th Template
@@ -28,8 +27,7 @@
                   td colspan="6" No upcoming workflow at the moment.
               - else
                 - @recurring_workflows.each do |recurring_workflow|
-                  tr
-                    td = recurring_workflow.id
+                  tr 
                     td = recurring_workflow.freq_value
                     td = recurring_workflow.freq_unit
                     td = recurring_workflow.template.title
