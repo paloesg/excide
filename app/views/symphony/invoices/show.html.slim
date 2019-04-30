@@ -7,6 +7,8 @@
         = link_to @workflow.identifier, symphony_workflow_path(workflow_identifier: @workflow.identifier)
       li.breadcrumb-item Invoices
     h1 Invoice - #{@invoice.id}
+    - if @invoice.workflow_archived?
+      span.badge.badge-danger Workflow Archived
 .row.mt-3
   .col-md-2.col-sm-4
     strong Invoice Date:

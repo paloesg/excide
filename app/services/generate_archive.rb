@@ -8,6 +8,7 @@ class GenerateArchive
     begin
       @workflow.transaction do
         @workflow.update_columns(completed: true, archive: generate_archive)
+        @workflow.invoice.update_columns(workflow_archived: true)
         delete_reminders
         delete_workflow_actions
         delete_activities
