@@ -19,7 +19,6 @@ class Symphony::RecurringWorkflowsController < ApplicationController
     @recurring_workflow = RecurringWorkflow.new(recurring_workflow_params)
     @recurring_workflow.template = @template
     @recurring_workflow.company = @company
-    @recurring_workflow.recurring = true
     #set the next recurring workflow date
     @recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
     if @recurring_workflow.save
@@ -65,7 +64,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   end
 
   def recurring_workflow_params
-    params.require(:recurring_workflow).permit(:recurring, :freq_value, :freq_unit, :template_id, :company_id, :next_workflow_date)
+    params.require(:recurring_workflow).permit(:freq_value, :freq_unit, :template_id, :company_id, :next_workflow_date)
   end
 
   def set_company

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_073846) do
+ActiveRecord::Schema.define(version: 2019_04_30_084021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -254,7 +254,6 @@ ActiveRecord::Schema.define(version: 2019_04_30_073846) do
   end
 
   create_table "recurring_workflows", force: :cascade do |t|
-    t.boolean "recurring"
     t.integer "freq_value"
     t.integer "freq_unit"
     t.bigint "template_id"
