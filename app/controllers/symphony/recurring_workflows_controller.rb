@@ -7,7 +7,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring, :show]
 
   def index
-    @recurring_workflows = RecurringWorkflow.all
+    @recurring_workflows = RecurringWorkflow.where(company_id: @company.id)
     @templates = Template.assigned_templates(current_user)
   end
 
@@ -18,6 +18,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   def create
     @recurring_workflow = RecurringWorkflow.new(recurring_workflow_params)
     @recurring_workflow.template = @template
+    @recurring_workflow.company_id = @company
     @recurring_workflow.recurring = true
     #set the next recurring workflow date
     @recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
@@ -64,7 +65,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   end
 
   def recurring_workflow_params
-    params.require(:recurring_workflow).permit(:recurring, :freq_value, :freq_unit, :template_id, :next_workflow_date)
+    params.require(:recurring_workflow).permit(:recurring, :freq_value, :freq_unit, :template_id, :company_id, :next_workflow_date)
   end
 
   def set_company
