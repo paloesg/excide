@@ -18,7 +18,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   def create
     @recurring_workflow = RecurringWorkflow.new(recurring_workflow_params)
     @recurring_workflow.template = @template
-    @recurring_workflow.company_id = @company
+    @recurring_workflow.company = @company
     @recurring_workflow.recurring = true
     #set the next recurring workflow date
     @recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
