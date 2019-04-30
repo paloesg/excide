@@ -8,7 +8,6 @@ class GenerateArchive
     begin
       @workflow.transaction do
         @workflow.update_columns(completed: true, archive: generate_archive)
-        send_email_summary
         delete_reminders
         delete_workflow_actions
         delete_activities
@@ -47,10 +46,6 @@ class GenerateArchive
       archive_tasks << archive_task
     end
     archive_tasks
-  end
-
-  def send_email_summary
-    WorkflowMailer.email_summary(@workflow, @workflow.user, @workflow.company).deliver_now
   end
 
   def activity_log
