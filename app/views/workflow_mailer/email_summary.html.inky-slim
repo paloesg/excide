@@ -71,7 +71,7 @@ container
               td = wfa.task.instructions
               td = Time.current.strftime('%Y-%m-%d %H:%M:%S')
               - if wfa.completed_user.nil?
-                td Not completed
+                td.not-completed-mark Not completed
               - else
                 td = wfa.completed_user.full_name.to_s
               td = wfa.remarks
