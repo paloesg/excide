@@ -1,5 +1,5 @@
 class Batch < ApplicationRecord
   belongs_to :company
   belongs_to :template
-  has_many :workflows
+  has_many :workflows, dependent: :destroy
 end
