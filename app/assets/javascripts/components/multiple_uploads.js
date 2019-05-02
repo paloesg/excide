@@ -29,6 +29,14 @@ $(document).ready(function () {
       var filePath = $(resp).find("Key").text();
       var location = new URL($(resp).find("Location").text())
       if ($("#uploader").length){
+        $.post('/symphony/batches', {
+          authenticity_token: $.rails.csrfToken(),
+          //to identify the batch with a unique identifier, the 1st part is to get current date is this format: YYYY/MM/DD, the latter part represent a random string of letters and numbers
+          batch_identifier: (new Date().toJSON().slice(0,10).replace(/-/g,'/') + ' - ' + Math.random().toString(36).replace('0.', '') ),
+          batch:{
+            template_id: $('#template_id').val(), 
+          }
+        });
         $.post('/symphony/documents', {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'invoice',
