@@ -48,6 +48,8 @@ Rails.application.routes.draw do
         post '/cancel', to: 'reminders#cancel'
       end
     end
+    resources :batches
+
     resources :document_templates
     resources :documents do
       collection do
