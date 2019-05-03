@@ -11,15 +11,9 @@ class Symphony::BatchesController < ApplicationController
   def create
   	@batch = Batch.new(batch_params)
   	@batch.company = @company
-  	respond_to do |format|
-      if @batch.save
-      	@batch.template = Template.find(params[:batch][:template_id])
-      	format.html { redirect_to symphony_root_path), notice: 'Batch is created' }
-      	format.json { render :show, status: :created, location: @batch}
-      else
-      	format.html { render :new }
-        format.json { render json: @document.errors, status: :unprocessable_entity }
-      end
+    @template = Template.find(params[:batch][:template_id])
+    @batch.template = @template
+    @batch.save
   end
 
   private
