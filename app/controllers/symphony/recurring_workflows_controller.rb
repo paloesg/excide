@@ -74,7 +74,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   end
 
   def recurring_workflow_params
-    params.require(:recurring_workflow).permit(:freq_value, :freq_unit, :template_id, :company_id, :next_workflow_date)
+    params.require(:recurring_workflow).permit(:freq_value, :freq_unit, :template_id, :company_id, :user_id, :next_workflow_date)
   end
 
   def set_company
