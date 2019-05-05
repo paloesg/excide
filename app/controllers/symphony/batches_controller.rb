@@ -19,7 +19,7 @@ class Symphony::BatchesController < ApplicationController
   private
 
   def batch_params
-    params.require(:batch).permit(:company_id, :template_id)
+    params.require(:batch).permit(:company_id, :template_id, :batch_identifier)
   end
 
   def set_company

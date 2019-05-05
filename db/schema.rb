@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_02_071009) do
+ActiveRecord::Schema.define(version: 2019_05_04_135328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 2019_05_02_071009) do
     t.bigint "template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "batch_identifier"
     t.index ["company_id"], name: "index_batches_on_company_id"
     t.index ["template_id"], name: "index_batches_on_template_id"
   end
