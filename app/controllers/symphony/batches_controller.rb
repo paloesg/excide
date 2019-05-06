@@ -23,8 +23,7 @@ class Symphony::BatchesController < ApplicationController
     @workflow.batch_id = @batch.id
     respond_to do |format|
       if @workflow.save
-        # @number_of_documents + 
-        format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: ' documents were successfully created.' }
+        format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: @batch.workflows.count.to_s + ' documents were successfully created.' }
         format.json { render :show, status: :created, location: @workflow}
       else
         format.html { render :new }
