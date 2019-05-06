@@ -15,7 +15,7 @@
             th Id
             th Batch Identifier
         tbody
-          - @batches.each do |batch|
+          - @batches.order(id: :desc).each do |batch|
             tr
               td = link_to batch.id, symphony_batch_path(batch.id) 
               td = batch.batch_identifier
