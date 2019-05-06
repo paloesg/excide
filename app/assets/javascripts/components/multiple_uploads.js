@@ -24,6 +24,15 @@ $(document).ready(function () {
         this.removeFile(file);
       }
     })
+    documentUpload.on("drop", function(file, request){
+      $.post('/symphony/batches', {
+        authenticity_token: $.rails.csrfToken(),
+        batch: {
+          template_id: $('#template_id').val(),
+          batch_identifier: new Date().toJSON().slice(0,10).replace(/-/g,'/') + ' - ' +  Math.random().toString(36).replace('0.', ''),
+        }
+      });
+    })
     documentUpload.on("success", function (file, request) {
       var resp = $.parseXML(request);
       var filePath = $(resp).find("Key").text();
@@ -70,12 +79,6 @@ $(document).ready(function () {
     });
     documentUpload.on("queuecomplete", function (file, request) {
       $('#view-invoices-button').show();
-      $.post('/symphony/batches', {
-        authenticity_token: $.rails.csrfToken(),
-        batch: {
-          template_id: $('#template_id').val(),
-        }
-      });
     });
   };
 });
