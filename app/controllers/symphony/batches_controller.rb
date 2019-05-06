@@ -9,8 +9,8 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def create
-  	@batch = Batch.new(batch_params)
-  	@batch.company = @company
+    @batch = Batch.new(batch_params)
+    @batch.company = @company
     @template = Template.find(params[:batch][:template_id])
     @batch.template = @template
     @batch.batch_identifier = params[:batch][:batch_identifier]
@@ -38,7 +38,7 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def set_company
-  	@company = current_user.company
+    @company = current_user.company
   end
 
   def template
