@@ -24,12 +24,12 @@ $(document).ready(function () {
         this.removeFile(file);
       }
     })
-    documentUpload.on("drop", function(file, request){
+    documentUpload.on("drop", function(file, request, data){
       $.post('/symphony/batches', {
         authenticity_token: $.rails.csrfToken(),
         batch: {
           template_id: $('#template_id').val(),
-          batch_identifier: new Date().toJSON().slice(0,10).replace(/-/g,'/') + ' - ' +  Math.random().toString(36).replace('0.', ''),
+          batch_identifier: Math.random().toString(36).replace('0.', ''),
         }
       });
     })
