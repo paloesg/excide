@@ -1,0 +1,32 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="#" Home
+      li.breadcrumb-item
+        a href="#" Company
+      li.breadcrumb-item
+        a href="#" Batches
+    h1
+      | Workflows in Batch
+.row
+  .col-sm-12
+    .table-responsive
+      table.table.table-hover
+        thead
+          tr
+            th = sortable "identifier", "Identifier"
+            th = sortable "template", "Workflow Type"
+            th = sortable "workflowable", "Client Name"
+            th = sortable "remarks", "Remarks"
+            th = sortable "deadline", "Deadline"
+            th = sortable "completed", "Status"
+        tbody
+          - @batch.workflows.each do |workflow|
+            tr
+              td = link_to workflow.identifier, symphony_workflow_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier)
+              td = workflow.template.title
+              td = workflow.workflowable&.name || '-'
+              td = workflow.remarks || '-'
+              td = workflow.deadline&.strftime("%d/%m/%Y") || '-'
+              td = workflow.completed ? 'Completed' : workflow.current_section&.display_name

@@ -1,0 +1,24 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="#" Home
+      li.breadcrumb-item
+        a href="#" Company
+      li.breadcrumb-item
+        a href="#" Batches
+    h1
+      | Batches Listing
+.row
+  .col-sm-12
+    .table-responsive
+      table.table.table-hover
+        thead
+          tr
+            th Id
+            th Batch Identifier
+        tbody
+          - @batches.each do |batch|
+            tr
+              td = link_to batch.id, symphony_batch_path(batch.id) 
+              td = batch.batch_identifier

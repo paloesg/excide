@@ -4,6 +4,10 @@ class Symphony::BatchesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
 
+  def index
+    @batches = Batch.all
+  end
+
   def new
 
   end
@@ -15,6 +19,10 @@ class Symphony::BatchesController < ApplicationController
     @batch.template = @template
     @batch.batch_identifier = params[:batch][:batch_identifier]
     @batch.save
+  end
+
+  def show
+    @batch = Batch.find(params[:id])
   end
 
   def assign_workflows_to_batch
