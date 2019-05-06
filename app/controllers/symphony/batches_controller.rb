@@ -17,7 +17,7 @@ class Symphony::BatchesController < ApplicationController
     @batch.save
   end
 
-  def create_and_assign_workflow_to_batch
+  def assign_workflows_to_batch
     @batch = Batch.find_by(batch_identifier: params[:batch_identifier])
     @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
     @workflow.batch_id = @batch.id
