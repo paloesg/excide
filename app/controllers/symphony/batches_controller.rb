@@ -25,20 +25,6 @@ class Symphony::BatchesController < ApplicationController
     @batch = Batch.find(params[:id])
   end
 
-  def assign_workflows_to_batch
-    @batch = Batch.find_by(batch_identifier: params[:batch_identifier])
-    @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
-    @workflow.batch_id = @batch.id
-    respond_to do |format|
-      if @workflow.save
-        format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: @batch.workflows.count.to_s + ' documents were successfully created.' }
-        format.json { render :show, status: :created, location: @workflow}
-      else
-        format.html { render :new }
-      end
-    end
-  end
-
   private
 
   def batch_params

@@ -31,14 +31,15 @@ class Symphony::DocumentsController < DocumentsController
           @template = Template.find(params[:document][:template_id])
           @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: @document.identifier, workflowable: @client)
           @workflow.template_data(@template)
+          #get the latest batch identifier and pass it as a params
+          @latest_batch = Batch.last
+          @workflow.batch = @latest_batch
           @workflow.save
           @document.update_attributes(workflow: @workflow)
           #number of documents uploaded in the dropzone
           @number_of_documents = params[:count]
-          #get the latest batch identifier and pass it as a params
-          @latest_batch = Batch.last
-          #this will trigger assign workflow to batches in batches controller
-          format.html { redirect_to symphony_assign_workflows_to_batch_path(batch_identifier: @latest_batch.batch_identifier, workflow_name: @template.slug, workflow_identifier: @workflow.identifier)}
+          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: @number_of_documents.to_s + ' documents were successfully created.' }
+          format.json { render :show, status: :created, location: @workflow}
         else
           format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
           format.json { render :show, status: :created, location: @document}

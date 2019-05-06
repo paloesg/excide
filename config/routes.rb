@@ -49,7 +49,6 @@ Rails.application.routes.draw do
       end
     end
     resources :batches
-    get '/batches/:batch_identifier/:workflow_name/:workflow_identifier', to: 'batches#assign_workflows_to_batch', as: :assign_workflows_to_batch
 
     resources :document_templates
     resources :documents do
