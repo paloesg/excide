@@ -2,13 +2,14 @@
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
-        a href="#" Home
+        a href="/symphony" Symphony
       li.breadcrumb-item
-        a href="#" Company
-      li.breadcrumb-item
-        a href="#" Batches
+        a href="/symphony/batches" Batches
+      li.breadcrumb-item #{@batch.company.name}
+      li.breadcrumb-item 
+        a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
     h1
-      | Workflows in Batch
+      | Workflows in Batch - #{@batch.id}
 .row
   .col-sm-12
     .table-responsive
