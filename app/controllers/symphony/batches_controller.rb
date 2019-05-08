@@ -19,7 +19,6 @@ class Symphony::BatchesController < ApplicationController
     @batch.company = @company
     @template = Template.find(params[:batch][:template_id])
     @batch.template = @template
-    @batch.batch_identifier = "hey-dropzone"
     @batch.save
   end
 
@@ -30,7 +29,7 @@ class Symphony::BatchesController < ApplicationController
   private
 
   def batch_params
-    params.permit(:company_id, :template_id, :batch_identifier)
+    params.permit(:company_id, :template_id)
   end
 
   def set_company
