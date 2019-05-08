@@ -50,7 +50,7 @@ Rails.application.routes.draw do
     end
     resources :batches, path: '/batches/:batch_template_name', except: [:index, :create]
     get '/batches', to: 'batches#index', as: :batches_index
-    post '/batches/', to: 'batches#create'
+    post '/batches', to: 'batches#create'
 
     resources :document_templates
     resources :documents do
