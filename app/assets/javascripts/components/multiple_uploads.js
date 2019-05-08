@@ -27,6 +27,9 @@ $(document).ready(function () {
       documentUpload.processQueue();
       $.post('/symphony/batches', {
         authenticity_token: $.rails.csrfToken(),
+        batch: {
+          template_id: $('#template_id').val(),
+        }
       });
     })
     documentUpload.on("success", function (file, request) {
@@ -42,6 +45,7 @@ $(document).ready(function () {
             filename: file.upload.filename,
             identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,
+            template_id: $('#template_id').val(),
           }
         });
       }
