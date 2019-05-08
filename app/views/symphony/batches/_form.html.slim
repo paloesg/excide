@@ -1,0 +1,15 @@
+.row
+  .col-md-12.col-sm-12
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Batch Details
+          .card-body
+            .form-group
+              = f.label :batch_identifier
+              = f.text_field :batch_identifier, class: 'form-control'
+            / need to check identifier unique
+            / form#my-awesome-dropzone.dropzone action="/file-upload" 
+.row  
+  .col-sm-12
+    = f.submit 'Save Batch', class: 'btn btn-primary'
