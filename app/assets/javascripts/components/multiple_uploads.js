@@ -17,20 +17,16 @@ $(document).ready(function () {
       filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       return filter_filename + '.' + get_extension;
     };
-    var documentUpload = new Dropzone('.multiple_uploads', { timeout: 0, renameFilename: cleanFilename });
-    documentUpload.on("sending", function(file) {
-      if ( $('#template_id').val() == "" ) {
-        alert('Template is required.');
-        this.removeFile(file);
-      }
-    })
-    documentUpload.on("drop", function(file, request, data){
+    var documentUpload = new Dropzone('.multiple_uploads', {
+      timeout: 0, 
+      renameFilename: cleanFilename,
+      autoProcessQueue: false,
+      parallelUploads: 10,
+    });
+    $('#drag-and-drop-submit').click(function(){
+      documentUpload.processQueue();
       $.post('/symphony/batches', {
         authenticity_token: $.rails.csrfToken(),
-        batch: {
-          template_id: $('#template_id').val(),
-          batch_identifier: Math.random().toString(36).replace('0.', ''),
-        }
       });
     })
     documentUpload.on("success", function (file, request) {
@@ -46,11 +42,11 @@ $(document).ready(function () {
             filename: file.upload.filename,
             identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,
-            template_id: $('#template_id').val(),
           }
         });
       }
       else if($("#uploadToXero").length){
+        //check this part of drag and drop
         $.post('/symphony/documents', {
           authenticity_token: $.rails.csrfToken(),
           workflow: $('#workflow_identifier').val(),
