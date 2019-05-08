@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_08_065034) do
+ActiveRecord::Schema.define(version: 2019_05_08_080454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "activation_types", id: :serial, force: :cascade do |t|
     t.string "name"
@@ -93,7 +94,7 @@ ActiveRecord::Schema.define(version: 2019_05_08_065034) do
     t.index ["user_id"], name: "index_availabilities_on_user_id"
   end
 
-  create_table "batches", force: :cascade do |t|
+  create_table "batches", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.bigint "company_id"
     t.bigint "template_id"
     t.datetime "created_at", null: false
@@ -184,8 +185,6 @@ ActiveRecord::Schema.define(version: 2019_05_08_065034) do
     t.integer "document_template_id"
     t.string "identifier"
     t.integer "user_id"
-    t.bigint "batch_id"
-    t.index ["batch_id"], name: "index_documents_on_batch_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
     t.index ["document_template_id"], name: "index_documents_on_document_template_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
@@ -232,8 +231,6 @@ ActiveRecord::Schema.define(version: 2019_05_08_065034) do
     t.string "currency"
     t.boolean "approved"
     t.decimal "total"
-    t.bigint "user_id"
-    t.index ["user_id"], name: "index_invoices_on_user_id"
     t.index ["workflow_id"], name: "index_invoices_on_workflow_id"
   end
 
@@ -485,7 +482,7 @@ ActiveRecord::Schema.define(version: 2019_05_08_065034) do
     t.json "data", default: []
     t.json "archive", default: "[]"
     t.bigint "recurring_workflow_id"
-    t.bigint "batch_id"
+    t.uuid "batch_id"
     t.index ["batch_id"], name: "index_workflows_on_batch_id"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
@@ -509,12 +506,10 @@ ActiveRecord::Schema.define(version: 2019_05_08_065034) do
   add_foreign_key "companies", "users", column: "shared_service_id"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
-  add_foreign_key "documents", "batches"
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflows"
-  add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"
