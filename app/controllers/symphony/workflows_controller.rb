@@ -222,7 +222,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def set_attributes_metadata
-    params[:workflow][:data_attributes]&.each do |key, value|
+    params[:workflow][:data_attributes]&.each do |_key, value|
       if value[:_create] == '1' or value[:_update] == '1' or value[:_destroy] == '1'
         value[:user_id] = @user.id
         value[:updated_at] = Time.current

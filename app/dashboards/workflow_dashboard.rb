@@ -11,6 +11,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
     user: Field::BelongsTo,
     company: Field::BelongsTo,
     template: Field::BelongsTo,
+    recurring_workflow: Field::BelongsTo,
     identifier: Field::String,
     id: Field::Number,
     completed: Field::Boolean,
@@ -26,12 +27,13 @@ class WorkflowDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
+    :id,
     :user,
     :company,
     :identifier,
     :template,
     :workflowable,
-    :id,
+    :recurring_workflow,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -57,6 +59,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
     :company,
     :identifier,
     :template,
+    :recurring_workflow,
     :completed,
   ].freeze
 

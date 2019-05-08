@@ -2,6 +2,7 @@ class Workflow < ApplicationRecord
   belongs_to :user
   belongs_to :company
   belongs_to :template
+  belongs_to :recurring_workflow
 
   # Polymorphic association for any model that needs to be managed through workflows
   belongs_to :workflowable, polymorphic: true
@@ -84,7 +85,7 @@ class Workflow < ApplicationRecord
 
   def data_attributes=(attributes)
     data = []
-    attributes.each do |index, attrs|
+    attributes.each do |_index, attrs|
       next if '1' == attrs.delete("_destroy")
       next if attrs['name'].empty? && attrs['value'].empty?
       data << attrs

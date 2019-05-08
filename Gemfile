@@ -33,6 +33,8 @@ gem 'puma'
 gem 'rack-timeout'
 # Better Rails logging
 gem "lograge"
+# Reverse proxy to proxy blog server to primary domain
+gem "rack-reverse-proxy", require: "rack/reverse_proxy"
 
 #################################################
 #                                               #
@@ -172,6 +174,7 @@ group :development, :test do
 
   # Testing framework
   gem 'rspec-rails'
+  gem 'rspec_junit_formatter'
   gem 'guard-rspec'
   gem 'spring-commands-rspec'
   gem 'shoulda'
