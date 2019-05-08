@@ -1,0 +1,15 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony/" Home
+      li.breadcrumb-item
+        a href="#" #{@company.name}
+      li.breadcrumb-item.active New Batch
+    h1 New Batch
+.row
+  .col-md-12
+    = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads', id: 'uploader'
+      - @s3_direct_post.fields.each do |key, value|
+        = hidden_field_tag key, value
+    = submit_tag 'Submit', class: 'btn btn-primary mt-2', id: 'drag-and-drop-submit'
