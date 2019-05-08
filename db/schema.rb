@@ -231,6 +231,8 @@ ActiveRecord::Schema.define(version: 2019_05_05_104900) do
     t.string "currency"
     t.boolean "approved"
     t.decimal "total"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_invoices_on_user_id"
     t.index ["workflow_id"], name: "index_invoices_on_workflow_id"
   end
 
@@ -510,6 +512,7 @@ ActiveRecord::Schema.define(version: 2019_05_05_104900) do
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflows"
+  add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"

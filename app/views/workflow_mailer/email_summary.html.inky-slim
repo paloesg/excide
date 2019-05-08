@@ -1,0 +1,79 @@
+/*move the above styles into your custom stylesheet /    
+container
+  row.collapse
+    columns small="6" valign="middle" 
+      = image_tag("excide-logo.png", style: "width: 50%; height: 50%")
+  spacer size="16" 
+  row
+    columns
+      h1 Hi, #{@user.first_name} 
+      p.lead 
+        | The workflow 
+        span.red #{@workflow.identifier} 
+        | has been archived.
+      p.lead Deadline: #{@workflow&.deadline&.strftime("%d/%m/%Y")}
+      p.lead.email-margin-top Company Details:
+      table border="1"
+        thead
+          tr
+            th Name
+            th UEN
+            th Contact Details
+        tbody
+          tr
+            td = @workflow.company.name
+            td = @workflow.company.uen
+            td = @workflow.company.contact_details
+      - if @workflow.documents.present?
+        p.lead.email-margin-top Document uploaded: 
+        table border="1"
+          thead
+            tr
+              th Document Filename
+              th Uploaded By
+              th Uploaded On
+          tbody
+            - @workflow.documents.each do |doc|
+              tr
+                td 
+                  a href="#{doc.file_url}" #{doc.filename}
+                td = doc.user.full_name
+                td = doc.created_at.strftime('%Y-%m-%d %H:%M:%S')
+      - else
+        p.lead.email-margin-top No document uploaded
+      - if @workflow.invoice.present?
+        p.lead.email-margin-top Invoice created:
+        table border="1"
+          thead
+            tr
+              th Invoice Reference
+              th Created By
+              th Created On
+          tbody
+            tr
+              td 
+                = link_to @workflow.invoice.invoice_reference, symphony_invoice_url(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @workflow.invoice.id)
+              td = @workflow.invoice.user.full_name
+              td = @workflow.invoice.created_at.strftime('%Y-%m-%d %H:%M:%S')
+      - else
+        p.lead No invoice created
+      p.lead.email-margin-top Below is a summary of the workflow completed:
+      table border="1" 
+        thead
+          tr
+            th width="30%" Instruction
+            th width="15%" Time Completed
+            th width="15%" Completed by
+            th width="40%" Remarks
+        tbody
+          - @workflow.workflow_actions.order(:id).each do |wfa|
+            tr
+              td = wfa.task.instructions
+              td = Time.current.strftime('%Y-%m-%d %H:%M:%S')
+              - if wfa.completed_user.nil?
+                td.not-completed-mark Not completed
+              - else
+                td = wfa.completed_user.full_name.to_s
+              td = wfa.remarks
+      p.lead.email-margin-top
+        a href="#{symphony_archive_url(@workflow.template.slug, @workflow.identifier)}" View the workflow

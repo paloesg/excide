@@ -9,3 +9,6 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 Rails.application.config.assets.precompile += %w( parallax.js application-dashboard.css )
+
+#foundation_emails in the vendor folder can be individually precompile so that we can reference to it
+Rails.application.config.assets.precompile += %w( foundation_emails.css )

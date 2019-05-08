@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :availabilities, dependent: :destroy
   has_many :allocations, dependent: :destroy
   has_many :owned_events, class_name: 'Activation', foreign_key: 'event_owner_id', dependent: :destroy
+  has_many :invoices
 
   belongs_to :company
 

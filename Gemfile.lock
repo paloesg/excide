@@ -93,6 +93,8 @@ GEM
       tzinfo (~> 1.1)
     acts_as_list (0.9.19)
       activerecord (>= 3.0)
+    addressable (2.6.0)
+      public_suffix (>= 2.0.2, < 4.0)
     administrate (0.11.0)
       actionpack (>= 4.2, < 6.0)
       actionview (>= 4.2, < 6.0)
@@ -160,6 +162,8 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
+    css_parser (1.7.0)
+      addressable
     datetime_picker_rails (0.0.7)
       momentjs-rails (>= 2.8.1)
     debug_inspector (0.0.3)
@@ -210,6 +214,7 @@ GEM
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
     formatador (0.2.5)
+    foundation_emails (2.2.1.0)
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
     globalid (0.4.2)
@@ -229,9 +234,13 @@ GEM
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
     hashie (3.6.0)
+    htmlentities (4.3.4)
     httpclient (2.8.3)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
+    inky-rb (1.3.7.5)
+      foundation_emails (~> 2)
+      nokogiri
     ipaddress (0.8.3)
     jaro_winkler (1.5.2)
     jbuilder (2.8.0)
@@ -340,6 +349,13 @@ GEM
       tty-color (~> 0.4.0)
     pg (1.1.4)
     popper_js (1.14.5)
+    premailer (1.11.1)
+      addressable
+      css_parser (>= 1.6.0)
+      htmlentities (>= 4.0.0)
+    premailer-rails (1.10.2)
+      actionmailer (>= 3, < 6)
+      premailer (~> 1.7, >= 1.7.9)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -357,6 +373,7 @@ GEM
       activerecord (>= 3.0)
       i18n (>= 0.5.0)
       railties (>= 3.0.0)
+    public_suffix (3.0.3)
     puma (3.12.1)
     pundit (2.0.1)
       activesupport (>= 3.0.0)
@@ -595,6 +612,7 @@ DEPENDENCIES
   font-awesome-rails
   friendly_id (~> 5.2.0)
   guard-rspec
+  inky-rb
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
@@ -610,6 +628,7 @@ DEPENDENCIES
   omniauth-xero
   pg (>= 0.18, < 2.0)
   popper_js
+  premailer-rails
   pry-byebug
   pry-rails
   pry-remote

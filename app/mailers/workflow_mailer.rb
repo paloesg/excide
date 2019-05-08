@@ -11,9 +11,10 @@ class WorkflowMailer < ApplicationMailer
     mail(to: @url, subject: 'Xero bill invoice')
   end
 
-  def email_summary(workflow, user)
+  def email_summary(workflow, user, company)
     @workflow = workflow
     @user = user
+    @company = company
 
     @url = user.email
     mail(to: @url, subject: '[Completed] ' + workflow.template.title + ' - ' + workflow.identifier + ' completed')
