@@ -21,7 +21,8 @@ $(document).ready(function () {
       timeout: 0, 
       renameFilename: cleanFilename,
       autoProcessQueue: false,
-      parallelUploads: 10,
+      parallelUploads: 100,
+      uploadMultiple: false,
     });
     $('#drag-and-drop-submit').click(function(){
       documentUpload.processQueue();
