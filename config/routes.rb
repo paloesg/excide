@@ -48,7 +48,9 @@ Rails.application.routes.draw do
         post '/cancel', to: 'reminders#cancel'
       end
     end
-    resources :batches
+    resources :batches, path: '/batches/:batch_template_name', except: [:index, :create]
+    get '/batches', to: 'batches#index', as: :batches_index
+    post '/batches/', to: 'batches#create'
 
     resources :document_templates
     resources :documents do
