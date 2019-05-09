@@ -11,30 +11,52 @@
     h1
       | Workflows in Batch - #{@batch.id}
 .row
-  .col-sm-4
-    .scrollwrapper
-      .table-responsive
-        table.table.table-hover
-          thead
-            tr
-              th Instruction
-              th Role
-          tbody
-            / since all the workflows have the same workflow action and hence task
-            - @batch.workflows[0].workflow_actions.each do |wfa|
-              tr
-                td = wfa.task.instructions
-                td = wfa.task.role&.name
-  .col-sm-8
-    .scrollwrapper
-      .table-responsive
-        table.table.table-hover
-          thead
-            tr
-              - @batch.workflows.each do |workflow|
-                th = workflow.identifier
-          tbody
-            
+  .col-sm-12
+    .row
+      .col-sm-2
+        p Instructions
+        - @batch.workflows[0].workflow_actions.each do |wfa|
+          p = wfa.task.instructions
+      .col-sm-2
+        p Roles
+        - @batch.workflows[0].workflow_actions.each do |wfa|
+          p = wfa.task.role&.name
+      - @batch.workflows.each do |wf|   
+        .col-sm-1.overlap-scroll  
+          p = wf.identifier
+/     .col-sm-8
+/       .row
+/         - @batch.workflows.each do |wf|        
+/           .col-sm-4
+/             p = wf.identifier
+/             - wf.workflow_actions.each do |wfa|
+/               = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action: wfa
+/ / .row
+/   .col-sm-4
+/     .scrollwrapper
+/       .table-responsive
+/         table.table.table-hover
+/           thead
+/             tr
+/               th Instruction
+/               th Role
+/           tbody
+/             / since all the workflows have the same workflow action and hence task
+/             - @batch.workflows[0].workflow_actions.each do |wfa|
+/               tr
+/                 td = wfa.task.instructions
+/                 td = wfa.task.role&.name
+/   .col-sm-8
+/     .scrollwrapper
+/       .table-responsive
+/         table.table.table-hover        
+/           thead
+/             tr
+/               - @batch.workflows.each do |wf|
+/                 th = wf.identifier
+/                 - wf.workflow_actions.each do |wfa|
+/                   td = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action: wfa
+
 / .row
 /   .col-sm-12
 /     .table-responsive
