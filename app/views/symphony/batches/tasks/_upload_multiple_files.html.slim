@@ -1,0 +1,13 @@
+.form-group
+  = label_tag "Drag and Drop"
+= hidden_field_tag 'workflow', workflow.identifier, id: 'workflow_identifier'
+= form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads', id: 'uploadToXero'
+  - @s3_direct_post.fields.each do |key, value|
+    = hidden_field_tag key, value
+.btn-toolbar role="toolbar"
+  .btn-group.mr-2 role="group" aria-label="Reminder actions"
+    - if action.reminders.present?
+      = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+    / - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+    /   = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
+      / = link_to "Drag and Drop", class: 'dropzone collapse', id: 'uploader'

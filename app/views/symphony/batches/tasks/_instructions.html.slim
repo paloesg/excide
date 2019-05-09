@@ -1,0 +1,8 @@
+/ .btn-toolbar role="toolbar"
+/   .btn-group.mr-2 role="group" aria-label="Reminder actions"
+/     - if action.reminders.present?
+/       = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(workflow.template.slug, workflow.identifier, action.task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+/     - else
+/   	  p Hello. Instructions here!
+/ 	  / - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+/ 	  /   = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: action.task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'

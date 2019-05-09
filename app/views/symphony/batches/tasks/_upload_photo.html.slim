@@ -1,0 +1,8 @@
+.btn-toolbar role="toolbar"
+  .btn-group.mr-2 role="group" aria-label="Task actions"
+    = link_to "Take Photo", new_symphony_document_path(workflow: workflow.identifier, params: {camera: true}), role: 'button', class: 'btn btn-primary btn-sm'
+  .btn-group.mr-2 role="group" aria-label="Reminder actions"
+    - if action.reminders.present?
+      = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(workflow.template.slug,workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+    / - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+    /   = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: action.task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
