@@ -2,9 +2,9 @@ class Symphony::HomeController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
+  before_action :set_company
 
   def index
-    @company = current_user.company
     @templates = Template.assigned_templates(current_user)
     @clients = @company.clients
 
@@ -47,4 +47,7 @@ class Symphony::HomeController < ApplicationController
     }
   end
 
+  def set_company
+    @company = current_user.company
+  end
 end
