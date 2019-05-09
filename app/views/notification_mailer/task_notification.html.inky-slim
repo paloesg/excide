@@ -5,12 +5,9 @@ container
   spacer size="16" 
   row
     columns
-			h1 Hi #{@user.first_name},
+			p Hi #{@user.first_name},
 			p
-				| You have a new task that you are required to complete
-  			- if @action.deadline.present?
-    			|  by #{@action.deadline.strftime("%d/%m/%Y")}
-  				| .
+				| You have a new task that you are required to complete by #{@action&.deadline&.strftime("%d/%m/%Y")}.
 
 			p
   			' The instructions for the task are as follows: "#{@task.instructions}". You can access the task from this link:
