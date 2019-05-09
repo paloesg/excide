@@ -4,8 +4,9 @@
       li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
       li.breadcrumb-item.active #{@template.title}
-    h1
-      | #{@template.title}
+    .float-right = page_entries_info @workflows, entry_name: 'workflow'
+    h1 #{@template.title}
+    hr
 .row
   .col-sm-12
     .card
