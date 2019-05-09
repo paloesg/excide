@@ -12,7 +12,7 @@ container
         span.red #{@workflow.identifier} 
         | has been archived.
       p.lead Deadline: #{@workflow&.deadline&.strftime("%d/%m/%Y")}
-      p.lead style="margin-top: 10px;" Company Details:
+      p.lead.email-margin-top Company Details:
       table border="1"
         thead
           tr
@@ -25,7 +25,7 @@ container
             td = @workflow.company.uen
             td = @workflow.company.contact_details
       - if @workflow.documents.present?
-        p.lead style="margin-top: 10px;" Document uploaded: 
+        p.lead.email-margin-top Document uploaded: 
         table border="1"
           thead
             tr
@@ -40,9 +40,9 @@ container
                 td = doc.user.full_name
                 td = doc.created_at.strftime('%Y-%m-%d %H:%M:%S')
       - else
-        p.lead No document uploaded
+        p.lead.email-margin-top No document uploaded
       - if @workflow.invoice.present?
-        p.lead style="margin-top: 10px;" Invoice created:
+        p.lead.email-margin-top Invoice created:
         table border="1"
           thead
             tr
@@ -57,7 +57,7 @@ container
               td = @workflow.invoice.created_at.strftime('%Y-%m-%d %H:%M:%S')
       - else
         p.lead No invoice created
-      p.lead Below is a summary of the workflow completed:
+      p.lead.email-margin-top Below is a summary of the workflow completed:
       table border="1" 
         thead
           tr
@@ -71,9 +71,9 @@ container
               td = wfa.task.instructions
               td = Time.current.strftime('%Y-%m-%d %H:%M:%S')
               - if wfa.completed_user.nil?
-                td Not completed
+                td.not-completed-mark Not completed
               - else
                 td = wfa.completed_user.full_name.to_s
               td = wfa.remarks
-      p.lead style="margin-top: 10px;"
+      p.lead.email-margin-top
         a href="#{symphony_archive_url(@workflow.template.slug, @workflow.identifier)}" View the workflow
