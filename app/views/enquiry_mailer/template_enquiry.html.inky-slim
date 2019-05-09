@@ -5,7 +5,7 @@ container
   spacer size="16" 
   row
     columns
-      h1 Hi #{@enquiry.name},
+      p Hi #{@enquiry.name},
 
       p Thank you for your interest in our financial model template.
 
