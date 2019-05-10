@@ -6,7 +6,7 @@ container
   spacer size="16" 
   row
     columns
-      h1 Hi, #{@user.first_name} 
+      p Hi, #{@user.first_name} 
       p.lead 
         | The workflow 
         span.red #{@workflow.identifier} 
