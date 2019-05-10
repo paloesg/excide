@@ -6,20 +6,16 @@ container
   row
     columns
       p Hi #{@enquiry.name},
-
       p Thank you for your interest in our financial model template.
-
       p
         ' We need a bit more information about your business to send you the most appropriate template for your business. Please fill up the form at this link:
         a href="#{@url}" #{@url}.
-
       p We will send you the template and keep you posted on any updates to the template in the future.
       br
       p
         | Best Regards,
         br
         | Sam Lee Chengyi
-
       p
         | Partner
         br

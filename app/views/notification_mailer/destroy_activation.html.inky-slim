@@ -5,7 +5,7 @@ container
   spacer size="16" 
   row
     columns
-			p Hi #{@user.first_name},
+      p Hi #{@user.first_name},
 
-			p
-			  | The activation for #{@activation.client.name} on #{@activation.start_time.strftime("%d/%m/%Y")} from #{@activation.start_time.strftime("%H:%M")} to #{@activation.end_time.strftime("%H:%M")} at #{@activation.location} has been cancelled
+      p
+        | The activation for #{@activation.client.name} on #{@activation.start_time.strftime("%d/%m/%Y")} from #{@activation.start_time.strftime("%H:%M")} to #{@activation.end_time.strftime("%H:%M")} at #{@activation.location} has been cancelled

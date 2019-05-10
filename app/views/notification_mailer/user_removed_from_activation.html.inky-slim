@@ -5,8 +5,8 @@ container
   spacer size="16" 
   row
     columns
-			p Hi #{@user.first_name},
+      p Hi #{@user.first_name},
 
-			p
-			  | Please note that you have been unassigned from the following activation:
-			  | #{@activation.client.name} #{@activation.start_time.strftime("%F")} #{@activation.start_time.strftime("%H:%M")} - #{@activation.end_time.strftime("%H:%M")}.
+      p
+        | Please note that you have been unassigned from the following activation:
+        | #{@activation.client.name} #{@activation.start_time.strftime("%F")} #{@activation.start_time.strftime("%H:%M")} - #{@activation.end_time.strftime("%H:%M")}.
