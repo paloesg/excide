@@ -1,12 +1,7 @@
 .row
   .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="#" Home
-      li.breadcrumb-item
-        a href="#" #{@company.name}
-      li.breadcrumb-item.active Dashboard
     h1 Symphony Dashboard
+    hr
 .row
   .col-md-8.col-sm-6
     .card-deck.mb-3
@@ -20,7 +15,7 @@
          h1.card-text = @workflows_array.count
       .card.text-center.bg-light
         .card-body
-         h5.card-title Recurring Workflows
+         h5.card-title Recurring
          h1.card-text = link_to @recurring_workflows_array.count, symphony_workflows_recurring_path, class: 'text-dark'
       .card.text-center.bg-light
         .card-body
