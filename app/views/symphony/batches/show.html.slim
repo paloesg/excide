@@ -10,71 +10,25 @@
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
     h1
       | Workflows in Batch - #{@batch.id}
-.row
-  .col-sm-12
-    .row
-      .col-sm-2
-        p Instructions
-        - @batch.workflows[0].workflow_actions.each do |wfa|
-          p = wfa.task.instructions
-      .col-sm-2
-        p Roles
-        - @batch.workflows[0].workflow_actions.each do |wfa|
-          p = wfa.task.role&.name
-      - @batch.workflows.each do |wf|   
-        .col-sm-1.overlap-scroll  
-          p = wf.identifier
-/     .col-sm-8
-/       .row
-/         - @batch.workflows.each do |wf|        
-/           .col-sm-4
-/             p = wf.identifier
-/             - wf.workflow_actions.each do |wfa|
-/               = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action: wfa
-/ / .row
-/   .col-sm-4
-/     .scrollwrapper
-/       .table-responsive
-/         table.table.table-hover
-/           thead
-/             tr
-/               th Instruction
-/               th Role
-/           tbody
-/             / since all the workflows have the same workflow action and hence task
-/             - @batch.workflows[0].workflow_actions.each do |wfa|
-/               tr
-/                 td = wfa.task.instructions
-/                 td = wfa.task.role&.name
-/   .col-sm-8
-/     .scrollwrapper
-/       .table-responsive
-/         table.table.table-hover        
-/           thead
-/             tr
-/               - @batch.workflows.each do |wf|
-/                 th = wf.identifier
-/                 - wf.workflow_actions.each do |wfa|
-/                   td = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action: wfa
-
-/ .row
-/   .col-sm-12
-/     .table-responsive
-/       table.table.table-hover
-/         thead
-/           tr
-/             th = sortable "identifier", "Identifier"
-/             th = sortable "template", "Workflow Type"
-/             th = sortable "workflowable", "Client Name"
-/             th = sortable "remarks", "Remarks"
-/             th = sortable "deadline", "Deadline"
-/             th = sortable "completed", "Status"
-/         tbody
-/           - @batch.workflows.each do |workflow|
-/             tr
-/               td = link_to workflow.identifier, symphony_workflow_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier)
-/               td = workflow.template.title
-/               td = workflow.workflowable&.name || '-'
-/               td = workflow.remarks || '-'
-/               td = workflow.deadline&.strftime("%d/%m/%Y") || '-'
-/               td = workflow.completed ? 'Completed' : workflow.current_section&.display_name
+.container-table-wrap.container-scroll
+  .row.flex-nowrap
+    .col-sm-4
+      h6 Instructions
+      .row
+        .col-sm-4
+          - @batch.workflows[0].workflow_actions.each do |wfa|
+            p = wfa.task.instructions
+    .col-sm-4
+      h6 Roles
+      .row
+        .col-sm-4
+          - @batch.workflows[0].workflow_actions.each do |wfa|
+            p = wfa.task.role.name
+    - @batch.workflows.each do |wf|
+      .col-sm-4
+        h6 = wf.identifier
+        .row
+          .col-sm-4
+            - wf.workflow_actions.order(created_at: :asc).each do |wfa|
+              .mt-2
+                = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action:wfa
