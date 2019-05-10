@@ -1,3 +1,9 @@
-.overlap-scroll   {
-  overflow-x: scroll;
+.container-scroll > .row {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.container-scroll > .row > .col-sm-4{
+  display: inline-block;
+  float: none;
 }
