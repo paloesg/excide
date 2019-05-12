@@ -12,23 +12,26 @@
       | Workflows in Batch - #{@batch.id}
 .container-table-wrap.container-scroll
   .row.flex-nowrap
-    .col-sm-4
+    .col-sm-5
       h6 Instructions
+      hr
       .row
-        .col-sm-4
+        .col-sm-12
           - @batch.workflows[0].workflow_actions.each do |wfa|
             p = wfa.task.instructions
-    .col-sm-4
+    .col-sm-3
       h6 Roles
+      hr
       .row
-        .col-sm-4
+        .col-sm-12
           - @batch.workflows[0].workflow_actions.each do |wfa|
-            p = wfa.task.role.name
+            p = wfa.task.role&.name
     - @batch.workflows.each do |wf|
       .col-sm-4
         h6 = wf.identifier
+        hr
         .row
-          .col-sm-4
+          .col-sm-12
             - wf.workflow_actions.order(created_at: :asc).each do |wfa|
-              .mt-2
+              .pt-1.pb-1
                 = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action:wfa

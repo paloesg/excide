@@ -4,6 +4,22 @@
 }
 
 .container-scroll > .row > .col-sm-4{
-  display: inline-block;
+  display: inline;
   float: none;
+}
+/*To make border around the row*/
+.grid-border{
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding: 5px 0;
+}
+
+.grid-bottom{
+  border-bottom: 1px solid black;
+}
+
+.enlarged-checkbox{
+  width: 15px;
+  height: 15px;
 }
