@@ -28,7 +28,8 @@
             p = wfa.task.role&.name
     - @batch.workflows.each do |wf|
       .col-sm-4
-        h6 = wf.identifier
+        h6 
+          = link_to wf.identifier, symphony_workflow_path(wf.template.slug, wf.identifier)
         hr
         .row
           .col-sm-12
