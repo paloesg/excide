@@ -16,7 +16,7 @@
             tr
               th Id
           tbody
-            - @batches.order(created_at: :desc).each do |batch|
+            - @batches_paginate.each do |batch|
               tr
                 td = link_to batch.id, symphony_batch_path(id: batch.id, batch_template_name: batch.template&.slug)
         .card-footer.pt-4

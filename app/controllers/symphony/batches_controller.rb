@@ -5,8 +5,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_company
 
   def index
-    @batches = Batch.all
-    @batches_paginate = Kaminari.paginate_array(@batches).page(params[:page]).per(10)
+    @batches_paginate = Kaminari.paginate_array(Batch.all.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(10)
   end
 
   def new
