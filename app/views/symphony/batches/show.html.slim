@@ -10,68 +10,85 @@
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
     h1
       | Batch ID - #{@batch.id}
-.container-table-wrap.container-scroll
-  .row.flex-nowrap
-    .col-sm-4
-      h6 Instructions
-      hr
-      .row
-        .col-sm-12
-          - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
-            - t = TaskDecorator.new(wfa.task)
-            p = t.display_position + ' ' + wfa.task.instructions
-    .col-sm-2
-      h6 Roles
-      hr
-      .row
-        .col-sm-12
-          - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
-            p = wfa.task.role&.name or '-'
-    - @batch.workflows.each do |wf|
-      .col-sm-3
-        h6
-          = link_to truncate(wf.identifier, length: 50), symphony_workflow_path(wf.template.slug, wf.identifier)
-        hr
-        .row
-          .col-sm-12
-            - wf.workflow_actions.order(created_at: :asc).each do |wfa|
-              .pt-1.pb-1
-                = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action: wfa
 .row.mt-3
-  .col-sm-6
-    .card.mb-3
-      h6.card-header Documents
-      - @batch.workflows.each do |wf|
-        - if wf.documents.empty?
-          .card-body No documents yet.
-        - else
-          - wf.documents.each do |d|
-            ul.list-group.list-group-flush
-              li.list-group-item
-                .media
-                  .align-self-center
-                    = link_to symphony_document_path(d)
-                      i.ti-file.icon.mr-3 style="font-size: 50px"
-                  .media-body
-                    h5.card-title = d.filename
-                    h6.card-subtitle = d.user&.full_name
-                    .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
-  .col-sm-6
-    .card.mb-3
-      h6.card-header Invoices
-      - @batch.workflows.each do |wf|
-        - if wf.invoice.blank?
-          .card-body No invoice yet
-        - else
+  .col-sm-2
+    h6 Documents
+    - @batch.workflows.each do |wf|
+      - if wf.documents.empty?
+        = "No documents yet."
+      - else
+        - wf.documents.each do |d|
           ul.list-group.list-group-flush
             li.list-group-item
               .media
                 .align-self-center
-                  = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id)
-                    i.ti-receipt.icon.mr-3 style="font-size: 50px"
+                  = link_to symphony_document_path(d)
+                    i.ti-file.icon.mr-3 style="font-size: 50px"
                 .media-body
-                  h5.card-title = wf.invoice.id
-                  h6.card-subtitle Invoice Type: #{wf.invoice.invoice_type.capitalize}
-                  h6.card-subtitle.mt-1 Invoice Contact: #{wf.invoice.xero_contact_name.capitalize}
-                  h6.card-subtitle.mt-1 Invoice Total: $#{wf.invoice.total}
-                  .text-muted = wf.invoice.created_at.strftime("Uploaded at %d/%m/%Y %R")
+                  h5 = d.filename
+                  h6 = d.user&.full_name
+  .col-sm-2
+    h6 Invoices
+    - @batch.workflows.each do |wf|
+      - if wf.invoice.blank?
+        = "No invoice yet"
+      - else
+        ul.list-group.list-group-flush
+          li.list-group-item
+            .media
+              .align-self-center
+                = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id)
+                  i.ti-receipt.icon.mr-3 style="font-size: 50px"
+              .media-body
+                h5 = wf.invoice.id
+                h6 Invoice Type: #{wf.invoice.invoice_type.capitalize}
+                h6 Invoice Contact: #{wf.invoice.xero_contact_name.capitalize}
+                h6 Invoice Total: $#{wf.invoice.total}
+
+/ .container-table-wrap.container-scroll
+/   .row.flex-nowrap
+/     .col-sm-4
+/       h6 Instructions
+/       hr
+/       .row
+/         .col-sm-12
+/           - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
+/             - t = TaskDecorator.new(wfa.task)
+/             p = t.display_position + ' ' + wfa.task.instructions
+/     .col-sm-2
+/       h6 Roles
+/       hr
+/       .row
+/         .col-sm-12
+/           - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
+/             p = wfa.task.role&.name or '-'
+/     - @batch.workflows.each do |wf|
+/       .col-sm-3
+/         h6
+/           = link_to truncate(wf.identifier, length: 50), symphony_workflow_path(wf.template.slug, wf.identifier)
+/         hr
+/         .row
+/           .col-sm-12
+/             - wf.workflow_actions.order(created_at: :asc).each do |wfa|
+/               .pt-1.pb-1
+/                 = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action: wfa
+
+/   .col-sm-6
+/     .card.mb-3
+/       h6.card-header Invoices
+/       - @batch.workflows.each do |wf|
+/         - if wf.invoice.blank?
+/           .card-body No invoice yet
+/         - else
+/           ul.list-group.list-group-flush
+/             li.list-group-item
+/               .media
+/                 .align-self-center
+/                   = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id)
+/                     i.ti-receipt.icon.mr-3 style="font-size: 50px"
+/                 .media-body
+/                   h5.card-title = wf.invoice.id
+/                   h6.card-subtitle Invoice Type: #{wf.invoice.invoice_type.capitalize}
+/                   h6.card-subtitle.mt-1 Invoice Contact: #{wf.invoice.xero_contact_name.capitalize}
+/                   h6.card-subtitle.mt-1 Invoice Total: $#{wf.invoice.total}
+/                   .text-muted = wf.invoice.created_at.strftime("Uploaded at %d/%m/%Y %R")
