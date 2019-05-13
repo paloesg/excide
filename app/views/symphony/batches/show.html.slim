@@ -9,7 +9,7 @@
       li.breadcrumb-item 
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
     h1
-      | Batch - #{@batch.id}
+      | Batch ID - #{@batch.id}
 .container-table-wrap.container-scroll
   .row.flex-nowrap
     .col-sm-5
@@ -18,7 +18,8 @@
       .row
         .col-sm-12
           - @batch.workflows[0].workflow_actions.each do |wfa|
-            p = wfa.task.instructions
+            - t = TaskDecorator.new(wfa.task)
+            p = t.display_position + ' ' + wfa.task.instructions
     .col-sm-3
       h6 Roles
       hr
