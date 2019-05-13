@@ -25,6 +25,7 @@ class Symphony::BatchesController < ApplicationController
   def show
     @batch = Batch.find(params[:id])
     @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
+    @current_user = current_user
   end
 
   private

@@ -12,31 +12,31 @@
       | Batch ID - #{@batch.id}
 .container-table-wrap.container-scroll
   .row.flex-nowrap
-    .col-sm-5
+    .col-sm-4
       h6 Instructions
       hr
       .row
         .col-sm-12
-          - @batch.workflows[0].workflow_actions.each do |wfa|
+          - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
             - t = TaskDecorator.new(wfa.task)
             p = t.display_position + ' ' + wfa.task.instructions
-    .col-sm-3
+    .col-sm-2
       h6 Roles
       hr
       .row
         .col-sm-12
-          - @batch.workflows[0].workflow_actions.each do |wfa|
-            p = wfa.task.role&.name
+          - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
+            p = wfa.task.role&.name or '-'
     - @batch.workflows.each do |wf|
-      .col-sm-4
-        h6 
-          = link_to wf.identifier, symphony_workflow_path(wf.template.slug, wf.identifier)
+      .col-sm-3
+        h6
+          = link_to truncate(wf.identifier, length: 50), symphony_workflow_path(wf.template.slug, wf.identifier)
         hr
         .row
           .col-sm-12
             - wf.workflow_actions.order(created_at: :asc).each do |wfa|
               .pt-1.pb-1
-                = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action:wfa
+                = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action: wfa
 .row.mt-3
   .col-sm-6
     .card.mb-3

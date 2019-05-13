@@ -5,38 +5,17 @@
   / Else, check if workflow client is already on Xero if not show button to add client to Xero first. After client is on Xero, show button to send invoice to Xero.
   - else
     = link_to('Add Client to Xero', xero_create_symphony_client_path(workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm') if workflow.invoice.xero_contact_id.nil?
-    - if @invoice.approved?
-      = link_to("Send to Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, @send_awaiting_approval), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
-      = link_to("Send to Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, @send_awaiting_payment), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
+    - if workflow.invoice.approved?
+      = link_to("Send to Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(workflow.template.slug, workflow.identifier, @send_awaiting_approval), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
+      = link_to("Send to Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(workflow.template.slug, workflow.identifier, @send_awaiting_payment), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
     - else
-      = link_to('Approve invoice', edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), role: 'button', class: 'btn btn-success btn-sm')
+      = link_to('Approve invoice', edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier, id: workflow.invoice.id), role: 'button', class: 'btn btn-success btn-sm')
 - elsif workflow.invoice&.receivable?
   = link_to("Not invoice payable", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
 - else
   = link_to("No invoice found", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
+- if action.reminders.present?
+  = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(workflow.template.slug, workflow.identifier, action.task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+- if @current_user.has_role? :admin, @company
+  = link_to "Send Reminder", reminder_task_symphony_workflow_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier, task_id: action.task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
 = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: action.task.id, workflow_name: action.workflow.template.slug, workflow_identifier: action.workflow.identifier, controller: 'workflows'), method: "POST" }, :onclick => "this.checked=true;", class: 'enlarged-checkbox float-right'
-
-/ .btn-toolbar.grid-bottom role="toolbar"
-/   .btn-group.mr-2 role="group" aria-label="Task actions"
-/     - if workflow.invoice&.payable?
-/       / If xero invoice is present, only show button to view Xero invoice
-/       - if workflow.invoice.xero_invoice_id.present?
-/         = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm', target: :_blank
-/       / Else, check if workflow client is already on Xero if not show button to add client to Xero first. After client is on Xero, show button to send invoice to Xero.
-/       - else
-/         = link_to('Add Client to Xero', xero_create_symphony_client_path(workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm') if workflow.invoice.xero_contact_id.nil?
-/         - if @invoice.approved?
-/           = link_to("Send to Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, @send_awaiting_approval), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
-/           = link_to("Send to Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.identifier, @send_awaiting_payment), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
-/         - else
-/           = link_to('Approve invoice', edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), role: 'button', class: 'btn btn-success btn-sm')
-/     - elsif workflow.invoice&.receivable?
-/       = link_to("Not invoice payable", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
-/     - else
-/       = link_to("No invoice found", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
-/     = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: action.task.id, workflow_name: action.workflow.template.slug, workflow_identifier: action.workflow.identifier, controller: 'workflows'), method: "POST" }, :onclick => "this.checked=true;"
-/   .btn-group.mr-2 role="group" aria-label="Reminder actions"
-/     - if action.reminders.present?
-/       = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(workflow.template.slug, workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
-/     - if task == @workflow.current_task and (@user.has_role? :admin, @company)
-/       = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: action.task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'

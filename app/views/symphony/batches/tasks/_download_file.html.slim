@@ -1,11 +1,7 @@
 = link_to "Download File", action.task.document_template.file_url, role: 'button', class: 'btn btn-primary btn-sm' if action.task.document_template.present?
 = link_to "No file to download", '#', class: 'btn btn-primary btn-sm disabled'
+- if action.reminders.present?
+  = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(workflow.template.slug, workflow.identifier, action.task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+- if @current_user.has_role? :admin, @company
+	= link_to "Send Reminder", reminder_task_symphony_workflow_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier, task_id: action.task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
 = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: action.task.id, workflow_name: action.workflow.template.slug, workflow_identifier: action.workflow.identifier, controller: 'workflows'), method: "POST" }, :onclick => "this.checked=true;", class: 'enlarged-checkbox float-right'
-/ .btn-toolbar role="toolbar"
-/   .btn-group.mr-2 role="group" aria-label="Task actions"
-/     = link_to "Download File", task.document_template.file_url, role: 'button', class: 'btn btn-primary btn-sm' if task.document_template.present?
-/   .btn-group.mr-2 role="group" aria-label="Reminder actions"
-/     - if action.reminders.present?
-/       = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
-/     - if task == @workflow.current_task && (@user.has_role? :admin, @company)
-/       = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
