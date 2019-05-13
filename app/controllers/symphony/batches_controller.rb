@@ -6,6 +6,7 @@ class Symphony::BatchesController < ApplicationController
 
   def index
     @batches = Batch.all
+    @batches_paginate = Kaminari.paginate_array(@batches).page(params[:page]).per(10)
   end
 
   def new
