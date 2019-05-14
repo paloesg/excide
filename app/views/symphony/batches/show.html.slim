@@ -32,11 +32,13 @@
         - else
           - wf.documents.each do |d|
             p = d.filename
+            = link_to symphony_document_path(d), target: "_blank"
+              i.ti-file.icon.mr-3.text-center style="font-size: 50px"
       .col-sm-1
         - if wf.invoice.blank?
           p = "No invoice yet."
         - else
-          p = wf.invoice.id
+          = link_to wf.invoice.id, symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id), target: "_blank"
       - wf.workflow_actions.order(created_at: :asc).each do |action|
         .col-sm-1
           = render "symphony/batches/tasks/#{action.task.task_type}", workflow: wf, action: action
