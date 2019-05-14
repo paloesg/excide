@@ -14,14 +14,14 @@
   / Do the header of the grid table
   .row.mt-3.grid-bottom
     .col-sm-1
-      h6 Documents
+      h6.text-center Documents
       hr
     .col-sm-1
-      h6 Invoices
+      h6.text-center Invoices
       hr
     - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
       .col-sm-1
-        h6 = wfa.task.instructions
+        h6.text-center = wfa.task.instructions
         hr      
   /Do the body of the grid table 
   - @batch.workflows.each do |wf|
