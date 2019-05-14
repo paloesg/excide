@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_05_104900) do
+ActiveRecord::Schema.define(version: 2019_05_13_093457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "activation_types", id: :integer, default: nil, force: :cascade do |t|
+  create_table "activation_types", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.string "colour"
@@ -93,16 +93,6 @@ ActiveRecord::Schema.define(version: 2019_05_05_104900) do
     t.index ["user_id"], name: "index_availabilities_on_user_id"
   end
 
-  create_table "batches", force: :cascade do |t|
-    t.bigint "company_id"
-    t.bigint "template_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "batch_identifier"
-    t.index ["company_id"], name: "index_batches_on_company_id"
-    t.index ["template_id"], name: "index_batches_on_template_id"
-  end
-
   create_table "choices", id: :serial, force: :cascade do |t|
     t.text "content"
     t.integer "position"
@@ -173,7 +163,7 @@ ActiveRecord::Schema.define(version: 2019_05_05_104900) do
     t.index ["user_id"], name: "index_document_templates_on_user_id"
   end
 
-  create_table "documents", id: :serial, force: :cascade do |t|
+  create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "filename"
     t.text "remarks"
     t.integer "company_id"
@@ -482,10 +472,8 @@ ActiveRecord::Schema.define(version: 2019_05_05_104900) do
     t.string "workflowable_type"
     t.text "remarks"
     t.json "data", default: []
-    t.json "archive", default: "[]"
+    t.json "archive", default: []
     t.bigint "recurring_workflow_id"
-    t.bigint "batch_id"
-    t.index ["batch_id"], name: "index_workflows_on_batch_id"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
     t.index ["template_id"], name: "index_workflows_on_template_id"
@@ -499,8 +487,6 @@ ActiveRecord::Schema.define(version: 2019_05_05_104900) do
   add_foreign_key "allocations", "activations"
   add_foreign_key "allocations", "users"
   add_foreign_key "availabilities", "users"
-  add_foreign_key "batches", "companies"
-  add_foreign_key "batches", "templates"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
   add_foreign_key "companies", "users", column: "associate_id"
@@ -543,7 +529,6 @@ ActiveRecord::Schema.define(version: 2019_05_05_104900) do
   add_foreign_key "workflow_actions", "users", column: "assigned_user_id"
   add_foreign_key "workflow_actions", "users", column: "completed_user_id"
   add_foreign_key "workflow_actions", "workflows"
-  add_foreign_key "workflows", "batches"
   add_foreign_key "workflows", "companies"
   add_foreign_key "workflows", "recurring_workflows"
   add_foreign_key "workflows", "templates"
