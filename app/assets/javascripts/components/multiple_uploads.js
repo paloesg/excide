@@ -8,6 +8,37 @@ $(document).ready(function () {
     }
   })
 
+  if($(".uploadToXero").length){
+    var cleanFilename = function (name) {
+      fileName = name.split('.').slice(0, -1).join('.')
+      get_extension = name.substring(name.lastIndexOf(".") + 1)
+      // Filter out special characters and spaces in filename (same as parametrize function in rails)
+      filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+      return filter_filename + '.' + get_extension;
+    };
+    var documentUploadToXero = new Dropzone('.uploadToXero',{
+      timeout: 0, 
+      renameFilename: cleanFilename,
+    })
+    documentUploadToXero.on("success", function(file, request){
+      var resp = $.parseXML(request);
+      var filePath = $(resp).find("Key").text();
+      var location = new URL($(resp).find("Location").text());
+      if($("#uploadToXero").length){
+        //check this part of drag and drop
+        $.post('/symphony/documents', {
+          authenticity_token: $.rails.csrfToken(),
+          workflow: $('#workflow_identifier').val(),
+          document: {
+            filename: file.upload.filename,
+            identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
+            file_url: '//' + location['host'] + '/' + filePath
+          }
+        });
+      }
+    })
+  }
+
   // $("#uploader").length 'To check #uploader is exists'
   if ($(".multiple_uploads").length) {
     var cleanFilename = function (name) {
@@ -60,18 +91,6 @@ $(document).ready(function () {
             identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,
             template_id: $('#template_id').val(),
-          }
-        });
-      }
-      else if($("#uploadToXero").length){
-        //check this part of drag and drop
-        $.post('/symphony/documents', {
-          authenticity_token: $.rails.csrfToken(),
-          workflow: $('#workflow_identifier').val(),
-          document: {
-            filename: file.upload.filename,
-            identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
-            file_url: '//' + location['host'] + '/' + filePath
           }
         });
       }
