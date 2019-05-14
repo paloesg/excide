@@ -3,7 +3,7 @@
   white-space: nowrap;
 }
 
-.container-scroll > .row > .col-sm-4{
+.container-scroll > .row > .col-sm-1{
   display: inline;
   float: none;
 }
@@ -20,6 +20,6 @@
 }
 
 .grid-bottom{
-  border: 2px solid black;
+  border-bottom: 2px solid grey;
   padding: 10px;
 }

@@ -3,6 +3,6 @@ $(function () {
   $('.pop').popover().click(function () {
     setTimeout(function () {
         $('.pop').popover('hide');
-    }, 2000);
+    }, 5000);
 });
 })
