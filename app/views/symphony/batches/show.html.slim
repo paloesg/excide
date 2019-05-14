@@ -9,33 +9,34 @@
       li.breadcrumb-item 
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
     h1
-      | Batch ID - #{@batch.id}
-/ Do the header of the grid table
-.row.mt-3
-  .col-sm-2
-    h6 Documents
-    hr
-  .col-sm-2
-    h6 Invoices
-    hr
-  - @batch.workflows[0].workflow_actions.each do |wfa|
-    .col-sm-2
-      h6 = wfa.task.instructions
+      | Batch ID - #{@batch.id}    
+.container-fluid
+  / Do the header of the grid table
+  .row.mt-3.grid-bottom
+    .col-sm-1
+      h6 Documents
       hr
-/Do the body of the grid table 
-- @batch.workflows.each do |wf|
-  .row.mt-2
-    .col-sm-2
-      - if wf.documents.empty?
-        p = "No documents yet."
-      - else
-        - wf.documents.each do |d|
-          p = d.filename
-    .col-sm-2
-      - if wf.invoice.blank?
-        p = "No invoice yet."
-      - else
-        p = wf.invoice.id
-    - wf.workflow_actions.order(created_at: :asc).each do |action|
-      .col-sm-2
-        = render "symphony/batches/tasks/#{action.task.task_type}", workflow: wf, action: action
+    .col-sm-1
+      h6 Invoices
+      hr
+    - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
+      .col-sm-1
+        h6 = wfa.task.instructions
+        hr      
+  /Do the body of the grid table 
+  - @batch.workflows.each do |wf|
+    .row.mt-2.grid-bottom
+      .col-sm-1
+        - if wf.documents.empty?
+          p = "No documents yet."
+        - else
+          - wf.documents.each do |d|
+            p = d.filename
+      .col-sm-1
+        - if wf.invoice.blank?
+          p = "No invoice yet."
+        - else
+          p = wf.invoice.id
+      - wf.workflow_actions.order(created_at: :asc).each do |action|
+        .col-sm-1
+          = render "symphony/batches/tasks/#{action.task.task_type}", workflow: wf, action: action
