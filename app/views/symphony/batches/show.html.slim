@@ -10,85 +10,32 @@
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
     h1
       | Batch ID - #{@batch.id}
+/ Do the header of the grid table
 .row.mt-3
   .col-sm-2
     h6 Documents
-    - @batch.workflows.each do |wf|
-      - if wf.documents.empty?
-        = "No documents yet."
-      - else
-        - wf.documents.each do |d|
-          ul.list-group.list-group-flush
-            li.list-group-item
-              .media
-                .align-self-center
-                  = link_to symphony_document_path(d)
-                    i.ti-file.icon.mr-3 style="font-size: 50px"
-                .media-body
-                  h5 = d.filename
-                  h6 = d.user&.full_name
+    hr
   .col-sm-2
     h6 Invoices
-    - @batch.workflows.each do |wf|
-      - if wf.invoice.blank?
-        = "No invoice yet"
+    hr
+  - @batch.workflows[0].workflow_actions.each do |wfa|
+    .col-sm-2
+      h6 = wfa.task.instructions
+      hr
+/Do the body of the grid table 
+- @batch.workflows.each do |wf|
+  .row.mt-2
+    .col-sm-2
+      - if wf.documents.empty?
+        p = "No documents yet."
       - else
-        ul.list-group.list-group-flush
-          li.list-group-item
-            .media
-              .align-self-center
-                = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id)
-                  i.ti-receipt.icon.mr-3 style="font-size: 50px"
-              .media-body
-                h5 = wf.invoice.id
-                h6 Invoice Type: #{wf.invoice.invoice_type.capitalize}
-                h6 Invoice Contact: #{wf.invoice.xero_contact_name.capitalize}
-                h6 Invoice Total: $#{wf.invoice.total}
-
-/ .container-table-wrap.container-scroll
-/   .row.flex-nowrap
-/     .col-sm-4
-/       h6 Instructions
-/       hr
-/       .row
-/         .col-sm-12
-/           - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
-/             - t = TaskDecorator.new(wfa.task)
-/             p = t.display_position + ' ' + wfa.task.instructions
-/     .col-sm-2
-/       h6 Roles
-/       hr
-/       .row
-/         .col-sm-12
-/           - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
-/             p = wfa.task.role&.name or '-'
-/     - @batch.workflows.each do |wf|
-/       .col-sm-3
-/         h6
-/           = link_to truncate(wf.identifier, length: 50), symphony_workflow_path(wf.template.slug, wf.identifier)
-/         hr
-/         .row
-/           .col-sm-12
-/             - wf.workflow_actions.order(created_at: :asc).each do |wfa|
-/               .pt-1.pb-1
-/                 = render "symphony/batches/tasks/#{wfa.task.task_type}", workflow: wf, action: wfa
-
-/   .col-sm-6
-/     .card.mb-3
-/       h6.card-header Invoices
-/       - @batch.workflows.each do |wf|
-/         - if wf.invoice.blank?
-/           .card-body No invoice yet
-/         - else
-/           ul.list-group.list-group-flush
-/             li.list-group-item
-/               .media
-/                 .align-self-center
-/                   = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id)
-/                     i.ti-receipt.icon.mr-3 style="font-size: 50px"
-/                 .media-body
-/                   h5.card-title = wf.invoice.id
-/                   h6.card-subtitle Invoice Type: #{wf.invoice.invoice_type.capitalize}
-/                   h6.card-subtitle.mt-1 Invoice Contact: #{wf.invoice.xero_contact_name.capitalize}
-/                   h6.card-subtitle.mt-1 Invoice Total: $#{wf.invoice.total}
-/                   .text-muted = wf.invoice.created_at.strftime("Uploaded at %d/%m/%Y %R")
+        - wf.documents.each do |d|
+          p = d.filename
+    .col-sm-2
+      - if wf.invoice.blank?
+        p = "No invoice yet."
+      - else
+        p = wf.invoice.id
+    - wf.workflow_actions.order(created_at: :asc).each do |action|
+      .col-sm-2
+        = render "symphony/batches/tasks/#{action.task.task_type}", workflow: wf, action: action
