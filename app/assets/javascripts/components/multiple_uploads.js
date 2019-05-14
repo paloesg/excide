@@ -50,6 +50,19 @@ $(document).ready(function () {
           }
         });
       }
+      else if($("#batch-uploader").length){
+        $.post('/symphony/documents', {
+          authenticity_token: $.rails.csrfToken(),
+          document_type: 'batch-uploads',
+          count: this.files.length,
+          document: {
+            filename: file.upload.filename,
+            identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
+            file_url: '//' + location['host'] + '/' + filePath,
+            template_id: $('#template_id').val(),
+          }
+        });
+      }
       else if($("#uploadToXero").length){
         //check this part of drag and drop
         $.post('/symphony/documents', {
