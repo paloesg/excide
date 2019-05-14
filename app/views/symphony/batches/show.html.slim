@@ -21,7 +21,9 @@
       hr
     - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
       .col-sm-1
-        h6.text-center = wfa.task.instructions
+        a.pop data-container="body" data-content=("The task instruction is: #{wfa.task.instructions}") data-placement="top" data-toggle="popover"
+          p.text-center 
+            = wfa.task.task_type
         hr      
   /Do the body of the grid table 
   - @batch.workflows.each do |wf|
@@ -42,3 +44,4 @@
       - wf.workflow_actions.order(created_at: :asc).each do |action|
         .col-sm-1
           = render "symphony/batches/tasks/#{action.task.task_type}", workflow: wf, action: action
+
