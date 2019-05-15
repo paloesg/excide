@@ -12,37 +12,38 @@
       | Batch ID - #{@batch.id}
 .container-scroll
   .container-fluid
-    / Do the header of the grid table
-    .row.mt-3.grid-bottom.flex-nowrap
-      .col-sm-2
-        h6.text-center Documents
-        hr
-      .col-sm-2
-        h6.text-center Invoices
-        hr
-      - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
-        .col-sm-2
-          a.pop data-container="body" title="Task instruction and role" data-content=("<div><b>Task instruction</b> - #{wfa.task.instructions}<br/><b>Assigned to </b> - #{wfa.task.role&.name} </div>") data-html="true" data-placement="top" data-toggle="popover"
-            h6.text-center 
-              = wfa.task.task_type.humanize
-          hr 
-    /Do the body of the grid table 
-    - @batch.workflows.each do |wf|
-      .row.mt-2.grid-bottom.flex-nowrap
-        .col-sm-2
-          - if wf.documents.empty?
-            p = "No documents yet."
-          - else
-            - wf.documents.each do |d|
-              p = d.filename
-              = link_to symphony_document_path(d), target: "_blank"
-                i.ti-file.icon.mr-3.text-center style="font-size: 50px"
-        .col-sm-2
-          - if wf.invoice.blank?
-            p = "No invoice yet."
-          - else
-            = link_to wf.invoice.id, symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id), target: "_blank"
-        - wf.workflow_actions.order(created_at: :asc).each do |action|
+    - @sections.each do |section|
+      / Do the header of the grid table
+      .row.mt-3.grid-bottom.flex-nowrap
+        .col-sm-1
+          h6.text-center Documents
+          hr
+        .col-sm-1
+          h6.text-center Invoices
+          hr
+        - section.tasks.order(created_at: :asc).each do |task|
           .col-sm-2
-            = render "symphony/batches/tasks/#{action.task.task_type}", workflow: wf, action: action
+            a.pop data-container="body" title="Task instruction and role" data-content=("<div><b>Task instruction</b> - #{task.instructions}<br/><b>Assigned to </b> - #{task.role&.name} </div>") data-html="true" data-placement="top" data-toggle="popover"
+              h6.text-center 
+                = task.task_type.humanize
+            hr 
+      /Do the body of the grid table 
+      - @batch.workflows.each do |wf|
+        .row.mt-2.grid-bottom.flex-nowrap
+          .col-sm-1
+            - if wf.documents.empty?
+              p = "No documents yet."
+            - else
+              - wf.documents.each do |d|
+                p = d.filename
+                = link_to symphony_document_path(d), target: "_blank"
+                  i.ti-file.icon.mr-3.text-center style="font-size: 50px"
+          .col-sm-1
+            - if wf.invoice.blank?
+              p = "No invoice yet."
+            - else
+              = link_to wf.invoice.id, symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id), target: "_blank"
+          - section.tasks.order(created_at: :asc).each do |task|   
+            .col-sm-2
+              = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.identifier)
 
