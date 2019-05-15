@@ -4,8 +4,4 @@
 = form_tag @s3_direct_post.url, class: 'dropzone uploadToXero', id: 'uploadToXero'
   - @s3_direct_post.fields.each do |key, value|
     = hidden_field_tag key, value
-- if action.reminders.present?
-  = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(workflow.template.slug, workflow.identifier, action.task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
-- if @current_user.has_role? :admin, @company
-	= link_to "Send Reminder", reminder_task_symphony_workflow_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier, task_id: action.task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
 = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: action.task.id, workflow_name: action.workflow.template.slug, workflow_identifier: action.workflow.identifier, controller: 'workflows'), method: "POST" }, :onclick => "this.checked=true;", class: 'enlarged-checkbox float-right'
