@@ -20,9 +20,9 @@
     hr
   - @batch.workflows[0].workflow_actions.order(created_at: :asc).each do |wfa|
     .col-sm-1
-      a.pop data-container="body" data-content=("The task instruction is: #{wfa.task.instructions}") data-placement="top" data-toggle="popover"
+      a.pop data-container="body" title="Task instruction and role" data-content=("<div><b>Task instruction</b> - #{wfa.task.instructions}<br/><b>Assigned to </b> - #{wfa.task.role&.name} </div>") data-html="true" data-placement="top" data-toggle="popover"
         h6.text-center 
-          = wfa.task.task_type
+          = wfa.task.task_type.humanize
       hr      
 /Do the body of the grid table 
 - @batch.workflows.each do |wf|

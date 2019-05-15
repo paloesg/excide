@@ -4,5 +4,5 @@ $(function () {
     setTimeout(function () {
         $('.pop').popover('hide');
     }, 5000);
-});
+	});
 })
