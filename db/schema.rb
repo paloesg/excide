@@ -480,7 +480,7 @@ ActiveRecord::Schema.define(version: 2019_05_08_080454) do
     t.string "workflowable_type"
     t.text "remarks"
     t.json "data", default: []
-    t.json "archive", default: "[]"
+    t.json "archive", default: []
     t.bigint "recurring_workflow_id"
     t.uuid "batch_id"
     t.index ["batch_id"], name: "index_workflows_on_batch_id"

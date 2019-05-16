@@ -18,6 +18,6 @@
           tbody
             - @batches_paginate.each do |batch|
               tr
-                td = link_to batch.id, symphony_batch_path(id: batch.id, batch_template_name: batch.template&.slug)
+                td = link_to batch.id, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
         .card-footer.pt-4
           = paginate @batches_paginate, views_prefix: 'dashboards' 

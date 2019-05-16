@@ -8,7 +8,6 @@ class Template < ApplicationRecord
   has_many :document_templates, dependent: :destroy
   has_many :workflows
   has_many :recurring_workflows
-  has_many :templates
 
   belongs_to :company
 
