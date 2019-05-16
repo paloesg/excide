@@ -1,12 +1,3 @@
-.container-scroll > .row {
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-.container-scroll > .row > .col-sm-2{
-  display: inline;
-  float: none;
-}
 input.enlarged-checkbox{
   width: 15px;
   height: 15px;
@@ -26,6 +17,10 @@ input.enlarged-checkbox{
 
 .card{
   overflow-x: auto;
-  
+}
+
+.header-properties{
+  color: #dd715e;
+  text-align: center;
 }
 
