@@ -24,7 +24,7 @@
           hr
         - section.tasks.order(created_at: :asc).each do |task|
           .col-sm-2
-            a.pop data-container="body" title="Task instruction and role" data-content=("<div><b>Task instruction</b> - #{task.instructions}<br/><b>Assigned to </b> - #{task.role&.name} </div>") data-html="true"  data-placement="top" data-toggle="popover"
+            a.pop data-container="body" title="Task instruction and role" data-content=("<div><b>Task instruction</b> - #{task.instructions}<br/><b>Assigned to </b> - #{task.role&.name} </div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
               h6.header-properties 
                 = task.task_type.humanize
             hr 
