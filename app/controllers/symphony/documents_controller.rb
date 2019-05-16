@@ -70,6 +70,8 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def destroy
+    authorize @document
+
     @document.destroy
     redirect_to symphony_documents_path, notice: 'Document was successfully destroyed.'
   end
