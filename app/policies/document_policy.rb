@@ -4,7 +4,7 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def show?
-
+    user.company == record.company
   end
 
   def create?
