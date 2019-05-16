@@ -12,6 +12,11 @@ class Symphony::DocumentsController < DocumentsController
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
+  def new
+    @document = Document.new
+    authorize @document
+  end
+
   def edit
     @workflow = @workflows.find(@document.workflow_id) if @document.workflow_id.present?
   end
