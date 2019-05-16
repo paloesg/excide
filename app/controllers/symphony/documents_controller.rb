@@ -27,6 +27,8 @@ class Symphony::DocumentsController < DocumentsController
 
   def create
     @document = Document.new(document_params)
+    authorize @document
+
     @document.company = @company
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
