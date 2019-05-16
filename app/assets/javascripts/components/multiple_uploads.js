@@ -16,7 +16,7 @@ $(document).ready(function () {
       filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       return filter_filename + '.' + get_extension;
     };
-    var documentUploadToXero = new Dropzone('.uploadToXero',{
+    var documentUploadToXero = new Dropzone(".uploadToXero",{
       timeout: 0, 
       renameFilename: cleanFilename,
     })
@@ -48,16 +48,16 @@ $(document).ready(function () {
       filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       return filter_filename + '.' + get_extension;
     };
-    var documentUpload = new Dropzone('.multiple_uploads', {
+    var documentUpload = new Dropzone(".multiple_uploads", {
       timeout: 0, 
       renameFilename: cleanFilename,
       autoProcessQueue: false,
       parallelUploads: 100,
       uploadMultiple: false,
     });
-    $('#drag-and-drop-submit').click(function(){
+    $("#drag-and-drop-submit").click(function(){
       documentUpload.processQueue();
-      $.post('/symphony/batches', {
+      $.post("/symphony/batches", {
         authenticity_token: $.rails.csrfToken(),
         batch: {
           template_id: $('#template_id').val(),

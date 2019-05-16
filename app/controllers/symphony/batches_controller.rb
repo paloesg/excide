@@ -3,6 +3,7 @@ class Symphony::BatchesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
+  before_action :set_batch, only: [:show]
 
   def index
     @batches_paginate = Kaminari.paginate_array(Batch.all.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(10)
@@ -23,7 +24,6 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def show
-    @batch = Batch.find(params[:id])
     @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
     @current_user = current_user
     @sections = @batch.template.sections
@@ -34,6 +34,10 @@ class Symphony::BatchesController < ApplicationController
 
   def batch_params
     params.permit(:company_id, :template_id)
+  end
+
+  def set_batch
+    @batch = Batch.find(params[:id])
   end
 
   def set_company
