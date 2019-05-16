@@ -33,9 +33,9 @@ $(document).ready(function () {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'invoice',
           count: this.files.length,
+          workflow_identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
           document: {
             filename: file.upload.filename,
-            identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,
             template_id: $('#template_id').val(),
           }
@@ -45,9 +45,9 @@ $(document).ready(function () {
         $.post('/symphony/documents', {
           authenticity_token: $.rails.csrfToken(),
           workflow: $('#workflow_identifier').val(),
+          workflow_identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
           document: {
             filename: file.upload.filename,
-            identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath
           }
         });
