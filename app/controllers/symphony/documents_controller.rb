@@ -9,6 +9,7 @@ class Symphony::DocumentsController < DocumentsController
   def index
     @get_documents = policy_scope(Document).includes(:document_template, :workflow)
     @documents = Kaminari.paginate_array(@get_documents.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(20)
+
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
@@ -22,6 +23,8 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def edit
+    authorize @document
+
     @workflow = @workflows.find(@document.workflow_id) if @document.workflow_id.present?
   end
 
@@ -63,6 +66,8 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def update
+    authorize @document
+
     if @document.update(document_params)
       redirect_to symphony_document_path, notice: 'Document was successfully updated.'
     else

@@ -1,6 +1,6 @@
 class DocumentPolicy < ApplicationPolicy
   def index?
-    false
+    user.present?
   end
 
   def show?
@@ -8,15 +8,15 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def create?
-    true
+    user.present?
   end
 
   def new?
-    true
+    create?
   end
 
   def update?
-    false
+    user == record.user or user.has_role?(:admin, record.company)
   end
 
   def edit?
