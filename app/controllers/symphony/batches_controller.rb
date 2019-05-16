@@ -27,6 +27,7 @@ class Symphony::BatchesController < ApplicationController
     @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
     @current_user = current_user
     @sections = @batch.template.sections
+    @roles = @current_user.roles.where(resource_id: @company.id, resource_type: "Company")
   end
 
   private
