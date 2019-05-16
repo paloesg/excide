@@ -1,3 +1,4 @@
 = link_to "Download File", action.task.document_template.file_url, role: 'button', class: 'btn btn-primary btn-sm' if action.task.document_template.present?
 = link_to "No file to download", '#', class: 'btn btn-primary btn-sm disabled'
-= check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: action.task.id, workflow_name: action.workflow.template.slug, workflow_identifier: action.workflow.identifier, controller: 'workflows'), method: "POST" }, :onclick => "this.checked=true;", class: 'enlarged-checkbox float-right'
+.row
+	= check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: action.task.id, workflow_name: action.workflow.template.slug, workflow_identifier: action.workflow.identifier, controller: 'workflows'), method: "POST" }, :onclick => "this.checked=true;", class: 'enlarged-checkbox float-right'
