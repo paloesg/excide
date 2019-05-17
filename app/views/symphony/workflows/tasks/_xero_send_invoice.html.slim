@@ -15,12 +15,13 @@ tr
       = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST" }, :onclick => "this.checked=true;"
     - else
       = check_box_tag 'completed', action.id, action.completed, disabled: true
-  td
-    a data-toggle="collapse" href="#task_#{task.id}" aria-expanded="#{task == @workflow.current_task ? 'true' : 'false'}" class="#{task == @workflow.current_task ? '' : 'collapsed'}"
-      i.fa aria-hidden="true"
+  - if action.workflow.template.ordered?
+    td
+      a data-toggle="collapse" href="#task_#{task.id}" aria-expanded="#{task == @workflow.current_task ? 'true' : 'false'}" class="#{task == @workflow.current_task ? '' : 'collapsed'}"
+        i.fa aria-hidden="true"
 tr
   td.p-0.border-top-0 colspan="6"
-    div id="task_#{task.id}" class="#{task == @workflow.current_task ? 'collapse show' : 'collapse'}"
+    div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered? ? 'collapse show' : 'collapse'}"
       .m-3
         h6 Actions:
         .btn-toolbar role="toolbar"
