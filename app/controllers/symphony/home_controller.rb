@@ -2,9 +2,9 @@ class Symphony::HomeController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
+  before_action :set_company
 
   def index
-    @company = current_user.company
     @templates = Template.assigned_templates(current_user)
     @clients = @company.clients
 
@@ -24,6 +24,8 @@ class Symphony::HomeController < ApplicationController
     @reminder_count = current_user.reminders.count
 
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
+
+    @recurring_workflows_array = current_user.company.recurring_workflows.map{|rwf| rwf }
   end
 
   def search
@@ -45,4 +47,7 @@ class Symphony::HomeController < ApplicationController
     }
   end
 
+  def set_company
+    @company = current_user.company
+  end
 end

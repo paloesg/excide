@@ -11,6 +11,7 @@ class Company < ApplicationRecord
   has_many :documents
   has_many :templates
   has_many :workflows
+  has_many :recurring_workflows
   has_many :workflow_actions
   has_many :clients
   has_many :activations

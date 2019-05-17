@@ -32,7 +32,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     :slug,
     :company,
     :workflow_type,
-    :workflows,
+    :workflows
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES

@@ -1,12 +1,7 @@
 .row
   .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="#" Home
-      li.breadcrumb-item
-        a href="#" #{@company.name}
-      li.breadcrumb-item.active Dashboard
     h1 Symphony Dashboard
+    hr
 .row
   .col-md-8.col-sm-6
     .card-deck.mb-3
@@ -18,6 +13,10 @@
         .card-body
          h5.card-title Workflows
          h1.card-text = @workflows_array.count
+      .card.text-center.bg-light
+        .card-body
+         h5.card-title Recurring
+         h1.card-text = link_to @recurring_workflows_array.count, symphony_workflows_recurring_path, class: 'text-dark'
       .card.text-center.bg-light
         .card-body
          h5.card-title Reminders
@@ -91,3 +90,12 @@
         = form_tag @s3_direct_post.url, class: 'dropzone collapse multiple_uploads', id: 'uploader'
           - @s3_direct_post.fields.each do |key, value|
             = hidden_field_tag key, value
+    .card.mb-3
+      h5.card-header New Recurring Workflow
+      .card-body
+        .form-group
+          = label_tag "template", "Select template:"
+          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
+        = link_to 'New Recurring Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-recurring-workflow'
+
+

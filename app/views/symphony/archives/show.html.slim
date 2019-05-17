@@ -5,6 +5,8 @@
         a href="/symphony" Symphony
       li.breadcrumb-item
         a href="/symphony/archives" Archives
+      li.breadcrumb-item
+        = link_to @template['title'], symphony_workflows_path(@template['slug'])
       li.breadcrumb-item.active #{@workflow.identifier}
     h1
       | #{@template['title']} – #{@workflow.identifier}

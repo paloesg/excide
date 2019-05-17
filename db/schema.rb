@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_04_30_022730) do
+=======
+ActiveRecord::Schema.define(version: 2019_05_16_122235) do
+>>>>>>> master
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -163,7 +167,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_022730) do
     t.index ["user_id"], name: "index_document_templates_on_user_id"
   end
 
-  create_table "documents", id: :serial, force: :cascade do |t|
+  create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "filename"
     t.text "remarks"
     t.integer "company_id"
@@ -173,7 +177,6 @@ ActiveRecord::Schema.define(version: 2019_04_30_022730) do
     t.string "file_url"
     t.integer "workflow_id"
     t.integer "document_template_id"
-    t.string "identifier"
     t.integer "user_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
     t.index ["document_template_id"], name: "index_documents_on_document_template_id"
@@ -222,7 +225,10 @@ ActiveRecord::Schema.define(version: 2019_04_30_022730) do
     t.boolean "approved"
     t.decimal "total"
     t.bigint "user_id"
+<<<<<<< HEAD
     t.boolean "workflow_archived"
+=======
+>>>>>>> master
     t.index ["user_id"], name: "index_invoices_on_user_id"
     t.index ["workflow_id"], name: "index_invoices_on_workflow_id"
   end
@@ -254,14 +260,25 @@ ActiveRecord::Schema.define(version: 2019_04_30_022730) do
   end
 
   create_table "recurring_workflows", force: :cascade do |t|
+<<<<<<< HEAD
     t.boolean "recurring"
+=======
+>>>>>>> master
     t.integer "freq_value"
     t.integer "freq_unit"
     t.bigint "template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "next_workflow_date"
+<<<<<<< HEAD
     t.index ["template_id"], name: "index_recurring_workflows_on_template_id"
+=======
+    t.bigint "company_id"
+    t.bigint "user_id"
+    t.index ["company_id"], name: "index_recurring_workflows_on_company_id"
+    t.index ["template_id"], name: "index_recurring_workflows_on_template_id"
+    t.index ["user_id"], name: "index_recurring_workflows_on_user_id"
+>>>>>>> master
   end
 
   create_table "reminders", id: :serial, force: :cascade do |t|
@@ -475,7 +492,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_022730) do
     t.string "workflowable_type"
     t.text "remarks"
     t.json "data", default: []
-    t.json "archive", default: "[]"
+    t.json "archive", default: []
     t.bigint "recurring_workflow_id"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
@@ -505,7 +522,13 @@ ActiveRecord::Schema.define(version: 2019_04_30_022730) do
   add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"
+<<<<<<< HEAD
   add_foreign_key "recurring_workflows", "templates"
+=======
+  add_foreign_key "recurring_workflows", "companies"
+  add_foreign_key "recurring_workflows", "templates"
+  add_foreign_key "recurring_workflows", "users"
+>>>>>>> master
   add_foreign_key "reminders", "companies"
   add_foreign_key "reminders", "tasks"
   add_foreign_key "reminders", "users"
