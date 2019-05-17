@@ -10,15 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2019_04_30_022730) do
-=======
-ActiveRecord::Schema.define(version: 2019_05_16_122235) do
->>>>>>> master
+ActiveRecord::Schema.define(version: 2019_05_17_055131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "activation_types", id: :serial, force: :cascade do |t|
     t.string "name"
@@ -95,6 +92,15 @@ ActiveRecord::Schema.define(version: 2019_05_16_122235) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_availabilities_on_user_id"
+  end
+
+  create_table "batches", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "template_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_batches_on_company_id"
+    t.index ["template_id"], name: "index_batches_on_template_id"
   end
 
   create_table "choices", id: :serial, force: :cascade do |t|
@@ -225,10 +231,6 @@ ActiveRecord::Schema.define(version: 2019_05_16_122235) do
     t.boolean "approved"
     t.decimal "total"
     t.bigint "user_id"
-<<<<<<< HEAD
-    t.boolean "workflow_archived"
-=======
->>>>>>> master
     t.index ["user_id"], name: "index_invoices_on_user_id"
     t.index ["workflow_id"], name: "index_invoices_on_workflow_id"
   end
@@ -260,25 +262,17 @@ ActiveRecord::Schema.define(version: 2019_05_16_122235) do
   end
 
   create_table "recurring_workflows", force: :cascade do |t|
-<<<<<<< HEAD
-    t.boolean "recurring"
-=======
->>>>>>> master
     t.integer "freq_value"
     t.integer "freq_unit"
     t.bigint "template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "next_workflow_date"
-<<<<<<< HEAD
-    t.index ["template_id"], name: "index_recurring_workflows_on_template_id"
-=======
     t.bigint "company_id"
     t.bigint "user_id"
     t.index ["company_id"], name: "index_recurring_workflows_on_company_id"
     t.index ["template_id"], name: "index_recurring_workflows_on_template_id"
     t.index ["user_id"], name: "index_recurring_workflows_on_user_id"
->>>>>>> master
   end
 
   create_table "reminders", id: :serial, force: :cascade do |t|
@@ -405,11 +399,6 @@ ActiveRecord::Schema.define(version: 2019_05_16_122235) do
     t.integer "company_id"
     t.json "data_names", default: []
     t.integer "workflow_type", default: 0
-    t.date "recurring_start_date"
-    t.date "recurring_end_date"
-    t.boolean "recurring"
-    t.integer "freq_unit"
-    t.integer "freq_value"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
@@ -494,6 +483,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_122235) do
     t.json "data", default: []
     t.json "archive", default: []
     t.bigint "recurring_workflow_id"
+    t.uuid "batch_id"
+    t.index ["batch_id"], name: "index_workflows_on_batch_id"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
     t.index ["template_id"], name: "index_workflows_on_template_id"
@@ -507,6 +498,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_122235) do
   add_foreign_key "allocations", "activations"
   add_foreign_key "allocations", "users"
   add_foreign_key "availabilities", "users"
+  add_foreign_key "batches", "companies"
+  add_foreign_key "batches", "templates"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
   add_foreign_key "companies", "users", column: "associate_id"
@@ -522,13 +515,9 @@ ActiveRecord::Schema.define(version: 2019_05_16_122235) do
   add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"
-<<<<<<< HEAD
-  add_foreign_key "recurring_workflows", "templates"
-=======
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"
   add_foreign_key "recurring_workflows", "users"
->>>>>>> master
   add_foreign_key "reminders", "companies"
   add_foreign_key "reminders", "tasks"
   add_foreign_key "reminders", "users"
@@ -553,6 +542,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_122235) do
   add_foreign_key "workflow_actions", "users", column: "assigned_user_id"
   add_foreign_key "workflow_actions", "users", column: "completed_user_id"
   add_foreign_key "workflow_actions", "workflows"
+  add_foreign_key "workflows", "batches"
   add_foreign_key "workflows", "companies"
   add_foreign_key "workflows", "recurring_workflows"
   add_foreign_key "workflows", "templates"
