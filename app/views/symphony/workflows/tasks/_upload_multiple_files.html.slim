@@ -34,6 +34,5 @@ tr
               = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
             - if task == @workflow.current_task && (@user.has_role? :admin, @company)
               = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
-              / = link_to "Drag and Drop", class: 'dropzone collapse', id: 'uploader'
         br
         = task.display_image

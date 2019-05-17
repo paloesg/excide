@@ -68,20 +68,7 @@ $(document).ready(function () {
       var resp = $.parseXML(request);
       var filePath = $(resp).find("Key").text();
       var location = new URL($(resp).find("Location").text())
-      if ($("#uploader").length){
-        $.post('/symphony/documents', {
-          authenticity_token: $.rails.csrfToken(),
-          document_type: 'invoice',
-          count: this.files.length,
-          document: {
-            filename: file.upload.filename,
-            identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
-            file_url: '//' + location['host'] + '/' + filePath,
-            template_id: $('#template_id').val(),
-          }
-        });
-      }
-      else if($("#batch-uploader").length){
+      if($("#batch-uploader").length){
         $.post('/symphony/documents', {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
