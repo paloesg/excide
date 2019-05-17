@@ -11,6 +11,11 @@ class Symphony::DocumentsController < DocumentsController
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
+  def search
+    # TODO: Generate secured api key per user tag, only relevant users are tagged to each workflow.
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'company.slug:' + current_user.company.slug})
+  end
+
   def edit
     @workflow = @workflows.find(@document.workflow_id) if @document.workflow_id.present?
   end

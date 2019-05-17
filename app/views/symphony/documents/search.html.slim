@@ -1,0 +1,80 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony/documents" Documents
+      li.breadcrumb-item.active Search
+    h1 Search Documents
+
+.row
+  .col-sm-6.offset-sm-6
+    input.form-control#q type="search"
+    br
+
+.row
+  .col-sm-3#facets
+    #templates
+  .col-sm-9
+    .card
+      h5.card-header Search results
+      .table-responsive#hits
+
+javascript:
+  function loadExtJS(src, callback) {
+    var s = document.createElement('script');
+    s.src = src;
+    document.body.appendChild(s);
+    s.onload = callback
+  }
+
+  loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
+    var hitTemplate = '<table class="table table-striped">' +
+        '<thead><tr><th>Filename</th>' +
+        '</tr></thead>' +
+        '<tbody>{{#hits}}' +
+        '<tr><td>{{{_highlightResult.identifier.value}}}</td>' +
+        '{{/hits}}</tbody>'
+      '</div>';
+      var search = instantsearch({
+        appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
+        apiKey: '#{@public_key}',
+        indexName: '#{Document.index_name}',
+        urlSync: true
+      });
+      search.addWidget(
+        instantsearch.widgets.searchBox({
+          container: '#q',
+          placeholder: 'Search for documents',
+          autofocus: false,
+          poweredBy: true
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.hits({
+          container: '#hits',
+          templates: {
+            empty: 'No matching documents',
+            allItems: hitTemplate
+          },
+          hitsPerPage: 10
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.refinementList({
+          container: '#templates',
+          attributeName: 'template.title',
+          limit: 10,
+          templates: {
+            header: '<h5 class="card-header">Templates</h5>'
+          },
+          cssClasses: {
+            root: 'card',
+            body: 'list-group list-group-flush',
+            item: 'list-group-item',
+            count: 'badge badge-pill badge-secondary'
+          }
+        })
+      );
+      search.start();
+  })
+

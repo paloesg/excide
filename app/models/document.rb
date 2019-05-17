@@ -17,6 +17,20 @@ class Document < ApplicationRecord
   before_validation :set_filename
   after_destroy :delete_file_on_s3
 
+  include AlgoliaSearch
+  algoliasearch do
+    attribute :filename, :created_at, :updated_at
+    attribute :workflow do
+      { identifier: workflow&.identifier }
+    end
+    attribute :document_template do
+      { title: document_template&.title }
+    end
+    attribute :company do
+      { name: company.name, slug: company.slug }
+    end
+  end
+
   private
 
   def set_filename
