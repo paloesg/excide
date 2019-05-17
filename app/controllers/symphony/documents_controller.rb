@@ -29,7 +29,7 @@ class Symphony::DocumentsController < DocumentsController
       if @document.save
         if params[:document_type] == 'batch-uploads'
           @template = Template.find(params[:document][:template_id])
-          @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: @document.identifier, workflowable: @client)
+          @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: params[:workflow_identifier], workflowable: @client)
           @workflow.template_data(@template)
           #equate workflow to the latest batch
           @workflow.batch = Batch.last

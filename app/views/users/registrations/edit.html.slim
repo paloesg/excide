@@ -2,11 +2,10 @@
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
-        a href="#" Home
-      li.breadcrumb-item
-        a href="#" #{resource_name.to_s.humanize}
-      li.breadcrumb-item.active Update
+        a href="/symphony" Symphony
+      li.breadcrumb-item.active Edit User
     h1 Edit User
+    hr
 .row
   .col-md-12
     = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|

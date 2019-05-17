@@ -1,6 +1,7 @@
 class RecurringWorkflow < ApplicationRecord
   belongs_to :template
   belongs_to :company
+  belongs_to :user
   has_many :workflows
 
   enum freq_unit: {days: 0, weeks: 1, months: 2, years: 3}

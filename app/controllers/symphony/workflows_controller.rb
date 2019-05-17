@@ -109,7 +109,6 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def archive
-    WorkflowMailer.email_summary(@workflow, @workflow.user).deliver_now
     generate_archive = GenerateArchive.new(@workflow).run
     # Mark workflow as completed when workflow is archived
     if generate_archive.success?
@@ -159,6 +158,7 @@ class Symphony::WorkflowsController < WorkflowsController
       @workflow.documents.each do |document|
         xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
       end
+      @workflow.invoice.save
       @invoice_payable = @xero.get_invoice(@workflow.invoice.xero_invoice_id)
       #this is to send invoice to xero 'awaiting approval'
       if params[:approved].present?

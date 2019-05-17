@@ -1,0 +1,11 @@
+container
+  row.collapse
+    columns small="6" valign="middle" 
+      = image_tag("excide-logo.png", style: "width: 50%; height: 50%")
+  spacer size="16" 
+  row
+    columns
+      p Hi #{@user.first_name},
+
+      p
+        | A new activation for #{@activation.client.name} has been created on #{@activation.start_time.strftime("%d/%m/%Y")} from #{@activation.start_time.strftime("%H:%M")} to #{@activation.end_time.strftime("%H:%M")} at #{@activation.location} and you have been assigned as the Event In-Charge.
