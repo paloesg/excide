@@ -13,11 +13,11 @@ tr
   	= render "symphony/workflows/tasks/workflow_type_conditions", action: action, task: task
   - if action.workflow.template.ordered?
     td
-      a data-toggle="collapse" href="#task_#{task.id}" aria-expanded="#{task == @workflow.current_task or @workflow.template.unordered? ? 'true' : 'false'}" class="#{task == @workflow.current_task ? '' : 'collapsed'}"
+      a data-toggle="collapse" href="#task_#{task.id}" aria-expanded="#{task == @workflow.current_task ? 'true' : 'false'}" class="#{task == @workflow.current_task ? '' : 'collapsed'}"
         i.fa aria-hidden="true"
 tr
   td.p-0.border-top-0 colspan="6"
-    div id="task_#{task.id}" class="#{task == @workflow.current_task ? 'collapse show' : 'collapse'}"
+    div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered?? 'collapse show' : 'collapse'}"
       .m-3
         = render "symphony/workflows/tasks/remarks", action: action
           .btn-toolbar role="toolbar"
