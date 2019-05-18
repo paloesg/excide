@@ -19,7 +19,7 @@ class Document < ApplicationRecord
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :filename, :created_at, :updated_at
+    attribute :filename, :created_at, :updated_at, :remarks
     attribute :workflow do
       { identifier: workflow&.identifier }
     end
