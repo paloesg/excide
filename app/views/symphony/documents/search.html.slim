@@ -13,7 +13,7 @@
 
 .row
   .col-sm-3#facets
-    #templates
+    #document_templates
   .col-sm-9
     .card
       h5.card-header Search results
@@ -30,9 +30,13 @@ javascript:
   loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
     var hitTemplate = '<table class="table table-striped">' +
         '<thead><tr><th>Filename</th>' +
+        '<th>Document Template</th>' +
+        '<th>Workflow</th>' +
         '</tr></thead>' +
         '<tbody>{{#hits}}' +
-        '<tr><td>{{{_highlightResult.identifier.value}}}</td>' +
+        '<tr><td>{{{_highlightResult.filename.value}}}</td>' +
+        '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
+        '<td>{{{_highlightResult.workflow.identifier.value}}}</td>' +
         '{{/hits}}</tbody>'
       '</div>';
       var search = instantsearch({
@@ -61,11 +65,11 @@ javascript:
       );
       search.addWidget(
         instantsearch.widgets.refinementList({
-          container: '#templates',
-          attributeName: 'template.title',
+          container: '#document_templates',
+          attributeName: 'document_template.title',
           limit: 10,
           templates: {
-            header: '<h5 class="card-header">Templates</h5>'
+            header: '<h5 class="card-header">Document Templates</h5>'
           },
           cssClasses: {
             root: 'card',
