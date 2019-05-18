@@ -32,11 +32,13 @@ javascript:
         '<thead><tr><th>Filename</th>' +
         '<th>Document Template</th>' +
         '<th>Workflow</th>' +
+        '<th>Remarks</th>' +
         '</tr></thead>' +
         '<tbody>{{#hits}}' +
         '<tr><td>{{{_highlightResult.filename.value}}}</td>' +
         '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
         '<td>{{{_highlightResult.workflow.identifier.value}}}</td>' +
+        '<td>{{{_highlightResult.remarks.value}}}</td>' +
         '{{/hits}}</tbody>'
       '</div>';
       var search = instantsearch({
