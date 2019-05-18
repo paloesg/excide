@@ -34,7 +34,7 @@ class Symphony::DocumentsController < DocumentsController
       if @document.save
         if params[:document_type] == 'invoice'
           @template = Template.find(params[:document][:template_id])
-          @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: @document.identifier, workflowable: @client)
+          @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: params[:workflow_identifier], workflowable: @client)
           @workflow.template_data(@template)
           @workflow.save
           @document.update_attributes(workflow: @workflow)

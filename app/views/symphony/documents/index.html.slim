@@ -17,7 +17,6 @@
         thead
           tr
             th Filename
-            th Identifier
             th Document Template
             th Workflow
             th Uploaded At
@@ -27,7 +26,6 @@
           - @documents.each do |document|
             tr
               td = document.filename
-              td = document.identifier
               td = document.document_template&.title
               td = link_to document.workflow.template.title, symphony_workflow_path(document.workflow.template.slug, document.workflow.identifier) if document.workflow.present?
               td = document.created_at.strftime("%d/%m/%Y %R")
