@@ -16,6 +16,7 @@ class Company < ApplicationRecord
   has_many :clients
   has_many :activations
   has_many :reminders, dependent: :destroy
+  has_many :batches
   has_one :address, as: :addressable
 
   belongs_to :consultant, class_name: 'User'
