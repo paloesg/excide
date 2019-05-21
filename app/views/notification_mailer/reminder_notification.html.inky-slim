@@ -1,0 +1,17 @@
+container
+  row.collapse
+    columns small="6" valign="middle" 
+      = image_tag("excide-logo.png", style: "width: 50%; height: 50%")
+  spacer size="16" 
+  row
+    columns
+      p Hi #{@user.first_name},
+
+      p #{@reminder.content}
+
+      - if @reminder.task.present?
+        p
+          ' You can access the task from this link:
+          a href="#{symphony_workflow_url(@reminder.task.section.template.slug, @reminder.workflow_action.workflow.identifier)}" #{@reminder.task.section.template.title} - #{@reminder.workflow_action.workflow.identifier}
+
+      p If you have any queries regarding your task, please contact your admin.

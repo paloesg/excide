@@ -12,12 +12,14 @@ class User < ApplicationRecord
   has_many :reminders, dependent: :destroy
   has_many :clients
   has_many :documents
+  has_many :recurring_workflows
   has_many :assigned_tasks, class_name: 'WorkflowAction', foreign_key: 'assigned_user_id'
   has_many :completed_tasks, class_name: 'WorkflowAction', foreign_key: 'completed_user_id'
 
   has_many :availabilities, dependent: :destroy
   has_many :allocations, dependent: :destroy
   has_many :owned_events, class_name: 'Activation', foreign_key: 'event_owner_id', dependent: :destroy
+  has_many :invoices
 
   belongs_to :company
 

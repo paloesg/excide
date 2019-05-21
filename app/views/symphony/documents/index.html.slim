@@ -2,15 +2,12 @@
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
-        a href="#" Home
-      li.breadcrumb-item
-        a href="#" Company
-      li.breadcrumb-item
-        a href="#" Documents
-      li.breadcrumb-item.active Edit
+        a href="/symphony" Symphony
+      li.breadcrumb-item.active Documents
     h1
-      | Documents Listing
+      | Documents
       .btn-toolbar.float-right
+        = link_to "Document Templates", symphony_document_templates_path, role: 'button', class: 'btn btn-success mr-1'
         = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
         = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning' if ::Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').present?
 .row
@@ -20,7 +17,6 @@
         thead
           tr
             th Filename
-            th Identifier
             th Document Template
             th Workflow
             th Uploaded At
@@ -30,7 +26,6 @@
           - @documents.each do |document|
             tr
               td = document.filename
-              td = document.identifier
               td = document.document_template&.title
               td = link_to document.workflow.template.title, symphony_workflow_path(document.workflow.template.slug, document.workflow.identifier) if document.workflow.present?
               td = document.created_at.strftime("%d/%m/%Y %R")

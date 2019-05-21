@@ -10,6 +10,7 @@ class WorkflowAction < ApplicationRecord
 
   after_save :clear_reminders, if: :ordered_workflow_task_completed?
   after_save :trigger_next_task, if: :ordered_workflow_task_completed?
+  after_save :send_email_summary , if: :check_all_actions_completed?
 
   belongs_to :task
   belongs_to :company
@@ -48,6 +49,10 @@ class WorkflowAction < ApplicationRecord
   # TODO: Refactor to use ActiveRecord .or after upgrading to Rails 5
   def self.all_user_actions(user)
     WorkflowAction.from("(#{assigned_actions(user).to_sql} UNION #{role_actions(user.roles).to_sql}) AS workflow_actions")
+  end
+
+  def send_email_summary
+    WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later
   end
 
   private
@@ -115,5 +120,10 @@ class WorkflowAction < ApplicationRecord
   # Callback conditional to check whether the template is of type ordered and whether the task is completed before triggering callback
   def ordered_workflow_task_completed?
     self.workflow.template.ordered? && self.completed?
+  end
+
+  #this callback checks that all actions in the workflow are completed before sending out the email summary
+  def check_all_actions_completed?
+    self.workflow.workflow_actions.all? {|action| action.completed? }
   end
 end

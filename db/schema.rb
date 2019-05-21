@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_08_080454) do
 
+ActiveRecord::Schema.define(version: 2019_05_16_122235) do
+  
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -173,7 +174,7 @@ ActiveRecord::Schema.define(version: 2019_05_08_080454) do
     t.index ["user_id"], name: "index_document_templates_on_user_id"
   end
 
-  create_table "documents", id: :serial, force: :cascade do |t|
+  create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "filename"
     t.text "remarks"
     t.integer "company_id"
@@ -183,7 +184,6 @@ ActiveRecord::Schema.define(version: 2019_05_08_080454) do
     t.string "file_url"
     t.integer "workflow_id"
     t.integer "document_template_id"
-    t.string "identifier"
     t.integer "user_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
     t.index ["document_template_id"], name: "index_documents_on_document_template_id"
@@ -231,6 +231,8 @@ ActiveRecord::Schema.define(version: 2019_05_08_080454) do
     t.string "currency"
     t.boolean "approved"
     t.decimal "total"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_invoices_on_user_id"
     t.index ["workflow_id"], name: "index_invoices_on_workflow_id"
   end
 
@@ -510,6 +512,7 @@ ActiveRecord::Schema.define(version: 2019_05_08_080454) do
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflows"
+  add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"

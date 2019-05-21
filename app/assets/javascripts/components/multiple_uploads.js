@@ -31,7 +31,6 @@ $(document).ready(function () {
           workflow: $('#workflow_identifier').val(),
           document: {
             filename: file.upload.filename,
-            identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath
           }
         });
@@ -73,9 +72,9 @@ $(document).ready(function () {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
           count: this.files.length,
+          workflow_identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
           document: {
             filename: file.upload.filename,
-            identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,
             template_id: $('#template_id').val(),
           }

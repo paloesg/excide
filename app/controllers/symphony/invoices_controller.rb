@@ -20,6 +20,7 @@ class Symphony::InvoicesController < ApplicationController
   def create
     @invoice = Invoice.new(invoice_params)
     @invoice.workflow_id = @workflow.id
+    @invoice.user_id = current_user.id
     if @invoice.xero_contact_id.present?
       @invoice.xero_contact_name = @xero.get_contact(@invoice.xero_contact_id).name
     else
@@ -110,7 +111,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :approved, :total, line_items_attributes: [:description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :approved, :total, :user_id, line_items_attributes: [:description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :_destroy])
   end
 
   def xero_login
