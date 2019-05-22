@@ -25,6 +25,11 @@ class Symphony::DocumentsController < DocumentsController
       @document.workflow = @workflow
     end
 
+    if params[:workflow_action].present?
+      @workflow_action = WorkflowAction.find(params[:workflow_action])
+      @document.workflow_action = @workflow_action
+    end
+
     respond_to do |format|
       if @document.save
         if params[:document_type] == 'batch-uploads'
