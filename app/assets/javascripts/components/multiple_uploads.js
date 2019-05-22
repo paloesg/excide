@@ -19,9 +19,11 @@ $(document).ready(function () {
     };
     var documentUpload = new Dropzone('.multiple_uploads', { timeout: 0, renameFilename: cleanFilename });
     documentUpload.on("sending", function(file) {
-      if ( $('#template_id').val() == "" ) {
-        alert('Template is required.');
-        this.removeFile(file);
+      if ($("#documentIndex")) {
+        if ( $('#template_id').val() == "" ) {
+          alert('Template is required.');
+          this.removeFile(file);
+        }
       }
     })
     documentUpload.on("success", function (file, request) {
@@ -70,6 +72,19 @@ $(document).ready(function () {
     });
     documentUpload.on("queuecomplete", function (file, request) {
       $('#view-invoices-button').show();
+
+      // Get url images after uploaded
+      var images = []
+      if ($("#documentIndex")) {
+        $.each(this.files, function(index, value) {
+          var key     = $(value.xhr.responseXML).find("Key").text();
+          var parser  = document.createElement('a');
+          parser.href = $(value.xhr.responseXML).find("Location").text()
+          var url     = '//' + parser.hostname + '/' + key;
+          images.push(url)
+        });
+      }
+      console.log(images)
     });
   };
 });
