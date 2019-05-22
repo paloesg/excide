@@ -8,12 +8,16 @@ class Symphony::BatchesController < ApplicationController
   def index
     #get current_user's roles with all the word downcase for matching the string
     @current_user_roles = current_user.roles.names.map(&:downcase)
-    @batch = []
-    #Loop all the batch and find same roles between the current_user's roles and the batch's workflows's roles. If the current_user has the same role as a role in workflow_actions, then save the batch into @batch.
-    Batch.all.each do |batch|
-      #intersection operator to get duplicate values of the role in both arrays
-      @intersection = batch.get_relevant_roles & @current_user_roles
-      @batch.push(batch) if @intersection.present?
+    if current_user.has_role? :admin, @company
+      @batch = Batch.all
+    else
+      @batch = []
+      #Loop all the batch and find same roles between the current_user's roles and the batch's workflows's roles. If the current_user has the same role as a role in workflow_actions, then save the batch into @batch.
+      Batch.all.each do |batch|
+        #intersection operator & to get duplicate values of the role in both arrays
+        @intersection = batch.get_relevant_roles & @current_user_roles
+        @batch.push(batch) if @intersection.present?
+      end
     end
     @batches_paginate = Kaminari.paginate_array(@batch.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(10)
   end
