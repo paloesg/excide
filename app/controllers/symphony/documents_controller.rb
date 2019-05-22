@@ -27,15 +27,15 @@ class Symphony::DocumentsController < DocumentsController
 
     respond_to do |format|
       if @document.save
-        if params[:document_type] == 'invoice'
+        if params[:document_type] == 'batch-uploads'
           @template = Template.find(params[:document][:template_id])
           @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: params[:workflow_identifier], workflowable: @client)
           @workflow.template_data(@template)
+          #equate workflow to the latest batch
+          @workflow.batch = Batch.last
           @workflow.save
           @document.update_attributes(workflow: @workflow)
-          #number of documents uploaded in the dropzone
-          @number_of_documents = params[:count]
-          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: @number_of_documents + ' documents were successfully created.' }
+          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_batch_path(@workflow.template.slug, @workflow.batch_id), notice: params[:count] + ' documents were successfully created.' }
           format.json { render :show, status: :created, location: @document}
         else
           format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
