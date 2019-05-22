@@ -9,11 +9,11 @@ class Symphony::BatchesController < ApplicationController
     #get current_user's roles with all the word downcase for matching the string
     @current_user_roles = current_user.roles.names.map(&:downcase)
     if current_user.has_role? :admin, @company
-      @batch = Batch.all
+      @batch = Batch.all.where(company: @company)
     else
       @batch = []
       #Loop all the batch and find same roles between the current_user's roles and the batch's workflows's roles. If the current_user has the same role as a role in workflow_actions, then save the batch into @batch.
-      Batch.all.each do |batch|
+      Batch.all.where(company: @company).each do |batch|
         #intersection operator & to get duplicate values of the role in both arrays
         @intersection = batch.get_relevant_roles & @current_user_roles
         @batch.push(batch) if @intersection.present?
