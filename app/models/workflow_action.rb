@@ -20,6 +20,7 @@ class WorkflowAction < ApplicationRecord
   belongs_to :completed_user, class_name: 'User'
 
   has_many :reminders, dependent: :destroy
+  has_many :documents
 
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_workflow_action(self.company, self.workflow.identifier)

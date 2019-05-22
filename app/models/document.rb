@@ -10,6 +10,7 @@ class Document < ApplicationRecord
   belongs_to :workflow
   belongs_to :document_template
   belongs_to :user
+  belongs_to :workflow_action
 
   validates :file_url, :filename, presence: true
   validates :file_url, uniqueness: true
