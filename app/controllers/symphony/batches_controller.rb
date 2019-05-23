@@ -21,6 +21,7 @@ class Symphony::BatchesController < ApplicationController
     end
     @batches_paginate = Kaminari.paginate_array(@batch.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(10)
 
+    #save all the progress into an array to set the progress bar in view page
     @batch_progress = []
     Batch.all.where(company: @company).sort_by{ |a| a.created_at }.reverse!.each do |batch|
       @batch_progress.push(batch.action_completed_progress)
