@@ -15,9 +15,13 @@
           thead
             tr
               th Id
+              th Progress
           tbody
-            - @batches_paginate.each do |batch|
+            - @batches_paginate.each_with_index do |batch, index|
               tr
                 td = link_to batch.id, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
+                td
+                  .progress
+                    .progress-bar.progress-bar-striped aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{@batch_progress[index]}%") #{@batch_progress[index]}%
         .card-footer.pt-4
           = paginate @batches_paginate, views_prefix: 'dashboards' 
