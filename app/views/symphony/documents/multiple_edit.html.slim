@@ -1,0 +1,26 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="#" Home
+      li.breadcrumb-item
+        a href="#" Company
+      li.breadcrumb-item
+        a href="#" Documents
+      li.breadcrumb-item.active Update details
+    h1 Details
+table.table
+  thead
+    tr
+      th.col-4 File
+      th.col-4 Template
+      th.col-4 Remarks
+  tbody
+    - @documents.each do |document|
+      tr
+        td
+          figure.figure
+            = image_tag(document[:file_url], class: 'img-responsive figure-img img-fluid', style: 'height:200px')
+            figcaption.figure-caption.text-center = document.filename
+        td = document.document_template
+        td = document.remarks

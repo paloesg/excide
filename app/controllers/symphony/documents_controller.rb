@@ -61,9 +61,13 @@ class Symphony::DocumentsController < DocumentsController
       @files.append document
     end
     respond_to do |format|
-      format.html { render json: @files.to_json }
+      format.html { redirect_to multiple_edit_symphony_documents_path files: @files }
       format.json { render json: @files.to_json }
     end
+  end
+
+  def multiple_edit
+    @documents = Document.where(id: params[:files])
   end
 
   def update
