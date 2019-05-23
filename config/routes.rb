@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     resources :document_templates
     resources :documents do
       collection do
+        post '/index-create', to: 'documents#index_create', as: :index_create_document
         get '/upload-invoice', to: 'documents#upload_invoice', as: :upload_invoice
       end
     end

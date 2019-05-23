@@ -1,6 +1,6 @@
 class Symphony::DocumentsController < DocumentsController
   before_action :set_templates, only: [:index, :new, :edit]
-  before_action :set_company_workflows, only: [:index, :new, :edit]
+  before_action :set_company_workflows, only: [:index, :new, :edit, :index_create]
   before_action :set_workflow, only: [:new]
 
   def index
@@ -47,6 +47,22 @@ class Symphony::DocumentsController < DocumentsController
         format.html { render :new }
         format.json { render json: @document.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def index_create
+    @files = []
+    set_company
+    params[:url_files].each do |url_file|
+      document = Document.new(file_url: url_file)
+      document.company = @company
+      document.user = @user
+      document.save
+      @files.append document
+    end
+    respond_to do |format|
+      format.html { render json: @files.to_json }
+      format.json { render json: @files.to_json }
     end
   end
 

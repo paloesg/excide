@@ -72,19 +72,21 @@ $(document).ready(function () {
     });
     documentUpload.on("queuecomplete", function (file, request) {
       $('#view-invoices-button').show();
-
-      // Get url images after uploaded
-      var images = []
+      // Get url files after uploaded
+      var url_files = []
       if ($("#documentIndex")) {
         $.each(this.files, function(index, value) {
           var key     = $(value.xhr.responseXML).find("Key").text();
           var parser  = document.createElement('a');
           parser.href = $(value.xhr.responseXML).find("Location").text()
           var url     = '//' + parser.hostname + '/' + key;
-          images.push(url)
+          url_files.push(url)
         });
       }
-      console.log(images)
+      $.post('/symphony/documents/index-create', {
+        authenticity_token: $.rails.csrfToken(),
+        url_files: url_files
+      });
     });
   };
 });
