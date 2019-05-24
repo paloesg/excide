@@ -39,4 +39,5 @@
                         = f.label :remarks
                         = f.text_area :remarks, class: 'form-control'
                       = f.submit 'Save Document', class: 'btn btn-primary'
-
+                      i.fa.fa-check.text-success.ml-3 style="opacity: 0;" id="check-#{document.id}"
+                .newDiv.text-success.(id="remarks-#{document.id}")
