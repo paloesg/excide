@@ -8,8 +8,13 @@ class Symphony::BatchesController < ApplicationController
   def index
     #get current_user's roles with all the word downcase for matching the string
     @current_user_roles = current_user.roles.names.map(&:downcase)
+    @batch_progress =  []
     if current_user.has_role? :admin, @company
       @batch = Batch.all.where(company: @company)
+      #save all the progress into an array to set the progress bar in view page
+      @batch.where(company: @company).sort_by{ |a| a.created_at }.reverse!.each do |batch|
+        @batch_progress.push(batch.action_completed_progress)
+      end
     else
       @batch = []
       #Loop all the batch and find same roles between the current_user's roles and the batch's workflows's roles. If the current_user has the same role as a role in workflow_actions, then save the batch into @batch.
@@ -18,16 +23,11 @@ class Symphony::BatchesController < ApplicationController
         @intersection = batch.get_relevant_roles & @current_user_roles
         @batch.push(batch) if @intersection.present?
       end
+      @batch.sort_by{ |a| a.created_at }.reverse!.each do |batch|
+        @batch_progress.push(batch.action_completed_progress)
+      end
     end
-    @batches_paginate = Kaminari.paginate_array(@batch.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(10)
-
-    #save all the progress into an array to set the progress bar in view page
-    @batch_progress = []
-    Batch.all.where(company: @company).sort_by{ |a| a.created_at }.reverse!.each do |batch|
-      @batch_progress.push(batch.action_completed_progress)
-    end
-
-    # @batch_progress = Batch.last.action_completed_progress
+    @batches_paginate = Kaminari.paginate_array(@batch.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(5)
   end
 
   def new
