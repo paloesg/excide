@@ -27,7 +27,7 @@ class Symphony::BatchesController < ApplicationController
         @batch_progress.push(batch.action_completed_progress)
       end
     end
-    @batches_paginate = Kaminari.paginate_array(@batch.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(5)
+    @batches_paginate = Kaminari.paginate_array(@batch.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(10)
   end
 
   def new

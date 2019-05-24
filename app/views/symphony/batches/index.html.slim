@@ -17,11 +17,17 @@
               th Id
               th Progress
           tbody
+            / to account for the index number when paginates
+            - if params[:page].nil? || params[:page] == "0" || params[:page] == "1"
+              - x = 0
+            - else
+              - page = params[:page].to_i - 1
+              - x = page * 10
             - @batches_paginate.each_with_index do |batch, index|
               tr
                 td = link_to batch.id, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
                 td
                   .progress
-                    .progress-bar.progress-bar-striped aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{@batch_progress[index]}%") #{@batch_progress[index]}%
+                    .progress-bar.progress-bar-striped aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{@batch_progress[index + x]}%") #{@batch_progress[index + x]}%
         .card-footer.pt-4
           = paginate @batches_paginate, views_prefix: 'dashboards' 
