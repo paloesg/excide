@@ -1,5 +1,5 @@
 class Symphony::DocumentsController < DocumentsController
-  before_action :set_templates, only: [:index, :new, :edit]
+  before_action :set_templates, only: [:index, :new, :edit, :multiple_edit]
   before_action :set_company_workflows, only: [:index, :new, :edit]
   before_action :set_workflow, only: [:new]
 
@@ -72,10 +72,13 @@ class Symphony::DocumentsController < DocumentsController
 
   def update
     if @document.update(document_params)
-      redirect_to symphony_document_path, notice: 'Document was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to symphony_document_path, notice: 'Document was successfully updated.' }
+        format.js { render json: @document }
+      end
     else
       set_templates
-      render :edit
+      format.html { render :edit }
     end
   end
 
