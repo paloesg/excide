@@ -144,7 +144,7 @@
                   i.ti-receipt.icon.mr-3 style="font-size: 50px"
               .media-body
                 h5.card-title = @invoice.id
-                h6.card-subtitle Invoice Type: #{@invoice.invoice_type.capitalize}
-                h6.card-subtitle.mt-1 Invoice Contact: #{@invoice.xero_contact_name.capitalize}
+                h6.card-subtitle Invoice Type: #{@invoice.invoice_type&.capitalize}
+                h6.card-subtitle.mt-1 Invoice Contact: #{@invoice.xero_contact_name&.capitalize}
                 h6.card-subtitle.mt-1 Invoice Total: $#{@invoice.total}
                 .text-muted = @invoice.created_at.strftime("Uploaded at %d/%m/%Y %R")
