@@ -9,7 +9,7 @@ class DocumentDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     company: Field::BelongsTo,
-    id: Field::Number,
+    id: Field::String,
     filename: Field::String,
     remarks: Field::Text,
     date_signed: Field::DateTime,
