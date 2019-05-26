@@ -6,9 +6,8 @@
       li.breadcrumb-item
         = link_to @workflow.identifier, symphony_workflow_path(workflow_identifier: @workflow.identifier)
       li.breadcrumb-item Invoices
-    h1 Invoice - #{@invoice.id}
-    - if @invoice.workflow.archive.present?
-      span.badge.badge-danger Workflow Archived
+    h1
+      | Invoice - #{@invoice.id}
 .row.mt-3
   .col-md-2.col-sm-4
     strong Invoice Date:
@@ -28,7 +27,7 @@
   .col-md-2.col-sm-4
     strong Attachments:
     - if @documents.empty?
-      | -
+      p -
     - else
       - @documents.each do |d|
         .media
@@ -52,6 +51,9 @@
   .col-md-2.col-sm-4
     strong Status:
     p = @invoice.approved ? 'Approved' : 'Draft'
+  .offset-md-4.col-md-2.offset-sm-8.col-sm-4
+    - if @invoice.workflow.archive.present?
+      span.badge.badge-danger Workflow Archived
 .row
   .col-sm-12
     .table-responsive
