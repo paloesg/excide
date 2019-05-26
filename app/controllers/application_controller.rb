@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
       stored_location_for(resource) || admin_root_path
     elsif current_user.has_role? :contractor, :any
       conductor_user_path current_user
+    elsif current_user.has_role? :shared_service, :any
+      symphony_batches_path
     elsif current_user.company.present?
       symphony_root_path
     else

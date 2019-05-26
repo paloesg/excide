@@ -8,6 +8,36 @@ $(document).ready(function () {
     }
   })
 
+  if($(".uploadToXero").length){
+    var cleanFilename = function (name) {
+      fileName = name.split('.').slice(0, -1).join('.')
+      get_extension = name.substring(name.lastIndexOf(".") + 1)
+      // Filter out special characters and spaces in filename (same as parametrize function in rails)
+      filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+      return filter_filename + '.' + get_extension;
+    };
+    var documentUploadToXero = new Dropzone(".uploadToXero",{
+      timeout: 0, 
+      renameFilename: cleanFilename,
+    })
+    documentUploadToXero.on("success", function(file, request){
+      var resp = $.parseXML(request);
+      var filePath = $(resp).find("Key").text();
+      var location = new URL($(resp).find("Location").text());
+      if($("#uploadToXero").length){
+        //check this part of drag and drop
+        $.post('/symphony/documents', {
+          authenticity_token: $.rails.csrfToken(),
+          workflow: $('#workflow_identifier').val(),
+          document: {
+            filename: file.upload.filename,
+            file_url: '//' + location['host'] + '/' + filePath
+          }
+        });
+      }
+    })
+  }
+
   // $("#uploader").length 'To check #uploader is exists'
   if ($(".multiple_uploads").length) {
     var cleanFilename = function (name) {
@@ -17,38 +47,36 @@ $(document).ready(function () {
       filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       return filter_filename + '.' + get_extension;
     };
-    var documentUpload = new Dropzone('.multiple_uploads', { timeout: 0, renameFilename: cleanFilename });
-    documentUpload.on("sending", function(file) {
-      if ( $('#template_id').val() == "" ) {
-        alert('Template is required.');
-        this.removeFile(file);
-      }
+    var documentUpload = new Dropzone(".multiple_uploads", {
+      timeout: 0, 
+      renameFilename: cleanFilename,
+      autoProcessQueue: false,
+      parallelUploads: 100,
+      uploadMultiple: false,
+    });
+    $("#drag-and-drop-submit").click(function(){
+      documentUpload.processQueue();
+      $.post("/symphony/batches", {
+        authenticity_token: $.rails.csrfToken(),
+        batch: {
+          template_id: $('#template_id').val(),
+        }
+      });
     })
     documentUpload.on("success", function (file, request) {
       var resp = $.parseXML(request);
       var filePath = $(resp).find("Key").text();
       var location = new URL($(resp).find("Location").text())
-      if ($("#uploader").length){
+      if($("#batch-uploader").length){
         $.post('/symphony/documents', {
           authenticity_token: $.rails.csrfToken(),
-          document_type: 'invoice',
+          document_type: 'batch-uploads',
           count: this.files.length,
           workflow_identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
           document: {
             filename: file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,
             template_id: $('#template_id').val(),
-          }
-        });
-      }
-      else if($("#uploadToXero").length){
-        $.post('/symphony/documents', {
-          authenticity_token: $.rails.csrfToken(),
-          workflow: $('#workflow_identifier').val(),
-          workflow_identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
-          document: {
-            filename: file.upload.filename,
-            file_url: '//' + location['host'] + '/' + filePath
           }
         });
       }

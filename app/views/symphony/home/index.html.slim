@@ -82,14 +82,12 @@
           = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
         = link_to 'New Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
     .card.mb-3
-      h5.card-header Multiple File Upload
+      h5.card-header Batch Upload
       .card-body
         .form-group
           = label_tag "Select template:"
-          = select_tag('template_id', options_for_select(@templates.map {|k,v| [k.title, k.id] }), include_blank: true, class: 'selectize')
-        = form_tag @s3_direct_post.url, class: 'dropzone collapse multiple_uploads', id: 'uploader'
-          - @s3_direct_post.fields.each do |key, value|
-            = hidden_field_tag key, value
+          = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
+        = link_to 'New Batch', '', class: 'btn btn-primary d-block mb-2', id: 'new-batch'
     .card.mb-3
       h5.card-header New Recurring Workflow
       .card-body
