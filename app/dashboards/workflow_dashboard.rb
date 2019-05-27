@@ -13,7 +13,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
     template: Field::BelongsTo,
     recurring_workflow: Field::BelongsTo,
     identifier: Field::String,
-    id: Field::Number,
+    id: Field::String,
     completed: Field::Boolean,
     workflowable: Field::Polymorphic,
     workflow_actions: Field::HasMany,
