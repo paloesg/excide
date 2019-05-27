@@ -5,4 +5,16 @@ container
   spacer size="16" 
   row
     columns
-    	p Hi, #{@consultant.full_name}
+      p Hi, #{@consultant.full_name}
+      p The progress of the batches are as follow:
+      table border="1"
+        thead
+          tr
+            th Batch ID
+            th Progress (%)
+        tbody
+          - @batches.each do |batch|
+            tr
+              td = batch.id
+              td = batch.action_completed_progress 
+
