@@ -20,7 +20,7 @@ class Document < ApplicationRecord
   private
 
   def set_filename
-    self.filename = File.basename(self.file_url)
+    self.filename = File.basename(self.file_url) if self.file_url
   end
 
   def delete_file_on_s3
