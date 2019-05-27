@@ -40,7 +40,7 @@ namespace :scheduler do
   end
 
   task :daily_batch_email_summary => :environment do 
-    batches = Batch.all
-    BatchMailer.daily_batch_email_summary(batches).deliver_now
+    @companies = Company.all
+    BatchMailer.daily_batch_email_summary(@companies).deliver_now
   end
 end
