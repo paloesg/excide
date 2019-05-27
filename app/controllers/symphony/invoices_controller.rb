@@ -30,7 +30,7 @@ class Symphony::InvoicesController < ApplicationController
     end
 
     if @invoice.save
-      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id), notice: "Invoice created successfully!"
+      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully!"
     else
       render 'new'
     end
@@ -49,7 +49,7 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.save
     if @invoice.update(invoice_params)
-      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id)
+      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id)
     else
       render 'edit'
     end
@@ -73,7 +73,7 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.destroy!
     respond_to do |format|
-      format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Invoice has been deleted successfully."}
+      format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), notice: "Invoice has been deleted successfully."}
     end
   end
 
@@ -83,7 +83,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def set_workflow
-    @workflow = Workflow.find_by(identifier: params[:workflow_identifier])
+    @workflow = Workflow.find(params[:workflow_id])
   end
 
   def set_company

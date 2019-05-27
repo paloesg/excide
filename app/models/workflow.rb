@@ -143,7 +143,7 @@ class Workflow < ApplicationRecord
   end
 
   def trigger_first_task
-    self.current_task.get_workflow_action(self.company, self.identifier).set_deadline_and_notify(current_task)
+    self.current_task.get_workflow_action(self.company, self.id).set_deadline_and_notify(current_task)
   end
 
   def uppercase_identifier

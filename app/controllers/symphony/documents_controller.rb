@@ -88,6 +88,6 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def set_workflow
-    @workflow = @workflows.find_by(identifier: params[:workflow]) if params[:workflow].present?
+    @workflow = @workflows.find(params[:workflow]) if params[:workflow].present?
   end
 end

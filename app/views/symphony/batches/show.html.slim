@@ -6,7 +6,7 @@
       li.breadcrumb-item
         a href="/symphony/batches" Batches
       li.breadcrumb-item #{@batch.company.name}
-      li.breadcrumb-item 
+      li.breadcrumb-item
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
     h1
       | Batch ID - #{@batch.id}
@@ -25,10 +25,10 @@
         - section.tasks.order(created_at: :asc).each do |task|
           .col-sm-2
             a.pop data-container="body" title="Task instruction and role" data-content=("<div><b>Task instruction</b> - #{task.instructions}<br/><b>Assigned to </b> - #{task.role&.name} </div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
-              h6.header-properties 
+              h6.header-properties
                 = task.task_type.humanize
-            hr 
-      /Do the body of the grid table 
+            hr
+      /Do the body of the grid table
       - @batch.workflows.each do |wf|
         .row.mt-2.flex-nowrap.grid-bottom
           .col-sm-1.text-center
@@ -44,7 +44,7 @@
               p = "No invoice yet."
             - else
               = link_to wf.invoice.id, symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id), target: "_blank"
-          - section.tasks.order(created_at: :asc).each do |task|   
+          - section.tasks.order(created_at: :asc).each do |task|
             .col-sm-2.text-center
-              = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.identifier)
+              = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
 

@@ -38,9 +38,9 @@ class Symphony::WorkflowsController < WorkflowsController
     if @workflow.save
       log_data_activity
       if params[:assign]
-        redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
+        redirect_to assign_symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully created.'
       else
-        redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
+        redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully created.'
       end
     else
       render :new
@@ -57,7 +57,7 @@ class Symphony::WorkflowsController < WorkflowsController
       payment: "payment"
     }
     if @workflow.completed?
-      redirect_to symphony_archive_path(@workflow.template.slug, @workflow.identifier)
+      redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
     else
       @sections = @template.sections
       @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
@@ -79,11 +79,11 @@ class Symphony::WorkflowsController < WorkflowsController
       log_data_activity
       log_workflow_activity
       if params[:assign]
-        redirect_to assign_symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
+        redirect_to assign_symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully edited.'
       elsif params[:document_id]
-        redirect_to data_entry_symphony_workflow_path(@template.slug, @workflow.identifier, document_id: params[:document_id]), notice: 'Attributes were successfully saved.'
+        redirect_to data_entry_symphony_workflow_path(@template.slug, @workflow.id, document_id: params[:document_id]), notice: 'Attributes were successfully saved.'
       else
-        redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully edited.'
+        redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully edited.'
       end
     else
       render :edit
@@ -112,9 +112,9 @@ class Symphony::WorkflowsController < WorkflowsController
     generate_archive = GenerateArchive.new(@workflow).run
     # Mark workflow as completed when workflow is archived
     if generate_archive.success?
-      redirect_to symphony_archive_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully archived.'
+      redirect_to symphony_archive_path(@template.slug, @workflow.id), notice: 'Workflow was successfully archived.'
     else
-      redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), alert: "There was an error archiving this workflow. Please contact your admin with details of this error: #{generate_archive.message}."
+      redirect_to symphony_workflow_path(@template.slug, @workflow.id), alert: "There was an error archiving this workflow. Please contact your admin with details of this error: #{generate_archive.message}."
     end
   end
 
@@ -132,7 +132,7 @@ class Symphony::WorkflowsController < WorkflowsController
     @workflow.update_attribute(:completed, false)
     @workflow_actions.update_all(completed: false, completed_user_id: nil)
     @workflow.create_activity key: 'workflow.reset', owner: @user
-    redirect_to symphony_workflow_path(@template.slug, @workflow.identifier), notice: 'Workflow was successfully reset.'
+    redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully reset.'
   end
 
   def activities
@@ -177,14 +177,14 @@ class Symphony::WorkflowsController < WorkflowsController
       if @workflow.invoice.errors.empty?
         #check for any errors when sending the invoice to xero, before matching the totals
         if xero_invoice.errors.any?
-          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice was not sent to Xero!" }
+          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), alert: "Xero invoice was not sent to Xero!" }
         elsif xero_invoice.total == @workflow.invoice.total
-          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: "Xero invoice has been created successfully and the invoice totals match." }
+          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), notice: "Xero invoice has been created successfully and the invoice totals match." }
         else
-          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!" }
+          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!" }
         end
       else
-        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.identifier), alert: "Invoice is not save in Symphony successfully!" }
+        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), alert: "Invoice is not save in Symphony successfully!" }
       end
     end
   end
@@ -196,7 +196,7 @@ class Symphony::WorkflowsController < WorkflowsController
         WorkflowMailer.send_invoice_email(@workflow, workflow_docs).deliver_later
     end
     flash[:notice] = "#{@workflow.documents.count} email/s have been generated for Xero. Please check Xero in a few minutes."
-    redirect_to symphony_workflow_path(@template.slug, @workflow.identifier)
+    redirect_to symphony_workflow_path(@template.slug, @workflow.id)
   end
 
   private

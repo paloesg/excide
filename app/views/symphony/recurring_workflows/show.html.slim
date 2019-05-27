@@ -43,7 +43,7 @@
             - @recurring_workflow.workflows.each do |workflow|
               tr
                 td
-                  = link_to workflow.identifier, symphony_workflow_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier)
+                  = link_to workflow.identifier, symphony_workflow_path(workflow_name: workflow.template.slug, workflow_id: workflow.id)
                 td = workflow.template.title
                 td = workflow.workflowable&.name || '-'
                 td = workflow.remarks || '-'
