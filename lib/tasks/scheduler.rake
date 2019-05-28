@@ -41,6 +41,6 @@ namespace :scheduler do
 
   task :daily_batch_email_summary => :environment do 
     @companies = Company.all
-    BatchMailer.daily_batch_email_summary(@companies).deliver_now
+    BatchMailer.daily_batch_email_summary(@companies).deliver_later
   end
 end
