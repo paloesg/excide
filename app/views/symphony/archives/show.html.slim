@@ -57,18 +57,7 @@
         .clearfix
     .row
       = render partial: 'symphony/workflows/data_attributes', locals: { data: @archive['data'].map{|d| OpenStruct.new(d) }}
-      .col-sm-6
-        .card
-          h5.card-header History
-          table.table.table-condensed
-            thead
-              tr
-                th User
-                th Action
-                th Time
-            tbody
-              - @activities.each do |activity|
-                tr = render_activity PublicActivity::Activity.new(activity.with_indifferent_access)
+      = render partial: 'symphony/workflows/history', locals: { activities: @activities }
   .col-md-3.col-sm-6
     .card.mb-3
       h6.card-header = @archive['client_type']

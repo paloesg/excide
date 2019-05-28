@@ -51,22 +51,7 @@
         .clearfix
     .row
       = render partial: 'data_attributes', locals: { data: @workflow.data }
-      .col-lg-6.col-sm-12
-        .card
-          h5.card-header History
-          .table-responsive
-            table.table.table-condensed
-              thead
-                tr
-                  th User
-                  th Action
-                  th Time
-              tbody
-                - @activities.take(10).each do |activity|
-                  tr = render_activity activity
-          - if @activities.count > 10
-            .card-footer
-              = link_to "View more...", activities_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-sm btn-outline-secondary float-right'
+      = render partial: 'history', locals: { activities: @activities }
   .col-md-3.col-sm-12
     = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
     = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
