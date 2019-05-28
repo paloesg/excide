@@ -56,8 +56,10 @@
             i.fa.fa-chevron-right
         .clearfix
     .row
-      = render partial: 'symphony/workflows/data_attributes', locals: { data: @archive['data'].map{|d| OpenStruct.new(d) }}
-      = render partial: 'symphony/workflows/history', locals: { activities: @activities }
+      .col-lg-6.col-sm-12
+        = render partial: 'symphony/workflows/data_attributes', locals: { data: @archive['data'].map{|d| OpenStruct.new(d) }}
+      .col-lg-6.col-sm-12
+        = render partial: 'symphony/workflows/history', locals: { activities: @activities }
   .col-md-3.col-sm-6
     .card.mb-3
       h6.card-header = @archive['client_type']

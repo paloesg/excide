@@ -1,19 +1,18 @@
-.col-lg-6.col-sm-12
-  .card
-    h5.card-header History
-    .table-responsive
-      table.table.table-condensed
-        thead
-          tr
-            th User
-            th Action
-            th Time
-        tbody
-          - activities.take(10).each do |activity|
-            - if (current_page? controller: 'symphony/workflows', action: 'show')
-              tr = render_activity activity
-            - elsif (current_page? controller: 'symphony/archives', action: 'show')
-              tr = render_activity PublicActivity::Activity.new(activity.with_indifferent_access)
-    - if (activities.count > 10) and (current_page? controller: 'symphony/workflows')
-      .card-footer
-        = link_to "View more...", activities_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-sm btn-outline-secondary float-right'
+.card
+  h5.card-header History
+  .table-responsive
+    table.table.table-condensed
+      thead
+        tr
+          th User
+          th Action
+          th Time
+      tbody
+        - activities.take(10).each do |activity|
+          - if (current_page? controller: 'symphony/workflows', action: 'show')
+            tr = render_activity activity
+          - elsif (current_page? controller: 'symphony/archives', action: 'show')
+            tr = render_activity PublicActivity::Activity.new(activity.with_indifferent_access)
+  - if (activities.count > 10) and (current_page? controller: 'symphony/workflows')
+    .card-footer
+      = link_to "View more...", activities_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-sm btn-outline-secondary float-right'

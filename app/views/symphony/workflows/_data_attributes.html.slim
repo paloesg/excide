@@ -1,18 +1,17 @@
-.col-lg-6.col-sm-12
-  .card.mb-3
-    h5.card-header Attributes
-    .table-responsive
-      table.table.table-condensed
-        thead
+.card.mb-3
+  h5.card-header Attributes
+  .table-responsive
+    table.table.table-condensed
+      thead
+        tr
+          th Name
+          th Value
+          th Updated By
+          th Updated At
+      tbody
+        - data.each do |d|
           tr
-            th Name
-            th Value
-            th Updated By
-            th Updated At
-        tbody
-          - data.each do |d|
-            tr
-              td = d.name
-              td = d.value
-              td = User.find_by(id: d.user_id)&.full_name
-              td = d.updated_at&.to_time&.strftime("%d/%m/%Y %R")
+            td = d.name
+            td = d.value
+            td = User.find_by(id: d.user_id)&.full_name
+            td = d.updated_at&.to_time&.strftime("%d/%m/%Y %R")
