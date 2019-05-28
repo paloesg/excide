@@ -12,7 +12,6 @@ class WorkflowDashboard < Administrate::BaseDashboard
     company: Field::BelongsTo,
     template: Field::BelongsTo,
     recurring_workflow: Field::BelongsTo,
-    identifier: Field::String,
     id: Field::String,
     completed: Field::Boolean,
     workflowable: Field::Polymorphic,
@@ -30,7 +29,6 @@ class WorkflowDashboard < Administrate::BaseDashboard
     :id,
     :user,
     :company,
-    :identifier,
     :template,
     :workflowable,
     :recurring_workflow,
@@ -41,7 +39,6 @@ class WorkflowDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = [
     :user,
     :company,
-    :identifier,
     :template,
     :workflowable,
     :workflow_actions,
@@ -57,7 +54,6 @@ class WorkflowDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :user,
     :company,
-    :identifier,
     :template,
     :recurring_workflow,
     :completed,
@@ -67,6 +63,6 @@ class WorkflowDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(workflow)
-    workflow.identifier
+    workflow.id
   end
 end

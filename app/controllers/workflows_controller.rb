@@ -3,14 +3,13 @@ class WorkflowsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company_and_roles
-  before_action :set_template, except: [:check_identifier]
+  before_action :set_template
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :section]
 
   def show
     # Look for existing workflow if not create new workflow and then show the tasks from the first section
     #TODO: Refactor to separate workflow creation
-    identifier = @company.name + '-' + @template.title
-    @workflow = @workflows.create_with(user: @user, identifier: identifier).find_or_create_by!(template: @template, company: @company)
+    @workflow = @workflows.create_with(user: @user).find_or_create_by!(template: @template, company: @company)
     @sections = @template.sections
     @section = @workflow.current_section
     @document_templates = DocumentTemplate.where(template: @workflow.template)
@@ -37,14 +36,6 @@ class WorkflowsController < ApplicationController
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  def check_identifier
-    @check_workflow = Workflow.where(identifier: params[:identifier].parameterize.upcase)
-
-    respond_to do |format|
-      format.json { render json: { :unique => @check_workflow.blank? } }
     end
   end
 
@@ -82,6 +73,6 @@ class WorkflowsController < ApplicationController
   end
 
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier)
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline)
   end
 end

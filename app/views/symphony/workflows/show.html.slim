@@ -5,11 +5,11 @@
         a href="/symphony" Symphony
       li.breadcrumb-item
         = link_to @template.title, symphony_workflows_path(@template.slug)
-      li.breadcrumb-item.active.text-truncate #{@workflow.identifier}
+      li.breadcrumb-item.active.text-truncate #{@workflow.id}
 .row
   .col-md-9.col-sm-12
     h1.text-truncate
-      | #{@template.title} – #{@workflow.identifier}
+      | #{@template.title} – #{@workflow.id}
   .col-md-3.col-sm-6
     .btn-group.float-right role='group'
       - if @workflow.previous_workflow.present?
@@ -37,7 +37,7 @@
           tbody
             - @tasks.each do |task|
               - t = TaskDecorator.new(task)
-              - a = t.workflow_action(@workflow.identifier)
+              - a = t.workflow_action(@workflow.id)
               = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
       .card-footer
         - unless @section.first?
@@ -147,7 +147,7 @@
           li.list-group-item
             .media
               .align-self-center
-                = link_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id)
+                = link_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id)
                   i.ti-receipt.icon.mr-3 style="font-size: 50px"
               .media-body
                 h5.card-title = @invoice.id

@@ -17,7 +17,7 @@ $(document).ready(function () {
       return filter_filename + '.' + get_extension;
     };
     var documentUploadToXero = new Dropzone(".uploadToXero",{
-      timeout: 0, 
+      timeout: 0,
       renameFilename: cleanFilename,
     })
     documentUploadToXero.on("success", function(file, request){
@@ -28,7 +28,7 @@ $(document).ready(function () {
         //check this part of drag and drop
         $.post('/symphony/documents', {
           authenticity_token: $.rails.csrfToken(),
-          workflow: $('#workflow_identifier').val(),
+          workflow: $('#workflow_id').val(),
           document: {
             filename: file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath
@@ -48,7 +48,7 @@ $(document).ready(function () {
       return filter_filename + '.' + get_extension;
     };
     var documentUpload = new Dropzone(".multiple_uploads", {
-      timeout: 0, 
+      timeout: 0,
       renameFilename: cleanFilename,
       autoProcessQueue: false,
       parallelUploads: 100,
@@ -72,7 +72,6 @@ $(document).ready(function () {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
           count: this.files.length,
-          workflow_identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
           document: {
             filename: file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,

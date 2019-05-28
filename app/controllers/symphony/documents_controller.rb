@@ -21,7 +21,7 @@ class Symphony::DocumentsController < DocumentsController
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
     if params[:workflow].present?
-      @workflow = Workflow.find_by(identifier: params[:workflow])
+      @workflow = Workflow.find(params[:workflow])
       @document.workflow = @workflow
     end
 
@@ -29,7 +29,7 @@ class Symphony::DocumentsController < DocumentsController
       if @document.save
         if params[:document_type] == 'batch-uploads'
           @template = Template.find(params[:document][:template_id])
-          @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: params[:workflow_identifier], workflowable: @client)
+          @workflow = Workflow.new(user: current_user, company: @company, template: @template, workflowable: @client)
           @workflow.template_data(@template)
           #equate workflow to the latest batch
           @workflow.batch = Batch.last
@@ -38,7 +38,7 @@ class Symphony::DocumentsController < DocumentsController
           format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_batch_path(@workflow.template.slug, @workflow.batch_id), notice: params[:count] + ' documents were successfully created.' }
           format.json { render :show, status: :created, location: @document}
         else
-          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
+          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.id), notice: 'Document was successfully created.' }
           format.json { render :show, status: :created, location: @document}
         end
       else

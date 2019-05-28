@@ -21,7 +21,6 @@ class Symphony::WorkflowsController < WorkflowsController
   def new
     @workflow = Workflow.new
     @workflow.template_data(@template)
-    @workflow.identifier = (Date.current.to_s + '-' + @template.title + SecureRandom.hex).parameterize.upcase
   end
 
   def create
@@ -258,7 +257,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier, :workflowable_id, :workflowable_type, :remarks, workflowable_attributes: [:id, :name, :identifier, :user_id, :company_id, :xero_email], data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :workflowable_id, :workflowable_type, :remarks, workflowable_attributes: [:id, :name, :identifier, :user_id, :company_id, :xero_email], data_attributes: [:name, :value, :user_id, :updated_at, :_create, :_update, :_destroy])
   end
 
   def set_documents

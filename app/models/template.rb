@@ -26,12 +26,12 @@ class Template < ApplicationRecord
   def workflows_to_csv
     ordered_workflows = workflows.order(created_at: :asc)
     data_names = ordered_workflows.map{|workflow| workflow.data.map(&:name)}.flatten.uniq
-    attributes = %w{Identifier Created\ At Status Remarks} + data_names
+    attributes = %w{Id Created\ At Status Remarks} + data_names
     CSV.generate(headers: true) do |csv|
       csv << attributes
       ordered_workflows.each do |workflow|
         row = [
-          workflow['identifier'],
+          workflow['id'],
           workflow['created_at'],
           workflow['completed'] ? 'Completed' : workflow.current_section&.display_name,
           workflow['remarks']
@@ -51,7 +51,7 @@ class Template < ApplicationRecord
   def self.csv_to_workflows(file)
     imports = {update: [], unchanged: [], not_found: []}
     CSV.foreach(file.path, headers: true, skip_blanks: true) do |row|
-      workflow = Workflow.find_by_identifier(row['Identifier'])
+      workflow = Workflow.find(row['Id'])
       if workflow
         row_headers = row.headers
         workflow_data_attributes = workflow.data
@@ -77,7 +77,7 @@ class Template < ApplicationRecord
           imports[:unchanged] << workflow
         end
       else
-        imports[:not_found] << row['Identifier']
+        imports[:not_found] << row['Id']
       end
     end
     imports
