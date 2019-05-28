@@ -12,7 +12,7 @@ container
           tr
             th Batch ID
             th Progress (%)
-            th Average Time taken (Days)
+            th Average Time taken (Hours)
         tbody
           - @batches.each do |batch|
             tr
