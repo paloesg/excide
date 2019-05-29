@@ -50,38 +50,7 @@
     .card.mb-3
       h6.card-header Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
-    .card.mb-3
-      h6.card-header Documents
-      - if @documents.empty?
-        .card-body No documents yet.
-      - else
-        - @documents.each do |d|
-          ul.list-group.list-group-flush
-            li.list-group-item
-              .media
-                .align-self-center
-                  = link_to symphony_document_path(d)
-                    i.ti-file.icon.mr-3 style="font-size: 50px"
-                .media-body
-                  h5.card-title = d.filename
-                  h6.card-subtitle = d.user&.full_name
-                  .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
-    .card.mb-3
-      h6.card-header Document Templates
-      - if @document_templates.empty?
-        .card-body No documents yet.
-      - else
-        - @document_templates.each do |d|
-          ul.list-group.list-group-flush
-            li.list-group-item
-              .media
-                .align-self-center
-                  a href = d.file_url
-                    i.ti-file.icon.mr-3 style="font-size: 50px"
-                .media-body
-                  h5.card-title = d.title
-                  h6.card-subtitle = File.basename(d.file_url)
-                  .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+    = render partial: 'documents'
     .card.mb-3
       h6.card-header Invoice
       - if @invoice.blank?
