@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class DocumentDashboard < Administrate::BaseDashboard
+class BatchDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -9,16 +9,11 @@ class DocumentDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     company: Field::BelongsTo,
-    id: Field::String,
-    filename: Field::String,
-    remarks: Field::Text,
-    date_signed: Field::DateTime,
+    template: Field::BelongsTo,
+    workflows: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    file_url: Field::String,
-    workflow: Field::BelongsTo,
-    document_template: Field::BelongsTo,
-    user: Field::BelongsTo,
+    id: Field::String.with_options(searchable: false),
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -27,29 +22,21 @@ class DocumentDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :company,
-    :user,
-    :workflow,
-    :document_template,
     :id,
-    :filename,
-    :remarks,
+    :company,
+    :template,
+    :workflows,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :company,
-    :user,
-    :workflow,
-    :document_template,
-    :id,
-    :filename,
-    :remarks,
-    :date_signed,
+    :template,
+    :workflows,
     :created_at,
     :updated_at,
-    :file_url,
+    :id,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -57,19 +44,14 @@ class DocumentDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :company,
-    :user,
-    :workflow,
-    :document_template,
-    :filename,
-    :remarks,
-    :date_signed,
-    :file_url,
+    :template,
+    :workflows,
   ].freeze
 
-  # Overwrite this method to customize how documents are displayed
+  # Overwrite this method to customize how batches are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(document)
-  #   "Document ##{document.id}"
+  # def display_resource(batch)
+  #   "Batch ##{batch.id}"
   # end
 end
