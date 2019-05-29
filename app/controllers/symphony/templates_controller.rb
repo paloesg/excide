@@ -1,5 +1,5 @@
 class Symphony::TemplatesController < ApplicationController
-	layout 'dashboard/application'
+  layout 'dashboard/application'
 
   before_action :authenticate_user!
 
