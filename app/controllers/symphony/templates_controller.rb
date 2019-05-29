@@ -1,4 +1,4 @@
-class Symphony::InvoicesController < ApplicationController
+class Symphony::TemplatesController < ApplicationController
 	layout 'dashboard/application'
 
   before_action :authenticate_user!
