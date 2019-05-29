@@ -13,48 +13,7 @@
       = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row
   .col-md-9.col-sm-12
-    .card.mb-3
-      h5.card-header = @section['display_name']
-      .table-responsive
-        table.table
-          thead
-            tr
-              th No.
-              th Instructions
-              th Assigned To
-              th Deadline
-              th Done
-              th Completed By
-              th
-          tbody
-            - @tasks.each do |task|
-              tr
-                td = task['position']
-                td = task['instructions']
-                td = task['workflow_actions']['assigned_user'] || task['role_name']
-                td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
-                td = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
-                td = task['workflow_actions']['completed_user']
-                td
-                  a data-toggle="collapse" href="#task_#{task['position']}" aria-expanded="false" class="collapsed"
-                    i.fa aria-hidden="true"
-              tr
-                td.p-0.border-top-0 colspan="6"
-                  div id="task_#{task['position']}" class="collapse"
-                    .m-3
-                      = label_tag :remarks
-                      = text_field_tag :remarks, task['workflow_actions']['remarks'], class: 'form-control', disabled: true
-                      = image_tag(task['image_url'], class: "img-fluid pt-4") if task['image_url'].present?
-      .card-footer
-        - unless @sections.first['unique_name'] == @section['unique_name']
-          = link_to "?section=#{@sections[@section_index - 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-left'
-            i.fa.fa-chevron-left
-            |  Previous Section
-        - unless @sections.last['unique_name'] == @section['unique_name']
-          = link_to "?section=#{@sections[@section_index + 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-right'
-            ' Next Section
-            i.fa.fa-chevron-right
-        .clearfix
+    = render partial: 'symphony/workflows/tasks', locals: { template: OpenStruct.new(@template), workflow: @workflow, section: OpenStruct.new(@section), tasks: @tasks }
     .row
       .col-lg-6.col-sm-12
         = render partial: 'symphony/workflows/data_attributes', locals: { data: @archive['data'].map{|d| OpenStruct.new(d) }}
