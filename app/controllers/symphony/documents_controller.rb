@@ -2,6 +2,7 @@ class Symphony::DocumentsController < DocumentsController
   before_action :set_templates, only: [:index, :new, :edit]
   before_action :set_company_workflows, only: [:index, :new, :edit]
   before_action :set_workflow, only: [:new]
+  before_action :set_workflow_action, only: [:new]
 
   def index
     # Show the documents by current user roles and documents without a workflow.
@@ -94,5 +95,9 @@ class Symphony::DocumentsController < DocumentsController
 
   def set_workflow
     @workflow = @workflows.find_by(identifier: params[:workflow]) if params[:workflow].present?
+  end
+
+  def set_workflow_action
+    @workflow_action = WorkflowAction.find(params[:workflow_action]) if params[:workflow_action].present?
   end
 end
