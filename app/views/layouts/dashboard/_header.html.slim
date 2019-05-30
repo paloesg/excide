@@ -39,7 +39,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
               = link_to symphony_workflows_path(t.slug), class: 'dropdown-item'
                 ' #{t.title}
                 .badge.badge-pill.badge-secondary.align-text-bottom = t.workflows.count
-        li.nav-item = link_to "Batches", symphony_batches_index_path, class: 'nav-link'
+        li.nav-item = link_to "Batches", symphony_batches_index_path, class: 'nav-link' 
+        li.nav-item = link_to "Templates", symphony_templates_path, class: 'nav-link' 
         li.nav-item = link_to "Documents", symphony_documents_path, class: 'nav-link'
         li.nav-item = link_to "Archives", symphony_archives_path, class: 'nav-link'
         - if current_user.has_role? :admin, @company
