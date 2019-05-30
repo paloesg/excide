@@ -27,16 +27,24 @@
                   td = ff.text_field :link_url, {class: "form-control"}
                   td = ff.text_field :image_url, {class: "form-control"}
   .col-md-4.col-sm-12
-    .card.mb-3
-      h5.card-header Template Details:
-      .col-sm-12.mt-3
-        .form-group
-          = f.label :title, "Title:" 
-          = f.text_field :title, class: "form-control"
-        .form-group
-          = f.label :company, "Company:" 
-          = f.select :company, Company.all.map{|k, v| [k.name.humanize, k]}, {}, {class: "dropdown-overlay"}
-        .form-group
-          = f.label :workflow_type, "Workflow Type:" 
-          = f.select :workflow_type, [["Ordered", "ordered"], ["Unordered", "unordered"]], {}, {class: "dropdown-overlay"}
-
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Template Details:
+          .col-sm-12.mt-3
+            .form-group
+              = f.label :title, "Title:" 
+              = f.text_field :title, class: "form-control"
+            .form-group
+              = f.label :company, "Company:" 
+              = f.select :company, Company.all.map{|k, v| [k.name.humanize, k]}, {}, {class: "dropdown-overlay"}
+            .form-group
+              = f.label :workflow_type, "Workflow Type:" 
+              = f.select :workflow_type, [["Ordered", "ordered"], ["Unordered", "unordered"]], {}, {class: "dropdown-overlay"}
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Document Template Details
+          .col-sm-12.mt-3
+            = f.label :document_template
+            = f.select :document_templates, DocumentTemplate.all.map{|k, v| [k.title.humanize, k]}, {include_blank: true}, {class: "dropdown-overlay mb-2"}
