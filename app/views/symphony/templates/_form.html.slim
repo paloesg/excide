@@ -24,9 +24,9 @@
                   td = ff.select :role, Role.all.map{|k, v| [k.display_name, k]}, {} , {class: "dropdown-overlay"}
                   td = ff.number_field :days_to_complete, {step: 1, class: "form-control"}
                   td = ff.check_box :set_reminder, {class: "form-control"}
-                  td = ff.text_field :link_url
-                
-  .col-md-2.col-sm-12
+                  td = ff.text_field :link_url, {class: "form-control"}
+                  td = ff.text_field :image_url, {class: "form-control"}
+  .col-md-4.col-sm-12
     .card.mb-3
       h5.card-header Template Details:
       .col-sm-12.mt-3

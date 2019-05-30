@@ -15,10 +15,10 @@
             th Workflow Type
             th
         tbody
-        	- @templates.each do |template|
-        		tr
-        			td = template.title
-        			td = template.workflow_type 
-        			td
-        				/ link to the first section of the template
-        				= link_to "Edit", edit_symphony_template_path(template_slug: template.slug, section_id: template.sections[0]), class: 'btn btn-sm btn-success'
+          - @templates.each do |template|
+            tr
+              td = template.title
+              td = template.workflow_type 
+              td
+                / link to the first section of the template
+                = link_to "Edit", edit_symphony_template_path(template_slug: template.slug, section_id: template.sections[0]), class: 'btn btn-sm btn-success'
