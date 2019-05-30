@@ -9,7 +9,8 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def edit
-
+  	@template = Template.find(params[:template_slug])
+  	@section = Section.find(params[:section_id])
   end
 
   def update

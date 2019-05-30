@@ -1,0 +1,42 @@
+.row
+  .col-md-8.col-sm-12
+    .card.mb-3
+      h5.card-header = @section.position.to_s + '. ' + @section.unique_name
+      .table-responsive
+        table.table
+          thead
+            tr
+              th No.
+              th Task Type
+              th Instruction
+              th Assigned To
+              th Days To Complete
+              th Set Reminder
+              th Link URL
+              th Image URL
+          tbody
+            - @section.tasks.each do |task|
+              = f.fields_for(task, url: symphony_template_path(template_slug: @template.slug, section_id: @section.id) ) do |ff|
+                tr
+                  td = ff.text_field :position, {class: "form-control"}
+                  td = ff.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {},  {class: "dropdown-overlay"}
+                  td = ff.text_field :instructions, {class: "form-control"}
+                  td = ff.select :role, Role.all.map{|k, v| [k.display_name, k]}, {} , {class: "dropdown-overlay"}
+                  td = ff.number_field :days_to_complete, {step: 1, class: "form-control"}
+                  td = ff.check_box :set_reminder, {class: "form-control"}
+                  td = ff.text_field :link_url
+                
+  .col-md-2.col-sm-12
+    .card.mb-3
+      h5.card-header Template Details:
+      .col-sm-12.mt-3
+        .form-group
+          = f.label :title, "Title:" 
+          = f.text_field :title, class: "form-control"
+        .form-group
+          = f.label :company, "Company:" 
+          = f.select :company, Company.all.map{|k, v| [k.name.humanize, k]}, {}, {class: "dropdown-overlay"}
+        .form-group
+          = f.label :workflow_type, "Workflow Type:" 
+          = f.select :workflow_type, [["Ordered", "ordered"], ["Unordered", "unordered"]], {}, {class: "dropdown-overlay"}
+
