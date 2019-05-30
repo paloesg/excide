@@ -1,0 +1,27 @@
+input.enlarged-checkbox{
+  width: 15px;
+  height: 15px;
+  margin-top: 5%;
+  margin-left: 45%;
+}
+
+.fixed-column{
+  position: absolute;
+  width: 100%;
+  // margin-left: -5em;
+}
+
+.grid-bottom{
+  border-bottom: 1px solid grey;
+  padding: 10px;
+}
+
+.card.scrollbar{
+  overflow-x: auto;
+}
+
+.header-properties{
+  color: #dd715e;
+  text-align: center;
+}
+

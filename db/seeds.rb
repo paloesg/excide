@@ -26,6 +26,8 @@ contractor_in_charge = User.create(email: 'contractorIC@gobbler.com', password: 
 contractor_in_charge.add_role :contractor_id, gobbler
 associate_in_charge = User.create(email: 'associate@gobbler.com', password: 'password', first_name: 'Associate', last_name: 'Guy', contact_number: "12341234", company: gobbler, confirmed_at: Time.now)
 associate_in_charge.add_role :associate, gobbler
+shared_service = User.create(email: 'shared_service@gobbler.com', password: 'password', first_name: 'Shared', last_name: 'Service', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
+shared_service.add_role :shared_service, gobbler
 
 # Create template
 template_1 = Template.create(title: 'Template 1', company: gobbler)
