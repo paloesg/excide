@@ -1,18 +1,34 @@
 .row
+  .col-md-3.col-sm-12
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Template Details:
+          .col-sm-12.mt-3
+            .form-group
+              = f.label :title, "Title:" 
+              = f.text_field :title, class: "form-control"
+            .form-group
+              = f.label :company_id, "Company:" 
+              = f.select :company_id, options_for_select(Company.all.collect{|company| [company.name, company.id]}), {}, {class: "dropdown-overlay"}
+            .form-group
+              = f.label :workflow_type, "Workflow Type:" 
+              = f.select :workflow_type, [["Ordered", "ordered"], ["Unordered", "unordered"]], {}, {class: "dropdown-overlay"}
   .col-md-9.col-sm-12
     .card.mb-3
       = f.fields_for :sections do |ff|
         .card-header 
+          h5 Section Details:
           .form-inline.col-sm-12
             .form-group.col-sm-4
-              = ff.label :display_name, "Section's Display Name:", class: "mb-2"
-              = ff.text_field :display_name, {class: "form-control col-sm-12"}
+              = ff.label :display_name, "Display Name:", class: "mr-2"
+              = ff.text_field :display_name, {class: "form-control col-sm-8"}
             .form-group.col-sm-4
-              = ff.label :unique_name, "Section's Unique Name", class: "mb-2"
-              = ff.text_field :unique_name, {class: "form-control col-sm-12"}
+              = ff.label :unique_name, "Unique Name:", class: "mr-2"
+              = ff.text_field :unique_name, {class: "form-control col-sm-8"}
             .form-group.col-sm-4
-              = ff.label :position, "Section's Position", class: "mb-2"
-              = ff.text_field :position, {class: "form-control col-sm-12"}
+              = ff.label :position, "Position:", class: "mr-2"
+              = ff.text_field :position, {class: "form-control col-sm-8"}
         .card-body
           .table-responsive
             table.table
@@ -33,24 +49,9 @@
                     td = fff.text_field :position, {class: "form-control"}
                     td = fff.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {},  {class: "dropdown-overlay"}
                     td = fff.text_field :instructions, {class: "form-control"}
-                    td = fff.select :role_id, Role.all.map{|k, v| [k.display_name, k]}, {} , {class: "dropdown-overlay"}
+                    td = fff.select :role_id, options_for_select(Role.all.collect{|role| [role.display_name, role.id]}), {} , {class: "dropdown-overlay"}
                     td = fff.number_field :days_to_complete, {step: 1, class: "form-control"}
-                    td = fff.select :document_template, DocumentTemplate.all.map{|k, v| [k.title.humanize, k]}, {include_blank: true}, {class: "dropdown-overlay mb-2"}
+                    td = fff.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}), {include_blank: true}, {class: "dropdown-overlay mb-2"}
                     td = fff.check_box :set_reminder, {class: "form-control"}
                     td = fff.text_field :link_url, {class: "form-control"}
                     td = fff.text_field :image_url, {class: "form-control"}
-  .col-md-3.col-sm-12
-    .row
-      .col-sm-12
-        .card.mb-3
-          h5.card-header Template Details:
-          .col-sm-12.mt-3
-            .form-group
-              = f.label :title, "Title:" 
-              = f.text_field :title, class: "form-control"
-            .form-group
-              = f.label :company_id, "Company:" 
-              = f.select :company_id, options_for_select(Company.all.collect{|company| [company.name, company.id]}), {}, {class: "dropdown-overlay"}
-            .form-group
-              = f.label :workflow_type, "Workflow Type:" 
-              = f.select :workflow_type, [["Ordered", "ordered"], ["Unordered", "unordered"]], {}, {class: "dropdown-overlay"}
