@@ -9,9 +9,6 @@
               = f.label :title, "Title:" 
               = f.text_field :title, class: "form-control"
             .form-group
-              = f.label :company_id, "Company:" 
-              = f.select :company_id, options_for_select(Company.all.collect{|company| [company.name, company.id]}), {}, {class: "dropdown-overlay"}
-            .form-group
               = f.label :workflow_type, "Workflow Type:" 
               = f.select :workflow_type, [["Ordered", "ordered"], ["Unordered", "unordered"]], {}, {class: "dropdown-overlay"}
   .col-md-9.col-sm-12
@@ -40,9 +37,9 @@
                   th Assigned To
                   th Days To Complete
                   th Document Template
-                  th Set Reminder
                   th Link URL
                   th Image URL
+                  th Set Reminder
               tbody       
                 = ff.fields_for :tasks do |fff|
                   tr
@@ -52,6 +49,6 @@
                     td = fff.select :role_id, options_for_select(Role.all.collect{|role| [role.display_name, role.id]}), {} , {class: "dropdown-overlay"}
                     td = fff.number_field :days_to_complete, {step: 1, class: "form-control"}
                     td = fff.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}), {include_blank: true}, {class: "dropdown-overlay mb-2"}
-                    td = fff.check_box :set_reminder, {class: "form-control"}
                     td = fff.text_field :link_url, {class: "form-control"}
                     td = fff.text_field :image_url, {class: "form-control"}
+                    td = fff.check_box :set_reminder, {class: "form-control"}
