@@ -11,14 +11,21 @@ class Symphony::InvoicesController < ApplicationController
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+
   def new
     @invoice = Invoice.new
+    authorize @invoice
+
     @invoice.build_line_item
     @xero = Xero.new(session[:xero_auth])
   end
 
   def create
     @invoice = Invoice.new(invoice_params)
+    authorize @invoice
+
     @invoice.workflow_id = @workflow.id
     @invoice.user_id = current_user.id
     if @invoice.xero_contact_id.present?
@@ -37,9 +44,11 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def edit
+    authorize @invoice
   end
 
   def update
+    authorize @invoice
     @xero = Xero.new(session[:xero_auth])
     if params[:invoice][:xero_contact_name].blank?
       @invoice.xero_contact_name = @xero.get_contact(params[:invoice][:xero_contact_id]).name
@@ -56,10 +65,13 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def show
+    authorize @invoice
     @total = @invoice.total_amount
   end
 
   def destroy
+    authorize @invoice
+
     #if invoice is sent to xero already, then set xero invoice status to deleted or voided, depending on the current status
     if @invoice.xero_invoice_id.present?
       @delete_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
