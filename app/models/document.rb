@@ -19,9 +19,9 @@ class Document < ApplicationRecord
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :id, :filename, :file_url, :created_at, :updated_at, :remarks
+    attribute :id, :filename, :file_url, :created_at, :updated_at
     attribute :workflow do
-      { identifier: workflow&.identifier, template_title: workflow&.template&.title }
+      { identifier: workflow&.identifier, template_title: workflow&.template&.title, template_slug: workflow&.template&.slug }
     end
     attribute :document_template do
       { title: document_template&.title }
