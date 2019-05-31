@@ -14,7 +14,13 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def update
-
+    @template = Template.find(params[:template_slug])
+    @section = Section.find(params[:section_id])
+    if @template.update!(template_params)
+      redirect_to symphony_templates_path
+    else
+      render 'edit'
+    end
   end
 
   private
@@ -23,6 +29,6 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def template_params
-  	params.require(:template).permit(:title, :company_id, :workflow_type)
+  	params.require(:template).permit(:title, :company_id, :workflow_type, document_templates_attribute: [],sections_attributes: [:id, :display_name, :unique_name, :position, tasks_attributes: [:id, :position, :task_type, :instructions, :role, :days_to_complete, :set_reminder, :link_url, :image_url] ])
   end
 end
