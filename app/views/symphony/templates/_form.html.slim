@@ -46,9 +46,9 @@
                     td = fff.text_field :position, {class: "form-control"}
                     td = fff.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {},  {class: "dropdown-overlay"}
                     td = fff.text_field :instructions, {class: "form-control"}
-                    td = fff.select :role_id, options_for_select(Role.all.collect{|role| [role.display_name, role.id]}), {} , {class: "dropdown-overlay"}
+                    td = fff.select :role_id, options_for_select(Role.all.collect{|role| [role.display_name, role.id]}, selected: fff.object.role.id), {} , {class: "dropdown-overlay"}
                     td = fff.number_field :days_to_complete, {step: 1, class: "form-control"}
-                    td = fff.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}), {include_blank: true}, {class: "dropdown-overlay mb-2"}
+                    td = fff.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: fff.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay mb-2"}
                     td = fff.text_field :link_url, {class: "form-control"}
                     td = fff.text_field :image_url, {class: "form-control"}
                     td = fff.check_box :set_reminder, {class: "form-control"}
