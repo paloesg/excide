@@ -1,32 +1,45 @@
 .row
-  .col-md-8.col-sm-12
+  .col-md-9.col-sm-12
     .card.mb-3
-      h5.card-header = @section.position.to_s + '. ' + @section.unique_name
-      .table-responsive
-        table.table
-          thead
-            tr
-              th No.
-              th Task Type
-              th Instruction
-              th Assigned To
-              th Days To Complete
-              th Set Reminder
-              th Link URL
-              th Image URL
-          tbody
-            - @section.tasks.each do |task|
-              = f.fields_for(task, url: symphony_template_path(template_slug: @template.slug, section_id: @section.id) ) do |ff|
+      = f.fields_for :sections do |ff|
+        .card-header 
+          .form-inline.col-sm-12
+            .form-group.col-sm-4
+              = ff.label :display_name, "Section's Display Name:", class: "mb-2"
+              = ff.text_field :display_name, {class: "form-control col-sm-12"}
+            .form-group.col-sm-4
+              = ff.label :unique_name, "Section's Unique Name", class: "mb-2"
+              = ff.text_field :unique_name, {class: "form-control col-sm-12"}
+            .form-group.col-sm-4
+              = ff.label :position, "Section's Position", class: "mb-2"
+              = ff.text_field :position, {class: "form-control col-sm-12"}
+        .card-body
+          .table-responsive
+            table.table
+              thead
                 tr
-                  td = ff.text_field :position, {class: "form-control"}
-                  td = ff.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {},  {class: "dropdown-overlay"}
-                  td = ff.text_field :instructions, {class: "form-control"}
-                  td = ff.select :role, Role.all.map{|k, v| [k.display_name, k]}, {} , {class: "dropdown-overlay"}
-                  td = ff.number_field :days_to_complete, {step: 1, class: "form-control"}
-                  td = ff.check_box :set_reminder, {class: "form-control"}
-                  td = ff.text_field :link_url, {class: "form-control"}
-                  td = ff.text_field :image_url, {class: "form-control"}
-  .col-md-4.col-sm-12
+                  th No.
+                  th Task Type
+                  th Instruction
+                  th Assigned To
+                  th Days To Complete
+                  th Document Template
+                  th Set Reminder
+                  th Link URL
+                  th Image URL
+              tbody       
+                = ff.fields_for :tasks do |fff|
+                  tr
+                    td = fff.text_field :position, {class: "form-control"}
+                    td = fff.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {},  {class: "dropdown-overlay"}
+                    td = fff.text_field :instructions, {class: "form-control"}
+                    td = fff.select :role_id, Role.all.map{|k, v| [k.display_name, k]}, {} , {class: "dropdown-overlay"}
+                    td = fff.number_field :days_to_complete, {step: 1, class: "form-control"}
+                    td = fff.select :document_template, DocumentTemplate.all.map{|k, v| [k.title.humanize, k]}, {include_blank: true}, {class: "dropdown-overlay mb-2"}
+                    td = fff.check_box :set_reminder, {class: "form-control"}
+                    td = fff.text_field :link_url, {class: "form-control"}
+                    td = fff.text_field :image_url, {class: "form-control"}
+  .col-md-3.col-sm-12
     .row
       .col-sm-12
         .card.mb-3
@@ -36,15 +49,8 @@
               = f.label :title, "Title:" 
               = f.text_field :title, class: "form-control"
             .form-group
-              = f.label :company, "Company:" 
-              = f.select :company, Company.all.map{|k, v| [k.name.humanize, k]}, {}, {class: "dropdown-overlay"}
+              = f.label :company_id, "Company:" 
+              = f.select :company_id, options_for_select(Company.all.collect{|company| [company.name, company.id]}), {}, {class: "dropdown-overlay"}
             .form-group
               = f.label :workflow_type, "Workflow Type:" 
               = f.select :workflow_type, [["Ordered", "ordered"], ["Unordered", "unordered"]], {}, {class: "dropdown-overlay"}
-    .row
-      .col-sm-12
-        .card.mb-3
-          h5.card-header Document Template Details
-          .col-sm-12.mt-3
-            = f.label :document_template
-            = f.select :document_templates, DocumentTemplate.all.map{|k, v| [k.title.humanize, k]}, {include_blank: true}, {class: "dropdown-overlay mb-2"}
