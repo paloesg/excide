@@ -3,7 +3,7 @@ class Symphony::DocumentsController < DocumentsController
   before_action :set_company_workflows, only: [:new, :edit]
   before_action :set_workflow, only: [:new]
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: [:index, :search]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -95,7 +95,7 @@ class Symphony::DocumentsController < DocumentsController
     # TODO: Generate secured api key per user tag, only relevant users are tagged to each workflow.
     @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'company.slug:' + current_user.company.slug})
   end
-  
+
   private
 
   def set_company
