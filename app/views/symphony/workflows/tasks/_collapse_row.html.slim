@@ -1,0 +1,28 @@
+tr
+  td.p-0.border-top-0 colspan="6"
+    div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered? ? 'collapse show' : 'collapse'}"
+      .m-3
+        h6 Actions:
+        .btn-toolbar role="toolbar"
+          .btn-group.mr-2 role="group" aria-label="Task actions"
+            - if task.task_type == "download_file"
+              = link_to "Download File", task.document_template.file_url, role: 'button', class: 'btn btn-primary btn-sm' if task.document_template.present?
+            - elsif task.task_type == "enter_data"
+              = link_to "Enter Data", data_entry_symphony_workflow_path(workflow_identifier: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-sm'
+            - elsif task.task_type == "send_xero_email"
+              = link_to "Send Email", send_email_to_xero_symphony_workflow_path, class: 'btn btn-primary btn-sm'
+            - elsif task.task_type == "upload_file"
+              = link_to "Upload File", new_symphony_document_path(workflow: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-sm'
+            - elsif task.task_type == "upload_photo"
+              = link_to "Take Photo", new_symphony_document_path(workflow: @workflow.identifier, params: {camera: true}), role: 'button', class: 'btn btn-primary btn-sm'
+            - elsif task.task_type == "visit_link"
+              = link_to "Visit Link", task.link_url, target: :_blank, role: 'button', class: 'btn btn-primary btn-sm' if task.link_url.present?
+          .btn-group.mr-2 role="group" aria-label="Reminder actions"
+            - if action.reminders.present?
+              = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+            - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+              = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
+        br
+        = render "symphony/workflows/tasks/remarks", action: action
+        br
+        = task.display_image
