@@ -1,0 +1,30 @@
+.card-header
+  h5 Section Details:
+  .form-inline.col-sm-12
+    .form-group.col-sm-4
+      = f.label :display_name, "Display Name:", class: "mr-2"
+      = f.text_field :display_name, {class: "form-control col-sm-8"}
+    .form-group.col-sm-4
+      = f.label :unique_name, "Unique Name:", class: "mr-2"
+      = f.text_field :unique_name, {class: "form-control col-sm-8"}
+    .form-group.col-sm-4
+      = f.label :position, "Position:", class: "mr-2"
+      = f.text_field :position, {class: "form-control col-sm-8"}
+.table-responsive
+  table.table
+    thead
+      tr
+        th No.
+        th Task Type
+        th Instruction
+        th Assigned To
+        th Days To Complete
+        th Document Template
+        th Link URL
+        th Image URL
+        th Set Reminder                   
+    tbody class=("task-in-section-#{f.object.id}")
+      = f.fields_for :tasks do |task|
+        = render 'task_fields', f: task
+.card-body
+  = link_to_add_row('Add task', f, :tasks)

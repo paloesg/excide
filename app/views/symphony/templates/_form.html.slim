@@ -12,43 +12,8 @@
               = f.label :workflow_type, "Workflow Type:" 
               = f.select :workflow_type, [["Ordered", "ordered"], ["Unordered", "unordered"]], {}, {class: "dropdown-overlay task-items-dropdown-width"}
   .col-md-9.col-sm-12
-    .card.mb-3
-      = f.fields_for :sections do |ff|
-        .card-header 
-          h5 Section Details:
-          .form-inline.col-sm-12
-            .form-group.col-sm-4
-              = ff.label :display_name, "Display Name:", class: "mr-2"
-              = ff.text_field :display_name, {class: "form-control col-sm-8"}
-            .form-group.col-sm-4
-              = ff.label :unique_name, "Unique Name:", class: "mr-2"
-              = ff.text_field :unique_name, {class: "form-control col-sm-8"}
-            .form-group.col-sm-4
-              = ff.label :position, "Position:", class: "mr-2"
-              = ff.text_field :position, {class: "form-control col-sm-8"}
-        .card-body.p-0
-          .table-responsive
-            table.table
-              thead
-                tr
-                  th No.
-                  th Task Type
-                  th Instruction
-                  th Assigned To
-                  th Days To Complete
-                  th Document Template
-                  th Link URL
-                  th Image URL
-                  th Set Reminder
-              tbody       
-                = ff.fields_for :tasks do |fff|
-                  tr
-                    td.task-fields = fff.text_field :position, {class: "form-control"}
-                    td.task-fields = fff.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {},  {class: "dropdown-overlay"}
-                    td.task-fields = fff.text_field :instructions, {class: "form-control text-field-width"}
-                    td.task-fields = fff.select :role_id, options_for_select(Role.all.collect{|role| [role.display_name, role.id]}, selected: fff.object.role.id), {} , {class: "dropdown-overlay task-items-dropdown-width"}
-                    td.task-fields = fff.number_field :days_to_complete, {step: 1, class: "form-control"}
-                    td.task-fields = fff.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: fff.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay task-items-dropdown-width mb-2"}
-                    td.task-fields = fff.text_field :link_url, {class: "form-control text-field-width"}
-                    td.task-fields = fff.text_field :image_url, {class: "form-control text-field-width"}
-                    td.task-fields = fff.check_box :set_reminder, {class: "form-control"}
+    .card.mb-3.fields
+      = f.fields_for :sections do |section|
+        = render 'section_fields', f: section
+    / Use cocoon gem to add section
+    = link_to_add_association 'Add Section', f, :sections, class: 'btn btn-primary', data: { association_insertion_node: '.fields', association_insertion_method: :append} 

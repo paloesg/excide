@@ -7,4 +7,5 @@
     h1 Edit #{@template.title}
 = form_for(@template, url: symphony_template_path(template_slug: @template.slug, section_id: @section.id) ) do |f|
   = render 'form', f: f
-  = f.submit 'Save Template', class: 'btn btn-primary pull-right' 
+  = f.submit 'Save Template', class: 'btn btn-primary pull-right'
+  
