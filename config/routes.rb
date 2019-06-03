@@ -55,7 +55,6 @@ Rails.application.routes.draw do
     resources :document_templates
     resources :documents do
       collection do
-        get '/search', to: 'documents#search'
         get '/upload-invoice', to: 'documents#upload_invoice', as: :upload_invoice
       end
     end
