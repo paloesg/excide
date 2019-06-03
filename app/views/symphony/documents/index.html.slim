@@ -12,9 +12,8 @@
         = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning' if ::Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').present?
 
 .row
-  .col-sm-6.offset-sm-6
+  .col-sm-6.offset-sm-6.mb-3
     input.form-control#q type="search"
-    br
 
 .row
   .col-sm-3#facets
@@ -33,7 +32,7 @@ javascript:
   }
 
   loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
-    var hitTemplate = '<table class="table table-striped table-responsive">' +
+    var hitTemplate = '<table class="table table-striped">' +
         '<thead><tr><th>Filename</th>' +
         '<th>Document Template</th>' +
         '<th>Workflow</th>' +
@@ -41,11 +40,11 @@ javascript:
         '<th>Actions</th>' +
         '</tr></thead>' +
         '<tbody>{{#hits}}' +
-        '<tr><td>{{filename}}</td>' +
-        '<td>{{document_template.title}}</td>' +
-        '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.identifier}}">{{workflow.template_title}}</td>' +
+        '<tr><td>{{{_highlightResult.filename.value}}}</td>' +
+        '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
+        '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.identifier}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
         '<td>{{created_at}}</td>' +
-        '<td><a href="/symphony/documents/{{id}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1">Download</a> </td>' +
+        '<td><a href="/symphony/documents/{{objectID}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1">Download</a> </td>' +
         '{{/hits}}</tbody>'
       '</div>';
       var search = instantsearch({
