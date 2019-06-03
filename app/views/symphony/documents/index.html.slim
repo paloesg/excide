@@ -41,11 +41,11 @@ javascript:
         '<th>Actions</th>' +
         '</tr></thead>' +
         '<tbody>{{#hits}}' +
-        '<tr><td>{{{_highlightResult.filename.value}}}</td>' +
-        '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
-        '<td><a href="/symphony/{{_highlightResult.workflow.template_slug.value}}/{{_highlightResult.workflow.identifier.value}}">{{_highlightResult.workflow.template_title.value}}</td>' +
+        '<tr><td>{{filename}}</td>' +
+        '<td>{{document_template.title}}</td>' +
+        '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.identifier}}">{{workflow.template_title}}</td>' +
         '<td>{{created_at}}</td>' +
-        '<td><a href="/symphony/documents/{{_highlightResult.id.value}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{_highlightResult.file_url.value}}" class="btn btn-warning btn-sm mr-1">Download</a> </td>' +
+        '<td><a href="/symphony/documents/{{id}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1">Download</a> </td>' +
         '{{/hits}}</tbody>'
       '</div>';
       var search = instantsearch({
