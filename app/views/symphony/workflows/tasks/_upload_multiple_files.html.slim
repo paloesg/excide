@@ -36,5 +36,23 @@ tr
               = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
             - if task == @workflow.current_task && (@user.has_role? :admin, @company)
               = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
-        br
-        = task.display_image
+        - if task.image_url.present?
+          br
+          = task.display_image
+        - if action.documents.present?
+          br
+          .row
+            .col-md-12
+              h6 Documents :
+              .workflow-action-documents
+                ul
+                  - action.documents.each do |d|
+                    li
+                      .media
+                        .align-self-center
+                          = link_to symphony_document_path(d)
+                            i.ti-file.icon.mr-3 style="font-size: 40px"
+                        .media-body
+                          h5.text-truncate = d.filename
+                          h6.card-subtitle = d.user&.full_name
+                          .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
