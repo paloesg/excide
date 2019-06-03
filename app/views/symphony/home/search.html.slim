@@ -18,6 +18,7 @@
     .card
       h5.card-header Search results
       .table-responsive#hits
+    #pagination
 
 javascript:
   function loadExtJS(src, callback) {
@@ -80,6 +81,11 @@ javascript:
             item: 'list-group-item',
             count: 'badge badge-pill badge-secondary'
           }
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.pagination({
+          container: '#pagination'
         })
       );
       search.start();
