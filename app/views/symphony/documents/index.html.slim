@@ -44,7 +44,7 @@ javascript:
         '<tr><td>{{{_highlightResult.filename.value}}}</td>' +
         '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
         '<td><a href="/symphony/{{_highlightResult.workflow.template_slug.value}}/{{_highlightResult.workflow.identifier.value}}">{{_highlightResult.workflow.template_title.value}}</td>' +
-        '<td>{{{_highlightResult.created_at.value}}}</td>' +
+        '<td>{{created_at}}</td>' +
         '<td><a href="/symphony/documents/{{_highlightResult.id.value}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{_highlightResult.file_url.value}}" class="btn btn-warning btn-sm mr-1">Download</a> </td>' +
         '{{/hits}}</tbody>'
       '</div>';
@@ -64,6 +64,14 @@ javascript:
       search.addWidget(
         instantsearch.widgets.hits({
           container: '#hits',
+          transformData: {
+            allItems: function(data) {
+              $(data['hits']).each(function(index) {
+                data['hits'][index].created_at = moment(this.created_at).format("DD/MM/YYYY HH:mm")
+              })
+              return data;
+            }
+          },
           templates: {
             empty: 'No matching documents',
             allItems: hitTemplate
@@ -89,4 +97,3 @@ javascript:
       );
       search.start();
   })
-
