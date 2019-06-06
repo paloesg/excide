@@ -31,6 +31,10 @@
         text-decoration: none;
       }
     }
+    &.ais-pagination--item__disabled {
+      display: none;
+      pointer-events: none;
+    }
     &:first-child {
       > a,
       > span {
@@ -42,7 +46,6 @@
     &:last-child {
       > a,
       > span {
-        content: 'Last >>';
         border-top-right-radius: 0.25rem;
         border-bottom-right-radius: 0.25rem;
       }
@@ -59,10 +62,6 @@
       background-color: #007bff;
       border-color: #007bff;
     }
-  }
-
-  > .ais-pagination--item__disabled {
-    display: none;
   }
 
   > .ais-pagination--item__first > a:after {
