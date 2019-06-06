@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_17_055131) do
+ActiveRecord::Schema.define(version: 2019_06_06_053028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -99,8 +99,10 @@ ActiveRecord::Schema.define(version: 2019_05_17_055131) do
     t.bigint "template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["company_id"], name: "index_batches_on_company_id"
     t.index ["template_id"], name: "index_batches_on_template_id"
+    t.index ["user_id"], name: "index_batches_on_user_id"
   end
 
   create_table "choices", id: :serial, force: :cascade do |t|
@@ -500,6 +502,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_055131) do
   add_foreign_key "availabilities", "users"
   add_foreign_key "batches", "companies"
   add_foreign_key "batches", "templates"
+  add_foreign_key "batches", "users"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
   add_foreign_key "companies", "users", column: "associate_id"
