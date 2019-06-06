@@ -3,20 +3,18 @@ class Symphony::TemplatesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
+  before_action :set_template_and_section, only: [:edit, :update]
 
   def index
     @templates = Template.all.where(company: @company)
   end
 
   def edit
-    @template = Template.find(params[:template_slug])
-    @section = Section.find(params[:section_id])
     @roles = Role.all.where(resource: @company)
+    @templates = Template.workflow_types
   end
 
   def update
-    @template = Template.find(params[:template_slug])
-    @section = Section.find(params[:section_id])
     if @template.update!(template_params)
       redirect_to symphony_templates_path
     else
@@ -25,6 +23,11 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   private
+  def set_template_and_section
+    @template = Template.find(params[:template_slug])
+    @section = Section.find(params[:section_id])
+  end
+
   def set_company
     @company = current_user.company
   end
