@@ -34,8 +34,9 @@ Rails.application.routes.draw do
     get '/search', to: 'home#search'
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
 
-    resources :templates, param: :section_id, path: '/:template_slug', only: [:edit, :update]
     get '/templates', to: 'templates#index'
+    get '/templates/:template_slug/edit', to: 'templates#edit', as: :edit_template
+    get '/templates/:template_slug', to: 'templates#update', as: :template
 
     resources :clients do
       member do
