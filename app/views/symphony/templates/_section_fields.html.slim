@@ -1,5 +1,4 @@
 .card-header
-  h5 Section Details:
   .form-inline.col-sm-12
     .form-group.col-sm-6
       = f.label :unique_name, "Unique Name:", class: "mr-2"
@@ -19,9 +18,9 @@
         th Document Template
         th Link URL
         th Image URL
-        th Set Reminder                   
-    tbody class=("task-in-section-#{f.object.id}")
+        th Set Reminder                    
+    tbody 
       = f.fields_for :tasks do |task|
         = render 'task_fields', f: task
-.card-body
-  = link_to_add_row('Add task', f, :tasks)
+/ .card-body
+/   = link_to_add_row('Add task', f, :tasks)

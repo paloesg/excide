@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     get '/templates', to: 'templates#index'
     get '/templates/:template_slug/edit', to: 'templates#edit', as: :edit_template
     get '/templates/:template_slug', to: 'templates#update', as: :template
+    post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
 
     resources :clients do
       member do
