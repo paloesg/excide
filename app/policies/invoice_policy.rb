@@ -1,6 +1,6 @@
 class InvoicePolicy < ApplicationPolicy
   def show?
-    user.company == record.user.company
+    user == record.user
   end
 
   def create?
@@ -16,7 +16,7 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def edit?
-    update?
+    user == record.user
   end
 
   def destroy?
