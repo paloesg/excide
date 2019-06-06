@@ -135,7 +135,7 @@ class Workflow < ApplicationRecord
         WorkflowAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
-    trigger_first_task if (ordered_workflow? and self.batch.nil?) 
+    trigger_first_task if ordered_workflow? 
   end
 
   def ordered_workflow?

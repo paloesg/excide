@@ -29,7 +29,7 @@ class WorkflowAction < ApplicationRecord
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
 
     # Trigger email notification for next task if role present
-    if next_task.role.present?
+    if next_task.role.present? and self.workflow.batch.nil?
       users = User.with_role(next_task.role.name.to_sym, self.company)
       NotificationMailer.deliver_notifications(next_task, next_action, users)
     end
@@ -71,12 +71,12 @@ class WorkflowAction < ApplicationRecord
       # Don't need to set up next task if no next section present
       if next_section.present?
         next_task = next_section.tasks.find_by(position: 1)
-        set_deadline_and_notify(next_task) if self.workflow.batch.nil?
+        set_deadline_and_notify(next_task)
       end
     elsif self.completed
       # Find next action in line and set deadline if not the last task in section
       next_task = self.task.lower_item
-      set_deadline_and_notify(next_task) if self.workflow.batch.nil?
+      set_deadline_and_notify(next_task)
     end
   end
 
