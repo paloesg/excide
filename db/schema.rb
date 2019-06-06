@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_06_053028) do
+ActiveRecord::Schema.define(version: 2019_06_06_070211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -323,8 +323,7 @@ ActiveRecord::Schema.define(version: 2019_06_06_053028) do
   end
 
   create_table "sections", id: :serial, force: :cascade do |t|
-    t.string "unique_name"
-    t.string "display_name"
+    t.string "section_name"
     t.integer "position"
     t.integer "template_id"
     t.datetime "created_at", null: false
