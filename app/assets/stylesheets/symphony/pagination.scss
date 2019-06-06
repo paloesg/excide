@@ -1,25 +1,83 @@
-ul.ais-pagination {
-  display: inline-block;
-  padding: 0;
-  margin-top: 20px;
-  float: right;
-}
+// Pagination (for algolia search)
+// --------------------------------------------------
+.ais-pagination {
+  padding-top: 1.5rem !important;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.25rem;
+  justify-content: center !important;
 
-ul.ais-pagination li {
-  display: inline;
-}
+  > li {
+    display: inline;
+    > a,
+    > span {
+      position: relative;
+      display: block;
+      padding: 0.5rem 0.75rem;
+      margin-left: -1px;
+      line-height: 1.25;
+      color: #007bff;
+      background-color: #fff;
+      border: 1px solid #dee2e6;
 
-ul.ais-pagination li a {
-  color: #000000;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
-}
+      &:hover,
+      &:focus {
+        z-index: 2;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+      &:link {
+        text-decoration: none;
+      }
+    }
+    &:first-child {
+      > a,
+      > span {
+        margin-left: 0;
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+      }
+    }
+    &:last-child {
+      > a,
+      > span {
+        content: 'Last >>';
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+      }
+    }
+  }
 
-ul.ais-pagination li.ais-pagination--item__disabled {
-  display: none;
-}
-ul.ais-pagination li.ais-pagination--item__active a {
-  background-color: #007bff;
-  color: #fefefe
+  > .ais-pagination--item__active > a,
+  > .ais-pagination--item__active > span {
+    &,
+    &:hover,
+    &:focus {
+      z-index: 1;
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+  }
+
+  > .ais-pagination--item__disabled {
+    display: none;
+  }
+
+  > .ais-pagination--item__first > a:after {
+    content: ' First';
+  }
+
+  > .ais-pagination--item__previous > a:after {
+    content: ' Previous';
+  }
+
+  > .ais-pagination--item__next > a:before {
+    content: 'Next ';
+  }
+
+  > .ais-pagination--item__last > a:before {
+    content: 'Last ';
+  }
 }
