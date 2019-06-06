@@ -11,6 +11,7 @@ class Symphony::TemplatesController < ApplicationController
   def edit
     @template = Template.find(params[:template_slug])
     @section = Section.find(params[:section_id])
+    @roles = Role.all.where(resource: @company)
   end
 
   def update
