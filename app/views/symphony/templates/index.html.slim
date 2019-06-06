@@ -19,7 +19,7 @@
           - @templates.each do |template|
             tr
               td = template.title
-              td = template.workflow_type 
+              td = template.workflow_type.humanize 
               td = template.sections.count
               td
                 / link to the first section of the template
