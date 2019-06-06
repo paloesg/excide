@@ -12,20 +12,25 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def update?
-    user == record.user or user.has_role?(:admin, record.company)
+    user == record.user or user.has_role? :admin
   end
 
   def edit?
-    user == record.user
+    update?
   end
 
   def destroy?
-    user.has_role? :admin, record.user.company
+    user.has_role? :admin
   end
 
   class Scope < Scope
     def resolve
-      scope.all
+      # Scope invoices by user who created the invoices
+      if user.has_role? :admin
+        scope.all
+      else
+        scope.where(user: user)
+      end
     end
   end
 end
