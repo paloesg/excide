@@ -17,7 +17,7 @@
               th Id
               th Progress
           tbody
-            - @batches_paginate.each_with_index do |batch|
+            - @batches_paginate.each do |batch|
               tr
                 td = link_to batch.id, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
                 td
