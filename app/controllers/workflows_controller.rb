@@ -30,6 +30,12 @@ class WorkflowsController < ApplicationController
 
   def toggle
     @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_identifier])
+    @workflow = Workflow.find_by(identifier: params[:workflow_identifier] )
+    #manually saving updated_at of the batch to current time
+    if @workflow.batch.present?
+      @workflow.batch.updated_at = Time.current
+      @workflow.batch.save
+    end
     respond_to do |format|
       if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id)
         format.json { render json: @action.completed, status: :ok }
