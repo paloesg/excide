@@ -9,6 +9,22 @@ class Symphony::TemplatesController < ApplicationController
     @templates = Template.all.where(company: @company)
   end
 
+  def new
+    @template = Template.new
+    @roles = Role.all.where(resource: @company)
+    @templates = Template.workflow_types
+  end
+
+  def create
+    @template = Template.new(template_params)
+    @template.company = @company
+    if @template.save
+      redirect_to edit_symphony_template_path(@template)
+    else
+      redirect_to symphony_templates_path
+    end
+  end
+
   def edit
     @roles = Role.all.where(resource: @company)
     @templates = Template.workflow_types
