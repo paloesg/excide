@@ -28,9 +28,9 @@ class Symphony::TemplatesController < ApplicationController
     @position = @template.sections.count + 1
     @section = Section.create!(unique_name: params[:new_section], template_id: @template.id, position: @position)
     if @section.save
-      redirect_to symphony_templates_path
+      redirect_to symphony_edit_template_path(@template)
     else
-      render 'edit'
+      redirect_to symphony_templates_path
     end
   end
 
