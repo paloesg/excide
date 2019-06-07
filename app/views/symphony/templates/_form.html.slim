@@ -14,27 +14,4 @@
   .col-md-9.col-sm-12
     .card.mb-3.fields
       = f.fields_for :sections do |section|
-        .card-header
-          .form-inline.col-sm-12
-            .form-group.col-sm-6
-              = section.label :unique_name, "Unique Name:", class: "mr-2"
-              = section.text_field :unique_name, {class: "form-control col-sm-8"}
-            .form-group.col-sm-6
-              = section.label :position, "Position:", class: "mr-2"
-              = section.number_field :position, {class: "form-control col-sm-8"}
-        .table-responsive
-          table.table
-            thead
-              tr
-                th No.
-                th Task Type
-                th Instruction
-                th Assigned To
-                th Days To Complete
-                th Document Template
-                th Link URL
-                th Image URL
-                th Set Reminder                    
-            tbody 
-              = section.fields_for :tasks do |task|
-                = render 'task_fields', f: task
+        = render 'section_fields', f: section
