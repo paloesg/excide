@@ -34,10 +34,9 @@ Rails.application.routes.draw do
     get '/search', to: 'home#search'
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
 
-    get '/templates', to: 'templates#index'
-    get '/templates/:template_slug/edit', to: 'templates#edit', as: :edit_template
-    patch '/templates/:template_slug', to: 'templates#update', as: :template
+    resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
+    delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
 
     resources :clients do
       member do

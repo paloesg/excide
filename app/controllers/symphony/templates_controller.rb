@@ -3,7 +3,7 @@ class Symphony::TemplatesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_template, only: [:edit, :update, :create_section]
+  before_action :set_template, only: [:edit, :update, :create_section, :destroy_section]
 
   def index
     @templates = Template.all.where(company: @company)
@@ -28,7 +28,16 @@ class Symphony::TemplatesController < ApplicationController
     @position = @template.sections.count + 1
     @section = Section.create!(unique_name: params[:new_section], template_id: @template.id, position: @position)
     if @section.save
-      redirect_to symphony_edit_template_path(@template)
+      redirect_to edit_symphony_template_path(@template)
+    else
+      redirect_to symphony_templates_path
+    end
+  end
+
+  def destroy_section
+    @section = Section.find(params[:section_id])
+    if @section.destroy
+      redirect_to edit_symphony_template_path(@template.slug)
     else
       redirect_to symphony_templates_path
     end
