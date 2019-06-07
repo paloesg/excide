@@ -44,6 +44,15 @@
       regexp = new RegExp($(this).data('id'), 'g');
       console.log("PARENT 3: ", '.task-in-section-' + $(this).data('sectionId'));
       $( '.task-in-section-' + $(this).data('sectionId') ).append($(this).data('fields').replace(regexp, time));
+      //Loop section count to get the index of the section's array
+      $( ".section-count" ).each(function( index ) {
+        $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_task_type']").selectize({
+          dropdownParent: "body"
+        });
+        $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_role_id']").selectize({
+          dropdownParent: "body"
+        });
+      });
       return event.preventDefault();
     });
     //if radio button is checked, disable or enable the relevant fields

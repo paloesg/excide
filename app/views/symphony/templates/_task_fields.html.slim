@@ -1,4 +1,4 @@
-tr
+tr.section-count
   td.task-fields = f.number_field :position, {step: 1, class: "form-control number-width"}
   td.task-fields = f.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {},  {class: "dropdown-overlay"}
   td.task-fields = f.text_field :instructions, {class: "form-control text-field-width"}
