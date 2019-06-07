@@ -27,23 +27,11 @@ tr
         = form_tag @s3_direct_post.url, class: "dropzone uploadToXero#{action.id}", id: "uploadToXero#{action.id}"
         	- @s3_direct_post.fields.each do |key, value|
         		= hidden_field_tag key, value
-        br
-        = render "symphony/workflows/tasks/remarks", action: action
-        br
-        .btn-toolbar role="toolbar"
-          .btn-group.mr-2 role="group" aria-label="Reminder actions"
-            - if action.reminders.present?
-              = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
-            - if task == @workflow.current_task && (@user.has_role? :admin, @company)
-              = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
-        - if task.image_url.present?
-          br
-          = task.display_image
         - if action.documents.present?
           br
           .row
             .col-md-12
-              h6 Documents :
+              h6 Files:
               .workflow-action-documents
                 ul
                   - action.documents.each do |d|
@@ -56,3 +44,15 @@ tr
                           h5.text-truncate = d.filename
                           h6.card-subtitle = d.user&.full_name
                           .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+        br
+        = render "symphony/workflows/tasks/remarks", action: action
+        br
+        .btn-toolbar role="toolbar"
+          .btn-group.mr-2 role="group" aria-label="Reminder actions"
+            - if action.reminders.present?
+              = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+            - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+              = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
+        - if task.image_url.present?
+          br
+          = task.display_image
