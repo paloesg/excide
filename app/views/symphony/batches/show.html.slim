@@ -27,8 +27,15 @@
             a.pop data-container="body" title="Task instruction and role" data-content=("<div><b>Task instruction</b> - #{task.instructions}<br/><b>Assigned to </b> - #{task.role&.name} </div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
               h6.header-properties
                 = task.task_type.humanize
-            = button_tag 'Select all', type: 'button', class: "btn btn-primary btn-sm checkall", id:"selectall-#{task.id}"
             hr
+      .row.mt-3.flex-nowrap
+        .col-sm-1
+        .col-sm-1
+        - section.tasks.order(created_at: :asc).each do |task|
+          .col-sm-2
+            .text-center
+              = button_tag 'Select all', type: 'button', class: "btn btn-primary btn-sm checkall", id:"selectall-#{task.id}"
+
       /Do the body of the grid table
       - @batch.workflows.each do |wf|
         .row.mt-2.flex-nowrap.grid-bottom
