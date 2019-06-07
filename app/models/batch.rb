@@ -22,8 +22,8 @@ class Batch < ApplicationRecord
   end
 
   def average_time_taken_per_task
-    #display time in hours, divided by the total number of action
-    (((Time.current - self.created_at) / (60*60) ) / total_action).round(2)
+    #display time in seconds, divided by the total number of action
+    ((self.updated_at - self.created_at) / total_action).round(2)
   end
 
   #Since each template's workflows have the same workflow_actions, can get the total number of actions by multiplying the number of workflows in batch with the workflow_actions of ANY one workflow
