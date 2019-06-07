@@ -12,6 +12,12 @@
         $(this).closest('tr').remove();
         return event.preventDefault();
     })
+    //removing a task in template
+    $('form').on('click', '.remove_tasks', function(event){
+        $(this).prev('input[type=hidden]').val('1');
+        $(this).closest('tr').hide();
+        return event.preventDefault();
+    })
     //dropdownParent is required to avoid dropdown clipping issue so that the dropdown isn't a child of an element with clipping
     $('.dropdown-overlay').selectize({
         dropdownParent: "body"
