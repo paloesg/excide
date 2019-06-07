@@ -1,0 +1,13 @@
+.workflow-action-documents li {
+  display: inline;
+  float: left;
+  padding: 10px;
+  width: 310px;
+}
+
+.workflow-action-documents .media .media-body .text-truncate {
+  width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

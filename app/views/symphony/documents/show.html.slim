@@ -36,6 +36,10 @@
           = @document.workflow&.identifier
         p
           strong
+            ' Task:
+          = @document.workflow_action&.task&.instructions
+        p
+          strong
             ' Template:
           = @document.document_template&.title
         p
