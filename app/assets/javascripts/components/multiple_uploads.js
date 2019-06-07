@@ -34,6 +34,7 @@ $(document).ready(function () {
           $.post('/symphony/documents', {
             authenticity_token: $.rails.csrfToken(),
             workflow: $('#workflow_identifier').val(),
+            workflow_action: workflow_action_id,
             document: {
               filename: file.upload.filename,
               file_url: '//' + location['host'] + '/' + filePath

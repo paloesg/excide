@@ -2,6 +2,7 @@ class Symphony::DocumentsController < DocumentsController
   before_action :set_templates, only: [:new, :edit]
   before_action :set_company_workflows, only: [:new, :edit]
   before_action :set_workflow, only: [:new]
+  before_action :set_workflow_action, only: [:new]
 
   after_action :verify_authorized, except: [:index, :search]
   after_action :verify_policy_scoped, only: :index
@@ -37,8 +38,13 @@ class Symphony::DocumentsController < DocumentsController
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
     if params[:workflow].present?
-      @workflow = Workflow.find_by(identifier: params[:workflow])
+      @workflow = @company.workflows.find_by(identifier: params[:workflow])
       @document.workflow = @workflow
+    end
+
+    if params[:workflow_action].present?
+      @workflow_action = @company.workflow_actions.find(params[:workflow_action])
+      @document.workflow_action = @workflow_action
     end
 
     respond_to do |format|
@@ -109,5 +115,9 @@ class Symphony::DocumentsController < DocumentsController
 
   def set_workflow
     @workflow = @workflows.find_by(identifier: params[:workflow]) if params[:workflow].present?
+  end
+
+  def set_workflow_action
+    @workflow_action = @company.workflow_actions.find(params[:workflow_action]) if params[:workflow_action].present?
   end
 end
