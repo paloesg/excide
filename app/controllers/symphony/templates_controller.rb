@@ -26,7 +26,7 @@ class Symphony::TemplatesController < ApplicationController
     @roles = Role.all.where(resource: @company)
     @templates = Template.workflow_types
     @position = @template.sections.count + 1
-    @section = Section.create!(unique_name: params[:q], template_id: @template.id, position: @position)
+    @section = Section.create!(unique_name: params[:new_section], template_id: @template.id, position: @position)
     if @section.save
       redirect_to symphony_templates_path
     else

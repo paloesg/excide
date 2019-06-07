@@ -23,4 +23,4 @@
       = f.fields_for :tasks do |task|
         = render 'task_fields', f: task
 .card-body
-  = link_to_add_row('Add task', f, :tasks)
+  = link_to_add_tasks('Add task', f, :tasks)
