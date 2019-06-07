@@ -8,6 +8,7 @@ $(document).ready(function () {
     }
   })
 
+  //upload documents on workflows page
   $( ".action_id" ).each(function( index ) {
     var action_id = $(this).attr('id')
     var workflow_action_id = $('#'+action_id).val();
