@@ -38,12 +38,12 @@ class Symphony::DocumentsController < DocumentsController
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
     if params[:workflow].present?
-      @workflow = Workflow.find_by(identifier: params[:workflow])
+      @workflow = @company.workflows.find_by(identifier: params[:workflow])
       @document.workflow = @workflow
     end
 
     if params[:workflow_action].present?
-      @workflow_action = WorkflowAction.find(params[:workflow_action])
+      @workflow_action = @company.workflow_actions.find(params[:workflow_action])
       @document.workflow_action = @workflow_action
     end
 
@@ -118,6 +118,6 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def set_workflow_action
-    @workflow_action = WorkflowAction.find(params[:workflow_action]) if params[:workflow_action].present?
+    @workflow_action = @company.workflow_actions.find(params[:workflow_action]) if params[:workflow_action].present?
   end
 end
