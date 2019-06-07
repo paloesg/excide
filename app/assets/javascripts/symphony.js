@@ -43,7 +43,7 @@
       time = new Date().getTime();
       regexp = new RegExp($(this).data('id'), 'g');
       console.log("PARENT 3: ", '.task-in-section-' + $(this).data('sectionId'));
-      $( '.task-in-section-' + $(this).data('sectionId') ).append($(this).data('fields'));
+      $( '.task-in-section-' + $(this).data('sectionId') ).append($(this).data('fields').replace(regexp, time));
       return event.preventDefault();
     });
     //if radio button is checked, disable or enable the relevant fields
