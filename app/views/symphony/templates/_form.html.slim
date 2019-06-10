@@ -16,7 +16,7 @@
               = f.text_field :title, class: "form-control"
             .form-group
               = f.label :workflow_type, "Workflow Type:" 
-              = f.select :workflow_type, @templates.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
+              = f.select :workflow_type, @templates_workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
   .col-md-9.col-sm-12
     .card.mb-3
       = f.fields_for :sections do |section|

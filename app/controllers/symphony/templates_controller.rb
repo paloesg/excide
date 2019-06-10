@@ -3,7 +3,8 @@ class Symphony::TemplatesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_template, only: [:edit, :update, :create_section, :destroy_section]
+  before_action :set_template, except: [:index, :new, :create]
+  before_action :find_roles_and_workflow_types, only: [:new, :edit, :create_section]
 
   def index
     @templates = Template.all.where(company: @company)
@@ -11,8 +12,6 @@ class Symphony::TemplatesController < ApplicationController
 
   def new
     @template = Template.new
-    @roles = Role.all.where(resource: @company)
-    @templates = Template.workflow_types
   end
 
   def create
@@ -26,8 +25,6 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def edit
-    @roles = Role.all.where(resource: @company)
-    @templates = Template.workflow_types
   end
 
   def update
@@ -39,8 +36,6 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def create_section
-    @roles = Role.all.where(resource: @company)
-    @templates = Template.workflow_types
     @position = @template.sections.count + 1
     @section = Section.create!(unique_name: params[:new_section], template_id: @template.id, position: @position)
     if @section.save
@@ -66,6 +61,11 @@ class Symphony::TemplatesController < ApplicationController
 
   def set_company
     @company = current_user.company
+  end
+
+  def find_roles_and_workflow_types
+    @roles = Role.all.where(resource: @company)
+    @templates_workflow_types = Template.workflow_types
   end
 
   def template_params
