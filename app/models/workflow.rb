@@ -77,7 +77,7 @@ class Workflow < ApplicationRecord
   end
 
   def get_users
-    self.template.sections.map{|section| section.tasks.map{|task| task.workflow_actions.map(&:user)}}.flatten.compact.uniq
+    self.template.sections.map{|section| section.tasks.map{|task| task.workflow_actions.map(&:assigned_user)}}.flatten.compact.uniq
   end
 
   def data
@@ -135,7 +135,7 @@ class Workflow < ApplicationRecord
         WorkflowAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
-    trigger_first_task if ordered_workflow?
+    trigger_first_task
   end
 
   def ordered_workflow?
@@ -143,7 +143,14 @@ class Workflow < ApplicationRecord
   end
 
   def trigger_first_task
-    self.current_task.get_workflow_action(self.company, self.identifier).set_deadline_and_notify(current_task)
+    if ordered_workflow?
+      self.current_task.get_workflow_action(self.company, self.identifier).set_deadline_and_notify(current_task)
+    else
+      roles = self.get_roles
+      roles.each do |role|
+        NotificationMailr.unordered_workflow_notification
+      end
+    end
   end
 
   def uppercase_identifier

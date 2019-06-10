@@ -16,6 +16,10 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.identifier)
   end
 
+  def unordered_workflow_notification(workflow)
+    
+  end
+
   def reminder_notification(reminder)
     @reminder = reminder
     @user = reminder.user
