@@ -14,7 +14,7 @@
 .row
   .col-md-9.col-sm-12
     .card.mb-3
-      h5.card-header = @section['section_name']
+      h5.card-header = (@section['section_name'] || @section['display_name'])
       .table-responsive
         table.table
           thead
@@ -46,12 +46,12 @@
                       = text_field_tag :remarks, task['workflow_actions']['remarks'], class: 'form-control', disabled: true
                       = image_tag(task['image_url'], class: "img-fluid pt-4") if task['image_url'].present?
       .card-footer
-        - unless @sections.first['unique_name'] == @section['unique_name']
-          = link_to "?section=#{@sections[@section_index - 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-left'
+        - unless (@sections.first['section_name'] == @section['section_name'] || @sections.first['unique_name'] == @section['unique_name'])
+          = link_to ("?section=#{@sections[@section_index - 1]['section_name']}" || "?section=#{@sections[@section_index - 1]['unique_name']}"), class: 'btn btn-sm btn-outline-secondary float-left'
             i.fa.fa-chevron-left
             |  Previous Section
-        - unless @sections.last['unique_name'] == @section['unique_name']
-          = link_to "?section=#{@sections[@section_index + 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-right'
+        - unless (@sections.last['section_name'] == @section['section_name'] || @sections.last['unique_name'] == @section['unique_name'])
+          = link_to ("?section=#{@sections[@section_index + 1]['section_name']}" || "?section=#{@sections[@section_index + 1]['unique_name']}"), class: 'btn btn-sm btn-outline-secondary float-right'
             ' Next Section
             i.fa.fa-chevron-right
         .clearfix
