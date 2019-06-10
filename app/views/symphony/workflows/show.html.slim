@@ -39,7 +39,7 @@
               - t = TaskDecorator.new(task)
               - a = t.workflow_action(@workflow.identifier)
               = render "symphony/workflows/tasks/main_row", task: t, action: a
-              - if (task.task_type == "xero_send_invoice") or (task.task_type == "upload_multiple_files") or (task.task_type == "approval") or (task.task_type == "coding_invoice") or (task.task_type == "create_invoice_payable") or (task.task_type == "create_invoice_receivable") or (task.task_type == "instructions")
+              - if ["xero_send_invoice", "upload_multiple_files", "approval", "coding_invoice", "create_invoice_payable", "create_invoice_receivable", "instructions"].include? task.task_type
                 = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
               - else
                 = render "symphony/workflows/tasks/collapse_row", task: t, action: a
