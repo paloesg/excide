@@ -38,24 +38,11 @@
             - @tasks.each do |task|
               - t = TaskDecorator.new(task)
               - a = t.workflow_action(@workflow.identifier)
-              tr
-                td = t.display_position
-                td
-                  = t.instructions
-                td
-                  - if a.assigned_user.present?
-                    span.fa.fa-user aria-hidden="true"
-                    |  #{a.assigned_user&.full_name}
-                  - else
-                    = t.display_role
-                td = a.deadline.try(:strftime, "%d/%m/%Y") || '-'
-                td
-                  = render "symphony/workflows/tasks/workflow_type_conditions", action: a, task: t
-                - if a.workflow.template.ordered?
-                  td
-                    a data-toggle="collapse" href="#task_#{t.id}" aria-expanded="#{t == @workflow.current_task ? 'true' : 'false'}" class="#{t == @workflow.current_task ? '' : 'collapsed'}"
-                      i.fa aria-hidden="true"
-              = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
+              = render "symphony/workflows/tasks/main_row", task: t, action: a
+              - if (task.task_type == "xero_send_invoice") or (task.task_type == "upload_multiple_files") or (task.task_type == "approval") or (task.task_type == "coding_invoice") or (task.task_type == "create_invoice_payable") or (task.task_type == "create_invoice_receivable") or (task.task_type == "instructions")
+                = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
+              - else
+                = render "symphony/workflows/tasks/collapse_row", task: t, action: a
       .card-footer
         - unless @section.first?
           = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-sm btn-outline-secondary float-left'
