@@ -85,7 +85,17 @@ javascript:
       );
       search.addWidget(
         instantsearch.widgets.pagination({
-          container: '#pagination'
+          container: '#pagination',
+          cssClasses: {
+            active: 'active',
+          },
+          labels: {
+            first: '<i class="fa fa-angle-left"></i> First',
+            previous: '<i class="fa fa-angle-left"></i> Previous',
+            next: 'Next <i class="fa fa-angle-right"></i>',
+            last: 'Last <i class="fa fa-angle-double-right"></i>',
+          },
+          autoHideContainer: false,
         })
       );
       search.start();
