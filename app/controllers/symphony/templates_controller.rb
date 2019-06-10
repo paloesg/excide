@@ -4,7 +4,7 @@ class Symphony::TemplatesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create]
-  before_action :find_roles_and_workflow_types, only: [:new, :edit, :create_section]
+  before_action :find_roles, only: [:new, :edit, :create_section]
 
   def index
     @templates = Template.all.where(company: @company)
@@ -63,9 +63,8 @@ class Symphony::TemplatesController < ApplicationController
     @company = current_user.company
   end
 
-  def find_roles_and_workflow_types
-    @roles = Role.all.where(resource: @company)
-    @templates_workflow_types = Template.workflow_types
+  def find_roles
+    @roles = Role.where(resource: @company)
   end
 
   def template_params
