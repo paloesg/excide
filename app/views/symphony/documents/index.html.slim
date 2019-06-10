@@ -10,9 +10,11 @@
         = link_to "Document Templates", symphony_document_templates_path, role: 'button', class: 'btn btn-success mr-1'
         = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
         = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning' if ::Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').present?
-    = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads document_index', id: 'documentIndex'
-      - @s3_direct_post.fields.each do |key, value|
-        = hidden_field_tag key, value
+    .card
+      .card-body
+        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads document_index', id: 'documentIndex'
+          - @s3_direct_post.fields.each do |key, value|
+            = hidden_field_tag key, value
 .row
   .col-sm-12
     .table-responsive
