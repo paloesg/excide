@@ -17,7 +17,7 @@ $(document).ready(function () {
       return filter_filename + '.' + get_extension;
     };
     var documentUploadToXero = new Dropzone(".uploadToXero",{
-      timeout: 0, 
+      timeout: 0,
       renameFilename: cleanFilename,
     })
     documentUploadToXero.on("success", function(file, request){
@@ -48,11 +48,14 @@ $(document).ready(function () {
       return filter_filename + '.' + get_extension;
     };
     var documentUpload = new Dropzone(".multiple_uploads", {
-      timeout: 0, 
+      timeout: 0,
       renameFilename: cleanFilename,
       autoProcessQueue: false,
       parallelUploads: 100,
       uploadMultiple: false,
+    });
+    documentUpload.on("addedfile", function () {
+      $('#drag-and-drop-submit').removeAttr('disabled');
     });
     $("#drag-and-drop-submit").click(function(){
       documentUpload.processQueue();
@@ -62,7 +65,7 @@ $(document).ready(function () {
           template_id: $('#template_id').val(),
         }
       });
-    })
+    });
     documentUpload.on("success", function (file, request) {
       var resp = $.parseXML(request);
       var filePath = $(resp).find("Key").text();
