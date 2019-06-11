@@ -1,0 +1,23 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item Batches
+    h1
+      | Batches Listing
+.row
+  .col-sm-12
+    .card
+      h5.card-header Batches Generated
+      .table-responsive
+        table.table.table-hover
+          thead
+            tr
+              th Id
+          tbody
+            - @batches_paginate.each do |batch|
+              tr
+                td = link_to batch.id, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
+        .card-footer.pt-4
+          = paginate @batches_paginate, views_prefix: 'dashboards' 

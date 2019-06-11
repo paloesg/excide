@@ -12,6 +12,7 @@ class DashboardManifest
   DASHBOARDS = [
     :workflows,
     :recurring_workflows,
+    :batches,
     :templates,
     :sections,
     :tasks,

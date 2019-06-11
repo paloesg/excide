@@ -1,0 +1,2 @@
+= link_to "Visit Link", action.task.link_url, target: :_blank, role: 'button', class: 'btn btn-warning btn-sm' if action.task.link_url.present?
+= render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow
