@@ -20,10 +20,11 @@
     #document_templates
   .col-sm-6
     .card
-      h5.card-header Search results
+      h5.card-header Search Results
       .table-responsive#hits
   .col-md-3
     .card
+      h5.card-header Upload Documents
       .card-body
         = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads document_index', id: 'documentIndex'
           - @s3_direct_post.fields.each do |key, value|
