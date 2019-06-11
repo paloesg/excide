@@ -9,7 +9,7 @@ container
       p Hi, #{@user.first_name}
       p.lead
         | The workflow
-        span.red #{@workflow.identifier}
+        span.red #{@workflow.id}
         | has been archived.
       p.lead Deadline: #{@workflow&.deadline&.strftime("%d/%m/%Y")}
       p.lead.email-margin-top Company Details:
@@ -76,4 +76,4 @@ container
                 td = wfa.completed_user.full_name.to_s
               td = wfa.remarks
       p.lead.email-margin-top
-        a href="#{symphony_archive_url(@workflow.template.slug, @workflow.identifier)}" View the workflow
+        a href="#{symphony_archive_url(@workflow.template.slug, @workflow.id)}" View the workflow

@@ -50,7 +50,7 @@ class Symphony::ArchivesController < ApplicationController
       elsif params[:sort] == "deadline" then item.deadline ? item.deadline : Time.at(0)
       elsif params[:sort] == "workflowable" then item.workflowable ? item.workflowable&.name.upcase : ""
       elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.display_name
-      elsif params[:sort] == "identifier" then item.identifier ? item.identifier.upcase : ""
+      elsif params[:sort] == "id" then item.id ? item.id.upcase : ""
       end
     }
   end

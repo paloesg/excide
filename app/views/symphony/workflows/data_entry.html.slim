@@ -6,9 +6,9 @@
       li.breadcrumb-item
         = link_to @template.title, symphony_workflows_path(@template.slug)
       li.breadcrumb-item
-        = link_to @workflow.identifier, symphony_workflow_path(@template.slug, @workflow.id)
+        = link_to @workflow.id, symphony_workflow_path(@template.slug, @workflow.id)
       li.breadcrumb-item.active Data Entry
-    h1 #{@template.title} – #{@workflow.identifier}
+    h1 #{@template.title} – #{@workflow.id}
 .row
   .col-md-6
     - if @documents.empty?
