@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  const $form = $( ".edit_workflow_action" );
+  const $form = $( ".edit_workflow_action, .edit_document" );
 
   $form.on("ajax:success", function(event, xhr, settings) {
     var jsonData = JSON.parse(xhr);
