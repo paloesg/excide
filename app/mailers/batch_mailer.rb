@@ -5,6 +5,6 @@ class BatchMailer < ApplicationMailer
     @consultant = company.consultant
     @batches = company.batches
     @url = company.consultant.email
-    mail(to: @url, subject: "[Batch Daily Progress] - " + company.name + "'s batches - " + Date.current.to_s)
+    mail(to: @url, subject: "[Batch Upload Report] - " + company.name + " - " + Date.current.to_s)
   end
 end

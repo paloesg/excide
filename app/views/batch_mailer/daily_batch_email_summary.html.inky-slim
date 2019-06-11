@@ -1,12 +1,12 @@
 container
   row.collapse
-    columns small="6" valign="middle" 
+    columns small="6" valign="middle"
       = image_tag("excide-logo.png", style: "width: 50%; height: 50%")
-  spacer size="16" 
+  spacer size="16"
   row
     columns
-      p Hi, #{@consultant.full_name}
-      p The progress of the batches are as follow:
+      p Hi #{@consultant.first_name},
+      p Here is today's update on the progress of the batch uploads:
       table border="1"
         thead
           tr
@@ -17,6 +17,5 @@ container
           - @batches.each do |batch|
             tr
               td = batch.id
-              td = batch.action_completed_progress 
+              td = batch.action_completed_progress
               td = batch.average_time_taken_per_task
-
