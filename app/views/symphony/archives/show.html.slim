@@ -7,9 +7,9 @@
         a href="/symphony/archives" Archives
       li.breadcrumb-item
         = link_to @template['title'], symphony_workflows_path(@template['slug'])
-      li.breadcrumb-item.active #{@workflow.identifier}
+      li.breadcrumb-item.active #{@workflow.id}
     h1
-      | #{@template['title']} – #{@workflow.identifier}
+      | #{@template['title']} – #{@workflow.id}
       = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row
   .col-md-9.col-sm-12
@@ -140,7 +140,7 @@
           li.list-group-item
             .media
               .align-self-center
-                = link_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id)
+                = link_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id)
                   i.ti-receipt.icon.mr-3 style="font-size: 50px"
               .media-body
                 h5.card-title = @invoice.id
