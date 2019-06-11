@@ -33,7 +33,7 @@ $(document).ready(function () {
           //check this part of drag and drop
           $.post('/symphony/documents', {
             authenticity_token: $.rails.csrfToken(),
-            workflow: $('#workflow_identifier').val(),
+            workflow: $('#workflow_id').val(),
             workflow_action: workflow_action_id,
             document: {
               filename: file.upload.filename,
