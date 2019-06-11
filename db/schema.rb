@@ -185,9 +185,12 @@ ActiveRecord::Schema.define(version: 2019_05_24_080122) do
     t.integer "document_template_id"
     t.integer "user_id"
     t.uuid "workflow_id"
+    t.bigint "workflow_action_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
     t.index ["document_template_id"], name: "index_documents_on_document_template_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
+    t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
+    t.index ["workflow_id"], name: "index_documents_on_workflow_id"
   end
 
   create_table "enquiries", id: :serial, force: :cascade do |t|
@@ -508,6 +511,7 @@ ActiveRecord::Schema.define(version: 2019_05_24_080122) do
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "users"
+  add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"

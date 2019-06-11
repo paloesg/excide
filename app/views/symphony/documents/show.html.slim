@@ -36,6 +36,10 @@
           = @document.workflow&.identifier
         p
           strong
+            ' Task:
+          = @document.workflow_action&.task&.instructions
+        p
+          strong
             ' Template:
           = @document.document_template&.title
         p
@@ -46,8 +50,8 @@
 
         .btn-toolbar
           = link_to "Download", @document.file_url, role: 'button', class: 'btn btn-success btn-sm mr-1'
-          = link_to 'Edit', edit_symphony_document_path(@document), role: 'button', class: 'btn btn-warning btn-sm mr-1'
-          = link_to 'Destroy', symphony_document_path(@document), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm mr-1' if current_user.has_role? :admin, @company
+          = link_to 'Edit', edit_symphony_document_path(@document), role: 'button', class: 'btn btn-warning btn-sm mr-1' if policy(@document).edit?
+          = link_to 'Destroy', symphony_document_path(@document), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm mr-1' if policy(@document).destroy?
         br
         .btn-toolbar
           - if @document.workflow.present?

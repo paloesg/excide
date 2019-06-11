@@ -150,4 +150,9 @@ class User < ApplicationRecord
     self.availabilities.where(availabilities: {available_date: allocation.allocation_date}).where("availabilities.start_time <= ?", allocation.start_time).where("availabilities.end_time >= ?", allocation.end_time).first
   end
 
+  def relevant_workflow_ids
+    workflows = self.company.workflows.includes(template: [{ sections: [{ tasks: :role }] }])
+    workflows.map{|w| w.id if (w.get_roles & self.roles).any?}.compact
+  end
+
 end

@@ -1,7 +1,10 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
+
   include Pundit
   include PublicActivity::StoreController
-  protect_from_forgery with: :exception
+
+  rescue_from Pundit::NotAuthorizedError, Pundit::AuthorizationNotPerformedError, with: :user_not_authorized
 
   after_action :store_location
 
@@ -27,5 +30,14 @@ class ApplicationController < ActionController::Base
   def current_user
     # Overwrite devise current_user function to eager load roles for current user
     @current_user ||= super && User.includes(roles: [:resource]).where(id: @current_user.id).first
+  end
+
+  private
+
+  def user_not_authorized
+    policy_name = exception.policy.class.to_s.underscore
+
+    flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
+    redirect_to root_path
   end
 end

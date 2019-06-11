@@ -8,6 +8,43 @@ $(document).ready(function () {
     }
   })
 
+  //upload documents on workflows page
+  $( ".action_id" ).each(function( index ) {
+    var action_id = $(this).attr('id')
+    var workflow_action_id = $('#'+action_id).val();
+
+    if($(".uploadToXero"+workflow_action_id).length){
+      var cleanFilename = function (name) {
+        fileName = name.split('.').slice(0, -1).join('.')
+        get_extension = name.substring(name.lastIndexOf(".") + 1)
+        // Filter out special characters and spaces in filename (same as parametrize function in rails)
+        filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+        return filter_filename + '.' + get_extension;
+      };
+      var documentUploadToXero = new Dropzone(".uploadToXero"+workflow_action_id,{
+        timeout: 0,
+        renameFilename: cleanFilename,
+      })
+      documentUploadToXero.on("success", function(file, request){
+        var resp = $.parseXML(request);
+        var filePath = $(resp).find("Key").text();
+        var location = new URL($(resp).find("Location").text());
+        if($("#uploadToXero"+workflow_action_id).length){
+          //check this part of drag and drop
+          $.post('/symphony/documents', {
+            authenticity_token: $.rails.csrfToken(),
+            workflow: $('#workflow_identifier').val(),
+            workflow_action: workflow_action_id,
+            document: {
+              filename: file.upload.filename,
+              file_url: '//' + location['host'] + '/' + filePath
+            }
+          });
+        }
+      })
+    }
+  });
+
   if($(".uploadToXero").length){
     var cleanFilename = function (name) {
       fileName = name.split('.').slice(0, -1).join('.')
@@ -54,6 +91,9 @@ $(document).ready(function () {
       parallelUploads: 100,
       uploadMultiple: false,
     });
+    documentUpload.on("addedfile", function () {
+      $('#drag-and-drop-submit').removeAttr('disabled');
+    });
     $("#drag-and-drop-submit").click(function(){
       documentUpload.processQueue();
       $.post("/symphony/batches", {
@@ -62,7 +102,7 @@ $(document).ready(function () {
           template_id: $('#template_id').val(),
         }
       });
-    })
+    });
     documentUpload.on("success", function (file, request) {
       var resp = $.parseXML(request);
       var filePath = $(resp).find("Key").text();
