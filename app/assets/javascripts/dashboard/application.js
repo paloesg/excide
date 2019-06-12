@@ -23,9 +23,11 @@
 //= require symphony/assign_ui
 //= require symphony/remarks
 //= require symphony/popover
+
 //= require conductor/create_allocations
 //= require conductor/add_availabilities
 //= require conductor/home
+
 //= require dropzone
 //= require components/multiple_uploads
 //= require components/popover_initialize
