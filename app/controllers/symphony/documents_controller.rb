@@ -100,7 +100,7 @@ class Symphony::DocumentsController < DocumentsController
     if @document.update(document_params)
       respond_to do |format|
         format.html { redirect_to symphony_document_path, notice: 'Document was successfully updated.' }
-        format.js { render json: @document }
+        format.json { render json: @document }
       end
     else
       set_templates

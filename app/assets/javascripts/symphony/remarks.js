@@ -1,11 +1,10 @@
 $(document).ready(function() {
-  const $form = $( ".edit_workflow_action, .edit_document" );
+  const $form = $( ".edit_workflow_action, .multiple_edit" );
 
   $form.on("ajax:success", function(event, xhr, settings) {
-    var jsonData = JSON.parse(xhr);
-    $("#check-" + jsonData.id).show().fadeTo(500, 200, function(){
-        $("#check-" + jsonData.id).fadeTo(200, 0);
+    $("#check-" + xhr.id).show().fadeTo(500, 200, function(){
+        $("#check-" + xhr.id).fadeTo(200, 0);
     });
-    $("#remarks-" + jsonData.id).text(jsonData.remarks);
+    $("#remarks-" + xhr.id).text(xhr.remarks);
   });
 });

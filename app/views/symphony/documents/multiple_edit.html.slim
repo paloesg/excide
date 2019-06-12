@@ -28,7 +28,7 @@
                     = image_tag(document[:file_url], class: 'img-responsive figure-img img-fluid', style: 'width:500px')
                   figcaption.figure-caption.text-center = document.filename
               td
-                = form_for(document, url: symphony_document_path(document.id), remote: true) do |f|
+                = form_for(document, url: symphony_document_path(document.id, format: 'json'), remote: true) do |f|
                   = f.hidden_field(:workflow_id, value: @workflow&.id)
                   .row
                     .col-md-12
