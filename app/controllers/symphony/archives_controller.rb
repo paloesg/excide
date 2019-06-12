@@ -23,17 +23,14 @@ class Symphony::ArchivesController < ApplicationController
 
   def show
     @workflows = @company.workflows
-    @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
-    @archive = @workflow.archive['workflow']
-    @template = @archive['template']
-    @sections = @template['sections']
-    @section = params[:section] ? @sections.select{|section| section['unique_name'] == params[:section]}.first : @sections.last
+    @workflow = Archive.new(@workflows.find_by(identifier: params[:workflow_identifier]))
+    @template = @workflow.template
+    @sections = @template.sections
+    select_section = params[:section] ? @sections.select{|section| section['unique_name'] == params[:section]}.first : @sections.last
+    @section = OpenStruct.new(select_section)
     @tasks = @section['tasks'].sort_by{|task| task['position']}
-    @section_index = @sections.index(@section)
-    @document_templates = DocumentTemplate.where(template: @workflow.template)
-    @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
-    @activities = @archive['activity_log']
-    @invoice = @workflow.invoice
+    @activities = @workflow.activities
+    render "symphony/workflows/show"
   end
 
   private

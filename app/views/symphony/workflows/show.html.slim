@@ -12,29 +12,33 @@
       | #{@template.title} – #{@workflow.identifier}
   .col-md-3.col-sm-6
     .btn-group.float-right role='group'
-      - if @workflow.previous_workflow.present?
-        = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-outline-secondary'
-          i.fa.fa-chevron-left
-          |  Earlier Workflow
-      - if @workflow.next_workflow.present?
-        = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-outline-secondary'
-          ' Later Workflow
-          i.fa.fa-chevron-right
+      - if @workflow.archive.blank?
+        - if @workflow.previous_workflow.present?
+          = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-outline-secondary'
+            i.fa.fa-chevron-left
+            |  Earlier Workflow
+        - if @workflow.next_workflow.present?
+          = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-outline-secondary'
+            ' Later Workflow
+            i.fa.fa-chevron-right
+      - else
+        h1 = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row
   .col-md-9.col-sm-12
-    = render partial: 'tasks', locals: { template: @template, workflow: @workflow, section: @section, tasks: @tasks }
+    = render partial: 'symphony/workflows/tasks', locals: { template: @template, workflow: @workflow, section: @section, tasks: @tasks }
     .row
       .col-lg-6.col-sm-12
-        = render partial: 'data_attributes', locals: { data: @workflow.data }
+        = render partial: 'symphony/workflows/data_attributes', locals: { data: @workflow.data }
       .col-lg-6.col-sm-12
-        = render partial: 'history', locals: { activities: @activities }
+        = render partial: 'symphony/workflows/history', locals: { activities: @activities }
   .col-md-3.col-sm-12
-    = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
-    = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
-    - if @user.has_role? :superadmin
-      = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
+    - if @workflow.archive.blank?
+      = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
+      = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
+      - if @user.has_role? :superadmin
+        = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
     br
-    - if @workflow.workflowable.present?
+    / - if @workflow.workflowable.present?
       .card.mb-3
         h6.card-header = @workflow.workflowable_type
         .card-body
@@ -43,16 +47,16 @@
             = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right'
           - else
             = link_to 'Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-sm btn-primary pull-right'
-    - if @workflow.remarks.present?
+    / - if @workflow.remarks.present?
       .card.mb-3
         h6.card-header Workflow Remarks
         .card-body = @workflow.remarks
     .card.mb-3
       h6.card-header Deadline
-      .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
-    = render partial: 'documents'
-    = render partial: 'invoice'
-    - if @workflow.recurring_workflow.present?
+      / .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
+    / = render partial: 'documents'
+    / = render partial: 'invoice'
+    / - if @workflow.recurring_workflow.present?
       .card.mb-3
         h6.card-header Next Recurring Workflow
         .card-body = @workflow.recurring_workflow.next_workflow_date
