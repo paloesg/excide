@@ -90,6 +90,7 @@ $(document).ready(function () {
       autoProcessQueue: false,
       parallelUploads: 100,
       uploadMultiple: false,
+
     });
     documentUpload.on("addedfile", function () {
       $('#drag-and-drop-submit').removeAttr('disabled');
@@ -108,6 +109,14 @@ $(document).ready(function () {
       var filePath = $(resp).find("Key").text();
       var location = new URL($(resp).find("Location").text())
       if($("#batch-uploader").length){
+        Dropzone.options.documentUpload = {
+          chunking: true,      // enable chunking
+          forceChunking: true, // forces chunking when file.size < chunkSize
+          parallelChunkUploads: false,
+          chunkSize: 1000000,  // chunk size 1,000,000 bytes (~1MB)
+          retryChunks: true,   // retry chunks on failure
+          retryChunksLimit: 10 // retry maximum of 3 times (default is 3)
+        };
         $.post('/symphony/documents', {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
