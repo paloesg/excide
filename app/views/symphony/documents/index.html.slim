@@ -12,16 +12,23 @@
         = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning' if ::Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').present?
 
 .row
-  .col-sm-6.offset-sm-6.mb-3
+  .col-sm-6.offset-sm-3.mb-3
     input.form-control#q type="search"
 
 .row
   .col-sm-3#facets
     #document_templates
-  .col-sm-9
+  .col-sm-6
     .card
-      h5.card-header Search results
+      h5.card-header Search Results
       .table-responsive#hits
+  .col-md-3
+    .card
+      h5.card-header Upload Documents
+      .card-body
+        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads document_index', id: 'documentIndex'
+          - @s3_direct_post.fields.each do |key, value|
+            = hidden_field_tag key, value
 
 javascript:
   function loadExtJS(src, callback) {
