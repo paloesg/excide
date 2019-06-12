@@ -1,0 +1,46 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="#" Home
+      li.breadcrumb-item
+        a href="#" Company
+      li.breadcrumb-item
+        a href="#" Documents
+      li.breadcrumb-item.active Update details
+    h1 Details
+.row
+  .col-sm-12
+    .table-responsive
+      table.table.table-hover
+        thead
+          tr
+            th File
+            th Edit
+        tbody
+          - @documents.each do |document|
+            tr
+              td.w-50
+                figure.figure
+                  - if File.extname(document.file_url) == '.pdf'
+                    iframe src="https://docs.google.com/viewer?url=https:#{document.file_url}&embedded=true" width="100%" height="500" style="border: none;"
+                  - else
+                    = image_tag(document[:file_url], class: 'img-responsive figure-img img-fluid', style: 'width:500px')
+                  figcaption.figure-caption.text-center = document.filename
+              td
+                = form_for(document, url: symphony_document_path(document.id, format: 'json'), remote: true) do |f|
+                  = f.hidden_field(:workflow_id, value: @workflow&.id)
+                  .row
+                    .col-md-12
+                      .form-group
+                        .file-path-wrapper
+                          = f.hidden_field :file_url, class: 'file-path form-control', disabled: true
+                        .form-group
+                          = f.label :document_template_id, 'Template'
+                          = f.collection_select :document_template_id, @document_templates, :id, :title, {include_blank: true}, {class: 'selectize'}
+                      .form-group
+                        = f.label :remarks
+                        = f.text_area :remarks, class: 'form-control'
+                      = f.submit 'Save Document', class: 'btn btn-primary'
+                      i.fa.fa-check.text-success.ml-3 style="opacity: 0;" id="check-#{document.id}"
+                .newDiv.text-success.(id="remarks-#{document.id}")

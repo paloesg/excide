@@ -13,4 +13,4 @@
       - @s3_direct_post.fields.each do |key, value|
         = hidden_field_tag key, value
     = hidden_field_tag 'template_id', @template.slug
-    = submit_tag 'Submit', class: 'btn btn-primary mt-2', id: 'drag-and-drop-submit'
+    = submit_tag 'Submit', disabled: true, class: 'btn btn-primary mt-2', id: 'drag-and-drop-submit'
