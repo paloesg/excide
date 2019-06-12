@@ -22,6 +22,7 @@
     .card
       h5.card-header Search Results
       .table-responsive#hits
+    #pagination
   .col-md-3
     .card
       h5.card-header Upload Documents
@@ -29,8 +30,6 @@
         = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads document_index', id: 'documentIndex'
           - @s3_direct_post.fields.each do |key, value|
             = hidden_field_tag key, value
-
-    #pagination
 
 javascript:
   function loadExtJS(src, callback) {
