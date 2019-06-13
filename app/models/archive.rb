@@ -7,7 +7,7 @@ class Archive
     @identifier = workflow.identifier
     @workflow = @archive["workflow"]
     @template = Template.new(@workflow["template"])
-    @data = @workflow["data"]
+    @data = @workflow["data"].map{|d| OpenStruct.new(d)}
     @activities = get_activities(@workflow["activity_log"])
     @workflowable = Workflowable.new(@workflow["workflowable_id"], @workflow["client_name"], @workflow["xero_contact_id"])
     @workflowable_type = @workflow["workflowable_type"]
