@@ -1,6 +1,8 @@
 class Archive
-  attr_reader :identifier, :template, :archive, :data, :activities, :workflowable, :workflowable_type, :remarks, :deadline
+  attr_reader :id, :identifier, :template, :archive, :data, :activities, :workflowable, :workflowable_type, :remarks, :deadline, :recurring_workflow
+
   def initialize(workflow)
+    @id = workflow.id
     @archive = workflow.archive
     @identifier = workflow.identifier
     @workflow = @archive["workflow"]
@@ -11,6 +13,7 @@ class Archive
     @workflowable_type = @workflow["workflowable_type"]
     @remarks = @workflow["remarks"]
     @deadline = @workflow["deadline"].to_datetime
+    @recurring_workflow = @workflow["recurring_workflow"]
   end
 
   class Workflowable

@@ -55,9 +55,9 @@
     .card.mb-3
       h6.card-header Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
-    / = render partial: 'symphony/workflows/documents'
-    / = render partial: 'symphony/workflows/invoice'
-    / - if @workflow.recurring_workflow.present?
+    = render partial: 'symphony/workflows/documents'
+    = render partial: 'symphony/workflows/invoice'
+    - if @workflow.recurring_workflow.present?
       .card.mb-3
         h6.card-header Next Recurring Workflow
         .card-body = @workflow.recurring_workflow.next_workflow_date
