@@ -10,9 +10,9 @@
       tbody
         - if @workflow.archive.blank?
           - activities.take(10).each do |activity|
-            tr = render_activity activity
         - else
           - activities.each do |activity|
+
             tr = render_activity activity
   - if (activities.count > 10) and @workflow.archive.blank?
     .card-footer
