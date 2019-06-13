@@ -7,10 +7,10 @@
         = link_to @template.title, symphony_workflows_path(@template.slug)
       li.breadcrumb-item.active.text-truncate #{@workflow.identifier}
 .row
-  .col-md-9.col-sm-12
+  .col-md-8.col-sm-12
     h1.text-truncate
       | #{@template.title} – #{@workflow.identifier}
-  .col-md-3.col-sm-6
+  .col-md-4.col-sm-6
     .btn-group.float-right role='group'
       - if @workflow.archive.blank?
         - if @workflow.previous_workflow.present?
@@ -37,10 +37,10 @@
       = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
       - if @user.has_role? :superadmin
         = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
-    br
+      br
     - if @workflow.workflowable.present?
       .card.mb-3
-        h6.card-header = @workflow.workflowable_type
+        h6.card-header Client
         .card-body
           = @workflow.workflowable&.name
           - if @workflow.archive.blank?
