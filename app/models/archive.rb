@@ -12,7 +12,7 @@ class Archive
     @workflowable = Workflowable.new(@workflow["workflowable_id"], @workflow["client_name"], @workflow["xero_contact_id"])
     @workflowable_type = @workflow["workflowable_type"]
     @remarks = @workflow["remarks"]
-    @deadline = @workflow["deadline"].to_datetime
+    @deadline = @workflow["deadline"]&.to_datetime
     @recurring_workflow = @workflow["recurring_workflow"]
   end
 
