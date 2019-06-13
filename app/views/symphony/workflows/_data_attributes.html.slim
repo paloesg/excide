@@ -9,7 +9,7 @@
           th Updated By
           th Updated At
       tbody
-        - data.each do |d|
+        - @workflow.data.each do |d|
           tr
             td = d.name
             td = d.value

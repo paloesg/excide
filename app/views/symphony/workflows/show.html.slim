@@ -25,12 +25,12 @@
         h1 = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row
   .col-md-9.col-sm-12
-    = render partial: 'symphony/workflows/tasks', locals: { template: @template, workflow: @workflow, section: @section, tasks: @tasks }
+    = render partial: 'symphony/workflows/tasks'
     .row
       .col-lg-6.col-sm-12
-        = render partial: 'symphony/workflows/data_attributes', locals: { data: @workflow.data }
+        = render partial: 'symphony/workflows/data_attributes'
       .col-lg-6.col-sm-12
-        = render partial: 'symphony/workflows/history', locals: { activities: @activities }
+        = render partial: 'symphony/workflows/history'
   .col-md-3.col-sm-12
     - if @workflow.archive.blank?
       = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
