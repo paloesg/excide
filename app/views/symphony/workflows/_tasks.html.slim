@@ -12,11 +12,11 @@
           th
       tbody
         - tasks.each do |task|
-          - if (current_page? controller: 'symphony/workflows', action: 'show')
+          - if @workflow.archive.blank?
             - t = TaskDecorator.new(task)
             - a = t.workflow_action(workflow.identifier)
             = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
-          - elsif (current_page? controller: 'symphony/archives', action: 'show')
+          - else
             tr
               td = task['position']
               td = task['instructions']
@@ -35,7 +35,7 @@
                     = text_field_tag :remarks, task['workflow_actions']['remarks'], class: 'form-control', disabled: true
                     = image_tag(task['image_url'], class: "img-fluid pt-4") if task['image_url'].present?
   .card-footer
-    - if (current_page? controller: 'symphony/workflows', action: 'show')
+    - if @workflow.archive.blank?
       - unless section.first?
         = link_to section_symphony_workflow_path(template.slug, workflow.identifier, section.higher_item.id), class: 'btn btn-sm btn-outline-secondary float-left'
           i.fa.fa-chevron-left
@@ -44,7 +44,7 @@
         = link_to section_symphony_workflow_path(template.slug, workflow.identifier, section.lower_item.id), class: 'btn btn-sm btn-outline-secondary float-right'
           ' Next Section
           i.fa.fa-chevron-right
-    - elsif (current_page? controller: 'symphony/archives', action: 'show')
+    - else
       - unless @sections.first['unique_name'] == section['unique_name']
         = link_to "?section=#{@sections[@section_index - 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-left'
           i.fa.fa-chevron-left
