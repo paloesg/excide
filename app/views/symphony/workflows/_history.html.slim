@@ -8,12 +8,9 @@
           th Action
           th Time
       tbody
-        - if @workflow.archive.blank?
-          - activities.take(10).each do |activity|
-        - else
-          - activities.each do |activity|
-
-            tr = render_activity activity
+        - get_activities = @workflow.archive.blank? ? activities.take(10) : activities
+        - get_activities.each do |activity|
+          tr = render_activity activity
   - if (activities.count > 10) and @workflow.archive.blank?
     .card-footer
       = link_to "View more...", activities_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-sm btn-outline-secondary float-right'
