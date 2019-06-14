@@ -4,7 +4,7 @@ class BatchPolicy < ApplicationPolicy
   end
 
   def show?
-    user == record.user
+    user.company == record.company
   end
 
    def create?
@@ -16,7 +16,7 @@ class BatchPolicy < ApplicationPolicy
   end
 
    def update?
-    user == record.user or user.has_role? :admin
+    user.company == record.company or user.has_role? :admin
   end
 
    def edit?
