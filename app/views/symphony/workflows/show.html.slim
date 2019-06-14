@@ -12,7 +12,7 @@
       | #{@template.title} – #{@workflow.identifier}
   .col-md-4.col-sm-6
     .btn-group.float-right role='group'
-      - if @workflow.archive.blank?
+      - if @workflow.archive.blank? or @workflow.archive == "[]"
         - if @workflow.previous_workflow.present?
           = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-outline-secondary'
             i.fa.fa-chevron-left
@@ -32,7 +32,7 @@
       .col-lg-6.col-sm-12
         = render partial: 'symphony/workflows/history'
   .col-md-3.col-sm-12
-    - if @workflow.archive.blank?
+    - if @workflow.archive.blank? or @workflow.archive == "[]"
       = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
       = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
       - if @user.has_role? :superadmin
@@ -43,7 +43,7 @@
         h6.card-header Client
         .card-body
           = @workflow.workflowable&.name
-          - if @workflow.archive.blank?
+          - if @workflow.archive.blank? or @workflow.archive == "[]"
             - if @workflow.workflowable.xero_contact_id.present?
               = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right'
             - else
