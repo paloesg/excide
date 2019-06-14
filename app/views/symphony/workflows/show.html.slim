@@ -7,98 +7,47 @@
         = link_to @template.title, symphony_workflows_path(@template.slug)
       li.breadcrumb-item.active.text-truncate #{@workflow.identifier}
 .row
-  .col-md-9.col-sm-12
+  .col-md-8.col-sm-12
     h1.text-truncate
       | #{@template.title} – #{@workflow.identifier}
-  .col-md-3.col-sm-6
+  .col-md-4.col-sm-6
     .btn-group.float-right role='group'
-      - if @workflow.previous_workflow.present?
-        = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-outline-secondary'
-          i.fa.fa-chevron-left
-          |  Earlier Workflow
-      - if @workflow.next_workflow.present?
-        = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-outline-secondary'
-          ' Later Workflow
-          i.fa.fa-chevron-right
+      - if @workflow.archive.blank?
+        - if @workflow.previous_workflow.present?
+          = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-outline-secondary'
+            i.fa.fa-chevron-left
+            |  Earlier Workflow
+        - if @workflow.next_workflow.present?
+          = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-outline-secondary'
+            ' Later Workflow
+            i.fa.fa-chevron-right
+      - else
+        h1 = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row
   .col-md-9.col-sm-12
-    .card.mb-3
-      h5.card-header = @section.display_name
-      .table-responsive
-        table.table
-          thead
-            tr
-              th No.
-              th Instructions
-              th Assigned To
-              th Deadline
-              th Done
-              th
-          tbody
-            - @tasks.each do |task|
-              - t = TaskDecorator.new(task)
-              - a = t.workflow_action(@workflow.identifier)
-              = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
-      .card-footer
-        - unless @section.first?
-          = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-sm btn-outline-secondary float-left'
-            i.fa.fa-chevron-left
-            |  Previous Section
-        - unless @section.last?
-          = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.lower_item.id), class: 'btn btn-sm btn-outline-secondary float-right'
-            ' Next Section
-            i.fa.fa-chevron-right
-        .clearfix
+    = render partial: 'symphony/workflows/tasks'
     .row
       .col-lg-6.col-sm-12
-        .card.mb-3
-          h5.card-header Attributes
-          .table-responsive
-            table.table.table-condensed
-              thead
-                tr
-                  th Name
-                  th Value
-                  th Updated By
-                  th Updated At
-              tbody
-                - @workflow.data.each do |d|
-                  tr
-                    td = d.name
-                    td = d.value
-                    td = User.find_by(id: d.user_id)&.full_name
-                    td = d.updated_at&.to_time&.strftime("%d/%m/%Y %R")
+        = render partial: 'symphony/workflows/data_attributes'
       .col-lg-6.col-sm-12
-        .card
-          h5.card-header History
-          .table-responsive
-            table.table.table-condensed
-              thead
-                tr
-                  th User
-                  th Action
-                  th Time
-              tbody
-                - @activities.take(10).each do |activity|
-                  tr = render_activity activity
-          - if @activities.count > 10
-            .card-footer
-              = link_to "View more...", activities_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-sm btn-outline-secondary float-right'
+        = render partial: 'symphony/workflows/history'
   .col-md-3.col-sm-12
-    = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
-    = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
-    - if @user.has_role? :superadmin
-      = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
-    br
+    - if @workflow.archive.blank?
+      = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
+      = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
+      - if @user.has_role? :superadmin
+        = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
+      br
     - if @workflow.workflowable.present?
       .card.mb-3
-        h6.card-header = @workflow.workflowable_type
+        h6.card-header Client
         .card-body
           = @workflow.workflowable&.name
-          - if @workflow.workflowable.xero_contact_id.present?
-            = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right'
-          - else
-            = link_to 'Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-sm btn-primary pull-right'
+          - if @workflow.archive.blank?
+            - if @workflow.workflowable.xero_contact_id.present?
+              = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right'
+            - else
+              = link_to 'Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-sm btn-primary pull-right'
     - if @workflow.remarks.present?
       .card.mb-3
         h6.card-header Workflow Remarks
@@ -106,55 +55,8 @@
     .card.mb-3
       h6.card-header Deadline
       .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
-    .card.mb-3
-      h6.card-header Documents
-      - if @documents.empty?
-        .card-body No documents yet.
-      - else
-        - @documents.each do |d|
-          ul.list-group.list-group-flush
-            li.list-group-item
-              .media
-                .align-self-center
-                  = link_to symphony_document_path(d)
-                    i.ti-file.icon.mr-3 style="font-size: 50px"
-                .media-body
-                  h5.card-title = d.filename
-                  h6.card-subtitle = d.user&.full_name
-                  .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
-    .card.mb-3
-      h6.card-header Document Templates
-      - if @document_templates.empty?
-        .card-body No documents yet.
-      - else
-        - @document_templates.each do |d|
-          ul.list-group.list-group-flush
-            li.list-group-item
-              .media
-                .align-self-center
-                  a href = d.file_url
-                    i.ti-file.icon.mr-3 style="font-size: 50px"
-                .media-body
-                  h5.card-title = d.title
-                  h6.card-subtitle = File.basename(d.file_url)
-                  .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
-    .card.mb-3
-      h6.card-header Invoice
-      - if @invoice.blank?
-        .card-body No invoice yet.
-      - else
-        ul.list-group.list-group-flush
-          li.list-group-item
-            .media
-              .align-self-center
-                = link_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id)
-                  i.ti-receipt.icon.mr-3 style="font-size: 50px"
-              .media-body
-                h5.card-title = @invoice.id
-                h6.card-subtitle Invoice Type: #{@invoice.invoice_type.capitalize}
-                h6.card-subtitle.mt-1 Invoice Contact: #{@invoice.xero_contact_name.capitalize}
-                h6.card-subtitle.mt-1 Invoice Total: $#{@invoice.total}
-                .text-muted = @invoice.created_at.strftime("Uploaded at %d/%m/%Y %R")
+    = render partial: 'symphony/workflows/documents'
+    = render partial: 'symphony/workflows/invoice'
     - if @workflow.recurring_workflow.present?
       .card.mb-3
         h6.card-header Next Recurring Workflow
