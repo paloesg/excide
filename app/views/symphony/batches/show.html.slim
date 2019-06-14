@@ -12,7 +12,7 @@
       | Batch ID - #{@batch.id}
 - @sections.each do |section|
   .card.mb-3
-    h5.card-header = section.display_name + ' - ' + section.tasks.count.to_s + " tasks"
+    h5.card-header = section.unique_name + ' - ' + section.tasks.count.to_s + " tasks"
     .card-body
       table.table.table-hover
         thead
