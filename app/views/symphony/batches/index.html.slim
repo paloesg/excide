@@ -18,6 +18,7 @@
               th Template
               th Created by
               th Created at
+              th Progress
           tbody
             - @batches_paginate.each do |batch|
               tr
@@ -25,5 +26,8 @@
                 td = batch.template.title
                 td = batch.user.full_name
                 td = batch.created_at.strftime('%m/%d/%Y %H:%M')
+                td
+                  .progress
+                    .progress-bar.progress-bar-striped aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{batch.action_completed_progress}%") #{batch.action_completed_progress}%
         .card-footer.pt-4
           = paginate @batches_paginate, views_prefix: 'dashboards'
