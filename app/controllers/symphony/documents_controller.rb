@@ -1,5 +1,5 @@
 class Symphony::DocumentsController < DocumentsController
-  before_action :set_templates, only: [:new, :edit]
+  before_action :set_templates, only: [:new, :edit, :multiple_edit]
   before_action :set_company_workflows, only: [:new, :edit]
   before_action :set_workflow, only: [:new]
   before_action :set_workflow_action, only: [:new]
@@ -72,14 +72,39 @@ class Symphony::DocumentsController < DocumentsController
     end
   end
 
+  def index_create
+    @files = []
+    set_company
+    params[:url_files].each do |url_file|
+      document = Document.new(file_url: url_file)
+      document.company = @company
+      document.user = @user
+      document.save
+      @files.append document
+      authorize document
+    end
+    respond_to do |format|
+      format.html { redirect_to multiple_edit_symphony_documents_path files: @files }
+      format.json { render json: @files.to_json }
+    end
+  end
+
+  def multiple_edit
+    @documents = Document.where(id: params[:files])
+    authorize @documents
+  end
+
   def update
     authorize @document
 
     if @document.update(document_params)
-      redirect_to symphony_document_path, notice: 'Document was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to symphony_document_path, notice: 'Document was successfully updated.' }
+        format.json { render json: @document }
+      end
     else
       set_templates
-      render :edit
+      format.html { render :edit }
     end
   end
 
