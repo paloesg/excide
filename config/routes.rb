@@ -33,6 +33,11 @@ Rails.application.routes.draw do
   namespace :symphony do
     get '/search', to: 'home#search'
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
+
+    resources :templates, param: :template_slug, except: [:destroy]
+    post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
+    delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
+
     resources :clients do
       member do
         post '/xero_create', to: 'clients#xero_create', as: :xero_create
@@ -55,6 +60,8 @@ Rails.application.routes.draw do
     resources :document_templates
     resources :documents do
       collection do
+        post '/index-create', to: 'documents#index_create', as: :index_create_document
+        get '/multiple-edit', to: 'documents#multiple_edit', as: :multiple_edit
         get '/upload-invoice', to: 'documents#upload_invoice', as: :upload_invoice
         post '/multiple', to: 'documents#multiple_create'
       end

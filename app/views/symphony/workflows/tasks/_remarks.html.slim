@@ -1,7 +1,7 @@
 .row
   .col-md-12
   	/ specifying data type of js
-    = form_for(action, url:workflow_action_path(id: action.id), method: :patch, remote: true, data: {type: 'script'}) do |f|
+    = form_for(action, url:workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
       .form-group
         = f.label :remarks
         = f.text_field :remarks, class: 'form-control', id: "remark-post-#{action.id}",placeholder: 'Enter remarks here...'

@@ -1,0 +1,23 @@
+- if @template.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@template.errors.count, "error")} prohibited this template from being saved:"
+    ul
+      - @template.errors.full_messages.each do |message|
+        li = message
+.row
+  .col-md-3.col-sm-12
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Template Details:
+          .col-sm-12.mt-3
+            .form-group
+              = f.label :title, "Title:" 
+              = f.text_field :title, class: "form-control"
+            .form-group
+              = f.label :workflow_type, "Workflow Type:" 
+              = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
+  .col-md-9.col-sm-12
+    .card.mb-3
+      = f.fields_for :sections do |section|
+        = render 'section_fields', f: section

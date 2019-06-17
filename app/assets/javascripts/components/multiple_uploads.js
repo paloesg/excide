@@ -66,14 +66,17 @@ $(document).ready(function () {
       filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       return filter_filename + '.' + get_extension;
     };
-    var documentUpload = new Dropzone(".multiple_uploads", {
-      timeout: 0,
-      renameFilename: cleanFilename,
-      autoProcessQueue: false,
-      parallelUploads: 100,
-      uploadMultiple: false,
-
-    });
+    if ($("#documentIndex")) {
+      var documentUpload = new Dropzone('.multiple_uploads', { timeout: 0, renameFilename: cleanFilename });
+    } else {
+      var documentUpload = new Dropzone(".multiple_uploads", {
+        timeout: 0,
+        renameFilename: cleanFilename,
+        autoProcessQueue: false,
+        parallelUploads: 100,
+        uploadMultiple: false,
+      });
+    }
     Dropzone.options.documentUpload = {
       chunking: true,      // enable chunking
       forceChunking: true, // forces chunking when file.size < chunkSize
@@ -82,6 +85,14 @@ $(document).ready(function () {
       retryChunks: true,   // retry chunks on failure
       retryChunksLimit: 10 // retry maximum of 3 times (default is 3)
     };
+    documentUpload.on("sending", function(file) {
+      if ($("#documentIndex")) {
+        if ( $('#template_id').val() == "" ) {
+          alert('Template is required.');
+          this.removeFile(file);
+        }
+      }
+    })
     documentUpload.on("addedfile", function () {
       $('#drag-and-drop-submit').removeAttr('disabled');
     });
@@ -132,6 +143,21 @@ $(document).ready(function () {
       // console.log(multiple_data)
       // uploadMultipleDocuments(multiple_data);
       $('#view-invoices-button').show();
+      // Get url files after uploaded
+      var url_files = []
+      if ($("#documentIndex")) {
+        $.each(this.files, function(index, value) {
+          var key     = $(value.xhr.responseXML).find("Key").text();
+          var parser  = document.createElement('a');
+          parser.href = $(value.xhr.responseXML).find("Location").text()
+          var url     = '//' + parser.hostname + '/' + key;
+          url_files.push(url)
+        });
+      }
+      $.post('/symphony/documents/index-create', {
+        authenticity_token: $.rails.csrfToken(),
+        url_files: url_files
+      });
     });
   };
 });

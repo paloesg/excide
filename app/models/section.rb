@@ -4,9 +4,9 @@ class Section < ApplicationRecord
 
   has_many :tasks, -> { order(position: :asc) }, dependent: :destroy
 
-  accepts_nested_attributes_for :tasks
+  accepts_nested_attributes_for :tasks, allow_destroy: true
 
-  validates :unique_name, :display_name, :position, presence: true
+  validates :unique_name, :position, presence: true
 
   def get_next_section
     self.lower_item
