@@ -13,6 +13,7 @@ $(document).ready(function () {
     $( ".action_id" ).each(function( index ) {
       var action_id = $(this).attr('id')
       var workflow_action_id = $('#'+action_id).val();
+      var action_id_str = action_id.substr(10);
 
       if($(".uploadToXero"+workflow_action_id).length){
         var cleanFilename = function (name) {
@@ -34,7 +35,7 @@ $(document).ready(function () {
             //check this part of drag and drop
             $.post('/symphony/documents', {
               authenticity_token: $.rails.csrfToken(),
-              workflow: $('#workflow_identifier').val(),
+              workflow: $('#workflow_identifier_'+action_id_str).val(),
               workflow_action: workflow_action_id,
               document: {
                 filename: file.upload.filename,
