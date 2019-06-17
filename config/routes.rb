@@ -56,6 +56,7 @@ Rails.application.routes.draw do
     resources :documents do
       collection do
         get '/upload-invoice', to: 'documents#upload_invoice', as: :upload_invoice
+        post '/multiple', to: 'documents#multiple_create'
       end
     end
     get '/archives', to: 'archives#index', as: :archives
