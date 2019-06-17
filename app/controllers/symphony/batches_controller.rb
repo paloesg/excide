@@ -4,7 +4,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_batch, only: [:show]
-  before_action :set_s3_direct_post, only: [:show]
+  before_action :set_s3_direct_post, only: [:show, :new]
 
   def index
     #get current_user's roles with all the word downcase for matching the string
@@ -27,7 +27,6 @@ class Symphony::BatchesController < ApplicationController
   def new
     @batch = Batch.new
     @template = Template.find_by(slug: params[:batch_template_name])
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
   def create

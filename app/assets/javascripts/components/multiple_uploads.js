@@ -8,7 +8,7 @@ $(document).ready(function () {
     }
   })
 
-  //upload documents on workflows page
+  //upload documents on workflows and batch page
   if ($(".action_id").length){
     $( ".action_id" ).each(function( index ) {
       var action_id = $(this).attr('id')
