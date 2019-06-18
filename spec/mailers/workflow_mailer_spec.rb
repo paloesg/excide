@@ -7,10 +7,10 @@ RSpec.describe WorkflowMailer, type: :mailer do
     ActionMailer::Base.delivery_method = :test
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
-    template = build(:template)
-    workflow = build(:workflow, template: template)
-    user = build(:user)
-    company = build(:company)
+    # template = build(:template)
+    # workflow = build(:workflow, template: template)
+    # user = build(:user)
+    # company = build(:company)
     # WorkflowMailer.email_summary(workflow, user, company).deliver
   end
 
