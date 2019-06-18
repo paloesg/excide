@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   namespace :symphony do
     get '/search', to: 'home#search'
     get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
+    post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
 
     resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section

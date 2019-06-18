@@ -43,3 +43,11 @@
               - section.tasks.order(created_at: :asc).each do |task|
                 td.text-center
                   = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.identifier)
+        tfoot
+          tr
+            th
+            th
+            - section.tasks.order(created_at: :asc).each do |task|
+              th
+                .text-center
+                  = button_tag 'Complete all', type: 'button', class: "btn btn-info btn-sm checkall", id:"selectall-#{task.id}"
