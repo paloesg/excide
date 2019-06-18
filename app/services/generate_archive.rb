@@ -32,7 +32,7 @@ class GenerateArchive
     archive_sections = []
     sections = @workflow.template.sections
     sections.each do |section|
-      archive_section = { unique_name: section.unique_name, display_name: section.display_name, position: section.position, tasks: generate_archive_tasks(section) }
+      archive_section = { section_name: section.section_name, position: section.position, tasks: generate_archive_tasks(section) }
       archive_sections << archive_section
     end
     archive_sections

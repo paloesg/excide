@@ -11,8 +11,8 @@
     h1
       | Batch ID - #{@batch.id}
 - @sections.each do |section|
-  .card.mb-3
-    h5.card-header = section.unique_name + ' - ' + section.tasks.count.to_s + " tasks"
+  .card.scrollbar.mb-3
+    h5.card-header = section.section_name + ' - ' + section.tasks.count.to_s + " tasks"
     .card-body
       table.table.table-hover
         thead
