@@ -189,7 +189,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def send_email_to_xero
-    @workflow = Workflow.find(params[:workflow_id])
+    @workflow = @company.workflows.find(params[:workflow_id])
 
     @workflow.documents.each do |workflow_docs|
         WorkflowMailer.send_invoice_email(@workflow, workflow_docs).deliver_later

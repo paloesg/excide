@@ -3,10 +3,10 @@ class Symphony::InvoicesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_invoice, only: [:edit, :update, :show, :destroy]
+  before_action :set_company
   before_action :set_workflow
   before_action :set_documents
-  before_action :set_company
+  before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :get_xero_details
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
@@ -83,7 +83,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def set_workflow
-    @workflow = Workflow.find(params[:workflow_id])
+    @workflow = @company.workflows.find(params[:workflow_id])
   end
 
   def set_company
