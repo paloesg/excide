@@ -34,6 +34,7 @@ class Symphony::BatchesController < ApplicationController
     @batch.company = @company
     @template = Template.find(params[:batch][:template_id])
     @batch.template = @template
+    @batch.user = current_user
     @batch.save
   end
 

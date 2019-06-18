@@ -3,7 +3,7 @@ class WorkflowsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company_and_roles
-  before_action :set_template, except: [:check_identifier]
+  before_action :set_template, except: [:check_identifier, :toggle_all]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :section]
 
   def show
@@ -39,6 +39,18 @@ class WorkflowsController < ApplicationController
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def toggle_all
+    @actions = WorkflowAction.where(id: params[:workflow_action_ids])
+    respond_to do |format|
+      if @actions.update_all(completed: true, completed_user_id: current_user.id)
+        format.json { render json: true, status: :ok }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      else
+        format.json { render json: @actions.errors, status: :unprocessable_entity }
       end
     end
   end

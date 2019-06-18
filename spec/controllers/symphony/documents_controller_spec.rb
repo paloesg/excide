@@ -14,7 +14,8 @@ RSpec.describe Symphony::DocumentsController, type: :controller do
   end
 
   describe "login user" do
-    let(:user) { FactoryBot.create(:user) }
+    let(:company) { FactoryBot.create(:company) }
+    let(:user) { FactoryBot.create(:user, company: company) }
     before :each do
       login_with user
     end
