@@ -42,14 +42,6 @@ class Workflow < ApplicationRecord
     self.workflowable = workflowable_type.constantize.new(params)
   end
 
-  def next_workflow
-    Workflow.where(template: self.template).where('id > ?', self.id).first
-  end
-
-  def previous_workflow
-    Workflow.where(template: self.template).where('id < ?', self.id).last
-  end
-
   def current_section
     if self.completed
       self.template.sections.last
@@ -133,7 +125,7 @@ class Workflow < ApplicationRecord
         WorkflowAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
-    trigger_first_task if ordered_workflow? 
+    trigger_first_task if ordered_workflow?
   end
 
   def ordered_workflow?

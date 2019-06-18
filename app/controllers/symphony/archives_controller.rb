@@ -23,7 +23,7 @@ class Symphony::ArchivesController < ApplicationController
 
   def show
     @workflows = @company.workflows
-    @get_workflow = @workflows.find(params[:workflow_identifier])
+    @get_workflow = @workflows.find(params[:workflow_id])
     @workflow = Archive.new(@get_workflow)
     @template = @workflow.template
     @sections = @template.sections
