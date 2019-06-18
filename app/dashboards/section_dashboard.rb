@@ -11,8 +11,7 @@ class SectionDashboard < Administrate::BaseDashboard
     template: Field::BelongsTo,
     tasks: Field::NestedHasMany.with_options(skip: [:section, :workflow_actions]),
     id: Field::Number,
-    unique_name: Field::String,
-    display_name: Field::String,
+    section_name: Field::String,
     position: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -26,7 +25,7 @@ class SectionDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :template,
-    :unique_name,
+    :section_name,
     :position,
     :tasks,
   ].freeze
@@ -35,8 +34,7 @@ class SectionDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :id,
-    :unique_name,
-    :display_name,
+    :section_name,
     :template,
     :position,
     :template,
@@ -50,8 +48,7 @@ class SectionDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :template,
-    :unique_name,
-    :display_name,
+    :section_name,
     :position,
     :tasks,
   ].freeze
@@ -60,6 +57,6 @@ class SectionDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(section)
-    section.unique_name
+    section.section_name
   end
 end

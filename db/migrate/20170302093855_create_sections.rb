@@ -1,7 +1,7 @@
 class CreateSections < ActiveRecord::Migration
   def change
     create_table :sections do |t|
-      t.string :unique_name
+      t.string :section_name
       t.string :display_name
       t.integer :position
       t.references :template, index: true, foreign_key: true
