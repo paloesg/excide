@@ -76,4 +76,4 @@ container
                 td = wfa.completed_user.full_name.to_s
               td = wfa.remarks
       p.lead.email-margin-top
-        a href="#{symphony_archive_url(@workflow.template.slug, @workflow.id)}" View the workflow
+        a href="#{symphony_workflow_url(@workflow.template.slug, @workflow.id)}" View the workflow

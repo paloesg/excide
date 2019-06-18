@@ -1,3 +1,5 @@
+= render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow
+br
 - if workflow.invoice&.payable?
   / If xero invoice is present, only show button to view Xero invoice
   - if workflow.invoice.xero_invoice_id.present?
@@ -14,4 +16,3 @@
   = link_to("Not invoice payable", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
 - else
   = link_to("No invoice found", '#', role: 'button', class: 'btn btn-primary btn-sm disabled')
-= render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow

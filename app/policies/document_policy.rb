@@ -23,6 +23,14 @@ class DocumentPolicy < ApplicationPolicy
     update?
   end
 
+  def index_create?
+    create?
+  end
+
+  def multiple_edit?
+    index?
+  end
+
   def destroy?
     user.has_role? :admin, record.company
   end

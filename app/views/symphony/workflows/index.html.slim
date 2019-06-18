@@ -31,6 +31,6 @@
                 td = w.workflowable&.name || '-'
                 td = w.remarks || '-'
                 td = w.deadline&.strftime("%d/%m/%Y") || '-'
-                td = w.completed ? 'Completed' : w.current_section&.display_name
+                td = w.completed ? 'Completed' : w.current_section&.section_name
         .card-footer.pt-4
           = paginate @workflows, views_prefix: 'dashboards'

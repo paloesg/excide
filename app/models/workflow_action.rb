@@ -30,7 +30,7 @@ class WorkflowAction < ApplicationRecord
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
 
     # Trigger email notification for next task if role present
-    if next_task.role.present?
+    if next_task.role.present? and self.workflow.batch.nil?
       users = User.with_role(next_task.role.name.to_sym, self.company)
       NotificationMailer.deliver_notifications(next_task, next_action, users)
     end
