@@ -6,7 +6,7 @@ class Section < ApplicationRecord
 
   accepts_nested_attributes_for :tasks, allow_destroy: true
 
-  validates :unique_name, :position, presence: true
+  validates :section_name, :position, presence: true
 
   def get_next_section
     self.lower_item

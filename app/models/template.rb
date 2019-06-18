@@ -33,7 +33,7 @@ class Template < ApplicationRecord
         row = [
           workflow['identifier'],
           workflow['created_at'],
-          workflow['completed'] ? 'Completed' : workflow.current_section&.display_name,
+          workflow['completed'] ? 'Completed' : workflow.current_section&.section_name,
           workflow['remarks']
         ]
         row_value = []
