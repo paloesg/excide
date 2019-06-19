@@ -27,7 +27,7 @@
     .card
       h5.card-header Upload Documents
       .card-body
-        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads document_index', id: 'documentIndex'
+        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads_and_edit'
           - @s3_direct_post.fields.each do |key, value|
             = hidden_field_tag key, value
 
