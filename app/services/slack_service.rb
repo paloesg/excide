@@ -74,8 +74,8 @@ class SlackService
               short: true
             },
             {
-              title: 'Workflow Identifier',
-              value: document.workflow&.identifier || '-',
+              title: 'Workflow Id',
+              value: document.workflow&.id || '-',
               short: true
             },
             {
@@ -216,8 +216,8 @@ class SlackService
           color: GOOD,
           fields: [
             {
-              title: 'Workflow Identifier',
-              value: action.workflow.identifier,
+              title: 'Workflow Id',
+              value: action.workflow.id,
               short: true
             },
             {

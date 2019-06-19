@@ -14,8 +14,8 @@ class Task < ApplicationRecord
 
   validates :instructions, :position, :task_type, presence: true
 
-  def get_workflow_action(company_id, workflow_identifier = nil)
-    workflow_id = workflow_identifier.present? ? Workflow.find_by(identifier: workflow_identifier).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id
+  def get_workflow_action(company_id, workflow_id = nil)
+    workflow_id = workflow_id.present? ? Workflow.find(workflow_id).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id
 
     return self.workflow_actions.find_by(company_id: company_id, workflow_id: workflow_id)
   end

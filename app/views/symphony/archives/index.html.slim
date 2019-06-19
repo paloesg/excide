@@ -19,7 +19,7 @@
         table.table
           thead
             tr
-              th = sortable "identifier", "Identifier"
+              th = sortable "id", "workflow ID"
               th = sortable "template", "Workflow Type"
               th = sortable "workflowable", "Client Name"
               th = sortable "remarks", "Remarks"
@@ -28,7 +28,7 @@
           tbody
             - @workflows.each do |w|
               tr.success
-                td = link_to w.identifier, symphony_archive_path(w.template.slug, w.identifier)
+                td = link_to w.id, symphony_archive_path(w.template.slug, w.id)
                 td = w.template.title
                 td = w.workflowable&.name || '-'
                 td = w.remarks || '-'

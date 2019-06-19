@@ -35,7 +35,8 @@ $(document).ready(function () {
             //check this part of drag and drop
             $.post('/symphony/documents', {
               authenticity_token: $.rails.csrfToken(),
-              workflow: $('#workflow_identifier_'+action_id_str).val(),
+              workflow: $('#workflow_id_'+action_id_str).val(),
+              workflow_action: workflow_action_id,
               document: {
                 filename: file.upload.filename,
                 file_url: '//' + location['host'] + '/' + filePath
@@ -84,7 +85,6 @@ $(document).ready(function () {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
           count: this.files.length,
-          workflow_identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
           document: {
             filename: file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,
