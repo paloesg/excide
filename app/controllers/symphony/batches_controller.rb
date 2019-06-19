@@ -36,6 +36,9 @@ class Symphony::BatchesController < ApplicationController
     @batch.template = @template
     @batch.user = current_user
     @batch.save
+    respond_to do |format|
+      format.json  { render :json => {:batch_id => @batch.id} }
+    end
   end
 
   def show

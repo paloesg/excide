@@ -57,8 +57,9 @@ class Symphony::DocumentsController < DocumentsController
           @workflow.batch = Batch.last
           @workflow.save
           @document.update_attributes(workflow: @workflow)
-          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_batch_path(@workflow.template.slug, @workflow.batch_id), notice: params[:count] + ' documents were successfully created.' }
-          format.json { render :show, status: :created, location: @document}
+          #return output in json
+          output = { :status => "ok", :message => "batch documents created", :document => @document.id, :batch => @workflow.batch.id, :template => @template.slug}
+          format.json  { render :json => output }
         else
           format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
           format.json { render :show, status: :created, location: @document}
@@ -92,32 +93,6 @@ class Symphony::DocumentsController < DocumentsController
   def multiple_edit
     @documents = Document.where(id: params[:files])
     authorize @documents
-  end
-
-  def multiple_create
-    params[:data_inputs].each do |index, data_input|
-      set_company
-      @document = Document.new(multiple_document_params(data_input))
-      @document.company = @company
-      @document.user = @user
-      @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if data_input[:document_type] == 'invoice'
-      if @document.save
-        if data_input[:document_type] == 'batch-uploads'
-          create_workflow(@company,data_input[:document][:template_id], data_input[:workflow_identifier], @client, @document)
-        end
-      else
-        respond_to do |format|
-          set_templates
-
-          format.html { render :new }
-          format.json { render json: @document.errors, status: :unprocessable_entity }
-        end
-      end
-    end
-    respond_to do |format|
-      format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_batch_path(@workflow.template.slug, @workflow.batch_id), notice:' documents were successfully created.' }
-      format.json { render :show, status: :created, location: @document}
-    end
   end
 
   def update

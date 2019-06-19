@@ -63,7 +63,6 @@ Rails.application.routes.draw do
         post '/index-create', to: 'documents#index_create', as: :index_create_document
         get '/multiple-edit', to: 'documents#multiple_edit', as: :multiple_edit
         get '/upload-invoice', to: 'documents#upload_invoice', as: :upload_invoice
-        post '/multiple', to: 'documents#multiple_create'
       end
     end
     get '/archives', to: 'archives#index', as: :archives
