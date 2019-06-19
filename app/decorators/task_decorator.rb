@@ -1,6 +1,6 @@
 class TaskDecorator < SimpleDelegator
-  def workflow_action(workflow_identifier)
-    workflow = Workflow.find_by(identifier: workflow_identifier)
+  def workflow_action(workflow_id)
+    workflow = Workflow.find(workflow_id)
     action = workflow_actions.find_by(workflow: workflow)
 
     return action

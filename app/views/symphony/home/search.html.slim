@@ -30,13 +30,13 @@ javascript:
 
   loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
     var hitTemplate = '<table class="table table-striped">' +
-        '<thead><tr><th>Workflow Identifier</th>' +
+        '<thead><tr><th>Workflow ID</th>' +
         '<th>Workflow Type</th>' +
         '<th>Client Name</th>' +
         '<th>Deadline</th>' +
         '<th>Status</th></tr></thead>' +
         '<tbody>{{#hits}}' +
-        '<tr><td><a href="/symphony/{{{template.slug}}}/{{{identifier}}}">{{{_highlightResult.identifier.value}}}</a></td>' +
+        '<tr><td><a href="/symphony/{{{template.slug}}}/{{{id}}}">{{{_highlightResult.id.value}}}</a></td>' +
         '<td>{{{_highlightResult.template.title.value}}}</td>' +
         '<td>{{{_highlightResult.workflowable.client_name.value}}}</td>' +
         '<td>{{{deadline}}}</td>' +

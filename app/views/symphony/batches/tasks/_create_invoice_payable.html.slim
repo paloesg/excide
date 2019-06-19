@@ -1,6 +1,6 @@
 = render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow
 br
 - if workflow.invoice.blank?
-  = link_to 'Create Invoice Payable', new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier, invoice_type: 'payable'), role: 'button', target: "_blank", class: 'btn btn-success btn-sm'
+  = link_to 'Create Invoice Payable', new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, invoice_type: 'payable'), role: 'button', target: "_blank", class: 'btn btn-success btn-sm'
 - else
   = link_to 'Invoice created', '#', class: 'btn btn-success btn-sm disabled'

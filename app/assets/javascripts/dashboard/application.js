@@ -19,7 +19,6 @@
 //= require symphony
 //= require symphony/new_workflow
 //= require components/date_time_picker
-//= require symphony/workflow_identifier
 //= require symphony/assign_ui
 //= require symphony/remarks
 //= require symphony/popover

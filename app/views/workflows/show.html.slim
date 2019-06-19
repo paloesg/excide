@@ -22,7 +22,7 @@
               th Done
           tbody
             - @tasks.each do |t|
-              - action = t.get_workflow_action(@company.id, @workflow.identifier)
+              - action = t.get_workflow_action(@company.id, @workflow.id)
               tr
                 td = t.position.to_s + '.'
                 td
@@ -30,7 +30,7 @@
                   = image_tag(t.image_url) if t.image_url.present?
                   - if t.upload_file?
                     br
-                    = link_to "Upload File", new_document_path(workflow: @workflow.identifier), role: 'button', class: 'btn btn-primary btn-sm'
+                    = link_to "Upload File", new_document_path(workflow: @workflow.id), role: 'button', class: 'btn btn-primary btn-sm'
                   - if t.download_file? && t.document_template.present?
                     br
                     = link_to "Download File", t.document_template.file_url, role: 'button', class: 'btn btn-primary btn-sm'

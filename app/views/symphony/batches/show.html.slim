@@ -39,10 +39,10 @@
                 - if wf.invoice.blank?
                   p = "No invoice yet."
                 - else
-                  = link_to wf.invoice.id, symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id), target: "_blank"
+                  = link_to wf.invoice.id, symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
               - section.tasks.order(created_at: :asc).each do |task|
                 td.text-center
-                  = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.identifier)
+                  = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
         tfoot
           tr
             th
