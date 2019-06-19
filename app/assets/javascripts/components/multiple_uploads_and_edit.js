@@ -37,17 +37,17 @@ $(document).ready(function () {
     documentUpload.on("queuecomplete", function (file, request) {
       $("#view-invoices-button").show();
       // Get url files after uploaded
-      var url_files = [];
+      var url_files = [], authenticity_token = $.rails.csrfToken();
       $.each(this.files, function(index, value) {
         var key     = $(value.xhr.responseXML).find("Key").text();
-        var parser  = document.createElement('a');
-        parser.href = $(value.xhr.responseXML).find("Location").text()
+        var parser  = document.createElement("a");
+        parser.href = $(value.xhr.responseXML).find("Location").text();
         var url     = "//" + parser.hostname + "/" + key;
         url_files.push(url);
       });
       $.post("/symphony/documents/index-create", {
-        authenticity_token: $.rails.csrfToken(),
-        url_files: url_files
+        authenticity_token,
+        url_files
       });
     });
   }
