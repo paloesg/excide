@@ -50,4 +50,4 @@
             - section.tasks.order(created_at: :asc).each do |task|
               th
                 .text-center
-                  = button_tag 'Complete all', type: 'button', class: "btn btn-info btn-sm checkall", disabled: task.important, id:"selectall-#{task.id}"
+                  = button_tag 'Complete All', type: 'button', class: "btn #{task.important ? 'btn-light' : 'btn-warning'} btn-sm checkall", disabled: task.important, id:"selectall-#{task.id}"

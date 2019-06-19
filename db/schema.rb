@@ -183,15 +183,14 @@ ActiveRecord::Schema.define(version: 2019_06_17_074036) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "file_url"
-    t.integer "workflow_id"
     t.integer "document_template_id"
     t.integer "user_id"
     t.bigint "workflow_action_id"
+    t.uuid "workflow_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
     t.index ["document_template_id"], name: "index_documents_on_document_template_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
-    t.index ["workflow_id"], name: "index_documents_on_workflow_id"
   end
 
   create_table "enquiries", id: :serial, force: :cascade do |t|
@@ -224,7 +223,6 @@ ActiveRecord::Schema.define(version: 2019_06_17_074036) do
     t.json "line_items", default: []
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "workflow_id"
     t.integer "line_amount_type"
     t.integer "invoice_type"
     t.string "xero_invoice_id"
@@ -235,8 +233,8 @@ ActiveRecord::Schema.define(version: 2019_06_17_074036) do
     t.boolean "approved"
     t.decimal "total"
     t.bigint "user_id"
+    t.uuid "workflow_id"
     t.index ["user_id"], name: "index_invoices_on_user_id"
-    t.index ["workflow_id"], name: "index_invoices_on_workflow_id"
   end
 
   create_table "profiles", id: :serial, force: :cascade do |t|
@@ -461,18 +459,17 @@ ActiveRecord::Schema.define(version: 2019_06_17_074036) do
     t.datetime "deadline"
     t.integer "company_id"
     t.integer "approved_by"
-    t.integer "workflow_id"
     t.integer "assigned_user_id"
     t.integer "completed_user_id"
     t.text "remarks"
+    t.uuid "workflow_id"
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
     t.index ["company_id"], name: "index_workflow_actions_on_company_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"
     t.index ["task_id"], name: "index_workflow_actions_on_task_id"
-    t.index ["workflow_id"], name: "index_workflow_actions_on_workflow_id"
   end
 
-  create_table "workflows", id: :serial, force: :cascade do |t|
+  create_table "workflows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "user_id"
     t.integer "company_id"
     t.integer "template_id"
