@@ -12,6 +12,6 @@
   text-overflow: ellipsis;
 }
 
-tr.important-task, tr.important-task + tr {
+tr.important-task, tr.important-task + tr, td.important-task {
   background-color: #ffeeba;
 }
