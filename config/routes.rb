@@ -32,7 +32,6 @@ Rails.application.routes.draw do
 
   namespace :symphony do
     get '/search', to: 'home#search'
-    get '/check-identifier', to: 'workflows#check_identifier', as: :check_identifier
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
 
     resources :templates, param: :template_slug, except: [:destroy]
@@ -67,7 +66,7 @@ Rails.application.routes.draw do
       end
     end
     get '/archives', to: 'archives#index', as: :archives
-    get '/archives/:workflow_name/:workflow_identifier', to: 'archives#show', as: :archive
+    get '/archives/:workflow_name/:workflow_id', to: 'archives#show', as: :archive
 
     get '/recurring_workflows', to: 'recurring_workflows#index', as: :workflows_recurring
     resources :recurring_workflows, path: '/recurring_workflows/:recurring_workflow_name', except: [:index] do
@@ -77,7 +76,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :workflows, param: :workflow_identifier, path: '/:workflow_name' do
+    resources :workflows, param: :workflow_id, path: '/:workflow_name' do
       member do
         get '/history', to: 'workflows#activities', as: :activities
         post '/archive', to: 'workflows#archive', as: :archive

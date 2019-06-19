@@ -35,7 +35,7 @@ $(document).ready(function () {
             //check this part of drag and drop
             $.post('/symphony/documents', {
               authenticity_token: $.rails.csrfToken(),
-              workflow: $('#workflow_identifier_'+action_id_str).val(),
+              workflow: $('#workflow_id_'+action_id_str).val(),
               workflow_action: workflow_action_id,
               document: {
                 filename: file.upload.filename,
@@ -57,25 +57,13 @@ $(document).ready(function () {
       filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       return filter_filename + '.' + get_extension;
     };
-    if ($("#documentIndex")) {
-      var documentUpload = new Dropzone('.multiple_uploads', { timeout: 0, renameFilename: cleanFilename });
-    } else {
-      var documentUpload = new Dropzone(".multiple_uploads", {
-        timeout: 0,
-        renameFilename: cleanFilename,
-        autoProcessQueue: false,
-        parallelUploads: 100,
-        uploadMultiple: false,
-      });
-    }
-    documentUpload.on("sending", function(file) {
-      if ($("#documentIndex")) {
-        if ( $('#template_id').val() == "" ) {
-          alert('Template is required.');
-          this.removeFile(file);
-        }
-      }
-    })
+    var documentUpload = new Dropzone(".multiple_uploads", {
+      timeout: 0,
+      renameFilename: cleanFilename,
+      autoProcessQueue: false,
+      parallelUploads: 100,
+      uploadMultiple: false,
+    });
     documentUpload.on("addedfile", function () {
       $('#drag-and-drop-submit').removeAttr('disabled');
     });
@@ -97,7 +85,6 @@ $(document).ready(function () {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
           count: this.files.length,
-          workflow_identifier: (new Date()).toISOString().replace(/[^\w\s]/gi, '') + '-' + file.upload.filename,
           document: {
             filename: file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,
@@ -123,21 +110,6 @@ $(document).ready(function () {
     });
     documentUpload.on("queuecomplete", function (file, request) {
       $('#view-invoices-button').show();
-      // Get url files after uploaded
-      var url_files = []
-      if ($("#documentIndex")) {
-        $.each(this.files, function(index, value) {
-          var key     = $(value.xhr.responseXML).find("Key").text();
-          var parser  = document.createElement('a');
-          parser.href = $(value.xhr.responseXML).find("Location").text()
-          var url     = '//' + parser.hostname + '/' + key;
-          url_files.push(url)
-        });
-      }
-      $.post('/symphony/documents/index-create', {
-        authenticity_token: $.rails.csrfToken(),
-        url_files: url_files
-      });
     });
   };
 });
