@@ -13,15 +13,6 @@
           h5.card-header Workflow Details
           .card-body
             .form-group
-              = f.label :identifier
-              = f.text_field :identifier, class: 'form-control'
-              span.help-block.d-none#identifier_exist
-                .fa.fa-times aria-hidden="true"
-                |  This identifier is already in use.
-              span.help-block.d-none#identifier_unique
-                .fa.fa-check aria-hidden="true"
-                |  This identifier is unique.
-            .form-group
               = f.label :remarks
               = f.text_area :remarks, class: 'form-control'
             .form-group

@@ -27,7 +27,7 @@
     .card
       h5.card-header Upload Documents
       .card-body
-        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads document_index', id: 'documentIndex'
+        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads_and_edit'
           - @s3_direct_post.fields.each do |key, value|
             = hidden_field_tag key, value
 
@@ -50,7 +50,7 @@ javascript:
         '<tbody>{{#hits}}' +
         '<tr><td>{{{_highlightResult.filename.value}}}</td>' +
         '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
-        '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.identifier}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
+        '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.id}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
         '<td>{{created_at}}</td>' +
         '<td><a href="/symphony/documents/{{objectID}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1">Download</a> </td>' +
         '{{/hits}}</tbody>'

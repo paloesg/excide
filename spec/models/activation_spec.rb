@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Activation, type: :model do
   describe "shoulda validations" do
-    subject { build(:activation) }
     it { should validate_presence_of(:start_time) }
     it { should validate_presence_of(:end_time) }
 

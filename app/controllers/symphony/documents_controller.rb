@@ -38,7 +38,7 @@ class Symphony::DocumentsController < DocumentsController
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
     if params[:workflow].present?
-      @workflow = @company.workflows.find_by(identifier: params[:workflow])
+      @workflow = @company.workflows.find(params[:workflow])
       @document.workflow = @workflow
     end
 
@@ -51,7 +51,7 @@ class Symphony::DocumentsController < DocumentsController
       if @document.save
         if params[:document_type] == 'batch-uploads'
           @template = Template.find(params[:document][:template_id])
-          @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: params[:workflow_identifier], workflowable: @client)
+          @workflow = Workflow.new(user: current_user, company: @company, template: @template, workflowable: @client)
           @workflow.template_data(@template)
           #equate workflow to the latest batch
           @workflow.batch = Batch.last
@@ -61,7 +61,7 @@ class Symphony::DocumentsController < DocumentsController
           output = { :status => "ok", :message => "batch documents created", :document => @document.id, :batch => @workflow.batch.id, :template => @template.slug}
           format.json  { render :json => output }
         else
-          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
+          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.id), notice: 'Document was successfully created.' }
           format.json { render :show, status: :created, location: @document}
         end
       else
@@ -150,7 +150,7 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def set_workflow
-    @workflow = @workflows.find_by(identifier: params[:workflow]) if params[:workflow].present?
+    @workflow = @workflows.find(params[:workflow]) if params[:workflow].present?
   end
 
   def set_workflow_action

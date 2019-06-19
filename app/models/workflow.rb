@@ -15,11 +15,9 @@ class Workflow < ApplicationRecord
   has_many :workflow_actions, dependent: :destroy
   has_many :documents, dependent: :destroy
 
-  validates :identifier, uniqueness: true
   validate :check_data_fields
 
   after_commit :create_actions_and_trigger_first_task, on: :create
-  before_save :uppercase_identifier
 
   include PublicActivity::Model
   tracked except: :update,
@@ -28,7 +26,7 @@ class Workflow < ApplicationRecord
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :identifier, :completed, :created_at, :updated_at, :deadline
+    attribute :id, :completed, :created_at, :updated_at, :deadline
     attribute :workflowable do
       { client_name: workflowable&.name, client_identifier: workflowable&.identifier }
     end
@@ -42,14 +40,6 @@ class Workflow < ApplicationRecord
 
   def build_workflowable(params)
     self.workflowable = workflowable_type.constantize.new(params)
-  end
-
-  def next_workflow
-    Workflow.where(template: self.template).where('id > ?', self.id).first
-  end
-
-  def previous_workflow
-    Workflow.where(template: self.template).where('id < ?', self.id).last
   end
 
   def current_section
@@ -143,11 +133,7 @@ class Workflow < ApplicationRecord
   end
 
   def trigger_first_task
-    self.current_task.get_workflow_action(self.company, self.identifier).set_deadline_and_notify(current_task)
-  end
-
-  def uppercase_identifier
-    self.identifier = identifier.parameterize.upcase
+    self.current_task.get_workflow_action(self.company, self.id).set_deadline_and_notify(current_task)
   end
 
   def check_data_fields

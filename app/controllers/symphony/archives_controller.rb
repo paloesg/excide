@@ -23,7 +23,7 @@ class Symphony::ArchivesController < ApplicationController
 
   def show
     @workflows = @company.workflows
-    @get_workflow = @workflows.find_by(identifier: params[:workflow_identifier])
+    @get_workflow = @workflows.find(params[:workflow_id])
     @workflow = Archive.new(@get_workflow)
     @template = @workflow.template
     @sections = @template.sections
@@ -52,7 +52,7 @@ class Symphony::ArchivesController < ApplicationController
       elsif params[:sort] == "deadline" then item.deadline ? item.deadline : Time.at(0)
       elsif params[:sort] == "workflowable" then item.workflowable ? item.workflowable&.name.upcase : ""
       elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.section_name
-      elsif params[:sort] == "identifier" then item.identifier ? item.identifier.upcase : ""
+      elsif params[:sort] == "id" then item.id ? item.id.upcase : ""
       end
     }
   end
