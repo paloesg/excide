@@ -28,7 +28,7 @@
           table.table
             thead
               tr
-                th Workflow Identifier
+                th Workflow ID
                 th Workflow Type
                 th Client Name
                 th Task Instructions
@@ -36,7 +36,7 @@
             tbody
               - @outstanding_actions.each do |action|
                 tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
-                  td = link_to action.workflow.identifier, symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier)
+                  td = link_to action.workflow.id, symphony_workflow_path(action.workflow.template.slug, action.workflow.id)
                   td = action.workflow.template.title
                   td = action.workflow.workflowable&.name || '-'
                   td = action.task.instructions
@@ -56,7 +56,7 @@
         table.table
           thead
             tr
-              th = sortable "identifier", "Identifier"
+              th = sortable "id", "Workflow ID"
               th = sortable "template", "Workflow Type"
               th = sortable "workflowable", "Client Name"
               th = sortable "remarks", "Remarks"
@@ -65,7 +65,7 @@
           tbody
             - @workflows.each do |w|
               tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
+                td = link_to w.id, symphony_workflow_path(w.template.slug, w.id)
                 td = w.template.title
                 td = w.workflowable&.name || '-'
                 td = w.remarks || '-'
