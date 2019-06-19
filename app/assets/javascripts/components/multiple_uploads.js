@@ -47,9 +47,9 @@ $(document).ready(function () {
                 file_url: '//' + location['host'] + '/' + filePath
               }
             };
-            uploadDocuments(data_input)
+            uploadDocuments(data_input);
           }
-        })
+        });
       }
     });
   }
@@ -128,7 +128,8 @@ $(document).ready(function () {
       }
     });
     documentUpload.on("queuecomplete", function (file, request) {
-      upload_process = "unprocess"
+      upload_process = "unprocess";
+      $('#drag-and-drop-submit').prop( "disabled", true );
       $('#view-invoices-button').show();
     });
   };
