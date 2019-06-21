@@ -3,10 +3,11 @@
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
-      li.breadcrumb-item Templates 
-    h1 
+      li.breadcrumb-item Templates
+    h1
       | All Templates
       .btn-toolbar.float-right
+        = link_to 'Clone Template', clone_symphony_templates_path, role: 'button', class: 'btn btn-warning mr-1'
         = link_to 'Create Template', new_symphony_template_path, role: 'button', class: 'btn btn-primary'
 .row
   .col-sm-12
@@ -22,7 +23,7 @@
           - @templates.each do |template|
             tr
               td = template.title
-              td = template.workflow_type.humanize 
+              td = template.workflow_type.humanize
               td = template.sections.count
               td
                 / link to the first section of the template
