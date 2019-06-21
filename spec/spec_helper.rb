@@ -16,6 +16,7 @@
 
 require_relative 'support/controller_helpers'
 require 'devise'
+require 'pundit/rspec'
 
 RSpec.configure do |config|
   config.include ControllerHelpers, type: :controller
