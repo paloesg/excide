@@ -3,7 +3,7 @@ class Symphony::TemplatesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_template, except: [:index, :new, :create]
+  before_action :set_template, except: [:index, :new, :create, :clone]
   before_action :find_roles, only: [:new, :edit, :create_section]
 
   def index
@@ -14,8 +14,18 @@ class Symphony::TemplatesController < ApplicationController
     @template = Template.new
   end
 
+  def clone
+    @template = Template.new
+    @general_templates = Template.where(company: nil)
+  end
+
   def create
-    @template = Template.new(template_params)
+    if params[:template][:clone]
+      @template = Template.find(params[:template][:clone]).deep_clone include: { sections: :tasks }
+      @template.title = template_params[:title]
+    else
+      @template = Template.new(template_params)
+    end
     @template.company = @company
     if @template.save
       redirect_to edit_symphony_template_path(@template)

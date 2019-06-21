@@ -34,7 +34,11 @@ Rails.application.routes.draw do
     get '/search', to: 'home#search'
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
 
-    resources :templates, param: :template_slug, except: [:destroy]
+    resources :templates, param: :template_slug, except: [:destroy] do
+      collection do
+        get '/clone', to: 'templates#clone', as: :clone
+      end
+    end
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
     delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
 
