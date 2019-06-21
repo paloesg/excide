@@ -1,0 +1,42 @@
+- if @body == "workflow"
+  tr
+    td = task.display_position
+    td
+      = task.instructions
+    td
+      - if action.assigned_user.present?
+        span.fa.fa-user aria-hidden="true"
+        |  #{action.assigned_user&.full_name}
+      - else
+        = task.display_role
+    td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
+    td
+      = render "symphony/tasks/partial/workflow_type_conditions", action: action, task: task, workflow: @workflow
+    - if action.workflow.template.ordered?
+      td
+        a data-toggle="collapse" href="#task_#{task.id}" aria-expanded="#{task == @workflow.current_task ? 'true' : 'false'}" class="#{task == @workflow.current_task ? '' : 'collapsed'}"
+          i.fa aria-hidden="true"
+  tr
+    td.p-0.border-top-0 colspan="6"
+      div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered? ? 'collapse show' : 'collapse'}"
+        .m-3
+          h6 Actions:
+          .btn-toolbar role="toolbar"
+            .btn-group.mr-2 role="group" aria-label="Task actions"
+              = link_to "Enter Data", data_entry_symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-primary btn-sm'
+            .btn-group.mr-2 role="group" aria-label="Reminder actions"
+              - if action.reminders.present?
+                = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.id, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+              - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+                = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
+          br
+          = render "symphony/workflows/tasks/remarks", action: action
+          br
+          = task.display_image
+
+- elsif @body == "batch"
+  .row
+    = render "symphony/tasks/partial/workflow_type_conditions", action: action, task: action.task, workflow: workflow
+  br
+  = link_to "Enter Data", data_entry_symphony_workflow_path(workflow_name: workflow.template.slug, workflow_id: workflow.id), role: 'button', target: "_blank", class: 'btn btn-success btn-sm'
+

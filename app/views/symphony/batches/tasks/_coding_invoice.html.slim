@@ -1,4 +1,5 @@
-= render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow
+.row
+  = render "symphony/tasks/partial/workflow_type_conditions", action: action, task: action.task, workflow: workflow
 br
 - if workflow.invoice.present?
   = link_to "Check & Approve Invoice", edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id), target: "_blank", class: 'btn btn-success btn-sm mb-2'

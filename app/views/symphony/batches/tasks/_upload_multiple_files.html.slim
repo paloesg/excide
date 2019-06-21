@@ -1,4 +1,6 @@
-= render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow
+/ = render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow
+.row
+  = render "symphony/tasks/partial/workflow_type_conditions", action: action, task: action.task, workflow: workflow
 br
 = hidden_field_tag 'workflow', workflow.identifier, id: "workflow_id_#{action.id}"
 = hidden_field_tag 'action_id', action.id, id: "action_id_#{action.id}", class: "action_id"

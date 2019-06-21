@@ -1,3 +1,4 @@
-= render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow
+.row
+  = render "symphony/tasks/partial/workflow_type_conditions", action: action, task: action.task, workflow: workflow
 br
 = link_to "Enter Data", data_entry_symphony_workflow_path(workflow_name: workflow.template.slug, workflow_id: workflow.id), role: 'button', target: "_blank", class: 'btn btn-success btn-sm'

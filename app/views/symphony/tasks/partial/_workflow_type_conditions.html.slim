@@ -1,0 +1,14 @@
+/ Check if task is current task AND check if it's assigned to a particular user OR whether user has the required role OR user has admin role.
+
+/==============================
+- if workflow.template.ordered?
+  - if task == workflow.current_task and (action.assigned_user == current_user or task.role_id == nil or (@roles.map(&:id).include? task.role_id) or (@user.has_role? :admin, @company))
+
+    = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: task.id, workflow_name: workflow.template.slug, workflow_id: workflow.id, controller: 'workflows'), method: "POST" }, :onclick => "this.checked=true;", class: "#{ "enlarged-checkbox float-right completed-#{task.id}" if @body == "batch" }", workflow_action: action.id
+  - else
+    = check_box_tag 'completed', action.id, action.completed, disabled: true, class: "#{ "enlarged-checkbox float-right" if @body == "batch" }"
+/For unordered workflow, no need to check for current task.
+- else
+  - if action.assigned_user == current_user or task.role_id == nil or (@roles.map(&:id).include? task.role_id) or (@user.has_role? :admin, @company)
+    = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST"}, class: "#{ "enlarged-checkbox float-right completed-#{task.id}" if @body == "batch" }", onclick: "this.checked=true;" if !action.completed?
+    = check_box_tag 'completed', action.id, action.completed, disabled: true if action.completed?
