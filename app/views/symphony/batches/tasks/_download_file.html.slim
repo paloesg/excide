@@ -1,3 +1,4 @@
+= render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow
+br
 = link_to "Download File", action.task.document_template.file_url, role: 'button', target: "_blank", class: 'btn btn-primary btn-sm' if action.task.document_template.present?
 = link_to "No file to download", '#', class: 'btn btn-primary btn-sm disabled'
-= render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow

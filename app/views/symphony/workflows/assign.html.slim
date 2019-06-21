@@ -6,7 +6,7 @@
       li.breadcrumb-item
         = link_to @template.title, symphony_workflows_path(@template.slug)
       li.breadcrumb-item
-        = link_to @workflow.identifier, symphony_workflow_path(@template.slug, @workflow.identifier)
+        = link_to @workflow.id, symphony_workflow_path(@template.slug, @workflow.id)
       li.breadcrumb-item.active Assign
     h1 User Assignment
 .row
@@ -14,7 +14,7 @@
     - @sections.each do |section|
       .card.mb-3
         .card-header
-          = section.display_name
+          = section.section_name
         .card-body
           table.table
             thead
@@ -26,7 +26,7 @@
                 th
             tbody
               - section.tasks.each do |t|
-                - action = t.get_workflow_action(@company.id, @workflow.identifier)
+                - action = t.get_workflow_action(@company.id, @workflow.id)
                 tr
                   td = t.position.to_s + '.'
                   td
@@ -38,7 +38,7 @@
                     i.fa.fa-check.text-success style="opacity: 0;"
                     i.fa.fa-times.text-danger style="opacity: 0;"
   .col-md-4.col-sm-6
-    = link_to "Finish Assignment", symphony_workflow_path(@template.slug, @workflow.identifier), class: 'btn btn-primary btn-block'
+    = link_to "Finish Assignment", symphony_workflow_path(@template.slug, @workflow.id), class: 'btn btn-primary btn-block'
     br
     - @workflow.get_roles.each do |role|
       .card.mb-3

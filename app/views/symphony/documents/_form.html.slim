@@ -5,6 +5,7 @@
       - @document.errors.full_messages.each do |message|
         li = message
 = f.hidden_field(:workflow_id, value: @workflow&.id)
+= f.hidden_field(:workflow_action_id, value: @workflow_action&.id)
 .row
   .col-md-6
     .form-group

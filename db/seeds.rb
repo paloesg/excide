@@ -35,7 +35,7 @@ template_1 = Template.create(title: 'Template 1', company: gobbler)
 sections = [['Section 1', 'Finance', 1, template_1], ['Section 2', 'Paper Work', 2, template_1], ['Section 3', 'Project Work', 3, template_1]]
 
 sections.each do |u_name, d_name, pos, template|
-  Section.create(unique_name: u_name, display_name: d_name, position: pos, template: template)
+  Section.create(section_name: u_name, position: pos, template: template)
 end
 
 task_list = [

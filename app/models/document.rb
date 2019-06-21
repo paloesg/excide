@@ -10,6 +10,7 @@ class Document < ApplicationRecord
   belongs_to :workflow
   belongs_to :document_template
   belongs_to :user
+  belongs_to :workflow_action
 
   validates :file_url, :filename, presence: true
   validates :file_url, uniqueness: true
@@ -17,10 +18,24 @@ class Document < ApplicationRecord
   before_validation :set_filename
   after_destroy :delete_file_on_s3
 
+  include AlgoliaSearch
+  algoliasearch do
+    attribute :filename, :file_url, :created_at, :updated_at
+    attribute :workflow do
+      { id: workflow&.id, template_title: workflow&.template&.title, template_slug: workflow&.template&.slug }
+    end
+    attribute :document_template do
+      { title: document_template&.title }
+    end
+    attribute :company do
+      { name: company.name, slug: company.slug }
+    end
+  end
+
   private
 
   def set_filename
-    self.filename = File.basename(self.file_url)
+    self.filename = File.basename(self.file_url) if self.file_url
   end
 
   def delete_file_on_s3

@@ -1,16 +1,18 @@
 class Symphony::DocumentsController < DocumentsController
-  before_action :set_templates, only: [:new, :edit]
+  before_action :set_templates, only: [:new, :edit, :multiple_edit]
   before_action :set_company_workflows, only: [:new, :edit]
   before_action :set_workflow, only: [:new]
+  before_action :set_workflow_action, only: [:new]
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: [:index, :search]
   after_action :verify_policy_scoped, only: :index
 
   def index
     @get_documents = policy_scope(Document).includes(:document_template, :workflow)
-    @documents = Kaminari.paginate_array(@get_documents.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(20)
 
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
+    # TODO: Generate secured api key per user tag, only relevant users are tagged to each workflow.
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'company.slug:' + current_user.company.slug})
   end
 
   def show
@@ -36,15 +38,20 @@ class Symphony::DocumentsController < DocumentsController
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
     if params[:workflow].present?
-      @workflow = Workflow.find_by(identifier: params[:workflow])
+      @workflow = @company.workflows.find(params[:workflow])
       @document.workflow = @workflow
+    end
+
+    if params[:workflow_action].present?
+      @workflow_action = @company.workflow_actions.find(params[:workflow_action])
+      @document.workflow_action = @workflow_action
     end
 
     respond_to do |format|
       if @document.save
         if params[:document_type] == 'batch-uploads'
           @template = Template.find(params[:document][:template_id])
-          @workflow = Workflow.new(user: current_user, company: @company, template: @template, identifier: params[:workflow_identifier], workflowable: @client)
+          @workflow = Workflow.new(user: current_user, company: @company, template: @template, workflowable: @client)
           @workflow.template_data(@template)
           #equate workflow to the latest batch
           @workflow.batch = Batch.last
@@ -53,7 +60,7 @@ class Symphony::DocumentsController < DocumentsController
           format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_batch_path(@workflow.template.slug, @workflow.batch_id), notice: params[:count] + ' documents were successfully created.' }
           format.json { render :show, status: :created, location: @document}
         else
-          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.identifier), notice: 'Document was successfully created.' }
+          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.id), notice: 'Document was successfully created.' }
           format.json { render :show, status: :created, location: @document}
         end
       else
@@ -65,14 +72,39 @@ class Symphony::DocumentsController < DocumentsController
     end
   end
 
+  def index_create
+    @files = []
+    set_company
+    params[:url_files].each do |url_file|
+      document = Document.new(file_url: url_file)
+      document.company = @company
+      document.user = @user
+      document.save
+      @files.append document
+      authorize document
+    end
+    respond_to do |format|
+      format.html { redirect_to multiple_edit_symphony_documents_path files: @files }
+      format.json { render json: @files.to_json }
+    end
+  end
+
+  def multiple_edit
+    @documents = Document.where(id: params[:files])
+    authorize @documents
+  end
+
   def update
     authorize @document
 
     if @document.update(document_params)
-      redirect_to symphony_document_path, notice: 'Document was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to symphony_document_path, notice: 'Document was successfully updated.' }
+        format.json { render json: @document }
+      end
     else
       set_templates
-      render :edit
+      format.html { render :edit }
     end
   end
 
@@ -107,6 +139,10 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def set_workflow
-    @workflow = @workflows.find_by(identifier: params[:workflow]) if params[:workflow].present?
+    @workflow = @workflows.find(params[:workflow]) if params[:workflow].present?
+  end
+
+  def set_workflow_action
+    @workflow_action = @company.workflow_actions.find(params[:workflow_action]) if params[:workflow_action].present?
   end
 end

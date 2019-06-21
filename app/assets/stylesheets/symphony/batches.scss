@@ -16,12 +16,16 @@ input.enlarged-checkbox{
   padding: 10px;
 }
 
-.card.scrollbar{
+.card.scrollbar > .card-body{
   overflow-x: auto;
 }
 
 .header-properties{
   color: #dd715e;
   text-align: center;
+}
+
+.table thead th {
+  vertical-align: middle;
 }
 

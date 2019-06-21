@@ -1,6 +1,6 @@
 class Symphony::RecurringWorkflowsController < ApplicationController
   layout "dashboard/application"
-  
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template
@@ -26,7 +26,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
       #creating the first workflow before recurring it through calling the service object
       @workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, recurring_workflow: @recurring_workflow, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase, deadline: Date.current + 1.week)
       @workflow.save
-      redirect_to symphony_workflow_path(@recurring_workflow.template.slug, @workflow.identifier), notice: 'Workflow was successfully created.'
+      redirect_to symphony_workflow_path(@recurring_workflow.template.slug, @workflow.id), notice: 'Workflow was successfully created.'
     end
   end
 
@@ -58,7 +58,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
     @new_workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, recurring_workflow: @recurring_workflow, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase)
     @new_workflow.recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
     if @new_workflow.recurring_workflow.save
-      redirect_to symphony_workflow_path(@new_workflow.template.slug, @new_workflow.identifier)
+      redirect_to symphony_workflow_path(@new_workflow.template.slug, @new_workflow.id)
     else
       redirect_to symphony_workflows_recurring_path, alert: "Workflow is not generated. Please try again!"
     end

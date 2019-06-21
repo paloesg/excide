@@ -10,27 +10,112 @@
         = link_to "Document Templates", symphony_document_templates_path, role: 'button', class: 'btn btn-success mr-1'
         = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
         = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning' if ::Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').present?
-    .float-right = page_entries_info @documents, entry_name: 'document'
-.row
-  .col-sm-12
-    .table-responsive
-      table.table.table-hover
-        thead
-          tr
-            th Filename
-            th Document Template
-            th Workflow
-            th Uploaded At
-            th Actions
 
-        tbody
-          - @documents.each do |document|
-            tr
-              td = document.filename
-              td = document.document_template&.title
-              td = link_to document.workflow.template.title, symphony_workflow_path(document.workflow.template.slug, document.workflow.identifier) if document.workflow.present?
-              td = document.created_at.strftime("%d/%m/%Y %R")
-              td style="min-width: 165px;"
-                = link_to "View", symphony_document_path(document), role: 'button', class: 'btn btn-primary btn-sm mr-1'
-                = link_to "Download", document.file_url, role: 'button', class: 'btn btn-warning btn-sm mr-1'
-      = paginate @documents, views_prefix: 'dashboards'
+.row
+  .col-sm-6.offset-sm-3.mb-3
+    input.form-control#q type="search"
+
+.row
+  .col-sm-3#facets
+    #document_templates
+  .col-sm-6
+    .card
+      h5.card-header Search Results
+      .table-responsive#hits
+    #pagination
+  .col-md-3
+    .card
+      h5.card-header Upload Documents
+      .card-body
+        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads_and_edit'
+          - @s3_direct_post.fields.each do |key, value|
+            = hidden_field_tag key, value
+
+javascript:
+  function loadExtJS(src, callback) {
+    var s = document.createElement('script');
+    s.src = src;
+    document.body.appendChild(s);
+    s.onload = callback
+  }
+
+  loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
+    var hitTemplate = '<table class="table table-striped">' +
+        '<thead><tr><th>Filename</th>' +
+        '<th>Document Template</th>' +
+        '<th>Workflow</th>' +
+        '<th>Uploaded At</th>' +
+        '<th>Actions</th>' +
+        '</tr></thead>' +
+        '<tbody>{{#hits}}' +
+        '<tr><td>{{{_highlightResult.filename.value}}}</td>' +
+        '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
+        '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.id}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
+        '<td>{{created_at}}</td>' +
+        '<td><a href="/symphony/documents/{{objectID}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1">Download</a> </td>' +
+        '{{/hits}}</tbody>'
+      '</div>';
+      var search = instantsearch({
+        appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
+        apiKey: '#{@public_key}',
+        indexName: '#{Document.index_name}',
+        urlSync: true
+      });
+      search.addWidget(
+        instantsearch.widgets.searchBox({
+          container: '#q',
+          placeholder: 'Search for documents',
+          autofocus: false
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.hits({
+          container: '#hits',
+          transformData: {
+            allItems: function(data) {
+              $(data['hits']).each(function(index) {
+                data['hits'][index].created_at = moment(this.created_at).format("DD/MM/YYYY HH:mm")
+              })
+              return data;
+            }
+          },
+          templates: {
+            empty: '<table class="table"><tr><td>No matching documents found.</td></tr></table>',
+            allItems: hitTemplate
+          },
+          hitsPerPage: 10
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.refinementList({
+          container: '#document_templates',
+          attributeName: 'document_template.title',
+          limit: 10,
+          templates: {
+            header: '<h5 class="card-header">Document Templates</h5>'
+          },
+          cssClasses: {
+            root: 'card',
+            body: 'list-group list-group-flush',
+            item: 'list-group-item',
+            count: 'badge badge-pill badge-secondary'
+          }
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.pagination({
+          container: '#pagination',
+          cssClasses: {
+            active: 'active',
+          },
+          labels: {
+            first: '<i class="fa fa-angle-left"></i> First',
+            previous: '<i class="fa fa-angle-left"></i> Previous',
+            next: 'Next <i class="fa fa-angle-right"></i>',
+            last: 'Last <i class="fa fa-angle-double-right"></i>',
+          },
+          autoHideContainer: false,
+        })
+      );
+      search.start();
+  })
