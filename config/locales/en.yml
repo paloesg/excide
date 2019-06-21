@@ -25,3 +25,6 @@ en:
    document_policy:
      update?: 'You cannot edit this document!'
      create?: 'You cannot create documents!'
+   invoice_policy:
+     update?: 'You cannot edit this invoice!'
+     create?: 'You cannot create invoice!'
