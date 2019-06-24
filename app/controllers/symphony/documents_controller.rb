@@ -47,17 +47,20 @@ class Symphony::DocumentsController < DocumentsController
       @document.workflow_action = @workflow_action
     end
 
+    if params[:document_type] == 'batch-uploads'
+      @template = Template.find(params[:document][:template_id])
+      @workflow = Workflow.new(user: current_user, company: @company, template: @template, workflowable: @client)
+      @workflow.template_data(@template)
+      #equate workflow to the latest batch
+      @workflow.batch = Batch.last
+      @workflow.save
+      @document.workflow = @workflow
+    end
+
     respond_to do |format|
       if @document.save
         if params[:document_type] == 'batch-uploads'
-          @template = Template.find(params[:document][:template_id])
-          @workflow = Workflow.new(user: current_user, company: @company, template: @template, workflowable: @client)
-          @workflow.template_data(@template)
-          #equate workflow to the latest batch
-          @workflow.batch = Batch.last
-          @workflow.save
-          @document.update_attributes(workflow: @workflow)
-          #return output in json
+           #return output in json
           output = { :status => "ok", :message => "batch documents created", :document => @document.id, :batch => @workflow.batch.id, :template => @template.slug}
           format.json  { render :json => output }
         else

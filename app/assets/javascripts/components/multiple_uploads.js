@@ -1,11 +1,11 @@
 function uploadDocuments(data){
-  $.post('/symphony/documents', data)
+  var result;
+  $.post('/symphony/documents', data);
 }
 
 Dropzone.autoDiscover = false;
 
 $(document).ready(function () {
-  var upload_process = "unprocess";
   // Show dropzone after client and template selected
   $("#template_id").on('change', function() {
     if ( $("#template_id").val() ) {
@@ -67,7 +67,7 @@ $(document).ready(function () {
       timeout: 0,
       renameFilename: cleanFilename,
       autoProcessQueue: false,
-      parallelUploads: 10,
+      parallelUploads: 100,
       uploadMultiple: false,
     });
     Dropzone.options.documentUpload = {
@@ -97,17 +97,12 @@ $(document).ready(function () {
     });
     $("#drag-and-drop-submit").click(function(){
       documentUpload.processQueue();
-      if (upload_process == "unprocess") {
-        $.post("/symphony/batches", {
-          authenticity_token: $.rails.csrfToken(),
-          batch: {
-            template_id: $('#template_id').val(),
-          }
-        })
-        .done(function( data ) {
-          upload_process = "processing"
-        });
-      }
+      $.post("/symphony/batches", {
+        authenticity_token: $.rails.csrfToken(),
+        batch: {
+          template_id: $('#template_id').val(),
+        }
+      })
     });
     documentUpload.on("success", function (file, request) {
       var resp = $.parseXML(request);
@@ -124,11 +119,10 @@ $(document).ready(function () {
             template_id: $('#template_id').val(),
           }
         };
-        uploadDocuments(data_input)
+        var result = uploadDocuments(data_input);
       }
     });
     documentUpload.on("queuecomplete", function (file, request) {
-      upload_process = "unprocess";
       $('#drag-and-drop-submit').prop( "disabled", true );
       $('#view-invoices-button').show();
     });
