@@ -135,10 +135,10 @@ class Workflow < ApplicationRecord
   def trigger_first_task
     if ordered_workflow?
       self.current_task.get_workflow_action(self.company, self.identifier).set_deadline_and_notify(current_task)
-    else
-      roles = self.get_roles
-      roles.each do |role|
-        NotificationMailr.unordered_workflow_notification
+    else 
+      users = self.get_roles.map{|role| role.users}.flatten.compact.uniq
+      users.each do |user|
+        NotificationMailer.unordered_workflow_notification(user).deliver_now
       end
     end
   end
