@@ -9,4 +9,4 @@ container
       p
         | The following tasks are assigned to you: 
       - @user_map.each do |t|
-      	p #{t.instrucions}        
+      	p #{t.instructions}        

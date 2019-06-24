@@ -18,7 +18,7 @@ class NotificationMailer < ApplicationMailer
 
   def unordered_workflow_notification(user)
     @user = user
-    @user_map = @user.roles.map{|role| role.tasks}
+    @user_map = @user.roles.map(&:tasks).flatten
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
     mail(to: address.format, subject: '[Unordered workflow email notification] ')
