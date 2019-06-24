@@ -4,15 +4,29 @@ class Symphony::BatchesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_batch, only: [:show]
+  before_action :set_s3_direct_post, only: [:show, :new]
 
   def index
-    @batches_paginate = Kaminari.paginate_array(Batch.all.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(10)
+    #get current_user's roles with all the word downcase for matching the string
+    @current_user_roles = current_user.roles.names.map(&:downcase)
+    if current_user.has_role? :admin, @company
+      @batch = Batch.all.where(company: @company)
+      #save all the progress into an array to set the progress bar in view page
+    else
+      @batch = []
+      #Loop all the batch and find same roles between the current_user's roles and the batch's workflows's roles. If the current_user has the same role as a role in workflow_actions, then save the batch into @batch.
+      Batch.all.where(company: @company).each do |batch|
+        #intersection operator & to get duplicate values of the role in both arrays
+        @intersection = batch.get_relevant_roles & @current_user_roles
+        @batch.push(batch) if @intersection.present?
+      end
+    end
+    @batches_paginate = Kaminari.paginate_array(@batch.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(10)
   end
 
   def new
     @batch = Batch.new
     @template = Template.find_by(slug: params[:batch_template_name])
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
   def create
@@ -20,11 +34,11 @@ class Symphony::BatchesController < ApplicationController
     @batch.company = @company
     @template = Template.find(params[:batch][:template_id])
     @batch.template = @template
+    @batch.user = current_user
     @batch.save
   end
 
   def show
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
     @current_user = current_user
     @sections = @batch.template.sections
     @roles = @current_user.roles.where(resource_id: @company.id, resource_type: "Company")
@@ -42,5 +56,9 @@ class Symphony::BatchesController < ApplicationController
 
   def set_company
     @company = current_user.company
+  end
+
+  def set_s3_direct_post
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 end

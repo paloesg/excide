@@ -23,17 +23,19 @@ class Symphony::ArchivesController < ApplicationController
 
   def show
     @workflows = @company.workflows
-    @workflow = @workflows.find_by(identifier: params[:workflow_identifier])
-    @archive = @workflow.archive['workflow']
-    @template = @archive['template']
-    @sections = @template['sections']
-    @section = params[:section] ? @sections.select{|section| section['unique_name'] == params[:section]}.first : @sections.last
+    @get_workflow = @workflows.find(params[:workflow_id])
+    @workflow = Archive.new(@get_workflow)
+    @template = @workflow.template
+    @sections = @template.sections
+    select_section = params[:section] ? @sections.select{|section| section['unique_name'] == params[:section]}.first : @sections.last
+    @section = OpenStruct.new(select_section)
     @tasks = @section['tasks'].sort_by{|task| task['position']}
-    @section_index = @sections.index(@section)
-    @document_templates = DocumentTemplate.where(template: @workflow.template)
+    @section_index = @sections.index(select_section)
+    @activities = @workflow.activities
     @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
-    @activities = @archive['activity_log']
-    @invoice = @workflow.invoice
+    @document_templates = DocumentTemplate.where(template: @get_workflow.template)
+    @invoice = @get_workflow.invoice
+    render "symphony/workflows/show"
   end
 
   private
@@ -49,8 +51,8 @@ class Symphony::ArchivesController < ApplicationController
       elsif params[:sort] == "remarks" then item.remarks ? item.remarks.upcase : ""
       elsif params[:sort] == "deadline" then item.deadline ? item.deadline : Time.at(0)
       elsif params[:sort] == "workflowable" then item.workflowable ? item.workflowable&.name.upcase : ""
-      elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.display_name
-      elsif params[:sort] == "identifier" then item.identifier ? item.identifier.upcase : ""
+      elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.section_name
+      elsif params[:sort] == "id" then item.id ? item.id.upcase : ""
       end
     }
   end

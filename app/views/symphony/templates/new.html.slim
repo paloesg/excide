@@ -1,0 +1,23 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item Template 
+    h1 New Template
+	= form_for(@template, url: symphony_templates_path(@template) ) do |f|
+	  .row
+	    .col-md-3.col-sm-12
+	      .row
+	        .col-sm-12
+	          .card.mb-3
+	            h5.card-header Template Details:
+	            .col-sm-12.mt-3
+	              .form-group
+	                = f.label :title, "Title:" 
+	                = f.text_field :title, class: "form-control"
+	              .form-group
+	                = f.label :workflow_type, "Workflow Type:" 
+	                = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
+	  = f.submit 'Save Template', class: 'btn btn-primary pull-left'
+  

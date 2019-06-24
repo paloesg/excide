@@ -1,4 +1,4 @@
-tr
+tr class="#{'important-task' if task.important}"
   td = task.display_position
   td
     = task.instructions
@@ -23,12 +23,12 @@ tr
         .btn-toolbar role="toolbar"
           .btn-group.mr-2 role="group" aria-label="Task actions"
             - if @workflow.invoice.blank?
-              = link_to "Create Invoice Receivable", new_symphony_invoice_path(workflow_identifier: @workflow.identifier, invoice: 'receivable'), role: 'button', class: 'btn btn-success btn-sm'
+              = link_to "Create Invoice Receivable", new_symphony_invoice_path(workflow_id: @workflow.id, invoice: 'receivable'), role: 'button', class: 'btn btn-success btn-sm'
             - else
-              = link_to "Create Invoice", new_symphony_invoice_path(workflow_identifier: @workflow.identifier), role: 'button', class: 'btn btn-success btn-sm disabled', disabled: true
+              = link_to "Create Invoice", new_symphony_invoice_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-success btn-sm disabled', disabled: true
           .btn-group.mr-2 role="group" aria-label="Reminder actions"
             - if action.reminders.present?
-              = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+              = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.id, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
             - if task == @workflow.current_task && (@user.has_role? :admin, @company)
               = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
       .m-3

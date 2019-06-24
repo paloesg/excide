@@ -23,14 +23,14 @@ class WorkflowAction < ApplicationRecord
   has_many :documents
 
   def set_deadline_and_notify(next_task)
-    next_action = next_task.get_workflow_action(self.company, self.workflow.identifier)
+    next_action = next_task.get_workflow_action(self.company, self.workflow.id)
     next_action.update_columns(deadline: check_week_day(Date.current + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
 
     # Create new reminder based on deadline of action and repeat every 2 days
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
 
     # Trigger email notification for next task if role present
-    if next_task.role.present?
+    if next_task.role.present? and self.workflow.batch.nil?
       users = User.with_role(next_task.role.name.to_sym, self.company)
       NotificationMailer.deliver_notifications(next_task, next_action, users)
     end
@@ -90,7 +90,7 @@ class WorkflowAction < ApplicationRecord
       company_id: action.company_id,
       task_id: task.id,
       workflow_action_id: action.id,
-      title: '[Reminder] ' + task.section.template.title + ' - ' + action.workflow.identifier,
+      title: '[Reminder] ' + task.section.template.title + ' - ' + action.workflow.id,
       content: task.instructions,
       slack: true,
       email: true

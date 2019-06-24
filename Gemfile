@@ -179,6 +179,7 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'shoulda'
   gem 'factory_bot_rails'
+  gem 'rails-controller-testing'
 
   # A library for generating fake data such as names, addresses, and phone numbers.
   gem 'faker', git: 'https://github.com/stympy/faker.git'

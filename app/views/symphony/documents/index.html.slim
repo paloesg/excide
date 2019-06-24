@@ -12,16 +12,24 @@
         = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning' if ::Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').present?
 
 .row
-  .col-sm-6.offset-sm-6.mb-3
+  .col-sm-6.offset-sm-3.mb-3
     input.form-control#q type="search"
 
 .row
   .col-sm-3#facets
     #document_templates
-  .col-sm-9
+  .col-sm-6
     .card
-      h5.card-header Search results
+      h5.card-header Search Results
       .table-responsive#hits
+    #pagination
+  .col-md-3
+    .card
+      h5.card-header Upload Documents
+      .card-body
+        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads_and_edit'
+          - @s3_direct_post.fields.each do |key, value|
+            = hidden_field_tag key, value
 
 javascript:
   function loadExtJS(src, callback) {
@@ -42,7 +50,7 @@ javascript:
         '<tbody>{{#hits}}' +
         '<tr><td>{{{_highlightResult.filename.value}}}</td>' +
         '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
-        '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.identifier}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
+        '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.id}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
         '<td>{{created_at}}</td>' +
         '<td><a href="/symphony/documents/{{objectID}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1">Download</a> </td>' +
         '{{/hits}}</tbody>'
@@ -92,6 +100,21 @@ javascript:
             item: 'list-group-item',
             count: 'badge badge-pill badge-secondary'
           }
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.pagination({
+          container: '#pagination',
+          cssClasses: {
+            active: 'active',
+          },
+          labels: {
+            first: '<i class="fa fa-angle-left"></i> First',
+            previous: '<i class="fa fa-angle-left"></i> Previous',
+            next: 'Next <i class="fa fa-angle-right"></i>',
+            last: 'Last <i class="fa fa-angle-double-right"></i>',
+          },
+          autoHideContainer: false,
         })
       );
       search.start();

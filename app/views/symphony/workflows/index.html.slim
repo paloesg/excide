@@ -17,7 +17,7 @@
         table.table
           thead
             tr
-              th = sortable "identifier", "Identifier"
+              th = sortable "id", "Workflow ID"
               th = sortable "template", "Workflow Type"
               th = sortable "workflowable", "Client Name"
               th = sortable "remarks", "Remarks"
@@ -26,11 +26,11 @@
           tbody
             - @workflows.each do |w|
               tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                td = link_to w.identifier, symphony_workflow_path(w.template.slug, w.identifier)
+                td = link_to w.id, symphony_workflow_path(w.template.slug, w.id)
                 td = w.template.title
                 td = w.workflowable&.name || '-'
                 td = w.remarks || '-'
                 td = w.deadline&.strftime("%d/%m/%Y") || '-'
-                td = w.completed ? 'Completed' : w.current_section&.display_name
+                td = w.completed ? 'Completed' : w.current_section&.section_name
         .card-footer.pt-4
           = paginate @workflows, views_prefix: 'dashboards'
