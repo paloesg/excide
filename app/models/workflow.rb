@@ -125,7 +125,11 @@ class Workflow < ApplicationRecord
         WorkflowAction.create!(task: t, company: self.company, completed: false, workflow: self)
       end
     end
-    trigger_first_task
+    if ordered_workflow?
+      trigger_first_task 
+    else
+      unordered_tasks_trigger_email
+    end
   end
 
   def ordered_workflow?
@@ -134,6 +138,10 @@ class Workflow < ApplicationRecord
 
   def trigger_first_task
     self.current_task.get_workflow_action(self.company, self.id).set_deadline_and_notify(current_task)
+  end
+
+  def unordered_tasks_trigger_email
+    self.current_task.get_workflow_action(self.company, self.id).unordered_workflow_email_notification
   end
 
   def uppercase_identifier
