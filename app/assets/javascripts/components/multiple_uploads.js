@@ -56,6 +56,7 @@ $(document).ready(function () {
 
   // $("#uploader").length 'To check #uploader is exists'
   if ($(".multiple_uploads").length) {
+    var batchId='';
     var cleanFilename = function (name) {
       fileName = name.split('.').slice(0, -1).join('.')
       get_extension = name.substring(name.lastIndexOf(".") + 1)
@@ -102,6 +103,8 @@ $(document).ready(function () {
         batch: {
           template_id: $('#template_id').val(),
         }
+      }). done(result => {
+        batchId = result.batch_id
       })
     });
     documentUpload.on("success", function (file, request) {
@@ -123,8 +126,17 @@ $(document).ready(function () {
       }
     });
     documentUpload.on("queuecomplete", function (file, request) {
+      var templateId = $('#template_id').val();
+      var totalFile = documentUpload.files.length;
       $('#drag-and-drop-submit').prop( "disabled", true );
       $('#view-invoices-button').show();
+      //if this function in create batch, redirect to show batch page after create
+      if($("#batch-uploader").length){
+        // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
+        window.setTimeout(function() {
+          window.location.href = '/symphony/batches/'+templateId+'/'+batchId;
+        }, totalFile*500);
+      }
     });
   };
 });
