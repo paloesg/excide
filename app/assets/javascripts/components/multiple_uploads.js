@@ -1,3 +1,8 @@
+function uploadDocuments(data){
+  var result;
+  $.post('/symphony/documents', data);
+}
+
 Dropzone.autoDiscover = false;
 
 $(document).ready(function () {
@@ -33,7 +38,7 @@ $(document).ready(function () {
           var location = new URL($(resp).find("Location").text());
           if($("#uploadToXero"+workflow_action_id).length){
             //check this part of drag and drop
-            $.post('/symphony/documents', {
+            var data_input = {
               authenticity_token: $.rails.csrfToken(),
               workflow: $('#workflow_id_'+action_id_str).val(),
               workflow_action: workflow_action_id,
@@ -41,15 +46,18 @@ $(document).ready(function () {
                 filename: file.upload.filename,
                 file_url: '//' + location['host'] + '/' + filePath
               }
-            });
+            };
+            uploadDocuments(data_input);
           }
-        })
+        });
       }
     });
   }
 
   // $("#uploader").length 'To check #uploader is exists'
   if ($(".multiple_uploads").length) {
+    $('.loader').hide();
+    var batchId='';
     var cleanFilename = function (name) {
       fileName = name.split('.').slice(0, -1).join('.')
       get_extension = name.substring(name.lastIndexOf(".") + 1)
@@ -64,37 +72,16 @@ $(document).ready(function () {
       parallelUploads: 100,
       uploadMultiple: false,
     });
-    documentUpload.on("addedfile", function () {
-      $('#drag-and-drop-submit').removeAttr('disabled');
-    });
-    $("#drag-and-drop-submit").click(function(){
-      documentUpload.processQueue();
-      $.post("/symphony/batches", {
-        authenticity_token: $.rails.csrfToken(),
-        batch: {
-          template_id: $('#template_id').val(),
-        }
-      });
-    });
-    documentUpload.on("success", function (file, request) {
-      var resp = $.parseXML(request);
-      var filePath = $(resp).find("Key").text();
-      var location = new URL($(resp).find("Location").text())
-      if($("#batch-uploader").length){
-        $.post('/symphony/documents', {
-          authenticity_token: $.rails.csrfToken(),
-          document_type: 'batch-uploads',
-          count: this.files.length,
-          document: {
-            filename: file.upload.filename,
-            file_url: '//' + location['host'] + '/' + filePath,
-            template_id: $('#template_id').val(),
-          }
-        });
-      }
-    });
-    // Check if file name are same & rename the file
+    Dropzone.options.documentUpload = {
+      chunking: true,      // enable chunking
+      forceChunking: true, // forces chunking when file.size < chunkSize
+      parallelChunkUploads: false,
+      chunkSize: 1000000,  // chunk size 1,000,000 bytes (~1MB)
+      retryChunks: true,   // retry chunks on failure
+      retryChunksLimit: 10 // retry maximum of 3 times (default is 3)
+    };
     documentUpload.on("addedfile", function (file) {
+      // Check if file name are same & rename the file
       if (this.files.length) {
         var _i, _len;
         for (_i = 0, _len = this.files.length; _i < _len - 1; _i++) {
@@ -107,9 +94,52 @@ $(document).ready(function () {
           }
         }
       }
+      //activate button submit
+      $('#drag-and-drop-submit').removeAttr('disabled');
+    });
+    $("#drag-and-drop-submit").click(function(){
+      documentUpload.processQueue();
+      $.post("/symphony/batches", {
+        authenticity_token: $.rails.csrfToken(),
+        batch: {
+          template_id: $('#template_id').val(),
+        }
+      }). done(result => {
+        batchId = result.batch_id
+      })
+    });
+    documentUpload.on("success", function (file, request) {
+      var resp = $.parseXML(request);
+      var filePath = $(resp).find("Key").text();
+      var location = new URL($(resp).find("Location").text())
+      if($("#batch-uploader").length){
+        var data_input = {
+          authenticity_token: $.rails.csrfToken(),
+          document_type: 'batch-uploads',
+          count: this.files.length,
+          document: {
+            filename: file.upload.filename,
+            file_url: '//' + location['host'] + '/' + filePath,
+            template_id: $('#template_id').val(),
+          }
+        };
+        var result = uploadDocuments(data_input);
+      }
     });
     documentUpload.on("queuecomplete", function (file, request) {
+      var templateId = $('#template_id').val();
+      var totalFile = documentUpload.files.length;
+      $('#drag-and-drop-submit').prop( "disabled", true );
       $('#view-invoices-button').show();
+      //if this function in create batch, redirect to show batch page after create
+      if($("#batch-uploader").length){
+        $('.loader').show();
+        // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
+        window.setTimeout(function() {
+          $('.loader').hide();
+          window.location.href = '/symphony/batches/'+templateId+'/'+batchId;
+        }, totalFile*500);
+      }
     });
   };
 });
