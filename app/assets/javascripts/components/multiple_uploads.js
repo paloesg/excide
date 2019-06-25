@@ -56,6 +56,7 @@ $(document).ready(function () {
 
   // $("#uploader").length 'To check #uploader is exists'
   if ($(".multiple_uploads").length) {
+    $('.loader').hide();
     var batchId='';
     var cleanFilename = function (name) {
       fileName = name.split('.').slice(0, -1).join('.')
@@ -132,8 +133,10 @@ $(document).ready(function () {
       $('#view-invoices-button').show();
       //if this function in create batch, redirect to show batch page after create
       if($("#batch-uploader").length){
+        $('.loader').show();
         // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
         window.setTimeout(function() {
+          $('.loader').hide();
           window.location.href = '/symphony/batches/'+templateId+'/'+batchId;
         }, totalFile*500);
       }
