@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_06_070211) do
+ActiveRecord::Schema.define(version: 2019_06_17_074036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -386,6 +386,7 @@ ActiveRecord::Schema.define(version: 2019_06_06_070211) do
     t.integer "task_type"
     t.integer "document_template_id"
     t.string "link_url"
+    t.boolean "important"
     t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"

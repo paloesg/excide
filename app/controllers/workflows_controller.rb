@@ -3,14 +3,13 @@ class WorkflowsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company_and_roles
-  before_action :set_template, except: [:check_identifier]
+  before_action :set_template, except: [:toggle_all]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :section]
 
   def show
     # Look for existing workflow if not create new workflow and then show the tasks from the first section
     #TODO: Refactor to separate workflow creation
-    identifier = @company.name + '-' + @template.title
-    @workflow = @workflows.create_with(user: @user, identifier: identifier).find_or_create_by!(template: @template, company: @company)
+    @workflow = @workflows.create_with(user: @user).find_or_create_by!(template: @template, company: @company)
     @sections = @template.sections
     @section = @workflow.current_section
     @document_templates = DocumentTemplate.where(template: @workflow.template)
@@ -29,8 +28,8 @@ class WorkflowsController < ApplicationController
   end
 
   def toggle
-    @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_identifier])
-    @workflow = Workflow.find_by(identifier: params[:workflow_identifier] )
+    @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_id])
+    @workflow = Workflow.find_by(id: params[:workflow_id] )
     #manually saving updated_at of the batch to current time
     @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
     respond_to do |format|
@@ -43,11 +42,15 @@ class WorkflowsController < ApplicationController
     end
   end
 
-  def check_identifier
-    @check_workflow = Workflow.where(identifier: params[:identifier].parameterize.upcase)
-
+  def toggle_all
+    @actions = WorkflowAction.where(id: params[:workflow_action_ids])
     respond_to do |format|
-      format.json { render json: { :unique => @check_workflow.blank? } }
+      if @actions.update_all(completed: true, completed_user_id: current_user.id)
+        format.json { render json: true, status: :ok }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      else
+        format.json { render json: @actions.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -85,6 +88,6 @@ class WorkflowsController < ApplicationController
   end
 
   def workflow_params
-    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline, :identifier)
+    params.require(:workflow).permit(:user_id, :company_id, :template_id, :completed, :deadline)
   end
 end

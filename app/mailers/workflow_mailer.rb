@@ -17,6 +17,6 @@ class WorkflowMailer < ApplicationMailer
     @company = company
 
     @url = user.email
-    mail(to: @url, subject: '[Completed] ' + workflow.template.title + ' - ' + workflow.identifier + ' completed')
+    mail(to: @url, subject: '[Completed] ' + workflow.template.title + ' - ' + workflow.id + ' completed')
   end
 end

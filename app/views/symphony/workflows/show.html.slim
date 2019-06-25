@@ -5,23 +5,14 @@
         a href="/symphony" Symphony
       li.breadcrumb-item
         = link_to @template.title, symphony_workflows_path(@template.slug)
-      li.breadcrumb-item.active.text-truncate #{@workflow.identifier}
+      li.breadcrumb-item.active.text-truncate #{@workflow.id}
 .row
   .col-md-8.col-sm-12
     h1.text-truncate
-      | #{@template.title} – #{@workflow.identifier}
+      | #{@template.title} – #{@workflow.id}
   .col-md-4.col-sm-6
     .btn-group.float-right role='group'
-      - if @workflow.archive.blank?
-        - if @workflow.previous_workflow.present?
-          = link_to symphony_workflow_path(@template.slug, @workflow.previous_workflow.identifier), class: 'btn btn-outline-secondary'
-            i.fa.fa-chevron-left
-            |  Earlier Workflow
-        - if @workflow.next_workflow.present?
-          = link_to symphony_workflow_path(@template.slug, @workflow.next_workflow.identifier), class: 'btn btn-outline-secondary'
-            ' Later Workflow
-            i.fa.fa-chevron-right
-      - else
+      - unless @workflow.archive.blank?
         h1 = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row
   .col-md-9.col-sm-12
@@ -33,10 +24,10 @@
         = render partial: 'symphony/workflows/history'
   .col-md-3.col-sm-12
     - if @workflow.archive.blank?
-      = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-primary btn-block'
-      = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
+      = link_to "Edit Workflow", edit_symphony_workflow_path(workflow_id: @workflow.id), class: 'btn btn-primary btn-block'
+      = link_to "Archive Workflow", archive_symphony_workflow_path(workflow_id: @workflow.id), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-success btn-block'
       - if @user.has_role? :superadmin
-        = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_identifier: @workflow.identifier), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
+        = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_id: @workflow.id), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
       br
     - if @workflow.workflowable.present?
       .card.mb-3
