@@ -13,9 +13,13 @@ container
             th Batch ID
             th Progress (%)
             th Average Time taken (Seconds)
+            th Create By
+            th Create At
         tbody
           - @batches.each do |batch|
             tr
               td = batch.id
               td = batch.action_completed_progress
               td = batch.average_time_taken_per_task
+              td = batch.user&.full_name
+              td = batch.created_at.strftime('%m/%d/%Y %H:%M')
