@@ -36,10 +36,14 @@ class WorkflowAction < ApplicationRecord
         NotificationMailer.deliver_notifications(next_task, next_action, users)
       end
     else
-      tasks = self.workflow.workflow_actions.map{|wfa| wfa.task}
-      users = tasks.map{|task| task.role.users}.flatten.compact.uniq
+      section_tasks = self.workflow.template.sections.map{|sect| sect.tasks }.flatten.compact
+      users = section_tasks.map{|task| task.role.users}.flatten.compact.uniq
+      tasks = []
       users.each do |user|
-        NotificationMailer.unordered_workflow_notification(user).deliver_now
+        #intersection is to draw out the task of the user that coincide with the section tasks
+        @intersection = user.roles.map(&:tasks).flatten & section_tasks
+        tasks.push(@intersection) 
+        NotificationMailer.unordered_workflow_notification(user, section_tasks).deliver_now
       end
     end
   end
