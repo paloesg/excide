@@ -1,4 +1,0 @@
-.row
-  = render "symphony/tasks/partial/workflow_type_conditions", action: action, task: action.task, workflow: workflow
-br
-= link_to "Take Photo", new_symphony_document_path(workflow: workflow.identifier, params: {camera: true}), role: 'button', class: 'btn btn-primary btn-sm'

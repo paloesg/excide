@@ -1,4 +1,0 @@
-.row
-  = render "symphony/tasks/partial/workflow_type_conditions", action: action, task: action.task, workflow: workflow
-br
-= link_to "Send Email", send_email_to_xero_symphony_workflow_path(workflow_name: workflow.template.slug, workflow_identifier: workflow.identifier), class: 'btn btn-primary btn-sm'

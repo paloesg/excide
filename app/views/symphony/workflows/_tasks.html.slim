@@ -17,7 +17,7 @@
           - if @workflow.archive.blank?
             - t = TaskDecorator.new(task)
             - a = t.workflow_action(@workflow.id)
-            = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
+            = render "symphony/tasks/partial/#{task.task_type}", task: t, action: a
           - else
             tr
               td = task['position']

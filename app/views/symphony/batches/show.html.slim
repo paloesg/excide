@@ -43,7 +43,7 @@
                   = link_to wf.invoice.id, symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
               - section.tasks.order(created_at: :asc).each do |task|
                 td class="text-center #{'important-task' if task.important}"
-                  = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
+                  = render "symphony/tasks/partial/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
         tfoot
           tr
             th

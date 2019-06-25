@@ -20,7 +20,7 @@
     td.p-0.border-top-0 colspan="6"
       div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered?? 'collapse show' : 'collapse'}"
         .m-3
-          = render "symphony/workflows/tasks/remarks", action: action
+          = render "symphony/tasks/partial/remarks", action: action
             .btn-toolbar role="toolbar"
               .btn-group.mr-2 role="group" aria-label="Reminder actions"
                 - if action.reminders.present?

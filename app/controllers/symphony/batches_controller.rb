@@ -3,6 +3,8 @@ class Symphony::BatchesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
+  before_action :set_user
+  before_action :set_roles
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
@@ -56,6 +58,14 @@ class Symphony::BatchesController < ApplicationController
 
   def set_company
     @company = current_user.company
+  end
+
+  def set_user
+    @user = current_user
+  end
+
+  def set_roles
+    @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
   end
 
   def set_s3_direct_post
