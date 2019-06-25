@@ -22,6 +22,7 @@
         th Link URL
         th Image URL
         th Set Reminder
+        th Important
     tbody.section-count class=("task-in-section-#{f.object.id}")
       = f.fields_for :tasks do |task|
         = render 'task_fields', f: task
