@@ -2,13 +2,18 @@ container
   row.collapse
     columns small="6" valign="middle" 
       = image_tag("excide-logo.png", style: "width: 50%; height: 50%")
-  spacer size="16" 
+  spacer size="16"
   row
     columns
       p Hi #{@user.first_name},
       p
         | The following tasks are assigned to you:
       - if (@user.roles.map(&:tasks).flatten & @section_tasks).any?
-        - @workflow_tasks.push(@user.roles.map(&:tasks).flatten & @section_tasks) 
-        - @workflow_tasks.flatten.sort_by{|workflow_task| workflow_task[:id]}.each do |task|
-          li #{task.instructions}         
+        - @workflow_tasks.push(@user.roles.map(&:tasks).flatten & @section_tasks)
+        ol
+          - @workflow_tasks.flatten.sort_by{|workflow_task| workflow_task[:id]}.each do |task|
+            li #{task.instructions} in section "#{task.section.section_name}"
+            p 
+              | To access the following workflow:
+              | You can access the task from this link: 
+              a href="#{symphony_workflow_url(task.section.template.slug, @workflow.id)}" Workflow
