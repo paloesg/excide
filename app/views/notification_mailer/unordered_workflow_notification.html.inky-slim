@@ -10,5 +10,6 @@ container
         | The following tasks are assigned to you:
       - if (@user.roles.map(&:tasks).flatten & @section_tasks).any?
         - @intersection.push(@user.roles.map(&:tasks).flatten & @section_tasks) 
-        - @intersection.flatten.each do |task|
-      	  p #{task.instructions}        
+        ol
+          - @intersection.flatten.each do |task|
+            li #{task.instructions}         
