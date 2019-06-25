@@ -16,12 +16,12 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.id)
   end
 
-  def unordered_workflow_notification(user, workflow_tasks, workflow)
+  def unordered_workflow_notification(user, workflow_tasks, action)
     @user = user
     @relevant_tasks = []
     #find relevant tasks through intersection that the particular user have in that workflow
     @relevant_tasks.push(@user.roles.map(&:tasks).flatten & workflow_tasks)
-    @workflow = workflow
+    @action = action
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
     mail(to: address.format, subject: '[Unordered workflow email notification] ')
