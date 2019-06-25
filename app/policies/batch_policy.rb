@@ -16,7 +16,7 @@ class BatchPolicy < ApplicationPolicy
   end
 
    def update?
-    user.company == record.company or user.has_role? :admin
+    user == record.user or user.has_role?(:admin, record.company)
   end
 
    def edit?
@@ -24,13 +24,13 @@ class BatchPolicy < ApplicationPolicy
   end
 
    def destroy?
-    user.has_role? :admin
+    user.has_role? :admin, record.company
   end
 
    class Scope < Scope
     def resolve
       # Scope batch by user who created the batch
-      if user.has_role? :admin
+      if user.has_role?(:admin, record.company)
         scope.all
       else
         scope.where(company: user.company)
