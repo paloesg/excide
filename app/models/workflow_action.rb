@@ -38,7 +38,6 @@ class WorkflowAction < ApplicationRecord
     else
       section_tasks = self.workflow.template.sections.map{|sect| sect.tasks }.flatten.compact
       users = section_tasks.map{|task| task.role.users}.flatten.compact.uniq
-      tasks = []
       users.each do |user|
         NotificationMailer.unordered_workflow_notification(user, section_tasks).deliver_now
       end

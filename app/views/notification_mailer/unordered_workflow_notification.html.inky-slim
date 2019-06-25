@@ -9,7 +9,6 @@ container
       p
         | The following tasks are assigned to you:
       - if (@user.roles.map(&:tasks).flatten & @section_tasks).any?
-        - @intersection.push(@user.roles.map(&:tasks).flatten & @section_tasks) 
-        ol
-          - @intersection.flatten.each do |task|
-            li #{task.instructions}         
+        - @workflow_tasks.push(@user.roles.map(&:tasks).flatten & @section_tasks) 
+        - @workflow_tasks.flatten.sort_by{|workflow_task| workflow_task[:id]}.each do |task|
+          li #{task.instructions}         

@@ -19,7 +19,7 @@ class NotificationMailer < ApplicationMailer
   def unordered_workflow_notification(user, section_tasks)
     @user = user
     @section_tasks = section_tasks
-    @intersection = []
+    @workflow_tasks = []
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
     mail(to: address.format, subject: '[Unordered workflow email notification] ')
