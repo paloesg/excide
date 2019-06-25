@@ -28,3 +28,6 @@ en:
    batch_policy:
      update?: 'You cannot edit this batch!'
      create?: 'You cannot create batch!'
+   invoice_policy:
+     update?: 'You cannot edit this invoice!'
+     create?: 'You cannot create invoice!'

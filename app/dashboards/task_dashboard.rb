@@ -19,6 +19,7 @@ class TaskDashboard < Administrate::BaseDashboard
     link_url: Field::String,
     days_to_complete: Field::Number,
     set_reminder: Field::Boolean,
+    important: Field::Boolean,
     document_template: Field::BelongsTo,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -38,6 +39,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :document_template,
     :days_to_complete,
     :set_reminder,
+    :important,
     :workflow_actions,
   ].freeze
 
@@ -55,6 +57,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :link_url,
     :days_to_complete,
     :set_reminder,
+    :important,
     :workflow_actions,
     :created_at,
     :updated_at,
@@ -74,6 +77,7 @@ class TaskDashboard < Administrate::BaseDashboard
     :link_url,
     :days_to_complete,
     :set_reminder,
+    :important,
     :workflow_actions,
   ].freeze
 

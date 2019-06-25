@@ -6,45 +6,48 @@
       li.breadcrumb-item
         a href="/symphony/batches" Batches
       li.breadcrumb-item #{@batch.company.name}
-      li.breadcrumb-item 
+      li.breadcrumb-item
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
     h1
       | Batch ID - #{@batch.id}
 - @sections.each do |section|
   .card.scrollbar.mb-3
-    h5.card-header = section.unique_name + ' - ' + section.tasks.count.to_s + " tasks"
+    h5.card-header = section.section_name + ' - ' + section.tasks.count.to_s + " tasks"
     .card-body
-      / Do the header of the grid table
-      .row.mt-3.flex-nowrap
-        .col-sm-1
-          h6.text-center Documents
-          hr
-        .col-sm-1
-          h6.text-center Invoices
-          hr
-        - section.tasks.order(created_at: :asc).each do |task|
-          .col-sm-2
-            a.pop data-container="body" title="Task instruction and role" data-content=("<div><b>Task instruction</b> - #{task.instructions}<br/><b>Assigned to </b> - #{task.role&.name} </div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
-              h6.header-properties 
-                = task.task_type.humanize
-            hr 
-      /Do the body of the grid table 
-      - @batch.workflows.each do |wf|
-        .row.mt-2.flex-nowrap.grid-bottom
-          .col-sm-1.text-center
-            - if wf.documents.empty?
-              p = "No documents yet."
-            - else
-              - wf.documents.each do |d|
-                p = d.filename
-                = link_to symphony_document_path(d), target: "_blank"
-                  i.ti-file.icon.mr-3.text-center style="font-size: 50px"
-          .col-sm-1.text-center
-            - if wf.invoice.blank?
-              p = "No invoice yet."
-            - else
-              = link_to wf.invoice.id, symphony_invoice_path(workflow_name: wf.template.slug, workflow_identifier: wf.identifier, id: wf.invoice.id), target: "_blank"
-          - section.tasks.order(created_at: :asc).each do |task|   
-            .col-sm-2.text-center
-              = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.identifier)
-
+      table.table.table-hover
+        thead
+          tr
+            th Documents
+            th Invoices
+            - section.tasks.order(created_at: :asc).each do |task|
+              th
+                a.pop data-container="body" title="Task instruction and role" data-content=("<div><b>Task instruction</b> - #{task.instructions}<br/><b>Assigned to </b> - #{task.role&.name} </div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
+                  .header-properties
+                    = task.task_type.humanize
+        tbody
+          - @batch.workflows.each do |wf|
+            tr
+              td
+                - if wf.documents.empty?
+                  p = "No documents yet."
+                - else
+                  - wf.documents.each do |d|
+                    p = d.filename
+                    = link_to symphony_document_path(d), target: "_blank"
+                      i.ti-file.icon.mr-3.text-center style="font-size: 50px"
+              td
+                - if wf.invoice.blank?
+                  p = "No invoice yet."
+                - else
+                  = link_to wf.invoice.id, symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
+              - section.tasks.order(created_at: :asc).each do |task|
+                td class="text-center #{'important-task' if task.important}"
+                  = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
+        tfoot
+          tr
+            th
+            th
+            - section.tasks.order(created_at: :asc).each do |task|
+              th
+                .text-center
+                  = button_tag 'Complete All', type: 'button', class: "btn #{task.important ? 'btn-light' : 'btn-warning'} btn-sm checkall", disabled: task.important, id:"selectall-#{task.id}"

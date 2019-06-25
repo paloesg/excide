@@ -27,7 +27,7 @@
     .card
       h5.card-header Upload Documents
       .card-body
-        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads document_index', id: 'documentIndex'
+        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads_and_edit'
           - @s3_direct_post.fields.each do |key, value|
             = hidden_field_tag key, value
 
@@ -41,18 +41,18 @@ javascript:
 
   loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
     var hitTemplate = '<table class="table table-striped">' +
-        '<thead><tr><th>Filename</th>' +
-        '<th>Document Template</th>' +
-        '<th>Workflow</th>' +
-        '<th>Uploaded At</th>' +
-        '<th>Actions</th>' +
+        '<thead><tr><th width="20%">Filename</th>' +
+        '<th width="20%">Document Template</th>' +
+        '<th width="20%">Workflow</th>' +
+        '<th width="20%">Uploaded At</th>' +
+        '<th width="20%">Actions</th>' +
         '</tr></thead>' +
         '<tbody>{{#hits}}' +
         '<tr><td>{{{_highlightResult.filename.value}}}</td>' +
         '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
-        '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.identifier}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
+        '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.id}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
         '<td>{{created_at}}</td>' +
-        '<td><a href="/symphony/documents/{{objectID}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1">Download</a> </td>' +
+        '<td><a href="/symphony/documents/{{objectID}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1 mt-1">Download</a> </td>' +
         '{{/hits}}</tbody>'
       '</div>';
       var search = instantsearch({

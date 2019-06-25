@@ -1,4 +1,4 @@
-tr
+tr class="#{'important-task' if task.important}"
   td = task.display_position
   td
     = task.instructions
@@ -25,7 +25,7 @@ tr
             = link_to "Send Email", send_email_to_xero_symphony_workflow_path, class: 'btn btn-primary btn-sm'
           .btn-group.mr-2 role="group" aria-label="Reminder actions"
             - if action.reminders.present?
-              = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.identifier, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+              = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.id, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
             - if task == @workflow.current_task && (@user.has_role? :admin, @company)
               = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm'
         br

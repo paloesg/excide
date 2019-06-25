@@ -1,5 +1,5 @@
 .card.mb-3
-  h5.card-header = @section.display_name
+  h5.card-header = @section.section_name || @section.display_name
   .table-responsive
     table.table
       thead
@@ -16,7 +16,7 @@
         - @tasks.each do |task|
           - if @workflow.archive.blank?
             - t = TaskDecorator.new(task)
-            - a = t.workflow_action(@workflow.identifier)
+            - a = t.workflow_action(@workflow.id)
             = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
           - else
             tr
@@ -39,11 +39,11 @@
   .card-footer
     - if @workflow.archive.blank?
       - unless @section.first?
-        = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.higher_item.id), class: 'btn btn-sm btn-outline-secondary float-left'
+        = link_to section_symphony_workflow_path(@template.slug, @workflow.id, @section.higher_item.id), class: 'btn btn-sm btn-outline-secondary float-left'
           i.fa.fa-chevron-left
           |  Previous Section
       - unless @section.last?
-        = link_to section_symphony_workflow_path(@template.slug, @workflow.identifier, @section.lower_item.id), class: 'btn btn-sm btn-outline-secondary float-right'
+        = link_to section_symphony_workflow_path(@template.slug, @workflow.id, @section.lower_item.id), class: 'btn btn-sm btn-outline-secondary float-right'
           ' Next Section
           i.fa.fa-chevron-right
     - else
