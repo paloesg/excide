@@ -13,6 +13,7 @@ container
             th Batch ID
             th Progress (%)
             th Average Time taken (Seconds)
+            th Template
             th Create By
             th Create At
         tbody
@@ -21,5 +22,6 @@ container
               td = batch.id
               td = batch.action_completed_progress
               td = batch.average_time_taken_per_task
+              td = batch.template.title
               td = batch.user&.full_name
               td = batch.created_at.strftime('%m/%d/%Y %H:%M')
