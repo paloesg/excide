@@ -7,7 +7,6 @@
     h1
       | All Templates
       .btn-toolbar.float-right
-        = link_to 'Clone Template', clone_symphony_templates_path, role: 'button', class: 'btn btn-warning mr-1' if current_user.has_role? :admin, :any
         = link_to 'Create Template', new_symphony_template_path, role: 'button', class: 'btn btn-primary'
 .row
   .col-sm-12

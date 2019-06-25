@@ -1,1 +1,40 @@
-= render partial: 'create_template', locals: { title: "New Template", submit_text: "Save Template" }
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item Template
+.row
+  .col-md-6
+    h1 New Template
+    = form_for(@template, url: symphony_templates_path(@template) ) do |f|
+      .row
+        .col-sm-10
+          .card.mb-3
+            h5.card-header Template Details:
+            .col-sm-12.mt-3
+              .form-group
+                = f.label :title, "Title:"
+                = f.text_field :title, class: "form-control"
+              .form-group
+                = f.label :workflow_type, "Workflow Type:"
+                = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
+      = f.submit "Save Template", class: 'btn btn-primary pull-left'
+  .col-md-6
+    h1 Clone Template
+    = form_for(@template, url: symphony_templates_path(@template) ) do |f|
+      .row
+        .col-md-10
+          .card.mb-3
+            h5.card-header Template Details:
+            .col-sm-12.mt-3
+              .form-group
+                = f.label :title, "Title:"
+                = f.text_field :title, class: "form-control"
+              .form-group
+                = label_tag :clone, "Template:"
+                = select_tag "template[clone]", options_from_collection_for_select(@general_templates, "id", "title"), class: "selectize"
+              .form-group
+                = f.label :workflow_type, "Workflow Type:"
+                = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
+      = f.submit "Clone Template", class: 'btn btn-primary pull-left'

@@ -12,10 +12,6 @@ class Symphony::TemplatesController < ApplicationController
 
   def new
     @template = Template.new
-  end
-
-  def clone
-    @template = Template.new
     @general_templates = Template.where(company: nil)
   end
 
