@@ -23,7 +23,7 @@ class NotificationMailer < ApplicationMailer
     @action = action
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
-    mail(to: address.format, subject: '[New Task] ' + 'Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.id)
+    mail(to: address.format, subject: '[New Task] Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.id)
   end
 
   def reminder_notification(reminder)
