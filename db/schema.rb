@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2019_06_17_074036) do
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "activation_types", id: :integer, default: nil, force: :cascade do |t|
+  create_table "activation_types", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.string "colour"
