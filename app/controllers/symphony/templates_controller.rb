@@ -4,7 +4,7 @@ class Symphony::TemplatesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
-  before_action :find_roles, only: [:new, :edit, :create_section]
+  before_action :find_roles, only: [:new, :edit, :update, :create_section]
 
   def index
     @templates = Template.all.where(company: @company)
@@ -26,7 +26,7 @@ class Symphony::TemplatesController < ApplicationController
     if @template.save
       redirect_to edit_symphony_template_path(@template)
     else
-      redirect_to symphony_templates_path
+      render :new
     end
   end
 
@@ -34,20 +34,20 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def update
-    if @template.update!(template_params)
+    if @template.update(template_params)
       redirect_to edit_symphony_template_path(@template)
     else
-      redirect_to root_path
+      render :edit
     end
   end
 
   def create_section
     @position = @template.sections.count + 1
-    @section = Section.create!(section_name: params[:new_section], template_id: @template.id, position: @position)
+    @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: @position)
     if @section.save
       redirect_to edit_symphony_template_path(@template)
     else
-      redirect_to symphony_templates_path
+      render :edit
     end
   end
 

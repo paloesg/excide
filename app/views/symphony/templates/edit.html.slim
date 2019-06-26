@@ -3,7 +3,7 @@
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
-      li.breadcrumb-item Template 
+      li.breadcrumb-item Template
     h1 Edit #{@template.title}
     - if @template.sections.present?
     	= form_for(@template, url: symphony_template_path(template_slug: @template.slug) ) do |f|
