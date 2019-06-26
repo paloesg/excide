@@ -36,6 +36,15 @@ class WorkflowAction < ApplicationRecord
     end
   end
 
+  def unordered_workflow_email_notification
+    workflow_tasks = self.workflow.template.sections.map{|sect| sect.tasks }.flatten.compact
+    task_users = workflow_tasks.map{|task| task.role.users}.flatten.compact.uniq
+    #loop through all the users that have a role in that workflow
+    task_users.each do |user|
+      NotificationMailer.unordered_workflow_notification(user, workflow_tasks, self).deliver_now
+    end
+  end
+
   # Get workflow actions that are assigned to the user.
   def self.assigned_actions(user)
     where(assigned_user: user)
