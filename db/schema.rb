@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_17_074036) do
+ActiveRecord::Schema.define(version: 2019_06_26_040527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -437,6 +437,7 @@ ActiveRecord::Schema.define(version: 2019_06_17_074036) do
     t.date "date_of_birth"
     t.text "remarks"
     t.string "bank_account_name"
+    t.json "notification_settings", default: []
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
