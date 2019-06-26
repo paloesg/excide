@@ -7,7 +7,7 @@
       li.list-group-item
         .media
           .align-self-center
-            = link_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_identifier: @workflow.identifier, id: @invoice.id)
+            = link_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id)
               i.ti-receipt.icon.mr-3 style="font-size: 50px"
           .media-body
             h5.card-title = @invoice.id

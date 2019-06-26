@@ -7,10 +7,10 @@ container
     columns
       p Hi #{@user.first_name},
       p
-        | You have a new task that you are required to complete         
-        - if @action.deadline.present?  
-          |  by #{@action.deadline.strftime("%d/%m/%Y")} 
-        |. 
+        | You have a new task that you are required to complete
+        - if @action.deadline.present?
+          |  by #{@action.deadline.strftime("%d/%m/%Y")}
+        |.
       p
         ' The instructions for the task are as follows: "#{@task.instructions}". You can access the task from this link:
         a href="#{symphony_workflow_url(@task.section.template.slug, @action.workflow.id)}" #{@task.section.template.title} - #{@action.workflow.id}
