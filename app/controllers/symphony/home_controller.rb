@@ -33,10 +33,6 @@ class Symphony::HomeController < ApplicationController
     @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'company.slug:' + current_user.company.slug})
   end
 
-  def notification_settings
-    @reminders = @company.reminders
-  end
-
   private
 
   def sort_column(array)

@@ -1,0 +1,53 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item.active Edit
+    h1 Edit Notification
+.row
+  .col-md-4.col-sm-12
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Reminders Setting
+          .card-body
+            .form-group.form-check
+              = check_box_tag 'SMS', true, false, class: 'form-check-input'
+              = label_tag 'SMS', 'SMS'
+            .form-group.form-check
+              = check_box_tag 'Email', false, true, disabled: true, class: 'form-check-input disabled'
+              = label_tag 'Email', 'Email'
+            .form-group.form-check
+              = check_box_tag 'Slack', true, false, class: 'form-check-input'
+              = label_tag 'Slack', 'Slack'
+  .col-md-4.col-sm-12
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Tasks Setting
+          .card-body
+            .form-group.form-check
+              = check_box_tag 'SMS', true, false, class: 'form-check-input'
+              = label_tag 'SMS', 'SMS'
+            .form-group.form-check
+              = check_box_tag 'Email', false, true, disabled: true, class: 'form-check-input disabled'
+              = label_tag 'Email', 'Email'
+            .form-group.form-check
+              = check_box_tag 'Slack', true, false, class: 'form-check-input'
+              = label_tag 'Slack', 'Slack'
+  .col-md-4.col-sm-12
+    .row
+      .col-sm-12
+        .card.mb-3
+          h5.card-header Batches Setting
+          .card-body
+            .form-group.form-check
+              = check_box_tag 'SMS', true, false, class: 'form-check-input'
+              = label_tag 'SMS', 'SMS'
+            .form-group.form-check
+              = check_box_tag 'Email', false, true, disabled: true, class: 'form-check-input disabled'
+              = label_tag 'Email', 'Email'
+            .form-group.form-check
+              = check_box_tag 'Slack', true, false, class: 'form-check-input'
+              = label_tag 'Slack', 'Slack'

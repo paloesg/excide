@@ -4,7 +4,7 @@ class Symphony::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles, only: [:new, :create, :edit]
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :change_company]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :change_company, :notification_settings]
 
   def index
     @users = User.where(company: @company).order(:id).without_role(:contractor, :any).includes(:roles)
@@ -52,6 +52,10 @@ class Symphony::UsersController < ApplicationController
     else
       redirect_to symphony_root_path, error: 'Unable to switch companies.'
     end
+  end
+
+  def notification_settings
+
   end
 
   private
