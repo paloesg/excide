@@ -4,7 +4,8 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def show?
-    user.company == record.company
+    #allow any user with role or assigned task using intersection from user role and workflow task role
+    user.get_role_ids & record.get_task_role_ids
   end
 
   def create?
@@ -16,7 +17,7 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def update?
-    user == record.user or user.has_role?(:admin, record.company)
+    user == record.user or user.has_role?(:any, record.company)
   end
 
   def edit?
@@ -46,7 +47,7 @@ class WorkflowPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       # Scope workflow by user has a role in
-      scope.where(company: user.company)
+      scope.where(company: user.company, id: user.relevant_workflow_ids)
     end
   end
 end

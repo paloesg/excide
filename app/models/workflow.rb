@@ -66,6 +66,10 @@ class Workflow < ApplicationRecord
     self.template.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
   end
 
+  def get_task_role_ids
+    self.workflow_actions.includes(:task).pluck('tasks.role_id')
+  end
+
   def get_users
     self.template.sections.map{|section| section.tasks.map{|task| task.workflow_actions.map(&:user)}}.flatten.compact.uniq
   end
