@@ -8,7 +8,7 @@ container
       p Hi #{@user.first_name},
       p
         | The following tasks are assigned to you:
-        - @relevant_tasks.flatten.sort_by{|relevant_task| relevant_task[:id]}.each do |task|
+        - @relevant_tasks.sort_by{|relevant_task| relevant_task[:id]}.each do |task|
             p 
               ' "#{task.instructions}". You can access the task from this link:
               a href="#{symphony_workflow_url(task.section.template.slug, @action.workflow.id)}" #{task.section.template.title} - #{@action.workflow.id}
