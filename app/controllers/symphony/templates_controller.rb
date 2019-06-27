@@ -43,7 +43,7 @@ class Symphony::TemplatesController < ApplicationController
 
   def create_section
     @position = @template.sections.count + 1
-    @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: @position)
+    @section = Section.new(section_name: params[:new_section], template_id: @template.id, position: @position)
     if @section.save
       redirect_to edit_symphony_template_path(@template)
     else
