@@ -6,21 +6,29 @@ class Symphony::TemplatesController < ApplicationController
   before_action :set_template, except: [:index, :new, :create, :clone]
   before_action :find_roles, only: [:new, :edit, :create_section]
 
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: :index
+
   def index
-    @templates = Template.all.where(company: @company)
+    @templates = policy_scope(Template)
+    #authorize the first template is enough for the policy to run record.company properly
+    authorize @templates[0]
   end
 
   def new
     @template = Template.new
+    authorize @template
     @general_templates = Template.where(company: nil)
   end
 
   def create
     if params[:template][:clone]
       @template = Template.find(params[:template][:clone]).deep_clone include: { sections: :tasks }
+      authorize @template
       @template.title = template_params[:title]
     else
       @template = Template.new(template_params)
+      authorize @template
     end
     @template.company = @company
     if @template.save
@@ -31,9 +39,11 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def edit
+    authorize @template
   end
 
   def update
+    authorize @template
     if @template.update!(template_params)
       redirect_to edit_symphony_template_path(@template)
     else
@@ -42,6 +52,7 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def create_section
+    authorize @template
     @position = @template.sections.count + 1
     @section = Section.create!(section_name: params[:new_section], template_id: @template.id, position: @position)
     if @section.save
@@ -52,6 +63,7 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def destroy_section
+    authorize @template
     @section = Section.find(params[:section_id])
     if @section.destroy
       redirect_to edit_symphony_template_path(@template.slug)
