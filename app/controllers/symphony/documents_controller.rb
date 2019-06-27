@@ -47,18 +47,22 @@ class Symphony::DocumentsController < DocumentsController
       @document.workflow_action = @workflow_action
     end
 
+    if params[:document_type] == 'batch-uploads'
+      @template = Template.find(params[:document][:template_id])
+      @workflow = Workflow.new(user: current_user, company: @company, template: @template, workflowable: @client)
+      @workflow.template_data(@template)
+      #equate workflow to the latest batch
+      @workflow.batch = Batch.last
+      @workflow.save
+      @document.workflow = @workflow
+    end
+
     respond_to do |format|
       if @document.save
         if params[:document_type] == 'batch-uploads'
-          @template = Template.find(params[:document][:template_id])
-          @workflow = Workflow.new(user: current_user, company: @company, template: @template, workflowable: @client)
-          @workflow.template_data(@template)
-          #equate workflow to the latest batch
-          @workflow.batch = Batch.last
-          @workflow.save
-          @document.update_attributes(workflow: @workflow)
-          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_batch_path(@workflow.template.slug, @workflow.batch_id), notice: params[:count] + ' documents were successfully created.' }
-          format.json { render :show, status: :created, location: @document}
+           #return output in json
+          output = { :status => "ok", :message => "batch documents created", :document => @document.id, :batch => @workflow.batch.id, :template => @template.slug}
+          format.json  { render :json => output }
         else
           format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.id), notice: 'Document was successfully created.' }
           format.json { render :show, status: :created, location: @document}
@@ -124,6 +128,16 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   private
+
+  def create_workflow(company, template_id, workflow_identifier, client, document)
+    @template = Template.find(template_id)
+    @workflow = Workflow.new(user: current_user, company: company, template: @template, identifier: workflow_identifier, workflowable: client)
+    @workflow.template_data(@template)
+    #equate workflow to the latest batch
+    @workflow.batch = Batch.last
+    @workflow.save
+    Document.find(document.id).update_attributes(workflow: @workflow)
+  end
 
   def set_company
     @user = current_user

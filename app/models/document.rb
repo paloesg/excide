@@ -28,7 +28,7 @@ class Document < ApplicationRecord
       { title: document_template&.title }
     end
     attribute :company do
-      { name: company.name, slug: company.slug }
+      { name: company&.name, slug: company&.slug }
     end
   end
 

@@ -13,4 +13,4 @@
           tr = render_activity activity
   - if (@activities.count > 10) and @workflow.archive.blank?
     .card-footer
-      = link_to "View more...", activities_symphony_workflow_path(workflow_identifier: @workflow.identifier), class: 'btn btn-sm btn-outline-secondary float-right'
+      = link_to "View more...", activities_symphony_workflow_path(workflow_id: @workflow.id), class: 'btn btn-sm btn-outline-secondary float-right'
