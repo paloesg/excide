@@ -44,10 +44,14 @@ class Symphony::TemplatesController < ApplicationController
   def create_section
     @position = @template.sections.count + 1
     @section = Section.new(section_name: params[:new_section], template_id: @template.id, position: @position)
-    if @section.save
-      redirect_to edit_symphony_template_path(@template)
-    else
-      render :edit
+    respond_to do |format|
+      if @section.save
+        format.html { redirect_to edit_symphony_template_path(@template), notice: 'Section was successfully created.' }
+        format.js { render js: 'Turbolinks.visit(location.toString());' }
+      else
+        format.html { render :edit }
+        format.js { render js: 'Turbolinks.visit(location.toString());' }
+      end
     end
   end
 
