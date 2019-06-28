@@ -48,11 +48,11 @@
           i.fa.fa-chevron-right
     - else
       - unless @sections.first['section_name'] == @section['section_name']
-        = link_to "?section=#{@sections[@section_index - 1]['position']}", class: 'btn btn-sm btn-outline-secondary float-left'
+        = link_to "?section=#{@section['position'] - 1}", class: 'btn btn-sm btn-outline-secondary float-left'
           i.fa.fa-chevron-left
           |  Previous Section
       - unless @sections.last['section_name'] == @section['section_name']
-        = link_to "?section=#{@sections[@section_index + 1]['position']}", class: 'btn btn-sm btn-outline-secondary float-right'
+        = link_to "?section=#{@section['position'] + 1}", class: 'btn btn-sm btn-outline-secondary float-right'
           ' Next Section
           i.fa.fa-chevron-right
     .clearfix

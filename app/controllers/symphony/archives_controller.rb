@@ -30,7 +30,6 @@ class Symphony::ArchivesController < ApplicationController
     select_section = params[:section] ? @sections.find{|section| section['position'] == params[:section].to_i} : @sections.last
     @section = OpenStruct.new(select_section)
     @tasks = select_section['tasks'].sort_by{|task| task['position']}
-    @section_index = @sections.index(select_section)
     @activities = @workflow.activities
     @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
     @document_templates = DocumentTemplate.where(template: @get_workflow.template)
