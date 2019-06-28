@@ -1,5 +1,5 @@
 .card.mb-3
-  h5.card-header = @section.section_name || @section.display_name
+  h5.card-header = @section.section_name
   .table-responsive
     table.table
       thead
@@ -47,12 +47,12 @@
           ' Next Section
           i.fa.fa-chevron-right
     - else
-      - unless @sections.first['unique_name'] == @section['unique_name']
-        = link_to "?section=#{@sections[@section_index - 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-left'
+      - unless @sections.first['section_name'] == @section['section_name']
+        = link_to "?section=#{@sections[@section_index - 1]['position']}", class: 'btn btn-sm btn-outline-secondary float-left'
           i.fa.fa-chevron-left
           |  Previous Section
-      - unless @sections.last['unique_name'] == @section['unique_name']
-        = link_to "?section=#{@sections[@section_index + 1]['unique_name']}", class: 'btn btn-sm btn-outline-secondary float-right'
+      - unless @sections.last['section_name'] == @section['section_name']
+        = link_to "?section=#{@sections[@section_index + 1]['position']}", class: 'btn btn-sm btn-outline-secondary float-right'
           ' Next Section
           i.fa.fa-chevron-right
     .clearfix
