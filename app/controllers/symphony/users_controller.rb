@@ -58,6 +58,10 @@ class Symphony::UsersController < ApplicationController
 
   end
 
+  def update_notification
+
+  end
+
   private
 
   def set_company
@@ -73,6 +77,6 @@ class Symphony::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :role_ids => [])
+    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :role_ids => [], notification_settings: [ reminders: [:sms, :email, :slack], tasks: [:sms, :email, :slack], batches: [:sms, :email, :slack] ])
   end
 end
