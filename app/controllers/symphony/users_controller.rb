@@ -15,7 +15,6 @@ class Symphony::UsersController < ApplicationController
 
   def new
     @user = User.new
-    @user.build_setting
   end
 
   def create
@@ -56,7 +55,7 @@ class Symphony::UsersController < ApplicationController
   end
 
   def notification_settings
-
+    @user.build_setting
   end
 
   def update_notification

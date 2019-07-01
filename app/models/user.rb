@@ -172,7 +172,7 @@ class User < ApplicationRecord
   def build_setting
     s = self.settings.dup
     s << Setting.new({reminder_sms: false, reminder_email: false, reminder_slack: false, task_sms: false, task_email: false, task_slack: false, batch_sms: false, batch_email: false, batch_slack: false })
-    self.settings = v
+    self.settings = s
   end
 
   class Setting
