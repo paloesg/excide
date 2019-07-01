@@ -5,54 +5,55 @@
         a href="/symphony" Symphony
       li.breadcrumb-item.active Edit
     h1 Edit Notification
-= form_with url: update_notification_symphony_user_path(@user) do |form|
-  .row
-    .col-md-4.col-sm-12
-      .row
-        .col-sm-12
-          .card.mb-3
-            h5.card-header Reminders Setting
-            .card-body
-              .form-group.form-check
-                = check_box_tag 'SMS', false, true, disabled: true, class: 'form-check-input'
-                = label_tag 'notification_settings[reminders][sms]', 'SMS'
-              .form-group.form-check
-                = check_box_tag 'Email', true, false, class: 'form-check-input'
-                = label_tag 'notification_settings[reminders][email]', 'Email'
-              .form-group.form-check
-                = check_box_tag 'Slack', true, false, class: 'form-check-input'
-                = label_tag 'notification_settings[reminders][slack]', 'Slack'
-    .col-md-4.col-sm-12
-      .row
-        .col-sm-12
-          .card.mb-3
-            h5.card-header Tasks Setting
-            .card-body
-              .form-group.form-check
-                = check_box_tag 'SMS', false, true, disabled: true, class: 'form-check-input'
-                = label_tag 'notification_settings[tasks][sms]', 'SMS'
-              .form-group.form-check
-                = check_box_tag 'Email', true, false, class: 'form-check-input'
-                = label_tag 'notification_settings[tasks][email]', 'Email'
-              .form-group.form-check
-                = check_box_tag 'Slack', true, false, class: 'form-check-input'
-                = label_tag 'notification_settings[tasks][slack]', 'Slack'
-    .col-md-4.col-sm-12
-      .row
-        .col-sm-12
-          .card.mb-3
-            h5.card-header Batches Setting
-            .card-body
-              .form-group.form-check
-                = check_box_tag 'SMS', false, true, disabled: true, class: 'form-check-input'
-                = label_tag 'notification_settings[batches][sms]', 'SMS'
-              .form-group.form-check
-                = check_box_tag 'Email', true, false, class: 'form-check-input'
-                = label_tag 'notification_settings[batches][email]', 'Email'
-              .form-group.form-check
-                = check_box_tag 'Slack', true, false, class: 'form-check-input'
-                = label_tag 'notification_settings[batches][slack]', 'Slack'
-  .row
-    .col-sm-12
-      = submit_tag 'Save', class: 'btn btn-primary pull-right'
+= form_for(@user, url: update_notification_symphony_user_path(@user)) do |f|
+  = f.fields_for :settings do |s|
+    .row
+      .col-md-4.col-sm-12
+        .row
+          .col-sm-12
+            .card.mb-3
+              h5.card-header Reminders Setting
+              .card-body
+                .form-group.form-check
+                  = s.check_box :reminder_sms, class: 'form-check-input'
+                  = s.label :reminder_sms, 'SMS', class: 'form-check-label'
+                .form-group.form-check
+                  = s.check_box :reminder_email, class: 'form-check-input'
+                  = s.label :reminder_email, 'Email', class: 'form-check-label'
+                .form-group.form-check
+                  = s.check_box :reminder_slack, class: 'form-check-input'
+                  = s.label :reminder_slack, 'Slack', class: 'form-check-label'
+      .col-md-4.col-sm-12
+        .row
+          .col-sm-12
+            .card.mb-3
+              h5.card-header Tasks Setting
+              .card-body
+                .form-group.form-check
+                  = s.check_box :task_sms, class: 'form-check-input'
+                  = s.label :task_sms, 'SMS', class: 'form-check-label'
+                .form-group.form-check
+                  = s.check_box :task_email, class: 'form-check-input'
+                  = s.label :task_email, 'Email', class: 'form-check-label'
+                .form-group.form-check
+                  = s.check_box :task_slack, class: 'form-check-input'
+                  = s.label :task_slack, 'Slack', class: 'form-check-label'
+      .col-md-4.col-sm-12
+        .row
+          .col-sm-12
+            .card.mb-3
+              h5.card-header Batches Setting
+              .card-body
+                .form-group.form-check
+                  = s.check_box :batch_sms, class: 'form-check-input'
+                  = s.label :batch_sms, 'SMS', class: 'form-check-label'
+                .form-group.form-check
+                  = s.check_box :batch_email, class: 'form-check-input'
+                  = s.label :batch_email, 'Email', class: 'form-check-label'
+                .form-group.form-check
+                  = s.check_box :batch_slack, class: 'form-check-input'
+                  = s.label :batch_slack, 'Slack', class: 'form-check-label'
+    .row
+      .col-sm-12
+        = s.submit 'Save', class: 'btn btn-primary pull-right'
      

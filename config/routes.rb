@@ -47,7 +47,7 @@ Rails.application.routes.draw do
       member do
         patch '/change_company', to: 'users#change_company', as: :change_company
         get '/notification_settings', to: 'users#notification_settings', as: :notification_settings
-        post '/update_notification', to: 'users#update_notification', as: :update_notification
+        patch '/update_notification', to: 'users#update_notification', as: :update_notification
       end
     end
     resources :reminders do

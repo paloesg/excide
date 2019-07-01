@@ -4,7 +4,7 @@ class Symphony::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles, only: [:new, :create, :edit]
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :change_company, :notification_settings]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :change_company, :notification_settings, :update_notification]
 
   def index
     @users = User.where(company: @company).order(:id).without_role(:contractor, :any).includes(:roles)
@@ -15,6 +15,7 @@ class Symphony::UsersController < ApplicationController
 
   def new
     @user = User.new
+    @user.build_setting
   end
 
   def create
@@ -59,7 +60,11 @@ class Symphony::UsersController < ApplicationController
   end
 
   def update_notification
-
+    if @user.update(user_params)
+      render :json => @user.to_json
+    else
+      render :index
+    end
   end
 
   private
@@ -77,6 +82,6 @@ class Symphony::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :role_ids => [], notification_settings: [ reminders: [:sms, :email, :slack], tasks: [:sms, :email, :slack], batches: [:sms, :email, :slack] ])
+    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack], :role_ids => [])
   end
 end

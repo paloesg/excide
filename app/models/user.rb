@@ -156,4 +156,44 @@ class User < ApplicationRecord
     workflows.map{|w| w.id if (w.get_roles & self.roles).any?}.compact
   end
 
+  def settings
+    read_attribute(:settings).map{|s| Setting.new(s)}
+  end
+
+  def settings_attributes=(attributes)
+    settings = []
+    attributes.each do |index, attrs|
+      next if '1' == attrs.delete("_destroy")
+      settings << attrs
+    end
+    write_attribute(:settings, settings)
+  end
+
+  def build_setting
+    s = self.settings.dup
+    s << Setting.new({reminder_sms: false, reminder_email: false, reminder_slack: false, task_sms: false, task_email: false, task_slack: false, batch_sms: false, batch_email: false, batch_slack: false })
+    self.settings = v
+  end
+
+  class Setting
+    attr_accessor :reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack
+
+    def initialize(hash)
+      @reminder_sms = hash['reminder_sms']
+      @reminder_email = hash['reminder_email']
+      @reminder_slack = hash['reminder_slack']
+      @task_sms = hash['task_sms']
+      @task_email = hash['task_email']
+      @task_slack = hash['task_slack']
+      @batch_sms = hash['batch_sms']
+      @batch_email = hash['batch_email']
+      @batch_slack = hash['batch_slack']
+    end
+    def persisted?() false; end
+    def new_record?() false; end
+    def marked_for_destruction?() false; end
+    def _create() false; end
+    def _update() false; end
+    def _destroy() false; end
+  end
 end
