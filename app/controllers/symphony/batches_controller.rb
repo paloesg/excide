@@ -10,21 +10,17 @@ class Symphony::BatchesController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    #get current_user's roles with all the word downcase for matching the string
-    @current_user_roles = current_user.roles.names.map(&:downcase)
+    #get current_user's id roles
+    @current_user_roles = current_user.roles.pluck(:id)
+
     if current_user.has_role? :admin, @company
-      @batch = Batch.all.where(company: @company)
+      @batches = Batch.where(company: @company).order(created_at: :desc)
       #save all the progress into an array to set the progress bar in view page
     else
-      @batch = []
-      #Loop all the batch and find same roles between the current_user's roles and the batch's workflows's roles. If the current_user has the same role as a role in workflow_actions, then save the batch into @batch.
-      Batch.all.where(company: @company).each do |batch|
-        #intersection operator & to get duplicate values of the role in both arrays
-        @intersection = batch.get_relevant_roles & @current_user_roles
-        @batch.push(batch) if @intersection.present?
-      end
+      #Get batches If the current_user has the same role as a role in workflow_actions
+      @batches =  Batch.includes(:workflows => [:template => [:sections => :tasks]]).where(:tasks => {:role_id => @current_user_roles}).order(created_at: :desc)
     end
-    @batches_paginate = Kaminari.paginate_array(@batch.sort_by{ |a| a.created_at }.reverse!).page(params[:page]).per(10)
+    @batches_paginate = Kaminari.paginate_array(@batches).page(params[:page]).per(10)
   end
 
   def new
@@ -41,6 +37,9 @@ class Symphony::BatchesController < ApplicationController
     @batch.template = @template
     @batch.user = current_user
     @batch.save
+    respond_to do |format|
+      format.json  { render :json => {:batch_id => @batch.id} }
+    end
   end
 
   def show

@@ -44,6 +44,9 @@ class WorkflowsController < ApplicationController
 
   def toggle_all
     @actions = WorkflowAction.where(id: params[:workflow_action_ids])
+    @workflow = @actions.last.workflow
+    #manually saving updated_at of the batch to current time
+    @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
     respond_to do |format|
       if @actions.update_all(completed: true, completed_user_id: current_user.id)
         format.json { render json: true, status: :ok }
