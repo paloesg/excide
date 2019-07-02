@@ -16,9 +16,8 @@
 
 require_relative 'support/controller_helpers'
 require 'devise'
-require 'pundit/rspec'
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
   config.include ControllerHelpers, type: :controller
