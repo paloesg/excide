@@ -61,9 +61,9 @@ class Symphony::UsersController < ApplicationController
 
   def update_notification
     if @user.update(user_params)
-      render :json => @user.to_json
+      redirect_to symphony_root_path, notice: 'Notification settings updated successfully!'
     else
-      render :index
+      redirect_to notification_settings_symphony_user(@user), alert: 'Notification settings not updated'
     end
   end
 
