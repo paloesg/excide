@@ -5,7 +5,10 @@ FactoryBot.define do
     file_url { Faker::File.file_name('foo/bar', 'baz', 'doc') }
 
     company
-    workflow
     document_template
+
+    factory :document_with_workflow do
+      workflow
+    end
   end
 end
