@@ -2,7 +2,7 @@
 container
   row.collapse
     columns small="6" valign="middle"
-      = image_tag("excide-logo.png", style: "width: 50%; height: 50%")
+      = image_tag("https://excide.s3-ap-southeast-1.amazonaws.com/excide-logo.png", style: "width: 50%; height: 50%")
   spacer size="16"
   row
     columns

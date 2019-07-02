@@ -9,4 +9,6 @@ RSpec.describe Survey, type: :model do
   it { should belong_to(:company) }
   it { should belong_to(:survey_template) }
   it { should have_many(:segments) }
+
+  it { should accept_nested_attributes_for (:company) }
 end
