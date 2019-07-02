@@ -10,6 +10,7 @@ class Symphony::BatchesController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    @get_batches = policy_scope(Batch).includes(:workflow)
     #get current_user's id roles
     @current_user_roles = current_user.roles.pluck(:id)
 

@@ -30,7 +30,7 @@ class BatchPolicy < ApplicationPolicy
    class Scope < Scope
     def resolve
       # Scope batch by user who created the batch
-      if user.has_role?(:admin, record.company)
+      if user.has_role?(:admin)
         scope.all
       else
         scope.where(company: user.company)
