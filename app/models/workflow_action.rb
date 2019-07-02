@@ -43,7 +43,7 @@ class WorkflowAction < ApplicationRecord
     task_users = workflow_tasks.map{|task| task.role.users}.flatten.compact.uniq
     #loop through all the users that have a role in that workflow
     task_users.each do |user|
-      NotificationMailer.unordered_workflow_notification(user, workflow_tasks, self).deliver_now
+      NotificationMailer.unordered_workflow_notification(user, workflow_tasks, self).deliver_later if user.settings[0]&.task_email == 'true'
     end
   end
 
