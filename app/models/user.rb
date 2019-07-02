@@ -157,7 +157,7 @@ class User < ApplicationRecord
   end
 
   def settings
-    read_attribute(:settings).map{|s| Setting.new(s)}
+    read_attribute(:settings).map { |s| Setting.new(s) }
   end
 
   def settings_attributes=(attributes)
@@ -171,7 +171,7 @@ class User < ApplicationRecord
 
   def build_setting
     s = self.settings.dup
-    s << Setting.new({reminder_sms: false, reminder_email: false, reminder_slack: false, task_sms: false, task_email: false, task_slack: false, batch_sms: false, batch_email: false, batch_slack: false })
+    s << Setting.new({reminder_sms: '', reminder_email: '', reminder_slack: '', task_sms: '', task_email: '', task_slack: '', batch_sms: '', batch_email: '', batch_slack: '' })
     self.settings = s
   end
 
