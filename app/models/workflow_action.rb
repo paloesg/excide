@@ -33,7 +33,7 @@ class WorkflowAction < ApplicationRecord
     if next_task.role.present? and self.workflow.batch.nil?
       users = User.with_role(next_task.role.name.to_sym, self.company)
       users.each do |user|
-        NotificationMailer.deliver_notifications(next_task, next_action, users) if user.settings[0]&.task_email == 'true'
+        NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
       end
     end
   end
