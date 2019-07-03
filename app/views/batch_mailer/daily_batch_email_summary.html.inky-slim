@@ -13,9 +13,19 @@ container
             th Batch ID
             th Progress (%)
             th Average Time taken (Seconds)
+            th Template
+            th Create By
+            th Create At
         tbody
           - @batches.each do |batch|
+            - next if batch.action_completed_progress == 100.0 and batch.updated_at.to_date < Date.today
             tr
-              td = batch.id
+              td
+                = link_to batch.id, symphony_batch_url(id: batch.id, batch_template_name: batch.template.slug)
+                - if (batch.created_at.to_date + 1.days) >= Date.today
+                  span.badge.badge-danger new
               td = batch.action_completed_progress
               td = batch.average_time_taken_per_task
+              td = batch.template.title
+              td = batch.user&.full_name
+              td = batch.created_at.strftime('%m/%d/%Y %H:%M')
