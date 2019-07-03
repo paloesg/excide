@@ -30,4 +30,4 @@ en:
      create?: 'You cannot create invoice!'
    template_policy:
      update?: 'You cannot edit this template!'
-     create?: 'Ypu cannot create template!'
+     create?: 'You cannot create template!'
