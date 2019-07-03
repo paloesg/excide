@@ -6,9 +6,6 @@ RSpec.describe TemplatePolicy, type: :policy do
   let(:user) { FactoryBot.create(:company_admin) }
 
   permissions :index? do
-    it "denies access if user is non-admin" do
-      @user = user.add_role(:admin, user)
-      expect(subject).to permit(@user)
-    end
+    pending "add some examples to (or delete) #{__FILE__}"
   end
 end
