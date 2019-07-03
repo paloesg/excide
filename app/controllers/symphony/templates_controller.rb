@@ -11,8 +11,6 @@ class Symphony::TemplatesController < ApplicationController
 
   def index
     @templates = policy_scope(Template)
-    #authorize the first template is enough for the policy to run record.company properly
-    authorize @templates[0]
   end
 
   def new
@@ -24,12 +22,11 @@ class Symphony::TemplatesController < ApplicationController
   def create
     if params[:template][:clone]
       @template = Template.find(params[:template][:clone]).deep_clone include: { sections: :tasks }
-      authorize @template
       @template.title = template_params[:title]
     else
       @template = Template.new(template_params)
-      authorize @template
     end
+    authorize @template
     @template.company = @company
     if @template.save
       redirect_to edit_symphony_template_path(@template)

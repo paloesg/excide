@@ -8,7 +8,7 @@ class TemplatePolicy < ApplicationPolicy
   end
 
   def new?
-    user_admin?
+    create?
   end
 
   def update?
@@ -16,11 +16,11 @@ class TemplatePolicy < ApplicationPolicy
   end
 
   def edit?
-    user_admin?
+    update?
   end
 
   def create_section?
-    user_admin?
+    create?
   end
 
   def destroy_section?
