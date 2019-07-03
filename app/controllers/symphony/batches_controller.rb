@@ -6,7 +6,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index, :search]
+  after_action :verify_authorized, except: [:index]
   after_action :verify_policy_scoped, only: :index
 
   def index
