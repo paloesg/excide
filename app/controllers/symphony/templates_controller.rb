@@ -4,7 +4,7 @@ class Symphony::TemplatesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
-  before_action :find_roles, only: [:new, :edit, :create_section]
+  before_action :find_roles, only: [:new, :edit, :update, :create_section]
 
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
@@ -31,7 +31,7 @@ class Symphony::TemplatesController < ApplicationController
     if @template.save
       redirect_to edit_symphony_template_path(@template)
     else
-      redirect_to symphony_templates_path
+      render :new
     end
   end
 
@@ -41,21 +41,25 @@ class Symphony::TemplatesController < ApplicationController
 
   def update
     authorize @template
-    if @template.update!(template_params)
+    if @template.update(template_params)
       redirect_to edit_symphony_template_path(@template)
     else
-      redirect_to root_path
+      render :edit
     end
   end
 
   def create_section
     authorize @template
     @position = @template.sections.count + 1
-    @section = Section.create!(section_name: params[:new_section], template_id: @template.id, position: @position)
-    if @section.save
-      redirect_to edit_symphony_template_path(@template)
-    else
-      redirect_to symphony_templates_path
+    @section = Section.new(section_name: params[:new_section], template_id: @template.id, position: @position)
+    respond_to do |format|
+      if @section.save
+        format.html { redirect_to edit_symphony_template_path(@template), notice: 'Section was successfully created.' }
+        format.js { render js: 'Turbolinks.visit(location.toString());' }
+      else
+        format.html { render :edit }
+        format.js { render js: 'Turbolinks.visit(location.toString());' }
+      end
     end
   end
 

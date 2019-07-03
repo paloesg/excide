@@ -1,0 +1,15 @@
+container
+  row.collapse
+    columns small="6" valign="middle" 
+      = image_tag("https://excide.s3-ap-southeast-1.amazonaws.com/excide-logo.png", style: "width: 50%; height: 50%")
+  spacer size="16"
+  row
+    columns
+      p Hi #{@user.first_name},
+      p
+        | The following tasks are assigned to you:
+        - @relevant_tasks.sort_by{|relevant_task| relevant_task[:id]}.each do |task|
+            p 
+              ' "#{task.instructions}". You can access the task from this link:
+              a href="#{symphony_workflow_url(task.section.template.slug, @action.workflow.id)}" #{task.section.template.title} - #{@action.workflow.id}
+      p If you have any queries regarding your task, please contact the workflow creator: #{@action.workflow.user.first_name}.
