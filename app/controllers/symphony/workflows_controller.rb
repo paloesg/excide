@@ -100,7 +100,7 @@ class Symphony::WorkflowsController < WorkflowsController
       if current_task.role.present?
         users = User.with_role(current_task.role.name.to_sym, @company)
         users.each do |user|
-          NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.task_email == 'true'
+          NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
         end
         format.json { render json: "Sent out", status: :ok }
       else
