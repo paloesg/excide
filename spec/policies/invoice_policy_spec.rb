@@ -4,9 +4,8 @@ RSpec.describe InvoicePolicy do
   subject { InvoicePolicy.new(user, invoice) }
   company = FactoryBot.create(:company)
   user_of_invoice = FactoryBot.create(:user, company: company)
-  company_admin = FactoryBot.create(:company_admin, company: company)
-
-  let(:document) { FactoryBot.create(:invoice, company: company, user: user_of_document) }
+  admin_of_company = FactoryBot.create(:company_admin, company: company)
+  let(:invoice) { FactoryBot.create(:invoice, company: company, user: user_of_invoice) }
 
   context "for a user" do
     let(:user) { FactoryBot.create(:user) }
@@ -27,7 +26,7 @@ RSpec.describe InvoicePolicy do
   end
 
   context "for a admin of company" do
-    let(:user) { company_admin }
+    let(:user) { admin_of_company }
     it { should permit(:show) }
     it { should permit(:create) }
     it { should permit(:update) }
