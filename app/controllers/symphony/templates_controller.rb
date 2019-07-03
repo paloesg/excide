@@ -6,7 +6,7 @@ class Symphony::TemplatesController < ApplicationController
   before_action :set_template, except: [:index, :new, :create, :clone]
   before_action :find_roles, only: [:new, :edit, :create_section]
 
-  after_action :verify_authorized
+  after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
   def index
