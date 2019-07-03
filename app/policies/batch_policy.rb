@@ -29,11 +29,12 @@ class BatchPolicy < ApplicationPolicy
 
    class Scope < Scope
     def resolve
-      # Scope batch by user who created the batch
       if user.has_role?(:admin)
-        scope.all
-      else
+        #Scope batch by user admin with same company
         scope.where(company: user.company)
+      else
+        #Scope batch by user who created the batch
+        scope.where(company: user.company, user: user)
       end
     end
   end
