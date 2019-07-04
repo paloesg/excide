@@ -1,4 +1,4 @@
-$(document).ready(function(){
+document.addEventListener("turbolinks:load", function(){
   var $detached = true;
   $detached = $(".form-for-new-client").detach();
 

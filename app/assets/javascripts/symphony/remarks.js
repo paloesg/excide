@@ -1,4 +1,4 @@
-$(document).ready(function() {
+document.addEventListener("turbolinks:load", function() {
   const $form = $( ".edit_workflow_action, .multiple_edit" );
 
   $form.on("ajax:success", function(event, xhr, settings) {

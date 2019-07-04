@@ -1,4 +1,4 @@
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
   $('select.selectize-workflow-type').selectize({
     allowEmptyOption: true,
     onItemAdd: function (value, $item) {

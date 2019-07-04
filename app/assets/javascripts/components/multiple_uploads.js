@@ -5,7 +5,7 @@ function uploadDocuments(data){
 
 Dropzone.autoDiscover = false;
 
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
   // Show dropzone after client and template selected
   $("#template_id").on('change', function() {
     if ( $("#template_id").val() ) {
