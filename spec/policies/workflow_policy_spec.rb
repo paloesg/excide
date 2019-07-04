@@ -1,27 +1,72 @@
 require 'rails_helper'
 
-RSpec.describe WorkflowPolicy, type: :policy do
-  let(:user) { User.new }
+RSpec.describe WorkflowPolicy do
+  subject { WorkflowPolicy.new(user, workflow) }
+  company = FactoryBot.create(:company)
+  user_of_workflow = FactoryBot.create(:user)
+  user_of_company = FactoryBot.create(:user, company: company)
+  user_of_company.add_role :any, company
+  admin_of_company = FactoryBot.create(:company_admin, company: company)
+  admin_of_company.add_role :any, company
+  let(:workflow) { FactoryBot.create(:workflow, company: company, user: user_of_workflow) }
 
-  subject { described_class }
-
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "for a user" do
+    let(:user) { FactoryBot.create(:user) }
+    it { should permit(:index) }
+    it { should permit(:show) }
+    it { should permit(:create) }
+    it { should permit(:new) }
+    it { should_not permit(:update) }
+    it { should_not permit(:edit) }
+    it { should_not permit(:assign) }
+    it { should_not permit(:archive) }
+    it { should_not permit(:reset) }
+    it { should permit(:activities) }
+    it { should_not permit(:destroy) }
   end
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "for a user of workflow" do
+    let(:user) { user_of_workflow }
+    it { should permit(:index) }
+    it { should permit(:show) }
+    it { should permit(:create) }
+    it { should permit(:new) }
+    it { should permit(:update) }
+    it { should permit(:edit) }
+    it { should permit(:assign) }
+    it { should permit(:archive) }
+    it { should permit(:reset) }
+    it { should permit(:activities) }
+    it { should_not permit(:destroy) }
   end
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "for a user of company" do
+    let(:user) { user_of_company }
+    it { should permit(:index) }
+    it { should permit(:show) }
+    it { should permit(:create) }
+    it { should permit(:new) }
+    it { should permit(:update) }
+    it { should permit(:edit) }
+    it { should permit(:assign) }
+    it { should permit(:archive) }
+    it { should permit(:reset) }
+    it { should permit(:activities) }
+    it { should_not permit(:destroy) }
   end
 
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "for a admin of company" do
+    let(:user) { admin_of_company }
+    it { should permit(:index) }
+    it { should permit(:show) }
+    it { should permit(:create) }
+    it { should permit(:new) }
+    it { should permit(:update) }
+    it { should permit(:edit) }
+    it { should permit(:assign) }
+    it { should permit(:archive) }
+    it { should permit(:reset) }
+    it { should permit(:activities) }
+    it { should permit(:destroy) }
   end
 end
