@@ -1,27 +1,17 @@
 require 'rails_helper'
 
-RSpec.describe BatchPolicy, type: :policy do
-  let(:user) { User.new }
+RSpec.describe BatchPolicy do
+  subject { BatchPolicy.new(user, batch) }
+  let(:batch) { FactoryBot.create(:batch) }
 
-  subject { described_class }
-
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "for a user" do
+    let(:user) { FactoryBot.create(:user) }
+    it { should permit(:index) }
+    it { should_not permit(:show) }
+    it { should permit(:create) }
+    it { should permit(:new) }
+    it { should_not permit(:update) }
+    it { should_not permit(:edit) }
+    it { should_not permit(:destroy) }
   end
 end
