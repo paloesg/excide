@@ -31,7 +31,6 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def edit
-    @section = @template.sections.build
   end
 
   def update
@@ -44,13 +43,13 @@ class Symphony::TemplatesController < ApplicationController
 
   def create_section
     @position = @template.sections.count + 1
-    @section = Section.new(section_name: params[:new_section], template_id: @template.id, position: @position)
+    @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: @position)
     respond_to do |format|
       if @section.save
         format.html { redirect_to edit_symphony_template_path(@template), notice: 'Section was successfully created.' }
         format.js { render js: 'Turbolinks.visit(location.toString());' }
       else
-        format.html { render :edit, alert: @section.errors.message }
+        format.html { render :edit }
         format.js { render js: 'Turbolinks.visit(location.toString());' }
       end
     end
