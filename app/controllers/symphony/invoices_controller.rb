@@ -28,6 +28,7 @@ class Symphony::InvoicesController < ApplicationController
 
     @invoice.workflow_id = @workflow.id
     @invoice.user_id = current_user.id
+    @invoice.company_id = current_user.company_id
     if @invoice.xero_contact_id.present?
       @invoice.xero_contact_name = @xero.get_contact(@invoice.xero_contact_id).name
     else

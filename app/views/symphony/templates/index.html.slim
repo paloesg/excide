@@ -26,4 +26,4 @@
               td = template.sections.count
               td
                 / link to the first section of the template
-                = link_to "Edit", edit_symphony_template_path(template_slug: template.slug), class: 'btn btn-sm btn-success'
+                = link_to "Edit", edit_symphony_template_path(template_slug: template.slug), class: 'btn btn-sm btn-success' if policy(template).edit?
