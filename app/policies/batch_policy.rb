@@ -1,4 +1,8 @@
 class BatchPolicy < ApplicationPolicy
+  def index?
+    user.present?
+  end
+
   def show?
     user.company == record.company
   end
@@ -23,7 +27,7 @@ class BatchPolicy < ApplicationPolicy
     user.has_role? :admin, record.company
   end
 
-   class Scope < Scope
+  class Scope < Scope
     def resolve
       # Scope Batch by company where user in same company
       scope.where(company: user.company)
