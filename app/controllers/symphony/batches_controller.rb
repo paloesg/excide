@@ -6,18 +6,18 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index]
+  after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
   def index
-    #batch policy scope
+    #Batch policy scope
     @batches = policy_scope(Batch)
-    #get current_user's id roles
-    @current_user_roles = current_user.roles.pluck(:id)
 
     if current_user.has_role? :admin, @company
       @batches = @batches.order(created_at: :desc)
     else
+      #Get current_user's id roles
+      @current_user_roles = current_user.roles.pluck(:id)
       #Get batches If the current_user has the same role as a role in workflow_actions
       @batches = @batches.includes(:workflows => [:template => [:sections => :tasks]]).where(:tasks => {:role_id => @current_user_roles}).order(created_at: :desc)
     end
