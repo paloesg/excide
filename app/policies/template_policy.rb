@@ -29,8 +29,8 @@ class TemplatePolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      # Scope templates from the user's company.
-      scope.where(company: user.company)
+      # Scope templates from the user's company and general templates (company is nil)
+      scope.where(company: [user.company, nil])
     end
   end
 
