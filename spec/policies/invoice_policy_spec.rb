@@ -27,7 +27,7 @@ RSpec.describe InvoicePolicy do
 
   context "for a admin of company" do
     let(:user) { admin_of_company }
-    it { should permit(:show) }
+    it { should_not permit(:show) }
     it { should permit(:create) }
     it { should permit(:update) }
     it { should permit(:edit) }
