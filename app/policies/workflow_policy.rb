@@ -17,7 +17,7 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def update?
-    user == record.user or user.has_role?(:any, record.company)
+    user.get_role_ids & record.get_task_role_ids
   end
 
   def edit?
