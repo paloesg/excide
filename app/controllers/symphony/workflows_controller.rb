@@ -9,13 +9,12 @@ class Symphony::WorkflowsController < WorkflowsController
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
   rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
 
-
-  after_action :verify_authorized, except: [:index]
+  after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
   def index
-    template = Template.find(params[:workflow_name])
-    @workflows = @company.workflows.includes(:template, :workflowable).where(template: template).order(created_at: :desc)
+    template = policy_scope(Template).find(params[:workflow_name])
+    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: template).order(created_at: :desc)
 
     @workflows_sort = sort_column(@workflows)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
