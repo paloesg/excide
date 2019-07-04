@@ -29,12 +29,8 @@ class TemplatePolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.has_role?(:admin, user.company)
-        # Scope templates from the user's company.
-        scope.where(company: user.company)
-      else
-        raise Pundit::NotAuthorizedError, 'not allowed to view this action'
-      end
+      # Scope templates from the user's company.
+      scope.where(company: user.company)
     end
   end
 
