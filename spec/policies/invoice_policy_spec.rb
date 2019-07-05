@@ -11,6 +11,7 @@ RSpec.describe InvoicePolicy do
     let(:user) { FactoryBot.create(:user) }
     it { should_not permit(:show) }
     it { should permit(:create) }
+    it { should permit(:new) }
     it { should_not permit(:update) }
     it { should_not permit(:edit) }
     it { should_not permit(:destroy) }
@@ -20,6 +21,7 @@ RSpec.describe InvoicePolicy do
     let(:user) { user_of_invoice }
     it { should permit(:show) }
     it { should permit(:create) }
+    it { should permit(:new) }
     it { should permit(:update) }
     it { should permit(:edit) }
     it { should_not permit(:destroy) }
@@ -29,6 +31,7 @@ RSpec.describe InvoicePolicy do
     let(:user) { admin_of_company }
     it { should_not permit(:show) }
     it { should permit(:create) }
+    it { should permit(:new) }
     it { should permit(:update) }
     it { should permit(:edit) }
     it { should permit(:destroy) }
