@@ -31,17 +31,17 @@
             tr
               td
                 - if wf.documents.empty?
-                  p = "No documents yet."
+                  i.ti-file.icon.mr-3.text-center style="font-size: 50px"
                 - else
                   - wf.documents.each do |d|
-                    p = d.filename
                     = link_to symphony_document_path(d), target: "_blank"
                       i.ti-file.icon.mr-3.text-center style="font-size: 50px"
               td
                 - if wf.invoice.blank?
-                  p = "No invoice yet."
+                  i.ti-receipt.icon.mr-3.text-center style="font-size: 50px"
                 - else
-                  = link_to wf.invoice.id, symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
+                  = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
+                    i.ti-receipt.icon.mr-3 style="font-size: 50px"
               - section.tasks.order(created_at: :asc).each do |task|
                 td class="text-center #{'important-task' if task.important}"
                   = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
