@@ -1,0 +1,37 @@
+tr class="#{'important-task' if task.important}"
+  td = task.display_position
+  td
+    = task.instructions
+  td
+    - if action.assigned_user.present?
+      span.fa.fa-user aria-hidden="true"
+      |  #{action.assigned_user&.full_name}
+    - else
+      = task.display_role
+  td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
+  td
+  	= render "symphony/workflows/tasks/workflow_type_conditions", action: action, task: task
+  - if action.workflow.template.ordered?
+    td
+      a data-toggle="collapse" href="#task_#{task.id}" aria-expanded="#{task == @workflow.current_task ? 'true' : 'false'}" class="#{task == @workflow.current_task ? '' : 'collapsed'}"
+        i.fa aria-hidden="true"
+tr
+  td.p-0.border-top-0 colspan="6"
+    div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered?? 'collapse show' : 'collapse'}"
+      .m-3
+        .col-md-6
+          .card.mb-3
+            h5.card-header Create Workflow
+            .card-body
+              .form-group
+                = label_tag "template", "Select template:"
+                = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
+              = link_to 'Create Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
+          .btn-toolbar role="toolbar"
+            .btn-group.mr-2 role="group" aria-label="Reminder actions"
+              - if action.reminders.present?
+                = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.id, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+              - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+                = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id, format: 'json'), method: :post, remote: true , class: 'btn btn-warning btn-sm'
+        br
+        = task.display_image

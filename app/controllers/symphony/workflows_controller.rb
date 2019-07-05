@@ -56,6 +56,7 @@ class Symphony::WorkflowsController < WorkflowsController
   def show
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
+    @templates = policy_scope(Template).assigned_templates(current_user)
     #declare 2 variables to pass into the link_to button in _xero_send_invoice.html.slim. @send_awaiting_approval's presence will cause the button to send to xero's invoice status 'AWAITING APPROVAL'. Likewise, @send_awaiting_payment will link to xero's invoice status 'AWAITING PAYMENT'
     @send_awaiting_approval = {
       approved: "approved"
