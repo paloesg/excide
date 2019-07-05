@@ -4,8 +4,7 @@
 
 Dropzone.autoDiscover = false;
 
-$(document).ready(function () {
-
+document.addEventListener("turbolinks:load", function() {
   // Multiple uploads on document index page
   if ($(".multiple_uploads_and_edit").length) {
     var cleanFilename = function (name) {
