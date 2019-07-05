@@ -1,9 +1,3 @@
-/ - if @section.errors.any? #if adding new section
-/   .alert.alert-danger role='alert'
-/     strong = "#{pluralize(@section.errors.count, "error")} prohibited this section from being saved:"
-/     ul
-/       - @section.errors.full_messages.each do |message|
-/         li = message
 .row
   .col-sm-12
     ol.breadcrumb
@@ -15,6 +9,6 @@
     	= form_for(@template, url: symphony_template_path(template_slug: @template.slug)) do |f|
     	  = render 'form', f: f
     	  = f.submit 'Save Template', class: 'btn btn-primary pull-right'
-    = form_tag(symphony_create_section_path, {class: 'form-inline col-sm-6 pull-right p-0', remote: true}) do
-      = text_field_tag :new_section, params[:new_section], {class: 'form-control mr-2 col-sm-9', required: true, placeholder: 'Enter section name...'}
+    = form_tag(symphony_create_section_path, {class: 'form-inline col-sm-6 pull-right p-0', local: true}) do
+      = text_field_tag :new_section, params[:new_section], {class: 'form-control mr-2 col-sm-9', placeholder: 'Enter section name...'}
       = submit_tag 'Add new section', class: 'btn btn-success'

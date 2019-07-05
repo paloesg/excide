@@ -49,8 +49,10 @@ class Symphony::TemplatesController < ApplicationController
         format.html { redirect_to edit_symphony_template_path(@template), notice: 'Section was successfully created.' }
         format.js { render js: 'Turbolinks.visit(location.toString());' }
       else
-        format.html { render :edit }
-        format.js { render js: 'Turbolinks.visit(location.toString());' }
+        @section.errors.full_messages.each do |message|
+          format.html { redirect_to edit_symphony_template_path(@template) , alert: message }
+          format.js { render js: 'Turbolinks.visit(location.toString());' }
+        end
       end
     end
   end
