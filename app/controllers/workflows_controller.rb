@@ -6,6 +6,8 @@ class WorkflowsController < ApplicationController
   before_action :set_template, except: [:toggle_all]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :section]
 
+  after_action :verify_authorized, only: :toggle
+
   def show
     # Look for existing workflow if not create new workflow and then show the tasks from the first section
     #TODO: Refactor to separate workflow creation
@@ -30,6 +32,7 @@ class WorkflowsController < ApplicationController
   def toggle
     @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_id])
     @workflow = Workflow.find_by(id: params[:workflow_id] )
+    authorize @workflow
     #manually saving updated_at of the batch to current time
     @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
     respond_to do |format|
@@ -47,6 +50,7 @@ class WorkflowsController < ApplicationController
     @workflow = @actions.last.workflow
     #manually saving updated_at of the batch to current time
     @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
+
     respond_to do |format|
       if @actions.update_all(completed: true, completed_user_id: current_user.id)
         format.json { render json: true, status: :ok }

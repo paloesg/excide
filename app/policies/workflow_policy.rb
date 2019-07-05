@@ -44,6 +44,10 @@ class WorkflowPolicy < ApplicationPolicy
     user.has_role? :admin, record.company
   end
 
+  def toggle?
+    user.get_role_ids & record.get_task_role_ids
+  end
+
   class Scope < Scope
     def resolve
       # Scope workflow by user has a role in
