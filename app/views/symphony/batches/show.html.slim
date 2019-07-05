@@ -14,7 +14,9 @@
       | View Batch
 - @sections.each do |section|
   .card.scrollbar.mb-3
-    h5.card-header = section.section_name + ' - ' + section.tasks.count.to_s + " tasks"
+    h5.card-header
+      | #{section.section_name} - #{section.tasks.count.to_s} tasks
+      .pull-right #{@batch.workflows.count} files
     .card-body
       table.table.table-hover
         thead
