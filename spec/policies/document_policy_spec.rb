@@ -15,7 +15,7 @@ RSpec.describe DocumentPolicy do
     it { should permit(:new) }
     it { should_not permit(:update) }
     it { should_not permit(:edit) }
-    it { should_not permit(:index_create) }
+    it { should permit(:index_create) }
     it { should permit(:index_create) }
     it { should permit(:multiple_edit) }
     it { should_not permit(:destroy) }
