@@ -3,10 +3,14 @@ FactoryBot.define do
     association :workflowable, factory: :client
 
     company
-    @template = template
+    template
 
-    after(:create) do |workflow|
-      create_list(:section, 3, template: @template)
+    after(:create) do |workflow, evaluator|
+      create_list(:section, 3, template: evaluator.template) do |section|
+        create_list(:task, 3, section: section) do |task|
+          create(:workflow_action, task: task, workflow: workflow, company: evaluator.company)
+        end
+      end
     end
 
     factory :workflow_with_document do
