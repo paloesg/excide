@@ -9,28 +9,43 @@ RSpec.describe DocumentPolicy do
 
   context "for a user" do
     let(:user) { FactoryBot.create(:user) }
+    it { should permit(:index) }
     it { should_not permit(:show) }
     it { should permit(:create) }
+    it { should permit(:new) }
     it { should_not permit(:update) }
     it { should_not permit(:edit) }
+    it { should_not permit(:index_create) }
+    it { should permit(:index_create) }
+    it { should permit(:multiple_edit) }
     it { should_not permit(:destroy) }
   end
 
   context "for a user with the same company with document" do
     let(:user) { user_of_document }
+    it { should permit(:index) }
     it { should permit(:show) }
     it { should permit(:create) }
+    it { should permit(:new) }
     it { should permit(:update) }
     it { should permit(:edit) }
+    it { should permit(:index_create) }
+    it { should permit(:index_create) }
+    it { should permit(:multiple_edit) }
     it { should_not permit(:destroy) }
   end
 
   context "for a admin of company" do
     let(:user) { admin_of_company }
+    it { should permit(:index) }
     it { should permit(:show) }
     it { should permit(:create) }
+    it { should permit(:new) }
     it { should permit(:update) }
     it { should permit(:edit) }
+    it { should permit(:index_create) }
+    it { should permit(:index_create) }
+    it { should permit(:multiple_edit) }
     it { should permit(:destroy) }
   end
 end
