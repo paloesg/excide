@@ -5,11 +5,9 @@ FactoryBot.define do
     company
     template
 
-    after(:create) do |workflow, evaluator|
+    before(:create) do |workflow, evaluator|
       create_list(:section, 3, template: evaluator.template) do |section|
-        create_list(:task, 3, section: section) do |task|
-          create(:workflow_action, task: task, workflow: workflow, company: evaluator.company)
-        end
+        create_list(:task, 3, section: section)
       end
     end
 
