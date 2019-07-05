@@ -23,25 +23,26 @@
             th Invoices
             - section.tasks.order(created_at: :asc).each do |task|
               th
-                a.pop data-container="body" title="Task instruction and role" data-content=("<div><b>Task instruction</b> - #{task.instructions}<br/><b>Assigned to </b> - #{task.role&.name} </div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
+                a.pop data-container="body" title="#{task.role&.display_name}" data-content=("<div>#{task.instructions}</div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
                   .header-properties
-                    = task.task_type.humanize
+                    ' #{task.task_type.humanize}
+                    i.ti-info-alt
         tbody
           - @batch.workflows.each do |wf|
             tr
               td
                 - if wf.documents.empty?
-                  i.ti-file.icon.mr-3.text-center style="font-size: 50px"
+                  i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
                 - else
                   - wf.documents.each do |d|
                     = link_to symphony_document_path(d), target: "_blank"
-                      i.ti-file.icon.mr-3.text-center style="font-size: 50px"
+                      i.ti-file.icon.mr-3.text-center.large-icon
               td
                 - if wf.invoice.blank?
-                  i.ti-receipt.icon.mr-3.text-center style="font-size: 50px"
+                  i.ti-receipt.icon.mr-3.text-center.large-icon.gray-icon
                 - else
                   = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
-                    i.ti-receipt.icon.mr-3 style="font-size: 50px"
+                    i.ti-receipt.icon.mr-3.large-icon
               - section.tasks.order(created_at: :asc).each do |task|
                 td class="text-center #{'important-task' if task.important}"
                   = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
