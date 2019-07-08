@@ -21,10 +21,16 @@
 
 en:
  pundit:
-   default: 'You cannot perform this action.'
+   default: 'You are not authorized to perform this action.'
    document_policy:
-     update?: 'You cannot edit this document!'
-     create?: 'You cannot create documents!'
+     update?: 'You are not authorized to edit this document!'
+     create?: 'You are not authorized to create documents!'
+   batch_policy:
+     update?: 'You are not authorized to edit this batch!'
+     create?: 'You are not authorized to create batch!'
    invoice_policy:
-     update?: 'You cannot edit this invoice!'
-     create?: 'You cannot create invoice!'
+     update?: 'You are not authorized to edit this invoice!'
+     create?: 'You are not authorized to create invoice!'
+   template_policy:
+     update?: 'You are not authorized to edit this template!'
+     create?: 'You are not authorized to create template!'

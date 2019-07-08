@@ -156,6 +156,10 @@ class User < ApplicationRecord
     workflows.map{|w| w.id if (w.get_roles & self.roles).any?}.compact
   end
 
+  def get_role_ids
+    self.roles.pluck(:id)
+  end
+
   def settings
     read_attribute(:settings).map { |s| Setting.new(s) }
   end

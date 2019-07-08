@@ -5,10 +5,10 @@ class Symphony::HomeController < ApplicationController
   before_action :set_company
 
   def index
-    @templates = Template.assigned_templates(current_user)
+    @templates = policy_scope(Template).assigned_templates(current_user)
     @clients = @company.clients
 
-    @workflows_array = @templates.includes(workflows: [:workflowable]).map(&:current_workflows).flatten
+    @workflows_array = policy_scope(Workflow).where(template: @templates)
     @workflows_sort = sort_column(@workflows_array)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
 
