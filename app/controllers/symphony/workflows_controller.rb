@@ -10,8 +10,8 @@ class Symphony::WorkflowsController < WorkflowsController
   rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
 
   def index
-    template = Template.find(params[:workflow_name])
-    @workflows = @company.workflows.includes(:template, :workflowable).where(template: template).order(created_at: :desc)
+    template = policy_scope(Template).find(params[:workflow_name])
+    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: template).order(created_at: :desc)
 
     @workflows_sort = sort_column(@workflows)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
@@ -20,11 +20,15 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def new
     @workflow = Workflow.new
+    authorize @workflow
+
     @workflow.template_data(@template)
   end
 
   def create
     @workflow = Workflow.new(workflow_params)
+    authorize @workflow
+
     @workflow.user = current_user
     @workflow.company = @company
     @workflow.template = @template
@@ -47,14 +51,8 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def show
+    authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
-    #declare 2 variables to pass into the link_to button in _xero_send_invoice.html.slim. @send_awaiting_approval's presence will cause the button to send to xero's invoice status 'AWAITING APPROVAL'. Likewise, @send_awaiting_payment will link to xero's invoice status 'AWAITING PAYMENT'
-    @send_awaiting_approval = {
-      approved: "approved"
-    }
-    @send_awaiting_payment = {
-      payment: "payment"
-    }
     if @workflow.completed?
       redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
     else
@@ -68,12 +66,14 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def edit
+    authorize @workflow
   end
 
   def update
+    authorize @workflow
     if @workflow.update(workflow_params)
       #if workflow.workflowable is present, don't need to create client. If no workflowable params is posted(such as in the case of data-entry), no client is created too.
-      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless @workflow.workflowable.present? or params[:workflow][:workflowable].nil?
+      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless @workflow.workflowable.present? or params[:workflow][:workflowable].present?
       @workflow.save
       log_data_activity
       log_workflow_activity
@@ -90,6 +90,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def assign
+    authorize @workflow
     @sections = @template.sections
   end
 
@@ -108,6 +109,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def archive
+    authorize @workflow
     generate_archive = GenerateArchive.new(@workflow).run
     # Mark workflow as completed when workflow is archived
     if generate_archive.success?
@@ -127,6 +129,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def reset
+    authorize @workflow
     @workflow_actions = @company.workflow_actions.where(workflow_id: @workflow.id)
     @workflow.update_attribute(:completed, false)
     @workflow_actions.update_all(completed: false, completed_user_id: nil)
@@ -136,6 +139,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def activities
     set_workflow
+    authorize @workflow
     @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
     @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
   end
