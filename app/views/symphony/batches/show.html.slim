@@ -9,7 +9,7 @@
         a href="/symphony/batches" Batches
       li.breadcrumb-item
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
-      li.breadcrumb-item #{@batch.created_at.strftime('%m-%d-%Y %T')}
+      li.breadcrumb-item #{@batch.name}
     h1
       | View Batch
 - @sections.each do |section|

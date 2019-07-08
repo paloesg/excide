@@ -35,4 +35,8 @@ class Batch < ApplicationRecord
   def get_completed_actions
     self.workflows.map{|wf| wf.workflow_actions}.flatten.compact.select{|action| action.completed?}
   end
+
+  def name
+    self.created_at.strftime('%m-%d-%Y %T')
+  end
 end
