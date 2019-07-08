@@ -37,6 +37,6 @@ class Batch < ApplicationRecord
   end
 
   def name
-    self.created_at.strftime('%m-%d-%Y %T')
+    self.created_at.strftime('%y%m%d-%H%M')
   end
 end
