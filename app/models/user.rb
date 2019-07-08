@@ -162,7 +162,7 @@ class User < ApplicationRecord
 
   def settings_attributes=(attributes)
     settings = []
-    attributes.each do |index, attrs|
+    attributes.each do |_index, attrs|
       next if '1' == attrs.delete("_destroy")
       settings << attrs
     end
