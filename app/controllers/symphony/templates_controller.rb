@@ -51,17 +51,16 @@ class Symphony::TemplatesController < ApplicationController
 
   def create_section
     authorize @template
-    @position = @template.sections.count + 1
-    @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: @position)
+    @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: params[:position])
     respond_to do |format|
       if @section.save
         format.html { redirect_to edit_symphony_template_path(@template), notice: 'Section was successfully created.' }
         format.js { render js: 'Turbolinks.visit(location.toString());' }
       else
-        @section.errors.full_messages.each do |message|
-          format.html { redirect_to edit_symphony_template_path(@template) , alert: message }
-          format.js { render js: 'Turbolinks.visit(location.toString());' }
-        end
+        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join(" and ") } if @section.errors.messages[:section_name].present? and @section.errors.messages[:position].present?
+        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join } if @section.errors.messages[:section_name].present?
+        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join } if @section.errors.messages[:position].present?
+        format.js { render js: 'Turbolinks.visit(location.toString());' }
       end
     end
   end
