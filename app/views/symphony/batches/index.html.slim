@@ -16,7 +16,7 @@
         table.table.table-hover
           thead
             tr
-              th Id
+              th Name
               th Template
               th Created by
               th Created at
@@ -24,7 +24,7 @@
           tbody
             - @batches_paginate.each do |batch|
               tr
-                td = link_to batch.id, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
+                td = link_to batch.created_at.strftime('%m-%d-%Y %T'), symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
                 td = batch.template.title
                 td = batch.user&.full_name
                 td = batch.created_at.strftime('%m/%d/%Y %H:%M')
