@@ -20,12 +20,7 @@ tr
     div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered?? 'collapse show' : 'collapse'}"
       .m-3
         .col-md-6
-          .card.mb-3
-            .card-body
-              .form-group
-                = label_tag "template", "Select template:"
-                = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-              = link_to 'Create Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
+          = link_to 'Create Workflow', "/symphony/#{task.template.slug}/new?action=#{action.id}", class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
           .btn-toolbar role="toolbar"
             .btn-group.mr-2 role="group" aria-label="Reminder actions"
               - if action.reminders.present?
