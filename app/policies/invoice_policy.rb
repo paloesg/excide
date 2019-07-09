@@ -12,7 +12,7 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def update?
-    user == record.user or user.has_role?(:admin, record.company)
+    user == record.user or user.has_role?(:associate, record.company) or user.has_role?(:admin, record.company)
   end
 
   def edit?
