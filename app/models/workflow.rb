@@ -4,6 +4,7 @@ class Workflow < ApplicationRecord
   belongs_to :template
   belongs_to :recurring_workflow
   belongs_to :batch
+  belongs_to :workflow_action
 
   # Polymorphic association for any model that needs to be managed through workflows
   belongs_to :workflowable, polymorphic: true
@@ -130,7 +131,7 @@ class Workflow < ApplicationRecord
       end
     end
     if ordered_workflow?
-      trigger_first_task 
+      trigger_first_task
     else
       unordered_tasks_trigger_email
     end

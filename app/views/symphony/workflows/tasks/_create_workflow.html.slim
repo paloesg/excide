@@ -20,7 +20,7 @@ tr
     div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered?? 'collapse show' : 'collapse'}"
       .m-3
         .col-md-6
-          = link_to 'Create Workflow', "/symphony/#{task.template.slug}/new?action=#{action.id}", class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
+          = link_to 'Create Workflow', "/symphony/#{task.template.slug}/new?action_id=#{action.id}", class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
           .btn-toolbar role="toolbar"
             .btn-group.mr-2 role="group" aria-label="Reminder actions"
               - if action.reminders.present?
