@@ -17,10 +17,22 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def update?
-    user == record.user or user.has_role?(:any, record.company)
+    user.get_role_ids & record.get_task_role_ids
   end
 
   def edit?
+    update?
+  end
+
+  def destroy?
+    user.has_role? :admin, record.company
+  end
+
+  def toggle?
+    update?
+  end
+
+  def toggle_all?
     update?
   end
 
@@ -28,20 +40,36 @@ class WorkflowPolicy < ApplicationPolicy
     update?
   end
 
+  def send_reminder?
+    user.has_role? :admin, record.company
+  end
+
   def archive?
     update?
   end
 
-  def reset?
+  def stop_reminder?
     update?
+  end
+
+  def reset?
+    user.has_role? :admin, record.company
   end
 
   def activities?
     show?
   end
 
-  def destroy?
-    user.has_role? :admin, record.company
+  def data_entry?
+    update?
+  end
+
+  def xero_create_invoice_payable?
+    update?
+  end
+
+  def send_email_to_xero?
+    update?
   end
 
   class Scope < Scope

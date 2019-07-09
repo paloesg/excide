@@ -9,13 +9,9 @@ class Symphony::WorkflowsController < WorkflowsController
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
   rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
 
-
-  after_action :verify_authorized, except: [:index]
-  after_action :verify_policy_scoped, only: :index
-
   def index
-    template = Template.find(params[:workflow_name])
-    @workflows = @company.workflows.includes(:template, :workflowable).where(template: template).order(created_at: :desc)
+    template = policy_scope(Template).find(params[:workflow_name])
+    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: template).order(created_at: :desc)
 
     @workflows_sort = sort_column(@workflows)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
@@ -57,13 +53,6 @@ class Symphony::WorkflowsController < WorkflowsController
   def show
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
-    #declare 2 variables to pass into the link_to button in _xero_send_invoice.html.slim. @send_awaiting_approval's presence will cause the button to send to xero's invoice status 'AWAITING APPROVAL'. Likewise, @send_awaiting_payment will link to xero's invoice status 'AWAITING PAYMENT'
-    @send_awaiting_approval = {
-      approved: "approved"
-    }
-    @send_awaiting_payment = {
-      payment: "payment"
-    }
     if @workflow.completed?
       redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
     else
