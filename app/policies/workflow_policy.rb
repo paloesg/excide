@@ -5,7 +5,7 @@ class WorkflowPolicy < ApplicationPolicy
 
   def show?
     #allow any user with role or assigned task using intersection from user role and workflow task role
-    user.get_role_ids & record.get_task_role_ids
+    (user.get_role_ids & record.get_task_role_ids).present?
   end
 
   def create?
@@ -17,7 +17,7 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def update?
-    user.get_role_ids & record.get_task_role_ids
+    (user.get_role_ids & record.get_task_role_ids).present?
   end
 
   def edit?
