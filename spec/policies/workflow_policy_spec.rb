@@ -35,7 +35,7 @@ RSpec.describe WorkflowPolicy do
     it { should permit(:edit) }
     it { should permit(:assign) }
     it { should permit(:archive) }
-    it { should permit(:reset) }
+    it { should_not permit(:reset) }
     it { should permit(:activities) }
     it { should_not permit(:destroy) }
   end
@@ -50,7 +50,7 @@ RSpec.describe WorkflowPolicy do
     it { should permit(:edit) }
     it { should permit(:assign) }
     it { should permit(:archive) }
-    it { should permit(:reset) }
+    it { should_not permit(:reset) }
     it { should permit(:activities) }
     it { should_not permit(:destroy) }
   end
