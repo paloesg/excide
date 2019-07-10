@@ -9,8 +9,11 @@ class Symphony::WorkflowsController < WorkflowsController
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
   rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
 
+  after_action :verify_authorized, except: :index 
+  after_action :verify_policy_scoped, only: :index
+
   def index
-    template = policy_scope(Template).find(params[:workflow_name])
+    template =  policy_scope(Template).find(params[:workflow_name])
     @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: template).order(created_at: :desc)
 
     @workflows_sort = sort_column(@workflows)
@@ -155,6 +158,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def xero_create_invoice_payable
     @xero = Xero.new(session[:xero_auth])
+    authorize @workflow
     if @workflow.invoice.payable?
       xero_invoice = @xero.create_invoice_payable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency)
       @workflow.invoice.xero_invoice_id = xero_invoice.id
