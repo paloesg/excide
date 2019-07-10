@@ -19,7 +19,8 @@ class Batch < ApplicationRecord
   end
 
   def action_completed_progress
-    ( (get_completed_actions.count.to_f / total_action) * 100).round(2)
+    # Check for case where total_action is 0 to prevent NaN error
+    total_action == 0 ? 0 : ((get_completed_actions.count.to_f / total_action) * 100).round(0)
   end
 
   def average_time_taken_per_task
@@ -31,6 +32,7 @@ class Batch < ApplicationRecord
   def total_action
     self.workflows.count * self.workflows[0].workflow_actions.count
   end
+
   #get all the completed workflow action in an array
   def get_completed_actions
     self.workflows.map{|wf| wf.workflow_actions}.flatten.compact.select{|action| action.completed?}
