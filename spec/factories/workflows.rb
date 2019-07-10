@@ -7,7 +7,7 @@ FactoryBot.define do
 
     before(:create) do |_workflow, evaluator|
       create_list(:section, 3, template: evaluator.template) do |section|
-        create_list(:task, 3, section: section)
+        create_list(:task, 3, section: section, role: evaluator.user.roles.first)
       end
     end
 
