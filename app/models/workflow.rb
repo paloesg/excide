@@ -62,10 +62,6 @@ class Workflow < ApplicationRecord
     self.current_task&.lower_item
   end
 
-  def get_roles
-    self.template.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
-  end
-
   def get_task_role_ids
     self.workflow_actions.includes(:task).pluck('tasks.role_id')
   end
@@ -130,7 +126,7 @@ class Workflow < ApplicationRecord
       end
     end
     if ordered_workflow?
-      trigger_first_task 
+      trigger_first_task
     else
       unordered_tasks_trigger_email
     end

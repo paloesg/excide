@@ -25,7 +25,7 @@ class Symphony::HomeController < ApplicationController
 
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
 
-    @recurring_workflows_array = current_user.company.recurring_workflows.map{|rwf| rwf }
+    @recurring_workflows_array=current_user.company.recurring_workflows.all
   end
 
   def search
