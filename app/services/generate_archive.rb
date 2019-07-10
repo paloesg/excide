@@ -9,7 +9,7 @@ class GenerateArchive
       @workflow.transaction do
         @workflow.update_columns(completed: true, archive: generate_archive)
         delete_reminders
-        delete_workflow_actions_documents
+        remove_document_workflow_action_id
         delete_workflow_actions
         delete_activities
       end
@@ -69,7 +69,7 @@ class GenerateArchive
     end
   end
 
-  def delete_workflow_actions_documents
+  def remove_document_workflow_action_id
     workflow_action_ids = @workflow.workflow_actions.pluck("workflow_actions.id")
     Document.where(workflow_action_id: workflow_action_ids).update_all(workflow_action_id: '')
   end
