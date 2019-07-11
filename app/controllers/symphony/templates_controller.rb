@@ -51,14 +51,14 @@ class Symphony::TemplatesController < ApplicationController
 
   def create_section
     authorize @template
-    @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: params[:position])
+    @position = @template.sections.count + 1
+    @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: @position)
     respond_to do |format|
       if @section.save
         format.html { redirect_to edit_symphony_template_path(@template), notice: 'Section was successfully created.' }
         format.js { render js: 'Turbolinks.visit(location.toString());' }
       else
-        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join(" and ") } if @section.errors.messages[:section_name].present? and @section.errors.messages[:position].present?
-        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join } if @section.errors.messages[:section_name].present? or @section.errors.messages[:position].present?
+        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join } if @section.errors.messages[:section_name].present?
         format.js { render js: 'Turbolinks.visit(location.toString());' }
       end
     end

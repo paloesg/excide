@@ -11,5 +11,4 @@
     	  = f.submit 'Save Template', class: 'btn btn-primary pull-right'
     = form_tag(symphony_create_section_path, {class: 'form-inline col-sm-6 pull-right p-0', local: true}) do
       = text_field_tag :new_section, params[:new_section], {class: 'form-control mr-2 col-sm-8', required: true, placeholder: 'Enter section name...'}
-      = number_field_tag :position, params[:position], {class: 'form-control mr-2 col-sm-2', required: true, placeholder: 'Enter Position...'}
       = submit_tag 'Add section', class: 'btn btn-success'
