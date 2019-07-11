@@ -27,6 +27,6 @@
         
     tbody.section-count class=("task-in-section-#{f.object.id}")
       = f.fields_for :tasks do |task|
-        = render 'task_fields', f: task, g: "hey"
+        = render partial: 'task_fields', locals: { f: task, g: f.object}
 .card-body
-  = link_to_add_tasks('Add task', f, :tasks)
+  = link_to_add_tasks('Add task', f, :tasks, g: f.object)
