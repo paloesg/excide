@@ -18,7 +18,7 @@
                   = s.check_box :reminder_sms, { class: 'form-check-input' }, 'true', 'false'
                   = s.label :reminder_sms, 'SMS', class: 'form-check-label'
                 .form-group.form-check
-                  = s.check_box :reminder_email,{ class: 'form-check-input', checked: @user.settings[0].reminder_email.nil? ? true : ActiveModel::Type::Boolean.new.cast(@user.settings[0].reminder_email) }, 'true', 'false'
+                  = s.check_box :reminder_email,{ class: 'form-check-input' }, 'true', 'false'
                   = s.label :reminder_email, 'Email', class: 'form-check-label'
                 .form-group.form-check
                   = s.check_box :reminder_slack,{ class: 'form-check-input' }, 'true', 'false'
@@ -33,7 +33,7 @@
                   = s.check_box :task_sms,{ class: 'form-check-input' }, 'true', 'false'
                   = s.label :task_sms, 'SMS', class: 'form-check-label'
                 .form-group.form-check
-                  = s.check_box :task_email, { class: 'form-check-input', checked: @user.settings[0].task_email.nil? ? true : ActiveModel::Type::Boolean.new.cast(@user.settings[0].task_email)  }, 'true', 'false'
+                  = s.check_box :task_email, { class: 'form-check-input' }, 'true', 'false'
                   = s.label :task_email, 'Email', class: 'form-check-label'
                 .form-group.form-check
                   = s.check_box :task_slack, { class: 'form-check-input' }, 'true', 'false'
@@ -48,7 +48,7 @@
                   = s.check_box :batch_sms, { class: 'form-check-input' }, 'true', 'false'
                   = s.label :batch_sms, 'SMS', class: 'form-check-label'
                 .form-group.form-check
-                  = s.check_box :batch_email, { class: 'form-check-input', checked: @user.settings[0].batch_email.nil? ? true : ActiveModel::Type::Boolean.new.cast(@user.settings[0].batch_email) }, 'true', 'false'
+                  = s.check_box :batch_email, { class: 'form-check-input' }, 'true', 'false'
                   = s.label :batch_email, 'Email', class: 'form-check-label'
                 .form-group.form-check
                   = s.check_box :batch_slack, { class: 'form-check-input' }, 'true', 'false'
