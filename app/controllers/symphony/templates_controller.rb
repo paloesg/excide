@@ -45,7 +45,7 @@ class Symphony::TemplatesController < ApplicationController
     if @template.update(template_params)
       redirect_to edit_symphony_template_path(@template)
     else
-      redirect_to root_path
+      redirect_to symphony_templates_path
     end
   end
 
