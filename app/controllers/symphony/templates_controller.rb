@@ -58,8 +58,7 @@ class Symphony::TemplatesController < ApplicationController
         format.js { render js: 'Turbolinks.visit(location.toString());' }
       else
         format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join(" and ") } if @section.errors.messages[:section_name].present? and @section.errors.messages[:position].present?
-        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join } if @section.errors.messages[:section_name].present?
-        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join } if @section.errors.messages[:position].present?
+        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join } if @section.errors.messages[:section_name].present? or @section.errors.messages[:position].present?
         format.js { render js: 'Turbolinks.visit(location.toString());' }
       end
     end
