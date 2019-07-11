@@ -173,12 +173,6 @@ class User < ApplicationRecord
     write_attribute(:settings, settings)
   end
 
-  def build_setting
-    s = self.settings.dup
-    s << Setting.new({reminder_sms: '', reminder_email: '', reminder_slack: '', task_sms: '', task_email: '', task_slack: '', batch_sms: '', batch_email: '', batch_slack: '' })
-    self.settings = s
-  end
-
   class Setting
     attr_accessor :reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack
 

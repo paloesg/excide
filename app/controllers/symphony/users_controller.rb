@@ -55,8 +55,7 @@ class Symphony::UsersController < ApplicationController
   end
 
   def notification_settings
-    #only build setting if setting's array is blank
-    @user.build_setting if @user.settings.blank?
+    
   end
 
   def update_notification
