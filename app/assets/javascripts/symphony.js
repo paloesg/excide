@@ -49,6 +49,7 @@
       time = new Date().getTime();
       regexp = new RegExp($(this).data('id'), 'g');
       $( '.task-in-section-' + $(this).data('sectionId') ).append($(this).data('fields').replace(regexp, time));
+      // $('.collapseTasks').attr("id", $(this).data('id'));
       //Loop section count to get the index of the section's array
       $( ".section-count" ).each(function( index ) {
         $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_task_type']").selectize({
@@ -65,16 +66,16 @@
     });
     //if radio button is checked, disable or enable the relevant fields
     $('input:radio[name="radioContact"]').click(
-        function(){
-            if($(this).val() == 'existing'){
-                $('.new-disable').attr('disabled', true);
-                $('.existing-contact-disable')[0].selectize.enable();
-            }
-            else{
-                $('.existing-contact-disable')[0].selectize.disable();
-                $('.new-disable').attr('disabled', false);
-            }
+      function(){
+        if($(this).val() == 'existing'){
+          $('.new-disable').attr('disabled', true);
+          $('.existing-contact-disable')[0].selectize.enable();
         }
+        else{
+          $('.existing-contact-disable')[0].selectize.disable();
+          $('.new-disable').attr('disabled', false);
+        }
+      }
     )
     return $('input').change(function(event) {
       return $(this).closest('td').next().find('.update').val('1');

@@ -18,13 +18,15 @@
         th Instruction
         th Assigned To
         th Days To Complete
-        th Document Template
-        th Link URL
-        th Image URL
-        th Set Reminder
-        th Important
+        / th Set Reminder
+        / th Important
+        th
+        / th Document Template
+        / th Link URL
+        / th Image URL
+        
     tbody.section-count class=("task-in-section-#{f.object.id}")
       = f.fields_for :tasks do |task|
-        = render 'task_fields', f: task
+        = render 'task_fields', f: task, g: "hey"
 .card-body
   = link_to_add_tasks('Add task', f, :tasks)
