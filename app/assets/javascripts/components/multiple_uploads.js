@@ -1,11 +1,14 @@
+/*global Dropzone*/
+/*eslint no-undef: "error"*/
+/*eslint camelcase: ["error", {allow: ["authenticity_token", "url_files"]}]*/
+
 function uploadDocuments(data){
-  var result;
   $.post('/symphony/documents', data);
 }
 
 Dropzone.autoDiscover = false;
 
-document.addEventListener("turbolinks:load", function() {
+$(document).on('turbolinks:load', function() {
   // Show dropzone after client and template selected
   $("#template_id").on('change', function() {
     if ( $("#template_id").val() ) {
@@ -16,29 +19,29 @@ document.addEventListener("turbolinks:load", function() {
   //upload documents on workflows and batch page
   if ($(".action_id").length){
     $( ".action_id" ).each(function( index ) {
-      var action_id = $(this).attr('id')
-      var workflow_action_id = $('#'+action_id).val();
-      var action_id_str = action_id.substr(10);
+      let action_id = $(this).attr('id')
+      let workflow_action_id = $('#'+action_id).val();
+      let action_id_str = action_id.substr(10);
 
       if($(".uploadToXero"+workflow_action_id).length){
-        var cleanFilename = function (name) {
+        let cleanFilename = function (name) {
           fileName = name.split('.').slice(0, -1).join('.')
           get_extension = name.substring(name.lastIndexOf(".") + 1)
           // Filter out special characters and spaces in filename (same as parametrize function in rails)
           filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
           return filter_filename + '.' + get_extension;
         };
-        var documentUploadToXero = new Dropzone(".uploadToXero"+workflow_action_id,{
+        let documentUploadToXero = new Dropzone(".uploadToXero"+workflow_action_id,{
           timeout: 0,
           renameFilename: cleanFilename,
         })
         documentUploadToXero.on("success", function(file, request){
-          var resp = $.parseXML(request);
-          var filePath = $(resp).find("Key").text();
-          var location = new URL($(resp).find("Location").text());
+          let resp = $.parseXML(request);
+          let filePath = $(resp).find("Key").text();
+          let location = new URL($(resp).find("Location").text());
           if($("#uploadToXero"+workflow_action_id).length){
             //check this part of drag and drop
-            var data_input = {
+            let data_input = {
               authenticity_token: $.rails.csrfToken(),
               workflow: $('#workflow_id_'+action_id_str).val(),
               workflow_action: workflow_action_id,
@@ -57,15 +60,15 @@ document.addEventListener("turbolinks:load", function() {
   // $("#uploader").length 'To check #uploader is exists'
   if ($(".multiple_uploads").length) {
     $('.loader').hide();
-    var batchId='';
-    var cleanFilename = function (name) {
+    let batchId='';
+    let cleanFilename = function (name) {
       fileName = name.split('.').slice(0, -1).join('.')
       get_extension = name.substring(name.lastIndexOf(".") + 1)
       // Filter out special characters and spaces in filename (same as parametrize function in rails)
       filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       return filter_filename + '.' + get_extension;
     };
-    var documentUpload = new Dropzone(".multiple_uploads", {
+    let documentUpload = new Dropzone(".multiple_uploads", {
       timeout: 0,
       renameFilename: cleanFilename,
       autoProcessQueue: false,
@@ -83,7 +86,7 @@ document.addEventListener("turbolinks:load", function() {
     documentUpload.on("addedfile", function (file) {
       // Check if file name are same & rename the file
       if (this.files.length) {
-        var _i, _len;
+        let _i, _len;
         for (_i = 0, _len = this.files.length; _i < _len - 1; _i++) {
           if (this.files[_i].name === file.name) {
             this.removeFile(file);
@@ -109,11 +112,11 @@ document.addEventListener("turbolinks:load", function() {
       })
     });
     documentUpload.on("success", function (file, request) {
-      var resp = $.parseXML(request);
-      var filePath = $(resp).find("Key").text();
-      var location = new URL($(resp).find("Location").text())
+      let resp = $.parseXML(request);
+      let filePath = $(resp).find("Key").text();
+      let location = new URL($(resp).find("Location").text())
       if($("#batch-uploader").length){
-        var data_input = {
+        let data_input = {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
           count: this.files.length,
@@ -123,12 +126,12 @@ document.addEventListener("turbolinks:load", function() {
             template_id: $('#template_id').val(),
           }
         };
-        var result = uploadDocuments(data_input);
+        let result = uploadDocuments(data_input);
       }
     });
     documentUpload.on("queuecomplete", function (file, request) {
-      var templateId = $('#template_id').val();
-      var totalFile = documentUpload.files.length;
+      let templateId = $('#template_id').val();
+      let totalFile = documentUpload.files.length;
       $('#drag-and-drop-submit').prop( "disabled", true );
       $('#view-invoices-button').show();
       //if this function in create batch, redirect to show batch page after create
