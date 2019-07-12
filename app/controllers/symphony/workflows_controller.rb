@@ -13,7 +13,7 @@ class Symphony::WorkflowsController < WorkflowsController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    template =  policy_scope(Template).find(params[:workflow_name])
+    template = policy_scope(Template).find(params[:workflow_name])
     @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: template).order(created_at: :desc)
 
     @workflows_sort = sort_column(@workflows)
