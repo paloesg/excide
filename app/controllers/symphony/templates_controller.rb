@@ -23,6 +23,12 @@ class Symphony::TemplatesController < ApplicationController
   def create
     if params[:template][:clone]
       @template = Template.find(params[:template][:clone]).deep_clone include: { sections: :tasks }
+      @template.sections.each do |section|
+        section.tasks.each do |task|
+          role = Role.find_by(name: task.role.name, resource_id: current_user.company.id, resource_type: "Company") if task.role
+          task.role = role
+        end
+      end
       @template.title = template_params[:title]
     else
       @template = Template.new(template_params)
