@@ -19,16 +19,16 @@ tr
       .form-group.col-sm-12
         = f.label :document_template_id, 'Document Template'  
         = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay mb-2"}
-      .form-group.col-sm-12
-        = f.label :days_to_complete
-        = f.number_field :days_to_complete, {step: 1, class: "form-control"}
       .form-inline.col-sm-12.p-0.mb-2
-        .form-group.col-sm-6
+        .form-group.col-sm-2
+          = f.label :days_to_complete
+          = f.number_field :days_to_complete, {step: 1, class: "form-control col-sm-12 mt-2"}
+        .form-group.col-sm-5
           = f.label :link_url
-          = f.text_field :link_url, {class: "form-control col-sm-12"}
-        .form-group.col-sm-6
+          = f.text_field :link_url, {class: "form-control col-sm-12 mt-2"}
+        .form-group.col-sm-5
           = f.label :image_url
-          = f.text_field :image_url, {class: "form-control col-sm-12"}
+          = f.text_field :image_url, {class: "form-control col-sm-12 mt-2"}
       .form-inline.col-sm-12.p-0.mb-2
         .form-group.col-sm-6
           = f.label :set_reminder  
