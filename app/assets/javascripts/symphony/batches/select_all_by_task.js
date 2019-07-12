@@ -1,12 +1,12 @@
-document.addEventListener("turbolinks:load", function(){
-  var clicked = false;
+$(document).on('turbolinks:load', function(){
+  let clicked = false;
   $(".checkall").on("click", function() {
-    var buttonCheckAll = $(this).attr("id");
-    var taskId = buttonCheckAll.replace("selectall-","");
+    let buttonCheckAll = $(this).attr("id");
+    let taskId = buttonCheckAll.replace("selectall-","");
     $(".completed-"+taskId).prop("checked", !clicked);
     clicked = !clicked;
 
-    var workflowActionIds = [];
+    let workflowActionIds = [];
     $(".completed-"+taskId).each(function (index, value){
       workflowActionIds.push($(this).attr("workflow_action"));
     });
