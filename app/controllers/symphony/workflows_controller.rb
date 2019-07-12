@@ -148,6 +148,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def data_entry
+    authorize @workflow
     set_documents
     unless @documents.empty?
       @document = @documents.where(id: params[:document_id]).exists? ? @documents.find(params[:document_id]) : @documents.last

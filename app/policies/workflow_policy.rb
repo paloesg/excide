@@ -4,8 +4,8 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def show?
-    #allow any user with role or assigned task using intersection from user role and workflow task role
-    (user.get_role_ids & record.get_task_role_ids).any? or user.has_role?(:admin, record.company)
+    #allow any user with role or assigned task using intersection from user role and workflow task role. Admin gets to see all the workflows!
+    (user.get_role_ids & record.get_task_role_ids).any? or user_admin?
   end
 
   def create?
