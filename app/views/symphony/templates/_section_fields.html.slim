@@ -2,10 +2,10 @@
   .form-inline.col-sm-12
     .form-group.col-sm-6
       = f.label :section_name, "Section Name:", class: "mr-2"
-      = f.text_field :section_name, {class: "form-control col-sm-8"}
+      = f.text_field :section_name, {class: "form-control col-sm-8", required: true}
     .form-group.col-sm-4
       = f.label :position, "Position:", class: "mr-2"
-      = f.number_field :position, {class: "form-control col-sm-8"}
+      = f.number_field :position, {class: "form-control col-sm-8", required: true}
     .form-group.col-sm-2
       = link_to 'X', symphony_destroy_section_path(params: {section_id: f.object.id}), data: { confirm: 'Are you sure you want to delete this section?' }, method: :delete, role: 'button', class: 'btn btn-danger mr-1'
 .table-responsive
