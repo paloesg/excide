@@ -5,7 +5,7 @@
       - @template.errors.full_messages.each do |message|
         li = message
 .row
-  .col-md-2.col-sm-12
+  .col-md-3.col-sm-12
     .row
       .col-sm-12
         .card.mb-3
@@ -17,7 +17,7 @@
             .form-group
               = f.label :workflow_type, "Workflow Type:" 
               = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
-  .col-md-10.col-sm-12
+  .col-md-9.col-sm-12
     .card.mb-3
       = f.fields_for :sections do |section|
         = render 'section_fields', f: section
