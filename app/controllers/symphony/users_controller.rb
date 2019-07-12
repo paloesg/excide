@@ -55,7 +55,6 @@ class Symphony::UsersController < ApplicationController
   end
 
   def notification_settings
-    
   end
 
   def update_notification
