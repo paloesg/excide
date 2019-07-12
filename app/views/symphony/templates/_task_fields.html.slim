@@ -10,9 +10,9 @@ tr
   
   td.task-fields 
     p
-      a aria-controls="collapseExample" aria-expanded="false" data-toggle="collapse" href="#task-index-#{f.index}-#{g.id}" role="button" class="collapseTasks"
+      a aria-controls="collapseExample" aria-expanded="false" data-toggle="collapse" href="#task-index-#{f.index}-section-#{g.id}" role="button" class="collapseTasks"
         | More
-    .collapse.collapseTasks id="task-index-#{f.index}-#{g.id}"
+    .collapse.collapseTasks id="task-index-#{f.index}-section-#{g.id}"
       .card.card-body
         = f.label :set_reminder  
         = f.check_box :set_reminder, {class: "form-control"}
