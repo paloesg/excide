@@ -22,11 +22,11 @@ class SendReminder
   private
 
   def send_slack_reminder
-    SlackService.new.send_reminder(@reminder).deliver
+    SlackService.new.send_reminder(@reminder).deliver if @reminder.user.settings[0]&.reminder_slack == 'true'
   end
 
   def send_email_reminder
-    NotificationMailer.reminder_notification(@reminder).deliver_later
+    NotificationMailer.reminder_notification(@reminder).deliver_later if @reminder.user.settings[0]&.reminder_email == 'true'
   end
 
   def send_sms_reminder
@@ -38,7 +38,7 @@ class SendReminder
 
     @client = Twilio::REST::Client.new account_sid, auth_token
 
-    message = @client.api.account.messages.create( from: from_number, to: to_number, body: message_body )
+    message = @client.api.account.messages.create( from: from_number, to: to_number, body: message_body ) if @user.settings[0]&.reminder_sms == 'true'
   end
 
   def reminder_error_notification(e)
