@@ -15,10 +15,10 @@ tr
       hr
       .form-group.col-sm-12
         = f.label :role_id, 'Assigned Role'
-        = f.select :role_id, options_for_select(@roles.collect{|role| [role.display_name, role.id]}, selected: f.object.role&.id), {} , {class: "dropdown-overlay task-items-dropdown-width"}
+        = f.select :role_id, options_for_select(@roles.collect{|role| [role.display_name, role.id]}, selected: f.object.role&.id), {} , {class: "dropdown-overlay"}
       .form-group.col-sm-12
         = f.label :document_template_id, 'Document Template'  
-        = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay task-items-dropdown-width mb-2"}
+        = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay mb-2"}
       .form-group.col-sm-12
         = f.label :days_to_complete
         = f.number_field :days_to_complete, {step: 1, class: "form-control"}
@@ -36,13 +36,3 @@ tr
         .form-group.col-sm-6
           = f.label :important  
           = f.check_box :important, {class: "form-control ml-2"}
-      / a aria-controls="collapseExample" aria-expanded="false" data-toggle="collapse" href="#task-index-#{f.index}-section-#{g.id}" role="button" class="collapseTasks"
-      /   | More
-    .collapse.collapseTasks id="task-index-#{f.index}-section-#{g.id}"
-      
-
-  / td.task-fields = f.check_box :set_reminder, {class: "form-control"}
-  / td.task-fields = f.check_box :important, {class: "form-control"}
-  / td.task-fields = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay task-items-dropdown-width mb-2"}
-  / td.task-fields = f.text_field :link_url, {class: "form-control text-field-width"}
-  / td.task-fields = f.text_field :image_url, {class: "form-control text-field-width"}

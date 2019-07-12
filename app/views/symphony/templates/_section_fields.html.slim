@@ -16,15 +16,7 @@
         th.position-width No.
         th.task-type Task Type
         th.instruction Instruction
-        / th Assigned To
-        / th Days To Complete
-        / th Set Reminder
-        / th Important
         th 
-        / th Document Template
-        / th Link URL
-        / th Image URL
-        
     tbody.section-count class=("task-in-section-#{f.object.id}")
       = f.fields_for :tasks do |task|
         = render partial: 'task_fields', locals: { f: task, g: f.object}
