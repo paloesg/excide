@@ -8,7 +8,6 @@ class Symphony::WorkflowsController < ApplicationController
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :archive, :reset, :data_entry, :xero_create_invoice_payable, :send_email_to_xero, :activities]
   before_action :set_attributes_metadata, only: [:create, :update]
-  before_action :set_s3_direct_post, only: [:show]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
   rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
@@ -55,6 +54,7 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def show
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
     if @workflow.completed?
@@ -245,10 +245,6 @@ class Symphony::WorkflowsController < ApplicationController
     @next_section = @workflow.next_section
     @tasks = @section&.tasks.includes(:role)
     @current_task = @workflow.current_task
-  end
-
-  def set_s3_direct_post
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
   def set_company_and_roles
