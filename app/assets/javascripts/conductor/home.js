@@ -11,7 +11,7 @@ $(document).on("ajax:error", "form", function (xhr, status, error) {
     $(this).find('.alert').show()
   }
 });
-$(document).on('turbolinks:load', function(){
+$(document).on("turbolinks:load", function(){
   // Create new activation
   $('.new_activations').popover({
     html: true,

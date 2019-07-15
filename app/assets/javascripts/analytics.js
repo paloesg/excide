@@ -1,5 +1,5 @@
-$(document).on('turbolinks:load', function(){
-  GoogleAnalytics = (function() {
+$(document).on("turbolinks:load", function(){
+  var GoogleAnalytics = (function() {
     function GoogleAnalytics() {}
 
     GoogleAnalytics.load = function() {
@@ -57,4 +57,4 @@ $(document).on('turbolinks:load', function(){
     return GoogleAnalytics;
 
   })();
-})
+});

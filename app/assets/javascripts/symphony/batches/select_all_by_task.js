@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', function(){
+$(document).on("turbolinks:load", function(){
   let clicked = false;
   $(".checkall").on("click", function() {
     let buttonCheckAll = $(this).attr("id");

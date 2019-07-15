@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', function() {
+$(document).on("turbolinks:load", function() {
   let form = $( ".edit_workflow_action, .multiple_edit" );
 
   $('form').bind('turbolinks:request-end', function(evt, data, status, xhr) {

@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', function(){
+$(document).on("turbolinks:load", function(){
   mixpanel.track("Page view");
   if ($('.directUpload').length) {
     $('.directUpload').find('input:file').each(function(i, elem) {
@@ -19,18 +19,18 @@ $(document).on('turbolinks:load', function(){
         dataType: 'XML',
         replaceFileInput: false,
         add: function(e, data) {
-          let fileName, filter_filename, get_extension, rawFileName, s3_url_key, s3_url_key_with_filename;
+          let fileName, filterFilename, getExtension, rawFileName, s3UrlKey, s3UrlKeyWithFilename;
           rawFileName = e.target.files[0].name;
           fileName = rawFileName.split('.').slice(0, -1).join('.');
-          get_extension = rawFileName.substring(rawFileName.lastIndexOf(".") + 1);
+          getExtension = rawFileName.substring(rawFileName.lastIndexOf(".") + 1);
           //Filter out special characters and spaces in filename (same as parametrize function in rails)
-          filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+          filterFilename = fileName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
           //Get s3 key url
-          s3_url_key_with_filename = form.data('form-data')['key'];
+          s3UrlKeyWithFilename = form.data('form-data')['key'];
           //Remove default filename from s3 key url
-          s3_url_key = s3_url_key_with_filename.replace(/[^\/]*$/, '');
+          s3UrlKey = s3UrlKeyWithFilename.replace(/[^\/]*$/, '');
           //The new filename with s3 key url
-          form.data('form-data')['key'] = s3_url_key + filter_filename + '.' + get_extension;
+          form.data('form-data')['key'] = s3UrlKey + filterFilename + '.' + getExtension;
           data.formData = form.data('form-data');
           return data.submit();
         },

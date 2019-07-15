@@ -8,7 +8,7 @@ function uploadDocuments(data){
 
 Dropzone.autoDiscover = false;
 
-$(document).on('turbolinks:load', function() {
+$(document).on("turbolinks:load", function() {
   // Show dropzone after client and template selected
   $("#template_id").on('change', function() {
     if ( $("#template_id").val() ) {
@@ -19,11 +19,11 @@ $(document).on('turbolinks:load', function() {
   //upload documents on workflows and batch page
   if ($(".action_id").length){
     $( ".action_id" ).each(function( index ) {
-      let action_id = $(this).attr('id')
-      let workflow_action_id = $('#'+action_id).val();
-      let action_id_str = action_id.substr(10);
+      let actionId = $(this).attr('id')
+      let workflowActionId = $('#'+actionId).val();
+      let actionIdStr = actionId.substr(10);
 
-      if($(".uploadToXero"+workflow_action_id).length){
+      if($(".uploadToXero"+workflowActionId).length){
         let cleanFilename = function (name) {
           fileName = name.split('.').slice(0, -1).join('.')
           get_extension = name.substring(name.lastIndexOf(".") + 1)
@@ -31,7 +31,7 @@ $(document).on('turbolinks:load', function() {
           filter_filename = fileName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
           return filter_filename + '.' + get_extension;
         };
-        let documentUploadToXero = new Dropzone(".uploadToXero"+workflow_action_id,{
+        let documentUploadToXero = new Dropzone(".uploadToXero"+workflowActionId,{
           timeout: 0,
           renameFilename: cleanFilename,
         })
@@ -39,12 +39,12 @@ $(document).on('turbolinks:load', function() {
           let resp = $.parseXML(request);
           let filePath = $(resp).find("Key").text();
           let location = new URL($(resp).find("Location").text());
-          if($("#uploadToXero"+workflow_action_id).length){
+          if($("#uploadToXero"+workflowActionId).length){
             //check this part of drag and drop
             let data_input = {
               authenticity_token: $.rails.csrfToken(),
-              workflow: $('#workflow_id_'+action_id_str).val(),
-              workflow_action: workflow_action_id,
+              workflow: $('#workflow_id_'+actionIdStr).val(),
+              workflow_action: workflowActionId,
               document: {
                 filename: file.upload.filename,
                 file_url: '//' + location['host'] + '/' + filePath

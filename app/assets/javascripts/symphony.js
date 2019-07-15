@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', function(){
+$(document).on("turbolinks:load", function(){
   $('form').on('click', '.remove_fields', function(event) {
     $(this).closest('tr').find('.destroy').val('1');
     $(this).closest('tr').hide();

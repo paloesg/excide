@@ -152,7 +152,7 @@ class User < ApplicationRecord
   end
 
   def relevant_workflow_ids
-    workflows = self.company.workflows.includes(:template => [:sections => :tasks]).where(:tasks => {:role_id => self.get_role_ids})
+    self.company.workflows.includes(:template => [:sections => :tasks]).where(:tasks => {:role_id => self.get_role_ids})
   end
 
   def get_role_ids
