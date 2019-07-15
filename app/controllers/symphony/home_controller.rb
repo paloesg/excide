@@ -8,18 +8,21 @@ class Symphony::HomeController < ApplicationController
     @templates = policy_scope(Template).assigned_templates(current_user)
     @clients = @company.clients
 
-    @workflows_array = policy_scope(Workflow).where(template: @templates)
-    @workflows_sort = sort_column(@workflows_array)
-    params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
+    #add include
+    @workflows_array = policy_scope(Workflow).includes(:template, :workflowable).where(template: @templates);
+
+    workflows_sort = sort_column(@workflows_array)
+    params[:direction] == "desc" ? workflows_sort.reverse! : workflows_sort
 
     if params[:workflow_type].blank?
-      @templates_type = @workflows_sort
+      templates_type = workflows_sort
     else
-      @templates_type = @workflows_sort.select{ |t| t.template.slug == params[:workflow_type] }
+      templates_type = workflows_sort.select{ |t| t.template.slug == params[:workflow_type] }
     end
 
-    @workflows = Kaminari.paginate_array(@templates_type).page(params[:page]).per(10)
-    @outstanding_actions = WorkflowAction.includes(workflow: [:template]).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: @company).order(:deadline).includes(:task)
+    @workflows = Kaminari.paginate_array(templates_type).page(params[:page]).per(10)
+
+    @outstanding_actions = WorkflowAction.includes({workflow: [:template, :workflowable]}).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: @company).order(:deadline).includes(:task)
 
     @reminder_count = current_user.reminders.count
 
