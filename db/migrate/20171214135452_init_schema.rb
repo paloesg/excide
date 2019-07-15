@@ -248,7 +248,7 @@ class InitSchema < ActiveRecord::Migration
       t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
     end
     create_table "sections" do |t|
-      t.string "section_name"
+      t.string "unique_name"
       t.string "display_name"
       t.integer "position"
       t.bigint "template_id"
