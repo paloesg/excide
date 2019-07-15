@@ -30,7 +30,7 @@ class Batch < ApplicationRecord
 
   #get all the completed workflow action in an array
   def get_completed_actions
-    self.workflows.map{|wf| wf.workflow_actions}.flatten.compact.select{|action| action.completed?}
+    self.workflows.includes(:workflow_actions).where(workflow_actions: {completed: true})
   end
 
   def name
