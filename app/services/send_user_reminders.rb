@@ -23,7 +23,7 @@ class SendUserReminders
 
   def send_email_reminders
     email_reminders = @reminders.where(email: true)
-    NotificationMailer.batch_reminder(email_reminders, @user).deliver_now
+    NotificationMailer.batch_reminder(email_reminders, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
   end
 
   def send_sms_reminders
@@ -43,13 +43,13 @@ class SendUserReminders
 
     @client = Twilio::REST::Client.new account_sid, auth_token
 
-    message = @client.api.account.messages.create( from: from_number, to: to_number, body: message_body )
+    message = @client.api.account.messages.create( from: from_number, to: to_number, body: message_body ) if @user.settings[0]&.reminder_sms == 'true'
   end
 
   def send_slack_reminders
     slack_reminders = @reminders.where(slack: true)
 
-    SlackService.new.send_reminders(slack_reminders, @user).deliver
+    SlackService.new.send_reminders(slack_reminders, @user).deliver if @user.settings[0]&.reminder_slack == 'true'
   end
 
   def set_next_reminder

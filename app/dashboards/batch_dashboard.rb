@@ -14,6 +14,7 @@ class BatchDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     id: Field::String.with_options(searchable: false),
+    name: Field::String,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -22,7 +23,7 @@ class BatchDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :id,
+    :name,
     :company,
     :template,
     :workflows,

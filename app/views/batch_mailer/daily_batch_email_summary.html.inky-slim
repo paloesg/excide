@@ -21,7 +21,7 @@ container
             - next if batch.action_completed_progress == 100.0 and batch.updated_at.to_date < Date.today
             tr
               td
-                = link_to batch.id, symphony_batch_url(id: batch.id, batch_template_name: batch.template.slug)
+                = link_to batch.name, symphony_batch_url(id: batch.id, batch_template_name: batch.template.slug)
                 - if (batch.created_at.to_date + 1.days) >= Date.today
                   span.badge.badge-danger new
               td = batch.action_completed_progress
