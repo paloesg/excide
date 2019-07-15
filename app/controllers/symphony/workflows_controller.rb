@@ -6,7 +6,7 @@ class Symphony::WorkflowsController < ApplicationController
   before_action :set_company_and_roles
   before_action :set_template, except: [:toggle_all]
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :archive, :reset, :data_entry, :xero_create_invoice_payable, :send_email_to_xero, :activities]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice_payable, :send_email_to_xero, :activities]
   before_action :set_attributes_metadata, only: [:create, :update]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
