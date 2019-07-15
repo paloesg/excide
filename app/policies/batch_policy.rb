@@ -11,19 +11,19 @@ class BatchPolicy < ApplicationPolicy
     user.present?
   end
 
-   def new?
+  def new?
     create?
   end
 
-   def update?
+  def update?
     user == record.user or user.has_role?(:admin, record.company)
   end
 
-   def edit?
+  def edit?
     update?
   end
 
-   def destroy?
+  def destroy?
     user.has_role? :admin, record.company
   end
 
