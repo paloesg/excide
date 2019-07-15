@@ -34,10 +34,10 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def user_not_authorized
+  def user_not_authorized(exception)
     policy_name = exception.policy.class.to_s.underscore
 
-    flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-    redirect_to root_path
+    flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
+    redirect_to symphony_root_path
   end
 end

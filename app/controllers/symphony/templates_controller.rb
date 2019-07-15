@@ -4,14 +4,19 @@ class Symphony::TemplatesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
-  before_action :find_roles, only: [:new, :edit, :create_section]
+  before_action :find_roles, only: [:new, :edit, :update, :create_section]
+
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: :index
 
   def index
-    @templates = Template.all.where(company: @company)
+    authorize Template
+    @templates = policy_scope(Template)
   end
 
   def new
     @template = Template.new
+    authorize @template
     @general_templates = Template.where(company: nil)
   end
 
@@ -22,36 +27,45 @@ class Symphony::TemplatesController < ApplicationController
     else
       @template = Template.new(template_params)
     end
+    authorize @template
     @template.company = @company
     if @template.save
       redirect_to edit_symphony_template_path(@template)
     else
-      redirect_to symphony_templates_path
+      render :new
     end
   end
 
   def edit
+    authorize @template
   end
 
   def update
-    if @template.update!(template_params)
+    authorize @template
+    if @template.update(template_params)
       redirect_to edit_symphony_template_path(@template)
     else
-      redirect_to root_path
+      render :edit
     end
   end
 
   def create_section
+    authorize @template
     @position = @template.sections.count + 1
-    @section = Section.create!(section_name: params[:new_section], template_id: @template.id, position: @position)
-    if @section.save
-      redirect_to edit_symphony_template_path(@template)
-    else
-      redirect_to symphony_templates_path
+    @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: @position)
+    respond_to do |format|
+      if @section.save
+        format.html { redirect_to edit_symphony_template_path(@template), notice: 'Section was successfully created.' }
+        format.js { render js: 'Turbolinks.visit(location.toString());' }
+      else
+        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join } if @section.errors.messages[:section_name].present?
+        format.js { render js: 'Turbolinks.visit(location.toString());' }
+      end
     end
   end
 
   def destroy_section
+    authorize @template
     @section = Section.find(params[:section_id])
     if @section.destroy
       redirect_to edit_symphony_template_path(@template.slug)

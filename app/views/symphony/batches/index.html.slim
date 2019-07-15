@@ -16,18 +16,16 @@
         table.table.table-hover
           thead
             tr
-              th Id
+              th Name
               th Template
               th Created by
-              th Created at
               th Progress
           tbody
             - @batches_paginate.each do |batch|
               tr
-                td = link_to batch.id, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
+                td = link_to batch.name, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
                 td = batch.template.title
-                td = batch.user.full_name
-                td = batch.created_at.strftime('%m/%d/%Y %H:%M')
+                td = batch.user&.full_name
                 td
                   .progress
                     .progress-bar.progress-bar-striped aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{batch.action_completed_progress}%") #{batch.action_completed_progress}%

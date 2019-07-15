@@ -28,6 +28,7 @@ class Symphony::InvoicesController < ApplicationController
 
     @invoice.workflow_id = @workflow.id
     @invoice.user_id = current_user.id
+    @invoice.company_id = current_user.company_id
     if @invoice.xero_contact_id.present?
       @invoice.xero_contact_name = @xero.get_contact(@invoice.xero_contact_id).name
     else
@@ -37,7 +38,11 @@ class Symphony::InvoicesController < ApplicationController
     end
 
     if @invoice.save
-      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully!"
+      if @workflow.batch
+        redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "Invoice created successfully!"
+      else
+        redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully!"
+      end
     else
       render 'new'
     end

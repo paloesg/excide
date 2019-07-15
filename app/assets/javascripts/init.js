@@ -4,7 +4,7 @@
 
   app_init = function() {
     mixpanel.track("Page view");
-    if ($('.directUpload').lenght) {
+    if ($('.directUpload').length) {
       $('.directUpload').find('input:file').each(function(i, elem) {
         var barContainer, fileInput, form, progressBar, submitButton;
         fileInput = $(elem);
@@ -69,7 +69,6 @@
         });
       });
     }
-
   };
 
   $(document).ready(app_init);
