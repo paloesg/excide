@@ -57,7 +57,7 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def activities?
-    show?
+    update?
   end
 
   def data_entry?
