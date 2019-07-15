@@ -21,9 +21,6 @@ Rails.application.routes.draw do
 
   # Company workflow management
   get 'dashboard', to: 'dashboards#show', as: :dashboard
-  get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
-  get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
-  post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   resources :documents
   patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
