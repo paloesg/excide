@@ -1,4 +1,4 @@
-class CreateActivations < ActiveRecord::Migration
+class CreateActivations < ActiveRecord::Migration[5.2]
   def change
     create_table :activations do |t|
       t.integer :activation_type

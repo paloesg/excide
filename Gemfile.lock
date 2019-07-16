@@ -536,6 +536,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    squasher (0.6.2)
     strings (0.1.5)
       strings-ansi (~> 0.1)
       unicode-display_width (~> 1.5)
@@ -662,6 +663,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   sprockets-rails (= 2.3.3)
+  squasher (>= 0.6.0)
   sucker_punch (~> 2.0)
   themify-icons-rails!
   trix

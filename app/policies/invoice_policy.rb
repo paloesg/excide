@@ -1,6 +1,6 @@
 class InvoicePolicy < ApplicationPolicy
   def show?
-    user == record.user
+    (user == record.user) or user.has_role?(:associate, record.company) or user.has_role?(:admin, record.company)
   end
 
   def create?
@@ -12,7 +12,7 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def update?
-    user == record.user or user.has_role?(:associate, record.company) or user.has_role?(:admin, record.company)
+    show?
   end
 
   def edit?

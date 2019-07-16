@@ -54,10 +54,16 @@ class Symphony::DocumentsController < ApplicationController
 
     if params[:document_type] == 'batch-uploads'
       @template = Template.find(params[:document][:template_id])
-      @workflow = Workflow.new(user: current_user, company: @company, template: @template, workflowable: @client)
+      @workflow = Workflow.new(user: curuser, company: @company, template: @template, workflowable: @client)
       @workflow.template_data(@template)
       #equate workflow to the latest batch
       @workflow.batch = Batch.last
+      @workflow.workflow_actions.each do |action|
+        if action.task.task_type == "upload_file"
+          action.completed = true
+          action.save
+        end
+      end
       @workflow.save
       @document.workflow = @workflow
     end
