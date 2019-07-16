@@ -43,11 +43,13 @@ class Symphony::DocumentsController < ApplicationController
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
     if params[:workflow].present?
-      @document.workflow = @company.workflows.find(params[:workflow])
+      @workflow = @company.workflows.find(params[:workflow])
+      @document.workflow = @workflow
     end
 
     if params[:workflow_action].present?
-      @document.workflow_action = @company.workflow_actions.find(params[:workflow_action])
+      @workflow_action = @company.workflow_actions.find(params[:workflow_action])
+      @document.workflow_action = @workflow_action
     end
 
     if params[:document_type] == 'batch-uploads'
