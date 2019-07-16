@@ -64,11 +64,6 @@
       return event.preventDefault();
     });
 
-    //If section in template present and need to add new section, template will be save too
-    saveTemplate = function(){
-      $('.edit_template').submit();
-    }
-
     //if radio button is checked, disable or enable the relevant fields
     $('input:radio[name="radioContact"]').click(
         function(){
