@@ -32,7 +32,7 @@ class WorkflowsController < ApplicationController
 
   def toggle
     @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_id])
-    @workflow = Workflow.find_by(id: params[:workflow_id] )
+    @workflow = policy_scope(Workflow).find(params[:workflow_id] )
     authorize @workflow
     #manually saving updated_at of the batch to current time
     @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
