@@ -35,6 +35,8 @@ gem 'rack-timeout'
 gem "lograge"
 # Reverse proxy to proxy blog server to primary domain
 gem "rack-reverse-proxy", require: "rack/reverse_proxy"
+# Add squasher to collate old migration file
+gem 'squasher', '>= 0.6.0'
 
 #################################################
 #                                               #

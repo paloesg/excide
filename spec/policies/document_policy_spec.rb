@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe BatchPolicy do
-  subject { BatchPolicy.new(user, batch) }
+RSpec.describe DocumentPolicy do
+  subject { DocumentPolicy.new(user, document) }
   company = FactoryBot.create(:company)
-  user_of_batch = FactoryBot.create(:user, company: company)
+  user_of_document = FactoryBot.create(:user, company: company)
   admin_of_company = FactoryBot.create(:company_admin, company: company)
-  let(:batch) { FactoryBot.create(:batch, user: user_of_batch, company: company) }
+  let(:document) { FactoryBot.create(:document, company: company, user: user_of_document) }
 
   context "for a user" do
     let(:user) { FactoryBot.create(:user) }
@@ -15,17 +15,23 @@ RSpec.describe BatchPolicy do
     it { should permit(:new) }
     it { should_not permit(:update) }
     it { should_not permit(:edit) }
+    it { should permit(:index_create) }
+    it { should permit(:index_create) }
+    it { should permit(:multiple_edit) }
     it { should_not permit(:destroy) }
   end
 
-  context "for a user with company" do
-    let(:user) { user_of_batch }
+  context "for a user with the same company with document" do
+    let(:user) { user_of_document }
     it { should permit(:index) }
     it { should permit(:show) }
     it { should permit(:create) }
     it { should permit(:new) }
     it { should permit(:update) }
     it { should permit(:edit) }
+    it { should permit(:index_create) }
+    it { should permit(:index_create) }
+    it { should permit(:multiple_edit) }
     it { should_not permit(:destroy) }
   end
 
@@ -37,6 +43,9 @@ RSpec.describe BatchPolicy do
     it { should permit(:new) }
     it { should permit(:update) }
     it { should permit(:edit) }
+    it { should permit(:index_create) }
+    it { should permit(:index_create) }
+    it { should permit(:multiple_edit) }
     it { should permit(:destroy) }
   end
 end

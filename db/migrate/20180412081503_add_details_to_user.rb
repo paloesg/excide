@@ -1,4 +1,4 @@
-class AddDetailsToUser < ActiveRecord::Migration
+class AddDetailsToUser < ActiveRecord::Migration[5.2]
   def change
     add_column :users, :nric, :string
     add_column :users, :bank_name, :string

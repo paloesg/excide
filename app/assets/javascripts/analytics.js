@@ -1,10 +1,9 @@
-//Javascript
-(function() {
-  this.GoogleAnalytics = (function() {
+$(document).on("turbolinks:load", function(){
+  var GoogleAnalytics = (function() {
     function GoogleAnalytics() {}
 
     GoogleAnalytics.load = function() {
-      var firstScript, ga;
+      let firstScript, ga;
       //Google Analytics depends on a global _gaq array. window is the global scope.
       window._gaq = [];
       window._gaq.push(["_setAccount", GoogleAnalytics.analyticsId()]);
@@ -58,7 +57,4 @@
     return GoogleAnalytics;
 
   })();
-
-  GoogleAnalytics.load();
-
-}).call(this);
+});

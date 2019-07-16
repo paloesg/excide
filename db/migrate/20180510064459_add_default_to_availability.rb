@@ -1,4 +1,4 @@
-class AddDefaultToAvailability < ActiveRecord::Migration
+class AddDefaultToAvailability < ActiveRecord::Migration[5.2]
   def up
     change_column_default :availabilities, :assigned, false
   end
