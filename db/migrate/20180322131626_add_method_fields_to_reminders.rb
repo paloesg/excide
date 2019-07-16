@@ -1,4 +1,4 @@
-class AddMethodFieldsToReminders < ActiveRecord::Migration
+class AddMethodFieldsToReminders < ActiveRecord::Migration[5.2]
   def change
     add_column :reminders, :email, :boolean
     add_column :reminders, :sms, :boolean

@@ -1,4 +1,4 @@
-class ChangeUsersColumns < ActiveRecord::Migration
+class ChangeUsersColumns < ActiveRecord::Migration[5.2]
   def change
     remove_column :users, :allow_contact
     remove_column :users, :agree_terms
