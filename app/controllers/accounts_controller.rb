@@ -13,28 +13,14 @@ class AccountsController < ApplicationController
 
   # Technically not creating a new entry. Updates user account details and create new comapny when user is first created and redirected here.
   def create
-    customer = Stripe::Customer.create(
-      :email => current_user.email,
-      :description => [current_user.first_name, current_user.last_name].join(' ').squeeze(' '),
-      :source  => params[:stripeToken]
-    )
+    @user = User.new(user_params)
 
-    subscription = Stripe::Subscription.create(
-      :customer => customer.id,
-      :plan => "compliance-toolkit",
-    )
-    @user.make_payment
-    @user.save
-
-    if @user.update(user_params)
+    if @user.save
       SlackService.new.company_signup(@user, @user.company).deliver
       redirect_to dashboard_path, notice: 'Your account was successfully created.'
     else
       render :new, error: 'Please ensure that all fields are entered.'
     end
-  rescue Stripe::CardError => e
-    flash[:error] = e.message
-    redirect_to new_account_path
   end
 
   def update
