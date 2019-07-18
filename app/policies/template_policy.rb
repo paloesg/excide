@@ -27,6 +27,10 @@ class TemplatePolicy < ApplicationPolicy
     user_admin?
   end
 
+  def workflow_template?
+    user.company == record.company
+  end
+
   class Scope < Scope
     def resolve
       # Scope templates from the user's company and general templates (company is nil)
