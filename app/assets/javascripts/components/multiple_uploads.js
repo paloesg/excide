@@ -107,7 +107,7 @@ $(document).on("turbolinks:load", function() {
         batch: {
           template_id: $('#template_id').val(),
         }
-      }). done(result => {
+      }).done(result => {
         batchId = result.batch_id
       })
     });
