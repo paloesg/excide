@@ -29,21 +29,30 @@ $(document).on("turbolinks:load", function() {
   $(".autodate").keyup(function(e) {
     if (tabKeyPressed) {
       let dateStr = $(this).val();
-      let dateVar = dateStr.replace(/[\. ,:-]+/g, "-");
-      var dsplit = dateVar.split("-");
+      //format string replace all symbol with dash
+      dateStr = dateStr.replace(/(^\s+|[^a-zA-Z0-9 ]+|\s+$)/g,"-");
+      dateStr = dateStr.replace(/\s+/g, "-");
+
+      //put the date to array
+      var dsplit = dateStr.split("-");
+
+      // if year cannot detect, default year is current year
       if (!dsplit[2]){
         dsplit[2] = new Date().getFullYear();
       }
-
+      // create the date
       var d = new Date(dsplit[2],dsplit[1]-1,dsplit[0]);
 
+      //if cannot get the date it will run create new date again with other format, because sometimes user input month with text, for example: "20 Aug"
       if (d == "Invalid Date"){
-        dateVar = dsplit.join();
-        d = new Date(dateVar);
+        dateStr = dsplit.join();
+        d = new Date(dateStr);
+        //if cannot get the date again, the default is today
         if (d == "Invalid Date"){
           d = new Date();
         }
       }
+      //format date "20 Aug 2019"
       d = moment(d).format("D MMM YYYY")
       $(this).val(d);
       e.preventDefault();
