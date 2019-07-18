@@ -28,7 +28,8 @@ class TemplatePolicy < ApplicationPolicy
   end
 
   def workflow_template?
-    user.company == record.company
+    #If user's company matches the template's company, allow authorization usage of template when creating new workflows. Also, record.company.nil? accounts for when the template is a general template for cloning.
+    user.company == record.company or record.company.nil?
   end
 
   class Scope < Scope
