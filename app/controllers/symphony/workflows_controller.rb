@@ -9,9 +9,6 @@ class Symphony::WorkflowsController < WorkflowsController
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
   rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
 
-  after_action :verify_authorized, except: :index 
-  after_action :verify_policy_scoped, only: :index
-
   def index
     template = policy_scope(Template).find(params[:workflow_name])
     @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: template).order(created_at: :desc)
