@@ -19,7 +19,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def new
-    authorize @template, :workflow_template?
+    authorize @template, :check_template?
     @workflow = Workflow.new
     authorize @workflow
     @workflow.template_data(@template)
