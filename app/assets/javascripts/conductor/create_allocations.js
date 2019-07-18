@@ -1,5 +1,5 @@
 function create_allocations(id, type, element) {
-  count = element.value
+  let count = element.value
   $.ajax({
     type: "GET",
     url: "activations/" + id + "/create-allocations/" + type + "/" + count,

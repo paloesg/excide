@@ -1,5 +1,3 @@
-- @stripe_refresh = true
-
 .row
   .col-sm-12
     ol.breadcrumb
@@ -9,9 +7,9 @@
         a href="/symphony/batches" Batches
       li.breadcrumb-item
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
-      li.breadcrumb-item #{@batch.id}
+      li.breadcrumb-item #{@batch.name}
     h1
-      | View Batch
+      | Batch #{@batch.name}
 - @sections.each do |section|
   .card.scrollbar.mb-3
     h5.card-header

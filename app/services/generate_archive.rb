@@ -9,6 +9,7 @@ class GenerateArchive
       @workflow.transaction do
         @workflow.update_columns(completed: true, archive: generate_archive)
         delete_reminders
+        remove_document_workflow_action_id
         delete_workflow_actions
         delete_activities
       end
@@ -42,10 +43,20 @@ class GenerateArchive
     archive_tasks = []
     workflow_actions = WorkflowAction.where(workflow: @workflow).joins(:task).where(tasks: { section_id: section.id })
     workflow_actions.each do |action|
-      archive_task = { instructions: action.task.instructions, position: action.task.position, image_url: action.task.image_url, link_url: action.task.link_url, role_name: action.task.role&.display_name, task_type: action.task.task_type, workflow_actions: { completed: action.completed, deadline: action.deadline, company: action.company&.name, assigned_user: action.assigned_user&.full_name, completed_user: action.completed_user&.full_name, remarks: action.remarks } }
+      archive_task = { instructions: action.task.instructions, position: action.task.position, image_url: action.task.image_url, link_url: action.task.link_url, role_name: action.task.role&.display_name, task_type: action.task.task_type, workflow_actions: { completed: action.completed, deadline: action.deadline, company: action.company&.name, assigned_user: action.assigned_user&.full_name, completed_user: action.completed_user&.full_name, remarks: action.remarks, documents: generate_archive_documents(action)  } }
       archive_tasks << archive_task
     end
     archive_tasks
+  end
+
+  def generate_archive_documents(section)
+    archive_documents = []
+    documents = Document.where(workflow_action_id: section.id)
+    documents.each do |action|
+      archive_document = { document_id: action.id}
+      archive_documents << archive_document
+    end
+    archive_documents
   end
 
   def activity_log
@@ -56,6 +67,11 @@ class GenerateArchive
     @workflow.workflow_actions.each do |action|
       action.reminders.destroy_all if action.reminders
     end
+  end
+
+  def remove_document_workflow_action_id
+    workflow_action_ids = @workflow.workflow_actions.pluck("workflow_actions.id")
+    Document.where(workflow_action_id: workflow_action_ids).update_all(workflow_action_id: '')
   end
 
   def delete_workflow_actions
