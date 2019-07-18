@@ -27,10 +27,18 @@
         .form-row
           .form-group.col-md-2
             = f.label :invoice_date, 'Invoice Date'
-            = f.date_field :invoice_date, required: true, class: 'form-control'
+            #datetimepicker.input-group.date.dateinvoice data-target-input="nearest"
+              = f.text_field :invoice_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.invoice_date.present? ? @invoice.invoice_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker', 'data-target': '#datetimepicker'
+              .input-group-append data-target="#datetimepicker" data-toggle="datetimepicker"
+                .input-group-text
+                  i.fa.fa-calendar
           .form-group.col-md-2
             = f.label :due_date, 'Due Date'
-            = f.date_field :due_date, class: 'form-control'
+            #datetimepicker1.input-group.date.dateinvoice data-target-input="nearest"
+              = f.text_field :due_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.due_date.present? ? @invoice.due_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker1', 'data-target': '#datetimepicker1'
+              .input-group-append data-target="#datetimepicker1" data-toggle="datetimepicker"
+                .input-group-text
+                  i.fa.fa-calendar
           .form-group.col-md-2
             = f.label :line_amount_type, 'Amounts are: ', class: 'mr-2'
             = f.select :line_amount_type, [["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "no_tax"]], {include_blank: true}, {class: 'form-control', required: true}
