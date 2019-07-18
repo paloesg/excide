@@ -6,7 +6,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: [:index, :create]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -31,13 +31,9 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def create
-    @batch = Batch.new(batch_params)
-    authorize @batch
-    @batch.company = @company
+    # authorize @batch
     @template = Template.find(params[:batch][:template_id])
-    @batch.template = @template
-    @batch.user = current_user
-    @batch.save
+    @batch = GenerateBatch.new(current_user, @template, current_user.company).run
     respond_to do |format|
       format.json  { render :json => {:batch_id => @batch.id} }
     end
