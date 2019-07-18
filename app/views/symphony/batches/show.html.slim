@@ -30,7 +30,7 @@
                     ' #{task.task_type.humanize}
                     i.ti-info-alt
         tbody
-          - @batch.workflows.each do |wf|
+          - @batch.workflows.order(created_at: :asc).each do |wf|
             tr
               td
                 - if wf.documents.empty?
