@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).on("turbolinks:load", function() {
   $('[data-toggle="task_popover"]').popover({
     html: true,
     container: 'body',

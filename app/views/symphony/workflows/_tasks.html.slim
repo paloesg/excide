@@ -36,6 +36,28 @@
                     = label_tag :remarks
                     = text_field_tag :remarks, task['workflow_actions']['remarks'], class: 'form-control', disabled: true
                     = image_tag(task['image_url'], class: "img-fluid pt-4") if task['image_url'].present?
+            - if task['workflow_actions']['documents'].present?
+              tr
+                td.p-0.border-top-0 colspan="6"
+                  .m-3
+                    br
+                    .row
+                      .col-md-12
+                        h6 Files:
+                        .workflow-action-documents
+                          ul
+                            - task['workflow_actions']['documents'].each do |d|
+                              - d = Document.find(d['document_id']) if @workflow.archive.present?
+                              li
+                                .media
+                                  .align-self-center
+                                    = link_to symphony_document_path(d)
+                                      i.ti-file.icon.mr-3 style="font-size: 40px"
+                                  .media-body
+                                    h5.text-truncate = d.filename
+                                    h6.card-subtitle = d.user&.full_name
+                                    .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+            br
   .card-footer
     - if @workflow.archive.blank?
       - unless @section.first?

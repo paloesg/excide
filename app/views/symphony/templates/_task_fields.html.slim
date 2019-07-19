@@ -2,7 +2,7 @@ tr
   td.task-fields
     = f.hidden_field :_destroy
     = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
-  td.task-fields = f.number_field :position, {step: 1, class: "form-control"}
+  td.task-fields = f.number_field :position, {min: 1, step: 1, class: "form-control"}
   td.task-fields = f.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {},  {class: "dropdown-overlay"}
   td.task-fields = f.text_area :instructions, {class: "form-control"}
   td.task-fields 
@@ -22,7 +22,7 @@ tr
       .form-inline.col-sm-12.p-0.mb-2
         .form-group.col-sm-2
           = f.label :days_to_complete
-          = f.number_field :days_to_complete, {step: 1, class: "form-control col-sm-12 mt-2"}
+          = f.number_field :days_to_complete, {min: 1, step: 1, class: "form-control col-sm-12 mt-2"}
         .form-group.col-sm-5
           = f.label :link_url
           = f.text_field :link_url, {class: "form-control col-sm-12 mt-2"}
