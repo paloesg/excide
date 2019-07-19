@@ -245,7 +245,7 @@ class Symphony::WorkflowsController < ApplicationController
   private
 
   def set_template
-    @template = Template.find(params[:workflow_name])
+    @template = policy_scope(Template).find(params[:workflow_name])
   end
 
   def set_tasks
