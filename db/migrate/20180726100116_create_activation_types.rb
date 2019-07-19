@@ -1,4 +1,4 @@
-class CreateActivationTypes < ActiveRecord::Migration
+class CreateActivationTypes < ActiveRecord::Migration[5.2]
   def change
     create_table :activation_types do |t|
       t.string :name

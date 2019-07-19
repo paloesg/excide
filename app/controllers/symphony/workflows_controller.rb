@@ -1,13 +1,19 @@
-class Symphony::WorkflowsController < WorkflowsController
+class Symphony::WorkflowsController < ApplicationController
+  layout "dashboard/application"
   include Adapter
 
+  before_action :authenticate_user!
+  before_action :set_company_and_roles
+  before_action :set_template, except: [:toggle_all]
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :section, :archive, :reset, :data_entry, :xero_create_invoice_payable]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice_payable, :send_email_to_xero, :activities]
   before_action :set_attributes_metadata, only: [:create, :update]
-  before_action :set_s3_direct_post, only: [:show]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
   rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
+
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
 
   def index
     template = policy_scope(Template).find(params[:workflow_name])
@@ -52,6 +58,7 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def show
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
     @templates = policy_scope(Template).assigned_templates(current_user)
@@ -91,6 +98,38 @@ class Symphony::WorkflowsController < WorkflowsController
     end
   end
 
+  def toggle
+    @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_id])
+    @workflow = policy_scope(Workflow).find(params[:workflow_id])
+    authorize @workflow
+    #manually saving updated_at of the batch to current time
+    @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
+    respond_to do |format|
+      if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id)
+        format.json { render json: @action.completed, status: :ok }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      else
+        format.json { render json: @action.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def toggle_all
+    @actions = WorkflowAction.where(id: params[:workflow_action_ids])
+    @workflow = @actions.last.workflow
+    authorize @workflow
+    #manually saving updated_at of the batch to current time
+    @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
+    respond_to do |format|
+      if @actions.update_all(completed: true, completed_user_id: current_user.id)
+        format.json { render json: true, status: :ok }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      else
+        format.json { render json: @actions.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def assign
     authorize @workflow
     @sections = @template.sections
@@ -102,7 +141,9 @@ class Symphony::WorkflowsController < WorkflowsController
     respond_to do |format|
       if current_task.role.present?
         users = User.with_role(current_task.role.name.to_sym, @company)
-        NotificationMailer.deliver_notifications(current_task, current_action, users)
+        users.each do |user|
+          NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
+        end
         format.json { render json: "Sent out", status: :ok }
       else
         format.json { render json: "Current task has no role" }
@@ -140,13 +181,13 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def activities
-    set_workflow
     authorize @workflow
     @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
     @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
   end
 
   def data_entry
+    authorize @workflow
     set_documents
     unless @documents.empty?
       @document = @documents.where(id: params[:document_id]).exists? ? @documents.find(params[:document_id]) : @documents.last
@@ -157,6 +198,7 @@ class Symphony::WorkflowsController < WorkflowsController
 
   def xero_create_invoice_payable
     @xero = Xero.new(session[:xero_auth])
+    authorize @workflow
     if @workflow.invoice.payable?
       xero_invoice = @xero.create_invoice_payable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency)
       @workflow.invoice.xero_invoice_id = xero_invoice.id
@@ -195,8 +237,6 @@ class Symphony::WorkflowsController < WorkflowsController
   end
 
   def send_email_to_xero
-    @workflow = @company.workflows.find(params[:workflow_id])
-
     @workflow.documents.each do |workflow_docs|
         WorkflowMailer.send_invoice_email(@workflow, workflow_docs).deliver_later
     end
@@ -206,8 +246,14 @@ class Symphony::WorkflowsController < WorkflowsController
 
   private
 
-  def set_s3_direct_post
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
+  def set_template
+    @template = policy_scope(Template).find(params[:workflow_name])
+  end
+
+  def set_tasks
+    @next_section = @workflow.next_section
+    @tasks = @section&.tasks.includes(:role)
+    @current_task = @workflow.current_task
   end
 
   def set_company_and_roles

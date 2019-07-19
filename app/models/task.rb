@@ -1,4 +1,5 @@
 class Task < ApplicationRecord
+  validates :days_to_complete, numericality: {allow_nil: true, greater_than_or_equal_to: 1}
   after_create :add_workflow_action
 
   belongs_to :section

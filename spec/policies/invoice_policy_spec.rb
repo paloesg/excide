@@ -1,27 +1,39 @@
 require 'rails_helper'
 
-RSpec.describe InvoicePolicy, type: :policy do
-  let(:user) { User.new }
+RSpec.describe InvoicePolicy do
+  subject { InvoicePolicy.new(user, invoice) }
+  company = FactoryBot.create(:company)
+  user_of_invoice = FactoryBot.create(:user, company: company)
+  admin_of_company = FactoryBot.create(:company_admin, company: company)
+  let(:invoice) { FactoryBot.create(:invoice, company: company, user: user_of_invoice) }
 
-  subject { described_class }
-
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "for a user" do
+    let(:user) { FactoryBot.create(:user) }
+    it { should_not permit(:show) }
+    it { should permit(:create) }
+    it { should permit(:new) }
+    it { should_not permit(:update) }
+    it { should_not permit(:edit) }
+    it { should_not permit(:destroy) }
   end
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "for a user with the same company with invoice" do
+    let(:user) { user_of_invoice }
+    it { should permit(:show) }
+    it { should permit(:create) }
+    it { should permit(:new) }
+    it { should permit(:update) }
+    it { should permit(:edit) }
+    it { should_not permit(:destroy) }
   end
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  context "for a admin of company" do
+    let(:user) { admin_of_company }
+    it { should permit(:show) }
+    it { should permit(:create) }
+    it { should permit(:new) }
+    it { should permit(:update) }
+    it { should permit(:edit) }
+    it { should permit(:destroy) }
   end
 end

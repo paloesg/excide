@@ -20,7 +20,7 @@ class WorkflowAction < ApplicationRecord
   belongs_to :completed_user, class_name: 'User'
 
   has_many :reminders, dependent: :destroy
-  has_many :documents
+  has_many :documents, dependent: :destroy
 
   has_one :created_a_workflow, class_name: 'Workflow'
 
@@ -34,7 +34,9 @@ class WorkflowAction < ApplicationRecord
     # Trigger email notification for next task if role present
     if next_task.role.present? and self.workflow.batch.nil?
       users = User.with_role(next_task.role.name.to_sym, self.company)
-      NotificationMailer.deliver_notifications(next_task, next_action, users)
+      users.each do |user|
+        NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
+      end
     end
   end
 
@@ -43,7 +45,7 @@ class WorkflowAction < ApplicationRecord
     task_users = workflow_tasks.map{|task| task.role.users}.flatten.compact.uniq
     #loop through all the users that have a role in that workflow
     task_users.each do |user|
-      NotificationMailer.unordered_workflow_notification(user, workflow_tasks, self).deliver_now
+      NotificationMailer.unordered_workflow_notification(user, workflow_tasks, self).deliver_later if user.settings[0]&.task_email == 'true'
     end
   end
 
