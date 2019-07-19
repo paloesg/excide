@@ -8,18 +8,19 @@ class GenerateBatch
 
   def run
     generate_batch
-    generate_workflow
+    generate_workflow(batch)
     generate_documents(workflow)
   end
 
   private
 
   def generate_batch
-    Batch.create(user: @user, template: @template, company: @user.company)
+    batch = Batch.create(user: @user, template: @template, company: @user.company)
+    return batch
   end
 
-  def generate_workflow
-    workflow = Workflow.new(user: @user, compny: @user.company, template: @template)
+  def generate_workflow(batch)
+    workflow = Workflow.new(user: @user, compny: @user.company, template: @template, batch: batch)
     workflow.template_data(@template)
     workflow.save
     return workflow
