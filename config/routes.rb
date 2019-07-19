@@ -16,17 +16,11 @@ Rails.application.routes.draw do
   scope 'admin/companies/:company_name', as: 'admin_company' do
     get 'dashboard', to: 'dashboards#show', as: :dashboard
     get 'edit', to: 'companies#edit', as: :edit
-    get 'workflow/:workflow_name', to: 'workflows#show', as: :workflow
-    get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :workflow_section
-    post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
     resources :documents
   end
 
   # Company workflow management
   get 'dashboard', to: 'dashboards#show', as: :dashboard
-  get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
-  get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
-  post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   resources :documents
   patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 

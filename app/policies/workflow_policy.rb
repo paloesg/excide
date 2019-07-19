@@ -4,8 +4,8 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def show?
-    #allow any user with role or assigned task using intersection from user role and workflow task role
-    (user.get_role_ids & record.get_task_role_ids).present?
+    #allow any user with role or assigned task using intersection from user role and workflow task role. Admin gets to see all the workflows!
+    (user.get_role_ids & record.get_task_role_ids).any? or user_admin?
   end
 
   def create?
@@ -17,7 +17,7 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def update?
-    (user.get_role_ids & record.get_task_role_ids).present?
+    show?
   end
 
   def edit?
@@ -25,7 +25,7 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.has_role? :admin, record.company
+    user_admin?
   end
 
   def toggle?
@@ -41,7 +41,7 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def send_reminder?
-    user.has_role? :admin, record.company
+    user_admin?
   end
 
   def archive?
@@ -53,11 +53,11 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def reset?
-    user.has_role? :admin, record.company
+    user_admin?
   end
 
   def activities?
-    show?
+    update?
   end
 
   def data_entry?
@@ -74,8 +74,16 @@ class WorkflowPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
+      if user.has_role?(:admin, user.company)
+        scope.all
+      else
       # Scope workflow by user has a role in
-      scope.where(company: user.company, id: user.relevant_workflow_ids)
+        scope.where(company: user.company, id: user.relevant_workflow_ids)
+      end
     end
+  end
+  private
+  def user_admin?
+    user.has_role?(:admin, record.company)
   end
 end

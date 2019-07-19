@@ -69,17 +69,17 @@ RSpec.describe WorkflowPolicy do
   context "for a admin of company" do
     let(:user) { admin_of_company }
     it { should permit(:index) }
-    it { should_not permit(:show) }
+    it { should permit(:show) }
     it { should permit(:create) }
     it { should permit(:new) }
-    it { should_not permit(:update) }
-    it { should_not permit(:edit) }
-    it { should_not permit(:assign) }
-    it { should_not permit(:archive) }
+    it { should permit(:update) }
+    it { should permit(:edit) }
+    it { should permit(:assign) }
+    it { should permit(:archive) }
     it { should permit(:reset) }
-    it { should_not permit(:activities) }
-    it { should_not permit(:data_entry) }
-    it { should_not permit(:xero_create_invoice_payable) }
+    it { should permit(:activities) }
+    it { should permit(:data_entry) }
+    it { should permit(:xero_create_invoice_payable) }
     it { should permit(:destroy) }
   end
 end
