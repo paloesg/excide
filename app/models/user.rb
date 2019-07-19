@@ -152,12 +152,45 @@ class User < ApplicationRecord
   end
 
   def relevant_workflow_ids
-    workflows = self.company.workflows.includes(template: [{ sections: [{ tasks: :role }] }])
-    workflows.map{|w| w.id if (w.get_roles & self.roles).any?}.compact
+    self.company.workflows.includes(:template => [:sections => :tasks]).where(:tasks => {:role_id => self.get_role_ids})
   end
 
   def get_role_ids
     self.roles.pluck(:id)
   end
 
+  def settings
+    read_attribute(:settings).map { |s| Setting.new(s) }
+  end
+
+  def settings_attributes=(attributes)
+    settings = []
+    attributes.each do |_index, attrs|
+      next if '1' == attrs.delete("_destroy")
+      settings << attrs
+    end
+    write_attribute(:settings, settings)
+  end
+
+  class Setting
+    attr_accessor :reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack
+
+    def initialize(hash)
+      @reminder_sms = hash['reminder_sms']
+      @reminder_email = hash['reminder_email']
+      @reminder_slack = hash['reminder_slack']
+      @task_sms = hash['task_sms']
+      @task_email = hash['task_email']
+      @task_slack = hash['task_slack']
+      @batch_sms = hash['batch_sms']
+      @batch_email = hash['batch_email']
+      @batch_slack = hash['batch_slack']
+    end
+    def persisted?() false; end
+    def new_record?() false; end
+    def marked_for_destruction?() false; end
+    def _create() false; end
+    def _update() false; end
+    def _destroy() false; end
+  end
 end

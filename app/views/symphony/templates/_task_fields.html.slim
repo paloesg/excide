@@ -2,11 +2,11 @@ tr
   td.task-fields
     = f.hidden_field :_destroy
     = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
-  td.task-fields = f.number_field :position, {step: 1, class: "form-control number-width"}
-  td.task-fields = f.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {},  {class: "dropdown-overlay"}
-  td.task-fields = f.text_area :instructions, {class: "form-control text-field-width"}
-  td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.display_name, role.id]}, selected: f.object.role&.id), {} , {class: "dropdown-overlay task-items-dropdown-width"}
-  td.task-fields = f.number_field :days_to_complete, {step: 1, class: "form-control number-width"}
+  td.task-fields = f.number_field :position, {min: 1, step: 1, class: "form-control number-width", required: true}
+  td.task-fields = f.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay", required: true}
+  td.task-fields = f.text_area :instructions, {class: "form-control text-field-width", required: true}
+  td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.display_name, role.id]}, selected: f.object.role&.id), {include_blank: true} , {class: "dropdown-overlay task-items-dropdown-width"}
+  td.task-fields = f.number_field :days_to_complete, {min: 1, step: 1, class: "form-control number-width"}
   td.task-fields = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay task-items-dropdown-width mb-2"}
   td.task-fields = f.text_field :link_url, {class: "form-control text-field-width"}
   td.task-fields = f.text_field :image_url, {class: "form-control text-field-width"}

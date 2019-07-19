@@ -42,7 +42,7 @@ namespace :scheduler do
   task :daily_batch_email_summary => :environment do 
     Company.all.each do |company|
       if company.batches.present? and company.consultant.present?
-        BatchMailer.daily_batch_email_summary(company).deliver_later
+        BatchMailer.daily_batch_email_summary(company).deliver_later if company.consultant.settings[0]&.batch_email == 'true'
       end
     end
   end

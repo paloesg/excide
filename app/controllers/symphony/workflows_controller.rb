@@ -12,6 +12,9 @@ class Symphony::WorkflowsController < ApplicationController
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
   rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
 
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+
   def index
     template = policy_scope(Template).find(params[:workflow_name])
     @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: template).order(created_at: :desc)
@@ -95,7 +98,7 @@ class Symphony::WorkflowsController < ApplicationController
 
   def toggle
     @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_id])
-    @workflow = policy_scope(Workflow).find_by(id: params[:workflow_id] )
+    @workflow = policy_scope(Workflow).find(params[:workflow_id])
     authorize @workflow
     #manually saving updated_at of the batch to current time
     @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
@@ -136,7 +139,9 @@ class Symphony::WorkflowsController < ApplicationController
     respond_to do |format|
       if current_task.role.present?
         users = User.with_role(current_task.role.name.to_sym, @company)
-        NotificationMailer.deliver_notifications(current_task, current_action, users)
+        users.each do |user|
+          NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
+        end
         format.json { render json: "Sent out", status: :ok }
       else
         format.json { render json: "Current task has no role" }
@@ -180,6 +185,7 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def data_entry
+    authorize @workflow
     set_documents
     unless @documents.empty?
       @document = @documents.where(id: params[:document_id]).exists? ? @documents.find(params[:document_id]) : @documents.last
@@ -190,6 +196,7 @@ class Symphony::WorkflowsController < ApplicationController
 
   def xero_create_invoice_payable
     @xero = Xero.new(session[:xero_auth])
+    authorize @workflow
     if @workflow.invoice.payable?
       xero_invoice = @xero.create_invoice_payable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency)
       @workflow.invoice.xero_invoice_id = xero_invoice.id

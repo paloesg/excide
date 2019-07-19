@@ -3,10 +3,12 @@ FactoryBot.define do
     filename { Faker::File.file_name }
     remarks { Faker::Lorem.sentence }
     file_url { Faker::File.file_name('foo/bar', 'baz', 'doc') }
-    identifier { Faker::Job.title }
 
     company
-    workflow
     document_template
+
+    factory :document_with_workflow do
+      workflow
+    end
   end
 end
