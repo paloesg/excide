@@ -20,8 +20,8 @@ tr
     div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered?? 'collapse show' : 'collapse'}"
       .m-3
         .col-md-6
-          - if action.created_a_workflow
-            = link_to 'View Workflow', symphony_workflow_path(workflow_name: action.created_a_workflow.template.slug, workflow_id: action.created_a_workflow.id), class: 'btn btn-success btn-sm mb-2', id: 'new-workflow'
+          - if action.sub_workflow
+            = link_to 'View Workflow', symphony_workflow_path(workflow_name: action.sub_workflow.template.slug, workflow_id: action.sub_workflow.id), class: 'btn btn-success btn-sm mb-2', id: 'new-workflow'
           - else
             = link_to 'Create Workflow', "/symphony/#{task.template.slug}/new?action_id=#{action.id}", class: 'btn btn-primary btn-sm mb-2', id: 'new-workflow'
           .btn-toolbar role="toolbar"
