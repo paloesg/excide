@@ -25,9 +25,9 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def new
+    authorize @template, :check_template?
     @workflow = Workflow.new
     authorize @workflow
-
     @workflow.template_data(@template)
   end
 
