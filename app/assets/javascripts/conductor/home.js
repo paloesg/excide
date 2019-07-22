@@ -2,16 +2,16 @@
 $(document).on("ajax:error", "form", function (xhr, status, error) {
   $(this).find('#popover_validation').text('')
   data = JSON.parse(status.responseText)
-  var message, results;
+  let message, results;
   if (data) {
     results = [];
-    for (var message in data) {
+    for (let message in data) {
       results.push($(this).find('#popover_validation').prepend(' *' + message.replace(/_/g, ' ') + ' ' + data[message]));
     }
     $(this).find('.alert').show()
   }
 });
-$(document).ready(function () {
+$(document).on("turbolinks:load", function(){
   // Create new activation
   $('.new_activations').popover({
     html: true,

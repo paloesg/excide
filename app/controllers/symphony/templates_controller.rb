@@ -23,6 +23,16 @@ class Symphony::TemplatesController < ApplicationController
   def create
     if params[:template][:clone]
       @template = Template.find(params[:template][:clone]).deep_clone include: { sections: :tasks }
+      @template.sections.each do |section|
+        section.tasks.each do |task|
+          if task.role
+            # Get role of user company, if the role not exist, create the same role for current user company
+            role = Role.find_by(name: task.role.name, resource_id: current_user.company.id, resource_type: "Company")
+            role = Role.create(name: task.role.name, resource_id: current_user.company.id, resource_type: "Company") if role.blank?
+            task.role = role
+          end
+        end
+      end
       @template.title = template_params[:title]
     else
       @template = Template.new(template_params)
@@ -42,10 +52,25 @@ class Symphony::TemplatesController < ApplicationController
 
   def update
     authorize @template
-    if @template.update(template_params)
-      redirect_to edit_symphony_template_path(@template)
+    if params[:new_section_submit].present?
+      @position = @template.sections.count + 1
+      @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: @position)
+      if @section.save
+        flash[:notice] = 'Section was successfully created.'
+      else
+        flash[:alert] = @section.errors.full_messages.join
+      end
+    end
+    if params[:template].present?
+      if @template.update(template_params)
+        flash[:notice] = 'Template updated.'
+        redirect_to edit_symphony_template_path(@template)
+      else
+        flash[:alert] = @template.errors.full_messages.join
+        render :edit
+      end
     else
-      render :edit
+      redirect_to edit_symphony_template_path(@template)
     end
   end
 
@@ -76,7 +101,7 @@ class Symphony::TemplatesController < ApplicationController
 
   private
   def set_template
-    @template = Template.find(params[:template_slug])
+    @template = Template.includes(sections: [tasks: [:role, :document_template]]).find(params[:template_slug])
   end
 
   def set_company
