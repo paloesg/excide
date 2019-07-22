@@ -101,7 +101,7 @@ class Symphony::TemplatesController < ApplicationController
 
   private
   def set_template
-    @template = Template.find(params[:template_slug])
+    @template = Template.includes(sections: [tasks: [:role, :document_template]]).find(params[:template_slug])
   end
 
   def set_company
