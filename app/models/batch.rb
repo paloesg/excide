@@ -13,11 +13,6 @@ class Batch < ApplicationRecord
     order("batches.created_at DESC").first
   end
 
-  #this method gets an array of names of roles in all the workflows of Batch. Using this, we can compare the roles with current_user's role to reveal their batches in the INDEX page
-  def get_relevant_roles
-    self.workflows.map{|wf| wf.get_roles.map(&:name).map(&:downcase)}.flatten.compact.uniq
-  end
-
   def action_completed_progress
     # Check for case where total_action is 0 to prevent NaN error
     total_action == 0 ? 0 : ((get_completed_actions.count.to_f / total_action) * 100).round(0)
@@ -35,7 +30,7 @@ class Batch < ApplicationRecord
 
   #get all the completed workflow action in an array
   def get_completed_actions
-    self.workflows.map{|wf| wf.workflow_actions}.flatten.compact.select{|action| action.completed?}
+    self.workflows.includes(:workflow_actions).where(workflow_actions: {completed: true})
   end
 
   def name

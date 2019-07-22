@@ -1,4 +1,4 @@
-$(function () {
+$(document).on("turbolinks:load", function() {
   $(".datetimepicker").datetimepicker({
     format: "YYYY-MM-DD HH:mm",
     stepping: 15
