@@ -59,6 +59,8 @@ class Symphony::DocumentsController < ApplicationController
       #equate workflow to the latest batch
       @workflow.batch = Batch.last
       @workflow.save
+      #auto check upload file
+      @workflow.workflow_actions.map { |action| action.update_attributes completed: true if action.task.task_type == "upload_file" }
       @document.workflow = @workflow
     end
 
