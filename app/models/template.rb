@@ -93,6 +93,10 @@ class Template < ApplicationRecord
     self.workflows.select{ |w| !w.completed? }
   end
 
+  def company_workflows(company)
+    self.workflows.where(company: company)
+  end
+
   def self.assigned_templates(user)
     if user.has_role? :admin, user.company
       Template.where(company: user.company).or(Template.where(company: nil)).order(:created_at)
