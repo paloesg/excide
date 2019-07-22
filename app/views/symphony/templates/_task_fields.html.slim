@@ -2,13 +2,34 @@ tr
   td.task-fields
     = f.hidden_field :_destroy
     = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
-  td.task-fields = f.number_field :position, {min: 1, step: 1, class: "form-control number-width", required: true}
-  td.task-fields = f.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay", required: true}
-  td.task-fields = f.text_area :instructions, {class: "form-control text-field-width", required: true}
-  td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.display_name, role.id]}, selected: f.object.role&.id), {include_blank: true} , {class: "dropdown-overlay task-items-dropdown-width"}
-  td.task-fields = f.number_field :days_to_complete, {min: 1, step: 1, class: "form-control number-width"}
-  td.task-fields = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay task-items-dropdown-width mb-2"}
-  td.task-fields = f.text_field :link_url, {class: "form-control text-field-width"}
-  td.task-fields = f.text_field :image_url, {class: "form-control text-field-width"}
-  td.task-fields = f.check_box :set_reminder, {class: "form-control"}
-  td.task-fields = f.check_box :important, {class: "form-control"}
+  td.task-fields = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
+  td.task-fields = f.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {}, { required: true, class: "dropdown-overlay"}
+  td.task-fields = f.text_area :instructions, {required: true, class: "form-control"}
+  td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.display_name, role.id]}, selected: f.object.role&.id), {include_blank: true} , {required: true, class: "dropdown-overlay"}
+  td.task-fields
+    p
+      a data-toggle="collapse" href="#task-index-#{f.index}-section-#{g.id}" aria-expanded="false" class="collapsed"
+        i.fa aria-hidden="true"
+tr
+  td.table-active.p-0.border-top-0 colspan="6"
+    div id="task-index-#{f.index}-section-#{g.id}" class="collapse"
+      .form-group.col-sm-12.pt-2
+        = f.label :document_template_id, 'Document Template'
+        = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay mb-2"}
+      .form-inline.col-sm-12.p-0.mb-2
+        .form-group.col-sm-2
+          = f.label :days_to_complete
+          = f.number_field :days_to_complete, {min: 1, step: 1, class: "form-control col-sm-12 mt-2"}
+        .form-group.col-sm-5
+          = f.label :link_url
+          = f.text_field :link_url, {class: "form-control col-sm-12 mt-2"}
+        .form-group.col-sm-5
+          = f.label :image_url
+          = f.text_field :image_url, {class: "form-control col-sm-12 mt-2"}
+      .form-inline.col-sm-12.p-0.mb-2
+        .form-group.col-sm-6
+          = f.label :set_reminder
+          = f.check_box :set_reminder, {class: "form-control ml-2"}
+        .form-group.col-sm-6
+          = f.label :important
+          = f.check_box :important, {class: "form-control ml-2"}
