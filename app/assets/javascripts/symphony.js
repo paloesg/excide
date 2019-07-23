@@ -55,7 +55,7 @@ $(document).on("turbolinks:load", function(){
       $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_role_id']").selectize({
         dropdownParent: "body"
       });
-      $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_template']").selectize({
+      $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_template_id']").selectize({
         dropdownParent: "body"
       });
       $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_document_template_id']").selectize({
