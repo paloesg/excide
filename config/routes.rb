@@ -16,12 +16,16 @@ Rails.application.routes.draw do
   scope 'admin/companies/:company_name', as: 'admin_company' do
     get 'dashboard', to: 'dashboards#show', as: :dashboard
     get 'edit', to: 'companies#edit', as: :edit
-    resources :documents
+    get 'workflow/:workflow_name', to: 'workflows#show', as: :workflow
+    get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :workflow_section
+    post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
   end
 
   # Company workflow management
   get 'dashboard', to: 'dashboards#show', as: :dashboard
-  resources :documents
+  get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
+  get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
+  post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
   namespace :symphony do
@@ -58,7 +62,6 @@ Rails.application.routes.draw do
       collection do
         post '/index-create', to: 'documents#index_create', as: :index_create_document
         get '/multiple-edit', to: 'documents#multiple_edit', as: :multiple_edit
-        get '/upload-invoice', to: 'documents#upload_invoice', as: :upload_invoice
       end
     end
     get '/archives', to: 'archives#index', as: :archives

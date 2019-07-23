@@ -9,3 +9,6 @@
   - if action.assigned_user == current_user or task.role_id == nil or (@roles.map(&:id).include? task.role_id) or (@user.has_role? :admin, @company)
     = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST"}, onclick: "this.checked=true;" if !action.completed?
     = check_box_tag 'completed', action.id, action.completed, disabled: true if action.completed?
+  - else
+    = check_box_tag 'completed', action.id, action.completed, disabled: true
+

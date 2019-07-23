@@ -1,8 +1,11 @@
-class Symphony::DocumentsController < DocumentsController
+class Symphony::DocumentsController < ApplicationController
+  layout 'dashboard/application'
+  before_action :authenticate_user!
+  before_action :set_company
   before_action :set_templates, only: [:new, :edit, :multiple_edit]
   before_action :set_company_workflows, only: [:new, :edit]
-  before_action :set_workflow, only: [:new]
-  before_action :set_workflow_action, only: [:new]
+  before_action :set_document, only: [:show, :edit, :update, :destroy]
+  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
   after_action :verify_authorized, except: [:index, :search]
   after_action :verify_policy_scoped, only: :index
@@ -20,6 +23,8 @@ class Symphony::DocumentsController < DocumentsController
   end
 
   def new
+    @workflow = @workflows.find(params[:workflow]) if params[:workflow].present?
+    @workflow_action = @company.workflow_actions.find(params[:workflow_action]) if params[:workflow_action].present?
     @document = Document.new
     authorize @document
   end
@@ -54,6 +59,8 @@ class Symphony::DocumentsController < DocumentsController
       #equate workflow to the latest batch
       @workflow.batch = Batch.last
       @workflow.save
+      #auto check upload file
+      @workflow.workflow_actions.map { |action| action.update_attributes completed: true if action.task.task_type == "upload_file" }
       @document.workflow = @workflow
     end
 
@@ -78,7 +85,6 @@ class Symphony::DocumentsController < DocumentsController
 
   def index_create
     @files = []
-    set_company
     params[:url_files].each do |url_file|
       document = Document.new(file_url: url_file)
       document.company = @company
@@ -119,25 +125,7 @@ class Symphony::DocumentsController < DocumentsController
     redirect_to symphony_documents_path, notice: 'Document was successfully destroyed.'
   end
 
-  def upload_invoice
-    set_company
-    set_company_workflows
-    @clients = @company.clients
-    @templates = Template.assigned_templates(current_user)
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
-  end
-
   private
-
-  def create_workflow(company, template_id, workflow_identifier, client, document)
-    @template = Template.find(template_id)
-    @workflow = Workflow.new(user: current_user, company: company, template: @template, identifier: workflow_identifier, workflowable: client)
-    @workflow.template_data(@template)
-    #equate workflow to the latest batch
-    @workflow.batch = Batch.last
-    @workflow.save
-    Document.find(document.id).update_attributes(workflow: @workflow)
-  end
 
   def set_company
     @user = current_user
@@ -152,11 +140,16 @@ class Symphony::DocumentsController < DocumentsController
     @workflows = @company.workflows.includes(template: [{ sections: [{ tasks: :role }] }])
   end
 
-  def set_workflow
-    @workflow = @workflows.find(params[:workflow]) if params[:workflow].present?
+  def set_document
+    @document = @company.documents.find(params[:id])
   end
 
-  def set_workflow_action
-    @workflow_action = @company.workflow_actions.find(params[:workflow_action]) if params[:workflow_action].present?
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def document_params
+    params.require(:document).permit(:filename, :remarks, :company_id, :date_signed, :date_uploaded, :file_url, :workflow_id, :document_template_id)
+  end
+
+  def set_s3_direct_post
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
   end
 end
