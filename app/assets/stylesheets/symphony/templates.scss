@@ -7,10 +7,22 @@ td.task-fields{
   min-width: 200px;
 }
 
-.number-width{
-  width: 4rem !important;
+.task-type{
+  width: 25% !important;
 }
 
-.text-field-width{
-  width: 400px !important;
+.instruction{
+  width: 32% !important;
+}
+
+.position-width{
+  width: 7% !important;
+}
+
+.assigned-role{
+  width: 25% !important;
+}
+
+.collapse-arrow-width{
+  width: 1% !important;
 }
