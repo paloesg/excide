@@ -85,7 +85,7 @@ $(document).on("turbolinks:load", function(){
       return event.preventDefault();
     });
     //if radio button is checked, disable or enable the relevant fields
-    $('input:radio[name="radioContact"]').click(
+    $("input:radio[name='radioContact']").click(
         function(){
             if($(this).val() == 'existing'){
                 $('.new-disable').attr('disabled', true);
@@ -96,7 +96,7 @@ $(document).on("turbolinks:load", function(){
                 $('.new-disable').attr('disabled', false);
             }
         }
-    )
+    );
     return $('input').change(function(event) {
       return $(this).closest('td').next().find('.update').val('1');
     });
