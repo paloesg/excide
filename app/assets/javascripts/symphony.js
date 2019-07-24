@@ -26,6 +26,9 @@ $(document).on("turbolinks:load", function(){
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
     $(".table>tbody>tr:last-child").after($(this).data('fields').replace(regexp, time));
+    $("select[id$='" + time + "_item']").selectize({
+      dropdownParent: "body"
+    });
     $("select[id$='" + time + "_account']").selectize({
       dropdownParent: "body"
     });
