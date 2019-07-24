@@ -33,38 +33,16 @@ class Symphony::DocumentsController < DocumentsController
   def create
     @document = Document.new(document_params)
     authorize @document
-
-    @document.company = @company
-    @document.user = @user
-    @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if params[:document_type] == 'invoice'
-    if params[:workflow].present?
-      @workflow = @company.workflows.find(params[:workflow])
-      @document.workflow = @workflow
-    end
-
-    if params[:workflow_action].present?
-      @workflow_action = @company.workflow_actions.find(params[:workflow_action])
-      @document.workflow_action = @workflow_action
-    end
-
-    if params[:document_type] == 'batch-uploads'
-      @template = Template.find(params[:document][:template_id])
-      @workflow = Workflow.new(user: current_user, company: @company, template: @template, workflowable: @client)
-      @workflow.template_data(@template)
-      #equate workflow to the latest batch
-      @workflow.batch = Batch.last
-      @workflow.save
-      @document.workflow = @workflow
-    end
+    @document = GenerateDocumentAction.new(@document, @user, @company, params[:workflow], params[:workflow_action], params[:document_type], params[:document][:template_id]).run
 
     respond_to do |format|
       if @document.save
         if params[:document_type] == 'batch-uploads'
            #return output in json
-          output = { :status => "ok", :message => "batch documents created", :document => @document.id, :batch => @workflow.batch.id, :template => @template.slug}
+          output = { :status => "ok", :message => "batch documents created", :document => @document.id, :batch => @document.workflow.batch.id, :template => @document.workflow.template.slug}
           format.json  { render :json => output }
         else
-          format.html { redirect_to @workflow.nil? ? symphony_documents_path : symphony_workflow_path(@workflow.template.slug, @workflow.id), notice: 'Document was successfully created.' }
+          format.html { redirect_to @document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(@document.workflow.template.slug, @document.workflow.id), notice: 'Document was successfully created.' }
           format.json { render :show, status: :created, location: @document}
         end
       else
