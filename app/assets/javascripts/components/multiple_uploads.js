@@ -109,7 +109,7 @@ $(document).on("turbolinks:load", function() {
         }
       }).done(result => {
         batchId = result.batch_id
-      })
+      });
     });
     documentUpload.on("success", function (file, request) {
       let resp = $.parseXML(request);

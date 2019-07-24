@@ -32,9 +32,7 @@ class Symphony::BatchesController < ApplicationController
 
   def create
     @template = Template.find(params[:batch][:template_id])
-    document_filename = params[:document][:filename]
-    document_file_url = params[:document][:file_url]
-    @batch = GenerateBatch.new(current_user, @template, document_filename, document_file_url).run
+    @batch = GenerateBatch.new(current_user, @template).run
     authorize @batch
     respond_to do |format|
       format.json  { render :json => {:batch_id => @batch.id} }
