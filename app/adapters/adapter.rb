@@ -15,6 +15,10 @@ module Adapter
       @xero_client.Contact.all
     end
 
+    def get_items
+      @xero_client.Item.all
+    end
+
     def get_contact(xero_contact_id)
       return @xero_client.Contact.find(xero_contact_id)
     end

@@ -38,8 +38,9 @@ class Invoice < ApplicationRecord
   end
 
   class LineItem
-    attr_accessor :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2
+    attr_accessor :item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2
     def initialize(hash)
+      @item = hash['item']
       @description = hash['description']
       @quantity = hash['quantity']
       @price = hash['price']
@@ -63,6 +64,8 @@ class Invoice < ApplicationRecord
   end
 
   def check_additional_line_item_fields
+    self.errors.add(:line_items, "item cannot be blank") if self.line_items.map(&:item).include? ""
+
     self.errors.add(:line_items, "account code cannot be blank") if self.line_items.map(&:account).include? ""
     self.errors.add(:line_items, "tax type cannot be blank") if self.line_items.map(&:tax).include? ""
     self.errors.add(:line_items, "tracking cannot be blank") if self.line_items.map(&:tracking_option_1).include? "" or self.line_items.map(&:tracking_option_2).include? ""
