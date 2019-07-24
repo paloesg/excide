@@ -9,7 +9,6 @@
       .btn-toolbar.float-right
         = link_to "Document Templates", symphony_document_templates_path, role: 'button', class: 'btn btn-success mr-1'
         = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
-        = link_to 'Upload Invoices', upload_invoice_symphony_documents_path, role: 'button', class: 'btn btn-warning' if ::Template.where(company: @company).where('slug LIKE ?', 'payable-invoices%').present?
 
 .row
   .col-sm-6.offset-sm-3.mb-3

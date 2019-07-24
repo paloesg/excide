@@ -7,6 +7,9 @@
     .row
       = check_box_tag 'completed', action.id, action.completed, disabled: true, class: 'enlarged-checkbox float-right'
 - else
-  - if action.assigned_user == current_user or action.task.role_id == nil or (@roles.map(&:id).include? action.task.role_id) or (@current_user.has_role? :admin, @company)
+  - if action.completed == false and (action.assigned_user == current_user or action.task.role_id == nil or (@roles.map(&:id).include? action.task.role_id) or (@current_user.has_role? :admin, @company))
     .row
-      = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: action.task.id, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, controller: 'workflows'), method: "POST" }, :onclick => "this.checked=true;", class: "enlarged-checkbox float-right completed-#{action.task.id}"
+      = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: action.task.id, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, controller: 'workflows'), method: "POST" }, :onclick => "this.checked=true;", class: "enlarged-checkbox float-right completed-#{action.task.id}", workflow_action: action.id
+  - else
+    .row
+      = check_box_tag 'completed', action.id, action.completed, disabled: true, class: 'enlarged-checkbox float-right'

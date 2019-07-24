@@ -12,19 +12,14 @@
   table.table
     thead
       tr
-        th
-        th No.
-        th Task Type
-        th Instruction
-        th Assigned To
-        th Days To Complete
-        th Document Template
-        th Link URL
-        th Image URL
-        th Set Reminder
-        th Important
+        th.collapse-arrow-width
+        th.position-width No.
+        th.task-type Task Type
+        th.instruction Instruction
+        th.assigned-role Assigned Role
+        th 
     tbody.section-count class=("task-in-section-#{f.object.id}")
       = f.fields_for :tasks do |task|
-        = render 'task_fields', f: task
+        = render partial: 'task_fields', locals: { f: task, g: f.object}
 .card-body
-  = link_to_add_tasks('Add task', f, :tasks)
+  = link_to_add_tasks('Add task', f, :tasks, g: f.object)

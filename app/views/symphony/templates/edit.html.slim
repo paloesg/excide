@@ -5,10 +5,10 @@
         a href="/symphony" Symphony
       li.breadcrumb-item Template
     h1 Edit #{@template.title}
-    - if @template.sections.present?
-    	= form_for(@template, url: symphony_template_path(template_slug: @template.slug)) do |f|
-    	  = render 'form', f: f
-    	  = f.submit 'Save Template', class: 'btn btn-primary pull-right'
-    = form_tag(symphony_create_section_path, {class: 'form-inline col-sm-6 pull-right p-0', local: true}) do
-      = text_field_tag :new_section, params[:new_section], {class: 'form-control mr-2 col-sm-8', required: true, placeholder: 'Enter section name...'}
-      = submit_tag 'Add section', class: 'btn btn-success'
+    = form_for(@template, url: symphony_template_path(template_slug: @template.slug), html: {class:'save-form-template'}) do |f|
+      - if @template.sections.present?
+        = render 'form', f: f
+        = f.submit 'Save Template', class: 'btn btn-primary pull-right'
+      .form-inline.col-sm-6.pull-right.p-0
+        = text_field_tag :new_section, params[:new_section], {class: 'form-control mr-2 col-sm-8', placeholder: 'Enter section name...'}
+        = submit_tag 'Add new section', class: 'btn btn-success', name: 'new_section_submit'

@@ -58,6 +58,7 @@ $(document).on("turbolinks:load", function(){
       $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_document_template_id']").selectize({
         dropdownParent: "body"
       });
+      $('.data-attributes').find('tr:last-child').find('.create').val('1');
     });
     return event.preventDefault();
   });
