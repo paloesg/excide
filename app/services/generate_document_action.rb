@@ -10,9 +10,19 @@ class GenerateDocumentAction
   end
 
   def run
+    set_basic_document_attribute
+    set_document_workflow_with_condition
+  end
+
+  private
+
+  def set_basic_document_attribute
     @document.company = @company
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if @document_type_param == 'invoice'
+  end 
+
+  def set_document_workflow_with_condition
     if @workflow_param.present?
       @workflow = @document.company.workflows.find(@workflow_param)
       @document.workflow = @workflow
@@ -34,6 +44,4 @@ class GenerateDocumentAction
     end
     return @document
   end
-
-  private
 end
