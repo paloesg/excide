@@ -11,6 +11,6 @@ class GenerateBatch
   private
 
   def generate_batch
-    batch = Batch.create(user: @user, template: @template, company: @user.company)
+    Batch.create(user: @user, template: @template, company: @user.company)
   end
 end
