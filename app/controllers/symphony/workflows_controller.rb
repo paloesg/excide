@@ -38,7 +38,7 @@ class Symphony::WorkflowsController < ApplicationController
     @workflow.user = current_user
     @workflow.company = @company
     @workflow.template = @template
-    @workflow.workflow_action = params[:action_id] if params[:action_id]
+    @workflow.workflow_action_id = params[:action_id] if params[:action_id]
 
     if params[:workflow][:client][:name].present?
       @xero = Xero.new(session[:xero_auth])
