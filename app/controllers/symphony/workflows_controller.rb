@@ -37,6 +37,7 @@ class Symphony::WorkflowsController < ApplicationController
     @workflow.user = current_user
     @workflow.company = @company
     @workflow.template = @template
+    @workflow.workflow_action_id = params[:action_id] if params[:action_id]
 
     if params[:workflow][:client][:name].present?
       @xero = Xero.new(session[:xero_auth])
@@ -59,6 +60,7 @@ class Symphony::WorkflowsController < ApplicationController
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
+    @templates = policy_scope(Template).assigned_templates(current_user)
     if @workflow.completed?
       redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
     else

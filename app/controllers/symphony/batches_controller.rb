@@ -47,6 +47,7 @@ class Symphony::BatchesController < ApplicationController
     authorize @batch
     @current_user = current_user
     @sections = @batch.template.sections
+    @templates = policy_scope(Template).assigned_templates(current_user)
     @roles = @current_user.roles.where(resource_id: @company.id, resource_type: "Company")
   end
 

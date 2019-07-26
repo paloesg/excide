@@ -5,6 +5,7 @@
       - @workflow.errors.full_messages.each do |message|
         li = message
 = f.hidden_field(:workflowable_type, value: 'Client')
+= hidden_field_tag(:action_id, params[:action_id]) if params[:action_id]
 .row
   .col-md-6.col-sm-12
     .row
