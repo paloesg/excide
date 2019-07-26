@@ -389,9 +389,11 @@ ActiveRecord::Schema.define(version: 2019_07_08_112156) do
     t.integer "document_template_id"
     t.string "link_url"
     t.boolean "important"
+    t.bigint "template_id"
     t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
+    t.index ["template_id"], name: "index_tasks_on_template_id"
   end
 
   create_table "templates", id: :serial, force: :cascade do |t|
@@ -488,11 +490,13 @@ ActiveRecord::Schema.define(version: 2019_07_08_112156) do
     t.json "archive", default: []
     t.bigint "recurring_workflow_id"
     t.uuid "batch_id"
+    t.bigint "workflow_action_id"
     t.index ["batch_id"], name: "index_workflows_on_batch_id"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
     t.index ["template_id"], name: "index_workflows_on_template_id"
     t.index ["user_id"], name: "index_workflows_on_user_id"
+    t.index ["workflow_action_id"], name: "index_workflows_on_workflow_action_id"
     t.index ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id"
   end
 
@@ -542,6 +546,7 @@ ActiveRecord::Schema.define(version: 2019_07_08_112156) do
   add_foreign_key "tasks", "document_templates"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
+  add_foreign_key "tasks", "templates"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
   add_foreign_key "workflow_actions", "companies"
@@ -554,4 +559,5 @@ ActiveRecord::Schema.define(version: 2019_07_08_112156) do
   add_foreign_key "workflows", "recurring_workflows"
   add_foreign_key "workflows", "templates"
   add_foreign_key "workflows", "users"
+  add_foreign_key "workflows", "workflow_actions"
 end
