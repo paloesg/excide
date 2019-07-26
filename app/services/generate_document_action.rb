@@ -10,38 +10,40 @@ class GenerateDocumentAction
   end
 
   def run
-    set_basic_document_attribute
-    set_document_workflow_with_condition
+    set_common_document_attributes
+    set_document_associations
   end
 
   private
 
-  def set_basic_document_attribute
+  def set_common_document_attributes
     @document.company = @company
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if @document_type_param == 'invoice'
-  end 
+  end
 
-  def set_document_workflow_with_condition
-    if @workflow_param.present?
-      @workflow = @document.company.workflows.find(@workflow_param)
-      @document.workflow = @workflow
-    end
-
-    if @action_param.present?
-      @workflow_action = @document.company.workflow_actions.find(@action_param)
-      @document.workflow_action = @workflow_action
-    end
-
+  def set_document_associations
     if @document_type_param == 'batch-uploads'
       @template = Template.find(@document_template_param)
       @workflow = Workflow.new(user: @document.user, company: @document.company, template: @template, workflowable: @client)
       @workflow.template_data(@template)
-      #equate workflow to the latest batch
+      # Set workflow to belong to the most recently created batch
+      # TODO: Fix concurrency issues if 2 people create batch at the same time
       @workflow.batch = Batch.last
       @workflow.save
       @document.workflow = @workflow
+    elsif @workflow_param.present?
+      # Document belongs to workflow
+      @workflow = @document.company.workflows.find(@workflow_param)
+      @document.workflow = @workflow
+
+      if @action_param.present?
+        # Document belongs to a specific task in workflow
+        @workflow_action = @document.company.workflow_actions.find(@action_param)
+        @document.workflow_action = @workflow_action
+      end
     end
+
     return @document
   end
 end
