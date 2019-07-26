@@ -9,14 +9,14 @@
       li.breadcrumb-item.active New
     h1 Create Invoice
 .row
-  .col-md-4.forward
+  .col-md-4
     - if @documents.empty?
       | No documents available. Please upload documents first.
     - else
       - if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
         = link_to image_tag(@document.file_url, class: 'img-responsive image-document'), @document.file_url , {target: "_blank"}
       - else
-        iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" id="iframe-document"
+        iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
   .col-md-8
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = render 'form', f: f
