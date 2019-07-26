@@ -60,15 +60,8 @@ task_list.each do |instruct, pos, completion, remind, role, task, sect|
   Task.create(instructions: instruct, position: pos, days_to_complete: completion, set_reminder: remind, role_id: role, task_type: task, section: sect)
 end
 
-workflows = [
-  [1, 1, 1, false, 'W_flow1', 1, "Client", "EFGHIJ", template_1],
-  [2, 1, 1, false, 'W_flow2', 1, "Client", "sdjdf", template_1],
-  [3, 1, 1, false, 'W_flow3', 1, "Client", "jsjdhjsjf", template_1]
-]
+workflow_1 = Workflow.create(user_id: admin.id, company_id: gobbler.id, template_id: template_1.id, completed: false, identifier: 'W_flow1', workflowable_id: 1, workflowable_type: "Client", remarks: "BLAH")
 
-workflows.each do |user_id, comp_id, templateid, completion, identifier, workflowid, workflowtype, remarks, template|
-  Workflow.create(user_id: user_id, company_id: comp_id, template_id: templateid, completed: completion, identifier: identifier, workflowable_id: workflowid, workflowable_type: workflowtype, remarks: remarks, template: template)
-end
 
 # Create document template
 document_template_1 = DocumentTemplate.create(title: 'Doc template 1', description: 'Describe the template of the first document', file_url: 'http://www.doc_sksij.com', template_id: 2, user_id: 1, template: template_1)
