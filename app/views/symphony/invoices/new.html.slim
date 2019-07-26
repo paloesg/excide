@@ -14,7 +14,8 @@
       | No documents available. Please upload documents first.
     - else
       - if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
-        = link_to image_tag(@document.file_url, class: 'img-responsive image-document'), @document.file_url , {target: "_blank"}
+        .thumb-holder
+          = image_tag(@document.file_url, class: 'img-responsive thumbnail')
       - else
         iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" id="iframe-document"
   .col-md-8

@@ -15,6 +15,7 @@
 //= require z.jquery.fileupload
 //= require algolia/v3/algoliasearch.min
 //= require selectize
+//= require jquery.elevatezoom
 
 //= require symphony
 //= require symphony/new_workflow
@@ -23,6 +24,7 @@
 //= require symphony/remarks
 //= require symphony/popover
 //= require symphony/batches/select_all_by_task
+//= require symphony/zoom
 //= require conductor/create_allocations
 //= require conductor/add_availabilities
 //= require conductor/home

@@ -11,3 +11,38 @@
 .forward{
 	z-index: 3;
 }
+
+.thumb-holder {
+    border: 4px solid #F1F1F1;
+    padding: 0;
+    width: 100%;
+    height: 90%;
+    position: relative;
+    margin: 3% auto;
+    display: block;
+    overflow: hidden;
+  .thumbnail {
+    float: left;
+    width: 100%;
+    height: auto;
+    top: 1%;
+  }
+}
+
+.thumb-zoom {
+  position: absolute;
+  background-repeat: no-repeat;
+  width: 180px;
+  height: 180px;
+  border-radius: 0;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  border: 7px solid grey;
+  top: 0;
+  overflow: hidden;
+  cursor: none;
+  #zoom-img {
+    width: 300%;
+    height: auto;
+    position: absolute;
+  }
+}
