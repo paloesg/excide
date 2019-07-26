@@ -58,7 +58,7 @@ class Symphony::WorkflowsController < ApplicationController
   def show
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
-    # @invoice = Invoice.find_by(workflow_id: @workflow.id)
+    @invoice = Invoice.find_by(workflow_id: @workflow.id)
     if @workflow.completed?
       redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
     else
@@ -250,7 +250,7 @@ class Symphony::WorkflowsController < ApplicationController
 
   def set_tasks
     @next_section = @workflow.next_section
-    @tasks = @section&.tasks
+    @tasks = @section&.tasks.includes(:role)
     @current_task = @workflow.current_task
   end
 
