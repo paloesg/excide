@@ -3,15 +3,15 @@ class Symphony::InvoicesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_company
-  before_action :set_workflow
-  before_action :set_documents
+  before_action :set_company, except: [:get_xero_item_code_detail]
+  before_action :set_workflow, except: [:get_xero_item_code_detail]
+  before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :get_xero_details
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: [:index, :get_xero_item_code_detail]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -50,7 +50,6 @@ class Symphony::InvoicesController < ApplicationController
 
   def edit
     authorize @invoice
-    # render json: @items
   end
 
   def update
@@ -92,6 +91,28 @@ class Symphony::InvoicesController < ApplicationController
     @invoice.destroy!
     respond_to do |format|
       format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), notice: "Invoice has been deleted successfully."}
+    end
+  end
+
+  def get_xero_item_code_detail
+    @item_code_list = @xero.get_item(params[:item_id])
+
+    @purchase_description = @item_code_list.purchase_description
+    @price_code = @item_code_list.sales_details.unit_price
+
+    @get_account = @xero.get_account(@item_code_list.sales_details.account_code)
+    @account_code = @get_account.code + ' - ' + @get_account.name
+
+    @get_tax_rate = @xero.get_tax_rate(@item_code_list.sales_details.tax_type)
+    @tax_code = @get_tax_rate.name + ' (' + @get_tax_rate.display_tax_rate.to_s + '%) - ' + @get_tax_rate.tax_type
+
+    respond_to do |format|
+      if @item_code_list.present?
+        format.json { render :json => {item: {:purchase_description => @purchase_description, :price_code => @price_code,
+        :account => @account_code, :tax => @tax_code}}}
+      else
+        format.json { render json: @item_code_list.errors, status: :unprocessable_entity }
+      end
     end
   end
 

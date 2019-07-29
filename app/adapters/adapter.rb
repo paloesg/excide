@@ -19,6 +19,10 @@ module Adapter
       @xero_client.Item.all
     end
 
+    def get_item(item_id)
+      @xero_client.Item.find(item_id)
+    end
+
     def get_contact(xero_contact_id)
       return @xero_client.Contact.find(xero_contact_id)
     end
@@ -31,12 +35,24 @@ module Adapter
       @xero_client.Account.all
     end
 
+    def get_account(account_code)
+      @xero_client.Account.find(account_code)
+    end
+
     def get_account_attributes(account_code)
       @xero_client.Account.all(:where => {:code => account_code})
     end
 
     def get_tax_rates
       @xero_client.TaxRate.all
+    end
+
+    def get_tax_rate(tax_type)
+      @xero_client.TaxRate.find(tax_type)
+    end
+
+    def get_tax_rate_attributes(tax_type)
+      @xero_client.TaxRate.all(:where => {:tax_type => tax_type})
     end
 
     def get_currencies
