@@ -1,22 +1,3 @@
-function getXeroItem(item_id, field) {
-  $.get("/symphony/xero_item_code/"+item_id, function(data) {
-    console.log(data);
-    $("#invoice_line_items_attributes_"+field+"_description").val(data.item.purchase_description);
-    $("#invoice_line_items_attributes_"+field+"_quantity").val(1);
-    $("#invoice_line_items_attributes_"+field+"_price").val(data.item.price_code);
-
-    //account
-    var selectize_account = $("#invoice_line_items_attributes_"+field+"_account").selectize();
-    var selectize_account = selectize_account[0].selectize;
-    selectize_account.setValue(data.item.account, false);
-
-    //tax
-    var selectize_tax = $("#invoice_line_items_attributes_"+field+"_tax").selectize();
-    var selectize_tax = selectize_tax[0].selectize;
-    selectize_tax.setValue(data.item.tax, false);
-  });
-}
-
 $(document).on("turbolinks:load", function(){
   $('form').on('click', '.remove_fields', function(event) {
     $(this).closest('tr').find('.destroy').val('1');
