@@ -116,8 +116,6 @@ gem "font-awesome-rails"
 gem 'inky-rb', require: 'inky'
 # Stylesheet inlining for email
 gem 'premailer-rails'
-# Image Zoom
-gem 'elevatezoom-rails'
 
 # Nested form helper
 gem "cocoon"
