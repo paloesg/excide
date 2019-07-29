@@ -31,13 +31,9 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def create
-    @batch = Batch.new(batch_params)
-    authorize @batch
-    @batch.company = @company
     @template = Template.find(params[:batch][:template_id])
-    @batch.template = @template
-    @batch.user = current_user
-    @batch.save
+    @batch = GenerateBatch.new(current_user, @template).run
+    authorize @batch
     respond_to do |format|
       format.json  { render :json => {:batch_id => @batch.id} }
     end
