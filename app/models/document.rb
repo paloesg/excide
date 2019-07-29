@@ -13,6 +13,7 @@ class Document < ApplicationRecord
   belongs_to :workflow_action
 
   validates :file_url, :filename, presence: true
+  validate :file_format, if: :file_url
   validates :file_url, uniqueness: true
 
   before_validation :set_filename
@@ -33,6 +34,13 @@ class Document < ApplicationRecord
   end
 
   private
+
+  def file_format
+    # Check file if not saved or exist
+    unless MiniMime.lookup_by_filename(self.file_url)
+      errors[:document] << "Invalid file format or error uploding"
+    end
+  end
 
   def set_filename
     self.filename = File.basename(self.file_url) if self.file_url

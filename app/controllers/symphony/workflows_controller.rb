@@ -16,8 +16,7 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    template = policy_scope(Template).find(params[:workflow_name])
-    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: template).order(created_at: :desc)
+    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: @template).order(created_at: :desc)
 
     @workflows_sort = sort_column(@workflows)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
@@ -38,6 +37,7 @@ class Symphony::WorkflowsController < ApplicationController
     @workflow.user = current_user
     @workflow.company = @company
     @workflow.template = @template
+    @workflow.workflow_action_id = params[:action_id] if params[:action_id]
 
     if params[:workflow][:client][:name].present?
       @xero = Xero.new(session[:xero_auth])
@@ -60,6 +60,7 @@ class Symphony::WorkflowsController < ApplicationController
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
+    @templates = policy_scope(Template).assigned_templates(current_user)
     if @workflow.completed?
       redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
     else
@@ -130,7 +131,7 @@ class Symphony::WorkflowsController < ApplicationController
 
   def assign
     authorize @workflow
-    @sections = @template.sections
+    @sections = @template.sections.includes(tasks: :role)
   end
 
   def send_reminder
@@ -262,8 +263,7 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def set_workflow
-    @workflows = @company.workflows
-    @workflow = @workflows.find(params[:workflow_id])
+    @workflow = policy_scope(Workflow).find(params[:workflow_id])
     @documents = @company.documents.order(created_at: :desc)
     @document_templates = DocumentTemplate.where(template: @workflow.template)
   end
