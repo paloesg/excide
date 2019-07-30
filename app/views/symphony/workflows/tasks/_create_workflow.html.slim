@@ -19,16 +19,19 @@ tr
   td.p-0.border-top-0 colspan="6"
     div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered?? 'collapse show' : 'collapse'}"
       .m-3
-        .col-md-6
-          - if action.sub_workflow
-            = link_to 'View Workflow', symphony_workflow_path(workflow_name: action.sub_workflow.template.slug, workflow_id: action.sub_workflow.id), class: 'btn btn-success btn-sm mb-2', id: 'new-workflow'
-          - else
-            = link_to 'Create Workflow', "/symphony/#{task.template.slug}/new?action_id=#{action.id}", class: 'btn btn-primary btn-sm mb-2', id: 'new-workflow'
-          .btn-toolbar role="toolbar"
-            .btn-group.mr-2 role="group" aria-label="Reminder actions"
-              - if action.reminders.any?(&:next_reminder) and task.set_reminder?
-                = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.id, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
-              - if task == @workflow.current_task && (@user.has_role? :admin, @company)
-                = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id, format: 'json'), method: :post, remote: true , class: 'btn btn-warning btn-sm'
+        h6 Actions:
+        .btn-toolbar role="toolbar"
+          .btn-group.mr-2 role="group" aria-label="Task actions"
+            - if action.sub_workflow
+              = link_to 'View Workflow', symphony_workflow_path(workflow_name: action.sub_workflow.template.slug, workflow_id: action.sub_workflow.id), class: 'btn btn-success btn-sm', id: 'new-workflow'
+            - else
+              = link_to 'Create Workflow', "/symphony/#{task.template.slug}/new?action_id=#{action.id}", class: 'btn btn-primary btn-sm', id: 'new-workflow'
+          .btn-group.mr-2 role="group" aria-label="Reminder actions"
+            - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+              = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id, format: 'json'), method: :post, remote: true , class: 'btn btn-warning btn-sm mr-2'
+            - if action.reminders.any?(&:next_reminder) and task.set_reminder?
+              = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.id, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+        br
+        = render "symphony/workflows/tasks/remarks", action: action
         br
         = task.display_image
