@@ -16,9 +16,6 @@
 
 .img-magnifier-container {
   position: relative;
-  .zoomed-image {
-  	width: 100%;
-  }
 }
 
 .img-magnifier-glass {
@@ -29,4 +26,8 @@
   /*Set the size of the magnifier glass:*/
   width: 150px;
   height: 150px;
+}
+
+.zoomed-image {
+  width: 100%;
 }
