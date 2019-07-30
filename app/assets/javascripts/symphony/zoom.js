@@ -1,26 +1,25 @@
-$(document).on("turbolinks:load", function() {
-  //check for the container before magnifying
-  if($(".img-magnifier-container").length){
-    magnify("zoomed-image", 1.5);
-  };
-  
-  function magnify(imgID, zoom) {
-    var img, imageUrl, glass, w, h, bw;
-    img = $("." + imgID);
+function magnify(imgID, zoom) {
+  var img;
+  // , imageUrl, glass, w, h, bw;
+  $img = $("." + imgID);
 
+  $img.on('load', function(){
+    console.log($(this).width());
+    var glass, imageUrl, w, h, bw;
     /* Create magnifier glass: */
     glass = $("<div>");
     glass.addClass("img-magnifier-glass");
-
     /* Insert magnifier glass: */
-    img.parent()[0].insertBefore(glass[0], img[0]);
-
+    $img.parent()[0].insertBefore(glass[0], $img[0]);
     /* Set background properties for the magnifier glass: */
-    imageUrl = "url('" + img[0].src + "')";
+    imageUrl = "url('" + $img[0].src + "')";
+    console.log("IMAGE JQUERY", $img);
+    console.log("Image: ", $img[0]);
+    console.log("Image_height: ", $img[0].height);
     glass.css({
       "background-image": imageUrl,
       "background-repeat": "no-repeat",
-      "background-size": (img[0].width * zoom) + "px " + (img[0].height * zoom) + "px"
+      "background-size": ($img[0].width * zoom) + "px " + ($img[0].height * zoom) + "px"
     });
     bw = 3;
     w = glass[0].offsetWidth / 2;
@@ -28,11 +27,12 @@ $(document).on("turbolinks:load", function() {
 
     /* Execute a function when someone moves the magnifier glass over the image: */
     glass.on("mousemove", moveMagnifier);
-    img.on("mousemove", moveMagnifier);
+    $img.on("mousemove", moveMagnifier);
 
     /*and also for touch screens:*/
     glass.on("touchmove", moveMagnifier);
-    img.on("touchmove", moveMagnifier);
+    $img.on("touchmove", moveMagnifier);
+    console.log("IT IS STILL WORKING!");
     
     function moveMagnifier(e) {
       var pos, x, y;
@@ -43,9 +43,9 @@ $(document).on("turbolinks:load", function() {
       x = pos.x;
       y = pos.y;
       /* Prevent the magnifier glass from being positioned outside the image: */
-      if (x > img[0].width - (w / zoom)) {x = img[0].width - (w / zoom);}
+      if (x > $img[0].width - (w / zoom)) {x = $img[0].width - (w / zoom);}
       if (x < w / zoom) {x = w / zoom;}
-      if (y > img[0].height - (h / zoom)) {y = img[0].height - (h / zoom);}
+      if (y > $img[0].height - (h / zoom)) {y = $img[0].height - (h / zoom);}
       if (y < h / zoom) {y = h / zoom;}
 
       /* Set the position of the magnifier glass: */
@@ -61,8 +61,8 @@ $(document).on("turbolinks:load", function() {
       var a, x = 0, y = 0;
       e = e || window.event;
       /* Get the x and y positions of the image: */
-      a = img[0].getBoundingClientRect();
-      /* Calculate the cursor's x and y coordinates, relative to the image: */
+      a = $img[0].getBoundingClientRect();
+      // Calculate the cursor's x and y coordinates, relative to the image: 
       x = e.pageX - a.left;
       y = e.pageY - a.top;
       /* Consider any page scrolling: */
@@ -70,5 +70,11 @@ $(document).on("turbolinks:load", function() {
       y = y - window.pageYOffset;
       return {x : x, y : y};
     };
+  }); 
+};
+$(document).on("turbolinks:load", function() { 
+  //check for the container before magnifying
+  if($(".img-magnifier-container").length){
+    magnify("zoomed-image", 1.5);
   };
 });
