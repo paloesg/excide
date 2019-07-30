@@ -1,10 +1,8 @@
 function magnify(imgID, zoom) {
-  var img;
-  // , imageUrl, glass, w, h, bw;
+  var $img;
   $img = $("." + imgID);
 
   $img.on('load', function(){
-    console.log($(this).width());
     var glass, imageUrl, w, h, bw;
     /* Create magnifier glass: */
     glass = $("<div>");
@@ -13,9 +11,6 @@ function magnify(imgID, zoom) {
     $img.parent()[0].insertBefore(glass[0], $img[0]);
     /* Set background properties for the magnifier glass: */
     imageUrl = "url('" + $img[0].src + "')";
-    console.log("IMAGE JQUERY", $img);
-    console.log("Image: ", $img[0]);
-    console.log("Image_height: ", $img[0].height);
     glass.css({
       "background-image": imageUrl,
       "background-repeat": "no-repeat",
@@ -32,7 +27,6 @@ function magnify(imgID, zoom) {
     /*and also for touch screens:*/
     glass.on("touchmove", moveMagnifier);
     $img.on("touchmove", moveMagnifier);
-    console.log("IT IS STILL WORKING!");
     
     function moveMagnifier(e) {
       var pos, x, y;
