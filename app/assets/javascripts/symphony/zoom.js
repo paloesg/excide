@@ -70,5 +70,5 @@ $(document).on("turbolinks:load", function() {
   //check for the container before magnifying
   if($(".img-magnifier-container").length){
     magnify("zoomed-image", 1.5);
-  };
+  }
 });
