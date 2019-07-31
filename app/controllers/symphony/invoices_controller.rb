@@ -95,23 +95,12 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def get_xero_item_code_detail
-    @item_code_list = @xero.get_item(params[:item_id])
-
-    @purchase_description = @item_code_list.purchase_description
-    @price_code = @item_code_list.sales_details.unit_price
-
-    @get_account = @xero.get_account(@item_code_list.sales_details.account_code)
-    @account_code = @get_account.code + ' - ' + @get_account.name
-
-    @get_tax_rate = @xero.get_tax_rate(@item_code_list.sales_details.tax_type)
-    @tax_code = @get_tax_rate.name + ' (' + @get_tax_rate.display_tax_rate.to_s + '%) - ' + @get_tax_rate.tax_type
-
+    @item_code_list = @xero.get_item_attributes(params[:item_code])
     respond_to do |format|
       if @item_code_list.present?
-        format.json { render :json => {item: {:purchase_description => @purchase_description, :price_code => @price_code,
-        :account => @account_code, :tax => @tax_code}}}
+        format.json { render json: @item_code_list[0], status: :ok }
       else
-        format.json { render json: @item_code_list.errors, status: :unprocessable_entity }
+        format.json { render json: @item_code_list[0].errors, status: :unprocessable_entity }
       end
     end
   end
@@ -148,7 +137,7 @@ class Symphony::InvoicesController < ApplicationController
     @tracking_name          = @xero.get_tracking_options
     @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| option}
     @tracking_categories_2  = @tracking_name[1]&.options&.map{|option| option}
-    @items                  = @xero.get_items
+    @items                  = @xero.get_items.map{|item| (item.code + ': ' + item.description) if item.code.present?}
   end
 
   def invoice_params

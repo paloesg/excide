@@ -19,8 +19,8 @@ module Adapter
       @xero_client.Item.all
     end
 
-    def get_item(item_id)
-      @xero_client.Item.find(item_id)
+    def get_item_attributes(item_code)
+      @xero_client.Item.all(:where => {:code => item_code})
     end
 
     def get_contact(xero_contact_id)

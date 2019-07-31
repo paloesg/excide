@@ -1,23 +1,46 @@
-function getXeroItem(item_id, field) {
+function getXeroItem(itemCode, field) {
   $('.loading').show();
-  $.get("/symphony/xero_item_code/"+item_id, function(data) {
-    $("#invoice_line_items_attributes_"+field+"_description").val(data.item.purchase_description);
+  $.get("/symphony/xero_item_code", { "item_code": itemCode })
+  .done(function(data) {
+    $("#invoice_line_items_attributes_"+field+"_description").val(data.purchase_description);
     $("#invoice_line_items_attributes_"+field+"_quantity").val(1);
-    $("#invoice_line_items_attributes_"+field+"_price").val(data.item.price_code);
+    $("#invoice_line_items_attributes_"+field+"_price").val(data.sales_details.unit_price);
 
     //selectize account
-    var selectize_account = $("#invoice_line_items_attributes_"+field+"_account").selectize();
-    var selectize_account = selectize_account[0].selectize;
-    selectize_account.setValue(data.item.account, false);
+    if (data.sales_details.account_code) {
+      let selectizeAccount = $("#invoice_line_items_attributes_"+field+"_account").selectize();
+      selectizeAccount = selectizeAccount[0].selectize;
+      let accOptions = selectizeAccount.options;
+      $.map(accOptions, function (accOpt) {
+        let txtOpt = accOpt.text.split(" - ");
+        if (txtOpt[0] == data.sales_details.account_code) {
+          // set selected option
+          selectizeAccount.setValue(accOpt.text);
+        }
+      });
+    }
 
     //selectize tax
-    var selectize_tax = $("#invoice_line_items_attributes_"+field+"_tax").selectize();
-    var selectize_tax = selectize_tax[0].selectize;
-    selectize_tax.setValue(data.item.tax, false);
-
+    if (data.sales_details.tax_type) {
+      let selectizeTax = $("#invoice_line_items_attributes_"+field+"_tax").selectize();
+      selectizeTax = selectizeTax[0].selectize;
+      let taxOptions = selectizeTax.options;
+      $.map(taxOptions, function (taxOpt) {
+        let txtOpt = taxOpt.text.split(" - ");
+        if (txtOpt[txtOpt.length-1] == data.sales_details.tax_type) {
+          // set selected option
+          selectizeTax.setValue(taxOpt.text);
+        }
+      });
+    }
+  })
+  .fail(function() {
+    alert( "error" );
+  })
+  .always(function() {
     window.setTimeout(function() {
       $('.loading').hide();
-    }, 50);
+    }, 5);
   });
 }
 
@@ -32,9 +55,9 @@ $(document).on("turbolinks:load", function(){
     dropdownParent: "body",
     onChange: function(value) {
       let obj = $(this)[0];
-      let item_id = value.split(": ")[0];
-      let this_id = (obj.$input["0"].id).split('_')[4]
-      getXeroItem(item_id, this_id);
+      let itemCode = value.split(": ")[0];
+      let thisId = (obj.$input["0"].id).split('_')[4];
+      getXeroItem(itemCode, thisId);
     }
   });
 
@@ -47,8 +70,8 @@ $(document).on("turbolinks:load", function(){
     $("select[id$='" + time + "_item']").selectize({
       dropdownParent: "body",
       onChange: function(value) {
-        let item_id = value.split(": ")[0];
-        getXeroItem(item_id, time);
+        let itemCode = value.split(": ")[0];
+        getXeroItem(itemCode, time);
       }
     });
     $("select[id$='" + time + "_account']").selectize({
