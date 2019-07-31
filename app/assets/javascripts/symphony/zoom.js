@@ -2,9 +2,8 @@ $(document).on('turbolinks:load', function() {
   function magnify(imgID, zoom) {
     var $img;
     $img = $("." + imgID);
-
+    //load the image to get the proper height of the image after it is loaded, but have to off the 'load', so that it loads the image on refresh (this is to prevent the function not working on refresh)
     $img.off('load').on('load', function(){
-      console.log("LOAD SUCCESS!");
       var glass, imageUrl, w, h, bw;
       /* Create magnifier glass: */
       glass = $("<div>");
@@ -72,5 +71,4 @@ $(document).on('turbolinks:load', function() {
   if($(".img-magnifier-container").length){
     magnify("zoomed-image", 1.5);
   };
-  console.log("Turbolinkssss");
 });
