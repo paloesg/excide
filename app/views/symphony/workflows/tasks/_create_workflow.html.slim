@@ -27,9 +27,10 @@ tr
             - else
               = link_to 'Create Workflow', "/symphony/#{task.template.slug}/new?action_id=#{action.id}", class: 'btn btn-primary btn-sm', id: 'new-workflow'
           .btn-group.mr-2 role="group" aria-label="Reminder actions"
-            - if task == @workflow.current_task && (@user.has_role? :admin, @company)
+            / the below condition checks whether user is admin. If template is ordered, it will check whether the task is the current task and if unordered, it will check whether the workflowaction is uncompleted.
+            - if (@user.has_role? :admin, @company) && (task == @workflow.current_task || (@workflow.template.unordered? && !action.completed))
               = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id, format: 'json'), method: :post, remote: true , class: 'btn btn-warning btn-sm mr-2'
-            - if action.reminders.any?(&:next_reminder) and task.set_reminder?
+            - if action.reminders.any?(&:next_reminder) && task.set_reminder?
               = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.id, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
         br
         = render "symphony/workflows/tasks/remarks", action: action
