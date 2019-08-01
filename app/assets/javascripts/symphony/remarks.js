@@ -5,6 +5,5 @@ $(document).on("turbolinks:load", function() {
     $("#check-" + xhr.id).show().fadeTo(500, 200, function(){
         $("#check-" + xhr.id).fadeTo(200, 0);
     });
-    $("#remarks-" + xhr.id).text(xhr.remarks);
   });
 });
