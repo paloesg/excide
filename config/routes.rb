@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   namespace :symphony do
     get '/search', to: 'home#search'
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
+    get '/xero_item_code', to: 'invoices#get_xero_item_code_detail'
 
     resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section

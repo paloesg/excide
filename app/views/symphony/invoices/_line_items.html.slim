@@ -1,4 +1,5 @@
 tr.line_items
+  td.line-item-field = f.collection_select :item, @items, :to_s, :to_s, { include_blank: true }, { class: 'minimize-text line-items-dropdown-width dropdown-items' }
   td.line-item-field = f.text_field :description, class: 'form-control minimize-text'
   td.line-item-field = f.number_field :quantity, class: 'form-control minimize-text'
   td.line-item-field = f.number_field :price, class: 'form-control minimize-text', step: 0.01

@@ -3,15 +3,15 @@ class Symphony::InvoicesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_company
-  before_action :set_workflow
-  before_action :set_documents
+  before_action :set_company, except: [:get_xero_item_code_detail]
+  before_action :set_workflow, except: [:get_xero_item_code_detail]
+  before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :get_xero_details
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: [:index, :get_xero_item_code_detail]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -94,6 +94,17 @@ class Symphony::InvoicesController < ApplicationController
     end
   end
 
+  def get_xero_item_code_detail
+    @item_code_list = @xero.get_item_attributes(params[:item_code])
+    respond_to do |format|
+      if @item_code_list.present?
+        format.json { render json: @item_code_list[0], status: :ok }
+      else
+        format.json { render json: @item_code_list[0].errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
   def set_invoice
     @invoice = Invoice.find(params[:id])
@@ -126,10 +137,11 @@ class Symphony::InvoicesController < ApplicationController
     @tracking_name          = @xero.get_tracking_options
     @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| option}
     @tracking_categories_2  = @tracking_name[1]&.options&.map{|option| option}
+    @items                  = @xero.get_items.map{|item| (item.code + ': ' + item.description) if item.code.present?}
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :approved, :total, :user_id, line_items_attributes: [:description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :approved, :total, :user_id, line_items_attributes: [:item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :_destroy])
   end
 
   def xero_login
