@@ -1,5 +1,5 @@
 function getXeroItem(itemCode, field) {
-  $('.loading').show();
+  $(".loading").show();
   $.get("/symphony/xero_item_code", { "item_code": itemCode })
   .done(function(data) {
     $("#invoice_line_items_attributes_"+field+"_description").val(data.purchase_description);
@@ -13,7 +13,7 @@ function getXeroItem(itemCode, field) {
       let accOptions = selectizeAccount.options;
       $.map(accOptions, function (accOpt) {
         let txtOpt = accOpt.text.split(" - ");
-        if (txtOpt[0] == data.sales_details.account_code) {
+        if (txtOpt[0] === data.sales_details.account_code) {
           // set selected option
           selectizeAccount.setValue(accOpt.text);
         }
@@ -27,7 +27,7 @@ function getXeroItem(itemCode, field) {
       let taxOptions = selectizeTax.options;
       $.map(taxOptions, function (taxOpt) {
         let txtOpt = taxOpt.text.split(" - ");
-        if (txtOpt[txtOpt.length-1] == data.sales_details.tax_type) {
+        if (txtOpt[txtOpt.length-1] === data.sales_details.tax_type) {
           // set selected option
           selectizeTax.setValue(taxOpt.text);
         }
@@ -39,15 +39,15 @@ function getXeroItem(itemCode, field) {
   })
   .always(function() {
     window.setTimeout(function() {
-      $('.loading').hide();
+      $(".loading").hide();
     }, 5);
   });
 }
 
 $(document).on("turbolinks:load", function(){
-  $('.loading').hide();
+  $(".loading").hide();
   // dropdownParent is required to avoid dropdown clipping issue so that the dropdown isn't a child of an element with clipping
-  $('.dropdown-overlay').selectize({
+  $(".dropdown-overlay").selectize({
     dropdownParent: "body"
   })
 
@@ -56,17 +56,17 @@ $(document).on("turbolinks:load", function(){
     onChange: function(value) {
       let obj = $(this)[0];
       let itemCode = value.split(": ")[0];
-      let thisId = (obj.$input["0"].id).split('_')[4];
+      let thisId = (obj.$input["0"].id).split("_")[4];
       getXeroItem(itemCode, thisId);
     }
   });
 
   //add attribute fields with selectize drop down (for creating invoice and data entry)
-  $('form').on('click', '.add_attribute_fields', function(event) {
+  $("form").on("click", ".add_attribute_fields", function(event) {
     let regexp, time;
     time = new Date().getTime();
-    regexp = new RegExp($(this).data('id'), 'g');
-    $(".table>tbody>tr:last-child").after($(this).data('fields').replace(regexp, time));
+    regexp = new RegExp($(this).data("id"), "g");
+    $(".table>tbody>tr:last-child").after($(this).data("fields").replace(regexp, time));
     $("select[id$='" + time + "_item']").selectize({
       dropdownParent: "body",
       onChange: function(value) {
@@ -86,7 +86,7 @@ $(document).on("turbolinks:load", function(){
     $("select[id$='" + time + "_tracking_option_2']").selectize({
       dropdownParent: "body"
     });
-    $('.data-attributes').find('tr:last-child').find('.create').val('1');
+    $(".data-attributes").find("tr:last-child").find(".create").val("1");
     return event.preventDefault();
   });
-})
+});
