@@ -7,10 +7,15 @@ class GenerateBatch
   end
 
   def run
-    Batch.transaction do
-      generate_batch
-      generate_documents
-      @batch
+
+    begin
+      Batch.transaction do
+        generate_batch
+        generate_documents
+      end
+      OpenStruct.new(success?: true, batch: @batch)
+    rescue => e
+      OpenStruct.new(success?: false, batch: @batch, message: e.message)
     end
   end
 
@@ -36,7 +41,7 @@ class GenerateBatch
     @workflow.template_data(@template)
     # Set workflow to belong to the most recently created batch
     # TODO: Fix concurrency issues if 2 people create batch at the same time
-    @workflow.batch = Batch.last
+    @workflow.batch = @batch
     @workflow.save
   end
 end
