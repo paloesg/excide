@@ -6,7 +6,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: [:index, :create]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -32,18 +32,22 @@ class Symphony::BatchesController < ApplicationController
 
   def create
     @template = Template.find(params[:batch][:template_id])
-    @batch = GenerateBatch.new(current_user, @template).run
-    authorize @batch
+    @batch = GenerateBatch.new(current_user, @template, params[:batch]).run
+    # authorize @batch
     respond_to do |format|
-      format.json  { render :json => {:batch_id => @batch.id} }
+      if @batch.present?
+        format.json { render json: @batch, status: :ok }
+      else
+        format.json { render json: @batch.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def show
     authorize @batch
     @current_user = current_user
-    @sections = @batch.template.sections
-    @templates = policy_scope(Template).assigned_templates(current_user)
+    # @sections = @batch.template.sections
+    # @templates = policy_scope(Template).assigned_templates(current_user)
     @roles = @current_user.roles.where(resource_id: @company.id, resource_type: "Company")
   end
 
@@ -54,7 +58,7 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def set_batch
-    @batch = Batch.find(params[:id])
+    @batch = policy_scope(Batch).find(params[:id])
   end
 
   def set_company
