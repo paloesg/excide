@@ -55,8 +55,8 @@ gem 'pundit'
 gem 'omniauth'
 gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-linkedin-oauth2'
-# Xero API integration
-gem 'omniauth-xero'
+# Xero API integration for partner app
+gem 'omniauth-xero', github: 'xplenty/omniauth-xero-partner'
 gem 'xeroizer', git: 'https://github.com/waynerobinson/xeroizer.git'
 
 # Protect app from bad clients

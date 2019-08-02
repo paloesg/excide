@@ -16,3 +16,7 @@
 config/database.yml
 
 .byebug_history
+
+xero-privatekey.pem
+xero-public_privatekey.pfx
+xero-publickey.cer

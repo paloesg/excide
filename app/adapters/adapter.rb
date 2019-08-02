@@ -1,7 +1,11 @@
 module Adapter
   class Xero
     def initialize(xero_auth)
-      @xero_client = Xeroizer::PublicApplication.new(ENV['XERO_CONSUMER_KEY'], ENV['XERO_CONSUMER_SECRET'])
+      @xero_client = Xeroizer::PartnerApplication.new(
+        ENV['XERO_CONSUMER_KEY'],
+        ENV['XERO_CONSUMER_SECRET'],
+        "xero-privatekey.pem"
+      )
 
       if xero_auth
         @xero_client.authorize_from_access(
