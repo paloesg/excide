@@ -121,7 +121,6 @@ $(document).on("turbolinks:load", function() {
           }
         };
         arrDocuments.push(data_input);
-        // let result = uploadDocuments(data_input);
       }
     });
     documentUpload.on("queuecomplete", function (file, request) {
@@ -130,8 +129,6 @@ $(document).on("turbolinks:load", function() {
       $('#drag-and-drop-submit').prop( "disabled", true );
       $('#view-invoices-button').show();
 
-      console.log(arrDocuments);
-
       $.post("/symphony/batches", {
         authenticity_token: $.rails.csrfToken(),
         batch: {
@@ -139,14 +136,12 @@ $(document).on("turbolinks:load", function() {
           document_attributes: arrDocuments
         }
       }).done(result => {
-        console.log("success"+ result);
         if($("#batch-uploader").length){
 
           //if this function in create batch, redirect to show batch page after create
           // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
           window.setTimeout(function() {
             $('.loading').hide();
-            window.location.href = '/symphony/batches/'+result.template_id+'/'+result.id;
           }, totalFile*500);
         }
       });
