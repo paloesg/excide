@@ -18,6 +18,7 @@ class Symphony::TemplatesController < ApplicationController
     @template = Template.new
     authorize @template
     @general_templates = Template.where(company: nil)
+    @templates = policy_scope(Template).assigned_templates(current_user)
   end
 
   def create
@@ -48,6 +49,7 @@ class Symphony::TemplatesController < ApplicationController
 
   def edit
     authorize @template
+    @templates = policy_scope(Template).assigned_templates(current_user)
   end
 
   def update
@@ -113,6 +115,6 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:template).permit(:title, :company_id, :workflow_type, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :position, :task_type, :instructions, :role_id, :document_template_id, :days_to_complete, :set_reminder, :important, :link_url, :image_url, :_destroy] ])
+    params.require(:template).permit(:title, :company_id, :workflow_type, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :template_id, :position, :task_type, :instructions, :role_id, :document_template_id, :days_to_complete, :set_reminder, :important, :link_url, :image_url, :_destroy] ])
   end
 end

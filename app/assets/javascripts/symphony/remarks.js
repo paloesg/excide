@@ -1,10 +1,9 @@
 $(document).on("turbolinks:load", function() {
   let form = $( ".edit_workflow_action, .multiple_edit" );
 
-  $('form').bind('turbolinks:request-end', function(evt, data, status, xhr) {
+  form.on("ajax:success", function(event, xhr, settings) {
     $("#check-" + xhr.id).show().fadeTo(500, 200, function(){
         $("#check-" + xhr.id).fadeTo(200, 0);
     });
-    $("#remarks-" + xhr.id).text(xhr.remarks);
   });
 });
