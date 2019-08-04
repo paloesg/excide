@@ -9,6 +9,8 @@
       li.breadcrumb-item.active New
     h1 Create Invoice
 .row
+  .loading
+    .loader
   .col-md-4.forward
     - if @documents.empty?
       | No documents available. Please upload documents first.

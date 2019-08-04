@@ -38,8 +38,9 @@ class Invoice < ApplicationRecord
   end
 
   class LineItem
-    attr_accessor :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2
+    attr_accessor :item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2
     def initialize(hash)
+      @item = hash['item']
       @description = hash['description']
       @quantity = hash['quantity']
       @price = hash['price']
