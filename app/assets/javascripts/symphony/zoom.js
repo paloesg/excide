@@ -33,6 +33,21 @@ $(document).on("turbolinks:load", function() {
         x = x - window.pageXOffset;
         y = y - window.pageYOffset;
         return {x, y};
+      }        
+
+      function magnifierConditions(x, y){
+        /* Prevent the magnifier glass from being positioned outside the image: */
+        if (x > $img[0].width - (w / zoom)){ x = $img[0].width - (w / zoom);}
+        if (x < w / zoom) { x = w / zoom;}
+        if (y > $img[0].height - (h / zoom)) {  y = $img[0].height - (h / zoom);}
+        if (y < h / zoom) { y = h / zoom;}
+        /* Set the position of the magnifier glass: */
+        glass.css({
+          "left": (x - w) + "px",
+          "top": (y - h) + "px",
+          // Display what the magnifier glass "sees": 
+          "background-position": "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px",
+        });
       }
       
       function moveMagnifier(e) {
@@ -41,21 +56,7 @@ $(document).on("turbolinks:load", function() {
         e.preventDefault();
         /* Get the cursor's x and y positions: */
         pos = getCursorPos(e);
-        x = pos.x;
-        y = pos.y;
-        /* Prevent the magnifier glass from being positioned outside the image: */
-        if (x > $img[0].width - (w / zoom)){x = $img[0].width - (w / zoom);}
-        if (x < w / zoom) {x = w / zoom;}
-        if (y > $img[0].height - (h / zoom)) {y = $img[0].height - (h / zoom);}
-        if (y < h / zoom) {y = h / zoom;}
-
-        /* Set the position of the magnifier glass: */
-        glass.css({
-          "left": (x - w) + "px",
-          "top": (y - h) + "px",
-          // Display what the magnifier glass "sees": 
-          "background-position": "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px",
-        });
+        magnifierConditions(pos.x, pos.y);
       }
 
       /* Execute a function when someone moves the magnifier glass over the image: */
