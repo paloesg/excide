@@ -65,8 +65,8 @@ $(document).on("turbolinks:load", function() {
       /*and also for touch screens:*/
       glass.on("touchmove", moveMagnifier);
       $img.on("touchmove", moveMagnifier);
-    })
-  };
+    });
+  }
   //check for the container before magnifying
   if($(".img-magnifier-container").length){
     magnify("zoomed-image", 1.5);
