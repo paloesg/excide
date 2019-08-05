@@ -33,7 +33,7 @@ $(document).on("turbolinks:load", function() {
         x = x - window.pageXOffset;
         y = y - window.pageYOffset;
         return {x, y};
-      };
+      }
       
       function moveMagnifier(e) {
         var pos, x, y;
@@ -56,7 +56,7 @@ $(document).on("turbolinks:load", function() {
           // Display what the magnifier glass "sees": 
           "background-position": "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px",
         });
-      };
+      }
 
       /* Execute a function when someone moves the magnifier glass over the image: */
       glass.on("mousemove", moveMagnifier);
