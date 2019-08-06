@@ -7,6 +7,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflow, except: [:get_xero_item_code_detail]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
+  before_action :get_xero_client
   before_action :get_xero_details
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
@@ -19,7 +20,10 @@ class Symphony::InvoicesController < ApplicationController
     authorize @invoice
 
     @invoice.build_line_item
-    @xero = Xero.new(session[:xero_auth])
+    request_token = @xero_client.request_token(oauth_callback: symphony_workflow_url(@workflow.template.slug, @workflow.id))
+    session[:request_token] = request_token.token
+    session[:request_secret] = request_token.secret
+    redirect_to request_token.authorize_url
   end
 
   def create
@@ -127,8 +131,23 @@ class Symphony::InvoicesController < ApplicationController
     end
   end
 
+  def get_xero_client
+    @xero_client = Xeroizer::PartnerApplication.new(
+      ENV['XERO_CONSUMER_KEY'],
+      ENV['XERO_CONSUMER_SECRET'],
+      'xero-privatekey.pem',
+      signature_method: 'RSA-SHA1'
+    )
+    if session[:xero_auth]
+      @xero_client.authorize_from_access(
+        session[:xero_auth]["access_token"],
+        session[:xero_auth]["access_key"]
+      )
+    end
+  end
+
   def get_xero_details
-    @xero                   = Xero.new(session[:xero_auth])
+    @xero = Xero.new
     @clients                = @xero.get_contacts
     # Combine account codes and account names as a string
     @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing

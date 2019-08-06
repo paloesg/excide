@@ -1,17 +1,4 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  def xero
-    # auth = request.env["omniauth.auth"]
-
-    # session[:xero_auth] = {
-    #   :access_token => auth.credentials.token,
-    #   :access_key => auth.credentials.secret
-    # }
-  
-
-    # set_flash_message(:notice, :success, :kind => "Xero")
-    # redirect_to session[:previous_url]
-  end
-
   def linkedin
     auth = request.env["omniauth.auth"]
     params = request.env["omniauth.params"]

@@ -1,20 +1,20 @@
 module Adapter
   class Xero
-    def initialize(xero_auth)
+    def initialize
       @xero_client = Xeroizer::PartnerApplication.new(
         ENV['XERO_CONSUMER_KEY'],
         ENV['XERO_CONSUMER_SECRET'],
         'xero-privatekey.pem',
         signature_method: 'RSA-SHA1'
       )
-      # @xero_client.renew_access_token
+      # # @xero_client.renew_access_token
 
-      if xero_auth
-        @xero_client.authorize_from_access(
-          xero_auth["access_token"],
-          xero_auth["access_key"]
-        )
-      end
+      # if xero_auth
+      #   @xero_client.authorize_from_access(
+      #     xero_auth["access_token"],
+      #     xero_auth["access_key"]
+      #   )
+      # end
       # request_token = @xero_client.request_token(oauth_callback: 'http://excide.co/oauth/callback')
       # session[:request_token]  = request_token.token
       # session[:request_secret] = request_token.secret
