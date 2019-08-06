@@ -8,11 +8,8 @@ class SendUserReminders
   def run
     get_user_reminders
     return OpenStruct.new(success?:true, reminder_count: 0, user: @user, message: 'No reminders for this user.') if @reminders.empty?
-    send_email_reminders
-    send_sms_reminders
-    send_slack_reminders
     set_next_reminder
-    return OpenStruct.new(success?:true, reminder_count: @reminders.count, user: @user, message: 'Reminders for this user sent.')
+    return OpenStruct.new(success?:true, reminder_count: @reminders.count, user: @user, message: 'Reminders for this user sent.', email_status: send_email_reminders, slack_status: send_slack_reminders, sms_status: send_sms_reminders)
   end
 
   private
@@ -38,7 +35,7 @@ class SendUserReminders
     from_number = ENV['TWILIO_NUMBER']
     account_sid = ENV['TWILIO_ACCOUNT_SID']
     auth_token = ENV['TWILIO_AUTH_TOKEN']
-    to_number = '+65' + reminder.user.contact_number
+    to_number = '+6281260236554'
     message_body = reminder.content
 
     @client = Twilio::REST::Client.new account_sid, auth_token
