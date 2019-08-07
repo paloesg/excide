@@ -6,8 +6,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       :access_token => auth.credentials.token,
       :access_key => auth.credentials.secret
     }
-  
-
     set_flash_message(:notice, :success, :kind => "Xero")
     redirect_to session[:previous_url]
   end
