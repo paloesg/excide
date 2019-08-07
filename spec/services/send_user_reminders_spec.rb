@@ -30,17 +30,20 @@ RSpec.describe SendUserReminders do
 
   context "Send user reminder" do
     it "receive email to user" do
-      expect(send_email_reminder.email_status.present?).to eq(true)
+      expect(send_email_reminder.slack_status.present?).to eq(false)
+      expect(send_email_reminder.sms_status).to include(nil)
       expect(send_email_reminder.email_status.subject).to eq('Here are your reminders for today')
       expect(send_email_reminder.email_status.to).to eq(["#{email_reminder.user.email}"])
     end
     it "ping to slack" do
-      expect(send_slack_reminder.slack_status.present?).to eq(true)
+      expect(send_slack_reminder.email_status.present?).to eq(false)
+      expect(send_slack_reminder.sms_status).to include(nil)
       expect(send_slack_reminder.slack_status.read_body).to eq("ok")
     end
     it "sms reminder sent out" do
       sms_status = send_sms_reminder.sms_status.map{|m| m.status}
-      expect(send_sms_reminder.sms_status.present?).to eq(true)
+      expect(send_sms_reminder.email_status.present?).to eq(false)
+      expect(send_sms_reminder.slack_status.present?).to eq(false)
       expect(sms_status).to include("queued")
       expect(sms_status).not_to include("undelivered")
       expect(sms_status).not_to include("failed")
