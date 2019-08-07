@@ -56,7 +56,7 @@ gem 'omniauth'
 gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-linkedin-oauth2'
 # Xero API integration for partner app
-# gem 'omniauth-xero'
+gem 'omniauth-xero', git: 'https://github.com/Jonathanlau92/omniauth-xero.git'
 gem 'xeroizer', git: 'https://github.com/waynerobinson/xeroizer.git'
 
 # Protect app from bad clients
