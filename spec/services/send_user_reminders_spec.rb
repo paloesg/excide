@@ -38,5 +38,12 @@ RSpec.describe SendUserReminders do
       expect(send_slack_reminder.slack_status.present?).to eq(true)
       expect(send_slack_reminder.slack_status.read_body).to eq("ok")
     end
+    it "sms reminder sent out" do
+      sms_status = send_sms_reminder.sms_status.map{|m| m.status}
+      expect(send_slack_reminder.sms_status.present?).to eq(true)
+      expect(sms_status).to include("queued")
+      expect(sms_status).not_to include("undelivered")
+      expect(sms_status).not_to include("failed")
+    end
   end
 end

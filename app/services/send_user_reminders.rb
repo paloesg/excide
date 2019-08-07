@@ -8,8 +8,8 @@ class SendUserReminders
   def run
     get_user_reminders
     return OpenStruct.new(success?:true, reminder_count: 0, user: @user, message: 'No reminders for this user.') if @reminders.empty?
-    set_next_reminder
     return OpenStruct.new(success?:true, reminder_count: @reminders.count, user: @user, message: 'Reminders for this user sent.', email_status: send_email_reminders, slack_status: send_slack_reminders, sms_status: send_sms_reminders)
+    set_next_reminder
   end
 
   private
@@ -24,11 +24,13 @@ class SendUserReminders
   end
 
   def send_sms_reminders
+    sms = []
     sms_reminders = @reminders.where(sms: true)
 
     sms_reminders.each do |reminder|
-      send_sms(reminder)
+      sms << send_sms(reminder)
     end
+    sms
   end
 
   def send_sms(reminder)
