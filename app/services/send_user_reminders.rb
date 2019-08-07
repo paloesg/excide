@@ -8,8 +8,11 @@ class SendUserReminders
   def run
     get_user_reminders
     return OpenStruct.new(success?:true, reminder_count: 0, user: @user, message: 'No reminders for this user.') if @reminders.empty?
-    return OpenStruct.new(success?:true, reminder_count: @reminders.count, user: @user, message: 'Reminders for this user sent.', email_status: send_email_reminders, slack_status: send_slack_reminders, sms_status: send_sms_reminders)
+    send_email_reminders
+    send_slack_reminders
+    send_sms_reminders
     set_next_reminder
+    return OpenStruct.new(success?:true, reminder_count: @reminders.count, user: @user, message: 'Reminders for this user sent.', email_status: @email_status, slack_status: @slack_status, sms_status: @sms_status)
   end
 
   private
@@ -20,7 +23,7 @@ class SendUserReminders
 
   def send_email_reminders
     email_reminders = @reminders.where(email: true)
-    NotificationMailer.batch_reminder(email_reminders, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
+    @email_status = NotificationMailer.batch_reminder(email_reminders, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
   end
 
   def send_sms_reminders
@@ -30,7 +33,7 @@ class SendUserReminders
     sms_reminders.each do |reminder|
       sms << send_sms(reminder)
     end
-    sms
+    @sms_status = sms
   end
 
   def send_sms(reminder)
@@ -48,7 +51,7 @@ class SendUserReminders
   def send_slack_reminders
     slack_reminders = @reminders.where(slack: true)
 
-    SlackService.new.send_reminders(slack_reminders, @user).deliver if @user.settings[0]&.reminder_slack == 'true'
+    @slack_status = SlackService.new.send_reminders(slack_reminders, @user).deliver if @user.settings[0]&.reminder_slack == 'true'
   end
 
   def set_next_reminder
