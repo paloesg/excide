@@ -35,7 +35,7 @@ class SendUserReminders
     from_number = ENV['TWILIO_NUMBER']
     account_sid = ENV['TWILIO_ACCOUNT_SID']
     auth_token = ENV['TWILIO_AUTH_TOKEN']
-    to_number = '+6281260236554'
+    to_number = '+65' + reminder.user.contact_number
     message_body = reminder.content
 
     @client = Twilio::REST::Client.new account_sid, auth_token
