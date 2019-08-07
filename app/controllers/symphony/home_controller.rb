@@ -9,7 +9,7 @@ class Symphony::HomeController < ApplicationController
     @clients = @company.clients
 
     #add include
-    @workflows_array = policy_scope(Workflow).includes(:template, :workflowable).where(template: @templates);
+    @workflows_array = policy_scope(Workflow).includes(:template, :workflowable).where(template: @templates)
 
     workflows_sort = sort_column(@workflows_array)
     params[:direction] == "desc" ? workflows_sort.reverse! : workflows_sort
