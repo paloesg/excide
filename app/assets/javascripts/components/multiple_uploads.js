@@ -59,7 +59,6 @@ $(document).on("turbolinks:load", function() {
 
   // $("#uploader").length 'To check #uploader is exists'
   if ($(".multiple_uploads").length) {
-    var arrDocuments = [];
     $('.loading').hide();
     var batchId="";
     var cleanFilename = function (name) {
@@ -102,10 +101,17 @@ $(document).on("turbolinks:load", function() {
       $('#drag-and-drop-submit').removeAttr('disabled');
     });
     $("#drag-and-drop-submit").click(function(){
-      documentUpload.processQueue();
+      $.post("/symphony/batches", {
+        authenticity_token: $.rails.csrfToken(),
+        batch: {
+          template_id: $('#template_id').val(),
+        }
+      }).done(result => {
+        batchId = result.batch_id;
+        documentUpload.processQueue();
+      });
     });
     documentUpload.on("success", function (file, request) {
-      $('.loading').show();
       let resp = $.parseXML(request);
       let filePath = $(resp).find("Key").text();
       let location = new URL($(resp).find("Location").text())
@@ -113,38 +119,31 @@ $(document).on("turbolinks:load", function() {
         let data_input = {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
+          batch_id: batchId,
           count: this.files.length,
           document: {
             filename: file.upload.filename,
             file_url: '//' + location['host'] + '/' + filePath,
-            template_id: $('#template_id').val(),
+            template_id: $('#template_id').val()
           }
         };
-        arrDocuments.push(data_input);
+        let result = uploadDocuments(data_input);
       }
     });
     documentUpload.on("queuecomplete", function (file, request) {
+      let templateId = $('#template_id').val();
       let totalFile = documentUpload.files.length;
-
       $('#drag-and-drop-submit').prop( "disabled", true );
       $('#view-invoices-button').show();
-
-      $.post("/symphony/batches", {
-        authenticity_token: $.rails.csrfToken(),
-        batch: {
-          template_id: $('#template_id').val(),
-          document_attributes: arrDocuments
-        }
-      }).done(result => {
-        if($("#batch-uploader").length){
-
-          //if this function in create batch, redirect to show batch page after create
-          // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
-          window.setTimeout(function() {
-            $('.loading').hide();
-          }, totalFile*500);
-        }
-      });
+      //if this function in create batch, redirect to show batch page after create
+      if($("#batch-uploader").length){
+        $('.loading').show();
+        // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
+        window.setTimeout(function() {
+          $('.loading').hide();
+          Turbolinks.visit('/symphony/batches/'+templateId+'/'+batchId);
+        }, totalFile*1000);
+      }
     });
   };
 });
