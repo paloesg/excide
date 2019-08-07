@@ -32,24 +32,17 @@ class Symphony::BatchesController < ApplicationController
 
   def create
     @template = Template.find(params[:batch][:template_id])
-    @generate_batch = GenerateBatch.new(current_user, @template, params[:batch]).run
-    authorize @generate_batch.batch
+    @batch = GenerateBatch.new(current_user, @template).run
+    authorize @batch
     respond_to do |format|
-      if @generate_batch.success?
-        format.html { redirect_to symphony_batch_path(@template.slug, @generate_batch.batch.id), notice: 'Batch successfully created!' }
-        format.json { render json: @generate_batch.batch, status: :ok }
-      else
-        format.html { redirect_to new_symphony_batch_path(@template.slug), alert: "There was an error archiving this workflow. Please contact your admin with details of this error: #{@generate_batch.message}." }
-        format.json { render json: @generate_batch.message, status: :unprocessable_entity }
-      end
+      flash[:notice] = "Batch created"
+      format.json  { render :json => {:batch_id => @batch.id} }
     end
   end
 
   def show
     authorize @batch
     @current_user = current_user
-    # @sections = @batch.template.sections
-    # @templates = policy_scope(Template).assigned_templates(current_user)
     @roles = @current_user.roles.where(resource_id: @company.id, resource_type: "Company")
   end
 
