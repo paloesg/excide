@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 2019_08_02_091752) do
     t.string "session_handle"
     t.string "access_key"
     t.string "access_secret"
-    t.time "expires_at"
+    t.integer "expires_at"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
