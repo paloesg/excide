@@ -6,7 +6,6 @@ module Adapter
         ENV['XERO_CONSUMER_SECRET'],
         'xero-privatekey.pem',
       )
-
       if xero_auth
         @xero_client.authorize_from_access(
           xero_auth["access_token"],

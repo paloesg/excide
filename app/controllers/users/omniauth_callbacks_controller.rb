@@ -3,9 +3,18 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     auth = request.env["omniauth.auth"]
 
     session[:xero_auth] = {
-      :access_token => auth.credentials.token,
-      :access_key => auth.credentials.secret
+      access_token: auth.credentials.token,
+      access_key:   auth.credentials.secret,
+      session_handle: auth.credentials.session_handle,
+      expires_at: auth.credentials.expires_at
     }
+    #save company's xero details
+    company = current_user.company
+    company.access_key = session[:xero_auth][:access_key]
+    company.access_secret = session[:xero_auth][:access_token]
+    company.session_handle = session[:xero_auth][:session_handle]
+    company.expires_at = session[:xero_auth][:expires_at]
+    company.save
     set_flash_message(:notice, :success, :kind => "Xero")
     redirect_to session[:previous_url]
   end
