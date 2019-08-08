@@ -137,7 +137,7 @@ class Symphony::InvoicesController < ApplicationController
     @tracking_name          = @xero.get_tracking_options
     @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| option}
     @tracking_categories_2  = @tracking_name[1]&.options&.map{|option| option}
-    @items                  = @xero.get_items.map{|item| (item.code + ': ' + item.description) if item.code.present?}
+    @items                  = @xero.get_items.map{|item| (item.code + ': ' + (item.description || '-')) if item.code.present?}
   end
 
   def invoice_params

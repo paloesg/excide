@@ -23,6 +23,7 @@
 //= require symphony/remarks
 //= require symphony/popover
 //= require symphony/batches/select_all_by_task
+//= require symphony/zoom
 //= require symphony/invoices/xero
 //= require conductor/create_allocations
 //= require conductor/add_availabilities
