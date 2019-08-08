@@ -39,6 +39,7 @@ class Symphony::InvoicesController < ApplicationController
 
     if @invoice.save
       if @workflow.batch
+        WorkflowAction.find(params[:workflow_action_id]).update_columns(completed: true) if params[:workflow_action_id].present?
         redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "Invoice created successfully!"
       else
         redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully!"
