@@ -32,11 +32,18 @@ class Symphony::BatchesController < ApplicationController
 
   def create
     @template = Template.find(params[:batch][:template_id])
-    @batch = GenerateBatch.new(current_user, @template).run
-    authorize @batch
+    @generate_batch = GenerateBatch.new(current_user, @template).run
+    authorize @generate_batch.batch
     respond_to do |format|
-      flash[:notice] = "Batch created"
-      format.json  { render :json => {:batch_id => @batch.id} }
+      if @generate_batch.success?
+        flash[:notice] = "Batch created"
+        format.json  { render :json => {:status => "ok", :batch_id => @generate_batch.batch.id} }
+      else
+        error_message = "There was an error creating this batch. Please contact your admin with details of this error: #{@generate_batch.message}"
+        flash[:alert] = error_message
+        output = { :status => "error", :message => error_message}
+        format.json  { render :json => output }
+      end
     end
   end
 

@@ -61,6 +61,7 @@ $(document).on("turbolinks:load", function() {
   if ($(".multiple_uploads").length) {
     $('.loading').hide();
     var batchId="";
+    var templateSlug = $('#template_id').val();
     var cleanFilename = function (name) {
       fileName = name.split('.').slice(0, -1).join('.')
       get_extension = name.substring(name.lastIndexOf(".") + 1)
@@ -107,8 +108,13 @@ $(document).on("turbolinks:load", function() {
           template_id: $('#template_id').val(),
         }
       }).done(result => {
-        batchId = result.batch_id;
-        documentUpload.processQueue();
+        if(result.status == "ok"){
+          batchId = result.batch_id;
+          documentUpload.processQueue();
+        }
+        else {
+          Turbolinks.visit('/symphony/batches/'+templateSlug+'/new');
+        }
       });
     });
     documentUpload.on("success", function (file, request) {
@@ -131,7 +137,6 @@ $(document).on("turbolinks:load", function() {
       }
     });
     documentUpload.on("queuecomplete", function (file, request) {
-      let templateId = $('#template_id').val();
       let totalFile = documentUpload.files.length;
       $('#drag-and-drop-submit').prop( "disabled", true );
       $('#view-invoices-button').show();
@@ -141,7 +146,7 @@ $(document).on("turbolinks:load", function() {
         // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
         window.setTimeout(function() {
           $('.loading').hide();
-          Turbolinks.visit('/symphony/batches/'+templateId+'/'+batchId);
+          Turbolinks.visit('/symphony/batches/'+templateSlug+'/'+batchId);
         }, totalFile*1000);
       }
     });
