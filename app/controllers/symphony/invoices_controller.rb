@@ -7,7 +7,6 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflow, except: [:get_xero_item_code_detail]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
-  # before_action :get_xero_client
   before_action :get_xero_details
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
@@ -127,21 +126,6 @@ class Symphony::InvoicesController < ApplicationController
       @next_document = @documents.where('id > ?', @document.id).last
     end
   end
-
-  # def get_xero_client
-  #   @xero_client = Xeroizer::PartnerApplication.new(
-  #     ENV['XERO_CONSUMER_KEY'],
-  #     ENV['XERO_CONSUMER_SECRET'],
-  #     'xero-privatekey.pem',
-  #     signature_method: 'RSA-SHA1'
-  #   )
-  #   if session[:xero_auth]
-  #     @xero_client.authorize_from_access(
-  #       session[:xero_auth]["access_token"],
-  #       session[:xero_auth]["access_key"]
-  #     )
-  #   end
-  # end
 
   def get_xero_details
     @xero = Xero.new(session[:xero_auth])
