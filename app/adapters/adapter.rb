@@ -1,6 +1,6 @@
 module Adapter
   class Xero
-    def initialize(xero_auth)
+    def initialize(xero_auth, company)
       @xero_client = Xeroizer::PartnerApplication.new(
         ENV['XERO_CONSUMER_KEY'],
         ENV['XERO_CONSUMER_SECRET'],
@@ -11,6 +11,10 @@ module Adapter
           xero_auth["access_token"],
           xero_auth["access_key"]
         )
+      end
+      #if expiring time is less than current time, it means authorization has been expired.
+      if Time.at(company.expires_at) < Time.now
+        @xero_client.renew_access_token
       end
     end
 
