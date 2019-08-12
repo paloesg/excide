@@ -1,7 +1,7 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def xero
     auth = request.env["omniauth.auth"]
-
+    puts auth.inspect
     session[:xero_auth] = {
       access_token: auth.credentials.token,
       access_key:   auth.credentials.secret,

@@ -6,15 +6,21 @@ module Adapter
         ENV['XERO_CONSUMER_SECRET'],
         'xero-privatekey.pem',
       )
+      if company.expires_at.present?
+        #if expiring time is less than current time, it means authorization has been expired.
+        @xero_client.renew_access_token(xero_auth["access_token"], xero_auth["access_key"], xero_auth["session_handle"]) if Time.at(company.expires_at) < Time.now
+        company.update_attributes(
+          access_token: @xero_client.access_token.token,
+          access_key: @xero_client.access_token.secret,
+          session_handle: @xero_client.session_handle,
+          expires_at: @xero_client.client.expires_at
+        )
+      end
       if xero_auth
         @xero_client.authorize_from_access(
           xero_auth["access_token"],
           xero_auth["access_key"]
         )
-      end
-      #if expiring time is less than current time, it means authorization has been expired.
-      if Time.at(company.expires_at) < Time.now
-        @xero_client.renew_access_token
       end
     end
 
