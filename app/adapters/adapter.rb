@@ -1,26 +1,28 @@
 module Adapter
   class Xero
-    def initialize(xero_auth, company)
+    def initialize(company)
       @xero_client = Xeroizer::PartnerApplication.new(
         ENV['XERO_CONSUMER_KEY'],
         ENV['XERO_CONSUMER_SECRET'],
         'xero-privatekey.pem',
       )
-      if company.expires_at.present?
-        #if expiring time is less than current time, it means authorization has been expired.
-        @xero_client.renew_access_token(xero_auth["access_token"], xero_auth["access_key"], xero_auth["session_handle"]) if Time.at(company.expires_at) < Time.now
-        company.update_attributes(
-          access_token: @xero_client.access_token.token,
-          access_key: @xero_client.access_token.secret,
-          session_handle: @xero_client.session_handle,
-          expires_at: @xero_client.client.expires_at
+      if company
+        @xero_client.authorize_from_access(
+          company.access_secret,
+          company.access_key
         )
       end
-      if xero_auth
-        @xero_client.authorize_from_access(
-          xero_auth["access_token"],
-          xero_auth["access_key"]
-        )
+
+      if company.expires_at.present? and (Time.at(company.expires_at) < Time.now)
+        #if expiring time is less than current time, it means authorization has been expired.
+        @xero_client.renew_access_token
+        # (company.access_secret, {} ,company.session_handle) 
+        # company.update_attributes(
+        #   access_key: @xero_client.access_token.token,
+        #   access_secret: @xero_client.access_token.secret,
+        #   session_handle: @xero_client.session_handle,
+        #   expires_at: @xero_client.client.expires_at
+        # )
       end
     end
 
