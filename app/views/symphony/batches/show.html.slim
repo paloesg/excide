@@ -35,8 +35,10 @@
                   i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
                 - else
                   - wf.documents.each do |d|
-                    = link_to symphony_document_path(d), target: "_blank"
-                      i.ti-file.icon.mr-3.text-center.large-icon
+                    = d.filename
+                    br
+                    button class="btn btn-link" data-container="body" data-toggle="popover" data-placement="auto" data-html="true" data-content="<img src='#{d.file_url}' class='rounded' alt='Cinque Terre'/>"
+                      ' preview
               td
                 - if wf.invoice.blank?
                   i.ti-receipt.icon.mr-3.text-center.large-icon.gray-icon
