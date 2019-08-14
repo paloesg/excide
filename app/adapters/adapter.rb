@@ -15,14 +15,7 @@ module Adapter
 
       if company.expires_at.present? and (Time.at(company.expires_at) < Time.now)
         #if expiring time is less than current time, it means authorization has been expired.
-        @xero_client.renew_access_token
-        # (company.access_secret, {} ,company.session_handle) 
-        # company.update_attributes(
-        #   access_key: @xero_client.access_token.token,
-        #   access_secret: @xero_client.access_token.secret,
-        #   session_handle: @xero_client.session_handle,
-        #   expires_at: @xero_client.client.expires_at
-        # )
+        @xero_client.renew_access_token(company.access_token['token'], company.access_secret ,company.session_handle) 
       end
     end
 

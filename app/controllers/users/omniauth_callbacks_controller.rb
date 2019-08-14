@@ -9,8 +9,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # }
     #save company's xero details
     company = current_user.company
-    company.access_key = auth.credentials.secret
-    company.access_secret = auth.credentials.token
+    company.access_token = auth.credentials.access_token
+    company.access_secret = auth.credentials.secret
+    company.access_key = auth.credentials.token
     company.session_handle = auth.credentials.session_handle
     company.expires_at = auth.credentials.expires_at
     company.save

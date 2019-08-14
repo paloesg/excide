@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Jonathanlau92/omniauth-xero.git
-  revision: 5b11526f1e6e56ad431136137599201e7e1d1c6f
+  revision: 65e4e64f62c967976565d9914bdebe8537f78986
   specs:
     omniauth-xero (1.0.2)
       omniauth-oauth (~> 1.0)
