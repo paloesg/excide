@@ -37,9 +37,12 @@
                   .row
                     - wf.documents.each do |d|
                       .col-md-4
-                        p = d.filename
-                        button class="btn btn-link" data-container="body" data-toggle="popover" data-placement="auto" data-html="true" data-content="<img src='#{d.file_url}' class='rounded' alt='Cinque Terre'/>"
-                          ' preview
+                        - if File.extname(d.file_url) == '.pdf'
+                          p = d.filename
+                          button.btn.btn-link.document-preview data-placement="auto" data-content="" data-container="body" preview
+                        - else
+                          p = d.filename
+                          button.btn.btn-link.document-preview data-container="body" data-toggle="popover" data-placement="auto" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid' alt='Cinque Terre'/>" preview
               td
                 - if wf.invoice.blank?
                   i.ti-receipt.icon.mr-3.text-center.large-icon.gray-icon
