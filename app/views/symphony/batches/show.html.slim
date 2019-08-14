@@ -21,14 +21,14 @@
           tr
             th Documents
             th Invoices
-            - section.tasks.order(created_at: :asc).each do |task|
+            - section.tasks.includes(:role).order(created_at: :asc).each do |task|
               th
                 a.pop data-container="body" title="#{task.role&.display_name}" data-content=("<div>#{task.instructions}</div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
                   .header-properties
                     ' #{task.task_type.humanize}
                     i.ti-info-alt
         tbody
-          - @batch.workflows.order(created_at: :asc).each do |wf|
+          - @batch.workflows.includes(:documents, :invoice).order(created_at: :asc).each do |wf|
             tr
               td
                 - if wf.documents.empty?

@@ -67,8 +67,9 @@ class Symphony::BatchesController < ApplicationController
 
   def set_workflow_completed
     @batch = Batch.find(params[:id])
-    @batch.workflows.each do |wf|
-      wf.completed = true if wf.workflow_actions.all?{ |wfa| wfa.completed? }
+    @workflows = @batch.workflows.includes(:workflow_actions)
+    @workflows.each do |wf|
+      wf.completed = true if wf.workflow_actions.all?{|wfa| wfa.completed? }
       wf.save
     end
   end
