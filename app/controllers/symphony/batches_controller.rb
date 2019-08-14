@@ -3,7 +3,7 @@ class Symphony::BatchesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_workflow_completed, only: [:show]
+  before_action :set_batch_and_workflow_completed, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
   after_action :verify_authorized, except: :index
@@ -53,10 +53,6 @@ class Symphony::BatchesController < ApplicationController
     params.permit(:company_id, :template_id)
   end
 
-  # def set_batch
-  #   @batch = Batch.find(params[:id])
-  # end
-
   def set_company
     @company = current_user.company
   end
@@ -65,7 +61,7 @@ class Symphony::BatchesController < ApplicationController
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
-  def set_workflow_completed
+  def set_batch_and_workflow_completed
     @batch = Batch.find(params[:id])
     @workflows = @batch.workflows.includes(:workflow_actions)
     @workflows.each do |wf|
