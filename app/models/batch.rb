@@ -15,7 +15,7 @@ class Batch < ApplicationRecord
 
   def action_completed_progress
     # Check for case where total_action is 0 to prevent NaN error
-    total_action == 0 ? 0 : ((get_completed_actions.count.to_f / total_action) * 100).round(0)
+    total_action == 0 ? 0 : ((get_completed_actions.count.to_f / total_action) * 100).round(0) if total_action.present?
   end
 
   def average_time_taken_per_task
@@ -25,7 +25,8 @@ class Batch < ApplicationRecord
 
   #Since each template's workflows have the same workflow_actions, can get the total number of actions by multiplying the number of workflows in batch with the workflow_actions of ANY one workflow
   def total_action
-    self.workflows.count * self.workflows[0].workflow_actions.count
+    #if there is an error that causes the batch to be created without workflows, this condition checks for the existence of workflows
+    self.workflows.count * self.workflows[0].workflow_actions.count if self.workflows.present?
   end
 
   #get all the completed workflow action in an array
