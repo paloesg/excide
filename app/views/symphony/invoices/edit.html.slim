@@ -22,6 +22,7 @@
   .col-md-8
     = form_for(@invoice, url: symphony_invoice_path(workflow_id: params[:workflow_id])) do |f|
       = render 'form', f: f
+      = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning pull-right ml-2'
       = link_to "View invoice", symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), role: 'button', class: 'btn btn-primary ml-2 pull-right'
       - if current_user.has_role? :associate, @company or current_user.has_role? :admin, @company or current_user.has_role? :consultant, @company

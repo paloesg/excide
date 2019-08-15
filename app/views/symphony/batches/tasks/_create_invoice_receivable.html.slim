@@ -1,6 +1,7 @@
-= render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow
-br
-- if workflow.invoice.blank?
-  = link_to "Create Invoice Receivable", new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, invoice: 'receivable'), role: 'button', target: "_blank", class: 'btn btn-success btn-sm mb-2'
+- if action.completed
+  = render "symphony/batches/tasks/completed"
 - else
-  = link_to "Create Invoice", new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id), role: 'button', class: 'btn btn-success btn-sm mb-2 disabled', disabled: true
+  - if workflow.invoice.blank?
+    = link_to "Start", new_symphony_invoice_path  (workflow_name: workflow.template.slug, workflow_id: workflow.id, invoice: 'receivable'), role: 'button', target: "_blank", class: 'btn btn-success btn-sm mb-2'
+  - else
+    = link_to "Start", new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id), role: 'button', class: 'btn btn-success btn-sm mb-2 disabled', disabled: true
