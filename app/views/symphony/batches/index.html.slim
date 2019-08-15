@@ -4,8 +4,19 @@
       li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
       li.breadcrumb-item Batches
-    h1
+.row
+  .col-sm-10
+    h2 Symphony AP
+  .col-sm-1.p-0
+    h2.text-center Completed
+.row.mt-2.mb-3
+  .col-sm-10
+    h5
       | List of Batches
+  .col-sm-1.gray-box-background
+    h5.text-center.mb-0
+      | #{@completed_batches.count} of #{@batches.count}
+    
 .row
   .col-sm-12
     .card
