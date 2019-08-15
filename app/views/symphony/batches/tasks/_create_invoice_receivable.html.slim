@@ -1,7 +1,7 @@
-- if action.completed
+- if action.completed?
   = render "symphony/batches/tasks/completed"
 - else
   - if workflow.invoice.blank?
-    = link_to "Start", new_symphony_invoice_path  (workflow_name: workflow.template.slug, workflow_id: workflow.id, invoice: 'receivable'), role: 'button', target: "_blank", class:  "btn btn-success btn-sm mb-2 #{"disabled" if action.task.check_previous.get_workflow_action(workflow.company, workflow.id).completed == false}"
+    = link_to "Start", new_symphony_invoice_path  (workflow_name: workflow.template.slug, workflow_id: workflow.id, invoice: 'receivable'), role: 'button', target: "_blank", class:  "btn btn-success btn-sm mb-2 #{"disabled" if !action.task.check_previous.get_workflow_action(workflow.company, workflow.id).completed? or current_user.roles.exclude? action.task.role}"
   - else
     = link_to "Start", new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id), role: 'button', class: 'btn btn-success btn-sm mb-2 disabled', disabled: true
