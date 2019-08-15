@@ -20,7 +20,7 @@
       | Batch Name: #{@batch.name}
   .col-sm-1.gray-box-background
     h5.text-center.mb-0
-      | #{@batch.workflows.where(completed: true).count} of #{@batch.workflows.count}
+      | #{@completed_workflow_count} of #{@batch.workflows.count}
 
 - @sections.each do |section|
   .card.scrollbar.mb-3
