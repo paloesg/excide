@@ -28,7 +28,7 @@
                 td = link_to batch.name, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
                 td = batch.user&.full_name
                 td = batch.updated_at.strftime('%y%m%d-%H:%M:%S')
-                td = "HAPPY"
+                td = batch.get_completed_workflows
                 td = batch.workflows.count
                 td
                   .progress
