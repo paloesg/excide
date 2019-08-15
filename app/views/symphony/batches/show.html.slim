@@ -8,18 +8,20 @@
       li.breadcrumb-item
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
       li.breadcrumb-item #{@batch.name}
+/ display number of completed workflows count
 .row
-  .col-sm-6
-    h1 Symphony AP
-  .col-sm-6
-    h1.float-right Completed
-.row.mt-2
-  .col-sm-6
+  .col-sm-10
+    h2 Symphony AP
+  .col-sm-1.p-0
+    h2.text-center Completed
+.row.mt-2.mb-3
+  .col-sm-10
     h5
-      | Batch #{@batch.name}
-  .col-sm-6
-    h5.float-right 
+      | Batch Name: #{@batch.name}
+  .col-sm-1.gray-box-background
+    h5.text-center.mb-0
       | #{@batch.workflows.where(completed: true).count} of #{@batch.workflows.count}
+
 - @sections.each do |section|
   .card.scrollbar.mb-3
     h5.card-header
