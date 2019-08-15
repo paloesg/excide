@@ -42,7 +42,7 @@
                           button.btn.btn-link.pdf-preview data-placement="auto" data-container="body" data-document="https:#{d.file_url}" preview
                         - else
                           p = d.filename
-                          button.btn.btn-link data-container="body" data-toggle="popover" data-placement="auto" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid' alt='Cinque Terre'/>" preview
+                          button.btn.btn-link data-container="body" data-toggle="popover" data-placement="auto" data-html="true" data-trigger="focus" data-content="<img src='#{d.file_url}' class='img-fluid' alt='Cinque Terre'/>" preview
               td
                 - if wf.invoice.blank?
                   i.ti-receipt.icon.mr-3.text-center.large-icon.gray-icon

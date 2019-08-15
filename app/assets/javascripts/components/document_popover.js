@@ -2,6 +2,7 @@ $(document).on("turbolinks:load", function() {
   $('.pdf-preview').popover({
     html : true,
     placement : "auto",
+    trigger : "focus",
     content: function() {
       return '<strong class="document-content">Loading...</strong>';
       }
