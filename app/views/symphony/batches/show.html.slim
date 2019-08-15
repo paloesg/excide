@@ -8,8 +8,18 @@
       li.breadcrumb-item
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
       li.breadcrumb-item #{@batch.name}
-    h1
+.row
+  .col-sm-6
+    h1 Symphony AP
+  .col-sm-6
+    h1.float-right Completed
+.row.mt-2
+  .col-sm-6
+    h5
       | Batch #{@batch.name}
+  .col-sm-6
+    h5.float-right 
+      | #{@batch.workflows.where(completed: true).count} of #{@batch.workflows.count}
 - @sections.each do |section|
   .card.scrollbar.mb-3
     h5.card-header
