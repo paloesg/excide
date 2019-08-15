@@ -2,7 +2,6 @@
   = render "symphony/batches/tasks/completed"
 - else
   - if workflow.invoice.present?
-    = link_to "Start", edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id), target: "_blank", class: 'btn btn-success btn-sm mb-2' if !workflow.invoice.approved?
-    = link_to "Invoice Approved", edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id), target: "_blank", class: 'btn btn-success btn-sm mb-2 disabled' if workflow.invoice.approved?
+    = link_to "Start", edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id, workflow_action_id: action.id), class: 'btn btn-success btn-sm mb-2' if !workflow.invoice.approved?
   - else
-    = link_to "No invoice found", '#', role: 'button', class: 'btn btn-success btn-sm mb-2 disabled'
+    = link_to "Start", '#', role: 'button', class: 'btn btn-success btn-sm mb-2 disabled'
