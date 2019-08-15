@@ -3,9 +3,9 @@ $(document).on("turbolinks:load", function() {
     html : true,
     placement : "auto",
     content: function() {
-      return 'Loading...';
+      return '<strong class="document-content">Loading...</strong>';
       }
-   }).on('shown.bs.popover',function(){
-    $($(this).data("bs.popover").tip).find('.popover-body').replaceWith('<iframe src="https://docs.google.com/viewer?url=' + $(this).attr('data-document') + '&embedded=true" frameborder="0" height="300px" width="250px"></iframe>')
- });
+  }).on('inserted.bs.popover',function(){
+    $($(this).data("bs.popover").tip).find('.document-content').replaceWith('<iframe src="https://docs.google.com/viewer?url=' + $(this).attr('data-document') + '&embedded=true" frameborder="0" height="300px" width="250px"></iframe>')
+  });
 });
