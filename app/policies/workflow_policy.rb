@@ -28,6 +28,10 @@ class WorkflowPolicy < ApplicationPolicy
     user_admin?
   end
 
+  def workflow_action_complete?
+    update?
+  end
+
   def toggle?
     update?
   end
