@@ -256,6 +256,15 @@ class Symphony::WorkflowsController < ApplicationController
           format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!" }
         end
       else
+        if @workflow.batch
+          @action = WorkflowAction.find(params[:workflow_action_id])
+          @action.update_columns(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
+          if @action
+            format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{@action.task.task_type.humanize} Done!"}
+          else
+            format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), alert: @action.error}
+          end
+        end
         format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), alert: "Invoice is not save in Symphony successfully!" }
       end
     end

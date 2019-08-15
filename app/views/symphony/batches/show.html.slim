@@ -45,18 +45,6 @@
                 - else
                   = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
                     i.ti-receipt.icon.mr-3.large-icon
-              / - wf.get_workflow_action_by_section(section.id).each do |action|
-                td class="text-center #{'important-task' if action.task.important}"
-                   = render "symphony/batches/tasks/#{action.task.task_type}", workflow: wf, action: action
-
               - section.tasks.includes(:role).order(position: :asc).each do |task|
                 td class="text-center #{'important-task' if task.important}"
                   = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
-        / tfoot
-          tr
-            th
-            th
-            - section.tasks.order(created_at: :asc).each do |task|
-              th
-                .text-center
-                  = button_tag 'Complete All', type: 'button', class: "btn #{task.important ? 'btn-light' : 'btn-warning'} btn-sm checkall", disabled: task.important, id:"selectall-#{task.id}"

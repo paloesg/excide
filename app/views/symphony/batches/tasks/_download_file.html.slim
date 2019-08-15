@@ -1,4 +1,4 @@
 - if action.completed
   = render "symphony/batches/tasks/completed"
 - else
-  = link_to 'Start', action.task.document_template.file_url, role: 'button', target: "_blank", class: 'btn btn-primary btn-sm' if action.task.document_template.present?
+  = link_to 'Start', action.task.document_template.file_url, role: 'button', class: "btn btn-success btn-sm mb-2 #{"disabled" if action.task.check_previous.get_workflow_action(workflow.company, workflow.id).completed == false}" if action.task.document_template.present?

@@ -139,7 +139,7 @@ class Workflow < ApplicationRecord
   end
 
   def trigger_first_task
-    self.current_task.get_workflow_action(self.company, self.id).set_deadline_and_notify(current_task)
+    self.current_task.get_workflow_action(self.company_id, self.id).set_deadline_and_notify(self.current_task)
   end
 
   def unordered_tasks_trigger_email

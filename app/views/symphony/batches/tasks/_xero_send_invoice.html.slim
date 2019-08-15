@@ -1,20 +1,25 @@
 - if action.completed
   = render "symphony/batches/tasks/completed"
 - else
-  - if workflow.invoice&.payable?
-    / If xero invoice is present, only show button to view Xero invoice
-    - if workflow.invoice.xero_invoice_id.present?
-      = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{workflow.invoice.xero_invoice_id}", role: 'button', target: "_blank", class: 'btn btn-warning btn-sm mb-2', target: :_blank
-    / Else, check if workflow client is already on Xero if not show button to add client to Xero first. After client is on Xero, show button to send invoice to Xero.
-    - else
-      = link_to('Add Client to Xero', xero_create_symphony_client_path(workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm mb-2') if workflow.invoice.xero_contact_id.nil?
-      - if workflow.invoice.approved?
-        = link_to("Send to Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(workflow.template.slug, workflow.id, approved: "approved"), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mb-2')
-        br
-        = link_to("Send to Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(workflow.template.slug, workflow.id, payment: "payment"), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mb-2')
-      - else
-        = link_to('Approve invoice', edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id), role: 'button', target: "_blank", class: 'btn btn-success btn-sm mb-2')
-  - elsif workflow.invoice&.receivable?
-    = link_to("Not invoice payable", '#', role: 'button', class: 'btn btn-primary btn-sm mb-2 disabled')
+  - if workflow.invoice.present?
+    = link_to "Start", edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id, workflow_action_id: action.id), class: "btn btn-success btn-sm mb-2 #{"disabled" if action.task.check_previous.get_workflow_action(workflow.company, workflow.id).completed == false}" 
   - else
-    = link_to("No invoice found", '#', role: 'button', class: 'btn btn-primary btn-sm mb-2 disabled')
+    = link_to "Start", '#', role: 'button', class: 'btn btn-success btn-sm mb-2 disabled'
+
+  / - if workflow.invoice&.payable?
+  /   / If xero invoice is present, only show button to view Xero invoice
+  /   - if workflow.invoice.xero_invoice_id.present?
+  /     = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{workflow.invoice.xero_invoice_id}", role: 'button', target: "_blank", class: 'btn btn-warning btn-sm mb-2', target: :_blank
+  /   / Else, check if workflow client is already on Xero if not show button to add client to Xero first. After client is on Xero, show button to send invoice to Xero.
+  /   - else
+  /     = link_to('Add Client to Xero', xero_create_symphony_client_path(workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm mb-2') if workflow.invoice.xero_contact_id.nil?
+  /     - if workflow.invoice.approved?
+  /       = link_to("Send to Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(workflow.template.slug, workflow.id, approved: "approved"), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mb-2')
+  /       br
+  /       = link_to("Send to Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(workflow.template.slug, workflow.id, payment: "payment"), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mb-2')
+  /     - else
+  /       = link_to('Start', edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id), role: 'button', target: "_blank", class: "btn btn-success btn-sm mb-2 #{"disabled" if action.task.check_previous.get_workflow_action(workflow.company, workflow.id).completed == false}")
+  / - elsif workflow.invoice&.receivable?
+  /   = link_to("Not invoice payable", '#', role: 'button', class: 'btn btn-primary btn-sm mb-2 disabled')
+  / - else
+  /   = link_to("No invoice found", '#', role: 'button', class: 'btn btn-primary btn-sm mb-2 disabled')
