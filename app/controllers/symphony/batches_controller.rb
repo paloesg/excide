@@ -69,8 +69,7 @@ class Symphony::BatchesController < ApplicationController
 
   def batch_completed 
     Batch.all.includes(:workflows).each do |batch|
-      batch.completed = true if batch.workflows.all?{ |wf| wf.completed? }
-      batch.save
+      batch.update_attribute('completed', true) if batch.workflows.all?{ |wf| wf.completed? }
     end
   end
 end
