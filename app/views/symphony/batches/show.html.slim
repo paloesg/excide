@@ -37,14 +37,13 @@
                   i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
                 - else
                   - wf.documents.each do |d|
-                    = link_to symphony_document_path(d), target: "_blank"
-                      i.ti-file.icon.mr-3.text-center.large-icon
+                    = link_to d.filename, symphony_document_path(d), target: "_blank"
               td
                 - if wf.invoice.blank?
-                  i.ti-receipt.icon.mr-3.text-center.large-icon.gray-icon
+                  i.ti-receipt.icon.mr-3.text-center.medium-icon.gray-icon
                 - else
                   = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
-                    i.ti-receipt.icon.mr-3.large-icon
+                    i.ti-receipt.icon.mr-3.medium-icon
               - section.tasks.includes(:role).order(position: :asc).each do |task|
                 td class="text-center #{'important-task' if task.important}"
                   = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
