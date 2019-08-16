@@ -15,7 +15,7 @@ class Batch < ApplicationRecord
 
   def action_completed_progress
     # Check for case where total_action is 0 to prevent NaN error
-    total_action == 0 ? 0 : ((get_completed_actions.count.to_f / total_action) * 100).round(0)
+    total_action == 0 ? 0 : ((get_completed_actions.count.to_f / total_action) * 100).round(0) if total_action.present?
   end
 
   def average_time_taken_per_task
