@@ -283,6 +283,42 @@ class SlackService
     end
   end
 
+  def task_notification(task, action, user)
+    params = {
+      attachments: [
+        {
+          title: action.workflow.template.title,
+          fallback: 'Task ID ' + task.id.to_s,
+          pretext: 'Please be reminded to perform this task:',
+          color: WARNING,
+          fields: [
+            {
+              title: 'Workflow Id',
+              value: action.workflow.id,
+              short: true
+            },
+            {
+              title: 'Client',
+              value: action.workflow.workflowable&.name,
+              short: true
+            },
+            {
+              title: 'Task',
+              value: task.instructions,
+            },
+            {
+              title: 'Assigned To',
+              value: user.full_name,
+              short: true
+            },
+          ]
+        }
+      ]
+    }
+    @params = generate_payload(params)
+    self
+  end
+
   private
 
   def generate_payload(params)
