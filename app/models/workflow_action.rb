@@ -11,6 +11,7 @@ class WorkflowAction < ApplicationRecord
   after_save :clear_reminders, if: :ordered_workflow_task_completed?
   after_save :trigger_next_task, if: :ordered_workflow_task_completed?
   after_save :send_email_summary , if: :check_all_actions_completed?
+  after_save :send_one_email, if: :all_actions_task_group_completed?
 
   belongs_to :task
   belongs_to :company
@@ -23,6 +24,9 @@ class WorkflowAction < ApplicationRecord
   has_many :documents, dependent: :destroy
 
   has_one :sub_workflow, class_name: 'Workflow'
+
+  def send_one_email
+  end
 
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_workflow_action(self.company, self.workflow.id)
@@ -139,5 +143,10 @@ class WorkflowAction < ApplicationRecord
   #this callback checks that all actions in the workflow are completed before sending out the email summary
   def check_all_actions_completed?
     self.workflow.workflow_actions.all? {|action| action.completed? }
+  end
+
+  # get all the actions by task grouping for batch
+  def all_actions_task_group_completed?
+    self.workflow.batch ? WorkflowAction.where(workflow: [self.workflow.batch.workflows.pluck(:id)], task_id: self.task.id).map{|wa| wa.completed}.uniq.first.eql?(true) : false
   end
 end
