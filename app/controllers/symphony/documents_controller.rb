@@ -36,15 +36,14 @@ class Symphony::DocumentsController < ApplicationController
   end
 
   def create
-    @document = Document.new(document_params)
-    authorize @document
-    @document = GenerateDocumentAction.new(@document, @user, @company, params[:workflow], params[:workflow_action], params[:document_type], params[:document][:template_id]).run
- 
+    @generate_document = GenerateDocumentAction.new(@user, @company, params[:workflow], params[:workflow_action], document_params, params[:document_type], params[:document][:template_id], params[:batch_id]).run
+
+    authorize @generate_document.document
     respond_to do |format|
-      if @document.save
+      if @generate_document.success?
         if params[:document_type] == 'batch-uploads'
            #return output in json
-          output = { :status => "ok", :message => "batch documents created", :document => @document.id, :batch => @document.workflow.batch.id, :template => @document.workflow.template.slug}
+          output = { :status => "ok", :message => "batch documents created", :document => @generate_document.document.id, :batch => @generate_document.document.workflow.batch.id, :template => @generate_document.document.workflow.template.slug}
           format.json  { render :json => output }
         elsif params[:upload_type] == "batch_upload"
           @batch = @document.workflow.batch
@@ -55,14 +54,18 @@ class Symphony::DocumentsController < ApplicationController
             format.json { render json: @actions.errors, status: :unprocessable_entity }            
           end
         else
-          format.html { redirect_to @document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(@document.workflow.template.slug, @document.workflow.id), notice: 'Document was successfully created.' }
-          format.json { render :show, status: :created, location: @document}
+          format.html { redirect_to @generate_document.document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(@generate_document.document.workflow.template.slug, @generate_document.document.workflow.id), notice: 'Document was successfully created.' }
         end
       else
         set_templates
-
-        format.html { render :new }
-        format.json { render json: @document.errors, status: :unprocessable_entity }
+        error_message = "There was an error creating document of batch. Please contact your admin with details of this error: #{@generate_document.message}"
+        flash[:alert] = error_message
+        if params[:document_type] == 'batch-uploads'
+          output = { :status => "error", :message => error_message}
+          format.json  { render :json => output }
+        else
+          format.html { render :new }
+        end
       end
     end
   end

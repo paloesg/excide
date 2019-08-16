@@ -10,7 +10,7 @@
       li.breadcrumb-item #{@batch.name}
     h1
       | Batch #{@batch.name}
-- @sections.each do |section|
+- @batch.template.sections.each do |section|
   .card.scrollbar.mb-3
     h5.card-header
       | #{section.section_name} - #{section.tasks.count.to_s} tasks

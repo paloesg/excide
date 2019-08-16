@@ -1,3 +1,4 @@
+#DEPRECATED, PLEASE REFER TO SEND_USER_REMINDERS.RB INSTEAD.
 class SendReminder
   include Service
 
