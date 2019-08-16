@@ -145,8 +145,8 @@ class WorkflowAction < ApplicationRecord
     self.workflow.workflow_actions.all? {|action| action.completed? }
   end
 
-  # get all the actions by task grouping for batch
+  # Check if workflow created from batch, get all the actions by task grouping for batch, check the all action group is completed
   def all_actions_task_group_completed?
-    self.workflow.batch ? WorkflowAction.where(workflow: [self.workflow.batch.workflows.pluck(:id)], task_id: self.task.id).map{|wa| wa.completed}.uniq.first.eql?(true) : false
+    self.workflow.batch ? WorkflowAction.where(workflow: [self.workflow.batch.workflows.pluck(:id)], task_id: self.task.id).pluck(:completed).uniq.exclude?(false) : false
   end
 end
