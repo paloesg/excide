@@ -25,7 +25,7 @@ class Batch < ApplicationRecord
 
   #Since each template's workflows have the same workflow_actions, can get the total number of actions by multiplying the number of workflows in batch with the workflow_actions of ANY one workflow
   def total_action
-    self.workflows.count * self.workflows[0].workflow_actions.count
+    self.workflows.present? ? (self.workflows.count * self.workflows[0].workflow_actions.count) : 0
   end
 
   #get all the completed workflow action in an array
