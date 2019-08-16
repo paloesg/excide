@@ -33,6 +33,11 @@ class Batch < ApplicationRecord
     self.workflows.includes(:workflow_actions).where(workflow_actions: {completed: true})
   end
 
+  # get all the actions by task grouping
+  def get_current_actions(task)
+    WorkflowAction.where(workflow: [self.workflows.pluck(:id)]).where(task_id: task.id)
+  end
+
   def name
     self.created_at.strftime('%y%m%d-%H%M')
   end
