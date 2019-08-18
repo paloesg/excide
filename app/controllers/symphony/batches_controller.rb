@@ -5,7 +5,6 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_company
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
-  before_action :batch_completed, only: [:index]
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -13,6 +12,10 @@ class Symphony::BatchesController < ApplicationController
   def index
     #Batch policy scope
     @batches = policy_scope(Batch).includes(:workflows, :template, :user)
+    @batches.each do |batch|
+      #update batch to true only when the action_completed_progress hits 100%
+      batch.update_attribute('completed', true) if batch.action_completed_progress == 100
+    end
     @completed_batches = @batches.where(completed: true)
 
     if current_user.has_role? :admin, @company
@@ -65,11 +68,5 @@ class Symphony::BatchesController < ApplicationController
 
   def set_s3_direct_post
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
-  end
-
-  def batch_completed 
-    Batch.all.includes(:workflows).each do |batch|
-      batch.update_attribute('completed', true) if batch.workflows.all?{ |wf| wf.completed? }
-    end
   end
 end
