@@ -36,4 +36,11 @@ class Batch < ApplicationRecord
   def name
     self.created_at.strftime('%y%m%d-%H%M')
   end
+
+  def check_and_update_workflow_completed
+    workflows = self.workflows.includes(:workflow_actions)
+    workflows.each do |wf|
+      wf.update_attribute('completed', true) if wf.workflow_actions.present? and wf.workflow_actions.all?{ |wfa| wfa.completed? }
+    end
+  end
 end

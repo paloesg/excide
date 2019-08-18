@@ -3,7 +3,7 @@ class Symphony::BatchesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_batch_and_workflow_completed, only: [:show]
+  before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
   after_action :verify_authorized, except: :index
@@ -41,6 +41,8 @@ class Symphony::BatchesController < ApplicationController
 
   def show
     authorize @batch
+    #check and update workflow if all its actions are completed
+    @batch.check_and_update_workflow_completed
     @completed_workflow_count = @batch.workflows.where(completed: true).count
     @current_user = current_user
     @sections = @batch.template.sections
@@ -62,13 +64,7 @@ class Symphony::BatchesController < ApplicationController
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
-  def set_batch_and_workflow_completed
+  def set_batch
     @batch = Batch.find(params[:id])
-    #set workflow to completed true if all it's workflow_actions are completed
-    @workflows = @batch.workflows.includes(:workflow_actions)
-    @workflows.each do |wf|
-      wf.completed = true if wf.workflow_actions.present? and wf.workflow_actions.all?{ |wfa| wfa.completed? }
-      wf.save
-    end
   end
 end
