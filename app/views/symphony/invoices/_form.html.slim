@@ -82,6 +82,11 @@
           .form-group.col-md-2
             = f.label :total, 'Total (including GST): ', class: 'mr-2'
             = f.number_field :total, class: 'form-control', step: 0.01
+.row
+  .col-md-12
+    .form-check
+      = f.check_box :status, {:class => "form-check-input", :checked => @invoice.rejected?}, "rejected", "approved"
+      = f.label :status, 'Mark as rejected', class: 'form-check-label'
 .btn-group role='group'
   - if @previous_document.present?
     = f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-primary'

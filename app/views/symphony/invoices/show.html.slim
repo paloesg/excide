@@ -50,7 +50,7 @@
       p No Tax
   .col-md-2.col-sm-4
     strong Status:
-    p = @invoice.approved ? 'Approved' : 'Draft'
+    p = @invoice.status
   .offset-md-4.col-md-2.offset-sm-8.col-sm-4
     - if @invoice.workflow.archive.present?
       span.badge.badge-danger Workflow Archived
