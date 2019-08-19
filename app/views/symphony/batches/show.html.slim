@@ -41,7 +41,7 @@
                           .card-body
                             - if File.extname(d.file_url) == '.pdf'
                               p = d.filename
-                              a.btn.btn-link.pdf-preview tabindex="0" data-placement="auto" data-container="body" data-content=""  data-document="https:#{d.file_url}" preview
+                              a.btn.btn-link.pdf-preview tabindex="0" data-placement="auto" data-container="body" data-content=""  data-document="https:#{d.file_url}" Preview
                             - else
                               p = d.filename
                               a.btn.btn-link data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid'/>" Preview
