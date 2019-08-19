@@ -13,11 +13,14 @@
   .col-sm-10
     h2
       | Batch Name: #{@batch.name}
+  .col-sm-2
+    h5
+      | #{@completed_workflow_count} of #{@batch.workflows.count} completed workflows
 - @sections.each do |section|
   .card.scrollbar.mb-3
     h5.card-header
       | #{section.section_name} - #{section.tasks.count.to_s} tasks
-      .pull-right #{@completed_workflow_count} of #{@batch.workflows.count} files
+      .pull-right #{@batch.workflows.count} files
     .card-body
       table.table.table-hover
         thead
