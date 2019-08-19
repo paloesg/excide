@@ -11,7 +11,6 @@ class WorkflowAction < ApplicationRecord
   after_save :clear_reminders, if: :ordered_workflow_task_completed?
   after_save :trigger_next_task, if: :ordered_workflow_task_completed?
   after_save :send_email_summary , if: :check_all_actions_completed?
-  after_save :send_one_email, if: :all_actions_task_group_completed?
 
   belongs_to :task
   belongs_to :company
@@ -25,9 +24,6 @@ class WorkflowAction < ApplicationRecord
 
   has_one :sub_workflow, class_name: 'Workflow'
 
-  def send_one_email
-  end
-
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_workflow_action(self.company, self.workflow.id)
     next_action.update(deadline: check_week_day(Date.current + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
@@ -36,10 +32,14 @@ class WorkflowAction < ApplicationRecord
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
 
     # Trigger email notification for next task if role present
+    users = User.with_role(next_task.role.name.to_sym, self.company)
     if next_task.role.present? and self.workflow.batch.nil?
-      users = User.with_role(next_task.role.name.to_sym, self.company)
       users.each do |user|
         NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
+      end
+    elsif next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?
+      users.each do |user|
+        NotificationMailer.task_notification(next_task, next_action, user).deliver_later
       end
     end
   end
