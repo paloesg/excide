@@ -35,9 +35,16 @@
                   - if wf.documents.empty?
                     i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
                   - else
-                    - wf.documents.each do |d|
-                      = link_to symphony_document_path(d), target: "_blank"
-                        i.ti-file.icon.mr-3.text-center.large-icon
+                    .row
+                      - wf.documents.each do |d|
+                        .d-flex.card-transparent.text-center
+                          .card-body
+                            - if File.extname(d.file_url) == '.pdf'
+                              p = d.filename
+                              a.btn.btn-link.pdf-preview tabindex="0" data-placement="auto" data-container="body" data-content=""  data-document="https:#{d.file_url}" Preview
+                            - else
+                              p = d.filename
+                              a.btn.btn-link data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid'/>" Preview
                 td
                   - if wf.invoice.blank?
                     i.ti-receipt.icon.mr-3.text-center.large-icon.gray-icon
