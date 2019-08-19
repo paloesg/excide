@@ -6,7 +6,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: [:index, :create]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -37,10 +37,18 @@ class Symphony::BatchesController < ApplicationController
 
   def create
     @template = Template.find(params[:batch][:template_id])
-    @batch = GenerateBatch.new(current_user, @template).run
-    authorize @batch
+    @generate_batch = GenerateBatch.new(current_user, @template).run
+    authorize @generate_batch.batch
     respond_to do |format|
-      format.json  { render :json => {:batch_id => @batch.id} }
+      if @generate_batch.success?
+        flash[:notice] = "Batch created"
+        format.json  { render :json => {:status => "ok", :batch_id => @generate_batch.batch.id} }
+      else
+        error_message = "There was an error creating this batch. Please contact your admin with details of this error: #{@generate_batch.message}"
+        flash[:alert] = error_message
+        output = { :status => "error", :message => error_message}
+        format.json  { render :json => output }
+      end
     end
   end
 
@@ -59,7 +67,7 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def set_batch
-    @batch = Batch.find(params[:id])
+    @batch = policy_scope(Batch).find(params[:id])
   end
 
   def set_company
