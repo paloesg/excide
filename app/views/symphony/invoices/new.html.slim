@@ -12,6 +12,12 @@
   .loading
     .loader
   .col-md-4.forward
+    .document-info
+      - if @workflow.batch.present?
+        | Batch Name: #{@workflow.batch.name}
+        br
+      - if @document.present?        
+        | File Name: #{@document.filename}
     - if @documents.empty?
       | No documents available. Please upload documents first.
     - else
@@ -23,5 +29,8 @@
   .col-md-8
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = render 'form', f: f
-      = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning pull-right ml-2'
-      = f.submit 'Create Invoice', class: 'btn btn-primary pull-right'
+      - if @workflow.batch.present?
+        = link_to "Batch Listing", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning'
+      - else
+        = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
+      = f.submit 'Save & Next', class: 'btn btn-primary pull-right'
