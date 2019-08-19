@@ -1,4 +1,4 @@
 - if action.completed?
   = render "symphony/batches/tasks/completed"
 - else
-  = link_to 'Start', new_symphony_document_path(workflow: workflow.id, workflow_action: action.id, upload_type: 'batch_upload'), role: 'button', class: "btn btn-success btn-sm mb-2 #{"disabled" if !action.task.check_previous.get_workflow_action(workflow.company, workflow.id).completed? or current_user.roles.exclude? action.task.role}"
+  = link_to 'Start', new_symphony_document_path(workflow: workflow.id, workflow_action: action.id, upload_type: 'batch_upload'), role: 'button', class: "btn btn-success btn-sm mb-2 #{"disabled" if !action.task.first? and (!action.task.check_previous.get_workflow_action(workflow.company, workflow.id)&.completed? or current_user.roles.exclude? action.task.role)}"
