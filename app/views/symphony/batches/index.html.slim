@@ -4,28 +4,35 @@
       li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
       li.breadcrumb-item Batches
-    h1
-      | Batches Listing
+    h1 Symphony AP
 .row
   .col-sm-12
     .card
-      h5.card-header Batches Generated
+      h5.card-header
+        | List of batches
+        .pull-right #{@completed_batches.count} of #{@batches.count} completed
       .table-responsive
         table.table.table-hover
           thead
             tr
-              th Name
-              th Template
-              th Created by
+              th S/N
+              th Batch Name
+              th Created By
+              th Last Updated
+              th No. Completed Workflows
+              th No. of Workflows
               th Progress
           tbody
-            - @batches_paginate.each do |batch|
+            - @batches_paginate.each_with_index do |batch, index|
               tr
+                td = index + 1
                 td = link_to batch.name, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
-                td = batch.template.title
                 td = batch.user&.full_name
+                td = batch.updated_at.strftime('%y%m%d-%H:%M:%S')
+                td = batch.get_completed_workflows
+                td = batch.workflows.count
                 td
                   .progress
-                    .progress-bar.progress-bar-striped aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{batch.action_completed_progress}%") #{batch.action_completed_progress}%
+                    .progress-bar.progress-bar-striped aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{batch.action_completed_progress ? batch.action_completed_progress : 100}%") #{batch.action_completed_progress ? (batch.action_completed_progress.to_s + "%") : "ERROR ~ Please delete batch"}
         .card-footer.pt-4
           = paginate @batches_paginate, views_prefix: 'dashboards'

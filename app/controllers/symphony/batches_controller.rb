@@ -6,12 +6,17 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: [:index, :create]
   after_action :verify_policy_scoped, only: :index
 
   def index
     #Batch policy scope
     @batches = policy_scope(Batch).includes(:workflows, :template, :user)
+    @batches.each do |batch|
+      #update batch to true only when the action_completed_progress hits 100%
+      batch.update_attribute('completed', true) if batch.action_completed_progress == 100
+    end
+    @completed_batches = @batches.where(completed: true)
 
     if current_user.has_role? :admin, @company
       @batches = @batches.order(created_at: :desc)
@@ -32,10 +37,18 @@ class Symphony::BatchesController < ApplicationController
 
   def create
     @template = Template.find(params[:batch][:template_id])
-    @batch = GenerateBatch.new(current_user, @template).run
-    authorize @batch
+    @generate_batch = GenerateBatch.new(current_user, @template).run
+    authorize @generate_batch.batch
     respond_to do |format|
-      format.json  { render :json => {:batch_id => @batch.id} }
+      if @generate_batch.success?
+        flash[:notice] = "Batch created"
+        format.json  { render :json => {:status => "ok", :batch_id => @generate_batch.batch.id} }
+      else
+        error_message = "There was an error creating this batch. Please contact your admin with details of this error: #{@generate_batch.message}"
+        flash[:alert] = error_message
+        output = { :status => "error", :message => error_message}
+        format.json  { render :json => output }
+      end
     end
   end
 
@@ -44,7 +57,7 @@ class Symphony::BatchesController < ApplicationController
     @current_user = current_user
     @sections = @batch.template.sections
     @templates = policy_scope(Template).assigned_templates(current_user)
-    @roles = @current_user.roles.where(resource_id: @company.id, resource_type: "Company")
+    @roles = @current_user.roles.includes(:resource).where(resource_id: @current_user.company.id, resource_type: "Company")
   end
 
   private
@@ -54,7 +67,7 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def set_batch
-    @batch = Batch.find(params[:id])
+    @batch = policy_scope(Batch).find(params[:id])
   end
 
   def set_company

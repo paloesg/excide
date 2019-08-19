@@ -98,7 +98,7 @@ class Template < ApplicationRecord
   end
 
   def self.assigned_templates(user)
-    if user.has_role? :admin, user.company
+    if user.has_role?(:admin, user.company) or user.has_role? :superadmin
       Template.where(company: user.company).order(:created_at)
     else
       # Work backwards from tasks to get to the templates that have tasks assigned to the user role
