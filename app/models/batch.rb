@@ -13,6 +13,15 @@ class Batch < ApplicationRecord
     order("batches.created_at DESC").first
   end
 
+  #get all the completed workflow action in an array
+  def get_completed_actions
+    self.workflows.includes(:workflow_actions).map{ |wf| wf.workflow_actions.where(completed: true) }.flatten.compact
+  end
+
+  def get_completed_workflows
+    self.workflows.where(completed: true).count
+  end
+
   def action_completed_progress
     # Check for case where total_action is 0 to prevent NaN error
     total_action == 0 ? 0 : ((get_completed_actions.count.to_f / total_action) * 100).round(0) if total_action.present?
@@ -26,11 +35,6 @@ class Batch < ApplicationRecord
   #Since each template's workflows have the same workflow_actions, can get the total number of actions by multiplying the number of workflows in batch with the workflow_actions of ANY one workflow
   def total_action
     self.workflows.present? ? (self.workflows.count * self.workflows[0].workflow_actions.count) : 0
-  end
-
-  #get all the completed workflow action in an array
-  def get_completed_actions
-    self.workflows.includes(:workflow_actions).where(workflow_actions: {completed: true})
   end
 
   def name
