@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    connect_xero_organisation
+    XeroSessionsController.connect_xero_organisation(session)
     
     # if current_user.has_role? :superadmin
     #   # stored_location_for(resource) || admin_root_path
@@ -41,13 +41,5 @@ class ApplicationController < ActionController::Base
 
     flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
     redirect_to symphony_root_path
-  end
-
-  def connect_xero_organisation  
-    @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "xero-privatekey.pem")
-    request_token = @xero_client.request_token(oauth_callback: "http://localhost:3000/xero_session_callback")
-    session[:request_token] = request_token.token
-    session[:request_secret] = request_token.secret
-    request_token.authorize_url
   end
 end

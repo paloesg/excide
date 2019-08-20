@@ -8,15 +8,15 @@ module Adapter
       )
       if company
         @xero_client.authorize_from_access(
-          company.access_secret,
-          company.access_key
+          company.access_key,
+          company.access_secret
         )
       end
 
-      if company.expires_at.present? and (Time.at(company.expires_at) < Time.now)
-        #if expiring time is less than current time, it means authorization has been expired.
-        @xero_client.renew_access_token(company.access_token['token'], company.access_secret ,company.session_handle) 
-      end
+      # if company.expires_at.present? and (Time.at(company.expires_at) < Time.now)
+      #   #if expiring time is less than current time, it means authorization has been expired.
+      #   @xero_client.renew_access_token(company.access_token['token'], company.access_secret ,company.session_handle) 
+      # end
     end
 
     def get_contacts
