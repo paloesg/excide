@@ -43,6 +43,9 @@
           li.nav-item
             = link_to symphony_search_path, class: 'nav-link' do
               i.ti-search
+        li.nav-item
+          = link_to "https://github.com/hschin/excide-manuscript/wiki", class: 'nav-link' do
+            i.ti-help
         - if current_user.has_role?(:admin, @company) or current_user.has_role?(:superadmin)
           li.nav-item.dropdown
             a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Admin
