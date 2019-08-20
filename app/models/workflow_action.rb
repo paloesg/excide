@@ -73,6 +73,11 @@ class WorkflowAction < ApplicationRecord
     WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later
   end
 
+  # Check if workflow created from batch, get all the actions by task grouping for batch, check the all action group is completed
+  def all_actions_task_group_completed?
+    self.workflow.batch ? WorkflowAction.where(workflow: [self.workflow.batch.workflows.pluck(:id)], task_id: self.task.id).pluck(:completed).uniq.exclude?(false) : false
+  end
+
   private
 
   def clear_reminders
@@ -143,10 +148,5 @@ class WorkflowAction < ApplicationRecord
   #this callback checks that all actions in the workflow are completed before sending out the email summary
   def check_all_actions_completed?
     self.workflow.workflow_actions.all? {|action| action.completed? }
-  end
-
-  # Check if workflow created from batch, get all the actions by task grouping for batch, check the all action group is completed
-  def all_actions_task_group_completed?
-    self.workflow.batch ? WorkflowAction.where(workflow: [self.workflow.batch.workflows.pluck(:id)], task_id: self.task.id).pluck(:completed).uniq.exclude?(false) : false
   end
 end
