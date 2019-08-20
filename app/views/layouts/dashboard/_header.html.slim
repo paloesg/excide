@@ -39,11 +39,14 @@
                 .badge.badge-pill.badge-secondary.align-text-bottom = t.company_workflows(current_user.company).count
         li.nav-item = link_to "Batches", symphony_batches_index_path, class: 'nav-link'
       ul.navbar-nav.ml-auto
+        - if current_user.has_role? :superadmin
+          li.nav-item
+            = link_to symphony_search_path, class: 'nav-link' do
+              i.ti-search
         - if current_user.has_role?(:admin, @company) or current_user.has_role?(:superadmin)
           li.nav-item.dropdown
             a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Admin
             .dropdown-menu
-              = link_to "Search Workflows", symphony_search_path, class: 'dropdown-item'
               = link_to "Manage Users", symphony_users_path, class: 'dropdown-item'
               = link_to "Manage Templates", symphony_templates_path, class: 'dropdown-item'
               = link_to "Company Details", edit_company_path, class: 'dropdown-item'
