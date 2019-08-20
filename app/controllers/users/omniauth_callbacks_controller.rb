@@ -1,23 +1,23 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  def xero
-    auth = request.env["omniauth.auth"]
-    # session[:xero_auth] = {
-    #   access_token: auth.credentials.token,
-    #   access_key:   auth.credentials.secret,
-    #   session_handle: auth.credentials.session_handle,
-    #   expires_at: auth.credentials.expires_at
-    # }
-    #save company's xero details
-    company = current_user.company
-    company.access_token = auth.credentials.access_token
-    company.access_secret = auth.credentials.secret
-    company.access_key = auth.credentials.token
-    company.session_handle = auth.credentials.session_handle
-    company.expires_at = auth.credentials.expires_at
-    company.save
-    set_flash_message(:notice, :success, :kind => "Xero")
-    redirect_to session[:previous_url]
-  end
+  # def xero
+  #   auth = request.env["omniauth.auth"]
+  #   # session[:xero_auth] = {
+  #   #   access_token: auth.credentials.token,
+  #   #   access_key:   auth.credentials.secret,
+  #   #   session_handle: auth.credentials.session_handle,
+  #   #   expires_at: auth.credentials.expires_at
+  #   # }
+  #   #save company's xero details
+  #   company = current_user.company
+  #   company.access_token = auth.credentials.access_token
+  #   company.access_secret = auth.credentials.secret
+  #   company.access_key = auth.credentials.token
+  #   company.session_handle = auth.credentials.session_handle
+  #   company.expires_at = auth.credentials.expires_at
+  #   company.save
+  #   set_flash_message(:notice, :success, :kind => "Xero")
+  #   redirect_to session[:previous_url]
+  # end
 
   def linkedin
     auth = request.env["omniauth.auth"]

@@ -1,11 +1,4 @@
 GIT
-  remote: https://github.com/Jonathanlau92/omniauth-xero.git
-  revision: 65e4e64f62c967976565d9914bdebe8537f78986
-  specs:
-    omniauth-xero (1.0.2)
-      omniauth-oauth (~> 1.0)
-
-GIT
   remote: https://github.com/eddietejeda/administrate-field-json.git
   revision: 53b1099be0298b2384bf3ff3d168e168d5fbd875
   specs:
@@ -338,9 +331,6 @@ GEM
       rack (>= 1.6.2, < 3)
     omniauth-linkedin-oauth2 (1.0.0)
       omniauth-oauth2
-    omniauth-oauth (1.1.0)
-      oauth
-      omniauth (~> 1.0)
     omniauth-oauth2 (1.3.1)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
@@ -632,7 +622,6 @@ DEPENDENCIES
   omniauth
   omniauth-linkedin-oauth2
   omniauth-oauth2 (~> 1.3.1)
-  omniauth-xero!
   pg (>= 0.18, < 2.0)
   popper_js
   premailer-rails
