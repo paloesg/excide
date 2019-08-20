@@ -14,17 +14,19 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.has_role? :superadmin
-      stored_location_for(resource) || admin_root_path
-    elsif current_user.has_role? :contractor, :any
-      conductor_user_path current_user
-    elsif current_user.has_role? :shared_service, :any
-      symphony_batches_path
-    elsif current_user.company.present?
-      symphony_root_path
-    else
-      session[:previous_url] || root_path
-    end
+    connect_xero_organisation
+    
+    # if current_user.has_role? :superadmin
+    #   # stored_location_for(resource) || admin_root_path
+    # elsif current_user.has_role? :contractor, :any
+    #   conductor_user_path current_user
+    # elsif current_user.has_role? :shared_service, :any
+    #   symphony_batches_path
+    # elsif current_user.company.present?
+    #   symphony_root_path
+    # else
+    #   session[:previous_url] || root_path
+    # end
   end
 
   def current_user
@@ -39,5 +41,13 @@ class ApplicationController < ActionController::Base
 
     flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
     redirect_to symphony_root_path
+  end
+
+  def connect_xero_organisation  
+    @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "xero-privatekey.pem")
+    request_token = @xero_client.request_token(oauth_callback: "http://localhost:3000/xero_session_callback")
+    session[:request_token] = request_token.token
+    session[:request_secret] = request_token.secret
+    request_token.authorize_url
   end
 end
