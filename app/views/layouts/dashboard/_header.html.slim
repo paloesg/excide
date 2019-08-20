@@ -38,6 +38,7 @@
                 ' #{t.title}
                 .badge.badge-pill.badge-secondary.align-text-bottom = t.company_workflows(current_user.company).count
         li.nav-item = link_to "Batches", symphony_batches_index_path, class: 'nav-link'
+      ul.navbar-nav.ml-auto
         - if current_user.has_role?(:admin, @company) or current_user.has_role?(:superadmin)
           li.nav-item.dropdown
             a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Admin
