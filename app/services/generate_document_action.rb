@@ -46,13 +46,10 @@ class GenerateDocumentAction
   def generate_workflow
     if @document_type_param == 'batch-uploads'
       @template = Template.find(@document_template_param)
-      @batch = Batch.find(@batch_id)
       # Create new workflow
       @workflow = Workflow.new(user: @document.user, company: @document.company, template: @template, workflowable: @client)
       @workflow.template_data(@template)
-      # Set workflow to belong to the most recently created batch
-      # TODO: Fix concurrency issues if 2 people create batch at the same time
-      @workflow.batch = @batch
+      @workflow.batch = Batch.find(@batch_id)
       @workflow.save
     elsif @workflow_param.present?
       # Document belongs to workflow
