@@ -15,7 +15,6 @@ class XeroSessionsController < ApplicationController
       # begin
       @xero_client.authorize_from_request(session[:request_token], session[:request_secret], oauth_verifier: params[:oauth_verifier])
       company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle)
-      session[:xero_auth] = { access_token: @xero_client.access_token }
       session.delete(:request_token)
       session.delete(:request_secret)
 
