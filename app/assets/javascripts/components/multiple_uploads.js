@@ -85,7 +85,7 @@ $(document).on("turbolinks:load", function() {
     };
     documentUpload.on("addedfile", function (file) {
       // Check if file name are same & rename the file
-      if (this.files.length) {
+      if (this.files.length && $('#template_id').val()) {
         let _i, _len;
         for (_i = 0, _len = this.files.length; _i < _len - 1; _i++) {
           if (this.files[_i].name === file.name) {
@@ -96,9 +96,15 @@ $(document).on("turbolinks:load", function() {
             documentUpload.addFile(renameFile);
           }
         }
+        //activate button submit
+        $('#drag-and-drop-submit').removeAttr('disabled');
       }
-      //activate button submit
-      $('#drag-and-drop-submit').removeAttr('disabled');
+    });
+    // active button submit if any files on dropzone, when any template selected
+    $('#template_id').change(function() {
+      if (documentUpload.files.length) {
+        $('#drag-and-drop-submit').removeAttr('disabled');
+      }
     });
     $("#drag-and-drop-submit").click(function(){
       $.post("/symphony/batches", {
