@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_16_081328) do
+ActiveRecord::Schema.define(version: 2019_08_20_091106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -235,8 +235,10 @@ ActiveRecord::Schema.define(version: 2019_08_16_081328) do
     t.bigint "user_id"
     t.uuid "workflow_id"
     t.bigint "company_id"
+    t.bigint "workflow_action_id"
     t.index ["company_id"], name: "index_invoices_on_company_id"
     t.index ["user_id"], name: "index_invoices_on_user_id"
+    t.index ["workflow_action_id"], name: "index_invoices_on_workflow_action_id"
   end
 
   create_table "profiles", id: :serial, force: :cascade do |t|
@@ -523,6 +525,7 @@ ActiveRecord::Schema.define(version: 2019_08_16_081328) do
   add_foreign_key "documents", "workflows"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
+  add_foreign_key "invoices", "workflow_actions"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "sections", column: "survey_section_id"
