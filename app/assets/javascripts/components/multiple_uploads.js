@@ -61,7 +61,6 @@ $(document).on("turbolinks:load", function() {
   if ($(".multiple_uploads").length) {
     $('.loading').hide();
     var batchId="";
-    var templateSlug = $('#template_id').val();
     var cleanFilename = function (name) {
       fileName = name.split('.').slice(0, -1).join('.')
       get_extension = name.substring(name.lastIndexOf(".") + 1)
@@ -113,7 +112,7 @@ $(document).on("turbolinks:load", function() {
           documentUpload.processQueue();
         }
         else {
-          Turbolinks.visit('/symphony/batches/'+templateSlug+'/new');
+          Turbolinks.visit('/symphony/batches/'+$('#template_id').val()+'/new');
         }
       });
     });
@@ -146,7 +145,7 @@ $(document).on("turbolinks:load", function() {
         // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
         window.setTimeout(function() {
           $('.loading').hide();
-          Turbolinks.visit('/symphony/batches/'+templateSlug+'/'+batchId);
+          Turbolinks.visit('/symphony/batches/'+$('#template_id').val()+'/'+batchId);
         }, totalFile*1000);
       }
     });
