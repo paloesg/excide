@@ -63,7 +63,11 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.save
     if @invoice.update(invoice_params)
-      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id)
+      if @invoice.approved?
+        redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice has been approved!"
+      else
+        redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice has been updated!"
+      end
     else
       render 'edit'
     end
