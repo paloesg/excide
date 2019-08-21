@@ -15,7 +15,7 @@ class XeroSessionsController < ApplicationController
       # begin
       @xero_client.authorize_from_request(session[:request_token], session[:request_secret], oauth_verifier: params[:oauth_verifier])
       company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle)
-      # session[:xero_auth] = { access_token: @xero_client.access_token }
+      session[:xero_auth] = { access_token: @xero_client.access_token }
       session.delete(:request_token)
       session.delete(:request_secret)
       redirect_to edit_company_path(@company, xero: 'xero'), notice: "Settings have been saved"
@@ -26,17 +26,6 @@ class XeroSessionsController < ApplicationController
     else
       @organisation_detail = @company.xero_organisation
       @xero_organisation_accounts_details = @company.xero_organisation_accounts
-    end
-  end
-
-  private
-  def get_xero_client
-    @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "xero-privatekey.pem")
-    # Add AccessToken if authorised previously.
-    if session[:xero_auth]
-      @xero_client.authorize_from_access(
-        session[:xero_auth][:access_token],
-        session[:xero_auth][:access_key] )
     end
   end
 end

@@ -1,9 +1,14 @@
 module Adapter
   class Xero
-    def initialize(company)
+    def initialize(company, xero_auth)
       @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "xero-privatekey.pem")
       if company.expires_at.present? and (Time.at(company.expires_at) < Time.now)
         @xero_client.renew_access_token(company.access_key, company.access_secret, company.session_handle)
+        company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle)
+        @xero_client.authorize_from_access(
+          company.access_key,
+          company.access_secret
+        )
       else
         if company
           @xero_client.authorize_from_access(
