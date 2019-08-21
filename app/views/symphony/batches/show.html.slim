@@ -8,14 +8,17 @@
       li.breadcrumb-item
         a href="/symphony/#{@batch.template.slug}" #{@batch.template.title}
       li.breadcrumb-item #{@batch.name}
-    h1
-      | Batch #{@batch.name}
-- @batch.template.sections.each do |section|
+/ display number of completed workflows count
+.row
+  .col-sm-10
+    h2
+      | Batch Name: #{@batch.name}
+- @sections.each do |section|
   - if @batch.workflows.present?
     .card.scrollbar.mb-3
       h5.card-header
         | #{section.section_name} - #{section.tasks.count.to_s} tasks
-        .pull-right #{@batch.workflows.count} files
+        .pull-right #{@completed_workflow_count} of #{@batch.workflows.count} files completed
       .card-body
         table.table.table-hover
           thead
@@ -29,32 +32,39 @@
                       ' #{task.task_type.humanize}
                       i.ti-info-alt
           tbody
-            - @batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc).each do |wf|
+            - @batch.workflows.includes(:documents, :invoice).order(created_at: :asc).each do |wf|
+                tr
+                  td
+                    - if wf.documents.empty?
+                      i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
+                    - else
+                      .row
+                        - wf.documents.each do |d|
+                          .d-flex.card-transparent.text-center
+                            .card-body
+                              - if File.extname(d.file_url) == '.pdf'
+                                p = d.filename
+                                a.btn.btn-link.pdf-preview tabindex="0" data-placement="auto" data-container="body" data-content=""  data-document="https:#{d.file_url}" Preview
+                              - else
+                                p = d.filename
+                                a.btn.btn-link data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid'/>" Preview
+                  td
+                    - if wf.invoice.blank?
+                      i.ti-receipt.icon.mr-3.text-center.large-icon.gray-icon
+                    - else
+                      = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
+                        i.ti-receipt.icon.mr-3.large-icon
+                  - section.tasks.order(created_at: :asc).each do |task|
+                    td class="text-center #{'important-task' if task.important}"
+                      = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
+            tfoot
               tr
-                td
-                  - if wf.documents.empty?
-                    i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
-                  - else
-                    - wf.documents.each do |d|
-                      = link_to symphony_document_path(d), target: "_blank"
-                        i.ti-file.icon.mr-3.text-center.large-icon
-                td
-                  - if wf.invoice.blank?
-                    i.ti-receipt.icon.mr-3.text-center.large-icon.gray-icon
-                  - else
-                    = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id)
-                      i.ti-receipt.icon.mr-3.large-icon
-                - section.tasks.order(created_at: :asc).each do |task|
-                  td class="text-center #{'important-task' if task.important}"
-                    = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
-          tfoot
-            tr
-              th
-              th
-              - section.tasks.order(created_at: :asc).each do |task|
                 th
-                  .text-center
-                    = button_tag 'Complete All', type: 'button', class: "btn #{task.important ? 'btn-light' : 'btn-warning'} btn-sm checkall", disabled: task.important, id:"selectall-#{task.id}"
+                th
+                - section.tasks.order(created_at: :asc).each do |task|
+                  th
+                    .text-center
+                      = button_tag 'Complete All', type: 'button', class: "btn #{task.important ? 'btn-light' : 'btn-warning'} btn-sm checkall", disabled: task.important, id:"selectall-#{task.id}"
   - else
     .card.scrollbar.mb-3
       h5.card-header
