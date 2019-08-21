@@ -106,6 +106,7 @@ class Symphony::WorkflowsController < ApplicationController
     respond_to do |format|
       if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id)
         format.json { render json: @action.completed, status: :ok }
+        flash[:notice] = "You have successfully completed all outstanding items for your current task." if @action.all_actions_task_group_completed?
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
