@@ -1,6 +1,6 @@
 class InvoicePolicy < ApplicationPolicy
   def show?
-    (user == record.user) or user.has_role?(:associate, record.company) or user.has_role?(:admin, record.company)
+    (user == record.user) or user.has_role?(:associate, record.company) or user.has_role?(:admin, record.company) or user.has_role?(:shared_service, record.company)
   end
 
   def create?
