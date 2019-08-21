@@ -50,19 +50,19 @@ class Batch < ApplicationRecord
     workflow = self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
     show_workflow_action_by_workflow(workflow, workflow_action)    
   end
+  
+  def check_and_update_workflow_completed
+    workflows = self.workflows.includes(:workflow_actions)
+    workflows.each do |wf|
+      wf.update_attribute('completed', true) if wf.workflow_actions.present? and wf.workflow_actions.all?{ |wfa| wfa.completed? }
+    end
+  end
 
   private
 
   def show_workflow_action_by_workflow(workflow, workflow_action)
     if workflow.present?
       workflow.workflow_actions.find_by(task_id: workflow_action.task_id)
-    end
-  end
-  
-  def check_and_update_workflow_completed
-    workflows = self.workflows.includes(:workflow_actions)
-    workflows.each do |wf|
-      wf.update_attribute('completed', true) if wf.workflow_actions.present? and wf.workflow_actions.all?{ |wfa| wfa.completed? }
     end
   end
 end
