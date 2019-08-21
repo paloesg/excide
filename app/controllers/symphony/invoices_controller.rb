@@ -5,13 +5,14 @@ class Symphony::InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company, except: [:get_xero_item_code_detail]
   before_action :set_workflow, except: [:get_xero_item_code_detail]
+  before_action :set_workflow_action, only: [:new, :create, :update]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :get_xero_details
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
 
-  after_action :verify_authorized, except: [:index, :get_xero_item_code_detail]
+  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -19,14 +20,16 @@ class Symphony::InvoicesController < ApplicationController
     authorize @invoice
 
     @invoice.build_line_item
-    @xero = Xero.new(session[:xero_auth])
+    @xero = Xero.new(session[:xero_auth]) 
+
+    # render json: @workflow_action.to_json
   end
 
   def create
     @invoice = Invoice.new(invoice_params)
     authorize @invoice
-
     @invoice.workflow_id = @workflow.id
+    @invoice.workflow_action_id = @workflow_action.id
     @invoice.user_id = current_user.id
     @invoice.company_id = current_user.company_id
     if @invoice.xero_contact_id.present?
@@ -39,7 +42,20 @@ class Symphony::InvoicesController < ApplicationController
 
     if @invoice.save
       if @workflow.batch
-        redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "Invoice created successfully!"
+        flash[:notice] = "Invoice created successfully!"
+        if @invoice.workflow_action.present?
+          if params[:submit_position] == 'next_page'
+            next_task_action = @workflow.batch.next_task(@workflow, @invoice.workflow_action)
+            redirect_to new_symphony_invoice_path(workflow_name: next_task_action.workflow.template.slug, workflow_id: next_task_action.workflow.id, invoice_type: 'payable', workflow_action: next_task_action.id)
+          elsif params[:submit_position] == 'previous_page'
+            next_task_action = @workflow.batch.previous_task(@workflow, @invoice.workflow_action)
+            redirect_to symphony_invoice_path(workflow_name: next_task_action.workflow.template.slug, workflow_id: next_task_action.workflow.id, id: @invoice.id, workflow_action: next_task_action.id)
+          else
+            redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+          end
+        else
+          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+        end
       else
         redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully!"
       end
@@ -63,7 +79,20 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.save
     if @invoice.update(invoice_params)
-      redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id)
+      # redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id)
+      if @invoice.workflow_action_id.present?
+        if params[:submit_position] == 'next_page'
+          next_task_action = @workflow.batch.next_task(@workflow, @invoice.workflow_action_id)
+          redirect_to edit_symphony_invoice_path(workflow_name: next_task_action.workflow.template.slug, workflow_id: next_task_action.workflow.id, id: @invoice.id)
+        elsif params[:submit_position] == 'previous_page'
+          next_task_action = @workflow.batch.previous_task(@workflow, @invoice.workflow_action_id)
+          redirect_to edit_symphony_invoice_path(workflow_name: next_task_action.workflow.template.slug, workflow_id: next_task_action.workflow.id, id: @invoice.id)
+        else
+          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+        end
+      else
+        redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+      end
     else
       render 'edit'
     end
@@ -114,6 +143,15 @@ class Symphony::InvoicesController < ApplicationController
     @workflow = @company.workflows.find(params[:workflow_id])
   end
 
+  def set_workflow_action
+    if params[:workflow_action].present?
+      workflow_action_id = params[:workflow_action]
+    elsif @invoice.workflow_action.present?
+      workflow_action_id = @invoice.workflow_action.def index
+    end
+    @workflow_action = @workflow.workflow_actions.find(workflow_action_id)
+  end
+
   def set_company
     @company = current_user.company
   end
@@ -141,7 +179,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :status, :total, :user_id, line_items_attributes: [:item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :workflow_action_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :status, :total, :user_id, line_items_attributes: [:item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :_destroy])
   end
 
   def xero_login

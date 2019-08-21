@@ -23,8 +23,31 @@
     = form_for(@invoice, url: symphony_invoice_path(workflow_id: params[:workflow_id])) do |f|
       = render 'form', f: f
       .button-group.mt-20
-        - if @workflow.batch.present?
-          = link_to "Batch Listing", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning'
-        - else
-          = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
-        = f.submit 'Save & Next', class: 'btn btn-primary pull-right'
+        .row
+          .col-md-4
+            - if @workflow.batch.present?
+              = link_to "Batch Listing", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning mb-2'
+            - else
+              = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning mb-2'
+
+          .col-md-8
+            .row
+              .col-md-8
+                .col-md-4.pull-right
+                  - if @invoice.workflow_action.present?
+                    = hidden_field_tag :submit_position, '', class: 'submit-position'
+                    - if @workflow.batch.next_task(@workflow, @invoice.workflow_action).present? && @workflow.batch.next_task(@workflow, @invoice.workflow_action).workflow.invoice.present? 
+                      = f.submit 'Save & Next', class: 'btn btn-primary pull-right mb-2 submit-next'
+                      = hidden_field_tag :next_task, true 
+                    - if @workflow.batch.previous_task(@workflow, @invoice.workflow_action).present? && @workflow.batch.previous_task(@workflow, @invoice.workflow_action).workflow.invoice.present? 
+                      = f.submit 'Save & Back', class: 'btn btn-primary pull-right submit-back'
+                      = hidden_field_tag :previous_task, true
+                  - else
+                    = f.submit 'Save', class: 'btn btn-primary'
+              .col-md-4
+                - if @workflow.invoice.approved?
+                  = link_to("Awaiting Approval & Next", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved"), method: 'post', role: 'button', class: 'btn btn-primary pull-right mb-2')
+                  = link_to("Awaiting Payment & Next",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment"), method: 'post', role: 'button', class: 'btn btn-primary pull-right')
+                - else
+                  = link_to('Approve invoice', edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id), role: 'button', target: "_blank", class: 'btn btn-success btn-sm pull-right')
+
