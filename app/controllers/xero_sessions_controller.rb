@@ -2,8 +2,7 @@ class XeroSessionsController < ApplicationController
 
   def self.connect_to_xero(session)
     @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "| echo \"#{ENV["XERO_PRIVATE_KEY"]}\" ")
-    request_token = @xero_client.request_token(oauth_callback: 'https://' + ENV['HOST_DOMAIN'] + '/xero_callback_and_update')
-    #To test on localhost, replace ENV['HOST_DOMAIN'] to localhost
+    request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
     session[:request_token] = request_token.token
     session[:request_secret] = request_token.secret
     request_token.authorize_url
