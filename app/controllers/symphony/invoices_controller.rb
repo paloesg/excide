@@ -5,7 +5,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company, except: [:get_xero_item_code_detail]
   before_action :set_workflow, except: [:get_xero_item_code_detail]
-  before_action :set_workflows, only: [:new, :edit]
+  before_action :set_workflows_navigation, only: [:new, :edit]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :get_xero_details
@@ -145,12 +145,15 @@ class Symphony::InvoicesController < ApplicationController
     @workflow = @company.workflows.find(params[:workflow_id])
   end
 
-  def set_workflows
-    workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
-    @workflows = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: workflow_action.task_id}}).order(created_at: :asc)
+  def set_workflows_navigation
+    @workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
+    @workflows = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}}).order(created_at: :asc)
 
     @total_task = @workflows.count
     @current_position = @workflows.pluck('id').index(@workflow.id)+1
+
+    @next_workflow = @workflows.where('workflows.created_at > ?', @workflow.created_at).first
+    @previous_workflow = @workflows.where('workflows.created_at < ?', @workflow.created_at).last
   end
 
   def set_company

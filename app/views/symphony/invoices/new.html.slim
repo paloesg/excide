@@ -29,7 +29,19 @@
   .col-md-8
     .row
       .col-md-12
-        | Invoice  #{@current_position} of #{@total_task}
+        .card.mb-3
+          .card-body.contact-body
+            .row.m-2
+              | Invoice  #{@current_position} of #{@total_task}
+              - if @previous_workflow.present? && (@previous_workflow.invoice.blank? or @previous_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
+                = link_to 'Prev', new_symphony_invoice_path(workflow_name: @previous_workflow.template.slug, workflow_id: @previous_workflow.id, invoice_type: 'payable', workflow_action_id: @previous_workflow.get_workflow_action(@workflow_action.task_id).id)                 
+              - else
+                = link_to 'Prev', "#"
+
+              - if @next_workflow.present? && (@next_workflow.invoice.blank? or @next_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
+                = link_to 'Next', new_symphony_invoice_path(workflow_name: @next_workflow.template.slug, workflow_id: @next_workflow.id, invoice_type: 'payable', workflow_action_id: @next_workflow.get_workflow_action(@workflow_action.task_id).id)               
+              - else
+                = link_to 'Next', "#"
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
