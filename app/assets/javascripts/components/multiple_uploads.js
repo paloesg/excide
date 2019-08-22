@@ -61,7 +61,6 @@ $(document).on("turbolinks:load", function() {
   if ($(".multiple_uploads").length) {
     $('.loading').hide();
     var batchId="";
-    var templateSlug = $('#template_id').val();
     var cleanFilename = function (name) {
       fileName = name.split('.').slice(0, -1).join('.')
       get_extension = name.substring(name.lastIndexOf(".") + 1)
@@ -86,7 +85,7 @@ $(document).on("turbolinks:load", function() {
     };
     documentUpload.on("addedfile", function (file) {
       // Check if file name are same & rename the file
-      if (this.files.length) {
+      if (this.files.length && $('#template_id').val()) {
         let _i, _len;
         for (_i = 0, _len = this.files.length; _i < _len - 1; _i++) {
           if (this.files[_i].name === file.name) {
@@ -97,9 +96,15 @@ $(document).on("turbolinks:load", function() {
             documentUpload.addFile(renameFile);
           }
         }
+        //activate button submit
+        $('#drag-and-drop-submit').removeAttr('disabled');
       }
-      //activate button submit
-      $('#drag-and-drop-submit').removeAttr('disabled');
+    });
+    // active button submit if any files on dropzone, when any template selected
+    $('#template_id').change(function() {
+      if (documentUpload.files.length) {
+        $('#drag-and-drop-submit').removeAttr('disabled');
+      }
     });
     $("#drag-and-drop-submit").click(function(){
       $.post("/symphony/batches", {
@@ -113,7 +118,7 @@ $(document).on("turbolinks:load", function() {
           documentUpload.processQueue();
         }
         else {
-          Turbolinks.visit('/symphony/batches/'+templateSlug+'/new');
+          Turbolinks.visit('/symphony/batches/'+$('#template_id').val()+'/new');
         }
       });
     });
@@ -146,7 +151,7 @@ $(document).on("turbolinks:load", function() {
         // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
         window.setTimeout(function() {
           $('.loading').hide();
-          Turbolinks.visit('/symphony/batches/'+templateSlug+'/'+batchId);
+          Turbolinks.visit('/symphony/batches/'+$('#template_id').val()+'/'+batchId);
         }, totalFile*1000);
       }
     });
