@@ -42,23 +42,23 @@ class Batch < ApplicationRecord
   end
 
   def next_workflow(workflow)
-    workflow = self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first 
+    self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first
   end
 
   def previous_workflow(workflow)
-    workflow = self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
+    self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
   end
 
   def next_task(workflow, workflow_action)
-    workflow = self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first    
+    workflow = self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first
     show_workflow_action_by_workflow(workflow, workflow_action)
   end
 
   def previous_task(workflow, workflow_action)
     workflow = self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
-    show_workflow_action_by_workflow(workflow, workflow_action)    
+    show_workflow_action_by_workflow(workflow, workflow_action)
   end
-  
+
   def check_and_update_workflow_completed
     workflows = self.workflows.includes(:workflow_actions)
     workflows.each do |wf|

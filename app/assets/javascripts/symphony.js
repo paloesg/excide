@@ -1,12 +1,12 @@
 $(document).on("turbolinks:load", function(){
   $(".submit-next").click(function () {
-    $(".submit-position").val('next_page');
+    $(".submit-position").val("next_page");
   });
 
   $(".submit-back").click(function () {
-    $(".submit-position").val('previous_page');
+    $(".submit-position").val("previous_page");
   });
-  
+
   $('form').on('click', '.remove_fields', function(event) {
     $(this).closest('tr').find('.destroy').val('1');
     $(this).closest('tr').hide();
