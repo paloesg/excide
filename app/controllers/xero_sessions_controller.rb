@@ -2,15 +2,14 @@ class XeroSessionsController < ApplicationController
 
   def self.connect_to_xero(session)
     @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "| echo \"#{ENV["XERO_PRIVATE_KEY"]}\" ")
-    request_token = @xero_client.request_token(oauth_callback: 'https://' + ENV['HOST_DOMAIN'] + '/xero_callback_and_update')
-    #To test on localhost, replace ENV['HOST_DOMAIN'] to localhost
+    request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
     session[:request_token] = request_token.token
     session[:request_secret] = request_token.secret
     request_token.authorize_url
   end
 
   def xero_callback_and_update
-    if params[:oauth_verifier].present? 
+    if params[:oauth_verifier].present?
       @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "| echo \"#{ENV["XERO_PRIVATE_KEY"]}\" ")
       company = current_user.company
       # begin
@@ -18,7 +17,7 @@ class XeroSessionsController < ApplicationController
       company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle)
       session.delete(:request_token)
       session.delete(:request_secret)
-      redirect_to symphony_root_path, notice: "User signed in and Xero setting have been saved"
+      redirect_to symphony_root_path, notice: "User signed in and connected to Xero."
 
       #redirect the page after sign in depending on the role of the user
       # if current_user.has_role? :superadmin
@@ -33,7 +32,7 @@ class XeroSessionsController < ApplicationController
       #   session[:previous_url] || root_path
       # end
     else
-      redirect_to root_path, alert: "User not authenticated to xero"
+      redirect_to root_path, alert: "Connection to Xero failed."
     end
   end
 end
