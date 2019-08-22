@@ -86,8 +86,8 @@ class Symphony::WorkflowsController < ApplicationController
         log_data_activity
         log_workflow_activity
         if params[:enter_data_type] && params[:enter_data_type] == 'batch_enter_data'
-          @action = WorkflowAction.find(params[:workflow_action])
-          if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id)
+          workflow_action = WorkflowAction.find(params[:workflow_action])
+          if workflow_action.update_attributes(completed: !workflow_action.completed, completed_user_id: current_user.id)
             redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{@action.task.instructions} done!"
           end
         elsif params[:assign]
@@ -109,16 +109,16 @@ class Symphony::WorkflowsController < ApplicationController
     @workflow = policy_scope(Workflow).find(params[:workflow_id])
     authorize @workflow
 
-    @action = WorkflowAction.find(params[:action_id])
+    workflow_action = WorkflowAction.find(params[:action_id])
     respond_to do |format|
-      if @action.update_columns(completed: true, completed_user_id: current_user.id)
+      if workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
         if @workflow.batch
-          format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{@action.task.instructions} done!"}
+          format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.instructions} done!"}
         else
-          format.html {redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: "#{@action.task.instructions} done!"}
+          format.html {redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: "#{workflow_action.task.instructions} done!"}
         end
       else
-        format.json { render json: @actions.errors, status: :unprocessable_entity }
+        format.json { render json: workflow_action.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -266,12 +266,12 @@ class Symphony::WorkflowsController < ApplicationController
         end
       else
         if @workflow.batch
-          @action = WorkflowAction.find(params[:workflow_action_id])
-          @action.update_columns(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
-          if @action
-            format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{@action.task.task_type.humanize} Done!"}
+          workflow_action = WorkflowAction.find(params[:workflow_action_id])
+          workflow_action.update_columns(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
+          if workflow_action
+            format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} Done!"}
           else
-            format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), alert: @action.error}
+            format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), alert: workflow_action.error}
           end
         end
         format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), alert: "Invoice is not save in Symphony successfully!" }

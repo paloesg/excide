@@ -39,9 +39,9 @@ class Symphony::InvoicesController < ApplicationController
 
     if @invoice.save
       if @workflow.batch
-        @action = WorkflowAction.find(params[:workflow_action_id])
-        @action.update_columns(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
-        redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{@action.task.task_type.humanize} Done!"
+        workflow_action = WorkflowAction.find(params[:workflow_action_id])
+        workflow_action.update_columns(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
+        redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} Done!"
       else
         redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully!"
       end
@@ -66,9 +66,9 @@ class Symphony::InvoicesController < ApplicationController
     @invoice.save
     if @invoice.update(invoice_params)
       if @workflow.batch.present? && params[:workflow_action_id].present?
-        @action = WorkflowAction.find(params[:workflow_action_id])
-        @action.update_columns(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
-        redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{@action.task.task_type.humanize} Done!"
+        workflow_action = WorkflowAction.find(params[:workflow_action_id])
+        workflow_action.update_columns(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
+        redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} Done!"
       else        
         redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id)
       end      
