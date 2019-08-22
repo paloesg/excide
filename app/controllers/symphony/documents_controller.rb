@@ -44,6 +44,7 @@ class Symphony::DocumentsController < ApplicationController
         if params[:document_type] == 'batch-uploads'
            #return output in json
           output = { :status => "ok", :message => "batch documents created", :document => @generate_document.document.id, :batch => @generate_document.document.workflow.batch.id, :template => @generate_document.document.workflow.template.slug}
+          flash[:notice] = "New batch of #{Batch.find(params[:batch_id]).workflows.count} documents successfully created!"
           format.json  { render :json => output }
         else
           format.html { redirect_to @generate_document.document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(@generate_document.document.workflow.template.slug, @generate_document.document.workflow.id), notice: 'Document was successfully created.' }
