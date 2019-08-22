@@ -14,17 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.has_role? :superadmin
-      stored_location_for(resource) || admin_root_path
-    elsif current_user.has_role? :contractor, :any
-      conductor_user_path current_user
-    elsif current_user.has_role? :shared_service, :any
-      symphony_batches_path
-    elsif current_user.company.present?
-      symphony_root_path
-    else
-      session[:previous_url] || root_path
-    end
+    XeroSessionsController.connect_to_xero(session)
   end
 
   def current_user
