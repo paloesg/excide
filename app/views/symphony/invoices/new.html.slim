@@ -41,5 +41,8 @@
         .col-md-4
           = hidden_field_tag :submit_position, '', class: 'submit-position'
           .pull-right
-            = f.submit 'Save', class: "btn btn-primary ml-2 #{"submit-next" if @workflow.batch.next_workflow(@workflow).present?}"
+            - if current_user.has_role? :shared_service, @company or current_user.has_role? :admin, @company or current_user.has_role? :consultant, @company
+              = f.hidden_field :status, class: 'invoice-status', value: ''
+              = f.submit 'Reject', class: 'btn btn-danger mr-2 btn-invoice-rejected'
+            = f.submit 'Save', class: "btn btn-primary"
 
