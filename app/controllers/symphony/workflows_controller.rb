@@ -81,19 +81,45 @@ class Symphony::WorkflowsController < ApplicationController
     authorize @workflow
     if @workflow.update(workflow_params)
       #if workflow.workflowable is present, don't need to create client. If no workflowable params is posted(such as in the case of data-entry), no client is created too.
-      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless @workflow.workflowable.present? or params[:workflow][:workflowable].present?
-      @workflow.save
-      log_data_activity
-      log_workflow_activity
-      if params[:assign]
-        redirect_to assign_symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully edited.'
-      elsif params[:document_id]
-        redirect_to data_entry_symphony_workflow_path(@template.slug, @workflow.id, document_id: params[:document_id]), notice: 'Attributes were successfully saved.'
+      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user) unless @workflow.workflowable.present? or params[:workflow][:workflowable].present? or params[:workflow][:client].nil?
+      if @workflow.save
+        log_data_activity
+        log_workflow_activity
+        if params[:enter_data_type] && params[:enter_data_type] == 'batch_enter_data'
+          workflow_action = WorkflowAction.find(params[:workflow_action])
+          if workflow_action.update_attributes(completed: !workflow_action.completed, completed_user_id: current_user.id)
+            redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{@action.task.instructions} done!"
+          end
+        elsif params[:assign]
+          redirect_to assign_symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully edited.'
+        elsif params[:document_id]
+          redirect_to data_entry_symphony_workflow_path(@template.slug, @workflow.id, document_id: params[:document_id]), notice: 'Attributes were successfully saved.'
+        else
+          redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully edited.'
+        end
       else
-        redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully edited.'
-      end
+        render :edit
+      end      
     else
       render :edit
+    end
+  end
+
+  def workflow_action_complete
+    @workflow = policy_scope(Workflow).find(params[:workflow_id])
+    authorize @workflow
+
+    workflow_action = WorkflowAction.find(params[:action_id])
+    respond_to do |format|
+      if workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
+        if @workflow.batch
+          format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.instructions} done!"}
+        else
+          format.html {redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: "#{workflow_action.task.instructions} done!"}
+        end
+      else
+        format.json { render json: workflow_action.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -240,6 +266,15 @@ class Symphony::WorkflowsController < ApplicationController
           format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!" }
         end
       else
+        if @workflow.batch
+          workflow_action = WorkflowAction.find(params[:workflow_action_id])
+          workflow_action.update_columns(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
+          if workflow_action
+            format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} Done!"}
+          else
+            format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), alert: workflow_action.error}
+          end
+        end
         format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), alert: "Invoice is not save in Symphony successfully!" }
       end
     end
@@ -322,7 +357,7 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def set_documents
-    @documents = @company.documents.includes(:user).where(workflow_id: @workflow.id).order(created_at: :desc)
+    @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
   end
 
   def sort_column(array)

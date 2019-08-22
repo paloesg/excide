@@ -22,6 +22,10 @@ class Task < ApplicationRecord
     return self.workflow_actions.find_by(company_id: company_id, workflow_id: workflow_id)
   end
 
+  def check_previous
+    Task.where("id < ?", self.id).order(created_at: :asc).last
+  end
+
   private
   # Create company action for existing workflows that this task belongs to
   def add_workflow_action

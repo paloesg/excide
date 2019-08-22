@@ -1,6 +1,4 @@
-= render "symphony/batches/tasks/workflow_type_conditions", action: action, task: action.task, workflow: workflow
-br
-- if action.sub_workflow
-  = link_to 'View Workflow', symphony_workflow_path(workflow_name: action.sub_workflow.template.slug, workflow_id: action.sub_workflow.id), class: 'btn btn-success btn-sm mb-2', id: 'new-workflow'
+- if action.completed?
+  = render "symphony/batches/tasks/completed"
 - else
-  = link_to 'Create Workflow', "/symphony/#{action.task.template.slug}/new?action_id=#{action.id}", class: 'btn btn-primary btn-sm mb-2', id: 'new-workflow'
+  = link_to 'Start', action.sub_workflow ? symphony_workflow_path(workflow_name: action.sub_workflow.template.slug, workflow_id: action.sub_workflow.id) : "/symphony/#{action.task.template.slug}/new?action_id=#{action.id}", class: "btn btn-success btn-sm mb-2 #{"disabled" if !action.task.first? and (!action.task.check_previous.get_workflow_action(workflow.company, workflow.id)&.completed? or current_user.roles.exclude? action.task.role)}", id: 'new-workflow'

@@ -123,7 +123,8 @@ class Workflow < ApplicationRecord
     sections = self.template.sections
     sections.each do |s|
       s.tasks.each do |t|
-        WorkflowAction.create!(task: t, company: self.company, completed: false, workflow: self)
+        completed = (t.position == 1 && t.section.position == 1 && t.task_type == "upload_file") ? true : false
+        WorkflowAction.create!(task: t, company: self.company, completed: completed, workflow: self)
       end
     end
     if ordered_workflow?
@@ -138,7 +139,7 @@ class Workflow < ApplicationRecord
   end
 
   def trigger_first_task
-    self.current_task.get_workflow_action(self.company, self.id).set_deadline_and_notify(current_task)
+    self.current_task.get_workflow_action(self.company_id, self.id).set_deadline_and_notify(self.current_task)
   end
 
   def unordered_tasks_trigger_email

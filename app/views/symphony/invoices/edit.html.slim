@@ -22,10 +22,22 @@
   .col-md-8
     = form_for(@invoice, url: symphony_invoice_path(workflow_id: params[:workflow_id])) do |f|
       = render 'form', f: f
+      = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning pull-right ml-2'
       = link_to "View invoice", symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), role: 'button', class: 'btn btn-primary ml-2 pull-right'
+      / If xero invoice is present, only show button to view Xero invoice
+      - if @workflow.invoice.xero_invoice_id.present?
+        = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@invoice.xero_invoice_id}", role: 'button', target: "_blank", class: 'btn btn-warning', target: :_blank
+      / Else, check if workflow client is already on Xero if not show button to add client to Xero first. After client is on Xero, show button to send invoice to Xero.
+      - else
+        = link_to('Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm mb-2') if @workflow.invoice.xero_contact_id.nil?
+        - if @invoice.approved?
+          = link_to("Send to Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved", workflow_action_id: params[:workflow_action_id].present? ? params[:workflow_action_id] : ''), method: 'post', role: 'button', class: 'btn btn-primary')
+
+          = link_to("Send to Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment", workflow_action_id: params[:workflow_action_id].present? ? params[:workflow_action_id] : ''), method: 'post', role: 'button', class: 'btn btn-primary ml-2')
       - if current_user.has_role? :associate, @company or current_user.has_role? :admin, @company or current_user.has_role? :consultant, @company
-        = f.hidden_field :approved, value: true
-        = f.submit 'Approve Invoice', class: 'btn btn-primary pull-right'
+        - if @invoice.approved? == false
+          = f.hidden_field :approved, value: true
+          = f.submit 'Approve Invoice', class: 'btn btn-primary pull-right'
       - else
         = f.submit 'Save Invoice', class: 'btn btn-primary pull-right'
