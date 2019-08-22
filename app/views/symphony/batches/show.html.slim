@@ -32,7 +32,7 @@
                       ' #{task.task_type.humanize}
                       i.ti-info-alt
           tbody
-            - @batch.workflows.includes(:documents, :invoice).order(created_at: :asc).each do |wf|
+            - @batch.workflows.includes(:documents, :invoice, :company).order(created_at: :asc).each do |wf|
                 tr
                   td
                     - if wf.documents.empty?
