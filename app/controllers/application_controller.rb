@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     session[:previous_url] = request.fullpath unless request.xhr? or request.fullpath =~ /\/users/
   end
 
-  def after_sign_in_path_for(resource)
+  def after_sign_in_path_for
     XeroSessionsController.connect_to_xero(session)
   end
 
