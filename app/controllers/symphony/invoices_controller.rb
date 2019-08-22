@@ -63,7 +63,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def update
     authorize @invoice
-    @xero = Xero.new(session[:xero_auth])
+    @xero = Xero.new(@company)
     if params[:invoice][:xero_contact_name].blank?
       @invoice.xero_contact_name = @xero.get_contact(params[:invoice][:xero_contact_id]).name
     else
