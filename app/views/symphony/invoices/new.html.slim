@@ -12,12 +12,14 @@
   .loading
     .loader
   .col-md-4.forward
-    .document-info
-      - if @workflow.batch.present?
-        | Batch Name: #{@workflow.batch.name}
-        br
-      - if @document.present?        
-        | File Name: #{@document.filename}
+    .row
+      .col-md-8
+        .document-info
+          - if @workflow.batch.present?
+            | Batch Name: #{@workflow.batch.name}
+            br
+          - if @document.present?        
+            | File Name: #{@document.filename}
     - if @documents.empty?
       | No documents available. Please upload documents first.
     - else
@@ -32,16 +34,19 @@
         .card.mb-3
           .card-body.contact-body
             .row.m-2
-              | Invoice  #{@current_position} of #{@total_task}
-              - if @previous_workflow.present? && (@previous_workflow.invoice.blank? or @previous_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
-                = link_to 'Prev', new_symphony_invoice_path(workflow_name: @previous_workflow.template.slug, workflow_id: @previous_workflow.id, invoice_type: 'payable', workflow_action_id: @previous_workflow.get_workflow_action(@workflow_action.task_id).id)                 
-              - else
-                = link_to 'Prev', "#"
+              .col-md-6.btn-invoice-info
+                | Invoice  #{@current_position} of #{@total_task}
+              .col-md-6.btn-invoice-nav
+                .pull-right
+                  - if @previous_workflow.present? && (@previous_workflow.invoice.blank? or @previous_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
+                    = link_to 'Prev', new_symphony_invoice_path(workflow_name: @previous_workflow.template.slug, workflow_id: @previous_workflow.id, invoice_type: 'payable', workflow_action_id: @previous_workflow.get_workflow_action(@workflow_action.task_id).id), role: 'button', class:'btn btn-primary mr-2'               
+                  - else
+                    = link_to 'Prev', "#", role: 'button', class:'btn btn-primary mr-2 disabled'
 
-              - if @next_workflow.present? && (@next_workflow.invoice.blank? or @next_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
-                = link_to 'Next', new_symphony_invoice_path(workflow_name: @next_workflow.template.slug, workflow_id: @next_workflow.id, invoice_type: 'payable', workflow_action_id: @next_workflow.get_workflow_action(@workflow_action.task_id).id)               
-              - else
-                = link_to 'Next', "#"
+                  - if @next_workflow.present? && (@next_workflow.invoice.blank? or @next_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
+                    = link_to 'Next', new_symphony_invoice_path(workflow_name: @next_workflow.template.slug, workflow_id: @next_workflow.id, invoice_type: 'payable', workflow_action_id: @next_workflow.get_workflow_action(@workflow_action.task_id).id), role: 'button', class:'btn btn-primary mr-2'               
+                  - else
+                    = link_to 'Next', "#", role: 'button', class:'btn btn-primary mr-2 disabled'
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f

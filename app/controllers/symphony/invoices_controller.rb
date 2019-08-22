@@ -76,7 +76,7 @@ class Symphony::InvoicesController < ApplicationController
         workflow_action.update_columns(completed: true, completed_user_id: current_user.id)        
         invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @invoice.invoice_type
         next_wf = @workflow.batch.next_workflow(@workflow)
-        if next_wf.present? or next_wf.get_workflow_action(workflow_action.task_id).completed == false
+        if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
           redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id)
         else
           redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} Done!"
