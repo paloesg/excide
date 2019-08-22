@@ -18,19 +18,20 @@ class XeroSessionsController < ApplicationController
       company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle)
       session.delete(:request_token)
       session.delete(:request_secret)
+      redirect_to symphony_root_path, notice: "User signed in and Xero setting have been saved"
 
       #redirect the page after sign in depending on the role of the user
-      if current_user.has_role? :superadmin
-        redirect_to admin_root_path, notice: "User signed in and Xero settings have been saved"
-      elsif current_user.has_role? :contractor, :any
-        redirect_to conductor_user_path(current_user), notice: "User signed in and Xero settings have been saved"
-      elsif current_user.has_role? :shared_service, :any
-        redirect_to symphony_batches_path, notice: "User signed in and Xero settings have been saved"
-      elsif current_user.company.present?
-        redirect_to symphony_root_path, notice: "User signed in and Xero settings have been saved"
-      else
-        session[:previous_url] || root_path
-      end
+      # if current_user.has_role? :superadmin
+      #   redirect_to admin_root_path, notice: "User signed in and Xero settings have been saved"
+      # elsif current_user.has_role? :contractor, :any
+      #   redirect_to conductor_user_path(current_user), notice: "User signed in and Xero settings have been saved"
+      # elsif current_user.has_role? :shared_service, :any
+      #   redirect_to symphony_batches_path, notice: "User signed in and Xero settings have been saved"
+      # elsif current_user.company.present?
+      #   redirect_to symphony_root_path, notice: "User signed in and Xero settings have been saved"
+      # else
+      #   session[:previous_url] || root_path
+      # end
     else
       redirect_to root_path, alert: "User not authenticated to xero"
     end
