@@ -27,6 +27,9 @@
       - else
         iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" id="iframe-document"
   .col-md-8
+    .row
+      .col-md-12
+        | Invoice  #{@current_position} of #{@total_task}
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
