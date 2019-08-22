@@ -46,6 +46,14 @@ class Symphony::DocumentsController < ApplicationController
           output = { :status => "ok", :message => "batch documents created", :document => @generate_document.document.id, :batch => @generate_document.document.workflow.batch.id, :template => @generate_document.document.workflow.template.slug}
           flash[:notice] = "New batch of #{Batch.find(params[:batch_id]).workflows.count} documents successfully created!"
           format.json  { render :json => output }
+        elsif params[:upload_type] == "batch_upload"
+          @batch = @document.workflow.batch
+          workflow_action = WorkflowAction.find(params[:workflow_action])
+          if workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
+            format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id), notice: "#{@workflow_action.task.instructions} done!"}
+          else
+            format.json { render json: workflow_action.errors, status: :unprocessable_entity }            
+          end
         else
           format.html { redirect_to @generate_document.document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(@generate_document.document.workflow.template.slug, @generate_document.document.workflow.id), notice: 'Document was successfully created.' }
         end
@@ -117,7 +125,7 @@ class Symphony::DocumentsController < ApplicationController
   end
 
   def set_company_workflows
-    @workflows = @company.workflows.includes(template: [{ sections: [{ tasks: :role }] }])
+    @workflows = @company.workflows
   end
 
   def set_document

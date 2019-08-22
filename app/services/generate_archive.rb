@@ -7,7 +7,7 @@ class GenerateArchive
   def run
     begin
       @workflow.transaction do
-        @workflow.update_columns(completed: true, archive: generate_archive)
+        @workflow.update_columns(completed: true, archive: generate_archive, completed_user_id: current_user.id)
         delete_reminders
         remove_document_workflow_action_id
         delete_workflow_actions
