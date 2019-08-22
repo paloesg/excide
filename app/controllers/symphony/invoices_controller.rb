@@ -5,7 +5,6 @@ class Symphony::InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company, except: [:get_xero_item_code_detail]
   before_action :set_workflow, except: [:get_xero_item_code_detail]
-  before_action :set_workflow_action, only: [:new, :create, :update]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :get_xero_details
@@ -21,15 +20,12 @@ class Symphony::InvoicesController < ApplicationController
 
     @invoice.build_line_item
     @xero = Xero.new(session[:xero_auth]) 
-
-    # render json: @workflow_action.to_json
   end
 
   def create
     @invoice = Invoice.new(invoice_params)
     authorize @invoice
     @invoice.workflow_id = @workflow.id
-    @invoice.workflow_action_id = @workflow_action.id
     @invoice.user_id = current_user.id
     @invoice.company_id = current_user.company_id
     if @invoice.xero_contact_id.present?
@@ -43,16 +39,13 @@ class Symphony::InvoicesController < ApplicationController
     if @invoice.save
       if @workflow.batch
         flash[:notice] = "Invoice created successfully!"
-        if @invoice.workflow_action.present?
+        if @invoice.workflow.present?
           if params[:submit_position] == 'next_page'
-            next_task_action = @workflow.batch.next_task(@workflow, @invoice.workflow_action)
-            redirect_to new_symphony_invoice_path(workflow_name: next_task_action.workflow.template.slug, workflow_id: next_task_action.workflow.id, invoice_type: 'payable', workflow_action: next_task_action.id)
+            next_wf = @workflow.batch.next_workflow(@workflow)
           elsif params[:submit_position] == 'previous_page'
-            next_task_action = @workflow.batch.previous_task(@workflow, @invoice.workflow_action)
-            redirect_to symphony_invoice_path(workflow_name: next_task_action.workflow.template.slug, workflow_id: next_task_action.workflow.id, id: @invoice.id, workflow_action: next_task_action.id)
-          else
-            redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+            next_wf = @workflow.batch.previous_workflow(@workflow)
           end
+          render_action_create_invoice(next_wf)
         else
           redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
         end
@@ -79,17 +72,13 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.save
     if @invoice.update(invoice_params)
-      # redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id)
-      if @invoice.workflow_action_id.present?
+      if @invoice.workflow.present?
         if params[:submit_position] == 'next_page'
-          next_task_action = @workflow.batch.next_task(@workflow, @invoice.workflow_action_id)
-          redirect_to edit_symphony_invoice_path(workflow_name: next_task_action.workflow.template.slug, workflow_id: next_task_action.workflow.id, id: @invoice.id)
+          next_wf = @workflow.batch.next_workflow(@workflow)
         elsif params[:submit_position] == 'previous_page'
-          next_task_action = @workflow.batch.previous_task(@workflow, @invoice.workflow_action_id)
-          redirect_to edit_symphony_invoice_path(workflow_name: next_task_action.workflow.template.slug, workflow_id: next_task_action.workflow.id, id: @invoice.id)
-        else
-          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+          next_wf=@workflow.batch.previous_workflow(@workflow)
         end
+        render_action_create_invoice(next_wf)
       else
         redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
       end
@@ -118,8 +107,18 @@ class Symphony::InvoicesController < ApplicationController
       @delete_invoice.save
     end
     @invoice.destroy!
+    @batch = @workflow.batch
+    if @batch.present?
+      Document.where(workflow_id: @workflow.id).destroy_all
+      @workflow.destroy!
+    end
     respond_to do |format|
-      format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), notice: "Invoice has been deleted successfully."}
+      flash[:notice] = "Invoice has been deleted successfully."
+      if @batch.present?
+        format.html { redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id) }
+      else
+        format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id) }
+      end
     end
   end
 
@@ -184,5 +183,14 @@ class Symphony::InvoicesController < ApplicationController
 
   def xero_login
     redirect_to user_xero_omniauth_authorize_path
+  end
+
+  def render_action_create_invoice(wf_data)
+    invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @workflow.invoice.invoice_type
+    if wf_data.invoice.blank?
+      redirect_to new_symphony_invoice_path(workflow_name: wf_data.template.slug, workflow_id: wf_data.id, invoice_type: invoice_type)
+    elsif wf_data.invoice.present?
+      redirect_to edit_symphony_invoice_path(workflow_name: wf_data.template.slug, workflow_id: wf_data.id, id: @invoice.id)
+    end  
   end
 end

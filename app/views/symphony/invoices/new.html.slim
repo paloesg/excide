@@ -36,13 +36,14 @@
           - else
             = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
           - if params[:workflow_action].present?
-            = hidden_field_tag :workflow_action, params[:workflow_action]   
+            = hidden_field_tag :workflow_action, params[:workflow_action] 
+            = hidden_field_tag :invoice_type, params[:invoice_type]   
         .col-md-4
           = hidden_field_tag :submit_position, '', class: 'submit-position'
           .pull-right
-            - if @workflow.batch.previous_task(@workflow, @workflow_action).present?
+            - if @workflow.batch.previous_workflow(@workflow).present?
               = f.submit 'Save & Back', class: 'btn btn-primary ml-2 submit-back'
-            - if @workflow.batch.next_task(@workflow, @workflow_action).present?
+            - if @workflow.batch.next_workflow(@workflow).present?
               = f.submit 'Save & Next', class: 'btn btn-primary ml-2 submit-next'
             - else
               = f.submit 'Complete', class: 'btn btn-primary ml-2'

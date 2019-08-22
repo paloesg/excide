@@ -1,6 +1,5 @@
 class Invoice < ApplicationRecord
-  belongs_to :workflow
-  belongs_to :workflow_action
+  belongs_to :workflow, dependent: :destroy
   belongs_to :user
   belongs_to :company
 

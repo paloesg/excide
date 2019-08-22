@@ -34,16 +34,11 @@
             .row
               .col-md-8
                 .col-md-4.pull-right
-                  - if @invoice.workflow_action.present?
-                    = hidden_field_tag :submit_position, '', class: 'submit-position'
-                    - if @workflow.batch.next_task(@workflow, @invoice.workflow_action).present? && @workflow.batch.next_task(@workflow, @invoice.workflow_action).workflow.invoice.present? 
-                      = f.submit 'Save & Next', class: 'btn btn-primary pull-right mb-2 submit-next'
-                      = hidden_field_tag :next_task, true 
-                    - if @workflow.batch.previous_task(@workflow, @invoice.workflow_action).present? && @workflow.batch.previous_task(@workflow, @invoice.workflow_action).workflow.invoice.present? 
-                      = f.submit 'Save & Back', class: 'btn btn-primary pull-right submit-back'
-                      = hidden_field_tag :previous_task, true
-                  - else
-                    = f.submit 'Save', class: 'btn btn-primary'
+                  = hidden_field_tag :submit_position, '', class: 'submit-position'
+                  - if @workflow.batch.next_workflow(@workflow).present?
+                    = f.submit 'Save & Next', class: 'btn btn-primary mb-2 submit-next'
+                  - if @workflow.batch.previous_workflow(@workflow).present?
+                    = f.submit 'Save & Back', class: 'btn btn-primary submit-back'
               .col-md-4
                 - if @workflow.invoice.approved?
                   = link_to("Awaiting Approval & Next", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved"), method: 'post', role: 'button', class: 'btn btn-primary pull-right mb-2')
