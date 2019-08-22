@@ -12,11 +12,11 @@
  *
  *= require trix
  *= require_self
- *= require_tree ./dashboard
  *= require dropzone
  *= require font-awesome
  *= require selectize
  *= require selectize.default
+ *= require_tree ./dashboard
  */
 
 @import "bootstrap";

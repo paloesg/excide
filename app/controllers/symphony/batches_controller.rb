@@ -12,6 +12,11 @@ class Symphony::BatchesController < ApplicationController
   def index
     #Batch policy scope
     @batches = policy_scope(Batch).includes(:workflows, :template, :user)
+    @batches.each do |batch|
+      #update batch to true only when the action_completed_progress hits 100%
+      batch.update_attribute('completed', true) if batch.action_completed_progress == 100
+    end
+    @completed_batches = @batches.where(completed: true)
 
     if current_user.has_role? :admin, @company
       @batches = @batches.order(created_at: :desc)
@@ -49,8 +54,13 @@ class Symphony::BatchesController < ApplicationController
 
   def show
     authorize @batch
+    #check and update workflow if all its actions are completed
+    @batch.check_and_update_workflow_completed
+    @completed_workflow_count = @batch.workflows.where(completed: true).count
     @current_user = current_user
-    @roles = @current_user.roles.where(resource_id: @company.id, resource_type: "Company")
+    @sections = @batch.template.sections
+    @templates = policy_scope(Template).assigned_templates(current_user)
+    @roles = @current_user.roles.includes(:resource).where(resource_id: @current_user.company.id, resource_type: "Company")
   end
 
   private

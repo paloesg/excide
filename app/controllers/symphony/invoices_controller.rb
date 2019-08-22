@@ -19,7 +19,7 @@ class Symphony::InvoicesController < ApplicationController
     authorize @invoice
 
     @invoice.build_line_item
-    @xero = Xero.new(session[:xero_auth])
+    @xero = Xero.new(@company)
   end
 
   def create
@@ -136,7 +136,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def get_xero_details
-    @xero                   = Xero.new(session[:xero_auth])
+    @xero = Xero.new(current_user.company)
     @clients                = @xero.get_contacts
     # Combine account codes and account names as a string
     @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing

@@ -13,9 +13,18 @@ class Batch < ApplicationRecord
     order("batches.created_at DESC").first
   end
 
+  #get all the completed workflow action in an array
+  def get_completed_actions
+    self.workflows.includes(:workflow_actions).map{ |wf| wf.workflow_actions.where(completed: true) }.flatten.compact
+  end
+
+  def get_completed_workflows
+    self.workflows.where(completed: true).count
+  end
+
   def action_completed_progress
     # Check for case where total_action is 0 to prevent NaN error
-    total_action == 0 ? 0 : ((get_completed_actions.count.to_f / total_action) * 100).round(0)
+    total_action == 0 ? 0 : ((get_completed_actions.count.to_f / total_action) * 100).round(0) if total_action.present?
   end
 
   def average_time_taken_per_task
@@ -28,12 +37,14 @@ class Batch < ApplicationRecord
     self.workflows.present? ? (self.workflows.count * self.workflows[0].workflow_actions.count) : 0
   end
 
-  #get all the completed workflow action in an array
-  def get_completed_actions
-    self.workflows.includes(:workflow_actions).where(workflow_actions: {completed: true})
-  end
-
   def name
     self.created_at.strftime('%y%m%d-%H%M')
+  end
+
+  def check_and_update_workflow_completed
+    workflows = self.workflows.includes(:workflow_actions)
+    workflows.each do |wf|
+      wf.update_attribute('completed', true) if wf.workflow_actions.present? and wf.workflow_actions.all?{ |wfa| wfa.completed? }
+    end
   end
 end

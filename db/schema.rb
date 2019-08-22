@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_09_043202) do
+ActiveRecord::Schema.define(version: 2019_08_15_094840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2019_07_09_043202) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.boolean "completed"
     t.index ["company_id"], name: "index_batches_on_company_id"
     t.index ["template_id"], name: "index_batches_on_template_id"
     t.index ["user_id"], name: "index_batches_on_user_id"
@@ -158,6 +159,10 @@ ActiveRecord::Schema.define(version: 2019_07_09_043202) do
     t.bigint "associate_id"
     t.bigint "shared_service_id"
     t.string "designated_working_time"
+    t.string "session_handle"
+    t.string "access_key"
+    t.string "access_secret"
+    t.integer "expires_at"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
