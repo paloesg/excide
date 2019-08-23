@@ -42,3 +42,30 @@ td.line-item-field {
 .btn-invoice-info{
   padding: 10px;
 }
+
+.invoice-nav{
+  display: table;
+  table-layout: fixed; /*Optional*/
+  width: 100%;
+}
+
+.invoice-nav-number{
+  padding: 15px;
+  margin: 10px;
+  border: solid 1px;
+  text-align: center;
+}
+
+.invoice-nav-button{
+  display: table-cell;
+  font-size: 40px;
+  transform: translate(0%, 10%);
+}
+
+.btn-right{
+  text-align: right;  
+}
+
+.btn-left{
+  text-align: left;  
+}
