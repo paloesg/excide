@@ -1,4 +1,4 @@
 .row
-  .col-md-12.mb-3
-    .pull-right
-      | #{@total_task - @total_completed_task} Invoice Remaining
+  .col-md-12.mb-2
+    em.pull-right
+      | #{@total_task - @total_completed_task} #{'invoice'.pluralize(@total_task - @total_completed_task)} remaining
