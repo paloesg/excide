@@ -36,25 +36,54 @@
             .row.m-2
               .col-md-6
                 .col-md-12.text-center
-                  | Invoice
+                  | Completed
                 .col-md-12
                   .invoice-nav
-                    .invoice-nav-button.btn-right
+                    .invoice-nav-number--completed
+                      | #{@total_completed} of #{@total_task}
+              .col-md-6
+                .col-md-12.text-center
+                  | Invoice
+                .col-md-12
+
+                  .invoice-nav
+                    .col-md-4
                       - if @previous_workflow.present? && (@previous_workflow.invoice.blank? or @previous_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
-                        = link_to new_symphony_invoice_path(workflow_name: @previous_workflow.template.slug, workflow_id: @previous_workflow.id, invoice_type: 'payable', workflow_action_id: @previous_workflow.get_workflow_action(@workflow_action.task_id).id) do
+                        = link_to new_symphony_invoice_path(workflow_name: @previous_workflow.template.slug, workflow_id: @previous_workflow.id, invoice_type: 'payable', workflow_action_id: @previous_workflow.get_workflow_action(@workflow_action.task_id).id), class:'invoice-nav-button btn-left pull-right' do
                           i.fa.fa-caret-left.text-info              
                       - else
-                        = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug) do
+                        = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), class:'invoice-nav-button btn-left pull-right' do
                           i.fa.fa-caret-left.text-info
-                    .invoice-nav-number
+                    .col-md-4.invoice-nav-number
                       | #{@current_position} of #{@total_task}
-                    .invoice-nav-button.btn-left
+
+                    .col-md-4
                       - if @next_workflow.present? && (@next_workflow.invoice.blank? or @next_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
-                        = link_to new_symphony_invoice_path(workflow_name: @next_workflow.template.slug, workflow_id: @next_workflow.id, invoice_type: 'payable', workflow_action_id: @next_workflow.get_workflow_action(@workflow_action.task_id).id) do
+                        = link_to new_symphony_invoice_path(workflow_name: @next_workflow.template.slug, workflow_id: @next_workflow.id, invoice_type: 'payable', workflow_action_id: @next_workflow.get_workflow_action(@workflow_action.task_id).id), class:'invoice-nav-button' do
                           i.fa.fa-caret-right.text-info              
                       - else
-                        = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug) do
+                        = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), class:'invoice-nav-button' do
                           i.fa.fa-caret-right.text-info 
+
+                / .col-md-12
+                /   .invoice-nav
+                /     .invoice-nav-button
+                /       - if @previous_workflow.present? && (@previous_workflow.invoice.blank? or @previous_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
+                /         = link_to new_symphony_invoice_path(workflow_name: @previous_workflow.template.slug, workflow_id: @previous_workflow.id, invoice_type: 'payable', workflow_action_id: @previous_workflow.get_workflow_action(@workflow_action.task_id).id), class:'btn-left' do
+                /           i.fa.fa-caret-left.text-info              
+                /       - else
+                /         = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), class:'btn-left' do
+                /           i.fa.fa-caret-left.text-info
+                      
+                /       - if @next_workflow.present? && (@next_workflow.invoice.blank? or @next_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
+                /         = link_to new_symphony_invoice_path(workflow_name: @next_workflow.template.slug, workflow_id: @next_workflow.id, invoice_type: 'payable', workflow_action_id: @next_workflow.get_workflow_action(@workflow_action.task_id).id) do
+                /           i.fa.fa-caret-right.text-info              
+                /       - else
+                /         = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug) do
+                /           i.fa.fa-caret-right.text-info 
+                /     .invoice-nav-number
+                /       | #{@current_position} of #{@total_task}
+                      
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
