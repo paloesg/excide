@@ -116,6 +116,10 @@ class Workflow < ApplicationRecord
     def _destroy() false; end
   end
 
+  def get_workflow_action(task_id)
+    self.workflow_actions.where(task_id: task_id).first
+  end
+
   private
 
   # Create all the actions that need to be completed for a workflow that is associated with a company

@@ -23,6 +23,7 @@ class WorkflowAction < ApplicationRecord
   has_many :documents, dependent: :destroy
 
   has_one :sub_workflow, class_name: 'Workflow'
+  has_one :invoice
 
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_workflow_action(self.company, self.workflow.id)
