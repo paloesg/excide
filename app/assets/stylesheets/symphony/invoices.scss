@@ -44,7 +44,7 @@ td.line-item-field {
 }
 
 .invoice-nav{
-  display: inline-flex;
+  display: table;
   table-layout: fixed; /*Optional*/
   width: 100%;
 }
@@ -52,22 +52,20 @@ td.line-item-field {
 .invoice-nav-number{
   padding: 15px;
   margin: 10px;
-  text-align: center;
   border: solid 1px;
-  width: 100%;
-}
-
-.invoice-nav-number--completed{
-  padding: 15px;
-  margin: 10px;
   text-align: center;
-  border: solid 1px;
-  width: 35%;
-  margin: auto;
-  margin-top: 10px;
-  margin-bottom: 20px;
 }
 
 .invoice-nav-button{
-  font-size: 50px;
+  display: table-cell;
+  font-size: 40px;
+  transform: translate(0%, 10%);
+}
+
+.btn-right{
+  text-align: right;  
+}
+
+.btn-left{
+  text-align: left;  
 }
