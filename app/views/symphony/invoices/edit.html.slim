@@ -59,6 +59,7 @@
                   i.fa.fa-caret-right
     = form_for(@invoice, url: symphony_invoice_path(workflow_id: params[:workflow_id])) do |f|
       = render 'form', f: f
+      = render 'remaining_invoice'
       .button-group.mt-20
         .row
           .col-md-4

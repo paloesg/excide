@@ -55,6 +55,7 @@
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
+      = render 'remaining_invoice'
       .row
         .col-md-8
           - if @workflow.batch.present?
