@@ -59,6 +59,10 @@
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
       .row
+        .col-md-12.mb-3
+          .pull-right
+            | #{@total_task - @total_completed_task} Invoice Remaining
+      .row
         .col-md-8
           - if @workflow.batch.present?
             = link_to "View Batch", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning'
