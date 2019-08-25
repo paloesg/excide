@@ -40,7 +40,7 @@ class Symphony::InvoicesController < ApplicationController
     if @invoice.save
       if @workflow.batch
         workflow_action = WorkflowAction.find(params[:workflow_action_id])
-        workflow_action.update_columns(completed: true, completed_user_id: current_user.id)        
+        workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
         invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @invoice.invoice_type
         next_wf = @workflow.batch.next_workflow(@workflow)
         if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
@@ -73,7 +73,7 @@ class Symphony::InvoicesController < ApplicationController
     if @invoice.update(invoice_params)
       if @invoice.workflow.batch.present? && params[:workflow_action_id].present?
         workflow_action = WorkflowAction.find(params[:workflow_action_id])
-        workflow_action.update_columns(completed: true, completed_user_id: current_user.id)        
+        workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
         invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @invoice.invoice_type
         next_wf = @workflow.batch.next_workflow(@workflow)
         if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
@@ -152,6 +152,8 @@ class Symphony::InvoicesController < ApplicationController
     @total_task = @workflows.count
     @total_completed_task = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: true}).count
 
+    @remaining_invoices = @total_task - @total_completed_task - 1
+
     @current_position = @workflows.pluck('id').index(@workflow.id)+1
 
     @next_workflow = @workflows.where('workflows.created_at > ?', @workflow.created_at).first
@@ -198,6 +200,6 @@ class Symphony::InvoicesController < ApplicationController
       redirect_to new_symphony_invoice_path(workflow_name: wf_data.template.slug, workflow_id: wf_data.id, invoice_type: invoice_type)
     elsif wf_data.invoice.present?
       redirect_to edit_symphony_invoice_path(workflow_name: wf_data.template.slug, workflow_id: wf_data.id, id: @invoice.id)
-    end  
+    end
   end
 end
