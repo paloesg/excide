@@ -1,4 +1,20 @@
 $(document).on("turbolinks:load", function(){
+  $(".submit-next").click(function () {
+    $(".submit-position").val("next_page");
+  });
+
+  $(".submit-back").click(function () {
+    $(".submit-position").val("previous_page");
+  });
+
+  $(".btn-invoice-approved").click(function () {
+    $(".invoice-status").val("approved");
+  });
+
+  $(".btn-invoice-rejected").click(function () {
+    $(".invoice-status").val("rejected");
+  });
+
   $('form').on('click', '.remove_fields', function(event) {
     $(this).closest('tr').find('.destroy').val('1');
     $(this).closest('tr').hide();
