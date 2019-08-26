@@ -5,7 +5,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company, except: [:get_xero_item_code_detail]
   before_action :set_workflow, except: [:get_xero_item_code_detail]
-  before_action :set_workflows_navigation, only: [:new, :edit]
+  before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :get_xero_details
@@ -44,9 +44,9 @@ class Symphony::InvoicesController < ApplicationController
         invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @invoice.invoice_type
         next_wf = @workflow.batch.next_workflow(@workflow)
         if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
-          redirect_to new_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, invoice_type: invoice_type, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id)
+          redirect_to new_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, invoice_type: invoice_type, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: "Invoice #{@current_position} has been saved successfully"
         else
-          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} Done!"
+          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} done!"
         end
       else
         redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully!"
