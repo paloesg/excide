@@ -113,6 +113,7 @@ class Symphony::WorkflowsController < ApplicationController
     respond_to do |format|
       if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
         if @workflow.batch
+          # Display different flash message when all actions task group is completed
           if workflow_action.all_actions_task_group_completed?
             flash[:notice] = "You have successfully completed all outstanding items for your current task."
           else
