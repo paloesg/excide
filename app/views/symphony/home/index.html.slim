@@ -1,5 +1,32 @@
 .container.mt-5
   .row
+    .col-sm-12
+      .card-deck.mb-3
+        .card.text-center.bg-light
+          .card-body
+            h5.card-title Workflows
+            h1.card-text = @workflow_count
+        .card.text-center.bg-light
+          .card-body
+            h5.card-title Tasks
+            h1.card-text = @outstanding_actions
+        .card.text-center.bg-light
+          .card-body
+            h5.card-title Batches
+            h1.card-text = @batch_count
+        .card.text-center.bg-light
+          .card-body
+           h5.card-title Reminders
+           h1.card-text = link_to @reminder_count, symphony_reminders_path, class: 'text-dark'
+  .row
+    .col-sm-6
+      .card.mb-3
+        h5.card-header New Workflow
+        .card-body
+          .form-group
+            = label_tag "template", "Select template:"
+            = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
+          = link_to 'New Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
     .col-sm-6
       .card.mb-3
         h5.card-header Batch Upload
@@ -12,13 +39,3 @@
           = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads mb-3', id: 'batch-uploader'
             - @s3_direct_post.fields.each do |key, value|
               = hidden_field_tag key, value
-    .col-sm-6
-      .card-deck.mb-3
-        .card.text-center.bg-light
-          .card-body
-            h5.card-title Workflows
-            h1.card-text = @workflows_array.count
-        .card.text-center.bg-light
-          .card-body
-            h5.card-title Tasks
-            h1.card-text = @outstanding_actions.count
