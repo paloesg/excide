@@ -116,6 +116,10 @@ class Workflow < ApplicationRecord
     def _destroy() false; end
   end
 
+  def get_workflow_action(task_id)
+    self.workflow_actions.where(task_id: task_id).first
+  end
+
   private
 
   # Create all the actions that need to be completed for a workflow that is associated with a company
@@ -123,7 +127,8 @@ class Workflow < ApplicationRecord
     sections = self.template.sections
     sections.each do |s|
       s.tasks.each do |t|
-        WorkflowAction.create!(task: t, company: self.company, completed: false, workflow: self)
+        completed = (t.position == 1 && t.section.position == 1 && t.task_type == "upload_file") ? true : false
+        WorkflowAction.create!(task: t, company: self.company, completed: completed, workflow: self)
       end
     end
     if ordered_workflow?
@@ -138,7 +143,7 @@ class Workflow < ApplicationRecord
   end
 
   def trigger_first_task
-    self.current_task.get_workflow_action(self.company, self.id).set_deadline_and_notify(current_task)
+    self.current_task.get_workflow_action(self.company_id, self.id).set_deadline_and_notify(self.current_task)
   end
 
   def unordered_tasks_trigger_email

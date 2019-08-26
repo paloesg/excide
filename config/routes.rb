@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
+  get '/xero_callback_and_update', to: 'xero_sessions#xero_callback_and_update', as: :xero_callback_and_update
+
   namespace :symphony do
     get '/search', to: 'home#search'
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
@@ -88,7 +90,8 @@ Rails.application.routes.draw do
         get '/assign', to: 'workflows#assign', as: :assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
         post '/xero_create_invoice_payable', to: 'workflows#xero_create_invoice_payable', as: :xero_create_invoice_payable
-        get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero
+        get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero        
+        post '/complete_task/:action_id', to: 'workflows#workflow_action_complete', as: :workflow_action_complete
         resources :invoices
       end
     end

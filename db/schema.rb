@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_15_094840) do
+ActiveRecord::Schema.define(version: 2019_08_16_081328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -159,6 +159,10 @@ ActiveRecord::Schema.define(version: 2019_08_15_094840) do
     t.bigint "associate_id"
     t.bigint "shared_service_id"
     t.string "designated_working_time"
+    t.string "session_handle"
+    t.string "access_key"
+    t.string "access_secret"
+    t.integer "expires_at"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -231,7 +235,7 @@ ActiveRecord::Schema.define(version: 2019_08_15_094840) do
     t.string "xero_contact_id"
     t.string "xero_contact_name"
     t.string "currency"
-    t.boolean "approved"
+    t.integer "status"
     t.decimal "total"
     t.bigint "user_id"
     t.uuid "workflow_id"

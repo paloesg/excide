@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:linkedin, :xero]
+         :omniauthable, :omniauth_providers => [:linkedin]
 
   has_one :profile, dependent: :destroy
   has_one :address, as: :addressable, dependent: :destroy

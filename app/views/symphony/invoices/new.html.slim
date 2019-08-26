@@ -5,8 +5,7 @@
         a href="/symphony" Symphony
       li.breadcrumb-item
         = link_to @workflow.id, symphony_workflow_path(workflow_id: @workflow.id)
-      li.breadcrumb-item Invoices
-      li.breadcrumb-item.active New
+      li.breadcrumb-item.active New Invoice
     h1 Create Invoice
 .row
   .loading
@@ -21,7 +20,55 @@
       - else
         iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" id="iframe-document"
   .col-md-8
+    .card.mb-3
+      .row.m-2
+        .col-auto
+          .document-info
+            - if @workflow.batch.present?
+              strong Batch Name:
+              br
+              = @workflow.batch.name
+              br
+            - if @document.present?
+              strong File Name:
+              br
+              = @document.filename
+        .col-auto.ml-auto.text-center
+          | Invoice
+          .invoice-nav
+            .invoice-nav-button.btn-right
+              - if @previous_workflow.present? && (@previous_workflow.invoice.blank? or @previous_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
+                = link_to new_symphony_invoice_path(workflow_name: @previous_workflow.template.slug, workflow_id: @previous_workflow.id, invoice_type: 'payable', workflow_action_id: @previous_workflow.get_workflow_action(@workflow_action.task_id).id) do
+                  i.fa.fa-caret-left
+              - else
+                = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug) do
+                  i.fa.fa-caret-left
+            .invoice-nav-number
+              | #{@current_position} of #{@total_task}
+            .invoice-nav-button.btn-left
+              - if @next_workflow.present? && (@next_workflow.invoice.blank? or @next_workflow.get_workflow_action(@workflow_action.task_id).completed == false)
+                = link_to new_symphony_invoice_path(workflow_name: @next_workflow.template.slug, workflow_id: @next_workflow.id, invoice_type: 'payable', workflow_action_id: @next_workflow.get_workflow_action(@workflow_action.task_id).id) do
+                  i.fa.fa-caret-right
+              - else
+                = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug) do
+                  i.fa.fa-caret-right
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
+      = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
-      = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning pull-right ml-2'
-      = f.submit 'Create Invoice', class: 'btn btn-primary pull-right'
+      = render 'remaining_invoice'
+      .row
+        .col-md-8
+          - if @workflow.batch.present?
+            = link_to "View Batch", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning'
+          - else
+            = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
+          - if params[:workflow_action].present?
+            = hidden_field_tag :workflow_action, params[:workflow_action]
+            = hidden_field_tag :invoice_type, params[:invoice_type]
+        .col-md-4
+          = hidden_field_tag :submit_position, '', class: 'submit-position'
+          .pull-right
+            - if current_user.has_role? :shared_service, @company or current_user.has_role? :admin, @company or current_user.has_role? :consultant, @company
+              = f.hidden_field :status, class: 'invoice-status', value: ''
+              = f.submit 'Reject', class: 'btn btn-danger mr-2 btn-invoice-rejected'
+            = f.submit 'Save', class: "btn btn-primary"

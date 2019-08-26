@@ -1,7 +1,9 @@
 class Invoice < ApplicationRecord
-  belongs_to :workflow
+  belongs_to :workflow, dependent: :destroy
   belongs_to :user
   belongs_to :company
+
+  enum status: { rejected: 0, approved: 1}
 
   enum line_amount_type: { exclusive: 0, inclusive: 1, no_tax: 2}
 

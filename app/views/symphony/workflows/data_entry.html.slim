@@ -19,7 +19,9 @@
       - else
         iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
   .col-md-6
-    = form_for(@workflow, url: symphony_workflow_path(workflow_id: params[:workflow_id])) do |f|
+    = form_for(@workflow, url: symphony_workflow_path(workflow_id: params[:workflow_id])) do |f|      
+      = hidden_field_tag :enter_data_type, params[:enter_data_type] if params[:enter_data_type].present?
+      = hidden_field_tag :workflow_action, params[:workflow_action] if params[:workflow_action].present?
       .card.mb-3
         h5.card-header Data Attributes
         .table-responsive

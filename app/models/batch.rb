@@ -15,7 +15,7 @@ class Batch < ApplicationRecord
 
   #get all the completed workflow action in an array
   def get_completed_actions
-    self.workflows.includes(:workflow_actions).map{ |wf| wf.workflow_actions.where(completed: true) }.flatten.compact
+    self.workflows.map{ |wf| wf.workflow_actions.where(completed: true) }.flatten.compact
   end
 
   def get_completed_workflows
@@ -41,10 +41,36 @@ class Batch < ApplicationRecord
     self.created_at.strftime('%y%m%d-%H%M')
   end
 
+  def next_workflow(workflow)
+    self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first
+  end
+
+  def previous_workflow(workflow)
+    self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
+  end
+
+  def next_task(workflow, workflow_action)
+    workflow = self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first
+    show_workflow_action_by_workflow(workflow, workflow_action)
+  end
+
+  def previous_task(workflow, workflow_action)
+    workflow = self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
+    show_workflow_action_by_workflow(workflow, workflow_action)
+  end
+
   def check_and_update_workflow_completed
     workflows = self.workflows.includes(:workflow_actions)
     workflows.each do |wf|
       wf.update_attribute('completed', true) if wf.workflow_actions.present? and wf.workflow_actions.all?{ |wfa| wfa.completed? }
+    end
+  end
+
+  private
+
+  def show_workflow_action_by_workflow(workflow, workflow_action)
+    if workflow.present?
+      workflow.workflow_actions.find_by(task_id: workflow_action.task_id)
     end
   end
 end
