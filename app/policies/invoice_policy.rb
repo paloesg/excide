@@ -20,7 +20,7 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.has_role?(:admin, record.company)
+    user.has_role?(:associate, record.company) or user.has_role?(:admin, record.company)
   end
 
   class Scope < Scope
