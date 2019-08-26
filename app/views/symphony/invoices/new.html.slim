@@ -63,12 +63,11 @@
           - else
             = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
           - if params[:workflow_action].present?
-            = hidden_field_tag :workflow_action, params[:workflow_action]
+            = hidden_field_tag :workflow_action, params[:workflow_action_id]
             = hidden_field_tag :invoice_type, params[:invoice_type]
         .col-md-4
           = hidden_field_tag :submit_position, '', class: 'submit-position'
           .pull-right
             - if current_user.has_role? :shared_service, @company or current_user.has_role? :admin, @company or current_user.has_role? :consultant, @company
-              = f.hidden_field :status, class: 'invoice-status', value: ''
-              = f.submit 'Reject', class: 'btn btn-danger mr-2 btn-invoice-rejected'
+              = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, invoice_type: params[:invoice_type], workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2')
             = f.submit 'Save', class: "btn btn-primary"
