@@ -136,6 +136,45 @@ class Symphony::InvoicesController < ApplicationController
     end
   end
 
+  def reject
+    if params[:id].blank?
+      @invoice = Invoice.new
+      @invoice.workflow_id = @workflow.id
+      @invoice.user_id = current_user.id
+      @invoice.company_id = current_user.company_id
+      @invoice.invoice_type = params[:invoice_type]
+    else
+      @invoice = Invoice.find(params[:id])
+    end
+    authorize @invoice
+    if @invoice.save(validate: false)
+      if @invoice.update_attribute(:status, "rejected")
+        flash[:notice] = "Invoice has been rejected."
+        if @invoice.workflow.batch.present?
+          #set completed task
+          workflow_action = WorkflowAction.find(params[:workflow_action_id])
+          workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
+          redirect_to symphony_batch_path(batch_template_name: @invoice.workflow.batch.template.slug, id: @invoice.workflow.batch.id)
+        else
+          redirect_to symphony_workflow_path(@nvoice.workflow.template.slug, @nvoice.workflow.id)
+        end
+      else
+        if params[:id].present?
+          render :edit
+        else
+          render :new
+        end
+      end
+    else
+      if params[:id].present?
+        render :edit
+      else
+        render :new
+      end
+    end
+    
+  end
+
   private
   def set_invoice
     @invoice = Invoice.find(params[:id])
