@@ -99,7 +99,7 @@ class Symphony::WorkflowsController < ApplicationController
         end
       else
         render :edit
-      end      
+      end
     else
       render :edit
     end
@@ -111,9 +111,15 @@ class Symphony::WorkflowsController < ApplicationController
 
     workflow_action = WorkflowAction.find(params[:action_id])
     respond_to do |format|
-      if workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
+      if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
         if @workflow.batch
-          format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.instructions} done!"}
+          # Display different flash message when all actions task group is completed
+          if workflow_action.all_actions_task_group_completed?
+            flash[:notice] = "You have successfully completed all outstanding items for your current task."
+          else
+            flash[:notice] = "#{workflow_action.task.instructions} done!"
+          end
+          format.html {redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)}
         else
           format.html {redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: "#{workflow_action.task.instructions} done!"}
         end

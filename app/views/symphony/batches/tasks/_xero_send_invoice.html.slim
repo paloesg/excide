@@ -1,4 +1,4 @@
-- if action.completed?
+- if action.completed? or workflow&.invoice&.xero_invoice_id
   = render "symphony/batches/tasks/completed"
 - else
-  = link_to "Start", workflow.invoice.present? ? edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id, workflow_action_id: action.id) : "#", class: "btn btn-success btn-sm mb-2 #{"disabled" if !action.task.first? and (!action.task.check_previous.get_workflow_action(workflow.company, workflow.id)&.completed? or current_user.roles.exclude? action.task.role)}" 
+  = link_to "Start", workflow.invoice.present? ? edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id, workflow_action_id: action.id) : "#", class: "btn btn-success btn-sm mb-2 #{"disabled" if !action.task.first? and (!action.task.check_previous.get_workflow_action(workflow.company, workflow.id)&.completed? or current_user.roles.exclude? action.task.role)}"
