@@ -44,12 +44,12 @@ class Symphony::InvoicesController < ApplicationController
         invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @invoice.invoice_type
         next_wf = @workflow.batch.next_workflow(@workflow)
         if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
-          redirect_to new_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, invoice_type: invoice_type, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: "Invoice #{@current_position} has been saved successfully"
+          redirect_to new_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, invoice_type: invoice_type, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: "Invoice #{@current_position} has been saved successfully."
         else
-          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} done!"
+          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} task has been completed."
         end
       else
-        redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully!"
+        redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully."
       end
     else
       render 'new'
@@ -77,9 +77,9 @@ class Symphony::InvoicesController < ApplicationController
         invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @invoice.invoice_type
         next_wf = @workflow.batch.next_workflow(@workflow)
         if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
-          redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: "Invoice #{@current_position} has been #{@invoice.status} successfully"
+          redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: "Invoice #{@current_position} has been #{@invoice.status} successfully."
         else
-          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} done!"
+          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} task has been completed."
         end
       else
         redirect_to symphony_invoice_path(workflow_name: @invoice.workflow.template.slug, workflow_id: @invoice.workflow.id, id: @invoice.id)
