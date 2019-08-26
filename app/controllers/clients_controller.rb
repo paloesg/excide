@@ -26,7 +26,7 @@ class ClientsController < ApplicationController
     @client.user = current_user
 
     if params[:add_to_xero] == 'true'
-      @xero = Xero.new(session[:xero_auth])
+      @xero = Xero.new(@client.company)
       contact_id = @xero.create_contact(client_params)
       @client.xero_contact_id = contact_id
     end
@@ -63,7 +63,7 @@ class ClientsController < ApplicationController
   end
 
   def xero_create
-    @xero = Xero.new(session[:xero_auth])
+    @xero = Xero.new(@client.company)
     contact_id = @xero.create_contact(name: @client.name)
     @client.xero_contact_id = contact_id
 
