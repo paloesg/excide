@@ -40,7 +40,7 @@ class Symphony::WorkflowsController < ApplicationController
     @workflow.workflow_action_id = params[:action_id] if params[:action_id]
 
     if params[:workflow][:client][:name].present?
-      @xero = Xero.new(session[:xero_auth])
+      @xero = Xero.new(@workflow.company)
       @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user)
     end
 
@@ -232,7 +232,7 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def xero_create_invoice_payable
-    @xero = Xero.new(session[:xero_auth])
+    @xero = Xero.new(@workflow.company)
     authorize @workflow
     if @workflow.invoice.payable?
       xero_invoice = @xero.create_invoice_payable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency)
