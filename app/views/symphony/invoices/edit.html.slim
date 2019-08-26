@@ -83,8 +83,8 @@
                   - else
                     = link_to('Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm mb-2') if @invoice.xero_contact_id.nil?
                     - if @invoice.approved? and (current_user.has_role? :associate, @company or current_user.has_role? :admin, @company or current_user.has_role? :consultant, @company)
-                      = link_to("Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved"), method: 'post', role: 'button', class: 'btn btn-primary mr-2')
-                      = link_to("Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment"), method: 'post', role: 'button', class: 'btn btn-primary')
+                      = link_to("Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-primary mr-2')
+                      = link_to("Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-primary')
                     - else
                       - if current_user.has_role? :associate, @company or current_user.has_role? :admin, @company or current_user.has_role? :consultant, @company
                         = f.submit 'Approve', class: 'btn btn-success mr-2 btn-invoice-approved' if !@invoice.approved?
