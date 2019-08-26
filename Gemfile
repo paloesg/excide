@@ -164,6 +164,7 @@ group :development do
   gem "binding_of_caller"
 
   gem 'rails-erd'
+  gem 'rack-mini-profiler'
 end
 
 group :development, :test do
