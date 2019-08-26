@@ -136,6 +136,55 @@ class Symphony::InvoicesController < ApplicationController
     end
   end
 
+  def reject
+    invoice_id = params[:id]
+    if invoice_id.blank?
+      @invoice = Invoice.new
+      @invoice.workflow_id = @workflow.id
+      @invoice.user_id = current_user.id
+      @invoice.company_id = current_user.company_id
+      @invoice.invoice_type = params[:invoice_type]
+    else
+      @invoice = Invoice.find(invoice_id)
+    end
+    authorize @invoice
+    if @invoice.save(validate: false)
+      if @invoice.update_attribute(:status, "rejected")
+        flash[:notice] = "Invoice has been rejected."
+        if @invoice.workflow.batch.present?
+          #set completed task
+          workflow_action = WorkflowAction.find(params[:workflow_action_id])
+          workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
+          next_wf = @workflow.batch.next_workflow(@workflow)          
+          if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
+            if invoice_id.present?
+              redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id)
+            else
+              redirect_to new_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, invoice_type: @invoice.invoice_type, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id)
+            end
+          else
+            redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+          end
+        else
+          redirect_to symphony_workflow_path(@nvoice.workflow.template.slug, @nvoice.workflow.id)
+        end
+      else
+        if invoice_id.present?
+          render :edit
+        else
+          render :new
+        end
+      end
+    else
+      if invoice_id.present?
+        render :edit
+      else
+        render :new
+      end
+    end
+    
+  end
+
   private
   def set_invoice
     @invoice = Invoice.find(params[:id])

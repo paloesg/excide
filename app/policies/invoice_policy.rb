@@ -19,6 +19,10 @@ class InvoicePolicy < ApplicationPolicy
     update?
   end
 
+  def reject?
+    update?
+  end
+
   def destroy?
     user.has_role?(:associate, record.company) or user.has_role?(:admin, record.company)
   end
