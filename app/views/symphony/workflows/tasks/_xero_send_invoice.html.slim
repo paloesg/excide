@@ -28,7 +28,6 @@ tr
                 = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm', target: :_blank
               / Else, check if workflow client is already on Xero if not show button to add client to Xero first. After client is on Xero, show button to send invoice to Xero.
               - else
-                = link_to('Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-primary btn-sm') if @workflow.invoice.xero_contact_id.nil?
                 - if @invoice.approved?
                   / declare 2 variables to pass into the link_to button in _xero_send_invoice.html.slim. approved params will cause the button to send to xero's invoice status 'AWAITING APPROVAL'. Likewise,payment params will link to xero's invoice status 'AWAITING PAYMENT'
                   = link_to("Send to Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved"), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
