@@ -163,7 +163,7 @@ ActiveRecord::Schema.define(version: 2019_08_26_100448) do
     t.string "access_key"
     t.string "access_secret"
     t.integer "expires_at"
-    t.boolean "connect_xero"
+    t.boolean "connect_xero", default: true
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
