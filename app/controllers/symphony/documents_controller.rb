@@ -49,10 +49,10 @@ class Symphony::DocumentsController < ApplicationController
         elsif params[:upload_type] == "batch_upload"
           @batch = @document.workflow.batch
           workflow_action = WorkflowAction.find(params[:workflow_action])
-          if workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
+          if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
             format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id), notice: "#{@workflow_action.task.instructions} done!"}
           else
-            format.json { render json: workflow_action.errors, status: :unprocessable_entity }            
+            format.json { render json: workflow_action.errors, status: :unprocessable_entity }
           end
         else
           format.html { redirect_to @generate_document.document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(@generate_document.document.workflow.template.slug, @generate_document.document.workflow.id), notice: 'Document was successfully created.' }
