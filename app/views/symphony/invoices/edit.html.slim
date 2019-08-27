@@ -79,15 +79,14 @@
                   / If xero invoice is present, only show button to view Xero invoice
                   - if @invoice.xero_invoice_id.present?
                     = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@invoice.xero_invoice_id}", role: 'button', target: "_blank", class: 'btn btn-warning', target: :_blank
-                  - else
-                    - if @invoice.approved? and (current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company or current_user.has_role? :admin, @company)
+                  - elsif current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company or current_user.has_role? :admin, @company
+                    - if @invoice.approved?
                       | Send to Xero:
                       = link_to("Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-warning m-2')
                       = link_to("Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger')
                     - elsif @invoice.rejected?
-                      - if current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company or current_user.has_role? :admin, @company
-                        = f.submit 'Approve', class: 'btn btn-success mr-2 btn-invoice-approved'
-                        = link_to "Delete", symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), method: :delete, class: 'btn btn-danger mr-2', data: {confirm: "Are you sure you want to delete this invoice?"}
+                      = f.submit 'Approve', class: 'btn btn-success mr-2 btn-invoice-approved'
+                      = link_to "Delete", symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), method: :delete, class: 'btn btn-danger mr-2', data: {confirm: "Are you sure you want to delete this invoice?"}
                     - else
                       - if current_user.has_role? :shared_service, @company or current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company or current_user.has_role? :admin, @company
                         = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, id: @invoice.id, workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2')
