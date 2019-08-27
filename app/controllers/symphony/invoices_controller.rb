@@ -206,6 +206,10 @@ class Symphony::InvoicesController < ApplicationController
     @current_position = @workflows.pluck('id').index(@workflow.id)+1
 
     unclomplete_workflows = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: false}).order(created_at: :asc)
+
+    @next_workflow_edit = unclomplete_workflows.includes(:invoice).where.not(invoices: {id: nil}).where('workflows.created_at > ?', @workflow.created_at).first
+    @previous_workflow_edit = unclomplete_workflows.includes(:invoice).where.not(invoices: {id: nil}).where('workflows.created_at < ?', @workflow.created_at).last
+
     @next_workflow = unclomplete_workflows.where('workflows.created_at > ?', @workflow.created_at).first
     @previous_workflow = unclomplete_workflows.where('workflows.created_at < ?', @workflow.created_at).last
   end

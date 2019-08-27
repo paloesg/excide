@@ -37,7 +37,7 @@
           | Invoice
           .invoice-nav
             .invoice-nav-button.btn-right
-              - if @previous_workflow.present? and @previous_workflow.invoice.present? and @previous_workflow.get_workflow_action(@workflow_action.task_id).completed == false
+              - if @previous_workflow.present? and @previous_workflow.invoice.blank?
                 = link_to new_symphony_invoice_path(workflow_name: @previous_workflow.template.slug, workflow_id: @previous_workflow.id, invoice_type: 'payable', workflow_action_id: @previous_workflow.get_workflow_action(@workflow_action.task_id).id) do
                   i.fa.fa-caret-left
               - else
@@ -46,7 +46,7 @@
             .invoice-nav-number
               | #{@current_position} of #{@total_task}
             .invoice-nav-button.btn-left
-              - if @next_workflow.present? and @next_workflow.invoice.present? and @next_workflow.get_workflow_action(@workflow_action.task_id).completed == false
+              - if @next_workflow.present? and @next_workflow.invoice.blank?
                 = link_to new_symphony_invoice_path(workflow_name: @next_workflow.template.slug, workflow_id: @next_workflow.id, invoice_type: 'payable', workflow_action_id: @next_workflow.get_workflow_action(@workflow_action.task_id).id) do
                   i.fa.fa-caret-right
               - else
