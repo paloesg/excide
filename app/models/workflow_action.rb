@@ -32,14 +32,9 @@ class WorkflowAction < ApplicationRecord
     # Create new reminder based on deadline of action and repeat every 2 days
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
 
-    users = User.with_role(next_task.role.name.to_sym, self.company)
-    if next_task.role.present? and self.workflow.batch.nil?
+    if (next_task.role.present? and self.workflow.batch.nil?) or (next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?)
+      users = User.with_role(next_task.role.name.to_sym, self.company)
       # Trigger email notification for next task if role present
-      users.each do |user|
-        NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
-      end
-    elsif next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?
-      # Trigger email notification for next task in a batch once previous task is completed
       users.each do |user|
         NotificationMailer.task_notification(next_task, next_action, user).deliver_later
       end
