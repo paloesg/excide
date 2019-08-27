@@ -207,8 +207,10 @@ class Symphony::InvoicesController < ApplicationController
 
     unclomplete_workflows = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: false}).order(created_at: :asc)
 
-    @next_workflow_edit = unclomplete_workflows.includes(:invoice).where.not(invoices: {id: nil}).where('workflows.created_at > ?', @workflow.created_at).first
-    @previous_workflow_edit = unclomplete_workflows.includes(:invoice).where.not(invoices: {id: nil}).where('workflows.created_at < ?', @workflow.created_at).last
+    #when on edit page the workflow filter only have invoice
+    if params[:action] == "edit"
+      unclomplete_workflows = unclomplete_workflows.includes(:invoice).where.not(invoices: {id: nil})
+    end
 
     @next_workflow = unclomplete_workflows.where('workflows.created_at > ?', @workflow.created_at).first
     @previous_workflow = unclomplete_workflows.where('workflows.created_at < ?', @workflow.created_at).last
