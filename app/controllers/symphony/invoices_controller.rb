@@ -182,7 +182,6 @@ class Symphony::InvoicesController < ApplicationController
         render :new
       end
     end
-
   end
 
   private
@@ -205,8 +204,15 @@ class Symphony::InvoicesController < ApplicationController
 
     @current_position = @workflows.pluck('id').index(@workflow.id)+1
 
-    @next_workflow = @workflows.where('workflows.created_at > ?', @workflow.created_at).first
-    @previous_workflow = @workflows.where('workflows.created_at < ?', @workflow.created_at).last
+    incomplete_workflows = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: false}).order(created_at: :asc)
+
+    # When on edit page the workflow filter only have invoice
+    if params[:action] == "edit"
+      incomplete_workflows = incomplete_workflows.includes(:invoice).where.not(invoices: {id: nil})
+    end
+
+    @next_workflow = incomplete_workflows.where('workflows.created_at > ?', @workflow.created_at).first
+    @previous_workflow = incomplete_workflows.where('workflows.created_at < ?', @workflow.created_at).last
   end
 
   def set_company
