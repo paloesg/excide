@@ -155,7 +155,7 @@ class Symphony::InvoicesController < ApplicationController
           #set completed task
           workflow_action = WorkflowAction.find(params[:workflow_action_id])
           workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
-          next_wf = @workflow.batch.next_workflow(@workflow)          
+          next_wf = @workflow.batch.next_workflow(@workflow)
           if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
             if invoice_id.present?
               redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id)
@@ -182,7 +182,6 @@ class Symphony::InvoicesController < ApplicationController
         render :new
       end
     end
-    
   end
 
   private
@@ -205,15 +204,15 @@ class Symphony::InvoicesController < ApplicationController
 
     @current_position = @workflows.pluck('id').index(@workflow.id)+1
 
-    unclomplete_workflows = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: false}).order(created_at: :asc)
+    incomplete_workflows = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: false}).order(created_at: :asc)
 
-    #when on edit page the workflow filter only have invoice
+    # When on edit page the workflow filter only have invoice
     if params[:action] == "edit"
-      unclomplete_workflows = unclomplete_workflows.includes(:invoice).where.not(invoices: {id: nil})
+      incomplete_workflows = incomplete_workflows.includes(:invoice).where.not(invoices: {id: nil})
     end
 
-    @next_workflow = unclomplete_workflows.where('workflows.created_at > ?', @workflow.created_at).first
-    @previous_workflow = unclomplete_workflows.where('workflows.created_at < ?', @workflow.created_at).last
+    @next_workflow = incomplete_workflows.where('workflows.created_at > ?', @workflow.created_at).first
+    @previous_workflow = incomplete_workflows.where('workflows.created_at < ?', @workflow.created_at).last
   end
 
   def set_company
