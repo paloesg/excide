@@ -23,6 +23,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     xero_email: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    connect_xero: Field::Boolean,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -56,6 +57,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :ssic_code,
     :financial_year_end,
     :xero_email,
+    :connect_xero,
   ]
 
   # Overwrite this method to customize how profiles are displayed
