@@ -73,7 +73,7 @@ class Symphony::InvoicesController < ApplicationController
     if @invoice.update(invoice_params)
       if @invoice.workflow.batch.present? && params[:workflow_action_id].present?
         workflow_action = WorkflowAction.find(params[:workflow_action_id])
-        workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
+        workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
         invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @invoice.invoice_type
         next_wf = @workflow.batch.next_workflow(@workflow)
         if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
@@ -154,7 +154,7 @@ class Symphony::InvoicesController < ApplicationController
         if @invoice.workflow.batch.present?
           #set completed task
           workflow_action = WorkflowAction.find(params[:workflow_action_id])
-          workflow_action.update_columns(completed: true, completed_user_id: current_user.id)
+          workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
           next_wf = @workflow.batch.next_workflow(@workflow)
           if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
             if invoice_id.present?
