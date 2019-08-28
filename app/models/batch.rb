@@ -3,6 +3,7 @@ class Batch < ApplicationRecord
   belongs_to :template
   belongs_to :user
   has_many :workflows, dependent: :destroy
+  after_save :send_email_notification
 
   # replacement for .first/.last because we use uuids
   def self.first
@@ -35,6 +36,14 @@ class Batch < ApplicationRecord
   #Since each template's workflows have the same workflow_actions, can get the total number of actions by multiplying the number of workflows in batch with the workflow_actions of ANY one workflow
   def total_action
     self.workflows.present? ? (self.workflows.count * self.workflows[0].workflow_actions.count) : 0
+  end
+
+  def send_email_notification
+    task = self.template.sections.first.tasks.first
+    users = User.with_role(task.role.name.to_sym, self.company)
+    users.each do |user|
+      NotificationMailer.first_task_notification(task, self, user).deliver_later
+    end
   end
 
   def name
