@@ -14,7 +14,7 @@ class Symphony::BatchesController < ApplicationController
     @batches = policy_scope(Batch).includes(:workflows, :template, :user)
     @batches.each do |batch|
       #update batch to true only when the action_completed_progress hits 100%
-      batch.update_column('completed', true) if batch.action_completed_progress == 100
+      batch.update_attribute('completed', true) if batch.action_completed_progress == 100
     end
     @completed_batches = @batches.where(completed: true)
 

@@ -3,7 +3,7 @@ class Batch < ApplicationRecord
   belongs_to :template
   belongs_to :user
   has_many :workflows, dependent: :destroy
-  after_save :send_email_notification
+  after_create :send_email_notification
 
   # replacement for .first/.last because we use uuids
   def self.first
