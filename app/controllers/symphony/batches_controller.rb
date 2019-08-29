@@ -6,7 +6,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index, :create]
+  after_action :verify_authorized, except: [:index, :create, :load_batch]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -56,11 +56,18 @@ class Symphony::BatchesController < ApplicationController
     authorize @batch
     #check and update workflow if all its actions are completed
     @batch.check_and_update_workflow_completed
-    @completed_workflow_count = @batch.workflows.where(completed: true).count
+    @completed_workflow_count = @batch.workflows.where(completed: true).size
     @current_user = current_user
     @sections = @batch.template.sections
     @templates = policy_scope(Template).assigned_templates(current_user)
     @roles = @current_user.roles.includes(:resource).where(resource_id: @current_user.company.id, resource_type: "Company")
+  end
+
+  def load_batch
+    @batches = policy_scope(Batch).includes(:user).offset(params[:start_from]).limit(params[:limit])
+    respond_to do |format|
+      format.json  { render json: { batches: @batches.to_json(methods: [:get_completed_workflows, :total_action, :user]) } }
+    end
   end
 
   private

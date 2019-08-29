@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     end
     resources :batches, path: '/batches/:batch_template_name', except: [:index, :create]
     get '/batches', to: 'batches#index', as: :batches_index
+    post '/batches/load_batch/:start_from/:limit', to: 'batches#load_batch', as: :load_batch_json
     post '/batches', to: 'batches#create'
 
     resources :document_templates
@@ -90,7 +91,7 @@ Rails.application.routes.draw do
         get '/assign', to: 'workflows#assign', as: :assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
         post '/xero_create_invoice_payable', to: 'workflows#xero_create_invoice_payable', as: :xero_create_invoice_payable
-        get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero        
+        get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero
         post '/complete_task/:action_id', to: 'workflows#workflow_action_complete', as: :workflow_action_complete
         resources :invoices
       end
