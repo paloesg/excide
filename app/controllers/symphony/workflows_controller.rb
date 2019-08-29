@@ -10,7 +10,8 @@ class Symphony::WorkflowsController < ApplicationController
   before_action :set_attributes_metadata, only: [:create, :update]
 
   rescue_from Xeroizer::OAuth::TokenExpired, Xeroizer::OAuth::TokenInvalid, with: :xero_login
-  rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, with: :xero_error
+  rescue_from Xeroizer::RecordInvalid, URI::InvalidURIError, ArgumentError, with: :xero_error
+  rescue_from Xeroizer::ApiException, with: :xero_error_api_exception
 
   after_action :verify_authorized, except: [:index, :send_reminder, :stop_reminder]
   after_action :verify_policy_scoped, only: :index
@@ -407,6 +408,13 @@ class Symphony::WorkflowsController < ApplicationController
 
   def xero_error(e)
     message = 'Xero returned an error: ' + e.message + '. Please ensure you have filled in all the required data in the right format.'
+    Rails.logger.error("Xero Error: #{message}")
+    redirect_to session[:previous_url], alert: message
+  end
+
+  #return a separate error for xero api validation exception to prevent overflow cookie errors
+  def xero_error_api_exception
+    message = 'Xero returns validation errors. Please ensure that the data are entered correctly.'
     Rails.logger.error("Xero Error: #{message}")
     redirect_to session[:previous_url], alert: message
   end

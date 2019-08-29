@@ -11,7 +11,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :get_xero_details
 
   rescue_from Xeroizer::OAuth::TokenInvalid, with: :xero_login
-  rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, Xeroizer::OAuth::RateLimitExceeded, with: :xero_error
+  rescue_from Xeroizer::RecordInvalid, URI::InvalidURIError, ArgumentError, Xeroizer::OAuth::RateLimitExceeded, with: :xero_error
 
   after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail]
   after_action :verify_policy_scoped, only: :index
@@ -255,8 +255,8 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def xero_error(e)
-    message = 'Xero returned an error: ' + e.message + '. Please ensure you have filled in all the required data in the right format.'
-    Rails.logger.error("Xero Error: #{message}")
+    message = 'Xero returned an error: ' + truncate(e.message.to_s) + '. Please ensure you have filled in all the required data in the right format.'
+    Rails.logger.error("Xero Error: #{e.message.to_s}")
     redirect_to session[:previous_url], alert: message
   end
 
