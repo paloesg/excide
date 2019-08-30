@@ -111,10 +111,12 @@ gem 'bootstrap', '~> 4.3'
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
 # Font Awesome Rails
 gem "font-awesome-rails"
-#Use inky for email templating
+# Use inky for email templating
 gem 'inky-rb', require: 'inky'
 # Stylesheet inlining for email
 gem 'premailer-rails'
+# Default processer: MiniMagick. Enable variant for image using ActiveStorage
+gem 'image_processing', '~> 1.2'
 
 # Nested form helper
 gem "cocoon"
