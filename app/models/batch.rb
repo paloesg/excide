@@ -41,12 +41,12 @@ class Batch < ApplicationRecord
     self.created_at.strftime('%y%m%d-%H%M')
   end
 
-  def next_workflow(workflow)
-    self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first
+  def next_workflow(workflow, workflow_action)
+    self.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where('workflows.created_at > ?', workflow.created_at).order(created_at: :asc).first
   end
 
-  def previous_workflow(workflow)
-    self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
+  def previous_workflow(workflow, workflow_action)
+    self.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where('workflows.created_at < ?', workflow.created_at).order(created_at: :asc).last
   end
 
   def next_task(workflow, workflow_action)
