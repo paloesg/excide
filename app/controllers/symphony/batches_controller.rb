@@ -65,7 +65,7 @@ class Symphony::BatchesController < ApplicationController
 
   def load_batch
     get_batches = policy_scope(Batch).order("created_at DESC").offset(params[:start_from]).limit(params[:limit]).includes(:user, :workflows)
-    @batches = get_batches.as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}} ] )
+    @batches = get_batches.as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
     respond_to do |format|
       format.json  { render json: @batches }
     end
