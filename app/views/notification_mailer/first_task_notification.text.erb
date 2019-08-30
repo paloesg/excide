@@ -1,0 +1,8 @@
+Hi <%= @user.first_name %>,
+
+You have a new task that you are required to complete.
+
+The instructions for the task are as follows: "<%= @task.instructions %>". You can access the task from this URL:
+  <%= symphony_batch_url(@task.section.template.slug, @batch.id) %>
+
+If you have any queries regarding your task, please contact the workflow creator: <%= @batch.user.full_name %>
