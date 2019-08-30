@@ -5,7 +5,7 @@ $(document).on("turbolinks:load", function() {
     trigger : "focus",
     sanitize : false,
     content() {
-      return "<iframe src='https://docs.google.com/viewer?url=" + $(this).attr("data-document") + "&embedded=true' frameborder='0' height='300px' width='250px'></iframe>";
+      return "<iframe src='https://docs.google.com/viewer?url=" + $(this).attr("data-document") + "&embedded=true' frameborder='0' height='600px' width='450px'></iframe>";
     }
   });
 });

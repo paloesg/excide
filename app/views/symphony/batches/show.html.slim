@@ -40,11 +40,11 @@
                     - if File.extname(d.file_url) == '.pdf'
                       = d.filename
                       br
-                      a.pdf-preview tabindex="0" data-placement="auto" data-container="body" data-content=""  data-document="https:#{d.file_url}" Preview
+                      a.pdf-preview tabindex="0" data-placement="auto" data-container=".pdf-preview" data-content=""  data-document="https:#{d.file_url}" Preview
                     - else
                       = d.filename
                       br
-                      a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid'/>" Preview
+                      a.image-preview data-container=".image-preview" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid image-preview-style'/>" Preview
               td
                 - if wf.invoice.blank?
                   i.ti-receipt.icon.mr-3.text-center.medium-icon.gray-icon
