@@ -6,6 +6,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_company, except: [:get_xero_item_code_detail]
   before_action :set_workflow, except: [:get_xero_item_code_detail]
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
+  before_action :set_workflow_action, only: [:create, :update]
   before_action :set_last_workflow_action, only: [:show]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
@@ -41,14 +42,13 @@ class Symphony::InvoicesController < ApplicationController
 
     if @invoice.save
       if @workflow.batch
-        workflow_action = WorkflowAction.find(params[:workflow_action_id])
-        workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
-        invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @invoice.invoice_type
-        next_wf = @workflow.batch.next_workflow(@workflow, workflow_action)
-        if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
-          redirect_to new_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, invoice_type: invoice_type, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: "Invoice #{@current_position} has been saved successfully."
+        next_wf = @workflow.batch.next_workflow(@workflow, @workflow_action)
+        if next_wf.present? and next_wf.get_workflow_action(@workflow_action.task_id).completed == false
+          @workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
+          invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @invoice.invoice_type
+          redirect_to new_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, invoice_type: invoice_type, workflow_action_id: next_wf.get_workflow_action(@workflow_action.task_id).id), notice: "Invoice #{@current_position} has been saved successfully."
         else
-          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} task has been completed."
+          redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{@workflow_action.task.task_type.humanize} task has been completed."
         end
       else
         redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully."
@@ -73,15 +73,15 @@ class Symphony::InvoicesController < ApplicationController
     end
     if @invoice.save
       if @invoice.update(invoice_params)
-        if @invoice.workflow.batch.present? && params[:workflow_action_id].present?
-          workflow_action = WorkflowAction.find(params[:workflow_action_id])
-          workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
-          invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @invoice.invoice_type
-          next_wf = @workflow.batch.next_workflow(@workflow, workflow_action)
-          if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false and next_wf.invoice.present?
-            redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: "Invoice #{@current_position} has been #{@invoice.status} successfully."
+        if @invoice.workflow.batch.present? and params[:workflow_action_id].present?
+          next_wf = @workflow.batch.next_workflow(@workflow, @workflow_action)
+          if next_wf.present? and next_wf.get_workflow_action(@workflow_action.task_id).completed == false and next_wf.invoice.present?
+            if @invoice.approved?
+              @workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
+            end
+            redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(@workflow_action.task_id).id), notice: "Invoice #{@current_position} has been #{@invoice.status} successfully."
           else
-            redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{workflow_action.task.task_type.humanize} task has been completed."
+            redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{@workflow_action.task.task_type.humanize} task has been completed."
           end
         else
           redirect_to symphony_invoice_path(workflow_name: @invoice.workflow.template.slug, workflow_id: @invoice.workflow.id, id: @invoice.id, workflow_action_id: params[:workflow_action_id])
@@ -219,6 +219,10 @@ class Symphony::InvoicesController < ApplicationController
 
     @next_workflow = incomplete_workflows.where('workflows.created_at > ?', @workflow.created_at).first
     @previous_workflow = incomplete_workflows.where('workflows.created_at < ?', @workflow.created_at).last
+  end
+
+  def set_workflow_action
+    @workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])  
   end
 
   def set_last_workflow_action  
