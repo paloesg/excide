@@ -261,8 +261,8 @@ class Symphony::WorkflowsController < ApplicationController
       @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
 
-    next_wf = @workflow.batch.next_workflow(@workflow)
     workflow_action = WorkflowAction.find(params[:workflow_action_id])
+    next_wf = @workflow.batch.next_workflow(@workflow, workflow_action)
 
     respond_to do |format|
       if @workflow.invoice.errors.empty?
