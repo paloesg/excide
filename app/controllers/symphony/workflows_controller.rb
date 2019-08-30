@@ -407,7 +407,7 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def xero_error(e)
-    message = 'Xero returned an error: ' + e.parsed_xml + '. Please ensure you have filled in all the required data in the right format.'
+    message = 'Xero returned an error: ' + e.parsed_xml.text.to_s.truncate(200) + '. Please ensure you have filled in all the required data in the right format.'
     Rails.logger.error("Xero Error: #{message}")
     redirect_to session[:previous_url], alert: message
   end
