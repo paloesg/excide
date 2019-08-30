@@ -11,7 +11,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :get_xero_details
 
   rescue_from Xeroizer::OAuth::TokenInvalid, with: :xero_login
-  rescue_from Xeroizer::RecordInvalid, URI::InvalidURIError, ArgumentError, Xeroizer::OAuth::RateLimitExceeded, with: :xero_error
+  rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, Xeroizer::OAuth::RateLimitExceeded, with: :xero_error
 
   after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail]
   after_action :verify_policy_scoped, only: :index
