@@ -38,9 +38,9 @@
                 - else
                   - wf.documents.each do |d|
                     - if File.extname(d.file_url) == '.pdf'
-                      = d.filename
+                      = d.converted_image.blob.filename
                       br
-                      a.pdf-preview tabindex="0" data-placement="auto" data-container=".pdf-preview" data-content=""  data-document="https:#{d.file_url}" Preview
+                      a.pdf-preview tabindex="0" data-placement="auto" data-container=".pdf-preview" data-content=""  data-document="#{d.file_url}" Preview
                     - else
                       = d.filename
                       br
