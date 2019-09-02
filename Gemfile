@@ -78,7 +78,7 @@ gem 'acts_as_list'
 # Use user friendly slugs
 gem 'friendly_id', '~> 5.2.0'
 # Amazon S3 SDK
-gem 'aws-sdk', '~> 2'
+gem 'aws-sdk', '~> 3'
 # Sitemap generator
 gem 'sitemap_generator'
 # Uploading of sitemap to AWS
