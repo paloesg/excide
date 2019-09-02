@@ -10,6 +10,15 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.id)
   end
 
+  def first_task_notification(task, batch, user)
+    @task = task
+    @batch = batch
+    @user = user
+    address = Mail::Address.new @user.email
+    address.display_name = @user.full_name
+    mail(to: address.format, subject: '[New Task] ' + @task.instructions + ' - ' + @batch.id)
+  end
+
   def unordered_workflow_notification(user, workflow_tasks, action)
     @user = user
     #find relevant tasks through intersection that the particular user have in that workflow
