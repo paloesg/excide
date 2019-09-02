@@ -11,8 +11,9 @@
       h5.card-header
         | List of batches
         .pull-right
-          ' #{@completed_batches.count} of
-          element#batches-count #{@batches.count}
+          element#completed-batches 0
+          '  of
+          element#batches-count 0
           |  completed
       .table-responsive
         table#table-batches.table.table-hover

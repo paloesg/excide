@@ -2,11 +2,11 @@ $(document).ready(function(){
   // Check #table-batches element is exist in the page
   if ($("#table-batches")) {
     function loadBatch(start_from, limit) {
-      $.post("/symphony/batches/load_batch/"+ start_from + "/" + limit, function(batches) {
-        console.log(batches);
-      }).done(function(batches) {
+      $.post("/symphony/batches/load_batch/"+ start_from + "/" + limit, function(data) {
+        console.log(data);
+      }).done(function(data) {
         // Add batch with the details into table batches
-        $.each(batches, function(index, batch) {
+        $.each(data["batches"], function(index, batch) {
           $("#table-batches").append("<tr> \
           <td>"+(index + start_from + 1)+"</td> \
           <td><a href='batches/"+ batch["template"]["slug"] +"/"+ batch["id"] +"'>"+ batch["name"] +"</a></td> \
@@ -17,8 +17,10 @@ $(document).ready(function(){
           <td><div class='progress'><div class='progress-bar progress-bar-striped' aria-valuemax='100' aria-valuemin='0' aria-valuenow='10' role='progressbar' style='width:" + batch["action_completed_progress"] + "%' >"  + batch["action_completed_progress"] + "%</div></div></td> \
           </tr>");
         })
+        $("#completed-batches").text(data["completed_batches"]);
+        $("#batches-count").text(data["batches"].length);
       })
     }
-    loadBatch(0,$("#batches-count").text());
+    loadBatch(0,0);
   }
 })
