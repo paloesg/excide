@@ -1,14 +1,14 @@
 $(document).ready(function(){
   // Check #table-batches element is exist in the page
   if ($("#table-batches")) {
-    function loadBatch(start_from, limit) {
-      $.post("/symphony/batches/load_batch/"+ start_from + "/" + limit, function(data) {
+    function loadBatch() {
+      $.post("/symphony/batches/load_batch/", function(data) {
         console.log(data);
       }).done(function(data) {
         // Add batch with the details into table batches
         $.each(data["batches"], function(index, batch) {
           $("#table-batches").append("<tr> \
-          <td>"+(index + start_from + 1)+"</td> \
+          <td>"+(index + 1)+"</td> \
           <td><a href='batches/"+ batch["template"]["slug"] +"/"+ batch["id"] +"'>"+ batch["name"] +"</a></td> \
           <td>"+ batch["user"]["first_name"] +" "+ batch["user"]["last_name"] +"</td> \
           <td>"+ moment.parseZone(batch["updated_at"]).format("YYMMDD-H:m:s") +"</td> \

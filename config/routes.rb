@@ -58,7 +58,7 @@ Rails.application.routes.draw do
     end
     resources :batches, path: '/batches/:batch_template_name', except: [:index, :create]
     get '/batches', to: 'batches#index', as: :batches_index
-    post '/batches/load_batch/:start_from/:limit', to: 'batches#load_batch', as: :load_batch_json
+    post '/batches/load_batch', to: 'batches#load_batch', as: :load_batch_json
     post '/batches', to: 'batches#create'
 
     resources :document_templates
