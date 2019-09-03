@@ -93,6 +93,8 @@ Rails.application.routes.draw do
         get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero        
         post '/complete_task/:action_id', to: 'workflows#workflow_action_complete', as: :workflow_action_complete
         post '/invoices/reject', to:'invoices#reject', as: :reject_invoice
+        post '/invoices/next', to:'invoices#next_invoice', as: :next_invoice
+        post '/invoices/prev', to:'invoices#prev_invoice', as: :prev_invoice
         resources :invoices
       end
     end
