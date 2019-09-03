@@ -15,6 +15,29 @@ class Invoice < ApplicationRecord
   validate :check_basic_line_item_fields
   validate :check_additional_line_item_fields, if: :approved?
 
+  include AASM
+
+  aasm do
+    state :created, :initial: true
+    state :rejected, :xero_awaiting_approval, :xero_approved, :xero_total_mismatch
+
+    event :reject do
+      transitions from: :created, to: :rejected
+    end
+
+    event :verified do
+      transitions from: :created, to: :xero_awaiting_approval
+    end
+
+    event :approved do
+      transitions from: :created, to: :xero_approved
+    end
+
+    event :mismatch do
+      transitions from: :created, to: :xero_total_mismatch
+    end
+  end
+
   def line_items
     read_attribute(:line_items).map {|l| LineItem.new(l) }
   end
