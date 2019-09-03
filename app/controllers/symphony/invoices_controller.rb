@@ -147,7 +147,7 @@ class Symphony::InvoicesController < ApplicationController
     end
     authorize @invoice
     if @invoice.save(validate: false)
-      if @invoice.update_attribute(:status, "rejected")
+      if @invoice.reject!
         flash[:notice] = "Invoice has been rejected."
         if @invoice.workflow.batch.present?
           #set completed task

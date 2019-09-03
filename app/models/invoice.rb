@@ -13,7 +13,7 @@ class Invoice < ApplicationRecord
   validates :invoice_type, inclusion: { in: invoice_types.keys }
 
   validate :check_basic_line_item_fields
-  validate :check_additional_line_item_fields, if: :approved?
+  validate :check_additional_line_item_fields, if: [:xero_awaiting_approval?, :xero_approved?]
 
   enum status: { created: 0, rejected: 1, xero_awaiting_approval: 2, xero_approved: 3, xero_total_mismatch: 4, rounding_added: 5 }
 
