@@ -1,9 +1,9 @@
 class Invoice < ApplicationRecord
+  include AASM
+
   belongs_to :workflow, dependent: :destroy
   belongs_to :user
   belongs_to :company
-
-  enum status: { rejected: 0, approved: 1}
 
   enum line_amount_type: { exclusive: 0, inclusive: 1, no_tax: 2}
 
@@ -15,11 +15,14 @@ class Invoice < ApplicationRecord
   validate :check_basic_line_item_fields
   validate :check_additional_line_item_fields, if: :approved?
 
-  include AASM
+  enum status: { created: 0, rejected: 1, xero_awaiting_approval: 2, xero_approved: 3, xero_total_mismatch: 4, rounding_added: 5 }
 
-  aasm do
-    state :created, :initial: true
-    state :rejected, :xero_awaiting_approval, :xero_approved, :xero_total_mismatch
+  aasm column: :status do
+    state :created, initial: true
+    state :rejected
+    state :xero_awaiting_approval
+    state :xero_approved
+    state :xero_total_mismatch
 
     event :reject do
       transitions from: :created, to: :rejected
@@ -34,7 +37,11 @@ class Invoice < ApplicationRecord
     end
 
     event :mismatch do
-      transitions from: :created, to: :xero_total_mismatch
+      transitions from: [:xero_awaiting_approval, :xero_approved], to: :xero_total_mismatch
+    end
+
+    event :rounding do
+      transitions from: :xero_total_mismatch, to: :rounding_added
     end
   end
 
