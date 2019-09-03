@@ -262,6 +262,7 @@ class Symphony::WorkflowsController < ApplicationController
       @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
 
+    #In batch, check whether there is a next workflow
     next_wf = @workflow.batch.next_workflow(@workflow)
     workflow_action = WorkflowAction.find(params[:workflow_action_id])
 
@@ -288,7 +289,10 @@ class Symphony::WorkflowsController < ApplicationController
           end
         else
           if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
-            format.html{ redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!"}
+            #set invoice to status: xero_total_mismatch if symphony invoice total doesn't tally with xero's total
+            @workflow.invoice.xero_total_mismatch!
+            #redirect back to current invoice edit page
+            format.html{ redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id, workflow_action_id: @workflow.get_workflow_action(workflow_action.task_id).id), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!"}
           elsif @workflow.batch.nil?
             format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!" }
           else
