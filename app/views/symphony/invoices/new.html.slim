@@ -37,21 +37,13 @@
           | Invoice
           .invoice-nav
             .invoice-nav-button.btn-right
-              - if @previous_workflow.present? and @previous_workflow.invoice.blank?
-                = link_to new_symphony_invoice_path(workflow_name: @previous_workflow.template.slug, workflow_id: @previous_workflow.id, invoice_type: 'payable', workflow_action_id: @previous_workflow.get_workflow_action(@workflow_action.task_id).id) do
-                  i.fa.fa-caret-left
-              - else
-                = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug) do
-                  i.fa.fa-caret-left
+              = link_to prev_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
+                i.fa.fa-caret-left
             .invoice-nav-number
               | #{@current_position} of #{@total_task}
             .invoice-nav-button.btn-left
-              - if @next_workflow.present? and @next_workflow.invoice.blank?
-                = link_to new_symphony_invoice_path(workflow_name: @next_workflow.template.slug, workflow_id: @next_workflow.id, invoice_type: 'payable', workflow_action_id: @next_workflow.get_workflow_action(@workflow_action.task_id).id) do
-                  i.fa.fa-caret-right
-              - else
-                = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug) do
-                  i.fa.fa-caret-right
+              = link_to next_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
+                i.fa.fa-caret-right
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
