@@ -7,13 +7,13 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflow, except: [:get_xero_item_code_detail]
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents, except: [:get_xero_item_code_detail]
-  before_action :set_invoice, only: [:edit, :update, :show, :destroy]
+  before_action :set_invoice, only: [:edit, :update, :update_xero_invoice, :show, :destroy]
   before_action :get_xero_details
 
   rescue_from Xeroizer::OAuth::TokenInvalid, with: :xero_login
   rescue_from Xeroizer::RecordInvalid, Xeroizer::ApiException, URI::InvalidURIError, ArgumentError, Xeroizer::OAuth::RateLimitExceeded, with: :xero_error
 
-  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail]
+  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :update_xero_invoice]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -61,9 +61,9 @@ class Symphony::InvoicesController < ApplicationController
     authorize @invoice
     if @invoice.xero_total_mismatch?
       @xero = Xero.new(@company)
+      @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
       #get the total of the sent invoice in Xero
-      @xero_invoice_total = @xero.get_invoice(@invoice.xero_invoice_id).total
-      @invoice.add_line_item_for_rounding(@xero_invoice_total)
+      @invoice.add_line_item_for_rounding(@xero_invoice.total)
       @invoice.save
     end
   end
@@ -189,6 +189,20 @@ class Symphony::InvoicesController < ApplicationController
       else
         render :new
       end
+    end
+  end
+
+  def update_xero_invoice
+    #In batch, check whether there is a next workflow
+    next_wf = @workflow.batch.next_workflow(@workflow)
+    workflow_action = WorkflowAction.find(params[:workflow_action_id])
+
+    @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
+    @update_xero_invoice = @xero.updating_invoice_payable(@xero_invoice, @invoice.line_items)
+    if @invoice.errors.empty?
+      redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: 'Xero invoice updated successfully.'
+    else
+      redirect_to symphony_batches_index_path, alert: 'Xero invoice not updated. Please try again.'
     end
   end
 

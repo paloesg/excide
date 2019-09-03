@@ -94,6 +94,7 @@ Rails.application.routes.draw do
         post '/complete_task/:action_id', to: 'workflows#workflow_action_complete', as: :workflow_action_complete
         post '/invoices/reject', to:'invoices#reject', as: :reject_invoice
         resources :invoices
+        post '/invoices/:id/update_xero_invoice', to: 'invoices#update_xero_invoice', as: :update_xero_invoice
       end
     end
 
