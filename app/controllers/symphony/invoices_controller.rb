@@ -59,6 +59,10 @@ class Symphony::InvoicesController < ApplicationController
 
   def edit
     authorize @invoice
+    if @invoice.xero_total_mismatch?
+      @invoice.add_line_item_for_rounding
+      @invoice.save
+    end
   end
 
   def update

@@ -34,6 +34,21 @@ class Invoice < ApplicationRecord
     self.line_items = l
   end
 
+  def add_line_item_for_rounding
+    l = self.line_items.dup
+    if l.last.description == "Rounding"
+      puts "DO nothing!"
+    else
+      l << LineItem.new({description: '', quantity: '', price: '', account: '', tax: '', tracking_option_1: '', tracking_option_2: ''})
+      l.last.description = "Rounding"
+      l.last.quantity = 1
+      l.last.price = 1.50
+      l.last.account = "860 - Rounding"
+      l.last.tax = "Sales Tax on Imports (0.0%) - GSTONIMPORTS"
+      self.line_items = l
+    end
+  end
+
   def total_amount
     array = self.line_items
     array.inject(0) { |sum, h| sum + (h.quantity.to_i * h.price.to_f)}
