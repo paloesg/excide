@@ -10,11 +10,6 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :get_xero_details
 
-  rescue_from Xeroizer::OAuth::TokenInvalid, with: :xero_login
-  rescue_from Xeroizer::RecordInvalid, URI::InvalidURIError, ArgumentError, Xeroizer::OAuth::RateLimitExceeded, with: :xero_error
-  rescue_from Xeroizer::ApiException, with: :xero_error_api_exception
-
-
   after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail]
   after_action :verify_policy_scoped, only: :index
 
@@ -246,27 +241,6 @@ class Symphony::InvoicesController < ApplicationController
 
   def invoice_params
     params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :workflow_action_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :status, :total, :user_id, line_items_attributes: [:item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :_destroy])
-  end
-
-  def xero_login
-    @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "| echo \"#{ENV["XERO_PRIVATE_KEY"]}\" ")
-    request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
-    session[:request_token] = request_token.token
-    session[:request_secret] = request_token.secret
-    redirect_to request_token.authorize_url
-  end
-
-  def xero_error(e)
-    message = 'Xero returned an error: ' + e.message + '. Please ensure you have filled in all the required data in the right format.'
-    Rails.logger.error("Xero Error: #{message}")
-    redirect_to session[:previous_url], alert: message
-  end
-
-  #prevent overflow cookie errors by parsing and truncating the XML exception xero returns
-  def xero_error_api_exception(e)
-    message = 'Xero returned an error: ' + e.parsed_xml.text.to_s.truncate(200) + '. Please ensure you have filled in all the required data in the right format.'
-    Rails.logger.error("Xero Error: #{message}")
-    redirect_to session[:previous_url], alert: message
   end
 
   def render_action_create_invoice(wf_data)
