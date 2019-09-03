@@ -43,7 +43,7 @@ class Symphony::InvoicesController < ApplicationController
         #set completed task
         update_workflow_action_completed(params[:workflow_action_id])
         #go to the next invoice
-        next_invoice
+        redirect_to_next_action(@workflow, params[:workflow_action_id])
       else
         redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully."
       end
@@ -73,7 +73,7 @@ class Symphony::InvoicesController < ApplicationController
           update_workflow_action_completed(params[:workflow_action_id])
         end
         #go to the next invoice
-        next_invoice
+        redirect_to_next_action(@workflow, params[:workflow_action_id])
       else
         redirect_to symphony_invoice_path(workflow_name: @invoice.workflow.template.slug, workflow_id: @invoice.workflow.id, id: @invoice.id)
       end
@@ -147,7 +147,7 @@ class Symphony::InvoicesController < ApplicationController
           #set completed task
           update_workflow_action_completed(params[:workflow_action_id])
           #go to the next invoice
-          next_invoice
+          redirect_to_next_action(@workflow, params[:workflow_action_id])
         else
           redirect_to symphony_workflow_path(@nvoice.workflow.template.slug, @nvoice.workflow.id)
         end
@@ -172,7 +172,7 @@ class Symphony::InvoicesController < ApplicationController
     if next_wf.blank? 
       next_wf = @workflow.batch.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).first
     end
-    render_action_create_invoice(next_wf, next_wf.workflow_actions.where(completed: false).first)
+    render_action_invoice(next_wf, next_wf.workflow_actions.where(completed: false).first)
   end
 
   def prev_invoice
@@ -180,7 +180,7 @@ class Symphony::InvoicesController < ApplicationController
     if prev_wf.blank? 
       prev_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).last
     end
-    render_action_create_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
+    render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
   end
 
   private
@@ -248,13 +248,28 @@ class Symphony::InvoicesController < ApplicationController
     redirect_to session[:previous_url], alert: message
   end
 
-  def render_action_create_invoice(workflow, workflow_action)
+  def render_action_invoice(workflow, workflow_action)
     if workflow.invoice.blank?
       invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @workflow.invoice&.invoice_type
       redirect_to new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, invoice_type: invoice_type, workflow_action_id: workflow_action)
     elsif workflow.invoice.present?
       redirect_to edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id, workflow_action_id: workflow_action)
     end
+  end
+
+  def redirect_to_next_action(workflow, workflow_action_id)
+    workflow_action = WorkflowAction.find(workflow_action_id)
+    incomplete_workflows = workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).order(created_at: :asc)
+    
+    if incomplete_workflows.count > 0
+      next_wf = incomplete_workflows.where('workflows.created_at > ?', workflow.created_at).first
+      if next_wf.blank? 
+        next_wf = incomplete_workflows.where('workflows.created_at < ?', workflow.created_at).first
+      end
+      render_action_invoice(next_wf, next_wf.workflow_actions.where(completed: false).first)
+    else
+      redirect_to symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id, notice: "#{workflow_action.task.task_type.humanize}task has been completed")
+    end    
   end
 
   def update_workflow_action_completed(workflow_action_id)
