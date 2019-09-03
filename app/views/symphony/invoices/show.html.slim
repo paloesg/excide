@@ -50,7 +50,7 @@
       p No Tax
   .col-md-2.col-sm-4
     strong Status:
-    p = @invoice.approved ? 'Approved' : 'Draft'
+    p = @invoice.status
   .offset-md-4.col-md-2.offset-sm-8.col-sm-4
     - if @invoice.workflow.archive.present?
       span.badge.badge-danger Workflow Archived
@@ -108,5 +108,8 @@ hr
       - else
         = link_to("No invoice payable created in Xero", '#', role: 'button', class: 'btn btn-warning mr-2 pull-right disabled')
       = link_to "Back to batch workflows", symphony_batch_path(@workflow.template.slug, @workflow.batch.id), class: 'btn btn-primary mr-2 pull-right' if @workflow.batch.present?
-    = link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), class: 'btn btn-success mr-2 pull-right' if policy(@invoice).edit?
+    /get last workflow action
+    - last_workflow_action = @workflow.workflow_actions.includes(:task).where(completed: false).order("tasks.position ASC").first.id
+    - if !@workflow.invoice&.rejected?
+      = link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id, workflow_action_id: last_workflow_action), class: 'btn btn-success mr-2 pull-right' if policy(@invoice).edit?
     = link_to "Delete Invoice", symphony_invoice_path(workflow_id: params[:workflow_id]), method: :delete, class: 'btn btn-danger mr-2 pull-right', data: { confirm: 'Are you sure you want to delete this invoice?' } if policy(@invoice).destroy?

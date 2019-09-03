@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :batch do
-    company { nil }
-    template { nil }
+    company
+    template { create(:template_with_sections) }
   end
 end

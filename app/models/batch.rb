@@ -3,6 +3,7 @@ class Batch < ApplicationRecord
   belongs_to :template
   belongs_to :user
   has_many :workflows, dependent: :destroy
+  after_create :send_email_notification
 
   # replacement for .first/.last because we use uuids
   def self.first
@@ -37,14 +38,48 @@ class Batch < ApplicationRecord
     self.workflows.present? ? (self.workflows.size * self.workflows.first.workflow_actions.size) : 0
   end
 
+  def send_email_notification
+    task = self.template.sections.first.tasks.first
+    users = User.with_role(task.role.name.to_sym, self.company)
+    users.each do |user|
+      NotificationMailer.first_task_notification(task, self, user).deliver_later
+    end
+  end
+
   def name
     self.created_at.strftime('%y%m%d-%H%M')
+  end
+
+  def next_workflow(workflow)
+    self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first
+  end
+
+  def previous_workflow(workflow)
+    self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
+  end
+
+  def next_task(workflow, workflow_action)
+    workflow = self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first
+    show_workflow_action_by_workflow(workflow, workflow_action)
+  end
+
+  def previous_task(workflow, workflow_action)
+    workflow = self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
+    show_workflow_action_by_workflow(workflow, workflow_action)
   end
 
   def check_and_update_workflow_completed
     workflows = self.workflows.includes(:workflow_actions)
     workflows.each do |wf|
       wf.update_attribute('completed', true) if wf.workflow_actions.present? and wf.workflow_actions.all?{ |wfa| wfa.completed? }
+    end
+  end
+
+  private
+
+  def show_workflow_action_by_workflow(workflow, workflow_action)
+    if workflow.present?
+      workflow.workflow_actions.find_by(task_id: workflow_action.task_id)
     end
   end
 end
