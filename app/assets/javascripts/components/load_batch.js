@@ -5,6 +5,7 @@ $(document).ready(function(){
       $.post("/symphony/batches/load_batch/", function(data) {
         console.log(data);
       }).done(function(data) {
+        $(".batch-loader").remove();
         // Add batch with the details into table batches
         $.each(data["batches"], function(index, batch) {
           $("#table-batches").append("<tr> \
