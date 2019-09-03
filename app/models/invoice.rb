@@ -34,7 +34,8 @@ class Invoice < ApplicationRecord
     self.line_items = l
   end
 
-  def add_line_item_for_rounding
+  def add_line_item_for_rounding(xero_invoice_total)
+    total_difference = total_difference(xero_invoice_total)
     l = self.line_items.dup
     if l.last.description == "Rounding"
       puts "DO nothing!"
@@ -42,11 +43,15 @@ class Invoice < ApplicationRecord
       l << LineItem.new({description: '', quantity: '', price: '', account: '', tax: '', tracking_option_1: '', tracking_option_2: ''})
       l.last.description = "Rounding"
       l.last.quantity = 1
-      l.last.price = 1.50
+      l.last.price = total_difference
       l.last.account = "860 - Rounding"
       l.last.tax = "Sales Tax on Imports (0.0%) - GSTONIMPORTS"
       self.line_items = l
     end
+  end
+
+  def total_difference(xero_invoice_total)
+    difference = (xero_invoice_total - self.total).abs
   end
 
   def total_amount

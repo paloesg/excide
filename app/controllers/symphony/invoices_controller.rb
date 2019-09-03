@@ -60,7 +60,10 @@ class Symphony::InvoicesController < ApplicationController
   def edit
     authorize @invoice
     if @invoice.xero_total_mismatch?
-      @invoice.add_line_item_for_rounding
+      @xero = Xero.new(@company)
+      #get the total of the sent invoice in Xero
+      @xero_invoice_total = @xero.get_invoice(@invoice.xero_invoice_id).total
+      @invoice.add_line_item_for_rounding(@xero_invoice_total)
       @invoice.save
     end
   end
