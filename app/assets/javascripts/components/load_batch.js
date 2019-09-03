@@ -1,9 +1,7 @@
 $(document).ready(function(){
   // Check #table-batches element is exist in the page
   if ($("#table-batches")) {
-    $.post("/symphony/batches/load_batch/", function(data) {
-      Console.log(data);
-    }).done(function(data) {
+    $.post("/symphony/batches/load_batch/", function(data) {}).done(function(data) {
       $(".batch-loader").remove();
       // Add batch with the details into table batches
       $.each(data["batches"], function(index, batch) {
@@ -19,6 +17,6 @@ $(document).ready(function(){
       })
       $("#completed-batches").text(data["completed_batches"]);
       $("#batches-count").text(data["batches"].length);
-    })
+    });
   }
 });
