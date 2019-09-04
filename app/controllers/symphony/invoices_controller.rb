@@ -202,7 +202,11 @@ class Symphony::InvoicesController < ApplicationController
     if prev_wf.blank? 
       prev_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).last
     end
-    render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
+    if prev_wf.invoice.xero_total_mismatch?
+      render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
+    else
+      render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).frst)
+    end
   end
 
   private
