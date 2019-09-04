@@ -3,7 +3,7 @@ class Invoice < ApplicationRecord
   belongs_to :user
   belongs_to :company
 
-  enum status: { rejected: 0, approved: 1}
+  enum status: { rejected: 0, approved: 1, xero_total_mismatch: 2 }
 
   enum line_amount_type: { exclusive: 0, inclusive: 1, no_tax: 2}
 
@@ -32,6 +32,25 @@ class Invoice < ApplicationRecord
     l = self.line_items.dup
     l << LineItem.new({description: '', quantity: '', price: '', account: '', tax: '', tracking_option_1: '', tracking_option_2: ''})
     self.line_items = l
+  end
+
+  def add_line_item_for_rounding(xero_invoice_total)
+    l = self.line_items.dup
+    if l.last.description == "Rounding"
+      #do nothing if the description rounding already existed, to prevent increment of the line item
+      puts "DO nothing!"
+    else
+      l << LineItem.new({description: '', quantity: '', price: '', account: '', tax: '', tracking_option_1: '', tracking_option_2: ''})
+      l.last.description = "Rounding"
+      l.last.quantity = 1
+      l.last.price = total_difference(xero_invoice_total)
+      self.line_items = l
+    end
+  end
+
+  def total_difference(xero_invoice_total)
+    #xero only can input positive number for price
+    self.total - xero_invoice_total
   end
 
   def total_amount
@@ -68,6 +87,5 @@ class Invoice < ApplicationRecord
   def check_additional_line_item_fields
     self.errors.add(:line_items, "account code cannot be blank") if self.line_items.map(&:account).include? ""
     self.errors.add(:line_items, "tax type cannot be blank") if self.line_items.map(&:tax).include? ""
-    self.errors.add(:line_items, "tracking cannot be blank") if self.line_items.map(&:tracking_option_1).include? "" or self.line_items.map(&:tracking_option_2).include? ""
   end
 end
