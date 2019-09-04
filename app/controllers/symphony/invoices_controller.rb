@@ -204,7 +204,7 @@ class Symphony::InvoicesController < ApplicationController
     if prev_wf.invoice.xero_total_mismatch?
       render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
     else
-      render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).frst)
+      render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
     end
   end
 
