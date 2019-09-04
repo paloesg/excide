@@ -260,26 +260,40 @@ class Symphony::WorkflowsController < ApplicationController
 
     respond_to do |format|
       if @workflow.invoice.errors.empty?
-        #check for any errors when sending the invoice to xero, before matching the totals
+        workflow_action = WorkflowAction.find(params[:workflow_action_id])
+        workflow_action.update_attributes(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
+        
         if xero_invoice.errors.any?
-          format.html{ redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), alert: "Xero invoice was not sent to Xero!"}
-        elsif xero_invoice.total == @workflow.invoice.total          
+          flash[:alert] = "Xero invoice was not sent to Xero!"
+        elsif xero_invoice.total == @workflow.invoice.total  
           flash[:notice] = "Xero invoice has been created successfully and the invoice totals match."
-          if @workflow.batch
-            workflow_action = WorkflowAction.find(params[:workflow_action_id])
-            workflow_action.update_attributes(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
-            next_wf = @workflow.batch.next_workflow(@workflow, workflow_action)
-            if next_wf.present? and next_wf.get_workflow_action(workflow_action.task_id).completed == false
-              redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id)
-            else
-              redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+        else
+          flash[:alert] = "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!"
+        end
+
+        incomplete_workflows = @workflow.batch.workflows.includes([{workflow_actions: :task}, :invoice]).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where.not(invoices: {id: nil}).order(created_at: :asc)
+        if @workflow.batch
+          if incomplete_workflows.count > 0
+            next_wf = incomplete_workflows.where('workflows.created_at > ?', @workflow.created_at).first
+            if next_wf.blank? 
+              next_wf = incomplete_workflows.where('workflows.created_at < ?', @workflow.created_at).first
             end
+      
+            next_wf_action = next_wf.workflow_actions.where(completed: false).first
+            format.html{redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf_action.id)}
+          else
+            format.html{redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)}
           end
         else
-          format.html{ redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), alert: "Xero invoice has been created successfully but the invoice totals do not match. Please check and fix the mismatch!"}
-        end
+          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id)}
+        end 
       else
-        format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id), alert: "Invoice is not save in Symphony successfully!" }
+        flash[:alert] = "Invoice is not save in Symphony successfully!"
+        if @workflow.batch
+          format.html{redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)}
+        else
+          format.html{ redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id) }
+        end
       end
     end
   end

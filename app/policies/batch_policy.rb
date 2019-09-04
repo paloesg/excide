@@ -23,6 +23,10 @@ class BatchPolicy < ApplicationPolicy
     update?
   end
 
+  def load_batch?
+    user.present?
+  end
+
   def destroy?
     user.has_role? :admin, record.company
   end

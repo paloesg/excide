@@ -35,6 +35,7 @@
 //= require components/popover_initialize
 //= require components/selectize_initialize
 //= require components/document_popover
+//= require components/load_batch
 
 //= require turbolinks
 //= require turbolinks-compatibility
