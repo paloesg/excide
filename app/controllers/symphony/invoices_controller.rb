@@ -96,10 +96,12 @@ class Symphony::InvoicesController < ApplicationController
         #go to the next invoice
         redirect_to_next_action(@workflow, params[:workflow_action_id])
       else
-        redirect_to symphony_invoice_path(workflow_name: @invoice.workflow.template.slug, workflow_id: @invoice.workflow.id, id: @invoice.id)
+        flash[:alert] = @invoice.errors.full_messages.join(', ')
+        redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id, workflow_action_id: params[:workflow_action_id])
       end
     else
-      render 'edit'
+      flash[:alert] = @invoice.errors.full_messages.join(', ')
+      redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id, workflow_action_id: params[:workflow_action_id])
     end
   end
 
@@ -282,13 +284,17 @@ class Symphony::InvoicesController < ApplicationController
         next_wf = incomplete_workflows.where('workflows.created_at < ?', workflow.created_at).first
       end
 
-      next_wf_action = next_wf.workflow_actions.where(completed: false).first
-      if params[:action] == "update"
-        redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf_action.id)
+      if next_wf.present?
+        next_wf_action = next_wf.workflow_actions.where(completed: false).first
+        if params[:action] == "update"
+          redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf_action.id)
+        else
+          invoice_type = params[:invoice_type].present? ? params[:invoice_type] : next_wf.invoice&.invoice_type
+          redirect_to new_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, invoice_type: invoice_type, workflow_action_id: next_wf_action.id)
+        end
       else
-        invoice_type = params[:invoice_type].present? ? params[:invoice_type] : next_wf.invoice&.invoice_type
-        redirect_to new_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, invoice_type: invoice_type, workflow_action_id: next_wf_action.id)
-      end
+        redirect_to symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id, notice: "#{workflow_action.task.task_type.humanize}task has been saved")
+      end      
     else
       redirect_to symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id, notice: "#{workflow_action.task.task_type.humanize}task has been completed")
     end    
