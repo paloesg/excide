@@ -174,17 +174,21 @@ class Symphony::InvoicesController < ApplicationController
   def update_xero_invoice
     #In batch, check whether there is a next workflow
     next_wf = @workflow.batch.next_workflow(@workflow)
-    workflow_action = WorkflowAction.find(params[:workflow_action_id])
+    workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
 
     @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
     @update_xero_invoice = @xero.updating_invoice_payable(@xero_invoice, @invoice.line_items)
     if @invoice.errors.empty?
-      redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: 'Xero invoice updated successfully.'
+      if next_wf.present?
+        redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: 'Xero invoice updated successfully.'
+      else
+        redirect_to symphony_batches_index_path, alert: 'Xero invoice updated.'
+      end
     else
       redirect_to symphony_batches_index_path, alert: 'Xero invoice not updated. Please try again.'
     end
   end
-  
+
   def next_invoice
     next_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).first
     if next_wf.blank? 
