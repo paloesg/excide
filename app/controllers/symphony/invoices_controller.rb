@@ -74,8 +74,8 @@ class Symphony::InvoicesController < ApplicationController
       #when invoice updates with the rounding line item, update the invoice in Xero as well
       if @invoice.xero_total_mismatch?
         #In batch, check whether there is a next workflow
-        next_wf = @workflow.batch.next_workflow(@workflow)
         workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
+        next_wf = @workflow.batch.next_workflow(@workflow, workflow_action)
 
         @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
         @update_xero_invoice = @xero.updating_invoice_payable(@xero_invoice, @invoice.line_items)
