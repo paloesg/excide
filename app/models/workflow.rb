@@ -26,7 +26,7 @@ class Workflow < ApplicationRecord
           recipient: ->(_controller, model) { model }
 
   include AlgoliaSearch
-  algoliasearch do
+  algoliasearch disable_indexing: Rails.env.test? do
     attribute :id, :completed, :created_at, :updated_at, :deadline
     attribute :workflowable do
       { client_name: workflowable&.name, client_identifier: workflowable&.identifier }
