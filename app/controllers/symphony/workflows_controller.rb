@@ -264,7 +264,7 @@ class Symphony::WorkflowsController < ApplicationController
 
     respond_to do |format|
       if @workflow.invoice.errors.empty?
-        workflow_action = WorkflowAction.find(params[:workflow_action_id])
+        workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
         workflow_action.update_attributes(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
         
         if xero_invoice.errors.any?
@@ -292,7 +292,7 @@ class Symphony::WorkflowsController < ApplicationController
             format.html{ redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id, workflow_action_id: @workflow.get_workflow_action(workflow_action.task_id).id)}
           else
             #if this is the last task but the xero total mismatched, redirect back to it's invoice EDIT page instead of batch INDEX
-            if !@workflow.invoice.xero_total_mismatch
+            if !@workflow.invoice.xero_total_mismatch?
               format.html{redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)} 
             else
               format.html{ redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id, workflow_action_id: @workflow.get_workflow_action(workflow_action.task_id).id)}

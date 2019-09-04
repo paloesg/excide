@@ -52,7 +52,8 @@ class Invoice < ApplicationRecord
   end
 
   def total_difference(xero_invoice_total)
-    difference = (self.total - xero_invoice_total).abs
+    #xero only can input positive number for price
+    self.total - xero_invoice_total
   end
 
   def total_amount
