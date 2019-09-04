@@ -11,6 +11,7 @@ class WorkflowAction < ApplicationRecord
   after_save :clear_reminders, if: :ordered_workflow_task_completed?
   after_save :trigger_next_task, if: :ordered_workflow_task_completed?
   after_save :send_email_summary , if: :check_all_actions_completed?
+  after_save :workflow_completed , if: :check_all_actions_completed?
 
   belongs_to :task
   belongs_to :company
@@ -68,6 +69,10 @@ class WorkflowAction < ApplicationRecord
 
   def send_email_summary
     WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later
+  end
+
+  def workflow_completed
+    self.workflow.update_column('completed', true)
   end
 
   # Check if workflow belongs to a batch, get all the actions by task grouping for the batch and check that all actions are completed

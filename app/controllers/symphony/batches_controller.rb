@@ -47,11 +47,7 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def load_batch
-    get_batches = policy_scope(Batch).includes([:user, :template, :workflows])
-    get_batches.each do |batch|
-      #update batch to true only when the action_completed_progress hits 100%
-      batch.update_attribute('completed', true) if batch.action_completed_progress == 100
-    end
+    get_batches = policy_scope(Batch).includes(:user, {workflows: [{template: [{sections: :tasks}]}]})
     completed_batches = get_batches.where(completed: true)
     if current_user.has_role? :admin, @company
       @batches = get_batches.order(created_at: :desc).as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
