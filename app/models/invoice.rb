@@ -45,8 +45,6 @@ class Invoice < ApplicationRecord
       l.last.description = "Rounding"
       l.last.quantity = 1
       l.last.price = total_difference
-      l.last.account = "860 - Rounding"
-      l.last.tax = "Sales Tax on Imports (0.0%) - GSTONIMPORTS"
       self.line_items = l
     end
   end

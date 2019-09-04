@@ -71,7 +71,24 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.save
     if @invoice.update(invoice_params)
-      if @invoice.workflow.batch.present? && params[:workflow_action_id].present?
+      #when invoice updates with the rounding line item, update the invoice in Xero as well
+      if @invoice.xero_total_mismatch?
+        #In batch, check whether there is a next workflow
+        next_wf = @workflow.batch.next_workflow(@workflow)
+        workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
+
+        @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
+        @update_xero_invoice = @xero.updating_invoice_payable(@xero_invoice, @invoice.line_items)
+        if @invoice.errors.empty?
+          if next_wf.present?
+            redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: 'Xero invoice updated successfully.'
+          else
+            redirect_to symphony_batches_index_path, alert: 'Xero invoice updated.'
+          end
+        else
+          redirect_to symphony_batches_index_path, alert: 'Xero invoice not updated. Please try again.'
+        end
+      elsif @invoice.workflow.batch.present? && params[:workflow_action_id].present?
         #set completed task
         if @invoice.approved?
           update_workflow_action_completed(params[:workflow_action_id])
@@ -168,24 +185,6 @@ class Symphony::InvoicesController < ApplicationController
       else
         render :new
       end
-    end
-  end
-
-  def update_xero_invoice
-    #In batch, check whether there is a next workflow
-    next_wf = @workflow.batch.next_workflow(@workflow)
-    workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
-
-    @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
-    @update_xero_invoice = @xero.updating_invoice_payable(@xero_invoice, @invoice.line_items)
-    if @invoice.errors.empty?
-      if next_wf.present?
-        redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: 'Xero invoice updated successfully.'
-      else
-        redirect_to symphony_batches_index_path, alert: 'Xero invoice updated.'
-      end
-    else
-      redirect_to symphony_batches_index_path, alert: 'Xero invoice not updated. Please try again.'
     end
   end
 

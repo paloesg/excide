@@ -72,7 +72,7 @@
                   - if @invoice.xero_invoice_id.present? and @invoice.approved?
                     = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@invoice.xero_invoice_id}", role: 'button', target: "_blank", class: 'btn btn-warning', target: :_blank
                   - elsif @invoice.xero_invoice_id.present? and @invoice.xero_total_mismatch?
-                    = link_to "Update invoice in Xero", update_xero_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id, workflow_action_id: params[:workflow_action_id]), role: 'button', method: :post, class: 'btn btn-warning'
+                    = f.submit 'Save and update invoice in Xero', class: 'btn btn-warning'
                   - else
                     - if @invoice.approved? and !current_user.has_role?(:shared_service, @company)
                       | Send to Xero:

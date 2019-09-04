@@ -89,7 +89,7 @@ module Adapter
     def updating_invoice_payable(xero_invoice, updated_line_items)
       #update line item with the rounding line item
       rounding_line_item = updated_line_items.last
-      xero_invoice.add_line_item(item_code: nil, description: rounding_line_item.description, quantity: rounding_line_item.quantity, unit_amount: rounding_line_item.price, account_code: rounding_line_item.account.slice(0..2), tax_type: rounding_line_item.tax.split.last, tracking: nil)
+      xero_invoice.add_line_item(item_code: nil, description: rounding_line_item.description, quantity: rounding_line_item.quantity, unit_amount: rounding_line_item.price, account_code: rounding_line_item.account&.slice(0..2), tax_type: rounding_line_item.tax&.split&.last, tracking: nil)
       xero_invoice.save
     end
   end
