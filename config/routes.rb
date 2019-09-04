@@ -97,7 +97,6 @@ Rails.application.routes.draw do
         post '/invoices/next', to:'invoices#next_invoice', as: :next_invoice
         post '/invoices/prev', to:'invoices#prev_invoice', as: :prev_invoice
         resources :invoices
-        post '/invoices/:id/update_xero_invoice', to: 'invoices#update_xero_invoice', as: :update_xero_invoice
       end
     end
 

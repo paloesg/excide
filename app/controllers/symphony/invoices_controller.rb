@@ -7,10 +7,10 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflow, except: [:get_xero_item_code_detail]
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents, except: [:get_xero_item_code_detail]
-  before_action :set_invoice, only: [:edit, :update, :update_xero_invoice, :show, :destroy]
+  before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :get_xero_details
 
-  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :update_xero_invoice, :next_invoice, :prev_invoice]
+  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice]
   after_action :verify_policy_scoped, only: :index
 
   def new
