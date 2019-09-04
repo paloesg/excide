@@ -83,7 +83,7 @@ class Symphony::InvoicesController < ApplicationController
           if next_wf.present?
             redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: 'Xero invoice updated successfully.'
           else
-            redirect_to symphony_batches_index_path, alert: 'Xero invoice updated.'
+            redirect_to symphony_batches_index_path, notice: 'Xero invoice updated.'
           end
         else
           redirect_to symphony_batches_index_path, alert: 'Xero invoice not updated. Please try again.'

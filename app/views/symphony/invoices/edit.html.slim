@@ -84,5 +84,5 @@
                     - else
                       = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, id: @invoice.id, workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2')
                       = f.submit 'Approve', class: 'btn btn-success mr-2 btn-invoice-approved' unless current_user.has_role? :shared_service, @company
-                    = f.submit 'Save', class: 'btn btn-primary'
+                      = f.submit 'Save', class: 'btn btn-primary'
 
