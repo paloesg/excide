@@ -72,7 +72,7 @@ class Symphony::InvoicesController < ApplicationController
     @invoice.save
     if @invoice.update(invoice_params)
       #If associate wants to update invoice before sending to xero, symphony finds the params update_field and then redirect to the same invoice EDIT page
-      if params[:update_field] == "success" and !@invoice.xero_total_mismatch?
+      if params[:update_field] == "success"
         redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id, workflow_action_id: params[:workflow_action_id]), notice: 'Symphony invoice successfully updated'
       #when invoice updates with the rounding line item, update the invoice in Xero as well
       elsif @invoice.xero_total_mismatch?
