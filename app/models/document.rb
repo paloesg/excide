@@ -20,7 +20,7 @@ class Document < ApplicationRecord
   after_destroy :delete_file_on_s3
 
   include AlgoliaSearch
-  algoliasearch disable_indexing: Rails.env.test? do
+  algoliasearch do
     attribute :filename, :file_url, :created_at, :updated_at
     attribute :workflow do
       { id: workflow&.id, template_title: workflow&.template&.title, template_slug: workflow&.template&.slug }
