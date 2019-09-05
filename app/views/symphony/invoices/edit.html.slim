@@ -42,21 +42,13 @@
           | Invoice
           .invoice-nav
             .invoice-nav-button.btn-right
-              - if @previous_workflow.present? and @previous_workflow.invoice.present?
-                = link_to edit_symphony_invoice_path(workflow_name: @previous_workflow.template.slug, workflow_id: @previous_workflow.id, id: @previous_workflow.invoice.id, invoice_type: 'payable', workflow_action_id: @previous_workflow.get_workflow_action(@workflow_action.task_id).id) do
-                  i.fa.fa-caret-left
-              - else
-                = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug) do
-                  i.fa.fa-caret-left
+              = link_to prev_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id), method: 'post', role: 'button' do
+                i.fa.fa-caret-left
             .invoice-nav-number
               | #{@current_position} of #{@total_task}
             .invoice-nav-button.btn-left
-              - if @next_workflow.present? and @next_workflow.invoice.present?
-                = link_to edit_symphony_invoice_path(workflow_name: @next_workflow.template.slug, workflow_id: @next_workflow.id, id: @next_workflow.invoice.id, invoice_type: 'payable', workflow_action_id: @next_workflow.get_workflow_action(@workflow_action.task_id).id) do
-                  i.fa.fa-caret-right
-              - else
-                = link_to symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug) do
-                  i.fa.fa-caret-right
+              = link_to next_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id), method: 'post', role: 'button' do
+                i.fa.fa-caret-right
     = form_for(@invoice, url: symphony_invoice_path(workflow_id: params[:workflow_id])) do |f|
       = render 'form', f: f
       = render 'remaining_invoice'
@@ -78,17 +70,17 @@
                   = f.hidden_field :status, class: 'invoice-status'
                   / If xero invoice is present, only show button to view Xero invoice
                   - if @invoice.xero_invoice_id.present?
-                    = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@invoice.xero_invoice_id}", role: 'button', target: "_blank", class: 'btn btn-warning', target: :_blank
+                    - if @invoice.xero_total_mismatch?
+                      = f.submit 'Save and update invoice in Xero', class: 'btn btn-warning'
+                    - else
+                      = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@invoice.xero_invoice_id}", role: 'button', target: "_blank", class: 'btn btn-warning', target: :_blank
                   - else
-                    - if @invoice.approved? and !current_user.has_role?(:shared_service, @company)
+                    - if !current_user.has_role?(:shared_service, @company)
                       | Send to Xero:
-                      = link_to("Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-warning m-2')
-                      = link_to("Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger m-2')
-                    - elsif @invoice.rejected? and !current_user.has_role?(:shared_service, @company)
-                      = f.submit 'Approve', class: 'btn btn-success mr-2 btn-invoice-approved'
-                      = link_to "Delete", symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), method: :delete, class: 'btn btn-danger mr-2', data: {confirm: "Are you sure you want to delete this invoice?"}
+                      = link_to("Save and submit for approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-warning m-2')
+                      = link_to("Approve", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-success m-2')
+                      = link_to "Delete", symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), method: :delete, class: 'btn btn-danger m-2', data: {confirm: "Are you sure you want to delete this invoice?"}
                     - else
                       = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, id: @invoice.id, workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2')
-                      = f.submit 'Approve', class: 'btn btn-success mr-2 btn-invoice-approved' unless current_user.has_role? :shared_service, @company
-                    = f.submit 'Save', class: 'btn btn-primary'
+                      = f.submit 'Save', class: 'btn btn-primary'
 

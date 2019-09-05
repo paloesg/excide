@@ -6,27 +6,10 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index, :create]
-  after_action :verify_policy_scoped, only: :index
+  after_action :verify_authorized, except: [:index, :create, :load_batch]
+  after_action :verify_policy_scoped, only: :load_batch
 
   def index
-    #Batch policy scope
-    @batches = policy_scope(Batch).includes(:workflows, :template, :user)
-    @batches.each do |batch|
-      #update batch to true only when the action_completed_progress hits 100%
-      batch.update_attribute('completed', true) if batch.action_completed_progress == 100
-    end
-    @completed_batches = @batches.where(completed: true)
-
-    if current_user.has_role? :admin, @company
-      @batches = @batches.order(created_at: :desc)
-    else
-      #Get current_user's id roles
-      @current_user_roles = current_user.roles.pluck(:id)
-      #Get batches If the current_user has the same role as a role in workflow_actions
-      @batches = @batches.includes({workflows: [{template: [{sections: :tasks}]}]}).where(tasks: {role_id: @current_user_roles}).order(created_at: :desc)
-    end
-    @batches_paginate = Kaminari.paginate_array(@batches).page(params[:page]).per(10)
   end
 
   def new
@@ -56,11 +39,28 @@ class Symphony::BatchesController < ApplicationController
     authorize @batch
     #check and update workflow if all its actions are completed
     @batch.check_and_update_workflow_completed
-    @completed_workflow_count = @batch.workflows.where(completed: true).count
+    @completed_workflow_count = @batch.workflows.where(completed: true).size
     @current_user = current_user
     @sections = @batch.template.sections
     @templates = policy_scope(Template).assigned_templates(current_user)
-    @roles = @current_user.roles.includes(:resource).where(resource_id: @current_user.company.id, resource_type: "Company")
+    @roles = @current_user.roles.where(resource_id: @current_user.company.id, resource_type: "Company")
+  end
+
+  def load_batch
+    get_batches = policy_scope(Batch).includes(:user, {workflows: [{template: [{sections: :tasks}]}]})
+    completed_batches = get_batches.where(completed: true)
+    if current_user.has_role? :admin, @company
+      @batches = get_batches.order(created_at: :desc).as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
+    else
+      #Get current_user's id roles
+      @current_user_roles = current_user.roles.pluck(:id)
+      #Get batches If the current_user has the same role as a role in workflow_actions
+      @batches = get_batches.where(tasks: {role_id: @current_user_roles}).order(created_at: :desc).as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
+    end
+
+    respond_to do |format|
+      format.json  { render json: { batches: @batches, completed_batches: completed_batches.size } }
+    end
   end
 
   private
