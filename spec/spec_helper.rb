@@ -15,11 +15,17 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require_relative 'support/controller_helpers'
+require 'webmock/rspec'
+require 'algolia/webmock'
 require 'devise'
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
+  config.before(:each) do
+    Algolia::WebMock.mock!
+  end
+
   config.include ControllerHelpers, type: :controller
   Warden.test_mode!
 
