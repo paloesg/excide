@@ -63,6 +63,10 @@ class Workflow < ApplicationRecord
     self.current_task&.lower_item
   end
 
+  def get_last_workflow_action
+    self.workflow_actions.includes(:task).where(completed: false).order("tasks.position ASC").first&.id
+  end
+
   def get_task_role_ids
     self.workflow_actions.includes(:task).pluck('tasks.role_id')
   end
