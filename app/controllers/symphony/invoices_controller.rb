@@ -72,8 +72,11 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.save
     if @invoice.update(invoice_params)
+      #If associate wants to update invoice before sending to xero, symphony finds the params update_field and then redirect to the same invoice EDIT page
+      if params[:update_field] == "success"
+        redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id, workflow_action_id: params[:workflow_action_id]), notice: 'Symphony invoice successfully updated'
       #when invoice updates with the rounding line item, update the invoice in Xero as well
-      if @invoice.xero_total_mismatch?
+      elsif @invoice.xero_total_mismatch?
         #In batch, check whether there is a next workflow
         workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
         next_wf = @workflow.batch.next_workflow(@workflow, workflow_action)
@@ -196,7 +199,11 @@ class Symphony::InvoicesController < ApplicationController
     if next_wf.blank? 
       next_wf = @workflow.batch.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).first
     end
-    render_action_invoice(next_wf, next_wf.workflow_actions.where(completed: false).first)
+    if next_wf.present?
+      render_action_invoice(next_wf, next_wf.workflow_actions.where(completed: false).first)
+    else
+      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+    end
   end
 
   def prev_invoice
@@ -204,10 +211,14 @@ class Symphony::InvoicesController < ApplicationController
     if prev_wf.blank? 
       prev_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).last
     end
-    if prev_wf.invoice.xero_total_mismatch?
-      render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
+    if prev_wf.present?
+      if prev_wf.invoice.xero_total_mismatch?
+        render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
+      else
+        render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
+      end
     else
-      render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
+      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
     end
   end
 
