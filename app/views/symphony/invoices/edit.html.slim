@@ -69,7 +69,7 @@
                 / If xero invoice is present, only show button to view Xero invoice
                 - if @invoice.xero_invoice_id.present?
                   - if @invoice.xero_total_mismatch?
-                    = f.submit 'Save and update invoice in Xero', class: 'btn btn-warning'
+                    = f.submit 'Save and update invoice in Xero', class: 'btn btn-warning float-right'
                   - else
                     = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@invoice.xero_invoice_id}", role: 'button', target: "_blank", class: 'btn btn-warning', target: :_blank
                 - else
