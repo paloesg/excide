@@ -61,6 +61,14 @@ $(document).on("turbolinks:load", function(){
     }
   });
 
+  //Disable the send xero button when form is changed
+  $("form").on("change", function(){
+    //disable submit approval button
+    $(".submit-approval-button").addClass("disabled");
+    //disable approve button
+    $(".approve-button").addClass("disabled");
+  });
+
   //add attribute fields with selectize drop down (for creating invoice and data entry)
   $("form").on("click", ".add_attribute_fields", function(event) {
     let regexp, time;
