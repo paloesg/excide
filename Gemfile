@@ -183,6 +183,8 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
 
+  gem 'webmock'
+
   # A library for generating fake data such as names, addresses, and phone numbers.
   gem 'faker', git: 'https://github.com/stympy/faker.git'
 end
