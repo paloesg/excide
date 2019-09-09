@@ -19,7 +19,7 @@ $(document).on("turbolinks:load", function() {
   var tabKeyPressed = false;
 
   $(".autodate").keydown(function(e) {
-    tabKeyPressed = e.keyCode == 9;
+    tabKeyPressed = e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 11;
     if (tabKeyPressed) {
       e.preventDefault();
       return;
@@ -55,6 +55,13 @@ $(document).on("turbolinks:load", function() {
       //format date "20 Aug 2019"
       d = moment(d).format("D MMM YYYY")
       $(this).val(d);
+
+      //go to next field when tab pressed
+      var inputs = $(this).parents("form").eq(0).find(":input");
+      if (inputs[inputs.index(this) + 1] != null) {                    
+        inputs[inputs.index(this) + 1].focus();
+      }
+
       e.preventDefault();
       return;
     }
