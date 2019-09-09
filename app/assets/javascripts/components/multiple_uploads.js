@@ -2,8 +2,11 @@
 /*eslint no-undef: "error"*/
 /*eslint camelcase: ["error", {allow: ["authenticity_token", "url_files"]}]*/
 
+var linkTo = ""
 function uploadDocuments(data){
-  $.post('/symphony/documents', data);
+  $.post('/symphony/documents', data).done(result => {
+    linkTo = result["link_to"];
+  })
 }
 
 Dropzone.autoDiscover = false;
@@ -151,7 +154,7 @@ $(document).on("turbolinks:load", function() {
         // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
         window.setTimeout(function() {
           $('.loading').hide();
-          Turbolinks.visit('/symphony/batches/'+$('#template_id').val()+'/'+batchId);
+          Turbolinks.visit(linkTo);
         }, totalFile*1000);
       }
     });
