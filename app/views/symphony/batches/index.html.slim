@@ -10,9 +10,13 @@
     .card
       h5.card-header
         | List of batches
-        .pull-right #{@completed_batches.count} of #{@batches.count} completed
+        .pull-right
+          element#completed-batches 0
+          '  of
+          element#batches-count 0
+          |  completed
       .table-responsive
-        table.table.table-hover
+        table#table-batches.table.table-hover
           thead
             tr
               th S/N
@@ -23,16 +27,10 @@
               th No. of Workflows
               th Progress
           tbody
-            - @batches_paginate.each_with_index do |batch, index|
-              tr
-                td = index + 1
-                td = link_to batch.name, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
-                td = batch.user&.full_name
-                td = batch.updated_at.strftime('%y%m%d-%H:%M:%S')
-                td = batch.get_completed_workflows
-                td = batch.workflows.count
-                td
-                  .progress
-                    .progress-bar.progress-bar-striped aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{batch.action_completed_progress ? batch.action_completed_progress : 100}%") #{batch.action_completed_progress ? (batch.action_completed_progress.to_s + "%") : "ERROR ~ Please delete batch"}
+            - 7.times do
+              tr.batch-loader
+                - 7.times do
+                  td
+                    .timeline-item
+                      .animated-background
         .card-footer.pt-4
-          = paginate @batches_paginate, views_prefix: 'dashboards'

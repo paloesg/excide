@@ -35,7 +35,7 @@ class Batch < ApplicationRecord
 
   #Since each template's workflows have the same workflow_actions, can get the total number of actions by multiplying the number of workflows in batch with the workflow_actions of ANY one workflow
   def total_action
-    self.workflows.present? ? (self.workflows.count * self.workflows[0].workflow_actions.count) : 0
+    self.workflows.present? ? (self.workflows.size * self.workflows.first.workflow_actions.size) : 0
   end
 
   def send_email_notification
@@ -50,12 +50,12 @@ class Batch < ApplicationRecord
     self.created_at.strftime('%y%m%d-%H%M')
   end
 
-  def next_workflow(workflow)
-    self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first
+  def next_workflow(workflow, workflow_action)
+    self.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where('workflows.created_at > ?', workflow.created_at).order(created_at: :asc).first
   end
 
-  def previous_workflow(workflow)
-    self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
+  def previous_workflow(workflow, workflow_action)
+    self.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where('workflows.created_at < ?', workflow.created_at).order(created_at: :asc).last
   end
 
   def next_task(workflow, workflow_action)

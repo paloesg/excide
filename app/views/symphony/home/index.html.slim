@@ -18,6 +18,10 @@
           .card-body
            h5.card-title Reminders
            h1.card-text = link_to @reminder_count, symphony_reminders_path, class: 'text-dark'
+        .card.text-center.bg-light
+          .card-body
+           h5.card-title Recurring
+           h1.card-text = link_to @recurring_count, symphony_workflows_recurring_path, class: 'text-dark'
   .row
     .col-sm-6
       .card.mb-3
@@ -27,6 +31,15 @@
             = label_tag "template", "Select template:"
             = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
           = link_to 'New Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
+    .col-sm-6
+      .card.mb-3  
+        h5.card-header New Recurring Workflow 
+        .card-body  
+          .form-group 
+            = label_tag "template", "Select template:"  
+            = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')" 
+          = link_to 'New Recurring Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-recurring-workflow'
+  .row
     .col-sm-6
       .card.mb-3
         h5.card-header Batch Upload
