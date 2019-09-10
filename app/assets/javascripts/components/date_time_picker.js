@@ -6,7 +6,7 @@ function changeDateValue(dateStr){
   var dsplit = dateStr.split("-");
 
   // if year cannot detect, default year is current year
-  if (!dsplit[2]){  
+  if (!dsplit[2]){
     dsplit[2] = new Date().getFullYear();
   }
   // create the date
@@ -43,9 +43,9 @@ $(document).on("turbolinks:load", function() {
 
 
   //auto convert date
-  $('.autodate').keydown(function (event) {
+  $(".autodate").keydown(function (event) {
     // check if tab keyboard button pressed
-    if (event.keyCode == 9) {
+    if (event.keyCode === 9) {
       let dateStr = $(this).val();
       // do change the field value with date format
       $(this).val(changeDateValue(dateStr));
