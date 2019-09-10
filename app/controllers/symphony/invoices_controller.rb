@@ -9,7 +9,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :get_xero_details
-  
+
   after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice]
   after_action :verify_policy_scoped, only: :index
 
@@ -51,6 +51,13 @@ class Symphony::InvoicesController < ApplicationController
 
   def edit
     authorize @invoice
+    if @invoice.xero_total_mismatch?
+      @xero = Xero.new(@company)
+      @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
+      #get the total of the sent invoice in Xero
+      @invoice.add_line_item_for_rounding(@xero_invoice.total)
+      @invoice.save
+    end
   end
 
   def update
@@ -64,7 +71,27 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.save
     if @invoice.update(invoice_params)
-      if @invoice.workflow.batch.present? && params[:workflow_action_id].present?
+      #If associate wants to update invoice before sending to xero, symphony finds the params update_field and then redirect to the same invoice EDIT page
+      if params[:update_field] == "success"
+        redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id, workflow_action_id: params[:workflow_action_id]), notice: 'Symphony invoice successfully updated'
+      #when invoice updates with the rounding line item, update the invoice in Xero as well
+      elsif @invoice.xero_total_mismatch?
+        #In batch, check whether there is a next workflow
+        workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
+        next_wf = @workflow.batch.next_workflow(@workflow, workflow_action)
+
+        @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
+        @update_xero_invoice = @xero.updating_invoice_payable(@xero_invoice, @invoice.line_items)
+        if @invoice.errors.empty?
+          if next_wf.present?
+            redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: 'Xero invoice updated successfully.'
+          else
+            redirect_to symphony_batches_index_path, notice: 'Xero invoice updated.'
+          end
+        else
+          redirect_to symphony_batches_index_path, alert: 'Xero invoice not updated. Please try again.'
+        end
+      elsif @invoice.workflow.batch.present? && params[:workflow_action_id].present?
         #set completed task
         if @invoice.approved?
           update_workflow_action_completed(params[:workflow_action_id])
@@ -171,7 +198,11 @@ class Symphony::InvoicesController < ApplicationController
     if next_wf.blank? 
       next_wf = @workflow.batch.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).first
     end
-    render_action_invoice(next_wf, next_wf.workflow_actions.where(completed: false).first)
+    if next_wf.present?
+      render_action_invoice(next_wf, next_wf.workflow_actions.where(completed: false).first)
+    else
+      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+    end
   end
 
   def prev_invoice
@@ -179,7 +210,15 @@ class Symphony::InvoicesController < ApplicationController
     if prev_wf.blank? 
       prev_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).last
     end
-    render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
+    if prev_wf.present?
+      if prev_wf.invoice.xero_total_mismatch?
+        render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
+      else
+        render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
+      end
+    else
+      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+    end
   end
 
   private

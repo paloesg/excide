@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.company.connect_xero?
+    if current_user.company.session_handle.blank? and current_user.company.connect_xero?
       XeroSessionsController.connect_to_xero(session)
     else
       symphony_root_path

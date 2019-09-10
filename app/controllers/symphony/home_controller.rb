@@ -9,6 +9,7 @@ class Symphony::HomeController < ApplicationController
     @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: @company).order(:deadline).includes(:task).count
     @batch_count = policy_scope(Batch).count
     @reminder_count = current_user.reminders.count
+    @recurring_count = current_user.company.recurring_workflows.all.count
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 end

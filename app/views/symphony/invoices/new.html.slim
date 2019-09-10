@@ -37,13 +37,15 @@
           | Invoice
           .invoice-nav
             .invoice-nav-button.btn-right
-              = link_to prev_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
-                i.fa.fa-caret-left
+              - if @total_task > 1
+                = link_to prev_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
+                  i.fa.fa-caret-left
             .invoice-nav-number
               | #{@current_position} of #{@total_task}
             .invoice-nav-button.btn-left
-              = link_to next_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
-                i.fa.fa-caret-right
+              - if @total_task > 1
+                = link_to next_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
+                  i.fa.fa-caret-right
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
