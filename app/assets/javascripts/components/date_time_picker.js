@@ -44,9 +44,10 @@ $(document).on("turbolinks:load", function() {
 
   //auto convert date
   $('.autodate').keydown(function (event) {
-    // check for hyphen
+    // check if tab keyboard button pressed
     if (event.keyCode == 9) {
       let dateStr = $(this).val();
+      // do change the field value with date format
       $(this).val(changeDateValue(dateStr));
     }
   });
