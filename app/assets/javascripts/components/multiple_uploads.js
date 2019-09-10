@@ -4,7 +4,7 @@
 
 var linkTo = "";
 function uploadDocuments(data){
-  $.post("/symphony/documents", data).done(result => {
+  $.post("/symphony/documents", data).done((result) => {
     linkTo = result["link_to"];
   })
 }
