@@ -1,3 +1,31 @@
+function changeDateValue(dateStr){
+  dateStr = dateStr.replace(/(^\s+|[^a-zA-Z0-9 ]+|\s+$)/g,"-");
+  dateStr = dateStr.replace(/\s+/g, "-");
+
+  //put the date to array
+  var dsplit = dateStr.split("-");
+
+  // if year cannot detect, default year is current year
+  if (!dsplit[2]){  
+    dsplit[2] = new Date().getFullYear();
+  }
+  // create the date
+  var d = new Date(dsplit[2],dsplit[1]-1,dsplit[0]);
+
+  //if cannot get the date it will run create new date again with other format, because sometimes user input month with text, for example: "20 Aug"
+  if (d == "Invalid Date"){
+    dateStr = dsplit.join();
+    d = new Date(dateStr);
+    //if cannot get the date again, the default is today
+    if (d == "Invalid Date"){
+      d = new Date();
+    }
+  }
+  //format date "20 Aug 2019"
+  d = moment(d).format("D MMM YYYY");
+  return d;
+}
+
 $(document).on("turbolinks:load", function() {
   $(".datetimepicker").datetimepicker({
     format: "YYYY-MM-DD HH:mm",
@@ -15,55 +43,11 @@ $(document).on("turbolinks:load", function() {
 
 
   //auto convert date
-
-  var tabKeyPressed = false;
-
-  $(".autodate").keydown(function(e) {
-    tabKeyPressed = e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 11;
-    if (tabKeyPressed) {
-      e.preventDefault();
-      return;
-    }
-  });
-
-  $(".autodate").keyup(function(e) {
-    if (tabKeyPressed) {
+  $('.autodate').keydown(function (event) {
+    // check for hyphen
+    if (event.keyCode == 9) {
       let dateStr = $(this).val();
-      //format string replace all symbol with dash
-      dateStr = dateStr.replace(/(^\s+|[^a-zA-Z0-9 ]+|\s+$)/g,"-");
-      dateStr = dateStr.replace(/\s+/g, "-");
-
-      //put the date to array
-      var dsplit = dateStr.split("-");
-
-      // if year cannot detect, default year is current year
-      if (!dsplit[2]){
-        dsplit[2] = new Date().getFullYear();
-      }
-      // create the date
-      var d = new Date(dsplit[2],dsplit[1]-1,dsplit[0]);
-
-      //if cannot get the date it will run create new date again with other format, because sometimes user input month with text, for example: "20 Aug"
-      if (d == "Invalid Date"){
-        dateStr = dsplit.join();
-        d = new Date(dateStr);
-        //if cannot get the date again, the default is today
-        if (d == "Invalid Date"){
-          d = new Date();
-        }
-      }
-      //format date "20 Aug 2019"
-      d = moment(d).format("D MMM YYYY")
-      $(this).val(d);
-
-      //go to next field when tab pressed
-      var inputs = $(this).parents("form").eq(0).find(":input");
-      if (inputs[inputs.index(this) + 1] != null) {                    
-        inputs[inputs.index(this) + 1].focus();
-      }
-
-      e.preventDefault();
-      return;
+      $(this).val(changeDateValue(dateStr));
     }
   });
 
