@@ -2,7 +2,7 @@
 /*eslint no-undef: "error"*/
 /*eslint camelcase: ["error", {allow: ["authenticity_token", "url_files"]}]*/
 
-var linkTo = ""
+var linkTo = "";
 function uploadDocuments(data){
   $.post('/symphony/documents', data).done(result => {
     linkTo = result["link_to"];
