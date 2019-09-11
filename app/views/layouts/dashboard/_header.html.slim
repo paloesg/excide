@@ -46,7 +46,7 @@
         li.nav-item
           = link_to "https://github.com/hschin/excide-manuscript/wiki", class: 'nav-link', target: :_blank do
             i.ti-help
-        - if current_user.has_role?(:admin, @company) or current_user.has_role?(:superadmin)
+        - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
           li.nav-item.dropdown
             a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Admin
             .dropdown-menu
