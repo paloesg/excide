@@ -145,6 +145,10 @@ class WorkflowAction < ApplicationRecord
 
   #this callback checks that all actions in the workflow are completed before sending out the email summary
   def check_all_actions_completed?
-    self.workflow.workflow_actions.all? {|action| action.completed? }
+    if self.workflow.workflow_actions.size == self.workflow.template.sections.joins(:tasks).size
+      self.workflow.workflow_actions.all? {|action| action.completed? }
+    else
+      false
+    end
   end
 end
