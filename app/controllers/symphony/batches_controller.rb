@@ -37,8 +37,6 @@ class Symphony::BatchesController < ApplicationController
 
   def show
     authorize @batch
-    #check and update workflow if all its actions are completed
-    @batch.check_and_update_workflow_completed
     @completed_workflow_count = @batch.workflows.where(completed: true).size
     @current_user = current_user
     @sections = @batch.template.sections

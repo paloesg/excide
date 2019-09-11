@@ -68,13 +68,6 @@ class Batch < ApplicationRecord
     show_workflow_action_by_workflow(workflow, workflow_action)
   end
 
-  def check_and_update_workflow_completed
-    workflows = self.workflows.includes(:workflow_actions)
-    workflows.each do |wf|
-      wf.update_attribute('completed', true) if wf.workflow_actions.present? and wf.workflow_actions.all?{ |wfa| wfa.completed? }
-    end
-  end
-
   private
 
   def show_workflow_action_by_workflow(workflow, workflow_action)
