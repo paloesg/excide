@@ -39,7 +39,8 @@ class Batch < ApplicationRecord
   end
 
   def send_email_notification
-    task = self.template.sections.first.tasks.first
+    first_task = self.template.sections.first.tasks.first
+    task = (first_task.task_type == "upload_file") ? first_task.lower_item : first_task
     users = User.with_role(task.role.name.to_sym, self.company)
     users.each do |user|
       NotificationMailer.first_task_notification(task, self, user).deliver_later
