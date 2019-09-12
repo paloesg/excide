@@ -49,12 +49,8 @@
                 - if wf.invoice.blank?
                   i.ti-receipt.icon.mr-3.text-center.medium-icon.gray-icon
                 - else
-                  - if current_user.has_role?(:shared_service, current_user.company)
-                    = link_to edit_symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id, workflow_action_id: wf.get_last_workflow_action), target: "_blank"
-                      i.ti-receipt.icon.mr-3.medium-icon
-                  - else
-                    = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
-                      i.ti-receipt.icon.mr-3.medium-icon
+                  = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id)
+                    i.ti-receipt.icon.mr-3.medium-icon
               - section.tasks.includes(:role).order(position: :asc).each do |task|
                 td class="text-center #{'important-task' if task.important}"
                   = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
