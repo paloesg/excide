@@ -11,10 +11,10 @@
           - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
             .dropdown
               - if current_user.has_role? :superadmin
-                - Company.all.each do |company|
+                - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
                   = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
               - else
-                - Company.assigned_companies(current_user).each do |company|
+                - Company.assigned_companies(current_user).order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
                   = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
               - if current_user.has_role? :superadmin
                   .dropdown-divider
