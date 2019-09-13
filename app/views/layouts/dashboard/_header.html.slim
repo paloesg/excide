@@ -7,18 +7,15 @@
         a.navbar-brand.dropdown-toggle.mr-auto.mr-lg-0 href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
           ' #{current_user.company.name}
           = content_tag :span, "Staging", class: "badge badge-danger" if ENV['APP_NAME'] == "excide-staging"
-        .dropdown-menu.dropdown-menu-left
-          - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
-            .dropdown
-              - if current_user.has_role? :superadmin
-                - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
-                  = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
-              - else
-                - Company.assigned_companies(current_user).order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
-                  = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
-              - if current_user.has_role? :superadmin
-                  .dropdown-divider
-                  = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
+        .dropdown-menu.dropdown-menu-left.columns
+          - if current_user.has_role? :superadmin
+            - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
+              = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
+            .dropdown-divider
+            = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
+          - else
+            - Company.assigned_companies(current_user).order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
+              = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
     - else
       = link_to(symphony_root_path, class: "navbar-brand mr-auto mr-lg-0") do
         ' #{current_user.company.name}
