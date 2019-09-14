@@ -15,6 +15,7 @@ $(document).on("turbolinks:load", function(){
   // Create new activation
   $('.new_activations').popover({
     html: true,
+    sanitize: false,
     container: 'body',
     placement: 'auto',
     content: function () {
