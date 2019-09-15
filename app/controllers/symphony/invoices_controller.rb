@@ -8,6 +8,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
+  before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
 
   after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice]
@@ -253,6 +254,10 @@ class Symphony::InvoicesController < ApplicationController
       @previous_document = @documents.where('id < ?', @document.id).first
       @next_document = @documents.where('id > ?', @document.id).last
     end
+  end
+
+  def set_last_workflow_action  
+    @last_workflow_action = @workflow.workflow_actions.includes(:task).where(completed: false).order("tasks.position ASC").first&.id
   end
 
   def get_xero_details

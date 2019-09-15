@@ -37,8 +37,6 @@ class Symphony::BatchesController < ApplicationController
 
   def show
     authorize @batch
-    #check and update workflow if all its actions are completed
-    @batch.check_and_update_workflow_completed
     @completed_workflow_count = @batch.workflows.where(completed: true).size
     @current_user = current_user
     @sections = @batch.template.sections
@@ -47,7 +45,7 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def load_batch
-    get_batches = policy_scope(Batch).includes(:user, {workflows: [{template: [{sections: :tasks}]}]})
+    get_batches = policy_scope(Batch).includes(:workflows, :template, :user)
     completed_batches = get_batches.where(completed: true)
     if current_user.has_role? :admin, @company
       @batches = get_batches.order(created_at: :desc).as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )

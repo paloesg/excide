@@ -172,6 +172,10 @@ class User < ApplicationRecord
     write_attribute(:settings, settings)
   end
 
+  def include_role?(role)
+    self.roles.pluck(:name).include? role.name
+  end
+
   class Setting
     attr_accessor :reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack
 

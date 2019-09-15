@@ -39,7 +39,8 @@ class Batch < ApplicationRecord
   end
 
   def send_email_notification
-    task = self.template.sections.first.tasks.first
+    first_task = self.template.sections.first.tasks.first
+    task = (first_task.task_type == "upload_file") ? first_task.lower_item : first_task
     users = User.with_role(task.role.name.to_sym, self.company)
     users.each do |user|
       NotificationMailer.first_task_notification(task, self, user).deliver_later
@@ -66,13 +67,6 @@ class Batch < ApplicationRecord
   def previous_task(workflow, workflow_action)
     workflow = self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
     show_workflow_action_by_workflow(workflow, workflow_action)
-  end
-
-  def check_and_update_workflow_completed
-    workflows = self.workflows.includes(:workflow_actions)
-    workflows.each do |wf|
-      wf.update_attribute('completed', true) if wf.workflow_actions.present? and wf.workflow_actions.all?{ |wfa| wfa.completed? }
-    end
   end
 
   private

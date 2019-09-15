@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
 
   def current_user
     # Overwrite devise current_user function to eager load roles for current user
-    @current_user ||= super && User.includes(roles: [:resource]).where(id: @current_user.id).first
+    @current_user ||= super && User.where(id: @current_user.id).first
   end
 
   private

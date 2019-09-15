@@ -13,7 +13,7 @@ class Workflow < ApplicationRecord
 
   has_one :invoice
 
-  has_many :workflow_actions, dependent: :destroy
+  has_many :workflow_actions, dependent: :destroy, counter_cache: true
   has_many :documents, dependent: :destroy
 
   validate :check_data_fields
@@ -61,6 +61,10 @@ class Workflow < ApplicationRecord
 
   def next_task
     self.current_task&.lower_item
+  end
+
+  def get_last_workflow_action
+    self.workflow_actions.includes(:task).where(completed: false).order("tasks.position ASC").first&.id
   end
 
   def get_task_role_ids
