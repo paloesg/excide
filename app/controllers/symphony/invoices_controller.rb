@@ -77,20 +77,28 @@ class Symphony::InvoicesController < ApplicationController
         redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id, workflow_action_id: params[:workflow_action_id]), notice: 'Symphony invoice successfully updated'
       #when invoice updates with the rounding line item, update the invoice in Xero as well
       elsif @invoice.xero_total_mismatch?
-        #In batch, check whether there is a next workflow
-        workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
-        next_wf = @workflow.batch.next_workflow(@workflow, workflow_action)
-
         @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
         @update_xero_invoice = @xero.updating_invoice_payable(@xero_invoice, @invoice.line_items)
-        if @invoice.errors.empty?
-          if next_wf.present?
-            redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: 'Xero invoice updated successfully.'
+
+        if @workflow.batch.present?
+          #In batch, check whether there is a next workflow
+          workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
+          next_wf = @workflow.batch.next_workflow(@workflow, workflow_action)
+          if @invoice.errors.empty?
+            if next_wf.present?
+              if next_wf.get_workflow_action(workflow_action.task_id).present? && next_wf.invoice.present?
+                redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: 'Xero invoice updated successfully.'
+              else
+                redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id, notice: 'Xero invoice updated successfully.')
+              end
+            else
+              redirect_to symphony_batches_index_path, notice: 'Xero invoice updated.'
+            end
           else
-            redirect_to symphony_batches_index_path, notice: 'Xero invoice updated.'
+            redirect_to symphony_batches_index_path, alert: 'Xero invoice not updated. Please try again.'
           end
         else
-          redirect_to symphony_batches_index_path, alert: 'Xero invoice not updated. Please try again.'
+          redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id, workflow_action_id: params[:workflow_action_id])
         end
       elsif @invoice.workflow.batch.present? && params[:workflow_action_id].present?
         #set completed task
@@ -212,8 +220,12 @@ class Symphony::InvoicesController < ApplicationController
       prev_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).last
     end
     if prev_wf.present?
-      if prev_wf.invoice.xero_total_mismatch?
-        render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
+      if prev_wf.invoice.present?
+        if prev_wf.invoice.xero_total_mismatch?
+          render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
+        else
+          render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
+        end
       else
         render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
       end
