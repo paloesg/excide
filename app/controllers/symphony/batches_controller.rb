@@ -45,15 +45,15 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def load_batch
-    get_batches = policy_scope(Batch).includes(:workflows, :template, :user)
+    get_batches = policy_scope(Batch).includes(:user, :workflows)
     completed_batches = get_batches.where(completed: true)
     if current_user.has_role? :admin, @company
-      @batches = get_batches.order(created_at: :desc).as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
+      @batches = get_batches.includes(:template).order(created_at: :desc).as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
     else
       #Get current_user's id roles
       @current_user_roles = current_user.roles.pluck(:id)
       #Get batches If the current_user has the same role as a role in workflow_actions
-      @batches = get_batches.where(tasks: {role_id: @current_user_roles}).order(created_at: :desc).as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
+      @batches = get_batches.includes(template: [{sections: :tasks}]).where(tasks: {role_id: @current_user_roles}).order(created_at: :desc).as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
     end
 
     respond_to do |format|
