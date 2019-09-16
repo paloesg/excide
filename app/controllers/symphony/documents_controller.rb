@@ -44,11 +44,11 @@ class Symphony::DocumentsController < ApplicationController
         if params[:document_type] == 'batch-uploads'
           document = @generate_document.document
           batch = document.workflow.batch
-          first_action = document.workflow.workflow_actions.first
+          first_task = batch.template&.sections.first.tasks.first
 
           # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable", for others task type will go to batch show page
-          if ['create_invoice_payable', 'create_invoice_receivable'].include? first_action.task.task_type
-            link = new_symphony_invoice_path(workflow_name: document.workflow.template.slug, workflow_id: batch.workflows.first, workflow_action_id: batch.workflows.first.workflow_actions.first.id, invoice_type: "#{first_action.task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
+          if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type
+            link = new_symphony_invoice_path(workflow_name: document.workflow.template.slug, workflow_id: batch.workflows.first, workflow_action_id: batch.workflows.first.workflow_actions.first.id, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
           else
             link = symphony_batch_path(batch_template_name: document.workflow.template.slug, id: document.workflow.batch)
           end
