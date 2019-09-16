@@ -14,7 +14,7 @@
             .dropdown-divider
             = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
           - else
-            - Company.assigned_companies(current_user).sort_by(:created_at).each do |company|
+            - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
               = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
     - else
       = link_to(symphony_root_path, class: "navbar-brand mr-auto mr-lg-0") do
