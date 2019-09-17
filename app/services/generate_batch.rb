@@ -7,6 +7,7 @@ class GenerateBatch
   def run
     begin
       generate_batch
+      @batch.save
       OpenStruct.new(success?: true, batch: @batch)
     rescue => e
       OpenStruct.new(success?: false, batch: @batch, message: e.message)
@@ -16,6 +17,9 @@ class GenerateBatch
   private
 
   def generate_batch
-    @batch = Batch.create(user: @user, template: @template, company: @user.company)
+    @batch = Batch.new
+    @batch.user_id = @user.id
+    @batch.template_id = @template.id
+    @batch.company_id = @user.company.id
   end
 end
