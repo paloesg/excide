@@ -18,8 +18,8 @@ class GenerateBatch
 
   def generate_batch
     @batch = Batch.new
-    @batch.user = @user
-    @batch.template = @template
-    @batch.company = @user.company
+    @batch.user_id = @user.id
+    @batch.template_id = @template.id
+    @batch.company_id = @user.company.id
   end
 end
