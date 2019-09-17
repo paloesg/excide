@@ -6,6 +6,7 @@ var linkTo = "";
 function uploadDocuments(data){
   $.post("/symphony/documents", data).done((result) => {
     linkTo = result["link_to"];
+    Turbolinks.visit(linkTo);
   })
 }
 
@@ -154,7 +155,7 @@ $(document).on("turbolinks:load", function() {
         // set the timer (total file multiplied by 0.5 seconds) after create documents to redirect page
         window.setTimeout(function() {
           $('.loading').hide();
-          Turbolinks.visit(linkTo);
+          // Turbolinks.visit(linkTo);
         }, totalFile*1000);
       }
     });
