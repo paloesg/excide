@@ -67,4 +67,23 @@ namespace :users do
     target_user.destroy!
     puts "#{destroyed_user_name} successfully deleted."
   end
+
+  task remap_roles_contractor: :environment do
+    # Change users role contractor_in_charge to be consultant
+    roles_contractor_in_charge = Role.where(name: "contractor_in_charge")
+    roles_contractor_in_charge.each do |role|
+      role.users.each do |user|
+        user.add_role :consultant, role.resource
+        user.remove_role :contractor_in_charge, role.resource
+      end
+    end
+    # Change users role contractor to be associate
+    roles_contractor = Role.where(name: "contractor")
+    roles_contractor.each do |role|
+      role.users.each do |user|
+        user.add_role :associate, role.resource
+        user.remove_role :contractor, role.resource
+      end
+    end
+  end
 end
