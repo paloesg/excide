@@ -4,7 +4,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
-  before_action :set_contractor, only: [:index, :edit]
+  before_action :set_associate, only: [:index, :edit]
   before_action :set_time_header, only: [:new, :edit]
 
   # GET /availabilities
@@ -100,8 +100,8 @@ class Conductor::AvailabilitiesController < ApplicationController
     @company = current_user.company
   end
 
-  def set_contractor
-    @users = User.where(company: @company).with_role :contractor, @company
+  def set_associate
+    @users = User.where(company: @company).with_role :associate, @company
   end
 
   def set_time_header
@@ -110,7 +110,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   end
 
   def after_save_path
-    (current_user.has_role? :contractor, :any) ? conductor_user_path(current_user) : conductor_availabilities_path
+    (current_user.has_role? :associate, :any) ? conductor_user_path(current_user) : conductor_availabilities_path
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

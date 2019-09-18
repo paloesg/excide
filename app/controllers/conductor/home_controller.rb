@@ -15,8 +15,8 @@ class Conductor::HomeController < ApplicationController
       @activations = get_activations.joins(:activation_type).where(activation_types: {slug: params[:activation_type]})
     end
 
-    # Only show activations relevant to contractor if logged in as contractor
-    @activations = @activations.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :contractor, :any
+    # Only show activations relevant to associate if logged in as associate
+    @activations = @activations.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :associate, :any
     @upcoming_activations = @activations.where("activations.end_time > ?", Time.current)
 
     @activities = PublicActivity::Activity.where(recipient_type: "Activation").order("created_at desc")

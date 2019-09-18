@@ -4,7 +4,7 @@ class Conductor::AllocationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_allocation, only: [:show, :edit, :update, :destroy]
-  before_action :set_contractor, only: [:new, :edit]
+  before_action :set_associate, only: [:new, :edit]
   before_action :set_activations, only: [:new, :edit]
   before_action :set_month_allocations, only: [:index, :export]
 
@@ -13,15 +13,15 @@ class Conductor::AllocationsController < ApplicationController
   def index
     if params[:allocation].present?
       @allocation = Allocation.find(params[:allocation])
-      # Check if allocation type is contractor in charge first.
+      # Check if allocation type is associate in charge first.
       # Next, heck if the availability date and allocation date matches.
       # Then check whether the availability start time is less than the allocation start time.
       # Finally check whether the availability end time is greater than the allocation end time.
       # If all conditions are met, the user is available for the assignment.
-      if @allocation.contractor_in_charge?
-        @users = User.with_role(:contractor_in_charge, @company)
+      if @allocation.consultant?
+        @users = User.with_role(:consultant, @company)
       else
-        @users = User.with_role(:contractor, @company)
+        @users = User.with_role(:associate, @company)
       end
       @users = @users.joins(:availabilities).where(availabilities: {available_date: @allocation.allocation_date}).where("availabilities.start_time <= ?", @allocation.start_time).where("availabilities.end_time >= ?", @allocation.end_time)
     else
@@ -54,7 +54,7 @@ class Conductor::AllocationsController < ApplicationController
         format.html { redirect_to conductor_allocations_path, notice: 'Allocation was successfully created.' }
         format.json { render :show, status: :created, location: @allocation }
       else
-        set_contractor
+        set_associate
         set_activations
         format.html { render :new }
         format.json { render json: @allocation.errors, status: :unprocessable_entity }
@@ -79,7 +79,7 @@ class Conductor::AllocationsController < ApplicationController
         format.json { render :show, status: :ok, location: @allocation }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
-        set_contractor
+        set_associate
         set_activations
         @allocation.errors.add(:user, "not availabile for assignment") if @availability.blank?
         format.html { render :edit }
@@ -135,8 +135,8 @@ class Conductor::AllocationsController < ApplicationController
     @company = current_user.company
   end
 
-  def set_contractor
-    @users = User.where(company: @company).with_role :contractor, @company
+  def set_associate
+    @users = User.where(company: @company).with_role :associate, @company
   end
 
   def set_activations
