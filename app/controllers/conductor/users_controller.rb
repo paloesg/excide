@@ -7,7 +7,7 @@ class Conductor::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.where(company: @company).with_role :contractor, @company
+    @users = User.where(company: @company).with_role :associate, @company
   end
 
   def show
