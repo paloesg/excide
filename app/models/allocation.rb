@@ -4,7 +4,7 @@ class Allocation < ApplicationRecord
   belongs_to :user
   belongs_to :activation
 
-  enum allocation_type: [:contractor, :contractor_in_charge]
+  enum allocation_type: [:associate, :consultant]
 
   monetize :rate_cents, allow_nil: true
 

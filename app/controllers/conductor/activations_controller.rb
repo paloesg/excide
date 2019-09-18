@@ -13,8 +13,8 @@ class Conductor::ActivationsController < ApplicationController
     @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
     @date_to = @date_from.end_of_month
     @activations = Activation.where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
-    # Only show activations relevant to contractor if logged in as contractor
-    @activations = @activations.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :contractor, :any
+    # Only show activations relevant to associate if logged in as associate
+    @activations = @activations.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :associate, :any
   end
 
   # GET /conductor/activations/1

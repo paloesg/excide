@@ -9,7 +9,7 @@
     h1
       | Activations Listing - #{@date_from.strftime("%B")}
       = link_to 'Activation Types', conductor_activation_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, :any
-      = link_to 'New Activation', new_conductor_activation_path, role: 'button', class: 'btn btn-warning float-right mr-1' unless @user.has_role? :contractor, :any
+      = link_to 'New Activation', new_conductor_activation_path, role: 'button', class: 'btn btn-warning float-right mr-1' unless @user.has_role? :associate, :any
 .row
   .col-sm-12.mb-3
     .btn-group.float-right role='group'
@@ -30,15 +30,15 @@
             th
             th Activation type
             th Client
-            th Event Owner
+            th Staffer
             th Start time
             th End time
             th Location
-            - if @user.has_role? :contractor, :any
+            - if @user.has_role? :associate, :any
               th Remarks
             - else
-              th Contractor ICs
-              th Contractors
+              th Consultant
+              th Associate
               th
               th
         tbody
@@ -52,19 +52,19 @@
               td = activation.start_time.strftime("%d/%m/%y %H:%M")
               td = activation.end_time.strftime("%d/%m/%y %H:%M")
               td = activation.location
-              - if @user.has_role? :contractor, :any
+              - if @user.has_role? :associate, :any
                 td = activation.remarks
               - else
                 td
-                  - if activation.allocations.contractor_in_charge.empty? and ((@user.has_role? :manpower_allocator, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((activation.allocations.contractor_in_charge.count..5).to_a, activation.allocations.contractor_in_charge.count), onchange: "create_allocations(#{activation.id}, 'contractor-in-charge', this);")
+                  - if activation.allocations.consultant.empty? and ((@user.has_role? :manpower_allocator, @company) or @user.has_role? :admin, @company)
+                    = select_tag('allocations', options_for_select((activation.allocations.consultant.count..5).to_a, activation.allocations.consultant.count), onchange: "create_allocations(#{activation.id}, 'consultant', this);")
                   - else
-                    = select_tag('allocations', options_for_select([activation.allocations.contractor_in_charge.count]), disabled: true)
+                    = select_tag('allocations', options_for_select([activation.allocations.consultant.count]), disabled: true)
                 td
-                  - if activation.allocations.contractor.empty? and ((@user.has_role? :manpower_allocator, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((activation.allocations.contractor.count..20).to_a, activation.allocations.contractor.count), onchange: "create_allocations(#{activation.id}, 'contractor', this);")
+                  - if activation.allocations.associate.empty? and ((@user.has_role? :manpower_allocator, @company) or @user.has_role? :admin, @company)
+                    = select_tag('allocations', options_for_select((activation.allocations.associate.count..20).to_a, activation.allocations.associate.count), onchange: "create_allocations(#{activation.id}, 'associate', this);")
                   - else
-                    = select_tag('allocations', options_for_select([activation.allocations.contractor.count]), disabled: true)
+                    = select_tag('allocations', options_for_select([activation.allocations.associate.count]), disabled: true)
                 td
                   i.fa.fa-check.text-success style="opacity: 0;"
                   i.fa.fa-times.text-danger style="opacity: 0;"
