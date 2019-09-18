@@ -7,13 +7,12 @@ class Conductor::HomeController < ApplicationController
   def show
     date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
     date_to = date_from.to_date + 1.month
-    get_activations = Activation.where(company: @company, start_time: date_from..date_to)
-
-    if params[:activation_type].blank?
-      @activations = get_activations.all
-    else
-      @activations = get_activations.joins(:activation_type).where(activation_types: {slug: params[:activation_type]})
-    end
+    # get_activations = Activation.where(company: @company, start_time: date_from..date_to)
+    @activations = Activation.company(@company.id)
+    @activations = @activations.start_time(date_from..date_to)
+    @activations = @activations.activation(params[:activation_type]) unless params[:activation_type].blank?
+    @activations = @activations.allocation(params[:allocator]) unless params[:allocator].blank?
+    @activations = @activations.client(params[:client]) unless params[:client].blank?
 
     # Only show activations relevant to contractor if logged in as contractor
     @activations = @activations.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :contractor, :any
