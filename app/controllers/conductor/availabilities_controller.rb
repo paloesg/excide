@@ -20,7 +20,7 @@ class Conductor::AvailabilitiesController < ApplicationController
 
   # GET /availabilities/new
   def new
-    (current_user.has_role? :contractor, :any) ? user_id = current_user.id : user_id = params[:user_id]
+    user_id = (current_user.has_role? :associate, :any) ? current_user.id : params[:user_id]
     last_availability = Availability.where(user_id: user_id).order('available_date ASC').last
 
     if last_availability.present?
