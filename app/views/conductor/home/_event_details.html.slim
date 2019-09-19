@@ -10,9 +10,9 @@ p
   br
   span#remarks
 p
-  strong Activation type:
+  strong Event type:
   br
-  span#activation_type_popover
+  span#event_type_popover
 p
   strong Staffer:
   br
@@ -41,7 +41,7 @@ p
   strong End time:
   br
   span#end_time
-- unless (current_user.has_role? :associate, :any) or (current_page? controller: 'activations', action: 'index')
+- unless (current_user.has_role? :associate, :any) or (current_page? controller: 'events', action: 'index')
   .btn-toolbar
-    a.btn.btn-primary.btn-sm.mr-1#edit_activation href="#" Edit activation
+    a.btn.btn-primary.btn-sm.mr-1#edit_event href="#" Edit event
     a.btn.btn-primary.btn-sm#edit_allocations href="#" Edit allocations

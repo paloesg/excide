@@ -7,15 +7,15 @@ $(document).on("turbolinks:load", function() {
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
-  $('select.selectize-activation-type').selectize({
+  $('select.selectize-event-type').selectize({
     allowEmptyOption: true,
     onItemAdd: function (value, $item) {
-      Turbolinks.visit('//' + location.host + location.pathname + '?activation_type=' + value);
+      Turbolinks.visit('//' + location.host + location.pathname + '?event_type=' + value);
     },
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
-  if ($('#new-activation.d-none')[0] == undefined) {
+  if ($('#new-event.d-none')[0] == undefined) {
     $('select.selectize').selectize({
       onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
     });

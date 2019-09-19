@@ -1,45 +1,45 @@
-class Activation < ApplicationRecord
-  after_create :create_activation_notification
-  after_destroy :destroy_activation_notification
+class Event < ApplicationRecord
+  after_create :create_event_notification
+  after_destroy :destroy_event_notification
 
   belongs_to :staffer, class_name: 'User'
   belongs_to :company
   belongs_to :client
-  belongs_to :activation_type
+  belongs_to :event_type, class_name: 'EventType'
 
   has_one :address, as: :addressable, dependent: :destroy
   has_many :allocations, dependent: :destroy
 
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
 
-  validates :company, :client, :activation_type, :start_time, :end_time, presence: true
+  validates :company, :client, :event_type, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
 
   include PublicActivity::Model
   tracked owner: ->(controller, _model) { controller && controller.current_user },
           recipient: ->(_controller, model) { model },
           params: {
-            activation_name: ->(_controller, model) { model&.name },
+            event_name: ->(_controller, model) { model&.name },
             start_time: ->(_controller, model) { model&.start_time },
             end_time: ->(_controller, model) { model&.end_time }
           }
 
   def name
-    client.name + ' ' + activation_type.name
+    client.name + ' ' + event_type&.name.to_s
   end
 
-  def update_activation_notification
-    NotificationMailer.edit_activation(self, self.staffer).deliver_later if self.staffer.present?
+  def update_event_notification
+    NotificationMailer.edit_event(self, self.staffer).deliver_later if self.staffer.present?
   end
 
   private
 
-  def create_activation_notification
-    NotificationMailer.create_activation(self, self.staffer).deliver_later if self.staffer.present?
+  def create_event_notification
+    NotificationMailer.create_event(self, self.staffer).deliver_later if self.staffer.present?
   end
 
-  def destroy_activation_notification
-    NotificationMailer.destroy_activation(self, self.staffer).deliver if self.staffer.present?
+  def destroy_event_notification
+    NotificationMailer.destroy_event(self, self.staffer).deliver if self.staffer.present?
   end
 
   def end_must_be_after_start
