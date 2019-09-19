@@ -72,7 +72,7 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: @subject)
   end
 
-  def contractor_notification(user)
+  def associate_notification(user)
     @user = user
     address = Mail::Address.new @user.email
     address.display_name = @user.first_name + @user.last_name

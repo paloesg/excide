@@ -22,7 +22,7 @@ class XeroSessionsController < ApplicationController
       #redirect the page after sign in depending on the role of the user
       # if current_user.has_role? :superadmin
       #   redirect_to admin_root_path, notice: "User signed in and Xero settings have been saved"
-      # elsif current_user.has_role? :contractor, :any
+      # elsif current_user.has_role? :associate, :any
       #   redirect_to conductor_user_path(current_user), notice: "User signed in and Xero settings have been saved"
       # elsif current_user.has_role? :shared_service, :any
       #   redirect_to symphony_batches_path, notice: "User signed in and Xero settings have been saved"
