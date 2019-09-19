@@ -58,7 +58,7 @@ $(document).on("turbolinks:load", function(){
     $('#allocated_users_length').text($(this).attr('get_allocated_users_length'));
     $('#client_name').text($(this).attr('activation-client'));
     $('#activation_type_popover').text($(this).attr('activation-type'));
-    $('#event_owner').text($(this).attr('activation-event_owner'));
+    $('#staffer').text($(this).attr('activation-staffer'));
     $('#location').text(get_activation['location']);
     if (get_activation_address) {
       $('#address_attributes_line_1').text(get_activation_address['line_1']);

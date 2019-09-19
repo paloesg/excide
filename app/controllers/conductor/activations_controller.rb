@@ -3,7 +3,7 @@ class Conductor::ActivationsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company_and_clients
-  before_action :set_event_owners, only: [:new, :edit]
+  before_action :set_staffers, only: [:new, :edit]
   before_action :set_activation, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
   before_action :set_user, only: [:new, :create, :edit, :update, :destroy]
 
@@ -49,7 +49,7 @@ class Conductor::ActivationsController < ApplicationController
         format.json { render :show, status: :created, location: @activation }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
-        set_event_owners
+        set_staffers
         @activation.build_address unless @activation.address.present?
         format.html { render :new }
         format.json { render json: @activation.errors, status: :unprocessable_entity }
@@ -71,7 +71,7 @@ class Conductor::ActivationsController < ApplicationController
         format.html { redirect_to conductor_activations_path }
         format.json { render :show, status: :ok, location: @activation }
       else
-        set_event_owners
+        set_staffers
         @activation.build_address unless @activation.address.present?
         format.html { render :edit }
         format.json { render json: @activation.errors, status: :unprocessable_entity }
@@ -134,12 +134,12 @@ class Conductor::ActivationsController < ApplicationController
       @clients = Client.where(company_id: @company.id)
     end
 
-    def set_event_owners
-      @event_owners = User.where(company: @company).with_role :event_owner, @company
+    def set_staffers
+      @staffers = User.where(company: @company).with_role :staffer, @company
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def activation_params
-      params.require(:activation).permit(:activation_type_id, :start_time, :end_time, :remarks, :location, :client_id, :event_owner_id, address_attributes: [:line_1, :line_2, :postal_code])
+      params.require(:activation).permit(:activation_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, address_attributes: [:line_1, :line_2, :postal_code])
     end
 end

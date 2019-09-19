@@ -24,7 +24,7 @@ class Conductor::HomeController < ApplicationController
     @activation = Activation.new
     @activation.build_address
     @clients = Client.where(company_id: @company.id)
-    @event_owners = User.where(company: @company).with_role :event_owner, @company
+    @staffers = User.where(company: @company).with_role :staffer, @company
   end
 
   private

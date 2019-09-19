@@ -10,7 +10,7 @@ RSpec.describe Activation, type: :model do
 
     it { should belong_to(:company) }
     it { should belong_to(:client) }
-    it { should belong_to(:event_owner) }
+    it { should belong_to(:staffer) }
     it { should belong_to(:activation_type) }
 
     it { should have_one(:address) }

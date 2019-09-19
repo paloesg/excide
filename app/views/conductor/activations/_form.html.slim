@@ -20,8 +20,8 @@
       = f.label :activation_type_id
       = f.select :activation_type_id, ActivationType.all.map { |key, value| [key.name, key.id] }, {selected: @activation.activation_type, prompt: 'Select activation type...'}, class: 'selectize'
     .form-group
-      = f.label :event_owner_id
-      = f.select :event_owner_id, @event_owners.map { |key, value| [key.full_name, key.id] }, {selected: @activation.event_owner_id, prompt: 'Select event owner...'}, class: 'selectize'
+      = f.label :staffer_id
+      = f.select :staffer_id, @staffers.map{ |key, value| [key.full_name, key.id] }, {selected: @activation.staffer, prompt: 'Select staff...'}, class: 'selectize'
     .form-group
       = f.label :start_time
       = f.text_field :start_time, class: 'form-control datetimepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'

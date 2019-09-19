@@ -2,7 +2,7 @@ class Activation < ApplicationRecord
   after_create :create_activation_notification
   after_destroy :destroy_activation_notification
 
-  belongs_to :event_owner, class_name: 'User'
+  belongs_to :staffer, class_name: 'User'
   belongs_to :company
   belongs_to :client
   belongs_to :activation_type
@@ -29,17 +29,17 @@ class Activation < ApplicationRecord
   end
 
   def update_activation_notification
-    NotificationMailer.edit_activation(self, self.event_owner).deliver_later if self.event_owner.present?
+    NotificationMailer.edit_activation(self, self.staffer).deliver_later if self.staffer.present?
   end
 
   private
 
   def create_activation_notification
-    NotificationMailer.create_activation(self, self.event_owner).deliver_later if self.event_owner.present?
+    NotificationMailer.create_activation(self, self.staffer).deliver_later if self.staffer.present?
   end
 
   def destroy_activation_notification
-    NotificationMailer.destroy_activation(self, self.event_owner).deliver if self.event_owner.present?
+    NotificationMailer.destroy_activation(self, self.staffer).deliver if self.staffer.present?
   end
 
   def end_must_be_after_start

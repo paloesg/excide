@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :activation do
     company
     client
-    event_owner
+    staffer
 
     activation_type { "happy_cart" }
     start_time { "2018-02-22 10:00:00" }

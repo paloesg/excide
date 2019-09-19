@@ -48,7 +48,7 @@
                 i.fa.fa-circle.mr-1 style="color: #{activation.activation_type.colour};"
               td = activation.activation_type.name
               td = activation.client&.name
-              td = activation.event_owner&.full_name
+              td = activation.staffer&.full_name
               td = activation.start_time.strftime("%d/%m/%y %H:%M")
               td = activation.end_time.strftime("%d/%m/%y %H:%M")
               td = activation.location
@@ -69,7 +69,7 @@
                   i.fa.fa-check.text-success style="opacity: 0;"
                   i.fa.fa-times.text-danger style="opacity: 0;"
                 td.btn-toolbar
-                  = link_to 'Details', '#', role: 'button', class: 'btn btn-success btn-sm mr-1 mt-1 activation', 'activation-data': "#{activation.to_json}", 'activation-address': "#{activation.address.to_json}", 'activation-client': "#{activation.client&.name}", 'activation-event_owner': "#{activation.event_owner&.full_name}", get_allocated_users_length: "#{activation.allocations.map(&:user).reject(&:blank?).length}", title: "Activation Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>", 'data-placement': "left", 'activation-type': "#{activation.activation_type.name}", data: { turbolinks: false }
+                  = link_to 'Details', '#', role: 'button', class: 'btn btn-success btn-sm mr-1 mt-1 activation', 'activation-data': "#{activation.to_json}", 'activation-address': "#{activation.address.to_json}", 'activation-client': "#{activation.client&.name}", 'activation-staffer': "#{activation.staffer&.full_name}", get_allocated_users_length: "#{activation.allocations.map(&:user).reject(&:blank?).length}", title: "Activation Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>", 'data-placement': "left", 'activation-type': "#{activation.activation_type.name}", data: { turbolinks: false }
                   = link_to 'Edit', edit_conductor_activation_path(activation), role: 'button', class: 'btn btn-primary btn-sm mr-1 mt-1'
                   = link_to 'Reset', reset_conductor_activation_path(activation), data: { confirm: 'This will remove all existing allocations for this activation. Are you sure?' }, method: :post, role: 'button', class: 'btn btn-warning btn-sm mr-1 mt-1'
                   = link_to 'Delete', conductor_activation_path(activation), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm mt-1'

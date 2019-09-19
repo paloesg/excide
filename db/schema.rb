@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_06_074806) do
+ActiveRecord::Schema.define(version: 2019_09_19_070839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -34,11 +34,11 @@ ActiveRecord::Schema.define(version: 2019_09_06_074806) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "company_id"
-    t.integer "event_owner_id"
+    t.integer "staffer_id"
     t.integer "client_id"
     t.index ["client_id"], name: "index_activations_on_client_id"
     t.index ["company_id"], name: "index_activations_on_company_id"
-    t.index ["event_owner_id"], name: "index_activations_on_event_owner_id"
+    t.index ["staffer_id"], name: "index_activations_on_staffer_id"
   end
 
   create_table "activities", id: :serial, force: :cascade do |t|
@@ -508,7 +508,7 @@ ActiveRecord::Schema.define(version: 2019_09_06_074806) do
 
   add_foreign_key "activations", "clients"
   add_foreign_key "activations", "companies"
-  add_foreign_key "activations", "users", column: "event_owner_id"
+  add_foreign_key "activations", "users", column: "staffer_id"
   add_foreign_key "allocations", "activations"
   add_foreign_key "allocations", "users"
   add_foreign_key "availabilities", "users"

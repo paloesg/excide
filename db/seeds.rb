@@ -18,8 +18,6 @@ management = User.create(email: 'management@gobbler.com', password: 'password', 
 management.add_role :management, gobbler
 vp_sales = User.create(email: 'vp_sales@gobbler.com', password: 'password', first_name: 'VP Sales', last_name: 'Gobbler', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
 vp_sales.add_role :vp_sales, gobbler
-event_owner = User.create(email: 'event_owner@gobbler.com', password: 'password', first_name: 'Event', last_name: 'Owner', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
-event_owner.add_role :event_owner, gobbler
 associate = User.create(email: 'associate@gobbler.com', password: 'password', first_name: 'Associate', last_name: 'Gobbler', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
 associate.add_role :associate, gobbler
 consultant = User.create(email: 'consultant@gobbler.com', password: 'password', first_name: 'Consultant', last_name: 'Gobbler', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
