@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class ActivationDashboard < Administrate::BaseDashboard
+class EventDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -11,7 +11,7 @@ class ActivationDashboard < Administrate::BaseDashboard
     staffer: Field::BelongsTo.with_options(class_name: "User"),
     company: Field::BelongsTo,
     client: Field::BelongsTo,
-    activation_type: Field::BelongsTo,
+    event_type: Field::BelongsTo,
     address: Field::HasOne,
     allocations: Field::HasMany,
     id: Field::Number,
@@ -32,7 +32,7 @@ class ActivationDashboard < Administrate::BaseDashboard
     :staffer,
     :company,
     :client,
-    :activation_type,
+    :event_type,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -41,7 +41,7 @@ class ActivationDashboard < Administrate::BaseDashboard
     :staffer,
     :company,
     :client,
-    :activation_type,
+    :event_type,
     :address,
     :allocations,
     :id,
@@ -60,7 +60,7 @@ class ActivationDashboard < Administrate::BaseDashboard
     :staffer,
     :company,
     :client,
-    :activation_type,
+    :event_type,
     :address,
     :allocations,
     :start_time,
@@ -69,10 +69,10 @@ class ActivationDashboard < Administrate::BaseDashboard
     :location,
   ].freeze
 
-  # Overwrite this method to customize how activations are displayed
+  # Overwrite this method to customize how events are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(activation)
-  #   "Activation ##{activation.id}"
+  # def display_resource(event)
+  #   "Event ##{event.id}"
   # end
 end

@@ -5,7 +5,7 @@ class Conductor::AllocationsController < ApplicationController
   before_action :set_company
   before_action :set_allocation, only: [:show, :edit, :update, :destroy]
   before_action :set_associate, only: [:new, :edit]
-  before_action :set_activations, only: [:new, :edit]
+  before_action :set_events, only: [:new, :edit]
   before_action :set_month_allocations, only: [:index, :export]
 
   # GET /allocations
@@ -55,7 +55,7 @@ class Conductor::AllocationsController < ApplicationController
         format.json { render :show, status: :created, location: @allocation }
       else
         set_associate
-        set_activations
+        set_events
         format.html { render :new }
         format.json { render json: @allocation.errors, status: :unprocessable_entity }
       end
@@ -80,7 +80,7 @@ class Conductor::AllocationsController < ApplicationController
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         set_associate
-        set_activations
+        set_events
         @allocation.errors.add(:user, "not availabile for assignment") if @availability.blank?
         format.html { render :edit }
         format.json { render json: @allocation.errors, status: :unprocessable_entity }
@@ -128,7 +128,7 @@ class Conductor::AllocationsController < ApplicationController
   def set_month_allocations
     @date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
     @date_to = @date_from.end_of_month
-    @allocations = Allocation.where(allocation_date: @date_from..@date_to).joins(:activation).where(activations: { company_id: @company.id } ).order(allocation_date: :desc, start_time: :asc, id: :asc)
+    @allocations = Allocation.where(allocation_date: @date_from..@date_to).joins(:event).where(events: { company_id: @company.id } ).order(allocation_date: :desc, start_time: :asc, id: :asc)
   end
 
   def set_company
@@ -139,12 +139,12 @@ class Conductor::AllocationsController < ApplicationController
     @users = User.where(company: @company).with_role :associate, @company
   end
 
-  def set_activations
-    @activations = Activation.where(company: @company)
+  def set_events
+    @events = Event.where(company: @company)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def allocation_params
-    params.require(:allocation).permit(:user_id, :activation_id, :allocation_date, :start_time, :end_time, :allocation_type, :last_minute, :rate)
+    params.require(:allocation).permit(:user_id, :event_id, :allocation_date, :start_time, :end_time, :allocation_type, :last_minute, :rate)
   end
 end

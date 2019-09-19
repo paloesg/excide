@@ -5,20 +5,20 @@
         a href="/conductor" Dashboard
       li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
-      li.breadcrumb-item.active Activation type
-    h1 #{@activation_type.name} activation type
+      li.breadcrumb-item.active Event type
+    h1 #{@event_type.name} event type
 .row
   .col-sm-12
     p
       strong Name :
-      = @activation_type.name
+      = @event_type.name
     p
       strong Slug :
-      = @activation_type.slug
+      = @event_type.slug
     p
       strong Colour :
-      = @activation_type.colour
+      = @event_type.colour
 
-    => link_to 'Edit', edit_conductor_activation_type_path(@activation_type.id)
+    => link_to 'Edit', edit_conductor_event_type_path(@event_type.id)
     '|
-    =< link_to 'Back', conductor_activation_types_path
+    =< link_to 'Back', conductor_event_types_path

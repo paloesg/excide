@@ -1,7 +1,7 @@
-class UpdateActivationTime
+class UpdateEventTime
 
-  def initialize(activation, new_start_time, new_end_time)
-    @activation     = activation
+  def initialize(event, new_start_time, new_end_time)
+    @event     = event
     @new_start_time = new_start_time
     @new_end_time   = new_end_time
     @associates_updated = 0
@@ -11,9 +11,9 @@ class UpdateActivationTime
   def run
     if time_change?
       begin
-        @activation.transaction do
-          update_activation
-          @activation.allocations.each do |allocation|
+        @event.transaction do
+          update_event
+          @event.allocations.each do |allocation|
             old_allocation, allocation = update_allocation(allocation)
             next if allocation.user.blank?
             if associate_available?(allocation)
@@ -23,27 +23,27 @@ class UpdateActivationTime
             end
           end
         end
-        OpenStruct.new(success?: true, activation: @activation, message: success_message)
+        OpenStruct.new(success?: true, event: @event, message: success_message)
       rescue ActiveRecord::RecordInvalid
-        OpenStruct.new(success?: false, activation: @activation)
+        OpenStruct.new(success?: false, event: @event)
       end
     else
-      OpenStruct.new(success?:true, activation: @activation, message: 'No time change. ')
+      OpenStruct.new(success?:true, event: @event, message: 'No time change. ')
     end
   end
 
   private
 
   def time_change?
-    if @activation.start_time.to_time == @new_start_time.to_time and @activation.end_time.to_time == @new_end_time.to_time
+    if @event.start_time.to_time == @new_start_time.to_time and @event.end_time.to_time == @new_end_time.to_time
       false
     else
       true
     end
   end
 
-  def update_activation
-    @activation.update_attributes!(start_time: @new_start_time, end_time: @new_end_time)
+  def update_event
+    @event.update_attributes!(start_time: @new_start_time, end_time: @new_end_time)
   end
 
   def update_allocation(allocation)
@@ -57,7 +57,7 @@ class UpdateActivationTime
   end
 
   def notify_associate(allocation)
-    NotificationMailer.edit_activation(@activation, allocation.user).deliver_later
+    NotificationMailer.edit_event(@event, allocation.user).deliver_later
     @associates_updated += 1
   end
 
@@ -65,14 +65,14 @@ class UpdateActivationTime
     removed_user = allocation.user
     allocation.update_attributes!(user_id: nil)
     removed_user.get_availability(old_allocation).toggle!(:assigned)
-    NotificationMailer.user_removed_from_activation(@activation, removed_user).deliver_later
+    NotificationMailer.user_removed_from_event(@event, removed_user).deliver_later
     @associates_unassigned += 1
   end
 
   def success_message
     message = ''
-    (message += "#{@associates_updated} associate(s) informed of the new activation time. ") if @associates_updated > 0
-    (message += "#{@associates_unassigned} associate(s) unassigned from the activation due to the time change. ") if @associates_unassigned > 0
+    (message += "#{@associates_updated} associate(s) informed of the new event time. ") if @associates_updated > 0
+    (message += "#{@associates_unassigned} associate(s) unassigned from the event due to the time change. ") if @associates_unassigned > 0
     return message
   end
 end

@@ -5,9 +5,9 @@
         a href="/conductor" Dashboard
       li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
-      li.breadcrumb-item.active Activation type
-    h1 Edit activation type
+      li.breadcrumb-item.active Event type
+    h1 Edit event type
 .row
   .col-sm-12
-    = form_for @activation_type, url: conductor_activation_type_path(@activation_type.id) do |f|
+    = form_for @event_type, url: conductor_event_type_path(@event_type.id) do |f|
       = render 'form', f: f

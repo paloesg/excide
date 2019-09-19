@@ -5,11 +5,11 @@
         a href="/conductor" Dashboard
       li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
-      li.breadcrumb-item.active Activations
+      li.breadcrumb-item.active Events
     h1
-      | Activations Listing - #{@date_from.strftime("%B")}
-      = link_to 'Activation Types', conductor_activation_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, :any
-      = link_to 'New Activation', new_conductor_activation_path, role: 'button', class: 'btn btn-warning float-right mr-1' unless @user.has_role? :associate, :any
+      | Events Listing - #{@date_from.strftime("%B")}
+      = link_to 'Event Types', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, :any
+      = link_to 'New Event', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1' unless @user.has_role? :associate, :any
 .row
   .col-sm-12.mb-3
     .btn-group.float-right role='group'
@@ -28,7 +28,7 @@
         thead
           tr
             th
-            th Activation type
+            th Event type
             th Client
             th Staffer
             th Start time
@@ -42,36 +42,36 @@
               th
               th
         tbody
-          - @activations.each do |activation|
+          - @events.each do |event|
             tr
               td.text-center
-                i.fa.fa-circle.mr-1 style="color: #{activation.activation_type.colour};"
-              td = activation.activation_type.name
-              td = activation.client&.name
-              td = activation.staffer&.full_name
-              td = activation.start_time.strftime("%d/%m/%y %H:%M")
-              td = activation.end_time.strftime("%d/%m/%y %H:%M")
-              td = activation.location
+                i.fa.fa-circle.mr-1 style="color: #{event.event_type.colour};"
+              td = event.event_type.name
+              td = event.client&.name
+              td = event.staffer&.full_name
+              td = event.start_time.strftime("%d/%m/%y %H:%M")
+              td = event.end_time.strftime("%d/%m/%y %H:%M")
+              td = event.location
               - if @user.has_role? :associate, :any
-                td = activation.remarks
+                td = event.remarks
               - else
                 td
-                  - if activation.allocations.consultant.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((activation.allocations.consultant.count..5).to_a, activation.allocations.consultant.count), onchange: "create_allocations(#{activation.id}, 'consultant', this);")
+                  - if event.allocations.consultant.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
+                    = select_tag('allocations', options_for_select((event.allocations.consultant.count..5).to_a, event.allocations.consultant.count), onchange: "create_allocations(#{event.id}, 'consultant', this);")
                   - else
-                    = select_tag('allocations', options_for_select([activation.allocations.consultant.count]), disabled: true)
+                    = select_tag('allocations', options_for_select([event.allocations.consultant.count]), disabled: true)
                 td
-                  - if activation.allocations.associate.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((activation.allocations.associate.count..20).to_a, activation.allocations.associate.count), onchange: "create_allocations(#{activation.id}, 'associate', this);")
+                  - if event.allocations.associate.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
+                    = select_tag('allocations', options_for_select((event.allocations.associate.count..20).to_a, event.allocations.associate.count), onchange: "create_allocations(#{event.id}, 'associate', this);")
                   - else
-                    = select_tag('allocations', options_for_select([activation.allocations.associate.count]), disabled: true)
+                    = select_tag('allocations', options_for_select([event.allocations.associate.count]), disabled: true)
                 td
                   i.fa.fa-check.text-success style="opacity: 0;"
                   i.fa.fa-times.text-danger style="opacity: 0;"
                 td.btn-toolbar
-                  = link_to 'Details', '#', role: 'button', class: 'btn btn-success btn-sm mr-1 mt-1 activation', 'activation-data': "#{activation.to_json}", 'activation-address': "#{activation.address.to_json}", 'activation-client': "#{activation.client&.name}", 'activation-staffer': "#{activation.staffer&.full_name}", get_allocated_users_length: "#{activation.allocations.map(&:user).reject(&:blank?).length}", title: "Activation Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>", 'data-placement': "left", 'activation-type': "#{activation.activation_type.name}", data: { turbolinks: false }
-                  = link_to 'Edit', edit_conductor_activation_path(activation), role: 'button', class: 'btn btn-primary btn-sm mr-1 mt-1'
-                  = link_to 'Reset', reset_conductor_activation_path(activation), data: { confirm: 'This will remove all existing allocations for this activation. Are you sure?' }, method: :post, role: 'button', class: 'btn btn-warning btn-sm mr-1 mt-1'
-                  = link_to 'Delete', conductor_activation_path(activation), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm mt-1'
-#activation-details.d-none
-  = render 'conductor/home/activation_details'
+                  = link_to 'Details', '#', role: 'button', class: 'btn btn-success btn-sm mr-1 mt-1 event', 'event-data': "#{event.to_json}", 'event-address': "#{event.address.to_json}", 'event-client': "#{event.client&.name}", 'event-staffer': "#{event.staffer&.full_name}", get_allocated_users_length: "#{event.allocations.map(&:user).reject(&:blank?).length}", title: "Event Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>", 'data-placement': "left", 'event-type': "#{event.event_type.name}", data: { turbolinks: false }
+                  = link_to 'Edit', edit_conductor_event_path(event), role: 'button', class: 'btn btn-primary btn-sm mr-1 mt-1'
+                  = link_to 'Reset', reset_conductor_event_path(event), data: { confirm: 'This will remove all existing allocations for this event. Are you sure?' }, method: :post, role: 'button', class: 'btn btn-warning btn-sm mr-1 mt-1'
+                  = link_to 'Delete', conductor_event_path(event), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm mt-1'
+#event-details.d-none
+  = render 'conductor/home/event_details'

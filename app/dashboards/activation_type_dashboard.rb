@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class ActivationTypeDashboard < Administrate::BaseDashboard
+class EventTypeDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,7 +8,7 @@ class ActivationTypeDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    activations: Field::HasMany,
+    events: Field::HasMany,
     id: Field::Number,
     name: Field::String,
     slug: Field::String,
@@ -23,7 +23,7 @@ class ActivationTypeDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :activations,
+    :events,
     :id,
     :name,
     :slug,
@@ -32,7 +32,7 @@ class ActivationTypeDashboard < Administrate::BaseDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :activations,
+    :events,
     :id,
     :name,
     :slug,
@@ -45,16 +45,16 @@ class ActivationTypeDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :activations,
+    :events,
     :name,
     :slug,
     :colour,
   ].freeze
 
-  # Overwrite this method to customize how activation types are displayed
+  # Overwrite this method to customize how event types are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(activation_type)
-  #   "ActivationType ##{activation_type.id}"
+  # def display_resource(event_type)
+  #   "EventType ##{event_type.id}"
   # end
 end

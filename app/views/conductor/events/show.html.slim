@@ -1,21 +1,21 @@
 p#notice = notice
 
 p
-  strong Activation type:
-  = @activation.activation_type.name
+  strong Event type:
+  = @event.event_type.name
 p
   strong Start time:
-  = @activation.start_time
+  = @event.start_time
 p
   strong End time:
-  = @activation.end_time
+  = @event.end_time
 p
   strong Remarks:
-  = @activation.remarks
+  = @event.remarks
 p
   strong Location:
-  = @activation.location
+  = @event.location
 
-=> link_to 'Edit', edit_conductor_activation_path(@activation)
+=> link_to 'Edit', edit_conductor_event_path(@event)
 '|
-=< link_to 'Back', conductor_activations_path
+=< link_to 'Back', conductor_events_path

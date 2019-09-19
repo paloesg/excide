@@ -47,26 +47,26 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: 'Here are your reminders for today')
   end
 
-  def create_activation(activation, user)
-    activation_notification(activation, user, 'A new activation has been created')
+  def create_event(event, user)
+    event_notification(event, user, 'A new event has been created')
   end
 
-  def edit_activation(activation, user)
-    activation_notification(activation, user, 'An activation has been changed')
+  def edit_event(event, user)
+    event_notification(event, user, 'An event has been changed')
   end
 
-  def destroy_activation(activation, user)
-    activation_notification(activation, user, 'An activation has been cancelled')
+  def destroy_event(event, user)
+    event_notification(event, user, 'An event has been cancelled')
   end
 
-  def user_removed_from_activation(activation, user)
-    activation_notification(activation, user, "Unassigned: #{activation.name} #{activation.start_time.strftime("%F")} #{activation.start_time.strftime("%H:%M")} - #{activation.end_time.strftime("%H:%M")}")
+  def user_removed_from_event(event, user)
+    event_notification(event, user, "Unassigned: #{event.name} #{event.start_time.strftime("%F")} #{event.start_time.strftime("%H:%M")} - #{event.end_time.strftime("%H:%M")}")
   end
 
-  def activation_notification(activation, user, subject)
+  def event_notification(event, user, subject)
     @user = user
     @subject = subject
-    @activation = activation
+    @event = event
     address = Mail::Address.new @user.email
     address.display_name = @user.first_name + @user.last_name
     mail(to: address.format, subject: @subject)

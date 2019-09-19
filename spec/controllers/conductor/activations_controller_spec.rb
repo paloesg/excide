@@ -23,10 +23,10 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe Conductor::ActivationsController, type: :controller do
+RSpec.describe Conductor::EventsController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
-  # Activation. As you add validations to Activation, be sure to
+  # Event. As you add validations to Event, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
@@ -38,7 +38,7 @@ RSpec.describe Conductor::ActivationsController, type: :controller do
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
-  # Conductor::ActivationsController. Be sure to keep this updated too.
+  # Conductor::EventsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
   let(:user) { FactoryBot.create(:user) }
@@ -48,7 +48,7 @@ RSpec.describe Conductor::ActivationsController, type: :controller do
 
   describe "GET #index" do
     it "returns a success response" do
-      activation = Activation.create! valid_attributes
+      event = Event.create! valid_attributes
       get :index, {}, valid_session
       expect(response).to be_success
     end
@@ -56,8 +56,8 @@ RSpec.describe Conductor::ActivationsController, type: :controller do
 
   describe "GET #show" do
     it "returns a success response" do
-      activation = Activation.create! valid_attributes
-      get :show, {:id => activation.to_param}, valid_session
+      event = Event.create! valid_attributes
+      get :show, {:id => event.to_param}, valid_session
       expect(response).to be_success
     end
   end
@@ -71,29 +71,29 @@ RSpec.describe Conductor::ActivationsController, type: :controller do
 
   describe "GET #edit" do
     it "returns a success response" do
-      activation = Activation.create! valid_attributes
-      get :edit, {:id => activation.to_param}, valid_session
+      event = Event.create! valid_attributes
+      get :edit, {:id => event.to_param}, valid_session
       expect(response).to be_success
     end
   end
 
   describe "POST #create" do
     context "with valid params" do
-      it "creates a new Activation" do
+      it "creates a new Event" do
         expect {
-          post :create, {:activation => valid_attributes}, valid_session
-        }.to change(Activation, :count).by(1)
+          post :create, {:event => valid_attributes}, valid_session
+        }.to change(Event, :count).by(1)
       end
 
-      it "redirects to the created activation" do
-        post :create, {:activation => valid_attributes}, valid_session
-        expect(response).to redirect_to(Activation.last)
+      it "redirects to the created event" do
+        post :create, {:event => valid_attributes}, valid_session
+        expect(response).to redirect_to(Event.last)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'new' template)" do
-        post :create, {:activation => invalid_attributes}, valid_session
+        post :create, {:event => invalid_attributes}, valid_session
         expect(response).to be_success
       end
     end
@@ -105,41 +105,41 @@ RSpec.describe Conductor::ActivationsController, type: :controller do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested activation" do
-        activation = Activation.create! valid_attributes
-        put :update, {:id => activation.to_param, :activation => new_attributes}, valid_session
-        activation.reload
+      it "updates the requested event" do
+        event = Event.create! valid_attributes
+        put :update, {:id => event.to_param, :event => new_attributes}, valid_session
+        event.reload
         skip("Add assertions for updated state")
       end
 
-      it "redirects to the activation" do
-        activation = Activation.create! valid_attributes
-        put :update, {:id => activation.to_param, :activation => valid_attributes}, valid_session
-        expect(response).to redirect_to(activation)
+      it "redirects to the event" do
+        event = Event.create! valid_attributes
+        put :update, {:id => event.to_param, :event => valid_attributes}, valid_session
+        expect(response).to redirect_to(event)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
-        activation = Activation.create! valid_attributes
-        put :update, {:id => activation.to_param, :activation => invalid_attributes}, valid_session
+        event = Event.create! valid_attributes
+        put :update, {:id => event.to_param, :event => invalid_attributes}, valid_session
         expect(response).to be_success
       end
     end
   end
 
   describe "DELETE #destroy" do
-    it "destroys the requested activation" do
-      activation = Activation.create! valid_attributes
+    it "destroys the requested event" do
+      event = Event.create! valid_attributes
       expect {
-        delete :destroy, {:id => activation.to_param}, valid_session
-      }.to change(Activation, :count).by(-1)
+        delete :destroy, {:id => event.to_param}, valid_session
+      }.to change(Event, :count).by(-1)
     end
 
-    it "redirects to the activations list" do
-      activation = Activation.create! valid_attributes
-      delete :destroy, {:id => activation.to_param}, valid_session
-      expect(response).to redirect_to(conductor_activations_url)
+    it "redirects to the events list" do
+      event = Event.create! valid_attributes
+      delete :destroy, {:id => event.to_param}, valid_session
+      expect(response).to redirect_to(conductor_events_url)
     end
   end
 

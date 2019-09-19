@@ -5,10 +5,10 @@
         a href="/conductor" Dashboard
       li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
-      li.breadcrumb-item.active Activation type
+      li.breadcrumb-item.active Event type
     h1
-      | Activation type Listing
-      = link_to 'New Activation Type', new_conductor_activation_type_path, role: 'button', class: 'btn btn-warning float-right' unless @user.has_role? :associate, :any
+      | Event type Listing
+      = link_to 'New Event Type', new_conductor_event_type_path, role: 'button', class: 'btn btn-warning float-right' unless @user.has_role? :associate, :any
 .row
   .col-sm-12
     .table-responsive
@@ -20,13 +20,13 @@
             th Slug
             th
         tbody
-          - @activation_types.each do |activation_type|
+          - @event_types.each do |event_type|
             tr
               td.text-center
-                i.fa.fa-circle.mr-1 style="color: #{activation_type.colour};"
-              td = activation_type.name
-              td = activation_type.slug
+                i.fa.fa-circle.mr-1 style="color: #{event_type.colour};"
+              td = event_type.name
+              td = event_type.slug
               td
-                = link_to 'Show', conductor_activation_type_path(activation_type.id), role: 'button', class: 'btn btn-success btn-sm mr-1'
-                = link_to 'Edit', edit_conductor_activation_type_path(activation_type.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
-                = link_to 'Delete', conductor_activation_type_path(activation_type.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm mr-1'
+                = link_to 'Show', conductor_event_type_path(event_type.id), role: 'button', class: 'btn btn-success btn-sm mr-1'
+                = link_to 'Edit', edit_conductor_event_type_path(event_type.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                = link_to 'Delete', conductor_event_type_path(event_type.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm mr-1'

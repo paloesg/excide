@@ -19,7 +19,7 @@ class Conductor::HomeController < ApplicationController
     @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :associate, :any
     @upcoming_events = @events.where("events.end_time > ?", Time.current)
 
-    @activities = PublicActivity::Activity.where(recipient_type: "Activation").order("created_at desc")
+    @activities = PublicActivity::Activity.where(recipient_type: "Event").order("created_at desc")
 
     @event = Event.new
     @event.build_address

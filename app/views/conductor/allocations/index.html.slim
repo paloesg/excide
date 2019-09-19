@@ -27,7 +27,7 @@
         table.table.table-hover
           thead
             tr
-              th Activation
+              th Event
               th Allocation date
               th Start time
               th End time
@@ -39,7 +39,7 @@
           tbody
             - @allocations.each do |allocation|
               tr data-allocation='#{allocation.id}' class="#{@allocation == allocation ? 'info' : ''}"
-                td = allocation.activation.name
+                td = allocation.event.name
                 td = allocation.allocation_date
                 td = allocation.start_time.strftime("%H:%M")
                 td = allocation.end_time.strftime("%H:%M")

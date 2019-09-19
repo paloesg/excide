@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe Conductor::ActivationTypesController, type: :controller do
+RSpec.describe Conductor::EventTypesController, type: :controller do
 
 end

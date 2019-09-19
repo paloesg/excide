@@ -1,4 +1,4 @@
 Hi <%= @user.first_name %>,
 
-Please note that you have been unassigned from the following activation:
-<%= @activation.client.name %> <%= @activation.start_time.strftime("%F") %> <%= @activation.start_time.strftime("%H:%M") %> - <%= @activation.end_time.strftime("%H:%M") %>.
+Please note that you have been unassigned from the following event:
+<%= @event.client.name %> <%= @event.start_time.strftime("%F") %> <%= @event.start_time.strftime("%H:%M") %> - <%= @event.end_time.strftime("%H:%M") %>.
