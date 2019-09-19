@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_19_101614) do
+ActiveRecord::Schema.define(version: 2019_09_19_134820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2019_09_19_101614) do
 
   create_table "allocations", id: :serial, force: :cascade do |t|
     t.integer "user_id"
-    t.integer "activation_id"
+    t.integer "event_id"
     t.date "allocation_date"
     t.time "start_time"
     t.time "end_time"
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 2019_09_19_101614) do
     t.integer "allocation_type"
     t.boolean "last_minute", default: false
     t.integer "rate_cents"
-    t.index ["activation_id"], name: "index_allocations_on_activation_id"
+    t.index ["event_id"], name: "index_allocations_on_event_id"
     t.index ["user_id"], name: "index_allocations_on_user_id"
   end
 
@@ -506,7 +506,7 @@ ActiveRecord::Schema.define(version: 2019_09_19_101614) do
     t.index ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id"
   end
 
-  add_foreign_key "allocations", "events", column: "activation_id"
+  add_foreign_key "allocations", "events"
   add_foreign_key "allocations", "users"
   add_foreign_key "availabilities", "users"
   add_foreign_key "batches", "companies"
