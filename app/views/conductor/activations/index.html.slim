@@ -56,12 +56,12 @@
                 td = activation.remarks
               - else
                 td
-                  - if activation.allocations.consultant.empty? and ((@user.has_role? :manpower_allocator, @company) or @user.has_role? :admin, @company)
+                  - if activation.allocations.consultant.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
                     = select_tag('allocations', options_for_select((activation.allocations.consultant.count..5).to_a, activation.allocations.consultant.count), onchange: "create_allocations(#{activation.id}, 'consultant', this);")
                   - else
                     = select_tag('allocations', options_for_select([activation.allocations.consultant.count]), disabled: true)
                 td
-                  - if activation.allocations.associate.empty? and ((@user.has_role? :manpower_allocator, @company) or @user.has_role? :admin, @company)
+                  - if activation.allocations.associate.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
                     = select_tag('allocations', options_for_select((activation.allocations.associate.count..20).to_a, activation.allocations.associate.count), onchange: "create_allocations(#{activation.id}, 'associate', this);")
                   - else
                     = select_tag('allocations', options_for_select([activation.allocations.associate.count]), disabled: true)
