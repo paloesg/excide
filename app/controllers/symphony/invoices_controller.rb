@@ -34,6 +34,10 @@ class Symphony::InvoicesController < ApplicationController
       #if invoice.xero_contact_id is not present, then create a contact in Xero
       contact_id = @xero.create_contact(name: @invoice.xero_contact_name)
       @invoice.xero_contact_id = contact_id
+      @xero_contact = XeroContact.create(name: @invoice.xero_contact_name, contact_id: contact_id, company: @company)
+      if !@xero_contact.save
+        render 'new'
+      end
     end
 
     if @invoice.save
@@ -69,6 +73,7 @@ class Symphony::InvoicesController < ApplicationController
     else
       contact_id = @xero.create_contact(name: params[:invoice][:xero_contact_name])
       @invoice.xero_contact_id = contact_id
+      @xero_contact = XeroContact.create(name: @invoice.xero_contact_name, contact_id: contact_id, company: @company)
     end
     @invoice.save
     if @invoice.update(invoice_params)
@@ -196,7 +201,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def next_invoice
     next_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).first
-    if next_wf.blank? 
+    if next_wf.blank?
       next_wf = @workflow.batch.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).first
     end
     if next_wf.present?
@@ -208,7 +213,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def prev_invoice
     prev_wf = @workflow.batch.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).last
-    if prev_wf.blank? 
+    if prev_wf.blank?
       prev_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).last
     end
     if prev_wf.present?
@@ -256,13 +261,13 @@ class Symphony::InvoicesController < ApplicationController
     end
   end
 
-  def set_last_workflow_action  
+  def set_last_workflow_action
     @last_workflow_action = @workflow.workflow_actions.includes(:task).where(completed: false).order("tasks.position ASC").first&.id
   end
 
   def get_xero_details
-    @xero = Xero.new(current_user.company)
-    @clients                = @xero.get_contacts
+    @xero = Xero.new(@company)
+    @clients                = @company.xero_contacts
     # Combine account codes and account names as a string
     @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing
     @full_tax_code          = @xero.get_tax_rates.map{|tax| tax.name + ' (' + tax.display_tax_rate.to_s + '%) - ' + tax.tax_type} # Combine tax codes and tax names as a string
@@ -293,10 +298,10 @@ class Symphony::InvoicesController < ApplicationController
     if params[:action] == "update"
       incomplete_workflows = incomplete_workflows.includes(:invoice).where.not(invoices: {id: nil})
     end
-    
+
     if incomplete_workflows.count > 0
       next_wf = incomplete_workflows.where('workflows.created_at > ?', workflow.created_at).first
-      if next_wf.blank? 
+      if next_wf.blank?
         next_wf = incomplete_workflows.where('workflows.created_at < ?', workflow.created_at).first
       end
 
@@ -310,10 +315,10 @@ class Symphony::InvoicesController < ApplicationController
         end
       else
         redirect_to symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id, notice: "#{workflow_action.task.task_type.humanize}task has been saved")
-      end      
+      end
     else
       redirect_to symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id, notice: "#{workflow_action.task.task_type.humanize}task has been completed")
-    end    
+    end
   end
 
   def update_workflow_action_completed(workflow_action_id)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_06_074806) do
+ActiveRecord::Schema.define(version: 2019_09_19_030139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -506,6 +506,15 @@ ActiveRecord::Schema.define(version: 2019_09_06_074806) do
     t.index ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id"
   end
 
+  create_table "xero_contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "contact_id"
+    t.bigint "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_xero_contacts_on_company_id"
+  end
+
   add_foreign_key "activations", "clients"
   add_foreign_key "activations", "companies"
   add_foreign_key "activations", "users", column: "event_owner_id"
@@ -566,4 +575,5 @@ ActiveRecord::Schema.define(version: 2019_09_06_074806) do
   add_foreign_key "workflows", "templates"
   add_foreign_key "workflows", "users"
   add_foreign_key "workflows", "workflow_actions"
+  add_foreign_key "xero_contacts", "companies"
 end

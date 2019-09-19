@@ -17,6 +17,7 @@ class XeroSessionsController < ApplicationController
       company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle)
       session.delete(:request_token)
       session.delete(:request_secret)
+      @xero_client.Contact.all.map{|c| XeroContact.create(name: c.name, contact_id: c.contact_id, company: company)}
       redirect_to symphony_root_path, notice: "User signed in and connected to Xero."
 
       #redirect the page after sign in depending on the role of the user
