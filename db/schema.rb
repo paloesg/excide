@@ -10,36 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_19_070839) do
+ActiveRecord::Schema.define(version: 2019_09_19_101614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
-
-  create_table "activation_types", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
-    t.string "colour"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "activations", id: :serial, force: :cascade do |t|
-    t.integer "activation_type_id"
-    t.datetime "start_time"
-    t.datetime "end_time"
-    t.text "remarks"
-    t.string "location"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "company_id"
-    t.integer "staffer_id"
-    t.integer "client_id"
-    t.index ["client_id"], name: "index_activations_on_client_id"
-    t.index ["company_id"], name: "index_activations_on_company_id"
-    t.index ["staffer_id"], name: "index_activations_on_staffer_id"
-  end
 
   create_table "activities", id: :serial, force: :cascade do |t|
     t.integer "trackable_id"
@@ -208,6 +184,30 @@ ActiveRecord::Schema.define(version: 2019_09_19_070839) do
     t.datetime "updated_at", null: false
     t.string "source"
     t.boolean "responded", default: false
+  end
+
+  create_table "event_types", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "colour"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "events", id: :serial, force: :cascade do |t|
+    t.integer "event_type_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.text "remarks"
+    t.string "location"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "company_id"
+    t.integer "staffer_id"
+    t.integer "client_id"
+    t.index ["client_id"], name: "index_events_on_client_id"
+    t.index ["company_id"], name: "index_events_on_company_id"
+    t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -506,10 +506,7 @@ ActiveRecord::Schema.define(version: 2019_09_19_070839) do
     t.index ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id"
   end
 
-  add_foreign_key "activations", "clients"
-  add_foreign_key "activations", "companies"
-  add_foreign_key "activations", "users", column: "staffer_id"
-  add_foreign_key "allocations", "activations"
+  add_foreign_key "allocations", "events", column: "activation_id"
   add_foreign_key "allocations", "users"
   add_foreign_key "availabilities", "users"
   add_foreign_key "batches", "companies"
@@ -527,6 +524,9 @@ ActiveRecord::Schema.define(version: 2019_09_19_070839) do
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
+  add_foreign_key "events", "clients"
+  add_foreign_key "events", "companies"
+  add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
