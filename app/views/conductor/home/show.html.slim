@@ -40,7 +40,7 @@
                 td = activation.location
       - else
         .card-body No upcoming activations for this month.
-  - unless current_user.has_role? :contractor, :any
+  - unless current_user.has_role? :associate, :any
     .col-sm-6.col-xs-12
       .card
         h6.card-header Activation History
