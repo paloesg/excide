@@ -104,20 +104,20 @@ Rails.application.routes.draw do
   end
 
   namespace :conductor do
-    resources :activation_types
+    resources :event_types
     resources :users do
       collection do
         get :export, to: 'users#export'
         post :import, to: 'users#import'
       end
     end
-    resources :activations do
+    resources :events do
       collection do
-        get :history, to: 'activations#activities', as: :activities
+        get :history, to: 'events#activities', as: :activities
       end
       member do
-        get '/create-allocations/:type/:count', to: 'activations#create_allocations', as: :create_allocations
-        post '/reset', to: 'activations#reset', as: :reset
+        get '/create-allocations/:type/:count', to: 'events#create_allocations', as: :create_allocations
+        post '/reset', to: 'events#reset', as: :reset
       end
     end
     resources :allocations do
