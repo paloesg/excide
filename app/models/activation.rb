@@ -32,6 +32,16 @@ class Activation < ApplicationRecord
     NotificationMailer.edit_activation(self, self.event_owner).deliver_later if self.event_owner.present?
   end
 
+  def project_consultants
+    user_id = self.allocations.where(allocation_type: 'contractor_in_charge').pluck('user_id')
+    User.where(id: user_id)
+  end
+
+  def associates
+    user_id = self.allocations.where(allocation_type: 'contractor').pluck('user_id')
+    User.where(id: user_id)
+  end
+
   private
 
   def create_activation_notification
