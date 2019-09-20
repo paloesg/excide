@@ -111,7 +111,7 @@ Rails.application.routes.draw do
         post :import, to: 'users#import'
       end
     end
-    resources :events, param: :event_id do
+    resources :events do
       collection do
         get :history, to: 'events#activities', as: :activities
       end
