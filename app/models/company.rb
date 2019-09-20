@@ -32,6 +32,6 @@ class Company < ApplicationRecord
 
   # Get all other companies that user has roles for excpet the current company that user belongs to
   def self.assigned_companies(user)
-    user.roles.map(&:resource).compact.uniq.reject{ |c| c == user.company }
+    user.roles.includes(:resource).map(&:resource).compact.uniq.reject{ |c| c == user.company }
   end
 end
