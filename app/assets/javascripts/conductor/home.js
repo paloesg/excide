@@ -59,12 +59,24 @@ $(document).on("turbolinks:load", function(){
     $('#client_name').text($(this).attr('event-client'));
     $('#event_type_popover').text($(this).attr('event-type'));
     $('#staffer').text($(this).attr('event-staffer'));
+
+    get_project_consultant = JSON.parse($(this).attr('activation-project_consultant'))
+    $('#project_consultant').empty();
+    $.each( get_project_consultant, function( key, value ) { 
+      var isLastElement = key == get_project_consultant.length -1;   
+      $('#project_consultant').append( value.first_name+" "+ value.last_name + (get_project_consultant.length > 1 && !isLastElement ? ", " : "") );
+    });
+
+    get_associate = JSON.parse($(this).attr('activation-associate'))
+    $('#associate').empty();
+    $.each( get_associate, function( key, value ) {    
+      var isLastElement = key == get_associate.length -1;
+      
+      $('#associate').append( value.first_name+" "+ value.last_name + (get_associate.length > 1 && !isLastElement ? ", " : ""));
+    });
+    
     $('#location').text(get_event['location']);
-    if (get_event_address) {
-      $('#address_attributes_line_1').text(get_event_address['line_1']);
-      $('#address_attributes_line_2').text(get_event_address['line_2']);
-      $('#address_attributes_postal_code').text(get_event_address['postal_code']);
-    }
+    
     $('#start_time').text(moment(start_time).format('HH:mm'));
     $('#end_time').text(moment(end_time).format('HH:mm'));
     $('#remarks').text(get_event['remarks']);
