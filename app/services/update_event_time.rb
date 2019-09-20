@@ -35,7 +35,7 @@ class UpdateEventTime
   private
 
   def time_change?
-    if @event.start_time.zone.to_time == DateTime.parse(@new_start_time).zone.to_time and @event.end_time.zone.to_time == DateTime.parse(@new_end_time).zone.to_time
+    if @event.start_time.in_time_zone == DateTime.parse(@new_start_time).in_time_zone and @event.end_time.in_time_zone == DateTime.parse(@new_end_time).in_time_zone
       false
     else
       true
