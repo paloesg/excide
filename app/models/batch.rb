@@ -16,16 +16,16 @@ class Batch < ApplicationRecord
 
   #get all the completed workflow action in an array
   def get_completed_actions
-    self.workflows.map{ |wf| wf.workflow_actions.where(completed: true) }.flatten.compact
+    WorkflowAction.includes(:workflow).where("workflows.batch_id": self.id, completed: true)
   end
 
   def get_completed_workflows
-    self.workflows.where(completed: true).count
+    self.workflows.where(completed: true).length
   end
 
   def action_completed_progress
     # Check for case where total_action is 0 to prevent NaN error
-    total_action == 0 ? 0 : ((get_completed_actions.count.to_f / total_action) * 100).round(0) if total_action.present?
+    total_action.blank? or total_action == 0 ? 0 : ((get_completed_actions.length.to_f / total_action) * 100).round(0) 
   end
 
   def average_time_taken_per_task
@@ -35,7 +35,7 @@ class Batch < ApplicationRecord
 
   #Since each template's workflows have the same workflow_actions, can get the total number of actions by multiplying the number of workflows in batch with the workflow_actions of ANY one workflow
   def total_action
-    self.workflows.present? ? (self.workflows.size * self.workflows.first.workflow_actions.size) : 0
+    self.workflows.present? ? (self.workflows.length * self.workflows.first.workflow_actions.length) : 0
   end
 
   def send_email_notification
