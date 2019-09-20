@@ -16,18 +16,21 @@ $(document).on("turbolinks:load", function() {
 
   $('select.project-clients').selectize({
     placeholder: "Choose project clients",
+    plugins: ['remove_button'],
     allowEmptyOption: true,
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
   $('select.allocation-users').selectize({
     placeholder: "Choose user allocation",
+    plugins: ['remove_button'],
     allowEmptyOption: true,
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
   $('select.activation-type').selectize({
     placeholder: "Choose activation type",
+    plugins: ['remove_button'],
     allowEmptyOption: true,
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
