@@ -68,6 +68,7 @@ namespace :users do
     puts "#{destroyed_user_name} successfully deleted."
   end
 
+  desc "Remap user roles in conductor"
   task remap_roles_in_conductor: :environment do
     # Change users role contractor_in_charge to be consultant
     roles_contractor_in_charge = Role.where(name: "contractor_in_charge")
