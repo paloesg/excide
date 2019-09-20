@@ -48,7 +48,6 @@ RSpec.describe Conductor::EventsController, type: :controller do
 
   describe "GET #index" do
     it "returns a success response" do
-      event = Event.create! valid_attributes
       get :index, {}, valid_session
       expect(response).to be_success
     end

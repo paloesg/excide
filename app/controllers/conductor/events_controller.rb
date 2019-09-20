@@ -106,7 +106,7 @@ class Conductor::EventsController < ApplicationController
     count = params[:count].to_i
     count.times do
       @allocation = Allocation.new(event_id: @event.id, allocation_date: @event.start_time, start_time: @event.start_time.strftime("%H:%M"), end_time: @event.end_time.strftime("%H:%M"), allocation_type: params[:type].underscore)
-      if !@allocation.save
+      unless @allocation.save
         format.json { render json: @allocation.errors, status: :unprocessable_entity  }
       end
     end
@@ -118,11 +118,11 @@ class Conductor::EventsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
-      @event = Event.find(params[:id])
+      @event = Event.find(params[:event_id])
     end
 
     def set_user
-      if !current_user.has_role? :admin, @company
+      unless current_user.has_role? :admin, @company
         flash[:alert] = "You are not authorized to perform this action."
         redirect_to conductor_events_path
       end
