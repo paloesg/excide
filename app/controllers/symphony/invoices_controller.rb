@@ -86,6 +86,7 @@ class Symphony::InvoicesController < ApplicationController
           next_wf = @workflow.batch.next_workflow(@workflow, workflow_action)
           if @invoice.errors.empty?
             if next_wf.present?
+              #check is the workflow have workflow action and have an invoice? if yes go to next invoice page, if not go to batch page
               if next_wf.get_workflow_action(workflow_action.task_id).present? && next_wf.invoice.present?
                 redirect_to edit_symphony_invoice_path(workflow_name: next_wf.template.slug, workflow_id: next_wf.id, id: next_wf.invoice.id, workflow_action_id: next_wf.get_workflow_action(workflow_action.task_id).id), notice: 'Xero invoice updated successfully.'
               else
@@ -220,12 +221,9 @@ class Symphony::InvoicesController < ApplicationController
       prev_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).last
     end
     if prev_wf.present?
-      if prev_wf.invoice.present?
-        if prev_wf.invoice.xero_total_mismatch?
-          render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
-        else
-          render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
-        end
+      # check if previous workflow have invoice or is that invoice xero total mismatch? if yes go to previous page if not go to first invoice
+      if prev_wf.invoice.present? || prev_wf.invoice.xero_total_mismatch?
+        render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
       else
         render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
       end
