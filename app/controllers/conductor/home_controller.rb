@@ -14,7 +14,7 @@ class Conductor::HomeController < ApplicationController
     params[:project_clients] = params[:project_clients].split(',') unless params[:project_clients].blank?
     
     #filter activation using scope setup in model
-    @activations = Activation.company(@company.id)
+    @activations = Activation.includes(:address, :client, :event_owner, :activation_type, [allocations: :user]).company(@company.id)
     @activations = @activations.start_time(date_from..date_to)
     @activations = @activations.activation(params[:activation_types]) unless params[:activation_types].blank?
     @activations = @activations.allocation(params[:allocation_users]) unless params[:allocation_users].blank?
@@ -24,7 +24,7 @@ class Conductor::HomeController < ApplicationController
     @activations = @activations.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :contractor, :any
     @upcoming_activations = @activations.where("activations.end_time > ?", Time.current)
 
-    @activities = PublicActivity::Activity.where(recipient_type: "Activation").order("created_at desc")
+    @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Activation").order("created_at desc")
 
     @activation = Activation.new
     @activation.build_address
