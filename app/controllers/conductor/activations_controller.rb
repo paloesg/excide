@@ -12,7 +12,7 @@ class Conductor::ActivationsController < ApplicationController
   def index
     @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
     @date_to = @date_from.end_of_month
-    @activations = Activation.where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
+    @activations = Activation.includes(:address, :client, :event_owner, :activation_type, [allocations: :user]).where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
     # Only show activations relevant to contractor if logged in as contractor
     @activations = @activations.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :contractor, :any
   end
@@ -40,6 +40,11 @@ class Conductor::ActivationsController < ApplicationController
   # POST /conductor/activations
   # POST /conductor/activations.json
   def create
+    if params['date_today'].present?
+      params['activation']['start_time'] = params['date_today'] +" "+ params['activation']['start_time']
+      params['activation']['end_time'] = params['date_today'] +" "+ params['activation']['end_time']
+    end
+
     @activation = Activation.new(activation_params)
     @activation.company = @company
 

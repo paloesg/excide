@@ -68,6 +68,6 @@
 #new-activation.d-none
   = form_for @activation, remote: true, url: conductor_activations_path do |f|
     .alert.alert-danger#popover_validation style="display:none;"
-    = render 'conductor/activations/form', f: f
+    = render 'activation_form', f: f
 #activation-details.d-none
   = render 'activation_details'
