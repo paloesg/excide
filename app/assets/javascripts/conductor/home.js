@@ -35,7 +35,21 @@ $(document).on("turbolinks:load", function(){
       sideBySide: true
     });
     $('.datetimepicker').val($(this).attr('td-date'));
+    $('.datetoday').val($(this).attr('td-date'));
     $($(this).data("bs.popover").tip).find('select').selectize();
+
+    timepickers = $('.timepickers');
+    // get last of .timepickers
+    timepickers.eq(timepickers.length - 1).attr('id', 'newtimepicker')
+    timepickers.eq(timepickers.length - 1).attr('data-target', "#" + 'newtimepicker')
+    // get second from last of .timepickers
+    timepickers.eq(timepickers.length - 2).attr('id', 'newtimepicker1')
+    timepickers.eq(timepickers.length - 2).attr('data-target', "#" + 'newtimepicker1')
+    timepickers.datetimepicker({
+      format: "HH:mm",
+      stepping: 15,
+      sideBySide: true
+    });
   }).on("show.bs.popover", function () {
     $('.popover').popover('hide');
     $($(this).data("bs.popover").tip).css({ "max-width": "500px" })
