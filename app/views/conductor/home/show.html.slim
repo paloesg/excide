@@ -7,8 +7,16 @@
         a href="#" Company
       li.breadcrumb-item.active Conductor
     h1.border-bottom Conductor
-    .col-sm-3.float-right
-      = select_tag('event_type', options_for_select(EventType.all.map {|k,v| [k.name, k.slug] }, selected: params[:event_type]), include_blank: 'All', class: 'selectize-event-type')
+    .row
+      .col-md-12.m-2
+        .col-sm-3.float-right
+          = button_tag 'Filter', type: 'button', class: 'btn btn-primary conductor-filter-button'
+        .col-sm-3.float-right
+          = select_tag('event_type', options_for_select(EventType.all.map {|k,v| [k.name, k.slug]}, selected: params[:event_types]), class: 'selectize-event-type event-type', multiple: true)
+        .col-sm-3.float-right
+          = select_tag('project_client', options_for_select(@clients.map {|k,v| [k.name, k.id] }, selected: params[:project_clients]), class: 'selectize-event-type project-clients', multiple: true)
+        .col-sm-3.float-right
+          = select_tag('allocation_user', options_for_select(User.all.map {|k,v| [k.first_name, k.id] }, selected: params[:allocation_users]), class: 'selectize-event-type allocation-users', multiple: true)
 .row
   .col-sm-12.mb-3
     = month_calendar events: @events do |date, events|

@@ -24,6 +24,16 @@ class Event < ApplicationRecord
             end_time: ->(_controller, model) { model&.end_time }
           }
 
+  scope :client, ->(client) { where(client_id: client) if client.present? }
+  scope :event, ->(event_types){
+    joins(:event_type).where(event_types: { slug: event_types }) if event_types.present?
+  }
+  scope :allocation, ->(allocations){
+    joins(:allocations).where(allocations: { user_id: allocations }) if allocations.present?
+  }
+  scope :company, ->(company_id){where(company_id: company_id) if company_id.present?}
+  scope :start_time, ->(time){where(start_time: time) if time.present?}
+
   def name
     client.name + ' ' + event_type&.name.to_s
   end

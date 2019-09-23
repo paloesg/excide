@@ -15,6 +15,18 @@ class Conductor::HomeController < ApplicationController
       @events = get_events.joins(:event_type).where(event_types: {slug: params[:event_type]})
     end
 
+    #split params to set default selected in selectize
+    params[:event_types] = params[:event_types].split(',') unless params[:event_types].blank?
+    params[:allocation_users] = params[:allocation_users].split(',') unless params[:allocation_users].blank?
+    params[:project_clients] = params[:project_clients].split(',') unless params[:project_clients].blank?
+
+    #filter event using scope setup in model
+    @events = Event.company(@company.id)
+    @events = @events.start_time(date_from..date_to)
+    @events = @events.event(params[:event_types]) unless params[:event_types].blank?
+    @events = @events.allocation(params[:allocation_users]) unless params[:allocation_users].blank?
+    @events = @events.client(params[:project_clients]) unless params[:project_clients].blank?
+
     # Only show events relevant to associate if logged in as associate
     @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :associate, :any
     @upcoming_events = @events.where("events.end_time > ?", Time.current)
