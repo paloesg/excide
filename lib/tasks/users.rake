@@ -70,23 +70,37 @@ namespace :users do
 
   desc "Remap user roles in conductor"
   task remap_roles_in_conductor: :environment do
-
-    # Rename role contractor_in_charge to be consultant
-    roles_contractor_in_charge = Role.where(name: "contractor_in_charge")
-    roles_contractor_in_charge.each do |role|
-      role.update_column(:name, "consultant")
+    # Change users role contractor_in_charge to consultant
+    contractor_in_charge = Role.where(name: "contractor_in_charge")
+    contractor_in_charge.each do |role|
+      existing_role = Role.find_by(name: "consultant", resource_id: role.resource.id)
+      role.tasks.update_all(role_id: existing_role.id) if existing_role
+      role.users.each do |user|
+        user.add_role :consultant, role.resource
+        user.remove_role role.name, role.resource
+      end
     end
 
-    # Rename role contractor to be associate
-    roles_contractor = Role.where(name: "contractor")
-    roles_contractor.each do |role|
-      role.update_column(:name, "associate")
+    # Change users role contractor to associate
+    contractor = Role.where(name: "contractor")
+    contractor.each do |role|
+      existing_role = Role.find_by(name: "associate", resource_id: role.resource.id)
+      role.tasks.update_all(role_id: existing_role.id) if existing_role
+      role.users.each do |user|
+        user.add_role :associate, role.resource
+        user.remove_role role.name, role.resource
+      end
     end
 
-    # Rename role event_creator/event_owner/manpower_allocator to be staffer
-    roles_creator_owner_manpower = Role.where(name: ["event_creator", "event_owner", "manpower_allocator", "Manpower Allocator"])
-    roles_creator_owner_manpower.each do |role|
-      role.update_column(:name, "staffer")
+    # Change users role event_creator/event_owner/manpower_allocator to stafer
+    creator_owner_manpower = Role.where(name: ["event_creator", "event_owner", "manpower_allocator", "Manpower Allocator"])
+    creator_owner_manpower.each do |role|
+      existing_role = Role.find_by(name: "staffer", resource_id: role.resource.id)
+      role.tasks.update_all(role_id: existing_role.id) if existing_role
+      role.users.each do |user|
+        user.add_role :staffer, role.resource
+        user.remove_role role.name, role.resource
+      end
     end
   end
 end
