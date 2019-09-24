@@ -95,11 +95,8 @@ namespace :users do
     # Change users role event_creator/event_owner/manpower_allocator to stafer
     creator_owner_manpower = Role.where(name: ["event_creator", "event_owner", "manpower_allocator", "Manpower Allocator"])
     creator_owner_manpower.each do |role|
-      existing_role = Role.find_by(name: "staffer", resource_id: role.resource.id)
-      role.tasks.update_all(role_id: existing_role.id) if existing_role
       role.users.each do |user|
         user.add_role :staffer, role.resource
-        user.remove_role role.name, role.resource
       end
     end
   end
