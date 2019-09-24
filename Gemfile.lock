@@ -229,7 +229,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
-    hashdiff (0.4.0)
+    hashdiff (1.0.0)
     hashie (3.6.0)
     htmlentities (4.3.4)
     httpclient (2.8.3)
