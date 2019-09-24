@@ -13,7 +13,7 @@ class Workflow < ApplicationRecord
 
   has_one :invoice
 
-  has_many :workflow_actions, dependent: :destroy, counter_cache: true
+  has_many :workflow_actions, dependent: :destroy
   has_many :documents, dependent: :destroy
 
   validate :check_data_fields
