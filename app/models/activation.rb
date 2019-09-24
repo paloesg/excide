@@ -24,6 +24,16 @@ class Activation < ApplicationRecord
             end_time: ->(_controller, model) { model&.end_time }
           }
 
+  scope :client, ->(client) { where(client_id: client) if client.present? }
+  scope :activation, ->(activation_types){
+    joins(:activation_type).where(activation_types: { slug: activation_types }) if activation_types.present?
+  }
+  scope :allocation, ->(allocations){
+    joins(:allocations).where(allocations: { user_id: allocations }) if allocations.present?
+  }
+  scope :company, ->(company_id){where(company_id: company_id) if company_id.present?}
+  scope :start_time, ->(time){where(start_time: time) if time.present?}
+
   def name
     client.name + ' ' + activation_type.name
   end
