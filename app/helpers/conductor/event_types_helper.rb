@@ -1,0 +1,2 @@
+module Conductor::EventTypesHelper
+end

@@ -12,7 +12,7 @@ FactoryBot.define do
     factory :template_with_sections do
       after(:create) do |t|
         create_list(:section, 3, template: t) do |section|
-          create_list(:task, 3, section: section, role: create(:event_owner).roles.first)
+          create_list(:task, 3, section: section, role: create(:staffer).roles.first)
         end
       end
     end

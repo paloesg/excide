@@ -1,0 +1,17 @@
+- if @event_type.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@event_type.errors.count, "error")} prohibited this event from being saved:"
+    ul
+      - @event_type.errors.full_messages.each do |message|
+        li = message
+.row
+  .col-sm-6
+    .form-group
+      = f.label :name
+      = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label :colour
+      = f.color_field :colour, class: 'w-100'
+.row
+  .col-sm-12
+    = f.submit 'Save Event Type', class: 'btn btn-primary'

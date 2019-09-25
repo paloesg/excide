@@ -7,7 +7,7 @@ class Conductor::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.where(company: @company).with_role :contractor, @company
+    @users = User.where(company: @company).with_role :associate, @company
   end
 
   def show
@@ -23,11 +23,11 @@ class Conductor::UsersController < ApplicationController
     @user.company = @company
     if user_params[:max_hours_per_week].blank?
       @user.valid?
-      @user.errors.add(:max_hours_per_week, "must be present for contractors")
+      @user.errors.add(:max_hours_per_week, "must be present for associates")
       render :new
     elsif @user.save
-      @user.add_role :contractor, @company
-      @user.add_role_contractor_ic params[:contractor_in_charge]
+      @user.add_role :associate, @company
+      @user.add_role_consultant params[:consultant]
       redirect_to conductor_users_path, notice: 'User successfully created!'
     else
       render :new
@@ -40,10 +40,10 @@ class Conductor::UsersController < ApplicationController
   def update
     if user_params[:max_hours_per_week].blank?
       @user.valid?
-      @user.errors.add(:max_hours_per_week, "must be present for contractors")
+      @user.errors.add(:max_hours_per_week, "must be present for associates")
       render :edit
     elsif @user.update(user_params)
-      @user.add_role_contractor_ic params[:contractor_in_charge]
+      @user.add_role_consultant params[:consultant]
       redirect_to conductor_user_path, notice: 'User successfully updated!'
     else
       render :edit
@@ -56,16 +56,16 @@ class Conductor::UsersController < ApplicationController
   end
 
   def export
-    @users = User.where(company: @company).with_role :contractor, @company
-    send_data @users.contractors_to_csv, filename: "Contractors-#{Date.current}.csv"
+    @users = User.where(company: @company).with_role :associate, @company
+    send_data @users.associates_to_csv, filename: "Associates-#{Date.current}.csv"
   end
 
   def import
-    import_count = User.csv_to_contractors(params[:csv_file], @company)
-    flash[:notice] = "#{import_count["imported"]} contractors imported succesfully. "
-    flash[:notice] << "#{import_count["invalid_data"]} contractors with invalid data. " if import_count["invalid_data"] != 0
-    flash[:notice] << "#{import_count["email_taken"]} contractors' email already exist. " if import_count["email_taken"] != 0
-    flash[:notice] << "#{import_count["email_blank"]} contractors' email missing. " if import_count["email_blank"] != 0
+    import_count = User.csv_to_associates(params[:csv_file], @company)
+    flash[:notice] = "#{import_count["imported"]} associates imported succesfully. "
+    flash[:notice] << "#{import_count["invalid_data"]} associates with invalid data. " if import_count["invalid_data"] != 0
+    flash[:notice] << "#{import_count["email_taken"]} associates' email already exist. " if import_count["email_taken"] != 0
+    flash[:notice] << "#{import_count["email_blank"]} associates' email missing. " if import_count["email_blank"] != 0
     redirect_to conductor_users_path
   end
 

@@ -2,7 +2,7 @@ function create_allocations(id, type, element) {
   let count = element.value
   $.ajax({
     type: "GET",
-    url: "activations/" + id + "/create-allocations/" + type + "/" + count,
+    url: "events/" + id + "/create-allocations/" + type + "/" + count,
     dataType: "json",
     success: function () {
       $(element).prop('disabled', 'disabled');
