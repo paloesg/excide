@@ -74,14 +74,14 @@ $(document).on("turbolinks:load", function(){
     $('#event_type_popover').text($(this).attr('event-type'));
     $('#staffer').text($(this).attr('event-staffer'));
 
-    get_project_consultant = JSON.parse($(this).attr('activation-project_consultant'))
+    get_project_consultant = JSON.parse($(this).attr('event-project_consultant'))
     $('#project_consultant').empty();
     $.each( get_project_consultant, function( key, value ) { 
       var isLastElement = key == get_project_consultant.length -1;   
       $('#project_consultant').append( value.first_name+" "+ value.last_name + (get_project_consultant.length > 1 && !isLastElement ? ", " : "") );
     });
 
-    get_associate = JSON.parse($(this).attr('activation-associate'))
+    get_associate = JSON.parse($(this).attr('event-associate'))
     $('#associate').empty();
     $.each( get_associate, function( key, value ) {    
       var isLastElement = key == get_associate.length -1;

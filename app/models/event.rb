@@ -39,12 +39,12 @@ class Event < ApplicationRecord
   end
 
   def project_consultants
-    user_id = self.allocations.where(allocation_type: 'contractor_in_charge').pluck('user_id')
+    user_id = self.allocations.where(allocation_type: 'consultant').pluck('user_id')
     User.where(id: user_id)
   end
 
   def associates
-    user_id = self.allocations.where(allocation_type: 'contractor').pluck('user_id')
+    user_id = self.allocations.where(allocation_type: 'associate').pluck('user_id')
     User.where(id: user_id)
   end
 

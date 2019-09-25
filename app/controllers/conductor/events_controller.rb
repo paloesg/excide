@@ -12,7 +12,7 @@ class Conductor::EventsController < ApplicationController
   def index
     @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
     @date_to = @date_from.end_of_month
-    @events = Event.where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
+    @events = Event.includes(:address, :client, :event_owner, :activation_type, [allocations: :user]).where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
     # Only show events relevant to associate if logged in as associate
     @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :associate, :any
   end
@@ -40,6 +40,11 @@ class Conductor::EventsController < ApplicationController
   # POST /conductor/events
   # POST /conductor/events.json
   def create
+    if params['date_today'].present?
+      params['event']['start_time'] = params['date_today'] +" "+ params['event']['start_time']
+      params['event']['end_time'] = params['date_today'] +" "+ params['event']['end_time']
+    end
+
     @event = Event.new(event_params)
     @event.company = @company
 

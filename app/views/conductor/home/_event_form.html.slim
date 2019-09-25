@@ -1,14 +1,14 @@
-- if @activation.errors.any?
+- if @event.errors.any?
   .alert.alert-danger role='alert'
-    strong = "#{pluralize(@activation.errors.count, "error")} prohibited this activation from being saved:"
+    strong = "#{pluralize(@event.errors.count, "error")} prohibited this event from being saved:"
     ul
-      - @activation.errors.full_messages.each do |message|
+      - @event.errors.full_messages.each do |message|
         li = message
 .row
   .col-sm-6
     .form-group
       = f.label :client_id
-      = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @activation.client_id, prompt: 'Select client...'}, class: 'selectize'
+      = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, class: 'selectize'
     .form-group
       = f.label :location
       = f.text_field :location, class: 'form-control'
@@ -17,11 +17,11 @@
         = render 'companies/address_fields', f: a
   .col-sm-6
     .form-group
-      = f.label :activation_type_id
-      = f.select :activation_type_id, ActivationType.all.map { |key, value| [key.name, key.id] }, {selected: @activation.activation_type, prompt: 'Select activation type...'}, class: 'selectize'
+      = f.label :event_type_id
+      = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }, {selected: @event.event_type, prompt: 'Select event type...'}, class: 'selectize'
     .form-group
-      = f.label :event_owner_id
-      = f.select :event_owner_id, @event_owners.map { |key, value| [key.full_name, key.id] }, {selected: @activation.event_owner_id, prompt: 'Select event owner...'}, class: 'selectize'
+      = f.label :staffer_id
+      = f.select :staffer_id, @staffers.map { |key, value| [key.full_name, key.id] }, {selected: @event.staffer_id, prompt: 'Select event owner...'}, class: 'selectize'
     .form-group
       = f.label :start_time
       = hidden_field_tag 'date_today', nil, class: 'form-control datetoday'
@@ -34,4 +34,4 @@
       = f.text_area :remarks, class: 'form-control'
 .row
   .col-sm-12
-    = f.submit 'Save Activation', class: 'btn btn-primary'
+    = f.submit 'Save Event', class: 'btn btn-primary'
