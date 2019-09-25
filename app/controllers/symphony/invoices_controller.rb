@@ -29,7 +29,7 @@ class Symphony::InvoicesController < ApplicationController
     @invoice.user_id = current_user.id
     @invoice.company_id = current_user.company_id
     if @invoice.xero_contact_id.present?
-      @invoice.xero_contact_name = @xero.get_contact(@invoice.xero_contact_id).name
+      @invoice.xero_contact_name = @clients.find_by(contact_id: @invoice.xero_contact_id).name
     else
       #if invoice.xero_contact_id is not present, then create a contact in Xero
       contact_id = @xero.create_contact(name: @invoice.xero_contact_name)
@@ -69,11 +69,11 @@ class Symphony::InvoicesController < ApplicationController
     authorize @invoice
     @xero = Xero.new(@company)
     if params[:invoice][:xero_contact_name].blank?
-      @invoice.xero_contact_name = @xero.get_contact(params[:invoice][:xero_contact_id]).name
+      @invoice.xero_contact_name = @clients.find_by(contact_id: params[:invoice][:xero_contact_id]).name
     else
       contact_id = @xero.create_contact(name: params[:invoice][:xero_contact_name])
       @invoice.xero_contact_id = contact_id
-      @xero_contact = XeroContact.create(name: @invoice.xero_contact_name, contact_id: contact_id, company: @company)
+      @xero_contact = XeroContact.create(name: params[:invoice][:xero_contact_name], contact_id: contact_id, company: @company)
     end
     @invoice.save
     if @invoice.update(invoice_params)
