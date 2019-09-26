@@ -68,15 +68,7 @@ class WorkflowAction < ApplicationRecord
 
   def workflow_completed
     self.workflow.update_column('completed', true)
-    batch_completed
     WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later
-  end
-
-  def batch_completed
-    workflows = self.workflow.batch.workflows.where(completed: false)
-    if workflows.blank?
-      self.workflow.batch.update_column(:completed, true)
-    end
   end
 
   # Check if workflow belongs to a batch, get all the actions by task grouping for the batch and check that all actions are completed
@@ -154,7 +146,7 @@ class WorkflowAction < ApplicationRecord
   #this callback checks that all actions in the workflow are completed before sending out the email summary
   def check_all_actions_completed?
     # Check length of workflow actions, to prevent workflow to be completed when creation of workflow actions (if first task completed)
-    if self.workflow.workflow_actions.length == self.workflow.template.sections.joins(:tasks).length
+    if self.workflow.workflow_actions.size == self.workflow.template.sections.joins(:tasks).size
       self.workflow.workflow_actions.all? {|action| action.completed? }
     else
       false
