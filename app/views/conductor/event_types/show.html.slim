@@ -1,0 +1,24 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/conductor" Dashboard
+      li.breadcrumb-item
+        a href="/symphony/company" #{@company.name}
+      li.breadcrumb-item.active Event type
+    h1 #{@event_type.name} event type
+.row
+  .col-sm-12
+    p
+      strong Name :
+      = @event_type.name
+    p
+      strong Slug :
+      = @event_type.slug
+    p
+      strong Colour :
+      = @event_type.colour
+
+    => link_to 'Edit', edit_conductor_event_type_path(@event_type.id)
+    '|
+    =< link_to 'Back', conductor_event_types_path

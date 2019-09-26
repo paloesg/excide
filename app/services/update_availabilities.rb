@@ -20,7 +20,7 @@ class UpdateAvailabilities
   private
 
   def set_user_id
-    if @current_user.has_role? :contractor, :any
+    if @current_user.has_role? :associate, :any
       @user_id = @current_user.id
     else
       @user_id = @available[:user_id]

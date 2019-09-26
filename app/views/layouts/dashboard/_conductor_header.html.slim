@@ -27,15 +27,15 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
   #navbarNavDropdown.collapse.navbar-collapse
     ul.navbar-nav
       li.nav-item = link_to "Conductor Dashboard", conductor_root_path, class: 'nav-link'
-      li.nav-item = link_to 'Activations', conductor_activations_path, class: 'nav-link'
-      - if current_user.has_role? :admin, @company or current_user.has_role? :manpower_allocator, @company
+      li.nav-item = link_to 'Event', conductor_events_path, class: 'nav-link'
+      - if current_user.has_role? :admin, @company or current_user.has_role? :Staffer, @company
         li.nav-item.dropdown
-          a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Contractors
+          a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Associates
           .dropdown-menu
-            = link_to 'Contractor Availability', conductor_availabilities_path, class: 'dropdown-item'
-            = link_to 'Allocate Contractor', conductor_allocations_path, class: 'dropdown-item'
-            = link_to "Manage Contractors", conductor_users_path, class: 'dropdown-item'
-      - if current_user.has_role? :contractor, @company
+            = link_to 'Associate Availability', conductor_availabilities_path, class: 'dropdown-item'
+            = link_to 'Allocate Associate', conductor_allocations_path, class: 'dropdown-item'
+            = link_to "Manage Associates", conductor_users_path, class: 'dropdown-item'
+      - if current_user.has_role? :associate, @company
         li.nav-item = link_to "User Details", conductor_user_path(current_user), class: 'nav-link'
       - else
         li.nav-item = link_to 'Clients', conductor_clients_path, class: 'nav-link'

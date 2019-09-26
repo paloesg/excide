@@ -3,7 +3,7 @@ class Client < ApplicationRecord
   belongs_to :company
 
   has_many :workflows, as: :workflowable
-  has_many :activations
+  has_many :events
 
   validates :name, presence: true
 end

@@ -5,12 +5,12 @@ section.cover.fullscreen.image-bg.overlay
     .row
       .col-md-4.offset-md-4.col-sm-8.offset-sm-2
         .feature.boxed
-          h4.uppercase Account Activation
-          = form_for resource, :as => resource_name, :url => update_user_confirmation_path, :html => {:method => 'put'}, :id => 'activation-form' do |f|
+          h4.uppercase Account Event
+          = form_for resource, :as => resource_name, :url => update_user_confirmation_path, :html => {:method => 'put'}, :id => 'event-form' do |f|
             = devise_error_messages!
             fieldset
               p.lead.mb48
-                ' Account Activation
+                ' Account Event
                 - if resource.first_name
                   | for #{resource.email}
               - if @requires_password

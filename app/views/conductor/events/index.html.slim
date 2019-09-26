@@ -1,0 +1,77 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/conductor" Dashboard
+      li.breadcrumb-item
+        a href="/symphony/company" #{@company.name}
+      li.breadcrumb-item.active Events
+    h1
+      | Events Listing - #{@date_from.strftime("%B")}
+      = link_to 'Event Types', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, :any
+      = link_to 'New Event', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1' unless @user.has_role? :associate, :any
+.row
+  .col-sm-12.mb-3
+    .btn-group.float-right role='group'
+      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm'
+        i.fa.fa-chevron-left
+        | Previous Month
+      = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm'
+        | Current Month
+      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm'
+        | Next Month
+        i.fa.fa-chevron-right
+.row
+  .col-sm-12
+    .table-responsive
+      table.table.table-hover
+        thead
+          tr
+            th
+            th Event type
+            th Client
+            th Staffer
+            th Start time
+            th End time
+            th Location
+            - if @user.has_role? :associate, :any
+              th Remarks
+            - else
+              th Consultant
+              th Associate
+              th
+              th
+        tbody
+          - @events.each do |event|
+            tr
+              td.text-center
+                i.fa.fa-circle.mr-1 style="color: #{event.event_type.colour};"
+              td = event.event_type.name
+              td = event.client&.name
+              td = event.staffer&.full_name
+              td = event.start_time.strftime("%d/%m/%y %H:%M")
+              td = event.end_time.strftime("%d/%m/%y %H:%M")
+              td = event.location
+              - if @user.has_role? :associate, :any
+                td = event.remarks
+              - else
+                td
+                  - if event.allocations.consultant.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
+                    = select_tag('allocations', options_for_select((event.allocations.consultant.count..5).to_a, event.allocations.consultant.count), onchange: "create_allocations(#{event.id}, 'consultant', this);")
+                  - else
+                    = select_tag('allocations', options_for_select([event.allocations.consultant.count]), disabled: true)
+                td
+                  - if event.allocations.associate.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
+                    = select_tag('allocations', options_for_select((event.allocations.associate.count..20).to_a, event.allocations.associate.count), onchange: "create_allocations(#{event.id}, 'associate', this);")
+                  - else
+                    = select_tag('allocations', options_for_select([event.allocations.associate.count]), disabled: true)
+                td
+                  i.fa.fa-check.text-success style="opacity: 0;"
+                  i.fa.fa-times.text-danger style="opacity: 0;"
+                td.btn-toolbar
+                  = link_to 'Details', '#', role: 'button', class: 'btn btn-success btn-sm mr-1 mt-1 event', 'event-data': "#{event.to_json}", 'event-address': "#{event.address.to_json}", 'event-client': "#{event.client&.name}", 'event-staffer': "#{event.staffer&.full_name}", get_allocated_users_length: "#{event.allocations.map(&:user).reject(&:blank?).length}", title: "Event Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>", 'data-placement': "left", 'event-type': "#{event.event_type.name}", data: { turbolinks: false }
+                  = link_to 'Edit', edit_conductor_event_path(event), role: 'button', class: 'btn btn-primary btn-sm mr-1 mt-1'
+                  = link_to 'Reset', reset_conductor_event_path(event), data: { confirm: 'This will remove all existing allocations for this event. Are you sure?' }, method: :post, role: 'button', class: 'btn btn-warning btn-sm mr-1 mt-1'
+                  = link_to 'Delete', conductor_event_path(event), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm mt-1'
+#event-details.d-none
+  = render 'conductor/home/event_details'
