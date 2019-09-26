@@ -37,7 +37,7 @@ class Symphony::BatchesController < ApplicationController
 
   def show
     authorize @batch
-    @completed_workflow_count = @batch.workflows.where(completed: true).size
+    @completed_workflow_count = @batch.workflows.where(completed: true).length
     @current_user = current_user
     @sections = @batch.template.sections
     @templates = policy_scope(Template).assigned_templates(current_user)
