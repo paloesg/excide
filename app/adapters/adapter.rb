@@ -16,6 +16,10 @@ module Adapter
       end
     end
 
+    def get_organisation
+      @xero_client.Organisation.first
+    end
+
     def get_contacts
       @xero_client.Contact.all
     end
