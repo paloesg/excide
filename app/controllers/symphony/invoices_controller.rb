@@ -238,7 +238,8 @@ class Symphony::InvoicesController < ApplicationController
     @total_task = @workflows.count
     @total_completed_task = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: true}).count
 
-    @remaining_invoices = @total_task - @total_completed_task - 1
+    # check using max, show maximum value. use square baracket [] for value
+    @remaining_invoices = [@total_task - @total_completed_task - 1, 0].max
 
     @current_position = @workflows.pluck('id').index(@workflow.id)+1
   end

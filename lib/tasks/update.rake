@@ -18,4 +18,12 @@ namespace :update do
       end
     end
   end
+
+  desc "Rename value of trackable_type from Activation to Event"
+  task activation_to_event: :environment do
+    activation_activities = PublicActivity::Activity.where(trackable_type: "Activation")
+    activation_activities.each do |activity|
+      activity.update_column(:trackable_type, "Event")
+    end
+  end
 end

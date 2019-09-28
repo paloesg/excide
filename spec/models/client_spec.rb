@@ -6,5 +6,5 @@ RSpec.describe Client, type: :model do
   it { should belong_to(:company) }
   it { should belong_to(:user) }
   it { should have_many(:workflows) }
-  it { should have_many(:activations) }
+  it { should have_many(:events) }
 end

@@ -8,8 +8,8 @@
 .row
   .col-xs-12.col-sm-6.col-md-3
     .form-group
-      = f.label :activation
-      = f.collection_select :activation_id, @activations, :id, :name, {include_blank: true}, {class: 'selectize', disabled: 'disabled'}
+      = f.label :event
+      = f.collection_select :event_id, @events, :id, :name, {include_blank: true}, {class: 'selectize', disabled: 'disabled'}
   .col-xs-12.col-sm-6.col-md-3
     .form-group
       = f.label :allocation_date

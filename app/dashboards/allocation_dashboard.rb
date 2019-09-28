@@ -9,7 +9,7 @@ class AllocationDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     user: Field::BelongsTo,
-    activation: Field::BelongsTo,
+    event: Field::BelongsTo,
     id: Field::Number,
     allocation_date: Field::DateTime,
     start_time: Field::Time,
@@ -28,7 +28,7 @@ class AllocationDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :user,
-    :activation,
+    :event,
     :id,
     :allocation_date,
   ].freeze
@@ -37,7 +37,7 @@ class AllocationDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :user,
-    :activation,
+    :event,
     :id,
     :allocation_date,
     :start_time,
@@ -54,7 +54,7 @@ class AllocationDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :user,
-    :activation,
+    :event,
     :allocation_date,
     :start_time,
     :end_time,

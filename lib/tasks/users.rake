@@ -67,4 +67,37 @@ namespace :users do
     target_user.destroy!
     puts "#{destroyed_user_name} successfully deleted."
   end
+
+  desc "Remap user roles in conductor"
+  task remap_roles_in_conductor: :environment do
+    # Change users role contractor_in_charge to consultant
+    contractor_in_charge = Role.where(name: "contractor_in_charge")
+    contractor_in_charge.each do |role|
+      existing_role = Role.find_by(name: "consultant", resource_id: role.resource.id)
+      role.tasks.update_all(role_id: existing_role.id) if existing_role
+      role.users.each do |user|
+        user.add_role :consultant, role.resource
+        user.remove_role role.name, role.resource
+      end
+    end
+
+    # Change users role contractor to associate
+    contractor = Role.where(name: "contractor")
+    contractor.each do |role|
+      existing_role = Role.find_by(name: "associate", resource_id: role.resource.id)
+      role.tasks.update_all(role_id: existing_role.id) if existing_role
+      role.users.each do |user|
+        user.add_role :associate, role.resource
+        user.remove_role role.name, role.resource
+      end
+    end
+
+    # Change users role event_creator/event_owner/manpower_allocator to stafer
+    creator_owner_manpower = Role.where(name: ["event_creator", "event_owner", "manpower_allocator", "Manpower Allocator"])
+    creator_owner_manpower.each do |role|
+      role.users.each do |user|
+        user.add_role :staffer, role.resource
+      end
+    end
+  end
 end
