@@ -1,0 +1,55 @@
+.float-right
+  .fa.fa-user aria-hidden='true'
+  span#allocated_users_length
+p
+  strong Client:
+  br
+  span#client_name
+p
+  strong Remarks:
+  br
+  span#remarks
+p
+  strong Event type:
+  br
+  span#event_type_popover
+p
+  strong Staffer:
+  br
+  span#staffer
+p
+  strong Project consultant:
+  br
+  span#project_consultant
+p
+  strong Associate:
+  br
+  span#associate
+p
+  strong Location:
+  br
+  span#location
+/ p
+/   strong Address line 1:
+/   br
+/   span#address_attributes_line_1
+/ p
+/   strong Address line 2:
+/   br
+/   span#address_attributes_line_2
+/ p
+/   strong Postal code:
+/   br
+/   span#address_attributes_postal_code
+p
+  strong Start time:
+  br
+  span#start_time
+p
+  strong End time:
+  br
+  span#end_time
+- unless (current_user.has_role? :associate, :any) or (current_page? controller: 'events', action: 'index')
+  .btn-toolbar
+    a.btn.btn-primary.btn-sm.mr-1#edit_event href="#" Edit event
+    a.btn.btn-primary.btn-sm#edit_allocations href="#" Edit allocations

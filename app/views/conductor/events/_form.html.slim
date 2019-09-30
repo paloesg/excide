@@ -1,0 +1,33 @@
+- if @event.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@event.errors.count, "error")} prohibited this event from being saved:"
+    ul
+      - @event.errors.full_messages.each do |message|
+        li = message
+.row
+  .col-sm-6
+    .form-group
+      = f.label :client_id
+      = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, class: 'selectize'
+    .form-group
+      = f.label :location
+      = f.text_field :location, class: 'form-control'
+    .form-group
+      = f.label :start_time
+      = f.text_field :start_time, class: 'form-control datetimepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
+    .form-group
+      = f.label :end_time
+      = f.text_field :end_time, class: 'form-control datetimepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker1', 'data-target': '#datetimepicker1'
+  .col-sm-6
+    .form-group
+      = f.label :event_type_id
+      = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }, {selected: @event.event_type, prompt: 'Select event type...'}, class: 'selectize'
+    .form-group
+      = f.label :staffer_id
+      = f.select :staffer_id, @staffers.map{ |key, value| [key.full_name, key.id] }, {selected: @event.staffer, prompt: 'Select staff...'}, class: 'selectize'    
+    .form-group
+      = f.label :remarks
+      = f.text_area :remarks, class: 'form-control'
+.row
+  .col-sm-12
+    = f.submit 'Save Event', class: 'btn btn-primary'
