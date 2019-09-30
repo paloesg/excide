@@ -1,0 +1,13 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/conductor" Dashboard
+      li.breadcrumb-item
+        a href="/symphony/company" #{@company.name}
+      li.breadcrumb-item.active Event type
+    h1 New event type
+.row
+  .col-sm-12
+    = form_for @event_type, url: conductor_event_types_path do |f|
+      = render 'form', f: f

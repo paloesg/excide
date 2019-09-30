@@ -6,8 +6,8 @@ $(document).on("turbolinks:load", function() {
     },
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
-  
-  if ($('#new-activation.d-none')[0] == undefined) {
+
+  if ($('#new-event.d-none')[0] == undefined) {
     $('select.selectize').selectize({
       onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
     });
@@ -22,14 +22,14 @@ $(document).on("turbolinks:load", function() {
   });
 
   $('select.allocation-users').selectize({
-    placeholder: "Choose user allocation",
+    placeholder: "Choose associates",
     plugins: ['remove_button'],
     allowEmptyOption: true,
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
-  $('select.activation-type').selectize({
-    placeholder: "Choose activation type",
+  $('select.event-type').selectize({
+    placeholder: "Choose event type",
     plugins: ['remove_button'],
     allowEmptyOption: true,
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
@@ -38,13 +38,13 @@ $(document).on("turbolinks:load", function() {
   $('.conductor-filter-button').click(function (e) {
     var project_client_selectize = $('select.project-clients').selectize();
     var allocation_user_selectize = $('select.allocation-users').selectize();
-    var activation_type_selectize = $('select.activation-type').selectize();
+    var event_type_selectize = $('select.event-type').selectize();
 
     var projectClientData = (project_client_selectize[0].selectize).getValue();
     var allocationUserData = (allocation_user_selectize[0].selectize).getValue();
-    var activationTypeData = (activation_type_selectize[0].selectize).getValue();
-    
-    Turbolinks.visit('//' + location.host + location.pathname + '?activation_types=' + activationTypeData +'&project_clients='+ projectClientData +'&allocation_users='+ allocationUserData);
+    var eventTypeData = (event_type_selectize[0].selectize).getValue();
+
+    Turbolinks.visit('//' + location.host + location.pathname + '?event_types=' + eventTypeData +'&project_clients='+ projectClientData +'&allocation_users='+ allocationUserData);
   });
 
 })
