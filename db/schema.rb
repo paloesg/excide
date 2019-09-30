@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_19_134820) do
+ActiveRecord::Schema.define(version: 2019_09_30_054747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -55,6 +55,8 @@ ActiveRecord::Schema.define(version: 2019_09_19_134820) do
     t.integer "allocation_type"
     t.boolean "last_minute", default: false
     t.integer "rate_cents"
+    t.bigint "availability_id"
+    t.index ["availability_id"], name: "index_allocations_on_availability_id"
     t.index ["event_id"], name: "index_allocations_on_event_id"
     t.index ["user_id"], name: "index_allocations_on_user_id"
   end
@@ -506,6 +508,7 @@ ActiveRecord::Schema.define(version: 2019_09_19_134820) do
     t.index ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id"
   end
 
+  add_foreign_key "allocations", "availabilities"
   add_foreign_key "allocations", "events"
   add_foreign_key "allocations", "users"
   add_foreign_key "availabilities", "users"
