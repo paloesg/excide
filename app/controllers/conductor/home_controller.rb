@@ -21,7 +21,7 @@ class Conductor::HomeController < ApplicationController
     params[:project_clients] = params[:project_clients].split(',') unless params[:project_clients].blank?
 
     #filter event using scope setup in model
-    @events = Event.company(@company.id)
+    @events = Event.includes(:address, :client, :staffer, :event_type, [allocations: :user]).company(@company.id)
     @events = @events.start_time(date_from..date_to)
     @events = @events.event(params[:event_types]) unless params[:event_types].blank?
     @events = @events.allocation(params[:allocation_users]) unless params[:allocation_users].blank?
@@ -31,7 +31,7 @@ class Conductor::HomeController < ApplicationController
     @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :associate, :any
     @upcoming_events = @events.where("events.end_time > ?", Time.current)
 
-    @activities = PublicActivity::Activity.where(recipient_type: "Event").order("created_at desc")
+    @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Event").order("created_at desc")
 
     @event = Event.new
     @event.build_address

@@ -35,7 +35,21 @@ $(document).on("turbolinks:load", function(){
       sideBySide: true
     });
     $('.datetimepicker').val($(this).attr('td-date'));
+    $('.datetoday').val($(this).attr('td-date'));
     $($(this).data("bs.popover").tip).find('select').selectize();
+
+    timepickers = $('.timepickers');
+    // get last of .timepickers
+    timepickers.eq(timepickers.length - 1).attr('id', 'newtimepicker')
+    timepickers.eq(timepickers.length - 1).attr('data-target', "#" + 'newtimepicker')
+    // get second from last of .timepickers
+    timepickers.eq(timepickers.length - 2).attr('id', 'newtimepicker1')
+    timepickers.eq(timepickers.length - 2).attr('data-target', "#" + 'newtimepicker1')
+    timepickers.datetimepicker({
+      format: "HH:mm",
+      stepping: 15,
+      sideBySide: true
+    });
   }).on("show.bs.popover", function () {
     $('.popover').popover('hide');
     $($(this).data("bs.popover").tip).css({ "max-width": "500px" })
@@ -59,12 +73,24 @@ $(document).on("turbolinks:load", function(){
     $('#client_name').text($(this).attr('event-client'));
     $('#event_type_popover').text($(this).attr('event-type'));
     $('#staffer').text($(this).attr('event-staffer'));
+
+    get_project_consultant = JSON.parse($(this).attr('event-project_consultant'))
+    $('#project_consultant').empty();
+    $.each( get_project_consultant, function( key, value ) { 
+      var isLastElement = key == get_project_consultant.length -1;   
+      $('#project_consultant').append( value.first_name+" "+ value.last_name + (get_project_consultant.length > 1 && !isLastElement ? ", " : "") );
+    });
+
+    get_associate = JSON.parse($(this).attr('event-associate'))
+    $('#associate').empty();
+    $.each( get_associate, function( key, value ) {    
+      var isLastElement = key == get_associate.length -1;
+      
+      $('#associate').append( value.first_name+" "+ value.last_name + (get_associate.length > 1 && !isLastElement ? ", " : ""));
+    });
+    
     $('#location').text(get_event['location']);
-    if (get_event_address) {
-      $('#address_attributes_line_1').text(get_event_address['line_1']);
-      $('#address_attributes_line_2').text(get_event_address['line_2']);
-      $('#address_attributes_postal_code').text(get_event_address['postal_code']);
-    }
+    
     $('#start_time').text(moment(start_time).format('HH:mm'));
     $('#end_time').text(moment(end_time).format('HH:mm'));
     $('#remarks').text(get_event['remarks']);

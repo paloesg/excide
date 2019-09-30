@@ -17,3 +17,11 @@ span#allocated_users_length {
     overflow-y: auto;
   }
 }
+
+input[type=select-multiple]{
+  width: auto!important;
+}
+
+input[type=select-one]{
+  width: auto!important;
+}

@@ -38,6 +38,16 @@ class Event < ApplicationRecord
     NotificationMailer.edit_event(self, self.staffer).deliver_later if self.staffer.present?
   end
 
+  def project_consultants
+    user_id = self.allocations.where(allocation_type: 'consultant').pluck('user_id')
+    User.where(id: user_id)
+  end
+
+  def associates
+    user_id = self.allocations.where(allocation_type: 'associate').pluck('user_id')
+    User.where(id: user_id)
+  end
+
   private
 
   def create_event_notification
