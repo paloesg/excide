@@ -33,10 +33,10 @@ $(document).on("turbolinks:load", function() {
   });
 
   $(".datepicker").datetimepicker({
-    format: "YYYY-MM-DD",
+    format: "YYYY-MM-DD"
   });
 
-  $('.timepicker').datetimepicker({
+  $('.timepickers').datetimepicker({
     format: 'HH:mm',
     stepping: 15
   });
