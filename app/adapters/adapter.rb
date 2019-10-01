@@ -2,7 +2,16 @@ module Adapter
   class Xero
     def initialize(company)
       # Sleep for 2 seconds every time the rate limit is exceeded.
-      @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "| echo \"#{ENV["XERO_PRIVATE_KEY"]}\" ", :rate_limit_sleep => 2)
+      @xero_client = Xeroizer::PartnerApplication.new(
+        ENV["XERO_CONSUMER_KEY"],
+        ENV["XERO_CONSUMER_SECRET"],
+        "| echo \"#{ENV["XERO_PRIVATE_KEY"]}\" ",
+        :rate_limit_sleep => 2,
+        before_request: ->(request) {
+          request.headers.merge! "User-Agent" => ENV['XERO_CONSUMER_KEY']
+        }
+      )
+
       #check for token expiring and renew it. After renew, update company's attribute
       if company.expires_at.present? and (Time.at(company.expires_at) < Time.now)
         @xero_client.renew_access_token(company.access_key, company.access_secret, company.session_handle)
