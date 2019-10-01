@@ -61,6 +61,8 @@
             = link_to "Notifications", notification_settings_symphony_user_path(current_user), class: 'dropdown-item'
             .dropdown-divider
             = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'dropdown-item'}
-.nav-scroller.bg-white.box-shadow
+.bg-white.box-shadow
   nav.nav.nav-underline
-    .nav-link = @xero.get_organisation.name
+    .nav-link
+      ' Currently connected to Xero for:
+      = current_user.company.xero_organisation_name

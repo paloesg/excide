@@ -14,7 +14,7 @@ class XeroSessionsController < ApplicationController
       company = current_user.company
       # begin
       @xero_client.authorize_from_request(session[:request_token], session[:request_secret], oauth_verifier: params[:oauth_verifier])
-      company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle)
+      company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle, xero_organisation_name: @xero_client.Organisation.first.name)
       session.delete(:request_token)
       session.delete(:request_secret)
       redirect_to symphony_root_path, notice: "User signed in and connected to Xero."
