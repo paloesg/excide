@@ -14,7 +14,9 @@ namespace :scheduler do
   task :deadline_send_summary_email => :environment do
     @workflows = Workflow.where(deadline: (Date.current - 1.day).beginning_of_day)
     @workflows.each do |workflow|
-      WorkflowMailer.email_summary(workflow, workflow.user, workflow.company).deliver_later
+      if workflow.batch.blank?
+        WorkflowMailer.email_summary(workflow, workflow.user, workflow.company).deliver_later
+      end
     end
   end
 
