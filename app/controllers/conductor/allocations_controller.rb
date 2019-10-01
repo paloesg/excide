@@ -76,7 +76,7 @@ class Conductor::AllocationsController < ApplicationController
     end
 
     respond_to do |format|
-      if @availability and @availability.toggle!(:assigned) and @allocation.update(allocation_params)
+      if @availability and @allocation.update(allocation_params)
         format.html { redirect_to conductor_allocations_path, notice: 'Allocation was successfully updated.' }
         format.json { render :show, status: :ok, location: @allocation }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
