@@ -29,11 +29,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_user
-    # Overwrite devise current_user function to eager load roles for current user
-    @current_user ||= super && User.where(id: @current_user.id).first
-  end
-
   private
 
   def user_not_authorized(exception)
@@ -44,7 +39,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_xero
-    @xero = Xero.new(current_user.company)
+    @xero = Xero.new(current_user.company) if current_user
   end
 
   def xero_login
