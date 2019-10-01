@@ -1,5 +1,6 @@
 class Availability < ApplicationRecord
   belongs_to :user
+  has_many :allocations
 
   validates :user, :available_date, :start_time, :end_time, presence: true
   validate :end_must_be_after_start

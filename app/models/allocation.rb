@@ -3,6 +3,7 @@ require 'csv'
 class Allocation < ApplicationRecord
   belongs_to :user
   belongs_to :event
+  belongs_to :availability
 
   enum allocation_type: [:associate, :consultant]
 
