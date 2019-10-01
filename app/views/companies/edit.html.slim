@@ -1,14 +1,15 @@
-.row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        a href="#" #{@company.name}
-      li.breadcrumb-item.active Update Details
-    h1 Update Company Details
-.row
-  .col-md-12
-    = form_for(@company, url: {action: "update"}) do |f|
-      = render 'form', f: f
-      = f.submit "Save details", class: 'btn btn-primary'
+.container
+  .row
+    .col-sm-12
+      ol.breadcrumb
+        li.breadcrumb-item.ml-auto
+          a href="/symphony" Symphony
+        li.breadcrumb-item
+          a href="#" #{@company.name}
+        li.breadcrumb-item.active Update Details
+      h1 Update Company Details
+  .row
+    .col-md-12
+      = form_for(@company, url: {action: "update"}) do |f|
+        = render 'form', f: f
+        = f.submit "Save details", class: 'btn btn-primary'
