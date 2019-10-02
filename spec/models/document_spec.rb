@@ -11,6 +11,4 @@ RSpec.describe Document, type: :model do
   it { should belong_to(:document_template) }
   it { should belong_to(:user) }
   it { should belong_to(:workflow_action) }
-
-  it { should validate_uniqueness_of(:file_url) }
 end
