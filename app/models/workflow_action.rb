@@ -10,7 +10,6 @@ class WorkflowAction < ApplicationRecord
 
   after_save :clear_reminders, if: :ordered_workflow_task_completed?
   after_save :trigger_next_task, if: :ordered_workflow_task_completed?
-  after_save :send_email_summary , if: :check_all_actions_completed?
   after_save :workflow_completed , if: :check_all_actions_completed?
 
   belongs_to :task
@@ -67,12 +66,17 @@ class WorkflowAction < ApplicationRecord
     WorkflowAction.from("(#{assigned_actions(user).to_sql} UNION #{role_actions(user.roles).to_sql}) AS workflow_actions")
   end
 
-  def send_email_summary
+  def workflow_completed
+    self.workflow.update_column('completed', true)
+    batch_completed
     WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later
   end
 
-  def workflow_completed
-    self.workflow.update_column('completed', true)
+  def batch_completed
+    workflows = self.workflow.batch.workflows.where(completed: false)
+    if workflows.blank?
+      self.workflow.batch.update_column(:completed, true)
+    end
   end
 
   # Check if workflow belongs to a batch, get all the actions by task grouping for the batch and check that all actions are completed
@@ -149,6 +153,11 @@ class WorkflowAction < ApplicationRecord
 
   #this callback checks that all actions in the workflow are completed before sending out the email summary
   def check_all_actions_completed?
-    self.workflow.workflow_actions.all? {|action| action.completed? }
+    # Check length of workflow actions, to prevent workflow to be completed when creation of workflow actions (if first task completed)
+    if self.workflow.workflow_actions.length == self.workflow.template.sections.joins(:tasks).length
+      self.workflow.workflow_actions.all? {|action| action.completed? }
+    else
+      false
+    end
   end
 end

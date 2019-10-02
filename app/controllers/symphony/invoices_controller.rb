@@ -8,6 +8,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
+  before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
 
   after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice]
@@ -195,7 +196,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def next_invoice
     next_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).first
-    if next_wf.blank? 
+    if next_wf.blank?
       next_wf = @workflow.batch.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).first
     end
     if next_wf.present?
@@ -207,7 +208,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def prev_invoice
     prev_wf = @workflow.batch.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).last
-    if prev_wf.blank? 
+    if prev_wf.blank?
       prev_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).last
     end
     if prev_wf.present?
@@ -237,7 +238,8 @@ class Symphony::InvoicesController < ApplicationController
     @total_task = @workflows.count
     @total_completed_task = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: true}).count
 
-    @remaining_invoices = @total_task - @total_completed_task - 1
+    # check using max, show maximum value. use square baracket [] for value
+    @remaining_invoices = [@total_task - @total_completed_task - 1, 0].max
 
     @current_position = @workflows.pluck('id').index(@workflow.id)+1
   end
@@ -255,8 +257,11 @@ class Symphony::InvoicesController < ApplicationController
     end
   end
 
+  def set_last_workflow_action
+    @last_workflow_action = @workflow.workflow_actions.includes(:task).where(completed: false).order("tasks.position ASC").first&.id
+  end
+
   def get_xero_details
-    @xero = Xero.new(current_user.company)
     @clients                = @xero.get_contacts
     # Combine account codes and account names as a string
     @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing
@@ -288,10 +293,10 @@ class Symphony::InvoicesController < ApplicationController
     if params[:action] == "update"
       incomplete_workflows = incomplete_workflows.includes(:invoice).where.not(invoices: {id: nil})
     end
-    
+
     if incomplete_workflows.count > 0
       next_wf = incomplete_workflows.where('workflows.created_at > ?', workflow.created_at).first
-      if next_wf.blank? 
+      if next_wf.blank?
         next_wf = incomplete_workflows.where('workflows.created_at < ?', workflow.created_at).first
       end
 
@@ -305,10 +310,10 @@ class Symphony::InvoicesController < ApplicationController
         end
       else
         redirect_to symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id, notice: "#{workflow_action.task.task_type.humanize}task has been saved")
-      end      
+      end
     else
       redirect_to symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id, notice: "#{workflow_action.task.task_type.humanize}task has been completed")
-    end    
+    end
   end
 
   def update_workflow_action_completed(workflow_action_id)

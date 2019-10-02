@@ -1,0 +1,21 @@
+p#notice = notice
+
+p
+  strong Event type:
+  = @event.event_type.name
+p
+  strong Start time:
+  = @event.start_time
+p
+  strong End time:
+  = @event.end_time
+p
+  strong Remarks:
+  = @event.remarks
+p
+  strong Location:
+  = @event.location
+
+=> link_to 'Edit', edit_conductor_event_path(@event)
+'|
+=< link_to 'Back', conductor_events_path

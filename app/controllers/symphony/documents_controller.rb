@@ -42,8 +42,19 @@ class Symphony::DocumentsController < ApplicationController
     respond_to do |format|
       if @generate_document.success?
         if params[:document_type] == 'batch-uploads'
+          document = @generate_document.document
+          batch = document.workflow.batch
+          first_task = batch.template&.sections.first.tasks.first
+
+          # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable", for others task type will go to batch show page
+          if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type
+            link = new_symphony_invoice_path(workflow_name: document.workflow.template.slug, workflow_id: batch.workflows.order(created_at: :asc).first, workflow_action_id: batch.workflows.order(created_at: :asc).first.workflow_actions.first.id, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
+          else
+            link = symphony_batch_path(batch_template_name: document.workflow.template.slug, id: document.workflow.batch.id)
+          end
+
            #return output in json
-          output = { :status => "ok", :message => "batch documents created", :document => @generate_document.document.id, :batch => @generate_document.document.workflow.batch.id, :template => @generate_document.document.workflow.template.slug}
+          output = { link_to: link, status: "ok", message: "batch documents created", document: document.id, batch: batch.id, template: document.workflow.template.slug }
           flash[:notice] = "New batch of #{Batch.find(params[:batch_id]).workflows.count} documents successfully created!"
           format.json  { render :json => output }
         elsif params[:upload_type] == "batch_upload"

@@ -7,43 +7,51 @@
         a href="#" Company
       li.breadcrumb-item.active Conductor
     h1.border-bottom Conductor
-    .col-sm-3.float-right
-      = select_tag('activation_type', options_for_select(ActivationType.all.map {|k,v| [k.name, k.slug] }, selected: params[:activation_type]), include_blank: 'All', class: 'selectize-activation-type')
+    .row
+      .col-md-12.m-2
+        .col-sm-3.float-right
+          = button_tag 'Filter', type: 'button', class: 'btn btn-primary conductor-filter-button'
+        .col-sm-3.float-right
+          = select_tag('event_type', options_for_select(EventType.all.map {|k,v| [k.name, k.slug]}, selected: params[:event_types]), class: 'selectize-event-type event-type', multiple: true)
+        .col-sm-3.float-right
+          = select_tag('project_client', options_for_select(@clients.map {|k,v| [k.name, k.id] }, selected: params[:project_clients]), class: 'selectize-event-type project-clients', multiple: true)
+        .col-sm-3.float-right
+          = select_tag('allocation_user', options_for_select(User.all.map {|k,v| [k.first_name, k.id] }, selected: params[:allocation_users]), class: 'selectize-event-type allocation-users', multiple: true)
 .row
   .col-sm-12.mb-3
-    = month_calendar events: @activations do |date, activations|
+    = month_calendar events: @events do |date, events|
       p = date.day
-      - activations.each do |activation|
+      - events.each do |event|
         .row
-            .col-sm-12.activation activation-data="#{activation.to_json}" activation-address="#{activation.address.to_json}" activation-client="#{activation.client&.name}" activation-event_owner="#{activation.event_owner&.full_name}" get_allocated_users_length="#{activation.allocations.map(&:user).reject(&:blank?).length}" activation-type="#{activation.activation_type.name}" title="Activation Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>" data-placement="auto"
-              i.fa.fa-circle.mr-1 style="color: #{activation.activation_type.colour};"
-              = activation.start_time.strftime('%H:%M') + '–' + activation.end_time.strftime('%H:%M ')
-              strong = activation.name
+          .col-sm-12.event event-data="#{event.to_json}" event-address="#{event.address.to_json}" event-client="#{event.client&.name}" event-staffer="#{event.staffer&.full_name}" get_allocated_users_length="#{event.allocations.map(&:user).reject(&:blank?).length}" event-type="#{event.event_type.name}" event-associate="#{event.associates.to_json}" event-project_consultant="#{event.project_consultants.to_json}" title="Event Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>" data-placement="auto"
+            i.fa.fa-circle.mr-1 style="color: #{event.event_type.colour};"
+            = event.start_time.strftime('%H:%M') + '–' + event.end_time.strftime('%H:%M ')
+            strong = event.name
 .row
   .col-sm-6.col-xs-12
     .card
-      h6.card-header Upcoming Activations
-      - if @upcoming_activations.present?
+      h6.card-header Upcoming Events
+      - if @upcoming_events.present?
         table.table
           thead
             tr
-              th Activation Type
+              th Event Type
               th Start Time
               th End Time
               th Location
           tbody
-            - @upcoming_activations.each do |activation|
+            - @upcoming_events.each do |event|
               tr
-                td = activation.activation_type.name
-                td = activation.start_time.strftime('%e %b %k:%M')
-                td = activation.end_time.strftime('%e %b %k:%M')
-                td = activation.location
+                td = event.event_type.name
+                td = event.start_time.strftime('%e %b %k:%M')
+                td = event.end_time.strftime('%e %b %k:%M')
+                td = event.location
       - else
-        .card-body No upcoming activations for this month.
-  - unless current_user.has_role? :contractor, :any
+        .card-body No upcoming events for this month.
+  - unless current_user.has_role? :associate, :any
     .col-sm-6.col-xs-12
       .card
-        h6.card-header Activation History
+        h6.card-header Event History
         table.table
           thead
             tr
@@ -55,11 +63,11 @@
               tr = render_activity activity
         - if @activities.count > 10
           .card-footer
-            = link_to "View more...", activities_conductor_activations_path, class: 'btn btn-sm btn-outline-secondary float-right'
+            = link_to "View more...", activities_conductor_events_path, class: 'btn btn-sm btn-outline-secondary float-right'
 
-#new-activation.d-none
-  = form_for @activation, remote: true, url: conductor_activations_path do |f|
+#new-event.d-none
+  = form_for @event, remote: true, url: conductor_events_path do |f|
     .alert.alert-danger#popover_validation style="display:none;"
-    = render 'conductor/activations/form', f: f
-#activation-details.d-none
-  = render 'activation_details'
+    = render 'event_form', f: f
+#event-details.d-none
+  = render 'event_details'

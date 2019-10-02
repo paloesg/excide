@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  include Adapter
   include Pundit
   include PublicActivity::StoreController
 
@@ -12,6 +13,7 @@ class ApplicationController < ActionController::Base
   #Error occurs for eg, the tax rate doesn't match with account code. Xero returns an exception in XML, hence the need to parse it truncate it in the xero_error_api_exception method
   rescue_from Xeroizer::ApiException, with: :xero_error_api_exception
 
+  before_action :get_xero
   after_action :store_location
 
   def store_location
@@ -27,11 +29,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_user
-    # Overwrite devise current_user function to eager load roles for current user
-    @current_user ||= super && User.includes(roles: [:resource]).where(id: @current_user.id).first
-  end
-
   private
 
   def user_not_authorized(exception)
@@ -39,6 +36,10 @@ class ApplicationController < ActionController::Base
 
     flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
     redirect_to symphony_root_path
+  end
+
+  def get_xero
+    @xero = Xero.new(current_user.company) if current_user
   end
 
   def xero_login

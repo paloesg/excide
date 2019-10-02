@@ -49,7 +49,7 @@
                 - if wf.invoice.blank?
                   i.ti-receipt.icon.mr-3.text-center.medium-icon.gray-icon
                 - else
-                  = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id), target: "_blank"
+                  = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id)
                     i.ti-receipt.icon.mr-3.medium-icon
               - section.tasks.includes(:role).order(position: :asc).each do |task|
                 td class="text-center #{'important-task' if task.important}"

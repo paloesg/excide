@@ -10,36 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_06_074806) do
+ActiveRecord::Schema.define(version: 2019_10_01_081722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
-
-  create_table "activation_types", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
-    t.string "colour"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "activations", id: :serial, force: :cascade do |t|
-    t.integer "activation_type_id"
-    t.datetime "start_time"
-    t.datetime "end_time"
-    t.text "remarks"
-    t.string "location"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "company_id"
-    t.integer "event_owner_id"
-    t.integer "client_id"
-    t.index ["client_id"], name: "index_activations_on_client_id"
-    t.index ["company_id"], name: "index_activations_on_company_id"
-    t.index ["event_owner_id"], name: "index_activations_on_event_owner_id"
-  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -91,7 +67,7 @@ ActiveRecord::Schema.define(version: 2019_09_06_074806) do
 
   create_table "allocations", id: :serial, force: :cascade do |t|
     t.integer "user_id"
-    t.integer "activation_id"
+    t.integer "event_id"
     t.date "allocation_date"
     t.time "start_time"
     t.time "end_time"
@@ -100,7 +76,7 @@ ActiveRecord::Schema.define(version: 2019_09_06_074806) do
     t.integer "allocation_type"
     t.boolean "last_minute", default: false
     t.integer "rate_cents"
-    t.index ["activation_id"], name: "index_allocations_on_activation_id"
+    t.index ["event_id"], name: "index_allocations_on_event_id"
     t.index ["user_id"], name: "index_allocations_on_user_id"
   end
 
@@ -185,6 +161,7 @@ ActiveRecord::Schema.define(version: 2019_09_06_074806) do
     t.string "access_secret"
     t.integer "expires_at"
     t.boolean "connect_xero", default: true
+    t.string "xero_organisation_name"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -230,6 +207,30 @@ ActiveRecord::Schema.define(version: 2019_09_06_074806) do
     t.datetime "updated_at", null: false
     t.string "source"
     t.boolean "responded", default: false
+  end
+
+  create_table "event_types", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "colour"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "events", id: :serial, force: :cascade do |t|
+    t.integer "event_type_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.text "remarks"
+    t.string "location"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "company_id"
+    t.integer "staffer_id"
+    t.integer "client_id"
+    t.index ["client_id"], name: "index_events_on_client_id"
+    t.index ["company_id"], name: "index_events_on_company_id"
+    t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -528,11 +529,8 @@ ActiveRecord::Schema.define(version: 2019_09_06_074806) do
     t.index ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id"
   end
 
-  add_foreign_key "activations", "clients"
-  add_foreign_key "activations", "companies"
-  add_foreign_key "activations", "users", column: "event_owner_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "allocations", "activations"
+  add_foreign_key "allocations", "events"
   add_foreign_key "allocations", "users"
   add_foreign_key "availabilities", "users"
   add_foreign_key "batches", "companies"
@@ -550,6 +548,9 @@ ActiveRecord::Schema.define(version: 2019_09_06_074806) do
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
+  add_foreign_key "events", "clients"
+  add_foreign_key "events", "companies"
+  add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"

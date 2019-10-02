@@ -12,7 +12,7 @@ RSpec.describe Company, type: :model do
   it { should have_many(:recurring_workflows) }
   it { should have_many(:workflow_actions) }
   it { should have_many(:clients) }
-  it { should have_many(:activations) }
+  it { should have_many(:events) }
   it { should have_many(:reminders) }
   it { should have_many(:batches) }
   it { should have_one(:address) }

@@ -14,7 +14,7 @@ class Company < ApplicationRecord
   has_many :recurring_workflows
   has_many :workflow_actions
   has_many :clients
-  has_many :activations
+  has_many :events
   has_many :reminders, dependent: :destroy
   has_many :batches
   has_many :invoices
@@ -32,6 +32,6 @@ class Company < ApplicationRecord
 
   # Get all other companies that user has roles for excpet the current company that user belongs to
   def self.assigned_companies(user)
-    user.roles.map(&:resource).compact.uniq.reject{ |c| c == user.company }
+    user.roles.includes(:resource).map(&:resource).compact.uniq.reject{ |c| c == user.company }
   end
 end

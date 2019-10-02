@@ -5,7 +5,7 @@
         a href="/conductor" Dashboard
       li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
-      li.breadcrumb-item.active Manpower
+      li.breadcrumb-item.active Staffer
     h1
       | #{@user.full_name}'s allocations
 .row
@@ -14,7 +14,7 @@
       thead
         tr
           th User
-          th Activation
+          th Event
           th Allocation Date
           th Start Time
           th End Time
@@ -23,7 +23,7 @@
       	- @user.allocations.each do |allocation|
       		tr
             td = @user.full_name
-            td = allocation.activation.id
+            td = allocation.event.id
             td = allocation.allocation_date
             td = allocation.start_time.strftime("%I:%M%p")
             td = allocation.end_time.strftime("%I:%M%p")
