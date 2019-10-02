@@ -37,7 +37,7 @@ class Document < ApplicationRecord
   end
 
   def convert_to_image
-    if File.extname(self.file_url) == ".pdf"
+    if File.extname(self.file_url).to_s == ".pdf"
       result = ImageProcessing::MiniMagick.source("https:" + self.file_url).convert("png").call
       self.converted_image.attach(io: result, filename: result.path.split('/').last, content_type: "image/png")
       self.pdf_converted_image = self.converted_image&.service_url
