@@ -5,7 +5,7 @@ class Availability < ApplicationRecord
   validates :user, :available_date, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
 
-  def assign_status(allocation)
+  def assign_status(_allocation)
     self.update_column(:assigned, self.allocations.present?)
   end
 
