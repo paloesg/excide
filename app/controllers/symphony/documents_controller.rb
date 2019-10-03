@@ -45,12 +45,13 @@ class Symphony::DocumentsController < ApplicationController
           document = @generate_document.document
           batch = document.workflow.batch
           first_task = batch.template&.sections.first.tasks.first
+          first_workflow = batch.workflows.order(created_at: :asc).first
 
           # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable", for others task type will go to batch show page
-          if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type
-            link = new_symphony_invoice_path(workflow_name: document.workflow.template.slug, workflow_id: batch.workflows.order(created_at: :asc).first, workflow_action_id: batch.workflows.order(created_at: :asc).first.workflow_actions.first.id, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
+          if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type or first_workflow.workflow_actions.present?
+            link = new_symphony_invoice_path(workflow_name: document.workflow.template.slug, workflow_id: first_workflow, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
           else
-            link = symphony_batch_path(batch_template_name: document.workflow.template.slug, id: document.workflow.batch.id)
+            link = symphony_batch_path(batch_template_name: document.workflow.template.slug, id: document.workflow.batch)
           end
 
            #return output in json
