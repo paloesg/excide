@@ -21,7 +21,9 @@ $(document).ready(function(){
     });
   }
 
-  $.post("/symphony/batches/load_batch", {id: "3d3f8325-d1ec-4391-b90c-31c37fba8be2"} ).done(function(data) {
-    console.log(data)
-  });
+  if ($("#table-batch").length) {
+    $.post("/symphony/batches/load_batch", {id: "3d3f8325-d1ec-4391-b90c-31c37fba8be2"} ).done(function(data) {
+      console.log(data)
+    });
+  }
 });
