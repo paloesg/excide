@@ -6,7 +6,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index, :create, :load_batch]
+  after_action :verify_authorized, except: [:index, :create, :load_batches]
   after_action :verify_policy_scoped, only: :load_batch
 
   def index
@@ -44,7 +44,7 @@ class Symphony::BatchesController < ApplicationController
     @roles = @current_user.roles.where(resource_id: @current_user.company.id, resource_type: "Company")
   end
 
-  def load_batch
+  def load_batches
     get_batches = policy_scope(Batch).includes(:user, [workflows: :workflow_actions])
     completed_batches = get_batches.where(completed: true)
     if current_user.has_role? :admin, @company

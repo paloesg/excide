@@ -23,7 +23,7 @@ class BatchPolicy < ApplicationPolicy
     update?
   end
 
-  def load_batch?
+  def load_batches?
     user.present?
   end
 

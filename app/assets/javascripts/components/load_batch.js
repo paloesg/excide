@@ -2,7 +2,7 @@ $(document).ready(function(){
   /*global moment*/
   // Check #table-batches element is exist in the page
   if ($("#table-batches").length) {
-    $.post("/symphony/batches/load_batch/", function(data) {}).done(function(data) {
+    $.post("/symphony/batches/load_batches", function(data) {}).done(function(data) {
       $(".batch-loader").remove();
       // Add batch with the details into table batches
       $.each(data["batches"], function(index, batch) {
