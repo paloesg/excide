@@ -3,7 +3,7 @@ class Symphony::BatchesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_batch, only: [:show]
+  before_action :set_batch, only: [:show, :load_batch]
   before_action :set_s3_direct_post, only: [:show, :new]
 
   after_action :verify_authorized, except: [:index, :create, :load_batches]
@@ -42,6 +42,19 @@ class Symphony::BatchesController < ApplicationController
     @sections = @batch.template.sections
     @templates = policy_scope(Template).assigned_templates(current_user)
     @roles = @current_user.roles.where(resource_id: @current_user.company.id, resource_type: "Company")
+  end
+
+  def load_batch
+    authorize @batch
+    @completed_workflow_count = @batch.workflows.where(completed: true).length
+    @current_user = current_user
+    @sections = @batch.template.sections
+    @templates = policy_scope(Template).assigned_templates(current_user)
+    @roles = @current_user.roles.where(resource_id: @current_user.company.id, resource_type: "Company")
+
+    respond_to do |format|
+      format.json { render json: { batch: @batch, completed_workflow_count: @completed_workflow_count, current_user: @current_user, sections: @sections, templates: @templates, roles: @roles } }
+    end
   end
 
   def load_batches
