@@ -26,6 +26,7 @@ $(document).ready(function(){
       console.log(data)
 
       $.each(data["sections"], function(index, section) {
+        // Card sections
         $("#table-batch").append(
           "<div class='card scrollbar mb-3' id='section-"+section["id"]+"'>" +
             "<h5 class='card-header'>" +
@@ -39,13 +40,12 @@ $(document).ready(function(){
                     "<th> Documents </th>" +
                     "<th> Invoices </th>" +
                   "</tr>" +
-                "</thead>" +
+                "</thead><tbody></tbody>" +
               "</table>" +
             "</div>" +
           "</div>"
         );
-      })
-      $.each(data["sections"], function(index, section) {
+        // Task header & popover
         $.each(section["tasks"], function(index, task) {
           $("#section-"+section["id"]+" .card-body > table > thead > tr").append(
             "<th>" +
@@ -61,11 +61,21 @@ $(document).ready(function(){
             "</th>"
           );
         })
+        // Table data of document, invoice & actions
+        $.each(data["batch"]["workflows"], function(index, workflow) {
+          $("#section-"+section["id"]+" .card-body > table > tbody").append(
+            "<tr id='wf_"+workflow["id"]+"'>" +
+              "<td class='documents'>Display Docs</td>" +
+              "<td class='invoice'>Display Invoice</td>" +
+            "</tr>"
+          )
+        })
       })
+
       $("a[data-toggle='append-new-popover']").popover().on('shown.bs.popover', function() {
         var this_popover = $(this).data("bs.popover").tip;
         $(this_popover).css({
-          top: '50px',
+          top: '50px'
         });
       })
     });
