@@ -36,7 +36,7 @@ class Symphony::InvoicesController < ApplicationController
       contact_id = @xero.create_contact(name: @invoice.xero_contact_name)
       @invoice.xero_contact_id = contact_id
       @xero_contact = XeroContact.create(name: @invoice.xero_contact_name, contact_id: contact_id, company: @company)
-      if !@xero_contact.save
+      unless @xero_contact.save
         render 'new'
       end
     end
@@ -236,7 +236,7 @@ class Symphony::InvoicesController < ApplicationController
     # redirect page
     if next_workflow_invoice.present?
       redirect_to symphony_invoice_path(workflow_name: next_workflow_invoice.template.slug, workflow_id: next_workflow_invoice.id, id: next_workflow_invoice.invoice.id)
-    else      
+    else
       redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
     end
   end
@@ -249,7 +249,7 @@ class Symphony::InvoicesController < ApplicationController
     # redirect page
     if prev_workflow_invoice.present?
       redirect_to symphony_invoice_path(workflow_name: prev_workflow_invoice.template.slug, workflow_id: prev_workflow_invoice.id, id: prev_workflow_invoice.invoice.id)
-    else      
+    else
       redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
     end
   end
