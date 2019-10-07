@@ -8,10 +8,11 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
+  before_action :set_show_invoice_navigation, only: [:show, :next_show_invoice, :prev_show_invoice]
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
 
-  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice]
+  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -227,6 +228,32 @@ class Symphony::InvoicesController < ApplicationController
     end
   end
 
+  def next_show_invoice
+    next_workflow_invoice = @workflow_invoices.where('workflows.created_at > ?', @workflow.created_at).order(created_at: :asc).first
+    if next_workflow_invoice.blank?
+      next_workflow_invoice = @workflow_invoices.where('workflows.created_at < ?', @workflow.created_at).order(created_at: :asc).first
+    end
+    # redirect page
+    if next_workflow_invoice.present?
+      redirect_to symphony_invoice_path(workflow_name: next_workflow_invoice.template.slug, workflow_id: next_workflow_invoice.id, id: next_workflow_invoice.invoice.id)
+    else      
+      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+    end
+  end
+
+  def prev_show_invoice
+    prev_workflow_invoice = @workflow_invoices.where('workflows.created_at < ?', @workflow.created_at).order(created_at: :asc).last
+    if prev_workflow_invoice.blank?
+      prev_workflow_invoice = @workflow_invoices.where('workflows.created_at > ?', @workflow.created_at).order(created_at: :asc).last
+    end
+    # redirect page
+    if prev_workflow_invoice.present?
+      redirect_to symphony_invoice_path(workflow_name: prev_workflow_invoice.template.slug, workflow_id: prev_workflow_invoice.id, id: prev_workflow_invoice.invoice.id)
+    else      
+      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+    end
+  end
+
   private
   def set_invoice
     @invoice = Invoice.find(params[:id])
@@ -236,6 +263,13 @@ class Symphony::InvoicesController < ApplicationController
     @workflow = @company.workflows.find(params[:workflow_id])
   end
 
+  def set_show_invoice_navigation
+    workflows = @workflow.batch.workflows.order(created_at: :asc)
+    @workflow_invoices= @workflow.batch.workflows.includes(:invoice).where.not(invoices: {id: nil}).where.not(invoices: {id: @workflow.invoice.id})
+    @total_workflows = workflows.length
+    @current_position = workflows.pluck('id').index(@workflow.id)+1
+  end
+
   def set_workflows_navigation
     @workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
     @workflows = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}}).order(created_at: :asc)
@@ -243,7 +277,8 @@ class Symphony::InvoicesController < ApplicationController
     @total_task = @workflows.count
     @total_completed_task = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: true}).count
 
-    @remaining_invoices = @total_task - @total_completed_task - 1
+    # check using max, show maximum value. use square baracket [] for value
+    @remaining_invoices = [@total_task - @total_completed_task - 1, 0].max
 
     @current_position = @workflows.pluck('id').index(@workflow.id)+1
   end
@@ -266,7 +301,6 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def get_xero_details
-    @xero = Xero.new(@company)
     @clients                = @company.xero_contacts
     # Combine account codes and account names as a string
     @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing

@@ -2,13 +2,14 @@ require 'csv'
 
 class Allocation < ApplicationRecord
   belongs_to :user
-  belongs_to :activation
+  belongs_to :event
+  belongs_to :availability
 
-  enum allocation_type: [:contractor, :contractor_in_charge]
+  enum allocation_type: [:associate, :consultant]
 
   monetize :rate_cents, allow_nil: true
 
-  validates :activation, :allocation_type, :allocation_date, :start_time, :end_time, presence: true
+  validates :event, :allocation_type, :allocation_date, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
 
   def self.to_csv
@@ -23,8 +24,8 @@ class Allocation < ApplicationRecord
             rowcount += 1,
             allocation.user&.full_name,
             allocation.allocation_date.strftime('%v'),
-            allocation.activation.activation_type.name,
-            allocation.activation.client&.name + " - " + allocation.activation.location,
+            allocation.event.event_type.name,
+            allocation.event.client&.name + " - " + allocation.event.location,
             allocation.start_time.in_time_zone.strftime("%H:%M"),
             allocation.end_time.in_time_zone.strftime("%H:%M"),
             allocation.allocation_type.titleize,

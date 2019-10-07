@@ -18,7 +18,7 @@ class User < ApplicationRecord
 
   has_many :availabilities, dependent: :destroy
   has_many :allocations, dependent: :destroy
-  has_many :owned_events, class_name: 'Activation', foreign_key: 'event_owner_id', dependent: :destroy
+  has_many :owned_events, class_name: 'Event', foreign_key: 'staffer_id', dependent: :destroy
   has_many :invoices
   has_many :batches
 
@@ -50,11 +50,11 @@ class User < ApplicationRecord
     end
   end
 
-  def add_role_contractor_ic(assign)
+  def add_role_consultant(assign)
     if assign
-      self.add_role :contractor_in_charge, self.company
+      self.add_role :consultant, self.company
     else
-      self.remove_role :contractor_in_charge, self.company
+      self.remove_role :consultant, self.company
     end
   end
 
@@ -81,25 +81,25 @@ class User < ApplicationRecord
     allocation_days.map(&:hours).sum
   end
 
-  def self.contractors_to_csv
-    attributes = ['Id', 'First Name', 'Last Name', 'Email', 'Phone', 'NRIC', 'Date of Birth', 'Max Hours Per Week', 'Bank Name', 'Bank Account Name', 'Bank Account Number', 'Bank Account Type', 'Status', 'IC']
+  def self.associates_to_csv
+    attributes = ['Id', 'First Name', 'Last Name', 'Email', 'Phone', 'NRIC', 'Date of Birth', 'Max Hours Per Week', 'Bank Name', 'Bank Account Name', 'Bank Account Number', 'Bank Account Type', 'Status', 'Consultant']
     CSV.generate do |csv|
       csv << attributes
       all.each do |user|
-        row = [user.id, user.first_name, user.last_name, user.email, user.contact_number, user.nric, user.date_of_birth, user.max_hours_per_week, user.bank_name, user.bank_account_name, user.bank_account_number, user.bank_account_type&.titleize, user.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed', (true if user.has_role?(:contractor_in_charge, :any)) ]
+        row = [user.id, user.first_name, user.last_name, user.email, user.contact_number, user.nric, user.date_of_birth, user.max_hours_per_week, user.bank_name, user.bank_account_name, user.bank_account_number, user.bank_account_type&.titleize, user.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed', (true if user.has_role?(:consultant, :any)) ]
         csv << row
       end
     end
   end
 
-  def self.csv_to_contractors(file, company)
+  def self.csv_to_associates(file, company)
     import_count = { "imported" => 0, "invalid_data" => 0, "email_taken" => 0, "email_blank" => 0 }
     CSV.foreach(file.path, headers: true) do |row|
       @user = User.new( first_name: row['First Name'], last_name: row['Last Name'], email: row['Email'], contact_number: row['Phone'], nric: row['NRIC'], date_of_birth: row['Date of Birth'], max_hours_per_week: row['Max Hours Per Week'], bank_name: row['Bank Name'], bank_account_name: row['Bank Account Name'], bank_account_number: row['Bank Account Number'], bank_account_type: row['Bank Account Type']&.downcase)
       @user.company = company
       if @user.save
-        @user.add_role :contractor, company
-        @user.add_role :contractor_in_charge, company if row['IC'] == true
+        @user.add_role :associate, company
+        @user.add_role :consultant, company if row['IC'] == true
         import_count['imported'] += 1
       elsif (@user.errors[:email])
         import_count['email_taken'] += 1 if @user.errors.messages[:email] == ["has already been taken"]
@@ -149,6 +149,10 @@ class User < ApplicationRecord
 
   def get_availability(allocation)
     self.availabilities.where(availabilities: {available_date: allocation.allocation_date}).where("availabilities.start_time <= ?", allocation.start_time).where("availabilities.end_time >= ?", allocation.end_time).first
+  end
+
+  def check_overlapping_allocation(allocation)
+    self.get_availability(allocation).allocations.where(allocation_date: allocation.allocation_date).where("allocations.start_time < ?", allocation.end_time).where("allocations.end_time > ?", allocation.start_time).present?
   end
 
   def relevant_workflow_ids

@@ -17,6 +17,19 @@
       - else
         iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" id="iframe-document"
   .col.md-8
+    .row
+      .col-auto.ml-auto.text-center
+        .invoice-nav
+          .invoice-nav-button.btn-right
+            - if @total_workflows > 1
+              = link_to symphony_invoice_prev_show_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_id: @invoice.id), method: 'post', role: 'button' do
+                i.fa.fa-caret-left
+          .invoice-nav-number
+            | #{@current_position} of #{@total_workflows}
+          .invoice-nav-button.btn-left
+            - if @total_workflows > 1
+              = link_to symphony_invoice_next_show_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_id: @invoice.id), method: 'post', role: 'button' do
+                i.fa.fa-caret-right
     .row.mt-3
       .col-md-12
         h1

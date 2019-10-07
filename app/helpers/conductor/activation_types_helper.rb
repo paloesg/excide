@@ -1,2 +1,0 @@
-module Conductor::ActivationTypesHelper
-end

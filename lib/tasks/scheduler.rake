@@ -14,7 +14,7 @@ namespace :scheduler do
   task :deadline_send_summary_email => :environment do
     @workflows = Workflow.where(deadline: (Date.current - 1.day).beginning_of_day)
     @workflows.each do |workflow|
-      WorkflowMailer.email_summary(workflow, workflow.user, workflow.company).deliver_later
+      WorkflowMailer.email_summary(workflow, workflow.user, workflow.company).deliver_later unless workflow.batch.present?
     end
   end
 
@@ -32,14 +32,14 @@ namespace :scheduler do
     end
   end
 
-  task :contractor_reminders => :environment do
-    users = User.with_role(:contractor, :any)
+  task :associate_reminders => :environment do
+    users = User.with_role(:associate, :any)
     users.each do |user|
-      NotificationMailer.contractor_notification(user).deliver_later
+      NotificationMailer.associate_notification(user).deliver_later
     end
   end
 
-  task :daily_batch_email_summary => :environment do 
+  task :daily_batch_email_summary => :environment do
     Company.all.each do |company|
       if company.batches.present? and company.consultant.present?
         BatchMailer.daily_batch_email_summary(company).deliver_later if company.consultant.settings[0]&.batch_email == 'true'
