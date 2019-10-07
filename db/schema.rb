@@ -518,10 +518,6 @@ ActiveRecord::Schema.define(version: 2019_10_01_081722) do
     t.index ["company_id"], name: "index_xero_contacts_on_company_id"
   end
 
-  add_foreign_key "activations", "clients"
-  add_foreign_key "activations", "companies"
-  add_foreign_key "activations", "users", column: "event_owner_id"
-  add_foreign_key "allocations", "activations"
   add_foreign_key "allocations", "availabilities"
   add_foreign_key "allocations", "events"
   add_foreign_key "allocations", "users"
