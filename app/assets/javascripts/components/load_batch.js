@@ -62,7 +62,12 @@ $(document).ready(function(){
           );
         })
       })
-
+      $("a[data-toggle='append-new-popover']").popover().on('shown.bs.popover', function() {
+        var this_popover = $(this).data("bs.popover").tip;
+        $(this_popover).css({
+          top: '50px',
+        });
+      })
     });
   }
 });
