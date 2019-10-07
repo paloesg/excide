@@ -10,6 +10,7 @@
       li.breadcrumb-item #{@batch.name}
     h1
       | Batch #{@batch.name}
+= hidden_field(:batch_id, :batch_id, value: @batch.id, id: "batch_id")
 - @batch.template.sections.each do |section|
   .card.scrollbar.mb-3
     h5.card-header
