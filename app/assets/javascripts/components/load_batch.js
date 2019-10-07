@@ -24,6 +24,45 @@ $(document).ready(function(){
   if ($("#table-batch").length) {
     $.post("/symphony/batches/load_batch", { id: $("#batch_id").val() } ).done(function(data) {
       console.log(data)
+
+      $.each(data["sections"], function(index, section) {
+        $("#table-batch").append(
+          "<div class='card scrollbar mb-3' id='section-"+section["id"]+"'>" +
+            "<h5 class='card-header'>" +
+              section["section_name"] + " - " + section["tasks"].length + " tasks" +
+              "<div class='pull-right'>" + data["completed_workflow_count"] + " of " + data["batch"]["workflows"].length + " files completed</div>" +
+            "</h5>" +
+            "<div class='card-body'>" +
+              "<table class='table table-hover'>" +
+                "<thead>" +
+                  "<tr>" +
+                    "<th> Documents </th>" +
+                    "<th> Invoices </th>" +
+                  "</tr>" +
+                "</thead>" +
+              "</table>" +
+            "</div>" +
+          "</div>"
+        );
+      })
+      $.each(data["sections"], function(index, section) {
+        $.each(section["tasks"], function(index, task) {
+          $("#section-"+section["id"]+" .card-body > table > thead > tr").append(
+            "<th>" +
+              "<a class='pop' data-container='body' title='"+ task["role"]["display_name"] +"' data-content='<div>"+task["instructions"]+"</div>' data-html='true' data-placement='top' data-toggle='append-new-popover' data-trigger='hover' >" +
+                "<div class='header-properties'>" +
+                  task["task_type"] +
+                  " <i class='ti-info-alt'></i>" +
+                "</div>" +
+                "<div class='header-info'>" +
+                  task["role"]["name"] +
+                "</div>" +
+              "</a>" +
+            "</th>"
+          );
+        })
+      })
+
     });
   }
 });

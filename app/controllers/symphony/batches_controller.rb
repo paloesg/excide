@@ -51,9 +51,11 @@ class Symphony::BatchesController < ApplicationController
     @sections = @batch.template.sections
     @templates = policy_scope(Template).assigned_templates(current_user)
     @roles = @current_user.roles.where(resource_id: @current_user.company.id, resource_type: "Company")
+    get_batch = @batch.as_json( include: { workflows: { include: [:workflow_actions, :documents, :invoice] } })
+    get_sections = @batch.template.sections.as_json( include: { tasks: { include: { role: {methods: :display_name}} } } )
 
     respond_to do |format|
-      format.json { render json: { batch: @batch, completed_workflow_count: @completed_workflow_count, current_user: @current_user, sections: @sections, templates: @templates, roles: @roles } }
+      format.json { render json: { batch: get_batch, completed_workflow_count: @completed_workflow_count, current_user: @current_user, sections: get_sections, templates: @templates, roles: @roles } }
     end
   end
 

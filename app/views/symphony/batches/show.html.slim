@@ -17,7 +17,7 @@
       | #{section.section_name} - #{section.tasks.count.to_s} tasks
       .pull-right #{@completed_workflow_count} of #{@batch.workflows.count} files completed
     .card-body
-      table#table-batch.table.table-hover
+      table.table.table-hover
         thead
           tr
             th Documents
@@ -52,6 +52,8 @@
                 - else
                   = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id)
                     i.ti-receipt.icon.mr-3.medium-icon
-              - section.tasks.includes(:role).order(position: :asc).each do |task|
-                td class="text-center #{'important-task' if task.important}"
-                  = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
+                - section.tasks.includes(:role).order(position: :asc).each do |task|
+                  td class="text-center #{'important-task' if task.important}"
+                    = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
+
+#table-batch
