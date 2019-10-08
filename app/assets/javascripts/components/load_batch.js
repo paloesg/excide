@@ -62,7 +62,7 @@ $(document).ready(function(){
           );
         })
         // Table data of document, invoice
-        $.each(data["batch"]["workflows"], function(index, workflow) {
+        $.each(data["batch"]["workflows"].reverse(), function(index, workflow) {
           $("#section-"+section["id"]+" .card-body > table > tbody").append(
             "<tr id='wf_"+workflow["id"]+"'>" +
               "<td class='documents'>Display Docs</td>" +
