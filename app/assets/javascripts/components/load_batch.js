@@ -81,9 +81,17 @@ $(document).ready(function(){
       // Table data of workflow actions
       $.each(data["batch"]["workflows"], function(index, workflow) {
         $.each(workflow["workflow_actions"], function(index, action) {
-          $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]+" > td#"+action["task"]["id"]).replaceWith(
-            "<td class='text-center'><a role='button' class='btn btn-success btn-sm mb-2' href='/symphony/"+data["batch"]["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=payable&workflow_action_id="+action["id"]+"'>Start</a></td>"
-          )
+          if (action["completed"]) {
+            $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]+" > td#"+action["task"]["id"]).replaceWith(
+              "<td class='text-center'><div class='completed-task'>" +
+                "<i class='fa fa-check-circle text-success ml-3'></i>" +
+              "</div></td>"
+            )
+          } else {
+            $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]+" > td#"+action["task"]["id"]).replaceWith(
+              "<td class='text-center'><a role='button' class='btn btn-success btn-sm mb-2' href='/symphony/"+data["batch"]["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=payable&workflow_action_id="+action["id"]+"'>Start</a></td>"
+            )
+          }
         })
       })
 
