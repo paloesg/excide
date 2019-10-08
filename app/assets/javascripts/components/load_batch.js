@@ -72,7 +72,15 @@ $(document).ready(function(){
         })
       })
 
-      $("a[data-toggle='append-new-popover']").popover().on('shown.bs.popover', function() {
+      $.each(data["batch"]["workflows"], function(index, workflow) {
+        $.each(workflow["workflow_actions"], function(index, action) {
+          $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]).append(
+            "<td>"+action["task"]["task_type"]+"</td>"
+          )
+        })
+      })
+
+      $("a[data-toggle='append-new-popover']").popover().on("shown.bs.popover", function() {
         var this_popover = $(this).data("bs.popover").tip;
         $(this_popover).css({
           top: '50px'
