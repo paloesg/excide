@@ -69,6 +69,7 @@ $(document).ready(function(){
               "<td class='invoice'>Display Invoice</td>" +
             "</tr>"
           )
+          // Set position of tasks, before add workflow actions to the table data
           $.each(section["tasks"], function(index, task) {
             $("#section-"+section["id"]+" .card-body > table > tbody > tr#wf_"+workflow["id"]).append(
               "<td id='"+task["id"]+"'>"+task["id"]+"</td>"
@@ -81,7 +82,7 @@ $(document).ready(function(){
       $.each(data["batch"]["workflows"], function(index, workflow) {
         $.each(workflow["workflow_actions"], function(index, action) {
           $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]+" > td#"+action["task"]["id"]).replaceWith(
-            "<td class='text-center'><a role='button' class='btn btn-success btn-sm mb-2' href='/symphony/"+data["batch"]["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=payable&workflow_action_id="+action["id"]+"'>workflow : "+workflow["id"]+" action: "+action["id"]+" "+action["task"]["task_type"]+"</a></td>"
+            "<td class='text-center'><a role='button' class='btn btn-success btn-sm mb-2' href='/symphony/"+data["batch"]["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=payable&workflow_action_id="+action["id"]+"'>Start</a></td>"
           )
         })
       })
