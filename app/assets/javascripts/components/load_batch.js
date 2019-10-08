@@ -61,7 +61,7 @@ $(document).ready(function(){
             "</th>"
           );
         })
-        // Table data of document, invoice & actions
+        // Table data of document, invoice
         $.each(data["batch"]["workflows"], function(index, workflow) {
           $("#section-"+section["id"]+" .card-body > table > tbody").append(
             "<tr id='wf_"+workflow["id"]+"'>" +
@@ -69,23 +69,30 @@ $(document).ready(function(){
               "<td class='invoice'>Display Invoice</td>" +
             "</tr>"
           )
+          $.each(section["tasks"], function(index, task) {
+            $("#section-"+section["id"]+" .card-body > table > tbody > tr#wf_"+workflow["id"]).append(
+              "<td id='"+task["id"]+"'>"+task["id"]+"</td>"
+            );
+          })
         })
       })
 
+      // Table data of workflow actions
       $.each(data["batch"]["workflows"], function(index, workflow) {
         $.each(workflow["workflow_actions"], function(index, action) {
-          $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]).append(
-            "<td>"+action["task"]["task_type"]+"</td>"
+          $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]+" > td#"+action["task"]["id"]).replaceWith(
+            "<td class='text-center'><a role='button' class='btn btn-success btn-sm mb-2' href='/symphony/"+data["batch"]["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=payable&workflow_action_id="+action["id"]+"'>workflow : "+workflow["id"]+" action: "+action["id"]+" "+action["task"]["task_type"]+"</a></td>"
           )
         })
       })
 
-      $("a[data-toggle='append-new-popover']").popover().on("shown.bs.popover", function() {
-        var this_popover = $(this).data("bs.popover").tip;
-        $(this_popover).css({
-          top: '50px'
-        });
-      })
+      $("a[data-toggle='append-new-popover']").popover()
+      // $("a[data-toggle='append-new-popover']").popover().on("shown.bs.popover", function() {
+      //   var this_popover = $(this).data("bs.popover").tip;
+      //   $(this_popover).css({
+      //     top: '50px'
+      //   });
+      // })
     });
   }
 });
