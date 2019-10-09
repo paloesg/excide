@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   #If record is not found on xero, it will return flash message as string
   rescue_from Xeroizer::RecordInvalid, URI::InvalidURIError, ArgumentError, with: :xero_error
   #Error occurs for eg, the tax rate doesn't match with account code. Xero returns an exception in XML, hence the need to parse it truncate it in the xero_error_api_exception method
-  rescue_from Xeroizer::ApiException, with: :xero_error_api_exception
+  rescue_from Xeroizer::ApiException, OAuth::Unauthorized, with: :xero_error_api_exception
 
   before_action :get_xero
   after_action :store_location
@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if current_user.company.session_handle.blank? and current_user.company.connect_xero?
-      XeroSessionsController.connect_to_xero(session)
+      connect_to_xero_path
     else
       symphony_root_path
     end
@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_xero
-    @xero = Xero.new(current_user.company) if current_user
+    @xero = Xero.new(current_user.company) if current_user and current_user.company.connect_xero
   end
 
   def xero_login

@@ -28,7 +28,9 @@ Rails.application.routes.draw do
   post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
+  get '/connect_to_xero', to: 'xero_sessions#connect_to_xero', as: :connect_to_xero
   get '/xero_callback_and_update', to: 'xero_sessions#xero_callback_and_update', as: :xero_callback_and_update
+  delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
   namespace :symphony do
     get '/search', to: 'home#search'
@@ -96,7 +98,7 @@ Rails.application.routes.draw do
         post '/invoices/reject', to:'invoices#reject', as: :reject_invoice
         post '/invoices/next', to:'invoices#next_invoice', as: :next_invoice
         post '/invoices/prev', to:'invoices#prev_invoice', as: :prev_invoice
-        resources :invoices do          
+        resources :invoices do
           post '/next', to:'invoices#next_show_invoice', as: :next_show_invoice
           post '/prev', to:'invoices#prev_show_invoice', as: :prev_show_invoice
         end
