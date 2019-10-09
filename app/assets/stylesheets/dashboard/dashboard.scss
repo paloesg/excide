@@ -134,15 +134,22 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-.nav-underline .nav-link {
+.nav-underline .nav-text {
   padding-top: .75rem;
   padding-bottom: .75rem;
+  padding-left: 1rem;
   font-size: .875rem;
   color: #6c757d;
-}
 
-.nav-underline .nav-link:hover {
-  color: #007bff;
+  a {
+    color: #6c757d;
+    text-decoration: underline;
+  }
+
+  a:hover {
+    color: #007bff;
+    text-decoration: underline;
+  }
 }
 
 .nav-underline .active {

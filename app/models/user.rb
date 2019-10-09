@@ -151,6 +151,10 @@ class User < ApplicationRecord
     self.availabilities.where(availabilities: {available_date: allocation.allocation_date}).where("availabilities.start_time <= ?", allocation.start_time).where("availabilities.end_time >= ?", allocation.end_time).first
   end
 
+  def check_overlapping_allocation(allocation)
+    self.get_availability(allocation).allocations.where(allocation_date: allocation.allocation_date).where("allocations.start_time < ?", allocation.end_time).where("allocations.end_time > ?", allocation.start_time).present?
+  end
+
   def relevant_workflow_ids
     self.company.workflows.includes(:template => [:sections => :tasks]).where(:tasks => {:role_id => self.get_role_ids})
   end

@@ -64,7 +64,8 @@ class UpdateEventTime
   def remove_associate(allocation, old_allocation)
     removed_user = allocation.user
     allocation.update_attributes!(user_id: nil)
-    removed_user.get_availability(old_allocation).toggle!(:assigned)
+    allocation.availability.update_column(:assigned, allocation.availability.allocations.present?)
+    allocation.availability.allocations.delete(allocation)
     NotificationMailer.user_removed_from_event(@event, removed_user).deliver_later
     @associates_unassigned += 1
   end

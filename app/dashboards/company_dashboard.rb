@@ -24,6 +24,11 @@ class CompanyDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     connect_xero: Field::Boolean,
+    xero_organisation_name: Field::String,
+    session_handle: Field::String,
+    access_key: Field::String,
+    access_secret: Field::String,
+    expires_at: Field::Number,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -34,6 +39,7 @@ class CompanyDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :name,
+    :xero_organisation_name,
     :workflows,
     :templates,
     :documents,
@@ -58,6 +64,11 @@ class CompanyDashboard < Administrate::BaseDashboard
     :financial_year_end,
     :xero_email,
     :connect_xero,
+    :xero_organisation_name,
+    :session_handle,
+    :access_key,
+    :access_secret,
+    :expires_at,
   ]
 
   # Overwrite this method to customize how profiles are displayed
