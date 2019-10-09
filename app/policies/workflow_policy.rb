@@ -17,7 +17,7 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def update?
-    show?
+    !user.has_role?(:shared_service, user.company)
   end
 
   def edit?
