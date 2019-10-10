@@ -72,6 +72,11 @@
               = render 'line_items', f: line_item
       .card-body
         .row
+          .col-md-12
+            .form-row
+              .form-inline.col-auto.ml-auto.mb-2.pull-right
+                = f.label :subtotal, 'Subtotal', class: 'mr-2'
+                = number_field_tag :subtotal, nil, class: 'form-control', disabled: true
           .col-md-4
             = link_to_add_line_items "Add Line Item", f, :line_items
           .col-md-8

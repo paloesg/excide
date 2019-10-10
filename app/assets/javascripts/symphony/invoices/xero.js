@@ -6,6 +6,7 @@ function getXeroItem(itemCode, field) {
     $("#invoice_line_items_attributes_"+field+"_quantity").val(1);
     $("#invoice_line_items_attributes_"+field+"_price").val(data.sales_details.unit_price);
     $("#invoice_line_items_attributes_"+field+"_amount").val(1*data.sales_details.unit_price);
+    $("input#subtotal").val( calculateSubtotal() );
 
     //selectize account
     if (data.sales_details.account_code) {
@@ -45,14 +46,25 @@ function getXeroItem(itemCode, field) {
   });
 }
 
-// Automatically calculate amount field
+// Automatically calculate the amount field
 function calculateAmount() {
   $("input[id$='_quantity'], input[id$='_price']").change(function () {
     quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
     price = $(this).closest(".line_items").find("input[id$='_price']").val();
     amount = $(this).closest(".line_items").find("input[id$='_amount']");
     amount.val( (quantity*price).toFixed(2) );
+    $("input#subtotal").val( calculateSubtotal() );
   })
+}
+
+// Automatically calculate the subtotal field
+function calculateSubtotal() {
+  sum = 0;
+  amounts = $("input[id$='_amount']");
+  amounts.each(function(index, field) {
+      sum += Number($(field).val());
+  });
+  return sum;
 }
 
 $(document).on("turbolinks:load", function(){
@@ -80,7 +92,9 @@ $(document).on("turbolinks:load", function(){
     $(".approve-button").addClass("disabled");
   });
 
+  // Run calculate after the page is loaded
   calculateAmount();
+  $("input#subtotal").val( calculateSubtotal() );
 
   //add attribute fields with selectize drop down (for creating invoice and data entry)
   $("form").on("click", ".add_attribute_fields", function(event) {
