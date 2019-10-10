@@ -64,7 +64,7 @@ function calculateSubtotal() {
   amounts.each(function(index, field) {
       sum += Number($(field).val());
   });
-  return sum;
+  return sum.toFixed(2);
 }
 
 $(document).on("turbolinks:load", function(){
