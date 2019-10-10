@@ -4,11 +4,11 @@
       li.breadcrumb-item.ml-auto
         a href="/conductor" Dashboard
       li.breadcrumb-item
-        a href="#" Company
+        a href="/company/edit" Company
       li.breadcrumb-item
-        a href="/conductor/users" Associates
+        a href="/conductor/users" Staff
       li.breadcrumb-item.active New
-    h1 New Associate
+    h1 New Staff
 .row
   .col-sm-12
     = form_for(@user, url: conductor_users_path) do |f|
