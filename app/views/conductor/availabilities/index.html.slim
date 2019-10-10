@@ -4,8 +4,10 @@
       li.breadcrumb-item.ml-auto
         a href="/conductor" Dashboard
       li.breadcrumb-item
-        a href="/symphony/company" #{@company.name}
-      li.breadcrumb-item.active Staffer
+        a href="/company/edit" #{@company.name}
+      li.breadcrumb-item
+        a href="/conductor/users" Staff
+      li.breadcrumb-item.active Availability
     h1
       | Availability Listing
 
@@ -14,7 +16,7 @@
     table.table.table-hover
       thead
         tr
-          th User
+          th Staff
           th Availabilities
           th View Availabilities
           th Allocations

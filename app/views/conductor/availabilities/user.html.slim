@@ -5,7 +5,7 @@
         a href="/conductor" Dashboard
       li.breadcrumb-item
         a href="/symphony/company" #{@company.name}
-      li.breadcrumb-item.active Staffer
+      li.breadcrumb-item.active Staff
     h1
       | #{@user.full_name} Availabilities
       = link_to 'Add Availability', new_conductor_availability_path(user_id: @user.id), role: 'button', class: 'btn btn-warning float-right'
