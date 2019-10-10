@@ -69,6 +69,13 @@ $(document).on("turbolinks:load", function(){
     $(".approve-button").addClass("disabled");
   });
 
+  $("input[id$='_quantity'], input[id$='_price']").change(function () {
+    quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
+    price = $(this).closest(".line_items").find("input[id$='_price']").val();
+    amount = $(this).closest(".line_items").find("input[id$='_amount']");
+    amount.val( (quantity*price).toFixed(2) );
+  })
+
   //add attribute fields with selectize drop down (for creating invoice and data entry)
   $("form").on("click", ".add_attribute_fields", function(event) {
     let regexp, time;
