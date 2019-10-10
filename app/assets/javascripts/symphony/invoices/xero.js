@@ -5,6 +5,7 @@ function getXeroItem(itemCode, field) {
     $("#invoice_line_items_attributes_"+field+"_description").val(data.purchase_description);
     $("#invoice_line_items_attributes_"+field+"_quantity").val(1);
     $("#invoice_line_items_attributes_"+field+"_price").val(data.sales_details.unit_price);
+    $("#invoice_line_items_attributes_"+field+"_amount").val(1*data.sales_details.unit_price);
 
     //selectize account
     if (data.sales_details.account_code) {
@@ -44,6 +45,16 @@ function getXeroItem(itemCode, field) {
   });
 }
 
+// Automatically calculate amount field
+function calculateAmount() {
+  $("input[id$='_quantity'], input[id$='_price']").change(function () {
+    quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
+    price = $(this).closest(".line_items").find("input[id$='_price']").val();
+    amount = $(this).closest(".line_items").find("input[id$='_amount']");
+    amount.val( (quantity*price).toFixed(2) );
+  })
+}
+
 $(document).on("turbolinks:load", function(){
   $(".loading").hide();
   // dropdownParent is required to avoid dropdown clipping issue so that the dropdown isn't a child of an element with clipping
@@ -69,12 +80,7 @@ $(document).on("turbolinks:load", function(){
     $(".approve-button").addClass("disabled");
   });
 
-  $("input[id$='_quantity'], input[id$='_price']").change(function () {
-    quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
-    price = $(this).closest(".line_items").find("input[id$='_price']").val();
-    amount = $(this).closest(".line_items").find("input[id$='_amount']");
-    amount.val( (quantity*price).toFixed(2) );
-  })
+  calculateAmount();
 
   //add attribute fields with selectize drop down (for creating invoice and data entry)
   $("form").on("click", ".add_attribute_fields", function(event) {
@@ -102,6 +108,7 @@ $(document).on("turbolinks:load", function(){
       dropdownParent: "body"
     });
     $(".data-attributes").find("tr:last-child").find(".create").val("1");
+    calculateAmount();
     return event.preventDefault();
   });
 });
