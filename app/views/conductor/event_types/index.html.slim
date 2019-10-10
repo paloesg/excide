@@ -8,7 +8,7 @@
       li.breadcrumb-item.active Event type
     h1
       | Event type Listing
-      = link_to 'New Event Type', new_conductor_event_type_path, role: 'button', class: 'btn btn-warning float-right' if @user.has_role? :staffer, @company
+      = link_to 'New Event Type', new_conductor_event_type_path, role: 'button', class: 'btn btn-warning float-right' if @user.has_role?(:staffer, @company) or @user.has_role?(:admin, @company)
 .row
   .col-sm-12
     .table-responsive

@@ -37,7 +37,7 @@ p
   strong End time:
   br
   span#end_time
-- if (current_user.has_role? :staffer, current_user.company) or (current_page? controller: 'events', action: 'index')
+- if current_user.has_role?(:staffer, current_user.company) or current_user.has_role?(:admin, current_user.company) or (current_page? controller: 'events', action: 'index')
   .btn-toolbar
     a.btn.btn-primary.btn-sm.mr-1#edit_event href="#" Edit event
     a.btn.btn-primary.btn-sm#edit_allocations href="#" Edit allocations
