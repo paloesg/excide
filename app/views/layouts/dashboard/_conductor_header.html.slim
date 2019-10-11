@@ -28,7 +28,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
     ul.navbar-nav
       li.nav-item = link_to "Calendar", conductor_root_path, class: 'nav-link'
       li.nav-item = link_to 'Events', conductor_events_path, class: 'nav-link'
-      - if current_user.has_role? :admin, @company or current_user.has_role? :Staffer, @company
+      - if current_user.has_role?(:admin, @company) or current_user.has_role?(:staffer, @company)
         li.nav-item.dropdown
           a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Staff
           .dropdown-menu
@@ -36,7 +36,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
             = link_to 'Allocate Staff', conductor_allocations_path, class: 'dropdown-item'
             = link_to "Manage Staff", conductor_users_path, class: 'dropdown-item'
     ul.navbar-nav.ml-auto
-      - if current_user.has_role? :associate, @company
+      - if current_user.has_role?(:associate, @company)
         li.nav-item = link_to "User Details", conductor_user_path(current_user), class: 'nav-link'
       - else
         li.nav-item = link_to 'Clients', conductor_clients_path, class: 'nav-link'
