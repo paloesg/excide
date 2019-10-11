@@ -74,6 +74,19 @@ $(document).on("turbolinks:load", function(){
     dropdownParent: "body"
   })
 
+  $(".dropdown-tax").selectize({
+    onInitialize: function () {
+      var s = this;
+      this.revertSettings.$children.each(function () {
+        $.extend(s.options[this.value], $(this).data());
+      });
+    },
+    onChange: function (value) {
+      var option = this.options[value];
+      console.log(option.rate);
+    }
+  });
+
   $(".dropdown-items").selectize({
     dropdownParent: "body",
     onChange: function(value) {

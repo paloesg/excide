@@ -299,7 +299,7 @@ class Symphony::InvoicesController < ApplicationController
     @clients                = @xero.get_contacts
     # Combine account codes and account names as a string
     @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing
-    @full_tax_code          = @xero.get_tax_rates.map{|tax| tax.name + ' (' + tax.display_tax_rate.to_s + '%) - ' + tax.tax_type} # Combine tax codes and tax names as a string
+    @full_tax_code          = @xero.get_tax_rates.map.map{|t| [t.name + ' (' + t.display_tax_rate.to_s + '%) - ' + t.tax_type, {'data-rate': "#{t.display_tax_rate}"}] } # Combine tax codes and tax names as a string
     @currencies             = @xero.get_currencies
     @tracking_name          = @xero.get_tracking_options
     @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| option}
