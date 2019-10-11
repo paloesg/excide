@@ -5,7 +5,6 @@ class Conductor::EventsController < ApplicationController
   before_action :set_company_and_clients
   before_action :set_staffers, only: [:new, :edit]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
-  before_action :set_user, only: [:new, :create, :edit, :update, :destroy]
 
   # GET /conductor/events
   # GET /conductor/events.json
@@ -121,30 +120,23 @@ class Conductor::EventsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = current_user.company.events.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = current_user.company.events.find(params[:id])
+  end
 
-    def set_user
-      unless current_user.has_role? :admin, @company
-        flash[:alert] = "You are not authorized to perform this action."
-        redirect_to conductor_events_path
-      end
-    end
+  def set_company_and_clients
+    @user = current_user
+    @company = @user.company
+    @clients = Client.where(company_id: @company.id)
+  end
 
-    def set_company_and_clients
-      @user = current_user
-      @company = @user.company
-      @clients = Client.where(company_id: @company.id)
-    end
+  def set_staffers
+    @staffers = User.where(company: @company).with_role :staffer, @company
+  end
 
-    def set_staffers
-      @staffers = User.where(company: @company).with_role :staffer, @company
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def event_params
-      params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, address_attributes: [:line_1, :line_2, :postal_code])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def event_params
+    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, address_attributes: [:line_1, :line_2, :postal_code])
+  end
 end
