@@ -4,17 +4,17 @@
       li.breadcrumb-item.ml-auto
         a href="/conductor" Dashboard
       li.breadcrumb-item
-        a href="/symphony" #{@company.name}
-      li.breadcrumb-item.active Associate
+        a href="/company/edit" #{@company.name}
+      li.breadcrumb-item.active Staff
     h1
-      | Manage Associates
+      | Manage Staff
       .btn-toolbar.float-right
-        = link_to 'Export Associates', {action: :export}, class: 'btn btn-success mr-1'
-        = link_to "New Associate", new_conductor_user_path, role: 'button', class: 'btn btn-warning'
+        = link_to 'Export Staff', {action: :export}, class: 'btn btn-success mr-1'
+        = link_to "New Staff", new_conductor_user_path, role: 'button', class: 'btn btn-warning'
 .row.mb-3
   .col-sm-12
     .card
-      h4.card-header Associates
+      h4.card-header Staff
       .table-responsive
         table.table
           thead
@@ -44,10 +44,10 @@
   .row
     .col-md-4.col-sm-6
       .card
-        h5.card-header Import Associates
+        h5.card-header Import Staff
         .card-body
           = form_tag({action: :import}, multipart: true) do
             .custom-file
               = file_field_tag 'csv_file', class: 'custom-file-input'
-              = label_tag 'csv_file', 'Upload associate CSV file', class: 'custom-file-label'
+              = label_tag 'csv_file', 'Upload staff CSV file', class: 'custom-file-label'
             = submit_tag "Import", class: 'btn btn-primary mt-3'

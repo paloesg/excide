@@ -8,10 +8,11 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents, except: [:get_xero_item_code_detail]
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
+  before_action :set_show_invoice_navigation, only: [:show, :next_show_invoice, :prev_show_invoice]
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
 
-  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice]
+  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -212,12 +213,42 @@ class Symphony::InvoicesController < ApplicationController
       prev_wf = @workflow.batch.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).last
     end
     if prev_wf.present?
-      if prev_wf.invoice.xero_total_mismatch?
-        render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
+      if prev_wf.invoice.present?
+        if prev_wf.invoice.xero_total_mismatch?
+          render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
+        else
+          render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
+        end
       else
         render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
       end
     else
+      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+    end
+  end
+
+  def next_show_invoice
+    next_workflow_invoice = @workflow_invoices.where('workflows.created_at > ?', @workflow.created_at).order(created_at: :asc).first
+    if next_workflow_invoice.blank?
+      next_workflow_invoice = @workflow_invoices.where('workflows.created_at < ?', @workflow.created_at).order(created_at: :asc).first
+    end
+    # redirect page
+    if next_workflow_invoice.present?
+      redirect_to symphony_invoice_path(workflow_name: next_workflow_invoice.template.slug, workflow_id: next_workflow_invoice.id, id: next_workflow_invoice.invoice.id)
+    else      
+      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+    end
+  end
+
+  def prev_show_invoice
+    prev_workflow_invoice = @workflow_invoices.where('workflows.created_at < ?', @workflow.created_at).order(created_at: :asc).last
+    if prev_workflow_invoice.blank?
+      prev_workflow_invoice = @workflow_invoices.where('workflows.created_at > ?', @workflow.created_at).order(created_at: :asc).last
+    end
+    # redirect page
+    if prev_workflow_invoice.present?
+      redirect_to symphony_invoice_path(workflow_name: prev_workflow_invoice.template.slug, workflow_id: prev_workflow_invoice.id, id: prev_workflow_invoice.invoice.id)
+    else      
       redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
     end
   end
@@ -229,6 +260,13 @@ class Symphony::InvoicesController < ApplicationController
 
   def set_workflow
     @workflow = @company.workflows.find(params[:workflow_id])
+  end
+
+  def set_show_invoice_navigation
+    workflows = @workflow.batch.workflows.order(created_at: :asc)
+    @workflow_invoices= @workflow.batch.workflows.includes(:invoice).where.not(invoices: {id: nil}).where.not(invoices: {id: @workflow.invoice.id})
+    @total_workflows = workflows.length
+    @current_position = workflows.pluck('id').index(@workflow.id)+1
   end
 
   def set_workflows_navigation

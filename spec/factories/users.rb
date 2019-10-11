@@ -19,5 +19,9 @@ FactoryBot.define do
     factory :staffer do
       after(:create) { |user| user.add_role :staffer, user.company }
     end
+
+    factory :shared_service do
+      after(:create) { |user| user.add_role :shared_service, user.company }
+    end
   end
 end

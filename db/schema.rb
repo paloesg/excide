@@ -76,6 +76,8 @@ ActiveRecord::Schema.define(version: 2019_10_02_090613) do
     t.integer "allocation_type"
     t.boolean "last_minute", default: false
     t.integer "rate_cents"
+    t.bigint "availability_id"
+    t.index ["availability_id"], name: "index_allocations_on_availability_id"
     t.index ["event_id"], name: "index_allocations_on_event_id"
     t.index ["user_id"], name: "index_allocations_on_user_id"
   end
@@ -529,16 +531,8 @@ ActiveRecord::Schema.define(version: 2019_10_02_090613) do
     t.index ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id"
   end
 
-  create_table "xero_contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "contact_id"
-    t.bigint "company_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["company_id"], name: "index_xero_contacts_on_company_id"
-  end
-
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "allocations", "availabilities"
   add_foreign_key "allocations", "events"
   add_foreign_key "allocations", "users"
   add_foreign_key "availabilities", "users"

@@ -4,10 +4,12 @@
       li.breadcrumb-item.ml-auto
         a href="/conductor" Dashboard
       li.breadcrumb-item
-        a href="/symphony/company" #{@company.name}
+        a href="/company/edit" #{@company.name}
+      li.breadcrumb-item
+        a href="/conductor/users" Staff
       li.breadcrumb-item.active Allocations
     h1
-      | Allocate Associate
+      | Allocate Staff
 
 .row
   .col-md-8.col-xs-12
@@ -52,7 +54,7 @@
     = link_to 'Export ' + @date_from.strftime("%B") + ' Allocations', {action: :export, start_date: params[:start_date]} ,class: 'btn btn-success btn-block'
     br
     .card
-      h5.card-header Available Associate
+      h5.card-header Available Staff
       ul.list-group
         - if params[:allocation].nil?
           li.list-group-item.clearfix Select an allocation on the left to assign associate.
@@ -81,7 +83,7 @@
                 .col-sm-4.col-12
                   - if user.max_hours_per_week.present? and (user.max_hours_per_week <= (user.weekly_allocated_hours(@allocation) + @allocation.hours))
                     = button_to 'Hours Exceeded', {}, disabled: true, role: 'button', class: 'btn btn-sm float-right'
-                  - elsif @allocation.user.present? or user.get_availability(@allocation).assigned == true
+                  - elsif user.get_availability(@allocation).allocations.include?(@allocation) or user.check_overlapping_allocation(@allocation)
                     = button_to 'Assign', {}, disabled: true, role: 'button', class: 'btn btn-sm float-right'
                   - else
                     = button_to 'Assign', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-primary btn-sm float-right', params: { 'allocation[user_id]': user.id}

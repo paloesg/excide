@@ -68,4 +68,5 @@
           ' Connected Xero organisation:
           = link_to(current_user.company.xero_organisation_name, edit_company_path)
         - else
-          | Not connected to Xero
+          ' Not connected to Xero:
+          = link_to('Connect', connect_to_xero_path)
