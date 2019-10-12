@@ -83,7 +83,7 @@ $(document).on("turbolinks:load", function(){
         return a['defaultSelected'];
       })
       if (currentTaxRate.length) {
-        var rate = currentTaxRate[0]['dataset']['rate'];
+        var rate = parseFloat(currentTaxRate[0]['dataset']['rate']);
         if ( $("#invoice_line_amount_type").val() == "exclusive" ) {
           $("#subtotal-wrapper").append("<div class='form-row'>"+
             "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
