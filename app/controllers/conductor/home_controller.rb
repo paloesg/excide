@@ -28,7 +28,7 @@ class Conductor::HomeController < ApplicationController
     @events = @events.client(params[:project_clients]) unless params[:project_clients].blank?
 
     # Only show events relevant to associate if logged in as associate
-    @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role? :associate, :any
+    @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role?(:associate, @company)
     @upcoming_events = @events.where("events.end_time > ?", Time.current)
 
     @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Event").order("created_at desc")

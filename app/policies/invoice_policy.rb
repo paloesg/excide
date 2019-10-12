@@ -20,7 +20,7 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def reject?
-    update?
+    user.has_role?(:shared_service, :any) or user.has_role?(:admin, :any) or user.has_role?(:consultant, :any)
   end
 
   def destroy?
