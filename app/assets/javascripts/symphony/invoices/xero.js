@@ -77,6 +77,30 @@ $(document).on("turbolinks:load", function(){
   $(".dropdown-tax").selectize({
     onInitialize: function () {
       var s = this;
+      var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
+      // Get selected tax
+      currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
+        return a['defaultSelected'];
+      })
+      if (currentTaxRate.length) {
+        var rate = currentTaxRate[0]['dataset']['rate'];
+        if ( $("#invoice_line_amount_type").val() == "exclusive" ) {
+          $("#subtotal-wrapper").append("<div class='form-row'>"+
+            "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
+              "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
+              "<input type='number' value='" + (currentAmount*(rate/100)).toFixed(2) + "' class='form-control form-control-sm' disabled='disabled'>" +
+            "</div>" +
+          "</div>")
+        } else if ( $("#invoice_line_amount_type").val() == "inclusive" ) {
+          $("#subtotal-wrapper").append("<div class='form-row'>"+
+            "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
+              "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
+              "<input type='number' value='" + (currentAmount-(currentAmount/((100+rate)/100))).toFixed(2) + "' class='form-control form-control-sm' disabled='disabled'>" +
+            "</div>" +
+          "</div>")
+        }
+
+      }
       this.revertSettings.$children.each(function () {
         $.extend(s.options[this.value], $(this).data());
       });
