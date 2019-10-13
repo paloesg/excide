@@ -46,6 +46,8 @@ function getXeroItem(itemCode, field) {
   });
 }
 
+var dropdownTax;
+
 // Automatically calculate the amount field
 function calculateAmount() {
   $("input[id$='_quantity'], input[id$='_price']").change(function () {
@@ -97,7 +99,22 @@ $(document).on("turbolinks:load", function(){
     dropdownParent: "body"
   })
 
-  $(".dropdown-tax").selectize({
+  $("#invoice_line_amount_type").change(function() {
+    $( ".total-tax-row" ).remove();
+    dropdownTax.each(function(index, item) {
+      selectizeItem = dropdownTax.selectize()[index].selectize;
+      currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
+        return a['defaultSelected'];
+      })
+      if (currentTaxRate.length) {
+        taxRate = currentTaxRate[0]['dataset']['rate'];
+        currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
+        calculateTotalTax(currentAmount, taxRate);
+      }
+    })
+  });
+
+  dropdownTax = $(".dropdown-tax").selectize({
     onInitialize: function () {
       var s = this;
       var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
@@ -105,7 +122,6 @@ $(document).on("turbolinks:load", function(){
       currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
         return a['defaultSelected'];
       })
-      // console.log(currentTaxRate)
       if (currentTaxRate.length) {
         taxRate = currentTaxRate[0]['dataset']['rate'];
         calculateTotalTax(currentAmount, taxRate);
