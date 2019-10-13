@@ -48,17 +48,6 @@ function getXeroItem(itemCode, field) {
 
 var dropdownTax;
 
-// Automatically calculate the amount field
-function calculateAmount() {
-  $("input[id$='_quantity'], input[id$='_price']").change(function () {
-    quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
-    price = $(this).closest(".line_items").find("input[id$='_price']").val();
-    amount = $(this).closest(".line_items").find("input[id$='_amount']");
-    amount.val( (quantity*price).toFixed(2) );
-    $("input#subtotal").val( calculateSubtotal() );
-  })
-}
-
 // Automatically calculate the subtotal field
 function calculateSubtotal() {
   sum = 0;
@@ -69,7 +58,7 @@ function calculateSubtotal() {
   return sum.toFixed(2);
 }
 
-// Calculate total tax
+// Calculate total tax & append element
 function calculateTotalTax(amount, rate) {
   amount = parseFloat(amount);
   rate = parseFloat(rate);
@@ -99,7 +88,23 @@ $(document).on("turbolinks:load", function(){
     dropdownParent: "body"
   })
 
-  $("#invoice_line_amount_type, input[id$='_quantity'], input[id$='_price']").change(function() {
+  $("#invoice_line_amount_type").change(function() {
+    updateTotalTax();
+  });
+
+  // Automatically calculate the amount field
+  function calculateAmount() {
+    $("input[id$='_quantity'], input[id$='_price']").change(function () {
+      quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
+      price = $(this).closest(".line_items").find("input[id$='_price']").val();
+      amount = $(this).closest(".line_items").find("input[id$='_amount']");
+      amount.val( (quantity*price).toFixed(2) );
+      $("input#subtotal").val( calculateSubtotal() );
+      updateTotalTax();
+    })
+  };
+
+  function updateTotalTax() {
     $( ".total-tax-row" ).remove();
     dropdownTax.each(function(index, item) {
       selectizeItem = dropdownTax.selectize()[index].selectize;
@@ -112,7 +117,7 @@ $(document).on("turbolinks:load", function(){
         calculateTotalTax(currentAmount, taxRate);
       }
     })
-  });
+  };
 
   dropdownTax = $(".dropdown-tax").selectize({
     onInitialize: function () {
