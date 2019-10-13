@@ -99,7 +99,7 @@ $(document).on("turbolinks:load", function(){
     dropdownParent: "body"
   })
 
-  $("#invoice_line_amount_type").change(function() {
+  $("#invoice_line_amount_type, input[id$='_quantity'], input[id$='_price']").change(function() {
     $( ".total-tax-row" ).remove();
     dropdownTax.each(function(index, item) {
       selectizeItem = dropdownTax.selectize()[index].selectize;
