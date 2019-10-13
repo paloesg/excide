@@ -67,6 +67,27 @@ function calculateSubtotal() {
   return sum.toFixed(2);
 }
 
+// Calculate total tax
+function calculateTotalTax(amount, rate) {
+  amount = parseFloat(amount);
+  rate = parseFloat(rate);
+  if ( $("#invoice_line_amount_type").val() == "exclusive" ) {
+    $("#subtotal-wrapper").append("<div class='form-row'>"+
+      "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
+        "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
+        "<input type='number' value='" + (amount*(rate/100)).toFixed(2) + "' class='form-control form-control-sm' disabled='disabled'>" +
+      "</div>" +
+    "</div>")
+  } else if ( $("#invoice_line_amount_type").val() == "inclusive" ) {
+    $("#subtotal-wrapper").append("<div class='form-row'>"+
+      "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
+        "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
+        "<input type='number' value='" + (amount-(amount/((100+rate)/100))).toFixed(2) + "' class='form-control form-control-sm' disabled='disabled'>" +
+      "</div>" +
+    "</div>")
+  }
+}
+
 $(document).on("turbolinks:load", function(){
   $(".loading").hide();
   // dropdownParent is required to avoid dropdown clipping issue so that the dropdown isn't a child of an element with clipping
@@ -82,32 +103,23 @@ $(document).on("turbolinks:load", function(){
       currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
         return a['defaultSelected'];
       })
+      // console.log(currentTaxRate)
       if (currentTaxRate.length) {
-        var rate = parseFloat(currentTaxRate[0]['dataset']['rate']);
-        if ( $("#invoice_line_amount_type").val() == "exclusive" ) {
-          $("#subtotal-wrapper").append("<div class='form-row'>"+
-            "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
-              "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
-              "<input type='number' value='" + (currentAmount*(rate/100)).toFixed(2) + "' class='form-control form-control-sm' disabled='disabled'>" +
-            "</div>" +
-          "</div>")
-        } else if ( $("#invoice_line_amount_type").val() == "inclusive" ) {
-          $("#subtotal-wrapper").append("<div class='form-row'>"+
-            "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
-              "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
-              "<input type='number' value='" + (currentAmount-(currentAmount/((100+rate)/100))).toFixed(2) + "' class='form-control form-control-sm' disabled='disabled'>" +
-            "</div>" +
-          "</div>")
-        }
-
+        taxRate = currentTaxRate[0]['dataset']['rate'];
+        calculateTotalTax(currentAmount, taxRate);
       }
       this.revertSettings.$children.each(function () {
         $.extend(s.options[this.value], $(this).data());
       });
     },
     onChange: function (value) {
-      var option = this.options[value];
-      console.log(option.rate);
+      var t = this
+      $(".tax > div > .has-items > .item").each(function(index, item) {
+        itemValue = $(item).text();
+        itemRate = t.options[itemValue].rate;
+        itemAmount = $(item).closest(".line_items").find("input[id$='_amount']").val();
+        calculateTotalTax(itemAmount, itemRate);
+      })
     }
   });
 
