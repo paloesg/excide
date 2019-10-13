@@ -85,6 +85,8 @@ function calculateTotalTax(amount, rate) {
         "<input type='number' value='" + (amount-(amount/((100+rate)/100))).toFixed(2) + "' class='form-control form-control-sm' disabled='disabled'>" +
       "</div>" +
     "</div>")
+  } else {
+    $( ".total-tax-row" ).remove();
   }
 }
 
