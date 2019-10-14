@@ -66,14 +66,14 @@ function calculateTotalTax(amount, rate) {
     $("#subtotal-wrapper").append("<div class='form-row total-tax-row'>"+
       "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
         "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
-        "<input type='number' value='" + (amount*(rate/100)).toFixed(2) + "' class='form-control form-control-sm' disabled='disabled'>" +
+        "<input type='number' value='" + (amount*(rate/100)).toFixed(2) + "' class='form-control' disabled='disabled'>" +
       "</div>" +
     "</div>")
   } else if ( $("#invoice_line_amount_type").val() == "inclusive" ) {
     $("#subtotal-wrapper").append("<div class='form-row total-tax-row'>"+
       "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
         "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
-        "<input type='number' value='" + (amount-(amount/((100+rate)/100))).toFixed(2) + "' class='form-control form-control-sm' disabled='disabled'>" +
+        "<input type='number' value='" + (amount-(amount/((100+rate)/100))).toFixed(2) + "' class='form-control' disabled='disabled'>" +
       "</div>" +
     "</div>")
   } else {
