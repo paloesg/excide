@@ -1,7 +1,13 @@
-$(document).on("turbolinks:load", function() { 
-  function magnify(imgID, zoom) {
+$(document).on("turbolinks:load", function() {
+  //check for the container before magnifying
+  if($(".img-magnifier-container").length){
+    // Detect zoomed-image before load image
+    $(".zoomed-image").each(function (k, v) { v.src = v.src; });
+
     var img;
-    img = $("." + imgID);
+    var zoom;
+    zoom = 1.5;
+    img = $("img.zoomed-image");
     //load the image to get the proper height of the image after it is loaded, but have to off the 'load', so that it loads the image on refresh (this is to prevent the function not working on refresh)
     img.off("load").on("load", function(){
       var glass, imageUrl, w, h, bw;
@@ -26,7 +32,7 @@ $(document).on("turbolinks:load", function() {
         e = e || window.event;
         /* Get the x and y positions of the image: */
         a = img[0].getBoundingClientRect();
-        // Calculate the cursor's x and y coordinates, relative to the image: 
+        // Calculate the cursor's x and y coordinates, relative to the image:
         x = e.pageX - a.left;
         y = e.pageY - a.top;
         /* Consider any page scrolling: */
@@ -40,7 +46,7 @@ $(document).on("turbolinks:load", function() {
         glass.css({
           "left": (x - w) + "px",
           "top": (y - h) + "px",
-          // Display what the magnifier glass "sees": 
+          // Display what the magnifier glass "sees":
           "background-position": "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px",
         });
       }
@@ -77,9 +83,5 @@ $(document).on("turbolinks:load", function() {
       glass.on("touchmove", moveMagnifier);
       img.on("touchmove", moveMagnifier);
     });
-  }
-  //check for the container before magnifying
-  if($(".img-magnifier-container").length){
-    magnify("zoomed-image", 1.5);
   }
 });

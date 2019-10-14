@@ -7,5 +7,6 @@ RSpec.describe Availability, type: :model do
   it { should validate_presence_of(:available_date) }
 
   it { should belong_to(:user) }
+  it { should have_many(:allocations) }
 
 end
