@@ -92,6 +92,10 @@ $(document).on("turbolinks:load", function(){
     updateTotalTax();
   });
 
+  $('form').on('click', '.remove_line_items', function(){
+    updateTotalTax();
+  });
+
   // Automatically calculate the amount field
   function calculateAmount() {
     $("input[id$='_quantity'], input[id$='_price']").change(function () {
@@ -111,7 +115,9 @@ $(document).on("turbolinks:load", function(){
       currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
         return a['defaultSelected'];
       })
-      if (currentTaxRate.length) {
+      dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!="1");
+      // Check tax field has value & status of the line item is not destroyed
+      if (currentTaxRate.length && dontDestroyLineItem) {
         taxRate = currentTaxRate[0]['dataset']['rate'];
         currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
         calculateTotalTax(currentAmount, taxRate);
