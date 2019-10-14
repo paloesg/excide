@@ -82,7 +82,7 @@
           .col-md-8
             .form-row
               .form-inline.col-auto.ml-auto
-                = f.label :total, 'Total (including GST): ', class: 'mr-2'
+                = f.label :total, 'Total (including tax): ', class: 'mr-2'
                 = f.number_field :total, class: 'form-control', step: 0.01
 .btn-group role='group'
   - if @previous_document.present?
