@@ -38,12 +38,12 @@
                 - else
                   - wf.documents.each do |d|
                     - if File.extname(d.file_url) == '.pdf'
-                      - display_url = url_for(d.converted_image.variant(resize: "400x550>"))
+                      - display_url = url_for(d.converted_image)
                     - else
                       - display_url = d.file_url
                     = d.filename
                     br
-                    a.image-preview data-container=".image-preview" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid image-preview-style'/>" Preview
+                    a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" Preview
               td
                 - if wf.invoice.blank?
                   i.ti-receipt.icon.mr-3.text-center.medium-icon.gray-icon
