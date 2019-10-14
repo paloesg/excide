@@ -113,11 +113,12 @@ $(document).on("turbolinks:load", function(){
     dropdownTax.each(function(index, item) {
       selectizeItem = dropdownTax.selectize()[index].selectize;
       currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
-        return a['defaultSelected'];
+        this_value = $(item).closest("tr.line_items").find(".tax > div > .has-items > .item");
+        return a["innerText"] == this_value.text();
       })
       dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!="1");
-      // Check tax field has value & status of the line item is not destroyed
-      if (currentTaxRate.length && dontDestroyLineItem) {
+      // Check tax field has value & status of the line item is not destroyed & value not empty
+      if (currentTaxRate.length && dontDestroyLineItem && currentTaxRate[0]["value"]!="") {
         taxRate = currentTaxRate[0]['dataset']['rate'];
         currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
         calculateTotalTax(currentAmount, taxRate);
@@ -191,9 +192,35 @@ $(document).on("turbolinks:load", function(){
     $("select[id$='" + time + "_account']").selectize({
       dropdownParent: "body"
     });
-    $("select[id$='" + time + "_tax']").selectize({
-      dropdownParent: "body"
-    });
+    // Add tax selectize object into array of dropdownTax
+    dropdownTax.push($("select[id$='" + time + "_tax']").selectize({
+      dropdownParent: "body",
+      onInitialize: function () {
+        var s = this;
+        var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
+        // Get selected tax
+        currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
+          return a['defaultSelected'];
+        })
+        if (currentTaxRate.length) {
+          taxRate = currentTaxRate[0]['dataset']['rate'];
+          calculateTotalTax(currentAmount, taxRate);
+        }
+        this.revertSettings.$children.each(function () {
+          $.extend(s.options[this.value], $(this).data());
+        });
+      },
+      onChange: function (value) {
+        var t = this
+        $( ".total-tax-row" ).remove();
+        $(".tax > div > .has-items > .item").each(function(index, item) {
+          itemValue = $(item).text();
+          itemRate = t.options[itemValue].rate;
+          itemAmount = $(item).closest(".line_items").find("input[id$='_amount']").val();
+          calculateTotalTax(itemAmount, itemRate);
+        })
+      }
+    })[0]);
     $("select[id$='" + time + "_tracking_option_1']").selectize({
       dropdownParent: "body"
     });
