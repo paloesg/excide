@@ -161,8 +161,7 @@ $(document).on("turbolinks:load", function(){
       var t = this;
       $( ".total-tax-row" ).remove();
       $(".tax > div > .has-items > .item").each(function(index, item) {
-        let itemValue = $(item).text();
-        let itemRate = t.options[itemValue].rate;
+        let itemRate = t.options[$(item).text()].rate;
         let itemAmount = $(item).closest(".line_items").find("input[id$='_amount']").val();
         calculateTotalTax(itemAmount, itemRate);
       })
