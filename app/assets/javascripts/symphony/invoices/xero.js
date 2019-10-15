@@ -80,7 +80,9 @@ function calculateTotalTax(amount, rate) {
       // Combine tax depend by value of tax rate
       let value = getExistRate.first().find("input").val();
       let combine = parseFloat(value) + parseFloat(result);
-      getExistRate.first().find("input").val(combine.toFixed(2));
+      if (combine) { // Result of combine is a number
+        getExistRate.first().find("input").val(combine.toFixed(2));
+      }
     } else {
       if (rate !== 0.00) { // Dont display calculated tax rate is `0.00%`
         $("#subtotal-wrapper").append("<div class='form-row total-tax-row calculated-tax' data-rate='"+rate+"'>"+
