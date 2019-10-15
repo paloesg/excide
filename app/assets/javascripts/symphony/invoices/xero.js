@@ -199,11 +199,11 @@ $(document).on("turbolinks:load", function(){
         var s = this;
         var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
         // Get selected tax
-        currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
+        let currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
           return a["defaultSelected"];
         })
         if (currentTaxRate.length) {
-          taxRate = currentTaxRate[0]["dataset"]["rate"];
+          let taxRate = currentTaxRate[0]["dataset"]["rate"];
           calculateTotalTax(currentAmount, taxRate);
         }
         this.revertSettings.$children.each(function () {
@@ -214,9 +214,9 @@ $(document).on("turbolinks:load", function(){
         var t = this;
         $( ".total-tax-row" ).remove();
         $(".tax > div > .has-items > .item").each(function(index, item) {
-          itemValue = $(item).text();
-          itemRate = t.options[itemValue].rate;
-          itemAmount = $(item).closest(".line_items").find("input[id$='_amount']").val();
+          let itemValue = $(item).text();
+          let itemRate = t.options[itemValue].rate;
+          let itemAmount = $(item).closest(".line_items").find("input[id$='_amount']").val();
           calculateTotalTax(itemAmount, itemRate);
         })
       }
