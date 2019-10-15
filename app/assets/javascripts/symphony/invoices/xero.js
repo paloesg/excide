@@ -1,3 +1,13 @@
+// Automatically calculate the subtotal field
+function calculateSubtotal() {
+  sum = 0;
+  amounts = $("input[id$='_amount']");
+  amounts.each(function(index, field) {
+      sum += Number($(field).val());
+  });
+  return sum.toFixed(2);
+}
+
 function getXeroItem(itemCode, field) {
   $(".loading").show();
   $.get("/symphony/xero_item_code", { "item_code": itemCode })
@@ -47,16 +57,6 @@ function getXeroItem(itemCode, field) {
 }
 
 var dropdownTax;
-
-// Automatically calculate the subtotal field
-function calculateSubtotal() {
-  sum = 0;
-  amounts = $("input[id$='_amount']");
-  amounts.each(function(index, field) {
-      sum += Number($(field).val());
-  });
-  return sum.toFixed(2);
-}
 
 // Calculate total tax & append element
 function calculateTotalTax(amount, rate) {
