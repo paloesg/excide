@@ -127,15 +127,15 @@ $(document).on("turbolinks:load", function(){
   }
 
   dropdownTax = $(".dropdown-tax").selectize({
-    onInitialize: function () {
+    onInitialize() {
       var s = this;
       var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
       // Get selected tax
       let currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
-        return a['defaultSelected'];
+        return a["defaultSelected"];
       })
       if (currentTaxRate.length) {
-        let taxRate = currentTaxRate[0]['dataset']['rate'];
+        let taxRate = currentTaxRate[0]["dataset"]["rate"];
         calculateTotalTax(currentAmount, taxRate);
       }
       this.revertSettings.$children.each(function () {
