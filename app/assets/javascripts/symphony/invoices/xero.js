@@ -62,26 +62,31 @@ var dropdownTax;
 function calculateTotalTax(amount, rate) {
   amount = parseFloat(amount);
   rate = parseFloat(rate);
-  if ( $("#invoice_line_amount_type").val() === "exclusive" ) {
-    $("#subtotal-wrapper").append("<div class='form-row total-tax-row'>"+
-      "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
-        "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
-        "<input type='number' value='" + (amount*(rate/100)).toFixed(2) + "' class='form-control' disabled='disabled'>" +
-      "</div>" +
-    "</div>");
-  } else if ( $("#invoice_line_amount_type").val() === "inclusive" ) {
-    $("#subtotal-wrapper").append("<div class='form-row total-tax-row'>"+
-      "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
-        "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
-        "<input type='number' value='" + (amount-(amount/((100+rate)/100))).toFixed(2) + "' class='form-control' disabled='disabled'>" +
-      "</div>" +
-    "</div>");
-  } else {
-    $( ".total-tax-row" ).remove();
+  // Dont calculate if tax rate is `0.00%`
+  if (rate !== 0.00) {
+    if ( $("#invoice_line_amount_type").val() === "exclusive" ) {
+      $("#subtotal-wrapper").append("<div class='form-row total-tax-row calculated-tax'>"+
+        "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
+          "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
+          "<input type='number' value='" + (amount*(rate/100)).toFixed(2) + "' class='form-control' disabled='disabled'>" +
+        "</div>" +
+      "</div>");
+    } else if ( $("#invoice_line_amount_type").val() === "inclusive" ) {
+      $("#subtotal-wrapper").append("<div class='form-row total-tax-row calculated-tax'>"+
+        "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
+          "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
+          "<input type='number' value='" + (amount-(amount/((100+rate)/100))).toFixed(2) + "' class='form-control' disabled='disabled'>" +
+        "</div>" +
+      "</div>");
+    } else {
+      $( ".total-tax-row" ).remove();
+    }
   }
 }
 
 $(document).on("turbolinks:load", function(){
+  $(".loading").hide();
+
   function updateTotalTax() {
     $( ".total-tax-row" ).remove();
     dropdownTax.each(function(index, item) {
