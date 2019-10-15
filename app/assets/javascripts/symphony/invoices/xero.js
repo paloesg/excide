@@ -64,16 +64,6 @@ function calculateTotalTax(amount, rate) {
   rate = parseFloat(rate);
   let result = 0.0;
 
-  if ( $("#invoice_line_amount_type").val() === "exclusive" ) {
-    result = (amount*(rate/100)).toFixed(2);
-    addElementCalculatedTax(result);
-  } else if ( $("#invoice_line_amount_type").val() === "inclusive" ) {
-    result = (amount-(amount/((100+rate)/100))).toFixed(2)
-    addElementCalculatedTax(result);
-  } else {
-    $( ".total-tax-row" ).remove();
-  }
-
   function addElementCalculatedTax(result) {
     let getExistRate = $(".total-tax-row[data-rate='"+rate+"']");
     if (getExistRate.length) {
@@ -93,6 +83,16 @@ function calculateTotalTax(amount, rate) {
         "</div>");
       }
     }
+  }
+
+  if ( $("#invoice_line_amount_type").val() === "exclusive" ) {
+    result = (amount*(rate/100)).toFixed(2);
+    addElementCalculatedTax(result);
+  } else if ( $("#invoice_line_amount_type").val() === "inclusive" ) {
+    result = (amount-(amount/((100+rate)/100))).toFixed(2);
+    addElementCalculatedTax(result);
+  } else {
+    $( ".total-tax-row" ).remove();
   }
 }
 
