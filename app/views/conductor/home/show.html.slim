@@ -59,7 +59,8 @@
             th Time
         tbody
           - @activities.take(10).each do |activity|
-            tr = render_activity activity
+            - if activity.recipient.company_id == current_user.company_id
+              tr = render_activity activity
       - if @activities.count > 10
         .card-footer
           = link_to "View more...", activities_conductor_events_path, class: 'btn btn-sm btn-outline-secondary float-right'
