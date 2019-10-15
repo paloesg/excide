@@ -601,5 +601,4 @@ ActiveRecord::Schema.define(version: 2019_10_14_161509) do
   add_foreign_key "workflows", "templates"
   add_foreign_key "workflows", "users"
   add_foreign_key "workflows", "workflow_actions"
-  add_foreign_key "xero_contacts", "companies"
 end
