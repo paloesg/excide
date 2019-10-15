@@ -80,7 +80,7 @@ function calculateTotalTax(amount, rate) {
       // Combine tax depend by value of tax rate
       let value = getExistRate.first().find("input").val();
       let combine = parseFloat(value) + parseFloat(result);
-      if (combine) { // Result of combine is a number
+      if (combine) { // Result of combine should be a number
         getExistRate.first().find("input").val(combine.toFixed(2));
       }
     } else {
