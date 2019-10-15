@@ -93,7 +93,7 @@ $(document).on("turbolinks:load", function(){
       let dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!=="1");
       // Check tax field has value & status of the line item is not destroyed & value not empty
       if (currentTaxRate.length && dontDestroyLineItem && currentTaxRate[0]["value"]!=="") {
-        let taxRate = currentTaxRate[0]['dataset']['rate'];
+        let taxRate = currentTaxRate[0]["dataset"]["rate"];
         let currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
         calculateTotalTax(currentAmount, taxRate);
       }
