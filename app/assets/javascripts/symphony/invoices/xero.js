@@ -195,7 +195,7 @@ $(document).on("turbolinks:load", function(){
     // Add tax selectize object into array of dropdownTax
     dropdownTax.push($("select[id$='" + time + "_tax']").selectize({
       dropdownParent: "body",
-      onInitialize: function () {
+      onInitialize() {
         var s = this;
         var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
         // Get selected tax
