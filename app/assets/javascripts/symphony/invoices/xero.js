@@ -62,14 +62,14 @@ var dropdownTax;
 function calculateTotalTax(amount, rate) {
   amount = parseFloat(amount);
   rate = parseFloat(rate);
-  if ( $("#invoice_line_amount_type").val() == "exclusive" ) {
+  if ( $("#invoice_line_amount_type").val() === "exclusive" ) {
     $("#subtotal-wrapper").append("<div class='form-row total-tax-row'>"+
       "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
         "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
         "<input type='number' value='" + (amount*(rate/100)).toFixed(2) + "' class='form-control' disabled='disabled'>" +
       "</div>" +
     "</div>")
-  } else if ( $("#invoice_line_amount_type").val() == "inclusive" ) {
+  } else if ( $("#invoice_line_amount_type").val() === "inclusive" ) {
     $("#subtotal-wrapper").append("<div class='form-row total-tax-row'>"+
       "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
         "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
@@ -114,7 +114,7 @@ $(document).on("turbolinks:load", function(){
       let selectizeItem = dropdownTax.selectize()[index].selectize;
       let currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
         let thisValue = $(item).closest("tr.line_items").find(".tax > div > .has-items > .item");
-        return a["innerText"] == thisValue.text();
+        return a["innerText"] === thisValue.text();
       })
       let dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!="1");
       // Check tax field has value & status of the line item is not destroyed & value not empty
