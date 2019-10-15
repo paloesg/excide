@@ -98,7 +98,7 @@ $(document).on("turbolinks:load", function(){
         calculateTotalTax(currentAmount, taxRate);
       }
     })
-  };
+  }
 
   $(".loading").hide();
   // dropdownParent is required to avoid dropdown clipping issue so that the dropdown isn't a child of an element with clipping
@@ -124,7 +124,7 @@ $(document).on("turbolinks:load", function(){
       $("input#subtotal").val( calculateSubtotal() );
       updateTotalTax();
     })
-  };
+  }
 
   dropdownTax = $(".dropdown-tax").selectize({
     onInitialize: function () {
