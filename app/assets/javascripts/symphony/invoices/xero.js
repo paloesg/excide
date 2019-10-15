@@ -62,7 +62,7 @@ var dropdownTax;
 function calculateTotalTax(amount, rate) {
   amount = parseFloat(amount);
   rate = parseFloat(rate);
-  let result = 0;
+  let result = 0.0;
 
   if ( $("#invoice_line_amount_type").val() === "exclusive" ) {
     result = (amount*(rate/100)).toFixed(2);
@@ -75,13 +75,21 @@ function calculateTotalTax(amount, rate) {
   }
 
   function addElementCalculatedTax(result) {
-    if (rate !== 0.00) { // Dont display calculated tax rate is `0.00%`
-      $("#subtotal-wrapper").append("<div class='form-row total-tax-row calculated-tax'>"+
-        "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
-          "<label class='mr-2'> Total tax "+  rate + "%  </label>" +
-          "<input type='number' value='" + result + "' class='form-control' disabled='disabled'>" +
-        "</div>" +
-      "</div>");
+    let getExistRate = $(".total-tax-row[data-rate='"+rate+"']");
+    if (getExistRate.length) {
+      // Combine tax depend by value of tax rate
+      let value = getExistRate.first().find("input").val();
+      let combine = parseFloat(value) + parseFloat(result);
+      getExistRate.first().find("input").val(combine.toFixed(2));
+    } else {
+      if (rate !== 0.00) { // Dont display calculated tax rate is `0.00%`
+        $("#subtotal-wrapper").append("<div class='form-row total-tax-row calculated-tax' data-rate='"+rate+"'>"+
+          "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
+            "<label class='mr-2'> Total tax "+ rate + "%  </label>" +
+            "<input type='number' value='" + result + "' class='form-control' disabled='disabled'>" +
+          "</div>" +
+        "</div>");
+      }
     }
   }
 }
