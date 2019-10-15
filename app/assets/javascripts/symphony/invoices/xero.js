@@ -1,7 +1,7 @@
 // Automatically calculate the subtotal field
 function calculateSubtotal() {
-  sum = 0;
-  amounts = $("input[id$='_amount']");
+  let sum = 0;
+  let amounts = $("input[id$='_amount']");
   amounts.each(function(index, field) {
       sum += Number($(field).val());
   });
@@ -99,9 +99,9 @@ $(document).on("turbolinks:load", function(){
   // Automatically calculate the amount field
   function calculateAmount() {
     $("input[id$='_quantity'], input[id$='_price']").change(function () {
-      quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
-      price = $(this).closest(".line_items").find("input[id$='_price']").val();
-      amount = $(this).closest(".line_items").find("input[id$='_amount']");
+      let quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
+      let price = $(this).closest(".line_items").find("input[id$='_price']").val();
+      let amount = $(this).closest(".line_items").find("input[id$='_amount']");
       amount.val( (quantity*price).toFixed(2) );
       $("input#subtotal").val( calculateSubtotal() );
       updateTotalTax();
@@ -111,16 +111,16 @@ $(document).on("turbolinks:load", function(){
   function updateTotalTax() {
     $( ".total-tax-row" ).remove();
     dropdownTax.each(function(index, item) {
-      selectizeItem = dropdownTax.selectize()[index].selectize;
-      currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
-        this_value = $(item).closest("tr.line_items").find(".tax > div > .has-items > .item");
-        return a["innerText"] == this_value.text();
+      let selectizeItem = dropdownTax.selectize()[index].selectize;
+      let currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
+        let thisValue = $(item).closest("tr.line_items").find(".tax > div > .has-items > .item");
+        return a["innerText"] == thisValue.text();
       })
-      dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!="1");
+      let dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!="1");
       // Check tax field has value & status of the line item is not destroyed & value not empty
       if (currentTaxRate.length && dontDestroyLineItem && currentTaxRate[0]["value"]!="") {
-        taxRate = currentTaxRate[0]['dataset']['rate'];
-        currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
+        let taxRate = currentTaxRate[0]['dataset']['rate'];
+        let currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
         calculateTotalTax(currentAmount, taxRate);
       }
     })
@@ -131,11 +131,11 @@ $(document).on("turbolinks:load", function(){
       var s = this;
       var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
       // Get selected tax
-      currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
+      let currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
         return a['defaultSelected'];
       })
       if (currentTaxRate.length) {
-        taxRate = currentTaxRate[0]['dataset']['rate'];
+        let taxRate = currentTaxRate[0]['dataset']['rate'];
         calculateTotalTax(currentAmount, taxRate);
       }
       this.revertSettings.$children.each(function () {
@@ -146,9 +146,9 @@ $(document).on("turbolinks:load", function(){
       var t = this
       $( ".total-tax-row" ).remove();
       $(".tax > div > .has-items > .item").each(function(index, item) {
-        itemValue = $(item).text();
-        itemRate = t.options[itemValue].rate;
-        itemAmount = $(item).closest(".line_items").find("input[id$='_amount']").val();
+        let itemValue = $(item).text();
+        let itemRate = t.options[itemValue].rate;
+        let itemAmount = $(item).closest(".line_items").find("input[id$='_amount']").val();
         calculateTotalTax(itemAmount, itemRate);
       })
     }
