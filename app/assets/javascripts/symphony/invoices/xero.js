@@ -143,7 +143,7 @@ $(document).on("turbolinks:load", function(){
       });
     },
     onChange: function (value) {
-      var t = this
+      var t = this;
       $( ".total-tax-row" ).remove();
       $(".tax > div > .has-items > .item").each(function(index, item) {
         let itemValue = $(item).text();
