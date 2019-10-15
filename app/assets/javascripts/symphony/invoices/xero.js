@@ -82,6 +82,24 @@ function calculateTotalTax(amount, rate) {
 }
 
 $(document).on("turbolinks:load", function(){
+  function updateTotalTax() {
+    $( ".total-tax-row" ).remove();
+    dropdownTax.each(function(index, item) {
+      let selectizeItem = dropdownTax.selectize()[index].selectize;
+      let currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
+        let thisValue = $(item).closest("tr.line_items").find(".tax > div > .has-items > .item");
+        return a["innerText"] === thisValue.text();
+      })
+      let dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!="1");
+      // Check tax field has value & status of the line item is not destroyed & value not empty
+      if (currentTaxRate.length && dontDestroyLineItem && currentTaxRate[0]["value"]!="") {
+        let taxRate = currentTaxRate[0]['dataset']['rate'];
+        let currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
+        calculateTotalTax(currentAmount, taxRate);
+      }
+    })
+  };
+
   $(".loading").hide();
   // dropdownParent is required to avoid dropdown clipping issue so that the dropdown isn't a child of an element with clipping
   $(".dropdown-overlay").selectize({
@@ -105,24 +123,6 @@ $(document).on("turbolinks:load", function(){
       amount.val( (quantity*price).toFixed(2) );
       $("input#subtotal").val( calculateSubtotal() );
       updateTotalTax();
-    })
-  };
-
-  function updateTotalTax() {
-    $( ".total-tax-row" ).remove();
-    dropdownTax.each(function(index, item) {
-      let selectizeItem = dropdownTax.selectize()[index].selectize;
-      let currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
-        let thisValue = $(item).closest("tr.line_items").find(".tax > div > .has-items > .item");
-        return a["innerText"] === thisValue.text();
-      })
-      let dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!="1");
-      // Check tax field has value & status of the line item is not destroyed & value not empty
-      if (currentTaxRate.length && dontDestroyLineItem && currentTaxRate[0]["value"]!="") {
-        let taxRate = currentTaxRate[0]['dataset']['rate'];
-        let currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
-        calculateTotalTax(currentAmount, taxRate);
-      }
     })
   };
 
