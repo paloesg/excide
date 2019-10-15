@@ -92,7 +92,7 @@ $(document).on("turbolinks:load", function(){
     updateTotalTax();
   });
 
-  $('form').on('click', '.remove_line_items', function(){
+  $("form").on("click", ".remove_line_items", function(){
     updateTotalTax();
   });
 
@@ -200,10 +200,10 @@ $(document).on("turbolinks:load", function(){
         var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
         // Get selected tax
         currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
-          return a['defaultSelected'];
+          return a["defaultSelected"];
         })
         if (currentTaxRate.length) {
-          taxRate = currentTaxRate[0]['dataset']['rate'];
+          taxRate = currentTaxRate[0]["dataset"]["rate"];
           calculateTotalTax(currentAmount, taxRate);
         }
         this.revertSettings.$children.each(function () {
