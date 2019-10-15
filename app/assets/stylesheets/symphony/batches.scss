@@ -80,3 +80,17 @@ input.enlarged-checkbox{
 .gray-icon {
   color: gray;
 }
+
+.rejected-invoice-circle {
+  position: relative;
+  left: 35px;
+  bottom: 30px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 14px;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+  background: red;
+}
