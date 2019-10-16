@@ -14,7 +14,6 @@ class Document < ApplicationRecord
 
   validates :file_url, :filename, presence: true
   validate :file_format, if: :file_url
-  validates :file_url, uniqueness: true
 
   has_one_attached :converted_image
 
