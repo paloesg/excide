@@ -20,7 +20,6 @@ class Symphony::InvoicesController < ApplicationController
     authorize @invoice
 
     @invoice.build_line_item
-    @xero = Xero.new(@company)
   end
 
   def create
@@ -54,7 +53,6 @@ class Symphony::InvoicesController < ApplicationController
   def edit
     authorize @invoice
     if @invoice.xero_total_mismatch?
-      @xero = Xero.new(@company)
       @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
       #get the total of the sent invoice in Xero
       @invoice.add_line_item_for_rounding(@xero_invoice.total)
@@ -64,7 +62,6 @@ class Symphony::InvoicesController < ApplicationController
 
   def update
     authorize @invoice
-    @xero = Xero.new(@company)
     if params[:invoice][:xero_contact_name].blank?
       @invoice.xero_contact_name = @xero.get_contact(params[:invoice][:xero_contact_id]).name
     else
@@ -239,7 +236,7 @@ class Symphony::InvoicesController < ApplicationController
     # redirect page
     if next_workflow_invoice.present?
       redirect_to symphony_invoice_path(workflow_name: next_workflow_invoice.template.slug, workflow_id: next_workflow_invoice.id, id: next_workflow_invoice.invoice.id)
-    else      
+    else
       redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
     end
   end
@@ -252,7 +249,7 @@ class Symphony::InvoicesController < ApplicationController
     # redirect page
     if prev_workflow_invoice.present?
       redirect_to symphony_invoice_path(workflow_name: prev_workflow_invoice.template.slug, workflow_id: prev_workflow_invoice.id, id: prev_workflow_invoice.invoice.id)
-    else      
+    else
       redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
     end
   end
@@ -304,6 +301,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def get_xero_details
+    @xero = Xero.new(current_user.company)
     @clients                = @xero.get_contacts
     # Combine account codes and account names as a string
     @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing
