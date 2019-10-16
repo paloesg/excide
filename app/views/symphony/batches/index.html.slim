@@ -7,6 +7,8 @@
     h1 Symphony AP
 .row
   .col-sm-12
+    .loading
+      .loader
     .card
       h5.card-header
         | List of batches
@@ -26,6 +28,8 @@
               th No. Completed Workflows
               th No. of Workflows
               th Progress
+              - if current_user.has_role? :superadmin
+                th Action
           tbody
             - 7.times do
               tr.batch-loader
