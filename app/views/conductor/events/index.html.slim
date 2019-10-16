@@ -9,7 +9,7 @@
     h1
       | Events Listing - #{@date_from.strftime("%B")}
       = link_to 'Event Types', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, :any
-      = link_to 'New Event', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1' unless @user.has_role? :associate, :any
+      = link_to 'New Event', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1' if @user.has_role?(:staffer, @company) or @user.has_role?(:admin, @company)
 .row
   .col-sm-12.mb-3
     .btn-group.float-right role='group'
