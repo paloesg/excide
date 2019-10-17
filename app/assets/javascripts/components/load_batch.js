@@ -1,5 +1,5 @@
 function delete_batch(template, id){
-  if (confirm('Are you sure you want to delete this?')) {
+  if (confirm('Are you sure you want to delete this batch and all its data?')) {
     $('.loading').show();
     $.ajax({
       url: "batches/"+ template +"/"+ id,
