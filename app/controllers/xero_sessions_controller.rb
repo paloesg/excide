@@ -1,4 +1,6 @@
 class XeroSessionsController < ApplicationController
+  include Adapter
+
   def connect_to_xero
     @xero_client = Xeroizer::PartnerApplication.new(
       ENV["XERO_CONSUMER_KEY"],
@@ -39,5 +41,14 @@ class XeroSessionsController < ApplicationController
     current_user.company.update_attributes(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)
 
     redirect_to edit_company_path, notice: "You have been disconnected from Xero."
+  end
+
+  def update_contacts_from_xero
+    @xero_client = Xero.new(current_user.company)
+    @xero_client.get_contacts.each do |contact|
+      xc = XeroContact.find_or_initialize_by(contact_id: contact.contact_id)
+      xc.update(name: contact.name, company: current_user.company)
+    end
+    redirect_to edit_company_path, notice: "Contacts have been updated from Xero."
   end
 end
