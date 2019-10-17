@@ -48,22 +48,21 @@
                 td = event.location
       - else
         .card-body No upcoming events for this month.
-  - unless current_user.has_role? :associate, :any
-    .col-sm-6.col-xs-12
-      .card
-        h6.card-header Event History
-        table.table
-          thead
-            tr
-              th User
-              th Action
-              th Time
-          tbody
-            - @activities.take(10).each do |activity|
-              tr = render_activity activity
-        - if @activities.count > 10
-          .card-footer
-            = link_to "View more...", activities_conductor_events_path, class: 'btn btn-sm btn-outline-secondary float-right'
+  .col-sm-6.col-xs-12
+    .card
+      h6.card-header Event History
+      table.table
+        thead
+          tr
+            th User
+            th Action
+            th Time
+        tbody
+          - @activities.take(10).each do |activity|
+            tr = render_activity activity
+      - if @activities.count > 10
+        .card-footer
+          = link_to "View more...", activities_conductor_events_path, class: 'btn btn-sm btn-outline-secondary float-right'
 
 #new-event.d-none
   = form_for @event, remote: true, url: conductor_events_path do |f|

@@ -63,19 +63,26 @@
             th.minimize-header-text Account
             th.minimize-header-text Tax
             th.minimize-header-text #{@tracking_name[0]&.name}
-            th.minimize-header-text #{@tracking_name[1]&.name}
+            - if @tracking_categories_2.present?
+              th.minimize-header-text #{@tracking_name[1]&.name}
+            th.minimize-header-text Amount
           tbody.data-attributes
             tr
             = f.fields_for :line_items do |line_item|
               = render 'line_items', f: line_item
       .card-body
         .row
+          #subtotal-wrapper.col-md-12
+            .form-row
+              .form-inline.col-auto.ml-auto.mb-2.pull-right
+                = f.label :subtotal, 'Subtotal', class: 'mr-2'
+                = number_field_tag :subtotal, nil, class: 'form-control', disabled: true
           .col-md-4
-            = link_to_add_line_items "Add Line Item", f, :line_items
+            = link_to_add_line_items "Add Line Item", f, :line_items if policy(@workflow).update?
           .col-md-8
             .form-row
               .form-inline.col-auto.ml-auto
-                = f.label :total, 'Total (including GST): ', class: 'mr-2'
+                = f.label :total, 'Total (including tax): ', class: 'mr-2'
                 = f.number_field :total, class: 'form-control', step: 0.01
 .btn-group role='group'
   - if @previous_document.present?

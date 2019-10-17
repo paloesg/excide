@@ -101,7 +101,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   end
 
   def set_associate
-    @users = User.where(company: @company).with_role :associate, @company
+    @users = User.with_role(:associate, @company).uniq
   end
 
   def set_time_header
