@@ -25,7 +25,10 @@ class XeroSessionsController < ApplicationController
       current_user.company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle, xero_organisation_name: @xero_client.Organisation.first.name)
       session.delete(:request_token)
       session.delete(:request_secret)
-      @xero_client.Contact.all.map{|c| XeroContact.create(name: c.name, contact_id: c.contact_id, company: company)}
+      @xero_client.Contact.all.each do |contact|
+        xc = XeroContact.find_or_initialize_by(contact_id: contact.contact_id)
+        xc.update(name: contact.name, company: current_user.company)
+      end
       redirect_to symphony_root_path, notice: "User signed in and connected to Xero."
     else
       redirect_to root_path, alert: "Connection to Xero failed."
