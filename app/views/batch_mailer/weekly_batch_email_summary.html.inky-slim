@@ -1,0 +1,32 @@
+container
+  row.collapse
+    columns small="6" valign="middle"
+      = image_tag("https://excide.s3-ap-southeast-1.amazonaws.com/excide-logo.png", style: "width: 50%; height: 50%")
+  spacer size="16"
+  row
+    columns
+      p Hi Chris,
+      - if @batches.present?
+        p Here is last week update (Every monday report):
+        table border="1"
+          thead
+            tr
+              th Company
+              th Batch ID
+              th Created Date
+              th Created By
+              th Progress (%)
+              th Last modify date
+          tbody
+            - @batches.each do |batch, data|
+              - data.each_with_index do |m, index|
+                tr
+                  - if index.zero?
+                    td rowspan="#{data.count}" = m.company&.name
+                  td = link_to m.name, symphony_batch_url(id: m.id, batch_template_name: m.template.slug)
+                  td = m.created_at.strftime('%m/%d/%Y %H:%M')
+                  td = m.user&.full_name
+                  td = m.action_completed_progress
+                  td = m.updated_at.strftime('%m/%d/%Y %H:%M')
+      - else
+        p There is no batch updates for the last week

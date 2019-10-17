@@ -46,4 +46,9 @@ namespace :scheduler do
       end
     end
   end
+
+  task :weekly_batch_email_summary => :environment do
+    batches = Batch.where("created_at >= ?", 1.week.ago.utc)
+    BatchMailer.weekly_batch_email_summary.deliver_later if batches.present?
+  end
 end
