@@ -29,11 +29,15 @@ class Symphony::InvoicesController < ApplicationController
     @invoice.user_id = current_user.id
     @invoice.company_id = current_user.company_id
     if @invoice.xero_contact_id.present?
-      @invoice.xero_contact_name = @xero.get_contact(@invoice.xero_contact_id).name
+      @invoice.xero_contact_name = @clients.find_by(contact_id: @invoice.xero_contact_id).name
     else
       #if invoice.xero_contact_id is not present, then create a contact in Xero
       contact_id = @xero.create_contact(name: @invoice.xero_contact_name)
       @invoice.xero_contact_id = contact_id
+      @xero_contact = XeroContact.create(name: @invoice.xero_contact_name, contact_id: contact_id, company: @company)
+      unless @xero_contact.save
+        render 'new'
+      end
     end
 
     if @invoice.save
@@ -63,10 +67,11 @@ class Symphony::InvoicesController < ApplicationController
   def update
     authorize @invoice
     if params[:invoice][:xero_contact_name].blank?
-      @invoice.xero_contact_name = @xero.get_contact(params[:invoice][:xero_contact_id]).name
+      @invoice.xero_contact_name = @clients.find_by(contact_id: params[:invoice][:xero_contact_id]).name
     else
       contact_id = @xero.create_contact(name: params[:invoice][:xero_contact_name])
       @invoice.xero_contact_id = contact_id
+      @xero_contact = XeroContact.create(name: params[:invoice][:xero_contact_name], contact_id: contact_id, company: @company)
     end
     @invoice.save
     if @invoice.update(invoice_params)
@@ -302,7 +307,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def get_xero_details
     @xero = Xero.new(current_user.company)
-    @clients                = @xero.get_contacts
+    @clients                = @company.xero_contacts
     # Combine account codes and account names as a string
     @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing
     @full_tax_code          = @xero.get_tax_rates.map.map{|t| [t.name + ' (' + t.display_tax_rate.to_s + '%) - ' + t.tax_type, {'data-rate': "#{t.display_tax_rate}"}] } # Combine tax codes and tax names as a string
