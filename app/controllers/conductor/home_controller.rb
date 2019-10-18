@@ -31,7 +31,9 @@ class Conductor::HomeController < ApplicationController
     @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role?(:associate, @company)
     @upcoming_events = @events.where("events.end_time > ?", Time.current)
 
-    @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Event").order("created_at desc")
+    # Get event id to validate activities only event(by recipient_id) with current company will show
+    @recipient_event_ids = Event.company(@company.id).pluck(:id)
+    @activities = PublicActivity::Activity.includes(:owner, :recipient).where(recipient_type: "Event").where(recipient_id: @recipient_event_ids).order("created_at desc")
 
     @event = Event.new
     @event.build_address
