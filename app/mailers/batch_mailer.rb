@@ -10,7 +10,7 @@ class BatchMailer < ApplicationMailer
 
   def weekly_batch_email_summary
     @batches = Batch.includes(:company).where("updated_at >= ?", 1.week.ago.utc).group_by(&:company_id)
-    mail(to: "christopher@excide.co", subject: "[Batch Weekly Report]")
+    mail(to: "chris@excide.co", subject: "[Batch Weekly Report]")
   end
 
 end
