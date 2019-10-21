@@ -41,6 +41,6 @@ class TemplatePolicy < ApplicationPolicy
 
   private
   def user_admin?
-    user.has_role?(:admin, user.company)
+    user.has_role?(:admin, user.company) or user.has_role? :superadmin
   end
 end
