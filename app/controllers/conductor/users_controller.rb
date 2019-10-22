@@ -7,7 +7,8 @@ class Conductor::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.with_role(:associate, @company).uniq
+    @user_roles = User.with_role(:associate, @company) + User.with_role(:consultant, @company)
+    @users = User.where(id: @user_roles.pluck(:id).uniq).order(id: :asc)
   end
 
   def show
