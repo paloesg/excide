@@ -7,16 +7,16 @@ container
     columns
       p Hi Chris,
       - if @batches.present?
-        p Here is last week update (Every monday report):
+        p Here is your weekly report on batch progress:
         table border="1"
           thead
             tr
               th Company
               th Batch ID
-              th Created Date
+              th Date Created
               th Created By
               th Progress (%)
-              th Last modify date
+              th Last Modified
           tbody
             - @batches.each do |batch, data|
               - data.each_with_index do |m, index|
