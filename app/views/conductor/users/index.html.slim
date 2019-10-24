@@ -34,7 +34,7 @@
                 td = u.id
                 td = u.first_name
                 td = u.last_name
-                td = u.roles.map{|r| r.name}.join(", ")
+                td = u.roles.map{|r| r.name.capitalize}.join(", ")
                 td = u.email
                 td = u.contact_number
                 td = u.max_hours_per_week
