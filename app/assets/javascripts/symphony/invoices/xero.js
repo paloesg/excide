@@ -3,8 +3,9 @@ function calculateSubtotal() {
   let sum = 0;
   let amounts = $("input[id$='_amount']");
   amounts.each(function(index, field) {
-      sum += Number($(field).val());
+      sum += Number(convertCurrency($( field).val()));
   });
+  console.log(sum)
   return sum.toFixed(2);
 }
 
@@ -16,7 +17,7 @@ function getXeroItem(itemCode, field) {
     $("#invoice_line_items_attributes_"+field+"_quantity").val(1);
     $("#invoice_line_items_attributes_"+field+"_price").val(data.sales_details.unit_price);
     $("#invoice_line_items_attributes_"+field+"_amount").val(1*data.sales_details.unit_price);
-    $("input#subtotal").val( calculateSubtotal() );
+    $("input#subtotal").val( ReplaceNumberWithCurrencyFormat(calculateSubtotal()) );
 
     //selectize account
     if (data.sales_details.account_code) {
@@ -78,7 +79,7 @@ function calculateTotalTax(amount, rate) {
         $("#subtotal-wrapper").append("<div class='form-row total-tax-row calculated-tax' data-rate='"+rate+"'>"+
           "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
             "<label class='mr-2'> Total tax "+ rate + "%  </label>" +
-            "<input type='number' value='" + result + "' class='form-control' disabled='disabled'>" +
+            "<input type='text' value='" + ReplaceNumberWithCurrencyFormat(result) + "' class='form-control' disabled='disabled'>" +
           "</div>" +
         "</div>");
       }
@@ -94,6 +95,23 @@ function calculateTotalTax(amount, rate) {
   } else {
     $( ".total-tax-row" ).remove();
   }
+}
+
+function convertCurrency(currency){ 
+      
+  // Using replace() method 
+  // to make currency string suitable  
+  // for parseFloat() to convert  
+  var temp = currency.replace(/[^0-9.-]+/g,""); 
+    
+  // Converting string to float 
+  // or double and return 
+  return parseFloat(temp); 
+    
+}
+
+function ReplaceNumberWithCurrencyFormat(num) {
+  return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
 $(document).on("turbolinks:load", function(){
@@ -135,11 +153,14 @@ $(document).on("turbolinks:load", function(){
   function calculateAmount() {
     $("input[id$='_quantity'], input[id$='_price']").change(function () {
       let quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
-      let price = $(this).closest(".line_items").find("input[id$='_price']").val();
+      let price = $(this).closest(".line_items").find("input[id$='_price']");
       let amount = $(this).closest(".line_items").find("input[id$='_amount']");
-      amount.val( (quantity*price).toFixed(2) );
-      $("input#subtotal").val( calculateSubtotal() );
+      amount.val(quantity*convertCurrency(price.val()) );
+      $("input#subtotal").val( ReplaceNumberWithCurrencyFormat(calculateSubtotal()) );
       updateTotalTax();
+      amount.val(ReplaceNumberWithCurrencyFormat(amount.val()));
+      
+      price.val(ReplaceNumberWithCurrencyFormat(convertCurrency(price.val()))); 
     })
   }
 
@@ -190,7 +211,7 @@ $(document).on("turbolinks:load", function(){
 
   // Run calculate after the page is loaded
   calculateAmount();
-  $("input#subtotal").val( calculateSubtotal() );
+  $("input#subtotal").val( ReplaceNumberWithCurrencyFormat(calculateSubtotal()) );
 
   //add attribute fields with selectize drop down (for creating invoice and data entry)
   $("form").on("click", ".add_attribute_fields", function(event) {
