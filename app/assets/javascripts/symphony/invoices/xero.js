@@ -5,8 +5,7 @@ function calculateSubtotal() {
   amounts.each(function(index, field) {
       sum += Number(convertCurrency($( field).val()));
   });
-  console.log(sum)
-  return sum.toFixed(2);
+  return sum ? sum.toFixed(2) : 0;
 }
 
 function getXeroItem(itemCode, field) {
@@ -153,16 +152,24 @@ $(document).on("turbolinks:load", function(){
   function calculateAmount() {
     $("input[id$='_quantity'], input[id$='_price']").change(function () {
       let quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
-      let price = $(this).closest(".line_items").find("input[id$='_price']");
+      let input_price = $(this).closest(".line_items").find("input[id$='_price']");
       let amount = $(this).closest(".line_items").find("input[id$='_amount']");
-      amount.val(quantity*convertCurrency(price.val()) );
+      price = input_price.val() ? convertCurrency(input_price.val()) : 0;
+      amount.val(price == 0? 0 : quantity*price);
       $("input#subtotal").val( ReplaceNumberWithCurrencyFormat(calculateSubtotal()) );
       updateTotalTax();
-      amount.val(ReplaceNumberWithCurrencyFormat(amount.val()));
-      
-      price.val(ReplaceNumberWithCurrencyFormat(convertCurrency(price.val()))); 
+      //replace to currency format
+      amount.val(ReplaceNumberWithCurrencyFormat(amount.val()));      
+      input_price.val(ReplaceNumberWithCurrencyFormat(price)); 
     })
   }
+
+  $("input[id$='_price']").keydown(function (event) {
+    // check if tab keyboard button pressed
+    if (event.keyCode === 9) {
+      calculateAmount();
+    }
+  });
 
   dropdownTax = $(".dropdown-tax").selectize({
     onInitialize() {
