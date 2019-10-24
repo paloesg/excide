@@ -274,4 +274,32 @@ $(document).on("turbolinks:load", function(){
     calculateAmount();
     return event.preventDefault();
   });
+
+  $("form.edit_invoice").submit(function() {
+    let amounts = $("input[id$='_amount']");
+    amounts.each(function(index, field) {
+      $( field).val(convertCurrency($( field).val()))
+    });
+
+    let prices = $("input[id$='_price']");
+    prices.each(function(index, field) {
+      $( field).val(convertCurrency($( field).val()))
+    });
+
+    $("input#subtotal").val(convertCurrency($("input#subtotal").val()));
+  });
+
+  $("form.new_invoice").submit(function() {
+    let amounts = $("input[id$='_amount']");
+    amounts.each(function(index, field) {
+      $( field).val(convertCurrency($( field).val()))
+    });
+
+    let prices = $("input[id$='_price']");
+    prices.each(function(index, field) {
+      $( field).val(convertCurrency($( field).val()))
+    });
+
+    $("input#subtotal").val(convertCurrency($("input#subtotal").val()));
+  });
 });
