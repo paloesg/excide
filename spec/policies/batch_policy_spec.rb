@@ -37,6 +37,6 @@ RSpec.describe BatchPolicy do
     it { should permit(:new) }
     it { should permit(:update) }
     it { should permit(:edit) }
-    it { should permit(:destroy) }
+    it { should_not permit(:destroy) }
   end
 end
