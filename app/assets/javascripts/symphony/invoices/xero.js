@@ -294,7 +294,12 @@ $(document).on("turbolinks:load", function(){
     $(this).val(ReplaceNumberWithCurrencyFormat($(this).val()));
   })
 
-  $("input#invoice_total").val(ReplaceNumberWithCurrencyFormat($("input#invoice_total").val()));
+  if($("input#invoice_total").val() != 0){
+    $("input#invoice_total").val(ReplaceNumberWithCurrencyFormat($("input#invoice_total").val()));
+  }
+  else {
+    $("input#invoice_total").val(0);
+  }
 
   // Convert currency to number when form do submit
   function convertNormalNumber(){
