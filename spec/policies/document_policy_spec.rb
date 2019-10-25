@@ -5,7 +5,7 @@ RSpec.describe DocumentPolicy do
   company = FactoryBot.create(:company)
   user_of_document = FactoryBot.create(:user, company: company)
   admin_of_company = FactoryBot.create(:company_admin, company: company)
-  let(:document) { FactoryBot.create(:document, company: company, user: user_of_document) }
+  let(:document) { FactoryBot.create(:document, company: company, user: user_of_document, file_url: ENV["RSPEC_FILE_URL"]) }
 
   context "for a user" do
     let(:user) { FactoryBot.create(:user) }
