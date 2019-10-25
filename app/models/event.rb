@@ -48,6 +48,10 @@ class Event < ApplicationRecord
     User.where(id: user_id)
   end
 
+  def get_allocated_user
+    self.allocations.where.not(user_id: nil)
+  end
+
   private
 
   def create_event_notification
