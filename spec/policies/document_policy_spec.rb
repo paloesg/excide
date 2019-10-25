@@ -5,7 +5,7 @@ RSpec.describe DocumentPolicy do
   company = FactoryBot.create(:company)
   user_of_document = FactoryBot.create(:user, company: company)
   admin_of_company = FactoryBot.create(:company_admin, company: company)
-  let(:document) { FactoryBot.create(:document, company: company, user: user_of_document, file_url: ENV["RSPEC_FILE_URL"]) }
+  let(:document) { FactoryBot.create(:document, company: company, user: user_of_document, file_url: "//excide-platform-staging.s3.ap-southeast-1.amazonaws.com/uploads/f0b05221-8ca7-47bc-a4d9-d3804670a79d/invoice-eg-4.pdf") }
 
   context "for a user" do
     let(:user) { FactoryBot.create(:user) }
