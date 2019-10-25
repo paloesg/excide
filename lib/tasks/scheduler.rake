@@ -46,4 +46,8 @@ namespace :scheduler do
       end
     end
   end
+
+  task :weekly_batch_email_summary => :environment do
+    BatchMailer.weekly_batch_email_summary.deliver_later if Date.current.monday?
+  end
 end

@@ -22,6 +22,7 @@
               th ID
               th First Name
               th Last Name
+              th Role
               th Email
               th Phone
               th Max Hours
@@ -33,6 +34,7 @@
                 td = u.id
                 td = u.first_name
                 td = u.last_name
+                td = u.roles.map{|r| r.name.capitalize}.join(", ")
                 td = u.email
                 td = u.contact_number
                 td = u.max_hours_per_week

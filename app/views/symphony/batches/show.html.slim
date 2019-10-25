@@ -50,6 +50,8 @@
                 - else
                   = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id)
                     i.ti-receipt.icon.mr-3.medium-icon
+                  - if wf.invoice.rejected?
+                    .rejected-invoice-circle R
               - section.tasks.includes(:role).order(position: :asc).each do |task|
                 td class="text-center #{'important-task' if task.important}"
                   = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)

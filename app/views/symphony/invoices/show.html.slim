@@ -133,7 +133,7 @@
           - else
             = link_to("No invoice payable created in Xero", '#', role: 'button', class: 'btn btn-warning mr-2 pull-right disabled')
           = link_to "Back to batch workflows", symphony_batch_path(@workflow.template.slug, @workflow.batch.id), class: 'btn btn-primary mr-2 pull-right' if @workflow.batch.present?
-          
+
         - if !current_user.has_role?(:shared_service, @company) and @invoice.xero_invoice_id.blank? and @last_workflow_action.present?
           = link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id, workflow_action_id: @last_workflow_action), class: 'btn btn-success mr-2 pull-right' if policy(@invoice).edit?
         - if current_user.has_role?(:associate, @company) or current_user.has_role?(:admin, @company)
