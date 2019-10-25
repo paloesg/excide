@@ -96,19 +96,13 @@ function calculateTotalTax(amount, rate) {
   }
 }
 
+//convert from currency format to number
 function convertCurrency(currency){ 
-      
-  // Using replace() method 
-  // to make currency string suitable  
-  // for parseFloat() to convert  
   var temp = currency.replace(/[^0-9.-]+/g,""); 
-    
-  // Converting string to float 
-  // or double and return 
-  return parseFloat(temp); 
-    
+  return parseFloat(temp);     
 }
 
+//convert number to currency format
 function ReplaceNumberWithCurrencyFormat(num) {
   return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
@@ -275,6 +269,27 @@ $(document).on("turbolinks:load", function(){
     return event.preventDefault();
   });
 
+  // if line items amount have value, convert to currency format
+  let amounts = $("input[id$='_amount']");
+  if(amounts.length > 0){
+    amounts.each(function(index, field) {
+      if($(field). val()){
+        $( field).val(ReplaceNumberWithCurrencyFormat($( field).val()));
+      }
+    });
+  }
+
+  // if line items price have value, convert to currency format
+  let prices = $("input[id$='_price']");
+  if(prices.length > 0){
+    prices.each(function(index, field) {
+      if($(field). val()){
+        $( field).val(ReplaceNumberWithCurrencyFormat($( field).val()));
+      }
+    });
+  } 
+
+  // Convert currency to number when form do submit
   $("form.edit_invoice").submit(function() {
     let amounts = $("input[id$='_amount']");
     amounts.each(function(index, field) {
