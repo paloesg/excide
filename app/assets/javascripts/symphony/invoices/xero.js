@@ -60,6 +60,7 @@ var dropdownTax;
 
 // Calculate total tax & append element
 function calculateTotalTax(amount, rate) {
+  amount = convertCurrency(amount);
   amount = parseFloat(amount);
   rate = parseFloat(rate);
   let result = 0.0;
