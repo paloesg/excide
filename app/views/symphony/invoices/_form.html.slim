@@ -84,7 +84,7 @@
             .form-row
               .form-inline.col-auto.ml-auto
                 = f.label :total, 'Total (including tax): ', class: 'mr-2'
-                = f.text_field :total, class: 'form-control', step: 0.01
+                = f.text_field :total, class: 'form-control'
 .btn-group role='group'
   - if @previous_document.present?
     = f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-primary'

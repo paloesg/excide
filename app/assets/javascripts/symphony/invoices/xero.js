@@ -213,7 +213,7 @@ $(document).on("turbolinks:load", function(){
 
   // Run calculate after the page is loaded
   calculateAmount();
-  $("input#subtotal").val( ReplaceNumberWithCurrencyFormat(calculateSubtotal()) );
+  $("input#subtotal").val(ReplaceNumberWithCurrencyFormat(calculateSubtotal()));
 
   //add attribute fields with selectize drop down (for creating invoice and data entry)
   $("form").on("click", ".add_attribute_fields", function(event) {
@@ -288,34 +288,35 @@ $(document).on("turbolinks:load", function(){
         $( field).val(ReplaceNumberWithCurrencyFormat($( field).val()));
       }
     });
-  } 
+  }
+
+  $("input#invoice_total").change(function(){
+    $(this).val(ReplaceNumberWithCurrencyFormat($(this).val()));
+  })
+
+  $("input#invoice_total").val(ReplaceNumberWithCurrencyFormat($("input#invoice_total").val()));
 
   // Convert currency to number when form do submit
-  $("form.edit_invoice").submit(function() {
+  function convertNormalNumber(){
     let amounts = $("input[id$='_amount']");
     amounts.each(function(index, field) {
-      $( field).val(convertCurrency($( field).val()))
+      $( field).val(convertCurrency($( field).val()));
     });
 
     let prices = $("input[id$='_price']");
     prices.each(function(index, field) {
-      $( field).val(convertCurrency($( field).val()))
+      $( field).val(convertCurrency($( field).val()));
     });
 
     $("input#subtotal").val(convertCurrency($("input#subtotal").val()));
+    $("input#invoice_total").val(convertCurrency($("input#invoice_total").val()));
+  }
+
+  $("form.edit_invoice").submit(function() {
+    convertNormalNumber();
   });
 
   $("form.new_invoice").submit(function() {
-    let amounts = $("input[id$='_amount']");
-    amounts.each(function(index, field) {
-      $( field).val(convertCurrency($( field).val()))
-    });
-
-    let prices = $("input[id$='_price']");
-    prices.each(function(index, field) {
-      $( field).val(convertCurrency($( field).val()))
-    });
-
-    $("input#subtotal").val(convertCurrency($("input#subtotal").val()));
+    convertNormalNumber();
   });
 });
