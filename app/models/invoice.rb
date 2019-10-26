@@ -59,7 +59,7 @@ class Invoice < ApplicationRecord
   end
 
   class LineItem
-    attr_accessor :item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2
+    attr_accessor :item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :amount
     def initialize(hash)
       @item = hash['item']
       @description = hash['description']
@@ -69,6 +69,7 @@ class Invoice < ApplicationRecord
       @tax = hash['tax']
       @tracking_option_1 = hash['tracking_option_1']
       @tracking_option_2 = hash['tracking_option_2']
+      @amount = hash['amount']
     end
     def persisted?() false; end
     def new_record?() false; end
