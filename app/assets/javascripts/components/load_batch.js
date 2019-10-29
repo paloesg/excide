@@ -84,20 +84,16 @@ $(document).ready(function(){
         })
       })
 
-      // Action of workflow actions
+      // Start button or completed sign of workflow actions
       $.each(data["batch"]["workflows"], function(index, workflow) {
         sortWorkflowActions = workflow["workflow_actions"].sort(function(a,b) {
           return new Date (b["created_at"]) - new Date (a["created_at"])
         })
         $.each(sortWorkflowActions, function(index, action) {
           let disabledButton = "disabled";
-          if (index>0 && data["current_user"]["get_role_ids"].includes(action["task"]["role_id"]) || (index>0 && data["is_admin"])) {
-            disabledButton = "";
-          }
-
           if (action["completed"]) {
             $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]+" > td#"+action["task"]["id"]).replaceWith(
-              "<td class='action text-center'><div class='completed-task'>" +
+              "<td class='action text-center completed'><div class='completed-task'>" +
                 "<i class='fa fa-check-circle text-success ml-3'></i>" +
               "</div></td>"
             )
@@ -106,15 +102,24 @@ $(document).ready(function(){
               "<td class='action text-center'><a role='button' class='btn btn-success btn-sm mb-2 "+disabledButton+"' href='/symphony/"+data["batch"]["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=payable&workflow_action_id="+action["id"]+"'>Start</a></td>"
             )
           }
-          // Do not disable button for next task if previous task is completed
-          workflowRow = $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]);
-          $.each(workflowRow.find("td.action > .completed-task"), function(index, rowAction) {
-            $(rowAction.closest("td")).next().find("a").removeClass("disabled");
-          })
         })
       })
 
-      $("a[data-toggle='append-new-popover']").popover()
+      // Do not disable button for next task if previous task is completed
+      $.each(data["batch"]["workflows"], function(index, workflow) {
+        $.each(workflow["workflow_actions"], function(index, action) {
+          if (index+1 === workflow["workflow_actions"].length) {
+            workflowRow = $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]).find("td.action");
+            $.each(workflowRow, function(index, td) {
+              if (index===0 || $(td).prev().hasClass("completed")) {
+                $(td).find("a").removeClass("disabled");
+              }
+            })
+          }
+        })
+      })
+
+      // $("a[data-toggle='append-new-popover']").popover()
       // $("a[data-toggle='append-new-popover']").popover().on("shown.bs.popover", function() {
       //   var this_popover = $(this).data("bs.popover").tip;
       //   $(this_popover).css({
