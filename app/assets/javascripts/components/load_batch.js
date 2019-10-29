@@ -62,10 +62,17 @@ $(document).ready(function(){
         })
         // Table data of document, invoice
         $.each(data["batch"]["workflows"].reverse(), function(index, workflow) {
+          invoiceLink = "";
+          tableDataInvoice = "";
+          if (workflow["invoice"]){
+            invoiceLink = "/symphony/"+data["batch"]["template"]["slug"]+"/"+workflow["id"]+"/invoices/"+workflow["invoice"]["id"];
+            tableDataInvoice = "<td class='invoice'><a href='"+invoiceLink+"'><i class='ti-receipt icon mr-3 medium-icon'></i></a></td>";
+          } else {
+            tableDataInvoice = "<td class='invoice'><i class='ti-receipt icon mr-3 text-center medium-icon gray-icon'></i></td>";
+          }
           $("#section-"+section["id"]+" .card-body > table > tbody").append(
             "<tr id='wf_"+workflow["id"]+"'>" +
-              "<td class='documents'>Display Docs</td>" +
-              "<td class='invoice'>Display Invoice</td>" +
+              "<td class='documents'>Display Docs</td>" + tableDataInvoice +
             "</tr>"
           )
           // Set position of tasks, before add workflow actions to the table data
