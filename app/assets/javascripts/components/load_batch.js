@@ -18,6 +18,14 @@ $(document).ready(function(){
     return url;
   }
 
+  function humanize(str) {
+    var frags = str.split('_');
+    for (i=0; i<frags.length; i++) {
+      frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+    }
+    return frags.join(' ');
+  }
+
   if ($("#table-batches").length) {
     $.post("/symphony/batches/load_batches", function(data) {}).done(function(data) {
       $(".batch-loader").remove();
@@ -67,11 +75,11 @@ $(document).ready(function(){
             "<th>" +
               "<a class='pop' data-container='body' title='"+ task["role"]["display_name"] +"' data-content='<div>"+task["instructions"]+"</div>' data-html='true' data-placement='top' data-toggle='append-new-popover' data-trigger='hover' >" +
                 "<div class='header-properties'>" +
-                  task["task_type"] +
+                  humanize(task["task_type"]) +
                   " <i class='ti-info-alt'></i>" +
                 "</div>" +
                 "<div class='header-info'>" +
-                  task["role"]["name"] +
+                  humanize(task["role"]["name"]) +
                 "</div>" +
               "</a>" +
             "</th>"
