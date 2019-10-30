@@ -1,6 +1,22 @@
 $(document).ready(function(){
   /*global moment*/
   // Check #table-batches element is exist in the page
+
+  function startButtonLink(action, workflow, batch) {
+    let url = "";
+    let invoiceId = "";
+    if (workflow["invoice"]) {
+      invoiceId = workflow["invoice"]["id"];
+    }
+    switch (action["task"]["task_type"]) {
+      case "create_invoice_payable": url = "/symphony/"+batch["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=payable&workflow_action_id="+action["id"]; break;
+      case "create_invoice_receivable": url = "/symphony/"+batch["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=reiceivable&workflow_action_id="+action["id"]; break;
+      case "xero_send_invoice": url = "/symphony/"+batch["template"]["slug"]+"/"+workflow["id"]+"/invoices/"+invoiceId+"/edit?workflow_action_id="+action["id"]; break;
+      default: url = "#";
+    }
+    return url;
+  }
+
   if ($("#table-batches").length) {
     $.post("/symphony/batches/load_batches", function(data) {}).done(function(data) {
       $(".batch-loader").remove();
@@ -90,7 +106,9 @@ $(document).ready(function(){
           return new Date (b["created_at"]) - new Date (a["created_at"])
         })
         $.each(sortWorkflowActions, function(index, action) {
+          let linkTo = "";
           let disabledButton = "disabled";
+          linkTo = startButtonLink(action, workflow, data["batch"]);
           if (action["completed"]) {
             $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]+" > td#"+action["task"]["id"]).replaceWith(
               "<td class='action text-center completed'><div class='completed-task'>" +
@@ -99,7 +117,7 @@ $(document).ready(function(){
             )
           } else {
             $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]+" > td#"+action["task"]["id"]).replaceWith(
-              "<td class='action text-center'><a role='button' class='btn btn-success btn-sm mb-2 "+disabledButton+"' href='/symphony/"+data["batch"]["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=payable&workflow_action_id="+action["id"]+"'>Start</a></td>"
+              "<td class='action text-center'><a role='button' class='btn btn-success btn-sm mb-2 "+disabledButton+"' href='"+linkTo+"'>Start</a></td>"
             )
           }
         })
