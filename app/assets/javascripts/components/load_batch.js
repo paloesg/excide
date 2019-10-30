@@ -79,17 +79,33 @@ $(document).ready(function(){
         })
         // Table data of document, invoice
         $.each(data["batch"]["workflows"].reverse(), function(index, workflow) {
-          invoiceLink = "";
-          tableDataInvoice = "";
+          let invoiceLink = "";
+          let tableDataInvoice = "<i class='ti-receipt icon mr-3 text-center medium-icon gray-icon'></i>";
+          let workflowDocument = "<i class='ti-file icon mr-3 text-center large-icon gray-icon'></i>";
+
           if (workflow["invoice"]){
             invoiceLink = "/symphony/"+data["batch"]["template"]["slug"]+"/"+workflow["id"]+"/invoices/"+workflow["invoice"]["id"];
-            tableDataInvoice = "<td class='invoice'><a href='"+invoiceLink+"'><i class='ti-receipt icon mr-3 medium-icon'></i></a></td>";
-          } else {
-            tableDataInvoice = "<td class='invoice'><i class='ti-receipt icon mr-3 text-center medium-icon gray-icon'></i></td>";
+            tableDataInvoice = "<a href='"+invoiceLink+"'><i class='ti-receipt icon mr-3 medium-icon'></i></a>";
           }
+
+          if (workflow["documents"].length) {
+            workflowDocument = "";
+            let documentPreview = "";
+            $.each(workflow["documents"], function(index, doc) {
+              var ext = doc["file_url"].substring(doc["file_url"].lastIndexOf('.') + 1);
+              if (ext === "pdf") {
+                documentPreview = doc["filename"]+"<br><a class='pdf-preview' data-container='body' data-content data-document='https:"+doc["file_url"]+"' data-placement='auto' tabindex='0' data-original-title title>Preview</a>";
+              } else {
+                documentPreview = doc["filename"]+"<br><a data-container='body' data-content='<img src=\""+doc["file_url"]+"\" class=\"img-fluid\">' data-html='true' data-toggle='popover' data-trigger='focus' tabindex='0' data-original-title title>Preview</a>";
+              }
+              workflowDocument = workflowDocument + " " + documentPreview;
+            })
+          }
+
           $("#section-"+section["id"]+" .card-body > table > tbody").append(
             "<tr id='wf_"+workflow["id"]+"'>" +
-              "<td class='documents'>Display Docs</td>" + tableDataInvoice +
+              "<td class='documents'>"+ workflowDocument +"</td>" +
+              "<td class='invoice'>"+tableDataInvoice+"</td>"+
             "</tr>"
           )
           // Set position of tasks, before add workflow actions to the table data
@@ -138,13 +154,17 @@ $(document).ready(function(){
         })
       })
 
-      // $("a[data-toggle='append-new-popover']").popover()
-      // $("a[data-toggle='append-new-popover']").popover().on("shown.bs.popover", function() {
-      //   var this_popover = $(this).data("bs.popover").tip;
-      //   $(this_popover).css({
-      //     top: '50px'
-      //   });
-      // })
+      // Call initial popover for document preview
+      $("a[data-toggle='popover']").popover()
+      $(".pdf-preview").popover({
+        html : true,
+        placement : "auto",
+        trigger : "focus",
+        sanitize : false,
+        content() {
+          return "<iframe src='https://docs.google.com/viewer?url=" + $(this).attr("data-document") + "&embedded=true' frameborder='0' height='300px' width='250px'></iframe>";
+        }
+      });
     });
   }
 });
