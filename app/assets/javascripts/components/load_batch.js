@@ -13,20 +13,17 @@ function deleteBatch(template, id){
 
 $(document).ready(function(){
   /*global moment*/
-  /*eslint complexity: ["error", 2] */
   // Check #table-batches element is exist in the page
 
   function startButtonLink(action, workflow, batch) {
     let url = "";
-    let invoiceId = "";
-    if (workflow["invoice"]) {
-      invoiceId = workflow["invoice"]["id"];
-    }
+    let invoiceId = workflow["invoice"] ? workflow["invoice"]["id"] : "";
     switch (action["task"]["task_type"]) {
       case "create_invoice_payable": url = "/symphony/"+batch["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=payable&workflow_action_id="+action["id"]; break;
       case "create_invoice_receivable": url = "/symphony/"+batch["template"]["slug"]+"/"+workflow["id"]+"/invoices/new?invoice_type=reiceivable&workflow_action_id="+action["id"]; break;
       case "xero_send_invoice": url = "/symphony/"+batch["template"]["slug"]+"/"+workflow["id"]+"/invoices/"+invoiceId+"/edit?workflow_action_id="+action["id"]; break;
       case "approval": url = "/symphony/"+batch["template"]["slug"]+"/"+workflow["id"]+"/complete_task/"+action["id"]; break;
+      default: url;
     }
     return url;
   }
