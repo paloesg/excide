@@ -31,11 +31,11 @@ $(document).ready(function(){
   }
 
   function humanize(str) {
-    var frags = str.split('_');
+    var frags = str.split("_");
     for (i=0; i<frags.length; i++) {
       frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
     }
-    return frags.join(' ');
+    return frags.join(" ");
   }
 
   if ($("#table-batches").length) {
@@ -113,7 +113,7 @@ $(document).ready(function(){
             workflowDocument = "";
             let documentPreview = "";
             $.each(workflow["documents"], function(index, doc) {
-              var ext = doc["file_url"].substring(doc["file_url"].lastIndexOf('.') + 1);
+              var ext = doc["file_url"].substring(doc["file_url"].lastIndexOf(".") + 1);
               if (ext === "pdf") {
                 documentPreview = doc["filename"]+"<br><a class='pdf-preview' data-container='body' data-content data-document='https:"+doc["file_url"]+"' data-placement='auto' tabindex='0' data-original-title title>Preview</a>";
               } else {
