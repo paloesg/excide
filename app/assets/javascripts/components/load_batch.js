@@ -141,8 +141,8 @@ $(document).ready(function(){
       // Start button or completed sign of workflow actions
       $.each(data["batch"]["workflows"], function(index, workflow) {
         let sortWorkflowActions = workflow["workflow_actions"].sort(function(a,b) {
-          return new Date (b["created_at"]) - new Date (a["created_at"])
-        })
+          return new Date (b["created_at"]) - new Date (a["created_at"]);
+        });
         $.each(sortWorkflowActions, function(index, action) {
           let linkTo = "";
           let disabledButton = "disabled";
@@ -152,11 +152,11 @@ $(document).ready(function(){
               "<td class='action text-center completed'><div class='completed-task'>" +
                 "<i class='fa fa-check-circle text-success ml-3'></i>" +
               "</div></td>"
-            )
+            );
           } else {
             $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]+" > td#"+action["task"]["id"]).replaceWith(
               "<td class='action text-center'><a role='button' class='btn btn-success btn-sm mb-2 "+disabledButton+"' href='"+linkTo+"'>Start</a></td>"
-            )
+            );
           }
         })
       })
@@ -165,18 +165,18 @@ $(document).ready(function(){
       $.each(data["batch"]["workflows"], function(index, workflow) {
         $.each(workflow["workflow_actions"], function(index, action) {
           if (index+1 === workflow["workflow_actions"].length) {
-            workflowRow = $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]).find("td.action");
+            let workflowRow = $("#section-"+action["task"]["section_id"]+" .card-body > table > tbody > #wf_"+workflow["id"]).find("td.action");
             $.each(workflowRow, function(index, td) {
               if (index===0 || $(td).prev().hasClass("completed")) {
                 $(td).find("a").removeClass("disabled");
               }
             })
-          }
-        })
+          };
+        });
       })
 
       // Call initial popover for document preview
-      $("a[data-toggle='popover']").popover()
+      $("a[data-toggle='popover']").popover();
       $(".pdf-preview").popover({
         html : true,
         placement : "auto",
