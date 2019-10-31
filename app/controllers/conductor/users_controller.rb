@@ -7,7 +7,7 @@ class Conductor::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.where(company: @company).with_role :associate, @company
+    @users = User.includes(:roles).where(company_id: @company.id).where({roles: {name: ["consultant", "associate"], resource_id: @company.id}}).order(id: :asc).uniq
   end
 
   def show
@@ -56,7 +56,7 @@ class Conductor::UsersController < ApplicationController
   end
 
   def export
-    @users = User.where(company: @company).with_role :associate, @company
+    @users = User.with_role(:associate, @company).uniq
     send_data @users.associates_to_csv, filename: "Associates-#{Date.current}.csv"
   end
 

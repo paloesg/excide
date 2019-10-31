@@ -3,7 +3,7 @@ class Symphony::BatchesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_batch, only: [:show, :load_batch]
+  before_action :set_batch, only: [:show, :load_batch, :destroy]
   before_action :set_s3_direct_post, only: [:show, :new]
 
   after_action :verify_authorized, except: [:index, :create, :load_batches]
@@ -67,8 +67,14 @@ class Symphony::BatchesController < ApplicationController
     end
 
     respond_to do |format|
-      format.json  { render json: { batches: @batches, completed_batches: completed_batches.size } }
+      format.json  { render json: { batches: @batches, completed_batches: completed_batches.size, is_user_superadmin: (current_user.has_role? :superadmin) } }
     end
+  end
+
+  def destroy
+    authorize @batch
+    @batch.destroy
+    redirect_to symphony_batches_index_path, notice: 'Batch was successfully deleted.'
   end
 
   private

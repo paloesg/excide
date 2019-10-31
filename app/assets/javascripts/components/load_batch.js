@@ -1,3 +1,16 @@
+function deleteBatch(template, id){
+  if (confirm("Are you sure you want to delete this batch and all its data?")) {
+    $(".loading").show();
+    $.ajax({
+      url: "batches/"+ template +"/"+ id,
+      type: "DELETE",
+      success(result) {
+        $(".loading").hide();
+      }
+    });
+  }
+}
+
 $(document).ready(function(){
   /*global moment*/
   // Check #table-batches element is exist in the page
@@ -39,6 +52,7 @@ $(document).ready(function(){
           "<td>"+ batch["get_completed_workflows"] +"</td>" +
           "<td>"+ batch["workflows"].length +"</td>" +
           "<td><div class='progress'><div class='progress-bar progress-bar-striped' aria-valuemax='100' aria-valuemin='0' aria-valuenow='10' role='progressbar' style='width:" + batch["action_completed_progress"] + "%' >"  + batch["action_completed_progress"] + "%</div></div></td>" +
+          (data["is_user_superadmin"] ? "<td><button onclick='deleteBatch(\""+batch["template"]["slug"]+"\""+",\""+batch["id"]+"\")' class='btn btn-sm btn-danger'>Delete</button></td>" : "") +
         "</tr>");
       });
       $("#completed-batches").text(data["completed_batches"]);

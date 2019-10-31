@@ -28,7 +28,10 @@ Rails.application.routes.draw do
   post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
   patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
+  get '/connect_to_xero', to: 'xero_sessions#connect_to_xero', as: :connect_to_xero
   get '/xero_callback_and_update', to: 'xero_sessions#xero_callback_and_update', as: :xero_callback_and_update
+  post '/update_contacts_from_xero', to: 'xero_sessions#update_contacts_from_xero', as: :update_contacts_from_xero
+  delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
   namespace :symphony do
     get '/search', to: 'home#search'

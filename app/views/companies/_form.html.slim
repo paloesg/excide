@@ -45,7 +45,11 @@
       .card-body
         .form-group.form-check
           = f.check_box :connect_xero, class: 'form-check-input'
-          = f.label :connect_xero, class: 'form-check-label'
+          = f.label :connect_xero, 'Enable Xero', class: 'form-check-label'
+        .form-group
+          = link_to 'Connect to Xero', connect_to_xero_path, class: 'btn btn-primary mr-2'
+          = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: 'btn btn-danger mr-2'
+          = link_to 'Update contacts from Xero', update_contacts_from_xero_path, method: :post, class: 'btn btn-warning'
         .form-group
           = f.label :xero_organisation_name
           = f.text_field :xero_organisation_name, class: 'form-control', disabled: true

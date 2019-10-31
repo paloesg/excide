@@ -51,22 +51,24 @@ class Batch < ApplicationRecord
     self.created_at.strftime('%y%m%d-%H%M')
   end
 
-  def next_workflow(workflow, workflow_action)
+  def next_workflow(current_workflow)
+    next_wf = self.workflows.where('created_at > ?', current_workflow.created_at).order(created_at: :asc).first
+    if next_wf.blank? 
+      next_wf = self.workflows.where('created_at < ?', current_workflow.created_at).order(created_at: :asc).first
+    end
+    return next_wf
+  end
+
+  def previous_workflow(current_workflow)
+    prev_wf = self.workflows.where('created_at < ?', current_workflow.created_at).order(created_at: :asc).last
+    if prev_wf.blank? 
+      prev_wf = self.workflows.where('created_at > ?', current_workflow.created_at).order(created_at: :asc).last
+    end
+    return prev_wf
+  end
+
+  def next_workflow_with_action_incomplete(workflow, workflow_action)
     self.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where('workflows.created_at > ?', workflow.created_at).order(created_at: :asc).first
-  end
-
-  def previous_workflow(workflow, workflow_action)
-    self.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where('workflows.created_at < ?', workflow.created_at).order(created_at: :asc).last
-  end
-
-  def next_task(workflow, workflow_action)
-    workflow = self.workflows.where('created_at > ?', workflow.created_at).order(created_at: :asc).first
-    show_workflow_action_by_workflow(workflow, workflow_action)
-  end
-
-  def previous_task(workflow, workflow_action)
-    workflow = self.workflows.where('created_at < ?', workflow.created_at).order(created_at: :asc).last
-    show_workflow_action_by_workflow(workflow, workflow_action)
   end
 
   private

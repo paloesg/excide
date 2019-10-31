@@ -32,7 +32,7 @@ class BatchPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.has_role? :admin, record.company
+    user.has_role? :superadmin
   end
 
   class Scope < Scope

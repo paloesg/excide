@@ -4,10 +4,12 @@
       li.breadcrumb-item.ml-auto
         a href="/conductor" Dashboard
       li.breadcrumb-item
-        a href="/symphony/company" #{@company.name}
+        a href="/company/edit" #{@company.name}
+      li.breadcrumb-item
+        a href="/conductor/users" Staff
       li.breadcrumb-item.active Allocations
     h1
-      | Allocate Associate
+      | Allocate Staff
 
 .row
   .col-md-8.col-xs-12
@@ -52,7 +54,7 @@
     = link_to 'Export ' + @date_from.strftime("%B") + ' Allocations', {action: :export, start_date: params[:start_date]} ,class: 'btn btn-success btn-block'
     br
     .card
-      h5.card-header Available Associate
+      h5.card-header Available Staff
       ul.list-group
         - if params[:allocation].nil?
           li.list-group-item.clearfix Select an allocation on the left to assign associate.
