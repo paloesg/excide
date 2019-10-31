@@ -168,7 +168,7 @@ $(document).ready(function(){
               if (index===0 || $(td).prev().hasClass("completed")) {
                 $(td).find("a").removeClass("disabled");
               }
-            })
+            });
           }
         });
       });
