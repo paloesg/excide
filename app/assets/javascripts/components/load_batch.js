@@ -140,7 +140,7 @@ $(document).ready(function(){
 
       // Start button or completed sign of workflow actions
       $.each(data["batch"]["workflows"], function(index, workflow) {
-        sortWorkflowActions = workflow["workflow_actions"].sort(function(a,b) {
+        let sortWorkflowActions = workflow["workflow_actions"].sort(function(a,b) {
           return new Date (b["created_at"]) - new Date (a["created_at"])
         })
         $.each(sortWorkflowActions, function(index, action) {
