@@ -128,7 +128,7 @@ $(document).ready(function(){
               "<td class='documents'>"+ workflowDocument +"</td>" +
               "<td class='invoice'>"+tableDataInvoice+"</td>"+
             "</tr>"
-          )
+          );
           // Set position of tasks, before add workflow actions to the table data
           $.each(section["tasks"], function(index, task) {
             $("#section-"+section["id"]+" .card-body > table > tbody > tr#wf_"+workflow["id"]).append(
@@ -171,9 +171,9 @@ $(document).ready(function(){
                 $(td).find("a").removeClass("disabled");
               }
             })
-          };
+          }
         });
-      })
+      });
 
       // Call initial popover for document preview
       $("a[data-toggle='popover']").popover();
