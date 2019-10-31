@@ -32,8 +32,8 @@ $(document).ready(function(){
 
   function humanize(str) {
     var frags = str.split("_");
-    for (i=0; i<frags.length; i++) {
-      frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+    for (var i=0; i<frags.length; i++) {
+      frags[parseInt(i)] = frags[parseInt(i)].charAt(0).toUpperCase() + frags[parseInt(i)].slice(1);
     }
     return frags.join(" ");
   }
