@@ -13,6 +13,7 @@ function deleteBatch(template, id){
 
 $(document).ready(function(){
   /*global moment*/
+  /*eslint complexity: ["error", 2] */
   // Check #table-batches element is exist in the page
 
   function startButtonLink(action, workflow, batch) {
