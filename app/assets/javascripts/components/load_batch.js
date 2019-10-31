@@ -61,7 +61,7 @@ $(document).ready(function(){
 
   if ($("#table-batch").length) {
     $.post("/symphony/batches/load_batch", { id: $("#batch_id").val() } ).done(function(data) {
-      console.log(data)
+      // console.log(data);
       $.each(data["sections"], function(index, section) {
         // Card sections
         $("#table-batch").append(
