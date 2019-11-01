@@ -44,7 +44,7 @@ class AccountsController < ApplicationController
 
   def company_params
     params.require(:company).permit(:id, :name, :industry, :company_type, :image_url, :description,
-      address_attributes: [:line_1, :line_2, :postal_code]
+      address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state]
     )
   end
 end
