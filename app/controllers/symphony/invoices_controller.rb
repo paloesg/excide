@@ -3,7 +3,7 @@ class Symphony::InvoicesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_company, except: [:get_xero_item_code_detail]
+  before_action :set_company
   before_action :set_workflow, except: [:get_xero_item_code_detail]
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents, except: [:get_xero_item_code_detail]
