@@ -23,10 +23,10 @@
       p = date.day
       - events.each do |event|
         .row
-          .col-sm-12.event event-data="#{event.to_json}" event-address="#{event.address.to_json}" event-client="#{event.client&.name}" event-staffer="#{event.staffer&.full_name}" get_allocated_users_length="#{event.allocations.map(&:user).reject(&:blank?).length}" event-type="#{event.event_type.name}" event-associate="#{event.associates.to_json}" event-project_consultant="#{event.project_consultants.to_json}" title="Event Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>" data-placement="auto"
+          .col-sm-12.event event-data="#{event.to_json}" event-address="#{event.address.to_json}" event-client="#{event.client&.name}" event-staffer="#{event.staffer&.full_name}" get_allocated_users_length="#{event.get_allocated_user.length}" event-type="#{event.event_type.name}" event-associate="#{event.associates.to_json}" event-project_consultant="#{event.project_consultants.to_json}" title="Event Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>" data-placement="auto"
             i.fa.fa-circle.mr-1 style="color: #{event.event_type.colour};"
             = event.start_time.strftime('%H:%M') + '–' + event.end_time.strftime('%H:%M ')
-            strong = event.name
+            strong class="#{'text-danger' if event.get_allocated_user.length == 0 }" = event.name
 .row
   .col-sm-6.col-xs-12
     .card
