@@ -13,6 +13,9 @@ class AddressDashboard < Administrate::BaseDashboard
     line_1: Field::String,
     line_2: Field::String,
     postal_code: Field::String,
+    city: Field::String,
+    country: Field::String,
+    state: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -36,6 +39,9 @@ class AddressDashboard < Administrate::BaseDashboard
     :line_1,
     :line_2,
     :postal_code,
+    :city,
+    :country,
+    :state,
     :created_at,
     :updated_at,
   ].freeze
@@ -47,6 +53,9 @@ class AddressDashboard < Administrate::BaseDashboard
     :line_1,
     :line_2,
     :postal_code,
+    :city,
+    :country,
+    :state,
   ].freeze
 
   # Overwrite this method to customize how addresses are displayed
