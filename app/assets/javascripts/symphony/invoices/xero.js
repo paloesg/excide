@@ -1,3 +1,14 @@
+//convert from currency format to number
+function convertCurrency(currency){
+  var temp = currency.replace(/[^0-9.-]+/g,"");
+  return parseFloat(temp);
+}
+
+//convert number to currency format
+function replaceNumberWithCurrencyFormat(num) {
+  return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+}
+
 // Automatically calculate the subtotal field
 function calculateSubtotal() {
   let sum = 0;
@@ -14,9 +25,9 @@ function getXeroItem(itemCode, field) {
   .done(function(data) {
     $("#invoice_line_items_attributes_"+field+"_description").val(data.purchase_description);
     $("#invoice_line_items_attributes_"+field+"_quantity").val(1);
-    $("#invoice_line_items_attributes_"+field+"_price").val(data.sales_details.unit_price);
+    $("#invoice_line_items_attributes_"+field+"_price").val(data.purchase_details.unit_price);
     $("#invoice_line_items_attributes_"+field+"_amount").val(1*data.sales_details.unit_price);
-    $("input#subtotal").val( ReplaceNumberWithCurrencyFormat(calculateSubtotal()) );
+    $("input#subtotal").val( replaceNumberWithCurrencyFormat(calculateSubtotal()) );
 
     //selectize account
     if (data.sales_details.account_code) {
@@ -79,7 +90,7 @@ function calculateTotalTax(amount, rate) {
         $("#subtotal-wrapper").append("<div class='form-row total-tax-row calculated-tax' data-rate='"+rate+"'>"+
           "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
             "<label class='mr-2'> Total tax "+ rate + "%  </label>" +
-            "<input type='text' value='" + ReplaceNumberWithCurrencyFormat(result) + "' class='form-control' disabled='disabled'>" +
+            "<input type='text' value='" + replaceNumberWithCurrencyFormat(result) + "' class='form-control' disabled='disabled'>" +
           "</div>" +
         "</div>");
       }
@@ -95,17 +106,6 @@ function calculateTotalTax(amount, rate) {
   } else {
     $( ".total-tax-row" ).remove();
   }
-}
-
-//convert from currency format to number
-function convertCurrency(currency){ 
-  var temp = currency.replace(/[^0-9.-]+/g,""); 
-  return parseFloat(temp);     
-}
-
-//convert number to currency format
-function ReplaceNumberWithCurrencyFormat(num) {
-  return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
 $(document).on("turbolinks:load", function(){
@@ -147,15 +147,15 @@ $(document).on("turbolinks:load", function(){
   function calculateAmount() {
     $("input[id$='_quantity'], input[id$='_price']").change(function () {
       let quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
-      let input_price = $(this).closest(".line_items").find("input[id$='_price']");
+      let inputPrice = $(this).closest(".line_items").find("input[id$='_price']");
       let amount = $(this).closest(".line_items").find("input[id$='_amount']");
-      price = input_price.val() ? convertCurrency(input_price.val()) : 0;
-      amount.val(price == 0? 0 : quantity*price);
-      $("input#subtotal").val( ReplaceNumberWithCurrencyFormat(calculateSubtotal()) );
+      let price = inputPrice.val() ? convertCurrency(inputPrice.val()) : 0;
+      amount.val(price === 0? 0 : quantity*price);
+      $("input#subtotal").val( replaceNumberWithCurrencyFormat(calculateSubtotal()) );
       updateTotalTax();
       //replace to currency format
-      amount.val(ReplaceNumberWithCurrencyFormat(amount.val()));      
-      input_price.val(ReplaceNumberWithCurrencyFormat(price)); 
+      amount.val(replaceNumberWithCurrencyFormat(amount.val()));
+      inputPrice.val(replaceNumberWithCurrencyFormat(price));
     })
   }
 
@@ -213,7 +213,7 @@ $(document).on("turbolinks:load", function(){
 
   // Run calculate after the page is loaded
   calculateAmount();
-  $("input#subtotal").val(ReplaceNumberWithCurrencyFormat(calculateSubtotal()));
+  $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
 
   //add attribute fields with selectize drop down (for creating invoice and data entry)
   $("form").on("click", ".add_attribute_fields", function(event) {
@@ -275,7 +275,7 @@ $(document).on("turbolinks:load", function(){
   if(amounts.length > 0){
     amounts.each(function(index, field) {
       if($(field). val()){
-        $( field).val(ReplaceNumberWithCurrencyFormat($( field).val()));
+        $( field).val(replaceNumberWithCurrencyFormat($( field).val()));
       }
     });
   }
@@ -285,17 +285,17 @@ $(document).on("turbolinks:load", function(){
   if(prices.length > 0){
     prices.each(function(index, field) {
       if($(field). val()){
-        $( field).val(ReplaceNumberWithCurrencyFormat($( field).val()));
+        $( field).val(replaceNumberWithCurrencyFormat($( field).val()));
       }
     });
   }
 
   $("input#invoice_total").change(function(){
-    $(this).val(ReplaceNumberWithCurrencyFormat($(this).val()));
+    $(this).val(replaceNumberWithCurrencyFormat($(this).val()));
   })
 
-  if($("input#invoice_total").val() != 0){
-    $("input#invoice_total").val(ReplaceNumberWithCurrencyFormat($("input#invoice_total").val()));
+  if($("input#invoice_total").val() !== 0){
+    $("input#invoice_total").val(replaceNumberWithCurrencyFormat($("input#invoice_total").val()));
   }
   else {
     $("input#invoice_total").val(0);
