@@ -2,7 +2,12 @@ class CompaniesController < ApplicationController
   layout "dashboard/application"
 
   before_action :authenticate_user!
-  before_action :set_company, only: [:edit, :update]
+  before_action :set_company, only: [:show, :edit, :update]
+
+  def show
+    @address = @company&.address
+    @users = User.where(company: @company).order(:id).includes(:roles)
+  end
 
   def new
     @company = Company.new

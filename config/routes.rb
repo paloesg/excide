@@ -170,6 +170,7 @@ Rails.application.routes.draw do
 
   resources :responses
 
+  get 'company', to: 'companies#show', as: :company
   get 'company/new', to: 'companies#new', as: :new_company
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
