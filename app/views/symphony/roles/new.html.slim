@@ -1,0 +1,5 @@
+= form_for(@role, url: symphony_roles_path) do |f|
+  = hidden_field :role, :resource_id, value: @company.id
+  = hidden_field :role, :resource_type, value: "Company"
+  = render 'form', f: f
+  = f.submit 'Create Role', class: 'btn btn-primary'

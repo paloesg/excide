@@ -8,6 +8,7 @@
       li.breadcrumb-item.active Users
     h1
       | Manage Roles
+      = link_to "Add New Role", new_symphony_role_path, role: 'button', class: 'btn btn-warning float-right'
 .row
   .col-sm-12
     .table-responsive
