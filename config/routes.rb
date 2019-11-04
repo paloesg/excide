@@ -54,6 +54,7 @@ Rails.application.routes.draw do
         patch '/update_notification', to: 'users#update_notification', as: :update_notification
       end
     end
+    resources :roles
     resources :reminders do
       member do
         post '/cancel', to: 'reminders#cancel'

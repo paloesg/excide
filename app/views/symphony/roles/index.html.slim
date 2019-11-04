@@ -1,0 +1,31 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item
+        a href="/symphony" #{@company.name}
+      li.breadcrumb-item.active Users
+    h1
+      | Manage Roles
+.row
+  .col-sm-12
+    .table-responsive
+      table.table
+        thead
+          tr
+            th ID
+            th Name
+            th Users
+            th User Names
+            th Action
+        tbody
+          - @roles.each do |r|
+            tr
+              td = r.id
+              td = r.name
+              td = r.users.length
+              td = r.users.map(&:full_name).join('<br />').html_safe
+              td style="min-width: 135px;"
+                = link_to "Edit", "#", role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                = link_to "Delete", "#", data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
