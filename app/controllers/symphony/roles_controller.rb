@@ -8,6 +8,7 @@ class Symphony::RolesController < ApplicationController
   end
 
   def new
+    @users = User.where(company: @company).order(:id).pluck(:email, :id)
     @role = Role.new
   end
 
@@ -21,6 +22,7 @@ class Symphony::RolesController < ApplicationController
   end
 
   def edit
+    @users = User.where(company: @company).order(:id).pluck(:email, :id)
   end
 
   def update

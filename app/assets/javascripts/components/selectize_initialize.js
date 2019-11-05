@@ -35,6 +35,18 @@ $(document).on("turbolinks:load", function() {
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
+  $('select.role-select-users').selectize({
+    plugins: ['remove_button'],
+    delimiter: ' ',
+    persist: false,
+    create: function(input) {
+        return {
+            value: input,
+            text: input
+        }
+    }
+  });
+
   $('.conductor-filter-button').click(function (e) {
     var project_client_selectize = $('select.project-clients').selectize();
     var allocation_user_selectize = $('select.allocation-users').selectize();
