@@ -16,3 +16,5 @@ section.cover.fullscreen.image-bg.overlay
                 = f.check_box :remember_me
             = f.submit "Log in"
             = link_to "Forgot password", new_password_path(@user)
+            br
+            = link_to "Sign Up", new_user_registration_path(@user)
