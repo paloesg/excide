@@ -7,13 +7,13 @@
         = link_to @company.name, company_path
       li.breadcrumb-item
         = link_to "Manage Roles", symphony_roles_path()
-      li.breadcrumb-item.active New
-    h1 New Role
+      li.breadcrumb-item.active Edit
+    h1 Edit Role
 .container
   .row
     .col-sm-12
       .card
         .card-body
-          = form_for(@role, url: symphony_roles_path) do |f|
+          = form_for(@role, url: symphony_role_path) do |f|
             = render 'form', f: f
-            = f.submit 'Create Role', class: 'btn btn-primary'
+            = f.submit 'Update Role', class: 'btn btn-primary'

@@ -1,7 +1,7 @@
 class Symphony::RolesController < ApplicationController
   layout "dashboard/application"
   before_action :set_company
-  before_action :set_role, only: [:edit]
+  before_action :set_role, only: [:edit, :update]
 
   def index
     @roles = Role.where(resource_id: @company.id, resource_type: "Company")
@@ -24,6 +24,11 @@ class Symphony::RolesController < ApplicationController
   end
 
   def update
+    if @role.update(role_params)
+      redirect_to symphony_roles_path, notice: 'Role successfully updated!'
+    else
+      render :edit
+    end
   end
 
   private
