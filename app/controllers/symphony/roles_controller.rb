@@ -13,8 +13,12 @@ class Symphony::RolesController < ApplicationController
   end
 
   def create
+    users = User.where(id: params[:role][:user_ids])
     @role = Role.find_or_create_by(role_params)
     if @role.save
+      users.each do |user|
+        user.add_role @role.name, @role.resource
+      end
       redirect_to symphony_roles_path, notice: 'Role successfully created!'
     else
       render :new
