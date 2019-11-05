@@ -1,7 +1,7 @@
 class Symphony::RolesController < ApplicationController
   layout "dashboard/application"
   before_action :set_company
-  before_action :set_role, only: [:edit, :update]
+  before_action :set_role, only: [:edit, :update, :destroy]
 
   def index
     @roles = Role.where(resource_id: @company.id, resource_type: "Company")
@@ -29,6 +29,11 @@ class Symphony::RolesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @role.destroy
+    redirect_to symphony_roles_path, notice: 'Role was successfully deleted.'
   end
 
   private

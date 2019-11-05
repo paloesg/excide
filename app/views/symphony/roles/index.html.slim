@@ -29,4 +29,4 @@
               td = r.users.map(&:full_name).join('<br />').html_safe
               td style="min-width: 135px;"
                 = link_to "Edit", edit_symphony_role_path(r.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
-                = link_to "Delete", "#", data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
+                = link_to "Delete", symphony_role_path(r.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
