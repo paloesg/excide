@@ -22,10 +22,14 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.company.session_handle.blank? and current_user.company.connect_xero?
-      connect_to_xero_path
+    if current_user.company.name.present?      
+      if current_user.company.session_handle.blank? and current_user.company.connect_xero?
+        connect_to_xero_path
+      else
+        symphony_root_path
+      end
     else
-      symphony_root_path
+      additional_information_symphony_users_path
     end
   end
 

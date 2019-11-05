@@ -53,6 +53,10 @@ Rails.application.routes.draw do
         get '/notification_settings', to: 'users#notification_settings', as: :notification_settings
         patch '/update_notification', to: 'users#update_notification', as: :update_notification
       end
+      collection do
+        get '/additional_information', to: "users#additional_information", as: :additional_information
+        patch '/additional_information/update', to: 'users#edit_additional_information', as: :edit_additional_information   
+      end
     end
     resources :reminders do
       member do
@@ -148,7 +152,13 @@ Rails.application.routes.draw do
   as :user do
     match 'confirmation' => 'confirmations#update', :via => :put, :as => :update_user_confirmation
   end
-  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout' }
+
+  # devise_scope :user do
+  #   get 'additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
+  #   patch 'users/:id/edit_additional_information/update', to: 'users/registrations#edit_additional_information', as: 'edit_additional_information'
+  # end
+
+  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account
