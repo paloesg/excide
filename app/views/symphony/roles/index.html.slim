@@ -4,7 +4,7 @@
       li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
       li.breadcrumb-item
-        a href="/symphony" #{@company.name}
+        = link_to @company.name, company_path
       li.breadcrumb-item.active Users
     h1
       | Manage Roles
