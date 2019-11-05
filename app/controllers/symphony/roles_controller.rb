@@ -13,12 +13,9 @@ class Symphony::RolesController < ApplicationController
   end
 
   def create
-    users = User.where(id: params[:role][:user_ids])
     @role = Role.find_or_create_by(role_params)
     if @role.save
-      users.each do |user|
-        user.add_role @role.name, @role.resource
-      end
+      update_users_role
       redirect_to symphony_roles_path, notice: 'Role successfully created!'
     else
       render :new
@@ -31,6 +28,7 @@ class Symphony::RolesController < ApplicationController
 
   def update
     if @role.update(role_params)
+      update_users_role
       redirect_to symphony_roles_path, notice: 'Role successfully updated!'
     else
       render :edit
@@ -43,6 +41,16 @@ class Symphony::RolesController < ApplicationController
   end
 
   private
+
+  def update_users_role
+    users = User.where(id: params[:role][:user_ids])
+    @role.users.each do |user|
+      user.remove_role @role.name, @role.resource
+    end
+    users.each do |user|
+      user.add_role @role.name, @role.resource
+    end
+  end
 
   def set_role
     @role = Role.find(params[:id])
