@@ -58,6 +58,7 @@ Rails.application.routes.draw do
         patch '/additional_information/update', to: 'users#edit_additional_information', as: :edit_additional_information   
       end
     end
+    resources :roles
     resources :reminders do
       member do
         post '/cancel', to: 'reminders#cancel'
@@ -180,6 +181,7 @@ Rails.application.routes.draw do
 
   resources :responses
 
+  get 'company', to: 'companies#show', as: :company
   get 'company/new', to: 'companies#new', as: :new_company
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
