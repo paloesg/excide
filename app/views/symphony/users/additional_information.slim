@@ -53,6 +53,9 @@
                 .form-group
                   = fc.label :name, 'Company name'
                   = fc.text_field :name, class: 'form-control', required: true
+                .form-group.form-check
+                  = fc.check_box :connect_xero, class: 'form-check-input'
+                  = fc.label :connect_xero, 'Enable Xero', class: 'form-check-label'
                 .form-group
                   = fc.fields_for :address do |fca|
                     = render 'companies/address_fields', f: fca        

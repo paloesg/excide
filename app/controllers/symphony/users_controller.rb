@@ -73,17 +73,13 @@ class Symphony::UsersController < ApplicationController
     if @user.update(user_params)
       templates = Template.where(company: @user.company)
       flash[:notice] = 'Additional Information updated successfully!'
-      if @user.company.session_handle.blank? and @user.company.connect_xero?
+      if @user.company.connect_xero
         redirect_to connect_to_xero_path
       else
-        if templates.present?
-          redirect_to symphony_root_path        
-        else
-          redirect_to new_symphony_template_path
-        end
-      end      
+        redirect_to new_symphony_template_path
+      end
     else
-      redirect_to additional_information_symphony_users_path
+      render :additional_information
     end
   end
 
@@ -102,7 +98,7 @@ class Symphony::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack], :role_ids => [], company_attributes:[:id, :name, address_attributes: [:id, :line_1, :line_2, :postal_code]])
+    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack], :role_ids => [], company_attributes:[:id, :name, :connect_xero, address_attributes: [:id, :line_1, :line_2, :postal_code]])
   end
 
   def build_addresses
