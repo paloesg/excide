@@ -73,15 +73,15 @@ class Symphony::UsersController < ApplicationController
     if @user.update(user_params)
       templates = Template.where(company: @user.company)
       flash[:notice] = 'Additional Information updated successfully!'
-      if templates.present?
-        if @user.company.session_handle.blank? and @user.company.connect_xero?
-          redirect_to connect_to_xero_path
-        else
-          redirect_to symphony_root_path
-        end
+      if @user.company.session_handle.blank? and @user.company.connect_xero?
+        redirect_to connect_to_xero_path
       else
-        redirect_to new_symphony_template_path
-      end
+        if templates.present?
+          redirect_to symphony_root_path        
+        else
+          redirect_to new_symphony_template_path
+        end
+      end      
     else
       redirect_to additional_information_symphony_users_path
     end
