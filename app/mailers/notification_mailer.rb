@@ -1,6 +1,13 @@
 class NotificationMailer < ApplicationMailer
   default from: 'Excide Symphony <admin@excide.co>'
 
+  def sign_up_notification(user)
+    @user = user
+    address = Mail::Address.new @user.email
+    address.display_name = @user.full_name
+    mail(to: address.format, subject: 'Please activate your Excide Symphony account')
+  end
+
   def task_notification(task, action, user)
     @task = task
     @action = action
