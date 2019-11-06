@@ -9,7 +9,7 @@
     h1 New Template
     = form_for(@template, url: symphony_templates_path(@template) ) do |f|
       .row
-        .col-sm-10
+        .col-md-10
           .card.mb-3
             h5.card-header Template Details:
             .col-sm-12.mt-3
@@ -19,12 +19,13 @@
               .form-group
                 = f.label :workflow_type, "Workflow Type:"
                 = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
-      = f.submit "Save Template", class: 'btn btn-primary pull-left'
+              .form-group
+                = f.submit "Save Template", class: 'btn btn-primary pull-left mb-3'
   .col-md-6
     h1 Clone Template
     = form_for(@template, url: symphony_templates_path(@template) ) do |f|
       .row
-        .col-md-10
+        .col-md-12
           .card.mb-3
             h5.card-header Template Details:
             .col-sm-12.mt-3
@@ -37,4 +38,10 @@
               .form-group
                 = f.label :workflow_type, "Workflow Type:"
                 = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
-      = f.submit "Clone Template", class: 'btn btn-primary pull-left'
+              .form-group
+                = f.submit "Clone Template", class: 'btn btn-primary pull-left mb-3'
+
+- if @templates.length < 1
+  .row
+    .col-md-12.text-right
+      = link_to "Skip", symphony_root_path, class: 'btn btn-primary'

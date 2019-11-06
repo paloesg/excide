@@ -9,7 +9,20 @@
       = f.label :line_2, 'Address line 2'
       = f.text_field :line_2, class: 'form-control'
 .row
-  .col-md-12
+  .col-md-6
+    .form-group
+      = f.label :city, 'City'
+      = f.text_field :city, class: 'form-control'  
+  .col-md-6
+    .form-group
+      = f.label :country, 'Country'
+      = f.text_field :country, class: 'form-control'
+.row
+  .col-md-6
+    .form-group
+      = f.label :state, 'State'
+      = f.text_field :state, class: 'form-control'
+  .col-md-6
     .form-group
       = f.label :postal_code, 'Postal code'
       = f.text_field :postal_code, class: 'form-control'

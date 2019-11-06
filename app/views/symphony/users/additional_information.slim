@@ -9,7 +9,6 @@
     h1 Additional Information
 .row
   .col-sm-12
-    = @user.has_role? :admin, @company
     = form_for(@user, as: :user, url: edit_additional_information_symphony_users_path) do |f|
       - if @user.errors.any?
         .alert.alert-danger role='alert'
@@ -22,24 +21,30 @@
           .card.mb-4
             .card-header User Details
             .card-body
-              .form-group
-                = f.label :first_name
-                = f.text_field :first_name, class: 'form-control'
-              .form-group
-                = f.label :last_name
-                = f.text_field :last_name, class: 'form-control'
-          / .card
+              .row
+                .col-md-12
+                  .form-group
+                    = f.label :first_name
+                    = f.text_field :first_name, class: 'form-control', required: true
+              .row
+                .col-md-12
+                  .form-group
+                    = f.label :last_name
+                    = f.text_field :last_name, class: 'form-control', required: true
+          .card
             .card-header Credit Card Information
             .card-body
-              .form-group
-                = f.label :card_number, 'Card Number'
-                = f.text_field :card_number, placeholder: "Card Number"
-              .form-group
-                = f.label :year_numner, 'Year'
-                = f.text_field :year_numner, placeholder: "MM/YY"
-              .form-group
-                = f.label :cvc, 'CVC'
-                = f.text_field :cvc, placeholder: "CVC"
+              .row
+                .col-md-12
+                  .form-group
+                    = text_field_tag :card_number, nil, placeholder: "Card Number", class: 'form-control'
+              .row
+                .col-md-6
+                  .form-group
+                    = text_field_tag :year_numner, nil, placeholder: "MM/YY", class: 'form-control'                
+                .col-md-6
+                  .form-group
+                    = text_field_tag :cvc, nil, placeholder: "CVC", class: 'form-control'
         .col-sm-6
           .card.mb-4
             .card-header Company Information
@@ -47,9 +52,9 @@
               = f.fields_for :company do |fc|
                 .form-group
                   = fc.label :name, 'Company name'
-                  = fc.text_field :name, class: 'form-control'
+                  = fc.text_field :name, class: 'form-control', required: true
                 .form-group
                   = fc.fields_for :address do |fca|
                     = render 'companies/address_fields', f: fca        
         .col-sm-12.text-right
-          = f.submit "Save details", class: 'btn btn-primary'
+          = f.submit "Save Additional Information", class: 'btn btn-primary'
