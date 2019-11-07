@@ -4,7 +4,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-  after_action :send_activate_confirmation, only: [:create]
 
   # GET /resource/sign_up
   def new
@@ -22,7 +21,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.save
       resource.company = company
     end
-    resource.skip_confirmation!
     resource.save
     role = params[:role].present? ? params[:role] : "admin"
     if resource.company.present?
@@ -49,10 +47,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       set_minimum_password_length
       respond_with resource
     end
-  end
-
-  def send_activate_confirmation
-    NotificationMailer.sign_up_notification(resource).deliver_later
   end
 
   # GET /resource/edit
