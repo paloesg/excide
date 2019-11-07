@@ -2,7 +2,7 @@
   .col-md-12
     .form-group
       = f.label :line_1, 'Address line 1'
-      = f.text_field :line_1, class: 'form-control'
+      = f.text_field :line_1, class: 'form-control', required: true
 .row
   .col-md-12
     .form-group
@@ -25,4 +25,4 @@
   .col-md-6
     .form-group
       = f.label :postal_code, 'Postal code'
-      = f.text_field :postal_code, class: 'form-control'
+      = f.text_field :postal_code, class: 'form-control', required: true

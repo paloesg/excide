@@ -29,6 +29,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
   accepts_nested_attributes_for :company, :reject_if => :all_blank, :allow_destroy => true
 
+  validates :first_name, :last_name, presence: true
   validates :company, presence: true
 
   include AASM
