@@ -71,7 +71,6 @@ class Symphony::UsersController < ApplicationController
   def edit_additional_information
     @user = current_user
     if @user.update(user_params)
-      templates = Template.where(company: @user.company)
       flash[:notice] = 'Additional Information updated successfully!'
       if @user.company.connect_xero
         redirect_to connect_to_xero_path
