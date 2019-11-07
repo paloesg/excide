@@ -21,7 +21,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.save
       resource.company = company
     end
-    resource.save
+    resource.save(validate: false)
     role = params[:role].present? ? params[:role] : "admin"
     if resource.company.present?
       resource.add_role role.to_sym, resource.company
