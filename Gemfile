@@ -140,7 +140,7 @@ gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/admini
 gem 'administrate-field-jsonb'
 
 # Deep cloning for cloning of template with associated sections
-# gem 'deep_cloneable', '~> 2.3.0'
+gem 'deep_cloneable', '~> 3.0.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production

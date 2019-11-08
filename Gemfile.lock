@@ -177,6 +177,8 @@ GEM
     datetime_picker_rails (0.0.7)
       momentjs-rails (>= 2.8.1)
     debug_inspector (0.0.3)
+    deep_cloneable (3.0.0)
+      activerecord (>= 3.1.0, < 7)
     devise (4.7.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -601,6 +603,7 @@ DEPENDENCIES
   byebug
   cocoon
   coffee-rails (~> 4.2.2)
+  deep_cloneable (~> 3.0.0)
   devise
   docusign_rest
   dotenv-rails
