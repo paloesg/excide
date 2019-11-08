@@ -13,22 +13,17 @@ section.page-title.page-title-1.image-bg.overlay
     li.breadcrumb-item.active Xero Automation
 section
   .container
-    h1
-      | Symphony + Xero:
-      br
-      | Automated AP Processing
-    p.lead Joint value proposition. Your joint value proposition is your elevator pitch, summarising why customers would choose your app + Xero, how they solve the customer’s problems or challenges, and the specific benefit/s they deliver.
-    .row.justify-content-start
-      .col-lg-3.col-6.col-md-5.col-sm-6.col-xs-6
-        a#symphony.btn href="/users/login" role="button" Get Symphony
-      .col-lg-3.col-6.col-md-5.col-sm-6.col-xs-6
-        a#xero.btn href="https://xero.com/signup/?xtid=x30myapp" role="button" Try Xero for Free
+    .row
+      h2 Symphony + Xero: Streamlined AP Processing
+      p.lead Streamline your invoice approval process. Just 5 minutes to set up the workflow for all invoices to follow so the right person gets notified at each step for processing. Every invoice is tracked each step of the way for better visibility and control.
+      a.btn.btn-lg.btn-filled#symphony href="/users/login" role="button" Get Symphony
+      a.btn.btn-lg.btn-filled#xero href="https://xero.com/signup/?xtid=x30myapp" role="button" Try Xero for Free
 section
   .container
     .row
       .col-lg-6.col-md-6
         .text-center
-          img.img-fluid alt="xero-app-partner-logo" src=image_path("myapp-screenshot.png")
+          img.img-fluid alt="xero-app-partner-logo" src=image_path("symphony-screenshot.png")
       .col-lg-6.col-md-6
         .text-center.d-sm-none.d-none.d-md-block.d-lg-block
           img.img-fluid alt="xero-app-partner-logo" src=image_path("xero-screenshot.png")
@@ -47,23 +42,23 @@ section.bg-light
           .col-md
             .row
               .col-sm
-                h5 Benefit title
-                p benefit and the feature which delivers that benefit
+                h4 Streamline invoice approval
+                p Set up your workflow once and all invoices uploaded will follow the workflow automatically so the progress of each invoice is tracked.
               .col-sm
-                h5 Benefit title
-                p benefit and the feature which delivers that benefit
+                h4 Better understanding of cashflow
+                p AP processing integration with Xero allows your spending to be tracked in real time for better managing of your cashflow needs.
         .row
           .col-md
             .row
               .col-sm
-                h5 Benefit title
-                p benefit and the feature which delivers that benefit
+                h4 Reduce errors
+                p With proper workflow tracking, it reduces the chances of invoices getting lost or payments missed, so there is less extra work and penalties by suppliers.
               .col-sm
-                h5 Benefit title
-                p benefit and the feature which delivers that benefit
+                h4 Peace of mind
+                p Every action taking in the AP processing workflow is tracked so any issues that happen in the process can be tracked and rectified quickly.
         .row
           .col
-            a#symphony.btn href="/users/login" Get Symphony
+            a#symphony.btn.btn-lg.btn-filled href="/users/login" Get Symphony
 section
   .container
     .row
@@ -71,43 +66,43 @@ section
         h2.text-center What Symphony does
     .row
       .col-sm
-        h5 Heading
-        p Description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        h4 Workflow Coordination
+        p Ensure every party involved in the workflow is kept in the loop and be informed whenever they need to take action.
       .col-sm
-        h5 Heading
-        p Description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        h4 Track Progress
+        p See the progress of each workflow and keep track of when and who completed each task.
       .col-sm
-        h5 Heading
-        p Description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        h4 Automated Reminders
+        p Automated reminders ensure that no task is every missed or forgotten.
 section.bg-light
   .container
     .row
       .col-lg
         .row
           .col
-            h3 What Xero Does
+            h3 What Xero does
             p Xero is online accounting software that lets you run your business easily and efficiently.
         .row
           .col-md
             .row
               .col-sm
-                h5 See your up-to-date cash position
+                h4 See your up-to-date cash position
                 p Know how you’re doing financially with secure daily updates from your bank accounts and a clear visual dashboard.
               .col-sm
-                h5 Get paid faster and improve cash flow
+                h4 Get paid faster and improve cash flow
                 p Easily create and send invoices with online payments and automated invoice reminders for faster payment.
         .row
           .col-md
             .row
               .col-sm
-                h5 Run your business from anywhere
+                h4 Run your business from anywhere
                 p Access your business finances anytime, from any internet-connected device, and use the Xero app for iOS and Android.
               .col-sm
-                h5 Connect and collaborate anytime
+                h4 Connect and collaborate anytime
                 p Invite your team and your advisors to work with you in real time from home, office, or on the go using the mobile app.
         .row
           .col
-            a#xero.btn href="https://www.xero.com/signup/?xtid=x30yourapp" Try Xero for Free
+            a#xero.btn.btn-lg.btn-filled href="https://www.xero.com/signup/?xtid=x30yourapp" Try Xero for Free
       .col-lg.d-flex.align-items-center
         img.img-fluid src=image_path('xero-screenshot@2x.png') alt="Xero Product Image"
 section
@@ -120,9 +115,9 @@ section
         ul.accordion.accordion-1
           li
             .title
-              span 1 - Signup Symphony
+              span 1 - Sign up for Symphony
             .content
-              p Signup with Symphony #{link_to 'here', new_user_session_path}
+              p Sign up for Symphony #{link_to 'here', new_user_session_path}
               p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore etdolore magna aliqua. Ut enim ad minim veniam, quisnostrud exercitation ullamco laboris nisi ut aliquipex ea commodo consequat.
           li
             .title
@@ -136,7 +131,7 @@ section
             .content
               p Sign in with Xero, and authorise Symphony to access your Xero data.
               p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore etdolore magna aliqua. Ut enim ad minim veniam, quisnostrud exercitation ullamco laboris nisi ut aliquipex ea commodo consequat.
-section.bg-dark
+section.bg-light
   .container
     .row
       .col-12
@@ -152,14 +147,3 @@ section.bg-dark
       .col-lg-4.col-md-3.col-sm-6.col-12
         p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
         h6 Name, work, location
-section
-  .container
-    .row.justify-content-between
-      .col-lg-6.col-md-4.col-sm-12.col-12
-        p Symphony 2019
-      .col-lg-6.col-md-8.col-sm-12.col-12
-        .row.justify-content-between
-          .col-6
-            a#symphony.btn href="/users/login" role="button" Get Symphony
-          .col-6
-            a#xero.btn href="https://xero.com/signup/?xtid=x30myapp" role="button" Try Xero for Free
