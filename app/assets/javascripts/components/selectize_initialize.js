@@ -35,15 +35,15 @@ $(document).on("turbolinks:load", function() {
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
-  $('select.role-select-users').selectize({
+  $("select.role-select-users").selectize({
     plugins: ['remove_button'],
-    delimiter: ' ',
+    delimiter: " ",
     persist: false,
-    create: function(input) {
-        return {
-            value: input,
-            text: input
-        }
+    create(input) {
+      return {
+        value: input,
+        text: input
+      };
     }
   });
 

@@ -53,7 +53,7 @@ class Symphony::RolesController < ApplicationController
   end
 
   def set_role
-    @role = Role.find(params[:id])
+    @role = @company.roles.find(params[:id])
   end
 
   def set_company

@@ -72,7 +72,6 @@ class Symphony::UsersController < ApplicationController
     @user = current_user
     if @user.update(user_params)
       process_payment(@user.id, @user.email, user_params[:stripe_card_token])
-      templates = Template.where(company: @user.company)
       flash[:notice] = 'Additional Information updated successfully!'
       if @user.company.connect_xero
         redirect_to connect_to_xero_path
