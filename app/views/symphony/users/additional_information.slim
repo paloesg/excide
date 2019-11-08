@@ -37,6 +37,7 @@
               .row
                 .col-md-12
                   .form-group
+                    = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
                     #card-element
               .row
                 .col-md-12

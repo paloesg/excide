@@ -1,6 +1,6 @@
 $(document).on("turbolinks:load", function() {
   if ($('#card-element').length) {
-    var stripe = Stripe('pk_test_QSqR9niHI76R9dmfZETPjEmE00F3Hm3VEy');
+    var stripe = Stripe($('input[name=stripe_key]').val());
     var elements = stripe.elements();
 
     var card = elements.create('card');
