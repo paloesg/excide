@@ -47,6 +47,8 @@ gem 'squasher', '>= 0.6.0'
 
 # Authentication
 gem 'devise'
+# Stripe
+gem 'stripe'
 # Roles
 gem 'rolify'
 # Authorization

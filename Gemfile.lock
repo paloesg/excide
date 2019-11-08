@@ -527,6 +527,7 @@ GEM
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
     squasher (0.6.2)
+    stripe (5.8.0)
     sucker_punch (2.1.2)
       concurrent-ruby (~> 1.0)
     temple (0.8.1)
@@ -644,6 +645,7 @@ DEPENDENCIES
   spring-commands-rspec
   sprockets-rails (= 2.3.3)
   squasher (>= 0.6.0)
+  stripe
   sucker_punch (~> 2.0)
   themify-icons-rails!
   trix
