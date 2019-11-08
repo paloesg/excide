@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_01_024415) do
+ActiveRecord::Schema.define(version: 2019_11_07_035258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -454,6 +454,8 @@ ActiveRecord::Schema.define(version: 2019_11_01_024415) do
     t.text "remarks"
     t.string "bank_account_name"
     t.json "settings", default: [{"reminder_sms"=>"", "reminder_email"=>"true", "reminder_slack"=>"", "task_sms"=>"", "task_email"=>"true", "task_slack"=>"", "batch_sms"=>"", "batch_email"=>"true", "batch_slack"=>""}]
+    t.string "stripe_customer_id"
+    t.string "stripe_card_token"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
