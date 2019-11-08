@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.6.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.2'
+gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use SCSS for stylesheets
@@ -134,13 +134,13 @@ gem "selectize-rails"
 gem 'mini_mime'
 
 # Backend admin
-gem 'administrate', '0.11.0'
+gem "administrate", git: "https://github.com/thoughtbot/administrate.git"
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
-gem 'administrate-field-json', git: 'https://github.com/eddietejeda/administrate-field-json.git'
+gem 'administrate-field-jsonb'
 
 # Deep cloning for cloning of template with associated sections
-gem 'deep_cloneable', '~> 2.3.0'
+# gem 'deep_cloneable', '~> 2.3.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production

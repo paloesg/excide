@@ -18,7 +18,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     sections: Field::NestedHasMany.with_options(skip: [:template]),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    data_names: Field::JSON,
+    data_names: Field::JSONB,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
