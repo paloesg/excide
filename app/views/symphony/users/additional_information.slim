@@ -37,14 +37,11 @@
               .row
                 .col-md-12
                   .form-group
-                    = text_field_tag :card_number, nil, placeholder: "Card Number", class: 'form-control'
+                    #card-element
               .row
-                .col-md-6
+                .col-md-12
                   .form-group
-                    = text_field_tag :year_numner, nil, placeholder: "MM/YY", class: 'form-control'                
-                .col-md-6
-                  .form-group
-                    = text_field_tag :cvc, nil, placeholder: "CVC", class: 'form-control'
+                    #card-errors role='alert'           
         .col-sm-6
           .card.mb-4
             .card-header Company Information
@@ -60,4 +57,4 @@
                   = fc.fields_for :address do |fca|
                     = render 'companies/address_fields', f: fca        
         .col-sm-12.text-right
-          = f.submit "Save Additional Information", class: 'btn btn-primary'
+          = f.submit "Save Additional Information", class: 'btn btn-primary additional-information-submit'
