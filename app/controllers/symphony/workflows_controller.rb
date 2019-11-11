@@ -255,7 +255,7 @@ class Symphony::WorkflowsController < ApplicationController
       @invoice_payable.save
     else
       #in future if we do account receivable, must modify the adapter method create_invoice_receivable
-      @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
+      @invoice = @xero.create_invoice_receivable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
 
     respond_to do |format|
