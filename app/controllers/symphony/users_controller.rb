@@ -63,11 +63,6 @@ class Symphony::UsersController < ApplicationController
     end
   end
 
-  def additional_information
-    build_addresses
-    @user = current_user
-  end
-
   def edit_additional_information
     @user = current_user
     if @user.update(user_params)

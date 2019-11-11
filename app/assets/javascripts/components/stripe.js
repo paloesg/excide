@@ -1,4 +1,4 @@
-$(document).on("turbolinks:load", function() {
+$(document).on("turbolinks:load", function(){
   if ($('#card-element').length) {
     var stripe = Stripe($('input[name=stripe_key]').val());
     var elements = stripe.elements();
@@ -10,7 +10,7 @@ $(document).on("turbolinks:load", function() {
       // Check input( $( this ).val() ) for validity here
       var displayError = $('#card-errors');
       if(event.error) {
-        displayError.attr('class', 'alert alert-danger')    
+        displayError.attr('class', 'stripe-alert-error')    
         displayError.text(event.error.message);
       }
       else {
@@ -23,7 +23,7 @@ $(document).on("turbolinks:load", function() {
       stripe.createToken(card).then(function(result) {
         if (result.error) {
           var displayError = $('#card-errors');
-          displayError.attr('class', 'alert alert-danger')    
+          displayError.attr('class', 'stripe-alert-error')    
           displayError.text(result.error.message);
           var submit_button = $('.additional-information-submit')
           submit_button.removeAttr('disabled');

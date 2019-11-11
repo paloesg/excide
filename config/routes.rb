@@ -54,7 +54,6 @@ Rails.application.routes.draw do
         patch '/update_notification', to: 'users#update_notification', as: :update_notification
       end
       collection do
-        get '/additional_information', to: "users#additional_information", as: :additional_information
         patch '/additional_information/update', to: 'users#edit_additional_information', as: :edit_additional_information   
       end
     end
@@ -154,10 +153,9 @@ Rails.application.routes.draw do
     match 'confirmation' => 'confirmations#update', :via => :put, :as => :update_user_confirmation
   end
 
-  # devise_scope :user do
-  #   get 'additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
-  #   patch 'users/:id/edit_additional_information/update', to: 'users/registrations#edit_additional_information', as: 'edit_additional_information'
-  # end
+  devise_scope :user do
+    get 'users/additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
+  end
 
   devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
