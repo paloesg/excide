@@ -195,6 +195,7 @@ Rails.application.routes.draw do
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
   get 'about-us', to: 'home#about', as: :about
+  get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
 
   # VFO services
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo

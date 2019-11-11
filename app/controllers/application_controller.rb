@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   #Error occurs for eg, the tax rate doesn't match with account code. Xero returns an exception in XML, hence the need to parse it truncate it in the xero_error_api_exception method
   rescue_from Xeroizer::ApiException, with: :xero_error_api_exception
   rescue_from OAuth::Unauthorized, with: :xero_unauthorized
+  rescue_from Xeroizer::OAuth::RateLimitExceeded, with: :xero_rate_limit_exceeded
 
   after_action :store_location
 
@@ -67,5 +68,11 @@ class ApplicationController < ActionController::Base
     message = 'You are not authorized to access the Xero account this company is connected to. Please disconnect the Xero account to continue.'
     Rails.logger.error("Xero Error: 401 Unauthorized")
     redirect_to edit_company_path, alert: message
+  end
+
+  def xero_rate_limit_exceeded
+    message = 'You have exceeded the number of times you can access Xero in 1 minute. Please wait a few minutes and try again.'
+    Rails.logger.error("Xero Error: Rate limited exceeded")
+    redirect_to symphony_root_path, alert: message
   end
 end
