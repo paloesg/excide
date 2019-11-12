@@ -69,6 +69,6 @@ module.exports = function(api) {
         }
       ]
     ].filter(Boolean)
-  }
+  };
 };
 /* eslint-enable complexity */
