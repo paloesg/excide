@@ -56,6 +56,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   def update
+    if(params[:user][:stripe_card_token])
+      customer = Stripe::Customer.create({email: current_user.email, card: params[:user][:stripe_card_token]})
+      resource.stripe_customer_id = customer.id
+    end
+    resource.save
     super
   end
 

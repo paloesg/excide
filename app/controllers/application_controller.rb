@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
         symphony_root_path
       end
     else
-      additional_information_symphony_users_path
+      additional_information_path
     end
   end
 
