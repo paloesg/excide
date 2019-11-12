@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 module.exports = function(api) {
   var validEnv = ["development", "test", "production"];
   var currentEnv = api.env();
@@ -70,3 +71,4 @@ module.exports = function(api) {
     ].filter(Boolean)
   }
 };
+/* eslint-enable complexity */
