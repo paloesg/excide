@@ -37,6 +37,7 @@ module Excide
     config.active_job.queue_adapter = :sucker_punch
 
     # The default configuration for Rails 6
+    # Zeitwerk is able to load classes and modules on demand (autoloading), or upfront (eager loading).
     # config.load_defaults "6.0"
   end
 end
