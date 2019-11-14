@@ -8,8 +8,8 @@ nav
     .module.widget-handle.mobile-toggle.right.d-xl-none
       i.ti-menu
     .module-group.d-xl-block
-      - if current_user.present?
-        - if current_user.company.name.present?
+      - if current_user.present? 
+        - if current_user.company_id.present? && current_user.company.name.present?
           .module.left
             ul.menu
               li = link_to "Symphony", symphony_root_path
