@@ -48,5 +48,5 @@ section.image-bg.overlay
                     = fc.fields_for :address do |fca|
                       = render 'companies/address_fields', f: fca 
           .row       
-            .col-sm-12.text-right
+            .col-sm-4.offset-md-8.text-right
               = f.submit "Save Additional Information", class: 'additional-information-submit'
