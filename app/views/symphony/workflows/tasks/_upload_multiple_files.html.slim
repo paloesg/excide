@@ -26,6 +26,7 @@ tr
         = hidden_field_tag 'action_id', action.id, id: "action_id_#{action.id}", class: "action_id"
         = form_tag @s3_direct_post.url, class: "dropzone uploadToXero#{action.id}", id: "uploadToXero#{action.id}"
         	- @s3_direct_post.fields.each do |key, value|
+            = hidden_field_tag "utf8", "√"
         		= hidden_field_tag key, value
         - if action.documents.present?
           br
