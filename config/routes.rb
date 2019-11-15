@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   get '/connect_to_xero', to: 'xero_sessions#connect_to_xero', as: :connect_to_xero
   get '/xero_callback_and_update', to: 'xero_sessions#xero_callback_and_update', as: :xero_callback_and_update
   post '/update_contacts_from_xero', to: 'xero_sessions#update_contacts_from_xero', as: :update_contacts_from_xero
+  post '/update_line_items_from_xero', to: 'xero_sessions#update_line_items_from_xero', as: :update_line_items_from_xero
   delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
   namespace :symphony do

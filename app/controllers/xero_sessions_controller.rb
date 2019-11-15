@@ -31,6 +31,10 @@ class XeroSessionsController < ApplicationController
         xc = XeroContact.find_or_initialize_by(contact_id: contact.contact_id)
         xc.update(name: contact.name, company: current_user.company)
       end
+      @xero_client.Item.all.each do |item|
+        xli = XeroLineItem.find_or_initialize_by(item: item.code)
+        xli.update(description: item.description, quantity: item.quantity_on_hand, price: item.sales_details.unit_price, account: item.sales_details.account_code, tax: item.sales_details.tax_type, company: current_user.company)
+      end
       redirect_to symphony_root_path, notice: "User signed in and connected to Xero."
     else
       redirect_to root_path, alert: "Connection to Xero failed."
@@ -50,5 +54,14 @@ class XeroSessionsController < ApplicationController
       xc.update(name: contact.name, company: current_user.company)
     end
     redirect_to edit_company_path, notice: "Contacts have been updated from Xero."
+  end
+
+  def update_line_items_from_xero
+    @xero_client = Xero.new(current_user.company)
+    @xero_client.get_items.each do |item|
+      xli = XeroLineItem.find_or_initialize_by(item: item.code)
+      xli.update(description: item.description, quantity: item.quantity_on_hand, price: item.sales_details.unit_price, account: item.sales_details.account_code, tax: item.sales_details.tax_type, company: current_user.company)
+    end
+    redirect_to edit_company_path, notice: "Line Items have been updated from Xero."
   end
 end
