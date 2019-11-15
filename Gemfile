@@ -132,7 +132,7 @@ gem "selectize-rails"
 gem 'mini_mime'
 
 # Backend admin
-gem "administrate", git: "https://github.com/thoughtbot/administrate.git"
+gem "administrate", "0.12.0"
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
 gem 'administrate-field-jsonb'
