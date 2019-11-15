@@ -19,6 +19,7 @@ class Company < ApplicationRecord
   has_many :batches
   has_many :invoices
   has_many :xero_contacts
+  has_many :xero_line_items
   has_one :address, as: :addressable
 
   belongs_to :consultant, class_name: 'User'
