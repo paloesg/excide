@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_01_024415) do
+ActiveRecord::Schema.define(version: 2019_11_08_082633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -521,6 +521,19 @@ ActiveRecord::Schema.define(version: 2019_11_01_024415) do
     t.index ["company_id"], name: "index_xero_contacts_on_company_id"
   end
 
+  create_table "xero_line_items", force: :cascade do |t|
+    t.string "item"
+    t.string "description"
+    t.integer "quantity"
+    t.decimal "price"
+    t.string "account"
+    t.string "tax"
+    t.bigint "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_xero_line_items_on_company_id"
+  end
+
   add_foreign_key "allocations", "availabilities"
   add_foreign_key "allocations", "events"
   add_foreign_key "allocations", "users"
@@ -583,4 +596,5 @@ ActiveRecord::Schema.define(version: 2019_11_01_024415) do
   add_foreign_key "workflows", "users"
   add_foreign_key "workflows", "workflow_actions"
   add_foreign_key "xero_contacts", "companies"
+  add_foreign_key "xero_line_items", "companies"
 end
