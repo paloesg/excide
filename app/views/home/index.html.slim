@@ -1,5 +1,24 @@
-- set_meta_tags site: 'Excide', title: 'Virtual CFO Services', description: 'At Excide, we provide virtual CFO services for small businesses at a fraction of the cost.  Budgeting | Forecasting | Bookkeeping | Accounting | IPO | Mergers'
-section.cover.fullscreen.image-slider.slider-all-controls.controls-inside
+section.cover.height-60.imagebg.text-center data-overlay="5"
+  .background-image-holder.background--top
+    img alt="background" src=image_path('hero-image.jpg')
+  .container.pos-vertical-center
+    .row
+      .col-md-12
+        h1
+          | Health insurance for
+          em everything
+          | that matters
+        a.btn.btn--primary.type--uppercase href="#"
+          span.btn__text
+            | Get A Quote — No Obligation
+    /! end of row
+  /! end of container
+
+
+
+
+/ - set_meta_tags site: 'Excide', title: 'Virtual CFO Services', description: 'At Excide, we provide virtual CFO services for small businesses at a fraction of the cost.  Budgeting | Forecasting | Bookkeeping | Accounting | IPO | Mergers'
+/ section.cover.fullscreen.image-slider.slider-all-controls.controls-inside
   ul.slides
     li.overlay.image-bg
       .background-image-holder
@@ -13,7 +32,7 @@ section.cover.fullscreen.image-slider.slider-all-controls.controls-inside
         .row
           .col-md-10.offset-md-1.col-sm-12.text-center
             = render 'contact', short: true
-section
+/ section
   .container
     .row
       .col-md-8.offset-md-2.col-sm-12.text-center
@@ -39,7 +58,7 @@ section
             h5.uppercase Expertise
           p In a small set-up, resourcing becomes the third but not in any way the least of concerns to a business owner. Being able to find the people with the right talent is one thing, whereas finding the right people is another. “Where should I be looking for the right talent? Should I be doing this task by myself or outsourcing it to someone else? Can I trust that they deliver?”
 
-section.pt240.pb240.image-bg
+/ section.pt240.pb240.image-bg
   .background-image-holder
     img.background-image alt="Tailored solutions" src=image_path('tailored-solutions.jpg')
   .container
@@ -50,7 +69,7 @@ section.pt240.pb240.image-bg
             h4.uppercase.mb16 The Problem
             p.mb80 In the Johari window, the quadrant not known to self while known to others, is called the blind spot. It is important for startups and small businesses to identify the critical issues in their blind spot and resolve them before they run out of their financial runway. However, a reluctance to get help or getting the wrong kind of help could worsen the situation.
 
-section
+/ section
   .container
     .row
       .col-md-8.offset-md-2.col-sm-12.text-center
@@ -76,7 +95,7 @@ section
             h5.uppercase Treatment
           p This is where we will fine-tune the various aspects of your business that can be optimised. Based on a rock-solid financial model, you will have a complete overview of the health of your business and will know which are the areas that can be tweaked to improve business performance.
 
-section.pt240.pb240.image-bg
+/ section.pt240.pb240.image-bg
   .background-image-holder
     img.background-image alt="Let's work together" src=image_path('lets-work-together.jpg')
   .container
@@ -105,7 +124,7 @@ section.pt240.pb240.image-bg
                   h6.uppercase Sharon
                   span DigitalFolks
 
-section#contactus
+/ section#contactus
   .container
     .row
       .col-sm-8.offset-sm-2.text-center
