@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  layout 'stack/application'
+
   def index
     @enquiry = Enquiry.new
   end
