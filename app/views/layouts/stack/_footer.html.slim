@@ -1,28 +1,78 @@
-footer.footer-1.bg-dark
+footer.space--sm.footer-2
   .container
     .row
-      .col-md-4.col-sm-6
-        img.logo alt="Excide Logo" src=image_url('../excide-logo-light.png')
-      .col-md-4.col-sm-6
-        .widget
-      .col-md-4.col-sm-6
-        .widget.text-right
-          - if current_user.present?
-            = link_to "Log Out", destroy_user_session_path, method: :delete
-          - else
-            = link_to "Log In", new_user_session_path
-
+      .col-md-6.col-lg-3.col-6
+        h6.type--uppercase Company
+        ul.list--hover
+          li
+            a href="#"  About Company
+          li
+            a href="#"  Our Team
+          li
+            a href="#"  Locations
+          li
+            a href="#"  History
+          li
+            a href="#"  Work With Us
+      .col-md-6.col-lg-3.col-6
+        h6.type--uppercase Developers
+        ul.list--hover
+          li
+            a href="#"  Developer Center
+          li
+            a href="#"  API Reference
+          li
+            a href="#"  Downloads
+          li
+            a href="#"  Tools
+          li
+            a href="#"  Developer Blog
+          li
+            a href="#"  Developer Forums
+      .col-md-6.col-lg-3.col-6
+        h6.type--uppercase Support
+        ul.list--hover
+          li
+            a href="#"  Help Center
+          li
+            a href="#"  Live Chat
+          li
+            a href="#"  Downloads
+          li
+            a href="#"  Press Kit
+      .col-md-6.col-lg-3.col-6
+        h6.type--uppercase Locations
+        ul.list--hover
+          li
+            a href="#"  Melbourne
+          li
+            a href="#"  London
+          li
+            a href="#"  New York
+          li
+            a href="#"  San Francisco
+    /! end of row
     .row
-      .col-sm-6
-        span.sub &copy; #{Time.current.year} Excide Pte. Ltd. All rights reserved. | #{link_to "Privacy Policy", privacy_path}
-      .col-sm-6.text-right
-        ul.list-inline.social-list
-          li.list-inline-item
-            a href="https://twitter.com/excidevfo/"
-              i.ti-twitter-alt
-          li.list-inline-item
-            a href="https://www.facebook.com/excidevfo/"
-              i.ti-facebook
-          li.list-inline-item
-            a href="https://www.linkedin.com/company/excide/"
-              i.ti-linkedin
+      .col-md-6
+        span.type--fine-print
+          | ©
+          span.update-year
+          | Stack Inc.
+        a.type--fine-print href="#"  Privacy Policy
+        a.type--fine-print href="#"  Legal
+      .col-md-6.text-right.text-left-xs
+        ul.social-list.list-inline.list--hover
+          li
+            a href="#"
+              i.socicon.socicon-google.icon.icon--xs
+          li
+            a href="#"
+              i.socicon.socicon-twitter.icon.icon--xs
+          li
+            a href="#"
+              i.socicon.socicon-facebook.icon.icon--xs
+          li
+            a href="#"
+              i.socicon.socicon-instagram.icon.icon--xs
+    /! end of row
+  /! end of container
