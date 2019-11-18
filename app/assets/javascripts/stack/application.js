@@ -1,12 +1,12 @@
 //= require jquery3
 //= require popper
 //= require bootstrap
-//= require_tree ./js
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require moment
 //= require tempusdominus-bootstrap-4.js
 
+//= require_tree ./js
 //= require trix
 //= require cocoon
 //= require analytics

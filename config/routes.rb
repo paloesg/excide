@@ -148,7 +148,7 @@ Rails.application.routes.draw do
   as :user do
     match 'confirmation' => 'confirmations#update', :via => :put, :as => :update_user_confirmation
   end
-  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout' }
+  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account
