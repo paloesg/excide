@@ -1,1 +1,5 @@
 /*! Place your custom styles here */
+
+.btn.type--uppercase .btn__text {
+  margin-right: 0px !important;
+}
