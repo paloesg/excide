@@ -1,78 +1,25 @@
-footer.space--sm.footer-2
+footer.footer-4.space--sm.text-center-xs.bg--dark
   .container
     .row
-      .col-md-6.col-lg-3.col-6
-        h6.type--uppercase Company
-        ul.list--hover
-          li
-            a href="#"  About Company
-          li
-            a href="#"  Our Team
-          li
-            a href="#"  Locations
-          li
-            a href="#"  History
-          li
-            a href="#"  Work With Us
-      .col-md-6.col-lg-3.col-6
-        h6.type--uppercase Developers
-        ul.list--hover
-          li
-            a href="#"  Developer Center
-          li
-            a href="#"  API Reference
-          li
-            a href="#"  Downloads
-          li
-            a href="#"  Tools
-          li
-            a href="#"  Developer Blog
-          li
-            a href="#"  Developer Forums
-      .col-md-6.col-lg-3.col-6
-        h6.type--uppercase Support
-        ul.list--hover
-          li
-            a href="#"  Help Center
-          li
-            a href="#"  Live Chat
-          li
-            a href="#"  Downloads
-          li
-            a href="#"  Press Kit
-      .col-md-6.col-lg-3.col-6
-        h6.type--uppercase Locations
-        ul.list--hover
-          li
-            a href="#"  Melbourne
-          li
-            a href="#"  London
-          li
-            a href="#"  New York
-          li
-            a href="#"  San Francisco
-    /! end of row
+      .col-md-6.d-flex.align-items-center
+        img.logo alt="Image" src=image_url('excide-logo-light.png')
     .row
-      .col-md-6
-        span.type--fine-print
-          | ©
-          span.update-year
-          | Stack Inc.
-        a.type--fine-print href="#"  Privacy Policy
-        a.type--fine-print href="#"  Legal
-      .col-md-6.text-right.text-left-xs
+      .col-md-6        
+        span &copy; #{Time.current.year} Excide Pte. Ltd. All rights reserved. | #{link_to "Privacy Policy", privacy_path}     
+      .col-md-6.text-right.text-center-xs.block--xs
         ul.social-list.list-inline.list--hover
           li
-            a href="#"
+            a href="#" 
               i.socicon.socicon-google.icon.icon--xs
           li
-            a href="#"
+            a href="#" 
               i.socicon.socicon-twitter.icon.icon--xs
           li
-            a href="#"
+            a href="#" 
               i.socicon.socicon-facebook.icon.icon--xs
           li
-            a href="#"
+            a href="#" 
               i.socicon.socicon-instagram.icon.icon--xs
     /! end of row
   /! end of container
+

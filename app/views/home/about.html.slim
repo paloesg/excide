@@ -1,15 +1,11 @@
 - set_meta_tags title: 'About Us', description: 'Based in Singapore, Excide is a boutique consultancy that provides virtual financial officer or VFO services to startups or SMEs at the fraction of the cost.', reverse: true
-section.page-title.page-title-1.image-bg.overlay
+section.text-center.imagebg.space--lg data-overlay="3" 
   .background-image-holder
-    img.background-image alt="image" src=image_path('singapore-skyline.jpg')
+    img alt="background" src=image_path("singapore-skyline.jpg")
   .container
     .row
-      .col-md-12.text-center
-        h1.uppercase.mb0 About Us
-  ol.breadcrumb.breadcrumb-2.d-flex.justify-content-center
-    li.breadcrumb-item
-      a href="/" Home
-    li.breadcrumb-item.active About Us
+      .col-md-8.col-lg-6
+        h1 About Us
 section.pb0
   .container
     .row
@@ -20,20 +16,20 @@ section
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h4.mb64.uppercase About Excide
+          h2.mb64.uppercase About Excide
         p.lead.mb32 Excide is a boutique consulting house founded in 2015 serving small businesses and start-ups in Singapore. Excide performs the role of a Chief Finance Officer (CFO) at a fraction of their salary. This means that small businesses are able to afford the services that are commonly adopted by larger organizations.
         p.lead.mb32 Starting as a small business ourselves, we understand the unique challenges and constraints facing small businesses and start-ups. Combined with our big business expertise and know-how, we blend the best of both worlds to offer solutions that can deliver real business value quickly and effectively for you.
-section.pt240.pb240.image-bg
+section.text-center.imagebg.parallax data-overlay="4" 
   .background-image-holder
-    img.background-image alt="image" src=image_path('table-top-post-its.jpg')
+    img alt="background" src=image_path("table-top-post-its.jpg")
   .container
     .row
-      .col-md-8.offset-md-2.col-sm-12
-        .feature.boxed
-          .text-center
-            h4.mb10.uppercase Free financial model template
-            p.lead.mb24 Wish to do a preliminary understanding if your business requires a Virtual Financial Officer? Here is a free PDF download for you to determine if you are on-track with your business’ finances. As soon as you fill up your details, we will furnish you with a financial model template.
-            = render 'contact', short: true
+      .col-md-10.col-lg-8
+        .cta
+          h2 FREE FINANCIAL MODEL TEMPLATE
+          p.lead
+            | Wish to do a preliminary understanding if your business requires a Virtual Financial Officer? Here is a free PDF download for you to determine if you are on-track with your business’ finances. As soon as you fill up your details, we will furnish you with a financial model template.
+          = render 'contact', short: true
 section
   .container
     .row
@@ -73,9 +69,9 @@ section
               h5.uppercase.mb0 Julia Kwok
               span Senior Consultant
           p.mb0 Certified Practising Accountant of CPA Australia and Practising Management Consultant. Over 18 years of management and professional accounting experience in the F&B sector. Managed the SGX-listing of Thai Village in April 2000.
-section.pt240.pb240.image-bg
+section.text-center.height-30.imagebg.parallax data-overlay="4" 
   .background-image-holder
-    img.background-image alt="image" src=image_path('seminar-room.jpg')
+    img alt="background" src=image_path("seminar-room.jpg")
 section
   .container
     .row
@@ -84,9 +80,9 @@ section
         p.lead.mb64 We are a business that helps other small businesses think big.
         h4.mb64.uppercase Our Mission
         p.lead.mb64 To empower business owners and entrepreneurs with a platform that facilitates business growth, personal development, and job creation.
-section.pt240.pb240.image-bg
+section.text-center.height-30.imagebg.parallax data-overlay="4" 
   .background-image-holder
-    img.background-image alt="image" src=image_path('phone-laptop.jpg')
+    img alt="background" src=image_path("phone-laptop.jpg")
 section#contactus
   .container
     .row
