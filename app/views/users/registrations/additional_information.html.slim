@@ -6,7 +6,7 @@ section.image-bg.overlay
   .container
     .row
       .col-md-12
-        = form_for(@user, as: :user, url: edit_additional_information_symphony_users_path) do |f|
+        = form_for(@user, as: :user, url: edit_additional_information_symphony_users_path, html: { class: 'additional-information-page' }) do |f|
           .row.mb-3
             .col-sm-6
               .feature.boxed
