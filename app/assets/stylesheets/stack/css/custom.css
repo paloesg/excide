@@ -20,3 +20,27 @@
 .flickity-prev-next-button:hover {
   background: rgba(34,34,34,0.4) !important;
 }
+
+.btn--excide,
+.btn--excide:visited {
+  background: #c3502e;
+  border-color: #c3502e;
+  color: #fff;
+  height: 3.8em;
+}
+.btn--excide .btn__text,
+.btn--excide:visited .btn__text {
+  color: #fff;
+}
+.btn--excide .btn__text i,
+.btn--excide:visited .btn__text i {
+  color: #fff;
+}
+.btn--excide:hover {
+  background: #d45b37;
+  color: #fff;
+}
+.btn--excide:active {
+  background: #c3502e;
+  color: #fff;
+}
