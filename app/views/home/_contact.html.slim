@@ -1,34 +1,48 @@
-- if local_assigns[:short]
-  form.form-newsletter.thirds data-success="Thanks for your enquiry, we will get back to you shortly." data-error="Please fill in the required fields."
-    input.validate-required type="text" name="name" placeholder="Name"
-    input.validate-required type="email" name="email" placeholder="Email"
-    input type="hidden" name="source" value=action_name
-    button type="submit" Get In Touch
-    p.sub.text-center By submitting, you agree to receive email from us.
-- else
-  .row
-    .col-sm-6
-      .feature.bordered
-        h5.uppercase Send us a message
-        form.form-email data-success="Thanks for your enquiry, we will get back to you shortly." data-error="Please fill in the required fields."
-          input.validate-required type="text" name="name" placeholder="Name"
-          input.validate-required type="tel" name="contact" placeholder="Contact Number"
-          input.validate-required type="email" name="email" placeholder="Email"
-          textarea rows="5" name="comments" placeholder="Enquiry"
-          input type="hidden" name="source" value=action_name
-          button type="submit" Submit Enquiry
-    .col-sm-6
-      .map-holder.pt160.pb160.mb24
-        iframe src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJKZo5lywa2jERr-UI7ZI-pdo&key=AIzaSyCFxJd9qfiHi2nmn0myTo02zTgmFqW82so"
-      .feature.bordered
-        h5.uppercase Contact Information
-        p
-          ' +65 6352 2843
+section.bg--secondary.pb-0
+  .container
+    .row
+      .col-md-10.col-lg-8
+        h2 Get In Touch
+section.switchable.bg--secondary
+  .container
+    .row.justify-content-between
+      .col-md-5
+        iframe src="http://maps.google.com/maps?q=+London, +Downingstreet 10, +England"
+        / iframe src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJKZo5lywa2jERr-UI7ZI-pdo&key=AIzaSyCFxJd9qfiHi2nmn0myTo02zTgmFqW82so"
+        p.lead
+          | E:
+          a href="#"  info@excide.co
+          br/
+          | P: +65 6352 2843
+        p.lead
+          | 3 Pemimpin Drive, #07-04B
           br
-          | info@excide.co
-        p
-          ' 3 Pemimpin Drive, #07-04B
-          br
-          ' Lip Hing Industrial Building
+          | Lip Hing Industrial Building
           br
           | Singapore 576147
+      .col-md-6
+        - if local_assigns[:short]
+          form.form-newsletter.thirds data-success="Thanks for your enquiry, we will get back to you shortly." data-error="Please fill in the required fields."
+            input.validate-required type="text" name="name" placeholder="Name"
+            input.validate-required type="email" name="email" placeholder="Email"
+            input type="hidden" name="source" value=action_name
+            button type="submit" Get In Touch
+            p.sub.text-center By submitting, you agree to receive email from us.
+        - else
+          p.lead
+            | we are happy to provide you with a free 1-hour consultation if your business is located in singapore or myanmar. just drop us a message below!
+          form.form-email.row data-error="Please fill in all fields correctly." data-success="Thanks for your enquiry, we'll be in touch shortly." novalidate="true"
+            .col-md-12.col-12
+              label Your Name:
+              input.validate-required name="Name" type="text"
+            .col-md-12.col-12
+              label Contact Number:
+              input.validate-required.validate-email name="contact" type="tel"
+            .col-md-12.col-12
+              label Email Address:
+              input.validate-required.validate-email name="email" type="email"
+            .col-md-12.col-12
+              label Enquiry:
+              textarea.validate-required name="Message" rows="4"
+            .col-md-5.col-lg-4.col-6
+              button.btn.btn--primary.type--uppercase type="submit"  Submit Enquiry

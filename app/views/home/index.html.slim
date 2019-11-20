@@ -125,36 +125,4 @@ section.text-center.height-80.imagebg
             button.flickity-prev-next-button.next aria-label="next" type="button"
               svg viewbox="0 0 100 100"
                 path.arrow d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" transform="translate(100, 100) rotate(180) "
-section.bg--secondary
-  .container
-    .row
-      .col-md-10.col-lg-8
-        h2 Get In Touch
-        p.lead
-          | Whether you’re building a welcome mat for your SaaS or a clean, corporate portfolio, Stack has your design needs covered.
-section.switchable.bg--secondary
-  .container
-    .row.justify-content-between
-      .col-md-5
-        p.lead
-          | E:
-          a href="#"  hello@stack.net
-          br/
-          | P: +613 4827 2294
-        p.lead
-          | Give us a call or drop by anytime, we endeavour to answer all enquiries within 24 hours on business days.
-        p.lead
-          | We are open from 9am — 5pm week days.
-      .col-md-6.col-12
-        form.form-email.row data-error="Please fill in all fields correctly." data-success="Thanks for your enquiry, we'll be in touch shortly." novalidate="true"
-          .col-md-6.col-12
-            label Your Name:
-            input.validate-required name="Name" type="text"
-          .col-md-6.col-12
-            label Email Address:
-            input.validate-required.validate-email name="email" type="email"
-          .col-md-12.col-12
-            label Message:
-            textarea.validate-required name="Message" rows="4"
-          .col-md-5.col-lg-4.col-6
-            button.btn.btn--primary.type--uppercase type="submit"  Send Enquiry
+= render 'contact'
