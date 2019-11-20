@@ -44,3 +44,32 @@
   background: #c3502e;
   color: #fff;
 }
+
+.btn--orange,
+.btn--orange:visited {
+  background: #c3502e;
+  border-color: #c3502e;
+}
+.btn--orange .btn__text,
+.btn--orange:visited .btn__text {
+  color: #fff;
+}
+.btn--orange .btn__text i,
+.btn--orange:visited .btn__text i {
+  color: #fff;
+}
+.btn--orange:hover {
+  background: #d45b37;
+}
+.btn--orange:active {
+  background: #c3502e;
+}
+
+.accordion-1 li.active .accordion__title {
+  border-color: #c3502e!important;
+}
+
+.accordion li.active .accordion__title {
+  background: #c3502e!important;
+  border-bottom: 1px solid #ececec;
+}
