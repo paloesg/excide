@@ -37,29 +37,3 @@
           | Lip Hing Industrial Building
           br
           | Singapore 576147
-      .col-md-6
-        - if local_assigns[:short]
-          form.form-newsletter.thirds data-success="Thanks for your enquiry, we will get back to you shortly." data-error="Please fill in the required fields."
-            input.validate-required type="text" name="name" placeholder="Name"
-            input.validate-required type="email" name="email" placeholder="Email"
-            input type="hidden" name="source" value=action_name
-            button type="submit" Get In Touch
-            p.sub.text-center By submitting, you agree to receive email from us.
-        - else
-          p.lead
-            | we are happy to provide you with a free 1-hour consultation if your business is located in singapore or myanmar. just drop us a message below!
-          form.form-email.row data-error="Please fill in all fields correctly." data-success="Thanks for your enquiry, we'll be in touch shortly." novalidate="true"
-            .col-md-12.col-12
-              label Your Name:
-              input.validate-required name="Name" type="text"
-            .col-md-12.col-12
-              label Contact Number:
-              input.validate-required.validate-email name="contact" type="tel"
-            .col-md-12.col-12
-              label Email Address:
-              input.validate-required.validate-email name="email" type="email"
-            .col-md-12.col-12
-              label Enquiry:
-              textarea.validate-required name="Message" rows="4"
-            .col-md-5.col-lg-4.col-6
-              button.btn.btn--primary.type--uppercase type="submit"  Submit Enquiry
