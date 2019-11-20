@@ -6,7 +6,22 @@
 //= require moment
 //= require tempusdominus-bootstrap-4.js
 
-//= require_tree ./js
+//= require ./js/flickity.min
+//= require ./js/easypiechart.min
+//= require ./js/parallax
+//= require ./js/typed.min
+//= require ./js/datepicker
+//= require ./js/isotope.min
+//= require ./js/ytplayer.min
+//= require ./js/lightbox.min
+//= require ./js/granim.min
+//= require ./js/jquery.steps.min
+//= require ./js/countdown.min
+//= require ./js/twitterfetcher.min
+//= require ./js/spectragram.min
+//= require ./js/smooth-scroll.min
+//= require ./js/scripts
+
 //= require trix
 //= require cocoon
 //= require analytics
