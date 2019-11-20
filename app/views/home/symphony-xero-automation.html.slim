@@ -1,4 +1,4 @@
-section.page-title.page-title-1.image-bg.overlay
+section.text-center.imagebg.space--lg data-overlay="3"
   .background-image-holder
     img.background-image alt="image" src=image_path('laptop-with-charts.jpg')
   .container
@@ -7,17 +7,15 @@ section.page-title.page-title-1.image-bg.overlay
         h1.uppercase.pt-5 Xero Automation
       .col-md-3
         img.img-fluid.float-right alt="xero-app-partner-logo" src=image_path("logo_Xero App Partner Connected Badge.svg")
-  ol.breadcrumb.breadcrumb-2.d-flex.justify-content-center
-    li.breadcrumb-item
-      a href="/" Home
-    li.breadcrumb-item.active Xero Automation
 section
   .container
     .row
       h2 Symphony + Xero: Streamlined AP Processing
       p.lead Streamline your invoice approval process. Just 5 minutes to set up the workflow for all invoices to follow so the right person gets notified at each step for processing. Every invoice is tracked each step of the way for better visibility and control.
-      a.btn.btn-lg.btn-filled#symphony href="/users/login" role="button" Get Symphony
-      a.btn.btn-lg.btn-filled#xero href="https://xero.com/signup/?xtid=x30myapp" role="button" Try Xero for Free
+      a.btn.btn--lg.btn--orange#symphony href="/users/login" role="button" 
+        span.btn__text Get Symphony
+      a.btn.btn--lg.btn--primary#xero href="https://xero.com/signup/?xtid=x30myapp" role="button" 
+        span.btn__text Try Xero for Free
 section
   .container
     .row
@@ -27,13 +25,10 @@ section
       .col-lg-6.col-md-6
         .text-center.d-sm-none.d-none.d-md-block.d-lg-block
           img.img-fluid alt="xero-app-partner-logo" src=image_path("xero-screenshot.png")
-section.bg-light
+section.switchable.bg--secondary
   .container
-    .row
-      .col-lg-6
-        .d-none.d-lg-block.d-flex.align-items-center.text-center
-          img.img-fluid alt="Xero Product Image" src=image_path("myapp-product-image.png")
-      .col-lg-6
+    .row.justify-content-around      
+      .col-lg-6.col-md-6
         .row
           .col
             h3 Why connect Symphony to Xero
@@ -56,9 +51,13 @@ section.bg-light
               .col-sm
                 h4 Peace of mind
                 p Every action taking in the AP processing workflow is tracked so any issues that happen in the process can be tracked and rectified quickly.
-        .row
+        .row.mt--1
           .col
-            a#symphony.btn.btn-lg.btn-filled href="/users/login" Get Symphony
+            a#symphony.btn.btn--lg.btn--orange href="/users/login" 
+              span.btn__text Get Symphony
+      .col-md-6.col-lg-5
+        .d-none.d-lg-block.d-flex.align-items-center.text-center
+          img.img-fluid alt="Xero Product Image" src=image_path("myapp-product-image.png")
 section
   .container
     .row
@@ -74,9 +73,11 @@ section
       .col-sm
         h4 Automated Reminders
         p Automated reminders ensure that no task is every missed or forgotten.
-section.bg-light
+section.switchable.bg--secondary
   .container
-    .row
+    .row.justify-content-around
+      .col-lg.d-flex.align-items-center
+          img.img-fluid src=image_path('xero-screenshot@2x.png') alt="Xero Product Image"
       .col-lg
         .row
           .col
@@ -100,11 +101,10 @@ section.bg-light
               .col-sm
                 h4 Connect and collaborate anytime
                 p Invite your team and your advisors to work with you in real time from home, office, or on the go using the mobile app.
-        .row
+        .row.mt--1
           .col
-            a#xero.btn.btn-lg.btn-filled href="https://www.xero.com/signup/?xtid=x30yourapp" Try Xero for Free
-      .col-lg.d-flex.align-items-center
-        img.img-fluid src=image_path('xero-screenshot@2x.png') alt="Xero Product Image"
+            a#xero.btn.btn--lg.btn--primary href="https://www.xero.com/signup/?xtid=x30yourapp" 
+              span.btn__text Try Xero for Free   
 section
   .container
     .row
@@ -114,17 +114,17 @@ section
       .col-12
         ul.accordion.accordion-1
           li
-            .title
-              span 1 - Sign up for Symphony
-            .content
+            .accordion__title
+              span.h5 1 - Sign up for Symphony
+            .accordion__content
               p Sign up for Symphony #{link_to 'here', new_user_session_path}
           li
-            .title
-              span 2 - Connect to Xero
-            .content
+            .accordion__title
+              span.h5 2 - Connect to Xero
+            .accordion__content
               p Click on the 'Connect' link on the top left of the page to be redirected to the Xero authorisation page.
           li
-            .title
-              span 3 - Sign in and authorise Symphony
-            .content
+            .accordion__title
+              span.h5 3 - Sign in and authorise Symphony
+            .accordion__content
               p Sign in with Xero, and authorise Symphony to access your Xero data. You have now connected Symphony to Xero!
