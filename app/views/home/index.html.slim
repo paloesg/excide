@@ -2,13 +2,14 @@
 section.cover.height-100.imagebg.text-center data-overlay="5"
   .background-image-holder.background--top
     img alt="background" src=image_path('hero-image.jpg')
-  .container.pos-vertical-center
+  .container-fluid.pos-vertical-center
     .row
       .col-md-12
-        h2
+        h1
           | Excide provides virtual CFO services for startups and SMEs
         h4
           | Get in touch with us for a free 1-hour consultation if you are located in Singapore or Myanmar.
+  .container.pos-vertical-center
     form.row
       .col-md-4
         input name="name" placeholder="Name" type="text"
@@ -85,10 +86,13 @@ section.bg--secondary
           p
             | This is where we will fine-tune the various aspects of your business that can be optimised. Based on a rock-solid financial model, you will have a complete overview of the health of your business and will know which are the areas that can be tweaked to improve business performance.
 
-section.text-center.imagebg
+section.text-center.height-80.imagebg
   .background-image-holder style=("background: url(\"#{image_path('lets-work-together.jpg')}\"); opacity: 1;")
     img alt="background" src=image_path('lets-work-together.jpg')
-  .container
+  .container.pos-vertical-center
+    .row.testimoni-box.pb-0
+      .col-md-10.col-lg-10
+        h2.mb-0 WHAT OUR CLIENTS SAY
     .row.testimoni-box
       .col-lg-10.col-md-10
         .slider data-children="3" data-paging="true" data-arrows="true"
