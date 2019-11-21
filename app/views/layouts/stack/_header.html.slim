@@ -17,87 +17,100 @@ nav#menu1.bar.bar--sm.bar-1.hidden-xs.bar--absolute.bar--transparent
             img.logo.logo-dark alt="logo" src=image_url('excide-logo-light.png')
             img.logo.logo-light alt="logo" src=image_url('excide-logo.png')
       .col-lg-11.col-md-12.text-right.text-left-xs.text-left-sm
-        .bar__module
-          ul.menu-horizontal.text-left
-            li
-              a href="/about-us" About Us
-            li
-              a href="/virtual-financial-officer" Virtual Financial Officer
-            li.dropdown
-              span.dropdown__trigger Financial Advisory
-              .dropdown__container
-                .container
-                  .row
-                    .dropdown__content.col-lg-2.col-md-4
-                      ul.menu-vertical
-                        li.dropdown
-                          span.dropdown__trigger Financial Analytics
-                          .dropdown__container
-                            .container
-                              .row
-                                .dropdown__content.col-lg-2.col-md-4
-                                  ul.menu-vertical
-                                    li
-                                      a href="/financial-analytics-reporting"
-                                        | Financial Analytics & Reporting
-                                    li
-                                      a href="/forecasting-sensitivity-analysis"
-                                        | Forecasting & Sensitivity Analysis
-                                    li
-                                      a href="/budgeting-forecasting"
-                                        | Budgeting & Forecasting
-                        li.dropdown
-                          span.dropdown__trigger Financial Planning
-                          .dropdown__container
-                            .container
-                              .row
-                                .dropdown__content.col-lg-2.col-md-4
-                                  ul.menu-vertical
-                                    li
-                                      a href="/business-plan-assistance"
-                                        | Business Plan Assistance
-                                    li
-                                      a href="/corporate-planning"
-                                        | Corporate Planning & Structure
-                                    li
-                                      a href="/ipo-support"
-                                        | IPO Support
-                                    li
-                                      a href="/mergers-acquisitions-support"
-                                        | M&A Suppport
-                        li.dropdown
-                          span.dropdown__trigger Growth Strategy
-                          .dropdown__container
-                            .container
-                              .row
-                                .dropdown__content.col-lg-2.col-md-4
-                                  ul.menu-vertical
-                                    li
-                                      a href="/exit-strategy"
-                                        | Exit Strategy
-                                    li
-                                      a href="/turnaround-management"
-                                        | Turnaround Management
-                                    li
-                                      a href="/fund-raising"
-                                        | Fund Raising
-            li.dropdown
-              span.dropdown__trigger Symphony
-              .dropdown__container
-                .container
-                  .row
-                    .dropdown__content.col-lg-2.col-md-4
-                      ul.menu-vertical
-                        li
-                          a href="/symphony-xero-automation"
-                            | Xero Interration
+        - if current_user
+          .bar__module
+            ul.menu-horizontal.text-left
+              li = link_to "Symphony", symphony_root_path
+              li = link_to "Conductor", conductor_root_path if ENV['APP_NAME'] == "excide-staging"
+              - if current_user.has_role? :superadmin
+                li
+                  a href="/admin" Admin
+          .bar__module
+            = link_to destroy_user_session_path, method: :delete, class: "btn btn--sm type--uppercase" do
+              span.btn__text
+                | Log Out
+        - else
+          .bar__module
+            ul.menu-horizontal.text-left
+              li
+                a href="/about-us" About Us
+              li
+                a href="/virtual-financial-officer" Virtual Financial Officer
+              li.dropdown
+                span.dropdown__trigger Financial Advisory
+                .dropdown__container
+                  .container
+                    .row
+                      .dropdown__content.col-lg-2.col-md-4
+                        ul.menu-vertical
+                          li.dropdown
+                            span.dropdown__trigger Financial Analytics
+                            .dropdown__container
+                              .container
+                                .row
+                                  .dropdown__content.col-lg-2.col-md-4
+                                    ul.menu-vertical
+                                      li
+                                        a href="/financial-analytics-reporting"
+                                          | Financial Analytics & Reporting
+                                      li
+                                        a href="/forecasting-sensitivity-analysis"
+                                          | Forecasting & Sensitivity Analysis
+                                      li
+                                        a href="/budgeting-forecasting"
+                                          | Budgeting & Forecasting
+                          li.dropdown
+                            span.dropdown__trigger Financial Planning
+                            .dropdown__container
+                              .container
+                                .row
+                                  .dropdown__content.col-lg-2.col-md-4
+                                    ul.menu-vertical
+                                      li
+                                        a href="/business-plan-assistance"
+                                          | Business Plan Assistance
+                                      li
+                                        a href="/corporate-planning"
+                                          | Corporate Planning & Structure
+                                      li
+                                        a href="/ipo-support"
+                                          | IPO Support
+                                      li
+                                        a href="/mergers-acquisitions-support"
+                                          | M&A Suppport
+                          li.dropdown
+                            span.dropdown__trigger Growth Strategy
+                            .dropdown__container
+                              .container
+                                .row
+                                  .dropdown__content.col-lg-2.col-md-4
+                                    ul.menu-vertical
+                                      li
+                                        a href="/exit-strategy"
+                                          | Exit Strategy
+                                      li
+                                        a href="/turnaround-management"
+                                          | Turnaround Management
+                                      li
+                                        a href="/fund-raising"
+                                          | Fund Raising
+              li.dropdown
+                span.dropdown__trigger Symphony
+                .dropdown__container
+                  .container
+                    .row
+                      .dropdown__content.col-lg-2.col-md-4
+                        ul.menu-vertical
+                          li
+                            a href="/symphony-xero-automation"
+                              | Xero Interration
 
-            li
-              a href="/blog" Blog
-        .bar__module
-          a.btn.btn--sm.type--uppercase href="#"
-            span.btn__text
-              | Sign Up
-          a.btn.btn--sm.btn--orange.type--uppercase href="#"
-            span.btn__text
-              | Login
+              li
+                a href="/blog" Blog
+          .bar__module
+            = link_to new_user_registration_path, class: "btn btn--sm type--uppercase" do
+              span.btn__text
+                | Sign Up
+            = link_to new_user_session_path, method: :delete, class: "btn btn--sm btn--orange type--uppercase" do
+              span.btn__text
+                | Login
