@@ -13,7 +13,6 @@
 //= require ./js/datepicker
 //= require ./js/isotope.min
 //= require ./js/ytplayer.min
-//= require ./js/lightbox.min
 //= require ./js/granim.min
 //= require ./js/jquery.steps.min
 //= require ./js/countdown.min
