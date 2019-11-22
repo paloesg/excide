@@ -7,7 +7,8 @@ html lang="en"
     = render 'application/favicon'
     = display_meta_tags site: "Virtual CFO | Excide"
 
-    = stylesheet_link_tag    "stack/application"
+    = stylesheet_link_tag    "stack/application", media: "all"
+    = javascript_include_tag "stack/application", 'data-turbolinks-track' => true
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
 
@@ -24,6 +25,4 @@ html lang="en"
       = yield
     .page-footer
       = render 'layouts/stack/footer'
-  
-    / load Javascript
-    = javascript_include_tag "stack/application", 'data-turbolinks-track' => true
+    = javascript_include_tag "stack/footer", 'data-turbolinks-track' => true

@@ -12,3 +12,5 @@ Rails.application.config.assets.precompile += %w( parallax.js application-dashbo
 
 #foundation_emails in the vendor folder can be individually precompile so that we can reference to it
 Rails.application.config.assets.precompile += %w( foundation_emails.css )
+
+Rails.application.config.assets.precompile += %w( stack/footer.js )
