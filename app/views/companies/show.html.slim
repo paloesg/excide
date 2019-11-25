@@ -1,0 +1,83 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item
+        a href="#" #{@company.name}
+      li.breadcrumb-item.active Company Details
+    h1 Company Details
+.container-fluid
+  .row
+    .col-md-12.mb-5
+      .card
+        h3.card-header = @company.name
+        .card-body
+          .row
+            .col-md-10
+              form.form-horizontal
+                .form-group.row.m-1
+                  label.control-label.col-sm-2 Address Line 1
+                  .col-sm-10
+                    p.form-control-static
+                      = @address.line_1
+                .form-group.row.m-1
+                  label.control-label.col-sm-2 Address Line 2
+                  .col-sm-10
+                    p.form-control-static
+                      = @address.line_2
+                .form-group.row.m-1
+                  label.control-label.col-sm-2 Country
+                  .col-sm-10
+                    p.form-control-static
+                      = @address.country
+                .form-group.row.m-1
+                  label.control-label.col-sm-2 State
+                  .col-sm-10
+                    p.form-control-static
+                      = @address.state
+                .form-group.row.m-1
+                  label.control-label.col-sm-2 City
+                  .col-sm-10
+                    p.form-control-static
+                      = @address.city
+                .form-group.row.m-1
+                  label.control-label.col-sm-2 Postal Code
+                  .col-sm-10
+                    p.form-control-static
+                      = @address.postal_code
+            .col-md-2
+              = link_to "Edit Company", edit_company_path(), class: "btn btn-primary btn-block"
+              = link_to "Manage Roles", symphony_roles_path(), class: "btn btn-success btn-block"
+              = link_to "Manage Templates", symphony_templates_path(), class: "btn btn-warning btn-block"
+
+    .col-md-12
+      .card
+        .card-body
+          h3.float-left User List
+          = link_to "Add New User", new_symphony_user_path, role: 'button', class: 'btn btn-warning float-right mb-3'
+          .table-responsive
+            table.table
+              thead
+                tr
+                  th ID
+                  th Roles
+                  th First Name
+                  th Last Name
+                  th Email
+                  th Phone
+                  th Status
+                  th
+              tbody
+                - @users.each do |u|
+                  tr
+                    td = u.id
+                    td = u.roles.map(&:name).join('<br />').html_safe
+                    td = u.first_name
+                    td = u.last_name
+                    td = u.email
+                    td = u.contact_number
+                    td = u.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed'
+                    td style="min-width: 135px;"
+                      = link_to 'Edit', edit_symphony_user_path(u.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                      = link_to 'Delete', symphony_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'

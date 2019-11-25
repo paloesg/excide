@@ -36,6 +36,7 @@
 //= require components/selectize_initialize
 //= require components/document_popover
 //= require components/load_batch
+//= require components/stripe
 
 //= require turbolinks
 //= require turbolinks-compatibility
