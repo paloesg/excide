@@ -1,0 +1,61 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item
+        a href="/symphony/users" Users
+      li.breadcrumb-item.active Additional information
+    h1 Additional Information
+.row
+  .col-sm-12
+    = form_for(@user, as: :user, url: edit_additional_information_symphony_users_path) do |f|
+      - if @user.errors.any?
+        .alert.alert-danger role='alert'
+          strong = "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+          ul
+            - @user.errors.full_messages.each do |message|
+              li = message
+      .row.mb-3
+        .col-sm-6
+          .card.mb-4
+            .card-header User Details
+            .card-body
+              .row
+                .col-md-12
+                  .form-group
+                    = f.label :first_name
+                    = f.text_field :first_name, class: 'form-control', required: true
+              .row
+                .col-md-12
+                  .form-group
+                    = f.label :last_name
+                    = f.text_field :last_name, class: 'form-control', required: true
+          .card
+            .card-header Credit Card Information
+            .card-body
+              .row
+                .col-md-12
+                  .form-group
+                    = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
+                    #card-element
+              .row
+                .col-md-12
+                  .form-group
+                    #card-errors role='alert'           
+        .col-sm-6
+          .card.mb-4
+            .card-header Company Information
+            .card-body
+              = f.fields_for :company do |fc|
+                .form-group
+                  = fc.label :name, 'Company name'
+                  = fc.text_field :name, class: 'form-control', required: true
+                .form-group.form-check
+                  = fc.check_box :connect_xero, class: 'form-check-input'
+                  = fc.label :connect_xero, 'Enable Xero', class: 'form-check-label'
+                .form-group
+                  = fc.fields_for :address do |fca|
+                    = render 'companies/address_fields', f: fca        
+        .col-sm-12.text-right
+          = f.submit "Save Additional Information", class: 'btn btn-primary additional-information-submit'

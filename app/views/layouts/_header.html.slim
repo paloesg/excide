@@ -8,14 +8,15 @@ nav
     .module.widget-handle.mobile-toggle.right.d-xl-none
       i.ti-menu
     .module-group.d-xl-block
-      - if current_user
-        .module.left
-          ul.menu
-            li = link_to "Symphony", symphony_root_path
-            li = link_to "Conductor", conductor_root_path if ENV['APP_NAME'] == "excide-staging"
-            - if current_user.has_role? :superadmin
-              li
-                a href="/admin" Admin
+      - if current_user.present? 
+        - if current_user.company_id.present? && current_user.company.name.present?
+          .module.left
+            ul.menu
+              li = link_to "Symphony", symphony_root_path
+              li = link_to "Conductor", conductor_root_path if ENV['APP_NAME'] == "excide-staging"
+              - if current_user.has_role? :superadmin
+                li
+                  a href="/admin" Admin
         .module.right
           ul.menu
             li.log-out = link_to "Log Out", destroy_user_session_path, method: :delete
@@ -78,3 +79,5 @@ nav
           ul.menu
             li
               = link_to "Log In", new_user_session_path
+            li
+              = link_to "Sign up", new_user_registration_path(@user)

@@ -31,7 +31,13 @@ class XeroSessionsController < ApplicationController
         xc = XeroContact.find_or_initialize_by(contact_id: contact.contact_id)
         xc.update(name: contact.name, company: current_user.company)
       end
-      redirect_to symphony_root_path, notice: "User signed in and connected to Xero."
+      templates = Template.where(company: current_user.company)
+      flash[:notice] = "User signed in and connected to Xero."
+      if templates.present?
+        redirect_to symphony_root_path        
+      else
+        redirect_to new_symphony_template_path
+      end
     else
       redirect_to root_path, alert: "Connection to Xero failed."
     end

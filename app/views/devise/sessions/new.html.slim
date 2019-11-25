@@ -15,4 +15,9 @@ section.cover.fullscreen.image-bg.overlay
                 .inner
                 = f.check_box :remember_me
             = f.submit "Log in"
-            = link_to "Forgot password", new_password_path(@user)
+            .row
+              .col-sm-12
+                = link_to "Forgot password", new_password_path(@user)
+            .row
+              .col-sm-12
+                span Not a member? #{link_to "Sign up now", new_user_registration_path(@user)}

@@ -47,6 +47,8 @@ gem "webpacker"
 
 # Authentication
 gem 'devise'
+# Stripe
+gem 'stripe'
 # Roles
 gem 'rolify'
 # Authorization
