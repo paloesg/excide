@@ -1,116 +1,65 @@
-.bar.bar--sm.visible-xs
+nav.menu1.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top
   .container
-    .row
-      .col-3.col-md-2
-        a href="/"
-          img.logo.logo-dark alt="logo" src=image_url('excide-logo-light.png')
-          img.logo.logo-light alt="logo" src=image_url('excide-logo.png')
-      .col-9.col-md-10.text-right
-        a.hamburger-toggle data-toggle-class="#menu1;hidden-xs" href="#"
-          i.icon.icon--sm.stack-interface.stack-menu
-nav#menu1.bar.bar--sm.bar-1.hidden-xs.bar--absolute.bar--transparent
-  .container
-    .row
-      .col-lg-1.col-md-2.hidden-xs
-        .bar__module
-          a href="/"
-            img.logo.logo-dark alt="logo" src=image_url('excide-logo-light.png')
-            img.logo.logo-light alt="logo" src=image_url('excide-logo.png')
-      .col-lg-11.col-md-12.text-right.text-left-xs.text-left-sm
+    a.navbar-brand href="/"
+      img.logo.logo-light alt="logo" width="100" src=image_url('excide-logo.png')
+    button.navbar-toggler aria-controls="navbarsExample07" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarsExample07" data-toggle="collapse" type="button"
+      span.navbar-toggler-icon
+    #navbarsExample07.collapse.navbar-collapse
+      ul.navbar-nav.ml-auto
         - if current_user
-          .bar__module
-            ul.menu-horizontal.text-left
-              li = link_to "Symphony", symphony_root_path
-              li = link_to "Conductor", conductor_root_path if ENV['APP_NAME'] == "excide-staging"
-              - if current_user.has_role? :superadmin
-                li
-                  a href="/admin" Admin
-          .bar__module
+          li.nav-item = link_to "Symphony", symphony_root_path, class: "nav-link"
+          li.nav-item = link_to "Conductor", conductor_root_path, class: "nav-link" if ENV['APP_NAME'] == "excide-staging"
+          - if current_user.has_role? :superadmin
+            li.nav-item
+              a.nav-link href="/admin" Admin
+          li.nav-item.ml-3
             = link_to destroy_user_session_path, method: :delete, class: "btn btn--sm type--uppercase" do
-              span.btn__text
-                | Log Out
+              span.btn__text Log Out
         - else
-          .bar__module
-            ul.menu-horizontal.text-left
-              li
-                a href="/about-us" About Us
-              li
-                a href="/virtual-financial-officer" Virtual Financial Officer
-              li.dropdown
-                span.dropdown__trigger Financial Advisory
-                .dropdown__container
-                  .container
-                    .row
-                      .dropdown__content.col-lg-2.col-md-4
-                        ul.menu-vertical
-                          li.dropdown
-                            span.dropdown__trigger Financial Analytics
-                            .dropdown__container
-                              .container
-                                .row
-                                  .dropdown__content.col-lg-2.col-md-4
-                                    ul.menu-vertical
-                                      li
-                                        a href="/financial-analytics-reporting"
-                                          | Financial Analytics & Reporting
-                                      li
-                                        a href="/forecasting-sensitivity-analysis"
-                                          | Forecasting & Sensitivity Analysis
-                                      li
-                                        a href="/budgeting-forecasting"
-                                          | Budgeting & Forecasting
-                          li.dropdown
-                            span.dropdown__trigger Financial Planning
-                            .dropdown__container
-                              .container
-                                .row
-                                  .dropdown__content.col-lg-2.col-md-4
-                                    ul.menu-vertical
-                                      li
-                                        a href="/business-plan-assistance"
-                                          | Business Plan Assistance
-                                      li
-                                        a href="/corporate-planning"
-                                          | Corporate Planning & Structure
-                                      li
-                                        a href="/ipo-support"
-                                          | IPO Support
-                                      li
-                                        a href="/mergers-acquisitions-support"
-                                          | M&A Suppport
-                          li.dropdown
-                            span.dropdown__trigger Growth Strategy
-                            .dropdown__container
-                              .container
-                                .row
-                                  .dropdown__content.col-lg-2.col-md-4
-                                    ul.menu-vertical
-                                      li
-                                        a href="/exit-strategy"
-                                          | Exit Strategy
-                                      li
-                                        a href="/turnaround-management"
-                                          | Turnaround Management
-                                      li
-                                        a href="/fund-raising"
-                                          | Fund Raising
-              li.dropdown
-                span.dropdown__trigger Symphony
-                .dropdown__container
-                  .container
-                    .row
-                      .dropdown__content.col-lg-2.col-md-4
-                        ul.menu-vertical
-                          li
-                            a href="/symphony-xero-automation"
-                              | Xero Interration
-
-              li
-                a href="/blog" Blog
-          .bar__module
+          li.nav-item
+            a.nav-link href="/about-us" About Us
+          li.nav-item
+            a.nav-link href="/virtual-financial-officer" Virtual Financial Officer
+          li.nav-item.dropdown
+            a#dropdown07.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#"  Financial Advisory
+            ul.dropdown-menu.multi-level aria-labelledby="dropdownMenu" role="menu"
+              li.dropdown-submenu
+                a.dropdown-item data-toggle="dropdown" href="#" tabindex="-1"  Financial Analytics
+                ul.dropdown-menu
+                  li.dropdown-item
+                    a href="/financial-analytics-reporting" tabindex="-1" Financial Analytics & Reporting
+                  li.dropdown-item
+                    a href="/forecasting-sensitivity-analysis" tabindex="-1"  Forecasting & Sensitivity Analysis
+                  li.dropdown-item
+                    a href="/budgeting-forecasting" tabindex="-1" Budgeting & Forecasting
+              li.dropdown-submenu
+                a.dropdown-item data-toggle="dropdown" href="#" tabindex="-1"  Financial Planning
+                ul.dropdown-menu
+                  li.dropdown-item
+                    a href="/business-plan-assistance" tabindex="-1" Business Plan Assistance
+                  li.dropdown-item
+                    a href="/corporate-planning" tabindex="-1" Corporate Planning & Structure
+                  li.dropdown-item
+                    a href="/ipo-support" tabindex="-1" IPO Support
+                  li.dropdown-item
+                    a href="/mergers-acquisitions-support" tabindex="-1" M&A Suppport
+              li.dropdown-submenu
+                a.dropdown-item data-toggle="dropdown" href="#" tabindex="-1"  Growth Strategy
+                ul.dropdown-menu
+                  li.dropdown-item
+                    a href="/exit-strategy" tabindex="-1" Exit Strategy
+                  li.dropdown-item
+                    a href="/turnaround-management" tabindex="-1" Turnaround Management
+                  li.dropdown-item
+                    a href="/fund-raising" tabindex="-1" Fund Raising
+          li.nav-item.dropdown.mr-3
+            a#dropdown07.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" Symphony
+            ul.dropdown-menu aria-labelledby="dropdownMenu" role="menu"
+              li.dropdown-item
+                a href="/symphony-xero-automation" tabindex="-1" Xero Integration
+          li.nav-item
             = link_to new_user_registration_path, class: "btn btn--sm type--uppercase" do
-              span.btn__text
-                | Sign Up
+              span.btn__text Sign Up
+          li.nav-item.pl-3
             = link_to new_user_session_path, class: "btn btn--sm btn--orange type--uppercase" do
-              span.btn__text
-                | Login
+              span.btn__text Login
