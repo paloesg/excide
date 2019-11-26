@@ -1,0 +1,108 @@
+/! begin:: Header
+#kt_header.kt-header.kt-grid__item.kt-header--fixed data-ktheader-minimize="on" 
+  .kt-header__top
+    .kt-container
+      /! begin:: Brand
+      #kt_header_brand.kt-header__brand.kt-grid__item
+        / .kt-header__brand-logo
+          a href="/" 
+            img.kt-header__brand-logo-default alt="Logo" src=image_url('excide-logo.png')
+        .kt-header__brand-nav
+          .dropdown
+            button.btn.btn-pill.btn-default.dropdown-toggle aria-expanded="true" aria-haspopup="true" data-toggle="dropdown" type="button" Dashboard
+            .dropdown-menu.dropdown-menu-fit.dropdown-menu-md
+              ul.kt-nav.kt-nav--bold.kt-nav--md-space.kt-margin-t-20.kt-margin-b-20
+                li.kt-nav__item
+                  a.kt-nav__link.active href="#" 
+                      span.kt-nav__link-icon
+                      i.flaticon2-user
+                      span.kt-nav__link-text Human Resources
+                li.kt-nav__item
+                  a.kt-nav__link href="#" 
+                      span.kt-nav__link-icon
+                      i.flaticon-feed
+                      span.kt-nav__link-text Customer Relationship
+                li.kt-nav__item
+                  a.kt-nav__link href="#" 
+                      span.kt-nav__link-icon
+                      i.flaticon2-settings
+                      span.kt-nav__link-text Order Processing
+                li.kt-nav__item
+                  a.kt-nav__link href="#" 
+                      span.kt-nav__link-icon
+                      i.flaticon2-chart2
+                      span.kt-nav__link-text Accounting
+      /! end:: Brand
+      /! begin:: Header Topbar
+      .kt-header__topbar.kt-grid__item.kt-grid__item--fluid
+        - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
+          /! begin: Admin bar
+          .kt-header__topbar-item.kt-header__topbar-item--langs
+            .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown" 
+              span.kt-header__topbar-icon.kt-header__topbar-icon--info Admin
+            .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+              ul.kt-nav.kt-margin-t-10.kt-margin-b-10
+                li.kt-nav__item
+                  = link_to symphony_users_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Users
+                li.kt-nav__item
+                  = link_to symphony_templates_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Templates
+                li.kt-nav__item
+                  = link_to edit_company_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Company Details
+          /! end: Admin bar
+        /! begin: User bar
+        .kt-header__topbar-item.kt-header__topbar-item--langs
+          .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown" 
+            span.kt-header__topbar-icon.kt-header__topbar-icon--success #{current_user.first_name}
+          .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+            ul.kt-nav.kt-margin-t-10.kt-margin-b-10
+              li.kt-nav__item
+                = link_to edit_user_registration_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text User Profile
+              li.kt-nav__item
+                = link_to symphony_archives_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text Archived Workflows
+              li.kt-nav__item
+                = link_to symphony_documents_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text Documents
+              li.kt-nav__item
+                = link_to symphony_reminders_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text Reminders
+              li.kt-nav__item
+                = link_to notification_settings_symphony_user_path(current_user), class: 'kt-nav__link' do
+                  span.kt-nav__link-text Notifications
+              li.kt-nav__item
+                = link_to destroy_user_session_path, {method: :delete, class: 'kt-nav__link'} do
+                  span.kt-nav__link-text Log Out
+        /! end: User bar        
+    /! end:: Header Topbar
+  .kt-header__bottom
+    .kt-container
+      /! begin: Header Menu
+      button#kt_header_menu_mobile_close_btn.kt-header-menu-wrapper-close
+        i.la.la-close
+      #kt_header_menu_wrapper.kt-header-menu-wrapper
+        #kt_header_menu.kt-header-menu.kt-header-menu-mobile
+          ul.kt-menu__nav
+            li.kt-menu__item aria-haspopup="true" 
+              = link_to symphony_root_path, class:"kt-menu__link" do
+                span.kt-menu__link-text Dashboard  
+            li.kt-menu__item.kt-menu__item--submenu.kt-menu__item--rel aria-haspopup="true" data-ktmenu-submenu-toggle="hover" 
+              a.kt-menu__link.kt-menu__toggle href="index.html" 
+                span.kt-menu__link-text Workflows
+                i.kt-menu__ver-arrow.la.la-angle-right
+              .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left
+                ul.kt-menu__subnav
+                  - ::Template.assigned_templates(current_user).each do |t|
+                    li.kt-menu__item aria-haspopup="true" 
+                      = link_to symphony_workflows_path(t.slug), class: 'kt-menu__link' do
+                        = t.company_workflows(current_user.company).count
+                        span.kt-menu__link-text #{t.title} 
+            li.kt-menu__item aria-haspopup="true" 
+              = link_to symphony_batches_index_path, class:"kt-menu__link" do
+                span.kt-menu__link-text Batches            
+              
+      /! end: Header Menu
+/! end:: Header

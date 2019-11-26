@@ -1,0 +1,17 @@
+.kt-header__topbar .kt-header__topbar-item.kt-header__topbar-item--langs .kt-header__topbar-icon{
+  height: 37px;
+  width: 100%;
+  padding-right: 5px;
+  padding-left: 5px;
+  border-radius: 4px;
+}
+
+.kt-header__topbar .kt-header__topbar-item.kt-header__topbar-item--langs .kt-header__topbar-icon.kt-header__topbar-icon--info:hover, .kt-header__topbar .kt-header__topbar-item.kt-header__topbar-item--langs .kt-header__topbar-icon.kt-header__topbar-icon--info:hover b, .kt-header__topbar .kt-header__topbar-item.kt-header__topbar-item--langs .kt-header__topbar-icon.kt-header__topbar-icon--success:hover, .kt-header__topbar .kt-header__topbar-item.kt-header__topbar-item--langs .kt-header__topbar-icon.kt-header__topbar-icon--success:hover b {
+  color: #ffffff;
+}
+
+@media (max-width: 1024px){
+  .kt-header__topbar .kt-header__topbar-item .kt-header__topbar-wrapper .kt-header__topbar-icon {
+    max-width: 100%;
+  }
+}
