@@ -66,7 +66,16 @@ class Symphony::TemplatesController < ApplicationController
     if params[:template].present?
       if @template.update(template_params)
         flash[:notice] = 'Template updated.'
-        redirect_to edit_symphony_template_path(@template)
+        if current_user.company.session_handle.blank? and current_user.company.connect_xero?
+          redirect_to connect_to_xero_path
+        else
+          templates = Template.where(company: current_user.company)
+          if templates.length > 1
+            redirect_to edit_symphony_template_path(@template)
+          else
+            redirect_to edit_company_path(current_user.company)
+          end
+        end
       else
         flash[:alert] = @template.errors.full_messages.join
         render :edit

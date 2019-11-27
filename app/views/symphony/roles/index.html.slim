@@ -1,0 +1,32 @@
+.row
+  .col-sm-12
+    ol.breadcrumb
+      li.breadcrumb-item.ml-auto
+        a href="/symphony" Symphony
+      li.breadcrumb-item
+        = link_to @company.name, company_path
+      li.breadcrumb-item.active Users
+    h1
+      | Manage Roles
+      = link_to "Add New Role", new_symphony_role_path, role: 'button', class: 'btn btn-warning float-right'
+.row
+  .col-sm-12
+    .table-responsive
+      table.table
+        thead
+          tr
+            th ID
+            th Name
+            th Users
+            th User Names
+            th Action
+        tbody
+          - @roles.each do |r|
+            tr
+              td = r.id
+              td = r.name
+              td = r.users.length
+              td = r.users.map(&:full_name).join('<br />').html_safe
+              td style="min-width: 135px;"
+                = link_to "Edit", edit_symphony_role_path(r.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                = link_to "Delete", symphony_role_path(r.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'

@@ -63,6 +63,21 @@ class Symphony::UsersController < ApplicationController
     end
   end
 
+  def edit_additional_information
+    @user = current_user
+    if @user.update(user_params)
+      process_payment(@user.id, @user.email, user_params[:stripe_card_token])
+      flash[:notice] = 'Additional Information updated successfully!'
+      if @user.company.connect_xero
+        redirect_to connect_to_xero_path
+      else
+        redirect_to new_symphony_template_path
+      end
+    else
+      render :additional_information
+    end
+  end
+
   private
 
   def set_company
@@ -78,6 +93,28 @@ class Symphony::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack], :role_ids => [])
+    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :stripe_card_token, :stripe_customer_id, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack], :role_ids => [], company_attributes:[:id, :name, :connect_xero, address_attributes: [:id, :line_1, :line_2, :postal_code]])
+  end
+
+  def build_addresses
+    if @company.address.blank?
+      @company.address = @company.build_address
+    end
+  end
+
+  def process_payment(user_id, email, card_token)
+    customer = Stripe::Customer.create({email: email, card: card_token})
+
+    user = User.find(user_id)
+    # update account stripe in user
+    user.update_attributes(stripe_card_token: card_token, stripe_customer_id:customer.id)
+
+    # Do Charge
+    # charge = Stripe::Charge.create({
+    #   customer: user.stripe_customer_id.to_s,
+    #   amount: 1000,
+    #   currency: 'sgd',
+    #   description: 'Charge for first member',
+    # })
   end
 end

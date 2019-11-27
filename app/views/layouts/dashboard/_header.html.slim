@@ -1,72 +1,74 @@
 - if controller.class.parents.include?(Conductor)
   = render "layouts/dashboard/conductor_header"
 - else
-  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
-    - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
-      .nav-item.dropdown
-        a.navbar-brand.dropdown-toggle.mr-auto.mr-lg-0 href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+  - if current_user.present?
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
+      - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
+        .nav-item.dropdown
+          a.navbar-brand.dropdown-toggle.mr-auto.mr-lg-0 href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+            ' #{current_user.company.name}
+            = content_tag :span, "Staging", class: "badge badge-danger" if ENV['APP_NAME'] == "excide-staging"
+          .dropdown-menu.dropdown-menu-left.columns
+            - if current_user.has_role? :superadmin
+              - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
+                = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
+              .dropdown-divider
+              = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
+            - else
+              - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
+                = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
+      - else
+        = link_to(symphony_root_path, class: "navbar-brand mr-auto mr-lg-0") do
           ' #{current_user.company.name}
           = content_tag :span, "Staging", class: "badge badge-danger" if ENV['APP_NAME'] == "excide-staging"
-        .dropdown-menu.dropdown-menu-left.columns
-          - if current_user.has_role? :superadmin
-            - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
-              = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
-            .dropdown-divider
-            = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
-          - else
-            - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
-              = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
-    - else
-      = link_to(symphony_root_path, class: "navbar-brand mr-auto mr-lg-0") do
-        ' #{current_user.company.name}
-        = content_tag :span, "Staging", class: "badge badge-danger" if ENV['APP_NAME'] == "excide-staging"
 
-    button.navbar-toggler type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-expanded="false" aria-controls="navbarNavDropdown" aria-label="Toggle navigation"
-      span.navbar-toggler-icon
+      button.navbar-toggler type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-expanded="false" aria-controls="navbarNavDropdown" aria-label="Toggle navigation"
+        span.navbar-toggler-icon
 
-    #navbarNavDropdown.collapse.navbar-collapse
-      ul.navbar-nav
-        li.nav-item.text-nowrap = link_to "Dashboard", symphony_root_path, class: 'nav-link'
-        li.nav-item.dropdown
-          a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Workflows
-          .dropdown-menu
-            - ::Template.assigned_templates(current_user).each do |t|
-              = link_to symphony_workflows_path(t.slug), class: 'dropdown-item'
-                ' #{t.title}
-                .badge.badge-pill.badge-secondary.align-text-bottom = t.company_workflows(current_user.company).count
-        li.nav-item = link_to "Batches", symphony_batches_index_path, class: 'nav-link'
-      ul.navbar-nav.ml-auto
-        - if current_user.has_role? :superadmin
-          li.nav-item
-            = link_to symphony_search_path, class: 'nav-link' do
-              i.ti-search
-        li.nav-item
-          = link_to "https://github.com/hschin/excide-manuscript/wiki", class: 'nav-link', target: :_blank do
-            i.ti-help
-        - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
+      #navbarNavDropdown.collapse.navbar-collapse
+        ul.navbar-nav
+          li.nav-item.text-nowrap = link_to "Dashboard", symphony_root_path, class: 'nav-link'
           li.nav-item.dropdown
-            a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Admin
+            a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Workflows
             .dropdown-menu
-              = link_to "Manage Users", symphony_users_path, class: 'dropdown-item'
-              = link_to "Manage Templates", symphony_templates_path, class: 'dropdown-item'
-              = link_to "Company Details", edit_company_path, class: 'dropdown-item'
+              - if current_user.present?
+                - ::Template.assigned_templates(current_user).each do |t|
+                  = link_to symphony_workflows_path(t.slug), class: 'dropdown-item'
+                    ' #{t.title}
+                    .badge.badge-pill.badge-secondary.align-text-bottom = t.company_workflows(current_user.company).count
+          li.nav-item = link_to "Batches", symphony_batches_index_path, class: 'nav-link'
+        ul.navbar-nav.ml-auto
+          - if current_user.present? and current_user.has_role? :superadmin
+            li.nav-item
+              = link_to symphony_search_path, class: 'nav-link' do
+                i.ti-search
+          li.nav-item
+            = link_to "https://github.com/hschin/excide-manuscript/wiki", class: 'nav-link', target: :_blank do
+              i.ti-help
+          - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Admin
+              .dropdown-menu
+                = link_to "Manage Users", symphony_users_path, class: 'dropdown-item'
+                = link_to "Manage Templates", symphony_templates_path, class: 'dropdown-item'
+                = link_to "Company Details", edit_company_path, class: 'dropdown-item'
 
-        li.nav-item.dropdown
-          a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" #{current_user.first_name}
-          .dropdown-menu.dropdown-menu-right
-            = link_to "User Profile", edit_user_registration_path, class: 'dropdown-item'
-            = link_to "Archived Workflows", symphony_archives_path, class: 'dropdown-item'
-            = link_to "Documents", symphony_documents_path, class: 'dropdown-item'
-            = link_to "Reminders", symphony_reminders_path, class: 'dropdown-item'
-            = link_to "Notifications", notification_settings_symphony_user_path(current_user), class: 'dropdown-item'
-            .dropdown-divider
-            = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'dropdown-item'}
-  .nav-scroller.bg-white.box-shadow
-    nav.nav.nav-underline
-      .nav-text
-        - if current_user.company.session_handle.present?
-          ' Connected Xero organisation:
-          = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
-        - else
-          ' Not connected to Xero:
-          = link_to('Connect', connect_to_xero_path)
+          li.nav-item.dropdown
+            a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" #{current_user&.first_name}
+            .dropdown-menu.dropdown-menu-right
+              = link_to "User Profile", edit_user_registration_path, class: 'dropdown-item'
+              = link_to "Archived Workflows", symphony_archives_path, class: 'dropdown-item'
+              = link_to "Documents", symphony_documents_path, class: 'dropdown-item'
+              = link_to "Reminders", symphony_reminders_path, class: 'dropdown-item'
+              = link_to "Notifications", notification_settings_symphony_user_path(current_user), class: 'dropdown-item'
+              .dropdown-divider
+              = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'dropdown-item'}
+    .nav-scroller.bg-white.box-shadow
+      nav.nav.nav-underline
+        .nav-text
+          - if current_user.company.session_handle.present?
+            ' Connected Xero organisation:
+            = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
+          - else
+            ' Not connected to Xero:
+            = link_to('Connect', connect_to_xero_path)
