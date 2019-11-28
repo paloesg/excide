@@ -294,7 +294,7 @@ $(document).on("turbolinks:load", function(){
     $(this).val(replaceNumberWithCurrencyFormat($(this).val()));
   })
 
-  if($("input#invoice_total").val() !== 0){
+  if($("input#invoice_total").val() !== ""){
     $("input#invoice_total").val(replaceNumberWithCurrencyFormat($("input#invoice_total").val()));
   }
   else {
