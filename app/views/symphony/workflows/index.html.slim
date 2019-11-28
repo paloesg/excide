@@ -1,4 +1,50 @@
-.row
+#kt_subheader.kt-subheader.kt-grid__item
+  .kt-container
+.kt-container.kt-grid__item.kt-grid__item--fluid
+  .row.mb-3
+    .col
+      h1 #{@template.title}
+  .row
+    .col-xl-12
+      /! begin::Portlet
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title
+              | Workflows
+        .kt-portlet__body
+          /! begin::Section
+          .kt-section
+            - if @workflows.blank?
+              span.kt-section__info
+                | No outstanding #{@template.title} workflows at the moment.
+            .kt-section__content
+              table.table
+                thead
+                  tr
+                    th = sortable "id", "Workflow ID"
+                    th = sortable "template", "Workflow Type"
+                    th = sortable "workflowable", "Client Name"
+                    th = sortable "remarks", "Remarks"
+                    th = sortable "deadline", "Deadline"
+                    th = sortable "completed", "Status"
+                tbody
+                  - @workflows.each do |w|
+                    tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
+                      td = link_to w.id, symphony_workflow_path(w.template.slug, w.id)
+                      td = w.template.title
+                      td = w.workflowable&.name || '-'
+                      td = w.remarks || '-'
+                      td = w.deadline&.strftime("%d/%m/%Y") || '-'
+                      td = w.completed ? 'Completed' : w.current_section&.section_name
+              .row
+                .col
+                  = paginate @workflows, views_prefix: 'dashboards'
+          /! end::Section
+
+
+
+/ .row
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
@@ -7,7 +53,7 @@
     .float-right = page_entries_info @workflows, entry_name: 'workflow'
     h1 #{@template.title}
     hr
-.row
+/ .row
   .col-sm-12
     .card
       h5.card-header Workflows

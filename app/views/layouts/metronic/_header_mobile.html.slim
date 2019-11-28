@@ -1,44 +1,30 @@
 /! begin:: Header Mobile
 #kt_header_mobile.kt-header-mobile.kt-header-mobile--fixed
   .kt-header-mobile__logo
-    / a href="index.html" 
-      img alt="Logo" src="assets/media/logos/logo-10-sm.png" /
+    a href="/" 
+      img alt="Logo" src=image_url('logo-symphony.png')
     .dropdown
-      button.btn.btn-pill.btn-default.dropdown-toggle aria-expanded="true" aria-haspopup="true" data-toggle="dropdown" type="button" 
-        i.flaticon2-layers
-      .dropdown-menu.dropdown-menu-fit.dropdown-menu-md
-        ul.kt-nav.kt-nav--bold.kt-nav--md-space.kt-margin-t-20.kt-margin-b-20
-          li.kt-nav__item
-            a.kt-nav__link.active href="#" 
-              span.kt-nav__link-icon
-                i.flaticon2-user
-              span.kt-nav__link-text Human Resources
-          li.kt-nav__item
-            a.kt-nav__link href="#" 
-              span.kt-nav__link-icon
-                i.flaticon-feed
-              span.kt-nav__link-text Customer Relationship
-          li.kt-nav__item
-            a.kt-nav__link href="#" 
-              span.kt-nav__link-icon
-                i.flaticon2-settings
-              span.kt-nav__link-text Order Processing
-          li.kt-nav__item
-            a.kt-nav__link href="#" 
-              span.kt-nav__link-icon
-                i.flaticon2-chart2
-              span.kt-nav__link-text Accounting
-          li.kt-nav__separator
-          li.kt-nav__item
-            a.kt-nav__link href="#" 
-              span.kt-nav__link-icon
-                i.flaticon-security
-              span.kt-nav__link-text Finance
-          li.kt-nav__item
-            a.kt-nav__link href="#" 
-              span.kt-nav__link-icon
-                i.flaticon2-cup
-              span.kt-nav__link-text Administration
+      - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
+        button.btn.btn-pill.btn-default.dropdown-toggle aria-expanded="true" aria-haspopup="true" data-toggle="dropdown" type="button" 
+          i.flaticon2-layers
+        .dropdown-menu.dropdown-menu-fit.dropdown-menu-md
+          ul.kt-nav.kt-nav--bold.kt-nav--md-space.kt-margin-t-20.kt-margin-b-20
+            - if current_user.has_role? :superadmin
+              - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
+                - if company.name.present?
+                  li.kt-nav__item
+                    = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'kt-nav__link', tabindex: -1
+              .kt-separator.kt-separator--space-lg.kt-separator--border-dashed
+                li.kt-nav__item
+                  = link_to 'Add New Company', new_company_path, class: 'kt-nav__link'
+            - else
+              - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
+                - if company.name.present?
+                  = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'kt-nav__link', tabindex: -1
+      - else
+        = link_to(symphony_root_path, class: "btn btn-pill btn-default") do
+          ' #{current_user.company.name}
+      = content_tag :span, "Staging", class: "badge badge-danger" if ENV['APP_NAME'] == "excide-staging"
   .kt-header-mobile__toolbar
     button#kt_header_mobile_toggler.kt-header-mobile__toolbar-toggler
       span

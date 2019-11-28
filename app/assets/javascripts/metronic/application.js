@@ -29,7 +29,6 @@
 //= require conductor/add_availabilities
 //= require conductor/home
 
-//= require dropzone
 //= require components/multiple_uploads
 //= require components/multiple_uploads_and_edit
 //= require components/popover_initialize

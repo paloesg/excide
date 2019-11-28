@@ -4,9 +4,9 @@
     .kt-container
       /! begin:: Brand
       #kt_header_brand.kt-header__brand.kt-grid__item
-        / .kt-header__brand-logo
+        .kt-header__brand-logo
           a href="/" 
-            img.kt-header__brand-logo-default alt="Logo" src=image_url('excide-logo.png')
+            img.kt-header__brand-logo-default alt="Logo" src=image_url('logo-symphony.png')
         .kt-header__brand-nav
           .dropdown
             - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
@@ -36,7 +36,8 @@
           /! begin: Admin bar
           .kt-header__topbar-item.kt-header__topbar-item--langs
             .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown" 
-              span.kt-header__topbar-icon.kt-header__topbar-icon--info Admin
+              span.kt-header__topbar-icon.kt-header__topbar-icon--warning
+                i.flaticon2-gear
             .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
               ul.kt-nav.kt-margin-t-10.kt-margin-b-10
                 li.kt-nav__item
@@ -52,7 +53,8 @@
         /! begin: User bar
         .kt-header__topbar-item.kt-header__topbar-item--langs
           .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown" 
-            span.kt-header__topbar-icon.kt-header__topbar-icon--success #{current_user.first_name}
+            span.kt-header__topbar-icon.kt-header__topbar-icon--success 
+              i.flaticon2-user
           .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
             ul.kt-nav.kt-margin-t-10.kt-margin-b-10
               li.kt-nav__item
@@ -86,8 +88,8 @@
             li.kt-menu__item aria-haspopup="true" 
               = link_to symphony_root_path, class:"kt-menu__link" do
                 span.kt-menu__link-text Dashboard  
-            li.kt-menu__item.kt-menu__item--submenu.kt-menu__item--rel aria-haspopup="true" data-ktmenu-submenu-toggle="hover" 
-              a.kt-menu__link.kt-menu__toggle href="index.html" 
+            li.kt-menu__item.kt-menu__item--submenu.kt-menu__item--rel data-ktmenu-submenu-toggle="hover"  
+              a.kt-menu__link.kt-menu__toggle href="javascript:;" 
                 span.kt-menu__link-text Workflows
                 i.kt-menu__ver-arrow.la.la-angle-right
               .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left
@@ -95,7 +97,7 @@
                   - ::Template.assigned_templates(current_user).each do |t|
                     li.kt-menu__item aria-haspopup="true" 
                       = link_to symphony_workflows_path(t.slug), class: 'kt-menu__link' do
-                        = t.company_workflows(current_user.company).count
+                        span.kt-badge.kt-badge--info.kt-badge--rounded.mr-1 = t.company_workflows(current_user.company).count
                         span.kt-menu__link-text #{t.title} 
             li.kt-menu__item aria-haspopup="true" 
               = link_to symphony_batches_index_path, class:"kt-menu__link" do

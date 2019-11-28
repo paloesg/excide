@@ -1,5 +1,6 @@
 class Symphony::WorkflowsController < ApplicationController
-  layout "dashboard/application"
+  # layout "dashboard/application"
+  layout 'metronic/application'
   include Adapter
 
   before_action :authenticate_user!

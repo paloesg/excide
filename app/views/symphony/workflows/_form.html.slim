@@ -50,7 +50,7 @@
               .card-body
                 .form-group
                   = f.label :workflowable_id, 'Client Name'
-                  = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'dropdown-overlay'
+                  = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'dropdown-overlay form-control'
           - if @workflow.workflowable.blank?
             .card
               .card-header#headingTwo
