@@ -291,15 +291,14 @@ $(document).on("turbolinks:load", function(){
   }
 
   $("input#invoice_total").change(function(){
-    $(this).val(replaceNumberWithCurrencyFormat($(this).val()));
+    if($("input#invoice_total").val() !== ""){
+      $("input#invoice_total").val(replaceNumberWithCurrencyFormat($("input#invoice_total").val()));
+    }
+    else {
+      $("input#invoice_total").val(0);
+    }
   })
 
-  if($("input#invoice_total").val() !== ""){
-    $("input#invoice_total").val(replaceNumberWithCurrencyFormat($("input#invoice_total").val()));
-  }
-  else {
-    $("input#invoice_total").val(0);
-  }
 
   // Convert currency to number when form do submit
   function convertNormalNumber(){
