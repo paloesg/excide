@@ -1,11 +1,57 @@
-.row
+#kt_subheader.kt-subheader.kt-grid__item
+  .kt-container
+.kt-container.kt-grid__item.kt-grid__item--fluid
+  .row.mb-3
+    .col
+      h1 Archives
+  .row
+    .col-xl-12
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title Completed workflows
+        .kt-portlet__body
+          /! begin::Section
+          .kt-section
+            - if @workflows.blank?
+              span.kt-section__info
+                | No archives workflows at the moment.
+            .kt-section__content
+              .row
+                .col-sm-3
+                  = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'form-control selectize-workflow-type')
+                .offset-sm-6.col-sm-3
+                  .float-right = page_entries_info @workflows, entry_name: 'workflow'
+              .kt-separator.kt-separator--space-lg.kt-separator--border-dashed
+              .table-responsive
+                table.table
+                  thead
+                    tr
+                      th = sortable "id", "workflow ID"
+                      th = sortable "template", "Workflow Type"
+                      th = sortable "workflowable", "Client Name"
+                      th = sortable "remarks", "Remarks"
+                      th = sortable "deadline", "Deadline"
+                      th = sortable "completed", "Status"
+                  tbody
+                    - @workflows.each do |w|
+                      tr.success
+                        td = link_to w.id, symphony_archive_path(w.template.slug, w.id)
+                        td = w.template.title
+                        td = w.workflowable&.name || '-'
+                        td = w.remarks || '-'
+                        td = w.deadline&.strftime("%d/%m/%Y") || '-'
+                        td = w.completed ? 'Completed' : (w.current_section&.section_name || w.current_section&.display_name)
+                = paginate @workflows, views_prefix: 'dashboards'
+                .clearfix
+/ .row
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
         a href="/symphony" Symphony
       li.breadcrumb-item.active Archives
     h1.border-bottom Archives
-.row
+/ .row
   .col-sm-12
     .card
       h5.card-header Completed workflows

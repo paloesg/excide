@@ -1,4 +1,40 @@
-.row
+#kt_subheader.kt-subheader.kt-grid__item
+  .kt-container
+.kt-container.kt-grid__item.kt-grid__item--fluid
+  .row.mb-3
+    .col
+      h1 Manage Users
+      = link_to "Add New User", new_symphony_user_path, role: 'button', class: 'btn btn-warning float-right'
+  .row
+    .col-xl-12
+      .table-responsive
+        table.table
+          thead
+            tr
+              th ID
+              th Roles
+              th First Name
+              th Last Name
+              th Email
+              th Phone
+              th Status
+              th
+          tbody
+            - @users.each do |u|
+              tr
+                td = u.id
+                td = u.roles.map(&:display_name).join('<br />').html_safe
+                td = u.first_name
+                td = u.last_name
+                td = u.email
+                td = u.contact_number
+                td = u.confirmed_at.present? ? 'Confirmed' : 'Unconfirmed'
+                td style="min-width: 135px;"
+                  = link_to 'Edit', edit_symphony_user_path(u.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                  = link_to 'Delete', symphony_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
+
+
+/ .row
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
@@ -9,7 +45,7 @@
     h1
       | Manage Users
       = link_to "Add New User", new_symphony_user_path, role: 'button', class: 'btn btn-warning float-right'
-.row
+/ .row
   .col-sm-12
     .table-responsive
       table.table

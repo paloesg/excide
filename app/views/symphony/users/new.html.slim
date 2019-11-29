@@ -1,4 +1,15 @@
-.row
+#kt_subheader.kt-subheader.kt-grid__item
+  .kt-container
+.kt-container.kt-grid__item.kt-grid__item--fluid
+  .row.mb-3
+    .col
+      h1 New #{@company.name} User
+  .row
+    .col-xl-12
+      = form_for(@user, url: symphony_users_path) do |f|
+        = render 'form', f: f
+        = f.submit 'Create User', class: 'btn btn-primary'
+/ .row
   .col-sm-12
     ol.breadcrumb
       li.breadcrumb-item.ml-auto
@@ -9,7 +20,7 @@
         a href="#" Users
       li.breadcrumb-item.active New
     h1 New #{@company.name} User
-.row
+/ .row
   .col-sm-12
     = form_for(@user, url: symphony_users_path) do |f|
       = render 'form', f: f
