@@ -1,29 +1,27 @@
-.row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item Templates
-    h1
-      | All Templates
+#kt_subheader.kt-subheader.kt-grid__item
+  .kt-container
+.kt-container.kt-grid__item.kt-grid__item--fluid
+  .row.mb-3
+    .col
+      h1 All Templates
       .btn-toolbar.float-right
         = link_to 'Create Template', new_symphony_template_path, role: 'button', class: 'btn btn-primary'
-.row
-  .col-sm-12
-    .table-responsive
-      table.table.table-hover
-        thead
-          tr
-            th Title
-            th Workflow Type
-            th Number of Sections
-            th
-        tbody
-          - @templates.each do |template|
+  .row
+    .col-xl-12
+      .table-responsive
+        table.table.table-hover
+          thead
             tr
-              td = template.title
-              td = template.workflow_type.humanize
-              td = template.sections.count
-              td
-                / link to the first section of the template
-                = link_to "Edit", edit_symphony_template_path(template_slug: template.slug), class: 'btn btn-sm btn-success' if policy(template).edit?
+              th Title
+              th Workflow Type
+              th Number of Sections
+              th
+          tbody
+            - @templates.each do |template|
+              tr
+                td = template.title
+                td = template.workflow_type.humanize
+                td = template.sections.count
+                td
+                  / link to the first section of the template
+                  = link_to "Edit", edit_symphony_template_path(template_slug: template.slug), class: 'btn btn-sm btn-success' if policy(template).edit?

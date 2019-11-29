@@ -1,59 +1,70 @@
-.row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item.active Edit
-    h1 Edit Notification
-= form_for(@user, url: update_notification_symphony_user_path(@user)) do |f|
-  = f.fields_for :settings do |s|
-    .row
-      .col-md-4.col-sm-12
-        .row
-          .col-sm-12
-            .card.mb-3
-              h5.card-header Reminders Setting
-              .card-body
-                .form-group.form-check
-                  = s.check_box :reminder_sms, { class: 'form-check-input' }, 'true', 'false'
-                  = s.label :reminder_sms, 'SMS', class: 'form-check-label'
-                .form-group.form-check
-                  = s.check_box :reminder_email,{ class: 'form-check-input' }, 'true', 'false'
-                  = s.label :reminder_email, 'Email', class: 'form-check-label'
-                .form-group.form-check
-                  = s.check_box :reminder_slack,{ class: 'form-check-input' }, 'true', 'false'
-                  = s.label :reminder_slack, 'Slack', class: 'form-check-label'
-      .col-md-4.col-sm-12
-        .row
-          .col-sm-12
-            .card.mb-3
-              h5.card-header Tasks Setting
-              .card-body
-                .form-group.form-check
-                  = s.check_box :task_sms,{ class: 'form-check-input' }, 'true', 'false'
-                  = s.label :task_sms, 'SMS', class: 'form-check-label'
-                .form-group.form-check
-                  = s.check_box :task_email, { class: 'form-check-input' }, 'true', 'false'
-                  = s.label :task_email, 'Email', class: 'form-check-label'
-                .form-group.form-check
-                  = s.check_box :task_slack, { class: 'form-check-input' }, 'true', 'false'
-                  = s.label :task_slack, 'Slack', class: 'form-check-label'
-      .col-md-4.col-sm-12
-        .row
-          .col-sm-12
-            .card.mb-3
-              h5.card-header Batches Setting
-              .card-body
-                .form-group.form-check
-                  = s.check_box :batch_sms, { class: 'form-check-input' }, 'true', 'false'
-                  = s.label :batch_sms, 'SMS', class: 'form-check-label'
-                .form-group.form-check
-                  = s.check_box :batch_email, { class: 'form-check-input' }, 'true', 'false'
-                  = s.label :batch_email, 'Email', class: 'form-check-label'
-                .form-group.form-check
-                  = s.check_box :batch_slack, { class: 'form-check-input' }, 'true', 'false'
-                  = s.label :batch_slack, 'Slack', class: 'form-check-label'
-    .row
-      .col-sm-12
-        = s.submit 'Save', class: 'btn btn-primary pull-right'
+#kt_subheader.kt-subheader.kt-grid__item
+  .kt-container
+.kt-container.kt-grid__item.kt-grid__item--fluid
+  .row.mb-3
+    .col
+      h1 Edit Notification
+  .row
+    .col-xl-12
+      = form_for(@user, url: update_notification_symphony_user_path(@user)) do |f|
+        = f.fields_for :settings do |s|
+          .row
+            .col-md-4.col-sm-12
+              .row
+                .col-sm-12
+                  .kt-portlet
+                    .kt-portlet__head
+                      .kt-portlet__head-label
+                        h3.kt-portlet__head-title
+                          | Reminders Setting
+                    .kt-portlet__body
+                      .form-group.form-check
+                        = s.check_box :reminder_sms, { class: 'form-check-input' }, 'true', 'false'
+                        = s.label :reminder_sms, 'SMS', class: 'form-check-label'
+                      .form-group.form-check
+                        = s.check_box :reminder_email,{ class: 'form-check-input' }, 'true', 'false'
+                        = s.label :reminder_email, 'Email', class: 'form-check-label'
+                      .form-group.form-check
+                        = s.check_box :reminder_slack,{ class: 'form-check-input' }, 'true', 'false'
+                        = s.label :reminder_slack, 'Slack', class: 'form-check-label'                      
+            .col-md-4.col-sm-12
+              .row
+                .col-sm-12
+                  .kt-portlet
+                    .kt-portlet__head
+                      .kt-portlet__head-label
+                        h3.kt-portlet__head-title
+                          | Tasks Setting
+                    .kt-portlet__body
+                      .form-group.form-check
+                        = s.check_box :task_sms,{ class: 'form-check-input' }, 'true', 'false'
+                        = s.label :task_sms, 'SMS', class: 'form-check-label'
+                      .form-group.form-check
+                        = s.check_box :task_email, { class: 'form-check-input' }, 'true', 'false'
+                        = s.label :task_email, 'Email', class: 'form-check-label'
+                      .form-group.form-check
+                        = s.check_box :task_slack, { class: 'form-check-input' }, 'true', 'false'
+                        = s.label :task_slack, 'Slack', class: 'form-check-label'
+            .col-md-4.col-sm-12
+              .row
+                .col-sm-12
+                  .kt-portlet
+                    .kt-portlet__head
+                      .kt-portlet__head-label
+                        h3.kt-portlet__head-title
+                          | Batches Setting
+                    .kt-portlet__body
+                      .form-group.form-check
+                        = s.check_box :batch_sms, { class: 'form-check-input' }, 'true', 'false'
+                        = s.label :batch_sms, 'SMS', class: 'form-check-label'
+                      .form-group.form-check
+                        = s.check_box :batch_email, { class: 'form-check-input' }, 'true', 'false'
+                        = s.label :batch_email, 'Email', class: 'form-check-label'
+                      .form-group.form-check
+                        = s.check_box :batch_slack, { class: 'form-check-input' }, 'true', 'false'
+                        = s.label :batch_slack, 'Slack', class: 'form-check-label'
+          .row
+            .col-sm-12
+              = s.submit 'Save', class: 'btn btn-primary pull-right'
+
      

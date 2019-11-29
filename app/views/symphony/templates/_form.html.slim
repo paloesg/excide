@@ -8,16 +8,19 @@
   .col-md-3.col-sm-12
     .row
       .col-sm-12
-        .card.mb-3
-          h5.card-header Template Details:
-          .col-sm-12.mt-3
+        .kt-portlet
+          .kt-portlet__head
+            .kt-portlet__head-label
+              h3.kt-portlet__head-title
+                | Template Details
+          .kt-portlet__body
             .form-group
               = f.label :title, "Title:"
               = f.text_field :title, class: "form-control", required: true
             .form-group
               = f.label :workflow_type, "Workflow Type:"
-              = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width", required: true}
+              = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width form-control", required: true}
   .col-md-9.col-sm-12
-    .card.mb-3
+    .kt-portlet
       = f.fields_for :sections do |section|
         = render 'section_fields', f: section

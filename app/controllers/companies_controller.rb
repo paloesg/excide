@@ -1,5 +1,6 @@
 class CompaniesController < ApplicationController
-  layout "dashboard/application"
+  layout "dashboard/application", except: [:edit]
+  layout 'metronic/application', only: [:edit]
 
   before_action :authenticate_user!
   before_action :set_company, only: [:show, :edit, :update]

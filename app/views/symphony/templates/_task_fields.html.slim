@@ -3,9 +3,9 @@ tr
     = f.hidden_field :_destroy
     = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
   td.task-fields = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
-  td.task-fields = f.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {}, { required: true, class: "dropdown-overlay"}
+  td.task-fields = f.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {}, { required: true, class: "dropdown-overlay form-control"}
   td.task-fields = f.text_area :instructions, {required: true, class: "form-control"}
-  td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.display_name, role.id]}, selected: f.object.role&.id), {include_blank: true} , {required: true, class: "dropdown-overlay"}
+  td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.display_name, role.id]}, selected: f.object.role&.id), {include_blank: true} , {required: true, class: "dropdown-overlay form-control"}
   td.task-fields
     p
       a data-toggle="collapse" href="#task-index-#{f.index}-section-#{g.id}" aria-expanded="false" class="collapsed"
@@ -15,10 +15,10 @@ tr
     div id="task-index-#{f.index}-section-#{g.id}" class="collapse"
       .form-group.col-sm-12.pt-2
         = f.label :template, 'Template'
-        = f.select :template_id, options_for_select(@templates.map{|t| [t.title, t.id]}, selected: f.object.template&.id), {include_blank: true},  {class: "dropdown-overlay mb-2"}
+        = f.select :template_id, options_for_select(@templates.map{|t| [t.title, t.id]}, selected: f.object.template&.id), {include_blank: true},  {class: "dropdown-overlay form-control mb-2"}
       .form-group.col-sm-12.pt-2
         = f.label :document_template_id, 'Document Template'
-        = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay mb-2"}
+        = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay form-control mb-2"}
       .form-inline.col-sm-12.p-0.mb-2
         .form-group.col-sm-2
           = f.label :days_to_complete

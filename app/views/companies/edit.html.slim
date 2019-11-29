@@ -1,14 +1,11 @@
-.row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        a href="#" #{@company.name}
-      li.breadcrumb-item.active Update Details
-    h1 Update Company Details
-.row
-  .col-md-12
-    = form_for(@company, url: {action: "update"}) do |f|
-      = render 'form', f: f
-      = f.submit "Save details", class: 'btn btn-primary'
+#kt_subheader.kt-subheader.kt-grid__item
+  .kt-container
+.kt-container.kt-grid__item.kt-grid__item--fluid
+  .row.mb-3
+    .col
+      h1 Update Company Details
+  .row
+    .col-xl-12
+      = form_for(@company, url: {action: "update"}) do |f|
+        = render 'form', f: f
+        = f.submit "Save details", class: 'btn btn-primary'
