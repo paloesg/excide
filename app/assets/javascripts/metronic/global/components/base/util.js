@@ -1573,7 +1573,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 }
 
 // Initialize KTUtil class on document ready
-KTUtil.ready(function() {
+KTUtil.on("turbolinks:load", function() {
     KTUtil.init();
 });
 
