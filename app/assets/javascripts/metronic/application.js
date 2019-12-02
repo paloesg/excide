@@ -15,6 +15,7 @@
 //= require z.jquery.fileupload
 //= require algolia/v3/algoliasearch.min
 //= require selectize
+//= require dropzone
 
 //= require symphony
 //= require symphony/new_workflow

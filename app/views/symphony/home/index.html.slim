@@ -79,7 +79,7 @@
                 = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize form-control", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
               .col-xl-3.col-lg-3.col-md-3.mb-3
                 = submit_tag 'Submit', disabled: true, class: 'btn btn-primary', id: 'drag-and-drop-submit'
-            = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads', id: 'batch-uploader'
+            = form_tag @s3_direct_post.url, class: 'dropzone dropzone-default dz-clickable multiple_uploads', id: 'batch-uploader'
               - @s3_direct_post.fields.each do |key, value|
                 = hidden_field_tag key, value
                 = hidden_field_tag "utf8", "√"        
