@@ -2,7 +2,7 @@ function deleteBatch(template, id){
   if (confirm("Are you sure you want to delete this batch and all its data?")) {
     $(".loading").show();
     $.ajax({
-      url: "batches/"+ template +"/"+ id,
+      url: "symphony/batches/"+ template +"/"+ id,
       type: "DELETE",
       success(result) {
         $(".loading").hide();
