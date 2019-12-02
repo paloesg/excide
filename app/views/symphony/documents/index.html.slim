@@ -70,6 +70,7 @@
       .card-body
         = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads_and_edit'
           - @s3_direct_post.fields.each do |key, value|
+            = hidden_field_tag "utf8", "√"
             = hidden_field_tag key, value
 
 javascript:
