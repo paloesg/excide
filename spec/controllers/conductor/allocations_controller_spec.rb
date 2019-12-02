@@ -64,6 +64,7 @@ RSpec.describe Conductor::AllocationsController, type: :controller do
 
   describe "GET #new" do
     it "returns a success response" do
+      valid_attributes
       get :new, valid_session
       expect(response).to be_success
     end

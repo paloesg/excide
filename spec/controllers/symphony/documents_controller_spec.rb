@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Symphony::DocumentsController, type: :controller do
+
+  # This should return the minimal set of attributes required to create a valid
+  # Document. As you add validations to Document, be sure to
+  # adjust the attributes here as well.
+  let(:valid_attributes) {
+    skip("Add a hash of attributes valid for your model")
+  }
+
   describe "anonymous user" do
     before :each do
       # This simulates an anonymous user
@@ -21,7 +29,8 @@ RSpec.describe Symphony::DocumentsController, type: :controller do
     end
 
     it "should let a user see all the documents" do
-      get :index
+      valid_attributes
+      get :index, validate_session
       expect( response ).to render_template( :index )
     end
   end
