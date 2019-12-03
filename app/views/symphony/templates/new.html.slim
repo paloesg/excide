@@ -22,7 +22,7 @@
                 = f.text_field :title, class: "form-control"
               .form-group
                 = f.label :workflow_type, "Workflow Type:"
-                = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width form-control"}
+                = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
               .form-group
                 = f.submit "Save Template", class: 'btn btn-primary pull-left mb-3'
   .col-md-6
@@ -40,10 +40,10 @@
                 = f.text_field :title, class: "form-control"
               .form-group
                 = label_tag :clone, "Template:"
-                = select_tag "template[clone]", options_from_collection_for_select(@general_templates, "id", "title"), class: "selectize form-control"
+                = select_tag "template[clone]", options_from_collection_for_select(@general_templates, "id", "title"), class: "selectize"
               .form-group
                 = f.label :workflow_type, "Workflow Type:"
-                = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width form-control"}
+                = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
               .form-group
                 = f.submit "Clone Template", class: 'btn btn-primary pull-left mb-3'
 
