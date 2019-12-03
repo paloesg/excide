@@ -1,4 +1,5 @@
 require("jquery")
+require("moment")
 require("./symphony/new_workflow")
 require("./symphony/assign_ui")
 require("./symphony/remarks")
