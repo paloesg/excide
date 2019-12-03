@@ -16,7 +16,7 @@
  *= require font-awesome
  *= require selectize
  *= require selectize.default
- 
+
  */
 
 @import "bootstrap";
@@ -25,3 +25,4 @@
 @import "metronic/css/plugins.bundle";
 @import "metronic/css/style.bundle";
 @import "metronic/css/custom";
+@import "dashboard/admin";
