@@ -152,6 +152,6 @@ var KTOffcanvasPanel = function() {
 }();
 
 // Init on page load completed
-KTUtil.ready(function() {
+KTUtil.on("turbolinks:load", function()  {
     KTOffcanvasPanel.init();
 });

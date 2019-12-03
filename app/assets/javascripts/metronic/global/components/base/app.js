@@ -343,6 +343,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 }
 
 // Initialize KTApp class on document ready
-$(document).ready(function() {
+$(document).on("turbolinks:load", function() {
     KTApp.init(KTAppOptions);
 });

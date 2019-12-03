@@ -827,6 +827,7 @@ document.addEventListener("click", function (e) {
     var body = KTUtil.get('body');
     var query;
     if ( query = body.querySelectorAll('.kt-menu__nav .kt-menu__item.kt-menu__item--submenu.kt-menu__item--hover:not(.kt-menu__item--tabs)[data-ktmenu-submenu-toggle="click"]') ) {
+        console.log("testtt")
         for (var i = 0, len = query.length; i < len; i++) {
             var element = query[i].closest('.kt-menu__nav').parentNode;
 

@@ -226,5 +226,5 @@ var KTToggle = function(elementId, options) {
 
 // webpack support
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = KTToggle;
+  module.exports = KTToggle;
 }

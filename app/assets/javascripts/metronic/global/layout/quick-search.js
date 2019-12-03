@@ -161,7 +161,7 @@ var KTQuickSearchOffcanvas = KTQuickSearch;
 
 // Init on page load completed
 
-KTUtil.ready(function() {
+KTUtil.on("turbolinks:load", function() {
     if (KTUtil.get('kt_quick_search_dropdown')) {
         KTQuickSearch().init(KTUtil.get('kt_quick_search_dropdown'));
     }

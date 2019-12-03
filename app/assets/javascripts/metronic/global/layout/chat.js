@@ -175,6 +175,6 @@ if (typeof module !== 'undefined') {
 	module.exports = KTChat;
 }
 
-KTUtil.ready(function() {
+KTUtil.on("turbolinks:load", function()  {
 	KTChat.init();
 });
