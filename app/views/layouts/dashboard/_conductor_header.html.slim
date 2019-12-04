@@ -32,34 +32,13 @@
       /! end:: Brand
       /! begin:: Header Topbar
       .kt-header__topbar.kt-grid__item.kt-grid__item--fluid
-        - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
-          /! begin: Admin bar
-          .kt-header__topbar-item.kt-header__topbar-item--langs
-            .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
-              span.kt-header__topbar-icon.kt-header__topbar-icon--warning
-                i.flaticon2-gear
-            .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
-              ul.kt-nav.kt-margin-t-10.kt-margin-b-10
-                li.kt-nav__item
-                  = link_to symphony_users_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Manage Users
-                li.kt-nav__item
-                  = link_to symphony_templates_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Manage Templates
-                li.kt-nav__item
-                  = link_to edit_company_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Company Details
-          /! end: Admin bar
-        /! begin: User bar
+        /! begin: Admin bar
         .kt-header__topbar-item.kt-header__topbar-item--langs
           .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
-            span.kt-header__topbar-icon.kt-header__topbar-icon--success
-              i.flaticon2-user
+            span.kt-header__topbar-icon.kt-header__topbar-icon--warning
+              i.flaticon2-gear
           .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
             ul.kt-nav.kt-margin-t-10.kt-margin-b-10
-              li.kt-nav__item
-                = link_to edit_user_registration_path, class: 'kt-nav__link' do
-                  span.kt-nav__link-text User Profile
               - if current_user.has_role?(:staffer, @company) or current_user.has_role?(:admin, @company) or current_user.has_role? :superadmin
                 li.kt-nav__item
                   = link_to conductor_clients_path, class: 'kt-nav__link' do
@@ -72,6 +51,17 @@
                 li.kt-nav__item
                   = link_to symphony_root_path, class: 'kt-nav__link' do
                     span.kt-nav__link-text Symphony
+          /! end: Admin bar
+        /! begin: User bar
+        .kt-header__topbar-item.kt-header__topbar-item--langs
+          .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
+            span.kt-header__topbar-icon.kt-header__topbar-icon--success
+              i.flaticon2-user
+          .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+            ul.kt-nav.kt-margin-t-10.kt-margin-b-10
+              li.kt-nav__item
+                = link_to edit_user_registration_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text User Profile
               li.kt-nav__item
                 = link_to destroy_user_session_path, {method: :delete, class: 'kt-nav__link'} do
                   span.kt-nav__link-text Log Out
