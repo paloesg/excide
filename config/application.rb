@@ -35,5 +35,12 @@ module Excide
     # config.active_record.raise_in_transactional_callbacks = true
 
     config.active_job.queue_adapter = :sucker_punch
+
+    # The default configuration for Rails 6
+    # Zeitwerk is able to load classes and modules on demand (autoloading), or upfront (eager loading).
+    config.load_defaults "6.0"
+
+    # Set the default require belongs_to relations to optional
+    config.active_record.belongs_to_required_by_default = false
   end
 end

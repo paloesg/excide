@@ -54,7 +54,11 @@ Rails.application.routes.draw do
         get '/notification_settings', to: 'users#notification_settings', as: :notification_settings
         patch '/update_notification', to: 'users#update_notification', as: :update_notification
       end
+      collection do
+        patch '/additional_information/update', to: 'users#edit_additional_information', as: :edit_additional_information   
+      end
     end
+    resources :roles
     resources :reminders do
       member do
         post '/cancel', to: 'reminders#cancel'
@@ -149,7 +153,12 @@ Rails.application.routes.draw do
   as :user do
     match 'confirmation' => 'confirmations#update', :via => :put, :as => :update_user_confirmation
   end
-  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout' }
+
+  devise_scope :user do
+    get 'users/additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
+  end
+
+  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account
@@ -171,6 +180,7 @@ Rails.application.routes.draw do
 
   resources :responses
 
+  get 'company', to: 'companies#show', as: :company
   get 'company/new', to: 'companies#new', as: :new_company
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
@@ -184,6 +194,7 @@ Rails.application.routes.draw do
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
   get 'about-us', to: 'home#about', as: :about
+  get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
 
   # VFO services
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo

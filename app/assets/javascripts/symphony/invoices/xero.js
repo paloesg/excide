@@ -1,11 +1,22 @@
+//convert from currency format to number
+function convertCurrency(currency){
+  var temp = currency.replace(/[^0-9.-]+/g,"");
+  return parseFloat(temp);
+}
+
+//convert number to currency format
+function replaceNumberWithCurrencyFormat(num) {
+  return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+}
+
 // Automatically calculate the subtotal field
 function calculateSubtotal() {
   let sum = 0;
   let amounts = $("input[id$='_amount']");
   amounts.each(function(index, field) {
-      sum += Number($(field).val());
+      sum += Number(convertCurrency($( field).val()));
   });
-  return sum.toFixed(2);
+  return sum ? sum.toFixed(2) : 0;
 }
 
 function getXeroItem(itemCode, field) {
@@ -14,9 +25,9 @@ function getXeroItem(itemCode, field) {
   .done(function(data) {
     $("#invoice_line_items_attributes_"+field+"_description").val(data.purchase_description);
     $("#invoice_line_items_attributes_"+field+"_quantity").val(1);
-    $("#invoice_line_items_attributes_"+field+"_price").val(data.sales_details.unit_price);
+    $("#invoice_line_items_attributes_"+field+"_price").val(data.purchase_details.unit_price);
     $("#invoice_line_items_attributes_"+field+"_amount").val(1*data.sales_details.unit_price);
-    $("input#subtotal").val( calculateSubtotal() );
+    $("input#subtotal").val( replaceNumberWithCurrencyFormat(calculateSubtotal()) );
 
     //selectize account
     if (data.sales_details.account_code) {
@@ -60,6 +71,7 @@ var dropdownTax;
 
 // Calculate total tax & append element
 function calculateTotalTax(amount, rate) {
+  amount = convertCurrency(amount);
   amount = parseFloat(amount);
   rate = parseFloat(rate);
   let result = 0.0;
@@ -78,7 +90,7 @@ function calculateTotalTax(amount, rate) {
         $("#subtotal-wrapper").append("<div class='form-row total-tax-row calculated-tax' data-rate='"+rate+"'>"+
           "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
             "<label class='mr-2'> Total tax "+ rate + "%  </label>" +
-            "<input type='number' value='" + result + "' class='form-control' disabled='disabled'>" +
+            "<input type='text' value='" + replaceNumberWithCurrencyFormat(result) + "' class='form-control' disabled='disabled'>" +
           "</div>" +
         "</div>");
       }
@@ -135,13 +147,24 @@ $(document).on("turbolinks:load", function(){
   function calculateAmount() {
     $("input[id$='_quantity'], input[id$='_price']").change(function () {
       let quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
-      let price = $(this).closest(".line_items").find("input[id$='_price']").val();
+      let inputPrice = $(this).closest(".line_items").find("input[id$='_price']");
       let amount = $(this).closest(".line_items").find("input[id$='_amount']");
-      amount.val( (quantity*price).toFixed(2) );
-      $("input#subtotal").val( calculateSubtotal() );
+      let price = inputPrice.val() ? convertCurrency(inputPrice.val()) : 0;
+      amount.val(price === 0? 0 : quantity*price);
+      $("input#subtotal").val( replaceNumberWithCurrencyFormat(calculateSubtotal()) );
       updateTotalTax();
+      //replace to currency format
+      amount.val(replaceNumberWithCurrencyFormat(amount.val()));
+      inputPrice.val(replaceNumberWithCurrencyFormat(price));
     })
   }
+
+  $("input[id$='_price']").keydown(function (event) {
+    // check if tab keyboard button pressed
+    if (event.keyCode === 9) {
+      calculateAmount();
+    }
+  });
 
   dropdownTax = $(".dropdown-tax").selectize({
     onInitialize() {
@@ -190,7 +213,7 @@ $(document).on("turbolinks:load", function(){
 
   // Run calculate after the page is loaded
   calculateAmount();
-  $("input#subtotal").val( calculateSubtotal() );
+  $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
 
   //add attribute fields with selectize drop down (for creating invoice and data entry)
   $("form").on("click", ".add_attribute_fields", function(event) {
@@ -245,5 +268,59 @@ $(document).on("turbolinks:load", function(){
     $(".data-attributes").find("tr:last-child").find(".create").val("1");
     calculateAmount();
     return event.preventDefault();
+  });
+
+  // if line items amount have value, convert to currency format
+  let amounts = $("input[id$='_amount']");
+  if(amounts.length > 0){
+    amounts.each(function(index, field) {
+      if($(field). val()){
+        $( field).val(replaceNumberWithCurrencyFormat($( field).val()));
+      }
+    });
+  }
+
+  // if line items price have value, convert to currency format
+  let prices = $("input[id$='_price']");
+  if(prices.length > 0){
+    prices.each(function(index, field) {
+      if($(field). val()){
+        $( field).val(replaceNumberWithCurrencyFormat($( field).val()));
+      }
+    });
+  }
+
+  $("input#invoice_total").change(function(){
+    if($("input#invoice_total").val() !== ""){
+      $("input#invoice_total").val(replaceNumberWithCurrencyFormat($("input#invoice_total").val()));
+    }
+    else {
+      $("input#invoice_total").val(0);
+    }
+  })
+
+
+  // Convert currency to number when form do submit
+  function convertNormalNumber(){
+    let amounts = $("input[id$='_amount']");
+    amounts.each(function(index, field) {
+      $( field).val(convertCurrency($( field).val()));
+    });
+
+    let prices = $("input[id$='_price']");
+    prices.each(function(index, field) {
+      $( field).val(convertCurrency($( field).val()));
+    });
+
+    $("input#subtotal").val(convertCurrency($("input#subtotal").val()));
+    $("input#invoice_total").val(convertCurrency($("input#invoice_total").val()));
+  }
+
+  $("form.edit_invoice").submit(function() {
+    convertNormalNumber();
+  });
+
+  $("form.new_invoice").submit(function() {
+    convertNormalNumber();
   });
 });

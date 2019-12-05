@@ -35,7 +35,13 @@ class XeroSessionsController < ApplicationController
         xli = XeroLineItem.find_or_initialize_by(item: item.code)
         xli.update(description: item.description, quantity: item.quantity_on_hand, price: item.sales_details.unit_price, account: item.sales_details.account_code, tax: item.sales_details.tax_type, company: current_user.company)
       end
-      redirect_to symphony_root_path, notice: "User signed in and connected to Xero."
+      templates = Template.where(company: current_user.company)
+      flash[:notice] = "User signed in and connected to Xero."
+      if templates.present?
+        redirect_to symphony_root_path
+      else
+        redirect_to new_symphony_template_path
+      end
     else
       redirect_to root_path, alert: "Connection to Xero failed."
     end
