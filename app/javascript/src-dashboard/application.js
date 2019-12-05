@@ -1,5 +1,12 @@
 require("jquery")
 require("moment")
+require("dropzone")
+require("selectize")
+require("algoliasearch")
+
+require("./analytics")
+require("./symphony")
+
 require("./symphony/new_workflow")
 require("./symphony/assign_ui")
 require("./symphony/remarks")
@@ -19,3 +26,5 @@ require("./components/selectize_initialize")
 require("./components/document_popover")
 require("./components/load_batch")
 require("./components/stripe")
+
+require("./turbolinks-compatibility")

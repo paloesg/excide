@@ -823,7 +823,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 }
 
 // Plugin global lazy initialization
-document.addEventListener("click", function (e) {
+document.addEventListener("turbolinks:click", function (e) {
     var body = KTUtil.get('body');
     var query;
     if ( query = body.querySelectorAll('.kt-menu__nav .kt-menu__item.kt-menu__item--submenu.kt-menu__item--hover:not(.kt-menu__item--tabs)[data-ktmenu-submenu-toggle="click"]') ) {

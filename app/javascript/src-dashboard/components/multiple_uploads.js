@@ -15,6 +15,8 @@ function uploadDocuments(data){
 Dropzone.autoDiscover = false;
 
 $(document).on("turbolinks:load", function() {
+
+  var fileName, get_extension, filter_filename;
   // Show dropzone after client and template selected
   $("#template_id").on('change', function() {
     if ( $("#template_id").val() ) {

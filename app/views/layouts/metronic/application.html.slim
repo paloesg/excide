@@ -20,9 +20,7 @@ html lang="en"
 
     = render 'application/favicon'
     = display_meta_tags site: "Virtual CFO | Excide"
-
-    / = javascript_include_tag "metronic/application", "data-turbolinks-track" => "reload"
-    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application-dashboard', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
 
@@ -71,8 +69,3 @@ html lang="en"
             }
           }
         };
-    /! end::Global Config
-    /! begin::Global Theme Bundle(used by all pages)
-    / = javascript_include_tag "metronic/application-footer", "data-turbolinks-track" => "reload"
-    /! end::Global Theme Bundle
-  /! end::Body
