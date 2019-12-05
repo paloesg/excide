@@ -366,6 +366,6 @@ if (typeof module !== 'undefined') {
     module.exports = KTLayout;
 }
 
-$(document).ready(function() {
+$(document).on("turbolinks:load", function(){
     KTLayout.init();
 });

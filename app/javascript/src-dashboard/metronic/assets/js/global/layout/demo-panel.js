@@ -66,6 +66,6 @@ var KTDemoPanel = function() {
     };
 }();
 
-$(document).ready(function() {
+$(document).on("turbolinks:load", function(){
     KTDemoPanel.init();
 });

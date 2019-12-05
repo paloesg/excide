@@ -82,6 +82,6 @@ var KTQuickPanel = function() {
     };
 }();
 
-$(document).ready(function() {
+$(document).on("turbolinks:load", function(){
     KTQuickPanel.init();
 });
