@@ -19,7 +19,7 @@ class Company < ApplicationRecord
   has_many :batches, dependent: :destroy
   has_many :invoices, dependent: :destroy
   has_many :xero_contacts, dependent: :destroy
-  has_many :xero_line_items
+  has_many :xero_line_items, dependent: :destroy
   has_one :address, as: :addressable, dependent: :destroy
 
   belongs_to :consultant, class_name: 'User'
