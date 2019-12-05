@@ -1,8 +1,8 @@
-function create_allocations(id, type, element) {
+var createAllocation = function(id, type, element) {
   let count = element.value
   $.ajax({
     type: "GET",
-    url: "events/" + id + "/create-allocations/" + type + "/" + count,
+    url: "conductor/events/" + id + "/create-allocations/" + type + "/" + count,
     dataType: "json",
     success: function () {
       $(element).prop('disabled', 'disabled');
@@ -16,4 +16,9 @@ function create_allocations(id, type, element) {
       })
     }
   })
+}
+
+// webpack support
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = createAllocation;
 }
