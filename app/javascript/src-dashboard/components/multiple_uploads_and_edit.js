@@ -1,9 +1,6 @@
 /*global Dropzone*/
 /*eslint no-undef: "error"*/
 /*eslint camelcase: ["error", {allow: ["authenticity_token", "url_files"]}]*/
-
-import Dropzone from 'dropzone';
-
 Dropzone.autoDiscover = false;
 
 $(document).on("turbolinks:load", function() {
