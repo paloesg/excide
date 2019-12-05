@@ -3,6 +3,7 @@ window.moment = require("moment")
 window.Dropzone = require("dropzone")
 require("selectize")
 require("algoliasearch")
+require("tempusdominus-bootstrap-4")
 
 require("./analytics")
 require("./symphony")
