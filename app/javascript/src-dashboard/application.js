@@ -17,7 +17,7 @@ require("./symphony/zoom")
 require("./symphony/invoices/xero")
 
 window.createAllocation = require("./conductor/create_allocations")
-require("./conductor/add_availabilities")
+window.addAvailability = require("./conductor/add_availabilities")
 require("./conductor/home")
 
 require("./components/multiple_uploads")
