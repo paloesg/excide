@@ -1,6 +1,6 @@
 require("jquery")
-require("moment")
-require("dropzone")
+window.moment = require("moment")
+window.Dropzone = require("dropzone")
 require("selectize")
 require("algoliasearch")
 
