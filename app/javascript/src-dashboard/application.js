@@ -21,6 +21,7 @@ require("./symphony/invoices/xero")
 window.createAllocation = require("./conductor/create_allocations")
 window.addAvailability = require("./conductor/add_availabilities")
 require("./conductor/home")
+require("./conductor/go_to_allocation")
 
 require("./components/multiple_uploads")
 require("./components/multiple_uploads_and_edit")
