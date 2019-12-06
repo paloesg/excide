@@ -4,6 +4,7 @@ window.Dropzone = require("dropzone")
 window.mixpanel = require("mixpanel-browser")
 require("selectize")
 require("algoliasearch")
+require("tempusdominus-bootstrap-4")
 
 require("./init")
 require("./analytics")
@@ -17,8 +18,8 @@ require("./symphony/batches/select_all_by_task")
 require("./symphony/zoom")
 require("./symphony/invoices/xero")
 
-require("./conductor/create_allocations")
-require("./conductor/add_availabilities")
+window.createAllocation = require("./conductor/create_allocations")
+window.addAvailability = require("./conductor/add_availabilities")
 require("./conductor/home")
 
 require("./components/multiple_uploads")

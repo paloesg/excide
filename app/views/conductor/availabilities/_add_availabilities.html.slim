@@ -2,8 +2,8 @@
 = hidden_field :available, :start_date, value: params[:start_date]
 = week_calendar start_date: @date_from do |date|
   br
-  p = check_box :all_day, "dates[#{date}]['all']", {:multiple => true, :onchange => 'allDay(this)', :id => 'all_day', disabled: @availabilities.any? {|a| a[:available_date] == date and a[:assigned]} }
+  p = check_box :all_day, "dates[#{date}]['all']", {:multiple => true, :onchange => 'addAvailability.allDay(this)', :id => 'all_day', disabled: @availabilities.any? {|a| a[:available_date] == date and a[:assigned]} }
   - @time_values.each_with_index do |time, i|
     hr
-    p = check_box :available, "dates[#{date}][time]", {:multiple => true, :onchange => 'day(this)', disabled: @availabilities.any? {|a| a[:available_date] == date and a[:assigned]}, :checked => (@availabilities.select{|a| a[:available_date] == date and (a[:start_time].strftime('%H:%M:%S') <= time and a[:end_time].strftime('%H:%M:%S') > time)}).present?}, time, nil
+    p = check_box :available, "dates[#{date}][time]", {:multiple => true, :onchange => 'addAvailability.day(this)', disabled: @availabilities.any? {|a| a[:available_date] == date and a[:assigned]}, :checked => (@availabilities.select{|a| a[:available_date] == date and (a[:start_time].strftime('%H:%M:%S') <= time and a[:end_time].strftime('%H:%M:%S') > time)}).present?}, time, nil
 = submit_tag "Submit", class: 'btn btn-primary pull-right'

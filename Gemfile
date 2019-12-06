@@ -122,8 +122,6 @@ gem 'premailer-rails'
 gem "cocoon"
 # WYSIWYG editor
 gem 'trix'
-# Bootstrap4 datetime picker rails
-gem 'bootstrap4-datetime-picker-rails'
 # Render calendar
 gem "simple_calendar", "~> 2.0"
 # Algolia search

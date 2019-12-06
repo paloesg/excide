@@ -57,12 +57,12 @@
               - else
                 td
                   - if event.allocations.consultant.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((event.allocations.consultant.count..5).to_a, event.allocations.consultant.count), onchange: "create_allocations(#{event.id}, 'consultant', this);")
+                    = select_tag('allocations', options_for_select((event.allocations.consultant.count..5).to_a, event.allocations.consultant.count), onchange: "createAllocation(#{event.id}, 'consultant', this);")
                   - else
                     = select_tag('allocations', options_for_select([event.allocations.consultant.count]), disabled: true)
                 td
                   - if event.allocations.associate.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((event.allocations.associate.count..20).to_a, event.allocations.associate.count), onchange: "create_allocations(#{event.id}, 'associate', this);")
+                    = select_tag('allocations', options_for_select((event.allocations.associate.count..20).to_a, event.allocations.associate.count), onchange: "createAllocation(#{event.id}, 'associate', this);")
                   - else
                     = select_tag('allocations', options_for_select([event.allocations.associate.count]), disabled: true)
                 td
