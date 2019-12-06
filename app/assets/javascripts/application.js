@@ -5,7 +5,6 @@
 //= require bootstrap
 
 //= require moment
-//= require tempusdominus-bootstrap-4.js
 //= require trix
 //= require cocoon
 //= require analytics
