@@ -1,5 +1,5 @@
 $(document).on("turbolinks:load", function(){
-  mixpanel.track("Page view");
+  // mixpanel.track("Page view");
   if ($('.directUpload').length) {
     $('.directUpload').find('input:file').each(function(i, elem) {
       let barContainer, fileInput, form, progressBar, submitButton;

@@ -9,6 +9,7 @@
     "jquery": "^3.4.1",
     "jquery-ui": "^1.12.1",
     "jquery.ui.widget": "^1.10.3",
+    "mixpanel-browser": "^2.31.0",
     "moment": "^2.24.0",
     "popper.js": "^1.16.0",
     "selectize": "^0.12.6",

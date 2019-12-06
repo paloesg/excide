@@ -1,9 +1,11 @@
 require("jquery")
 window.moment = require("moment")
 window.Dropzone = require("dropzone")
+window.mixpanel = require("mixpanel-browser")
 require("selectize")
 require("algoliasearch")
 
+require("./init")
 require("./analytics")
 require("./symphony")
 
