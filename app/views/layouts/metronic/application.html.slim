@@ -33,15 +33,18 @@ html lang="en"
     /! end:: Header Mobile
     .kt-grid.kt-grid--hor.kt-grid--root
       .kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--ver.kt-page
-        #kt_wrapper.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-wrapper          
+        #kt_wrapper.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-wrapper     
           /! begin:: Header
           = render 'layouts/metronic/header'
           /! end:: Header 
           .kt-container.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
             #kt_body.kt-body.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
-              #kt_content.kt-content.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor                
+              #kt_content.kt-content.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor  
+                #kt_subheader.kt-subheader.kt-grid__item
+                  .kt-container              
                 /! begin:: Content
                 .kt-container.kt-grid__item.kt-grid__item--fluid
+                  = render 'layouts/metronic/messages'  
                   = yield
                 /! end:: Content
           /! begin:: Footer

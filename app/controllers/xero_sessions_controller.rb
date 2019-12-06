@@ -12,14 +12,12 @@ class XeroSessionsController < ApplicationController
       }
     )
 
+
     request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
     session[:request_token] = request_token.token
     session[:request_secret] = request_token.secret
-
-
-    render json: session.to_json
     
-    # redirect_to request_token.authorize_url
+    redirect_to request_token.authorize_url
   end
 
   def xero_callback_and_update

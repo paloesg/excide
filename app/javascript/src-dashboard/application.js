@@ -6,6 +6,10 @@ require("selectize")
 require("algoliasearch")
 require("tempusdominus-bootstrap-4")
 
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
+
 require("./init")
 require("./analytics")
 require("./symphony")

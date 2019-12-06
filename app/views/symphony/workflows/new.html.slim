@@ -1,13 +1,10 @@
-#kt_subheader.kt-subheader.kt-grid__item
-  .kt-container
-.kt-container.kt-grid__item.kt-grid__item--fluid
-  .row.mb-3
-    .col-md-12
-      h1 Workflow
-  .row.mb-3
-    .col-md-12
-      = form_for(@workflow, url: symphony_workflows_path(workflow_name: params[:workflow_name])) do |f|
-        = render 'form', f: f
+.row.mb-3
+  .col-md-12
+    h1 Workflow
+.row.mb-3
+  .col-md-12
+    = form_for(@workflow, url: symphony_workflows_path(workflow_name: params[:workflow_name])) do |f|
+      = render 'form', f: f
 / .row
   .col-sm-12
     ol.breadcrumb
