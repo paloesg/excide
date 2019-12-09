@@ -85,7 +85,7 @@
       #kt_header_menu_wrapper.kt-header-menu-wrapper
         #kt_header_menu.kt-header-menu.kt-header-menu-mobile
           ul.kt-menu__nav
-            li.kt-menu__item.kt-menu__item--open.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--here' if @navbar_dashboard_active}"
+            li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if @navbar_dashboard_active}"
               = link_to symphony_root_path, class:"kt-menu__link" do
                 span.kt-menu__link-text Dashboard  
             li.kt-menu__item.kt-menu__item--submenu.kt-menu__item--rel aria-haspopup="true" data-ktmenu-submenu-toggle="click" class="#{'kt-menu__item--here' if @navbar_workflows_active}"
@@ -95,11 +95,11 @@
               .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left
                 ul.kt-menu__subnav
                   - ::Template.assigned_templates(current_user).each do |t|
-                    li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--active' if @template && @template.id == t.id}"
+                    li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--active' if @template && @template.id == t.id}"
                       = link_to symphony_workflows_path(t.slug), class: 'kt-menu__link' do
                         span.kt-badge.kt-badge--info.kt-badge--rounded.mr-1 = t.company_workflows(current_user.company).count
                         span.kt-menu__link-text #{t.title} 
-            li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--here' if @navbar_batches_active}"
+            li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if @navbar_batches_active}"
               = link_to symphony_batches_index_path, class:"kt-menu__link" do
                 span.kt-menu__link-text Batches
         .xero-info.ml-3
