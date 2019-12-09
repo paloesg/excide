@@ -1,14 +1,15 @@
 require("jquery")
+
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
+
 window.moment = require("moment")
 window.Dropzone = require("dropzone")
 window.mixpanel = require("mixpanel-browser")
 require("selectize")
 require("algoliasearch")
 require("tempusdominus-bootstrap-4")
-
-import $ from 'jquery';
-window.jQuery = $;
-window.$ = $;
 
 require("./init")
 require("./analytics")
@@ -34,5 +35,6 @@ require("./components/selectize_initialize")
 require("./components/document_popover")
 require("./components/load_batch")
 require("./components/stripe")
+window.deleteBatch = require("./components/delete_batch")
 
 require("./turbolinks-compatibility")
