@@ -1,5 +1,4 @@
 class Symphony::WorkflowsController < ApplicationController
-  # layout "dashboard/application"
   layout 'metronic/application'
   include Adapter
 

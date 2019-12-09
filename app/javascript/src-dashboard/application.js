@@ -28,6 +28,7 @@ window.addAvailability = require("./conductor/add_availabilities")
 require("./conductor/home")
 require("./conductor/go_to_allocation")
 
+require("./components/date_time_picker")
 require("./components/multiple_uploads")
 require("./components/multiple_uploads_and_edit")
 require("./components/popover_initialize")

@@ -25,7 +25,7 @@
                       a.pop data-container="body" title="#{task.role&.display_name}" data-content=("<div>#{task.instructions}</div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
                         .header-properties
                           ' #{task.task_type.humanize}
-                          i.ti-info-alt
+                          i.flaticon2-file
                         .header-info
                           ' #{task.role.name.humanize}
               tbody
@@ -46,10 +46,10 @@
                             a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid'/>" Preview                    
                     td
                       - if wf.invoice.blank?
-                        i.ti-receipt.icon.mr-3.text-center.medium-icon.gray-icon
+                        i.flaticon2-file.icon.mr-3.text-center.medium-icon.gray-icon
                       - else
                         = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id)
-                          i.ti-receipt.icon.mr-3.medium-icon
+                          i.flaticon2-file.icon.mr-3.medium-icon
                         - if wf.invoice.rejected?
                           .rejected-invoice-circle R
                     - section.tasks.includes(:role).order(position: :asc).each do |task|
