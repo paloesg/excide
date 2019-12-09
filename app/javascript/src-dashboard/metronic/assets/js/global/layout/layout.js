@@ -41,16 +41,15 @@ var KTLayout = function() {
         };
 
         header = new KTHeader('kt_header', options);
+        // if (asideMenu) {
+        //     header.on('minimizeOn', function() {
+        //         asideMenu.scrollReInit();
+        //     });
 
-        if (asideMenu) {
-            header.on('minimizeOn', function() {
-                asideMenu.scrollReInit();
-            });
-
-            header.on('minimizeOff', function() {
-                asideMenu.scrollReInit();
-            });
-        }
+        //     header.on('minimizeOff', function() {
+        //         asideMenu.scrollReInit();
+        //     });
+        // }
     }
 
     // Header Menu
