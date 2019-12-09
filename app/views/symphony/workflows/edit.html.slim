@@ -1,25 +1,7 @@
-#kt_subheader.kt-subheader.kt-grid__item
-  .kt-container
-.kt-container.kt-grid__item.kt-grid__item--fluid
-  .row.mb-3
-    .col-md-12
-      h1 Edit Workflow
-  .row.mb-3
-    .col-md-12
-      = form_for(@workflow, url: symphony_workflow_path(workflow_id: params[:workflow_id])) do |f|
-        = render 'form', f: f
-/ .row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        = link_to @template.title, symphony_workflows_path(@template.slug)
-      li.breadcrumb-item
-        = link_to @workflow.id, symphony_workflow_path(@template.slug, @workflow.id)
-      li.breadcrumb-item.active Edit Workflow
+.row.mb-3
+  .col-md-12
     h1 Edit Workflow
-/ .row
+.row.mb-3
   .col-md-12
     = form_for(@workflow, url: symphony_workflow_path(workflow_id: params[:workflow_id])) do |f|
       = render 'form', f: f

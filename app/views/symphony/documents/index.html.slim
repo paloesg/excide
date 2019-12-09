@@ -1,77 +1,34 @@
-#kt_subheader.kt-subheader.kt-grid__item
-  .kt-container
-.kt-container.kt-grid__item.kt-grid__item--fluid
-  .row.mb-3
-    .col
-      h1 Documents
-      .btn-toolbar.float-right
-        = link_to "Document Templates", symphony_document_templates_path, role: 'button', class: 'btn btn-success mr-1'
-        = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
-  .row
-    .col-sm-6.offset-sm-3.mb-3
-      input.form-control#q type="search"
-  .row
-    .col-sm-3#facets
-      #document_templates
-    .col-sm-6
-      .kt-portlet
-        .kt-portlet__head
-          .kt-portlet__head-label
-            h3.kt-portlet__head-title
-              | Search Results
-        .kt-portlet__body
-          .table-responsive#hits
-          #pagination
-    .col-md-3
-      .kt-portlet
-        .kt-portlet__head
-          .kt-portlet__head-label
-            h3.kt-portlet__head-title
-              | Upload Documents
-        .kt-portlet__body
-          = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads_and_edit'
-            - @s3_direct_post.fields.each do |key, value|
-              = hidden_field_tag key, value  
-      / .card
-        h5.card-header Upload Documents
-        .card-body
-          = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads_and_edit'
-            - @s3_direct_post.fields.each do |key, value|
-              = hidden_field_tag key, value  
-
-
-/ .row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item.active Documents
-    h1
-      | Documents
-      .btn-toolbar.float-right
-        = link_to "Document Templates", symphony_document_templates_path, role: 'button', class: 'btn btn-success mr-1'
-        = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
-
-/ .row
+.row.mb-3
+  .col
+    h1 Documents
+    .btn-toolbar.float-right
+      = link_to "Document Templates", symphony_document_templates_path, role: 'button', class: 'btn btn-success mr-1'
+      = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
+.row
   .col-sm-6.offset-sm-3.mb-3
     input.form-control#q type="search"
-
-/ .row
+.row
   .col-sm-3#facets
     #document_templates
   .col-sm-6
-    .card
-      h5.card-header Search Results
-      .table-responsive#hits
-    #pagination
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title
+            | Search Results
+      .kt-portlet__body
+        .table-responsive#hits
+        #pagination
   .col-md-3
-    .card
-      h5.card-header Upload Documents
-      .card-body
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title
+            | Upload Documents
+      .kt-portlet__body
         = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads_and_edit'
           - @s3_direct_post.fields.each do |key, value|
-            = hidden_field_tag "utf8", "√"
-            = hidden_field_tag key, value
+            = hidden_field_tag key, value  
 
 javascript:
   function loadExtJS(src, callback) {
