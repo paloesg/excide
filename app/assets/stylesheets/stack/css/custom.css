@@ -141,3 +141,7 @@
   padding: 10px 10px 10px 0px;
   border-color: transparent;
 }
+
+.btn--loading, .btn--orange:focus, .btn--excide:focus {
+  box-shadow: 0 0 0 0.2rem rgba(201, 146, 146, 0.26) !important;
+}
