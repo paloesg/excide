@@ -21,7 +21,7 @@ function calculateSubtotal() {
 
 function getXeroItem(itemCode, field) {
   $(".loading").show();
-  $.get("/symphony/xero_line_items", { "item": itemCode })
+  $.get("/symphony/xero_line_items", { "item_code": itemCode })
   .done(function(data) {
     $("#invoice_line_items_attributes_"+field+"_description").val(data.description);
     $("#invoice_line_items_attributes_"+field+"_quantity").val(1);

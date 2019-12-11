@@ -1,7 +1,7 @@
 class CreateXeroLineItems < ActiveRecord::Migration[5.2]
   def change
     create_table :xero_line_items do |t|
-      t.string :item
+      t.string :item_code
       t.string :description
       t.integer :quantity
       t.decimal :price
