@@ -1,15 +1,9 @@
 .row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/conductor" Dashboard
-      li.breadcrumb-item
-        a href="/symphony/company" #{@company.name}
-      li.breadcrumb-item.active Events
-    h1
-      | Events Listing - #{@date_from.strftime("%B")}
-      = link_to 'Event Types', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, :any
-      = link_to 'New Event', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1' if @user.has_role?(:staffer, @company) or @user.has_role?(:admin, @company)
+  .col-md-6
+    h1 Events Listing - #{@date_from.strftime("%B")}
+  .col-md-6
+    = link_to 'Event Types', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, :any
+    = link_to 'New Event', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1' if @user.has_role?(:staffer, @company) or @user.has_role?(:admin, @company)
 .row
   .col-sm-12.mb-3
     .btn-group.float-right role='group'
