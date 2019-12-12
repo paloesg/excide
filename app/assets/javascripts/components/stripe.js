@@ -33,7 +33,7 @@ $(document).on("turbolinks:load", function(){
         } else {
           stripeTokenHandler(result.token);
         }
-      })
+      });
     });
   }
 
@@ -47,15 +47,15 @@ $(document).on("turbolinks:load", function(){
       card.mount('#card-element-update');
 
       card.addEventListener('change', function(event) {
-        var submitButton = $('input[type="submit"]')
+        var submitButton = $('input[type="submit"]');
         var displayError = $('#card-errors');
         if(event.error) {
-          displayError.attr('class', 'stripe-alert-error')
+          displayError.attr('class', 'stripe-alert-error');
           displayError.text(event.error.message);
           submitButton.attr('disabled', true);
         }
         else {
-          displayError.attr('class', '')
+          displayError.attr('class', '');
           displayError.text('');
           submitButton.removeAttr('disabled');
         }
