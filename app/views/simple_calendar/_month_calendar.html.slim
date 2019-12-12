@@ -1,26 +1,59 @@
-.card.simple-calendar
-  h4.card-header.calendar-heading.calendar-title
-    = t('date.month_names')[start_date.month]
-    '
-    = start_date.year
-    .btn-group.float-right role='group'
-      = link_to calendar.url_for_previous_view, type: 'button', class: 'btn btn-sm btn-outline-secondary'
-        i.fa.fa-chevron-left
-        |  Previous Month
-      = link_to calendar.url_for_next_view, type: 'button', class: 'btn btn-sm btn-outline-secondary'
-        ' Next Month
-        i.fa.fa-chevron-right
-  table.table.table-striped.calendar-table.mb-0
-    thead
-      tr
-        - date_range.slice(0, 7).each do |day|
-          th= t('date.abbr_day_names')[day.wday]
-    tbody
-      - date_range.each_slice(7) do |week|
-        tr
-          - week.each do |day|
-            = content_tag :td, class: ((calendar.td_classes_for(day)).push('new_events') if current_user.has_role?(:staffer, current_user.company) or current_user.has_role?(:admin, current_user.company)), 'td-date': day, title: 'New event <div class="float-right"><span class="popover-close fa fa-times" aria-hidden="true"></span><div>' do
-              - if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(block)
-                - capture_haml(day, sorted_events.fetch(day, []), &block)
-              - else
-                - block.call day, sorted_events.fetch(day, [])
+.fc.fc-ltr.fc-unthemed.pb-5
+  .fc-toolbar.fc-header-toolbar
+    .fc-left
+      h2
+        = t('date.month_names')[start_date.month]
+        '
+        = start_date.year
+    .fc-center
+    .fc-right
+      / button.fc-today-button.fc-button.fc-button-primary disabled="disabled" type="button"  today
+      .fc-button-group
+        = link_to calendar.url_for_previous_view, type: 'button', class: 'fc-prev-button fc-button fc-button-primary', 'aria-label': 'prev' do
+          span.fc-icon.fc-icon-chevron-left
+        button.fc-next-button.fc-button.fc-button-primary aria-label="next" type="button"
+        = link_to calendar.url_for_next_view, type: 'button', class: 'fc-next-button fc-button fc-button-primary', 'aria-label': 'next' do
+          span.fc-icon.fc-icon-chevron-right
+  .fc-view-container
+    .fc-view.fc-dayGridMonth-view.fc-dayGrid-view style=""
+      table
+        thead.fc-head
+          tr
+            td.fc-head-container.fc-widget-header
+              .fc-row.fc-widget-header
+                table
+                  thead
+                    tr
+                      - date_range.slice(0, 7).each do |day|
+                        th.fc-day-header.fc-widget-header
+                          span = t('date.abbr_day_names')[day.wday]
+        tbody.fc-body
+          tr
+            td.fc-widget-content
+              .fc-scroller.fc-day-grid-container style=("overflow: hidden; height: 911px;")
+                .fc-day-grid
+                  - date_range.each_slice(7) do |week|
+                    .fc-row.fc-week.fc-widget-content style=("height: 151px;")
+                      .fc-bg
+                        table
+                          tbody
+                            tr
+                              - week.each do |day|
+                                td.fc-day.fc-widget-content.fc-sun.fc-past data-date="#{day}"
+                      .fc-content-skeleton
+                        table
+                          thead
+                            tr
+                              - week.each do |day|
+                                td.fc-day-top.fc-past data-date="#{day}"
+                                  span.fc-day-number = day.day
+                          tbody
+                            tr
+                              - week.each do |day|
+                                / td.fc-day-top.fc-sun.fc-past data-date="#{day}"
+                                  span.fc-day-number 1
+                                = content_tag :td, class: ((calendar.td_classes_for(day)).push('new_events fc-day-top fc-past') if current_user.has_role?(:staffer, current_user.company) or current_user.has_role?(:admin, current_user.company)), 'td-date': day, title: 'New event <div class="float-right"><span class="popover-close fa fa-times" aria-hidden="true"></span><div>' do
+                                  - if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(block)
+                                    - capture_haml(day, sorted_events.fetch(day, []), &block)
+                                  - else
+                                    - block.call day, sorted_events.fetch(day, [])
