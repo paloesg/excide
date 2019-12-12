@@ -1,3 +1,20 @@
+/*global Stripe*/
+/*eslint no-undef: "error"*/
+/*eslint camelcase: ["error", {allow: ["authenticity_token", "url_files"]}]*/
+
+function stripeTokenHandler(token) {
+  // Insert the token ID into the form so it gets submitted to the server
+  var form = document.getElementById('edit_user');
+  var hiddenInput = document.createElement('input');
+  hiddenInput.setAttribute('type', 'hidden');
+  hiddenInput.setAttribute('name', 'user[stripe_card_token]');
+  hiddenInput.setAttribute('value', token.id);
+  form.appendChild(hiddenInput);
+
+  // Submit the form
+  form.submit();
+}
+
 $(document).on("turbolinks:load", function(){
   if ($('#card-element').length) {
     var stripe = Stripe($('input[name=stripe_key]').val());
@@ -82,16 +99,3 @@ $(document).on("turbolinks:load", function(){
   });
 });
 
-  
-function stripeTokenHandler(token) {
-  // Insert the token ID into the form so it gets submitted to the server
-  var form = document.getElementById('edit_user');
-  var hiddenInput = document.createElement('input');
-  hiddenInput.setAttribute('type', 'hidden');
-  hiddenInput.setAttribute('name', 'user[stripe_card_token]');
-  hiddenInput.setAttribute('value', token.id);
-  form.appendChild(hiddenInput);
-
-  // Submit the form
-  form.submit();
-}
