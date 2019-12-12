@@ -5,19 +5,19 @@ $(document).on("turbolinks:load", function(){
 
     var card = elements.create('card',{hidePostalCode: true,});
     card.mount('#card-element');
-    
+
     card.addEventListener('change', function(event) {
-      var submit_button = $('input[type="submit"]')
+      var submitButton = $('input[type="submit"]')
       var displayError = $('#card-errors');
       if(event.error) {
-        displayError.attr('class', 'stripe-alert-error')    
+        displayError.attr('class', 'stripe-alert-error')
         displayError.text(event.error.message);
-        submit_button.attr('disabled', true);
+        submitButton.attr('disabled', true);
       }
       else {
-        displayError.attr('class', '')    
+        displayError.attr('class', '')
         displayError.text('');
-        submit_button.removeAttr('disabled');
+        submitButton.removeAttr('disabled');
       }
     });
 
@@ -26,10 +26,10 @@ $(document).on("turbolinks:load", function(){
       stripe.createToken(card).then(function(result) {
         if (result.error) {
           var displayError = $('#card-errors');
-          displayError.attr('class', 'stripe-alert-error')    
+          displayError.attr('class', 'stripe-alert-error')
           displayError.text(result.error.message);
-          var submit_button = $('input[type="submit"]')
-          submit_button.removeAttr('disabled');
+          var submitButton = $('input[type="submit"]')
+          submitButton.removeAttr('disabled');
         } else {
           stripeTokenHandler(result.token);
         }
@@ -45,19 +45,19 @@ $(document).on("turbolinks:load", function(){
 
       var card = elements.create('card',{hidePostalCode: true,});
       card.mount('#card-element-update');
-      
+
       card.addEventListener('change', function(event) {
-        var submit_button = $('input[type="submit"]')
+        var submitButton = $('input[type="submit"]')
         var displayError = $('#card-errors');
         if(event.error) {
-          displayError.attr('class', 'stripe-alert-error')    
+          displayError.attr('class', 'stripe-alert-error')
           displayError.text(event.error.message);
-          submit_button.attr('disabled', true);
+          submitButton.attr('disabled', true);
         }
         else {
-          displayError.attr('class', '')    
+          displayError.attr('class', '')
           displayError.text('');
-          submit_button.removeAttr('disabled');
+          submitButton.removeAttr('disabled');
         }
       });
 
@@ -66,14 +66,14 @@ $(document).on("turbolinks:load", function(){
         stripe.createToken(card).then(function(result) {
           if (result.error) {
             var displayError = $('#card-errors');
-            displayError.attr('class', 'stripe-alert-error')    
+            displayError.attr('class', 'stripe-alert-error');
             displayError.text(result.error.message);
-            var submit_button = $('input[type="submit"]')
-            submit_button.removeAttr('disabled');
+            var submitButton = $('input[type="submit"]');
+            submitButton.removeAttr('disabled');
           } else {
             stripeTokenHandler(result.token);
           }
-        })
+        });
       });
     }
     else {
@@ -82,7 +82,7 @@ $(document).on("turbolinks:load", function(){
   });
 });
 
-  
+
 function stripeTokenHandler(token) {
   // Insert the token ID into the form so it gets submitted to the server
   var form = document.getElementById('edit_user');
