@@ -7,15 +7,15 @@ $(document).on("turbolinks:load", function(){
     card.mount('#card-element');
 
     card.addEventListener('change', function(event) {
-      var submitButton = $('input[type="submit"]')
+      var submitButton = $('input[type="submit"]');
       var displayError = $('#card-errors');
       if(event.error) {
-        displayError.attr('class', 'stripe-alert-error')
+        displayError.attr('class', 'stripe-alert-error');
         displayError.text(event.error.message);
         submitButton.attr('disabled', true);
       }
       else {
-        displayError.attr('class', '')
+        displayError.attr('class', '');
         displayError.text('');
         submitButton.removeAttr('disabled');
       }
@@ -26,9 +26,9 @@ $(document).on("turbolinks:load", function(){
       stripe.createToken(card).then(function(result) {
         if (result.error) {
           var displayError = $('#card-errors');
-          displayError.attr('class', 'stripe-alert-error')
+          displayError.attr('class', 'stripe-alert-error');
           displayError.text(result.error.message);
-          var submitButton = $('input[type="submit"]')
+          var submitButton = $('input[type="submit"]');
           submitButton.removeAttr('disabled');
         } else {
           stripeTokenHandler(result.token);
