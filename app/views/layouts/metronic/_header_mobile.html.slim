@@ -1,7 +1,7 @@
 /! begin:: Header Mobile
 #kt_header_mobile.kt-header-mobile.kt-header-mobile--fixed
   .kt-header-mobile__logo
-    a href="/" 
+    = link_to symphony_root_path do
       img alt="Logo" src=image_url('logo-symphony.png')
     .dropdown
       - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin

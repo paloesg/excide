@@ -1,18 +1,8 @@
+- @navbar_workflows_active = true
 .row.mb-3
   .col-md-12
     h1 Workflow
 .row.mb-3
-  .col-md-12
-    = form_for(@workflow, url: symphony_workflows_path(workflow_name: params[:workflow_name])) do |f|
-      = render 'form', f: f
-/ .row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony/" Symphony
-      li.breadcrumb-item.active New Workflow
-    h1 New Workflow
-/ .row
   .col-md-12
     = form_for(@workflow, url: symphony_workflows_path(workflow_name: params[:workflow_name])) do |f|
       = render 'form', f: f

@@ -1,57 +1,57 @@
-#kt_subheader.kt-subheader.kt-grid__item
-  .kt-container
-.kt-container.kt-grid__item.kt-grid__item--fluid
-  .row.mb-3
-    .col
-      h1 Batch #{@batch.name}
-  .row
-    .col-xl-12
-      - @batch.template.sections.each do |section|
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title
-                | #{section.section_name} - #{section.tasks.count.to_s} tasks
-            .pull-right #{@completed_workflow_count} of #{@batch.workflows.count} files completed
-          .kt-portlet__body
-            .table-responsive
-              table.table.table-hover
-                thead
+- @navbar_batches_active = true
+.row.mb-3
+  .col
+    h1 Batch #{@batch.name}
+.row
+  .col-xl-12
+    - @batch.template.sections.each do |section|
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title
+              | #{section.section_name} - #{section.tasks.count.to_s} tasks
+          .kt-portlet__head-toolbar
+            .kt-portlet__head-actions
+              .pull-right #{@completed_workflow_count} of #{@batch.workflows.count} files completed
+        .kt-portlet__body
+          .table-responsive
+            table.table.table-hover
+              thead
+                tr
+                  th Documents
+                  th Invoices
+                  - section.tasks.includes(:role).order(position: :asc).each do |task|
+                    th
+                      a.pop data-container="body" title="#{task.role&.display_name}" data-content=("<div>#{task.instructions}</div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
+                        .header-properties
+                          ' #{task.task_type.humanize}
+                          i.flaticon2-information
+                        .header-info
+                          ' #{task.role.name.humanize}
+              tbody
+                - @batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc).each do |wf|
                   tr
-                    th Documents
-                    th Invoices
+                    td
+                      - if wf.documents.empty?
+                        i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
+                      - else
+                        - wf.documents.each do |d|
+                          - if File.extname(d.file_url) == '.pdf'
+                            = d.filename
+                            br
+                            a.pdf-preview tabindex="0" data-placement="auto" data-container="body" data-content=""  data-document="https:#{d.file_url}" Preview
+                          - else
+                            = d.filename
+                            br
+                            a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid'/>" Preview                    
+                    td
+                      - if wf.invoice.blank?
+                        i.flaticon2-paper.icon.mr-3.text-center.medium-icon.gray-icon
+                      - else
+                        = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id)
+                          i.flaticon2-paper.icon.mr-3.medium-icon
+                        - if wf.invoice.rejected?
+                          .rejected-invoice-circle R
                     - section.tasks.includes(:role).order(position: :asc).each do |task|
-                      th
-                        a.pop data-container="body" title="#{task.role&.display_name}" data-content=("<div>#{task.instructions}</div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
-                          .header-properties
-                            ' #{task.task_type.humanize}
-                            i.ti-info-alt
-                          .header-info
-                            ' #{task.role.name.humanize}
-                tbody
-                  - @batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc).each do |wf|
-                    tr
-                      td
-                        - if wf.documents.empty?
-                          i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
-                        - else
-                          - wf.documents.each do |d|
-                            - if File.extname(d.file_url) == '.pdf'
-                              = d.filename
-                              br
-                              a.pdf-preview tabindex="0" data-placement="auto" data-container="body" data-content=""  data-document="https:#{d.file_url}" Preview
-                            - else
-                              = d.filename
-                              br
-                              a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid'/>" Preview                    
-                      td
-                        - if wf.invoice.blank?
-                          i.ti-receipt.icon.mr-3.text-center.medium-icon.gray-icon
-                        - else
-                          = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id)
-                            i.ti-receipt.icon.mr-3.medium-icon
-                          - if wf.invoice.rejected?
-                            .rejected-invoice-circle R
-                      - section.tasks.includes(:role).order(position: :asc).each do |task|
-                        td class="text-center #{'important-task' if task.important}"
-                          = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
+                      td class="text-center #{'important-task' if task.important}"
+                        = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)

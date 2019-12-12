@@ -22,9 +22,18 @@
 @import "bootstrap";
 @import "font-awesome";
 @import "metronic/css/custom";
-@import "metronic/css/flaticon";
+@import "metronic/css/invoices";
+@import "metronic/css/zoom";
+@import "metronic/css/batches";
+@import "metronic/css/companies";
+@import "metronic/css/templates";
+@import "metronic/css/pagination";
 @import "dashboard/admin";
 @import "symphony/pagination";
+
+//icon
+@import "metronic/css/flaticon";
+@import "metronic/css/socicon";
 
 //
 // Main Stylesheet

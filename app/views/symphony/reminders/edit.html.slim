@@ -1,23 +1,7 @@
-#kt_subheader.kt-subheader.kt-grid__item
-  .kt-container
-.kt-container.kt-grid__item.kt-grid__item--fluid
-  .row.mb-3
-    .col
-      h1 Edit Reminders
-  .row
-    .col-sm-12
-      = form_for(@reminder, url: symphony_reminder_path(@reminder.id)) do |f|
-        = render 'form', f: f
-/ .row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        a href="/symphony/reminders" Reminders
-      li.breadcrumb-item.active Edit
-    h1 Edit Reminder
-/ .row
+.row.mb-3
+  .col
+    h1 Edit Reminders
+.row
   .col-sm-12
     = form_for(@reminder, url: symphony_reminder_path(@reminder.id)) do |f|
       = render 'form', f: f

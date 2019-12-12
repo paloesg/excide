@@ -41,17 +41,21 @@ html lang="en"
             #kt_body.kt-body.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
               #kt_content.kt-content.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor  
                 #kt_subheader.kt-subheader.kt-grid__item
-                  .kt-container              
+                  .kt-container  
                 /! begin:: Content
-                .kt-container.kt-grid__item.kt-grid__item--fluid
-                  = render 'layouts/metronic/messages'  
+                .kt-container.kt-grid__item.kt-grid__item--fluid   
+                  = render 'layouts/metronic/messages'
                   = yield
                 /! end:: Content
           /! begin:: Footer
           = render 'layouts/metronic/footer'
           /! end:: Footer
     /! end:: Page
-    
+    /! begin::Scrolltop
+    #kt_scrolltop.kt-scrolltop
+      i.fa.fa-arrow-up
+    /! end::Scrolltop
+
     /! begin::Global Config(global config for global JS sciprts)
     javascript:
       var KTAppOptions = {
