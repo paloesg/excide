@@ -8,11 +8,10 @@
     .fc-center
     .fc-right
       / button.fc-today-button.fc-button.fc-button-primary disabled="disabled" type="button"  today
-      .fc-button-group
-        = link_to calendar.url_for_previous_view, type: 'button', class: 'fc-prev-button fc-button fc-button-primary', 'aria-label': 'prev' do
+      .btn-group
+        = link_to calendar.url_for_previous_view, class: 'btn btn-primary', 'aria-label': 'prev' do
           span.fc-icon.fc-icon-chevron-left
-        button.fc-next-button.fc-button.fc-button-primary aria-label="next" type="button"
-        = link_to calendar.url_for_next_view, type: 'button', class: 'fc-next-button fc-button fc-button-primary', 'aria-label': 'next' do
+        = link_to calendar.url_for_next_view, class: 'btn btn-primary', 'aria-label': 'next' do
           span.fc-icon.fc-icon-chevron-right
   .fc-view-container
     .fc-view.fc-dayGridMonth-view.fc-dayGrid-view style=""
