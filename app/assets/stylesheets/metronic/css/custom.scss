@@ -59,7 +59,28 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
- 
+
 .form-control{
   height: 37px;
+}
+
+// Custom style of fullcalendar
+
+td.day.has-events.fc-day-top.fc-past {
+  z-index: 5;
+  position: relative;
+}
+
+
+.fc-row .fc-content-skeleton {
+  position: initial !important;
+  z-index: 1 !important;
+}
+
+.fc-row .fc-bg {
+  z-index: 4 !important;
+}
+
+.fc-row.fc-week.fc-widget-content {
+  position: relative;
 }
