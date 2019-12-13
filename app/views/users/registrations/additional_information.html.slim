@@ -22,18 +22,18 @@ section.image-bg.overlay
                       = f.label :last_name
                       = f.text_field :last_name, class: 'form-control', required: true
                   
-              .feature.boxed
-                h5.uppercase #{params[:company]} Credit Card Detail 
-                .row
-                  .col-md-12
-                    .form-group
-                      = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
-                      .stripe-elements
-                        #card-element
-                .row
-                  .col-md-12
-                    .form-group
-                      #card-errors role='alert'           
+              / .feature.boxed
+              /   h5.uppercase #{params[:company]} Credit Card Detail 
+              /   .row
+              /     .col-md-12
+              /       .form-group
+              /         = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
+              /         .stripe-elements
+              /           #card-element
+              /   .row
+              /     .col-md-12
+              /       .form-group
+              /         #card-errors role='alert'           
             .col-sm-6
               .feature.boxed  
                 h5.uppercase #{params[:company]} Company Information            
