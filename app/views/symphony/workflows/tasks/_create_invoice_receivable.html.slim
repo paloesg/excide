@@ -23,9 +23,9 @@ tr
         .btn-toolbar role="toolbar"
           .btn-group.mr-2 role="group" aria-label="Task actions"
             - if @workflow.invoice.blank?
-              = link_to "Create Invoice Receivable", new_symphony_invoice_path(workflow_id: @workflow.id, invoice: 'receivable'), role: 'button', class: 'btn btn-success btn-sm'
+              = link_to "Create Invoice Receivable", new_symphony_invoice_path(workflow_id: @workflow.id, invoice: 'receivable', workflow_action_id: action.id), role: 'button', class: 'btn btn-success btn-sm'
             - else
-              = link_to "Create Invoice", new_symphony_invoice_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-success btn-sm disabled', disabled: true
+              = link_to "Create Invoice", new_symphony_invoice_path(workflow_id: @workflow.id, workflow_action_id: action.id), role: 'button', class: 'btn btn-success btn-sm disabled', disabled: true
           .btn-group.mr-2 role="group" aria-label="Reminder actions"
             / the below condition checks whether user is admin. If template is ordered, it will check whether the task is the current task and if unordered, it will check whether the workflowaction is uncompleted.
             - if (@user.has_role? :admin, @company) && (task == @workflow.current_task || (@workflow.template.unordered? && !action.completed))
