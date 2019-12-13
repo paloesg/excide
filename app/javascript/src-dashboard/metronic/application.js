@@ -20,4 +20,7 @@ require("./assets/js/global/layout/offcanvas-panel");
 require("./assets/js/global/layout/quick-panel");
 require("./assets/js/global/layout/quick-search");
 
+require("./assets/js/global/components/calendar/basic");
+require("./assets/js/global/components/calendar/fullcalendar.bundle");
+
 require("../turbolinks-compatibility")
