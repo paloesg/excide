@@ -57,7 +57,7 @@ $(document).on("turbolinks:load", function(){
 
   $('.update-credit-card').change(function() {
     if(this.checked) {
-      var stripe = Stripe($('input[name=stripe_key]').val());
+      var stripe = new Stripe($('input[name=stripe_key]').val());
       var elements = stripe.elements();
 
       var card = elements.create('card',{hidePostalCode: true,});
