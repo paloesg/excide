@@ -1,3 +1,63 @@
-.row
-	.col-sm-12
-		= link_to 'Checkout', company_checkout_path, class: 'btn btn-primary'
+- @navbar_batches_active = true
+/! begin:: Content
+.kt-container.kt-container--fluid.kt-grid__item.kt-grid__item--fluid
+  /! begin::Portlet
+  .kt-portlet
+    / .kt-portlet__head
+    /   .kt-portlet__head-label
+    /     span.kt-portlet__head-icon
+    /       i.la.la-puzzle-piece
+    /     h1.kt-portlet__head-title
+    /       | Basic Pricing Table
+    .kt-portlet__body
+      .kt-pricing-1.kt-pricing-1--fixed
+        .kt-pricing-1__items.row
+          .kt-pricing-1__item.col-lg-4
+            .kt-pricing-1__visual
+              .kt-pricing-1__hexagon1
+              .kt-pricing-1__hexagon2
+              span.kt-pricing-1__icon.kt-font-brand
+                i.fa.flaticon-rocket
+            span.kt-pricing-1__price 
+              | Free
+            h2.kt-pricing-1__subtitle 1 End Product License
+            span.kt-pricing-1__description
+              span Lorem ipsum dolor sit amet edipiscing elit
+              span sed do eiusmod elpors labore et dolore
+              span magna siad enim aliqua
+            .kt-pricing-1__btn
+              button.btn.btn-brand.btn-wide.btn-bold.btn-upper type="button"  Get For Free
+          .kt-pricing-1__item.col-lg-4
+            .kt-pricing-1__visual
+              .kt-pricing-1__hexagon1
+              .kt-pricing-1__hexagon2
+              span.kt-pricing-1__icon.kt-font-brand
+                i.fa.flaticon-piggy-bank
+            span.kt-pricing-1__price
+              | 69
+              span.kt-pricing-1__label $
+            h2.kt-pricing-1__subtitle Business License
+            span.kt-pricing-1__description
+              span Lorem ipsum dolor sit amet edipiscing elit
+              span sed do eiusmod elpors labore et dolore
+              span magna siad enim aliqua
+            .kt-pricing-1__btn
+              button.btn.btn-brand.btn-wide.btn-bold.btn-upper type="button"  Purchase
+          .kt-pricing-1__item.col-lg-4
+            .kt-pricing-1__visual
+              .kt-pricing-1__hexagon1
+              .kt-pricing-1__hexagon2
+              span.kt-pricing-1__icon.kt-font-brand
+                i.fa.flaticon-gift
+            span.kt-pricing-1__price
+              | 889
+              span.kt-pricing-1__label $
+            h2.kt-pricing-1__subtitle Enterprice License
+            span.kt-pricing-1__description
+              span Lorem ipsum dolor sit amet edipiscing elit
+              span sed do eiusmod elpors labore et dolore
+              span magna siad enim aliqua
+            .kt-pricing-1__btn
+              button.btn.btn-brand.btn-wide.btn-bold.btn-upper type="button"  Purchase
+  /! end::Portlet
+

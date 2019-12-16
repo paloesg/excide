@@ -186,6 +186,7 @@ Rails.application.routes.draw do
   patch 'company', to: 'companies#update'
   get 'company/plan', to: 'companies#plan'
   get 'company/checkout', to: 'companies#checkout'
+  
   # Hosted files
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
 
