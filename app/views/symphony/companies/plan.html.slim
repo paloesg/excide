@@ -1,0 +1,66 @@
+/! begin:: Content
+.kt-container.kt-container--fluid.kt-grid__item.kt-grid__item--fluid
+  /! begin::Portlet
+  .kt-portlet
+    / .kt-portlet__head
+    /   .kt-portlet__head-label
+    /     span.kt-portlet__head-icon
+    /       i.la.la-puzzle-piece
+    /     h1.kt-portlet__head-title
+    /       | Basic Pricing Table
+    .kt-portlet__body
+      .kt-pricing-1.kt-pricing-1--fixed
+        .kt-pricing-1__items.row
+          .kt-pricing-1__item.col-lg-6
+            .kt-pricing-1__visual
+              .kt-pricing-1__hexagon1
+              .kt-pricing-1__hexagon2
+              span.kt-pricing-1__icon.kt-font-brand
+                i.fa.flaticon-rocket
+            span.kt-pricing-1__price 
+              | Basic
+            h2.kt-pricing-1__subtitle Free 
+            span.kt-pricing-1__description
+              span Limited API Integrations
+              span Limited Features
+              span Limited Notification
+              span Unlimited Users
+            .kt-pricing-1__btn
+              - if @company.basic?
+                = link_to 'Visit Symphony', symphony_root_path, class: 'btn btn-brand btn-wide btn-bold btn-upper'
+              / button.btn.btn-brand.btn-wide.btn-bold.btn-upper type="button"  Get For Free
+          .kt-pricing-1__item.col-lg-6
+            .kt-pricing-1__visual
+              .kt-pricing-1__hexagon1
+              .kt-pricing-1__hexagon2
+              span.kt-pricing-1__icon.kt-font-brand
+                i.fa.flaticon-piggy-bank
+            span.kt-pricing-1__price
+              | Pro
+              span.kt-pricing-1__label 
+            h2.kt-pricing-1__subtitle $49/mth
+            span.kt-pricing-1__description
+              span ALL API Integrations
+              span PRO Features
+              span Multiple forms of reminders/notifications 
+              span Unlimited Users
+            .kt-pricing-1__btn
+              button.btn.btn-brand.btn-wide.btn-bold.btn-upper type="button"  Purchase
+          / .kt-pricing-1__item.col-lg-4
+          /   .kt-pricing-1__visual
+          /     .kt-pricing-1__hexagon1
+          /     .kt-pricing-1__hexagon2
+          /     span.kt-pricing-1__icon.kt-font-brand
+          /       i.fa.flaticon-gift
+          /   span.kt-pricing-1__price
+          /     | 889
+          /     span.kt-pricing-1__label $
+          /   h2.kt-pricing-1__subtitle Enterprice License
+          /   span.kt-pricing-1__description
+          /     span Lorem ipsum dolor sit amet edipiscing elit
+          /     span sed do eiusmod elpors labore et dolore
+          /     span magna siad enim aliqua
+          /   .kt-pricing-1__btn
+          /     button.btn.btn-brand.btn-wide.btn-bold.btn-upper type="button"  Purchase
+  /! end::Portlet
+

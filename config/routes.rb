@@ -38,6 +38,8 @@ Rails.application.routes.draw do
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
     get '/xero_item_code', to: 'invoices#get_xero_item_code_detail'
 
+    get '/plan', to: 'companies#plan'
+
     resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
     delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
@@ -184,8 +186,7 @@ Rails.application.routes.draw do
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
-  get 'company/plan', to: 'companies#plan'
-  get 'company/checkout', to: 'companies#checkout'
+  get 'pricing', to: 'companies#pricing'
   
   # Hosted files
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')

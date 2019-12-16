@@ -3,7 +3,7 @@ class CompaniesController < ApplicationController
   layout 'metronic/application', only: [:edit]
 
   before_action :authenticate_user!
-  before_action :set_company, only: [:show, :edit, :update]
+  before_action :set_company, only: [:show, :edit, :update, :plan]
 
   def show
     @address = @company&.address
@@ -42,11 +42,7 @@ class CompaniesController < ApplicationController
     end
   end
 
-  def plan
-  end
-
-  def checkout
-
+  def pricing
   end
 
   private
