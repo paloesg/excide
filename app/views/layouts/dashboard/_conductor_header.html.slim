@@ -1,45 +1,99 @@
-nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top.flex-md-nowrap
-  - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
-    .nav-item.dropdown
-      a.navbar-brand.dropdown-toggle.mr-auto.mr-lg-0 href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
-        ' #{current_user.company.name}
-        = content_tag :span, "Staging", class: "badge badge-danger" if ENV['APP_NAME'] == "excide-staging"
-      .dropdown-menu.dropdown-menu-left
-        - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
+/! begin:: Header
+#kt_header.kt-header.kt-grid__item.kt-header--fixed data-ktheader-minimize="on"
+  .kt-header__top
+    .kt-container
+      /! begin:: Brand
+      #kt_header_brand.kt-header__brand.kt-grid__item
+        .kt-header__brand-logo
+          a href="/"
+            img.kt-header__brand-logo-default alt="Logo" src=image_url('logo-symphony.png')
+        .kt-header__brand-nav
           .dropdown
-            - if current_user.has_role? :superadmin
-              - Company.all.each do |company|
-                = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
+            - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
+              button.btn.btn-pill.btn-default.dropdown-toggle aria-expanded="true" aria-haspopup="true" data-toggle="dropdown" type="button" #{current_user.company.name}
+              .dropdown-menu.dropdown-menu-fit.dropdown-menu-md
+                ul.kt-nav.kt-nav--bold.kt-nav--md-space.kt-margin-t-20.kt-margin-b-20
+                  - if current_user.has_role? :superadmin
+                    - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
+                      - if company.name.present?
+                        li.kt-nav__item
+                          = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'kt-nav__link', tabindex: -1
+                    .kt-separator.kt-separator--space-lg.kt-separator--border-dashed
+                      li.kt-nav__item
+                        = link_to 'Add New Company', new_company_path, class: 'kt-nav__link'
+                  - else
+                    - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
+                      - if company.name.present?
+                        = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'kt-nav__link', tabindex: -1
             - else
-              - Company.assigned_companies(current_user).each do |company|
-                = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
-            - if current_user.has_role? :superadmin
-                .dropdown-divider
-                = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
-  - else
-    = link_to(symphony_root_path, class: "navbar-brand mr-auto mr-lg-0") do
-      ' #{current_user.company.name}
-      = content_tag :span, "Staging", class: "badge badge-danger" if ENV['APP_NAME'] == "excide-staging"
-
-  button.navbar-toggler type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-expanded="false" aria-controls="navbarNavDropdown" aria-label="Toggle navigation"
-    span.navbar-toggler-icon
-
-  #navbarNavDropdown.collapse.navbar-collapse
-    ul.navbar-nav
-      li.nav-item = link_to "Calendar", conductor_root_path, class: 'nav-link'
-      li.nav-item = link_to 'Events', conductor_events_path, class: 'nav-link'
-      - if current_user.has_role?(:admin, @company) or current_user.has_role?(:staffer, @company)
-        li.nav-item.dropdown
-          a.nav-link.dropdown-toggle href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" Staff
-          .dropdown-menu
-            = link_to 'Staff Availability', conductor_availabilities_path, class: 'dropdown-item'
-            = link_to 'Allocate Staff', conductor_allocations_path, class: 'dropdown-item'
-            = link_to "Manage Staff", conductor_users_path, class: 'dropdown-item'
-    ul.navbar-nav.ml-auto
-      - if current_user.has_role?(:staffer, @company) or current_user.has_role?(:admin, @company) or current_user.has_role? :superadmin
-        li.nav-item = link_to 'Clients', conductor_clients_path, class: 'nav-link'
-      - if current_user.has_role?(:associate, @company)
-        li.nav-item = link_to "User Details", conductor_user_path(current_user), class: 'nav-link'
-      - else
-        li.nav-item = link_to "Symphony", symphony_root_path, class: 'nav-link'
-      li.nav-item = link_to "Log Out", destroy_user_session_path, {method: :delete, class: 'nav-link'}
+              = link_to(symphony_root_path, class: "btn btn-pill btn-default") do
+                ' #{current_user.company.name}
+            = content_tag :span, "Staging", class: "badge badge-danger" if ENV['APP_NAME'] == "excide-staging"
+      /! end:: Brand
+      /! begin:: Header Topbar
+      .kt-header__topbar.kt-grid__item.kt-grid__item--fluid
+        /! begin: Admin bar
+        .kt-header__topbar-item.kt-header__topbar-item--langs
+          .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
+            span.kt-header__topbar-icon.kt-header__topbar-icon--warning
+              i.flaticon2-gear
+          .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+            ul.kt-nav.kt-margin-t-10.kt-margin-b-10
+              - if current_user.has_role?(:staffer, @company) or current_user.has_role?(:admin, @company) or current_user.has_role? :superadmin
+                li.kt-nav__item
+                  = link_to conductor_clients_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Clients
+              - if current_user.has_role?(:associate, @company)
+                li.kt-nav__item
+                  = link_to conductor_user_path(current_user), class: 'kt-nav__link' do
+                    span.kt-nav__link-text User Details
+              - else
+                li.kt-nav__item
+                  = link_to symphony_root_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Symphony
+          /! end: Admin bar
+        /! begin: User bar
+        .kt-header__topbar-item.kt-header__topbar-item--langs
+          .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
+            span.kt-header__topbar-icon.kt-header__topbar-icon--success
+              i.flaticon2-user
+          .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+            ul.kt-nav.kt-margin-t-10.kt-margin-b-10
+              li.kt-nav__item
+                = link_to edit_user_registration_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text User Profile
+              li.kt-nav__item
+                = link_to destroy_user_session_path, {method: :delete, class: 'kt-nav__link'} do
+                  span.kt-nav__link-text Log Out
+        /! end: User bar
+    /! end:: Header Topbar
+  .kt-header__bottom
+    .kt-container
+      /! begin: Header Menu
+      button#kt_header_menu_mobile_close_btn.kt-header-menu-wrapper-close
+        i.la.la-close
+      #kt_header_menu_wrapper.kt-header-menu-wrapper
+        #kt_header_menu.kt-header-menu.kt-header-menu-mobile
+          ul.kt-menu__nav
+            li.kt-menu__item aria-haspopup="true"
+              = link_to conductor_root_path, class:"kt-menu__link" do
+                span.kt-menu__link-text Calendar
+            li.kt-menu__item aria-haspopup="true"
+              = link_to conductor_events_path, class:"kt-menu__link" do
+                span.kt-menu__link-text Events
+            - if current_user.has_role?(:admin, @company) or current_user.has_role?(:staffer, @company)              
+              li.kt-menu__item.kt-menu__item--submenu.kt-menu__item--rel aria-haspopup="true" data-ktmenu-submenu-toggle="click" class="#{'kt-menu__item--here' if @navbar_workflows_active}"
+                a.kt-menu__link.kt-menu__toggle href="javascript:;" 
+                  span.kt-menu__link-text Staff
+                  i.kt-menu__ver-arrow.la.la-angle-right
+                .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left
+                  ul.kt-menu__subnav
+                    li.kt-menu__item aria-haspopup="true"
+                      = link_to conductor_availabilities_path, class: 'kt-menu__link' do
+                        span.kt-menu__link-text Staff Availability
+                    li.kt-menu__item aria-haspopup="true"
+                      = link_to conductor_allocations_path, class: 'kt-menu__link' do
+                        span.kt-menu__link-text Allocate Availability
+                    li.kt-menu__item aria-haspopup="true"
+                      = link_to conductor_users_path, class: 'kt-menu__link' do
+                        span.kt-menu__link-text Manage Availability

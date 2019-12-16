@@ -1,0 +1,78 @@
+doctype html
+html lang="en" 
+  /! begin::Head
+  head
+    base href="../../"
+    meta charset="utf-8"
+    / title Metronic | Empty Page
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"
+    meta name="turbolinks-cache-control" content="no-cache"
+    /! begin::Fonts
+    link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Asap+Condensed:500" rel="stylesheet"
+    /! end::Fonts
+    /! begin::Page Vendors Styles(used by this page)
+    / link href="assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css"
+    /! end::Page Vendors Styles
+
+    /! begin::Global Theme Styles(used by all pages)
+    = stylesheet_link_tag    "metronic/application"
+    /! end::Global Theme Styles
+
+    = render 'application/favicon'
+    = display_meta_tags site: "Virtual CFO | Excide"
+    = javascript_pack_tag 'application-dashboard', 'data-turbolinks-track': 'reload'
+    = csrf_meta_tags
+    = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
+
+  /! end::Head
+  /! begin::Body
+  body.kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading
+    /! begin:: Page
+    /! begin:: Header Mobile
+    = render 'layouts/metronic/header_mobile'
+    /! end:: Header Mobile
+    .kt-grid.kt-grid--hor.kt-grid--root
+      .kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--ver.kt-page
+        #kt_wrapper.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-wrapper     
+          /! begin:: Header
+          = render 'layouts/metronic/header'
+          /! end:: Header 
+          .kt-container.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
+            #kt_body.kt-body.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
+              #kt_content.kt-content.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor  
+                #kt_subheader.kt-subheader.kt-grid__item
+                  .kt-container  
+                /! begin:: Content
+                .kt-container.kt-grid__item.kt-grid__item--fluid   
+                  = render 'layouts/metronic/messages'
+                  = yield
+                /! end:: Content
+          /! begin:: Footer
+          = render 'layouts/metronic/footer'
+          /! end:: Footer
+    /! end:: Page
+    /! begin::Scrolltop
+    #kt_scrolltop.kt-scrolltop
+      i.fa.fa-arrow-up
+    /! end::Scrolltop
+
+    /! begin::Global Config(global config for global JS sciprts)
+    javascript:
+      var KTAppOptions = {
+      	"colors": {
+          "state": {
+            "brand": "#5d78ff",
+            "light": "#ffffff",
+            "dark": "#282a3c",
+            "primary": "#5867dd",
+            "success": "#34bfa3",
+            "info": "#36a3f7",
+            "warning": "#ffb822",
+            "danger": "#fd3995"
+          },
+          "base": {
+            "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
+            "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
+            }
+          }
+        };

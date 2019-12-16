@@ -1,11 +1,5 @@
 .row
   .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="#" Home
-      li.breadcrumb-item
-        a href="#" Company
-      li.breadcrumb-item.active Conductor
     h1.border-bottom Conductor
     .row
       .col-md-12.m-2
@@ -19,14 +13,39 @@
           = select_tag('allocation_user', options_for_select(User.all.map {|k,v| [k.first_name, k.id] }, selected: params[:allocation_users]), class: 'selectize-event-type allocation-users', multiple: true)
 .row
   .col-sm-12.mb-3
+    #calendar
+    /! begin:: Content
+    .kt-container.kt-grid__item.kt-grid__item--fluid.calendar
+      .row
+        .col-lg-12
+          /! begin::Portlet
+          #kt_portlet.kt-portlet
+            .kt-portlet__head
+              .kt-portlet__head-label
+                span.kt-portlet__head-icon
+                  i.flaticon-map-location
+                h3.kt-portlet__head-title
+                  | Basic Calendar
+              .kt-portlet__head-toolbar
+                a.btn.btn-brand.btn-elevate href="#"
+                  i.la.la-plus
+                  | Add Event
+            .kt-portlet__body
+              #kt_calendar
+          /! end::Portlet
+
+
+
     = month_calendar events: @events do |date, events|
-      p = date.day
+      / span.fc-day-number = date.day
       - events.each do |event|
-        .row
-          .col-sm-12.event event-data="#{event.to_json}" event-address="#{event.address.to_json}" event-client="#{event.client&.name}" event-staffer="#{event.staffer&.full_name}" get_allocated_users_length="#{event.get_allocated_user.length}" event-type="#{event.event_type.name}" event-associate="#{event.associates.to_json}" event-project_consultant="#{event.project_consultants.to_json}" title="Event Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>" data-placement="auto"
-            i.fa.fa-circle.mr-1 style="color: #{event.event_type.colour};"
-            = event.start_time.strftime('%H:%M') + '–' + event.end_time.strftime('%H:%M ')
-            strong class="#{'text-danger' if event.get_allocated_user.length == 0 }" = event.name
+        / .row
+        .fc-event-container
+          .fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end
+            .event event-data="#{event.to_json}" event-address="#{event.address.to_json}" event-client="#{event.client&.name}" event-staffer="#{event.staffer&.full_name}" get_allocated_users_length="#{event.get_allocated_user.length}" event-type="#{event.event_type.name}" event-associate="#{event.associates.to_json}" event-project_consultant="#{event.project_consultants.to_json}" title="Event Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>" data-placement="auto"
+              i.fa.fa-circle.mr-1 style="color: #{event.event_type.colour};"
+              = event.start_time.strftime('%H:%M') + '–' + event.end_time.strftime('%H:%M ')
+              strong class="#{'text-warning' if event.get_allocated_user.length == 0 }" = event.name
 .row
   .col-sm-6.col-xs-12
     .card

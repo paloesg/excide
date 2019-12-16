@@ -1,15 +1,6 @@
 .row
   .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/conductor" Dashboard
-      li.breadcrumb-item
-        a href="/company/edit" #{@company.name}
-      li.breadcrumb-item
-        a href="/conductor/users" Staff
-      li.breadcrumb-item.active Allocations
-    h1
-      | Allocate Staff
+    h1 Allocate Staff
 
 .row
   .col-md-8.col-xs-12
@@ -87,11 +78,3 @@
                     = button_to 'Assign', {}, disabled: true, role: 'button', class: 'btn btn-sm float-right'
                   - else
                     = button_to 'Assign', conductor_allocation_path(@allocation), remote: true, method: :patch, role: 'button', class: 'btn btn-primary btn-sm float-right', params: { 'allocation[user_id]': user.id}
-
-javascript:
-  $("tr[data-allocation]").click(function() {
-    url = new URL(location)
-    params =  new URLSearchParams(url.search.slice(1))
-    params.set('allocation', $(this).data('allocation'))
-    Turbolinks.visit('//' + location.host + location.pathname + '?' + params);
-  })

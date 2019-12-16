@@ -1,6 +1,23 @@
 {
   "dependencies": {
-    "@rails/webpacker": "^4.0.7"
+    "@fullcalendar/core": "^4.3.1",
+    "@fullcalendar/daygrid": "^4.3.0",
+    "@rails/ujs": "^6.0.1",
+    "@rails/webpacker": "^4.2.0",
+    "algoliasearch": "^3.35.1",
+    "bootstrap": "^4.4.1",
+    "bootstrap-datetimepicker": "^0.0.7",
+    "dropzone": "^5.5.1",
+    "jquery": "^3.4.1",
+    "jquery-ui": "^1.12.1",
+    "jquery.ui.widget": "^1.10.3",
+    "mixpanel-browser": "^2.31.0",
+    "moment": "^2.24.0",
+    "popper.js": "^1.16.0",
+    "selectize": "^0.12.6",
+    "sticky-js": "^1.2.0",
+    "tempusdominus-bootstrap-4": "^5.0.0",
+    "turbolinks": "^5.2.0"
   },
   "devDependencies": {
     "webpack-dev-server": "^3.9.0"

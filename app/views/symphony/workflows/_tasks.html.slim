@@ -1,4 +1,88 @@
-.card.mb-3
+.kt-portlet
+  .kt-portlet__head
+    .kt-portlet__head-label
+      h3.kt-portlet__head-title
+        = @section.section_name
+  .kt-portlet__body
+    .table-responsive
+      table.table
+        thead
+          tr
+            th No.
+            th Instructions
+            th Assigned To
+            th Deadline
+            th Done
+            - if @workflow.archive.present?
+              th Completed By
+            th
+        tbody
+          - @tasks.each do |task|
+            - if @workflow.archive.blank?
+              - t = TaskDecorator.new(task)
+              - a = t.workflow_action(@workflow.id)
+              = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
+            - else
+              tr
+                td = task['position']
+                td = task['instructions']
+                td = task['workflow_actions']['assigned_user'] || task['role_name']
+                td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
+                td = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
+                td = task['workflow_actions']['completed_user'] || '-'
+                td
+                  a data-toggle="collapse" href="#task_#{task['position']}" aria-expanded="false" class="collapsed"
+                    i.fa aria-hidden="true"
+              tr
+                td.p-0.border-top-0 colspan="6"
+                  div id="task_#{task['position']}" class="collapse"
+                    .m-3
+                      = label_tag :remarks
+                      = text_field_tag :remarks, task['workflow_actions']['remarks'], class: 'form-control', disabled: true
+                      = image_tag(task['image_url'], class: "img-fluid pt-4") if task['image_url'].present?
+              - if task['workflow_actions']['documents'].present?
+                tr
+                  td.p-0.border-top-0 colspan="6"
+                    .m-3
+                      br
+                      .row
+                        .col-md-12
+                          h6 Files:
+                          .workflow-action-documents
+                            ul
+                              - task['workflow_actions']['documents'].each do |d|
+                                - d = Document.find(d['document_id']) if @workflow.archive.present?
+                                li
+                                  .media
+                                    .align-self-center
+                                      = link_to symphony_document_path(d)
+                                        i.ti-file.icon.mr-3 style="font-size: 40px"
+                                    .media-body
+                                      h5.text-truncate = d.filename
+                                      h6.card-subtitle = d.user&.full_name
+                                      .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+    .row
+      .col
+        - if @workflow.archive.blank?
+          - unless @section.first?
+            = link_to section_symphony_workflow_path(@template.slug, @workflow.id, @section.higher_item.id), class: 'btn btn-sm btn-outline-secondary float-left'
+              i.fa.fa-chevron-left
+              |  Previous Section
+          - unless @section.last?
+            = link_to section_symphony_workflow_path(@template.slug, @workflow.id, @section.lower_item.id), class: 'btn btn-sm btn-outline-secondary float-right'
+              ' Next Section
+              i.fa.fa-chevron-right
+        - else
+          - unless @sections.first['section_name'] == @section['section_name']
+            = link_to "?section=#{@section['position'] - 1}", class: 'btn btn-sm btn-outline-secondary float-left'
+              i.fa.fa-chevron-left
+              |  Previous Section
+          - unless @sections.last['section_name'] == @section['section_name']
+            = link_to "?section=#{@section['position'] + 1}", class: 'btn btn-sm btn-outline-secondary float-right'
+              ' Next Section
+              i.fa.fa-chevron-right
+        .clearfix
+/ .card.mb-3
   h5.card-header = @section.section_name
   .table-responsive
     table.table

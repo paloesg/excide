@@ -1,15 +1,9 @@
 .row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/conductor" Dashboard
-      li.breadcrumb-item
-        a href="/symphony/company" #{@company.name}
-      li.breadcrumb-item.active Events
-    h1
-      | Events Listing - #{@date_from.strftime("%B")}
-      = link_to 'Event Types', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, :any
-      = link_to 'New Event', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1' if @user.has_role?(:staffer, @company) or @user.has_role?(:admin, @company)
+  .col-md-6
+    h1 Events Listing - #{@date_from.strftime("%B")}
+  .col-md-6
+    = link_to 'Event Types', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, :any
+    = link_to 'New Event', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1' if @user.has_role?(:staffer, @company) or @user.has_role?(:admin, @company)
 .row
   .col-sm-12.mb-3
     .btn-group.float-right role='group'
@@ -57,12 +51,12 @@
               - else
                 td
                   - if event.allocations.consultant.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((event.allocations.consultant.count..5).to_a, event.allocations.consultant.count), onchange: "create_allocations(#{event.id}, 'consultant', this);")
+                    = select_tag('allocations', options_for_select((event.allocations.consultant.count..5).to_a, event.allocations.consultant.count), onchange: "createAllocation(#{event.id}, 'consultant', this);")
                   - else
                     = select_tag('allocations', options_for_select([event.allocations.consultant.count]), disabled: true)
                 td
                   - if event.allocations.associate.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((event.allocations.associate.count..20).to_a, event.allocations.associate.count), onchange: "create_allocations(#{event.id}, 'associate', this);")
+                    = select_tag('allocations', options_for_select((event.allocations.associate.count..20).to_a, event.allocations.associate.count), onchange: "createAllocation(#{event.id}, 'associate', this);")
                   - else
                     = select_tag('allocations', options_for_select([event.allocations.associate.count]), disabled: true)
                 td

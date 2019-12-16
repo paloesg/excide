@@ -1,40 +1,78 @@
 doctype html
 html lang="en"
+  /! begin::Head
   head
+    base href="../../"
     meta charset="utf-8"
-    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    / title Metronic | Empty Page
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"
     meta name="turbolinks-cache-control" content="no-cache"
-    link href="https://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600" rel="stylesheet" type="text/css"
+    /! begin::Fonts
+    link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Asap+Condensed:500" rel="stylesheet"
+    /! end::Fonts
+    /! begin::Page Vendors Styles(used by this page)
+    / link href="assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css"
+    /! end::Page Vendors Styles
+
+    /! begin::Global Theme Styles(used by all pages)
+    = stylesheet_link_tag    "metronic/application"
+    /! end::Global Theme Styles
+
     = render 'application/favicon'
     = display_meta_tags site: "Virtual CFO | Excide"
 
-    = stylesheet_link_tag    "application-dashboard"
-    = javascript_include_tag "dashboard/application", "data-turbolinks-track" => "reload"
+    = javascript_pack_tag 'application-dashboard', 'data-turbolinks-track': 'reload'
 
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
-    = javascript_include_tag "https://js.stripe.com/v3/"  
 
+  /! end::Head
+  /! begin::Body
+  body.kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading
+    /! begin:: Page
+    /! begin:: Header Mobile
+    = render 'layouts/metronic/header_mobile'
+    /! end:: Header Mobile
+    .kt-grid.kt-grid--hor.kt-grid--root
+      .kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--ver.kt-page
+        #kt_wrapper.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-wrapper
+          /! begin:: Header
+          = render 'layouts/dashboard/conductor_header'
+          /! end:: Header
+          .kt-container.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
+            #kt_body.kt-body.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
+              #kt_content.kt-content.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor  
+                #kt_subheader.kt-subheader.kt-grid__item
+                  .kt-container  
+                /! begin:: Content
+                .kt-container.kt-grid__item.kt-grid__item--fluid
+                  = render 'layouts/metronic/messages'
+                  = yield
+                /! end:: Content
+          /! begin:: Footer
+          = render 'layouts/metronic/footer'
+          /! end:: Footer
+    /! end:: Page
+
+    /! begin::Global Config(global config for global JS sciprts)
     javascript:
-      (function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
-      for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);
-      mixpanel.init($('meta[name="mixpanel-token"]').attr('content'));
-
-  body[class="#{controller_name} #{action_name} scroll-assist"]
-    = render 'layouts/dashboard/header'
-    .container-fluid.content
-      .row
-        - if controller.class.parents.include?(Conductor)
-          .col-sm-12.main
-            = render 'layouts/messages'
-            = yield
-        - else
-          .col-sm-12.main
-            = render 'layouts/messages'
-            = yield
-    footer.footer
-      = render 'layouts/dashboard/footer'
-
-    - if current_user
-      javascript:
-        window.Smallchat={config:{slackTeamId:"T08DWBQB0",scChannelId:"-KqvvQe8SGHuePqkk0OL",slackChannelId:"G6L32P0CX",uid:"-KqvvHgguYDkWDkNBcq_",planId:null,accountCreated:1502096468804},appearance:{brand_color:"#2C2C46",contact_dismissible:false,contact_enabled:true,contact_immediately:false,contact_prompt:"Add your name and email to make sure you see our reply:",hide_logo:false,hide_team_icon:false,launcher_pos:"left",launcher_prompt:"Need help?",launcher_type:"button",messenger_blank:"Send a message, and we’ll reply as soon as we can.",messenger_entry:"Send a message...",messenger_prompt:"How can we help you?",offline_greeting:"We’re offline right now but typically respond in about an hr.",text_color:"#FFFFFF"},behavior:{avatar_config:1,timezone:"Asia/Singapore"}};var styles=document.createElement("link");styles.rel="stylesheet";styles.href="https://static.small.chat/messenger.css";document.head.appendChild(styles);var script=document.createElement("script");script.async=true;script.src="https://static.small.chat/messenger.js";document.body.appendChild(script);
+      var KTAppOptions = {
+      	"colors": {
+          "state": {
+            "brand": "#5d78ff",
+            "light": "#ffffff",
+            "dark": "#282a3c",
+            "primary": "#5867dd",
+            "success": "#34bfa3",
+            "info": "#36a3f7",
+            "warning": "#ffb822",
+            "danger": "#fd3995"
+          },
+          "base": {
+            "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
+            "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
+            }
+          }
+        };
+    /! end::Global Config
+  /! end::Body

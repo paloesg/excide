@@ -1,9 +1,5 @@
 .row
   .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/conductor" Conductor
-      li.breadcrumb-item.active User Details
     h1
       | User Details
       = link_to "Edit Details", edit_conductor_user_path(@user), role: 'button', class: 'btn btn-primary float-right'
