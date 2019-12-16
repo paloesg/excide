@@ -66,7 +66,8 @@ class Symphony::UsersController < ApplicationController
   def edit_additional_information
     @user = current_user
     if @user.update(user_params)
-      process_payment(@user.id, @user.email, user_params[:stripe_card_token])
+      # Take out process payment since credit card is not added in the sign up page
+      # process_payment(@user.id, @user.email, user_params[:stripe_card_token])
       flash[:notice] = 'Additional Information updated successfully!'
       if @user.company.connect_xero
         redirect_to connect_to_xero_path

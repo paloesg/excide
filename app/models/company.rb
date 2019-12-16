@@ -29,6 +29,8 @@ class Company < ApplicationRecord
 
   enum company_type: ["Exempt Private Company Limited By Shares", "Private Company Limited By Shares", "Public Company Limited By Guarantee", "Public Company Limited By Shares", "Unlimited Exempt Private Company", "Unlimited Public Company"]
 
+  enum account_type: { basic: 0, pro: 1 }
+
   enum gst_quarter: { mar_jun_sep_dec: 0, apr_jul_oct_jan: 1, may_aug_nov_feb: 2}
 
   validates :name, presence: true, on: :additional_information

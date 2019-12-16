@@ -184,7 +184,8 @@ Rails.application.routes.draw do
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
-
+  get 'company/plan', to: 'companies#plan'
+  get 'company/checkout', to: 'companies#checkout'
   # Hosted files
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
 

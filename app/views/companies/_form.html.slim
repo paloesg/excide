@@ -40,6 +40,12 @@
           = f.label :form_cs_date, 'Form C-S date'
           = f.date_field :form_cs_date, class: 'form-control'
   .col-sm-6
+    .card.mb-4 
+      .card-header Plan/Subscriptions
+      .card-body
+        - if @company.account_type?
+          | Plan: #{@company.account_type}
+          = link_to 'Subscribe to PRO plan', company_plan_path, class: 'btn btn-sm btn-primary ml-2' if @company.account_type.basic?   
     .card.mb-4
       .card-header Xero Details
       .card-body
