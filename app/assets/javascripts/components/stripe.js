@@ -17,7 +17,7 @@ function stripeTokenHandler(token) {
 
 $(document).on("turbolinks:load", function(){
   if ($('#card-element').length) {
-    var stripe = Stripe($('input[name=stripe_key]').val());
+    var stripe = new Stripe($('input[name=stripe_key]').val());
     var elements = stripe.elements();
 
     var card = elements.create('card',{hidePostalCode: true,});
