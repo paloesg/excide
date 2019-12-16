@@ -60,10 +60,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
-    # if(params[:user][:stripe_card_token])
-    #   customer = Stripe::Customer.create({email: current_user.email, card: params[:user][:stripe_card_token]})
-    #   resource.stripe_customer_id = customer.id
-    # end
+    if(params[:user][:stripe_card_token])
+      customer = Stripe::Customer.create({email: current_user.email, card: params[:user][:stripe_card_token]})
+      resource.stripe_customer_id = customer.id
+    end
 
     resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
