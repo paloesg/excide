@@ -16,6 +16,8 @@ RSpec.describe Company, type: :model do
   it { should have_many(:reminders) }
   it { should have_many(:batches) }
   it { should have_one(:address) }
+  it { should have_many(:xero_contacts) }
+  it { should have_many(:xero_line_items) }
 
   it { should accept_nested_attributes_for(:address) }
 
