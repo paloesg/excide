@@ -3,15 +3,13 @@ source 'https://rubygems.org'
 ruby '2.6.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.2'
+gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2.2'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 gem "slim-rails"
@@ -37,6 +35,8 @@ gem "lograge"
 gem "rack-reverse-proxy", require: "rack/reverse_proxy"
 # Add squasher to collate old migration file
 gem 'squasher', '>= 0.6.0'
+# The default JavaScript compiler for Rails 6
+gem "webpacker"
 
 #################################################
 #                                               #
@@ -47,13 +47,16 @@ gem 'squasher', '>= 0.6.0'
 
 # Authentication
 gem 'devise'
+# Stripe
+gem 'stripe'
 # Roles
 gem 'rolify'
 # Authorization
 gem 'pundit'
 # LinkedIn API integration
 gem 'omniauth'
-gem 'omniauth-oauth2', '~> 1.3.1'
+gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-oauth2'
 gem 'omniauth-linkedin-oauth2'
 # Xero API integration for partner app
 gem 'xeroizer', git: 'https://github.com/waynerobinson/xeroizer.git'
@@ -76,7 +79,7 @@ gem 'twilio-ruby'
 # Manage ordering for survey objects
 gem 'acts_as_list'
 # Use user friendly slugs
-gem 'friendly_id', '~> 5.2.0'
+gem 'friendly_id', '~> 5.3.0'
 # Amazon S3 SDK
 gem 'aws-sdk', '~> 2'
 # Sitemap generator
@@ -132,13 +135,13 @@ gem "selectize-rails"
 gem 'mini_mime'
 
 # Backend admin
-gem 'administrate', '0.11.0'
+gem "administrate", "0.12.0"
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
-gem 'administrate-field-json', git: 'https://github.com/eddietejeda/administrate-field-json.git'
+gem 'administrate-field-jsonb'
 
 # Deep cloning for cloning of template with associated sections
-gem 'deep_cloneable', '~> 2.3.0'
+gem 'deep_cloneable', '~> 3.0.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production

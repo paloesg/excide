@@ -7,19 +7,20 @@ class Company < ApplicationRecord
   include PublicActivity::Model
   tracked owner: ->(controller, model) { controller && controller.current_user }
 
-  has_many :users
-  has_many :documents
-  has_many :templates
-  has_many :workflows
-  has_many :recurring_workflows
-  has_many :workflow_actions
-  has_many :clients
-  has_many :events
+  has_many :users, dependent: :destroy
+  has_many :documents, dependent: :destroy
+  has_many :templates, dependent: :destroy
+  has_many :workflows, dependent: :destroy
+  has_many :recurring_workflows, dependent: :destroy
+  has_many :workflow_actions, dependent: :destroy
+  has_many :clients, dependent: :destroy
+  has_many :events, dependent: :destroy
   has_many :reminders, dependent: :destroy
-  has_many :batches
-  has_many :invoices
-  has_many :xero_contacts
-  has_one :address, as: :addressable
+  has_many :batches, dependent: :destroy
+  has_many :invoices, dependent: :destroy
+  has_many :xero_contacts, dependent: :destroy
+  has_many :xero_line_items, dependent: :destroy
+  has_one :address, as: :addressable, dependent: :destroy
 
   belongs_to :consultant, class_name: 'User'
   belongs_to :associate, class_name: 'User'
@@ -30,6 +31,8 @@ class Company < ApplicationRecord
   enum company_type: ["Exempt Private Company Limited By Shares", "Private Company Limited By Shares", "Public Company Limited By Guarantee", "Public Company Limited By Shares", "Unlimited Exempt Private Company", "Unlimited Public Company"]
 
   enum gst_quarter: { mar_jun_sep_dec: 0, apr_jul_oct_jan: 1, may_aug_nov_feb: 2}
+
+  validates :name, presence: true, on: :additional_information
 
   # Get all other companies that user has roles for excpet the current company that user belongs to
   def self.assigned_companies(user)

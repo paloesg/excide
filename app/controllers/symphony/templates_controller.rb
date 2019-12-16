@@ -65,7 +65,7 @@ class Symphony::TemplatesController < ApplicationController
     end
     if params[:template].present?
       if @template.update(template_params)
-        flash[:notice] = 'Template updated.'
+        flash[:notice] = 'Template has been saved.'
         redirect_to edit_symphony_template_path(@template)
       else
         flash[:alert] = @template.errors.full_messages.join

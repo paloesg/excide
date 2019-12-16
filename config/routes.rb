@@ -31,12 +31,13 @@ Rails.application.routes.draw do
   get '/connect_to_xero', to: 'xero_sessions#connect_to_xero', as: :connect_to_xero
   get '/xero_callback_and_update', to: 'xero_sessions#xero_callback_and_update', as: :xero_callback_and_update
   post '/update_contacts_from_xero', to: 'xero_sessions#update_contacts_from_xero', as: :update_contacts_from_xero
+  post '/update_line_items_from_xero', to: 'xero_sessions#update_line_items_from_xero', as: :update_line_items_from_xero
   delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
   namespace :symphony do
     get '/search', to: 'home#search'
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
-    get '/xero_item_code', to: 'invoices#get_xero_item_code_detail'
+    get '/xero_line_items', to: 'xero_line_items#show'
 
     resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
@@ -53,7 +54,11 @@ Rails.application.routes.draw do
         get '/notification_settings', to: 'users#notification_settings', as: :notification_settings
         patch '/update_notification', to: 'users#update_notification', as: :update_notification
       end
+      collection do
+        patch '/additional_information/update', to: 'users#edit_additional_information', as: :edit_additional_information
+      end
     end
+    resources :roles
     resources :reminders do
       member do
         post '/cancel', to: 'reminders#cancel'
@@ -148,7 +153,12 @@ Rails.application.routes.draw do
   as :user do
     match 'confirmation' => 'confirmations#update', :via => :put, :as => :update_user_confirmation
   end
-  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout' }
+
+  devise_scope :user do
+    get 'users/additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
+  end
+
+  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account
@@ -170,6 +180,7 @@ Rails.application.routes.draw do
 
   resources :responses
 
+  get 'company', to: 'companies#show', as: :company
   get 'company/new', to: 'companies#new', as: :new_company
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company

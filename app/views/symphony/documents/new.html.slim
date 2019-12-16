@@ -14,4 +14,5 @@
   .col-sm-12
     = form_for(@document, url: symphony_documents_path(workflow: params[:workflow], workflow_action: params[:workflow_action]), html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
       = hidden_field_tag :upload_type, params[:upload_type] if params[:upload_type].present?
+      = hidden_field_tag "utf8", "√"
       = render 'form', f: f

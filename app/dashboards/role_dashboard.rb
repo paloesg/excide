@@ -59,7 +59,7 @@ class RoleDashboard < Administrate::BaseDashboard
     if role.resource_type.present? and role.resource_id.present?
       "[#{role.resource_type.constantize.find(role.resource_id).name}] #{role.name.titleize}"
     else
-      "[Global] #{role.name.titleize}"
+      "[Global] #{role.name&.titleize}"
     end
   end
 end
