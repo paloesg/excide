@@ -2,11 +2,11 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
@@ -18,27 +18,30 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
   enable_extension "uuid-ossp"
 
   create_table "activities", id: :serial, force: :cascade do |t|
-    t.integer "trackable_id"
     t.string "trackable_type"
-    t.integer "owner_id"
+    t.bigint "trackable_id"
     t.string "owner_type"
+    t.bigint "owner_id"
     t.string "key"
     t.text "parameters"
-    t.string "recipient_id"
     t.string "recipient_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "recipient_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
+    t.index ["owner_type", "owner_id"], name: "index_activities_on_owner_type_and_owner_id"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
+    t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient_type_and_recipient_id"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
+    t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable_type_and_trackable_id"
   end
 
   create_table "addresses", id: :serial, force: :cascade do |t|
     t.string "line_1"
     t.string "line_2"
     t.string "postal_code"
-    t.integer "addressable_id"
     t.string "addressable_type"
+    t.bigint "addressable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "city"
@@ -47,9 +50,9 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
-  create_table "allocations", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "event_id"
+  create_table "allocations", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "event_id"
     t.date "allocation_date"
     t.time "start_time"
     t.time "end_time"
@@ -64,8 +67,8 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.index ["user_id"], name: "index_allocations_on_user_id"
   end
 
-  create_table "availabilities", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
+  create_table "availabilities", force: :cascade do |t|
+    t.bigint "user_id"
     t.date "available_date"
     t.time "start_time"
     t.time "end_time"
@@ -95,18 +98,18 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
   end
 
   create_table "choices_questions", id: false, force: :cascade do |t|
-    t.integer "question_id", null: false
-    t.integer "choice_id", null: false
+    t.bigint "question_id", null: false
+    t.bigint "choice_id", null: false
     t.index ["question_id", "choice_id"], name: "index_choices_questions_on_question_id_and_choice_id"
   end
 
   create_table "clients", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "identifier"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "company_id"
+    t.bigint "company_id"
     t.string "xero_contact_id"
     t.string "xero_email"
     t.index ["company_id"], name: "index_clients_on_company_id"
@@ -155,8 +158,8 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.string "title"
     t.text "description"
     t.string "file_url"
-    t.integer "template_id"
-    t.integer "user_id"
+    t.bigint "template_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["template_id"], name: "index_document_templates_on_template_id"
@@ -166,13 +169,13 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
   create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "filename"
     t.text "remarks"
-    t.integer "company_id"
+    t.bigint "company_id"
     t.date "date_signed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "file_url"
-    t.integer "document_template_id"
-    t.integer "user_id"
+    t.bigint "document_template_id"
+    t.bigint "user_id"
     t.bigint "workflow_action_id"
     t.uuid "workflow_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
@@ -192,7 +195,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.boolean "responded", default: false
   end
 
-  create_table "event_types", id: :serial, force: :cascade do |t|
+  create_table "event_types", force: :cascade do |t|
     t.string "name"
     t.string "slug"
     t.string "colour"
@@ -200,7 +203,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "events", id: :serial, force: :cascade do |t|
+  create_table "events", force: :cascade do |t|
     t.integer "event_type_id"
     t.datetime "start_time"
     t.datetime "end_time"
@@ -208,9 +211,9 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.string "location"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "company_id"
-    t.integer "staffer_id"
-    t.integer "client_id"
+    t.bigint "company_id"
+    t.bigint "staffer_id"
+    t.bigint "client_id"
     t.index ["client_id"], name: "index_events_on_client_id"
     t.index ["company_id"], name: "index_events_on_company_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
@@ -254,7 +257,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
   create_table "profiles", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "headline"
     t.text "summary"
     t.string "industry"
@@ -271,7 +274,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.text "content"
     t.integer "question_type"
     t.integer "position"
-    t.integer "survey_section_id"
+    t.bigint "survey_section_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["survey_section_id"], name: "index_questions_on_survey_section_id"
@@ -299,12 +302,12 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.datetime "past_reminders", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.integer "company_id"
+    t.bigint "user_id"
+    t.bigint "company_id"
     t.string "title"
     t.text "content"
-    t.integer "task_id"
-    t.integer "workflow_action_id"
+    t.bigint "task_id"
+    t.bigint "workflow_action_id"
     t.boolean "email"
     t.boolean "sms"
     t.boolean "slack"
@@ -316,9 +319,9 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
 
   create_table "responses", id: :serial, force: :cascade do |t|
     t.text "content"
-    t.integer "question_id"
-    t.integer "choice_id"
-    t.integer "segment_id"
+    t.bigint "question_id"
+    t.bigint "choice_id"
+    t.bigint "segment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["choice_id"], name: "index_responses_on_choice_id"
@@ -328,18 +331,19 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
 
   create_table "roles", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.integer "resource_id"
     t.string "resource_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.bigint "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
   create_table "sections", id: :serial, force: :cascade do |t|
     t.string "section_name"
     t.integer "position"
-    t.integer "template_id"
+    t.bigint "template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["template_id"], name: "index_sections_on_template_id"
@@ -348,8 +352,8 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
   create_table "segments", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "position"
-    t.integer "survey_section_id"
-    t.integer "survey_id"
+    t.bigint "survey_section_id"
+    t.bigint "survey_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["survey_id"], name: "index_segments_on_survey_id"
@@ -360,7 +364,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.string "unique_name"
     t.string "display_name"
     t.integer "position"
-    t.integer "survey_template_id"
+    t.bigint "survey_template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["survey_template_id"], name: "index_survey_sections_on_survey_template_id"
@@ -377,9 +381,9 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
   create_table "surveys", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "remarks"
-    t.integer "user_id"
-    t.integer "company_id"
-    t.integer "survey_template_id"
+    t.bigint "user_id"
+    t.bigint "company_id"
+    t.bigint "survey_template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_surveys_on_company_id"
@@ -390,15 +394,15 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
   create_table "tasks", id: :serial, force: :cascade do |t|
     t.string "instructions"
     t.integer "position"
-    t.integer "section_id"
+    t.bigint "section_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
     t.integer "days_to_complete"
     t.boolean "set_reminder"
-    t.integer "role_id"
+    t.bigint "role_id"
     t.integer "task_type"
-    t.integer "document_template_id"
+    t.bigint "document_template_id"
     t.string "link_url"
     t.boolean "important"
     t.bigint "template_id"
@@ -414,8 +418,8 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
-    t.integer "company_id"
-    t.json "data_names", default: []
+    t.bigint "company_id"
+    t.json "data_names", default: "[]"
     t.integer "workflow_type", default: 0
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
@@ -444,7 +448,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.string "aasm_state"
-    t.integer "company_id"
+    t.bigint "company_id"
     t.integer "max_hours_per_week"
     t.string "nric"
     t.string "bank_name"
@@ -465,20 +469,22 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
   end
 
   create_table "users_roles", id: false, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "role_id"
+    t.bigint "user_id"
+    t.bigint "role_id"
+    t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+    t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
   create_table "workflow_actions", id: :serial, force: :cascade do |t|
-    t.integer "task_id"
+    t.bigint "task_id"
     t.boolean "completed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deadline"
-    t.integer "company_id"
+    t.bigint "company_id"
     t.integer "approved_by"
-    t.integer "assigned_user_id"
+    t.bigint "assigned_user_id"
     t.integer "completed_user_id"
     t.text "remarks"
     t.uuid "workflow_id"
@@ -489,18 +495,18 @@ ActiveRecord::Schema.define(version: 2019_11_07_035258) do
   end
 
   create_table "workflows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "company_id"
-    t.integer "template_id"
+    t.bigint "user_id"
+    t.bigint "company_id"
+    t.bigint "template_id"
     t.boolean "completed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deadline"
     t.string "identifier"
-    t.integer "workflowable_id"
     t.string "workflowable_type"
+    t.bigint "workflowable_id"
     t.text "remarks"
-    t.json "data", default: []
+    t.json "data", default: "[]"
     t.json "archive", default: []
     t.bigint "recurring_workflow_id"
     t.uuid "batch_id"
