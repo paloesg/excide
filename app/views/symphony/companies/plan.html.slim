@@ -45,7 +45,7 @@
               span Multiple forms of reminders/notifications 
               span Unlimited Users
             .kt-pricing-1__btn
-              button.btn.btn-brand.btn-wide.btn-bold.btn-upper type="button"  Purchase
+              = link_to 'Purchase', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-brand btn-wide btn-bold btn-upper'
           / .kt-pricing-1__item.col-lg-4
           /   .kt-pricing-1__visual
           /     .kt-pricing-1__hexagon1

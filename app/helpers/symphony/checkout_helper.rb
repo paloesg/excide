@@ -1,0 +1,2 @@
+module Symphony::CheckoutHelper
+end

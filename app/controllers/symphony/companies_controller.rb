@@ -1,7 +1,7 @@
 class Symphony::CompaniesController < CompaniesController
-	# layout "dashboard/application", except: [:edit]
+  # layout "dashboard/application", except: [:edit]
   layout 'metronic/application', only: [:plan]
-	def plan
+  def plan
 
-	end
+  end
 end

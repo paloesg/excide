@@ -8,6 +8,7 @@ html lang="en"
     = display_meta_tags site: "Virtual CFO | Excide"
 
     = stylesheet_link_tag    "application"
+    <script src="https://js.stripe.com/v3/"></script>
     = javascript_include_tag "application", 'data-turbolinks-track' => true
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']

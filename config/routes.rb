@@ -44,6 +44,12 @@ Rails.application.routes.draw do
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
     delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
 
+    scope '/checkout' do
+      post 'create', to: 'checkout#create', as: :checkout_create
+      get 'cancel', to: 'checkout#cancel', as: :checkout_cancel
+      get 'success', to: 'checkout#success', as: :checkout_success
+    end
+
     resources :clients do
       member do
         post '/xero_create', to: 'clients#xero_create', as: :xero_create
