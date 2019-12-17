@@ -273,11 +273,11 @@ class Symphony::InvoicesController < ApplicationController
     if @workflow.batch.present?
       workflows = @workflow.batch.workflows.order(created_at: :asc)
       @workflow_invoices= @workflow.batch.workflows.includes(:invoice).where.not(invoices: {id: nil}).where.not(invoices: {id: @workflow.invoice.id})
-    else 
+    else
       workflows = Array(@workflow)
-      @workflow_invoices= Workflow::includes(:invoice).where.not(invoices: {id: nil}).where.not(invoices: {id: @workflow.invoice.id})
+      @workflow_invoices= policy_scope(Workflow).includes(:invoice).where.not(invoices: {id: nil}).where.not(invoices: {id: @workflow.invoice.id})
     end
-    
+
     @total_workflows = workflows.count
     @current_position = workflows.pluck('id').index(@workflow.id)+1
   end
@@ -290,9 +290,9 @@ class Symphony::InvoicesController < ApplicationController
       @total_completed_task = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: true}).count
     else
       @workflows = Array(@workflow_action.workflow)
-      @total_completed_task = Workflow::where(id: @workflow_action.workflow.id, completed: true).count
+      @total_completed_task = policy_scope(Workflow).where(id: @workflow_action.workflow.id, completed: true).count
     end
-    @total_task = @workflows.count    
+    @total_task = @workflows.count
 
     # check using max, show maximum value. use square baracket [] for value
     @remaining_invoices = [@total_task - @total_completed_task - 1, 0].max
