@@ -12,7 +12,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
 
-  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice]
+  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice, :run_textract]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -257,6 +257,30 @@ class Symphony::InvoicesController < ApplicationController
     else
       redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
     end
+  end
+
+  def run_textract
+    # get object file location and name
+    s3_uri = URI.parse(@document.file_url)
+    s3_uri.path.slice!(0)
+    file_name = s3_uri.path
+    # example: "excide/uploads/3d8ff957-532b-4f37-8fbe-9baa522d337c/191126-fuji-xerox-250-87.pdf"
+
+    # asynchronus operation
+    resp = AWS_TEXTRACT.start_document_text_detection({
+      document_location: {
+        s3_object: {
+          bucket: ENV['S3_BUCKET'],
+          name: file_name
+        }
+      },
+      client_request_token: "DocumentDetectionToken",
+      job_tag: "Receipt",
+    })
+
+    get_data = AWS_TEXTRACT.get_document_text_detection({job_id: resp.job_id})
+    
+    render json: get_data.to_json
   end
 
   private
