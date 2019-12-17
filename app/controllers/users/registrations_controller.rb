@@ -1,7 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  layout 'stack/application', only: [:new]
-  # disabled layout to show registration page
-  layout 'dashboard/application', except: [:new, :additional_information, :create]
+  layout 'stack/application'
 
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
