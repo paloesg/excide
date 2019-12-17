@@ -145,3 +145,8 @@
 .btn--loading, .btn--orange:focus, .btn--excide:focus {
   box-shadow: 0 0 0 0.2rem rgba(201, 146, 146, 0.26) !important;
 }
+
+.alert.alert-dismissible.m-0.mx-5.alert-danger {
+  z-index: 2;
+  top: 70px;
+}
