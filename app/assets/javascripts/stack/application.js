@@ -14,6 +14,7 @@
 //= require z.jquery.fileupload
 //= require algolia/v3/algoliasearch.min
 //= require selectize
+//= require components/stripe
 
 //= require turbolinks
 //= require turbolinks-compatibility
