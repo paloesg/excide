@@ -188,3 +188,9 @@
   opacity: 0.3;
   z-index: 2;
 }
+
+.feature-1 i {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #c3502e;
+}
