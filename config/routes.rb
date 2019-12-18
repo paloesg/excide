@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :workflow_section
     post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
   end
+  # Stripe event path for webhook
+  mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
 
   # Company workflow management
   get 'dashboard', to: 'dashboards#show', as: :dashboard
@@ -39,16 +41,15 @@ Rails.application.routes.draw do
     get '/xero_item_code', to: 'invoices#get_xero_item_code_detail'
 
     # get '/plan', to: 'companies#plan'
-
-    resources :templates, param: :template_slug, except: [:destroy]
-    post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
-    delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
-
     scope '/checkout' do
       post 'create', to: 'checkout#create', as: :checkout_create
       get 'cancel', to: 'checkout#cancel', as: :checkout_cancel
       get 'success', to: 'checkout#success', as: :checkout_success
     end
+    
+    resources :templates, param: :template_slug, except: [:destroy]
+    post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
+    delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
 
     resources :clients do
       member do

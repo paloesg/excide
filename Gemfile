@@ -49,6 +49,7 @@ gem "webpacker"
 gem 'devise'
 # Stripe
 gem 'stripe'
+gem 'stripe_event'
 # Roles
 gem 'rolify'
 # Authorization

@@ -4,6 +4,7 @@ class Symphony::CheckoutController < ApplicationController
   def create
     @company = Company.find(params[:company_id])
     @session = Stripe::Checkout::Session.create(
+      customer: current_user.stripe_customer_id,
       customer_email: current_user.email,
       payment_method_types: ['card'],
       subscription_data: {
@@ -11,7 +12,7 @@ class Symphony::CheckoutController < ApplicationController
           plan: 'plan_GMuEzp27rnQXc5',
         }],
       },
-      success_url: symphony_checkout_success_url,
+      success_url: symphony_checkout_success_url + '?session_id={CHECKOUT_SESSION_ID}',
       cancel_url: symphony_checkout_cancel_url,
     )
     respond_to do |format|
@@ -20,7 +21,7 @@ class Symphony::CheckoutController < ApplicationController
   end
 
   def success
-
+    
   end
 
   def cancel
