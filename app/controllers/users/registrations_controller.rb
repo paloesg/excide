@@ -1,5 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  layout 'stack/application'
+  layout :multi_layout
 
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
@@ -92,6 +92,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def additional_information
     build_addresses
     @user = current_user
+    render layout: 'stack/application'
   end
 
   protected
@@ -120,6 +121,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @company = current_user.company
     if @company.address.blank?
       @company.address = @company.build_address
+    end
+  end
+
+  def multi_layout
+    case action_name
+    when "new", "additional_information"
+      "stack/application"
+    else
+      "dashboard/application"
     end
   end
 end
