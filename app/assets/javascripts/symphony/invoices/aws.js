@@ -12,7 +12,8 @@ function get_document_analysis(template, workflow, job_id){
       }
       else {
         console.log(result);
-        $(".aws-textract-result").val(result);
+        $('.loading').hide();
+        $(".aws-textract-result").text(JSON.stringify(result.blocks));
         return result;
       }
     }, 7000)
@@ -23,6 +24,7 @@ $(document).on("turbolinks:load", function() {
   $('.do-textract').click(function(){
     let template = $('.template-field').val() ;
     let workflow = $('.workflow-field').val() ;
-    let textract = run_textract(template, workflow);
+    run_textract(template, workflow);
+    $('.loading').show();
   })
 })
