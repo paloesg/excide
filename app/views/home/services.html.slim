@@ -1,22 +1,20 @@
 - set_meta_tags title: 'Services', description: 'Providing you with Professional Services for your convenience.'
-section.page-title.page-title-1.image-bg.overlay
+section.text-center.imagebg.space--lg data-overlay="3"
   .background-image-holder
     img.background-image alt="image" src=image_path('services.png')
   .container
     .row
-      .col-sm-12.text-center
-        h3.type--uppercase.mb-0 Professional Services
-  ol.breadcrumb.breadcrumb-2
-    li
-      a href="#" Home
-    li
-      a href="#" Services
+      .col-md-8.col-lg-6
+        h1.type-uppercase Professional Services
+        ol.breadcrumbs
+          li
+            a href="/"  Home
+          li Professional Services
 section.pb0
   .container
     .row
-      .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.text-center
+      .col-md-12.col-md-offset-2.col-sm-10.col-sm-offset-1.text-center
         h3 Providing you with Professional Services for your Business and convenience.
-
 section
   .container
     .row
@@ -24,42 +22,42 @@ section
         a href="/accounting-services"
           .feature.feature-1
             .text-center
-              i.ti-credit-card.icon
+              = fa_icon "credit-card", class: "icon"
               h4.type--uppercase Accounting Services
       .col-sm-4.showgrid.mb32
         a href="/annual-return-filing"
           .feature.feature-1
             .text-center
-              i.ti-files.icon
+              = fa_icon "files-o", class: "icon"
               h4.type--uppercase Annual Return Filing
       .col-sm-4.showgrid.mb32
         a href="/bookkeeping"
           .feature.feature-1
             .text-center
-              i.ti-book.icon
+              = fa_icon "book", class: "icon"
               h4.type--uppercase Bookkeeping Services
       .col-sm-4.showgrid.mb32
         a href="/"
           .feature.feature-1
             .text-center
-              i.ti-money.icon
+              = fa_icon "usd", class: "icon"
               h4.type--uppercase Corporate Tax Services
       .col-sm-4.showgrid.mb32
         a href="/"
           .feature.feature-1
             .text-center
-              i.ti-user.icon
+              = fa_icon "user", class: "icon"
               h4.type--uppercase Nominee Director
       .col-sm-4.showgrid.mb32
         a href="/"
           .feature.feature-1
             .text-center
-              i.ti-ink-pen.icon
+              = fa_icon "pen", class: "icon"
               h4.type--uppercase Payroll Services
 section#contactus
   .container
     .row.mb--2
-      .col-sm-8.col-sm-offset-2.text-center
+      .col-sm-12.col-sm-offset-2.text-center
         h4.mb-5.type--uppercase Having doubts of engaging us to do your work?
         p.lead.mb80 Let us convince you through a face to face consultation clearing all your doubts and uncertainty. Leave us your details and we will get in touch with you soon.
     = render 'contact'
