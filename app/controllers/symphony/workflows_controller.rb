@@ -13,7 +13,7 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: @template).order(created_at: :desc)
+    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: @template, completed: nil).order(created_at: :desc)
 
     @workflows_sort = sort_column(@workflows)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
