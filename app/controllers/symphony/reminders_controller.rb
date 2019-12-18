@@ -7,13 +7,12 @@ class Symphony::RemindersController < ApplicationController
     @company = @user.company
     @reminders = @company.reminders.where(user: @user)
 
-    activities_array=[];
+    company_activities_array=[];
     activities = PublicActivity::Activity.includes(:owner, :trackable).where(trackable_type: "Reminder", recipient_id: current_user.id ).order("created_at desc")
-    activities.each {
-      |acti| 
-        activities_array << acti if acti.trackable.present? and acti.trackable.company_id == current_user.company_id
-    }
-    @activities = activities_array
+    activities.each do |activity| 
+      company_activities_array << activity if activity.trackable.present? and activity.trackable.company_id == current_user.company_id
+    end
+    @activities = company_activities_array
   end
 
   def new
