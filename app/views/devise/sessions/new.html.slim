@@ -16,10 +16,10 @@ section.height-100.imagebg.text-center data-overlay="4"
                 = f.password_field :password, placeholder: "Password", autocomplete: "off"
               - if devise_mapping.rememberable?
                 .col-md-12
-                  .input-checkbox.input-checkbox--switch
+                  .float-left= f.label :remember_me
+                  .input-checkbox.input-checkbox--switch.float-right
                     = f.check_box :remember_me, id:"checkbox-switch"
                     label for="checkbox-switch"
-                  span= f.label :remember_me
               .col-md-12
                 = f.submit "Log in", class:"btn btn--excide type--uppercase"
             .row.mt-3
