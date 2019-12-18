@@ -52,5 +52,6 @@ Rails.application.configure do
     Bullet.rails_logger = true
   end
 
-  config.hosts << "excide.test"
+  # config.hosts << "excide.test"
+  config.hosts = nil
 end
