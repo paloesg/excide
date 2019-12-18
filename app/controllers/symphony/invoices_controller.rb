@@ -12,7 +12,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
 
-  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice, :run_textract]
+  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice, :run_textract, :get_document_analysis]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -267,20 +267,30 @@ class Symphony::InvoicesController < ApplicationController
     # example: "excide/uploads/3d8ff957-532b-4f37-8fbe-9baa522d337c/191126-fuji-xerox-250-87.pdf"
 
     # asynchronus operation
-    resp = AWS_TEXTRACT.start_document_text_detection({
+    resp = AWS_TEXTRACT.start_document_analysis({
       document_location: {
         s3_object: {
           bucket: ENV['S3_BUCKET'],
           name: file_name
         }
       },
-      client_request_token: "DocumentDetectionToken",
+      feature_types: ["TABLES"],
       job_tag: "Receipt",
     })
 
-    get_data = AWS_TEXTRACT.get_document_text_detection({job_id: resp.job_id})
-    
-    render json: get_data.to_json
+    respond_to do |format|
+      format.json  { render :json => resp }
+    end
+  end
+
+  def get_document_analysis
+    job_id = params[:job_id]
+    resp = AWS_TEXTRACT.get_document_analysis({
+      job_id: job_id.to_s
+    })
+    respond_to do |format|
+      format.json  { render :json => resp }
+    end
   end
 
   private

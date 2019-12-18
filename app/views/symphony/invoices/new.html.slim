@@ -34,9 +34,10 @@
               br
               = @document.filename
           // button to run textract
-          = link_to "Do Textract", textract_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), role: 'button' , class:"btn btn-primary"
-        .col-auto.ml-auto.text-center
-          
+          button class="btn btn-primary do-textract" Do Textract
+          = hidden_field_tag :template, @workflow.template.slug, class:"template-field"
+          = hidden_field_tag :workflow_id, @workflow.id, class:"workflow-field"
+        .col-auto.ml-auto.text-center          
           | Invoice
           .invoice-nav
             .invoice-nav-button.btn-right
