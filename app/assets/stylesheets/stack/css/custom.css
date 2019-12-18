@@ -150,3 +150,21 @@
   z-index: 2;
   top: 70px;
 }
+
+.link-list {
+  line-height: 32px;
+}
+
+.link-list a:after {
+  content: "\f061";
+  font: normal normal normal 10px FontAwesome !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  font-size: 11px;
+  display: inline-block;
+  margin-left: 8px;
+}
