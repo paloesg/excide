@@ -155,6 +155,10 @@
   line-height: 32px;
 }
 
+.link-list > li > a {
+  font-weight: normal !important;
+}
+
 .link-list a:after {
   content: "\f061";
   font: normal normal normal 10px FontAwesome !important;
