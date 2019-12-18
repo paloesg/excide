@@ -154,6 +154,7 @@ Rails.application.routes.draw do
   end
 
   devise_scope :user do
+    get 'users/password/new', to: 'users/passwords#new', as: 'new_user_password'
     get 'users/additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
   end
 
