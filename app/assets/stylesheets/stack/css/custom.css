@@ -35,7 +35,7 @@
 .btn--orange:active,
 .btn--excide,
 .btn--excide:visited {
-  background: #c3502e;
+  background: #c3502e !important;
   border-color: #c3502e !important;
 }
 
