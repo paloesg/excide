@@ -42,7 +42,7 @@ class CompaniesController < ApplicationController
     end
   end
 
-  def pricing
+  def plan
   end
 
   private

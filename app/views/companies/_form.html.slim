@@ -44,8 +44,9 @@
       .card-header Plan/Subscriptions
       .card-body
         - if @company.account_type?
-          | Plan: #{@company.account_type}
-          = link_to 'Subscribe to PRO plan', symphony_plan_path, class: 'btn btn-primary ml-2' if @company.basic?
+          = @company.account_type.capitalize
+          br
+          = link_to 'Subscribe to PRO', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post,class: 'btn btn-primary mt-2' if @company.basic?
     .card.mb-4
       .card-header Xero Details
       .card-body
