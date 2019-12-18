@@ -15,6 +15,10 @@ class Symphony::CheckoutController < ApplicationController
       success_url: symphony_checkout_success_url + '?session_id={CHECKOUT_SESSION_ID}',
       cancel_url: symphony_checkout_cancel_url,
     )
+    if @session.present?
+      @company.account_type = 'pro' 
+      @company.save
+    end
     respond_to do |format|
       format.js
     end
