@@ -27,7 +27,7 @@ class WorkflowAction < ApplicationRecord
 
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_workflow_action(self.company, self.workflow.id)
-    next_action.update(deadline: check_week_day(Date.current + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
+    next_action.update(deadline: next_task.days_to_complete.business_days.after(Date.current)) unless next_task.days_to_complete.nil?
 
     # Create new reminder based on deadline of action and repeat every 2 days
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
