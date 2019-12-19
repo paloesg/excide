@@ -1,0 +1,22 @@
+section.height-100.imagebg data-overlay="4"
+  .background-image-holder
+    img alt="background" src=image_path('hero-image.jpg')
+  .container.pos-vertical-center
+    .row.d-flex.justify-content-center
+      .col-md-7.col-lg-5
+        .boxed.boxed--lg.boxed--border
+          h2 Change your password
+          = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "pb-4" }) do |f|
+            = devise_error_messages!
+            = f.hidden_field :reset_password_token
+            = f.label :password, "New password"
+            br
+            - if @minimum_password_length
+              em
+                | (#{@minimum_password_length} characters minimum)
+              br
+            = f.password_field :password, autofocus: true, autocomplete: "off"
+            = f.label :password_confirmation, "Confirm new password"
+            = f.password_field :password_confirmation, autocomplete: "off"
+            = f.submit "Change my password", class: "btn btn--excide"
+          = render "devise/shared/links"
