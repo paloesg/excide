@@ -15,7 +15,8 @@ module Stripe
 
     def handle_checkout_session_completed(event)
       # your code goes here
-      console.log("Success!")
+      puts "event is: #{event}"
+      puts "Success!"
     end
   end
 end

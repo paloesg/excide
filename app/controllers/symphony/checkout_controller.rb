@@ -3,6 +3,7 @@ class Symphony::CheckoutController < ApplicationController
   layout 'metronic/application'
   def create
     @company = Company.find(params[:company_id])
+
     @session = Stripe::Checkout::Session.create(
       customer: current_user.stripe_customer_id,
       customer_email: current_user.email,
@@ -25,7 +26,12 @@ class Symphony::CheckoutController < ApplicationController
   end
 
   def success
-    
+    if params[:session_id]
+      flash[:notice] = "Thanks for your Subscribing to Symphony PRO."
+    else
+      flash[:error] = "Session expired error"
+      redirect_to symphony_root_path
+    end
   end
 
   def cancel
