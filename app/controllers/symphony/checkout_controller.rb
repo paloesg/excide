@@ -6,7 +6,6 @@ class Symphony::CheckoutController < ApplicationController
 
     @session = Stripe::Checkout::Session.create(
       customer: current_user.stripe_customer_id,
-      customer_email: current_user.email,
       payment_method_types: ['card'],
       subscription_data: {
         items: [{

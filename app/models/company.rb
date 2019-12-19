@@ -29,7 +29,16 @@ class Company < ApplicationRecord
 
   enum company_type: ["Exempt Private Company Limited By Shares", "Private Company Limited By Shares", "Public Company Limited By Guarantee", "Public Company Limited By Shares", "Unlimited Exempt Private Company", "Unlimited Public Company"]
 
-  enum account_type: { basic: 0, pro: 1 }
+  enum account_type: { free_trial: 0, basic: 1, pro: 2 }
+
+  include AASM
+
+  aasm column: :account_type, enum: true do
+    state :free_trial, initial: true
+    state :basic
+    state :pro
+  end
+
 
   enum gst_quarter: { mar_jun_sep_dec: 0, apr_jul_oct_jan: 1, may_aug_nov_feb: 2}
 

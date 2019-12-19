@@ -28,8 +28,8 @@
             - else
               = link_to(symphony_root_path, class: "btn btn-pill btn-default") do
                 ' #{current_user.company.name}
-            = content_tag :span, "Staging", class: "badge badge-danger mr-2" if ENV['APP_NAME'] == "excide-staging"
-            = content_tag :span, "PRO", class: "badge badge-success" if current_user.company.pro?
+            = content_tag :span, "Staging", class: "badge badge-danger" if ENV['APP_NAME'] == "excide-staging"
+            = content_tag :span, "PRO", class: "badge badge-success ml-2" if current_user.company.pro?
       /! end:: Brand
       /! begin:: Header Topbar
       .kt-header__topbar.kt-grid__item.kt-grid__item--fluid
