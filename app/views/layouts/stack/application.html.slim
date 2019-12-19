@@ -8,7 +8,7 @@ html lang="en"
     = display_meta_tags site: "Virtual CFO | Excide"
 
     = stylesheet_link_tag    "stack/application", media: "all"
-    = javascript_include_tag "stack/application", 'data-turbolinks-track' => true
+    = javascript_pack_tag 'home/application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
 
