@@ -39,7 +39,6 @@ class Company < ApplicationRecord
     state :pro
   end
 
-
   enum gst_quarter: { mar_jun_sep_dec: 0, apr_jul_oct_jan: 1, may_aug_nov_feb: 2}
 
   validates :name, presence: true, on: :additional_information

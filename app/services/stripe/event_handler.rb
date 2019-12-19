@@ -14,8 +14,12 @@ module Stripe
     end
 
     def handle_checkout_session_completed(event)
-      # your code goes here
-      puts "event is: #{event}"
+      # Find the current_user using the data returned by stripe webhook
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      # Store the event data into database of company
+      @current_user.company.stripe_event_data = event
+      @current_user.company.save
+      puts "event data object is: #{event.data.object}"
       puts "Success!"
     end
   end
