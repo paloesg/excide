@@ -7573,7 +7573,7 @@ label {
   margin-right: 0.46428571em;
 }
 .input-checkbox label:hover {
-  border-color: #4a90e2;
+  border-color: #c3502e;
 }
 .input-checkbox label:before {
   content: '';
@@ -7589,8 +7589,8 @@ label {
   -moz-transition: 0.3s ease;
 }
 .input-checkbox input:checked + label {
-  border-color: #4a90e2;
-  background: #4a90e2;
+  border-color: #c3502e;
+  background: #c3502e;
 }
 .input-checkbox input:checked + label:after {
   content: 'L';
@@ -7640,15 +7640,15 @@ label {
   top: 2px;
 }
 .input-checkbox.input-checkbox--switch label:hover:before {
-  border-color: #4a90e2;
+  border-color: #c3502e;
 }
 .input-checkbox.input-checkbox--switch input:checked + label {
   background: none;
 }
 .input-checkbox.input-checkbox--switch input:checked + label:before {
   animation: none !important;
-  background: #4a90e2;
-  border-color: #4a90e2;
+  background: #c3502e;
+  border-color: #c3502e;
   transform: translateX(1.85714286em);
 }
 .input-checkbox.input-checkbox--switch input:checked + label:after {
