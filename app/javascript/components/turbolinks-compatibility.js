@@ -1,5 +1,3 @@
-import Turbolinks from "turbolinks"
-
 //Javascript
 (function() {
   var defer, dispatch, handleEvent, loaded, translateEvent;

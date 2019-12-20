@@ -1,1 +1,1 @@
-import '../../stack/application.js';
+import '../../stack/footer.js';

@@ -1,6 +1,3 @@
-
-window.mr = window.mr || {};
-
 mr = (function (mr, $, window, document){
     "use strict";
 
