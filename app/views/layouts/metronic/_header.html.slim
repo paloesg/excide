@@ -7,6 +7,7 @@
         .kt-header__brand-logo
           = link_to symphony_root_path do
             img.kt-header__brand-logo-default alt="Logo" src=image_url('logo-symphony.png')
+          = content_tag :span, "Staging", class: "badge badge-danger badge-staging" if ENV['APP_NAME'] == "excide-staging"
         .kt-header__brand-nav
           .dropdown
             - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
@@ -28,7 +29,6 @@
             - else
               = link_to(symphony_root_path, class: "btn btn-pill btn-default") do
                 ' #{current_user.company.name}
-            = content_tag :span, "Staging", class: "badge badge-danger kt-margin-l-5" if ENV['APP_NAME'] == "excide-staging"
       /! end:: Brand
       /! begin:: Header Topbar
       .kt-header__topbar.kt-grid__item.kt-grid__item--fluid
