@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   rescue_from OAuth::Unauthorized, with: :xero_unauthorized
   rescue_from Xeroizer::OAuth::RateLimitExceeded, with: :xero_rate_limit_exceeded
 
+  before_action :check_trial_period
+
   after_action :store_location
 
   def store_location
@@ -32,6 +34,10 @@ class ApplicationController < ActionController::Base
     else
       additional_information_path
     end
+  end
+
+  def check_trial_period
+    current_user.company.trial_ended if current_user.present?
   end
 
   private

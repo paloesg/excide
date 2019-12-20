@@ -43,10 +43,19 @@
     .card.mb-4 
       .card-header Plan/Subscriptions
       .card-body
-        - if @company.account_type?
-          h4 #{@company.account_type.capitalize.humanize} Plan
+        h4.mb-2 #{@company.account_type.capitalize.humanize} Plan
+        - if @company.free_trial?
+          | You are currently on Symphony free trial plan, which expires in 30 days.
           br
-          = link_to 'Subscribe to PRO', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post,class: 'btn btn-primary mt-2' if @company.basic?
+          | To Upgrade, click the button below:
+          br
+          = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post,class: 'btn btn-primary mt-2'
+        - elsif @company.basic?
+          | Upgrade to Symphony Pro for more advanced features!
+          br.mb-2
+          = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post,class: 'btn btn-primary mt-2'
+        - else
+          | End subscription date:
     .card.mb-4
       .card-header Xero Details
       .card-body

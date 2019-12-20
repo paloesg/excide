@@ -37,6 +37,18 @@ class Company < ApplicationRecord
     state :free_trial, initial: true
     state :basic
     state :pro
+
+    event :trial_ends do
+      transitions from: :free_trial, to: :basic
+    end
+
+    event :upgrade do
+      transitions from: :basic, to: :pro
+    end
+
+    event :downgrade do
+      transitions from: :pro, to: :basic
+    end
   end
 
   enum gst_quarter: { mar_jun_sep_dec: 0, apr_jul_oct_jan: 1, may_aug_nov_feb: 2}
@@ -46,5 +58,11 @@ class Company < ApplicationRecord
   # Get all other companies that user has roles for excpet the current company that user belongs to
   def self.assigned_companies(user)
     user.roles.includes(:resource).map(&:resource).compact.uniq.reject{ |c| c == user.company }
+  end
+
+  def trial_ended
+    if self.trial_end_date.present?
+      self.trial_ends if self.trial_end_date < DateTime.current
+    end
   end
 end

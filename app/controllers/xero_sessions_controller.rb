@@ -33,7 +33,7 @@ class XeroSessionsController < ApplicationController
         xc.update(name: contact.name, company: current_user.company)
       end
       templates = Template.where(company: current_user.company)
-      flash[:notice] = "User signed in and connected to Xero."
+      flash[:notice] = "User signed in and connected to Xero. You are currently using the 30-days free trial Symphony Pro!"
       if templates.present?
         redirect_to symphony_root_path        
       else
