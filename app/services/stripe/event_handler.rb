@@ -17,7 +17,7 @@ module Stripe
       # Find the current_user using the data returned by stripe webhook
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       # Store the event data into database of company
-      @current_user.company.stripe_event_data = event
+      @current_user.company.stripe_subscription_plan_data = Stripe::Subscription.retrieve(event.data.object.subscription)
       @current_user.company.save
       puts "event data object is: #{event.data.object}"
       puts "Success!"
