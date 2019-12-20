@@ -1,7 +1,9 @@
 class XeroSessionsController < ApplicationController
   include Adapter
-
+  after_action :verify_authorized, only: :connect_to_xero
+  
   def connect_to_xero
+    authorize :xero_session, :connect_to_xero?
     @xero_client = Xeroizer::PartnerApplication.new(
       ENV["XERO_CONSUMER_KEY"],
       ENV["XERO_CONSUMER_SECRET"],

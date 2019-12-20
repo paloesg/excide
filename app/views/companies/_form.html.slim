@@ -60,7 +60,6 @@
         - else
           | End subscription date:
           br
-
           h5 = Time.at(@company.stripe_subscription_plan_data["current_period_end"]).strftime("%F")
     .card.mb-4
       .card-header Xero Details

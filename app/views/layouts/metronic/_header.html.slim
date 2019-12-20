@@ -78,8 +78,9 @@
               li.kt-nav__item
                 = link_to destroy_user_session_path, {method: :delete, class: 'kt-nav__link'} do
                   span.kt-nav__link-text Log Out
-        /! end: User bar        
-    /! end:: Header Topbar
+        /! end: User bar 
+      
+  /! end:: Header Topbar
   .kt-header__bottom
     .kt-container
       /! begin: Header Menu
@@ -90,7 +91,7 @@
           ul.kt-menu__nav
             li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if @navbar_dashboard_active}"
               = link_to symphony_root_path, class:"kt-menu__link" do
-                span.kt-menu__link-text Dashboard  
+                span.kt-menu__link-text Dashboard
             li.kt-menu__item.kt-menu__item--submenu.kt-menu__item--rel aria-haspopup="true" data-ktmenu-submenu-toggle="click" class="#{'kt-menu__item--here' if @navbar_workflows_active}"
               a.kt-menu__link.kt-menu__toggle href="javascript:;" 
                 span.kt-menu__link-text Workflows
@@ -106,10 +107,12 @@
               = link_to symphony_batches_index_path, class:"kt-menu__link" do
                 span.kt-menu__link-text Batches
         .xero-info.ml-3
-          - if current_user.company.session_handle.present?
+          - if current_user.company.session_handle.present? and (current_user.company.free_trial? or current_user.company.pro?)
             ' Connected Xero organisation:
             = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
-          - else
+          - elsif current_user.company.session_handle.nil? and (current_user.company.free_trial? or current_user.company.pro?)
             ' Not connected to Xero:
-            = link_to('Connect', connect_to_xero_path) 
+            = link_to('Connect', connect_to_xero_path)
+          - else
+            = link_to 'Subscribe to Symphony Pro for more advanced features', edit_company_path
 /! end:: Header
