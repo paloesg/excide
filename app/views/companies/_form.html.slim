@@ -47,6 +47,9 @@
         - if @company.free_trial?
           | You are currently on Symphony free trial plan, which expires in 30 days.
           br
+          | End trial date:
+          br
+          h5 = @company.trial_end_date.strftime("%F")
           | To Upgrade, click the button below:
           br
           = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post,class: 'btn btn-primary mt-2'
@@ -56,6 +59,9 @@
           = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post,class: 'btn btn-primary mt-2'
         - else
           | End subscription date:
+          br
+
+          h5 = Time.at(@company.stripe_subscription_plan_data["current_period_end"]).strftime("%F")
     .card.mb-4
       .card-header Xero Details
       .card-body
