@@ -3,7 +3,7 @@
     "@fullcalendar/core": "^4.3.1",
     "@fullcalendar/daygrid": "^4.3.0",
     "@rails/ujs": "^6.0.1",
-    "@rails/webpacker": "^4.2.0",
+    "@rails/webpacker": "^4.2.2",
     "algoliasearch": "^3.35.1",
     "bootstrap": "^4.4.1",
     "bootstrap-datetimepicker": "^0.0.7",
