@@ -43,7 +43,7 @@ class Company < ApplicationRecord
     end
 
     event :upgrade do
-      transitions from: :basic, to: :pro
+      transitions from: [:free_trial, :basic], to: :pro
     end
 
     event :downgrade do
@@ -61,8 +61,8 @@ class Company < ApplicationRecord
   end
 
   def trial_ended
-    if self.trial_end_date.present?
-      self.trial_ends if self.trial_end_date < DateTime.current
+    if self.trial_end_date.present? and self.trial_end_date < DateTime.current
+      self.trial_ends unless self.pro? or self.basic? #only from free trial to basic
     end
   end
 end

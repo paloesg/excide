@@ -18,7 +18,7 @@ module Stripe
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       # Store the event data into database of company
       @current_user.company.stripe_subscription_plan_data = Stripe::Subscription.retrieve(event.data.object.subscription)
-      @current_user.company.account_type = 'pro'
+      @current_user.company.upgrade
       @current_user.company.save
       puts "event data object is: #{event.data.object}"
       puts "Success!"
