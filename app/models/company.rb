@@ -61,8 +61,8 @@ class Company < ApplicationRecord
   end
 
   def trial_ended
-    if self.trial_end_date.present? and self.trial_end_date < DateTime.current
-      self.trial_ends unless self.pro? or self.basic? #only from free trial to basic
+    if self.trial_end_date.present? and self.trial_end_date < DateTime.current and self.free_trial?
+      self.trial_ends  #only from free trial to basic
     end
   end
 end

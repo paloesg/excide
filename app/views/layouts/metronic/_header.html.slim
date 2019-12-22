@@ -104,8 +104,15 @@
                         span.kt-badge.kt-badge--info.kt-badge--rounded.mr-1 = t.company_workflows(current_user.company).count
                         span.kt-menu__link-text #{t.title} 
             li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if @navbar_batches_active}"
-              = link_to symphony_batches_index_path, class:"kt-menu__link" do
-                span.kt-menu__link-text Batches
+              - if current_user.company.basic? 
+                = link_to symphony_batches_index_path, class:"kt-menu__link" do
+                  span.kt-menu__link-text 
+                    | Batches
+                    = content_tag :span, "Pro", class: "badge badge-success ml-2"
+              - else 
+                = link_to symphony_batches_index_path, class:"kt-menu__link" do
+                  span.kt-menu__link-text Batches
+
         .xero-info.ml-3
           - if current_user.company.session_handle.present? and (current_user.company.free_trial? or current_user.company.pro?)
             ' Connected Xero organisation:
