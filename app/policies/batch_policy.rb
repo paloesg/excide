@@ -8,7 +8,7 @@ class BatchPolicy < ApplicationPolicy
   end
 
    def create?
-    user.present?
+    user.present?  and trial_or_pro_only?
   end
 
   def new?
