@@ -39,11 +39,13 @@
         = f.check_box :email, class: 'form-check-input'
         = f.label :email, class: 'form-check-label'
       .form-check
-        = f.check_box :sms, class: 'form-check-input'
+        = f.check_box :sms, class: 'form-check-input', disabled: current_user.company.basic?
         = f.label :sms, class: 'form-check-label'
+        = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
       .form-check
-        = f.check_box :slack, class: 'form-check-input'
+        = f.check_box :slack, class: 'form-check-input', disabled: current_user.company.basic?
         = f.label :slack, class: 'form-check-label'
+        = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
 .row
   .col-sm-6
     = f.submit 'Save Reminder', class: 'btn btn-primary'
