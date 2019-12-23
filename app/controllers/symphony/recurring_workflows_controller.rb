@@ -7,15 +7,18 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring, :show, :trigger_workflow]
 
   def index
+    authorize RecurringWorkflow
     @recurring_workflows = RecurringWorkflow.where(company_id: @company.id)
     @templates = Template.assigned_templates(current_user)
   end
 
   def new
+    authorize RecurringWorkflow
     @recurring_workflow = RecurringWorkflow.new
   end
 
   def create
+    authorize RecurringWorkflow
     @recurring_workflow = RecurringWorkflow.new(recurring_workflow_params)
     @recurring_workflow.template = @template
     @recurring_workflow.company = @company
@@ -31,10 +34,11 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   end
 
   def edit
-
+    authorize RecurringWorkflow
   end
 
   def update
+    authorize RecurringWorkflow
     if @recurring_workflow.update(recurring_workflow_params)
       redirect_to symphony_workflows_recurring_path, notice: 'Recurring Workflow is successfully updated.'
     else
@@ -43,10 +47,12 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   end
 
   def show
+    authorize RecurringWorkflow
     @workflows = Kaminari.paginate_array(@recurring_workflow.workflows).page(params[:page]).per(10)
   end
 
   def stop_recurring
+    authorize RecurringWorkflow
     if @recurring_workflow.update(next_workflow_date: nil)
       redirect_to symphony_workflows_recurring_path, notice: 'Recurring Workflow stopped.'
     else
@@ -55,6 +61,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   end
 
   def trigger_workflow
+    authorize RecurringWorkflow
     @new_workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, recurring_workflow: @recurring_workflow, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase)
     @new_workflow.recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
     if @new_workflow.recurring_workflow.save
