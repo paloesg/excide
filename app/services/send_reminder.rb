@@ -4,6 +4,10 @@ class SendReminder
 
   def initialize(reminder)
     @reminder = reminder
+    @from_number = ENV['TWILIO_NUMBER']
+    @account_sid = ENV['TWILIO_ACCOUNT_SID']
+    @auth_token = ENV['TWILIO_AUTH_TOKEN']
+    @client = Twilio::REST::Client.new @account_sid, @auth_token
   end
 
   def run
@@ -12,6 +16,7 @@ class SendReminder
       send_email_reminder if @reminder.email?
       send_sms_reminder if @reminder.sms?
       send_slack_reminder if @reminder.slack?
+      send_whatsapp_reminder if @reminder.whatsapp?
     rescue => e
       reminder_error_notification(e)
       set_reminder_tomorrow
@@ -31,15 +36,17 @@ class SendReminder
   end
 
   def send_sms_reminder
-    from_number = ENV['TWILIO_NUMBER']
-    account_sid = ENV['TWILIO_ACCOUNT_SID']
-    auth_token = ENV['TWILIO_AUTH_TOKEN']
     to_number = '+65' + @reminder.user.contact_number
     message_body = @reminder.content
 
-    @client = Twilio::REST::Client.new account_sid, auth_token
+    message = @client.api.account.messages.create( from: @from_number, to: to_number, body: message_body ) if @user.settings[0]&.reminder_sms == 'true'
+  end
 
-    message = @client.api.account.messages.create( from: from_number, to: to_number, body: message_body ) if @user.settings[0]&.reminder_sms == 'true'
+  def send_whatsapp_reminder
+    to_number = '+65' + @reminder.user.contact_number
+    message_body = @reminder.content
+
+    message = @client.messages.create( from: 'whatsapp:'+@from_number, to: 'whatsapp:'+to_number, body: message_body ) if @user.settings[0]&.reminder_whatsapp == 'true'
   end
 
   def reminder_error_notification(e)
