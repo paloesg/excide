@@ -3,9 +3,10 @@ tr
     = f.hidden_field :_destroy
     = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
   td.task-fields = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
-  td.task-fields = f.select :task_type, Task.task_types.map{|k, v| [k.humanize, k]}, {}, { required: true, class: "dropdown-overlay"}
+  td.task-fields
+    = f.select :task_type, options_for_select(Task.task_types.map{|k, v| ((k == "create_invoice_payable" || k == "xero_send_invoice" || k ==  "create_invoice_receivable" || k == "coding_invoice") && current_user.company.basic?) ? ["PRO " + k.humanize, k] : [k.humanize, k]}, disabled: current_user.company.basic? ? ["create_invoice_payable", "xero_send_invoice", "create_invoice_receivable", "coding_invoice"] : []), {}, { required: true, class: "dropdown-overlay"}
   td.task-fields = f.text_area :instructions, {required: true, class: "form-control"}
-  td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.display_name, role.id]}, selected: f.object.role&.id), {include_blank: true} , {required: true, class: "dropdown-overlay"}
+  td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.display_name, role.id]}, selected: f.object.role&.id), {include_blank: true} , {required: true, class: "dropdown-overlay option"}
   td.task-fields
     p
       a data-toggle="collapse" href="#task-index-#{f.index}-section-#{g.id}" aria-expanded="false" class="collapsed"
