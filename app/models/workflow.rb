@@ -56,7 +56,7 @@ class Workflow < ApplicationRecord
   end
 
   def current_task
-    self.current_section.tasks.joins(:workflow_actions).where(workflow_actions: {workflow_id: self.id, completed: false}).first unless self.completed
+    self.current_section.tasks.joins(:workflow_actions).where(workflow_actions: {workflow_id: self.id, completed: nil}).first unless self.completed
   end
 
   def next_task
@@ -131,9 +131,9 @@ class Workflow < ApplicationRecord
     sections = self.template.sections
     sections.each do |s|
       s.tasks.each do |t|
-        completed = (t.position == 1 && t.section.position == 1 && t.task_type == "upload_file") ? true : false
-        WorkflowAction.create!(task: t, company: self.company, completed: completed, workflow: self)
+        WorkflowAction.create!(task: t, company: self.company, workflow: self)
       end
+      self.workflow_actions.first.update(completed: true) if (s.tasks.first.task_type == "upload_file")
     end
     if ordered_workflow?
       trigger_first_task
