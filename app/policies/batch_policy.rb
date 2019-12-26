@@ -4,11 +4,11 @@ class BatchPolicy < ApplicationPolicy
   end
 
   def show?
-    user.company == record.company
+    user.company == record.company and trial_or_pro_only?
   end
 
    def create?
-    user.present?  and trial_or_pro_only?
+    user.present? and trial_or_pro_only?
   end
 
   def new?
@@ -16,19 +16,19 @@ class BatchPolicy < ApplicationPolicy
   end
 
   def update?
-    user == record.user or user.has_role?(:admin, record.company)
+    user == record.user or user.has_role?(:admin, record.company) and trial_or_pro_only?
   end
 
   def edit?
-    update?
+    update? 
   end
 
   def load_batch?
-    user.present?
+    user.present? and trial_or_pro_only?
   end
 
   def destroy?
-    user.has_role? :superadmin
+    user.has_role? :superadmin and trial_or_pro_only?
   end
 
   class Scope < Scope

@@ -48,6 +48,7 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def load_batch
+    authorize @batch
     get_batches = policy_scope(Batch).includes(:user, [workflows: :workflow_actions])
     completed_batches = get_batches.where(completed: true)
     if current_user.has_role? :admin, @company
