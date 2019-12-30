@@ -22,6 +22,7 @@ class Symphony::CheckoutController < ApplicationController
 
   def success
     if params[:session_id]
+      GenerateStripeInvoice.new(current_user.company).run
       flash[:notice] = "Thanks for your Subscribing to Symphony PRO."
       redirect_to edit_company_path
     else
@@ -31,8 +32,7 @@ class Symphony::CheckoutController < ApplicationController
   end
 
   def cancel
-    Stripe::Subscription.delete(current_user.company.stripe_subscription_plan_data["id"])
-    current_user.company.update(stripe_subscription_plan_data: nil, trial_end_date: nil, account_type: 'basic')
-    redirect_to symphony_root_path, alert: 'You had cancelled your subscription. Re-subscribe to it for more Symphony advanced features'
+    DowngradeSubscription.new(current_user.company).run
+    redirect_to symphony_root_path, alert: 'You had cancelled your subscription. Re-subscribe to it for more Symphony advanced features.'
   end
 end
