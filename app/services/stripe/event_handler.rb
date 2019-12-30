@@ -23,6 +23,9 @@ module Stripe
       puts "event data object is: #{event.data.object}"
       puts "Success!"
     end
+
+    def handle_customer_subscription_deleted(event)
+    end
   end
 end
 
