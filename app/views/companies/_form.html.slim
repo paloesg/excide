@@ -64,6 +64,13 @@
           br
           = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-primary'
     .card.mb-4
+      .card-header Invoices
+      .card-body
+        h5 Download invoice below:
+        .row
+          .col-sm-6
+            = link_to Time.at(@company.stripe_invoice_data['period_end']).to_date, @company.stripe_invoice_data['invoice_pdf'], class: 'text-primary'
+    .card.mb-4
       .card-header Xero Details
       .card-body
         .form-group.form-check
