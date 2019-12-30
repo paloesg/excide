@@ -13,7 +13,7 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: @template, completed: false || nil).order(created_at: :desc)
+    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: @template, completed: [false, nil]).order(created_at: :desc)
 
     @workflows_sort = sort_column(@workflows)
     params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
@@ -32,7 +32,7 @@ class Symphony::WorkflowsController < ApplicationController
     authorize @workflow
 
     @workflow.user = current_user
-    @workflow.completed= false
+    @workflow.completed = false
     @workflow.company = @company
     @workflow.template = @template
     @workflow.workflow_action_id = params[:action_id] if params[:action_id]

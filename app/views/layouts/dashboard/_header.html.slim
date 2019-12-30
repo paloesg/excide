@@ -35,7 +35,7 @@
                 - ::Template.assigned_templates(current_user).each do |t|
                   = link_to symphony_workflows_path(t.slug), class: 'dropdown-item'
                     ' #{t.title}
-                    .badge.badge-pill.badge-secondary.align-text-bottom = t.company_workflows(current_user.company).where(completed: false || nil).count
+                    .badge.badge-pill.badge-secondary.align-text-bottom = t.company_workflows(current_user.company).where(completed: [false, nil]).count
           li.nav-item = link_to "Batches", symphony_batches_index_path, class: 'nav-link'
         ul.navbar-nav.ml-auto
           - if current_user.present? and current_user.has_role? :superadmin
