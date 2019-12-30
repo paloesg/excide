@@ -22,6 +22,7 @@ class Symphony::CheckoutController < ApplicationController
 
   def success
     if params[:session_id]
+      # Store stripe invoice
       GenerateStripeInvoice.new(current_user.company).run
       flash[:notice] = "Thanks for your Subscribing to Symphony PRO."
       redirect_to edit_company_path
