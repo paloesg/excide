@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+  protect_from_forgery with: :exception, prepend: true
 
   include Adapter
   include Pundit
@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.company.name.present?      
+    if current_user.company.name.present?
       if current_user.company.session_handle.blank? and current_user.company.connect_xero?
         connect_to_xero_path
       else
