@@ -59,10 +59,4 @@ class Company < ApplicationRecord
   def self.assigned_companies(user)
     user.roles.includes(:resource).map(&:resource).compact.uniq.reject{ |c| c == user.company }
   end
-
-  def trial_ended
-    if self.trial_end_date.present? and self.trial_end_date < DateTime.current and self.free_trial?
-      self.trial_ends  #only from free trial to basic
-    end
-  end
 end

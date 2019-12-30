@@ -50,4 +50,17 @@ namespace :scheduler do
   task :weekly_batch_email_summary => :environment do
     BatchMailer.weekly_batch_email_summary.deliver_later if Date.current.monday?
   end
+
+  task :check_trial_ended => :environment do
+    companies = Company.all.each do |company|
+      if company.trial_end_date.present? and company.trial_end_date < DateTime.current and company.free_trial?
+        # email users if free trial ended
+        company.users.each do |user|
+          StripeNotificationMailer.free_trial_ending_notification(user).deliver
+        end
+        company.trial_ends  #only from free trial to basic
+        company.save
+      end
+    end
+  end
 end
