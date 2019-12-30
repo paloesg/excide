@@ -11,10 +11,9 @@ function get_document_analysis(template, workflow, job_id){
         get_document_analysis(template, workflow, job_id);  
       }
       else {
-        $('.loading-textract').hide();
+        $('.loading').hide();
         let table = get_table(result.blocks);
         $(".aws-textract-result").text(JSON.stringify(table));
-        console.log(table);
         return table;
       }
     }, 7000)
@@ -81,11 +80,11 @@ function get_text(cell, data){
 }
 
 $(document).on("turbolinks:load", function() {
-  $('.loading-textract').hide();
+  $('.loading').hide();
   $('.do-textract').click(function(){
     let template = $('.template-field').val() ;
     let workflow = $('.workflow-field').val() ;
     run_textract(template, workflow);
-    $('.loading-textract').show();
+    $('.loading').show();
   })
 })
