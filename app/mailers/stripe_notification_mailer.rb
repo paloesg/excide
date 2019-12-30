@@ -3,8 +3,11 @@ class StripeNotificationMailer < ApplicationMailer
 
   def upcoming_payment_notification(user)
     @user = user
-    address = Mail::Address.new @user.email
-    address.display_name = @user.full_name
-    mail(to: address.format, subject: '[Upcoming billing for Symphony PRO]')
+    mail(to: @user.email, subject: '[Upcoming billing for Symphony PRO]')
+  end
+
+  def free_trial_ending_notification(user)
+    @user = user
+    mail(to: @user.email, subject: '[Free trial ending]')
   end
 end
