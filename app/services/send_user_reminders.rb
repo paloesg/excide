@@ -9,8 +9,8 @@ class SendUserReminders
     get_user_reminders
     return OpenStruct.new(success?:true, reminder_count: 0, user: @user, message: 'No reminders for this user.') if @reminders.empty?
     send_email_reminders
-    send_sms_reminders
-    send_slack_reminders
+    send_sms_reminders unless @user.company.basic?
+    send_slack_reminders unless @user.company.basic?
     set_next_reminder
     return OpenStruct.new(success?:true, reminder_count: @reminders.count, user: @user, message: 'Reminders for this user sent.')
   end
