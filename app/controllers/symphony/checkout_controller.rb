@@ -1,9 +1,10 @@
 class Symphony::CheckoutController < ApplicationController
   layout "dashboard/application"
   layout 'metronic/application'
+  after_action :verify_authorized
   def create
+    authorize :checkout, :create?
     @company = Company.find(params[:company_id])
-
     @session = Stripe::Checkout::Session.create(
       customer: current_user.stripe_customer_id,
       payment_method_types: ['card'],
@@ -21,6 +22,7 @@ class Symphony::CheckoutController < ApplicationController
   end
 
   def success
+    authorize :checkout, :success?
     if params[:session_id]
       # Store stripe invoice
       GenerateStripeInvoice.new(current_user.company).run
@@ -33,6 +35,7 @@ class Symphony::CheckoutController < ApplicationController
   end
 
   def cancel
+    authorize :checkout, :cancel?
     DowngradeSubscription.new(current_user.company).run
     redirect_to symphony_root_path, alert: 'You had cancelled your subscription. Re-subscribe to it for more Symphony advanced features.'
   end
