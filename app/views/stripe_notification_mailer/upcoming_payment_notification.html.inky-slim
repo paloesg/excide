@@ -11,6 +11,6 @@ container
 
       p To unsubscribe, click the follow link below:
 
-      = link_to 'Unsubscribe Symphony Pro', edit_company_path, class: 'text-primary'
+      = link_to 'Unsubscribe Symphony Pro', edit_company_url, class: 'text-primary'
       
       p If you have any queries regarding your task, please contact your admin.

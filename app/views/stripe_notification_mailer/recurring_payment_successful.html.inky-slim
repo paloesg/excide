@@ -11,6 +11,6 @@ container
 
       p To check your subscription end date, kindly click the follow link below:
 
-      = link_to 'Check subscription', edit_company_path, class: 'text-primary'
+      = link_to 'Check subscription', edit_company_url, class: 'text-primary'
       
       p If you have any queries regarding your task, please contact your admin.
