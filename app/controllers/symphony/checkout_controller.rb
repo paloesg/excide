@@ -4,7 +4,10 @@ class Symphony::CheckoutController < ApplicationController
   after_action :verify_authorized
   def create
     authorize :checkout, :create?
-    @company = Company.find(params[:company_id])
+    if current_user.stripe_customer_id.nil?
+      current_user.stripe_customer_id = Stripe::Customer.create({email: current_user.email}).id
+      current_user.save
+    end
     @session = Stripe::Checkout::Session.create(
       customer: current_user.stripe_customer_id,
       payment_method_types: ['card'],
