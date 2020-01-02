@@ -16,6 +16,7 @@ class DowngradeSubscription
   def append_past_invoices
     # append stripe invoice data to past invoice when subscription is cancelled
     @company.past_invoice << @company.stripe_invoice_data
+    @company.stripe_invoice_data = nil
     @company.downgrade
     @company.save
   end
