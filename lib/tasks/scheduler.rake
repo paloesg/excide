@@ -52,7 +52,7 @@ namespace :scheduler do
   end
 
   task :check_trial_ended => :environment do
-    companies = Company.all.each do |company|
+    Company.all.each do |company|
       if company.trial_end_date.present? and company.trial_end_date < DateTime.current and company.free_trial?
         # email users if free trial ended
         company.users.each do |user|
