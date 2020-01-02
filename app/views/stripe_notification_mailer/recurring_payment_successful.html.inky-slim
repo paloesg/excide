@@ -7,10 +7,10 @@ container
     columns
       p Hi #{@user.first_name},
 
-      p Your subscription is coming to an end. Symphony will automatically help you renew it.
+      p Your subscription has been successfully renewed.
 
-      p To unsubscribe, click the follow link below:
+      p To check your subscription end date, kindly click the follow link below:
 
-      = link_to 'Unsubscribe Symphony Pro', edit_company_path, class: 'text-primary'
+      = link_to 'Check subscription', edit_company_path, class: 'text-primary'
       
       p If you have any queries regarding your task, please contact your admin.
