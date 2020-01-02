@@ -1,0 +1,12 @@
+container
+  row.collapse
+    columns small="6" valign="middle"
+      = image_tag("https://excide.s3-ap-southeast-1.amazonaws.com/excide-logo.png", style: "width: 50%; height: 50%")
+  spacer size="16"
+  row
+    columns
+      p Hi #{@user.first_name},
+
+      p Your company's free trial has ended. Please subscribe to PRO for more advanced features!
+      
+      p If you have any queries regarding your task, please contact your admin.

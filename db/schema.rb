@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_20_042524) do
+ActiveRecord::Schema.define(version: 2019_12_31_011533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -147,8 +147,10 @@ ActiveRecord::Schema.define(version: 2019_12_20_042524) do
     t.boolean "connect_xero", default: true
     t.string "xero_organisation_name"
     t.integer "account_type"
-    t.json "stripe_subscription_plan_data"
     t.datetime "trial_end_date"
+    t.json "stripe_invoice_data", default: []
+    t.json "stripe_subscription_plan_data", default: []
+    t.json "past_invoice", default: []
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"

@@ -2,8 +2,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # disabled layout to show registration page
   layout 'dashboard/application', except: [:new, :additional_information, :create]
   layout 'metronic/application', only: [:edit]
-  skip_before_action :check_trial_period
-
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 

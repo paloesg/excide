@@ -1,0 +1,16 @@
+container
+  row.collapse
+    columns small="6" valign="middle"
+      = image_tag("https://excide.s3-ap-southeast-1.amazonaws.com/excide-logo.png", style: "width: 50%; height: 50%")
+  spacer size="16"
+  row
+    columns
+      p Hi #{@user.first_name},
+
+      p Your subscription is coming to an end. Symphony will automatically help you renew it.
+
+      p To unsubscribe, click the follow link below:
+
+      = link_to 'Unsubscribe Symphony Pro', edit_company_path, class: 'text-primary'
+      
+      p If you have any queries regarding your task, please contact your admin.
