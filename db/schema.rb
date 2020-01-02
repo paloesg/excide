@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_31_011533) do
+ActiveRecord::Schema.define(version: 2020_01_02_094019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -406,11 +406,11 @@ ActiveRecord::Schema.define(version: 2019_12_31_011533) do
     t.integer "document_template_id"
     t.string "link_url"
     t.boolean "important"
-    t.bigint "template_id"
+    t.bigint "child_workflow_template_id"
+    t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
-    t.index ["template_id"], name: "index_tasks_on_template_id"
   end
 
   create_table "templates", id: :serial, force: :cascade do |t|
@@ -588,7 +588,7 @@ ActiveRecord::Schema.define(version: 2019_12_31_011533) do
   add_foreign_key "tasks", "document_templates"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
-  add_foreign_key "tasks", "templates"
+  add_foreign_key "tasks", "templates", column: "child_workflow_template_id"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
   add_foreign_key "workflow_actions", "companies"
