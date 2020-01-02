@@ -7,6 +7,6 @@ container
     columns
       p Hi #{@user.first_name},
 
-      p Your company's free trial has ended. Please click the link below to subscribe to Symphony PRO!
+      p Your company's free trial has ended. Please subscribe to PRO for more advanced features!
       
       p If you have any queries regarding your task, please contact your admin.

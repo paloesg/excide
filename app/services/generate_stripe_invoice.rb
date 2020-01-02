@@ -4,7 +4,12 @@ class GenerateStripeInvoice
   end
 
   def run
-    @company.stripe_invoice_data = Stripe::Invoice.retrieve(@company.stripe_subscription_plan_data["latest_invoice"])
-    @company.save
+    retrive_invoice
+  end
+
+  private
+  def retrive_invoice
+  	@company.stripe_invoice_data = Stripe::Invoice.retrieve(@company.stripe_subscription_plan_data["latest_invoice"])
+  	@company.save
   end
 end
