@@ -4,6 +4,7 @@ class Symphony::CheckoutController < ApplicationController
   after_action :verify_authorized
   def create
     authorize :checkout, :create?
+    # Create a stripe account for existing user (without having to register again)
     if current_user.stripe_customer_id.nil?
       current_user.stripe_customer_id = Stripe::Customer.create({email: current_user.email}).id
       current_user.save
@@ -27,8 +28,6 @@ class Symphony::CheckoutController < ApplicationController
   def success
     authorize :checkout, :success?
     if params[:session_id]
-      # Store stripe invoice
-      GenerateStripeInvoice.new(current_user.company).run
       flash[:notice] = "Thanks for your Subscribing to Symphony PRO."
       redirect_to edit_company_path
     else

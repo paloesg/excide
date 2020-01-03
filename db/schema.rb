@@ -148,9 +148,7 @@ ActiveRecord::Schema.define(version: 2020_01_02_094019) do
     t.string "xero_organisation_name"
     t.integer "account_type"
     t.datetime "trial_end_date"
-    t.json "stripe_invoice_data", default: []
     t.json "stripe_subscription_plan_data", default: []
-    t.json "past_invoice", default: []
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
