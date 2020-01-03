@@ -127,7 +127,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def multi_layout
     case action_name
     when "new", "additional_information"
-      "stack/application"
+      "application"
     else
       "dashboard/application"
     end
