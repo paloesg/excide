@@ -35,11 +35,15 @@ module Stripe
 
     def handle_invoice_payment_succeeded(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      # Check for upcoming invoice from stripe automated billing and update the database with the new subscription data.
-      # Need to check whether webhook returns the next subscription or the current subscription
-      # if @current_user.company.update(stripe_subscription_plan_data: Stripe::Subscription.retrieve(event.data.object.subscription))
-      #   StripeNotificationMailer.recurring_payment_successful(@current_user).deliver_later
-      # end
+      # Check for recurring invoice payment successful, then send email notification.
+      # The below condition checks that user has not cancel subscription. If this condition is not checked, it will interfere with the handle_checkout_session_completed and overwrite its stripe subscription plan data.
+      if @current_user.company.stripe_subscription_plan_data["current_invoice"].present?
+        # Append current invoice to past invoice and save the new invoice to current invoice
+        @current_user.company.stripe_subscription_plan_data["past_invoices"] << @current_user.company.stripe_subscription_plan_data["current_invoice"]
+        @current_user.company.stripe_subscription_plan_data["current_invoice"] = Stripe::Invoice.retrieve(event.data.object.id)
+        @current_user.company.save
+        StripeNotificationMailer.recurring_payment_successful(@current_user).deliver_later
+      end
     end
   end
 end

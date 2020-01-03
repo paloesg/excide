@@ -69,13 +69,13 @@
         h5 Download current invoice:
         .row
           .col-sm-12
-            - if @company.stripe_subscription_plan_data['current_invoice'].present?
-              = link_to Time.at(@company.stripe_subscription_plan_data['current_invoice']['period_end']).strftime("%d-%b-%Y"), @company.stripe_subscription_plan_data['current_invoice']['invoice_pdf'], class: 'text-primary'
+            = link_to Time.at(@company.stripe_subscription_plan_data['current_invoice']['period_end']).strftime("%d-%b-%Y"), @company.stripe_subscription_plan_data['current_invoice']['invoice_pdf'], class: 'text-primary' if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data["current_invoice"].present?
         h5.mt-2 Download past invoices:
         .row
           .col-sm-12
-            - @company.stripe_subscription_plan_data['past_invoices'].each do |past_invoice|
-              = link_to Time.at(past_invoice['period_end']).strftime("%d-%b-%Y"), past_invoice['invoice_pdf'], class: 'text-primary'
+            - if @company.stripe_subscription_plan_data.present?
+              - @company.stripe_subscription_plan_data['past_invoices'].each do |past_invoice|
+                = link_to Time.at(past_invoice['period_end']).strftime("%d-%b-%Y"), past_invoice['invoice_pdf'], class: 'text-primary' 
               br
     .card.mb-4
       .card-header Xero Details
