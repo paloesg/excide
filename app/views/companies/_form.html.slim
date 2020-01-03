@@ -69,7 +69,7 @@
         h5 Download current invoice:
         .row
           .col-sm-12
-            - if @company.stripe_subscription_plan_data.present?
+            - if @company.stripe_subscription_plan_data['current_invoice'].present?
               = link_to Time.at(@company.stripe_subscription_plan_data['current_invoice']['period_end']).strftime("%d-%b-%Y"), @company.stripe_subscription_plan_data['current_invoice']['invoice_pdf'], class: 'text-primary'
         h5.mt-2 Download past invoices:
         .row
