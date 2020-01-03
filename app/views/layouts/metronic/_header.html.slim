@@ -30,7 +30,7 @@
                 ' #{current_user.company.name}
             = content_tag :span, "Staging", class: "badge badge-danger" if ENV['APP_NAME'] == "excide-staging"
             = content_tag :span, "Trial", class: "badge badge-warning ml-2" if current_user.company.free_trial?
-            = content_tag :span, "Basic", class: "badge badge-danger ml-2" if current_user.company.basic?
+            = content_tag :span, "Basic", class: "badge badge-secondary ml-2" if current_user.company.basic?
             = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.pro?
       /! end:: Brand
       /! begin:: Header Topbar
