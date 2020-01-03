@@ -60,22 +60,22 @@
           - else
             | End subscription date:
             br
-            h5.mt-2 = Time.at(@company.stripe_subscription_plan_data["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
+            h5.mt-2 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
             br
             = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-primary'
-    .card.mb-4
-      .card-header Invoices
-      .card-body
-        h5 Download current invoice:
-        .row
-          .col-sm-12
-            - if @company.stripe_invoice_data.present?
-              = link_to Time.at(@company.stripe_invoice_data['period_end']).strftime("%d-%b-%Y"), @company.stripe_invoice_data['invoice_pdf'], class: 'text-primary'
-        h5.mt-2 Download past invoices:
-        .row
-          .col-sm-12
-            - @company.past_invoice.each do |past_invoice|
-              = link_to Time.at(past_invoice['period_end']).strftime("%d-%b-%Y"), past_invoice['invoice_pdf'], class: 'text-primary'
+    / .card.mb-4
+    /   .card-header Invoices
+    /   .card-body
+    /     h5 Download current invoice:
+    /     .row
+    /       .col-sm-12
+    /         - if @company.stripe_invoice_data.present?
+    /           = link_to Time.at(@company.stripe_invoice_data['period_end']).strftime("%d-%b-%Y"), @company.stripe_invoice_data['invoice_pdf'], class: 'text-primary'
+    /     h5.mt-2 Download past invoices:
+    /     .row
+    /       .col-sm-12
+    /         - @company.past_invoice.each do |past_invoice|
+    /           = link_to Time.at(past_invoice['period_end']).strftime("%d-%b-%Y"), past_invoice['invoice_pdf'], class: 'text-primary'
               br
     .card.mb-4
       .card-header Xero Details

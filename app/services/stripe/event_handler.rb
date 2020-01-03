@@ -17,7 +17,12 @@ module Stripe
       # Find the current_user using the data returned by stripe webhook
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       # Store the event data into database of company
-      @current_user.company.stripe_subscription_plan_data = Stripe::Subscription.retrieve(event.data.object.subscription)
+      puts "stripe Subscription: #{event.data.object.subscription}"
+      @current_user.company.stripe_subscription_plan_data = {
+        subscription: Stripe::Subscription.retrieve(event.data.object.subscription),
+        current_invoice: Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"]),
+        past_invoices: @current_user.company.stripe_subscription_plan_data.empty? ? [] : @current_user.company.stripe_subscription_plan_data["past_invoices"]
+      }  
       @current_user.company.upgrade
       @current_user.company.save
     end
@@ -32,9 +37,9 @@ module Stripe
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       # Check for upcoming invoice from stripe automated billing and update the database with the new subscription data.
       # Need to check whether webhook returns the next subscription or the current subscription
-      if @current_user.company.update(stripe_subscription_plan_data: Stripe::Subscription.retrieve(event.data.object.subscription))
-        StripeNotificationMailer.recurring_payment_successful(@current_user).deliver_later
-      end
+      # if @current_user.company.update(stripe_subscription_plan_data: Stripe::Subscription.retrieve(event.data.object.subscription))
+      #   StripeNotificationMailer.recurring_payment_successful(@current_user).deliver_later
+      # end
     end
   end
 end
