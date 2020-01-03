@@ -29,7 +29,7 @@ class TemplatePolicy < ApplicationPolicy
 
   def check_template?
     #If user's company matches the template's company, allow authorization usage of template when creating new workflows. Also, record.company.nil? accounts for when the template is a general template for cloning.
-    user.company == record.company or record.company.nil?
+    (user.company == record.company or record.company.nil?) && (user.company.basic? ? (record.sections.map {|s| s.tasks.select {|t| t.task_type == "create_invoice_payable"|| t.task_type == "xero_send_invoice" || t.task_type == "create_invoice_receivable"|| t.task_type == "coding_invoice"}}.flatten.empty?) : true)
   end
 
   class Scope < Scope
