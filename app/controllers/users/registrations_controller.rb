@@ -92,7 +92,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def additional_information
     build_addresses
     @user = current_user
-    render layout: 'stack/application'
+    render layout: 'application'
   end
 
   protected
