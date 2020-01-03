@@ -6,15 +6,15 @@ footer.footer-4.space--sm.text-center-xs.bg--dark
     .row
       .col-md-6
         span &copy; #{Time.current.year} Excide Pte. Ltd. All rights reserved. | #{link_to "Privacy Policy", privacy_path}
-      .col-md-6.text-right.text-center-xs.block--xs
-        ul.list-inline.list--hover
-          li
+      .col-md-6
+        ul.list-inline.list--hover.d-flex.justify-content-center.justify-content-lg-end
+          li.pr-2
             a href="https://twitter.com/excidevfo/"
               = fa_icon "twitter"
-          li
+          li.pr-2
             a href="https://www.facebook.com/excidevfo/"
               = fa_icon "facebook"
-          li
+          li.pr-2
             a href="https://www.linkedin.com/company/excide/"
               = fa_icon "instagram"
     /! end of row
