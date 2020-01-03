@@ -4,22 +4,19 @@ footer.footer-4.space--sm.text-center-xs.bg--dark
       .col-md-6.d-flex.align-items-center
         img.logo alt="Image" src=image_url('excide-logo-light.png')
     .row
-      .col-md-6        
-        span &copy; #{Time.current.year} Excide Pte. Ltd. All rights reserved. | #{link_to "Privacy Policy", privacy_path}     
+      .col-md-6
+        span &copy; #{Time.current.year} Excide Pte. Ltd. All rights reserved. | #{link_to "Privacy Policy", privacy_path}
       .col-md-6.text-right.text-center-xs.block--xs
         ul.social-list.list-inline.list--hover
           li
-            a href="#" 
-              i.socicon.socicon-google.icon.icon--xs
+            a href="https://twitter.com/excidevfo/"
+              = fa_icon "twitter"
           li
-            a href="#" 
-              i.socicon.socicon-twitter.icon.icon--xs
+            a href="https://www.facebook.com/excidevfo/"
+              = fa_icon "facebook"
           li
-            a href="#" 
-              i.socicon.socicon-facebook.icon.icon--xs
-          li
-            a href="#" 
-              i.socicon.socicon-instagram.icon.icon--xs
+            a href="https://www.linkedin.com/company/excide/"
+              = fa_icon "instagram"
     /! end of row
   /! end of container
 
