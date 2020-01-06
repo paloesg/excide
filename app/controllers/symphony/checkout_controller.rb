@@ -14,7 +14,7 @@ class Symphony::CheckoutController < ApplicationController
       payment_method_types: ['card'],
       subscription_data: {
         items: [{
-          plan: 'plan_GMuEzp27rnQXc5',
+          plan: ENV['STRIPE_PLAN'],
         }],
       },
       success_url: symphony_checkout_success_url + '?session_id={CHECKOUT_SESSION_ID}',
@@ -39,6 +39,6 @@ class Symphony::CheckoutController < ApplicationController
   def cancel
     authorize :checkout, :cancel?
     DowngradeSubscription.new(current_user.company).run
-    redirect_to symphony_root_path, alert: 'You have cancelled your subscription. Re-subscribe to it for more Symphony advanced features.'
+    redirect_to symphony_root_path, alert: 'You have cancelled your subscription. Re-subscribe to PRO for more Symphony advanced features.'
   end
 end
