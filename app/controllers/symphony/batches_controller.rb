@@ -23,7 +23,7 @@ class Symphony::BatchesController < ApplicationController
   def create
     authorize Batch
     @template = Template.find_by(slug: params[:batch][:template_id])
-    @generate_batch = GenerateBatch.new(current_user, @template).run 
+    @generate_batch = GenerateBatch.new(current_user, @template).run
     authorize @generate_batch.batch
     respond_to do |format|
       if @generate_batch.success?
@@ -48,7 +48,6 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def load_batch
-    authorize @batch
     get_batches = policy_scope(Batch).includes(:user, [workflows: :workflow_actions])
     completed_batches = get_batches.where(completed: true)
     if current_user.has_role? :admin, @company
