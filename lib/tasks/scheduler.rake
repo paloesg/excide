@@ -59,6 +59,7 @@ namespace :scheduler do
           NotificationMailer.free_trial_ending_notification(user).deliver
         end
         company.trial_ends  #only from free trial to basic
+        company.update_attributes(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)
         company.save
       end
     end
