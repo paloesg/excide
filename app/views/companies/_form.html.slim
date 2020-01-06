@@ -76,7 +76,7 @@
             - if @company.stripe_subscription_plan_data.present?
               - @company.stripe_subscription_plan_data['past_invoices'].each do |past_invoice|
                 = link_to Time.at(past_invoice['period_end']).strftime("%d-%b-%Y"), past_invoice['invoice_pdf'], class: 'text-primary' 
-              br
+                br
     .card.mb-4
       .card-header Xero Details
       .card-body
