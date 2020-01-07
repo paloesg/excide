@@ -18,29 +18,34 @@ module Stripe
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       # Store the event data into database of company
       puts "stripe Subscription: #{event.data.object.subscription}"
-      @current_user.company.stripe_subscription_plan_data = {
-        subscription: Stripe::Subscription.retrieve(event.data.object.subscription),
-        current_invoice: Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"]),
-        past_invoices: @current_user.company.stripe_subscription_plan_data.empty? ? [] : @current_user.company.stripe_subscription_plan_data["past_invoices"]
-      }  
+      # If stripe data is empty, initialize it
+      if @current_user.company.stripe_subscription_plan_data.empty?
+        @current_user.company.stripe_subscription_plan_data = {
+          subscription: Stripe::Subscription.retrieve(event.data.object.subscription),
+          invoices: [ Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"]) ],
+        }
+      #else, append the invoice data to the invoices key
+      else
+        @current_user.company.stripe_subscription_plan_data['subscription'] = Stripe::Subscription.retrieve(event.data.object.subscription)
+        @current_user.company.stripe_subscription_plan_data['invoices'] << Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"])
+      end
       @current_user.company.upgrade
       @current_user.company.save
     end
 
-    def handle_invoice_upcoming(event)
-      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      # Notify user when payment is upcoming for the next month
-      StripeNotificationMailer.upcoming_payment_notification(@current_user).deliver_later
-    end
+    # def handle_invoice_upcoming(event)
+    #   @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+    #   # Notify user when payment is upcoming for the next month
+    #   StripeNotificationMailer.upcoming_payment_notification(@current_user).deliver_later
+    # end
 
     def handle_invoice_payment_succeeded(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       # Check for recurring invoice payment successful, then send email notification.
       # The below condition checks that user has not cancel subscription. If this condition is not checked, it will interfere with the handle_checkout_session_completed and overwrite its stripe subscription plan data.
-      if @current_user.company.stripe_subscription_plan_data["current_invoice"].present?
-        # Append current invoice to past invoice and save the new invoice to current invoice
-        @current_user.company.stripe_subscription_plan_data["past_invoices"] << @current_user.company.stripe_subscription_plan_data["current_invoice"]
-        @current_user.company.stripe_subscription_plan_data["current_invoice"] = Stripe::Invoice.retrieve(event.data.object.id)
+      if @current_user.company.stripe_subscription_plan_data["invoices"].present?
+        # Append new invoice into invoices key in json subscription plan data
+        @current_user.company.stripe_subscription_plan_data["invoices"] << Stripe::Invoice.retrieve(event.data.object.id)
         @current_user.company.save
         StripeNotificationMailer.recurring_payment_successful(@current_user).deliver_later
       end
