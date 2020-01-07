@@ -36,5 +36,5 @@ require("selectize")
 require("algoliasearch")
 require("tempusdominus-bootstrap-4")
 
-require("../components/stripe");
-require("../components/turbolinks-compatibility")
+require("../../components/stripe");
+require("../../components/turbolinks-compatibility")
