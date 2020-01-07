@@ -64,4 +64,12 @@ namespace :scheduler do
       end
     end
   end
+
+  task :check_subscription_end_date_upon_cancellation => :environment do
+    Company.all.each do |company|
+      if company.stripe_subscription_plan_data.present? and company.stripe_subscription_plan_data['cancel'] == true and (company.stripe_subscription_plan_data["subscription"]["current_period_end"] < Time.current.to_i)
+        DowngradeSubscriptionService.new(company).run
+      end
+    end
+  end
 end

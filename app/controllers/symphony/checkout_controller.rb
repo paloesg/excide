@@ -38,7 +38,8 @@ class Symphony::CheckoutController < ApplicationController
 
   def cancel
     authorize :checkout, :cancel?
-    DowngradeSubscriptionService.new(current_user.company).run
-    redirect_to symphony_root_path, alert: 'You have cancelled your subscription. Re-subscribe to PRO for more Symphony advanced features.'
+    current_user.company.stripe_subscription_plan_data['cancel'] = true
+    current_user.company.save
+    redirect_to symphony_root_path, alert: 'You have cancelled your subscription. You have still have the PRO features until the end of your subscription date. Re-subscribe to PRO for more Symphony advanced features.'
   end
 end
