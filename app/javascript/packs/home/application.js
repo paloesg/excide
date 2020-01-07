@@ -19,4 +19,3 @@ require("turbolinks").start()
 
 import 'bootstrap/dist/js/bootstrap';
 import '../../stack/application.js';
-import '../../stack/footer.js';
