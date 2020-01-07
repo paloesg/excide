@@ -194,3 +194,12 @@
   margin-bottom: 16px;
   color: #c3502e;
 }
+
+.dropdown-item.active,.dropdown-item:active, .dropdown-menu > .dropdown-item:active {
+  text-decoration: none;
+  background-color: #82878c !important;
+}
+
+.dropdown-menu > .dropdown-item > a.nav-link:active, ul.dropdown-menu > li.dropdown-item > a:active {
+  color: #fff;
+}
