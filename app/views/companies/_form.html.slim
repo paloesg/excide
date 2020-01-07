@@ -71,7 +71,8 @@
           .col-sm-12
             - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data["invoices"].present?
               - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
-                = link_to Time.at(invoice['period_end']).strftime("%d-%b-%Y"), invoice['invoice_pdf'], class: 'text-primary'
+                / only display invoices that are in the 12 months span period
+                = link_to Time.at(invoice['period_end']).strftime("%d-%b-%Y"), invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
                 br 
     .card.mb-4
       .card-header Xero Details
