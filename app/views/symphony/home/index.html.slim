@@ -47,10 +47,10 @@
       .kt-portlet__body
         .form-group
           = label_tag "template", "Select template:"
-          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
+          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
       .kt-portlet__foot
         .kt-form__actions
-          = link_to 'New Recurring Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-recurring-workflow'
+          = link_to 'New Recurring Workflow', '', class: ['btn', 'btn-primary', 'd-block', 'mb-2', ('disabled' if current_user.company.basic?) ], id: 'new-recurring-workflow'
   .col-md-4
     .kt-portlet
       .kt-portlet__head
@@ -61,10 +61,10 @@
         .form-group
           .row
             .col-xl-8.col-lg-8.col-md-8.mr-2
-              = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
+              = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
             /,disabled: current_user.company.basic?
             .col-xl-3.col-lg-3.col-md-3.mb-3
-              = submit_tag 'Submit', class: 'btn btn-primary', id: 'drag-and-drop-submit'
+              = submit_tag 'Submit', disabled: current_user.company.basic?, class: 'btn btn-primary', id: 'drag-and-drop-submit'
               /, disabled: current_user.company.basic?
           = form_tag @s3_direct_post.url, class: 'dropzone dropzone-default dz-clickable multiple_uploads', id: 'batch-uploader'
            - @s3_direct_post.fields.each do |key, value|
