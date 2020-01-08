@@ -7,7 +7,13 @@ container
     columns
       p Hi #{@user.first_name},
 
-      p Your subscription has been successfully renewed.
+      p Your payment for Symphony Pro has been successful. Your subscription period will be from #{Time.at(@start_date).strftime("%d-%b-%Y")} to #{Time.at(@end_date).strftime("%d-%b-%Y")}.
+
+      p To view your invoice, click the link below.
+
+      = link_to 'Download Invoice PDF', @invoice_pdf, class: 'text-primary'
+      
+      p If you have any queries regarding your task, please contact your admin.
 
       p To check your subscription end date, kindly click the follow link below:
 

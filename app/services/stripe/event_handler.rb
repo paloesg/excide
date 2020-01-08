@@ -40,17 +40,15 @@ module Stripe
     #   StripeNotificationMailer.upcoming_payment_notification(@current_user).deliver_later
     # end
 
-    # def handle_invoice_payment_succeeded(event)
-    #   @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-    #   # Check for recurring invoice payment successful, then send email notification.
-    #   # The below condition checks that user has not cancel subscription. If this condition is not checked, it will interfere with the handle_checkout_session_completed and overwrite its stripe subscription plan data.
-    #   if @current_user.company.stripe_subscription_plan_data["invoices"].present?
-    #     # Append new invoice into invoices key in json subscription plan data
-    #     @current_user.company.stripe_subscription_plan_data["invoices"] << Stripe::Invoice.retrieve(event.data.object.id)
-    #     @current_user.company.save
-    #     StripeNotificationMailer.recurring_payment_successful(@current_user).deliver_later
-    #   end
-    # end
+    def handle_invoice_payment_succeeded(event)
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      puts "CURRENT USER : #{event.data.object.subscription}"
+      subscription = Stripe::Subscription.retrieve(event.data.object.subscription)
+      period_start = subscription["current_period_start"]
+      period_end = subscription["current_period_end"]
+      invoice_pdf = event.data.object["invoice_pdf"]
+      StripeNotificationMailer.payment_successful(@current_user, period_start, period_end, invoice_pdf).deliver
+    end
   end
 end
 
