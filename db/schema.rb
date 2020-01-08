@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_08_082633) do
+ActiveRecord::Schema.define(version: 2020_01_08_034648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -175,6 +175,7 @@ ActiveRecord::Schema.define(version: 2019_11_08_082633) do
     t.integer "user_id"
     t.bigint "workflow_action_id"
     t.uuid "workflow_id"
+    t.string "aws_textract_job_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
     t.index ["document_template_id"], name: "index_documents_on_document_template_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
