@@ -35,6 +35,7 @@
           button class="btn btn-primary do-textract" Do Textract
           = hidden_field_tag :template, @workflow.template.slug, class:"template-field"
           = hidden_field_tag :workflow_id, @workflow.id, class:"workflow-field"
+          = hidden_field_tag :textract_job_id, @document.aws_textract_job_id, class:"textract-job-id-field"
         .col-auto.ml-auto.text-center          
           | Invoice
           .invoice-nav

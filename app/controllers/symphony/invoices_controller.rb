@@ -12,7 +12,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
 
-  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice, :run_textract, :get_document_analysis]
+  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice, :get_document_analysis, :get_xero_details_json]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -259,37 +259,19 @@ class Symphony::InvoicesController < ApplicationController
     end
   end
 
-  def run_textract
-    # get object file location and name
-    s3_uri = URI.parse(@document.file_url)
-    s3_uri.path.slice!(0)
-    file_name = s3_uri.path
-    # example: "excide/uploads/3d8ff957-532b-4f37-8fbe-9baa522d337c/191126-fuji-xerox-250-87.pdf"
-
-    # asynchronus operation
-    resp = AWS_TEXTRACT.start_document_analysis({
-      document_location: {
-        s3_object: {
-          bucket: ENV['S3_BUCKET'],
-          name: file_name
-        }
-      },
-      feature_types: ["TABLES"],
-      job_tag: "Receipt",
+  def get_document_analysis
+    job_id = params[:job_id]
+    resp = AWS_TEXTRACT.get_document_analysis({
+      job_id: job_id
     })
-
     respond_to do |format|
       format.json  { render :json => resp }
     end
   end
 
-  def get_document_analysis
-    job_id = params[:job_id]
-    resp = AWS_TEXTRACT.get_document_analysis({
-      job_id: job_id.to_s
-    })
+  def get_xero_details_json
     respond_to do |format|
-      format.json  { render :json => resp }
+      format.json  { render :json => [{"accounts": @full_account_code}, {"taxes": @full_tax_code}, {"tracking_categories_1": @tracking_categories_1},  {"tracking_categories_2": @tracking_categories_2}, {"items": @items}] }
     end
   end
 
