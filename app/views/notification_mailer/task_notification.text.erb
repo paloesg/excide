@@ -3,7 +3,7 @@ Hi <%= @user.first_name %>,
 You have a new task that you are required to complete.
 
 The instructions for the task are as follows: "<%= @task.instructions %>". You can access the task from this URL:
-<% if ['create_invoice_payable','create_invoice_receivable'].include? @task.task_type %>
+<% if ['pro_create_invoice_payable','pro_create_invoice_receivable'].include? @task.task_type %>
   <%= new_symphony_invoice_url(@task.section.template.slug, @action.workflow.id) %>
 <% else %>
   <%= symphony_workflow_url(@task.section.template.slug, @action.workflow.id) %>

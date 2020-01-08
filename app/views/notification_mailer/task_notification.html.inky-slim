@@ -13,7 +13,7 @@ container
         |.
       p
         ' The instructions for the task are as follows: "#{@task.instructions}". You can access the task from this link:
-        - if ['create_invoice_payable','create_invoice_receivable'].include? @task.task_type
+        - if ['pro_create_invoice_payable','pro_create_invoice_receivable'].include? @task.task_type
           a href="#{new_symphony_invoice_url(@task.section.template.slug, @action.workflow.id)}" #{@task.section.template.title} - #{@action.workflow.id}
         - else
           a href="#{symphony_workflow_url(@task.section.template.slug, @action.workflow.id)}" #{@task.section.template.title} - #{@action.workflow.id}
