@@ -5,14 +5,14 @@ section.height-100.imagebg.text-center data-overlay="4"
     .row
       .col-md-7.col-lg-5
         .boxed.boxed--lg.boxed--border
-          h2 Login
-          p.lead
-            | Welcome, sign in with your account credentials
+          h2
+            | Login to your
+            br
+            | Symphony account
           = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
             .row
               .col-md-12
                 = f.email_field :email, placeholder: "Email"
-              .col-md-12
                 = f.password_field :password, placeholder: "Password", autocomplete: "off"
               - if devise_mapping.rememberable?
                 .col-md-12
@@ -24,7 +24,8 @@ section.height-100.imagebg.text-center data-overlay="4"
                 = f.submit "Log in", class:"btn btn--excide type--uppercase"
             .row.mt-3
               .col-md-12
-                = link_to "Forgot password", new_password_path(@user)
+                = link_to "Forgot password?", new_password_path(@user)
             .row
               .col-md-12
-                span Not a member? #{link_to "Sign up now", new_user_registration_path(@user)}
+                ' Don't have an account?
+                = link_to "Sign up now", new_user_registration_path
