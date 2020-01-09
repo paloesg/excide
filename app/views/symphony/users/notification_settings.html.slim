@@ -23,6 +23,9 @@
                 .form-group.form-check
                   = s.check_box :reminder_slack,{ class: 'form-check-input' }, 'true', 'false'
                   = s.label :reminder_slack, 'Slack', class: 'form-check-label'
+                .form-group.form-check
+                  = s.check_box :reminder_whatsapp,{ class: 'form-check-input' }, 'true', 'false'
+                  = s.label :reminder_whatsapp, 'Whatsapp', class: 'form-check-label'
       .col-md-4.col-sm-12
         .row
           .col-sm-12
@@ -38,6 +41,9 @@
                 .form-group.form-check
                   = s.check_box :task_slack, { class: 'form-check-input' }, 'true', 'false'
                   = s.label :task_slack, 'Slack', class: 'form-check-label'
+                .form-group.form-check
+                  = s.check_box :task_whatsapp, { class: 'form-check-input' }, 'true', 'false'
+                  = s.label :task_whatsapp, 'Whatsapp', class: 'form-check-label'
       .col-md-4.col-sm-12
         .row
           .col-sm-12
@@ -53,6 +59,9 @@
                 .form-group.form-check
                   = s.check_box :batch_slack, { class: 'form-check-input' }, 'true', 'false'
                   = s.label :batch_slack, 'Slack', class: 'form-check-label'
+                .form-group.form-check
+                  = s.check_box :batch_whatsapp, { class: 'form-check-input' }, 'true', 'false'
+                  = s.label :batch_whatsapp, 'Whatsapp', class: 'form-check-label'
     .row
       .col-sm-12
         = s.submit 'Save', class: 'btn btn-primary pull-right'

@@ -46,9 +46,9 @@ class Symphony::UsersController < ApplicationController
 
   def change_company
     if @user.update(user_params)
-      redirect_to symphony_root_path, notice: 'Switched company to ' + @user.company.name + '.'
+      redirect_to symphony_root_path, notice: 'Company changed to ' + @user.company.name + '.'
     else
-      redirect_to symphony_root_path, error: 'Unable to switch companies.'
+      redirect_to symphony_root_path, error: 'Sorry, there was an error when trying to switch company.'
     end
   end
 
@@ -59,7 +59,7 @@ class Symphony::UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to symphony_root_path, notice: 'Notification settings updated successfully!'
     else
-      redirect_to notification_settings_symphony_user(@user), alert: 'Notification settings not updated'
+      redirect_to notification_settings_symphony_user(@user), alert: 'Error updating notification settings.'
     end
   end
 
@@ -67,7 +67,7 @@ class Symphony::UsersController < ApplicationController
     @user = current_user
     if @user.update(user_params)
       process_payment(@user.id, @user.email, user_params[:stripe_card_token])
-      flash[:notice] = 'Additional Information updated successfully!'
+      flash[:notice] = 'User details saved successfully!'
       if @user.company.connect_xero
         redirect_to connect_to_xero_path
       else
@@ -93,7 +93,7 @@ class Symphony::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :stripe_card_token, :stripe_customer_id, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack], :role_ids => [], company_attributes:[:id, :name, :connect_xero, address_attributes: [:id, :line_1, :line_2, :postal_code]])
+    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :stripe_card_token, :stripe_customer_id, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :reminder_whatsapp, :task_sms, :task_email, :task_slack, :task_whatsapp, :batch_sms, :batch_email, :batch_slack, :batch_whatsapp], :role_ids => [], company_attributes:[:id, :name, :connect_xero, address_attributes: [:id, :line_1, :line_2, :postal_code]])
   end
 
   def build_addresses

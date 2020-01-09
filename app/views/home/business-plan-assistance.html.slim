@@ -1,27 +1,27 @@
 - set_meta_tags title: 'Business Plan Assistance', description: 'Achieve business growth with an effective business plan. Excide helps  with market analysis, organization management, marketing, sales, funding, financial projections.', reverse: true
-section.page-title.page-title-1.image-bg.overlay
+section.text-center.imagebg.space--lg data-overlay="3"
   .background-image-holder
     img.background-image alt="image" src=image_path('business-plan-assistance.jpg')
   .container
     .row
-      .col-md-12.text-center
-        h1.uppercase.mb8 Business Plan Assistance
-        p.lead.mb64 Assisting you in planning your business ventures
-  ol.breadcrumb.breadcrumb-2.d-flex.justify-content-center
-    li.breadcrumb-item
-      a href="/" Home
-    li.breadcrumb-item
-      a href="/virtual-financial-officer" Virtual Financial Officer
-    li.breadcrumb-item.active Business Plan Assistance
+      .col-md-8.col-lg-12
+        h1.type-uppercase Business Plan Assistance
+        h4 Assisting you in planning your business ventures
+        ol.breadcrumbs
+          li
+            a href="/"  Home
+          li
+            a href="/financial-analytics-reporting/"  Virtual Financial Officer
+          li Business Plan Assistance
 section
   .container
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h3.mb64.uppercase Every business needs a business plan
+          h3.mb-5.type--uppercase Every business needs a business plan
         p.lead.m32.pb32 Every business needs a business plan. It is the first essential step to take before entering the business. Many entrepreneurs start out with a brilliant idea but with a badly planned business structure, their business fail due to bad execution and poor business planning.
         p.lead.m32 Business plans are strategic and is important for businesses. By planning out a detailed business strategy, you will be able to have a better idea how you are going to handle your business in both short term and long term. This plan will be able to determine what actions you are going to take when your business becomes more established in the future.
-section.pt240.pb240.image-bg
+section.pt240.pb240.imagebg.height-30
   .background-image-holder
     img.background-image alt="image" src=image_path('pen-on-notebook.jpg')
 section
@@ -29,7 +29,7 @@ section
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h3.mb64.uppercase Why Excide?
+          h3.mb-5.type--uppercase Why Excide?
         p.lead.m32 At Excide, we help structure a business plan pertaining to your business model and ideas. We will help you uncover what are the necessary steps to take in order to make your business flourish. By answering some questions such as:
 
         ul.lead data-bullet="ti-check-box"
@@ -44,18 +44,18 @@ section
           li How to Make Your Business Plan Stand Out
 
         p.lead.m32.pb32 We will be able to help provide you detailed steps to take to ensure that your business take flight under our guidance. We will also provide you with our own financial model for your reference to aid you in your finances on a regular basis.
-section.image-bg.overlay
+section.imagebg.overlay
   .background-image-holder
     img.background-image alt="image" src=image_path('table-top-post-its.jpg')
   .container
     .row
       .col-sm-12.text-center
-        h3.uppercase.mb64.mb-xs-32 More Services
+        h3.type--uppercase.mb-5.mb-xs-32 More Services
         = render 'services_list'
 section#contactus
   .container
-    .row
+    .row.mb--2
       .col-md-8.offset-md-2.col-sm-12.text-center
-        h4.mb64.uppercase Need to know more about what we offer?
-        p.lead.mb80 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
+        h4.mb-5.type--uppercase Need to know more about what we offer?
+        p.lead.mb-5 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
     = render 'contact'

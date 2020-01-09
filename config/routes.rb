@@ -155,10 +155,12 @@ Rails.application.routes.draw do
   end
 
   devise_scope :user do
+    get 'users/password/new', to: 'users/passwords#new', as: 'new_user_password'
+    get 'users/password/edit', to: 'users/passwords#edit', as: 'edit_user_password'
     get 'users/additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
   end
 
-  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
+  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account
