@@ -66,7 +66,8 @@
                   - if @invoice.xero_total_mismatch?
                     = f.submit 'Save and update invoice in Xero', class: 'btn btn-warning float-right'
                   - else
-                    = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@invoice.xero_invoice_id}", role: 'button', target: "_blank", class: 'btn btn-warning', target: :_blank
+                    = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm', target: :_blank if @workflow.invoice&.payable?
+                    = link_to "View Xero invoice", "https://go.xero.com/AccountsReceivable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm', target: :_blank if @workflow.invoice&.receivable?
                 - else
                   - if policy(@workflow).update?
                     .row
