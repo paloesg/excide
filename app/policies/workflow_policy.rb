@@ -68,7 +68,7 @@ class WorkflowPolicy < ApplicationPolicy
     update?
   end
 
-  def xero_create_invoice_payable?
+  def xero_create_invoice?
     update?
   end
 

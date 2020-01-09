@@ -29,7 +29,7 @@ RSpec.describe WorkflowPolicy do
     it { should_not permit(:reset) }
     it { should permit(:activities) }
     it { should permit(:data_entry) }
-    it { should permit(:xero_create_invoice_payable) }
+    it { should permit(:xero_create_invoice) }
     it { should_not permit(:destroy) }
   end
 
@@ -47,7 +47,7 @@ RSpec.describe WorkflowPolicy do
     it { should_not permit(:reset) }
     it { should permit(:activities) }
     it { should permit(:data_entry) }
-    it { should permit(:xero_create_invoice_payable) }
+    it { should permit(:xero_create_invoice) }
     it { should_not permit(:destroy) }
   end
 
@@ -64,7 +64,7 @@ RSpec.describe WorkflowPolicy do
     it { should_not permit(:reset) }
     it { should permit(:activities) }
     it { should permit(:data_entry) }
-    it { should permit(:xero_create_invoice_payable) }
+    it { should permit(:xero_create_invoice) }
     it { should_not permit(:destroy) }
   end
 
@@ -81,7 +81,7 @@ RSpec.describe WorkflowPolicy do
     it { should permit(:reset) }
     it { should permit(:activities) }
     it { should permit(:data_entry) }
-    it { should permit(:xero_create_invoice_payable) }
+    it { should permit(:xero_create_invoice) }
     it { should permit(:destroy) }
   end
 
@@ -98,7 +98,7 @@ RSpec.describe WorkflowPolicy do
     it { should_not permit(:reset) }
     it { should_not permit(:activities) }
     it { should_not permit(:data_entry) }
-    it { should_not permit(:xero_create_invoice_payable) }
+    it { should_not permit(:xero_create_invoice) }
     it { should_not permit(:destroy) }
   end
 end

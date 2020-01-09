@@ -6,7 +6,7 @@ class Symphony::WorkflowsController < ApplicationController
   before_action :set_company_and_roles
   before_action :set_template, except: [:toggle_all]
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice_payable, :send_email_to_xero, :activities]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero, :activities]
   before_action :set_attributes_metadata, only: [:create, :update]
 
   after_action :verify_authorized, except: [:index, :send_reminder, :stop_reminder]
@@ -234,7 +234,7 @@ class Symphony::WorkflowsController < ApplicationController
     end
   end
 
-  def xero_create_invoice_payable
+  def xero_create_invoice
     @xero = Xero.new(@workflow.company)
     authorize @workflow
     xero_invoice = @xero.create_invoice(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency, @workflow.invoice.invoice_type)
@@ -251,28 +251,6 @@ class Symphony::WorkflowsController < ApplicationController
       xero_invoice.status = "AUTHORISED"
     end
     xero_invoice.save
-
-
-    # if @workflow.invoice.payable?
-    #   xero_invoice = @xero.create_invoice_payable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency)
-    #   @workflow.invoice.xero_invoice_id = xero_invoice.id
-    #   @workflow.documents.each do |document|
-    #     xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
-    #   end
-    #   @workflow.invoice.save
-    #   @invoice_payable = @xero.get_invoice(@workflow.invoice.xero_invoice_id)
-    #   #this is to send invoice to xero 'awaiting approval'
-    #   if params[:approved].present?
-    #     @invoice_payable.status = "SUBMITTED"
-    #   #this is to send invoice to xero 'awaiting payment', default status will be 'draft'
-    #   elsif params[:payment].present?
-    #     @invoice_payable.status = "AUTHORISED"
-    #   end
-    #   @invoice_payable.save
-    # else
-    #   #in future if we do account receivable, must modify the adapter method create_invoice_receivable
-    #   @invoice = @xero.create_invoice_receivable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
-    # end
 
     respond_to do |format|
       if @workflow.invoice.errors.empty?

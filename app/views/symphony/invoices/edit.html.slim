@@ -77,8 +77,8 @@
                     .row.mt-2
                       .col-md-12
                         / align buttons to the right
-                        = link_to("Approve", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-success approve-button ml-2 float-right')
-                        = link_to("Submit for approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-warning submit-approval-button ml-2 float-right')
+                        = link_to("Approve", xero_create_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-success approve-button ml-2 float-right')
+                        = link_to("Submit for approval", xero_create_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-warning submit-approval-button ml-2 float-right')
                         span.float-right Send to Xero:  
                   - else
                     = f.submit 'Save', class: 'btn btn-primary float-right'

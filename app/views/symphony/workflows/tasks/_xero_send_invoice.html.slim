@@ -30,8 +30,8 @@ tr
               - else
                 - if @invoice.approved?
                   / declare 2 variables to pass into the link_to button in _xero_send_invoice.html.slim. approved params will cause the button to send to xero's invoice status 'AWAITING APPROVAL'. Likewise,payment params will link to xero's invoice status 'AWAITING PAYMENT'
-                  = link_to("Send to Awaiting Approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved"), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
-                  = link_to("Send to Awaiting Payment",xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment"), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
+                  = link_to("Send to Awaiting Approval", xero_create_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved"), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
+                  = link_to("Send to Awaiting Payment",xero_create_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment"), method: 'post', role: 'button', class: 'btn btn-primary btn-sm mr-2')
                 - else
                   = link_to('Approve invoice', edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), role: 'button', class: 'btn btn-success btn-sm')
             - elsif @workflow.invoice&.receivable?
