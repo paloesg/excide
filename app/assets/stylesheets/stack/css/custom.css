@@ -39,13 +39,13 @@
   border-color: #c3502e !important;
 }
 
-.imagebg:not(.image--light) input,
 .btn--excide:active,
 .btn--excide:hover,
 .btn--excide .btn__text i,
 .btn--excide,
 .btn--excide .btn__text,
 .btn--excide:visited .btn__text,
+.btn--orange,
 .btn--orange > a > .btn__text,
 .btn--orange:visited .btn__text,
 .btn--orange .btn__text i,
