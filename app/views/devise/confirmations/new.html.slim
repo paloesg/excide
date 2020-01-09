@@ -1,21 +1,11 @@
-section.cover.fullscreen.image-bg.overlay
-  .background-image-holder
-    img.background-image alt="Growing your business" src=image_path('hero-image.jpg')
-  .container.v-align-transform
-    .row
-      .col-md-6.offset-md-3.col-sm-8.offset-sm-2
-        .feature.boxed
-          h4.uppercase Resend confirmation instructions
-
-
-section.height-100.imagebg.text-center data-overlay="4"
+section.height-100.imagebg data-overlay="4"
   .background-image-holder
     img alt="background" src=image_path('hero-image.jpg')
   .container.pos-vertical-center
-    .row
+    .row.d-flex.justify-content-center
       .col-md-7.col-lg-5
         .boxed.boxed--lg.boxed--border
-          h2 Resend confirmation instructions
+          h2.text-center Resend confirmation instructions
           = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
             .row
               .col-md-12
@@ -25,4 +15,4 @@ section.height-100.imagebg.text-center data-overlay="4"
               .col-md-12
                 = f.submit "Resend confirmation instructions", class:"btn btn--excide type--uppercase"
 
-                = render "devise/shared/links"
+          = render "devise/shared/links"
