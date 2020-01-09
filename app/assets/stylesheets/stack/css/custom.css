@@ -39,6 +39,7 @@
   border-color: #c3502e !important;
 }
 
+.imagebg:not(.image--light) input,
 .btn--excide:active,
 .btn--excide:hover,
 .btn--excide .btn__text i,
