@@ -133,7 +133,7 @@ class Workflow < ApplicationRecord
       s.tasks.each do |t|
         WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
       end
-      self.workflow_actions.first.update(completed: true) if (s.position == 1 && s.tasks.first.task_type == "upload_file" && self.batch.present?)
+      s.tasks.first.get_workflow_action(self.company_id, self.id).update(completed: true) if (s.position == 1 && s.tasks.first.task_type == "upload_file" && self.batch.present?)
     end
     if ordered_workflow?
       trigger_first_task
