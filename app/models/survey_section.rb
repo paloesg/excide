@@ -7,5 +7,5 @@ class SurveySection < ApplicationRecord
 
   accepts_nested_attributes_for :questions
 
-  validates :unique_name, :display_name, :position, :survey_template, presence: true
+  validates :display_name, :position, :survey_template, presence: true
 end
