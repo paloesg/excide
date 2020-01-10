@@ -74,6 +74,16 @@ $(document).on("turbolinks:load", function(){
     });
     return event.preventDefault();
   });
+
+  //General way of adding attribute through link_to_add_row method in application helper
+  $('form').on('click', '.add_question_fields', function(event) {
+    let regexp, time;
+    time = new Date().getTime();
+    regexp = new RegExp($(this).data('id'), 'g');
+    $( '.question-in-survey-section-' + $(this).data('surveySectionId') ).append($(this).data('fields').replace(regexp, time));
+    return event.preventDefault();
+  });
+
   //if radio button is checked, disable or enable the relevant fields
   $('input:radio[name="radioContact"]').click(function(){
     if($(this).val() == 'existing'){
