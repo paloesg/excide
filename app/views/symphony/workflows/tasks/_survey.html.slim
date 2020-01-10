@@ -1,0 +1,35 @@
+tr class="#{'important-task' if task.important}"
+  td = task.display_position
+  td
+    = task.instructions
+  td
+    - if action.assigned_user.present?
+      span.fa.fa-user aria-hidden="true"
+      |  #{action.assigned_user&.full_name}
+    - else
+      = task.display_role
+  td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'
+  td
+  	= render "symphony/workflows/tasks/workflow_type_conditions", action: action, task: task
+  - if action.workflow.template.ordered?
+    td
+      a data-toggle="collapse" href="#task_#{task.id}" aria-expanded="#{task == @workflow.current_task ? 'true' : 'false'}" class="#{task == @workflow.current_task ? '' : 'collapsed'}"
+        i.fa aria-hidden="true"
+tr
+  td.p-0.border-top-0 colspan="6"
+    div id="task_#{task.id}" class="#{task == @workflow.current_task or @workflow.template.unordered? ? 'collapse show' : 'collapse'}"
+      .m-3
+        h6 Actions:
+        .btn-toolbar role="toolbar"
+          .btn-group.mr-2 role="group" aria-label="Task actions"
+            = link_to "Create Survey", new_symphony_survey_path, role: 'button', class: 'btn btn-primary btn-sm'
+          .btn-group.mr-2 role="group" aria-label="Reminder actions"
+            / the below condition checks whether user is admin. If template is ordered, it will check whether the task is the current task and if unordered, it will check whether the workflowaction is uncompleted.
+            - if (@user.has_role? :admin, @company) && (task == @workflow.current_task || (@workflow.template.unordered? && !action.completed))
+              = link_to "Send Reminder", reminder_task_symphony_workflow_path(task_id: task.id, action_id: action.id), method: :post, remote: true , class: 'btn btn-warning btn-sm mr-2'
+            - if action.reminders.any?(&:next_reminder) && task.set_reminder?
+              = link_to "Stop Reminder", stop_reminder_symphony_workflow_path(action.workflow.template.slug, action.workflow.id, task.id), method: :post, remote: true, class: 'btn btn-danger btn-sm'
+        br
+        = render "symphony/workflows/tasks/remarks", action: action
+        br
+        = task.display_image
