@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_10_072402) do
+ActiveRecord::Schema.define(version: 2020_01_10_075556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -372,6 +372,8 @@ ActiveRecord::Schema.define(version: 2020_01_10_072402) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "survey_type"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_survey_templates_on_company_id"
   end
 
   create_table "surveys", id: :serial, force: :cascade do |t|
@@ -579,6 +581,7 @@ ActiveRecord::Schema.define(version: 2020_01_10_072402) do
   add_foreign_key "segments", "sections", column: "survey_section_id"
   add_foreign_key "segments", "surveys"
   add_foreign_key "survey_sections", "survey_templates"
+  add_foreign_key "survey_templates", "companies"
   add_foreign_key "surveys", "companies"
   add_foreign_key "surveys", "templates", column: "survey_template_id"
   add_foreign_key "surveys", "users"
