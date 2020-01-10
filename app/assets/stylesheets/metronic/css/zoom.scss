@@ -3,12 +3,14 @@
 	transition: transform .2s; /* Animation */
 	width: 100%;
 	height: 1000px;
+  z-index: 2;
+  position: relative;
 	&:hover{
 		width: 310%; /* For col-md-4 to be full-width (col-md-12), multiply 3 to 100% to get the width of the window */
 	}
 }
 .forward{
-	z-index: 3;
+	z-index: 3 !important;
 }
 
 * {box-sizing: border-box;}
