@@ -92,7 +92,7 @@
               a.kt-menu__link.kt-menu__toggle href="javascript:;"
                 span.kt-menu__link-text Workflows
                 i.kt-menu__ver-arrow.la.la-angle-right
-              .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left
+              .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left.columns
                 ul.kt-menu__subnav
                   - ::Template.assigned_templates(current_user).each do |t|
                     li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--active' if @template && @template.id == t.id}"
