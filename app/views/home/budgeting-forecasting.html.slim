@@ -1,24 +1,24 @@
 - set_meta_tags title: 'Budgeting and Forecasting', description: 'At Excide, we help companies create robust budgeting and forecasting systems to help you know your cashflow, prepare for contingencies and achieve growth.', reverse: true
-section.page-title.page-title-1.image-bg.overlay
+section.text-center.imagebg.space--lg data-overlay="3"
   .background-image-holder
-    img.background-image alt="image" src=image_path('laptop-with-charts.jpg')
+    img alt="background" src=image_path('laptop-with-charts.jpg')
   .container
     .row
-      .col-sm-12.text-center
-        h1.uppercase.mb0 Budgeting & Forecasting
-        p.lead.mb64 Proper budgeting and forecasting goes a long way
-  ol.breadcrumb.breadcrumb-2.d-flex.justify-content-center
-    li.breadcrumb-item
-      a href="/" Home
-    li.breadcrumb-item
-      a href="/virtual-financial-officer" Virtual Financial Officer
-    li.breadcrumb-item.active Budgeting & Forecasting
+      .col-md-8.col-lg-12
+        h1.type-uppercase Budgeting & Forecasting
+        h4 Proper budgeting and forecasting goes a long way
+        ol.breadcrumbs
+          li
+            a href="/"  Home
+          li
+            a href="/financial-analytics-reporting/"  Virtual Financial Officer
+          li Budgeting & Forecasting
 section
   .container
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h3.mb64.uppercase The Importance of Budgeting
+          h3.mb-5.type--uppercase The Importance of Budgeting
         p.lead.m32 Budgeting provides an estimation of your business’s cash flow, of both revenues earned and expenses paid. Budgeting uses estimation to quantify the expectation of revenues a business wants to achieve for a future period, usually over a fiscal year. It represents a business’s financial position and it helps provide a direction where the business wants to go. To be a successful player in today's environment, one has to have a robust budgeting & forecasting system. Businesses would need to:
 
         ul.lead data-bullet="ti-check-box"
@@ -26,7 +26,7 @@ section
           li Plan and prepare for any contingencies
           li Set goals and targets for key management personnel
           li Drawing up growth strategy and identifying milestones
-section.pt240.pb240.image-bg
+section.pt240.pb240.imagebg.height-50
   .background-image-holder
     img.background-image alt="image" src=image_path('charts-with-iphone.jpg')
 section
@@ -34,7 +34,7 @@ section
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h3.mb64.uppercase Why Excide?
+          h3.mb-5.type--uppercase Why Excide?
         p.lead.m32 At Excide, we will assist you in creating a robust budgeting & forecasting system. This system creation cannot be created overnight and requires consistent planning and prudent budget analysis. We will help you with:
         ul.lead data-bullet="ti-check-box"
           li Planning - outline the company's financial direction and expectations
@@ -42,18 +42,18 @@ section
           li Forecasting - use accumulated historical data to predict financial outcomes for the future
 
         p.lead.m32.pb32 These steps will be crucial in knowing how your business will do in the years to come.
-section.image-bg.overlay
+section.imagebg.overlay
   .background-image-holder
     img.background-image alt="image" src=image_path('table-top-post-its.jpg')
   .container
     .row
       .col-sm-12.text-center
-        h3.uppercase.mb64.mb-xs-32 More Services
+        h3.type--uppercase.mb-5.mb-xs-32 More Services
         = render 'services_list'
 section#contactus
   .container
-    .row
+    .row.mb--2
       .col-md-8.offset-md-2.col-sm-12.text-center
-        h4.mb64.uppercase Need to know more about what we offer?
-        p.lead.mb80 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
+        h4.mb-5.type--uppercase Need to know more about what we offer?
+        p.lead.mb-5 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
     = render 'contact'

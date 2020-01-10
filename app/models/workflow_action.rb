@@ -27,7 +27,7 @@ class WorkflowAction < ApplicationRecord
 
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_workflow_action(self.company, self.workflow.id)
-    next_action.update(deadline: check_week_day(Date.current + next_task.days_to_complete)) unless next_task.days_to_complete.nil?
+    next_action.update(deadline: next_task.days_to_complete.business_days.after(Date.current)) unless next_task.days_to_complete.nil?
 
     # Create new reminder based on deadline of action and repeat every 2 days
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
@@ -111,7 +111,7 @@ class WorkflowAction < ApplicationRecord
 
   def create_reminder(task, action)
     reminder = Reminder.new(
-      next_reminder: check_week_day(action.deadline),
+      next_reminder: action.deadline,
       repeat: true,
       freq_value: 2,
       freq_unit: "days",
@@ -140,10 +140,6 @@ class WorkflowAction < ApplicationRecord
     if self.completed
       SlackService.new.send_notification(self).deliver
     end
-  end
-
-  def check_week_day(day)
-    day.on_weekday? ? day : day.next_weekday
   end
 
   # Callback conditional to check whether the template is of type ordered and whether the task is completed before triggering callback

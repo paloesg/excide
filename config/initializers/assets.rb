@@ -14,3 +14,4 @@ Rails.application.config.assets.precompile += %w( parallax.js application-dashbo
 Rails.application.config.assets.precompile += %w( foundation_emails.css )
 
 Rails.application.config.assets.precompile += %w( metronic/application-footer.js )
+Rails.application.config.assets.precompile += %w( stack/footer.js )

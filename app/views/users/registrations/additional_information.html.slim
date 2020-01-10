@@ -1,4 +1,4 @@
-= javascript_include_tag "https://js.stripe.com/v3/"  
+= javascript_include_tag "https://js.stripe.com/v3/"
 section.image-bg.overlay
   .background-image-holder
     img.background-image alt="Growing your business" src=image_path('hero-image.jpg')
@@ -20,9 +20,9 @@ section.image-bg.overlay
                     .form-group
                       = f.label :last_name
                       = f.text_field :last_name, class: 'form-control', required: true
-                  
+
               .feature.boxed
-                h5.uppercase #{params[:company]} Credit Card Detail 
+                h5.uppercase #{params[:company]} Credit Card Detail
                 .row
                   .col-md-12
                     .form-group
@@ -32,20 +32,22 @@ section.image-bg.overlay
                 .row
                   .col-md-12
                     .form-group
-                      #card-errors role='alert'           
+                      #card-errors role='alert'
             .col-sm-6
-              .feature.boxed  
-                h5.uppercase #{params[:company]} Company Information            
+              .feature.boxed
+                h5.uppercase #{params[:company]} Company Information
                 = f.fields_for :company do |fc|
-                  .form-group
+                  .col-md-12
                     = fc.label :name, 'Company name'
                     = fc.text_field :name, class: 'form-control', required: true
-                  .form-group.form-check
-                    = fc.check_box :connect_xero, class: 'form-check-input'
-                    = fc.label :connect_xero, 'Enable Xero', class: 'form-check-label'
-                  .form-group
+                  .col-md-12
+                    .input-checkbox
+                      input#input-assigned-8 name="connect_xero" type="checkbox"
+                      label for="input-assigned-8"
+                    span Connect Xero
+                  .col-md-12
                     = fc.fields_for :address do |fca|
-                      = render 'companies/address_fields', f: fca 
-          .row       
+                      = render 'companies/address_fields', f: fca
+          .row
             .col-sm-4.offset-md-8.text-right
-              = f.submit "Save Additional Information", class: 'additional-information-submit'
+              = f.submit "Save Additional Information", class: 'additional-information-submit btn--orange'
