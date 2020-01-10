@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_08_082633) do
+ActiveRecord::Schema.define(version: 2020_01_10_072402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -382,9 +382,11 @@ ActiveRecord::Schema.define(version: 2019_11_08_082633) do
     t.integer "survey_template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "workflow_id"
     t.index ["company_id"], name: "index_surveys_on_company_id"
     t.index ["survey_template_id"], name: "index_surveys_on_survey_template_id"
     t.index ["user_id"], name: "index_surveys_on_user_id"
+    t.index ["workflow_id"], name: "index_surveys_on_workflow_id"
   end
 
   create_table "tasks", id: :serial, force: :cascade do |t|
@@ -580,6 +582,7 @@ ActiveRecord::Schema.define(version: 2019_11_08_082633) do
   add_foreign_key "surveys", "companies"
   add_foreign_key "surveys", "templates", column: "survey_template_id"
   add_foreign_key "surveys", "users"
+  add_foreign_key "surveys", "workflows"
   add_foreign_key "tasks", "document_templates"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"

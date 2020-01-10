@@ -3,6 +3,7 @@ require 'csv'
 class Survey < ApplicationRecord
   belongs_to :user
   belongs_to :company
+  belongs_to :workflow
   belongs_to :survey_template
 
   has_many :segments, dependent: :destroy

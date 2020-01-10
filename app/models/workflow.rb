@@ -15,6 +15,7 @@ class Workflow < ApplicationRecord
 
   has_many :workflow_actions, dependent: :destroy
   has_many :documents, dependent: :destroy
+  has_many :surveys, dependent: :destroy
 
   validate :check_data_fields
 
