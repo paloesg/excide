@@ -6,5 +6,5 @@ class Question < ApplicationRecord
 
   has_and_belongs_to_many :choices
 
-  enum question_type: [:text, :number, :single, :multiple, :file]
+  enum question_type: { text: 0, number: 1, single: 2, multiple: 3, file: 4}
 end
