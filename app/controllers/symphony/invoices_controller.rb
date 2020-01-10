@@ -3,7 +3,7 @@ class Symphony::InvoicesController < ApplicationController
   layout 'dashboard/application'
 
   before_action :authenticate_user!
-  before_action :set_company, except: [:get_xero_item_code_detail]
+  before_action :set_company
   before_action :set_workflow, except: [:get_xero_item_code_detail]
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents, except: [:get_xero_item_code_detail]
@@ -269,18 +269,30 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def set_show_invoice_navigation
-    workflows = @workflow.batch.workflows.order(created_at: :asc)
-    @workflow_invoices= @workflow.batch.workflows.includes(:invoice).where.not(invoices: {id: nil}).where.not(invoices: {id: @workflow.invoice.id})
-    @total_workflows = workflows.length
+    # check if workflow have batch
+    if @workflow.batch.present?
+      workflows = @workflow.batch.workflows.order(created_at: :asc)
+      @workflow_invoices= @workflow.batch.workflows.includes(:invoice).where.not(invoices: {id: nil}).where.not(invoices: {id: @workflow.invoice.id})
+    else
+      workflows = Array(@workflow)
+      @workflow_invoices= policy_scope(Workflow).includes(:invoice).where.not(invoices: {id: nil}).where.not(invoices: {id: @workflow.invoice.id})
+    end
+
+    @total_workflows = workflows.count
     @current_position = workflows.pluck('id').index(@workflow.id)+1
   end
 
   def set_workflows_navigation
     @workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
-    @workflows = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}}).order(created_at: :asc)
-
+    # check if workflow have batch
+    if @workflow.batch.present?
+      @workflows = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}}).order(created_at: :asc)
+      @total_completed_task = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: true}).count
+    else
+      @workflows = Array(@workflow_action.workflow)
+      @total_completed_task = policy_scope(Workflow).where(id: @workflow_action.workflow.id, completed: true).count
+    end
     @total_task = @workflows.count
-    @total_completed_task = @workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: @workflow_action.task_id}, completed: true}).count
 
     # check using max, show maximum value. use square baracket [] for value
     @remaining_invoices = [@total_task - @total_completed_task - 1, 0].max
@@ -315,7 +327,7 @@ class Symphony::InvoicesController < ApplicationController
     @tracking_name          = @xero.get_tracking_options
     @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| option}
     @tracking_categories_2  = @tracking_name[1]&.options&.map{|option| option}
-    @items                  = @xero.get_items.map{|item| (item.code + ': ' + (item.description || '-')) if item.code.present?}
+    @items                  = @company.xero_line_items.map{|item| (item.item_code + ': ' + (item.description || '-')) if item.item_code.present?}
   end
 
   def invoice_params

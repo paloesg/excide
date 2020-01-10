@@ -1,0 +1,9 @@
+= hidden_field :role, :resource_id, value: @company.id
+= hidden_field :role, :resource_type, value: "Company"
+.form-group
+  = f.label :role_name
+  = f.text_field :name, class: 'form-control'
+.form-group
+  = f.label :users
+  = f.select :user_ids, nil, {}, multiple: true, class: "role-select-users" do
+    = options_for_select(@users, @role.users.pluck(:id))

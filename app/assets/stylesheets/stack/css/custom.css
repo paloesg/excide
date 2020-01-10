@@ -1,0 +1,205 @@
+/*! Place your custom styles here */
+
+.btn.type--uppercase .btn__text {
+  margin-right: 0px !important;
+}
+
+.testimoni-box {
+  background: rgba(34,34,34,0.4);
+  padding: 30px 0;
+}
+
+.testimonial {
+  padding: 0 50px;
+}
+
+.flickity-prev-next-button {
+  background: transparent !important;
+}
+
+.flickity-prev-next-button:hover {
+  background: rgba(34,34,34,0.4) !important;
+}
+
+.btn--excide,
+.btn--excide:visited {
+  /* height: 3.8em; */
+}
+
+.btn--excide:active {
+  background: #c3502e;
+}
+
+.btn--orange,
+.btn--orange:visited,
+.btn--orange:active,
+.btn--excide,
+.btn--excide:visited {
+  background: #c3502e !important;
+  border-color: #c3502e !important;
+}
+
+.btn--excide:active,
+.btn--excide:hover,
+.btn--excide .btn__text i,
+.btn--excide,
+.btn--excide .btn__text,
+.btn--excide:visited .btn__text,
+.btn--orange > a > .btn__text,
+.btn--orange:visited .btn__text,
+.btn--orange .btn__text i,
+.btn--orange:visited .btn__text i {
+  color: #fff !important;
+}
+
+.btn--excide:hover,
+.btn--orange:hover {
+  background: #d45b37;
+}
+
+.accordion-1 li.active .accordion__title {
+  border-color: #c3502e!important;
+}
+
+.accordion li.active .accordion__title {
+  background: #c3502e!important;
+  border-bottom: 1px solid #ececec;
+}
+
+@media (max-width: 990px) {
+  button {
+    margin-top: 0 !important;
+  }
+}
+
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px;
+  border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+
+.dropdown-submenu>a:after {
+  display: block;
+  content: "\f105";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 0 0;
+  border-left-color: transparent;
+  margin-top: 0;
+  margin-right: -10px;
+  font: normal normal normal 18px FontAwesome !important;
+}
+
+.dropdown > ul > .dropdown-item, .dropdown > ul > .dropdown-item > ul > li {
+  padding: 0 20px;
+}
+
+.dropdown-submenu:hover>a:after {
+  border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+  float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
+}
+
+.dropdown-toggle::after {
+  border-top: 0.3em solid transparent !important;
+  border-right: 0.3em solid transparent;
+  border-left: 0.3em solid transparent;
+  font: normal normal normal 9px FontAwesome !important;
+  content: "\f107"!important;
+}
+
+.dropdown-menu {
+  border-radius: 6px;
+  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.08);
+  padding: 10px 10px 10px 0px;
+  border-color: transparent;
+}
+
+.btn--loading, .btn--orange:focus, .btn--excide:focus {
+  box-shadow: 0 0 0 0.2rem rgba(201, 146, 146, 0.26) !important;
+}
+
+.alert.alert-dismissible.m-0.mx-5 {
+  z-index: 2;
+  top: 70px;
+}
+
+.link-list {
+  line-height: 32px;
+}
+
+.link-list > li > a {
+  font-weight: normal !important;
+}
+
+.link-list a:after {
+  content: "\f061";
+  font: normal normal normal 10px FontAwesome !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  font-size: 11px;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.icon {
+  font-size: 64px;
+}
+
+.overlay:before {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #292929;
+  opacity: 0.3;
+  z-index: 2;
+}
+
+.feature-1 i {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #c3502e;
+}
+
+.dropdown-item.active,.dropdown-item:active, .dropdown-menu > .dropdown-item:active {
+  text-decoration: none;
+  background-color: #f3f3f3 !important;
+}
+
+.dropdown-menu > .dropdown-item > a.nav-link:active, ul.dropdown-menu > li.dropdown-item > a:active {
+  color: #fff;
+}

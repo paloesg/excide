@@ -8,6 +8,7 @@ class Symphony::WorkflowsController < ApplicationController
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice_payable, :send_email_to_xero, :activities]
   before_action :set_attributes_metadata, only: [:create, :update]
+  before_action :set_twilio_account, only:[:send_reminder]
 
   after_action :verify_authorized, except: [:index, :send_reminder, :stop_reminder]
   after_action :verify_policy_scoped, only: :index
@@ -173,14 +174,13 @@ class Symphony::WorkflowsController < ApplicationController
         users.each do |user|
           NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
           SlackService.new.task_notification(current_task, current_action, user).deliver if user.settings[0]&.reminder_slack == 'true'
-          from_number = ENV['TWILIO_NUMBER']
-          account_sid = ENV['TWILIO_ACCOUNT_SID']
-          auth_token = ENV['TWILIO_AUTH_TOKEN']
           to_number = '+65' + user.contact_number
           message_body = current_task.instructions
           message_head = current_action.workflow.template.title
-          @client = Twilio::REST::Client.new account_sid, auth_token
-          message = @client.api.account.messages.create( from: from_number, to: to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_sms == 'true'
+          # message for sms
+          message = @client.api.account.messages.create( from: @from_number, to: to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_sms == 'true'
+          # message for whatsapp
+          message_whatsapp = @client.messages.create( from: 'whatsapp:'+@from_number, to: 'whatsapp:'+to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_whatsapp == 'true'
         end
         format.json { render json: "Sent out", status: :ok }
       else
@@ -255,7 +255,7 @@ class Symphony::WorkflowsController < ApplicationController
       @invoice_payable.save
     else
       #in future if we do account receivable, must modify the adapter method create_invoice_receivable
-      @invoice = @xero.create_invoice_receivable(@workflow.workflowable.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
+      @invoice = @xero.create_invoice_receivable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
     end
 
     respond_to do |format|
@@ -399,5 +399,12 @@ class Symphony::WorkflowsController < ApplicationController
       elsif params[:sort] == "identifier" then item.identifier ? item.identifier.upcase : ""
       end
     }
+  end
+
+  def set_twilio_account
+    @from_number = ENV['TWILIO_NUMBER']
+    account_sid = ENV['TWILIO_ACCOUNT_SID']
+    auth_token = ENV['TWILIO_AUTH_TOKEN']
+    @client = Twilio::REST::Client.new account_sid, auth_token
   end
 end

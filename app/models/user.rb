@@ -29,6 +29,8 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
   accepts_nested_attributes_for :company, :reject_if => :all_blank, :allow_destroy => true
 
+  validates :email, uniqueness: true
+  validates :first_name, :last_name, presence: true, on: :additional_information
   validates :company, presence: true
 
   include AASM
@@ -181,18 +183,21 @@ class User < ApplicationRecord
   end
 
   class Setting
-    attr_accessor :reminder_sms, :reminder_email, :reminder_slack, :task_sms, :task_email, :task_slack, :batch_sms, :batch_email, :batch_slack
+    attr_accessor :reminder_sms, :reminder_email, :reminder_slack, :reminder_whatsapp, :task_sms, :task_email, :task_slack, :task_whatsapp, :batch_sms, :batch_email, :batch_slack, :batch_whatsapp
 
     def initialize(hash)
       @reminder_sms = hash['reminder_sms']
       @reminder_email = hash['reminder_email']
       @reminder_slack = hash['reminder_slack']
+      @reminder_whatsapp = hash['reminder_whatsapp']
       @task_sms = hash['task_sms']
       @task_email = hash['task_email']
       @task_slack = hash['task_slack']
+      @task_whatsapp = hash['task_whatsapp']
       @batch_sms = hash['batch_sms']
       @batch_email = hash['batch_email']
       @batch_slack = hash['batch_slack']
+      @batch_whatsapp = hash['batch_whatsapp']
     end
     def persisted?() false; end
     def new_record?() false; end

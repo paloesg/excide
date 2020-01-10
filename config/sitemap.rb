@@ -48,4 +48,5 @@ SitemapGenerator::Sitemap.create do
   add exit_strategy_path
   add turnaround_management_path
   add fund_raising_path
+  add symphony_xero_automation_path
 end
