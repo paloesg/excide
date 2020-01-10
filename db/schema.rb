@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_14_161509) do
+ActiveRecord::Schema.define(version: 2020_01_10_021234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -20,9 +20,10 @@ ActiveRecord::Schema.define(version: 2019_10_14_161509) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.bigint "record_id", null: false
+    t.bigint "record_id_int"
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
+    t.uuid "record_id", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -62,6 +63,9 @@ ActiveRecord::Schema.define(version: 2019_10_14_161509) do
     t.string "addressable_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "city"
+    t.string "country"
+    t.string "state"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
@@ -164,6 +168,9 @@ ActiveRecord::Schema.define(version: 2019_10_14_161509) do
     t.integer "expires_at"
     t.boolean "connect_xero", default: true
     t.string "xero_organisation_name"
+    t.integer "account_type"
+    t.datetime "trial_end_date"
+    t.json "stripe_subscription_plan_data", default: []
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -419,11 +426,11 @@ ActiveRecord::Schema.define(version: 2019_10_14_161509) do
     t.integer "document_template_id"
     t.string "link_url"
     t.boolean "important"
-    t.bigint "template_id"
+    t.bigint "child_workflow_template_id"
+    t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
-    t.index ["template_id"], name: "index_tasks_on_template_id"
   end
 
   create_table "templates", id: :serial, force: :cascade do |t|
@@ -472,6 +479,8 @@ ActiveRecord::Schema.define(version: 2019_10_14_161509) do
     t.text "remarks"
     t.string "bank_account_name"
     t.json "settings", default: [{"reminder_sms"=>"", "reminder_email"=>"true", "reminder_slack"=>"", "task_sms"=>"", "task_email"=>"true", "task_slack"=>"", "batch_sms"=>"", "batch_email"=>"true", "batch_slack"=>""}]
+    t.string "stripe_customer_id"
+    t.string "stripe_card_token"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -539,6 +548,19 @@ ActiveRecord::Schema.define(version: 2019_10_14_161509) do
     t.index ["company_id"], name: "index_xero_contacts_on_company_id"
   end
 
+  create_table "xero_line_items", force: :cascade do |t|
+    t.string "item_code"
+    t.string "description"
+    t.integer "quantity"
+    t.decimal "price"
+    t.string "account"
+    t.string "tax"
+    t.bigint "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_xero_line_items_on_company_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "allocations", "availabilities"
   add_foreign_key "allocations", "events"
@@ -587,7 +609,7 @@ ActiveRecord::Schema.define(version: 2019_10_14_161509) do
   add_foreign_key "tasks", "document_templates"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
-  add_foreign_key "tasks", "templates"
+  add_foreign_key "tasks", "templates", column: "child_workflow_template_id"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
   add_foreign_key "workflow_actions", "companies"
@@ -602,4 +624,5 @@ ActiveRecord::Schema.define(version: 2019_10_14_161509) do
   add_foreign_key "workflows", "users"
   add_foreign_key "workflows", "workflow_actions"
   add_foreign_key "xero_contacts", "companies"
+  add_foreign_key "xero_line_items", "companies"
 end
