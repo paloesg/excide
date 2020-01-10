@@ -1,0 +1,12 @@
+.row
+  .col-sm-12
+    = form_for @survey do |f|
+      .form-group
+        = f.text_field :title, placeholder: 'Survey title', class: 'form-control'
+      .form-group
+        = f.collection_select(:survey_template_id, ::SurveyTemplate.all.map{|t| [t.survey_type.titleize, t.id]}, :last, :first, {include_blank: 'Business Model'}, class: 'selectize')
+      .form-group
+        = f.collection_select(:company_id, Company.all, :id, :name, {include_blank: 'Company Name'}, class: 'selectize')
+      .form-group
+        = f.text_area :remarks, placeholder: 'Remarks', class: 'form-control'
+      = f.submit 'Create Survey', class: 'btn btn-primary pull-right'

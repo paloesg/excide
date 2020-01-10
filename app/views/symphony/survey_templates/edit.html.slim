@@ -1,0 +1,12 @@
+.row.mb-3
+  .col
+    h1 Edit #{@survey_template.title}
+.row
+  .col-xl-12
+    = form_for(@survey_template, url: symphony_survey_template_path(id: @survey_template.id)) do |f|
+      - if @survey_template.survey_sections.present?
+        = render 'form', f: f
+        = f.submit 'Save Survey Template', class: 'btn btn-primary pull-right'
+      .form-inline.col-sm-6.pull-right.p-0
+        = text_field_tag :new_survey_section, params[:new_survey_section], {class: 'form-control mr-2 col-sm-8', placeholder: 'Enter Survey Section Name...'}
+        = submit_tag 'Add new survey section', class: 'btn btn-success', name: 'new_survey_section_submit'    
