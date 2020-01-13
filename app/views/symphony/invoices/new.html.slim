@@ -49,17 +49,6 @@
               - if @total_task > 1
                 = link_to next_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
                   i.fa.fa-caret-right    
-    .row.mb-3
-      .col-md-12
-        .card
-          .card-body.contact-body
-            .loading-textract
-              .d-flex.align-items-center
-                strong Loading...
-                .spinner-border.ml-auto aria-hidden="true" role="status" 
-            .result-textract
-              = label_tag :textract_json, 'Result Textract JSON'
-              = text_area_tag 'body', nil, rows: 10, class:"form-control aws-textract-result"
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
