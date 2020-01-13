@@ -90,8 +90,6 @@
               .form-inline.col-auto.ml-auto
                 = f.label :total, 'Total (including tax): ', class: 'mr-2'
                 = f.text_field :total, class: 'form-control'
-          .col-md-12
-            = link_to_get_textract "Do Textract", f, :line_items, @document if @invoice.new_record? or policy(@invoice).update?
 .btn-group role='group'
   - if @previous_document.present?
     = f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-primary'
