@@ -15,7 +15,7 @@ tr
     div id="task-index-#{f.index}-section-#{g.id}" class="collapse"
       .form-group.col-sm-12.pt-2
         = f.label :template, 'Template'
-        = f.select :template_id, options_for_select(@templates.map{|t| [t.title, t.id]}, selected: f.object.template&.id), {include_blank: true},  {class: "dropdown-overlay mb-2"}
+        = f.select :template, options_for_select(@templates.map{|t| [t.title, t.id]}, selected: f.object.template&.id), {include_blank: true},  {class: "dropdown-overlay mb-2"}
       .form-group.col-sm-12.pt-2
         = f.label :document_template_id, 'Document Template'
         = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay mb-2"}
