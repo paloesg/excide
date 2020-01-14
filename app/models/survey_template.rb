@@ -4,6 +4,7 @@ class SurveyTemplate < ApplicationRecord
 
   has_many :survey_sections, -> { order(position: :asc) }
   has_many :surveys
+  has_many :tasks
 
   belongs_to :company
   accepts_nested_attributes_for :survey_sections
