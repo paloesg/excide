@@ -5,12 +5,14 @@ class Symphony::SurveysController < ApplicationController
 
   def new
     @survey = Survey.new
+    @task = Task.find(params[:task])
+    @survey_template = SurveyTemplate.find(@task.survey_template_id)
   end
 
   def create
     @survey = Survey.new(survey_params)
-    @survey.user_id = current_user.id
-
+    @survey.user = current_user
+    @survey.company = current_user.company
     if @survey.save!
       redirect_to 
     end

@@ -94,6 +94,14 @@ $(document).on("turbolinks:load", function(){
     return event.preventDefault();
   });
 
+  $('form').on('click', '.add_segment_fields', function(event) {
+    let regexp, time;
+    time = new Date().getTime();
+    regexp = new RegExp($(this).data('id'), 'g');
+    $( '.segment-section' ).append($(this).data('fields').replace(regexp, time));
+    return event.preventDefault();
+  });
+
   //if radio button is checked, disable or enable the relevant fields
   $('input:radio[name="radioContact"]').click(function(){
     if($(this).val() == 'existing'){

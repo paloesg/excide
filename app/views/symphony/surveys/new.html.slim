@@ -1,12 +1,30 @@
 .row
   .col-sm-12
     = form_for @survey do |f|
-      .form-group
-        = f.text_field :title, placeholder: 'Survey title', class: 'form-control'
-      .form-group
-        = f.collection_select(:survey_template_id, ::SurveyTemplate.all.map{|t| [t.survey_type.titleize, t.id]}, :last, :first, {include_blank: 'Business Model'}, class: 'selectize')
-      .form-group
-        = f.collection_select(:company_id, Company.all, :id, :name, {include_blank: 'Company Name'}, class: 'selectize')
-      .form-group
-        = f.text_area :remarks, placeholder: 'Remarks', class: 'form-control'
-      = f.submit 'Create Survey', class: 'btn btn-primary pull-right'
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h1.kt-portlet__head-title #{@survey_template.title}
+        .kt-portlet__body
+          .form-inline.col-sm-12.p-0.mb-2
+            .form-group.col-sm-6
+              = f.text_field :title, placeholder: 'Survey title', class: 'form-control col-sm-12'
+            .form-group.col-sm-6
+              = f.text_field :remarks, placeholder: 'Remarks', class: 'form-control col-sm-12'
+          - @survey_template.survey_sections.each do |sur_section|
+            h3.kt-portlet__body-title #{sur_section.display_name}
+            .segment-section
+              = f.fields_for :segments do |s|
+                = render partial: 'segment_fields', locals: { f: s, g: f.object}
+              = link_to_add_segments('Add segments', f, :segments, g: f.object)
+/ .row
+/   .col-sm-12
+/     = form_for @survey do |f|
+/       .form-group
+/         = f.text_field :title, placeholder: 'Survey title', class: 'form-control'
+/       .form-group
+/         = f.text_area :remarks, placeholder: 'Remarks', class: 'form-control'
+/       = f.fields_for :segments do |segment|
+
+
+/       = f.submit 'Submit Survey', class: 'btn btn-primary pull-right'
