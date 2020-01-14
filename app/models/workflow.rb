@@ -133,6 +133,7 @@ class Workflow < ApplicationRecord
       s.tasks.each do |t|
         WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
       end
+      # Automatically set first task as completed if workflow is part of a batch and first task is a file upload task
       s.tasks.first.get_workflow_action(self.company_id, self.id).update(completed: true) if (s.position == 1 && s.tasks.first.task_type == "upload_file" && self.batch.present?)
     end
     if ordered_workflow?
