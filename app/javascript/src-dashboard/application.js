@@ -10,6 +10,7 @@ window.mixpanel = require("mixpanel-browser")
 require("selectize")
 require("algoliasearch")
 require("tempusdominus-bootstrap-4")
+require("blueimp-file-upload")
 
 require("./init")
 require("./analytics")
