@@ -7,8 +7,8 @@ html lang="en"
     = render 'application/favicon'
     = display_meta_tags site: "Virtual CFO | Excide"
 
-    = stylesheet_link_tag    "application"
-    = javascript_include_tag "application", 'data-turbolinks-track' => true
+    = stylesheet_link_tag    "stack/application", media: "all"
+    = javascript_pack_tag 'home/application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
 
@@ -17,10 +17,12 @@ html lang="en"
       for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);
       mixpanel.init($('meta[name="mixpanel-token"]').attr('content'));
 
-  body[class="#{controller_name} #{action_name} scroll-assist"]
+  body class=" "
+    a#start
     .nav-container = render 'layouts/header'
     = render 'layouts/messages'
     .main-container
       = yield
     .page-footer
       = render 'layouts/footer'
+    = javascript_pack_tag 'home/footer'

@@ -37,6 +37,8 @@ gem "rack-reverse-proxy", require: "rack/reverse_proxy"
 gem 'squasher', '>= 0.6.0'
 # The default JavaScript compiler for Rails 6
 gem "webpacker"
+# Calculate business days
+gem "business_time"
 
 #################################################
 #                                               #

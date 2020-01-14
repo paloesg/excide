@@ -1,26 +1,26 @@
 - set_meta_tags title: 'Corporate Planning', description: 'Excide provides corporate planning to help businesses increase revenue and profits. Business plan | Corporate Structure | Funding Strategies | Finance | Accounting', reverse: true
-section.page-title.page-title-1.image-bg.overlay
+section.text-center.imagebg.space--lg data-overlay="3"
   .background-image-holder
     img.background-image alt="image" src=image_path('notebook-plan.jpg')
   .container
     .row
-      .col-sm-12.text-center
-        h1.uppercase.mb0 Corporate Planning
-        p.lead.mb64 Planning a corporate structure for your business
-  ol.breadcrumb.breadcrumb-2.d-flex.justify-content-center
-    li.breadcrumb-item
-      a href="/" Home
-    li.breadcrumb-item
-      a href="/virtual-financial-officer" Virtual Financial Officer
-    li.breadcrumb-item.active Corporate Planning & Structure
+      .col-md-8.col-lg-12
+        h1.type--uppercase Corporate Planning
+        h4 Planning a corporate structure for your business
+        ol.breadcrumbs
+          li
+            a href="/"  Home
+          li
+            a href="/financial-analytics-reporting/"  Virtual Financial Officer
+          li Corporate Planning
 section
   .container
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h3.mb64.uppercase Identifying the needs for your business
+          h3.mb-5.type--uppercase Identifying the needs for your business
         p.lead.m32.pb32 Product development and sales are important for businesses as it brings in revenue, allowing for business growth. However, selling your products is only the first step. By have a good corporate plan, your business will be better equipped with the necessities for future growth. This will help encapsulate all your marketing, productions, sales, human resources and financial strategies together, resulting in a better picture on how your business is being run.
-section.pt240.pb240.image-bg
+section.pt240.pb240.imagebg.height-50
   .background-image-holder
     img.background-image alt="image" src=image_path('pen-on-notebook.jpg')
 section
@@ -28,7 +28,7 @@ section
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h3.mb64.uppercase Why Excide?
+          h3.mb-5.type--uppercase Why Excide?
         p.lead.m32.pb32 At Excide, we will help assist you in building a business model which is in line with your ideals and needs. We will help you in better understanding what resources your business needs, evaluate risks, determine taxes, human resources and many other essentials. We will assist you with:
 
         ul.lead data-bullet="ti-check-box"
@@ -37,18 +37,18 @@ section
           li Business Arrangements
           li Funding Strategies
           li Finance & Accounting Functions
-section.image-bg.overlay
+section.imagebg.overlay
   .background-image-holder
     img.background-image alt="image" src=image_path('table-top-post-its.jpg')
   .container
     .row
       .col-sm-12.text-center
-        h3.uppercase.mb64.mb-xs-32 More Services
+        h3.type--uppercase.mb-5.mb-xs-32 More Services
         = render 'services_list'
 section#contactus
   .container
-    .row
+    .row.mb--2
       .col-md-8.offset-md-2.col-sm-12.text-center
-        h4.mb64.uppercase Need to know more about what we offer?
-        p.lead.mb80 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
+        h4.mb-5.type--uppercase Need to know more about what we offer?
+        p.lead.mb-5 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
     = render 'contact'
