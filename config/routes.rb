@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     get '/xero_line_items', to: 'xero_line_items#show'
 
     resources :survey_templates, param: :survey_template_slug, except: [:destroy]
+    delete '/survey_templates/:survey_template_slug/destroy_survey_section', to: 'templates#destroy_survey_section', as: :destroy_survey_section
 
     resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section

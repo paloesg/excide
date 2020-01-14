@@ -2,6 +2,7 @@ class Symphony::SurveyTemplatesController < ApplicationController
   layout 'metronic/application'
 
   before_action :authenticate_user!
+  before_action :set_survey_template
 
   def index
     @survey_templates = SurveyTemplate.all
@@ -22,11 +23,10 @@ class Symphony::SurveyTemplatesController < ApplicationController
   end
 
   def edit
-    @survey_template = SurveyTemplate.find_by(slug: params[:survey_template_slug])
+    
   end
 
   def update
-    @survey_template = SurveyTemplate.find_by(slug: params[:survey_template_slug])
     if params[:new_survey_section_submit].present?
       @position = @survey_template.survey_sections.count + 1
       @survey_section = SurveySection.create(display_name: params[:new_survey_section], survey_template_id: @survey_template.id, position: @position)
@@ -49,12 +49,21 @@ class Symphony::SurveyTemplatesController < ApplicationController
     # end
   end
 
+  def destroy_survey_section
+    @survey_section = SurveySection.find(params[:survey_section_id])
+    if @survey_section.destroy
+      redirect_to edit_symphony_survey_template(@survey_template.slug)
+    else
+      redirect_to symphony_survey_templates_path
+    end
+  end
+
 
   private
   # Use callbacks to share common setup or constraints between actions.
-  # def set_survey_template
-  #   @survey_template = SurveyTemplate.find(params[:id])
-  # end
+  def set_survey_template
+    @survey_template = SurveyTemplate.find_by(slug: params[:survey_template_slug])
+  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def survey_template_params

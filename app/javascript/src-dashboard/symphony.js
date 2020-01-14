@@ -81,6 +81,13 @@ $(document).on("turbolinks:load", function(){
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
     $( '.question-in-survey-section-' + $(this).data('surveySectionId') ).append($(this).data('fields').replace(regexp, time));
+    $( ".survey-section-count" ).each(function( index ) {
+      $("select[id$='survey_template_survey_sections_attributes_" + index + "_questions_attributes_" + time + "_question_type']").selectize({
+        dropdownParent: "body"
+      });
+      $('.data-attributes').find('tr:last-child').find('.create').val('1');
+      return event.preventDefault();
+    });
     return event.preventDefault();
   });
 
