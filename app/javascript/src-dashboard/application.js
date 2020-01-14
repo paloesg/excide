@@ -12,7 +12,6 @@ require("algoliasearch")
 require("tempusdominus-bootstrap-4")
 require("blueimp-file-upload")
 
-require("./init")
 require("./analytics")
 require("./symphony")
 
@@ -30,6 +29,7 @@ require("./conductor/home")
 require("./conductor/go_to_allocation")
 require("./components/calendar_style")
 
+require("./components/document_upload")
 require("./components/date_time_picker")
 require("./components/multiple_uploads")
 require("./components/multiple_uploads_and_edit")
