@@ -41,6 +41,8 @@ Rails.application.routes.draw do
 
     resources :survey_templates, param: :survey_template_slug, except: [:destroy]
     delete '/survey_templates/:survey_template_slug/destroy_survey_section', to: 'survey_templates#destroy_survey_section', as: :destroy_survey_section
+    
+    resources :surveys
 
     resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
