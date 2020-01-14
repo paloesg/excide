@@ -2,7 +2,7 @@ class Symphony::SurveyTemplatesController < ApplicationController
   layout 'metronic/application'
 
   before_action :authenticate_user!
-  before_action :set_survey_template
+  before_action :set_survey_template, except: [:index, :new, :create]
 
   def index
     @survey_templates = SurveyTemplate.all
@@ -37,22 +37,22 @@ class Symphony::SurveyTemplatesController < ApplicationController
         flash[:alert] = @survey_section.errors.full_messages.join
       end
     end
-    # if params[:template].present?
-    #   if @template.update(template_params)
-    #     flash[:notice] = 'Template has been saved.'
-    #     redirect_to edit_symphony_template_path(@template)
-    #   else
-    #     flash[:alert] = @template.errors.full_messages.join
-    #     render :edit
-    #   end
-    # else
-    # end
+    if params[:survey_template].present?
+      if @survey_template.update(survey_template_params)
+        flash[:notice] = 'Survey template has been saved.'
+        redirect_to edit_symphony_survey_template_path(@survey_template)
+      else
+        flash[:alert] = @survey_template.errors.full_messages.join
+        render :edit
+      end
+    else
+    end
   end
 
   def destroy_survey_section
     @survey_section = SurveySection.find(params[:survey_section_id])
     if @survey_section.destroy
-      redirect_to edit_symphony_survey_template(@survey_template.slug)
+      redirect_to edit_symphony_survey_template_path(@survey_template.slug)
     else
       redirect_to symphony_survey_templates_path
     end
@@ -67,6 +67,6 @@ class Symphony::SurveyTemplatesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def survey_template_params
-    params.require(:survey_template).permit(:title, :slug, :survey_type, :company_id)
+    params.require(:survey_template).permit(:title, :slug, :survey_type, :company_id, survey_sections_attributes: [:id, :display_name, :position, questions_attributes: [:id, :content, :question_type, :position, :_destroy] ])
   end
 end
