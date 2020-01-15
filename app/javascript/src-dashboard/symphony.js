@@ -22,15 +22,22 @@ $(document).on("turbolinks:load", function(){
   });
   //removing a line_item in the invoice
   $('form').on('click', '.remove_line_items', function(event){
-      $(this).closest('tr').find('.destroy').val('1');
-      $(this).closest('tr').remove();
-      return event.preventDefault();
+    $(this).closest('tr').find('.destroy').val('1');
+    $(this).closest('tr').remove();
+    return event.preventDefault();
   })
   //removing a task in template
   $('form').on('click', '.remove_tasks', function(event){
-      $(this).prev('input[type=hidden]').val('1');
-      $(this).closest('tr').hide();
-      return event.preventDefault();
+    $(this).prev('input[type=hidden]').val('1');
+    $(this).closest('tr').hide();
+    return event.preventDefault();
+  })
+
+  $('form').on('click', '.remove_segments', function(event){
+    $(this).closest('div').find('.destroy').val('1');
+    console.log("WHat is this?", $(this).closest('div').parent().closest('div'));
+    $(this).closest('div').parent().closest('div').remove();
+    return event.preventDefault();
   })
 
   //General way of adding attribute through link_to_add_row method in application helper

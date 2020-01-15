@@ -1,13 +1,13 @@
-.row
-	.col-sm-5
-		= f.label :position
-		= f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
-	.col-sm-5
-		= f.label :name
-		= f.text_field :name, {required: true, class: "form-control"}
-	.col-sm-2
-		= f.hidden_field :_destroy
-		= link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
+.form-inline.col-sm-12.p-0.mb-2
+  .form-group.col-sm-2
+    = f.hidden_field :_destroy
+    = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_segments'
+  .form-group.col-sm-5
+    = f.label :position
+    = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control col-sm-12"}
+  .form-group.col-sm-5
+    = f.label :name
+    = f.text_field :name, {required: true, class: "form-control col-sm-12"}
 
 / tr 
 /   td

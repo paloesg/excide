@@ -21,6 +21,6 @@ class Symphony::SurveysController < ApplicationController
   private
 
   def survey_params
-    params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :survey_template_id)
+    params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :survey_template_id, segments_attributes: [:name, :position, :_destroy])
   end
 end

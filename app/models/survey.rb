@@ -9,6 +9,7 @@ class Survey < ApplicationRecord
   has_many :segments, dependent: :destroy
 
   accepts_nested_attributes_for :company
+  accepts_nested_attributes_for :segments
 
   validates :user, :survey_template, :title, presence: true
 
