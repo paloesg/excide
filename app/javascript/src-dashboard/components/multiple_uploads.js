@@ -127,24 +127,23 @@ $(document).on("turbolinks:load", function() {
         }
       });
     });
-    documentUpload.on("success", function (file, request) {
-      let resp = $.parseXML(request);
-      let filePath = $(resp).find("Key").text();
-      let location = new URL($(resp).find("Location").text())
-      if($("#batch-uploader").length){
+    documentUpload.on("queuecomplete", () => {
+      $.each(documentUpload["files"], (index, file) => {
+        getUrlResponse = $.parseXML(file["xhr"]["response"]);
+        $(getUrlResponse).find("Location").text();
         let data_input = {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
           batch_id: batchId,
-          count: this.files.length,
+          count: documentUpload["files"].length,
           document: {
             filename: file.upload.filename,
-            file_url: '//' + location['host'] + '/' + filePath,
+            file_url: $(getUrlResponse).find("Location").text(),
             template_id: $('#template_id').val()
           }
         };
         let result = uploadDocuments(data_input);
-      }
+      })
     });
     documentUpload.on("queuecomplete", function (file, request) {
       let totalFile = documentUpload.files.length;
