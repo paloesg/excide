@@ -43,6 +43,7 @@ class Symphony::DocumentsController < ApplicationController
     authorize @generate_document.document
     respond_to do |format|
       if @generate_document.success?
+        @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate
         if params[:document_type] == 'batch-uploads'
           document = @generate_document.document
           batch = document.workflow.batch
@@ -69,7 +70,7 @@ class Symphony::DocumentsController < ApplicationController
             format.json { render json: workflow_action.errors, status: :unprocessable_entity }
           end
         else
-          format.html { redirect_to @generate_document.document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(@generate_document.document.workflow.template.slug, @generate_document.document.workflow.id), notice: 'Document was successfully created.' }
+          format.html { redirect_to @generate_textract.document.nil? && @generate_document.document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(@generate_document.document.workflow.template.slug, @generate_document.document.workflow.id), notice: 'Document was successfully created.' }
         end
       else
         set_templates
