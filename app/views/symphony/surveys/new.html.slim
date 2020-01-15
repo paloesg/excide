@@ -1,22 +1,52 @@
 .row
   .col-sm-12
     = form_for @survey do |f|
+      h1 #{@survey_template.title}
       .kt-portlet
-        .kt-portlet__head
-          .kt-portlet__head-label
-            h1.kt-portlet__head-title #{@survey_template.title}
-        .kt-portlet__body
-          .form-inline.col-sm-12.p-0.mb-2
-            .form-group.col-sm-6
-              = f.text_field :title, placeholder: 'Survey title', class: 'form-control col-sm-12'
-            .form-group.col-sm-6
-              = f.text_field :remarks, placeholder: 'Remarks', class: 'form-control col-sm-12'
-          - @survey_template.survey_sections.each do |sur_section|
-            h3.kt-portlet__body-title #{sur_section.display_name}
-            .segment-section
-              = f.fields_for :segments do |s|
-                = render partial: 'segment_fields', locals: { f: s, g: f.object}
-              = link_to_add_segments('Add segments', f, :segments, g: f.object)
+        - @survey_template.survey_sections.each do |sur_section|
+          .kt-portlet__head
+            .kt-portlet__head-label
+              h1.kt-portlet__head-title #{sur_section.display_name}
+              - sur_section.questions.each do |qn|
+      /   .kt-portlet__body
+      /     .form-inline.col-sm-12.p-0.mb-2
+      /       .form-group.col-sm-6
+      /         = f.text_field :title, placeholder: 'Survey title', class: 'form-control col-sm-12'
+      /       .form-group.col-sm-6
+      /         = f.text_field :remarks, placeholder: 'Remarks', class: 'form-control col-sm-12'
+      /     - @survey_template.survey_sections.each do |sur_section|
+      /       h3.kt-portlet__body-title #{sur_section.display_name}
+      /       = fields_for :responses do |response|
+
+
+
+
+
+
+
+
+            / .row
+            /   .col-sm-12.segment-section.mb-3 
+            /     = f.fields_for :segments do |s|
+            /       = render partial: 'segment_fields', locals: { f: s, g: f.object}
+            /   = link_to_add_segments('Add segments', f, :segments, g: f.object)
+                   
+
+            
+
+
+
+            
+            
+
+
+/ - sur_section.questions.each do |qn|
+/   .row
+/     .col-sm-12
+/       = qn.content
+
+              /   = render partial: 'segment_fields', locals: { f: s, g: f.object}
+              / = link_to_add_segments('Add segments', f, :segments, g: f.object)
 / .row
 /   .col-sm-12
 /     = form_for @survey do |f|

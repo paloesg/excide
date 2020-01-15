@@ -1,6 +1,16 @@
-tr 
-  td
-    = f.hidden_field :_destroy
-    = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
-  td = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
-  td = f.text_field :name, {required: true, class: "form-control"}
+.row
+	.col-sm-5
+		= f.label :position
+		= f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
+	.col-sm-5
+		= f.label :name
+		= f.text_field :name, {required: true, class: "form-control"}
+	.col-sm-2
+		= f.hidden_field :_destroy
+		= link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
+
+/ tr 
+/   td
+/     = f.hidden_field :_destroy
+/     = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
+/   td = f.text_field :name, {required: true, class: "form-control"}
