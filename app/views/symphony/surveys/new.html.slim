@@ -8,10 +8,8 @@
             .kt-portlet__head
               .kt-portlet__head-label
                 h1.kt-portlet__head-title #{sur_section.display_name}
-            .kt-portlet__body
-              
-            .segment-section
-              = render partial: 'segment_fields', locals: { f: s, g: f.object}
+            .kt-portlet__body.segment-section
+              = render partial: 'segment_fields', locals: { f: s, g: f.object, sur_sec: sur_section}
         = link_to_add_segments('Add segments', f, :segments, g: f.object)
 
 

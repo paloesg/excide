@@ -1,14 +1,18 @@
-.form-inline.col-sm-12.p-0.mb-2
-  .form-group.col-sm-2
-    = f.hidden_field :_destroy
-    = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_segments'
-  .form-group.col-sm-5
-    = f.label :position
-    = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control col-sm-12"}
-  .form-group.col-sm-5
-    = f.label :name
-    = f.text_field :name, {required: true, class: "form-control col-sm-12"}
-
+.question-block
+  .form-inline.col-sm-12.p-0.mb-2
+    .form-group.col-sm-2
+      = f.hidden_field :_destroy
+      = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_segments'
+    .form-group.col-sm-5
+      = f.label :position
+      = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control col-sm-12"}
+    .form-group.col-sm-5
+      = f.label :name
+      = f.text_field :name, {required: true, class: "form-control col-sm-12"}
+  = f.fields_for :responses do |response|
+    - sur_sec.questions.each do |qn|
+      h3 = qn.content
+      = render "symphony/surveys/questions/#{qn.question_type}", q: qn
 / tr 
 /   td
 /     = f.hidden_field :_destroy
