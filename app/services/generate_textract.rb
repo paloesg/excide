@@ -62,13 +62,13 @@ class GenerateTextract
   end
 
   def get_table
-    @table_result = []
+    @table_result = Array.new()
     if @document.aws_textract_data.present?
       @table_result = @document.aws_textract_data
     else
       @blocks = @textract_json['blocks']
-      @blocks_map = {}
-      @table_blocks = []
+      @blocks_map = Hash.new()
+      @table_blocks = Array.new()
 
       @blocks.each do |block|
         @blocks_map[block['id']] = block
@@ -89,7 +89,7 @@ class GenerateTextract
   end
 
   def get_rows_column(table, data)
-    rows = {}
+    rows = Hash.new()
     table['relationships'].each do |relationship|
       if relationship['type'] == "CHILD"
         relationship['ids'].each do |child|
@@ -97,8 +97,8 @@ class GenerateTextract
           if cell['block_type'] == "CELL"
             row_index = cell['row_index']
             col_index = cell['column_index']
-            if !(rows.has_key? row_index)
-              rows[row_index] = {}
+            if !(rows.key?(row_index))
+              rows[row_index] = Hash.new()
             end
             rows[row_index][col_index] = get_text(cell, data)
           end
@@ -110,7 +110,7 @@ class GenerateTextract
 
   def get_text(cell, data)
     text = ""
-    if cell['relationships']
+    if cell['relationships'].present?
       cell['relationships'].each do |relationship|
         if relationship['type'] == "CHILD"
           relationship['ids'].each do |child|
@@ -131,12 +131,13 @@ class GenerateTextract
   end
 
   def get_data_table
-    @arr_object = []
-    @head_id = []
-    # create object array of table
+    # create object array of table    
+    @table_rows = Array.new()
     @table_result.each do |table|
+      @arr_object = Array.new()
+      @head_id = Array.new()
       table.each do |tab_val|
-        object = {}
+        object = Hash.new()
         tab_val.each do |col_val|
           object = col_val
         end 
@@ -145,35 +146,38 @@ class GenerateTextract
         end 
       end
 
-      # find head of table
-      @arr_object.each do |object|
-        rows_head = {}
-        object.each do |ass|
-          rows_head['price'] = ass[0] if ass[1].include? "price" or ass[1].include? "Price"
-          rows_head['amount'] = ass[0] if ass[1].include? "amount" or ass[1].include? "Amount"
-          rows_head['description'] = ass[0] if ass[1].include? "description" or ass[1].include? "Description"
-          rows_head['quantity'] = ass[0] if ass[1].include? "quantity" or ass[1].include? "Quantity"
+      if @arr_object.present?
+        # find head of table
+        @arr_object.each do |object|
+          rows_head = Hash.new()
+          object.each do |ass|
+            rows_head['price'] = ass[0] if ass[1].include? "price" or ass[1].include? "Price"
+            rows_head['amount'] = ass[0] if ass[1].include? "amount" or ass[1].include? "Amount"
+            rows_head['description'] = ass[0] if ass[1].include? "description" or ass[1].include? "Description"
+            rows_head['quantity'] = ass[0] if ass[1].include? "quantity" or ass[1].include? "Quantity"
+          end
+
+          if rows_head.present?
+            @head_id.push(rows_head)
+          end 
         end
 
-        if rows_head.present?
-          @head_id.push(rows_head)
+        # find values by head of table 
+        i = 0 
+        if @head_id.present?
+          @arr_object.each_with_index do |object, index|
+            row_result = Hash.new()
+            row_result['description'] = object[@head_id[0]['description']] if @head_id[0]['description'].present?
+            row_result['price'] = object[@head_id[0]['price']].gsub(/[^\d\.]/, '').to_f if @head_id[0]['price'].present? && object[@head_id[0]['price']].present?
+            row_result['amount'] = object[@head_id[0]['amount']].gsub(/[^\d\.]/, '').to_f if @head_id[0]['amount'].present? && object[@head_id[0]['amount']].present?
+            row_result['quantity'] = object[@head_id[0]['quantity']] if @head_id[0]['quantity'].present?
+            row_result['index'] = index
+            if row_result.present?
+              @table_rows.push(row_result)
+            end
+          end
         end 
-      end
-
-      # find values by head of table
-      @table_rows = [] 
-      i = 0 
-      @arr_object.each_with_index do |object, index|
-        row_result = {}
-        row_result['description'] = object[@head_id[0]['description']] if @head_id[0]['description'].present?
-        row_result['price'] = object[@head_id[0]['price']].gsub(/[^\d\.]/, '').to_f if @head_id[0]['price'].present? && object[@head_id[0]['price']].present?
-        row_result['amount'] = object[@head_id[0]['amount']].gsub(/[^\d\.]/, '').to_f if @head_id[0]['amount'].present? && object[@head_id[0]['amount']].present?
-        row_result['quantity'] = object[@head_id[0]['quantity']] if @head_id[0]['quantity'].present?
-        row_result['index'] = index
-        if row_result.present?
-          @table_rows.push(row_result)
-        end
-      end
+      end           
     end
 
     # remove first array, because that is as head of table
