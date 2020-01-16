@@ -128,6 +128,7 @@ $(document).on("turbolinks:load", function() {
       });
     });
     documentUpload.on("queuecomplete", () => {
+      // Create workflows from multiple files
       $.each(documentUpload["files"], (index, file) => {
         getUrlResponse = $.parseXML(file["xhr"]["response"]);
         $(getUrlResponse).find("Location").text();
@@ -144,8 +145,7 @@ $(document).on("turbolinks:load", function() {
         };
         let result = uploadDocuments(data_input);
       })
-    });
-    documentUpload.on("queuecomplete", function (file, request) {
+
       let totalFile = documentUpload.files.length;
       $('#drag-and-drop-submit').prop( "disabled", true );
       $('#view-invoices-button').show();
