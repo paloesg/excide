@@ -62,22 +62,29 @@ class GenerateTextract
   end
 
   def get_table
-    @blocks = @textract_json['blocks']
-    @blocks_map = {}
-    @table_blocks = []
     @table_result = []
+    if @document.aws_textract_data.present?
+      @table_result = @document.aws_textract_data
+    else
+      @blocks = @textract_json['blocks']
+      @blocks_map = {}
+      @table_blocks = []
 
-    @blocks.each do |block|
-      @blocks_map[block['id']] = block
-      if block['block_type'] == "TABLE"
-        @table_blocks.push(block)
+      @blocks.each do |block|
+        @blocks_map[block['id']] = block
+        if block['block_type'] == "TABLE"
+          @table_blocks.push(block)
+        end
       end
-    end
 
-    @table_blocks.each do |table|
-      result = get_rows_column(table, @blocks_map)      
-      @table_result.push(result)
-    end
+      @table_blocks.each do |table|
+        result = get_rows_column(table, @blocks_map)      
+        @table_result.push(result)
+      end
+
+      @document.aws_textract_data = @table_result
+      @document.save 
+    end    
     return @table_result
   end
 
@@ -159,8 +166,8 @@ class GenerateTextract
       @arr_object.each_with_index do |object, index|
         row_result = {}
         row_result['description'] = object[@head_id[0]['description']] if @head_id[0]['description'].present?
-        row_result['price'] = object[@head_id[0]['price']].tr('$ ( )', '').to_f if @head_id[0]['price'].present?
-        row_result['amount'] = object[@head_id[0]['amount']].tr('$ ( )', '').to_f if @head_id[0]['amount'].present?
+        row_result['price'] = object[@head_id[0]['price']].gsub(/[^\d\.]/, '').to_f if @head_id[0]['price'].present? && object[@head_id[0]['price']].present?
+        row_result['amount'] = object[@head_id[0]['amount']].gsub(/[^\d\.]/, '').to_f if @head_id[0]['amount'].present? && object[@head_id[0]['amount']].present?
         row_result['quantity'] = object[@head_id[0]['quantity']] if @head_id[0]['quantity'].present?
         row_result['index'] = index
         if row_result.present?
