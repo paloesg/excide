@@ -133,6 +133,8 @@ gem "algoliasearch-rails"
 gem "selectize-rails"
 # Get mime type from filename
 gem 'mini_mime'
+# Shorten UUID to make it more user friendly
+gem 'shortuuid'
 
 # Backend admin
 gem "administrate", "0.12.0"
