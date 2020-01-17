@@ -25,6 +25,7 @@
 //= require symphony/batches/select_all_by_task
 //= require symphony/zoom
 //= require symphony/invoices/xero
+//= require symphony/invoices/aws
 //= require conductor/create_allocations
 //= require conductor/add_availabilities
 //= require conductor/home
