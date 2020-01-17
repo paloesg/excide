@@ -11,7 +11,7 @@ class Survey < ApplicationRecord
   accepts_nested_attributes_for :company
   accepts_nested_attributes_for :segments
 
-  validates :user, :survey_template, :title, presence: true
+  validates :user, :survey_template, presence: true
 
   def to_csv
     ::CSV.generate(headers: true) do |csv|

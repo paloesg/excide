@@ -9,10 +9,13 @@
     .form-group.col-sm-5
       = f.label :name
       = f.text_field :name, {required: true, class: "form-control col-sm-12"}
-  = f.fields_for :responses do |response|
+  .response-block.m-3
     - sur_sec.questions.each do |qn|
-      h3 = qn.content
-      = render "symphony/surveys/questions/#{qn.question_type}", q: qn
+      - f.object.build_responses
+      = f.fields_for :responses do |response|
+        h3 = qn.content
+        = render "symphony/surveys/questions/#{qn.question_type}", q: qn, r: response
+      hr
 / tr 
 /   td
 /     = f.hidden_field :_destroy
