@@ -139,7 +139,7 @@ $(document).on("turbolinks:load", function() {
           count: documentUpload["files"].length,
           document: {
             filename: file.upload.filename,
-            file_url: $(getUrlResponse).find("Location").text(),
+            file_url: $(getUrlResponse).find("Location").text().replace(/^https?:/,''),
             template_id: $('#template_id').val()
           }
         };
