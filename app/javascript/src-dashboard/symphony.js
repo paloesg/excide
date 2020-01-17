@@ -35,7 +35,6 @@ $(document).on("turbolinks:load", function(){
 
   $('form').on('click', '.remove_segments', function(event){
     $(this).closest('div').find('.destroy').val('1');
-    console.log("WHat is this?", $(this).closest('div').parent().closest('div').parent().closest('div.question-block'));
     $(this).closest('div').parent().closest('div').parent().closest('div.question-block').remove();
     return event.preventDefault();
   })
@@ -105,7 +104,6 @@ $(document).on("turbolinks:load", function(){
     let regexp, time;
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
-    console.log("DATA FIELDS: ", $(this).data('fields'));
     $( '.segment-section' ).append($(this).data('fields').replace(regexp, time));
     return event.preventDefault();
   });

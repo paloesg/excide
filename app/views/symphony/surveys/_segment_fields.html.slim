@@ -15,9 +15,5 @@
       = f.fields_for :responses do |response|
         h3 = qn.content
         = render "symphony/surveys/questions/#{qn.question_type}", q: qn, r: response
+        = response.hidden_field :question_id, value: qn.id
       hr
-/ tr 
-/   td
-/     = f.hidden_field :_destroy
-/     = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
-/   td = f.text_field :name, {required: true, class: "form-control"}
