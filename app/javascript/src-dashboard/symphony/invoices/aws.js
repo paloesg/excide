@@ -34,7 +34,9 @@ function get_xero_details(template, workflow){
 function get_document_analysis(template, workflow){
   $.post("/symphony/"+template+"/"+workflow+"/get_textract").done((result) => { 
     $('.loading-textract').hide();
+    // Show json result to input textarea
     $(".aws-textract-result").text(JSON.stringify(result["table"]));
+    // Validate result when success true and tables not null
     if(result["table"]["success?"] == true && result["table"]["tables"].length > 0){
       $(".table>tbody>tr").remove();
       let tables = result["table"]["tables"];
