@@ -130,16 +130,16 @@ $(document).on("turbolinks:load", function() {
     documentUpload.on("queuecomplete", () => {
       // Create workflows from multiple files
       $.each(documentUpload["files"], (index, file) => {
-        getUrlResponse = $.parseXML(file["xhr"]["response"]);
-        $(getUrlResponse).find("Location").text();
+        responseURL = file["xhr"]["responseURL"].replace(/^https?:/,'');
+        responseKey = $($.parseXML(file["xhr"]["response"])).find("Key").text();
         let data_input = {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
           batch_id: batchId,
           count: documentUpload["files"].length,
           document: {
-            filename: file.upload.filename,
-            file_url: $(getUrlResponse).find("Location").text().replace(/^https?:/,''),
+            filename: file.name,
+            file_url: responseURL + responseKey,
             template_id: $('#template_id').val()
           }
         };
