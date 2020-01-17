@@ -20,9 +20,9 @@ class GenerateTextract
       analyze_document
       get_table
       get_data_table
-      OpenStruct.new(success?: true, table: @table_rows)
+      OpenStruct.new(success?: true, tables: @table_rows)
     rescue => e
-      OpenStruct.new(success?: false, table: @table_rows, message: e.message)
+      OpenStruct.new(success?: false, tables: @table_rows, message: e.message)
     end
   end
 

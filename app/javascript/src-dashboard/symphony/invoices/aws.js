@@ -34,9 +34,10 @@ function get_xero_details(template, workflow){
 function get_document_analysis(template, workflow){
   $.post("/symphony/"+template+"/"+workflow+"/get_textract").done((result) => { 
     $('.loading-textract').hide();
-    if(result["table"]["success?"] == true){
+    $(".aws-textract-result").text(JSON.stringify(result["table"]));
+    if(result["table"]["success?"] == true && result["table"]["tables"].length > 0){
       $(".table>tbody>tr").remove();
-      let tables = result.table.table;
+      let tables = result["table"]["tables"];
       $.each(tables, function(i, table){
         add_line_items(table);
       })
