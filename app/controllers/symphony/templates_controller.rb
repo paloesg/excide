@@ -5,7 +5,7 @@ class Symphony::TemplatesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
-  before_action :find_roles, only: [:new, :edit, :update, :create_section]
+  before_action :find_roles, only: [:new, :edit, :update]
 
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
@@ -74,21 +74,6 @@ class Symphony::TemplatesController < ApplicationController
       end
     else
       redirect_to edit_symphony_template_path(@template)
-    end
-  end
-
-  def create_section
-    authorize @template
-    @position = @template.sections.count + 1
-    @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: @position)
-    respond_to do |format|
-      if @section.save
-        format.html { redirect_to edit_symphony_template_path(@template), notice: 'Section was successfully created.' }
-        format.js { render js: 'Turbolinks.visit(location.toString());' }
-      else
-        format.html { redirect_to edit_symphony_template_path(@template) , alert: @section.errors.full_messages.join } if @section.errors.messages[:section_name].present?
-        format.js { render js: 'Turbolinks.visit(location.toString());' }
-      end
     end
   end
 

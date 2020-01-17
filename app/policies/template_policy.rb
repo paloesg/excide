@@ -19,10 +19,6 @@ class TemplatePolicy < ApplicationPolicy
     update?
   end
 
-  def create_section?
-    create?
-  end
-
   def destroy_section?
     user_admin?
   end
