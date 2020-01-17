@@ -32,6 +32,12 @@ $(document).on("turbolinks:load", function(){
     $(this).closest('tr').hide();
     return event.preventDefault();
   })
+  //removing a question in the survey_template
+  $('form').on('click', '.remove_questions', function(event){
+    $(this).prev('input[type=hidden]').val('1');
+    $(this).closest('tr').hide();
+    return event.preventDefault();
+  })
 
   $('form').on('click', '.remove_segments', function(event){
     $(this).closest('div').find('.destroy').val('1');
