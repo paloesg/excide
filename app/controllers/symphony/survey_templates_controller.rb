@@ -32,7 +32,6 @@ class Symphony::SurveyTemplatesController < ApplicationController
       @survey_section = SurveySection.create(display_name: params[:new_survey_section], survey_template_id: @survey_template.id, position: @position)
       if @survey_section.save
         flash[:notice] = 'Survey section was successfully created.'
-        redirect_to edit_symphony_survey_template_path(@survey_template)
       else
         flash[:alert] = @survey_section.errors.full_messages.join
       end
@@ -46,6 +45,7 @@ class Symphony::SurveyTemplatesController < ApplicationController
         render :edit
       end
     else
+      redirect_to edit_symphony_survey_template_path(@survey_template)
     end
   end
 
