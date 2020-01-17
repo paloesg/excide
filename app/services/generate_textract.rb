@@ -97,7 +97,7 @@ class GenerateTextract
           if cell['block_type'] == "CELL"
             row_index = cell['row_index']
             col_index = cell['column_index']
-            if !(rows.key?(row_index))
+            unless rows.key?(row_index)
               rows[row_index] = Hash.new()
             end
             rows[row_index][col_index] = get_text(cell, data)
@@ -163,7 +163,6 @@ class GenerateTextract
         end
 
         # find values by head of table 
-        i = 0 
         if @head_id.present?
           @arr_object.each_with_index do |object, index|
             row_result = Hash.new()
