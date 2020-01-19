@@ -1,40 +1,41 @@
-.row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item Batches
+- @navbar_batches_active = true
+.row.mb-3
+  .col
     h1 Symphony AP
 .row
-  .col-sm-12
+  .col-xl-12
     .loading
       .loader
-    .card
-      h5.card-header
-        | List of batches
-        .pull-right
-          element#completed-batches 0
-          '  of
-          element#batches-count 0
-          |  completed
-      .table-responsive
-        table#table-batches.table
-          thead
-            tr
-              th S/N
-              th Batch Name
-              th Created By
-              th Last Updated
-              th No. Completed Workflows
-              th No. of Workflows
-              th Progress
-              - if current_user.has_role? :superadmin
-                th Action
-          tbody
-            - 7.times do
-              tr.batch-loader
-                - 7.times do
-                  td
-                    .timeline-item
-                      .animated-background
-        .card-footer.pt-4
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title
+            | List of batches
+        .kt-portlet__head-toolbar
+          .kt-portlet__head-actions
+            .pull-right
+              element#completed-batches 0
+              '  of
+              element#batches-count 0
+              |  completed
+      .kt-portlet__body
+        .table-responsive
+          table#table-batches.table
+            thead
+              tr
+                th S/N
+                th Batch Name
+                th Created By
+                th Last Updated
+                th No. Completed Workflows
+                th No. of Workflows
+                th Progress
+                - if current_user.has_role? :superadmin
+                  th Action
+            tbody
+              - 7.times do
+                tr.batch-loader
+                  - 8.times do
+                    td
+                      .timeline-item
+                        .animated-background

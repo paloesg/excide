@@ -1,0 +1,84 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require trix
+ *= require_self
+ *= require dropzone
+ *= require font-awesome
+ *= require selectize
+ *= require selectize.default
+
+ */
+
+@import "bootstrap";
+@import "font-awesome";
+@import "metronic/css/custom";
+@import "metronic/css/invoices";
+@import "metronic/css/zoom";
+@import "metronic/css/batches";
+@import "metronic/css/companies";
+@import "metronic/css/templates";
+@import "metronic/css/pagination";
+@import "dashboard/admin";
+@import "symphony/pagination";
+
+//icon
+@import "metronic/css/flaticon";
+@import "metronic/css/socicon";
+
+//
+// Main Stylesheet
+//
+
+////////////////////////////////////////////////////////////////
+///////////// DO NOT MODIFY BELOW INCLUDE ORDER ////////////////
+////////////////////////////////////////////////////////////////
+
+// 1: Include global config
+@import "config";
+
+// 2: Include demo config (that overrides the above global config)
+@import "global/layout/config";
+
+// 3: Bootstrap Include
+@import "global/integration/frameworks/bootstrap/variables";
+@import "global/integration/frameworks/bootstrap/bootstrap.scss";
+
+// 3: Components include
+@import "global/include";
+////////////////////////////////////////////////////////////////
+///////////// DO NOT MODIFY ABOVE INCLUDE ORDER ////////////////
+////////////////////////////////////////////////////////////////
+
+// 5: Demo Configs
+@import "global/layout/header/config";
+@import "global/layout/aside/config";
+@import "global/layout/footer/config";
+
+
+// 6: Demo Includes
+// Layout
+@import "global/layout/base/base";
+
+@import "global/layout/header/header";
+@import "global/layout/header/base-mobile";
+@import "global/layout/header/menu";
+@import "global/layout/header/topbar";
+@import "global/layout/header/brand";
+
+@import "global/layout/aside/aside";
+@import "global/layout/aside/menu";
+
+@import "global/layout/content/content";
+@import "global/components/calendar/fullcalendar.bundle";
+
+@import "global/layout/footer/footer";

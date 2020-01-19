@@ -1,53 +1,123 @@
-.row.mt-2
-  .col-sm-12
-    .card-deck.mb-3
-      .card.text-center.bg-light
-        .card-body
-          h5.card-title Workflows
-          h1.card-text = @workflow_count
-      .card.text-center.bg-light
-        .card-body
-          h5.card-title Tasks
-          h1.card-text = @outstanding_actions
-      .card.text-center.bg-light
-        .card-body
-          h5.card-title Batches
-          h1.card-text = @batch_count
-      .card.text-center.bg-light
-        .card-body
-         h5.card-title Reminders
-         h1.card-text = link_to @reminder_count, symphony_reminders_path, class: 'text-dark'
-      .card.text-center.bg-light
-        .card-body
-         h5.card-title Recurring
-         h1.card-text = link_to @recurring_count, symphony_workflows_recurring_path, class: 'text-dark'
+- @navbar_dashboard_active = true
 .row
-  .col-lg-4.col-sm-6
-    .card.mb-3
-      h5.card-header New Workflow
-      .card-body
+  .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
+    .kt-portlet.text-center
+      .kt-portlet__body
+        h5.kt-widget14__title Workflows
+        h1.kt-widget14__desc = @workflow_count
+  .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
+    .kt-portlet.text-center
+      .kt-portlet__body
+        h5.kt-widget14__title Tasks
+        h1.kt-widget14__desc = @outstanding_actions
+  .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
+    .kt-portlet.text-center
+      .kt-portlet__body
+        h5.kt-widget14__title Batches
+        h1.kt-widget14__desc = @batch_count
+  .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
+    .kt-portlet.text-center
+      .kt-portlet__body
+        h5.kt-widget14__title Reminders
+        h1.kt-widget14__desc = link_to @reminder_count, symphony_reminders_path, class: 'text-dark'
+  .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
+    .kt-portlet.text-center
+      .kt-portlet__body
+        h5.kt-widget14__title Recurring
+        h1.kt-widget14__desc = link_to @recurring_count, symphony_workflows_recurring_path, class: 'text-dark'
+.row
+  .col-md-4
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title New Workflow
+      .kt-portlet__body
         .form-group
           = label_tag "template", "Select template:"
-          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-        = link_to 'New Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
-  .col-lg-4.col-sm-6
-    .card.mb-3
-      h5.card-header New Recurring Workflow
-      .card-body
+          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"          
+      .kt-portlet__foot
+        .kt-form__actions
+          = link_to 'New Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
+  .col-md-4
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title New Recurring Workflow
+      .kt-portlet__body
         .form-group
           = label_tag "template", "Select template:"
-          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
-        = link_to 'New Recurring Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-recurring-workflow'
-  .col-lg-4.col-sm-6
-    .card.mb-3
-      h5.card-header Batch Upload
-      .card-body
-        .loading
-          .loader
-        .row
-          = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize col-md-8 mr-2", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
-          = submit_tag 'Submit', disabled: true, class: 'btn btn-primary col-md-3 mb-3 mx-auto', id: 'drag-and-drop-submit'
-        = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads', id: 'batch-uploader'
-          - @s3_direct_post.fields.each do |key, value|
-            = hidden_field_tag key, value
-            = hidden_field_tag "utf8", "√"
+          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"          
+      .kt-portlet__foot
+        .kt-form__actions
+          = link_to 'New Recurring Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-recurring-workflow'
+  .col-md-4
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title Batch Upload
+      .kt-portlet__body
+        .form-group
+          .row
+            .col-xl-8.col-lg-8.col-md-8.mr-2
+              = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
+            .col-xl-3.col-lg-3.col-md-3.mb-3
+              = submit_tag 'Submit', disabled: true, class: 'btn btn-primary', id: 'drag-and-drop-submit'
+          = form_tag @s3_direct_post.url, class: 'dropzone dropzone-default dz-clickable multiple_uploads', id: 'batch-uploader'
+            - @s3_direct_post.fields.each do |key, value|
+              = hidden_field_tag key, value
+              = hidden_field_tag "utf8", "√"     
+
+
+/ .row.mt-2
+/   .col-sm-12
+/     .card-deck.mb-3
+/       .card.text-center.bg-light
+/         .card-body
+/           h5.card-title Workflows
+/           h1.card-text = @workflow_count
+/       .card.text-center.bg-light
+/         .card-body
+/           h5.card-title Tasks
+/           h1.card-text = @outstanding_actions
+/       .card.text-center.bg-light
+/         .card-body
+/           h5.card-title Batches
+/           h1.card-text = @batch_count
+/       .card.text-center.bg-light
+/         .card-body
+/          h5.card-title Reminders
+/          h1.card-text = link_to @reminder_count, symphony_reminders_path, class: 'text-dark'
+/       .card.text-center.bg-light
+/         .card-body
+/          h5.card-title Recurring
+/          h1.card-text = link_to @recurring_count, symphony_workflows_recurring_path, class: 'text-dark'
+/ .row
+/   .col-lg-4.col-sm-6
+/     .card.mb-3
+/       h5.card-header New Workflow
+/       .card-body
+/         .form-group
+/           = label_tag "template", "Select template:"
+/           = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
+/         = link_to 'New Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
+/   .col-lg-4.col-sm-6
+/     .card.mb-3
+/       h5.card-header New Recurring Workflow
+/       .card-body
+/         .form-group
+/           = label_tag "template", "Select template:"
+/           = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
+/         = link_to 'New Recurring Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-recurring-workflow'
+/   .col-lg-4.col-sm-6
+/     .card.mb-3
+/       h5.card-header Batch Upload
+/       .card-body
+/         .loading
+/           .loader
+/         .row
+/           = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize col-md-8 mr-2", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
+/           = submit_tag 'Submit', disabled: true, class: 'btn btn-primary col-md-3 mb-3 mx-auto', id: 'drag-and-drop-submit'
+/         = form_tag @s3_direct_post.url, class: 'dropzone multiple_uploads', id: 'batch-uploader'
+/           - @s3_direct_post.fields.each do |key, value|
+/             = hidden_field_tag key, value
+/             = hidden_field_tag "utf8", "√"

@@ -1,5 +1,6 @@
 class Symphony::BatchesController < ApplicationController
-  layout 'dashboard/application'
+  # layout 'dashboard/application'
+  layout 'metronic/application'
 
   before_action :authenticate_user!
   before_action :set_company

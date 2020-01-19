@@ -56,7 +56,7 @@ class Conductor::UsersController < ApplicationController
   end
 
   def export
-    @users = User.with_role(:associate, @company).uniq
+    @users = User.with_role(:associate, @company)
     send_data @users.associates_to_csv, filename: "Associates-#{Date.current}.csv"
   end
 

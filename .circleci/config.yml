@@ -3,7 +3,7 @@ jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     parallelism: 1
     docker: # run the steps with Docker
-      - image: circleci/ruby:2.6.1-node # ...with this image as the primary container; this is where all `steps` will run
+      - image: circleci/ruby:2.6.1-node-browsers # ...with this image as the primary container; this is where all `steps` will run
         environment: # environment variables for primary container
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
@@ -11,6 +11,7 @@ jobs: # a collection of steps
           PGHOST: 127.0.0.1
           PGUSER: excide
           RAILS_ENV: test
+          NODE_ENV: test
       - image: circleci/postgres:9.5-alpine # database image
         environment: # environment variables for database
           POSTGRES_USER: excide
@@ -40,7 +41,6 @@ jobs: # a collection of steps
           key: excide-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
-
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
@@ -52,6 +52,34 @@ jobs: # a collection of steps
       - run:
           name: Database setup
           command: bin/rails db:schema:load --trace
+
+      - restore_cache:
+            keys:
+              - yarn-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Yarn install
+          command: yarn install --cache-folder ~/.cache/yarn
+
+        # save yarn cache
+      - save_cache:
+          key: yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
+      - restore_cache:
+          keys:
+            - webpack-{{ .Revision }}
+
+      - run:
+          name: Compile webpacker assets
+          command: bundle exec rake webpacker:compile
+          no_output_timeout: 35m
+
+      - save_cache:
+          key: webpack-{{ .Revision }}
+          paths:
+            - /home/circleci/project/public/packs-test/
 
       - run:
           name: Run rspec in parallel

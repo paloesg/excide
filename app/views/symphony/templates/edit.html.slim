@@ -1,14 +1,12 @@
-.row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item Template
+.row.mb-3
+  .col
     h1 Edit #{@template.title}
+.row
+  .col-xl-12
     = form_for(@template, url: symphony_template_path(template_slug: @template.slug), html: {class:'save-form-template'}) do |f|
       - if @template.sections.present?
         = render 'form', f: f
         = f.submit 'Save Template', class: 'btn btn-primary pull-right'
       .form-inline.col-sm-6.pull-right.p-0
         = text_field_tag :new_section, params[:new_section], {class: 'form-control mr-2 col-sm-8', placeholder: 'Enter section name...'}
-        = submit_tag 'Add new section', class: 'btn btn-success', name: 'new_section_submit'
+        = submit_tag 'Add new section', class: 'btn btn-success', name: 'new_section_submit'    
