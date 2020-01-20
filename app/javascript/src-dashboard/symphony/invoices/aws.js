@@ -19,7 +19,7 @@ function getXeroDetails(template, workflow){
       if(val.tracking_categories_1 !== null){
         $.each(val.tracking_categories_1, function(i, cat1){
           cat1 = JSON.parse(cat1);
-          xeroTrackingCategories1.push({value:cat1["name"], text:cat1["name"], tracking_option_id:cat1["tracking_option_id"]});
+          xeroTrackingCategories1.push({"value":cat1["name"], "text":cat1["name"], "tracking_option_id":cat1["tracking_option_id"]});
         })
       }
       if(val.items !== null){
@@ -31,7 +31,7 @@ function getXeroDetails(template, workflow){
   });
 }
 
-function add_line_items(data){
+function addLineItems(data){
   // Add value to line items
   let items = '<select class="minimize-text line-items-dropdown-width dropdown-items selectized" name="invoice[line_items_attributes]['+data.index+'][item]" id="invoice_line_items_attributes_'+data.index+'_item" tabindex="-1" style="display: none;"><option value="" selected="selected"></option></select>';
   let description = '<input class="form-control minimize-text" type="text" name="invoice[line_items_attributes]['+data.index+'][description]" id="invoice_line_items_attributes_'+data.index+'_description" value='+ ( data.description ?  data.description : "") +'>';
@@ -78,7 +78,7 @@ function getDocumentAnalysis(template, workflow){
       $(".table>tbody>tr").remove();
       let tables = result["table"]["tables"];
       $.each(tables, function(i, table){
-        add_line_items(table);
+        addLineItems(table);
       })
     }
   })
@@ -93,4 +93,4 @@ $(document).on("turbolinks:load", function() {
     getDocumentAnalysis(template, workflow);
     $('.loading-textract').show();
   });
-})
+});
