@@ -22,6 +22,7 @@ require("./symphony/popover")
 require("./symphony/batches/select_all_by_task")
 require("./symphony/zoom")
 require("./symphony/invoices/xero")
+require("./symphony/choices")
 
 window.createAllocation = require("./conductor/create_allocations")
 window.addAvailability = require("./conductor/add_availabilities")
