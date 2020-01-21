@@ -5,10 +5,11 @@
       = f.hidden_field :survey_template_id, value: @survey_template.id
       .kt-portlet
         - @survey_template.survey_sections.each do |sur_section|
+          - @survey_section = sur_section
           .kt-portlet__head
             .kt-portlet__head-label
               h1.kt-portlet__head-title #{sur_section.display_name}
-          .segment-section
+          .segment-section class=("segment-in-survey-section-#{sur_section.id}")
             = f.fields_for :segments do |s| 
               = render partial: 'segment_fields', locals: { f: s, g: f.object, sur_sec: sur_section}
           .kt-portlet__body

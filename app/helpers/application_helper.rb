@@ -74,6 +74,6 @@ module ApplicationHelper
     fields = f.fields_for(association, new_object, child_index: id) do |builder|
       render(association.to_s.singularize + '_fields', locals.merge!(f: builder))
     end
-    link_to(name, '#', class: "add_segment_fields btn btn-primary", data: {id: id, fields: fields.gsub("\n", "")})
+    link_to(name, '#', class: "add_segment_fields btn btn-primary", data: {survey_section_id: @survey_section.id, id: id, fields: fields.gsub("\n", "")})
   end
 end

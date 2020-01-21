@@ -118,7 +118,7 @@ $(document).on("turbolinks:load", function(){
     let regexp, time;
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
-    $( '.segment-section' ).append($(this).data('fields').replace(regexp, time));
+    $( '.segment-in-survey-section-' + $(this).data('surveySectionId') ).append($(this).data('fields').replace(regexp, time));
     return event.preventDefault();
   });
 
