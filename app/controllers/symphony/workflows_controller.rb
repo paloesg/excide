@@ -173,14 +173,16 @@ class Symphony::WorkflowsController < ApplicationController
         users = User.with_role(current_task.role.name.to_sym, @company)
         users.each do |user|
           NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
-          SlackService.new.task_notification(current_task, current_action, user).deliver if user.settings[0]&.reminder_slack == 'true'
-          to_number = '+65' + user.contact_number
-          message_body = current_task.instructions
-          message_head = current_action.workflow.template.title
-          # message for sms
-          message = @client.api.account.messages.create( from: @from_number, to: to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_sms == 'true'
-          # message for whatsapp
-          message_whatsapp = @client.messages.create( from: 'whatsapp:'+@from_number, to: 'whatsapp:'+to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_whatsapp == 'true'
+          SlackService.new.task_notification(current_task, current_action, user).deliver if (user.settings[0]&.reminder_slack == 'true' && @company.basic? == 'false')
+          if @company.basic? == 'false'
+            to_number = '+65' + user.contact_number
+            message_body = current_task.instructions
+            message_head = current_action.workflow.template.title
+            # message for sms
+            message = @client.api.account.messages.create( from: @from_number, to: to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_sms == 'true'
+            # message for whatsapp
+            message_whatsapp = @client.messages.create( from: 'whatsapp:'+@from_number, to: 'whatsapp:'+to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_whatsapp == 'true'
+          end
         end
         format.json { render json: "Sent out", status: :ok }
       else

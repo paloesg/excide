@@ -1,14 +1,6 @@
 - @navbar_workflows_active = true
 .row
   .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        a href="#" #{@template.title}
-      li.breadcrumb-item
-        = link_to @workflow.id, symphony_workflow_path(@template.slug, @workflow.id)
-      li.breadcrumb-item.active History
     h1 #{@template.title} – #{@workflow.id} Workflow History
 .row
   .col-sm-12
