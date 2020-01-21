@@ -1,14 +1,6 @@
 - @navbar_workflows_active = true
 .row
   .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        = link_to @template.title, symphony_workflows_path(@template.slug)
-      li.breadcrumb-item
-        = link_to @workflow.id, symphony_workflow_path(@template.slug, @workflow.id)
-      li.breadcrumb-item.active Data Entry
     h1 #{@template.title} – #{@workflow.id}
 .row
   .col-md-6
@@ -20,7 +12,7 @@
       - else
         iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
   .col-md-6
-    = form_for(@workflow, url: symphony_workflow_path(workflow_id: params[:workflow_id])) do |f|      
+    = form_for(@workflow, url: symphony_workflow_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :enter_data_type, params[:enter_data_type] if params[:enter_data_type].present?
       = hidden_field_tag :workflow_action, params[:workflow_action] if params[:workflow_action].present?
       .card.mb-3
