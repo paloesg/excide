@@ -28,11 +28,11 @@
               br
               = @document.filename
           // button to run textract
-          button class="btn btn-primary do-textract" Do Textract
+          button class="btn btn-primary do-textract" Extract Invoice Data
           = hidden_field_tag :template, @workflow.template.slug, class:"template-field"
           = hidden_field_tag :workflow_id, @workflow.id, class:"workflow-field"
           = hidden_field_tag :textract_job_id, @document.aws_textract_job_id, class:"textract-job-id-field"
-        .col-auto.ml-auto.text-center          
+        .col-auto.ml-auto.text-center
           | Invoice
           .invoice-nav
             .invoice-nav-button.btn-right
@@ -44,8 +44,8 @@
             .invoice-nav-button.btn-left
               - if @total_task > 1
                 = link_to next_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
-                  i.fa.fa-caret-right  
-    // Show textract result  
+                  i.fa.fa-caret-right
+    // Show textract result
     .row.mb-3.d-none
       .col-md-12
         .card
@@ -53,14 +53,14 @@
             .loading-textract
               .d-flex.align-items-center
                 strong Loading...
-                .spinner-border.ml-auto aria-hidden="true" role="status" 
+                .spinner-border.ml-auto aria-hidden="true" role="status"
             .result-textract
               = label_tag :textract_json, 'Result Textract JSON'
               = text_area_tag 'body', nil, rows: 10, class:"form-control aws-textract-result"
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
-      = render 'remaining_invoice'      
+      = render 'remaining_invoice'
       .row
         .col-md-8
           - if @workflow.batch.present?
