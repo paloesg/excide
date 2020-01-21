@@ -6,5 +6,6 @@ class Question < ApplicationRecord
 
   has_and_belongs_to_many :choices
 
+  accepts_nested_attributes_for :choices, allow_destroy: true
   enum question_type: { text: 0, number: 1, single: 2, multiple: 3, file: 4}
 end

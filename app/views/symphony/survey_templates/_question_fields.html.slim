@@ -5,14 +5,9 @@ tr
   td = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
   td = f.text_area :content, {required: true, class: "form-control"}
   td = f.select :question_type, Question.question_types.map{|k,v| [k.humanize, k]}, {}, { required: true, class: "dropdown-overlay qustion-choice", data: {question_id: f.object.id}}
-tr.multiple-choice-field.kt-hide
-  td.p-0.border-top-0 colspan="6"
-    .m-2
-      = f.fields_for :choices do |c|
-        .form-inline.col-sm-12
-          .form-group.col-sm-3
-            = c.label :position, 'Position: '
-            = c.number_field :position, {min: 1, step: 1, class: "form-control col-sm-6 ml-2"}
-          .form-group.col-sm-9
-            = c.label :content, 'Content: '
-            = c.text_field :content, {class: "form-control col-sm-10 ml-2"}
+tr.multiple-choice-field
+  td.p-0.ml-2.border-top-0 colspan="6"
+    .m-2 class=("choice-in-question-#{f.object.id}")
+      = f.fields_for :choices do |choice|
+        = render partial: 'choice_fields', locals: { f: choice, g: f.object}
+    = link_to_add_choices('Add choice', f, :choices, g: f.object)

@@ -106,6 +106,14 @@ $(document).on("turbolinks:load", function(){
     return event.preventDefault();
   });
 
+  $('form').on('click', '.add_choice_fields', function(event) {
+    let regexp, time;
+    time = new Date().getTime();
+    regexp = new RegExp($(this).data('id'), 'g');
+    $( '.choice-in-question-' + $(this).data('questionId') ).append($(this).data('fields').replace(regexp, time));
+    return event.preventDefault();
+  });
+
   $('form').on('click', '.add_segment_fields', function(event) {
     let regexp, time;
     time = new Date().getTime();
