@@ -32,44 +32,33 @@
     }
 
     /* Custom default button */
-    .btn-default,
-    .btn-default:hover,
-    .btn-default:focus {
-      color: #333;
-      text-shadow: none;
-      background-color: #fff;
-      border: 1px solid #fff;
-    }
-
-    .btn.active,
-    .btn:active {
-      -webkit-box-shadow: inset 0 3px 5px transparent !important;
-      box-shadow: inset 0 3px 5px transparent !important;
-    }
-
-    .btn-excde-orange {
-      height: 50px;
-      line-height: 27px;
-      border: 2px solid #c3502e;
+    .btn-excide {
+      border-color: #c3502e;
+      border-radius: 6px;
       background: #c3502e;
       color: #fff;
+      font-size: 12px;
       /* width: 100%; */
-      font-size: 11px;
+      text-shadow: none;
       text-transform: uppercase;
-      font-weight: bold;
-      letter-spacing: 1px;
-      border-radius: 0 !important;
+      padding: 14px 16px;
+      transition: 0.1s linear;
+      -webkit-transition: 0.1s linear;
+      -moz-transition: 0.1s linear;
     }
 
-    .btn-excde-orange:hover {
+    .btn-excide:hover {
+      background: #d45b37;
       color: #fff;
+      transform: translate3d(0, -2px, 0);
+      -webkit-transform: translate3d(0, -2px, 0);
     }
 
     html,
     body {
       height: 100%;
       background-color: #333;
-      font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+      font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif;
       color: #fff;
       text-align: center;
       text-shadow: 0 1px 3px rgba(0, 0, 0, .5);
@@ -89,7 +78,7 @@
     .site-wrapper-inner {
       display: table-cell;
       vertical-align: top;
-      background: url("/assets/img/hero-image.jpg");
+      background: url("/assets/hero-image-b494b5f26ae7e71cb32ce44f91b303aad54222f83ae3d0ee102e2b4ae4d65a46.jpg");
       top: -55px;
       transform: translate3d(0px, 0px, 0px);
     }
@@ -108,11 +97,6 @@
       .cover {
         padding: 0 20px;
       }
-    }
-
-    .cover .btn-lg {
-      padding: 10px 20px;
-      font-weight: bold;
     }
 
     @media (min-width: 768px) {
@@ -139,23 +123,17 @@
   <div class="site-wrapper">
     <div class="site-wrapper-inner">
       <div class="cover-container">
-        <div class="inner cover wow fadeIn">
+        <div class="inner cover">
           <a href="/">
-            <img src="assets/img/excide-logo-light.png" style="padding: 50px 100px 0;" class="img-responsive" title="Excide Logo" alt="Excide">
+            <img src="assets/excide-logo-light-ee31ec8c78e4ad2b5b69fb582dd2daf3dded8a254767ae241b68ba5ac8375382.png" style="padding: 50px 100px 0;" class="img-responsive" title="Excide Logo" alt="Excide">
           </a>
           <h1>The change you wanted was rejected.</h1>
           <p class="lead">Maybe you tried to change something you didn't have access to.</p>
-          <p class="lead">
-            <a href="/" class="btn btn-lg btn-excde-orange wow fadeIn" data-wow-delay="0.5s">Go to Homepage</a>
-          </p>
+          <a href="/" class="btn btn-excide">Go to Homepage</a>
         </div>
       </div>
     </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-  <script>
-    new WOW().init();
-  </script>
 </body>
 
 </html>

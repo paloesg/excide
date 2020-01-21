@@ -3,7 +3,8 @@
     - alert_type = 'danger'
   - else
     - alert_type = 'success'
-  .alert.alert-dismissible role="alert" class="alert-#{alert_type}"
-    button type="button" class="close" data-dismiss="alert" aria-label="Close"
-      span aria-hidden="true" ×
-    = msg
+  .alert.alert-dismissible.m-0.mx-5 role="alert" class="alert-#{alert_type}"
+    .alert__body
+      = msg
+    .alert__close
+      | ×

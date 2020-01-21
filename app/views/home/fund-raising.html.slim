@@ -1,26 +1,26 @@
 - set_meta_tags title: 'Fund Raising', description: 'Whether you are raising money from venture capital, angel investors, banks, financial institutions, PE funds, IPO, Excide advises you as a virtual CFO does.', reverse: true
-section.page-title.page-title-1.image-bg.overlay
+section.text-center.imagebg.space--lg data-overlay="3"
   .background-image-holder
     img.background-image alt="image" src=image_path('tall-skyscraper.jpg')
   .container
     .row
-      .col-sm-12.text-center
-        h1.uppercase.mb0 Fund Raising
-        p.lead.mb64 When you are raising money, Excide can advise you as a virtual CFO
-  ol.breadcrumb.breadcrumb-2.d-flex.justify-content-center
-    li.breadcrumb-item
-      a href="/" Home
-    li.breadcrumb-item
-      a href="/virtual-financial-officer" Virtual Financial Officer
-    li.breadcrumb-item.active Fund Raising
+      .col-md-8.col-lg-12
+        h1.type--uppercase Fund Raising
+        h4 When you are raising money, Excide can advise you as a virtual CFO
+        ol.breadcrumbs
+          li
+            a href="/"  Home
+          li
+            a href="/financial-analytics-reporting/"  Virtual Financial Officer
+          li Fund Raising
 section
   .container
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h3.mb64.uppercase Need to raise funds for your company?
+          h3.mb-5.type--uppercase Need to raise funds for your company?
         p.lead.m32.pb32 A fund raising exercise is a monetary injection into the company through interested investors. Such possible options for fundraising is from venture capital, angel investors, banks, financial institutions, PE funds and IPO.
-section.pt240.pb240.image-bg
+section.pt240.pb240.imagebg.height-50
   .background-image-holder
     img.background-image alt="image" src=image_path('seminar-room.jpg')
 section
@@ -28,24 +28,24 @@ section
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h4.mb64.uppercase Why Excide
+          h4.mb-5.type--uppercase Why Excide
         p.lead.m32 At Excide, we will advise you through the entire fund raising process by providing detailed forecast models. We will advise you on how much to fund raise dependent on sensitive scenarios and also help to determine which investor/bank is most probable. We are committed in getting you the best deal from these investors and its company. We will help you through:
         ul.lead data-bullet="ti-check-box"
           li Evaluation of requirements
           li Liaise and negotiate
           li Investor/Bank meetings
-section.image-bg.overlay
+section.imagebg.overlay
   .background-image-holder
     img.background-image alt="image" src=image_path('table-top-post-its.jpg')
   .container
     .row
       .col-sm-12.text-center
-        h3.uppercase.mb64.mb-xs-32 More Services
+        h3.type--uppercase.mb-5.mb-xs-32 More Services
         = render 'services_list'
 section#contactus
   .container
-    .row
+    .row.mb--2
       .col-md-8.offset-md-2.col-sm-12.text-center
-        h4.mb64.uppercase Need to know more about what we offer?
-        p.lead.mb80 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
+        h4.mb-5.type--uppercase Need to know more about what we offer?
+        p.lead.mb-5 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
     = render 'contact'

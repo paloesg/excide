@@ -107,7 +107,7 @@ Rails.application.routes.draw do
         post '/stop_reminder/:task_id', to: 'workflows#stop_reminder', as: :stop_reminder
         get '/assign', to: 'workflows#assign', as: :assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
-        post '/xero_create_invoice_payable', to: 'workflows#xero_create_invoice_payable', as: :xero_create_invoice_payable
+        post '/xero_create_invoice', to: 'workflows#xero_create_invoice', as: :xero_create_invoice
         get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero
         post '/complete_task/:action_id', to: 'workflows#workflow_action_complete', as: :workflow_action_complete
         post '/invoices/reject', to:'invoices#reject', as: :reject_invoice
@@ -164,10 +164,12 @@ Rails.application.routes.draw do
   end
 
   devise_scope :user do
+    get 'users/password/new', to: 'users/passwords#new', as: 'new_user_password'
+    get 'users/password/edit', to: 'users/passwords#edit', as: 'edit_user_password'
     get 'users/additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
   end
 
-  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
+  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account

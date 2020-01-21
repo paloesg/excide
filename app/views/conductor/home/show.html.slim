@@ -13,29 +13,6 @@
           = select_tag('allocation_user', options_for_select(User.all.map {|k,v| [k.first_name, k.id] }, selected: params[:allocation_users]), class: 'selectize-event-type allocation-users', multiple: true)
 .row
   .col-sm-12.mb-3
-    #calendar
-    /! begin:: Content
-    .kt-container.kt-grid__item.kt-grid__item--fluid.calendar
-      .row
-        .col-lg-12
-          /! begin::Portlet
-          #kt_portlet.kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                span.kt-portlet__head-icon
-                  i.flaticon-map-location
-                h3.kt-portlet__head-title
-                  | Basic Calendar
-              .kt-portlet__head-toolbar
-                a.btn.btn-brand.btn-elevate href="#"
-                  i.la.la-plus
-                  | Add Event
-            .kt-portlet__body
-              #kt_calendar
-          /! end::Portlet
-
-
-
     = month_calendar events: @events do |date, events|
       / span.fc-day-number = date.day
       - events.each do |event|

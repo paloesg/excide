@@ -1,27 +1,27 @@
 - set_meta_tags title: 'Forecasting and Sensitivity Analysis', description: 'Excide provides financial forecast consulting and sensitivity analysis to help you project future sales & revenue, and make wiser businesss decisions.', reverse: true
-section.page-title.page-title-1.image-bg.overlay
+section.text-center.imagebg.space--lg data-overlay="3"
   .background-image-holder
-    img.background-image alt="image" src=image_path('laptop-with-charts.jpg')
+    img alt="background" src=image_path("laptop-with-charts.jpg")
   .container
     .row
-      .col-sm-12.text-center
-        h1.uppercase.mb0 Forecasting & Sensitivity Analysis
-        p.lead.mb64 Be aware of your financial forecast and its sensitive factors
-  ol.breadcrumb.breadcrumb-2.d-flex.justify-content-center
-    li.breadcrumb-item
-      a href="/" Home
-    li.breadcrumb-item
-      a href="/virtual-financial-officer" Virtual Financial Officer
-    li.breadcrumb-item.active Forecasting & Sensitivity Analysis
+      .col-md-8.col-lg-12
+        h1.type--uppercase Forecasting & Sensitivity Analysis
+        h4 Be aware of your financial forecast and its sensitive factors
+        ol.breadcrumbs
+          li
+            a href="/"  Home
+          li
+            a href="/financial-analytics-reporting/"  Virtual Financial Officer
+          li Forecasting & Sensitivity Analysis
 section
   .container
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h3.mb64.uppercase The importance of knowing your future financial outcomes
+          h3.mb-5.type--uppercase The importance of knowing your future financial outcomes
         p.lead.m32.pb32 Financial forecasting is essential in knowing of your company’s future financial outcome. By using market trends and your business internal accounting and sales data, a financial forecast is useful in having a good idea of your finances in the coming years.
         p.lead.m32.pb32 A sensitivity analysis is a technique used to determine how different values of an independent variable impact a particular dependent variable under a given set of assumptions. This technique is used within specific boundaries that depend on one or more input variables.
-section.pt240.pb240.image-bg
+section.height-50.imagebg
   .background-image-holder
     img.background-image alt="image" src=image_path('laptop-with-dashboard.jpg')
 section
@@ -29,20 +29,20 @@ section
     .row
       .col-md-8.offset-md-2.col-sm-12
         .text-center
-          h3.mb64.uppercase Why Excide?
+          h3.mb-5.type--uppercase Why Excide?
         p.lead.m32.pb32 At Excide, we will provide you with a detailed analysis of your financial outcomes, allowing you to have a better idea on how you can use your finances. Sensitivity analysis will allow you to know the important factors that will drive your business and other factors that will be detrimental to it. These important information will be useful for you to make informed business decisions for your business growth.
-section.image-bg.overlay
+section.imagebg
   .background-image-holder
     img.background-image alt="image" src=image_path('table-top-post-its.jpg')
   .container
     .row
       .col-sm-12.text-center
-        h3.uppercase.mb64.mb-xs-32 More Services
+        h3.type--uppercase.mb-5.mb-xs-32 More Services
         = render 'services_list'
 section#contactus
   .container
-    .row
+    .row.mb--2
       .col-md-8.offset-md-2.col-sm-12.text-center
-        h4.mb64.uppercase Need to know more about what we offer?
-        p.lead.mb80 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
+        h4.mb-5.type--uppercase Need to know more about what we offer?
+        p.lead.mb-5 There is nothing like a face-to-face meeting to better understand each other. Leave your details below and we will get in touch with you soon.
     = render 'contact'

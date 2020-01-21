@@ -1,28 +1,22 @@
-footer.footer-1.bg-dark
+footer.footer-4.space--sm.text-center-xs.bg--dark
   .container
     .row
-      .col-md-4.col-sm-6
-        img.logo alt="Excide Logo" src=image_url('excide-logo-light.png')
-      .col-md-4.col-sm-6
-        .widget
-      .col-md-4.col-sm-6
-        .widget.text-right
-          - if current_user.present?
-            = link_to "Log Out", destroy_user_session_path, method: :delete
-          - else
-            = link_to "Log In", new_user_session_path
-
+      .col-md-6.d-flex.align-items-center
+        img.logo alt="Image" src=image_url('excide-logo-light.png')
     .row
-      .col-sm-6
-        span.sub &copy; #{Time.current.year} Excide Pte. Ltd. All rights reserved. | #{link_to "Privacy Policy", privacy_path}
-      .col-sm-6.text-right
-        ul.list-inline.social-list
-          li.list-inline-item
-            a href="https://twitter.com/excidevfo/"
-              i.ti-twitter-alt
-          li.list-inline-item
-            a href="https://www.facebook.com/excidevfo/"
-              i.ti-facebook
-          li.list-inline-item
-            a href="https://www.linkedin.com/company/excide/"
-              i.ti-linkedin
+      .col-md-6
+        span &copy; #{Time.current.year} Excide Pte. Ltd. All rights reserved. | #{link_to "Privacy Policy", privacy_path}
+      .col-md-6
+        ul.list-inline.list--hover.d-flex.justify-content-center.justify-content-lg-end
+          li.pr-2
+            a href="https://twitter.com/excidevfo/" target="_blank"
+              = fa_icon "twitter"
+          li.pr-2
+            a href="https://www.facebook.com/excidevfo/" target="_blank"
+              = fa_icon "facebook"
+          li.pr-2
+            a href="https://www.linkedin.com/company/excide/" target="_blank"
+              = fa_icon "linkedin"
+    /! end of row
+  /! end of container
+
