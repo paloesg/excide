@@ -78,4 +78,9 @@ class NotificationMailer < ApplicationMailer
     address.display_name = @user.first_name + @user.last_name
     mail(to: address.format, subject: 'Assign your availability for the next month')
   end
+
+  def free_trial_ending_notification(user)
+    @user = user
+    mail(to: @user.email, subject: '[Free trial ending]')
+  end
 end

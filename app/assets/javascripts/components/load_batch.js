@@ -2,7 +2,7 @@ function deleteBatch(template, id){
   if (confirm("Are you sure you want to delete this batch and all its data?")) {
     $(".loading").show();
     $.ajax({
-      url: "batches/"+ template +"/"+ id,
+      url: "symphony/batches/"+ template +"/"+ id,
       type: "DELETE",
       success(result) {
         $(".loading").hide();
@@ -21,7 +21,7 @@ $(document).ready(function(){
       $.each(data["batches"], function(index, batch) {
         $("#table-batches").append("<tr>" +
           "<td>"+(index + 1)+"</td>" +
-          "<td><a href='batches/"+ batch["template"]["slug"] +"/"+ batch["id"] +"'>"+ batch["name"] +"</a></td>" +
+          "<td><a href='symphony/batches/"+ batch["template"]["slug"] +"/"+ batch["id"] +"'>"+ batch["name"] +"</a></td>" +
           "<td>"+ batch["user"]["first_name"] +" "+ batch["user"]["last_name"] +"</td>" +
           "<td>"+ moment.parseZone(batch["updated_at"]).format("YYMMDD-H:m:s") +"</td>" +
           "<td>"+ batch["get_completed_workflows"] +"</td>" +

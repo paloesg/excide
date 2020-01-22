@@ -1,16 +1,9 @@
+.row.mb-3
+  .col
+    h1 Manage Users
+    = link_to "Add New User", new_symphony_user_path, role: 'button', class: 'btn btn-warning float-right'
 .row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        a href="/symphony" #{@company.name}
-      li.breadcrumb-item.active Users
-    h1
-      | Manage Users
-      = link_to "Add New User", new_symphony_user_path, role: 'button', class: 'btn btn-warning float-right'
-.row
-  .col-sm-12
+  .col-xl-12
     .table-responsive
       table.table
         thead

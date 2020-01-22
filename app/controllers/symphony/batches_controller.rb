@@ -1,15 +1,17 @@
 class Symphony::BatchesController < ApplicationController
-  layout 'dashboard/application'
+  # layout 'dashboard/application'
+  layout 'metronic/application'
 
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_batch, only: [:show, :destroy]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index, :create, :load_batch]
+  after_action :verify_authorized, except: [:create, :load_batch]
   after_action :verify_policy_scoped, only: :load_batch
 
   def index
+    authorize Batch
   end
 
   def new
@@ -19,6 +21,7 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def create
+    authorize Batch
     @template = Template.find_by(slug: params[:batch][:template_id])
     @generate_batch = GenerateBatch.new(current_user, @template).run
     authorize @generate_batch.batch

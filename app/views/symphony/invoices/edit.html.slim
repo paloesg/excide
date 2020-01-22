@@ -1,11 +1,4 @@
 .row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        = link_to @workflow.id, symphony_workflow_path(workflow_id: @workflow.id)
-      li.breadcrumb-item.active Edit Invoice
     h1
       | Edit Invoice
       - if @invoice.rejected?
@@ -15,7 +8,7 @@
 .row
   .loading
     .loader
-  .col-md-4.forward
+  .col-md-4
     - if @documents.empty?
       | No documents available. Please upload documents first.
     - else
@@ -73,7 +66,8 @@
                   - if @invoice.xero_total_mismatch?
                     = f.submit 'Save and update invoice in Xero', class: 'btn btn-warning float-right'
                   - else
-                    = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@invoice.xero_invoice_id}", role: 'button', target: "_blank", class: 'btn btn-warning', target: :_blank
+                    = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm', target: :_blank if @workflow.invoice&.payable?
+                    = link_to "View Xero invoice", "https://go.xero.com/AccountsReceivable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm', target: :_blank if @workflow.invoice&.receivable?
                 - else
                   - if policy(@workflow).update?
                     .row
@@ -84,8 +78,8 @@
                     .row.mt-2
                       .col-md-12
                         / align buttons to the right
-                        = link_to("Approve", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-success approve-button ml-2 float-right')
-                        = link_to("Submit for approval", xero_create_invoice_payable_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-warning submit-approval-button ml-2 float-right')
+                        = link_to("Approve", xero_create_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, payment: "payment", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-success approve-button ml-2 float-right')
+                        = link_to("Submit for approval", xero_create_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-warning submit-approval-button ml-2 float-right')
                         span.float-right Send to Xero:  
                   - else
                     = f.submit 'Save', class: 'btn btn-primary float-right'

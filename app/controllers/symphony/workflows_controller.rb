@@ -1,12 +1,12 @@
 class Symphony::WorkflowsController < ApplicationController
-  layout "dashboard/application"
+  layout 'metronic/application'
   include Adapter
 
   before_action :authenticate_user!
   before_action :set_company_and_roles
   before_action :set_template, except: [:toggle_all]
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice_payable, :send_email_to_xero, :activities]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero, :activities]
   before_action :set_attributes_metadata, only: [:create, :update]
   before_action :set_twilio_account, only:[:send_reminder]
 
@@ -174,14 +174,16 @@ class Symphony::WorkflowsController < ApplicationController
         users = User.with_role(current_task.role.name.to_sym, @company)
         users.each do |user|
           NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
-          SlackService.new.task_notification(current_task, current_action, user).deliver if user.settings[0]&.reminder_slack == 'true'
-          to_number = '+65' + user.contact_number
-          message_body = current_task.instructions
-          message_head = current_action.workflow.template.title
-          # message for sms
-          message = @client.api.account.messages.create( from: @from_number, to: to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_sms == 'true'
-          # message for whatsapp
-          message_whatsapp = @client.messages.create( from: 'whatsapp:'+@from_number, to: 'whatsapp:'+to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_whatsapp == 'true'
+          SlackService.new.task_notification(current_task, current_action, user).deliver if (user.settings[0]&.reminder_slack == 'true' && @company.basic? == 'false')
+          if @company.basic? == 'false'
+            to_number = '+65' + user.contact_number
+            message_body = current_task.instructions
+            message_head = current_action.workflow.template.title
+            # message for sms
+            message = @client.api.account.messages.create( from: @from_number, to: to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_sms == 'true'
+            # message for whatsapp
+            message_whatsapp = @client.messages.create( from: 'whatsapp:'+@from_number, to: 'whatsapp:'+to_number, body: "#{message_head} Please be reminded to perform this task: #{message_body}" ) if user.settings[0]&.reminder_whatsapp == 'true'
+          end
         end
         format.json { render json: "Sent out", status: :ok }
       else
@@ -235,29 +237,23 @@ class Symphony::WorkflowsController < ApplicationController
     end
   end
 
-  def xero_create_invoice_payable
+  def xero_create_invoice
     @xero = Xero.new(@workflow.company)
     authorize @workflow
-    if @workflow.invoice.payable?
-      xero_invoice = @xero.create_invoice_payable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency)
-      @workflow.invoice.xero_invoice_id = xero_invoice.id
-      @workflow.documents.each do |document|
-        xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
-      end
-      @workflow.invoice.save
-      @invoice_payable = @xero.get_invoice(@workflow.invoice.xero_invoice_id)
-      #this is to send invoice to xero 'awaiting approval'
-      if params[:approved].present?
-        @invoice_payable.status = "SUBMITTED"
-      #this is to send invoice to xero 'awaiting payment', default status will be 'draft'
-      elsif params[:payment].present?
-        @invoice_payable.status = "AUTHORISED"
-      end
-      @invoice_payable.save
-    else
-      #in future if we do account receivable, must modify the adapter method create_invoice_receivable
-      @invoice = @xero.create_invoice_receivable(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, "EXCIDE")
+    xero_invoice = @xero.create_invoice(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency, @workflow.invoice.invoice_type)
+    @workflow.invoice.xero_invoice_id = xero_invoice.id
+    @workflow.documents.each do |document|
+      xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
     end
+    @workflow.invoice.save
+    #this is to send invoice to xero 'awaiting approval'
+    if params[:approved].present?
+      xero_invoice.status = "SUBMITTED"
+    #this is to send invoice to xero 'awaiting payment', default status will be 'draft'
+    elsif params[:payment].present?
+      xero_invoice.status = "AUTHORISED"
+    end
+    xero_invoice.save
 
     respond_to do |format|
       if @workflow.invoice.errors.empty?
