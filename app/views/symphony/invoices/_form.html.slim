@@ -72,6 +72,11 @@
               = render 'line_items', f: line_item
       .card-body
         .row
+          .col-md-12.mb-2
+            .loading-textract
+              .d-flex.align-items-center
+                strong Loading...
+                .spinner-border.ml-auto aria-hidden="true" role="status"
           #subtotal-wrapper.col-md-12
             .form-row
               .form-inline.col-auto.ml-auto.mb-2.pull-right

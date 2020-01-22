@@ -113,6 +113,8 @@ Rails.application.routes.draw do
         post '/invoices/reject', to:'invoices#reject', as: :reject_invoice
         post '/invoices/next', to:'invoices#next_invoice', as: :next_invoice
         post '/invoices/prev', to:'invoices#prev_invoice', as: :prev_invoice
+        post '/xero_details', to:'invoices#get_xero_details_json', as: :get_xero_details_json
+        post '/get_textract', to:'invoices#get_document_analysis', as: :get_textract_invoice
         resources :invoices do
           post '/next', to:'invoices#next_show_invoice', as: :next_show_invoice
           post '/prev', to:'invoices#prev_show_invoice', as: :prev_show_invoice
@@ -210,6 +212,7 @@ Rails.application.routes.draw do
 
   # VFO services
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
+  get 'virtual-technology-officer', to: 'home#vto', as: :vto
   get 'financial-analytics-reporting', to: 'home#financial-analytics-reporting', as: :financial_analytics_reporting
   get 'business-plan-assistance', to: 'home#business-plan-assistance', as: :business_plan_assistance
   get 'corporate-planning', to: 'home#corporate-planning', as: :corporate_planning
