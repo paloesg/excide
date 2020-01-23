@@ -21,3 +21,6 @@ import 'bootstrap/dist/js/bootstrap';
 import 'dropzone/dist/dropzone';
 import '../src-dashboard/application.js';
 import '../src-dashboard/metronic/application.js';
+
+// Currently no way to implement cocoon in rails 6, so this was an alternative to use cocoon before the creator start changing to use webpack
+require("src-dashboard/cocoon")
