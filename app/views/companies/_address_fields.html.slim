@@ -12,11 +12,11 @@
   .col-md-6
     .form-group
       = f.label :city, 'City'
-      = f.text_field :city, class: 'form-control'  
+      = f.text_field :city, class: 'form-control'
   .col-md-6
     .form-group
       = f.label :country, 'Country'
-      = f.text_field :country, class: 'form-control'
+      = f.select :country, Country.all.map{ |c| c.name }.sort, {}, { class: 'selectize' }
 .row
   .col-md-6
     .form-group
