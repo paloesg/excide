@@ -30,7 +30,7 @@ section.height-100.imagebg data-overlay="4"
                     = fc.text_field :name, class: 'form-control', required: true
                   .col-md-12
                     .input-checkbox
-                      input#input-assigned-8 name="connect_xero" type="checkbox"
+                      = fc.check_box :connect_xero, {class: "input-assigned-8"}
                       label for="input-assigned-8"
                     span Connect Xero
                   .col-md-12

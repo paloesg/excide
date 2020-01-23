@@ -212,6 +212,7 @@ Rails.application.routes.draw do
 
   # VFO services
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
+  get 'virtual-technology-officer', to: 'home#vto', as: :vto
   get 'financial-analytics-reporting', to: 'home#financial-analytics-reporting', as: :financial_analytics_reporting
   get 'business-plan-assistance', to: 'home#business-plan-assistance', as: :business_plan_assistance
   get 'corporate-planning', to: 'home#corporate-planning', as: :corporate_planning
