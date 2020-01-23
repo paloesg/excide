@@ -1,22 +1,14 @@
-.row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        = link_to @template.title, symphony_workflows_path(@template.slug)
-      li.breadcrumb-item.active.text-truncate #{@workflow.id}
-.row
-  .col-md-8.col-sm-12
-    h1.text-truncate
-      | #{@template.title} – #{@workflow.id}
-  .col-md-4.col-sm-6
-    .btn-group.float-right role='group'
-      - unless @workflow.archive.blank?
-        h1 = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
+- @navbar_workflows_active = true
+.row.mb-3
+  .col
+    h1.text-truncate #{@template.title} – #{@workflow.id}
+    - unless @workflow.archive.blank?
+      h1 = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row
   .col-md-9.col-sm-12
+    /! begin::workflow task
     = render partial: 'symphony/workflows/tasks'
+    /! end
     .row
       .col-lg-6.col-sm-12
         = render partial: 'symphony/workflows/data_attributes'
@@ -30,9 +22,11 @@
         = link_to 'Reset Workflow', reset_symphony_workflow_path(workflow_id: @workflow.id), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-warning btn-block'
       br
     - if @workflow.workflowable.present?
-      .card.mb-3
-        h6.card-header Client
-        .card-body
+      .kt-portlet.mb-3
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title Client
+        .kt-portlet__body
           = @workflow.workflowable&.name
           - if @workflow.archive.blank?
             - if @workflow.workflowable.xero_contact_id.present?
@@ -40,29 +34,38 @@
             - else
               = link_to 'Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-sm btn-primary pull-right'
     - if @workflow.remarks.present?
-      .card.mb-3
-        h6.card-header Workflow Remarks
-        .card-body = @workflow.remarks
-    .card.mb-3
-      h6.card-header Deadline
-      .card-body = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title Workflow Remarks
+        .kt-portlet__body
+          = @workflow.remarks
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title Deadline
+      .kt-portlet__body
+        = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
     = render partial: 'symphony/workflows/documents'
     = render partial: 'symphony/workflows/invoice'
     - if @workflow.recurring_workflow.present?
-      .card.mb-3
-        h6.card-header Next Recurring Workflow
-        .card-body = @workflow.recurring_workflow.next_workflow_date
-#task-popover-content.d-none
-  p.pt-2
-    strong
-      ' Next reminder:
-    span#next_reminder
-    a.btn.btn-warning.btn-sm.btn-block#stop_reminder data-remote="true" data-method="post" href="#" Stop reminder
-  p
-    strong
-      ' Completed by:
-    span#completed_by
-  p.pb-0
-    strong
-      ' Completed on:
-    span#completed_on &mdash;
+      .kt-portlet.mb-3
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title Next Recurring Workflow
+        .kt-portlet__body
+          = @workflow.recurring_workflow.next_workflow_date
+  #task-popover-content.d-none
+    p.pt-2
+      strong
+        ' Next reminder:
+      span#next_reminder
+      a.btn.btn-warning.btn-sm.btn-block#stop_reminder data-remote="true" data-method="post" href="#" Stop reminder
+    p
+      strong
+        ' Completed by:
+      span#completed_by
+    p.pb-0
+      strong
+        ' Completed on:
+      span#completed_on &mdash;

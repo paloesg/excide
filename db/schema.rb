@@ -148,6 +148,9 @@ ActiveRecord::Schema.define(version: 2020_01_22_042558) do
     t.integer "expires_at"
     t.boolean "connect_xero", default: true
     t.string "xero_organisation_name"
+    t.integer "account_type"
+    t.datetime "trial_end_date"
+    t.json "stripe_subscription_plan_data", default: []
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -404,11 +407,11 @@ ActiveRecord::Schema.define(version: 2020_01_22_042558) do
     t.integer "document_template_id"
     t.string "link_url"
     t.boolean "important"
-    t.bigint "template_id"
+    t.bigint "child_workflow_template_id"
+    t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
-    t.index ["template_id"], name: "index_tasks_on_template_id"
   end
 
   create_table "templates", id: :serial, force: :cascade do |t|
@@ -586,7 +589,7 @@ ActiveRecord::Schema.define(version: 2020_01_22_042558) do
   add_foreign_key "tasks", "document_templates"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
-  add_foreign_key "tasks", "templates"
+  add_foreign_key "tasks", "templates", column: "child_workflow_template_id"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
   add_foreign_key "workflow_actions", "companies"

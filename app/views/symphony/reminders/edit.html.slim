@@ -1,12 +1,6 @@
-.row
-  .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        a href="/symphony/reminders" Reminders
-      li.breadcrumb-item.active Edit
-    h1 Edit Reminder
+.row.mb-3
+  .col
+    h1 Edit Reminders
 .row
   .col-sm-12
     = form_for(@reminder, url: symphony_reminder_path(@reminder.id)) do |f|

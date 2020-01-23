@@ -11,7 +11,10 @@ module ApplicationHelper
     arrow = params[:direction] == "asc" ? "fa fa-caret-down" : "fa fa-caret-up"
     css_class = column == params[:sort] ? "current #{arrow}" : nil
     direction_sort = column == params[:sort] && params[:direction] == "asc" ? "desc" : "asc"
-    link_to "?page=#{params[:page]}&sort=#{column}&direction=#{direction_sort}" do
+    # get current path url
+    url = request.path
+    
+    link_to "#{url}?page=#{params[:page]}&sort=#{column}&direction=#{direction_sort}" do
       if column == params[:sort]
         "#{title} #{content_tag :i, nil, class: arrow }".html_safe
       else

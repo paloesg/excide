@@ -1,7 +1,9 @@
 class XeroSessionsController < ApplicationController
   include Adapter
-
+  after_action :verify_authorized, except: [:xero_callback_and_update, :disconnect_from_xero]
+  
   def connect_to_xero
+    authorize :xero_session, :connect_to_xero?
     @xero_client = Xeroizer::PartnerApplication.new(
       ENV["XERO_CONSUMER_KEY"],
       ENV["XERO_CONSUMER_SECRET"],
@@ -12,10 +14,11 @@ class XeroSessionsController < ApplicationController
       }
     )
 
+
     request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
     session[:request_token] = request_token.token
     session[:request_secret] = request_token.secret
-
+    
     redirect_to request_token.authorize_url
   end
 
@@ -54,6 +57,7 @@ class XeroSessionsController < ApplicationController
   end
 
   def update_contacts_from_xero
+    authorize :xero_session, :update_contacts_from_xero?
     @xero_client = Xero.new(current_user.company)
     @xero_client.get_contacts.each do |contact|
       xc = XeroContact.find_or_initialize_by(contact_id: contact.contact_id)
@@ -63,6 +67,7 @@ class XeroSessionsController < ApplicationController
   end
 
   def update_line_items_from_xero
+    authorize :xero_session, :update_line_items_from_xero?
     @xero_client = Xero.new(current_user.company)
     @xero_client.get_items.each do |item|
       xli = XeroLineItem.find_or_initialize_by(item_code: item.code)
