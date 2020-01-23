@@ -33,6 +33,8 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true, on: :additional_information
   validates :company, presence: true
 
+  before_save :concatenate_number
+
   include AASM
 
   aasm do
@@ -180,6 +182,12 @@ class User < ApplicationRecord
 
   def include_role?(role)
     self.roles.pluck(:name).include? role.name
+  end
+
+  def concatenate_number
+    if self.company.address.country.present?
+      (self.contact_number = Country.find_country_by_name(self.company.address.country).country_code + self.contact_number) unless (Phonelib.valid?(self.contact_number) || self.contact_number.empty?)
+    end
   end
 
   class Setting

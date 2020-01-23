@@ -53,9 +53,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # GET /resource/edit
-  # def edit
-  #   super
-  # end
+  def edit
+    @contact = @user.contact_number
+    if @user.contact_number.present?
+      @contact = Phonelib.parse(@user.contact_number).local_number
+      @country_code = Phonelib.parse(@user.contact_number).country_code
+      @country = Country.find_country_by_country_code(@country_code).name + "(+" + @country_code + ")"
+    else
+      @country = @user.company.address.country + "(+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
+    end
+    super
+  end
 
   # PUT /resource
   def update
@@ -109,7 +117,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def account_update_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :current_password, :stripe_card_token, :stripe_customer_id)
+    params.require(:user).permit(:first_name, :last_name, :contact_number, :company_id, :email, :password, :password_confirmation, :current_password, :stripe_card_token, :stripe_customer_id)
   end
 
   # The path used after sign up.
