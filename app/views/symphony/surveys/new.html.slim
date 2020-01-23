@@ -10,8 +10,9 @@
             .kt-portlet__head-label
               h1.kt-portlet__head-title #{sur_section.display_name}
           .segment-section class=("segment-in-survey-section-#{sur_section.id}")
-            = f.fields_for :segments do |s| 
-              = render partial: 'segment_fields', locals: { f: s, g: f.object, sur_sec: sur_section}
-          .kt-portlet__body
-            = link_to_add_segments('Add segments', f, :segments, { g: f.object, sur_sec: sur_section})
-        = f.submit 'Submit Survey', class: 'btn btn-primary pull-right'
+            = f.fields_for :segments do |s|
+              .kt-portlet__body
+                = render partial: 'segment_fields', locals: { f: s, g: f.object, sur_sec: sur_section}
+          = link_to_add_segments('Add segments', f, :segments, { g: f.object, sur_sec: sur_section})
+        .form-inline.col-sm-6.pull-left.p-0
+          = f.submit 'Submit Survey', class: 'btn btn-primary pull-right'
