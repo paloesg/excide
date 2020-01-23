@@ -82,7 +82,7 @@
               li.kt-nav__item
                 = link_to destroy_user_session_path, {method: :delete, class: 'kt-nav__link'} do
                   span.kt-nav__link-text Log Out
-        /! end: User bar 
+        /! end: User bar
   /! end:: Header Topbar
   .kt-header__bottom
     .kt-container
@@ -102,17 +102,17 @@
               .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left.columns
                 ul.kt-menu__subnav
                   - ::Template.assigned_templates(current_user).each do |t|
-                    li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--active' if @template && @template.id == t.id}"
+                    li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--active' if @template && @template.slug == t.slug}"
                       = link_to symphony_workflows_path(t.slug), class: 'kt-menu__link' do
                         span.kt-badge.kt-badge--info.kt-badge--rounded.mr-1 = t.company_workflows(current_user.company).count
                         span.kt-menu__link-text #{t.title}
             li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if @navbar_batches_active}"
-              - if current_user.company.basic? 
+              - if current_user.company.basic?
                 = link_to symphony_batches_index_path, class:"kt-menu__link" do
-                  span.kt-menu__link-text 
+                  span.kt-menu__link-text
                     | Batches
                     = content_tag :span, "Pro", class: "badge badge-success ml-2"
-              - else 
+              - else
                 = link_to symphony_batches_index_path, class:"kt-menu__link" do
                   span.kt-menu__link-text Batches
 
