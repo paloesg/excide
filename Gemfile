@@ -123,7 +123,9 @@ gem 'inky-rb', require: 'inky'
 gem 'premailer-rails'
 
 # Nested form helper
-gem "cocoon"
+# gem "cocoon"
+# cocoon have a problem, so need use git first, solved in https://stackoverflow.com/questions/13190683/no-new-object-passed-to-cocoon-callback
+gem 'cocoon', git: 'https://github.com/nathanvda/cocoon'
 # WYSIWYG editor
 gem 'trix'
 # Render calendar

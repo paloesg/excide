@@ -8,6 +8,7 @@
     "blueimp-file-upload": "^10.7.0",
     "bootstrap": "^4.4.1",
     "bootstrap-datetimepicker": "^0.0.7",
+    "cocoon": "github:nathanvda/cocoon#c24ba53",
     "dropzone": "^5.5.1",
     "flatpickr": "^4.6.3",
     "flickity": "^2.2.1",

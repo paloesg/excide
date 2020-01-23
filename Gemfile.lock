@@ -7,6 +7,12 @@ GIT
       cocoon (~> 1.2, >= 1.2.11)
 
 GIT
+  remote: https://github.com/nathanvda/cocoon
+  revision: 6364ce5c284e574496e6007f24f5a13843fcb0d2
+  specs:
+    cocoon (1.2.14)
+
+GIT
   remote: https://github.com/scratch-soft/themify-icons-rails.git
   revision: af9160153187b577d32011fb3cf698a92d81a820
   specs:
@@ -153,7 +159,6 @@ GEM
       tzinfo
     byebug (11.0.1)
     choice (0.2.0)
-    cocoon (1.2.14)
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
     crack (0.4.3)
@@ -593,7 +598,7 @@ DEPENDENCIES
   bullet
   business_time
   byebug
-  cocoon
+  cocoon!
   deep_cloneable (~> 3.0.0)
   devise
   docusign_rest

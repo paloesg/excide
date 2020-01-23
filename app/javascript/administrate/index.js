@@ -1,4 +1,11 @@
+require("jquery");
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
+
 window.moment = require("moment");
+
+import "cocoon";
 require("selectize");
 require("algoliasearch");
 require("tempusdominus-bootstrap-4");
