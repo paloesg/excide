@@ -39,6 +39,10 @@ gem 'squasher', '>= 0.6.0'
 gem "webpacker"
 # Calculate business days
 gem "business_time"
+# Used for area code
+gem 'countries', require: 'countries/global'
+# CHecks phone number validity
+gem 'phonelib'
 
 #################################################
 #                                               #
