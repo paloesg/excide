@@ -50,4 +50,26 @@ namespace :scheduler do
   task :weekly_batch_email_summary => :environment do
     BatchMailer.weekly_batch_email_summary.deliver_later if Date.current.monday?
   end
+
+  task :check_trial_ended => :environment do
+    Company.all.each do |company|
+      if company.trial_end_date.present? and company.trial_end_date < DateTime.current and company.free_trial?
+        # email users if free trial ended
+        company.users.each do |user|
+          NotificationMailer.free_trial_ending_notification(user).deliver
+        end
+        company.trial_ends  #only from free trial to basic
+        company.update_attributes(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)
+        company.save
+      end
+    end
+  end
+
+  task :check_subscription_end_date_upon_cancellation => :environment do
+    Company.all.each do |company|
+      if company.stripe_subscription_plan_data.present? and company.stripe_subscription_plan_data['cancel'] == true and (company.stripe_subscription_plan_data["subscription"]["current_period_end"] < Time.current.to_i)
+        DowngradeSubscriptionService.new(company).run
+      end
+    end
+  end
 end

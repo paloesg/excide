@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :workflow_section
     post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
   end
+  # Stripe event path for webhook
+  mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
 
   # Company workflow management
   get 'dashboard', to: 'dashboards#show', as: :dashboard
@@ -39,6 +41,13 @@ Rails.application.routes.draw do
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
     get '/xero_line_items', to: 'xero_line_items#show'
 
+    # get '/plan', to: 'companies#plan'
+    scope '/checkout' do
+      post 'create', to: 'checkout#create', as: :checkout_create
+      get 'cancel', to: 'checkout#cancel', as: :checkout_cancel
+      get 'success', to: 'checkout#success', as: :checkout_success
+    end
+    
     resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
     delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
@@ -104,6 +113,8 @@ Rails.application.routes.draw do
         post '/invoices/reject', to:'invoices#reject', as: :reject_invoice
         post '/invoices/next', to:'invoices#next_invoice', as: :next_invoice
         post '/invoices/prev', to:'invoices#prev_invoice', as: :prev_invoice
+        post '/xero_details', to:'invoices#get_xero_details_json', as: :get_xero_details_json
+        post '/get_textract', to:'invoices#get_document_analysis', as: :get_textract_invoice
         resources :invoices do
           post '/next', to:'invoices#next_show_invoice', as: :next_show_invoice
           post '/prev', to:'invoices#prev_show_invoice', as: :prev_show_invoice
@@ -187,7 +198,8 @@ Rails.application.routes.draw do
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
-
+  get 'plan', to: 'companies#plan'
+  
   # Hosted files
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
 
@@ -200,6 +212,7 @@ Rails.application.routes.draw do
 
   # VFO services
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
+  get 'virtual-technology-officer', to: 'home#vto', as: :vto
   get 'financial-analytics-reporting', to: 'home#financial-analytics-reporting', as: :financial_analytics_reporting
   get 'business-plan-assistance', to: 'home#business-plan-assistance', as: :business_plan_assistance
   get 'corporate-planning', to: 'home#corporate-planning', as: :corporate_planning

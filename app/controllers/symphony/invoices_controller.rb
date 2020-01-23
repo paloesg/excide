@@ -11,8 +11,9 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_show_invoice_navigation, only: [:show, :next_show_invoice, :prev_show_invoice]
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
+  before_action :update_textract_job_id, only: [:new, :edit]
 
-  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice]
+  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice, :get_document_analysis, :get_xero_details_json]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -259,6 +260,19 @@ class Symphony::InvoicesController < ApplicationController
     end
   end
 
+  def get_document_analysis
+    generate_textract = GenerateTextract.new(@document.id).run_analyze
+    respond_to do |format|
+      format.json  { render json: generate_textract }
+    end
+  end
+
+  def get_xero_details_json
+    respond_to do |format|
+      format.json  { render :json => [{"accounts": @full_account_code}, {"taxes": @full_tax_code}, {"tracking_categories_1": @tracking_categories_1},  {"tracking_categories_2": @tracking_categories_2}, {"items": @items}] }
+    end
+  end
+
   private
   def set_invoice
     @invoice = Invoice.find(params[:id])
@@ -376,5 +390,9 @@ class Symphony::InvoicesController < ApplicationController
   def update_workflow_action_completed(workflow_action_id)
     workflow_action = WorkflowAction.find(workflow_action_id)
     workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
+  end
+
+  def update_textract_job_id
+    GenerateTextract.new(@document.id).run_generate if @document.aws_textract_job_id.nil?
   end
 end

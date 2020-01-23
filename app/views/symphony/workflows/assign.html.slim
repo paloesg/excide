@@ -1,14 +1,6 @@
 - @navbar_workflows_active = true
 .row
   .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        = link_to @template.title, symphony_workflows_path(@template.slug)
-      li.breadcrumb-item
-        = link_to @workflow.id, symphony_workflow_path(@template.slug, @workflow.id)
-      li.breadcrumb-item.active Assign
     h1 User Assignment
 .row
   .col-md-8.col-sm-6

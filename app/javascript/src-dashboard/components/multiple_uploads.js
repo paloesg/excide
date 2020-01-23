@@ -127,26 +127,25 @@ $(document).on("turbolinks:load", function() {
         }
       });
     });
-    documentUpload.on("success", function (file, request) {
-      let resp = $.parseXML(request);
-      let filePath = $(resp).find("Key").text();
-      let location = new URL($(resp).find("Location").text())
-      if($("#batch-uploader").length){
+    documentUpload.on("queuecomplete", () => {
+      // Create workflows from multiple files
+      $.each(documentUpload["files"], (index, file) => {
+        responseURL = file["xhr"]["responseURL"].replace(/^https?:/,'');
+        responseKey = $($.parseXML(file["xhr"]["response"])).find("Key").text();
         let data_input = {
           authenticity_token: $.rails.csrfToken(),
           document_type: 'batch-uploads',
           batch_id: batchId,
-          count: this.files.length,
+          count: documentUpload["files"].length,
           document: {
-            filename: file.upload.filename,
-            file_url: '//' + location['host'] + '/' + filePath,
+            filename: file.name,
+            file_url: responseURL + responseKey,
             template_id: $('#template_id').val()
           }
         };
         let result = uploadDocuments(data_input);
-      }
-    });
-    documentUpload.on("queuecomplete", function (file, request) {
+      })
+
       let totalFile = documentUpload.files.length;
       $('#drag-and-drop-submit').prop( "disabled", true );
       $('#view-invoices-button').show();
