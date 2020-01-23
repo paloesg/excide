@@ -1,4 +1,7 @@
 class Workflow < ApplicationRecord
+  include FriendlyId
+  friendly_id :short_uuid, use: [:slugged, :finders]
+
   belongs_to :user
   belongs_to :company
   belongs_to :template
@@ -37,6 +40,10 @@ class Workflow < ApplicationRecord
     attribute :company do
       { name: company.name, slug: company.slug }
     end
+  end
+
+  def short_uuid
+    ShortUUID.shorten id
   end
 
   def build_workflowable(params)
