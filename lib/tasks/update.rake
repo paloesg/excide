@@ -26,4 +26,17 @@ namespace :update do
       activity.update_column(:trackable_type, "Event")
     end
   end
+
+  desc "Update progress of batches"
+  task update_progress_batches: :environment do
+    batches = Batch.all
+    batches.each do |batch|
+      workflow_progress = batch.workflows.where(completed: true).length
+      # Check for case where total_action is 0 to prevent NaN error
+      task_progress = batch.total_action.blank? or batch.total_action == 0 ? 0 : ((batch.get_completed_actions.length.to_f / batch.total_action) * 100).round(0)
+      batch.workflow_progress = workflow_progress
+      batch.task_progress = task_progress
+      batch.save
+    end
+  end
 end
