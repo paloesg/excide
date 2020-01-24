@@ -19,13 +19,14 @@ class Batch < ApplicationRecord
     WorkflowAction.includes(:workflow).where("workflows.batch_id": self.id, completed: true)
   end
 
-  def get_completed_workflows
-    self.workflows.where(completed: true).length
+  def update_workflow_progress
+    self.update_attribute(:workflow_progress, self.workflows.where(completed: true).length)
   end
 
-  def action_completed_progress
+  def update_task_progress
     # Check for case where total_action is 0 to prevent NaN error
-    (total_action.blank? or total_action) == 0 ? 0 : ((get_completed_actions.length.to_f / total_action) * 100).round(0)
+    task_progress = (total_action.blank? or total_action) == 0 ? 0 : ((get_completed_actions.length.to_f / total_action) * 100).round(0)
+    self.update_attribute(:task_progress, task_progress)
   end
 
   def average_time_taken_per_task

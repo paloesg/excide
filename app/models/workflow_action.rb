@@ -11,6 +11,7 @@ class WorkflowAction < ApplicationRecord
   after_save :clear_reminders, if: :ordered_workflow_task_completed?
   after_save :trigger_next_task, if: :ordered_workflow_task_completed?
   after_save :workflow_completed , if: :check_all_actions_completed?
+  after_save :update_batch_progress
 
   belongs_to :task
   belongs_to :company
@@ -85,6 +86,11 @@ class WorkflowAction < ApplicationRecord
   end
 
   private
+
+  def update_batch_progress
+    self.workflow.batch.update_workflow_progress
+    self.workflow.batch.update_task_progress
+  end
 
   def clear_reminders
     if self.completed
