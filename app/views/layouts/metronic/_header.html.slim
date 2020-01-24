@@ -103,8 +103,8 @@
                   - ::Template.assigned_templates(current_user).each do |t|
                     li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--active' if @template && @template.slug == t.slug}"
                       = link_to symphony_workflows_path(t.slug), class: 'kt-menu__link' do
-                        span.kt-badge.kt-badge--info.kt-badge--rounded.mr-1 = t.company_workflows(current_user.company).where(completed: [false, nil]).count
                         span.kt-menu__link-text #{t.title}
+                        span.kt-badge.kt-badge--unified-primary.kt-badge--md.kt-badge-bold = t.company_workflows(current_user.company).where(completed: [false, nil]).count
             li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if @navbar_batches_active}"
               - if current_user.company.basic?
                 = link_to symphony_batches_index_path, class:"kt-menu__link" do
