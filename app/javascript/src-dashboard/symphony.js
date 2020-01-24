@@ -1,3 +1,10 @@
+// Cocoon code with selectize 
+$(document).on("cocoon:after-insert", function(e, addedItem) {
+  console.log("AddedItem: ", addedItem);
+  $(addedItem).find('.question-choice').selectize({
+    sortField: 'text'
+  })
+});
 $(document).on("turbolinks:load", function(){
   $(".submit-next").click(function () {
     $(".submit-position").val("next_page");
@@ -32,14 +39,6 @@ $(document).on("turbolinks:load", function(){
     $(this).closest('tr').hide();
     return event.preventDefault();
   })
-  //removing a question in the survey_template
-  // $('form').on('click', '.remove_questions', function(event){
-  //   $(this).prev('input[type=hidden]').val('1');
-  //   $(this).closest('tr').next().remove();
-  //   //Deleting question might not be possible if there are responses referenced to it.
-  //   $(this).closest('tr').hide();
-  //   return event.preventDefault();
-  // })
 
   $('form').on('click', '.remove_segments', function(event){
     $(this).closest('div').find('.destroy').val('1');
@@ -94,22 +93,6 @@ $(document).on("turbolinks:load", function(){
     );
     return $('input').change(function(event) {
       return $(this).closest('td').next().find('.update').val('1');
-    });
-    return event.preventDefault();
-  });
-
-  //General way of adding attribute through link_to_add_row method in application helper
-  $('form').on('click', '.add_question_fields', function(event) {
-    let regexp, time;
-    time = new Date().getTime();
-    regexp = new RegExp($(this).data('id'), 'g');
-    $( '.question-in-survey-section-' + $(this).data('surveySectionId') ).append($(this).data('fields').replace(regexp, time));
-    $( ".survey-section-count" ).each(function( index ) {
-      $("select[id$='survey_template_survey_sections_attributes_" + index + "_questions_attributes_" + time + "_question_type']").selectize({
-        dropdownParent: "body"
-      });
-      $('.data-attributes').find('tr:last-child').find('.create').val('1');
-      return event.preventDefault();
     });
     return event.preventDefault();
   });

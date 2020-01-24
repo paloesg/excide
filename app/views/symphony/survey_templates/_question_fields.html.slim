@@ -1,19 +1,12 @@
-/ .nested-fields
-/   tr 
-/     td = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
-/     td = f.text_area :content, {required: true, class: "form-control"}
-/     td = f.select :question_type, Question.question_types.map{|k,v| [k.humanize, k]}, {}, { required: true, class: "dropdown-overlay question-choice", data: {question_id: f.object.id}}
-/     td
-/       = link_to_remove_association "remove question", f
-/ tr.multiple-choice-field.kt-hide
-/   td.p-0.ml-2.border-top-0 colspan="6"
-/     .m-2 class=("choice-in-question-#{f.object.id}")
-/       = f.fields_for :choices do |choice|
-/         = render partial: 'choice_fields', locals: { f: choice, g: f.object}
-/     = link_to_add_choices('Add choice', f, :choices, g: f.object)
-
-.nested-fields
-  = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
-  = f.text_area :content, {required: true, class: "form-control"}
-  = f.select :question_type, Question.question_types.map{|k,v| [k.humanize, k]}, {}, { required: true, class: "dropdown-overlay question-choice", data: {question_id: f.object.id}}
-  = link_to_remove_association "remove question", f
+.nested-fields.border.shadow.p-2
+  .form-group.col-sm-12
+    = link_to_remove_association "X", f, class: 'btn btn-danger text-dark pull-right'
+  .form-group.col-sm-1
+    = f.label :position, 'Position: '
+    = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
+  .form-group.col-sm-12
+    = f.label :content, 'Content: '
+    = f.text_area :content, {required: true, class: "form-control"}
+  .form-group.col-sm-12
+    = f.label :question_type, 'Question Type: '
+    = f.select :question_type, Question.question_types.map{|k,v| [k.humanize, k]}, {}, { required: true, class: "selectize question-choice", data: {question_id: f.object.id}}
