@@ -10,12 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_28_024011) do
+ActiveRecord::Schema.define(version: 2020_01_28_043106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -200,6 +210,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_024011) do
     t.integer "user_id"
     t.bigint "workflow_action_id"
     t.uuid "workflow_id"
+    t.string "aws_textract_job_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
     t.index ["document_template_id"], name: "index_documents_on_document_template_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
@@ -388,7 +399,6 @@ ActiveRecord::Schema.define(version: 2020_01_28_024011) do
     t.integer "survey_template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "description"
     t.index ["survey_template_id"], name: "index_survey_sections_on_survey_template_id"
   end
 
@@ -432,18 +442,12 @@ ActiveRecord::Schema.define(version: 2020_01_28_024011) do
     t.string "link_url"
     t.boolean "important"
     t.bigint "child_workflow_template_id"
-<<<<<<< HEAD
     t.bigint "survey_template_id"
-=======
->>>>>>> enhance/configure-active-storage-to-symphony
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
-<<<<<<< HEAD
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
-=======
->>>>>>> enhance/configure-active-storage-to-symphony
   end
 
   create_table "templates", id: :serial, force: :cascade do |t|

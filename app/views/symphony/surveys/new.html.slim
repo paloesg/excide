@@ -6,6 +6,7 @@
       .kt-portlet
         - @survey_template.survey_sections.each do |sur_section|
           - @survey_section = sur_section
+          = sur_section.description
           .kt-portlet__head
             .kt-portlet__head-label
               h1.kt-portlet__head-title #{sur_section.display_name}

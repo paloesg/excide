@@ -8,4 +8,6 @@ class SurveySection < ApplicationRecord
   accepts_nested_attributes_for :questions, reject_if: :all_blank, allow_destroy: true
 
   validates :display_name, :position, :survey_template, presence: true
+
+  has_rich_text :description
 end
