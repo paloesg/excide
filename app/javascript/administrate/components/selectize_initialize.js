@@ -6,8 +6,8 @@ function callSelectize() {
 
 $(document).on("turbolinks:load", function() {
   callSelectize();
-  $('form').on('cocoon:after-insert', function(e, inserted_item) {
+  // Render selectize when form get value in select option
+  $('form').on('cocoon:after-insert', function(e, insertedItem) {
     callSelectize();
-    console.log(added_task);
   });
 });
