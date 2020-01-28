@@ -3,8 +3,8 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-require("@rails/ujs").start()
-require("turbolinks").start()
+require("@rails/ujs").start();
+require("turbolinks").start();
 
 // The next line you only need if you want ActiveStorage support
 // require("@rails/activestorage").start()
@@ -16,4 +16,7 @@ require("turbolinks").start()
 // require("trix")
 // require("@rails/actiontext")
 
-require("../administrate/index")
+// Currently no way to implement cocoon in rails 6, so this was an alternative to use cocoon before the creator start changing to use webpack
+require("../src-dashboard/cocoon");
+
+require("../administrate/index");
