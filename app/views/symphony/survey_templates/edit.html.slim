@@ -7,7 +7,7 @@
       - if @survey_template.survey_sections.present?
         = render 'form', f: f
         = f.submit 'Save Survey Template', class: 'btn btn-primary pull-right mb-3'
-      .form-group
-        = text_field_tag :new_survey_section, params[:new_survey_section], {class: 'form-control mr-2 col-sm-12', placeholder: 'Enter Survey Section Name...'}
+      - else
+        = render 'new_survey_section'
       .form-group
         = submit_tag 'Add new survey section', class: 'btn btn-success', name: 'new_survey_section_submit'    

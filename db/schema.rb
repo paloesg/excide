@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_14_072853) do
+ActiveRecord::Schema.define(version: 2020_01_28_024011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -366,6 +366,7 @@ ActiveRecord::Schema.define(version: 2020_01_14_072853) do
     t.integer "survey_template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "description"
     t.index ["survey_template_id"], name: "index_survey_sections_on_survey_template_id"
   end
 
