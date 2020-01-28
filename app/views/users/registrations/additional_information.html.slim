@@ -1,8 +1,8 @@
 = javascript_include_tag "https://js.stripe.com/v3/"
-section.image-bg.overlay
+section.height-100.imagebg data-overlay="4"
   .background-image-holder
     img.background-image alt="Growing your business" src=image_path('hero-image.jpg')
-  .container
+  .container.pos-vertical-center
     .row
       .col-md-12
         = form_for(@user, as: :user, url: edit_additional_information_symphony_users_path, html: { class: 'additional-information-page' }) do |f|
@@ -50,4 +50,4 @@ section.image-bg.overlay
                       = render 'companies/address_fields', f: fca
           .row
             .col-sm-4.offset-md-8.text-right
-              = f.submit "Save Additional Information", class: 'additional-information-submit btn--orange'
+              = f.submit "Save Additional Information", class: 'btn additional-information-submit btn--orange'

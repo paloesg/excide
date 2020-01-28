@@ -1,5 +1,5 @@
 /! begin:: Header
-#kt_header.kt-header.kt-grid__item.kt-header--fixed data-ktheader-minimize="on"
+#kt_header.kt-header.kt-grid__item.kt-header--fixed.forward data-ktheader-minimize="on"
   .kt-header__top
     .kt-container
       /! begin:: Brand
@@ -95,7 +95,7 @@
               a.kt-menu__link.kt-menu__toggle href="javascript:;"
                 span.kt-menu__link-text Workflows
                 i.kt-menu__ver-arrow.la.la-angle-right
-              .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left
+              .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left.columns
                 ul.kt-menu__subnav
                   - ::Template.assigned_templates(current_user).each do |t|
                     li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--active' if @template && @template.id == t.id}"

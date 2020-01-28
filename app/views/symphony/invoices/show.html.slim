@@ -118,13 +118,13 @@
         = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @invoice.workflow.id), role: 'button', class: 'btn btn-primary pull-right'
         - if @invoice.workflow.archive.empty?
           /To view xero invoice created in xero (if it is already created in Xero)
-          - if @workflow.invoice&.payable?
-            - if @workflow.invoice.xero_invoice_id.present?
-              = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning mr-2 pull-right', target: :_blank
+          - if @workflow.invoice.xero_invoice_id.present?
+            = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning mr-2 pull-right', target: :_blank if @workflow.invoice&.payable?
+            = link_to "View Xero invoice", "https://go.xero.com/AccountsReceivable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm', target: :_blank if @workflow.invoice&.receivable?
           /do additional condition to account for account receivables next time
           - else
-            = link_to("No invoice payable created in Xero", '#', role: 'button', class: 'btn btn-warning mr-2 pull-right disabled')
-          = link_to "Back to batch workflows", symphony_batch_path(@workflow.template.slug, @workflow.batch.id), class: 'btn btn-primary mr-2 pull-right' if @workflow.batch.present?
+            = link_to("No invoice was sent to xero", '#', role: 'button', class: 'btn btn-warning mr-2 pull-right disabled')
+            = link_to "Back to batch workflows", symphony_batch_path(@workflow.template.slug, @workflow.batch.id), class: 'btn btn-primary mr-2 pull-right' if @workflow.batch.present?
 
         - if !current_user.has_role?(:shared_service, @company) and @invoice.xero_invoice_id.blank? and @last_workflow_action.present?
           = link_to "Edit Invoice", edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id, workflow_action_id: @last_workflow_action), class: 'btn btn-success mr-2 pull-right' if policy(@invoice).edit?

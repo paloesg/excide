@@ -17,6 +17,28 @@ ActiveRecord::Schema.define(version: 2020_01_28_024011) do
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id_int"
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.uuid "record_id", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
   create_table "activities", id: :serial, force: :cascade do |t|
     t.integer "trackable_id"
     t.string "trackable_type"
@@ -410,12 +432,18 @@ ActiveRecord::Schema.define(version: 2020_01_28_024011) do
     t.string "link_url"
     t.boolean "important"
     t.bigint "child_workflow_template_id"
+<<<<<<< HEAD
     t.bigint "survey_template_id"
+=======
+>>>>>>> enhance/configure-active-storage-to-symphony
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
+<<<<<<< HEAD
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
+=======
+>>>>>>> enhance/configure-active-storage-to-symphony
   end
 
   create_table "templates", id: :serial, force: :cascade do |t|
@@ -546,6 +574,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_024011) do
     t.index ["company_id"], name: "index_xero_line_items_on_company_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "allocations", "availabilities"
   add_foreign_key "allocations", "events"
   add_foreign_key "allocations", "users"
