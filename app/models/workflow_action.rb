@@ -88,8 +88,10 @@ class WorkflowAction < ApplicationRecord
   private
 
   def update_batch_progress
-    self.workflow.batch.update_workflow_progress
-    self.workflow.batch.update_task_progress
+    if self.workflow.batch.present?
+      self.workflow.batch.update_workflow_progress
+      self.workflow.batch.update_task_progress
+    end
   end
 
   def clear_reminders
