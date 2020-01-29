@@ -42,3 +42,9 @@ require("./components/stripe")
 window.deleteBatch = require("./components/delete_batch")
 
 require("./turbolinks-compatibility")
+
+// Actiontext
+require("trix")
+require("@rails/actiontext")
+
+

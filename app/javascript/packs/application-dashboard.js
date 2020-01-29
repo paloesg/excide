@@ -28,4 +28,3 @@ require("src-dashboard/cocoon")
 // Actiontext
 require("trix")
 require("@rails/actiontext")
-
