@@ -11,3 +11,7 @@ require("./components/has_many_form");
 require("./components/image_upload");
 require("./components/selectize_initialize");
 require("./components/table");
+require("./components/administrate-field-jsonb/editor");
+require("./components/administrate-field-jsonb/accordion");
+require("./components/administrate-field-jsonb/viewer");
+window.JSONEditor = require("./components/administrate-field-jsonb/jsoneditor-minimalist.min");
