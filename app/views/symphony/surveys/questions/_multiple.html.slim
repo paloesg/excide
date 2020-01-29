@@ -1,5 +1,6 @@
 - q.choices.each do |choice|
   .form-group.form-check.m-1
-    = r.radio_button :choice_id, choice.id, {class: "form-check-input"}
+    / = r.check_box :choice_ids, { class: 'form-check-input', multiple: true }, choice.id, nil
+    = check_box_tag "choice_ids[]", choice.id
+    / = r.check_box :choice_id, { class: 'form-check-input', multiple: true }, choice.id, 0
     = r.label choice.content, class: 'form-check-label'
-    = r.hidden_field :content, value: choice.content

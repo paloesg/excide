@@ -8,11 +8,11 @@ $(document).on("turbolinks:load", function() {
     multipleChoiceDetails = $(this).closest('#multiple-choice-field');
     console.log("SELECTEDVALUE: ", selectedValue);
     console.log("THIS: ", $(this).closest('div').next()[0]);
-    if(selectedValue != 'multiple') {
-      $(this).closest('div').next().addClass('kt-hide');
+    if(selectedValue == 'multiple' || selectedValue ==  'single') {
+      $(this).closest('div').next().removeClass('kt-hide');
     }
     else{
-      $(this).closest('div').next().removeClass('kt-hide');
+      $(this).closest('div').next().addClass('kt-hide');
     }
   });
   $("#questions").on("cocoon:after-insert", function(e, addedItem) {
