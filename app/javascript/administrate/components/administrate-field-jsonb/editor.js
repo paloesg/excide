@@ -27,6 +27,13 @@ $(function () {
 
     let editor = new JSONEditor(this, options);
 
-    editor.set(JSON.parse($current.val()));
+    if ($current.val() == "null") {
+      editor.set(JSON.parse("[]"));
+      $("textarea").val("[]");
+    } else {
+      editor.set(JSON.parse($current.val()));
+    }
+
+
   });
 });
