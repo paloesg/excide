@@ -23,6 +23,8 @@ class Workflow < ApplicationRecord
 
   after_commit :create_actions_and_trigger_first_task, on: :create
 
+  self.implicit_order_column = "created_at"
+
   include PublicActivity::Model
   tracked except: :update,
           owner: ->(controller, _model) { controller && controller.current_user },
