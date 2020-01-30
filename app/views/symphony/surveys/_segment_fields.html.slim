@@ -8,6 +8,7 @@
     .form-group.col-sm-8
       = f.label :name, 'Name:'
       = f.text_field :name, {required: true, class: "form-control ml-2 col-sm-10"}
+    = f.hidden_field :survey_section_id, value: @survey_section.id
 
   .response-block.mt-3
     - @survey_section.questions.each do |qn|

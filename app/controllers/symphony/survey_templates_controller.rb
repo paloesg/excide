@@ -69,7 +69,7 @@ class Symphony::SurveyTemplatesController < ApplicationController
   def survey_template_params
     params.require(:survey_template).permit(:title, :slug, :survey_type, :company_id, 
       survey_sections_attributes: [:id, :display_name, :position, :description, 
-      questions_attributes: [:id, :content, :question_type, :position, :_destroy, 
+      questions_attributes: [:id, :content, :question_type, :position, :choice_id, :_destroy, 
       choices_attributes: [:id, :position, :content, :_destroy] ] ])
   end
 end

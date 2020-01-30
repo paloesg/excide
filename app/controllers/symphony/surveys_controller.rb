@@ -28,6 +28,6 @@ class Symphony::SurveysController < ApplicationController
   private
 
   def survey_params
-    params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :survey_template_id, segments_attributes: [:id, :name, :position, :_destroy, responses_attributes: [:id, :content, :question_id, :file, :choice_id ]])
+    params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :survey_template_id, segments_attributes: [:id, :name, :position, :survey_section_id, :_destroy, responses_attributes: [:id, :content, :question_id, :file, :choice_id ]])
   end
 end
