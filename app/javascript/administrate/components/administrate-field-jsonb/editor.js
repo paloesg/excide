@@ -1,4 +1,4 @@
-$(function () {
+$(document).on("turbolinks:load", function(){
   let editor, updatedJson;
   $('.administrate-jsoneditor').each(function (index) {
 
@@ -34,4 +34,4 @@ $(function () {
       editor.set(JSON.parse($current.val()));
     }
   });
-});
+})
