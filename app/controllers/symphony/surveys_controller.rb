@@ -13,13 +13,12 @@ class Symphony::SurveysController < ApplicationController
     @survey = Survey.new(survey_params)
     @survey.user = current_user
     @survey.company = current_user.company
-    puts "CHOICES ID = #{params[:choice_ids]}"
     @survey.survey_template = SurveyTemplate.find(params[:survey][:survey_template_id])
     @survey.workflow = Workflow.find(params[:workflow_id])
     if @survey.save!
-      # Save the multiple choices as string in recent response
       r = Response.last
-      r.content = params[:choice_ids]
+      # Save the multiple choices as string in recent response
+      r.content = params[:choice_ids] if params[:choice_ids].present?
       if r.save!
         redirect_to symphony_workflow_path(@survey.workflow.template.slug, @survey.workflow.id), notice: 'Survey successfully created'
       end
@@ -29,6 +28,6 @@ class Symphony::SurveysController < ApplicationController
   private
 
   def survey_params
-    params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :survey_template_id, segments_attributes: [:id, :name, :position, :_destroy, responses_attributes: [:id, :content, :question_id, choice_id: [] ]])
+    params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :survey_template_id, segments_attributes: [:id, :name, :position, :_destroy, responses_attributes: [:id, :content, :question_id, :file, :choice_id ]])
   end
 end
