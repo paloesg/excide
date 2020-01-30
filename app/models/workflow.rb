@@ -1,4 +1,7 @@
 class Workflow < ApplicationRecord
+  include FriendlyId
+  friendly_id :short_uuid, use: [:slugged, :finders]
+
   belongs_to :user
   belongs_to :company
   belongs_to :template
@@ -20,6 +23,8 @@ class Workflow < ApplicationRecord
 
   after_commit :create_actions_and_trigger_first_task, on: :create
 
+  self.implicit_order_column = "created_at"
+
   include PublicActivity::Model
   tracked except: :update,
           owner: ->(controller, _model) { controller && controller.current_user },
@@ -32,11 +37,15 @@ class Workflow < ApplicationRecord
       { client_name: workflowable&.name, client_identifier: workflowable&.identifier }
     end
     attribute :template do
-      { title: template.title, slug: template.slug }
+      { title: template&.title, slug: template&.slug }
     end
     attribute :company do
-      { name: company.name, slug: company.slug }
+      { name: company&.name, slug: company&.slug }
     end
+  end
+
+  def short_uuid
+    ShortUUID.shorten id
   end
 
   def build_workflowable(params)
