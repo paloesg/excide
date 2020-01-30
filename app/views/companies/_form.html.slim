@@ -40,7 +40,7 @@
           = f.label :form_cs_date, 'Form C-S date'
           = f.date_field :form_cs_date, class: 'form-control'
   .col-sm-6
-    .card.mb-4 
+    .card.mb-4
       .card-header Subscription
       .card-body
         h4.mb-2 #{@company.account_type.capitalize.humanize} Plan
@@ -54,7 +54,7 @@
             | You are currently on Symphony free trial plan, which expires in 30 days.
             br
             | Trial ends on:
-            h5.mt-2 = @company.trial_end_date.strftime("%d-%b-%Y")
+            h5.mt-2 = @company.trial_end_date&.strftime("%d-%b-%Y")
             | To Upgrade, click the button below:
             br
             = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary mt-2'
@@ -78,7 +78,7 @@
               - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
                 / only display invoices that are in the 12 months span period
                 = link_to Time.at(invoice['period_end']).strftime("%d-%b-%Y"), invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
-                br 
+                br
     .card.mb-4
       .card-header Xero Details
       .card-body

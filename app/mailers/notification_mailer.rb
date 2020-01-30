@@ -7,7 +7,7 @@ class NotificationMailer < ApplicationMailer
     @user = user
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
-    mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.id)
+    mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.friendly_id)
   end
 
   def first_task_notification(task, batch, user)
@@ -26,7 +26,7 @@ class NotificationMailer < ApplicationMailer
     @action = action
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
-    mail(to: address.format, subject: '[New Task] Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.id)
+    mail(to: address.format, subject: '[New Task] Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.friendly_id)
   end
 
   def reminder_notification(reminder)

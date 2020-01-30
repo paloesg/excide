@@ -39,4 +39,9 @@ namespace :update do
       batch.save
     end
   end
+
+  desc "Update workflows to generate short uuid and save as slug"
+  task generate_short_uuid: :environment do
+    Workflow.find_each(&:save)
+  end
 end
