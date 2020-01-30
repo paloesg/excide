@@ -11,6 +11,7 @@ class WorkflowAction < ApplicationRecord
   after_save :clear_reminders, if: :ordered_workflow_task_completed?
   after_save :trigger_next_task, if: :ordered_workflow_task_completed?
   after_save :workflow_completed , if: :check_all_actions_completed?
+  after_save :update_batch_progress, if: :workflow_has_batch?
 
   belongs_to :task
   belongs_to :company
@@ -86,6 +87,11 @@ class WorkflowAction < ApplicationRecord
 
   private
 
+  def update_batch_progress
+    self.workflow.batch.update_workflow_progress
+    self.workflow.batch.update_task_progress
+  end
+
   def clear_reminders
     if self.completed
       # Find associated reminders and remove next reminder date
@@ -140,6 +146,10 @@ class WorkflowAction < ApplicationRecord
     if self.completed
       SlackService.new.send_notification(self).deliver
     end
+  end
+
+  def workflow_has_batch?
+    self.workflow.batch.present?
   end
 
   # Callback conditional to check whether the template is of type ordered and whether the task is completed before triggering callback

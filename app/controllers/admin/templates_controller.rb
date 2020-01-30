@@ -1,6 +1,6 @@
 module Admin
   class TemplatesController < Admin::ApplicationController
-    before_action :set_s3_direct_post, only: [:new, :edit]
+    before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
     # To customize the behavior of this controller,
     # simply overwrite any of the RESTful actions. For example:
     #

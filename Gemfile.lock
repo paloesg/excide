@@ -501,6 +501,7 @@ GEM
       rdoc (~> 4.0)
     selectize-rails (0.12.6)
     shellany (0.0.1)
+    shortuuid (0.6.0)
     shoulda (3.6.0)
       shoulda-context (~> 1.0, >= 1.0.1)
       shoulda-matchers (~> 3.0)
@@ -655,6 +656,7 @@ DEPENDENCIES
   scout_apm
   sdoc (~> 0.4.0)
   selectize-rails
+  shortuuid
   shoulda
   simple_calendar (~> 2.0)
   sitemap_generator

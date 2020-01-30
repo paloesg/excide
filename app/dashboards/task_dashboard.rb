@@ -12,7 +12,7 @@ class TaskDashboard < Administrate::BaseDashboard
     workflow_actions: Field::HasMany,
     id: Field::Number,
     role: Field::BelongsTo,
-    template: Field::BelongsTo,
+    child_workflow_template: Field::BelongsTo.with_options(class_name: "Template"),
     task_type: EnumField,
     instructions: Field::String,
     position: Field::Number,
@@ -69,7 +69,7 @@ class TaskDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :task_type,
-    :template,
+    :child_workflow_template,
     :instructions,
     :section,
     :position,

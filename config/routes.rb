@@ -47,7 +47,7 @@ Rails.application.routes.draw do
       get 'cancel', to: 'checkout#cancel', as: :checkout_cancel
       get 'success', to: 'checkout#success', as: :checkout_success
     end
-    
+
     resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
     delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
@@ -92,6 +92,7 @@ Rails.application.routes.draw do
     resources :recurring_workflows, path: '/recurring_workflows/:recurring_workflow_name', except: [:index] do
       member do
         post '/stop_recurring', to: 'recurring_workflows#stop_recurring'
+        # TODO: Trigger workflow should be POST request not GET
         get :trigger_workflow, to: 'recurring_workflows#trigger_workflow'
       end
     end
@@ -199,7 +200,7 @@ Rails.application.routes.draw do
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
   get 'plan', to: 'companies#plan'
-  
+
   # Hosted files
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
 
