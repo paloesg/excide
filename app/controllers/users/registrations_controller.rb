@@ -54,10 +54,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/edit
   def edit
-    @contact = @user.contact_number
-    if @user.contact_number.present?
-      @contact = Phonelib.parse(@user.contact_number).local_number
-      @country_code = Phonelib.parse(@user.contact_number).country_code
+    @contact = Phonelib.parse(@user.contact_number)
+    if @contact.valid?
+      @country_code = @contact.country_code
+      @contact = @user.contact_number.remove(@country_code)
       @country = Country.find_country_by_country_code(@country_code).name + "(+" + @country_code + ")"
     else
       @country = @user.company.address.country + "(+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
@@ -74,14 +74,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
     #   customer = Stripe::Customer.create({email: current_user.email, card: params[:user][:stripe_card_token]})
     #   resource.stripe_customer_id = customer.id
     # end
-
     resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
     if resource_updated
-      set_flash_message_for_update(resource, prev_unconfirmed_email)
-      bypass_sign_in resource, scope: resource_name if sign_in_after_change_password?
-
-      respond_with resource, location: after_update_path_for(resource)
+      # gsub(/\D/, "") keeps only the numbers which is the country code
+      self.resource.contact_number = params[:country_code].gsub(/\D/, "") + params[:contact]
+      if Phonelib.parse(self.resource.contact_number).valid?
+        self.resource.save
+        set_flash_message_for_update(resource, prev_unconfirmed_email)
+        bypass_sign_in resource, scope: resource_name if sign_in_after_change_password?
+        respond_with resource, location: after_update_path_for(resource)
+      else
+        redirect_to edit_user_registration_path
+        flash[:alert] = "Invalid Contact Number"
+      end
     else
       clean_up_passwords resource
       set_minimum_password_length

@@ -31,9 +31,9 @@
                 = f.label :contact_number
                 .row
                   .col-md-6
-                    = f.select :contact_number, Country.all.map{ |c| c.name + "(+" + c.country_code + ")" }.sort, {selected: @country}, { class: 'selectize' }
+                    = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + "(+" + c.country_code + ")" }.sort, @country), class: 'selectize'
                   .col-md-6
-                    = f.text_field :contact_number, value: @contact, class: 'form-control'
+                    = text_field_tag "contact", @contact, class: 'form-control'
           - if current_user.has_role? :superadmin
             .kt-portlet
               .kt-portlet__head
