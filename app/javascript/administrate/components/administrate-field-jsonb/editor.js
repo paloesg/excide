@@ -33,7 +33,5 @@ $(function () {
     } else {
       editor.set(JSON.parse($current.val()));
     }
-
-
   });
 });

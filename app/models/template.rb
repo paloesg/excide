@@ -114,6 +114,6 @@ class Template < ApplicationRecord
       JSON.parse(data_names)
       return true
     rescue JSON::ParserError => e
-      errors.add(:data_names, :invalid)
+      errors.add(:data_names, :invalid, message: "should be array format")
   end
 end
