@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_28_043106) do
+ActiveRecord::Schema.define(version: 2020_01_30_080847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -350,7 +350,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_043106) do
     t.index ["workflow_action_id"], name: "index_reminders_on_workflow_action_id"
   end
 
-  create_table "responses", id: :serial, force: :cascade do |t|
+  create_table "responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "content"
     t.integer "question_id"
     t.integer "choice_id"
@@ -412,7 +412,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_043106) do
     t.index ["company_id"], name: "index_survey_templates_on_company_id"
   end
 
-  create_table "surveys", id: :serial, force: :cascade do |t|
+  create_table "surveys", force: :cascade do |t|
     t.string "title"
     t.text "remarks"
     t.integer "user_id"
