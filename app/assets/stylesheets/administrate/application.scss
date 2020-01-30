@@ -1,0 +1,49 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require trix
+ *= require_self
+ *= require dropzone
+ *= require font-awesome
+ *= require selectize
+ *= require selectize.default
+ */
+
+@charset "utf-8";
+@import "administrate/reset/normalize";
+
+@import "administrate/library/clearfix";
+@import "administrate/library/data-label";
+@import "administrate/library/variables";
+
+@import "administrate/base/forms";
+@import "administrate/base/layout";
+@import "administrate/base/lists";
+@import "administrate/base/tables";
+@import "administrate/base/typography";
+
+@import "administrate/components/app-container";
+@import "administrate/components/attributes";
+@import "administrate/components/buttons";
+@import "administrate/components/cells";
+@import "administrate/components/field-unit";
+@import "administrate/components/flashes";
+@import "administrate/components/form-actions";
+@import "administrate/components/main-content";
+@import "administrate/components/navigation";
+@import "administrate/components/pagination";
+@import "administrate/components/search";
+
+@import "administrate/utilities/text-color";
+@import "administrate/administrate-field-jsonb/jsoneditor.min";
+@import "administrate/administrate-field-jsonb/accordion";
+@import "administrate/administrate-field-jsonb/editor";

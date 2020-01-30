@@ -43,12 +43,12 @@
                           - else
                             = d.filename
                             br
-                            a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid'/>" Preview                    
+                            a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid'/>" Preview
                     td
                       - if wf.invoice.blank?
                         i.flaticon2-paper.icon.mr-3.text-center.medium-icon.gray-icon
                       - else
-                        = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.id, id: wf.invoice.id)
+                        = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id)
                           i.flaticon2-paper.icon.mr-3.medium-icon
                         - if wf.invoice.rejected?
                           .rejected-invoice-circle R
