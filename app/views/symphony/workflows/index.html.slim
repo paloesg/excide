@@ -28,7 +28,7 @@
                 tbody
                   - @workflows.each do |w|
                     tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                      td = link_to w.id, symphony_workflow_path(w.template.slug, w.id)
+                      td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
                       td = w.template.title
                       td = w.workflowable&.name || '-'
                       td = w.remarks || '-'

@@ -3,6 +3,7 @@ class Archive
 
   def initialize(workflow)
     @id = workflow.id
+    @slug = workflow.slug
     @archive = workflow.archive
     @identifier = workflow.identifier
     @workflow = @archive["workflow"]
@@ -36,5 +37,9 @@ class Archive
 
   def get_activities(activities)
     activities.map {|activity| PublicActivity::Activity.new(activity.with_indifferent_access) }
+  end
+
+  def friendly_id
+    @slug
   end
 end
