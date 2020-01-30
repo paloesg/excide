@@ -17,7 +17,6 @@ class Template < ApplicationRecord
   enum business_model: [:ecommerce, :marketplace, :media, :mobile, :saas, :others]
 
   validates :title, :slug, presence: true
-  validate :data_names_is_array
 
   before_save :data_names_to_json
 
@@ -108,12 +107,5 @@ class Template < ApplicationRecord
       template_ids = Section.where(id: section_ids).pluck(:template_id).uniq
       Template.where(id: template_ids, company: user.company).order(:created_at)
     end
-  end
-
-  def data_names_is_array
-      JSON.parse(data_names)
-      return true
-    rescue JSON::ParserError => e
-      errors.add(:data_names, :invalid, message: "should be array format")
   end
 end
