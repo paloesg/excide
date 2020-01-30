@@ -37,10 +37,10 @@ class Workflow < ApplicationRecord
       { client_name: workflowable&.name, client_identifier: workflowable&.identifier }
     end
     attribute :template do
-      { title: template.title, slug: template.slug }
+      { title: template&.title, slug: template&.slug }
     end
     attribute :company do
-      { name: company.name, slug: company.slug }
+      { name: company&.name, slug: company&.slug }
     end
   end
 
