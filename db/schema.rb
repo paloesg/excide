@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_30_080847) do
+ActiveRecord::Schema.define(version: 2020_01_30_151538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -178,9 +178,6 @@ ActiveRecord::Schema.define(version: 2020_01_30_080847) do
     t.integer "expires_at"
     t.boolean "connect_xero", default: true
     t.string "xero_organisation_name"
-    t.integer "account_type"
-    t.datetime "trial_end_date"
-    t.json "stripe_subscription_plan_data", default: []
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -307,9 +304,9 @@ ActiveRecord::Schema.define(version: 2020_01_30_080847) do
     t.text "content"
     t.integer "question_type"
     t.integer "position"
-    t.integer "survey_section_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "survey_section_id", null: false
     t.index ["survey_section_id"], name: "index_questions_on_survey_section_id"
   end
 
@@ -354,9 +351,9 @@ ActiveRecord::Schema.define(version: 2020_01_30_080847) do
     t.text "content"
     t.integer "question_id"
     t.integer "choice_id"
-    t.integer "segment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "segment_id", null: false
     t.index ["choice_id"], name: "index_responses_on_choice_id"
     t.index ["question_id"], name: "index_responses_on_question_id"
     t.index ["segment_id"], name: "index_responses_on_segment_id"
@@ -381,18 +378,18 @@ ActiveRecord::Schema.define(version: 2020_01_30_080847) do
     t.index ["template_id"], name: "index_sections_on_template_id"
   end
 
-  create_table "segments", id: :serial, force: :cascade do |t|
+  create_table "segments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.integer "position"
-    t.integer "survey_section_id"
     t.integer "survey_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "survey_section_id", null: false
     t.index ["survey_id"], name: "index_segments_on_survey_id"
     t.index ["survey_section_id"], name: "index_segments_on_survey_section_id"
   end
 
-  create_table "survey_sections", id: :serial, force: :cascade do |t|
+  create_table "survey_sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "unique_name"
     t.string "display_name"
     t.integer "position"
@@ -412,7 +409,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_080847) do
     t.index ["company_id"], name: "index_survey_templates_on_company_id"
   end
 
-  create_table "surveys", force: :cascade do |t|
+  create_table "surveys", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "remarks"
     t.integer "user_id"
@@ -441,13 +438,13 @@ ActiveRecord::Schema.define(version: 2020_01_30_080847) do
     t.integer "document_template_id"
     t.string "link_url"
     t.boolean "important"
-    t.bigint "child_workflow_template_id"
+    t.bigint "template_id"
     t.bigint "survey_template_id"
-    t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
+    t.index ["template_id"], name: "index_tasks_on_template_id"
   end
 
   create_table "templates", id: :serial, force: :cascade do |t|
@@ -629,7 +626,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_080847) do
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
   add_foreign_key "tasks", "survey_templates"
-  add_foreign_key "tasks", "templates", column: "child_workflow_template_id"
+  add_foreign_key "tasks", "templates"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
   add_foreign_key "workflow_actions", "companies"
