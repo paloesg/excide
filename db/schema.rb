@@ -427,13 +427,6 @@ ActiveRecord::Schema.define(version: 2020_01_31_023945) do
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
 
-  create_table "tracking_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "status"
-    t.string "tracking_category_id"
-    t.json "options"
-  end
-
   create_table "users", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -549,6 +542,17 @@ ActiveRecord::Schema.define(version: 2020_01_31_023945) do
     t.index ["company_id"], name: "index_xero_line_items_on_company_id"
   end
 
+  create_table "xero_tracking_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "status"
+    t.string "tracking_category_id"
+    t.json "options"
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_xero_tracking_categories_on_company_id"
+  end
+
   add_foreign_key "allocations", "availabilities"
   add_foreign_key "allocations", "events"
   add_foreign_key "allocations", "users"
@@ -612,4 +616,5 @@ ActiveRecord::Schema.define(version: 2020_01_31_023945) do
   add_foreign_key "workflows", "workflow_actions"
   add_foreign_key "xero_contacts", "companies"
   add_foreign_key "xero_line_items", "companies"
+  add_foreign_key "xero_tracking_categories", "companies"
 end
