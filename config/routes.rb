@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   get '/xero_callback_and_update', to: 'xero_sessions#xero_callback_and_update', as: :xero_callback_and_update
   post '/update_contacts_from_xero', to: 'xero_sessions#update_contacts_from_xero', as: :update_contacts_from_xero
   post '/update_line_items_from_xero', to: 'xero_sessions#update_line_items_from_xero', as: :update_line_items_from_xero
+  post '/update_tracking_categories_from_xero', to: 'xero_sessions#update_tracking_categories_from_xero', as: :update_tracking_categories_from_xero
   delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
   namespace :symphony do
@@ -47,7 +48,7 @@ Rails.application.routes.draw do
       get 'cancel', to: 'checkout#cancel', as: :checkout_cancel
       get 'success', to: 'checkout#success', as: :checkout_success
     end
-    
+
     resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
     delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
@@ -199,7 +200,7 @@ Rails.application.routes.draw do
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
   get 'plan', to: 'companies#plan'
-  
+
   # Hosted files
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
 

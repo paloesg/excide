@@ -40,7 +40,7 @@
           = f.label :form_cs_date, 'Form C-S date'
           = f.date_field :form_cs_date, class: 'form-control'
   .col-sm-6
-    .card.mb-4 
+    .card.mb-4
       .card-header Subscription
       .card-body
         h4.mb-2 #{@company.account_type.capitalize.humanize} Plan
@@ -78,7 +78,7 @@
               - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
                 / only display invoices that are in the 12 months span period
                 = link_to Time.at(invoice['period_end']).strftime("%d-%b-%Y"), invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
-                br 
+                br
     .card.mb-4
       .card-header Xero Details
       .card-body
@@ -90,7 +90,8 @@
           = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: 'btn btn-danger'
         .form-group
           = link_to 'Update contacts from Xero', update_contacts_from_xero_path, method: :post, class: 'btn btn-warning mr-2'
-          = link_to 'Update line items from Xero', update_line_items_from_xero_path, method: :post, class: 'btn btn-warning'
+          = link_to 'Update line items from Xero', update_line_items_from_xero_path, method: :post, class: 'btn btn-warning mr-2'
+          = link_to 'Update tracking categories from Xero', update_tracking_categories_from_xero_path, method: :post, class: 'btn btn-warning mr-2'
         .form-group
           = f.label :xero_organisation_name
           = f.text_field :xero_organisation_name, class: 'form-control', disabled: true

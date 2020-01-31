@@ -1,7 +1,7 @@
 class XeroSessionsController < ApplicationController
   include Adapter
   after_action :verify_authorized, except: [:xero_callback_and_update, :disconnect_from_xero]
-  
+
   def connect_to_xero
     authorize :xero_session, :connect_to_xero?
     @xero_client = Xeroizer::PartnerApplication.new(
@@ -18,7 +18,7 @@ class XeroSessionsController < ApplicationController
     request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
     session[:request_token] = request_token.token
     session[:request_secret] = request_token.secret
-    
+
     redirect_to request_token.authorize_url
   end
 
@@ -64,6 +64,16 @@ class XeroSessionsController < ApplicationController
       xc.update(name: contact.name, company: current_user.company)
     end
     redirect_to edit_company_path, notice: "Contacts have been updated from Xero."
+  end
+
+  def update_tracking_categories_from_xero
+    authorize :xero_session, :update_tracking_categories_from_xero?
+    @xero_client = Xero.new(current_user.company)
+    @xero_client.get_tracking_options.each do |tracking|
+      @tc = XeroTrackingCategory.find_or_initialize_by(tracking_category_id: tracking.tracking_category_id)
+      @tc.update(name: tracking.name, status: tracking.status, options: tracking.options, company: current_user.company)
+    end
+    redirect_to edit_company_path, notice: "Tracking categories have been updated from Xero."
   end
 
   def update_line_items_from_xero
