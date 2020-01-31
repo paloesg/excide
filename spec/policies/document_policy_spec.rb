@@ -35,17 +35,17 @@ RSpec.describe DocumentPolicy do
     it { should_not permit(:destroy) }
   end
 
-  context "for a admin of company" do
-    let(:user) { admin_of_company }
-    it { should permit(:index) }
-    it { should permit(:show) }
-    it { should permit(:create) }
-    it { should permit(:new) }
-    it { should permit(:update) }
-    it { should permit(:edit) }
-    it { should permit(:index_create) }
-    it { should permit(:index_create) }
-    it { should permit(:multiple_edit) }
-    it { should permit(:destroy) }
-  end
+  # context "for a admin of company" do
+  #   let(:user) { admin_of_company }
+  #   it { should permit(:index) }
+  #   it { should permit(:show) }
+  #   it { should permit(:create) }
+  #   it { should permit(:new) }
+  #   it { should permit(:update) }
+  #   it { should permit(:edit) }
+  #   it { should permit(:index_create) }
+  #   it { should permit(:index_create) }
+  #   it { should permit(:multiple_edit) }
+  #   it { should permit(:destroy) }
+  # end
 end
