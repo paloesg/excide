@@ -1,6 +1,5 @@
 // Cocoon code with selectize 
 $(document).on("cocoon:after-insert", function(e, addedItem) {
-  console.log("AddedItem: ", addedItem);
   $(addedItem).find('.question-choice').selectize({
     sortField: 'text'
   })
