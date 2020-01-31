@@ -1,0 +1,20 @@
+.kt-portlet.mb-3
+  .kt-portlet__head
+    .kt-portlet__head-label
+      h3.kt-portlet__head-title Survey
+  .kt-portlet__body
+    - if @surveys.present?
+      .table-responsive
+        table.table
+          thead
+            th Title
+            th Done By
+            th Date
+          tbody
+            - @surveys.each do |survey|
+              tr
+                td = link_to survey.title, symphony_survey_path(@workflow.template, @workflow.id, survey.id)
+                td = survey.user.full_name
+                td = survey.created_at.strftime('%F')
+    - else
+      | No survey yet.

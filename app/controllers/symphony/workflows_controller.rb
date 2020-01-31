@@ -58,6 +58,7 @@ class Symphony::WorkflowsController < ApplicationController
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
+    @surveys = Survey.all.where(workflow_id: @workflow.id)
     @templates = policy_scope(Template).assigned_templates(current_user)
     if @workflow.completed?
       redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)

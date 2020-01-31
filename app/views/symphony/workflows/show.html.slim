@@ -48,6 +48,7 @@
         = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
     = render partial: 'symphony/workflows/documents'
     = render partial: 'symphony/workflows/invoice'
+    = render partial: 'symphony/workflows/surveys'
     - if @workflow.recurring_workflow.present?
       .kt-portlet.mb-3
         .kt-portlet__head

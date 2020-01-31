@@ -25,6 +25,10 @@ class Symphony::SurveysController < ApplicationController
     end
   end
 
+  def show
+    @survey = Survey.find_by(workflow_id: params[:workflow_id])
+  end
+
   private
 
   def survey_params

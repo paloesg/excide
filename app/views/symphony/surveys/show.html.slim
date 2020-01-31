@@ -1,0 +1,21 @@
+.row
+  .col-md-12
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title
+            | Survey Details
+      .kt-portlet__body
+        - @survey.segments.each do |s|
+          .border.shadow.p-2 
+            h4 Segment Name: 
+            p = s.name
+            h4 Survey Section: 
+            p = s.survey_section.display_name
+            p = s.survey_section.description.body.to_rendered_html_with_layout()
+            hr
+            - s.survey_section.questions.each do |qn|
+              p = qn.content
+              - s.responses.each do |res|
+                p.text-primary = res.content if res.question_id == qn.id
+        / h1 #{@survey.segments[0].name}
