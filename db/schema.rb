@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_22_042558) do
+ActiveRecord::Schema.define(version: 2020_01_31_023945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -425,6 +425,13 @@ ActiveRecord::Schema.define(version: 2020_01_22_042558) do
     t.integer "workflow_type", default: 0
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
+  end
+
+  create_table "tracking_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "status"
+    t.string "tracking_category_id"
+    t.json "options"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
