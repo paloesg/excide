@@ -1,6 +1,6 @@
-class CreateTableTrackingCategory < ActiveRecord::Migration[6.0]
+class CreateTableXeroTrackingCategory < ActiveRecord::Migration[6.0]
   def change
-    create_table :tracking_categories, id: :uuid do |t|
+    create_table :xero_tracking_categories, id: :uuid do |t|
       t.string :name
       t.string :status
       t.string :tracking_category_id
