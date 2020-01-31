@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_101023) do
     t.boolean "assigned", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "fulltime", default: false
     t.index ["user_id"], name: "index_availabilities_on_user_id"
   end
 
