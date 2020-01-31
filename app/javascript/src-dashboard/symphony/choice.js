@@ -17,11 +17,11 @@ $(document).on("turbolinks:load", function() {
   });
   $("#questions").on("cocoon:after-insert", function(e, addedItem) {
     $('select.question-choice').on('change', function() {
-      if ($(addedItem).find('.question-choice').val() != 'multiple'){
-        $(this).closest('div').next().addClass('kt-hide');
+      if ($(addedItem).find('.question-choice').val() == 'multiple' || $(addedItem).find('.question-choice').val() ==  'single'){
+        $(this).closest('div').next().removeClass('kt-hide');
       }
       else{
-        $(this).closest('div').next().removeClass('kt-hide');
+        $(this).closest('div').next().addClass('kt-hide');
       }
     });
   });
