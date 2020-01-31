@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_30_151538) do
+ActiveRecord::Schema.define(version: 2020_01_30_075925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -304,9 +304,9 @@ ActiveRecord::Schema.define(version: 2020_01_30_151538) do
     t.text "content"
     t.integer "question_type"
     t.integer "position"
+    t.integer "survey_section_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "survey_section_id", null: false
     t.index ["survey_section_id"], name: "index_questions_on_survey_section_id"
   end
 
@@ -351,9 +351,9 @@ ActiveRecord::Schema.define(version: 2020_01_30_151538) do
     t.text "content"
     t.integer "question_id"
     t.integer "choice_id"
+    t.integer "segment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "segment_id", null: false
     t.index ["choice_id"], name: "index_responses_on_choice_id"
     t.index ["question_id"], name: "index_responses_on_question_id"
     t.index ["segment_id"], name: "index_responses_on_segment_id"
@@ -378,18 +378,18 @@ ActiveRecord::Schema.define(version: 2020_01_30_151538) do
     t.index ["template_id"], name: "index_sections_on_template_id"
   end
 
-  create_table "segments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "segments", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "position"
+    t.integer "survey_section_id"
     t.integer "survey_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "survey_section_id", null: false
     t.index ["survey_id"], name: "index_segments_on_survey_id"
     t.index ["survey_section_id"], name: "index_segments_on_survey_section_id"
   end
 
-  create_table "survey_sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "survey_sections", id: :serial, force: :cascade do |t|
     t.string "unique_name"
     t.string "display_name"
     t.integer "position"
