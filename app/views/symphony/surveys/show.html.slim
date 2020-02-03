@@ -17,5 +17,10 @@
             - s.survey_section.questions.each do |qn|
               p = qn.content
               - s.responses.each do |res|
-                p.text-primary = res.content if res.question_id == qn.id
+                / check for single choice response
+                if res.question_id == qn.id
+                  - if res.choice_id.present? 
+                    p.text-primary = res.choice.content
+                  - elsif res.content.is_a?
+                    p.text-primary = res.content 
         / h1 #{@survey.segments[0].name}

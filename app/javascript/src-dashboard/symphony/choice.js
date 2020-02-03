@@ -5,9 +5,11 @@ $(document).on("turbolinks:load", function() {
     console.log("Seelected val: ", selectedValue);
     console.log("MC Details: ", $(this).closest('div').next());
     if(selectedValue === 'multiple' || selectedValue ===  'single') {
+      console.log(" multiple and single");
       $(this).closest('div').next().removeClass('kt-hide');
     }
     else{
+      console.log("NON multiple and single");
       $(this).closest('div').next().addClass('kt-hide');
     }
   });
@@ -19,6 +21,7 @@ $(document).on("turbolinks:load", function() {
           $(this).closest('div').next().removeClass('kt-hide');
         }
         else{
+          console.log("Here too!");
           $(this).closest('div').next().addClass('kt-hide');
         }
       }   
