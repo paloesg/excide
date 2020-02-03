@@ -1,13 +1,13 @@
-.nested-fields.border.shadow.p-2
+.nested-fields.border.shadow.p-3
   .form-inline.col-sm-12.p-0.mt-2.mb-2
     .form-group.col-sm-1
       = link_to_remove_association "X", f, class: 'btn btn-danger text-dark pull-right'
     .form-group.col-sm-3
       = f.label :position, 'Position:'
-      = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control col-sm-4 ml-2"}
+      = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control b-bottom text-center col-sm-4 ml-2"}
     .form-group.col-sm-8
       = f.label :name, 'Name:'
-      = f.text_field :name, {required: true, class: "form-control ml-2 col-sm-10"}
+      = f.text_field :name, {required: true, class: "form-control b-bottom ml-2 col-sm-10"}
     = f.hidden_field :survey_section_id, value: @survey_section.id
 
   .response-block.mt-3

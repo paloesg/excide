@@ -13,7 +13,7 @@
           tbody
             - @surveys.each do |survey|
               tr
-                td = link_to survey.title, symphony_survey_path(@workflow.template, @workflow.id, survey.id)
+                td = link_to survey.title.present? ? survey.title : 'No title', symphony_survey_path(@workflow.template, @workflow.id, survey.id) 
                 td = survey.user.full_name
                 td = survey.created_at.strftime('%F')
     - else

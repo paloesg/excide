@@ -3,10 +3,10 @@
     = link_to_remove_association "X", f, class: 'btn btn-danger text-dark pull-right'
   .form-group.col-sm-2
     = f.label :position, 'Position: '
-    = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control col-sm-5"}
+    = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control col-sm-4 b-bottom text-center"}
   .form-group.col-sm-12
     = f.label :content, 'Content: '
-    = f.text_area :content, {required: true, class: "form-control"}
+    = f.text_field :content, {required: true, class: "form-control b-bottom"}
   .form-group.col-sm-12
     = f.label :question_type, 'Question Type: '
     = f.select :question_type, Question.question_types.map{|k,v| [k.humanize, k]}, {}, { required: true, class: "selectize question-choice", data: {question_id: f.object.id}}
