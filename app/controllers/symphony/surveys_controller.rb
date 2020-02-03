@@ -17,10 +17,9 @@ class Symphony::SurveysController < ApplicationController
     @survey.workflow = Workflow.find(params[:workflow_id])
     selected_choices = params[:choice_ids]
     if @survey.save!
-      r = Response.last
+      r = Response.find_by(question_id: params[:question_ids])
       # Save the multiple choices as string in recent response
       r.content = params[:choice_ids] if params[:choice_ids].present?
-      r.content = selected_choices.join(" ").split(" ") if params[:choice_ids]
       if r.save!
         redirect_to symphony_workflow_path(@survey.workflow.template.slug, @survey.workflow.id), notice: 'Survey successfully created'
       end

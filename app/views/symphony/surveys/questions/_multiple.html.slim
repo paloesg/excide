@@ -1,4 +1,5 @@
 - q.choices.each do |choice|
   .form-group.form-check.m-1
     = check_box_tag "choice_ids[]", choice.id
+    = hidden_field_tag "question_ids[]", q.id
     = r.label choice.content, class: 'form-check-label ml-2'
