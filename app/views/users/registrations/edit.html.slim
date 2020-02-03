@@ -30,9 +30,9 @@
               .form-group
                 = f.label :contact_number
                 .row
-                  .col-md-6
-                    = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + "(+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'selectize'
-                  .col-md-6
+                  .col-md-4
+                    = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'selectize'
+                  .col-md-8
                     = text_field_tag "contact", @contact, class: 'form-control'
           - if current_user.has_role? :superadmin
             .kt-portlet
