@@ -1,11 +1,5 @@
 .row
   .col-sm-12
-    ol.breadcrumb
-      li.breadcrumb-item.ml-auto
-        a href="/symphony" Symphony
-      li.breadcrumb-item
-        a href="/symphony/users" Users
-      li.breadcrumb-item.active Additional information
     h1 Additional Information
 .row
   .col-sm-12
@@ -42,7 +36,7 @@
               .row
                 .col-md-12
                   .form-group
-                    #card-errors role='alert'           
+                    #card-errors role='alert'
         .col-sm-6
           .card.mb-4
             .card-header Company Information
@@ -56,6 +50,6 @@
                   = fc.label :connect_xero, 'Enable Xero', class: 'form-check-label'
                 .form-group
                   = fc.fields_for :address do |fca|
-                    = render 'companies/address_fields', f: fca        
+                    = render 'companies/address_fields', f: fca
         .col-sm-12.text-right
           = f.submit "Save Additional Information", class: 'btn btn-primary additional-information-submit'

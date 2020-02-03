@@ -1,4 +1,7 @@
 class Workflow < ApplicationRecord
+  include FriendlyId
+  friendly_id :short_uuid, use: [:slugged, :finders]
+
   belongs_to :user
   belongs_to :company
   belongs_to :template
@@ -20,6 +23,8 @@ class Workflow < ApplicationRecord
 
   after_commit :create_actions_and_trigger_first_task, on: :create
 
+  self.implicit_order_column = "created_at"
+
   include PublicActivity::Model
   tracked except: :update,
           owner: ->(controller, _model) { controller && controller.current_user },
@@ -32,11 +37,15 @@ class Workflow < ApplicationRecord
       { client_name: workflowable&.name, client_identifier: workflowable&.identifier }
     end
     attribute :template do
-      { title: template.title, slug: template.slug }
+      { title: template&.title, slug: template&.slug }
     end
     attribute :company do
-      { name: company.name, slug: company.slug }
+      { name: company&.name, slug: company&.slug }
     end
+  end
+
+  def short_uuid
+    ShortUUID.shorten id
   end
 
   def build_workflowable(params)
@@ -131,9 +140,10 @@ class Workflow < ApplicationRecord
     sections = self.template.sections
     sections.each do |s|
       s.tasks.each do |t|
-        completed = (t.position == 1 && t.section.position == 1 && t.task_type == "upload_file") ? true : false
-        WorkflowAction.create!(task: t, company: self.company, completed: completed, workflow: self)
+        WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
       end
+      # Automatically set first task as completed if workflow is part of a batch and first task is a file upload task
+      s.tasks.first.get_workflow_action(self.company_id, self.id).update(completed: true) if (s.position == 1 && s.tasks.first.task_type == "upload_file" && self.batch.present?)
     end
     if ordered_workflow?
       trigger_first_task

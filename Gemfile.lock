@@ -903,10 +903,6 @@ GEM
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
-    bootstrap4-datetime-picker-rails (0.3.1)
-      jquery-rails (~> 4.2, >= 4.2.0)
-      moment-timezone-rails (~> 1.0)
-      momentjs-rails (>= 2.10.5, <= 3.0.0)
     brakeman (4.7.2)
     builder (3.2.3)
     bullet (6.0.2)
@@ -1059,7 +1055,6 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.13.0)
     mixpanel-ruby (2.2.2)
-    moment-timezone-rails (1.0.0)
     momentjs-rails (2.20.1)
       railties (>= 3.1)
     monetize (1.9.2)
@@ -1267,6 +1262,7 @@ GEM
       rdoc (~> 4.0)
     selectize-rails (0.12.6)
     shellany (0.0.1)
+    shortuuid (0.6.0)
     shoulda (3.6.0)
       shoulda-context (~> 1.0, >= 1.0.1)
       shoulda-matchers (~> 3.0)
@@ -1302,6 +1298,9 @@ GEM
       sprockets (>= 2.8, < 4.0)
     squasher (0.6.2)
     stripe (5.11.0)
+    stripe_event (2.3.0)
+      activesupport (>= 3.1)
+      stripe (>= 2.8, < 6)
     sucker_punch (2.1.2)
       concurrent-ruby (~> 1.0)
     temple (0.8.2)
@@ -1415,6 +1414,7 @@ DEPENDENCIES
   scout_apm
   sdoc (~> 0.4.0)
   selectize-rails
+  shortuuid
   shoulda
   simple_calendar (~> 2.0)
   sitemap_generator
@@ -1426,6 +1426,7 @@ DEPENDENCIES
   sprockets-rails (= 2.3.3)
   squasher (>= 0.6.0)
   stripe
+  stripe_event
   sucker_punch (~> 2.0)
   themify-icons-rails!
   trix

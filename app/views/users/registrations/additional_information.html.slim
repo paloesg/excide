@@ -19,20 +19,8 @@ section.height-100.imagebg data-overlay="4"
                   .col-md-12
                     .form-group
                       = f.label :last_name
-                      = f.text_field :last_name, class: 'form-control', required: true
+                      = f.text_field :last_name, class: 'form-control', required: true                
 
-              .feature.boxed
-                h5.uppercase #{params[:company]} Credit Card Detail
-                .row
-                  .col-md-12
-                    .form-group
-                      = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
-                      .stripe-elements
-                        #card-element
-                .row
-                  .col-md-12
-                    .form-group
-                      #card-errors role='alert'
             .col-sm-6
               .feature.boxed
                 h5.uppercase #{params[:company]} Company Information
@@ -42,7 +30,7 @@ section.height-100.imagebg data-overlay="4"
                     = fc.text_field :name, class: 'form-control', required: true
                   .col-md-12
                     .input-checkbox
-                      input#input-assigned-8 name="connect_xero" type="checkbox"
+                      = fc.check_box :connect_xero, {class: "input-assigned-8"}
                       label for="input-assigned-8"
                     span Connect Xero
                   .col-md-12
