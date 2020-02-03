@@ -17,10 +17,14 @@
             - s.survey_section.questions.each do |qn|
               p = qn.content
               - s.responses.each do |res|
-                / check for single choice response
-                - if res.choice_id.present?
-                  p.text-primary = res.choice.content if res.question_id == qn.id
-                - elsif res.file.attached?
-                  p.text-primary = link_to 'Download Attachment', rails_blob_path(res.file, disposition: "attachment") if res.question_id == qn.id
-                - else
-                  p.text-primary = res.content if res.question_id == qn.id
+                - if res.question_id == qn.id
+                  / check for single choice response
+                  - if res.choice_id.present?
+                    p.text-primary = res.choice.content
+                  - elsif res.file.attached?
+                    p.text-primary = link_to 'Download Attachment', rails_blob_path(res.file, disposition: "attachment")
+                  - elsif res.question.question_type == "multiple"
+                    - JSON.parse(res.content).each do |r|
+                      p.text-primary = Choice.find(r).content
+                  - else
+                    p.text-primary = res.content 
