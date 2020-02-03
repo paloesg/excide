@@ -54,16 +54,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/edit
   def edit
-    @contact = Phonelib.parse(@user.contact_number)
-    if @contact.valid?
-      @country_code = @contact.country_code
-      @contact = @user.contact_number.remove(@country_code)
-      @country = Country.find_country_by_country_code(@country_code).name + "(+" + @country_code + ")"
-    elsif @user.company.address.country.present?
-      @country = @user.company.address.country + "(+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
-    else
-      @country = nil;
-    end
+    set_contact
     super
   end
 
@@ -91,6 +82,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         flash[:alert] = "Invalid Contact Number"
       end
     else
+      set_contact
       clean_up_passwords resource
       set_minimum_password_length
       respond_with resource
@@ -152,6 +144,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
       "application"
     else
       "metronic/application"
+    end
+  end
+
+  def set_contact #as country code and contact are displayed as tags in the edit page, user[contact_number] is not called in the edit and update.
+    @contact = Phonelib.parse(@user.contact_number)
+    if @contact.valid?
+      @country_code = @contact.country_code
+      @contact = @user.contact_number.remove(@country_code)
+      @country = Country.find_country_by_country_code(@country_code).name + "(+" + @country_code + ")"
+    elsif @user.company.address.country.present?
+      @country = @user.company.address.country + "(+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
+    else
+      @country = nil;
     end
   end
 end
