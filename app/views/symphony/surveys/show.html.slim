@@ -18,9 +18,9 @@
               p = qn.content
               - s.responses.each do |res|
                 / check for single choice response
-                if res.question_id == qn.id
-                  - if res.choice_id.present? 
-                    p.text-primary = res.choice.content
-                  - elsif res.content.is_a?
-                    p.text-primary = res.content 
-        / h1 #{@survey.segments[0].name}
+                - if res.choice_id.present?
+                  p.text-primary = res.choice.content if res.question_id == qn.id
+                - elsif res.file.attached?
+                  p.text-primary = link_to 'Download Attachment', rails_blob_path(res.file, disposition: "attachment") if res.question_id == qn.id
+                - else
+                  p.text-primary = res.content if res.question_id == qn.id
