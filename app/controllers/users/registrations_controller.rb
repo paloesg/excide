@@ -59,8 +59,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @country_code = @contact.country_code
       @contact = @user.contact_number.remove(@country_code)
       @country = Country.find_country_by_country_code(@country_code).name + "(+" + @country_code + ")"
-    else
+    elsif @user.company.address.country.present?
       @country = @user.company.address.country + "(+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
+    else
+      @country = nil;
     end
     super
   end
