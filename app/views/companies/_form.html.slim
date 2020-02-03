@@ -54,7 +54,7 @@
             | You are currently on Symphony free trial plan, which expires in 30 days.
             br
             | Trial ends on:
-            h5.mt-2 = @company.trial_end_date.strftime("%d-%b-%Y")
+            / h5.mt-2 = @company.trial_end_date.strftime("%d-%b-%Y")
             | To Upgrade, click the button below:
             br
             = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary mt-2'
@@ -89,9 +89,9 @@
           = link_to 'Connect to Xero', connect_to_xero_path, class: 'btn btn-primary mr-2'
           = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: 'btn btn-danger'
         .form-group
-          = link_to 'Update contacts from Xero', update_contacts_from_xero_path, method: :post, class: 'btn btn-warning mr-2'
-          = link_to 'Update line items from Xero', update_line_items_from_xero_path, method: :post, class: 'btn btn-warning mr-2'
-          = link_to 'Update tracking categories from Xero', update_tracking_categories_from_xero_path, method: :post, class: 'btn btn-warning mr-2'
+          = link_to 'Update contacts from Xero', update_contacts_from_xero_path, method: :post, class: 'btn btn-warning mr-2 mb-1'
+          = link_to 'Update line items from Xero', update_line_items_from_xero_path, method: :post, class: 'btn btn-warning mr-2 mb-1'
+          = link_to 'Update tracking categories from Xero', update_tracking_categories_from_xero_path, method: :post, class: 'btn btn-warning mr-2 mb-1'
         .form-group
           = f.label :xero_organisation_name
           = f.text_field :xero_organisation_name, class: 'form-control', disabled: true
