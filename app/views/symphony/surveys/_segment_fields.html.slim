@@ -3,11 +3,11 @@
     .form-group.col-sm-1
       = link_to_remove_association "X", f, class: 'btn btn-danger text-dark pull-right'
     .form-group.col-sm-3
-      = f.label :position, 'Position:'
-      = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control b-bottom text-center col-sm-4 ml-2"}
+      = f.label :position, 'Position:', class: 'text-large'
+      = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control b-bottom text-large text-center col-sm-4 ml-2"}
     .form-group.col-sm-8
-      = f.label :name, 'Name:'
-      = f.text_field :name, {required: true, class: "form-control b-bottom ml-2 col-sm-10"}
+      = f.label :name, 'Name:', class: 'text-large'
+      = f.text_field :name, {required: true, class: "form-control b-bottom text-large ml-2 col-sm-10"}
     = f.hidden_field :survey_section_id, value: @survey_section.id
 
   .response-block.mt-3

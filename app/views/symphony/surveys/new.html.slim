@@ -10,7 +10,7 @@
               h1.kt-portlet__head-title #{sur_section.display_name}
           .kt-portlet__body
             .form-group.mt-2.border.shadow.p-3
-              = f.text_field :title, placeholder: 'Survey Title...', class: 'form-control b-bottom p-2'
+              = f.text_field :title, placeholder: 'Survey Title...', class: 'form-control text-large b-bottom p-2'
               = f.hidden_field :survey_template_id, value: @survey_template.id
               .border.shadow.p-2.mt-3 = @survey_section.description.body.to_rendered_html_with_layout()
             #segment-section
@@ -18,5 +18,5 @@
                 = render 'segment_fields', f: segment
               .links
                 = link_to_add_association 'Add Segments', f, :segments, class: 'btn btn-primary mt-3 pull-right'
-          .form-inline.col-sm-6.pull-left.p-0
-            = f.submit 'Submit Survey', class: 'btn btn-primary pull-right'
+          .form-inline.col-sm-12.p-0
+            = f.submit 'Submit Survey', class: 'btn btn-primary col-sm-12 pull-right'
