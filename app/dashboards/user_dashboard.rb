@@ -29,6 +29,7 @@ class UserDashboard < Administrate::BaseDashboard
     roles: HasManyRolesField,
     assigned_tasks: Field::HasMany.with_options(class_name: WorkflowAction),
     completed_tasks: Field::HasMany.with_options(class_name: WorkflowAction),
+    settings: Field::JSONB,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -58,12 +59,14 @@ class UserDashboard < Administrate::BaseDashboard
     :roles,
     :assigned_tasks,
     :completed_tasks,
+    :settings,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
+    :settings,
     :first_name,
     :last_name,
     :email,

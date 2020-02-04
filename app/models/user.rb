@@ -182,6 +182,10 @@ class User < ApplicationRecord
     self.roles.pluck(:name).include? role.name
   end
 
+  def settings=(value)
+    self[:settings] = value.is_a?(String) ? JSON.parse(value) : value
+  end
+
   class Setting
     attr_accessor :reminder_sms, :reminder_email, :reminder_slack, :reminder_whatsapp, :task_sms, :task_email, :task_slack, :task_whatsapp, :batch_sms, :batch_email, :batch_slack, :batch_whatsapp
 
