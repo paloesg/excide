@@ -12,7 +12,7 @@
 
   var newcontentUnderscord = function(id) {
     return '_' + id + '_$1';
-  }
+  };
 
   var getInsertionNodeElem = function(insertionNode, insertionTraversal, $this){
 
@@ -22,7 +22,7 @@
 
     if (typeof insertionNode === 'function'){
       if(insertionTraversal){
-        console.log('association-insertion-traversal is ignored, because association-insertion-node is given as a function.');
+        // console.log('association-insertion-traversal is ignored, because association-insertion-node is given as a function.');
       }
       return insertionNode($this);
     }
@@ -81,7 +81,7 @@
     var insertionNodeElem = getInsertionNodeElem(insertionNode, insertionTraversal, $this);
 
     if( !insertionNodeElem || (insertionNodeElem.length === 0) ){
-      console.warn("Couldn't find the element to insert the template. Make sure your `data-association-insertion-*` on `link_to_add_association` is correct.")
+      // console.warn("Couldn't find the element to insert the template. Make sure your `data-association-insertion-*` on `link_to_add_association` is correct.")
     }
 
     $.each(newContents, function(i, node) {

@@ -15,7 +15,6 @@ class Symphony::SurveysController < ApplicationController
     @survey.company = current_user.company
     @survey.survey_template = SurveyTemplate.find(params[:survey][:survey_template_id])
     @survey.workflow = Workflow.find(params[:workflow_id])
-    selected_choices = params[:choice_ids]
     if @survey.save!
       r = Response.find_by(question_id: params[:question_ids])
       # Save the multiple choices as string in recent response
