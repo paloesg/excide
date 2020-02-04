@@ -66,7 +66,6 @@ class UserDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :settings,
     :first_name,
     :last_name,
     :email,
@@ -74,6 +73,7 @@ class UserDashboard < Administrate::BaseDashboard
     :company,
     :roles,
     :confirmed_at,
+    :settings,
   ].freeze
 
   # Overwrite this method to customize how users are displayed
