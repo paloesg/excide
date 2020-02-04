@@ -32,6 +32,68 @@ function getXeroDetails(template, workflow){
 }
 
 function addLineItems(data){
+  var dropdownTax;
+
+  // dropdownTax = $(".dropdown-tax").selectize({
+  //   onInitialize() {
+  //     var s = this;
+  //     var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
+  //     // Get selected tax
+  //     let currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
+  //       return a["defaultSelected"];
+  //     })
+  //     if (currentTaxRate.length) {
+  //       let taxRate = currentTaxRate[0]["dataset"]["rate"];
+  //       calculateTotalTax(currentAmount, taxRate);
+  //     }
+  //     this.revertSettings.$children.each(function () {
+  //       $.extend(s.options[this.value], $(this).data());
+  //     });
+  //   },
+  //   onChange: function (value) {
+  //     var t = this;
+  //     $( ".total-tax-row" ).remove();
+  //     $(".tax > div > .has-items > .item").each(function(index, item) {
+  //       let itemRate = t.options[$(item).text()].rate;
+  //       let itemAmount = $(item).closest(".line_items").find("input[id$='_amount']").val();
+  //       calculateTotalTax(itemAmount, itemRate);
+  //     })
+  //   }
+  // });
+
+  function updateTotalTax() {
+    $( ".total-tax-row" ).remove();
+    dropdownTax.each(function(index, item) {
+      let selectizeItem = dropdownTax.selectize()[parseInt(index)].selectize;
+      let currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
+        let thisValue = $(item).closest("tr.line_items").find(".tax > div > .has-items > .item");
+        return a["innerText"] === thisValue.text();
+      })
+      let dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!=="1");
+      // Check tax field has value & status of the line item is not destroyed & value not empty
+      if (currentTaxRate.length && dontDestroyLineItem && currentTaxRate[0]["value"]!=="") {
+        let taxRate = currentTaxRate[0]["dataset"]["rate"];
+        let currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
+        calculateTotalTax(currentAmount, taxRate);
+      }
+    })
+  }
+
+  function calculateAmount() {
+    $("input[id$='_quantity'], input[id$='_price']").change(function () {
+      let quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
+      let inputPrice = $(this).closest(".line_items").find("input[id$='_price']");
+      let amount = $(this).closest(".line_items").find("input[id$='_amount']");
+      let price = inputPrice.val() ? convertCurrency(inputPrice.val()) : 0;
+      amount.val(price === 0? 0 : quantity*price);
+      $("input#subtotal").val( replaceNumberWithCurrencyFormat(calculateSubtotal()) );
+      updateTotalTax();
+      //replace to currency format
+      amount.val(replaceNumberWithCurrencyFormat(amount.val()));
+      inputPrice.val(replaceNumberWithCurrencyFormat(price));
+    })
+  }
+
   // Add value to line items
   let items = '<select class="minimize-text line-items-dropdown-width dropdown-items selectized" name="invoice[line_items_attributes]['+data.index+'][item]" id="invoice_line_items_attributes_'+data.index+'_item" tabindex="-1" style="display: none;"><option value="" selected="selected"></option></select>';
   let description = '<input class="form-control minimize-text" type="text" name="invoice[line_items_attributes]['+data.index+'][description]" id="invoice_line_items_attributes_'+data.index+'_description" value='+ ( data.description ?  data.description : "") +'>';
@@ -44,7 +106,7 @@ function addLineItems(data){
   let deleteButton = '<a class="btn btn-danger remove_line_items" href="#">x</a>';
 
   // Add field to form
-  $(".table tbody").append("<tr><td class='line-item-field'>"+items+"</td><td class='line-item-field'>"+description+"</td><td class='line-item-field'>"+quantity+"</td><td class='line-item-field'>"+price+"</td><td class='line-item-field'>"+account+"</td><td class='line-item-field tax'>"+tax+"</td><td class='line-item-field'>"+region+"</td><td class='line-item-field'>"+amount+"</td><td class='line-item-field pr-2'>"+deleteButton+"</td></tr>");
+  $(".table tbody").append("<tr class='line_items'><td class='line-item-field'>"+items+"</td><td class='line-item-field'>"+description+"</td><td class='line-item-field'>"+quantity+"</td><td class='line-item-field'>"+price+"</td><td class='line-item-field'>"+account+"</td><td class='line-item-field tax'>"+tax+"</td><td class='line-item-field'>"+region+"</td><td class='line-item-field'>"+amount+"</td><td class='line-item-field pr-2'>"+deleteButton+"</td></tr>");
 
   // Selectize
   $("select[id$='invoice_line_items_attributes_" + data.index + "_item']").selectize({
@@ -65,7 +127,16 @@ function addLineItems(data){
   });
   $("select[id$='invoice_line_items_attributes_" + data.index + "_tracking_option_2']").selectize({
     dropdownParent: "body"
-  });  
+  });    
+
+  $("input[id$='_price']").keydown(function (event) {          
+    // check if tab keyboard button pressed
+    if (event.keyCode === 9) {
+      console.log("masuk")
+      calculateAmount();
+    }
+  });
+  calculateAmount();
 }
 
 function getDocumentAnalysis(template, workflow){
@@ -75,18 +146,26 @@ function getDocumentAnalysis(template, workflow){
     $(".aws-textract-result").text(JSON.stringify(result["table"]));
     // Validate result when success true and tables not null
     if(result["table"]["success?"] === true && result["table"]["tables"].length > 0){
+      
       $(".table>tbody>tr").remove();
       let tables = result["table"]["tables"];
+      let forms = result["table"]["forms"];
+      let totalAmount = forms[0]["total_amount"];
       $.each(tables, function(i, table){
         addLineItems(table);
       })
+      $(".textract-total-value").val(totalAmount);
+      $('.textract-total').show();
+      $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
     }
   })
 }
 
 $(document).on("turbolinks:load", function() {
   $('.loading-textract').hide();
+  $('.textract-total').hide();
   $('.do-textract').click(function(){
+    $('.textract-total').hide();
     let template = $('.template-field').val() ;
     let workflow = $('.workflow-field').val() ;
     getXeroDetails(template, workflow);

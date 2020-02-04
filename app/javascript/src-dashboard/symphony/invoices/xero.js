@@ -55,6 +55,39 @@ $(document).on("turbolinks:load", function(){
     dropdownParent: "body"
   })
 
+  function updateTotalTax() {
+    $( ".total-tax-row" ).remove();
+    dropdownTax.each(function(index, item) {
+      let selectizeItem = dropdownTax.selectize()[parseInt(index)].selectize;
+      let currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
+        let thisValue = $(item).closest("tr.line_items").find(".tax > div > .has-items > .item");
+        return a["innerText"] === thisValue.text();
+      })
+      let dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!=="1");
+      // Check tax field has value & status of the line item is not destroyed & value not empty
+      if (currentTaxRate.length && dontDestroyLineItem && currentTaxRate[0]["value"]!=="") {
+        let taxRate = currentTaxRate[0]["dataset"]["rate"];
+        let currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
+        calculateTotalTax(currentAmount, taxRate);
+      }
+    })
+  }
+
+  function calculateAmount() {
+    $("input[id$='_quantity'], input[id$='_price']").change(function () {
+      let quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
+      let inputPrice = $(this).closest(".line_items").find("input[id$='_price']");
+      let amount = $(this).closest(".line_items").find("input[id$='_amount']");
+      let price = inputPrice.val() ? convertCurrency(inputPrice.val()) : 0;
+      amount.val(price === 0? 0 : quantity*price);
+      $("input#subtotal").val( replaceNumberWithCurrencyFormat(calculateSubtotal()) );
+      updateTotalTax();
+      //replace to currency format
+      amount.val(replaceNumberWithCurrencyFormat(amount.val()));
+      inputPrice.val(replaceNumberWithCurrencyFormat(price));
+    })
+  }
+
   $("#invoice_line_amount_type").change(function() {
     updateTotalTax();
   });
@@ -210,4 +243,6 @@ $(document).on("turbolinks:load", function(){
   $("form.new_invoice").submit(function() {
     convertNormalNumber();
   });
+
+  
 });
