@@ -48,7 +48,7 @@ class Symphony::InvoicesController < ApplicationController
         #go to the next invoice
         redirect_to_next_action(@workflow, params[:workflow_action_id])
       else
-        redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully."
+        redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.friendly_id, id: @invoice.id), notice: "Invoice created successfully."
       end
     else
       render 'new'
@@ -78,7 +78,7 @@ class Symphony::InvoicesController < ApplicationController
     if @invoice.update(invoice_params)
       #If associate wants to update invoice before sending to xero, symphony finds the params update_field and then redirect to the same invoice EDIT page
       if params[:update_field] == "success"
-        redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id, workflow_action_id: params[:workflow_action_id]), notice: 'Symphony invoice successfully updated'
+        redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.friendly_id, id: @workflow.invoice.id, workflow_action_id: params[:workflow_action_id]), notice: 'Symphony invoice successfully updated'
       #when invoice updates with the rounding line item, update the invoice in Xero as well
       elsif @invoice.xero_total_mismatch?
         @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
@@ -152,7 +152,7 @@ class Symphony::InvoicesController < ApplicationController
       if @batch.present?
         format.html { redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id) }
       else
-        format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id) }
+        format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id) }
       end
     end
   end
@@ -189,7 +189,7 @@ class Symphony::InvoicesController < ApplicationController
           #go to the next invoice
           redirect_to_next_action(@workflow, params[:workflow_action_id])
         else
-          redirect_to symphony_workflow_path(@nvoice.workflow.template.slug, @nvoice.workflow.id)
+          redirect_to symphony_workflow_path(@nvoice.workflow.template.slug, @nvoice.workflow.friendly_id)
         end
       else
         if invoice_id.present?
@@ -351,9 +351,9 @@ class Symphony::InvoicesController < ApplicationController
   def render_action_invoice(workflow, workflow_action)
     if workflow.invoice.blank?
       invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @workflow.invoice&.invoice_type
-      redirect_to new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, invoice_type: invoice_type, workflow_action_id: workflow_action)
+      redirect_to new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.friendly_id, invoice_type: invoice_type, workflow_action_id: workflow_action)
     elsif workflow.invoice.present?
-      redirect_to edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id, workflow_action_id: workflow_action)
+      redirect_to edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.friendly_id, id: workflow.invoice.id, workflow_action_id: workflow_action)
     end
   end
 

@@ -35,7 +35,6 @@
         .form-group
           = label_tag "template", "Select template:"
           = select_tag "template", options_for_select(@templates.map{|t| (@template_pro.include? t and current_user.company.basic?) ? ["[PRO] " + t.title.humanize, t.slug] : [t.title.humanize, t.slug]}, disabled: @template_pro.map{|t| t.slug if current_user.company.basic?}), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-      .kt-portlet__foot
         .kt-form__actions
           = link_to 'New Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
   .col-md-4
@@ -48,7 +47,6 @@
         .form-group
           = label_tag "template", "Select template:"
           = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
-      .kt-portlet__foot
         .kt-form__actions
           = link_to 'New Recurring Workflow', '', class: ['btn', 'btn-primary', 'd-block', 'mb-2', ('disabled' if current_user.company.basic?) ], id: 'new-recurring-workflow'
   .col-md-4
@@ -64,9 +62,7 @@
               = hidden_field_tag key, value
               = hidden_field_tag "utf8", "√"
           .row
-            .col-xl-8.col-lg-8.col-md-8.mr-2
+            .col-md-12
+              = label_tag "template", "Select template:", class: "mt-4"
               = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
-            /,disabled: current_user.company.basic?
-            .col-xl-3.col-lg-3.col-md-3.mb-3
-              = submit_tag 'Submit', disabled: current_user.company.basic?, class: 'btn btn-primary', id: 'drag-and-drop-submit'
-              /, disabled: current_user.company.basic?
+              = submit_tag 'Submit', disabled: current_user.company.basic?, class: 'btn btn-primary btn-block mt-4', id: 'drag-and-drop-submit'

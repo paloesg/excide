@@ -39,4 +39,17 @@ namespace :update do
       batch.save
     end
   end
+
+  desc "Update workflows to generate short uuid and save as slug"
+  task generate_short_uuid: :environment do
+    Workflow.find_each(&:save)
+  end
+
+  desc "Update all existing companies to PRO account if account type is nil"
+  task update_existing_companies_to_pro: :environment do
+    Company.where(account_type: nil).each do |company|
+      company.upgrade
+      company.save
+    end
+  end
 end

@@ -93,6 +93,7 @@ Rails.application.routes.draw do
     resources :recurring_workflows, path: '/recurring_workflows/:recurring_workflow_name', except: [:index] do
       member do
         post '/stop_recurring', to: 'recurring_workflows#stop_recurring'
+        # TODO: Trigger workflow should be POST request not GET
         get :trigger_workflow, to: 'recurring_workflows#trigger_workflow'
       end
     end

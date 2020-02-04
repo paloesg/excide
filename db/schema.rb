@@ -10,12 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_31_023945) do
+ActiveRecord::Schema.define(version: 2020_01_23_101023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "activities", id: :serial, force: :cascade do |t|
     t.integer "trackable_id"
@@ -72,6 +93,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_023945) do
     t.boolean "assigned", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "fulltime", default: false
     t.index ["user_id"], name: "index_availabilities_on_user_id"
   end
 
@@ -181,6 +203,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_023945) do
     t.bigint "workflow_action_id"
     t.uuid "workflow_id"
     t.string "aws_textract_job_id"
+    t.json "aws_textract_data"
     t.index ["company_id"], name: "index_documents_on_company_id"
     t.index ["document_template_id"], name: "index_documents_on_document_template_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
@@ -511,9 +534,11 @@ ActiveRecord::Schema.define(version: 2020_01_31_023945) do
     t.bigint "recurring_workflow_id"
     t.uuid "batch_id"
     t.bigint "workflow_action_id"
+    t.string "slug"
     t.index ["batch_id"], name: "index_workflows_on_batch_id"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
+    t.index ["slug"], name: "index_workflows_on_slug", unique: true
     t.index ["template_id"], name: "index_workflows_on_template_id"
     t.index ["user_id"], name: "index_workflows_on_user_id"
     t.index ["workflow_action_id"], name: "index_workflows_on_workflow_action_id"
@@ -542,17 +567,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_023945) do
     t.index ["company_id"], name: "index_xero_line_items_on_company_id"
   end
 
-  create_table "xero_tracking_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "status"
-    t.string "tracking_category_id"
-    t.json "options"
-    t.bigint "company_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_xero_tracking_categories_on_company_id"
-  end
-
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "allocations", "availabilities"
   add_foreign_key "allocations", "events"
   add_foreign_key "allocations", "users"
