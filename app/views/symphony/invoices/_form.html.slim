@@ -86,6 +86,10 @@
             / Only show add new line item button if any user creating new invoice or user has rights to update invoice.
             = link_to_add_line_items "Add Line Item", f, :line_items if @invoice.new_record? or policy(@invoice).update?
           .col-md-8
+            .textract-total.form-row.mb-2
+              .form-inline.col-auto.ml-auto
+                = f.label :total, 'Total (extract): ', class: 'mr-2'
+                = f.text_field :total, class: 'form-control textract-total-value', disabled: true
             .form-row
               .form-inline.col-auto.ml-auto
                 = f.label :total, 'Total (including tax): ', class: 'mr-2'
