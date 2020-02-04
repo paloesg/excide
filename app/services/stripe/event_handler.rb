@@ -42,7 +42,6 @@ module Stripe
 
     def handle_invoice_payment_succeeded(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      puts "CURRENT USER : #{event.data.object.subscription}"
       subscription = Stripe::Subscription.retrieve(event.data.object.subscription)
       period_start = subscription["current_period_start"]
       period_end = subscription["current_period_end"]
