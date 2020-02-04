@@ -13,4 +13,9 @@ class StripeNotificationMailer < ApplicationMailer
     @invoice_pdf = invoice_pdf
     mail(to: @user.email, subject: '[Payment has been made successfully]')
   end
+
+  def charge_failed(user)
+    @user = user
+    mail(to: @user.email, subject: '[Payment to subscribe Symphony PRO has failed]')
+  end
 end

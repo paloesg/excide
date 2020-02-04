@@ -28,10 +28,10 @@ class Symphony::CheckoutController < ApplicationController
   def success
     authorize :checkout, :success?
     if params[:session_id]
-      flash[:notice] = "Thanks for your Subscribing to Symphony PRO."
+      flash[:notice] = "Your account has been successfully upgraded to PRO."
       redirect_to edit_company_path
     else
-      flash[:error] = "Session expired error"
+      flash[:danger] = "Upgrading to PRO account has failed. Please contact the admin for more information."
       redirect_to symphony_root_path
     end
   end
