@@ -47,7 +47,7 @@ namespace :update do
 
   desc "Update all existing companies to PRO account if account type is nil"
   task update_existing_companies_to_pro: :environment do
-    Company.all.where(account_type: nil).each do |company|
+    Company.where(account_type: nil).each do |company|
       company.upgrade
       company.save
     end
