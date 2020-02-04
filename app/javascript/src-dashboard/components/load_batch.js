@@ -1,13 +1,21 @@
 $(document).on("turbolinks:load", function(){
   /*global moment*/
   // Check #table-batches element is exist in the page
+
   if ($("#table-batches").length) {
-    $.post("/symphony/batches/load_batch/", function(data) {}).done(function(data) {
+
+    // default start from
+    let offset = 0;
+    // default limit of batches
+    let limit = 20;
+
+    $.post("/symphony/batches/load_batch/", { limit: limit, offset: offset }, function(data) {}).done(function(data) {
       $(".batch-loader").remove();
       // Add batch with the details into table batches
       $.each(data["batches"], function(index, batch) {
+        let indexNumber = index + offset + 1;
         $("#table-batches").append("<tr>" +
-          "<td>"+(index + 1)+"</td>" +
+          "<td>"+ indexNumber +"</td>" +
           "<td><a href='/symphony/batches/"+ batch["template"]["slug"] +"/"+ batch["id"] +"'>"+ batch["name"] +"</a></td>" +
           "<td>"+ batch["user"]["first_name"] +" "+ batch["user"]["last_name"] +"</td>" +
           "<td>"+ moment.parseZone(batch["updated_at"]).format("YYMMDD-H:m:s") +"</td>" +
