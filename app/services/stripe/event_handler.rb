@@ -48,6 +48,14 @@ module Stripe
       invoice_pdf = event.data.object["invoice_pdf"]
       StripeNotificationMailer.payment_successful(@current_user, period_start, period_end, invoice_pdf).deliver
     end
+
+    def handle_charge_failed(event)
+      @current_user = User.find(170)
+
+      # @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      # Stripe creates a charge in the backend automatically even when it is one time checkout session.
+      StripeNotificationMailer.charge_failed(@current_user).deliver
+    end
   end
 end
 
