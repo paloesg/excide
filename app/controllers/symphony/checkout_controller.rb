@@ -27,7 +27,7 @@ class Symphony::CheckoutController < ApplicationController
 
   def success
     authorize :checkout, :success?
-    if params[:session_id] and current_user.company.pro?
+    if params[:session_id]
       flash[:notice] = "Your account has been successfully upgraded to PRO."
       redirect_to edit_company_path
     else
