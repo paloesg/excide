@@ -48,7 +48,8 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def load_batch
-    get_batches = policy_scope(Batch).includes(:user, [workflows: :workflow_actions]).limit(params[:limit]).offset(params[:offset])
+    user_batches = policy_scope(Batch).includes(:user, [workflows: :workflow_actions])
+    get_batches = user_batches.limit(params[:limit]).offset(params[:offset])
     completed_batches = get_batches.where(completed: true)
     if current_user.has_role? :admin, @company
       @batches = get_batches.includes(:template).order(created_at: :desc).as_json(only: [:id, :updated_at, :workflow_progress, :task_progress], methods: [:name, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
@@ -60,7 +61,7 @@ class Symphony::BatchesController < ApplicationController
     end
 
     respond_to do |format|
-      format.json  { render json: { batches: @batches, completed_batches: completed_batches.size, is_user_superadmin: (current_user.has_role? :superadmin) } }
+      format.json  { render json: { user_batches: user_batches.count, batches: @batches, completed_batches: completed_batches.size, is_user_superadmin: (current_user.has_role? :superadmin) } }
     end
   end
 
