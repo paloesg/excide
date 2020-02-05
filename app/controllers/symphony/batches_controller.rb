@@ -21,7 +21,6 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def create
-    authorize Batch
     @template = Template.find_by(slug: params[:batch][:template_id])
     @generate_batch = GenerateBatch.new(current_user, @template).run
     authorize @generate_batch.batch

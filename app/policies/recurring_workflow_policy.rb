@@ -31,6 +31,13 @@ class RecurringWorkflowPolicy < ApplicationPolicy
     trial_or_pro_only?
   end
 
+  class Scope < Scope
+    def resolve
+      # Scope recurring workflows from the user's company
+      scope.where(company: user.company)
+    end
+  end
+
   private
   def trial_or_pro_only?
     user.company.free_trial? or user.company.pro?
