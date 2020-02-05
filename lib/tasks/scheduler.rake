@@ -63,7 +63,7 @@ namespace :scheduler do
         company.update_attributes(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)
         company.save
       # Downgrade subscription when cancel is true and subscription end date is less than current time.
-      else company.stripe_subscription_plan_data.present? and company.stripe_subscription_plan_data['cancel'] == true and (company.stripe_subscription_plan_data["subscription"]["current_period_end"] < Time.current.to_i)
+      elsif company.stripe_subscription_plan_data.present? and company.stripe_subscription_plan_data['cancel'] == true and (company.stripe_subscription_plan_data["subscription"]["current_period_end"] < Time.current.to_i)
         DowngradeSubscriptionService.new(company).run
       end
     end
