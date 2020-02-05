@@ -2,15 +2,15 @@ $(document).on("turbolinks:load", function(){
   /*global moment*/
   // Check #table-batches element is exist in the page
 
-  if ($("#table-batches").length) {
+  // default start from
+  let offset = 0;
+  // default limit of batches
+  let limit = 20;
 
-    // default start from
-    let offset = 0;
-    // default limit of batches
-    let limit = 20;
-
+  function loadBatches() {
     $.post("/symphony/batches/load_batch/", { limit: limit, offset: offset }, function(data) {}).done(function(data) {
-      $(".batch-loader").remove();
+      // $(".batch-loader").remove();
+      $("#table-batches > tbody > tr").remove();
       // Add batch with the details into table batches
       $.each(data["batches"], function(index, batch) {
         let indexNumber = index + offset + 1;
@@ -28,5 +28,14 @@ $(document).on("turbolinks:load", function(){
       $("#completed-batches").text(data["completed_batches"]);
       $("#batches-count").text(data["batches"].length);
     });
+  }
+
+  $("select#limit_batches").change( () => {
+    limit = $("select#limit_batches").val();
+    loadBatches();
+  });
+
+  if ($("#table-batches").length) {
+    loadBatches();
   }
 });

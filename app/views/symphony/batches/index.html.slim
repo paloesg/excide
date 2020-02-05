@@ -12,12 +12,13 @@
           h3.kt-portlet__head-title
             | List of batches
         .kt-portlet__head-toolbar
-          .kt-portlet__head-actions
+          .kt-portlet__head-actions.mr-2
             .pull-right
               element#completed-batches 0
               '  of
               element#batches-count 0
               |  completed
+          = select_tag 'limit_batches', options_for_select([10,20,50,100], selected: 20), class: 'float-right'
       .kt-portlet__body
         .table-responsive
           table#table-batches.table
