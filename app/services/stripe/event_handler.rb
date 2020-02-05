@@ -25,7 +25,7 @@ module Stripe
           invoices: [ Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"]) ],
           cancel: false,
         }
-      #else, append the invoice data to the invoices key
+      #else, append the invoice data to the invoices key if the user decides to checkout again upon cancellation
       else
         @current_user.company.stripe_subscription_plan_data['subscription'] = Stripe::Subscription.retrieve(event.data.object.subscription)
         @current_user.company.stripe_subscription_plan_data['invoices'] << Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"])
@@ -46,6 +46,12 @@ module Stripe
       period_start = subscription["current_period_start"]
       period_end = subscription["current_period_end"]
       invoice_pdf = event.data.object["invoice_pdf"]
+
+      # This codes updates the stripe subscription plan data in DB upon recurring biling from Stripe.
+      @current_user.company.stripe_subscription_plan_data['subscription'] = subscription
+      @current_user.company.stripe_subscription_plan_data['invoices'] << Stripe::Invoice.retrieve(subscription["latest_invoice"])
+      @current_user.company.save
+      # Send email to inform user that payment is successful.
       StripeNotificationMailer.payment_successful(@current_user, period_start, period_end, invoice_pdf).deliver_later
     end
 
