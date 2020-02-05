@@ -79,14 +79,14 @@ class WorkflowPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.has_role?(:admin, user.company) or user.has_role? :superadmin
-        scope.all
+        scope.where(company: user.company)
       else
       # Scope workflow by user has a role in
         scope.where(company: user.company, id: user.relevant_workflow_ids)
       end
     end
   end
-  
+
   private
   def user_admin?
     user.has_role?(:admin, record.company) or user.has_role? :superadmin
