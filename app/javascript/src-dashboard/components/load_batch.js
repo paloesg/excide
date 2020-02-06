@@ -5,8 +5,10 @@
 let offset = 0;
 // default limit of batches
 let limit = 20;
+// current page
+let page = 0;
 
-function goToBatchPage(page) {
+function goToBatchPage() {
   offset = page*limit;
   loadBatches();
 }
@@ -39,15 +41,21 @@ function loadBatches() {
 
     // Navigation Pages Number
     for (i = 0; i < countPaginate; i++) {
-      $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link batch-pagination-button' data-page='"+ i +"'>" + (i+1) + "</button></li>" );
+      if (i === page) {
+        // Disable link page if on the page
+        $("#batch-pagination > ul").append("<li class='page-item disabled'><button class='page-link batch-pagination-button' data-page='"+ i +"'>" + (i+1) + "</button></li>" );
+      } else {
+        $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link batch-pagination-button' data-page='"+ i +"'>" + (i+1) + "</button></li>" );
+      }
     }
 
     // Next Page
     // $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link' > Next </button></li>" );
 
     $("button.batch-pagination-button").click( (e) => {
-      goToBatchPage($(e.target).data("page"));
-    } );
+      page = $(e.target).data("page");
+      goToBatchPage();
+    });
 
     $("#completed-batches").text(data["completed_batches"]);
     $("#batches-count").text(data["batches"].length);
@@ -57,6 +65,7 @@ function loadBatches() {
 $(document).on("turbolinks:load", function(){
   $("select#limit_batches").change( () => {
     offset = 0;
+    page = 0;
     limit = $("select#limit_batches").val();
     loadBatches();
   });
