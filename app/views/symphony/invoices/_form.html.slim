@@ -89,7 +89,7 @@
             .textract-total.form-row.mb-2
               .form-inline.col-auto.ml-auto
                 = f.label :total, 'Total (extract): ', class: 'mr-2'
-                = f.text_field :total, class: 'form-control textract-total-value', disabled: true
+                = text_field_tag :total_textract, nil, class: 'form-control textract-total-value', disabled: true
             .form-row
               .form-inline.col-auto.ml-auto
                 = f.label :total, 'Total (including tax): ', class: 'mr-2'

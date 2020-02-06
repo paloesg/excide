@@ -138,7 +138,7 @@ function getDocumentAnalysis(template, workflow){
       $(".table>tbody>tr").remove();
       let tables = result["table"]["tables"];
       let forms = result["table"]["forms"];
-      let totalAmount = "total_amount" in forms ? forms[0]["total_amount"] : 0;
+      let totalAmount = typeof forms[0]["total_amount"] !== "undefined" ? forms[0]["total_amount"] : 0;
       $.each(tables, function(i, table){
         addLineItems(table);
       })

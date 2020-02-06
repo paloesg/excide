@@ -108,6 +108,17 @@ function calculateTotalTax(amount, rate) {
   }
 }
 
+function checkTotalTextract(){
+  let textractTotal = $(".textract-total-value").val();
+  let inputTotal = $("input#invoice_total").val();
+
+  if (textractTotal && textractTotal !== inputTotal) {
+    $("input#invoice_total").css({ border: "1px solid #dc3545" });
+  } else {
+    $("input#invoice_total").css({ border: "1px solid #ced4da" });
+  }
+}
+
 $(document).on("turbolinks:load", function(){
   $(".loading").hide();
 
@@ -295,7 +306,11 @@ $(document).on("turbolinks:load", function(){
     $(this).val(replaceNumberWithCurrencyFormat($(this).val()));
   })
 
-  if($("input#invoice_total").val() !== 0){
+  $( "input#invoice_total" ).keyup(function() {
+    checkTotalTextract();
+  });
+
+  if($("input#invoice_total").val() !== ''){
     $("input#invoice_total").val(replaceNumberWithCurrencyFormat($("input#invoice_total").val()));
   }
   else {
@@ -314,8 +329,15 @@ $(document).on("turbolinks:load", function(){
       $( field).val(convertCurrency($( field).val()));
     });
 
+    let invoiceTotal = $("input#invoice_total").val();
+    
+    if(invoiceTotal > 0) {
+      $("input#invoice_total").val(convertCurrency(invoiceTotal));
+    } else {
+      $("input#invoice_total").val(convertCurrency(0));
+    }
+
     $("input#subtotal").val(convertCurrency($("input#subtotal").val()));
-    $("input#invoice_total").val(convertCurrency($("input#invoice_total").val()));
   }
 
   $("form.edit_invoice").submit(function() {
