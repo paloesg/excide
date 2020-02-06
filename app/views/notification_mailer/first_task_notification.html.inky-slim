@@ -12,3 +12,6 @@ container
         ' The instructions for the task are as follows: "#{@task.instructions}". You can access the task from this link:
         a href="#{symphony_batch_url(@task.section.template.slug, @batch.id)}" #{@task.section.template.title} - #{@batch.id}
       p If you have any queries regarding your task, please contact the workflow creator: #{@batch.user.first_name}.
+  row
+    columns
+      = render(partial: 'footer')

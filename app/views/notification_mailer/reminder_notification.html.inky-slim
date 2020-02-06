@@ -15,3 +15,6 @@ container
           a href="#{symphony_workflow_url(@reminder.task.section.template.slug, @reminder.workflow_action.workflow.id)}" #{@reminder.task.section.template.title} - #{@reminder.workflow_action.workflow.id}
 
       p If you have any queries regarding your task, please contact your admin.
+  row
+    columns
+      = render(partial: 'footer')
