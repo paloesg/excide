@@ -58,8 +58,10 @@ function loadBatches() {
       goToBatchPage();
     });
 
+    console.log(data)
+
     $("#completed-batches").text(data["completed_batches"]);
-    $("#batches-count").text(data["batches"].length);
+    $("#batches-count").text(data["user_batches"]);
   });
 }
 
