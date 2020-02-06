@@ -48,38 +48,21 @@ function addValueLineItems(data){
 }
 
 function addLineItems(data){
-  function updateTotalTax() {
-    $( ".total-tax-row" ).remove();
-    if(dropdownTax.length > 0) {
-      $.each(dropdownTax, function(index, item) {
-        // console.log(dropdownTax);
-        let selectizeItem = dropdownTax.selectize()[parseInt(index)].selectize;
-        let currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
-          let thisValue = $(item).closest("tr.line_items").find(".tax > div > .has-items > .item");
-          return a["innerText"] === thisValue.text();
-        })
-        let dontDestroyLineItem = ($(item).closest("tr.line_items").find("input.destroy").val()!=="1");
-        // Check tax field has value & status of the line item is not destroyed & value not empty
-        if (currentTaxRate.length && dontDestroyLineItem && currentTaxRate[0]["value"]!=="") {
-          let taxRate = currentTaxRate[0]["dataset"]["data-rate"];
-          let currentAmount = selectizeItem.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
-          console.log("current amount", currentAmount);
-          console.log("tax rate", taxRate);
-          calculateTotalTax(currentAmount ? currentAmount : 0, taxRate);
-        }
-      })
-    }    
-  }
-
   function calculateAmount() {
     $("input[id$='_quantity'], input[id$='_price']").change(function () {
       let quantity = $(this).closest(".line_items").find("input[id$='_quantity']").val();
       let inputPrice = $(this).closest(".line_items").find("input[id$='_price']");
       let amount = $(this).closest(".line_items").find("input[id$='_amount']");
+      let inputTax = $(this).closest(".line_items").find("select[id$='_tax']");
       let price = inputPrice.val() ? convertCurrency(inputPrice.val()) : 0;
       amount.val(price === 0? 0 : quantity*price);
       $("input#subtotal").val( replaceNumberWithCurrencyFormat(calculateSubtotal()) );
-      updateTotalTax();
+
+      $(".tax > div > .has-items > .item").each(function(index, item) {
+        let itemRate = parseFloat(inputTax.options[$(item).text()]['data-rate']);
+        let itemAmount = amount.val();
+        calculateTotalTax(itemAmount.toString(), itemRate.toString());
+      })
       //replace to currency format
       amount.val(replaceNumberWithCurrencyFormat(amount.val()));
       inputPrice.val(replaceNumberWithCurrencyFormat(price));
@@ -98,7 +81,7 @@ function addLineItems(data){
     options: xeroAccounts
   });
 
-  let tax_field = $("select[id='invoice_line_items_attributes_" + data.index + "_tax']").selectize({
+  $("select[id='invoice_line_items_attributes_" + data.index + "_tax']").selectize({
     dropdownParent: "body",
     options: xeroTaxes,
     onInitialize: function() {
@@ -126,7 +109,6 @@ function addLineItems(data){
       })
     }
   });
-  dropdownTax.push(tax_field[0]);
 
   $("select[id$='invoice_line_items_attributes_" + data.index + "_tracking_option_1']").selectize({
     dropdownParent: "body",
@@ -170,34 +152,6 @@ function getDocumentAnalysis(template, workflow){
 $(document).on("turbolinks:load", function() {
   $('.loading-textract').hide();
   $('.textract-total').hide();
-
-  dropdownTax = $(".dropdown-tax").selectize({
-    onInitialize() {
-      var s = this;
-      var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id$='_amount']").val();
-      // Get selected tax
-      let currentTaxRate = $.grep(this.revertSettings.$children, function(a) {
-        return a["defaultSelected"];
-      })
-      if (currentTaxRate.length) {
-        let taxRate = currentTaxRate[0]["dataset"]["rate"];
-        calculateTotalTax(currentAmount, taxRate);
-      }
-      this.revertSettings.$children.each(function () {
-        $.extend(s.options[this.value], $(this).data());
-      });
-    },
-    onChange: function (value) {
-      var t = this;
-      $( ".total-tax-row" ).remove();
-      $(".tax > div > .has-items > .item").each(function(index, item) {
-        let itemRate = t.options[$(item).text()].rate;
-        let itemAmount = $(item).closest(".line_items").find("input[id$='_amount']").val();
-        calculateTotalTax(itemAmount, itemRate);
-      })
-    }
-  });
-
   $('.do-textract').click(function(){
     $('.textract-total').hide();
     $('.total-tax-row' ).remove();

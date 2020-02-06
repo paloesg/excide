@@ -115,8 +115,6 @@ $(document).on("turbolinks:load", function(){
     $( ".total-tax-row" ).remove();
     dropdownTax.each(function(index, item) {
       let selectizeItem = dropdownTax.selectize()[parseInt(index)].selectize;
-      console.log(dropdownTax);
-      console.log(selectizeItem);
       let currentTaxRate = $.grep(selectizeItem.revertSettings.$children, function(a) {
         let thisValue = $(item).closest("tr.line_items").find(".tax > div > .has-items > .item");
         return a["innerText"] === thisValue.text();
