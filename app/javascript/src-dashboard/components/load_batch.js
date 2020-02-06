@@ -15,7 +15,7 @@ function goToBatchPage() {
 
 function loadBatches() {
   $.post("/symphony/batches/load_batch/", { limit: limit, offset: offset }, function(data) {}).done(function(data) {
-    let countPaginate = Math.floor(data["user_batches"]/limit);
+    let countPaginate = Math.ceil(data["user_batches"]/limit);
 
     // Reset table when load batches
     $("#table-batches > tbody > tr").remove();
@@ -37,7 +37,7 @@ function loadBatches() {
     });
 
     // Previous Page
-    // $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link' href='/#'> Previous </button></li>" );
+    $("#batch-pagination > ul").append("<li class='page-item "+ ( page === 0 ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (page-1) +"'> Previous </button></li>" );
 
     // Navigation Pages Number
     for (i = 0; i < countPaginate; i++) {
@@ -50,8 +50,9 @@ function loadBatches() {
     }
 
     // Next Page
-    // $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link' > Next </button></li>" );
+    $("#batch-pagination > ul").append("<li class='page-item "+ ( page === (countPaginate-1) ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (page+1) +"'> Next </button></li>" );
 
+    // Initial pagination button
     $("button.batch-pagination-button").click( (e) => {
       page = $(e.target).data("page");
       goToBatchPage();
