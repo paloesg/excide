@@ -16,6 +16,8 @@
 .env
 config/database.yml
 
+config/master.key
+
 .byebug_history
 /public/packs
 /public/packs-test

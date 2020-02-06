@@ -7,7 +7,10 @@
         .kt-header__brand-logo
           = link_to symphony_root_path do
             img.kt-header__brand-logo-default alt="Logo" src=image_url('logo-symphony.png')
-          = content_tag :span, "Staging", class: "badge badge-danger badge-staging" if ENV['APP_NAME'] == "excide-staging"
+          = content_tag :span, "Staging", class: "badge badge-danger badge-header" if ENV['APP_NAME'] == "excide-staging"
+          = content_tag :span, "Trial", class: "badge badge-warning badge-header ml-2" if current_user.company.free_trial?
+          = content_tag :span, "Basic", class: "badge badge-secondary badge-header ml-2" if current_user.company.basic?
+          = content_tag :span, "Pro", class: "badge badge-success badge-header ml-2" if current_user.company.pro?
         .kt-header__brand-nav
           .dropdown
             - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
@@ -44,6 +47,9 @@
                   = link_to symphony_users_path, class: 'kt-nav__link' do
                     span.kt-nav__link-text Manage Users
                 li.kt-nav__item
+                  = link_to symphony_roles_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Roles
+                li.kt-nav__item
                   = link_to symphony_templates_path, class: 'kt-nav__link' do
                     span.kt-nav__link-text Manage Templates
                 li.kt-nav__item
@@ -79,7 +85,7 @@
                 = link_to destroy_user_session_path, {method: :delete, class: 'kt-nav__link'} do
                   span.kt-nav__link-text Log Out
         /! end: User bar
-    /! end:: Header Topbar
+  /! end:: Header Topbar
   .kt-header__bottom
     .kt-container
       /! begin: Header Menu
@@ -98,18 +104,28 @@
               .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left.columns
                 ul.kt-menu__subnav
                   - ::Template.assigned_templates(current_user).each do |t|
-                    li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--active' if @template && @template.id == t.id}"
+                    li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--active' if @template && @template.slug == t.slug}"
                       = link_to symphony_workflows_path(t.slug), class: 'kt-menu__link' do
-                        span.kt-badge.kt-badge--info.kt-badge--rounded.mr-1 = t.company_workflows(current_user.company).count
                         span.kt-menu__link-text #{t.title}
+                        span.kt-badge.kt-badge--unified-primary.kt-badge--md.kt-badge-bold = t.company_workflows(current_user.company).where(completed: [false, nil]).count
             li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if @navbar_batches_active}"
-              = link_to symphony_batches_index_path, class:"kt-menu__link" do
-                span.kt-menu__link-text Batches
+              - if current_user.company.basic?
+                = link_to symphony_batches_index_path, class:"kt-menu__link" do
+                  span.kt-menu__link-text
+                    | Batches
+                    = content_tag :span, "Pro", class: "badge badge-success ml-2"
+              - else
+                = link_to symphony_batches_index_path, class:"kt-menu__link" do
+                  span.kt-menu__link-text Batches
+
         .xero-info.ml-3
-          - if current_user.company.session_handle.present?
+          - if current_user.company.session_handle.present? and (current_user.company.free_trial? or current_user.company.pro?)
             ' Connected Xero organisation:
             = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
-          - else
+            // If user is disconnected from xero, session handle is empty instead of nil
+          - elsif (current_user.company.session_handle.nil? or current_user.company.session_handle.empty?) and (current_user.company.free_trial? or current_user.company.pro?)
             ' Not connected to Xero:
             = link_to('Connect', connect_to_xero_path)
+          - else
+            = link_to 'Subscribe to Symphony Pro for more advanced features', edit_company_path
 /! end:: Header

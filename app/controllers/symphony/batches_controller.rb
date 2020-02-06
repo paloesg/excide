@@ -7,10 +7,11 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show, :destroy]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index, :create, :load_batch]
+  after_action :verify_authorized, except: [:create, :load_batch]
   after_action :verify_policy_scoped, only: :load_batch
 
   def index
+    authorize Batch
   end
 
   def new
@@ -20,6 +21,7 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def create
+    authorize Batch
     @template = Template.find_by(slug: params[:batch][:template_id])
     @generate_batch = GenerateBatch.new(current_user, @template).run
     authorize @generate_batch.batch
@@ -49,12 +51,12 @@ class Symphony::BatchesController < ApplicationController
     get_batches = policy_scope(Batch).includes(:user, [workflows: :workflow_actions])
     completed_batches = get_batches.where(completed: true)
     if current_user.has_role? :admin, @company
-      @batches = get_batches.includes(:template).order(created_at: :desc).as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
+      @batches = get_batches.includes(:template).order(created_at: :desc).as_json(only: [:id, :updated_at, :workflow_progress, :task_progress], methods: [:name, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
     else
       #Get current_user's id roles
       @current_user_roles = current_user.roles.pluck(:id)
       #Get batches If the current_user has the same role as a role in workflow_actions
-      @batches = get_batches.includes(template: [{sections: :tasks}]).where(tasks: {role_id: @current_user_roles}).order(created_at: :desc).as_json(only: [:id, :updated_at], methods: [:name, :action_completed_progress, :get_completed_workflows, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
+      @batches = get_batches.includes(template: [{sections: :tasks}]).where(tasks: {role_id: @current_user_roles}).order(created_at: :desc).as_json(only: [:id, :updated_at, :workflow_progress, :task_progress], methods: [:name, :total_action], include: [{user:  {only: [:first_name, :last_name]}}, {workflows: {only: :id}}, {template: {only: :slug}} ] )
     end
 
     respond_to do |format|

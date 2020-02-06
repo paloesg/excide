@@ -19,6 +19,7 @@ require("turbolinks").start()
 
 import 'bootstrap/dist/js/bootstrap';
 import 'dropzone/dist/dropzone';
+import 'tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min';
 import '../src-dashboard/application.js';
 import '../src-dashboard/metronic/application.js';
 

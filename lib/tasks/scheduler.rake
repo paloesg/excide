@@ -50,4 +50,30 @@ namespace :scheduler do
   task :weekly_batch_email_summary => :environment do
     BatchMailer.weekly_batch_email_summary.deliver_later if Date.current.monday?
   end
+
+  task :update_symphony_subscription => :environment do
+    Company.all.each do |company|
+      # Check for free trial end date
+      if company.trial_end_date.present? and company.trial_end_date < DateTime.current and company.free_trial?
+        # email users if free trial ended
+        company.users.each do |user|
+          NotificationMailer.free_trial_ending_notification(user).deliver_later
+        end
+        company.trial_ends  #only from free trial to basic
+        company.update_attributes(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)
+        company.save
+      # Downgrade subscription when cancel is true and subscription end date is less than current time.
+      elsif company.stripe_subscription_plan_data.present? and company.stripe_subscription_plan_data['cancel'] == true and (company.stripe_subscription_plan_data["subscription"]["current_period_end"] < Time.current.to_i)
+        DowngradeSubscriptionService.new(company).run
+      end
+    end
+  end
+
+  task :recurring_workflows => :environment do
+    #To check that workflow is recurring today (current date)
+    @recurring_workflows = RecurringWorkflow.today
+    @recurring_workflows.each do |recurring_workflow|
+      GenerateRecurringWorkflow.new(recurring_workflow).run
+    end
+  end
 end

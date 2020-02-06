@@ -1,7 +1,7 @@
 - @navbar_workflows_active = true
 .row.mb-3
   .col
-    h1.text-truncate #{@template.title} – #{@workflow.id}
+    h1.text-truncate #{@template.title} – #{@workflow.friendly_id}
     - unless @workflow.archive.blank?
       h1 = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row

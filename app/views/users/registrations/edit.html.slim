@@ -1,3 +1,4 @@
+= javascript_include_tag "https://js.stripe.com/v3/"
 .row.mb-3
   .col
     h1 Edit User
@@ -28,14 +29,18 @@
                   = resource.unconfirmed_email
               .form-group
                 = f.label :contact_number
-                = f.text_field :contact_number, class: 'form-control'
+                .row
+                  .col-md-4
+                    = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'selectize'
+                  .col-md-8
+                    = text_field_tag "contact", @contact, class: 'form-control'
           - if current_user.has_role? :superadmin
             .kt-portlet
               .kt-portlet__head
                 .kt-portlet__head-label
                   h3.kt-portlet__head-title
                     | Company Details Information
-              .kt-portlet__body           
+              .kt-portlet__body
                 .form-group
                   = f.label :company_id
                   = f.select :company_id, Company.all.map{|company| [company.name, company.id]}, {selected: resource.company.id}, class: 'selectize'

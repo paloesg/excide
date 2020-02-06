@@ -1,3 +1,4 @@
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 (function($) {
 
   var cocoonElementCounter = 0;
@@ -142,4 +143,3 @@
   });
 
 }(jQuery));
-

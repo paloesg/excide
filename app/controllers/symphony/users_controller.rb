@@ -67,8 +67,12 @@ class Symphony::UsersController < ApplicationController
   def edit_additional_information
     @user = current_user
     if @user.update(user_params)
-      process_payment(@user.id, @user.email, user_params[:stripe_card_token])
-      flash[:notice] = 'User details saved successfully!'
+      # Free trial period ends after 30 days
+      @user.company.trial_end_date = @user.company.created_at + 30.days
+      @user.company.save
+      # Take out process payment since credit card is not added in the sign up page
+      # process_payment(@user.id, @user.email, user_params[:stripe_card_token])
+      flash[:notice] = 'Additional Information updated successfully! You are currently using the 30-days free trial Symphony Pro!'
       if @user.company.connect_xero
         redirect_to connect_to_xero_path
       else
@@ -94,7 +98,7 @@ class Symphony::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :stripe_card_token, :stripe_customer_id, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :reminder_whatsapp, :task_sms, :task_email, :task_slack, :task_whatsapp, :batch_sms, :batch_email, :batch_slack, :batch_whatsapp], :role_ids => [], company_attributes:[:id, :name, :connect_xero, address_attributes: [:id, :line_1, :line_2, :postal_code]])
+    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :stripe_card_token, :stripe_customer_id, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :reminder_whatsapp, :task_sms, :task_email, :task_slack, :task_whatsapp, :batch_sms, :batch_email, :batch_slack, :batch_whatsapp], :role_ids => [], company_attributes:[:id, :name, :connect_xero, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state]])
   end
 
   def build_addresses

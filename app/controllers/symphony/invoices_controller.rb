@@ -11,8 +11,9 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_show_invoice_navigation, only: [:show, :next_show_invoice, :prev_show_invoice]
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
+  before_action :update_textract_job_id, only: [:new, :edit]
 
-  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice]
+  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice, :get_document_analysis, :get_xero_details_json]
   after_action :verify_policy_scoped, only: :index
 
   def new
@@ -47,7 +48,7 @@ class Symphony::InvoicesController < ApplicationController
         #go to the next invoice
         redirect_to_next_action(@workflow, params[:workflow_action_id])
       else
-        redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id), notice: "Invoice created successfully."
+        redirect_to symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.friendly_id, id: @invoice.id), notice: "Invoice created successfully."
       end
     else
       render 'new'
@@ -77,7 +78,7 @@ class Symphony::InvoicesController < ApplicationController
     if @invoice.update(invoice_params)
       #If associate wants to update invoice before sending to xero, symphony finds the params update_field and then redirect to the same invoice EDIT page
       if params[:update_field] == "success"
-        redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @workflow.invoice.id, workflow_action_id: params[:workflow_action_id]), notice: 'Symphony invoice successfully updated'
+        redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.friendly_id, id: @workflow.invoice.id, workflow_action_id: params[:workflow_action_id]), notice: 'Symphony invoice successfully updated'
       #when invoice updates with the rounding line item, update the invoice in Xero as well
       elsif @invoice.xero_total_mismatch?
         @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
@@ -151,7 +152,7 @@ class Symphony::InvoicesController < ApplicationController
       if @batch.present?
         format.html { redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id) }
       else
-        format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.id) }
+        format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id) }
       end
     end
   end
@@ -188,7 +189,7 @@ class Symphony::InvoicesController < ApplicationController
           #go to the next invoice
           redirect_to_next_action(@workflow, params[:workflow_action_id])
         else
-          redirect_to symphony_workflow_path(@nvoice.workflow.template.slug, @nvoice.workflow.id)
+          redirect_to symphony_workflow_path(@nvoice.workflow.template.slug, @nvoice.workflow.friendly_id)
         end
       else
         if invoice_id.present?
@@ -256,6 +257,19 @@ class Symphony::InvoicesController < ApplicationController
       redirect_to symphony_invoice_path(workflow_name: prev_workflow_invoice.template.slug, workflow_id: prev_workflow_invoice.id, id: prev_workflow_invoice.invoice.id)
     else
       redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
+    end
+  end
+
+  def get_document_analysis
+    generate_textract = GenerateTextract.new(@document.id).run_analyze
+    respond_to do |format|
+      format.json  { render json: generate_textract }
+    end
+  end
+
+  def get_xero_details_json
+    respond_to do |format|
+      format.json  { render :json => [{"accounts": @full_account_code}, {"taxes": @full_tax_code}, {"tracking_categories_1": @tracking_categories_1},  {"tracking_categories_2": @tracking_categories_2}, {"items": @items}] }
     end
   end
 
@@ -337,9 +351,9 @@ class Symphony::InvoicesController < ApplicationController
   def render_action_invoice(workflow, workflow_action)
     if workflow.invoice.blank?
       invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @workflow.invoice&.invoice_type
-      redirect_to new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, invoice_type: invoice_type, workflow_action_id: workflow_action)
+      redirect_to new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.friendly_id, invoice_type: invoice_type, workflow_action_id: workflow_action)
     elsif workflow.invoice.present?
-      redirect_to edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, id: workflow.invoice.id, workflow_action_id: workflow_action)
+      redirect_to edit_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.friendly_id, id: workflow.invoice.id, workflow_action_id: workflow_action)
     end
   end
 
@@ -376,5 +390,9 @@ class Symphony::InvoicesController < ApplicationController
   def update_workflow_action_completed(workflow_action_id)
     workflow_action = WorkflowAction.find(workflow_action_id)
     workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
+  end
+
+  def update_textract_job_id
+    GenerateTextract.new(@document.id).run_generate if @document.aws_textract_job_id.nil?
   end
 end
