@@ -15,7 +15,7 @@
             p = s.survey_section.description.body.to_rendered_html_with_layout()
             hr
             - s.survey_section.questions.each do |qn|
-              p = qn.content
+              h5.text-warning = qn.content
               - s.responses.each do |res|
                 - if res.question_id == qn.id
                   / check for single choice response

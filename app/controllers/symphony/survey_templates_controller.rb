@@ -5,7 +5,7 @@ class Symphony::SurveyTemplatesController < ApplicationController
   before_action :set_survey_template, except: [:index, :new, :create]
 
   def index
-    @survey_templates = SurveyTemplate.all
+    @survey_templates = SurveyTemplate.where(company_id: current_user.company)
   end
 
   def new 
@@ -50,7 +50,7 @@ class Symphony::SurveyTemplatesController < ApplicationController
   end
 
   def destroy_survey_section
-    @survey_section = SurveySection.find(params[:survey_section_id])
+    @survey_section = @survey_template.survey_sections.find(params[:survey_section_id])
     if @survey_section.destroy
       redirect_to edit_symphony_survey_template_path(@survey_template.slug)
     else

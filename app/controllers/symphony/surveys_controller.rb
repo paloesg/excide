@@ -2,11 +2,13 @@ class Symphony::SurveysController < ApplicationController
   layout 'metronic/application'
 
   before_action :authenticate_user!
+  before_action :set_survey, only: :show
 
   def new
     @survey = Survey.new
-    @task = Task.find(params[:task])
-    @survey_template = SurveyTemplate.find(@task.survey_template_id)
+    @workflow = Workflow.find_by(id: params[:workflow_id])
+    @task = @workflow.template.tasks.find(params[:task])
+    @survey_template = SurveyTemplate.find_by(id: @task.survey_template_id)
   end
 
   def create
@@ -14,7 +16,7 @@ class Symphony::SurveysController < ApplicationController
     @survey.user = current_user
     @survey.company = current_user.company
     @survey.survey_template = SurveyTemplate.find(params[:survey][:survey_template_id])
-    @survey.workflow = Workflow.find(params[:workflow_id])
+    @survey.workflow = Workflow.find_by(id: params[:workflow_id])
     if @survey.save!
       r = Response.find_by(question_id: params[:question_ids])
       # Save the multiple choices as string in recent response
@@ -26,10 +28,13 @@ class Symphony::SurveysController < ApplicationController
   end
 
   def show
-    @survey = Survey.find(params[:id])
   end
 
   private
+
+  def set_survey
+    @survey = Survey.includes(segments: [:responses]).find(params[:id])
+  end
 
   def survey_params
     params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :survey_template_id, segments_attributes: [:id, :name, :position, :survey_section_id, :_destroy, responses_attributes: [:id, :content, :question_id, :file, :choice_id ]])
