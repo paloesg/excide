@@ -6,10 +6,10 @@ let offset = 0;
 // default limit of batches
 let limit = 20;
 // current page
-let page = 0;
+let currentPage = 0;
 
 function goToBatchPage() {
-  offset = page*limit;
+  offset = currentPage*limit;
   loadBatches();
 }
 
@@ -36,12 +36,12 @@ function loadBatches() {
       "</tr>");
     });
 
-    // Previous Page
-    $("#batch-pagination > ul").append("<li class='page-item "+ ( page === 0 ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (page-1) +"'> Previous </button></li>" );
+    // Previous Page Button
+    $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === 0 ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (currentPage-1) +"'> Previous </button></li>" );
 
-    // Navigation Pages Number
+    // Pages Number Button
     for (i = 0; i < countPaginate; i++) {
-      if (i === page) {
+      if (i === currentPage) {
         // Disable link page if on the page
         $("#batch-pagination > ul").append("<li class='page-item disabled'><button class='page-link batch-pagination-button' data-page='"+ i +"'>" + (i+1) + "</button></li>" );
       } else {
@@ -49,16 +49,14 @@ function loadBatches() {
       }
     }
 
-    // Next Page
-    $("#batch-pagination > ul").append("<li class='page-item "+ ( page === (countPaginate-1) ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (page+1) +"'> Next </button></li>" );
+    // Next Page Button
+    $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === (countPaginate-1) ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (currentPage+1) +"'> Next </button></li>" );
 
     // Initial pagination button
     $("button.batch-pagination-button").click( (e) => {
-      page = $(e.target).data("page");
+      currentPage = $(e.target).data("page");
       goToBatchPage();
     });
-
-    console.log(data)
 
     $("#completed-batches").text(data["completed_batches"]);
     $("#batches-count").text(data["user_batches"]);
@@ -68,7 +66,7 @@ function loadBatches() {
 $(document).on("turbolinks:load", function(){
   $("select#limit_batches").change( () => {
     offset = 0;
-    page = 0;
+    currentPage = 0;
     limit = $("select#limit_batches").val();
     loadBatches();
   });
