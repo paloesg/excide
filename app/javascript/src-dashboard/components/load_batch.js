@@ -1,16 +1,41 @@
 /*global moment*/
 // Check #table-batches element is exist in the page
 
-// default start from
+// default of 'start from'
 let offset = 0;
 // default limit of batches
 let limit = 20;
 // current page
 let currentPage = 0;
+// limit Pages of Pagination (limit right left of current page)
+let limitPage = 3;
 
 function goToBatchPage() {
   offset = currentPage*limit;
   loadBatches();
+}
+
+
+function limitPagination(totalPages) {
+  let getLimitPages = []
+
+  if (currentPage === 0 || currentPage === (totalPages-1)) {
+    lmt = limitPage*2;
+  } else {
+    lmt = limitPage;
+  }
+
+  for (i = 0; i < totalPages; i++) {
+    if (i < (currentPage-lmt)) {
+        console.log("skip");
+    } else if (i <= (currentPage+lmt)) {
+      getLimitPages.push(i)
+    } else {
+        console.log("skip");
+    }
+  }
+
+  return getLimitPages;
 }
 
 function loadBatches() {
@@ -39,15 +64,14 @@ function loadBatches() {
     // Previous Page Button
     $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === 0 ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (currentPage-1) +"'> Previous </button></li>" );
 
-    // Pages Number Button
-    for (i = 0; i < countPaginate; i++) {
+    $.each(limitPagination(countPaginate), (index, i) => {
       if (i === currentPage) {
         // Disable link page if on the page
         $("#batch-pagination > ul").append("<li class='page-item disabled'><button class='page-link batch-pagination-button' data-page='"+ i +"'>" + (i+1) + "</button></li>" );
       } else {
         $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link batch-pagination-button' data-page='"+ i +"'>" + (i+1) + "</button></li>" );
       }
-    }
+    });
 
     // Next Page Button
     $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === (countPaginate-1) ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (currentPage+1) +"'> Next </button></li>" );
@@ -60,6 +84,8 @@ function loadBatches() {
 
     $("#completed-batches").text(data["completed_batches"]);
     $("#batches-count").text(data["user_batches"]);
+
+
   });
 }
 
