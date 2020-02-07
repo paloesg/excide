@@ -1,0 +1,89 @@
+section.text-center.imagebg.space--lg data-overlay="3"
+  .background-image-holder
+    img.background-image alt="image" src=image_path('laptop-with-charts.jpg')
+  .container
+    .row
+      .col-md-5.d-flex.align-content-center.flex-wrap.offset-md-2.mb-2
+        h1.type--uppercase Symphony Pricing
+    .row
+      .col-md-12
+        ol.breadcrumbs
+          li
+            a href="/"  Home
+          li
+            a href="/financial-analytics-reporting/"  Virtual Financial Officer
+          li Symphony Pricing
+section.pricing-section-2.text-center
+  .container
+    .row
+      .col-md-6.col-lg-6
+        .pricing.pricing-3
+          .pricing__head.bg--secondary.boxed
+            h5 Basic
+            span.h1
+              span.pricing__dollar> $
+              | 0
+            p.type--fine-print With basic features
+          ul
+            li
+              span Unlimited Users
+            li
+              span NO Xero Integration
+            li
+              span Basic Workflow Features:
+              br
+              span.font-italic Create and manage your workflows
+              br
+              span.font-italic No PRO workflow features
+            li
+              span Basic task type:
+              br
+              span.font-italic Uploading files
+              br
+              span.font-italic Set instructions
+              br
+              span.font-italic Download files and many more
+            li
+              span Basic reminder notification (Email only)
+            li
+              span Enquiry support
+        /! end pricing
+      .col-md-6.col-lg-6
+        .pricing.pricing-3
+          .pricing__head.bg--primary.boxed
+            span.label Value
+            h5 PRO
+            span.h1
+              span.pricing__dollar> $
+              | 49
+            p.type--fine-print Per Month, SGD.
+          ul
+            li
+              span Unlimited Users
+            li
+              span Xero Integration
+            li
+              span PRO Workflow Features:
+              br
+              span.font-italic Batch Uploading Workflows
+              br
+              span.font-italic Recurring Workflows
+            li
+              span PRO task type:
+              br
+              span.font-italic Basic task types
+              br
+              span.font-italic Create invoice payables and receivables
+              br
+              span.font-italic Automated sending of invoices to Xero upon clicking of button
+            li
+              span Advanced reminder notification (Whatapp, SMS, Slack, Email)
+            li
+              span Enquiry Support
+section#contactus
+  .container
+    .row.mb--2
+      .col-sm-8.offset-sm-2.text-center
+        h4.mb64.uppercase Where should I start?
+        p.lead The best way to determine which VTO package suits you would be for us to have a chat together. Leave us your details and we will get in touch with you soon.
+    = render 'contact'

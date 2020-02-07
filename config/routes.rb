@@ -232,6 +232,9 @@ Rails.application.routes.draw do
   get 'annual-return-filing', to: 'home#annual-return-filing', as: :return
   get 'bookkeeping', to: 'home#bookkeeping', as: :bookkeeping
 
+  # Pricing plan
+  get '/pricing-plan', to: 'home#pricing-plan', as: :pricing_plan
+
   get '/robots.txt' => 'home#robots'
 
   root 'home#index'
