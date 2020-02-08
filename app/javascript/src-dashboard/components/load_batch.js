@@ -67,11 +67,13 @@ function loadBatches() {
 
     arrayPages = limitPagination(countPaginate);
 
-    // The first page of pagination
-    $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === 0 ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ 0 +"'> First </button></li>" );
+    if (currentPage !== 0) {
+      // The first page of pagination
+      $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link batch-pagination-button' data-page='"+ 0 +"'> First </button></li>" );
 
-    // Previous Page Button
-    $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === 0 ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (currentPage-1) +"'> Previous </button></li>" );
+      // Previous Page Button
+      $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link batch-pagination-button' data-page='"+ (currentPage-1) +"'> Previous </button></li>" );
+    }
 
     // Left dots exceed
     if (exceedLeft) {
@@ -92,11 +94,13 @@ function loadBatches() {
       $("#batch-pagination > ul").append("<li class='page-item disabled'><button class='page-link batch-pagination-button' > .... </button></li>" );
     }
 
-    // Next Page Button
-    $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === (countPaginate-1) ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (currentPage+1) +"'> Next </button></li>" );
+    if (currentPage !== (countPaginate-1)) {
+      // Next Page Button
+      $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link batch-pagination-button' data-page='"+ (currentPage+1) +"'> Next </button></li>" );
 
-    // The last page of pagination (countPaginate-1)
-    $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === (countPaginate-1) ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (countPaginate-1) +"'> Last </button></li>" );
+      // The last page of pagination (countPaginate-1)
+      $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link batch-pagination-button' data-page='"+ (countPaginate-1) +"'> Last </button></li>" );
+    }
 
     // Initial pagination button
     $("button.batch-pagination-button").click( (e) => {
