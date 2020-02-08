@@ -65,10 +65,13 @@ function loadBatches() {
       "</tr>");
     });
 
+    arrayPages = limitPagination(countPaginate);
+
+    // The first page of pagination
+    $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === 0 ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ 0 +"'> First </button></li>" );
+
     // Previous Page Button
     $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === 0 ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (currentPage-1) +"'> Previous </button></li>" );
-
-    arrayPages = limitPagination(countPaginate);
 
     // Left dots exceed
     if (exceedLeft) {
@@ -78,7 +81,7 @@ function loadBatches() {
     $.each(arrayPages, (index, value) => {
       if (value === currentPage) {
         // Disable link page if on the page
-        $("#batch-pagination > ul").append("<li class='page-item disabled'><button class='page-link batch-pagination-button' data-page='"+ value +"'>" + (value+1) + "</button></li>" );
+        $("#batch-pagination > ul").append("<li class='page-item active'><button class='page-link' data-page='"+ value +"'>" + (value+1) + "</button></li>" );
       } else {
         $("#batch-pagination > ul").append("<li class='page-item'><button class='page-link batch-pagination-button' data-page='"+ value +"'>" + (value+1) + "</button></li>" );
       }
@@ -91,6 +94,9 @@ function loadBatches() {
 
     // Next Page Button
     $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === (countPaginate-1) ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (currentPage+1) +"'> Next </button></li>" );
+
+    // The last page of pagination (countPaginate-1)
+    $("#batch-pagination > ul").append("<li class='page-item "+ ( currentPage === (countPaginate-1) ? "disabled" : "" ) +"'><button class='page-link batch-pagination-button' data-page='"+ (countPaginate-1) +"'> Last </button></li>" );
 
     // Initial pagination button
     $("button.batch-pagination-button").click( (e) => {
