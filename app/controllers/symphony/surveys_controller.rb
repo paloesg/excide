@@ -16,7 +16,7 @@ class Symphony::SurveysController < ApplicationController
     @survey = Survey.new(survey_params)
     @survey.user = current_user
     @survey.company = current_user.company
-    @survey.survey_template = SurveyTemplate.find_by(params[:survey][:survey_template_id])
+    @survey.survey_template = SurveyTemplate.find_by(id: params[:survey][:survey_template_id])
     @survey.workflow = Workflow.find_by(id: params[:workflow_id])
     if @survey.save!
       redirect_to symphony_workflow_path(@survey.workflow.template.slug, @survey.workflow.id), notice: 'Survey successfully created'
