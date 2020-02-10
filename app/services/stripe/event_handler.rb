@@ -49,10 +49,14 @@ module Stripe
 
       # This codes updates the stripe subscription plan data in DB upon recurring biling from Stripe.
       @current_user.company.stripe_subscription_plan_data['subscription'] = subscription
-      @current_user.company.stripe_subscription_plan_data['invoices'] << Stripe::Invoice.retrieve(subscription["latest_invoice"])
-      @current_user.company.save
-      # Send email to inform user that payment is successful.
-      StripeNotificationMailer.payment_successful(@current_user, period_start, period_end, invoice_pdf).deliver_later
+      @current_user.company.stripe_subscription_plan_data['invoices'].each do |inv|
+        # Check for no duplicate invoices in the database, in case webhook send back twice the response
+        @current_user.company.stripe_subscription_plan_data['invoices'] << Stripe::Invoice.retrieve(subscription["latest_invoice"]) if inv['id'] != subscription["latest_invoice"]
+      end
+      if @current_user.company.save
+        # Send email to inform user that payment is successful.
+        StripeNotificationMailer.payment_successful(@current_user, period_start, period_end, invoice_pdf).deliver_later
+      end
     end
 
     def handle_charge_failed(event)
