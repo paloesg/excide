@@ -35,18 +35,14 @@ class Symphony::SurveyTemplatesController < ApplicationController
       else
         flash[:alert] = @survey_section.errors.full_messages.join
       end
-    end
-    if params[:survey_template].present?
+    else params[:survey_template].present?
       if @survey_template.update(survey_template_params)
         flash[:notice] = 'Survey template has been saved.'
-        redirect_to edit_symphony_survey_template_path(@survey_template)
       else
         flash[:alert] = @survey_template.errors.full_messages.join
-        render :edit
       end
-    else
-      redirect_to edit_symphony_survey_template_path(@survey_template)
     end
+    redirect_to edit_symphony_survey_template_path(@survey_template)
   end
 
   def destroy_survey_section
