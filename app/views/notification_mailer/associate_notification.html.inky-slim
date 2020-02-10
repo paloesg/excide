@@ -10,6 +10,3 @@ container
       p
         ' Please assign your availability for the next month.
         a href="#{conductor_user_url(@user.id)}" Sign in
-  row
-    columns
-      = render(partial: 'footer')

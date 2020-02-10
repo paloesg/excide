@@ -10,6 +10,3 @@ container
       p Your company's free trial has ended. Please subscribe to PRO for more advanced features!
 
       p If you have any queries regarding your task, please contact your admin.
-  row
-    columns
-      = render(partial: 'footer')
