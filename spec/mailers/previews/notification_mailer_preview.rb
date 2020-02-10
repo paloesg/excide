@@ -1,4 +1,5 @@
 class NotificationMailerPreview < ActionMailer::Preview
+  #you can either log in to User.last account or change the User.last to User.find(your id)
   def task_notification
     NotificationMailer.task_notification(Task.last, WorkflowAction.last, User.last)
   end
@@ -9,10 +10,6 @@ class NotificationMailerPreview < ActionMailer::Preview
 
   def unordered_workflow_notification
     NotificationMailer.unordered_workflow_notification(Template.where(workflow_type: 1).first.workflows.first.user, Template.where(workflow_type: 1).first.sections.map{|sect| sect.tasks }.flatten.compact, WorkflowAction.last)
-  end
-
-  def reminder_notification
-    NotificationMailer.reminder_notification(Reminder.last)
   end
 
   def batch_reminder
