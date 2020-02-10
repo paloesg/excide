@@ -19,12 +19,7 @@ class Symphony::SurveysController < ApplicationController
     @survey.survey_template = SurveyTemplate.find(params[:survey][:survey_template_id])
     @survey.workflow = Workflow.find_by(id: params[:workflow_id])
     if @survey.save!
-      r = Response.find_by(question_id: params[:question_ids])
-      # Save the multiple choices as string in recent response
-      r.content = params[:choice_ids] if params[:choice_ids].present?
-      if r.save!
-        redirect_to symphony_workflow_path(@survey.workflow.template.slug, @survey.workflow.id), notice: 'Survey successfully created'
-      end
+      redirect_to symphony_workflow_path(@survey.workflow.template.slug, @survey.workflow.id), notice: 'Survey successfully created'
     end
   end
 
@@ -38,6 +33,6 @@ class Symphony::SurveysController < ApplicationController
   end
 
   def survey_params
-    params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :survey_template_id, segments_attributes: [:id, :name, :position, :survey_section_id, :_destroy, responses_attributes: [:id, :content, :question_id, :file, :choice_id ]])
+    params.require(:survey).permit(:title, :remarks, :user_id, :company_id, :survey_template_id, segments_attributes: [:id, :name, :position, :survey_section_id, :_destroy, responses_attributes: [:id, :content, :question_id, :file, :choice_id, multiple_choices_array: [] ]])
   end
 end

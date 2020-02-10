@@ -1,6 +1,6 @@
 - q.choices.each do |choice|
   .form-group.form-check.m-1
-    = check_box_tag "choice_ids[]", choice.id
-    = hidden_field_tag "question_ids[]", q.id
-    = r.label choice.content, class: 'form-check-label ml-2'
+    .segment-identity
+      = r.check_box :multiple_choices_array, { multiple: true }, choice.id, nil
+      = r.label :multiple_choices_array, choice.content, class: 'form-check-label ml-2'
 hr

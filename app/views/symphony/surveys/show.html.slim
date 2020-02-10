@@ -23,8 +23,9 @@
                     p.text-primary = res.choice.content
                   - elsif res.file.attached?
                     p.text-primary = link_to 'Download Attachment', rails_blob_path(res.file, disposition: "attachment")
-                  - elsif res.question.question_type == "multiple"
-                    - JSON.parse(res.content).each do |r|
+                  / check the case of no checkboxes checked
+                  - elsif res.question.question_type == "multiple" and res.multiple_choices_array.present?
+                    - JSON.parse(res.multiple_choices_array).each do |r|
                       p.text-primary = Choice.find(r).content
                   - else
                     p.text-primary = res.content 

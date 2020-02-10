@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_30_075925) do
+ActiveRecord::Schema.define(version: 2020_02_10_092433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -104,7 +104,6 @@ ActiveRecord::Schema.define(version: 2020_01_30_075925) do
     t.boolean "assigned", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "fulltime", default: false
     t.index ["user_id"], name: "index_availabilities_on_user_id"
   end
 
@@ -361,6 +360,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_075925) do
     t.integer "segment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "multiple_choices_array"
     t.index ["choice_id"], name: "index_responses_on_choice_id"
     t.index ["question_id"], name: "index_responses_on_question_id"
     t.index ["segment_id"], name: "index_responses_on_segment_id"
