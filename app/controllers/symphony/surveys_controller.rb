@@ -9,6 +9,7 @@ class Symphony::SurveysController < ApplicationController
     @workflow = Workflow.find_by(id: params[:workflow_id])
     @task = @workflow.template.tasks.find(params[:task])
     @survey_template = SurveyTemplate.find_by(id: @task.survey_template_id)
+    @survey.segments.build
   end
 
   def create
