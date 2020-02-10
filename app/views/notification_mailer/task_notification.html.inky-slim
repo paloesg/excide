@@ -18,3 +18,6 @@ container
         - else
           a href="#{symphony_workflow_url(@task.section.template.slug, @action.workflow.id)}" #{@task.section.template.title} - #{@action.workflow.id}
       p If you have any queries regarding your task, please contact the workflow creator: #{@action.workflow.user.first_name}.
+  row
+    columns
+      = render(partial: 'footer')
