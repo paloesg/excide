@@ -31,9 +31,4 @@ container
               td = batch.created_at.strftime('%m/%d/%Y %H:%M')
   row
     columns
-      hr
-      p
-        center
-          small
-            u
-              a style="color:grey;" href = notification_settings_symphony_user_url(@consultant) Click here if you wish to unsubscribe or modify your notification settings.
+      = render(partial: 'notification_mailer/footer')

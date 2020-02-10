@@ -3,6 +3,7 @@ class BatchMailer < ApplicationMailer
 
   def daily_batch_email_summary(company)
     @consultant = company.consultant
+    @user = @consultant #reference for footer
     @batches = company.batches
     @url = company.consultant.email
     mail(to: @url, subject: "[Batch Upload Report] - " + company.name + " - " + Date.current.to_s)
