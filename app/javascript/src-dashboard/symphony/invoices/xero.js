@@ -1,3 +1,6 @@
+/*global dropdownTax a*/
+/*eslint no-undef: "error"*/
+
 //convert from currency format to number
 function convertCurrency(currency){
   var temp = currency.replace(/[^0-9.-]+/g,"");
