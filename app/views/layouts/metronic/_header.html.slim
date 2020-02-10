@@ -119,7 +119,8 @@
           - if current_user.company.session_handle.present? and (current_user.company.free_trial? or current_user.company.pro?)
             ' Connected Xero organisation:
             = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
-          - elsif current_user.company.session_handle.nil? and (current_user.company.free_trial? or current_user.company.pro?)
+            // If user is disconnected from xero, session handle is empty instead of nil
+          - elsif (current_user.company.session_handle.nil? or current_user.company.session_handle.empty?) and (current_user.company.free_trial? or current_user.company.pro?)
             ' Not connected to Xero:
             = link_to('Connect', connect_to_xero_path)
           - else

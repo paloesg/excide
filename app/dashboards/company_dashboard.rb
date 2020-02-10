@@ -29,6 +29,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     access_key: Field::String,
     access_secret: Field::String,
     expires_at: Field::Number,
+    account_type: EnumField,
+    stripe_subscription_plan_data: Field::JSONB,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -44,6 +46,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :templates,
     :documents,
     :users,
+    :account_type,
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -69,6 +72,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     :access_key,
     :access_secret,
     :expires_at,
+    :account_type,
+    :stripe_subscription_plan_data,
   ]
 
   # Overwrite this method to customize how profiles are displayed
