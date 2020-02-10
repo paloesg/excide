@@ -18,9 +18,9 @@ class GenerateTextract
     begin
       get_document
       analyze_document
-      get_table
-      get_data_table
-      get_form
+      get_table # convert json textract to json table
+      get_data_table # convert json table to json array with fix format 
+      get_form # get total amount from textract
       OpenStruct.new(success?: true, tables: @table_rows, forms: @kvs)
     rescue => e
       OpenStruct.new(success?: false, tables: @table_rows, forms: @kvs, message: e.message)
@@ -64,6 +64,7 @@ class GenerateTextract
 
   def get_table
     @table_result = Array.new()
+    # validate if aws textract data has in database
     if @document.aws_textract_data.present?
       @table_result = @document.aws_textract_data
     else
@@ -83,7 +84,7 @@ class GenerateTextract
         result = get_rows_column(table, @blocks_map)      
         @table_result.push(result)
       end
-
+      # save aws textract data to database
       @document.aws_textract_data = @table_result
       @document.save 
     end    
@@ -116,6 +117,7 @@ class GenerateTextract
       @value_block = find_value_block(key_block, @value_map)
       key = get_text(key_block, @block_map)
       val = get_text(@value_block, @block_map)
+      # get only total amount
       if key.include? "total" or key.include? "Total"
         fix_value = val.gsub(/[^\d\.]/, '').to_f if val.present?
         f['total_amount'] = fix_value
@@ -229,9 +231,6 @@ class GenerateTextract
 
     # remove first array, because that is as head of table
     @table_rows.shift
-
     return @table_rows
   end
-
-
 end

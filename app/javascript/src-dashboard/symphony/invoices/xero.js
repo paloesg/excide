@@ -303,19 +303,16 @@ $(document).on("turbolinks:load", function(){
   }
 
   $("input#invoice_total").change(function(){
-    $(this).val(replaceNumberWithCurrencyFormat($(this).val()));
+    value = $(this).val() !== '' ? $(this).val() : 0;
+    $(this).val(replaceNumberWithCurrencyFormat(value));
   })
 
   $( "input#invoice_total" ).keyup(function() {
     checkTotalTextract();
   });
 
-  if($("input#invoice_total").val() !== ''){
-    $("input#invoice_total").val(replaceNumberWithCurrencyFormat($("input#invoice_total").val()));
-  }
-  else {
-    $("input#invoice_total").val(0);
-  }
+  let totalField = $("input#invoice_total").val() !== '' ? $("input#invoice_total").val() : 0;
+  $("input#invoice_total").val(replaceNumberWithCurrencyFormat(totalField));
 
   // Convert currency to number when form do submit
   function convertNormalNumber(){

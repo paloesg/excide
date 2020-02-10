@@ -5,12 +5,12 @@ window.convertCurrency = function(currency) {
   return parseFloat(temp);
 }
 
-// //convert number to currency format
+//Convert number to currency format
 window.replaceNumberWithCurrencyFormat = function(num) {
   return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 }
 
-// // Automatically calculate the subtotal field
+// Automatically calculate the subtotal field
 window.calculateSubtotal = function() {
   let sum = 0;
   let amounts = $("input[id$='_amount']");
@@ -20,7 +20,7 @@ window.calculateSubtotal = function() {
   return sum ? sum.toFixed(2) : 0;
 }
 
-// // Calculate total tax & append element
+// Calculate total tax & append element
 window.calculateTotalTax = function(amount, rate) {
   amount = convertCurrency(amount);
   amount = parseFloat(amount);
