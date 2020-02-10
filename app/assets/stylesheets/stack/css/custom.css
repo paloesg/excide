@@ -204,3 +204,11 @@
 .dropdown-menu > .dropdown-item > a.nav-link:active, ul.dropdown-menu > li.dropdown-item > a:active {
   color: #fff;
 }
+
+.pricing-color{
+  background: #37647f !important;
+}
+
+.label-color{
+  background: #c3502e !important;
+}
