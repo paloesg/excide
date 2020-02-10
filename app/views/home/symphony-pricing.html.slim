@@ -76,7 +76,8 @@ hr
 section#contactus
   .container
     .row.mb--2
-      .col-sm-8.offset-sm-2.text-center
-        h4.mb64.uppercase Where should I start?
-        p.lead The best way to determine which VTO package suits you would be for us to have a chat to understand your needs. Leave us your details and we will get in touch with you soon.
+      .col-sm-6.offset-sm-3.text-center
+        h2.mb64.uppercase Sign up now and get a 1-month free trial of PRO features
+        p.lead Click on the Sign Up button below to get a 1-month free trial of all the Pro features, no credit card required!
+        = link_to 'Sign up for Symphony', new_user_registration_path, class: 'btn btn--excide type--uppercase'
     = render 'contact'
