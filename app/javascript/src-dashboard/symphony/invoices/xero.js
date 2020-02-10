@@ -303,7 +303,7 @@ $(document).on("turbolinks:load", function(){
   }
 
   $("input#invoice_total").change(function(){
-    value = $(this).val() !== '' ? $(this).val() : 0;
+    let value = $(this).val() !== '' ? $(this).val() : 0;
     $(this).val(replaceNumberWithCurrencyFormat(value));
   })
 

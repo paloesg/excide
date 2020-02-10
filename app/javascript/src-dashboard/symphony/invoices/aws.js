@@ -1,3 +1,6 @@
+/*global dropdownTax, convertCurrency, replaceNumberWithCurrencyFormat, calculateTotalTax, calculateSubtotal a*/
+/*eslint no-undef: "error"*/
+
 var xeroAccounts = [];
 var xeroTaxes = [];
 var xeroTrackingCategories1 = [];
@@ -70,7 +73,7 @@ function addLineItems(data){
     })
   }
 
-  addValueToFieldLineItems(data)
+  addValueToFieldLineItems(data);
 
   // Selectize
   // Selectize for Line Items
@@ -89,7 +92,7 @@ function addLineItems(data){
   $("select[id='invoice_line_items_attributes_" + data.index + "_tax']").selectize({
     dropdownParent: "body",
     options: xeroTaxes,
-    onInitialize: function() {
+    onInitialize() {
       var s = this;
       var currentAmount = this.$wrapper.closest("tr.line_items").find("input[id='invoice_line_items_attributes_"+data.index+"_amount']").val();
       // Get selected tax
@@ -104,7 +107,7 @@ function addLineItems(data){
         $.extend(s.options[this.value], $(this).data());
       });
     },
-    onChange: function (value) {
+    onChange() {
       var t = this;
       $( ".total-tax-row" ).remove();
       $(".tax > div > .has-items > .item").each(function(index, item) {
