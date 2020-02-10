@@ -205,8 +205,8 @@
   color: #fff;
 }
 
-.pricing-color{
-  background: #37647f !important;
+.boxed.pricing-color{
+  background-color: #37647f;
 }
 
 .label-color{
