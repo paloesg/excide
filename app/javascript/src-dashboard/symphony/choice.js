@@ -9,7 +9,7 @@ $(document).on("turbolinks:load", function() {
       $(this).closest('div').next().addClass('kt-hide');
     }
   });
-  $("#questions").on("cocoon:after-insert", function(e, addedItem) {
+  $(".questions").on("cocoon:after-insert", function(e, addedItem) {
     $('select.question-choice').on('change', function() {
       // Check if the added item value is undefined, only run the function if its defined. This is to prevent the code from crashing when we add choices instead of questions.
       if ( ($(addedItem).find('.question-choice').val()) ){

@@ -11,7 +11,7 @@
   .form-group.col-sm-12
     = f.label :description, "Description:", class: "mr-2"
     = f.rich_text_area :description, {class: "form-control col-sm-12", required: true}
-.kt-portlet__body#questions
+.kt-portlet__body.questions
   = f.fields_for :questions do |question|
     = render 'question_fields', f: question
   .links
