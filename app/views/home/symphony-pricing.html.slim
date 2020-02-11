@@ -1,0 +1,83 @@
+section.text-center.imagebg.space--lg data-overlay="3"
+  .background-image-holder
+    img.background-image alt="image" src=image_path('laptop-with-charts.jpg')
+  .container
+    .row
+      .col-md-5.d-flex.align-content-center.flex-wrap.offset-md-2.mb-2
+        h1.type--uppercase Symphony Pricing
+section.pricing-section-2.text-center
+  .container
+    .row
+      .col-md-6.col-lg-6
+        .pricing.pricing-3
+          .pricing__head.bg--secondary.boxed
+            h5 Basic
+            span.h1
+              span.pricing__dollar> $
+              | 0
+            p.type--fine-print With basic features
+          ul
+            li
+              strong Basic workflow features:
+              br
+              span Create and manage your workflows
+              br
+              span Assign workflow tasks to unlimited users
+              br
+              span Create and manage workflow templates
+            li
+              strong Basic task types:
+              br
+              span Task instructions
+              br
+              span Upload and store files
+              br
+              span Task reminders and many more
+            li
+              span No external app integrations
+            li
+              span Basic notifications and reminders (Email only)
+            li
+              span Email support
+        /! end pricing
+      .col-md-6.col-lg-6
+        .pricing.pricing-3
+          .pricing__head.pricing-color.boxed
+            span.label.label-color Value
+            h5.text-white PRO
+            span.h1.text-white
+              span.text-white.pricing__dollar> $
+              | 49
+            p.text-white.type--fine-print Per Month, SGD.
+          ul
+            li
+              strong PRO workflow features:
+              br
+              span Batch file uploads
+              br
+              span Automated batching of repetitive tasks
+              br
+              span Automated recurring workflows
+            li
+              strong PRO task types:
+              br
+              span Create payable and receivable invoices
+              br
+              span One-click send invoice to Xero
+              br
+              span All basic task types
+            li
+              span External app integrations (Xero, WhatsApp, Slack)
+            li
+              span Advanced notifications and reminders (WhatsApp, SMS, Email)
+            li
+              span Live chat support
+hr
+section#contactus
+  .container
+    .row.mb--2
+      .col-sm-6.offset-sm-3.text-center
+        h2.mb64.uppercase Sign up now and get a 1-month free trial of PRO features
+        p.lead Click on the Sign Up button below to get a 1-month free trial of all the Pro features, no credit card required!
+        = link_to 'Sign up for Symphony', new_user_registration_path, class: 'btn btn--excide type--uppercase'
+    = render 'contact'
