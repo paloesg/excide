@@ -11,4 +11,8 @@ class XeroSessionPolicy < Struct.new(:user, :xero_session)
   def update_line_items_from_xero?
     user.company.pro? or user.company.free_trial?
   end
+
+  def disconnect_from_xero?
+    user.company.pro? or user.company.free_trial?
+  end
 end
