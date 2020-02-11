@@ -7,13 +7,13 @@
       .table-responsive
         table.table
           thead
-            th Title
+            th Id
             th Done By
             th Date
           tbody
             - @surveys.each do |survey|
               tr
-                td = link_to survey.title.present? ? survey.title : 'No title', symphony_survey_path(@workflow.template, @workflow.id, survey.id) 
+                td = link_to survey.id, symphony_survey_path(@workflow.template, @workflow.id, survey.id) 
                 td = survey.user.full_name
                 td = survey.created_at.strftime('%F')
     - else
