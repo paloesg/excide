@@ -18,7 +18,7 @@ class Document < ApplicationRecord
   has_one_attached :converted_image
 
   before_validation :set_filename
-  after_create :convert_to_image
+  # after_create :convert_to_image
   after_destroy :delete_file_on_s3
 
   include AlgoliaSearch
@@ -35,12 +35,12 @@ class Document < ApplicationRecord
     end
   end
 
-  def convert_to_image
-    if File.extname(self.file_url) == ".pdf"
-      result = ImageProcessing::MiniMagick.source("https:" + self.file_url).loader(page: 0).convert("png").call
-      self.converted_image.attach(io: result, filename: result.path.split('/').last, content_type: "image/png")
-    end
-  end
+  # def convert_to_image
+  #   if File.extname(self.file_url) == ".pdf"
+  #     result = ImageProcessing::MiniMagick.source("https:" + self.file_url).loader(page: 0).convert("png").call
+  #     self.converted_image.attach(io: result, filename: result.path.split('/').last, content_type: "image/png")
+  #   end
+  # end
 
   private
 
