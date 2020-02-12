@@ -20,7 +20,7 @@ function goToBatchPage() {
 }
 
 function limitPagination(totalPages) {
-  let getLimitPages = []
+  let getLimitPages = [];
 
   if (currentPage === 0 || currentPage === (totalPages-1)) {
     lmt = limitPage*2;
@@ -32,7 +32,7 @@ function limitPagination(totalPages) {
     if (i < (currentPage-lmt)) {
       exceedLeft = true;
     } else if (i <= (currentPage+lmt)) {
-      getLimitPages.push(i)
+      getLimitPages.push(i);
     } else {
       exceedRight = true;
     }
