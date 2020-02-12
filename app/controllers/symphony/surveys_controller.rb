@@ -19,7 +19,13 @@ class Symphony::SurveysController < ApplicationController
     @survey.survey_template = SurveyTemplate.find_by(id: params[:survey][:survey_template_id])
     @survey.workflow = Workflow.find_by(id: params[:workflow_id])
     if @survey.save!
-      redirect_to symphony_workflow_path(@survey.workflow.template.slug, @survey.workflow.id), notice: 'Survey successfully created'
+      # If batch exists, then it should update completed to true upon returning to the batch SHOW page
+      if @survey.workflow.batch.present?
+        @survey.workflow.workflow_actions.find(params[:action_id]).update_attributes(completed: true)
+        redirect_to symphony_batch_path(@survey.workflow.template.slug, @survey.workflow.batch.id )
+      else
+        redirect_to symphony_workflow_path(@survey.workflow.template.slug, @survey.workflow.id), notice: 'Survey successfully created'
+      end
     end
   end
 

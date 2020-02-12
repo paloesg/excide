@@ -1,6 +1,6 @@
 .row
   .col-sm-12
-    = form_for(@survey, url: symphony_surveys_path(params[:workflow_name], params[:workflow_id]), html: { method: :post }) do |f|
+    = form_for(@survey, url: symphony_surveys_path(params[:workflow_name], params[:workflow_id], action_id: params[:action_id]), html: { method: :post }) do |f|
       h1 #{@survey_template.title}
       .kt-portlet
         - @survey_template.survey_sections.each do |sur_section|
