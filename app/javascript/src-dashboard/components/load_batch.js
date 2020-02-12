@@ -1,4 +1,6 @@
 /*global moment*/
+/*eslint no-use-before-define: ["error", { "functions": true }]*/
+
 // Check #table-batches element is exist in the page
 
 // default of 'start from'
@@ -16,7 +18,7 @@ let exceedRight = false;
 
 function goToBatchPage() {
   offset = currentPage*limit;
-  return new loadBatches();
+  loadBatches();
 }
 
 function limitPagination(totalPages) {
