@@ -35,7 +35,8 @@ class Symphony::SurveyTemplatesController < ApplicationController
       else
         flash[:alert] = @survey_section.errors.full_messages.join
       end
-    elsif params[:survey_template].present?
+    end
+    if params[:survey_template].present?
       if @survey_template.update(survey_template_params)
         flash[:notice] = 'Survey template has been saved.'
       else
