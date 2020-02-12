@@ -1,5 +1,5 @@
 /*global moment*/
-/*eslint no-use-before-define: ["error", { "functions": true }]*/
+/* eslint no-use-before-define: ["error", { "functions": false }] */
 
 // Check #table-batches element is exist in the page
 
@@ -15,6 +15,11 @@ let limitPage = 3;
 // This is for default value exceed left or right, not settings
 let exceedLeft = false;
 let exceedRight = false;
+
+function goToBatchPage() {
+  offset = currentPage*limit;
+  loadBatches();
+}
 
 function limitPagination(totalPages) {
   let getLimitPages = [];
@@ -114,11 +119,6 @@ function loadBatches() {
     exceedLeft = false;
     exceedRight = false;
   });
-}
-
-function goToBatchPage() {
-  offset = currentPage*limit;
-  loadBatches();
 }
 
 // When the first time page loaded
