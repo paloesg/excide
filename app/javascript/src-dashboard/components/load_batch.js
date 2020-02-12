@@ -16,7 +16,7 @@ let exceedRight = false;
 
 function goToBatchPage() {
   offset = currentPage*limit;
-  loadBatches();
+  return new loadBatches();
 }
 
 function limitPagination(totalPages) {
