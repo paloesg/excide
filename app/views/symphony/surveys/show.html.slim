@@ -6,8 +6,8 @@
           h3.kt-portlet__head-title
             | Survey Details
       .kt-portlet__body
-        - @survey.survey_template.survey_sections.each do |sur_sec|
-          h4 Survey Section: 
+        - @survey.survey_template.survey_sections.each_with_index do |sur_sec, index|
+          h4 Survey Section #{index + 1}: 
           p.text-dark = sur_sec.display_name
           p = sur_sec.description.body.to_rendered_html_with_layout()
           - sur_sec.segments.where(survey_id: @survey.id).each do |s|
@@ -30,3 +30,5 @@
                         p.text-dark = Choice.find(r).content
                     - else
                       p.text-dark = res.content
+        .col-sm-12
+          = link_to 'Back to workflow', symphony_workflow_path(workflow_name: params[:workflow_name], workflow_id: params[:workflow_id]), role: 'button', class: 'btn btn-primary pull-right'

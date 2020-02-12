@@ -7,11 +7,11 @@
           - @survey_section = sur_section
           .kt-portlet__head
             .kt-portlet__head-label
-              h1.kt-portlet__head-title #{sur_section.display_name}
+              h1.kt-portlet__head-title #{@survey_section.display_name}
           .kt-portlet__body
             .form-group.mt-2.border.shadow.p-3
               = f.hidden_field :survey_template_id, value: @survey_template.id
-              .border.shadow.p-2.mt-3 = @survey_section.description.body.to_rendered_html_with_layout()
+              .border.shadow.p-2.mt-3 =  @survey_section.description.body.to_rendered_html_with_layout()
             #segment-section
               = f.fields_for :segments do |segment|
                 = render 'segment_fields', f: segment
