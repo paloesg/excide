@@ -46,8 +46,8 @@ class Symphony::DocumentsController < ApplicationController
         @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate
         if params[:document_type] == 'batch-uploads'
           document = @generate_document.document
-          # Convert using service object
-          ConversionService.new(document).run
+          # Run convert job asynchronously. Service object is performed during the job.
+          ConvertPdfToImagesJob.perform_later(document)
           batch = document.workflow.batch
           first_task = batch.template&.sections.first.tasks.first
           first_workflow = batch.workflows.order(created_at: :asc).first
