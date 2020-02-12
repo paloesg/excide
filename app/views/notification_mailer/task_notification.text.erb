@@ -4,9 +4,11 @@ You have a new task that you are required to complete.
 
 The instructions for the task are as follows: "<%= @task.instructions %>". You can access the task from this URL:
 <% if ['create_invoice_payable','create_invoice_receivable'].include? @task.task_type %>
-  <%= new_symphony_invoice_url(@task.section.template.slug, @action.workflow.id) %>
+  <%= new_symphony_invoice_url(@task.section.template.slug, @action.workflow.friendly_id) %>
 <% else %>
-  <%= symphony_workflow_url(@task.section.template.slug, @action.workflow.id) %>
+  <%= symphony_workflow_url(@task.section.template.slug, @action.workflow.friendly_id) %>
 <% end %>
 
 If you have any queries regarding your task, please contact the workflow creator: <%= @action.workflow.user.full_name %>
+
+If you wish to change your notification settings, please go to this URL: <%= notification_settings_symphony_user_url(@user) %>

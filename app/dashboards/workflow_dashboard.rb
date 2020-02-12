@@ -8,11 +8,12 @@ class WorkflowDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    id: Field::String,
+    slug: Field::String,
     user: Field::BelongsTo,
     company: Field::BelongsTo,
     template: Field::BelongsTo,
     recurring_workflow: Field::BelongsTo,
-    id: Field::String,
     completed: Field::Boolean,
     workflowable: Field::Polymorphic,
     workflow_actions: Field::HasMany,
@@ -26,7 +27,7 @@ class WorkflowDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :id,
+    :slug,
     :user,
     :company,
     :template,
@@ -63,6 +64,6 @@ class WorkflowDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(workflow)
-    workflow.id
+    workflow.friendly_id
   end
 end

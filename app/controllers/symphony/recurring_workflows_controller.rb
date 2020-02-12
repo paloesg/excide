@@ -1,5 +1,5 @@
 class Symphony::RecurringWorkflowsController < ApplicationController
-  layout "dashboard/application"
+  layout "metronic/application"
 
   before_action :authenticate_user!
   before_action :set_company
@@ -7,21 +7,25 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring, :show, :trigger_workflow]
 
   def index
-    @recurring_workflows = RecurringWorkflow.where(company_id: @company.id)
-    @templates = Template.assigned_templates(current_user)
+    @recurring_workflows = policy_scope(RecurringWorkflow)
+    @templates = policy_scope(Template).assigned_templates(current_user)
   end
 
   def new
     @recurring_workflow = RecurringWorkflow.new
+    authorize @recurring_workflow
   end
 
   def create
     @recurring_workflow = RecurringWorkflow.new(recurring_workflow_params)
+    authorize @recurring_workflow
+
     @recurring_workflow.template = @template
     @recurring_workflow.company = @company
     @recurring_workflow.user = current_user
     #set the next recurring workflow date
     @recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
+
     if @recurring_workflow.save
       #creating the first workflow before recurring it through calling the service object
       @workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, recurring_workflow: @recurring_workflow, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase, deadline: Date.current + 1.week)
@@ -31,10 +35,11 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   end
 
   def edit
-
+    authorize @recurring_workflow
   end
 
   def update
+    authorize @recurring_workflow
     if @recurring_workflow.update(recurring_workflow_params)
       redirect_to symphony_workflows_recurring_path, notice: 'Recurring Workflow is successfully updated.'
     else
@@ -43,10 +48,12 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   end
 
   def show
+    authorize @recurring_workflow
     @workflows = Kaminari.paginate_array(@recurring_workflow.workflows).page(params[:page]).per(10)
   end
 
   def stop_recurring
+    authorize @recurring_workflow
     if @recurring_workflow.update(next_workflow_date: nil)
       redirect_to symphony_workflows_recurring_path, notice: 'Recurring Workflow stopped.'
     else
@@ -55,6 +62,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   end
 
   def trigger_workflow
+    authorize @recurring_workflow
     @new_workflow = Workflow.create(user_id: current_user.id, company_id: @company.id, template_id: @recurring_workflow.template.id, recurring_workflow: @recurring_workflow, identifier: (Date.current.to_s + '-' + @recurring_workflow.template.title + '-' +SecureRandom.hex).parameterize.upcase)
     @new_workflow.recurring_workflow.next_workflow_date = Date.current + @recurring_workflow.freq_value.send(@recurring_workflow.freq_unit)
     if @new_workflow.recurring_workflow.save
@@ -67,7 +75,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   private
 
   def set_template
-    @template = Template.find_by(slug: params[:recurring_workflow_name])
+    @template = policy_scope(Template).find_by(slug: params[:recurring_workflow_name])
   end
 
   def get_recurring_workflow

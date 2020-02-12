@@ -20,9 +20,9 @@ class GenerateTextract
       analyze_document
       get_table
       get_data_table
-      OpenStruct.new(success?: true, table: @table_rows)
+      OpenStruct.new(success?: true, tables: @table_rows)
     rescue => e
-      OpenStruct.new(success?: false, table: @table_rows, message: e.message)
+      OpenStruct.new(success?: false, tables: @table_rows, message: e.message)
     end
   end
 
@@ -63,21 +63,28 @@ class GenerateTextract
 
   def get_table
     @table_result = Array.new()
-    @blocks = @textract_json['blocks']
-    @blocks_map = Hash.new()
-    @table_blocks = Array.new()
+    if @document.aws_textract_data.present?
+      @table_result = @document.aws_textract_data
+    else
+      @blocks = @textract_json['blocks']
+      @blocks_map = Hash.new()
+      @table_blocks = Array.new()
 
-    @blocks.each do |block|
-      @blocks_map[block['id']] = block
-      if block['block_type'] == "TABLE"
-        @table_blocks.push(block)
+      @blocks.each do |block|
+        @blocks_map[block['id']] = block
+        if block['block_type'] == "TABLE"
+          @table_blocks.push(block)
+        end
       end
-    end
 
-    @table_blocks.each do |table|
-      result = get_rows_column(table, @blocks_map)      
-      @table_result.push(result)
-    end
+      @table_blocks.each do |table|
+        result = get_rows_column(table, @blocks_map)      
+        @table_result.push(result)
+      end
+
+      @document.aws_textract_data = @table_result
+      @document.save 
+    end    
     return @table_result
   end
 
@@ -90,7 +97,7 @@ class GenerateTextract
           if cell['block_type'] == "CELL"
             row_index = cell['row_index']
             col_index = cell['column_index']
-            if !(rows.key?(row_index))
+            unless rows.key?(row_index)
               rows[row_index] = Hash.new()
             end
             rows[row_index][col_index] = get_text(cell, data)
@@ -156,7 +163,6 @@ class GenerateTextract
         end
 
         # find values by head of table 
-        i = 0 
         if @head_id.present?
           @arr_object.each_with_index do |object, index|
             row_result = Hash.new()

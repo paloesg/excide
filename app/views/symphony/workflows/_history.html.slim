@@ -1,16 +1,18 @@
-.card
-  h5.card-header History
-  .table-responsive
-    table.table.table-condensed
-      thead
-        tr
-          th User
-          th Action
-          th Time
-      tbody
-        - get_activities = @workflow.archive.blank? ? @activities.take(10) : @activities
-        - get_activities.each do |activity|
-          tr = render_activity activity
-  - if (@activities.count > 10) and @workflow.archive.blank?
-    .card-footer
+.kt-portlet.mb-3
+  .kt-portlet__head
+    .kt-portlet__head-label
+      h3.kt-portlet__head-title History
+  .kt-portlet__body
+    .table-responsive
+      table.table.table-condensed
+        thead
+          tr
+            th User
+            th Action
+            th Time
+        tbody
+          - get_activities = @workflow.archive.blank? ? @activities.take(10) : @activities
+          - get_activities.each do |activity|
+            tr = render_activity activity
+    - if (@activities.count > 10) and @workflow.archive.blank?
       = link_to "View more...", activities_symphony_workflow_path(workflow_id: @workflow.id), class: 'btn btn-sm btn-outline-secondary float-right'

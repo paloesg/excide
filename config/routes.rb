@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :workflow_section
     post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
   end
+  # Stripe event path for webhook
+  mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
 
   # Company workflow management
   get 'dashboard', to: 'dashboards#show', as: :dashboard
@@ -38,6 +40,13 @@ Rails.application.routes.draw do
     get '/search', to: 'home#search'
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
     get '/xero_line_items', to: 'xero_line_items#show'
+
+    # get '/plan', to: 'companies#plan'
+    scope '/checkout' do
+      post 'create', to: 'checkout#create', as: :checkout_create
+      get 'cancel', to: 'checkout#cancel', as: :checkout_cancel
+      get 'success', to: 'checkout#success', as: :checkout_success
+    end
 
     resources :templates, param: :template_slug, except: [:destroy]
     post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
@@ -83,6 +92,7 @@ Rails.application.routes.draw do
     resources :recurring_workflows, path: '/recurring_workflows/:recurring_workflow_name', except: [:index] do
       member do
         post '/stop_recurring', to: 'recurring_workflows#stop_recurring'
+        # TODO: Trigger workflow should be POST request not GET
         get :trigger_workflow, to: 'recurring_workflows#trigger_workflow'
       end
     end
@@ -98,7 +108,7 @@ Rails.application.routes.draw do
         post '/stop_reminder/:task_id', to: 'workflows#stop_reminder', as: :stop_reminder
         get '/assign', to: 'workflows#assign', as: :assign
         get '/data-entry', to: 'workflows#data_entry', as: :data_entry
-        post '/xero_create_invoice_payable', to: 'workflows#xero_create_invoice_payable', as: :xero_create_invoice_payable
+        post '/xero_create_invoice', to: 'workflows#xero_create_invoice', as: :xero_create_invoice
         get :send_email_to_xero, to: 'workflows#send_email_to_xero', as: :send_email_to_xero
         post '/complete_task/:action_id', to: 'workflows#workflow_action_complete', as: :workflow_action_complete
         post '/invoices/reject', to:'invoices#reject', as: :reject_invoice
@@ -189,6 +199,7 @@ Rails.application.routes.draw do
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
+  get 'plan', to: 'companies#plan'
 
   # Hosted files
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
@@ -220,6 +231,9 @@ Rails.application.routes.draw do
   get 'accounting-services', to: 'home#accounting-services', as: :accounting
   get 'annual-return-filing', to: 'home#annual-return-filing', as: :return
   get 'bookkeeping', to: 'home#bookkeeping', as: :bookkeeping
+
+  # Pricing plans
+  get '/symphony-pricing', to: 'home#symphony-pricing', as: :symphony_pricing
 
   get '/robots.txt' => 'home#robots'
 

@@ -1,0 +1,61 @@
+td.line-item-field {
+  padding: 0.3rem 0 0 0.3rem;
+}
+
+.line-items-dropdown-width{
+  width: 100%;
+  min-width: 150px;
+}
+
+.minimize-header-text{
+  font-size: 0.8rem
+}
+
+.item{
+  font-size: 0.8rem
+}
+
+.image-document{
+  width: 100%;
+}
+
+.invoice-total-subtotal-size{
+	font-size: 1.5rem;
+}
+
+.subtotal{
+  font-size: 1.5rem;
+}
+
+.document-info{
+  margin-bottom: 10px;
+}
+
+.btn-invoice-info{
+  padding: 10px;
+}
+
+.invoice-nav{
+  display: table;
+}
+
+.invoice-nav-number{
+  padding: 15px;
+  margin: 10px;
+  border: solid 1px;
+  text-align: center;
+}
+
+.invoice-nav-button{
+  display: table-cell;
+  font-size: 40px;
+  transform: translate(0%, 10%);
+}
+
+.btn-right{
+  text-align: right;
+}
+
+.btn-left{
+  text-align: left;
+}

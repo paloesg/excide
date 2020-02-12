@@ -1,4 +1,4 @@
-.card-header
+.kt-portlet__head
   .form-inline.col-sm-12
     .form-group.col-sm-6
       = f.label :section_name, "Section Name:", class: "mr-2"
@@ -21,5 +21,5 @@
     tbody.section-count class=("task-in-section-#{f.object.id}")
       = f.fields_for :tasks do |task|
         = render partial: 'task_fields', locals: { f: task, g: f.object}
-.card-body
+.kt-portlet__body
   = link_to_add_tasks('Add task', f, :tasks, g: f.object)
