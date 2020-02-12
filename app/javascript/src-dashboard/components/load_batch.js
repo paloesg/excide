@@ -16,11 +16,6 @@ let limitPage = 3;
 let exceedLeft = false;
 let exceedRight = false;
 
-function goToBatchPage() {
-  offset = currentPage*limit;
-  loadBatches();
-}
-
 function limitPagination(totalPages) {
   let getLimitPages = [];
   let lmt = 0;
@@ -119,6 +114,11 @@ function loadBatches() {
     exceedLeft = false;
     exceedRight = false;
   });
+}
+
+function goToBatchPage() {
+  offset = currentPage*limit;
+  loadBatches();
 }
 
 // When the first time page loaded
