@@ -43,7 +43,7 @@ function limitPagination(totalPages) {
 
 function loadBatches() {
   $(".loading").show();
-  $.post("/symphony/batches/load_batch/", { limit: limit, offset: offset }, function(data) {}).done(function(data) {
+  $.post("/symphony/batches/load_batch/", { limit, offset }, function(data) {}).done(function(data) {
     $(".loading").hide();
     let countPaginate = Math.ceil(data["user_batches"]/limit);
     let arrayPages = [];
