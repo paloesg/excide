@@ -12,4 +12,12 @@ class WorkflowMailerPreview < ActionMailer::Preview
     mail(to: @url, subject: 'Xero bill invoice')
   end
 
+  def send_invoice_email
+    WorkflowMailer.send_invoice_email(Workflow.last, Document.last)
+  end
+
+  def email_summary
+    WorkflowMailer.email_summary(Workflow.last, Workflow.last.user, Company.last)
+  end
+
 end
