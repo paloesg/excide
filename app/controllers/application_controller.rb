@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
 
   def xero_unauthorized(e)
     message = 'You are not authorized to access the Xero account this company is connected to. Please disconnect the Xero account to continue.'
-    Rails.logger.error("Error body: #{e.request.body.gsub!('%20', ' ')}")
+    Rails.logger.error("Xero Error: #{e.request.body.gsub!('%20', ' ')}")
     redirect_to edit_company_path, alert: message
   end
 
