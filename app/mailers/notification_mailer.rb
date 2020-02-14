@@ -29,15 +29,6 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: '[New Task] Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.friendly_id)
   end
 
-  def reminder_notification(reminder)
-    @reminder = reminder
-    @user = reminder.user
-
-    address = Mail::Address.new @user.email
-    address.display_name = @user.full_name
-    mail(to: address.format, subject: @reminder.title)
-  end
-
   def batch_reminder(reminders, user)
     @reminders = reminders
     @user = user
