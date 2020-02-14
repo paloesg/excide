@@ -64,9 +64,9 @@ class ApplicationController < ActionController::Base
     redirect_to session[:previous_url], alert: message
   end
 
-  def xero_unauthorized
+  def xero_unauthorized(e)
     message = 'You are not authorized to access the Xero account this company is connected to. Please disconnect the Xero account to continue.'
-    Rails.logger.error("Xero Error: 401 Unauthorized")
+    Rails.logger.error("Error body: #{e.request.body.gsub!('%20', ' ')}")
     redirect_to edit_company_path, alert: message
   end
 
