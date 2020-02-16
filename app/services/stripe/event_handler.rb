@@ -40,7 +40,7 @@ module Stripe
     def handle_invoice_payment_succeeded(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       subscription = Stripe::Subscription.retrieve(event.data.object.subscription)
-      invoice = Stripe::Invoice.retrieve(subscription['latest_invoice'])
+      invoice = Stripe::Invoice.retrieve(event.data.object.id)
       period_start = subscription["current_period_start"]
       period_end = subscription["current_period_end"]
       invoice_pdf = event.data.object["invoice_pdf"]
