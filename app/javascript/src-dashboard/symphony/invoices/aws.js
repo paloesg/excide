@@ -133,6 +133,34 @@ function addLineItems(data){
   calculateAmount();
 }
 
+function changeDateValue(dateStr){
+  dateStr = dateStr.replace(/(^\s+|[^a-zA-Z0-9 ]+|\s+$)/g,"-");
+  dateStr = dateStr.replace(/\s+/g, "-");
+
+  //put the date to array
+  var dsplit = dateStr.split("-");
+
+  // if year cannot detect, default year is current year
+  if (!dsplit[2]){
+    dsplit[2] = new Date().getFullYear();
+  }
+  // create the date
+  var d = new Date(dsplit[2],dsplit[1]-1,dsplit[0]);
+
+  //if cannot get the date it will run create new date again with other format, because sometimes user input month with text, for example: "20 Aug"
+  if (d == "Invalid Date"){
+    dateStr = dsplit.join();
+    d = new Date(dateStr);
+    //if cannot get the date again, the default is today
+    if (d == "Invalid Date"){
+      d = new Date();
+    }
+  }
+  //format date "20 Aug 2019"
+  d = moment(d).format("D MMM YYYY");
+  return d;
+}
+
 // Get Document Analist from textract controller  
 function getDocumentAnalysis(template, workflow){
   $.post("/symphony/"+template+"/"+workflow+"/get_textract").done((result) => { 
@@ -150,11 +178,14 @@ function getDocumentAnalysis(template, workflow){
         console.log("FORM KEYS!: ", Object.keys(form).toString().includes("Due Date") || Object.keys(form).toString().includes("due date") );
         console.log("FORM VALUE:", Object.values(form).toString());
         if(Object.keys(form).toString().includes("Invoice Date") || Object.keys(form).toString().includes("INVOICE DATE")){
-          $('#datetimepicker1').val(Object.values(form).toString());
+          $('#datetimepicker1').val(changeDateValue(Object.values(form).toString()));
         // $('#datetimepicker12').data("DateTimePicker").date('2/11/2016 12:23:12');
         }
         else if(Object.keys(form).toString().includes("Due Date") || Object.keys(form).toString().includes("DUE DATE")){
-          $('#datetimepicker2').val(Object.values(form).toString());
+          $('#datetimepicker2').val(changeDateValue(Object.values(form).toString()));
+        }
+        else if(Object.keys(form).toString().includes("Invoice No.") || Object.keys(form).toString().includes("Reference No.")){
+          $('.inv-reference').val(Object.values(form).toString());
         }
       })
       // let totalAmount = forms.length > 0 && 

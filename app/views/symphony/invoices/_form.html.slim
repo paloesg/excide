@@ -46,7 +46,7 @@
             = f.select :invoice_type, Invoice.invoice_types.map{|k, v| [k.humanize, k]}, {selected: params[:invoice_type] || @invoice.invoice_type, include_blank: true}, {class: 'form-control', required: true}
           .form-group.col-md-2
             = f.label :invoice_reference, 'Reference', class: 'mr-2'
-            = f.text_field :invoice_reference, class: 'form-control'
+            = f.text_field :invoice_reference, class: 'form-control inv-reference'
           .form-group.col-md-2
             = f.label :currency, 'Currency', class: 'mr-2'
             = f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'selectize'
