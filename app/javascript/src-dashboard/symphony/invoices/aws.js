@@ -188,17 +188,20 @@ function getDocumentAnalysis(template, workflow){
         else if(Object.keys(form).toString().includes("Invoice No.") || Object.keys(form).toString().includes("Reference No.")){
           $('.inv-reference').val(Object.values(form).toString());
         }
+        else if(Object.keys(form).toString().includes("Total") || Object.keys(form).toString().includes("total")){
+          $(".textract-total-value").val(Object.values(form));
+          $('.textract-total').show();
+        }
       })
-      // let totalAmount = forms.length > 0 && 
-      let totalAmount = forms.length > 0 && typeof forms[0]["total_amount"] !== "undefined" ? forms[0]["total_amount"] : 0;
+      // let totalAmount = forms.length > 0 && typeof forms[0]["total_amount"] !== "undefined" ? forms[0]["total_amount"] : 0;
       $.each(tables, function(i, table){
         addLineItems(table);
       })
       // Show total amount if total amount greater than 0
-      if(totalAmount > 0) {
-        $(".textract-total-value").val(totalAmount);
-        $('.textract-total').show();
-      }
+      // if(totalAmount > 0) {
+      //   $(".textract-total-value").val(totalAmount);
+      //   $('.textract-total').show();
+      // }
       $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
     }
   })
