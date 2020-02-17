@@ -38,7 +38,7 @@
                         - wf.documents.each do |d|
                           - if File.extname(d.file_url) == '.pdf'
                             / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
-                            - display_url = url_for(d.converted_image) if d.converted_image.attached?
+                            - display_url = url_for(d.converted_image.first) if d.converted_image.attached?
                           - else
                             - display_url = d.file_url
                           = d.filename
