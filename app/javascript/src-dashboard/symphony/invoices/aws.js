@@ -147,11 +147,14 @@ function getDocumentAnalysis(template, workflow){
       console.log("TABLES: ", result["table"]["tables"]);
       console.log("FORMS: ", result["table"]["forms"]);
       $.each(forms, function(i, form){
-        console.log("FORM KEYS!: ", Object.keys(form).toString().includes("Invoice Date") || Object.keys(form).toString().includes("invoice date") );
-        console.log("FORM VALUE:");
+        console.log("FORM KEYS!: ", Object.keys(form).toString().includes("Due Date") || Object.keys(form).toString().includes("due date") );
+        console.log("FORM VALUE:", Object.values(form).toString());
         if(Object.keys(form).toString().includes("Invoice Date") || Object.keys(form).toString().includes("INVOICE DATE")){
-          $('#datetimepicker12').val(Object.values(form).toString());
+          $('#datetimepicker1').val(Object.values(form).toString());
         // $('#datetimepicker12').data("DateTimePicker").date('2/11/2016 12:23:12');
+        }
+        else if(Object.keys(form).toString().includes("Due Date") || Object.keys(form).toString().includes("DUE DATE")){
+          $('#datetimepicker2').val(Object.values(form).toString());
         }
       })
       // let totalAmount = forms.length > 0 && 
