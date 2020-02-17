@@ -144,6 +144,17 @@ function getDocumentAnalysis(template, workflow){
       $(".table>tbody>tr").remove();
       let tables = result["table"]["tables"];
       let forms = result["table"]["forms"];
+      console.log("TABLES: ", result["table"]["tables"]);
+      console.log("FORMS: ", result["table"]["forms"]);
+      $.each(forms, function(i, form){
+        console.log("FORM KEYS!: ", Object.keys(form).toString().includes("Invoice Date") || Object.keys(form).toString().includes("invoice date") );
+        console.log("FORM VALUE:");
+        if(Object.keys(form).toString().includes("Invoice Date") || Object.keys(form).toString().includes("INVOICE DATE")){
+          $('#datetimepicker12').val(Object.values(form).toString());
+        // $('#datetimepicker12').data("DateTimePicker").date('2/11/2016 12:23:12');
+        }
+      })
+      // let totalAmount = forms.length > 0 && 
       let totalAmount = forms.length > 0 && typeof forms[0]["total_amount"] !== "undefined" ? forms[0]["total_amount"] : 0;
       $.each(tables, function(i, table){
         addLineItems(table);

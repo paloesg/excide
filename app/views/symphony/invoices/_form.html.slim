@@ -27,7 +27,7 @@
           .form-group.col-md-2
             = f.label :invoice_date, 'Invoice Date'
             #datetimepicker.input-group.date.dateinvoice data-target-input="nearest"
-              = f.text_field :invoice_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.invoice_date.present? ? @invoice.invoice_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker', 'data-target': '#datetimepicker'
+              = f.text_field :invoice_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.invoice_date.present? ? @invoice.invoice_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker12', 'data-target': '#datetimepicker12'
               .input-group-append data-target="#datetimepicker" data-toggle="datetimepicker"
                 .input-group-text
                   i.fa.fa-calendar
