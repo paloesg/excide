@@ -133,16 +133,20 @@ function addLineItems(data){
   calculateAmount();
 }
 
-function changeDateValue(dateStr){
+function formatDate(dateStr){
   dateStr = dateStr.replace(/(^\s+|[^a-zA-Z0-9 ]+|\s+$)/g,"-");
   dateStr = dateStr.replace(/\s+/g, "-");
-
   //put the date to array
   var dsplit = dateStr.split("-");
 
   // if year cannot detect, default year is current year
   if (!dsplit[2]){
     dsplit[2] = new Date().getFullYear();
+  }
+  // Check for the condition that the year is only displayed in 2 numbers (eg 11-02-19). For that, we manually prepend '20' to the date
+  else if(dsplit[2].length < 3){
+    console.log("DSPLIT IS HERE!");
+    dsplit[2] = dsplit[2].replace (/^/,'20');
   }
   // create the date
   var d = new Date(dsplit[2],dsplit[1]-1,dsplit[0]);
@@ -175,14 +179,11 @@ function getDocumentAnalysis(template, workflow){
       console.log("TABLES: ", result["table"]["tables"]);
       console.log("FORMS: ", result["table"]["forms"]);
       $.each(forms, function(i, form){
-        console.log("FORM KEYS!: ", Object.keys(form).toString().includes("Due Date") || Object.keys(form).toString().includes("due date") );
-        console.log("FORM VALUE:", Object.values(form).toString());
         if(Object.keys(form).toString().includes("Invoice Date") || Object.keys(form).toString().includes("INVOICE DATE")){
-          $('#datetimepicker1').val(changeDateValue(Object.values(form).toString()));
-        // $('#datetimepicker12').data("DateTimePicker").date('2/11/2016 12:23:12');
+          $('#datetimepicker1').val(formatDate(Object.values(form).toString()));
         }
         else if(Object.keys(form).toString().includes("Due Date") || Object.keys(form).toString().includes("DUE DATE")){
-          $('#datetimepicker2').val(changeDateValue(Object.values(form).toString()));
+          $('#datetimepicker2').val(formatDate(Object.values(form).toString()));
         }
         else if(Object.keys(form).toString().includes("Invoice No.") || Object.keys(form).toString().includes("Reference No.")){
           $('.inv-reference').val(Object.values(form).toString());
