@@ -12,7 +12,27 @@
         .img-magnifier-container
           = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
       - else
-        iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" id="iframe-document"
+        - display_url = url_for(@document.converted_image.first) if @document.converted_image.attached?
+        .img-magnifier-container
+          div#carouselExampleIndicators.carousel.slide data-ride="carousel" data-interval="false"
+            ol.carousel-indicators
+              - @document.converted_image.each.with_index(0) do |image, index|
+                li. data-target="#carouselExampleIndicators" data-slide-to="#{index}" class=[index.zero? ? 'active' : '']
+              end
+            div.carousel-inner
+              - @document.converted_image.each.with_index(0) do |image, index|
+                div. class=["carousel-item", index.zero? ? 'active' : '' ]
+                  = link_to url_for(image)
+                    = image_tag(image, class: 'img-responsive zoomed-image')
+              end
+            a.carousel-control-prev data-slide="prev" href="#carouselExampleIndicators" role="button"
+              span.carousel-control-prev-icon aria-hidden="true"
+              span.sr-only Previous
+            a.carousel-control-next data-slide="next" href="#carouselExampleIndicators" role="button"
+              span.carousel-control-next-icon aria-hidden="true"
+              span.sr-only Next
+      end
+    end
   .col-md-8
     .card.mb-3
       .row.m-2
