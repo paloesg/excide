@@ -1,4 +1,4 @@
-/*global dropdownTax, convertCurrency, replaceNumberWithCurrencyFormat, calculateTotalTax, calculateSubtotal a*/
+/*global moment, dropdownTax, convertCurrency, replaceNumberWithCurrencyFormat, calculateTotalTax, calculateSubtotal a*/
 /*eslint no-undef: "error"*/
 
 var xeroAccounts = [];
