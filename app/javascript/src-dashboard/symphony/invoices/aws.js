@@ -145,18 +145,17 @@ function formatDate(dateStr){
   }
   // Check for the condition that the year is only displayed in 2 numbers (eg 11-02-19). For that, we manually prepend '20' to the date
   else if(dsplit[2].length < 4){
-    console.log("DSPLIT IS HERE!");
     dsplit[2] = dsplit[2].replace (/^/,'20');
   }
   // create the date
   var d = new Date(dsplit[2],dsplit[1]-1,dsplit[0]);
 
   //if cannot get the date it will run create new date again with other format, because sometimes user input month with text, for example: "20 Aug"
-  if (d == "Invalid Date"){
+  if (d === "Invalid Date"){
     dateStr = dsplit.join();
     d = new Date(dateStr);
     //if cannot get the date again, the default is today
-    if (d == "Invalid Date"){
+    if (d === "Invalid Date"){
       d = new Date();
     }
   }
@@ -176,8 +175,6 @@ function getDocumentAnalysis(template, workflow){
       $(".table>tbody>tr").remove();
       let tables = result["table"]["tables"];
       let forms = result["table"]["forms"];
-      console.log("TABLES: ", result["table"]["tables"]);
-      console.log("FORMS: ", result["table"]["forms"]);
       $.each(forms, function(i, form){
         // Used the match() method to search for string and for case insensitive search
         if(Object.keys(form).toString().match(/Invoice Date/i)) {
