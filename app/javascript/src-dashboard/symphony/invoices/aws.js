@@ -172,23 +172,24 @@ function getDocumentAnalysis(template, workflow){
     // Show json result to input textarea
     $(".aws-textract-result").text(JSON.stringify(result["table"]));
     // Validate result when success true and tables not null
-    if(result["table"]["success?"] === true && result["table"]["tables"].length > 0){      
+    if(result["table"]["success?"] === true && result["table"]["tables"].length > 0){
       $(".table>tbody>tr").remove();
       let tables = result["table"]["tables"];
       let forms = result["table"]["forms"];
       console.log("TABLES: ", result["table"]["tables"]);
       console.log("FORMS: ", result["table"]["forms"]);
       $.each(forms, function(i, form){
-        if(Object.keys(form).toString().includes("Invoice Date") || Object.keys(form).toString().includes("INVOICE DATE")){
+        // Used the match() method to search for string and for case insensitive search
+        if(Object.keys(form).toString().match(/Invoice Date/i)) {
           $('#datetimepicker1').val(formatDate(Object.values(form).toString()));
         }
-        else if(Object.keys(form).toString().includes("Due Date") || Object.keys(form).toString().includes("DUE DATE")){
+        else if(Object.keys(form).toString().match(/Due Date/i)){
           $('#datetimepicker2').val(formatDate(Object.values(form).toString()));
         }
-        else if(Object.keys(form).toString().includes("Invoice No.") || Object.keys(form).toString().includes("Reference No.")){
+        else if(Object.keys(form).toString().match(/Invoice No./i) || Object.keys(form).toString().match(/Reference No./i) || Object.keys(form).toString().match(/Inv No./i)){
           $('.inv-reference').val(Object.values(form).toString());
         }
-        else if(Object.keys(form).toString().includes("Total") || Object.keys(form).toString().includes("total")){
+        else if(Object.keys(form).toString().match(/Total/i)){
           $(".textract-total-value").val(Object.values(form));
           $('.textract-total').show();
         }
@@ -203,6 +204,8 @@ function getDocumentAnalysis(template, workflow){
       //   $('.textract-total').show();
       // }
       $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
+    }else{
+      alert("Textract cannot detect form. Please manually enter the data.");
     }
   })
 }
