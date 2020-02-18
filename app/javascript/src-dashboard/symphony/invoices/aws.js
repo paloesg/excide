@@ -194,15 +194,9 @@ function getDocumentAnalysis(template, workflow){
           $('.textract-total').show();
         }
       })
-      // let totalAmount = forms.length > 0 && typeof forms[0]["total_amount"] !== "undefined" ? forms[0]["total_amount"] : 0;
       $.each(tables, function(i, table){
         addLineItems(table);
       })
-      // Show total amount if total amount greater than 0
-      // if(totalAmount > 0) {
-      //   $(".textract-total-value").val(totalAmount);
-      //   $('.textract-total').show();
-      // }
       $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
     }else{
       alert("Textract cannot detect form. Please manually enter the data.");
