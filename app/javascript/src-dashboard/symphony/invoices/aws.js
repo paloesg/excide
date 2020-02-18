@@ -46,7 +46,7 @@ function addValueToFieldLineItems(data){
   let region = '<select class="minimize-text dropdown-overlay selectized" name="invoice[line_items_attributes]['+data.index+'][tracking_option_1]" id="invoice_line_items_attributes_'+data.index+'_tracking_option_1" tabindex="-1" ><option value="" selected="selected"></option></select>';
   let amount = '<input class="form-control minimize-text" readonly="readonly" type="text" name="invoice[line_items_attributes]['+data.index+'][amount]" id="invoice_line_items_attributes_'+data.index+'_amount" value='+(data.amount ? data.amount : 0)+'>';
   let deleteButton = '<a class="btn btn-danger remove_line_items" href="#">x</a>';
-  
+
   // Add fields to form
   $(".table tbody").append("<tr class='line_items'><td class='line-item-field'>"+items+"</td><td class='line-item-field'>"+description+"</td><td class='line-item-field'>"+quantity+"</td><td class='line-item-field'>"+price+"</td><td class='line-item-field'>"+account+"</td><td class='line-item-field tax'>"+tax+"</td><td class='line-item-field'>"+region+"</td><td class='line-item-field'>"+amount+"</td><td class='line-item-field pr-2'>"+deleteButton+"</td></tr>");
 }
@@ -122,9 +122,9 @@ function addLineItems(data){
   $("select[id$='invoice_line_items_attributes_" + data.index + "_tracking_option_1']").selectize({
     dropdownParent: "body",
     options: xeroTrackingCategories1
-  }); 
+  });
 
-  $("input[id$='_price']").keydown(function (event) {          
+  $("input[id$='_price']").keydown(function (event) {
     // Check if tab keyboard button pressed
     if (event.keyCode === 9) {
       calculateAmount();
@@ -164,9 +164,9 @@ function formatDate(dateStr){
   return d;
 }
 
-// Get Document Analist from textract controller  
+// Get Document Analist from textract controller
 function getDocumentAnalysis(template, workflow){
-  $.post("/symphony/"+template+"/"+workflow+"/get_textract").done((result) => { 
+  $.post("/symphony/"+template+"/"+workflow+"/get_textract").done((result) => {
     $('.loading-textract').hide();
     // Show json result to input textarea
     $(".aws-textract-result").text(JSON.stringify(result["table"]));
@@ -196,7 +196,7 @@ function getDocumentAnalysis(template, workflow){
       })
       $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
     }else{
-      alert("Unable to extract data from the form automatically. Please manually enter the data.");
+      alert("Unable to extract data from the file automatically. Please manually enter the data.");
     }
   })
 }
