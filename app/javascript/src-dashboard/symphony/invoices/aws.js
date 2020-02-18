@@ -144,7 +144,7 @@ function formatDate(dateStr){
     dsplit[2] = new Date().getFullYear();
   }
   // Check for the condition that the year is only displayed in 2 numbers (eg 11-02-19). For that, we manually prepend '20' to the date
-  else if(dsplit[2].length < 3){
+  else if(dsplit[2].length < 4){
     console.log("DSPLIT IS HERE!");
     dsplit[2] = dsplit[2].replace (/^/,'20');
   }
@@ -199,7 +199,7 @@ function getDocumentAnalysis(template, workflow){
       })
       $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
     }else{
-      alert("Textract cannot detect form. Please manually enter the data.");
+      alert("Unable to extract data from the form automatically. Please manually enter the data.");
     }
   })
 }
