@@ -1,3 +1,11 @@
+form.kt-form
+  .form-group.row
+    label.col-3.col-form-label Default Switch
+    .col-3
+      span.kt-switch
+        label
+          input checked="checked" name="" type="checkbox" /
+          span
 .row
   .col-sm-12
     h1 Create Invoice
@@ -77,7 +85,7 @@
             .result-textract
               = label_tag :textract_json, 'Result Textract JSON'
               = text_area_tag 'body', nil, rows: 10, class:"form-control aws-textract-result"
-    = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
+    = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id]), html: {class: "kt-form"}) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
       = render 'remaining_invoice'
@@ -85,6 +93,8 @@
         .col-md-8
           - if @workflow.batch.present?
             = link_to "View Batch", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning'
+            span.kt-switch
+              = check_box_tag "Zoom", "true", true
           - else
             = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
           - if params[:workflow_action].present?
@@ -95,3 +105,9 @@
           .pull-right
             = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, invoice_type: params[:invoice_type], workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2') if policy(@invoice).reject?
             = f.submit 'Save', class: "btn btn-primary"
+        .form-group.row
+          span.kt-switch
+            lbabel
+            input checked="checked" name="" type="checkbox"
+            span
+          label.col-form-label Default Switch
