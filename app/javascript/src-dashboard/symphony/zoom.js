@@ -15,7 +15,6 @@ $(document).on("turbolinks:load", function() {
         /* Create magnifier glass: */
         glass = $("<div>");
         glass.addClass("img-magnifier-glass");
-        console.log("hellow", img[0]);
         /* Insert magnifier glass: */
         img.parent()[0].insertBefore(glass[0], img[0]);
         /* Set background properties for the magnifier glass: */
@@ -26,8 +25,8 @@ $(document).on("turbolinks:load", function() {
           "background-size": (img[0].width * zoom) + "px " + (img[0].height * zoom) + "px"
         });
         bw = 3;
-        w = glass[0].offsetWidth / 2;
-        h = glass[0].offsetHeight / 2;
+        w = 75;
+        h = 75;
 
         function getCursorPos(e) {
           var a, x = 0, y = 0;
