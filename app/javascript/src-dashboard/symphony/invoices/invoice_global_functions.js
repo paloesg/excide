@@ -49,10 +49,16 @@ window.calculateTotalTax = function(amount, rate) {
   }
 
   if ( $("#invoice_line_amount_type").val() === "exclusive" ) {
-    console.log("amount is: ", amount);
-    console.log("rate is: ", rate);
     result = (amount*(rate/100));
     addElementCalculatedTax(result.toFixed(2));
+    var totalTax = 0;
+    $(".calculated-tax").each(function(){
+      console.log("GRANDKID: ",$(this).find("input.tax-value").val());
+      totalTax += parseFloat($(this).find("input.tax-value").val());
+      console.log("totalTax: ", totalTax);
+      return totalTax;
+    }) 
+    $(".total-calculated").val( totalTax + parseFloat($(".subtotal").val().replace(/,/g, '')) );
   } else if ( $("#invoice_line_amount_type").val() === "inclusive" ) {
     result = (amount-(amount/((100+rate)/100))).toFixed(2);
     addElementCalculatedTax(result);

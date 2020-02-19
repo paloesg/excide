@@ -87,7 +87,7 @@ function addLineItems(data){
     dropdownParent: "body",
     options: xeroAccounts
   });
-
+  
   // Selectize for Tax
   $("select[id='invoice_line_items_attributes_" + data.index + "_tax']").selectize({
     dropdownParent: "body",
@@ -112,7 +112,7 @@ function addLineItems(data){
       $( ".total-tax-row" ).remove();
       $(".tax > div > .has-items > .item").each(function(index, item) {
         let itemRate = parseFloat(t.options[$(item).text()]['data-rate']);
-        let itemAmount = parseFloat($(item).closest('.line-item-field.tax').siblings('.line-item-field.amount').children(".amount-data").val());        
+        let itemAmount = parseFloat($(item).closest('.line-item-field.tax').siblings('.line-item-field.amount').children(".amount-data").val());
         calculateTotalTax(itemAmount.toString(), itemRate.toString());
       })
     }
