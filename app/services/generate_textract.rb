@@ -117,12 +117,8 @@ class GenerateTextract
       @value_block = find_value_block(key_block, @value_map)
       key = get_text(key_block, @block_map)
       val = get_text(@value_block, @block_map)
-      # get only total amount
-      if key.include? "total" or key.include? "Total"
-        fix_value = val.gsub(/[^\d\.]/, '').to_f if val.present?
-        f['total_amount'] = fix_value
-        @kvs.push(f)
-      end
+      f[key] = val
+      @kvs.push(f)
     end
     return @kvs
   end

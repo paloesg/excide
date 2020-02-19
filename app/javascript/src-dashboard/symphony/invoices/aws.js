@@ -1,4 +1,4 @@
-/*global dropdownTax, convertCurrency, replaceNumberWithCurrencyFormat, calculateTotalTax, calculateSubtotal a*/
+/*global moment, dropdownTax, convertCurrency, replaceNumberWithCurrencyFormat, calculateTotalTax, calculateSubtotal a*/
 /*eslint no-undef: "error"*/
 
 var xeroAccounts = [];
@@ -46,7 +46,7 @@ function addValueToFieldLineItems(data){
   let region = '<select class="minimize-text dropdown-overlay selectized" name="invoice[line_items_attributes]['+data.index+'][tracking_option_1]" id="invoice_line_items_attributes_'+data.index+'_tracking_option_1" tabindex="-1" ><option value="" selected="selected"></option></select>';
   let amount = '<input class="form-control minimize-text" readonly="readonly" type="text" name="invoice[line_items_attributes]['+data.index+'][amount]" id="invoice_line_items_attributes_'+data.index+'_amount" value='+(data.amount ? data.amount : 0)+'>';
   let deleteButton = '<a class="btn btn-danger remove_line_items" href="#">x</a>';
-  
+
   // Add fields to form
   $(".table tbody").append("<tr class='line_items'><td class='line-item-field'>"+items+"</td><td class='line-item-field'>"+description+"</td><td class='line-item-field'>"+quantity+"</td><td class='line-item-field'>"+price+"</td><td class='line-item-field'>"+account+"</td><td class='line-item-field tax'>"+tax+"</td><td class='line-item-field'>"+region+"</td><td class='line-item-field'>"+amount+"</td><td class='line-item-field pr-2'>"+deleteButton+"</td></tr>");
 }
@@ -122,9 +122,9 @@ function addLineItems(data){
   $("select[id$='invoice_line_items_attributes_" + data.index + "_tracking_option_1']").selectize({
     dropdownParent: "body",
     options: xeroTrackingCategories1
-  }); 
+  });
 
-  $("input[id$='_price']").keydown(function (event) {          
+  $("input[id$='_price']").keydown(function (event) {
     // Check if tab keyboard button pressed
     if (event.keyCode === 9) {
       calculateAmount();
@@ -133,27 +133,70 @@ function addLineItems(data){
   calculateAmount();
 }
 
-// Get Document Analist from textract controller  
+function formatDate(dateStr){
+  dateStr = dateStr.replace(/(^\s+|[^a-zA-Z0-9 ]+|\s+$)/g,"-");
+  dateStr = dateStr.replace(/\s+/g, "-");
+  //put the date to array
+  var dsplit = dateStr.split("-");
+
+  // if year cannot detect, default year is current year
+  if (!dsplit[2]){
+    dsplit[2] = new Date().getFullYear();
+  }
+  // Check for the condition that the year is only displayed in 2 numbers (eg 11-02-19). For that, we manually prepend '20' to the date
+  else if(dsplit[2].length < 4){
+    dsplit[2] = dsplit[2].replace (/^/,'20');
+  }
+  // create the date
+  var d = new Date(dsplit[2],dsplit[1]-1,dsplit[0]);
+
+  //if cannot get the date it will run create new date again with other format, because sometimes user input month with text, for example: "20 Aug"
+  if (d === "Invalid Date"){
+    dateStr = dsplit.join();
+    d = new Date(dateStr);
+    //if cannot get the date again, the default is today
+    if (d === "Invalid Date"){
+      d = new Date();
+    }
+  }
+  //format date "20 Aug 2019"
+  d = moment(d).format("D MMM YYYY");
+  return d;
+}
+
+// Get Document Analist from textract controller
 function getDocumentAnalysis(template, workflow){
-  $.post("/symphony/"+template+"/"+workflow+"/get_textract").done((result) => { 
+  $.post("/symphony/"+template+"/"+workflow+"/get_textract").done((result) => {
     $('.loading-textract').hide();
     // Show json result to input textarea
     $(".aws-textract-result").text(JSON.stringify(result["table"]));
     // Validate result when success true and tables not null
-    if(result["table"]["success?"] === true && result["table"]["tables"].length > 0){      
+    if(result["table"]["success?"] === true && result["table"]["tables"].length > 0){
       $(".table>tbody>tr").remove();
       let tables = result["table"]["tables"];
       let forms = result["table"]["forms"];
-      let totalAmount = forms.length > 0 && typeof forms[0]["total_amount"] !== "undefined" ? forms[0]["total_amount"] : 0;
+      $.each(forms, function(i, form){
+        // Used the match() method to search for string and for case insensitive search
+        if(Object.keys(form).toString().match(/Invoice Date/i)) {
+          $('#datetimepicker1').val(formatDate(Object.values(form).toString()));
+        }
+        else if(Object.keys(form).toString().match(/Due Date/i)){
+          $('#datetimepicker2').val(formatDate(Object.values(form).toString()));
+        }
+        else if(Object.keys(form).toString().match(/Invoice No./i) || Object.keys(form).toString().match(/Reference No./i) || Object.keys(form).toString().match(/Inv No./i)){
+          $('.inv-reference').val(Object.values(form).toString());
+        }
+        else if(Object.keys(form).toString().match(/Total/i)){
+          $(".textract-total-value").val(Object.values(form));
+          $('.textract-total').show();
+        }
+      })
       $.each(tables, function(i, table){
         addLineItems(table);
       })
-      // Show total amount if total amount greater than 0
-      if(totalAmount > 0) {
-        $(".textract-total-value").val(totalAmount);
-        $('.textract-total').show();
-      }
       $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
+    }else{
+      alert("Unable to extract data from the file automatically. Please manually enter the data.");
     }
   })
 }
