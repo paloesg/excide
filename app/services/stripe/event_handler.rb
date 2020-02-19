@@ -48,7 +48,7 @@ module Stripe
       # This codes updates the stripe subscription plan data in DB upon recurring biling from Stripe. The if-condition checks for it being recurring (there should be subscription plan data rather than an empty array). 
       @current_user.company.stripe_subscription_plan_data['subscription'] = subscription
       # Check for no duplicate invoices in the database, in case webhook send back twice the response
-      @current_user.company.stripe_subscription_plan_data['invoices'].push( invoice ) if @current_user.company.stripe_subscription_plan_data['invoices'].any?{|inv| inv['id'] != invoice.id }
+      @current_user.company.stripe_subscription_plan_data['invoices'].push( invoice ) if @current_user.company.stripe_subscription_plan_data['invoices'].all?{|inv| inv['id'] != invoice.id }
       @current_user.company.save
 
       # Send email to inform user that payment is successful.
