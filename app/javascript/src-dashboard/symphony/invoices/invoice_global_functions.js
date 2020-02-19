@@ -41,7 +41,7 @@ window.calculateTotalTax = function(amount, rate) {
         $("#subtotal-wrapper").append("<div class='form-row total-tax-row calculated-tax' data-rate='"+rate+"'>"+
           "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
             "<label class='mr-2'> Total tax "+ rate + "%  </label>" +
-            "<input type='text' value='" + replaceNumberWithCurrencyFormat(result) + "' class='form-control' disabled='disabled'>" +
+            "<input type='text' value='" + replaceNumberWithCurrencyFormat(result) + "' class='form-control tax-value' disabled='disabled'>" +
           "</div>" +
         "</div>");
       }
@@ -49,8 +49,10 @@ window.calculateTotalTax = function(amount, rate) {
   }
 
   if ( $("#invoice_line_amount_type").val() === "exclusive" ) {
-    result = (amount*(rate/100)).toFixed(2);
-    addElementCalculatedTax(result);
+    console.log("amount is: ", amount);
+    console.log("rate is: ", rate);
+    result = (amount*(rate/100));
+    addElementCalculatedTax(result.toFixed(2));
   } else if ( $("#invoice_line_amount_type").val() === "inclusive" ) {
     result = (amount-(amount/((100+rate)/100))).toFixed(2);
     addElementCalculatedTax(result);

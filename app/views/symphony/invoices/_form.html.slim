@@ -99,7 +99,7 @@
               .form-row.mb-2
                 .form-inline.col-auto.ml-auto.pull-right
                   = f.label :total, 'Total (including tax): ', class: 'mr-2'
-                  = f.text_field :total, class: 'form-control'
+                  = f.text_field :total, class: 'form-control total-calculated'
             .col-md-12
               .textract-total
                 .text-danger * Total calculated does not match total extracted. Please check the amounts.
