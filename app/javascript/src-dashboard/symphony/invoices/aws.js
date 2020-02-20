@@ -178,16 +178,17 @@ function getDocumentAnalysis(template, workflow){
       $.each(forms, function(i, form){
         // Used the match() method to search for string and for case insensitive search
         if(Object.keys(form).toString().match(/Invoice Date/i)) {
-          $('#datetimepicker1').val(formatDate(Object.values(form).toString()));
+          $('#datetimepicker1').val(formatDate(Object.values(form).toString().trim()));
         }
         else if(Object.keys(form).toString().match(/Due Date/i)){
-          $('#datetimepicker2').val(formatDate(Object.values(form).toString()));
+          $('#datetimepicker2').val(formatDate(Object.values(form).toString().trim()));
         }
         else if(Object.keys(form).toString().match(/Invoice No./i) || Object.keys(form).toString().match(/Reference No./i) || Object.keys(form).toString().match(/Inv No./i)){
-          $('.inv-reference').val(Object.values(form).toString());
+          $('.inv-reference').val(Object.values(form).toString().trim());
         }
         else if(Object.keys(form).toString().match(/Total/i)){
-          $(".textract-total-value").val(Object.values(form));
+          $(".textract-total-value").val(Object.values(form).toString().trim());
+          console.log("Textract total value: ", $(".textract-total-value").val());
           $('.textract-total').show();
         }
       })
@@ -195,10 +196,24 @@ function getDocumentAnalysis(template, workflow){
         addLineItems(table);
       })
       $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
+      matchTotal();
     }else{
       alert("Unable to extract data from the file automatically. Please manually enter the data.");
     }
   })
+}
+
+function matchTotal(){
+  $("input.total-calculated").change(function(){
+    // Check if total inputed by user is the same as total extracted from textract and check that textract total exists
+    if ( $(".textract-total-value").val() && ($(".total-calculated").val() !==  $(".textract-total-value").val()) ){
+      $(".textract-total-message").removeClass("d-none");
+      $("input#invoice_total").css({ border: "1px solid #dc3545" });
+    } else{
+      $(".textract-total-message").addClass("d-none");
+      $("input#invoice_total").css({ border: "1px solid #6fb497" });
+    }
+  });
 }
 
 $(document).on("turbolinks:load", function() {

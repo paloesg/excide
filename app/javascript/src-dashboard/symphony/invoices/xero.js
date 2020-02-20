@@ -111,16 +111,16 @@ function calculateTotalTax(amount, rate) {
   }
 }
 
-function checkTotalTextract(){
-  let textractTotal = $(".textract-total-value").val();
-  let inputTotal = $("input#invoice_total").val();
+// function checkTotalTextract(){
+//   let textractTotal = $(".textract-total-value").val();
+//   let inputTotal = $("input#invoice_total").val();
 
-  if (textractTotal && textractTotal !== inputTotal) {
-    $("input#invoice_total").css({ border: "1px solid #dc3545" });
-  } else {
-    $("input#invoice_total").css({ border: "1px solid #ced4da" });
-  }
-}
+//   if (textractTotal && textractTotal !== inputTotal) {
+//     $("input#invoice_total").css({ border: "1px solid #dc3545" });
+//   } else {
+//     $("input#invoice_total").css({ border: "1px solid #ced4da" });
+//   }
+// }
 
 $(document).on("turbolinks:load", function(){
   $(".loading").hide();

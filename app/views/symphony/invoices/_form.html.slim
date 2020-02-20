@@ -101,7 +101,7 @@
                   = f.label :total, 'Total (including tax): ', class: 'mr-2'
                   = f.text_field :total, class: 'form-control total-calculated'
             .col-md-12
-              .textract-total
+              .textract-total-message.d-none
                 .text-danger * Total calculated does not match total extracted. Please check the amounts.
 .btn-group role='group'
   - if @previous_document.present?
