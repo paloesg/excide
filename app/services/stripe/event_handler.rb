@@ -37,6 +37,22 @@ module Stripe
     #   StripeNotificationMailer.upcoming_payment_notification(@current_user).deliver_later
     # end
 
+    def handle_customer_subscription_updated(event)
+      puts "EVENT CUSTOMER SUBSCRIPTION UPDATED!: #{event.data.object}}"
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      period_end = event.data.object.current_period_end
+      if event.data.object.cancel_at_period_end
+        # Assuming customer subscription updated only runs upon clicking the cancellation button
+        StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
+      end
+    end
+
+    def handle_customer_subscription_deleted(event)
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      # Downgrade service when stripe deleted subscription
+      DowngradeSubscriptionService.new(@current_user.company).run
+    end
+
     def handle_invoice_payment_succeeded(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       subscription = Stripe::Subscription.retrieve(event.data.object.subscription)

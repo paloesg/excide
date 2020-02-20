@@ -4,15 +4,15 @@ class DowngradeSubscriptionService
   end
 
   def run
-    delete_stripe_subscription
+    # delete_stripe_subscription
     downgrade_company
     update_company_when_downgraded
   end
 
   private
-  def delete_stripe_subscription
-    Stripe::Subscription.delete(@company.stripe_subscription_plan_data["subscription"]["id"])
-  end
+  # def delete_stripe_subscription
+  #   Stripe::Subscription.delete(@company.stripe_subscription_plan_data["subscription"]["id"])
+  # end
 
   def downgrade_company
     @company.downgrade
