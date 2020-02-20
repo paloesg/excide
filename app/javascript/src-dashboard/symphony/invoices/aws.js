@@ -35,7 +35,7 @@ function getXeroDetails(template, workflow){
   });
 }
 
-function addValueToFieldLineItems(data){
+function addValueToFieldLineItems(data){ 
   // Add value to line item fields
   let items = '<select class="minimize-text line-items-dropdown-width dropdown-items selectized" name="invoice[line_items_attributes]['+data.index+'][item]" id="invoice_line_items_attributes_'+data.index+'_item" tabindex="-1" style="display: none;"><option value="" selected="selected"></option></select>';
   let description = '<input class="form-control minimize-text" type="text" name="invoice[line_items_attributes]['+data.index+'][description]" id="invoice_line_items_attributes_'+data.index+'_description" value="' + ( data.description ?  data.description : "") +'">';
@@ -75,7 +75,6 @@ function addLineItems(data){
 
   addValueToFieldLineItems(data);
 
-  // Selectize
   // Selectize for Line Items
   $("select[id$='invoice_line_items_attributes_" + data.index + "_item']").selectize({
     dropdownParent: "body",
@@ -181,14 +180,14 @@ function getDocumentAnalysis(template, workflow){
           $('#datetimepicker1').val(formatDate(Object.values(form).toString().trim()));
         }
         else if(Object.keys(form).toString().match(/Due Date/i)){
-          $('#datetimepicker2').val(formatDate(Object.values(form).toString().trim()));
+          $('#datetimepicker3').val(formatDate(Object.values(form).toString().trim()));
         }
         else if(Object.keys(form).toString().match(/Invoice No./i) || Object.keys(form).toString().match(/Reference No./i) || Object.keys(form).toString().match(/Inv No./i)){
           $('.inv-reference').val(Object.values(form).toString().trim());
         }
         else if(Object.keys(form).toString().match(/Total/i)){
+          // Trim white spaces
           $(".textract-total-value").val(Object.values(form).toString().trim());
-          console.log("Textract total value: ", $(".textract-total-value").val());
           $('.textract-total').show();
         }
       })
@@ -206,7 +205,7 @@ function getDocumentAnalysis(template, workflow){
 function matchTotal(){
   $("input.total-calculated").change(function(){
     // Check if total inputed by user is the same as total extracted from textract and check that textract total exists
-    if ( $(".textract-total-value").val() && ($(".total-calculated").val() !==  $(".textract-total-value").val()) ){
+    if ( $(".total-calculated").val() !=  $(".textract-total-value").val() ){
       $(".textract-total-message").removeClass("d-none");
       $("input#invoice_total").css({ border: "1px solid #dc3545" });
     } else{
