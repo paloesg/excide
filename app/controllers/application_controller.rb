@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.company.name.present?      
+    if current_user.company.name.present?
       if current_user.company.session_handle.blank? and current_user.company.connect_xero?
         connect_to_xero_path
       else
@@ -52,27 +52,27 @@ class ApplicationController < ActionController::Base
   end
 
   def xero_error(e)
-    message = 'Xero returned an error: ' + e.message + '. Please ensure you have filled in all the required data in the right format.'
-    Rails.logger.error("Xero Error: #{message}")
+    message = 'Xero returned an error - ' + e.message + '. Please ensure you have filled in all the required data in the right format.'
+    Rails.logger.error("Xero error: #{message}")
     redirect_to session[:previous_url], alert: message
   end
 
   #prevent overflow cookie errors by parsing and truncating the XML exception xero returns
   def xero_error_api_exception(e)
-    message = 'Xero returned an error: ' + e.parsed_xml.text.to_s.truncate(200) + '. Please ensure you have filled in all the required data in the right format.'
-    Rails.logger.error("Xero Error: #{message}")
+    message = 'Xero returned an API error - ' + e.parsed_xml.text.to_s.truncate(200) + '. Please ensure you have filled in all the required data in the right format.'
+    Rails.logger.error("Xero API error: #{message}")
     redirect_to session[:previous_url], alert: message
   end
 
-  def xero_unauthorized
-    message = 'You are not authorized to access the Xero account this company is connected to. Please disconnect the Xero account to continue.'
-    Rails.logger.error("Xero Error: 401 Unauthorized")
+  def xero_unauthorized(e)
+    message = 'Xero authorization failed - ' + CGI.unescape(e.request.body)
+    Rails.logger.error("Xero OAuth error: #{message}")
     redirect_to edit_company_path, alert: message
   end
 
   def xero_rate_limit_exceeded
     message = 'You have exceeded the number of times you can access Xero in 1 minute. Please wait a few minutes and try again.'
-    Rails.logger.error("Xero Error: Rate limited exceeded")
+    Rails.logger.error("Xero error: Rate limited exceeded")
     redirect_to symphony_root_path, alert: message
   end
 end
