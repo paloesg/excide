@@ -16,8 +16,6 @@ module Stripe
     def handle_checkout_session_completed(event)
       # Find the current_user using the data returned by stripe webhook
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      # Store the event data into database of company
-      puts "stripe Subscription: #{event.data.object.subscription}"
       # If stripe data is empty, initialize it
       if @current_user.company.stripe_subscription_plan_data.empty?
         @current_user.company.stripe_subscription_plan_data = {
@@ -38,7 +36,6 @@ module Stripe
     # end
 
     def handle_customer_subscription_updated(event)
-      puts "EVENT CUSTOMER SUBSCRIPTION UPDATED!: #{event.data.object}}"
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       period_end = event.data.object.current_period_end
       # Run mailer only when cancel_at_period_end is true
