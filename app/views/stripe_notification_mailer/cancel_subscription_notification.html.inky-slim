@@ -7,7 +7,7 @@ container
     columns
       p Hi #{@user.first_name},
 
-      p You have cancelled your subscription for Symphony PRO.
+      p You have cancelled your subscription for Symphony Pro.
 
       p Your pro features will be available till #{Time.at(@period_end).strftime("%d-%b-%Y")}.
       
