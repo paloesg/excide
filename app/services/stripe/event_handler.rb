@@ -40,14 +40,14 @@ module Stripe
       period_end = event.data.object.current_period_end
       # Run mailer only when cancel_at_period_end is true
       if event.data.object.cancel_at_period_end
-        # Assuming customer subscription updated only runs upon clicking the cancellation button
+        # Assuming customer_subscription_updated method only runs upon clicking the cancellation button
         StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
       end
     end
 
     def handle_customer_subscription_deleted(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      # Downgrade service when stripe deleted subscription
+      # Downgrade service runs when stripe deleted subscription
       DowngradeSubscriptionService.new(@current_user.company).run
     end
 
