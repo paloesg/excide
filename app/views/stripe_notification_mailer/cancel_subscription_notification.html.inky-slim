@@ -9,6 +9,6 @@ container
 
       p You have cancelled your subscription for Symphony PRO.
 
-      p Your pro features will be available till #{@period_end}.
+      p Your pro features will be available till #{Time.at(@period_end).strftime("%d-%b-%Y")}.
       
       p Please contact your admin if you did not do so.

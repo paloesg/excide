@@ -41,6 +41,7 @@ module Stripe
       puts "EVENT CUSTOMER SUBSCRIPTION UPDATED!: #{event.data.object}}"
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       period_end = event.data.object.current_period_end
+      # Run mailer only when cancel_at_period_end is true
       if event.data.object.cancel_at_period_end
         # Assuming customer subscription updated only runs upon clicking the cancellation button
         StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
