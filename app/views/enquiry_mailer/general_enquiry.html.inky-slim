@@ -1,8 +1,8 @@
 container
   row.collapse
-    columns small="6" valign="middle" 
+    columns small="6" valign="middle"
       = image_tag("https://excide.s3-ap-southeast-1.amazonaws.com/excide-logo.png", style: "width: 50%; height: 50%")
-  spacer size="16" 
+  spacer size="16"
   row
     columns
       p Hi #{@enquiry.name},
@@ -19,7 +19,7 @@ container
       p
         | Partner
         br
-        | Excide Pte. Ltd.
+        | VFO Asia Pte. Ltd.
         br
         | Mobile: +65 9698 1755
         br
