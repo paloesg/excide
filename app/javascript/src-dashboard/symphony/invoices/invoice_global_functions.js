@@ -51,15 +51,17 @@ window.calculateTotalTax = function(amount, rate) {
     result = (amount*(rate/100));
     addElementCalculatedTax(result.toFixed(2));
     var totalTax = 0;
+    // Increment the tax value
     $(".calculated-tax").each(function(){
       totalTax += parseFloat($(this).find("input.tax-value").val());
       return totalTax;
-    }) 
+    })
+    // Add tax + subtotal
     $(".total-calculated").val( totalTax + parseFloat($(".subtotal-calculated").val().replace(/,/g, '')) );
   } else if ( $("#invoice_line_amount_type").val() === "inclusive" ) {
-    // result = (amount*(rate/100));
     result = (amount-(amount/((100+rate)/100)));
     addElementCalculatedTax(result.toFixed(2));
+    // total = subtotal
     $(".total-calculated").val(  parseFloat($(".subtotal-calculated").val().replace(/,/g, '')) );
   } else {
     $( ".total-tax-row" ).remove();
