@@ -163,6 +163,19 @@ function formatDate(dateStr){
   return d;
 }
 
+function matchTotal(){
+  $("input.total-calculated").change(function(){
+    // Check if total inputed by user is the same as total extracted from textract and check that textract total exists
+    if ( $(".total-calculated").val() !==  $(".textract-total-value").val() ){
+      $(".textract-total-message").removeClass("d-none");
+      $("input#invoice_total").css({ border: "1px solid #dc3545" });
+    } else{
+      $(".textract-total-message").addClass("d-none");
+      $("input#invoice_total").css({ border: "1px solid #6fb497" });
+    }
+  });
+}
+
 // Get Document Analist from textract controller
 function getDocumentAnalysis(template, workflow){
   $.post("/symphony/"+template+"/"+workflow+"/get_textract").done((result) => {
@@ -200,19 +213,6 @@ function getDocumentAnalysis(template, workflow){
       alert("Unable to extract data from the file automatically. Please manually enter the data.");
     }
   })
-}
-
-function matchTotal(){
-  $("input.total-calculated").change(function(){
-    // Check if total inputed by user is the same as total extracted from textract and check that textract total exists
-    if ( $(".total-calculated").val() !=  $(".textract-total-value").val() ){
-      $(".textract-total-message").removeClass("d-none");
-      $("input#invoice_total").css({ border: "1px solid #dc3545" });
-    } else{
-      $(".textract-total-message").addClass("d-none");
-      $("input#invoice_total").css({ border: "1px solid #6fb497" });
-    }
-  });
 }
 
 $(document).on("turbolinks:load", function() {

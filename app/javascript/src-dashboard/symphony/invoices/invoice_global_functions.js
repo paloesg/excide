@@ -55,7 +55,7 @@ window.calculateTotalTax = function(amount, rate) {
     $(".calculated-tax").each(function(){
       totalTax += parseFloat($(this).find("input.tax-value").val());
       return totalTax;
-    })
+    });
     // Add tax + subtotal
     $(".total-calculated").val( totalTax + parseFloat($(".subtotal-calculated").val().replace(/,/g, '')) );
   } else if ( $("#invoice_line_amount_type").val() === "inclusive" ) {
