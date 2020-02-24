@@ -83,20 +83,20 @@
       .card-header Xero Details
       .card-body
         .form-group.form-check
-          = f.check_box :connect_xero, class: 'form-check-input'
+          = f.check_box :connect_xero, { class: 'form-check-input', disabled: current_user.company.basic?}
           = f.label :connect_xero, 'Enable Xero', class: 'form-check-label'
         .form-group
-          = link_to 'Connect to Xero', connect_to_xero_path, class: 'btn btn-primary mr-2'
-          = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: 'btn btn-danger'
+          = link_to 'Connect to Xero', connect_to_xero_path, class: "btn btn-primary mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
+          = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
         .form-group
-          = link_to 'Update contacts from Xero', update_contacts_from_xero_path, method: :post, class: 'btn btn-warning mr-2'
-          = link_to 'Update line items from Xero', update_line_items_from_xero_path, method: :post, class: 'btn btn-warning'
+          = link_to 'Update contacts from Xero', update_contacts_from_xero_path, method: :post, class: "btn btn-warning mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
+          = link_to 'Update line items from Xero', update_line_items_from_xero_path, method: :post, class: "btn btn-warning #{current_user.company.basic? ? 'disabled' : nil}"
         .form-group
           = f.label :xero_organisation_name
           = f.text_field :xero_organisation_name, class: 'form-control', disabled: true
         .form-group
           = f.label :xero_email
-          = f.text_field :xero_email, class: 'form-control'
+          = f.text_field :xero_email, class: 'form-control', disabled: current_user.company.basic?
     .card
       .card-header Project Information
       .card-body

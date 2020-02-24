@@ -18,11 +18,12 @@ class GenerateTextract
     begin
       get_document
       analyze_document
-      get_table
-      get_data_table
-      OpenStruct.new(success?: true, tables: @table_rows)
+      get_table # convert json textract to json table
+      get_data_table # convert json table to json array with fix format 
+      get_form # get total amount from textract
+      OpenStruct.new(success?: true, tables: @table_rows, forms: @kvs)
     rescue => e
-      OpenStruct.new(success?: false, tables: @table_rows, message: e.message)
+      OpenStruct.new(success?: false, tables: @table_rows, forms: @kvs, message: e.message)
     end
   end
 
@@ -47,7 +48,7 @@ class GenerateTextract
           name: file_name
         }
       },
-      feature_types: ["TABLES"],
+      feature_types: ["TABLES", "FORMS"],
       job_tag: "Receipt",
     })
     @document.aws_textract_job_id = resp[:job_id]
@@ -63,12 +64,14 @@ class GenerateTextract
 
   def get_table
     @table_result = Array.new()
+    # validate if aws textract data has in database
     if @document.aws_textract_data.present?
       @table_result = @document.aws_textract_data
     else
       @blocks = @textract_json['blocks']
       @blocks_map = Hash.new()
       @table_blocks = Array.new()
+      @forms = Array.new()
 
       @blocks.each do |block|
         @blocks_map[block['id']] = block
@@ -81,11 +84,54 @@ class GenerateTextract
         result = get_rows_column(table, @blocks_map)      
         @table_result.push(result)
       end
-
+      # save aws textract data to database
       @document.aws_textract_data = @table_result
       @document.save 
     end    
     return @table_result
+  end
+
+
+  def get_form
+    @blocks = @textract_json['blocks']
+    # get key and value maps
+    @key_map = Array.new()
+    @value_map = Array.new()
+    @block_map = Hash.new()
+
+    @blocks.each do |block|
+      block_id = block['id']
+      @block_map[block_id] = block
+      if block['block_type'] == "KEY_VALUE_SET"
+        if block['entity_types'].include? "KEY"
+          @key_map.push(block)
+        else
+          @value_map.push(block)
+        end
+      end
+    end
+
+    @kvs = Array.new()
+    @key_map.each do |key_block|
+      f = Hash.new()
+      @value_block = find_value_block(key_block, @value_map)
+      key = get_text(key_block, @block_map)
+      val = get_text(@value_block, @block_map)
+      f[key] = val
+      @kvs.push(f)
+    end
+    return @kvs
+  end
+
+  def find_value_block(key_block, value_map)
+    key_block['relationships'].each do |relationship|
+      if relationship['type'] == 'VALUE'
+        relationship['ids'].each do |value_id|
+          @value_block = value_map.find{|h| h['id'] == value_id}
+        end
+      end
+    end
+    return @value_block
   end
 
   def get_rows_column(table, data)
@@ -116,7 +162,7 @@ class GenerateTextract
           relationship['ids'].each do |child|
             word = data[child]
             if word['block_type'] == "WORD"
-              text += word['text']
+              text += word['text']+ ' '
             end
             if word['block_type'] == "SELECTION_ELEMENT"
               if word['selection_status'] == "SELECTED"
@@ -181,7 +227,6 @@ class GenerateTextract
 
     # remove first array, because that is as head of table
     @table_rows.shift
-
     return @table_rows
   end
 end

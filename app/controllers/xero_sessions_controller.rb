@@ -1,6 +1,6 @@
 class XeroSessionsController < ApplicationController
   include Adapter
-  after_action :verify_authorized, except: [:xero_callback_and_update, :disconnect_from_xero]
+  after_action :verify_authorized, except: :xero_callback_and_update
   
   def connect_to_xero
     authorize :xero_session, :connect_to_xero?
@@ -51,6 +51,7 @@ class XeroSessionsController < ApplicationController
   end
 
   def disconnect_from_xero
+    authorize :xero_session, :disconnect_from_xero?
     current_user.company.update_attributes(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)
 
     redirect_to edit_company_path, notice: "You have been disconnected from Xero."
