@@ -40,6 +40,8 @@ module Stripe
       period_end = event.data.object.current_period_end
       # Run mailer only when cancel_at_period_end is true
       if event.data.object.cancel_at_period_end
+        @current_user.company.stripe_subscription_plan_data['cancel'] = true
+        @current_user.save
         # Assuming customer_subscription_updated method only runs upon clicking the cancellation button
         StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
       end

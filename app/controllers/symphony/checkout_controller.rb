@@ -38,15 +38,16 @@ class Symphony::CheckoutController < ApplicationController
 
   def cancel
     authorize :checkout, :cancel?
-    current_user.company.stripe_subscription_plan_data['cancel'] = true
     # Cancel stripe subscription ONLY at the end of biling period
-    Stripe::Subscription.update(
+    if Stripe::Subscription.update(
       current_user.company.stripe_subscription_plan_data['subscription']['id'],
       {
         cancel_at_period_end: true,
       }
     )
-    current_user.company.save
-    redirect_to symphony_root_path, alert: 'You have cancelled your subscription. You have still have the PRO features until the end of your subscription date. Re-subscribe to PRO for more Symphony advanced features.'
+      redirect_to symphony_root_path, notice: 'You have cancelled your subscription successfully. You will still have the PRO features until the end of your subscription date. Re-subscribe to PRO for more Symphony advanced features.'
+    else
+      redirect_to symphony_root_path, alert: 'Cancellation of subscription failed. Please try again later or contact support.'
+    end
   end
 end
