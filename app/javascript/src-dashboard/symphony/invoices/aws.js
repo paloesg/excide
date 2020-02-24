@@ -114,6 +114,7 @@ function addLineItems(data){
         let itemAmount = parseFloat($(item).closest('.line-item-field.tax').siblings('.line-item-field.amount').children(".amount-data").val());
         calculateTotalTax(itemAmount.toString(), itemRate.toString());
       })
+      $("select#invoice_line_amount_type").attr("disabled","disabled");
     }
   });
 
