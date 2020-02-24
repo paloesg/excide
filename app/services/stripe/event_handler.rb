@@ -16,8 +16,6 @@ module Stripe
     def handle_checkout_session_completed(event)
       # Find the current_user using the data returned by stripe webhook
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      # Store the event data into database of company
-      puts "stripe Subscription: #{event.data.object.subscription}"
       # If stripe data is empty, initialize it
       if @current_user.company.stripe_subscription_plan_data.empty?
         @current_user.company.stripe_subscription_plan_data = {
@@ -36,6 +34,24 @@ module Stripe
     #   # Notify user when payment is upcoming for the next month
     #   StripeNotificationMailer.upcoming_payment_notification(@current_user).deliver_later
     # end
+
+    def handle_customer_subscription_updated(event)
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      period_end = event.data.object.current_period_end
+      # Run mailer only when cancel_at_period_end is true
+      if event.data.object.cancel_at_period_end
+        @current_user.company.stripe_subscription_plan_data['cancel'] = true
+        @current_user.save
+        # Assuming customer_subscription_updated method only runs upon clicking the cancellation button
+        StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
+      end
+    end
+
+    def handle_customer_subscription_deleted(event)
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      # Downgrade service runs when stripe deleted subscription
+      DowngradeSubscriptionService.new(@current_user.company).run
+    end
 
     def handle_invoice_payment_succeeded(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
