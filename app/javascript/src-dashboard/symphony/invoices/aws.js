@@ -201,7 +201,7 @@ function getDocumentAnalysis(template, workflow){
         }
         else if(Object.keys(form).toString().match(/Total/i)){
           // Trim white spaces
-          $(".textract-total-value").val(Object.values(form).toString().trim());
+          $(".textract-total-value").val(Object.values(form).toString().trim().replace(/,/g, ''));
           $('.textract-total').show();
         }
       })

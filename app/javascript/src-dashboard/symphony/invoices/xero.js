@@ -9,7 +9,7 @@ function convertCurrency(currency){
 
 //convert number to currency format
 function replaceNumberWithCurrencyFormat(num) {
-  return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1");
 }
 
 // Automatically calculate the subtotal field

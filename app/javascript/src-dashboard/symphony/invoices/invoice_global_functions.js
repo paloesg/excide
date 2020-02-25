@@ -7,7 +7,7 @@ window.convertCurrency = function(currency) {
 
 //Convert number to currency format
 window.replaceNumberWithCurrencyFormat = function(num) {
-  return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1");
 }
 
 // Automatically calculate the subtotal field
