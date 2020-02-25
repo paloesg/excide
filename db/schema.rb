@@ -10,19 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_23_101023) do
+ActiveRecord::Schema.define(version: 2020_02_10_092433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.bigint "record_id", null: false
+    t.bigint "record_id_int"
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
+    t.uuid "record_id", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -93,7 +104,6 @@ ActiveRecord::Schema.define(version: 2020_01_23_101023) do
     t.boolean "assigned", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "fulltime", default: false
     t.index ["user_id"], name: "index_availabilities_on_user_id"
   end
 
@@ -343,13 +353,14 @@ ActiveRecord::Schema.define(version: 2020_01_23_101023) do
     t.index ["workflow_action_id"], name: "index_reminders_on_workflow_action_id"
   end
 
-  create_table "responses", id: :serial, force: :cascade do |t|
-    t.text "content"
+  create_table "responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "content"
     t.integer "question_id"
     t.integer "choice_id"
     t.integer "segment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "multiple_choices_array"
     t.index ["choice_id"], name: "index_responses_on_choice_id"
     t.index ["question_id"], name: "index_responses_on_question_id"
     t.index ["segment_id"], name: "index_responses_on_segment_id"
@@ -401,6 +412,8 @@ ActiveRecord::Schema.define(version: 2020_01_23_101023) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "survey_type"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_survey_templates_on_company_id"
   end
 
   create_table "surveys", id: :serial, force: :cascade do |t|
@@ -411,9 +424,11 @@ ActiveRecord::Schema.define(version: 2020_01_23_101023) do
     t.integer "survey_template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "workflow_id"
     t.index ["company_id"], name: "index_surveys_on_company_id"
     t.index ["survey_template_id"], name: "index_surveys_on_survey_template_id"
     t.index ["user_id"], name: "index_surveys_on_user_id"
+    t.index ["workflow_id"], name: "index_surveys_on_workflow_id"
   end
 
   create_table "tasks", id: :serial, force: :cascade do |t|
@@ -431,10 +446,12 @@ ActiveRecord::Schema.define(version: 2020_01_23_101023) do
     t.string "link_url"
     t.boolean "important"
     t.bigint "child_workflow_template_id"
+    t.bigint "survey_template_id"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
+    t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
   end
 
   create_table "templates", id: :serial, force: :cascade do |t|
@@ -594,7 +611,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_101023) do
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "profiles", "users"
-  add_foreign_key "questions", "sections", column: "survey_section_id"
+  add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"
   add_foreign_key "recurring_workflows", "users"
@@ -606,15 +623,18 @@ ActiveRecord::Schema.define(version: 2020_01_23_101023) do
   add_foreign_key "responses", "questions"
   add_foreign_key "responses", "segments"
   add_foreign_key "sections", "templates"
-  add_foreign_key "segments", "sections", column: "survey_section_id"
+  add_foreign_key "segments", "survey_sections"
   add_foreign_key "segments", "surveys"
   add_foreign_key "survey_sections", "survey_templates"
+  add_foreign_key "survey_templates", "companies"
   add_foreign_key "surveys", "companies"
-  add_foreign_key "surveys", "templates", column: "survey_template_id"
+  add_foreign_key "surveys", "survey_templates"
   add_foreign_key "surveys", "users"
+  add_foreign_key "surveys", "workflows"
   add_foreign_key "tasks", "document_templates"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
+  add_foreign_key "tasks", "survey_templates"
   add_foreign_key "tasks", "templates", column: "child_workflow_template_id"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"

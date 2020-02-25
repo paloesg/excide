@@ -37,13 +37,14 @@
                       - else
                         - wf.documents.each do |d|
                           - if File.extname(d.file_url) == '.pdf'
-                            = d.filename
-                            br
-                            a.pdf-preview tabindex="0" data-placement="auto" data-container="body" data-content=""  data-document="https:#{d.file_url}" Preview
+                            / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
+                            - display_url = url_for(d.converted_image) if d.converted_image.attached?
                           - else
-                            = d.filename
-                            br
-                            a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{d.file_url}' class='img-fluid'/>" Preview
+                            - display_url = d.file_url
+                          = d.filename
+                          br
+                          a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" Preview
+
                     td
                       - if wf.invoice.blank?
                         i.flaticon2-paper.icon.mr-3.text-center.medium-icon.gray-icon

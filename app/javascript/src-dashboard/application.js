@@ -23,6 +23,7 @@ require("./symphony/batches/select_all_by_task");
 require("./symphony/zoom");
 require("./symphony/invoices/xero");
 require("./symphony/invoices/aws");
+require("./symphony/choice");
 
 window.createAllocation = require("./conductor/create_allocations");
 window.addAvailability = require("./conductor/add_availabilities");
@@ -44,3 +45,7 @@ require("./symphony/invoices/invoice_global_functions");
 window.deleteBatch = require("./components/delete_batch");
 
 require("./turbolinks-compatibility");
+
+// Actiontext
+require("trix");
+require("@rails/actiontext");
