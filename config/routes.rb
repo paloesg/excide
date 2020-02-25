@@ -43,7 +43,7 @@ Rails.application.routes.draw do
 
     resources :survey_templates, param: :survey_template_slug, except: [:destroy]
     delete '/survey_templates/:survey_template_slug/destroy_survey_section', to: 'survey_templates#destroy_survey_section', as: :destroy_survey_section
-    
+
     # get '/plan', to: 'companies#plan'
     scope '/checkout' do
       post 'create', to: 'checkout#create', as: :checkout_create
@@ -212,7 +212,6 @@ Rails.application.routes.draw do
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
   get 'about-us', to: 'home#about', as: :about
-  get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
 
   # VFO services
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
@@ -235,7 +234,9 @@ Rails.application.routes.draw do
   get 'annual-return-filing', to: 'home#annual-return-filing', as: :return
   get 'bookkeeping', to: 'home#bookkeeping', as: :bookkeeping
 
-  # Pricing plans
+  # Symphony pages
+  get '/symphony-features', to: 'home#symphony-features', as: :symphony_features
+  get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
   get '/symphony-pricing', to: 'home#symphony-pricing', as: :symphony_pricing
 
   get '/robots.txt' => 'home#robots'
