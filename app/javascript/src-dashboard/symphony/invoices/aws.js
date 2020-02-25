@@ -35,7 +35,7 @@ function getXeroDetails(template, workflow){
   });
 }
 
-function addValueToFieldLineItems(data){ 
+function addValueToFieldLineItems(data){
   // Add value to line item fields
   let items = '<select class="minimize-text line-items-dropdown-width dropdown-items selectized" name="invoice[line_items_attributes]['+data.index+'][item]" id="invoice_line_items_attributes_'+data.index+'_item" tabindex="-1" style="display: none;"><option value="" selected="selected"></option></select>';
   let description = '<input class="form-control minimize-text" type="text" name="invoice[line_items_attributes]['+data.index+'][description]" id="invoice_line_items_attributes_'+data.index+'_description" value="' + ( data.description ?  data.description : "") +'">';
@@ -90,7 +90,7 @@ function addLineItems(data){
     dropdownParent: "body",
     options: xeroAccounts
   });
-  
+
   // Selectize for Tax
   $("select[id='invoice_line_items_attributes_" + data.index + "_tax']").selectize({
     dropdownParent: "body",
@@ -219,7 +219,6 @@ function getDocumentAnalysis(template, workflow){
     }
   })
 }
-
 
 $(document).on("turbolinks:load", function() {
   $('.loading-textract').hide();
