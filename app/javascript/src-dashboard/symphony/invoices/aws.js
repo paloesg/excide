@@ -59,7 +59,11 @@ function addLineItems(data){
       let amount = $(this).closest(".line_items").find("input[id$='_amount']");
       let inputTax = $(this).closest(".line_items").find("select[id$='_tax']");
       let price = inputPrice.val() ? convertCurrency(inputPrice.val()) : 0;
-      amount.val(price === 0? 0 : quantity*price);
+      if(!quantity){
+        amount.val('');
+      }else{
+        amount.val(price === 0 ? 0 : quantity*price);
+      }
       $("input#subtotal").val( replaceNumberWithCurrencyFormat(calculateSubtotal()) );
 
       $(".tax > div > .has-items > .item").each(function(index, item) {
