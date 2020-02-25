@@ -114,7 +114,7 @@ function addLineItems(data){
         let itemAmount = parseFloat($(item).closest('.line-item-field.tax').siblings('.line-item-field.amount').children(".amount-data").val());
         calculateTotalTax(itemAmount.toString(), itemRate.toString());
       })
-      $("select#invoice_line_amount_type").attr("disabled","disabled");
+      $("select#invoice_line_amount_type").attr("disabled", "disabled");
     }
   });
 
@@ -211,10 +211,11 @@ function getDocumentAnalysis(template, workflow){
       $("input#subtotal").val(replaceNumberWithCurrencyFormat(calculateSubtotal()));
       matchTotal();
     }else{
-      alert("Unable to extract data from the file automatically. Please manually enter the data.");
+      alert("Unable to extract data from the file automatically. Please manually enter the data or refresh to try again.");
     }
   })
 }
+
 
 $(document).on("turbolinks:load", function() {
   $('.loading-textract').hide();
@@ -229,5 +230,10 @@ $(document).on("turbolinks:load", function() {
     getXeroDetails(template, workflow);
     getDocumentAnalysis(template, workflow);
     $('.loading-textract').show();
+  });
+
+  $('form#new_invoice').on('submit', function () {
+    // enable the select dropdown so that database can update the value
+    $(this).find('select#invoice_line_amount_type').prop('disabled', false);
   });
 });
