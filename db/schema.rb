@@ -354,7 +354,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_092433) do
   end
 
   create_table "responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "content"
+    t.text "content"
     t.integer "question_id"
     t.integer "choice_id"
     t.integer "segment_id"
