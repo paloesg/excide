@@ -2,21 +2,22 @@ $(document).on("turbolinks:load", function() {
   //check for the container before magnifying
   if($(".img-magnifier-container").length){
     // Detect zoomed-image before load image
-    //$(".zoomed-image").each(function (k, v) { v.src = v.src; });
+    $(".zoomed-image").each(function (k, v) { v.src = v.src; });
 
     $("img.zoomed-image").each(function() { //for multiple pages
       var img;
       var zoom;
       zoom = 1.5;
       img = $(this);
-      if (img[0].width > $(".img-magnifier-container")[0].offsetWidth) {
-        img[0].width = $(".img-magnifier-container")[0].offsetWidth;
-      };
-      if (img[0].height > $(".img-magnifier-container")[0].offsetHeight) {
-        img[0].height = $(".img-magnifier-container")[0].offsetHeight;
-      };
       //load the image to get the proper height of the image after it is loaded, but have to off the 'load', so that it loads the image on refresh (this is to prevent the function not working on refresh)
       img.off("load").on("load", function(){
+        //check that img always fit in the container.
+        if (img[0].width > $(".img-magnifier-container")[0].offsetWidth) {
+          img[0].width = $(".img-magnifier-container")[0].offsetWidth;
+        };
+        if (img[0].height > $(".img-magnifier-container")[0].offsetHeight) {
+          img[0].height = $(".img-magnifier-container")[0].offsetHeight;
+        };
         var glass, imageUrl, w, h, bw;
         /* Create magnifier glass: */
         glass = $("<div>");
@@ -90,6 +91,7 @@ $(document).on("turbolinks:load", function() {
         glass.on("touchmove", moveMagnifier);
         img.on("touchmove", moveMagnifier);
 
+        //toggle magnifier using switch.
         $(document).on("click","#zoom",function(){
           if($(this).prop("checked") == true){
             $(".img-magnifier-glass").show();
