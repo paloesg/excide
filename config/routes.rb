@@ -41,6 +41,9 @@ Rails.application.routes.draw do
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
     get '/xero_line_items', to: 'xero_line_items#show'
 
+    resources :survey_templates, param: :survey_template_slug, except: [:destroy]
+    delete '/survey_templates/:survey_template_slug/destroy_survey_section', to: 'survey_templates#destroy_survey_section', as: :destroy_survey_section
+
     # get '/plan', to: 'companies#plan'
     scope '/checkout' do
       post 'create', to: 'checkout#create', as: :checkout_create
@@ -49,7 +52,6 @@ Rails.application.routes.draw do
     end
 
     resources :templates, param: :template_slug, except: [:destroy]
-    post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
     delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
 
     resources :clients do
@@ -120,6 +122,7 @@ Rails.application.routes.draw do
           post '/next', to:'invoices#next_show_invoice', as: :next_show_invoice
           post '/prev', to:'invoices#prev_show_invoice', as: :prev_show_invoice
         end
+        resources :surveys
       end
     end
 
@@ -209,7 +212,6 @@ Rails.application.routes.draw do
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
   get 'about-us', to: 'home#about', as: :about
-  get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
 
   # VFO services
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
@@ -232,7 +234,9 @@ Rails.application.routes.draw do
   get 'annual-return-filing', to: 'home#annual-return-filing', as: :return
   get 'bookkeeping', to: 'home#bookkeeping', as: :bookkeeping
 
-  # Pricing plans
+  # Symphony pages
+  get '/symphony-features', to: 'home#symphony-features', as: :symphony_features
+  get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
   get '/symphony-pricing', to: 'home#symphony-pricing', as: :symphony_pricing
 
   get '/robots.txt' => 'home#robots'

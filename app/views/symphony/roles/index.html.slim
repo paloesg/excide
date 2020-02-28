@@ -19,8 +19,10 @@
             tr
               td = r.id
               td = r.name
-              td = r.users.length
-              td = r.users.map(&:full_name).join('<br />').html_safe
+              td = r.users.where(company_id: @company.id).count
+              / concatenate first name and last name using pluck, which is more efficient as it works in db level
+              / Arel.sql to prevent sql injection through raw SQL
+              td = r.users.where(company_id: @company.id).pluck(Arel.sql("CONCAT_WS(' ', users.first_name, users.last_name)")).join('<br />').html_safe
               td style="min-width: 135px;"
                 = link_to "Edit", edit_symphony_role_path(r.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
                 = link_to "Delete", symphony_role_path(r.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'

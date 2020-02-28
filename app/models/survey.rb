@@ -3,13 +3,15 @@ require 'csv'
 class Survey < ApplicationRecord
   belongs_to :user
   belongs_to :company
+  belongs_to :workflow
   belongs_to :survey_template
 
   has_many :segments, dependent: :destroy
 
   accepts_nested_attributes_for :company
+  accepts_nested_attributes_for :segments
 
-  validates :user, :survey_template, :title, presence: true
+  validates :user, :survey_template, presence: true
 
   def to_csv
     ::CSV.generate(headers: true) do |csv|

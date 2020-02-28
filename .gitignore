@@ -10,6 +10,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 !/log/.keep
+/storage/storage
 /tmp
 
 .env
