@@ -18,23 +18,6 @@ class Task < ApplicationRecord
 
   validates :instructions, :position, :task_type, :role_id, presence: true
 
-  # acts_as_notifiable configures your model as ActivityNotification::Notifiable
-  # with parameters as value or custom methods defined in your model as lambda or symbol.
-  # The first argument is the plural symbol name of your target model.
-  acts_as_notifiable :users,
-    # Notification targets as :targets is a necessary option
-    # Set to notify to author and users commented to the article, except comment owner self
-    targets: ->(task, key) {
-      (task.role.users).uniq
-    },
-    # Path to move when the notification is opened by the target user
-    # This is an optional configuration since activity_notification uses polymorphic_path as default
-    notifiable_path: :task_notifiable_path
-
-  def task_notifiable_path
-    symphony_workflow_path(self.section.template, self.get_workflow_action(self.section.template.company).workflow)
-  end
-
   def get_workflow_action(company_id, workflow_id = nil)
     workflow_id = workflow_id.present? ? Workflow.find(workflow_id).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id
 

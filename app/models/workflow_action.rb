@@ -26,6 +26,23 @@ class WorkflowAction < ApplicationRecord
   has_one :sub_workflow, class_name: 'Workflow'
   has_one :invoice
 
+  # acts_as_notifiable configures your model as ActivityNotification::Notifiable
+  # with parameters as value or custom methods defined in your model as lambda or symbol.
+  # The first argument is the plural symbol name of your target model.
+  acts_as_notifiable :users,
+    # Notification targets as :targets is a necessary option
+    # Set to notify to author and users commented to the article, except comment owner self
+    targets: ->(workflow_action, key) {
+      (workflow_action.task.role.users).uniq
+    },
+    # Path to move when the notification is opened by the target user
+    # This is an optional configuration since activity_notification uses polymorphic_path as default
+    notifiable_path: :wf_notifiable_path
+
+  def wf_notifiable_path
+    symphony_workflow_path(self.workflow.template, self.workflow)
+  end
+
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_workflow_action(self.company, self.workflow.id)
     next_action.update(deadline: next_task.days_to_complete.business_days.after(Date.current)) unless next_task.days_to_complete.nil?
@@ -36,7 +53,7 @@ class WorkflowAction < ApplicationRecord
     if (next_task.role.present? and self.workflow.batch.nil?) or (next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?)
       users = User.with_role(next_task.role.name.to_sym, self.company)
       # create notification
-      next_task.notify :users, parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
+      next_action.notify :users, parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
       # Trigger email notification for next task if role present
       users.each do |user|
         NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
