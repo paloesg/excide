@@ -206,7 +206,6 @@ function getDocumentAnalysis(template, workflow){
         else if(Object.keys(form).toString().match(/Total/i)){
           // Trim white spaces
           $(".textract-total-value").val(Object.values(form).toString().trim().replace(/,/g, ''));
-          $('.textract-total').show();
         }
       })
       $.each(tables, function(i, table){
@@ -226,7 +225,7 @@ $(document).on("turbolinks:load", function() {
 
   // Run textract when click button extract data
   $('.do-textract').click(function(){
-    $('.textract-total').hide();
+    $('.textract-total').show();
     $('.total-tax-row' ).remove();
     let template = $('.template-field').val() ;
     let workflow = $('.workflow-field').val() ;
