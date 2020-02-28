@@ -38,10 +38,9 @@
         /! begin: Notification bar
         .kt-header__topbar-item.kt-header__topbar-item--langs
           .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
-            span.kt-header__topbar-icon.kt-header__topbar-icon--success
-              i.flaticon2-notification
-          .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
-            = render_notifications(current_user.notifications)
+            span.kt-header__topbar-icon
+              / uses view notifications/default/_index.html.slim
+              = render_notifications_of current_user, index_content: :with_attributes
         /! end: Notification bar
         - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
           /! begin: Admin bar
