@@ -55,9 +55,6 @@
                 li.kt-nav__item
                   = link_to symphony_survey_templates_path, class: 'kt-nav__link' do
                     span.kt-nav__link-text Manage Survey Templates
-                li.kt-nav__item
-                  = link_to edit_company_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Company Details
           /! end: Admin bar
         /! begin: User bar
         .kt-header__topbar-item.kt-header__topbar-item--langs
@@ -69,6 +66,9 @@
               li.kt-nav__item
                 = link_to edit_user_registration_path, class: 'kt-nav__link' do
                   span.kt-nav__link-text User Profile
+              li.kt-nav__item
+                = link_to edit_company_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text Company Details
               li.kt-nav__item
                 = link_to symphony_archives_path, class: 'kt-nav__link' do
                   span.kt-nav__link-text Archived Workflows
