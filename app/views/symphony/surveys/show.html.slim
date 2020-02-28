@@ -1,0 +1,34 @@
+.row
+  .col-md-12
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title
+            | Survey Details
+      .kt-portlet__body
+        - @survey.survey_template.survey_sections.each_with_index do |sur_sec, index|
+          h4 Survey Section #{index + 1}: 
+          p.text-dark = sur_sec.display_name
+          p = sur_sec.description.body.to_rendered_html_with_layout()
+          - sur_sec.segments.where(survey_id: @survey.id).each do |s|
+            .border.shadow.p-3.mb-3
+              h4 Segment Name: 
+              p.text-dark = s.name
+              hr
+              - s.survey_section.questions.each do |qn|
+                h5.text-primary = qn.content
+                - s.responses.each do |res|
+                  - if res.question_id == qn.id
+                    / check for single choice response
+                    - if res.choice_id.present?
+                      p.text-dark = res.choice.content
+                    - elsif res.file.attached?
+                      p.text-dark = link_to 'Download Attachment', rails_blob_path(res.file, disposition: "attachment")
+                    / check the case of no checkboxes checked
+                    - elsif res.question.question_type == "multiple" and res.multiple_choices_array.present?
+                      - JSON.parse(res.multiple_choices_array).each do |r|
+                        p.text-dark = Choice.find(r).content
+                    - else
+                      p.text-dark = res.content
+        .col-sm-12
+          = link_to 'Back to workflow', symphony_workflow_path(workflow_name: params[:workflow_name], workflow_id: params[:workflow_id]), role: 'button', class: 'btn btn-primary pull-right'

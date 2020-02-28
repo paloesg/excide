@@ -20,6 +20,9 @@ tr
       .form-group.col-sm-12.pt-2
         = f.label :document_template_id, 'Document Template'
         = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay mb-2"}
+      .form-group.col-sm-12
+        = f.label :survey_template_id, 'Survey Template'
+        = f.select :survey_template_id, options_for_select(SurveyTemplate.all.collect{|sur_tem| [sur_tem.title, sur_tem.id]}, selected: f.object.survey_template&.id), {include_blank: true}, {class: "dropdown-overlay mb-2"}
       .form-inline.col-sm-12.p-0.mb-2
         .form-group.col-sm-2
           = f.label :days_to_complete

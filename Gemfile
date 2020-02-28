@@ -88,7 +88,7 @@ gem 'acts_as_list'
 # Use user friendly slugs
 gem 'friendly_id', '~> 5.3.0'
 # Amazon S3 SDK
-gem 'aws-sdk', '~> 2'
+gem 'aws-sdk', '~> 3'
 # Sitemap generator
 gem 'sitemap_generator'
 # Uploading of sitemap to AWS
@@ -121,10 +121,12 @@ gem 'bootstrap', '~> 4.3'
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
 # Font Awesome Rails
 gem "font-awesome-rails"
-#Use inky for email templating
+# Use inky for email templating
 gem 'inky-rb', require: 'inky'
 # Stylesheet inlining for email
 gem 'premailer-rails'
+# Default processer: MiniMagick. Enable variant for image using ActiveStorage
+gem 'image_processing', '~> 1.2'
 
 # Nested form helper
 # gem "cocoon"
