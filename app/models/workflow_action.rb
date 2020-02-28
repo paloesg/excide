@@ -35,6 +35,8 @@ class WorkflowAction < ApplicationRecord
 
     if (next_task.role.present? and self.workflow.batch.nil?) or (next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?)
       users = User.with_role(next_task.role.name.to_sym, self.company)
+      # create notification
+      next_task.notify :users, parameters: { printable_notifiable_name: "#{next_task.instructions}" }, send_later: false
       # Trigger email notification for next task if role present
       users.each do |user|
         NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'

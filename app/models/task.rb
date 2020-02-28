@@ -32,7 +32,7 @@ class Task < ApplicationRecord
     notifiable_path: :task_notifiable_path
 
   def task_notifiable_path
-    symphony_workflow_path(self.section.template, self.get_workflow_action.workflow)
+    symphony_workflow_path(self.section.template, self.get_workflow_action(self.section.template.company).workflow)
   end
 
   def get_workflow_action(company_id, workflow_id = nil)
