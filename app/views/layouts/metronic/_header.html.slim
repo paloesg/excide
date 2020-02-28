@@ -117,6 +117,12 @@
               - else
                 = link_to symphony_batches_index_path, class:"kt-menu__link" do
                   span.kt-menu__link-text Batches
+            li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if @navbar_recurring_active}"
+              = link_to symphony_workflows_recurring_path, class:"kt-menu__link" do
+                span.kt-menu__link-text Recurring
+            li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if @navbar_reminders_active}"
+              = link_to symphony_reminders_path, class:"kt-menu__link" do
+                span.kt-menu__link-text Reminders
 
         .xero-info.ml-3
           - if current_user.company.session_handle.present? and (current_user.company.free_trial? or current_user.company.pro?)

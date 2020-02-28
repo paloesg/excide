@@ -18,13 +18,13 @@
   .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
     .kt-portlet.text-center
       .kt-portlet__body
-        h5.kt-widget14__title Reminders
-        h1.kt-widget14__desc = link_to @reminder_count, symphony_reminders_path, class: 'text-dark'
+        h5.kt-widget14__title Recurring
+        h1.kt-widget14__desc = @recurring_count
   .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
     .kt-portlet.text-center
       .kt-portlet__body
-        h5.kt-widget14__title Recurring
-        h1.kt-widget14__desc = link_to @recurring_count, symphony_workflows_recurring_path, class: 'text-dark'
+        h5.kt-widget14__title Reminders
+        h1.kt-widget14__desc = @reminder_count
 .row
   .col-md-4
     .kt-portlet
