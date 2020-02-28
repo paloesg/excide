@@ -1,6 +1,6 @@
 class Workflow < ApplicationRecord
   include FriendlyId
-  friendly_id :short_uuid, use: [:slugged, :finders]
+  friendly_id :slug, use: [:slugged, :finders]
 
   belongs_to :user
   belongs_to :company
@@ -23,6 +23,7 @@ class Workflow < ApplicationRecord
   validate :check_data_fields
 
   after_commit :create_actions_and_trigger_first_task, on: :create
+  after_create :short_uuid
 
   self.implicit_order_column = "created_at"
 
@@ -46,7 +47,8 @@ class Workflow < ApplicationRecord
   end
 
   def short_uuid
-    ShortUUID.shorten id
+    self.slug = ShortUUID.shorten id
+    self.save
   end
 
   def build_workflowable(params)
