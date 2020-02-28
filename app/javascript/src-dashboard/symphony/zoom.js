@@ -14,10 +14,10 @@ $(document).on("turbolinks:load", function() {
         //check that img always fit in the container.
         if (img[0].width > $(".img-magnifier-container")[0].offsetWidth) {
           img[0].width = $(".img-magnifier-container")[0].offsetWidth;
-        };
+        }
         if (img[0].height > $(".img-magnifier-container")[0].offsetHeight) {
           img[0].height = $(".img-magnifier-container")[0].offsetHeight;
-        };
+        }
         var glass, imageUrl, w, h, bw;
         /* Create magnifier glass: */
         glass = $("<div>");
@@ -93,10 +93,10 @@ $(document).on("turbolinks:load", function() {
 
         //toggle magnifier using switch.
         $(document).on("click","#zoom",function(){
-          if($(this).prop("checked") == true){
+          if($(this).prop("checked") === true){
             $(".img-magnifier-glass").show();
           }
-          else if($(this).prop("checked") == false){
+          else if($(this).prop("checked") === false){
             $(".img-magnifier-glass").hide();
           }
         });
