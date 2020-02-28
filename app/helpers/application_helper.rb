@@ -13,7 +13,7 @@ module ApplicationHelper
     direction_sort = column == params[:sort] && params[:direction] == "asc" ? "desc" : "asc"
     # get current path url
     url = request.path
-    
+
     link_to "#{url}?page=#{params[:page]}&sort=#{column}&direction=#{direction_sort}" do
       if column == params[:sort]
         "#{title} #{content_tag :i, nil, class: arrow }".html_safe
@@ -47,7 +47,7 @@ module ApplicationHelper
     fields = f.fields_for(association, new_object, child_index: id) do |builder|
       render(association.to_s.singularize + '_fields', locals.merge!(f: builder))
     end
-    link_to(name, '#', class: "add_task_fields btn btn-primary", data: {section_id: f.object.id, id: id, fields: fields.gsub("\n", "")})
+    link_to(name, '#', class: "add_task_fields btn btn-success pull-right", data: {section_id: f.object.id, id: id, fields: fields.gsub("\n", "")})
   end
 
   # def link_to_add_choices(name, f, association, locals={})
