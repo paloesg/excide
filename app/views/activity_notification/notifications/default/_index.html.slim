@@ -1,23 +1,38 @@
-.notification_wrapper
-  a.dropdown_notification
-    p#notification_count.notification_count
-      span class=("#{'unopened' if @target.has_unopened_notifications?(parameters)}") 
-        = @target.unopened_notification_count(parameters)
-        i.ml-1.flaticon2-notification
-  .notification_list_wrapper
-    .notification_header_wrapper
-      p.notification_header_title
-        | Notifications
-      p.notification_header_menu
-        = link_to "Open all", open_all_user_notifications_path(@target, parameters.slice(:routing_scope, :devise_default_routes)), method: :post, remote: true
-        - if @target.class.subscription_enabled?
-          = link_to "Subscriptions", subscriptions_path_for(@target, parameters.slice(:routing_scope, :devise_default_routes))
-    .notifications
-      = yield :notification_index
-    = link_to notifications_path_for(@target, parameters.slice(:routing_scope, :devise_default_routes)) do
-      .notification_link_wrapper
-        p.notification_link
-          | See notifications
+.kt-header__topbar-item.dropdown
+  .kt-header__topbar-wrapper data-offset="10px,0px" data-toggle="dropdown" 
+    span.kt-header__topbar-icon.kt-header__topbar-icon--success
+      i.flaticon2-bell-alarm-symbol
+    span.kt-hidden.kt-badge.kt-badge--danger
+  .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim.dropdown-menu-xl
+    form
+      /! begin: Head
+      .kt-head.kt-head--skin-light.kt-head--fit-x.kt-head--fit-b.dropdown_notification
+        h3.kt-head__title
+          | User Notifications
+          | &nbsp;
+          span.btn.btn-label-primary.btn-sm.btn-bold.btn-font-md class=("#{'unopened' if @target.has_unopened_notifications?(parameters)}") 
+            = "#{@target.unopened_notification_count(parameters)} new"
+        ul.nav.nav-tabs.nav-tabs-line.nav-tabs-bold.nav-tabs-line-3x.nav-tabs-line-brand.kt-notification-item-padding-x role="tablist" 
+          li.nav-item
+            a.nav-link.active.show aria-selected="true" data-toggle="tab" href="#topbar_notifications_notifications" role="tab"  Notifications  ​
+      / ! end: Head
+      .notification_list_wrapper
+        .tab-content
+          #topbar_notifications_notifications.tab-pane.active.show role="tabpanel" 
+            .kt-notification.kt-margin-t-10.kt-margin-b-10.kt-scroll.ps.ps--active-y data-height="300" data-mobile-height="200" data-scroll="true" 
+              .kt-notification__item-details
+                .kt-notification__item-title
+                  .notifications
+                    = yield :notification_index
+            / a.kt-notification__item href="#"
+            / .kt-notification__item-icon
+            /   i.flaticon2-line-chart.kt-font-success
+            
+            /     .notifications
+                  / = yield :notification_index
+                
+                / = yield :notification_index
+
 css:
   .notification_wrapper {
     margin: 13px 15px 0 2px;
@@ -73,9 +88,9 @@ css:
     font-size: 14px;
   }
 
-  .notification_wrapper .notification_list_wrapper .notifications {
+  .notifications {
     position: relative;
-    width: 330px;
+    width: 100%;
     height: calc(500px - 37px - 37px);
     overflow: scroll;
   }
@@ -97,8 +112,8 @@ css:
     text-align: center;
     font-size: 14px;
   }
-
 javascript:
   $(".dropdown_notification").click(function(){
     $(this).parent().toggleClass("open");
   });
+/ = yield :notification_index
