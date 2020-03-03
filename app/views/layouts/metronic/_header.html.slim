@@ -109,17 +109,15 @@
                         span.kt-menu__link-text #{t.title}
                         span.kt-badge.kt-badge--unified-primary.kt-badge--md.kt-badge-bold = t.company_workflows(current_user.company).where(completed: [false, nil]).count
             li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'batches'}"
-              - if current_user.company.basic?
-                = link_to symphony_batches_index_path, class:"kt-menu__link" do
-                  span.kt-menu__link-text
-                    | Batches
-                    = content_tag :span, "Pro", class: "badge badge-success ml-2"
-              - else
-                = link_to symphony_batches_index_path, class:"kt-menu__link" do
-                  span.kt-menu__link-text Batches
+              = link_to symphony_batches_index_path, class:"kt-menu__link" do
+                span.kt-menu__link-text
+                  | Batches
+                  = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
             li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'recurring_workflows'}"
               = link_to symphony_workflows_recurring_path, class:"kt-menu__link" do
-                span.kt-menu__link-text Recurring
+                span.kt-menu__link-text
+                  | Recurring
+                  = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
             li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'reminders'}"
               = link_to symphony_reminders_path, class:"kt-menu__link" do
                 span.kt-menu__link-text Reminders
