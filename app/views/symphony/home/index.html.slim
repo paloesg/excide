@@ -51,7 +51,7 @@
               = label_tag "template", "Select template:"
               = select_tag "template", options_for_select(@templates.map{|t| (@template_pro.include? t and current_user.company.basic?) ? ["[PRO] " + t.title.humanize, t.slug] : [t.title.humanize, t.slug]}, disabled: @template_pro.map{|t| t.slug if current_user.company.basic?}), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
             .kt-form__actions
-              = link_to 'New Workflow', '', class: 'btn btn-primary d-block', id: 'new-workflow'
+              = link_to 'New Workflow', '/symphony', class: 'btn btn-primary d-block', id: 'new-workflow'
       .col-md-6
         .kt-portlet
           .kt-portlet__head
