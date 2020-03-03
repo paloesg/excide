@@ -96,27 +96,28 @@
               = select_tag('workflow_type', options_for_select(@templates.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'selectize-workflow-type')
             .offset-sm-1.col-sm-6
               .float-right = page_entries_info @workflows, entry_name: 'workflow'
-        .kt-widget11
-          table.table
-            thead
-              tr
-                th = sortable "id", "Workflow ID"
-                th = sortable "template", "Workflow Type"
-                th = sortable "completed", "Status"
-            tbody
-              - @workflows.each do |w|
-                tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                  td = link_to w.id, symphony_workflow_path(w.template.slug, w.id)
-                  td = w.template.title
-                  td = w.completed ? 'Completed' : w.current_section&.section_name
-          = paginate @workflows, views_prefix: 'dashboards'
+        table.table
+          thead
+            tr
+              th = sortable "id", "Workflow ID"
+              th = sortable "template", "Workflow Type"
+              th = sortable "completed", "Status"
+          tbody
+            - @workflows.each do |w|
+              tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
+                td = link_to w.id, symphony_workflow_path(w.template.slug, w.id)
+                td = w.template.title
+                td = w.completed ? 'Completed' : w.current_section&.section_name
+        = paginate @workflows, views_prefix: 'dashboards'
   .col-md-6.col-sm-12
     .kt-portlet
       .kt-portlet__head
         .kt-portlet__head-label
           h3.kt-portlet__head-title Your Outstanding Tasks
       .kt-portlet__body
-        .kt-widget11
+        - if @outstanding_actions.blank?
+          | Hooray! You have no outstanding tasks at the moment.
+        - else
           table.table
             thead
               tr
