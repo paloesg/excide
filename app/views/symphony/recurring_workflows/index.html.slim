@@ -1,12 +1,9 @@
 .row
-  .col-sm-12
-    h1 Recurring Workflows
-.row
   .col-sm-8
     .kt-portlet
       .kt-portlet__head
         .kt-portlet__head-label
-          h3.kt-portlet__head-title Upcoming Recurring Workflow
+          h3.kt-portlet__head-title Recurring Workflows
       .kt-portlet__body
         .kt-section
           .kt-section__content
@@ -21,7 +18,7 @@
                   tbody
                     - if @recurring_workflows.blank?
                       tr
-                        td colspan="6" No upcoming workflow at the moment.
+                        td colspan="6" No recurring workflows at the moment.
                     - else
                       - @recurring_workflows.order(created_at: :desc).each do |recurring_workflow|
                         tr
@@ -30,18 +27,14 @@
                           td = recurring_workflow.next_workflow_date
                           td.kt-align-right
                             = link_to symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), method: :get, role: 'button', class: 'btn btn-primary btn-sm mr-1' do
-                              i.ti-eye
-                              |  View
-                            = link_to edit_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-primary btn-sm mr-1' do
-                              i.ti-pencil
-                              |  Edit
-                            = link_to trigger_workflow_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-warning btn-sm mr-1' do
-                              i.ti-control-play
-                              |  Trigger
+                              | View
+                            = link_to edit_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-warning btn-sm mr-1' do
+                              | Edit
+                            = link_to trigger_workflow_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-success btn-sm mr-1' do
+                              | Trigger
                             - if recurring_workflow.next_workflow_date.present?
                               = link_to stop_recurring_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), method: :post, role: 'button', class: 'btn btn-danger btn-sm mr-1' do
-                                i.ti-control-stop
-                                |  Stop
+                                | Stop
   .col-sm-4
     .kt-portlet
       .kt-portlet__head
