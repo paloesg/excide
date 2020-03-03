@@ -30,9 +30,7 @@ class Symphony::HomeController < ApplicationController
   def sort_column(array)
     array.sort_by{
       |item| if params[:sort] == "template" then item.template.title.upcase
-      elsif params[:sort] == "deadline" then item.deadline ? item.deadline : Time.at(0)
       elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.section_name
-      elsif params[:sort] == "id" then item.id ? item.id.upcase : ""
       end
     }
   end

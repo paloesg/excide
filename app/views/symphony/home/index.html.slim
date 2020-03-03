@@ -99,7 +99,7 @@
         table.table
           thead
             tr
-              th = sortable "id", "Workflow ID"
+              th Workflow ID
               th = sortable "template", "Workflow Type"
               th = sortable "completed", "Status"
           tbody
@@ -115,20 +115,22 @@
         .kt-portlet__head-label
           h3.kt-portlet__head-title Your Outstanding Tasks
       .kt-portlet__body
-        - if @outstanding_actions.blank?
-          | Hooray! You have no outstanding tasks at the moment.
-        - else
-          table.table
-            thead
-              tr
-                th Workflow ID
-                th Workflow Type
-                th Task Instructions
-                th Deadline
-            tbody
-              - @outstanding_actions.each do |action|
-                tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
-                  td = link_to action.workflow.id, symphony_workflow_path(action.workflow.template.slug, action.workflow.id)
-                  td = action.workflow.template.title
-                  td = action.task.instructions
-                  td = action.deadline&.strftime("%d/%m/%Y")
+        .kt-section
+          .kt-section__content
+            - if @outstanding_actions.blank?
+              | Hooray! You have no outstanding tasks at the moment.
+            - else
+              table.table
+                thead
+                  tr
+                    th Workflow ID
+                    th Workflow Type
+                    th Task Instructions
+                    th Deadline
+                tbody
+                  - @outstanding_actions.each do |action|
+                    tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
+                      td = link_to action.workflow.id, symphony_workflow_path(action.workflow.template.slug, action.workflow.id)
+                      td = action.workflow.template.title
+                      td = action.task.instructions
+                      td = action.deadline&.strftime("%d/%m/%Y")
