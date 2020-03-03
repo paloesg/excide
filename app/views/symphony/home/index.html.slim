@@ -105,7 +105,7 @@
           tbody
             - @workflows.each do |w|
               tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                td = link_to w.id, symphony_workflow_path(w.template.slug, w.id)
+                td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
                 td = w.template.title
                 td = w.completed ? 'Completed' : w.current_section&.section_name
         = paginate @workflows, views_prefix: 'dashboards'
@@ -130,7 +130,7 @@
                 tbody
                   - @outstanding_actions.each do |action|
                     tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
-                      td = link_to action.workflow.id, symphony_workflow_path(action.workflow.template.slug, action.workflow.id)
+                      td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
                       td = action.workflow.template.title
                       td = action.task.instructions
                       td = action.deadline&.strftime("%d/%m/%Y")
