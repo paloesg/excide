@@ -2,6 +2,12 @@
   z-index: 1001 !important;
 }
 
+.carousel-indicators,
+.carousel-control-next,
+.carousel-control-prev {
+    filter: invert(100%);
+}
+
 // Class to make five column in one row
 .col-2dot4,
 .col-sm-2dot4,
