@@ -5,40 +5,7 @@
   .loading
     .loader
   .col-md-4.forward
-    - if @documents.empty?
-      | No documents available. Please upload documents first.
-    - else
-      - if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
-        .img-magnifier-container
-          = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
-      - else
-        - display_url = url_for(@document.converted_image.first) if @document.converted_image.attached?
-        .img-magnifier-container
-          div#carouselExampleIndicators.carousel.slide data-ride="carousel" data-interval="false"
-            ol.carousel-indicators
-              - @document.converted_image.each.with_index(0) do |image, index|
-                li. data-target="#carouselExampleIndicators" data-slide-to="#{index}" class=[index.zero? ? 'active' : '']
-              end
-            div.carousel-inner
-              - @document.converted_image.each.with_index(0) do |image, index|
-                div. class=["carousel-item", index.zero? ? 'active' : '' ]
-                  = link_to url_for(image)
-                    = image_tag(image, class: 'img-responsive zoomed-image')
-              end
-            a.carousel-control-prev data-slide="prev" href="#carouselExampleIndicators" role="button"
-              span.carousel-control-prev-icon aria-hidden="true"
-              span.sr-only Previous
-            a.carousel-control-next data-slide="next" href="#carouselExampleIndicators" role="button"
-              span.carousel-control-next-icon aria-hidden="true"
-              span.sr-only Next
-      end
-      span.form-group.float-right
-        .kt-switch
-          label
-            label.col-form-label Magnifier
-            = check_box_tag "zoom", "true", true
-            span
-    end
+    = render "document"
   .col-md-8
     .card.mb-3
       .row.m-2
@@ -82,7 +49,7 @@
                 .spinner-border.ml-auto aria-hidden="true" role="status"
             .result-textract
               = label_tag :textract_json, 'Result Textract JSON'
-              = text_area_tag 'body', nil, rows: 10, class:"form-control aws-textract-result"
+              = text_area_tag 'textract', nil, rows: 10, class:"form-control aws-textract-result"
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f

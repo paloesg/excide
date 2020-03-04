@@ -1,13 +1,6 @@
 .row
   .col-md-4.mt-4
-    - if @documents.empty?
-      | No documents available. Please upload documents first.
-    - else
-      - if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
-        .img-magnifier-container
-          = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
-      - else
-        iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" id="iframe-document"
+    = render "document"
   .col.md-8
     .row
       .col-auto.ml-auto.text-center
