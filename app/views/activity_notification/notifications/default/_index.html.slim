@@ -1,7 +1,7 @@
 .kt-header__topbar-item.dropdown
   .kt-header__topbar-wrapper data-offset="10px,0px" data-toggle="dropdown" 
-    span.kt-header__topbar-icon.kt-header__topbar-icon--success
-      i.flaticon2-bell-alarm-symbol.
+    span.kt-header__topbar-icon.kt-header__topbar-icon--success.icon-size.mr-3
+      i.flaticon2-bell-alarm-symbol
       - if @target.has_unopened_notifications?(parameters)
         span.kt-badge.kt-badge--danger.mb-3
           = @target.unopened_notification_count(parameters)
@@ -23,6 +23,10 @@
         = yield :notification_index
 
 css:
+  span.icon-size{
+    width: 50px !important;
+  }
+
   .notification_wrapper {
     margin: 13px 15px 0 2px;
     float: left;
