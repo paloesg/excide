@@ -16,22 +16,9 @@
           li.nav-item
             a.nav-link.active.show aria-selected="true" data-toggle="tab" href="#topbar_notifications_notifications" role="tab"  Notifications  ​
       / ! end: Head
-      .notification_list_wrapper
-        .tab-content
-          #topbar_notifications_notifications.tab-pane.active.show role="tabpanel" 
-            .kt-notification.kt-margin-t-10.kt-margin-b-10.kt-scroll.ps.ps--active-y data-height="300" data-mobile-height="200" data-scroll="true" 
-              .kt-notification__item-details
-                .kt-notification__item-title
-                  .notifications
-                    = yield :notification_index
-            / a.kt-notification__item href="#"
-            / .kt-notification__item-icon
-            /   i.flaticon2-line-chart.kt-font-success
-            
-            /     .notifications
-                  / = yield :notification_index
-                
-                / = yield :notification_index
+      .notifications
+        //Calls _default.html.slim
+        = yield :notification_index
 
 css:
   .notification_wrapper {
@@ -112,8 +99,8 @@ css:
     text-align: center;
     font-size: 14px;
   }
+  
 javascript:
   $(".dropdown_notification").click(function(){
     $(this).parent().toggleClass("open");
   });
-/ = yield :notification_index
