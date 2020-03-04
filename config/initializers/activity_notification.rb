@@ -18,7 +18,7 @@ ActivityNotification.configure do |config|
   # Configure if email notification is enabled as default.
   # Note that you can configure them for each model by acts_as roles.
   # Set true when you want to turn on email notifications as default.
-  config.email_enabled = false
+  config.email_enabled = true
 
   # Configure if subscription is managed.
   # Note that this parameter must be true when you want use subscription management.
@@ -33,7 +33,7 @@ ActivityNotification.configure do |config|
 
   # Configure the e-mail address which will be shown in ActivityNotification::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-activity_notification@example.com'
+  config.mailer_sender = 'admin@excide.co'
 
   # Configure the class responsible to send e-mails.
   # config.mailer = "ActivityNotification::Mailer"

@@ -1,14 +1,14 @@
 class NotificationMailer < ApplicationMailer
   default from: 'Excide Symphony <admin@excide.co>'
 
-  def task_notification(task, action, user)
-    @task = task
-    @action = action
-    @user = user
-    address = Mail::Address.new @user.email
-    address.display_name = @user.full_name
-    mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.friendly_id)
-  end
+  # def task_notification(task, action, user)
+  #   @task = task
+  #   @action = action
+  #   @user = user
+  #   address = Mail::Address.new @user.email
+  #   address.display_name = @user.full_name
+  #   mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.friendly_id)
+  # end
 
   def first_task_notification(task, batch, user)
     @task = task

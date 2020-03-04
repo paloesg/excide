@@ -36,7 +36,9 @@ class User < ApplicationRecord
   # acts_as_target configures your model as ActivityNotification::Target
   # with parameters as value or custom methods defined in your model as lambda or symbol.
   # This is an example without any options (default configuration) as the target.
-  acts_as_target
+  # Example using confirmed_at of devise field
+  # to decide whether activity_notification sends notification email to this user
+  acts_as_target email: :email, email_allowed: :confirmed_at
 
   include AASM
 

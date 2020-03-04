@@ -33,6 +33,8 @@ class WorkflowAction < ApplicationRecord
     # Notification targets as :targets is a necessary option
     # Set to notify to author and users commented to the article, except comment owner self
     targets: ->(workflow_action, _key) { workflow_action.task.role.users.uniq },
+    # Allow notification email
+    email_allowed: true,
     # Path to move when the notification is opened by the target user
     # This is an optional configuration since activity_notification uses polymorphic_path as default
     notifiable_path: :wf_notifiable_path
@@ -53,9 +55,9 @@ class WorkflowAction < ApplicationRecord
       # create notification
       next_action.notify :users, parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
       # Trigger email notification for next task if role present
-      users.each do |user|
-        NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
-      end
+      # users.each do |user|
+      #   NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
+      # end
     end
   end
 
