@@ -32,6 +32,10 @@ For rails 5 and above:
 
     rails db:setup
 
+Install ImageMagick for Image Processing gem.
+
+    brew install imagemagick vips
+
 Start the application server.
 
     bin/rails server
