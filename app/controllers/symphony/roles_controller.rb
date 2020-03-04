@@ -8,12 +8,12 @@ class Symphony::RolesController < ApplicationController
   end
 
   def new
-    @users = User.where(company: @company).order(:id).pluck(:email, :id)
+    @users = User.where(company: @company).order(:id)
     @role = Role.new
   end
 
   def create
-    @role = Role.find_or_create_by(role_params)
+    @role = Role.new(role_params)
     if @role.save
       update_users_role
       redirect_to symphony_roles_path, notice: 'Role successfully created!'
@@ -23,7 +23,7 @@ class Symphony::RolesController < ApplicationController
   end
 
   def edit
-    @users = User.where(company: @company).order(:id).pluck(:email, :id)
+    @users = User.where(company: @company).order(:id)
   end
 
   def update
@@ -62,6 +62,6 @@ class Symphony::RolesController < ApplicationController
   end
 
   def role_params
-    params.require(:role).permit(:name, :resource_id, :resource_type)
+    params.require(:role).permit(:name, :resource_id, :resource_type, user_ids: [])
   end
 end

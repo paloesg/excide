@@ -1,7 +1,4 @@
 tr
-  td.task-fields
-    = f.hidden_field :_destroy
-    = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks'
   td.task-fields = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
   td.task-fields = f.select :task_type, options_for_select(Task.task_types.map{|k, v| ((k == "create_invoice_payable" || k == "xero_send_invoice" || k ==  "create_invoice_receivable" || k == "coding_invoice") && current_user.company.basic?) ? ["[PRO] " + k.humanize, k] : [k.humanize, k]}, selected: f.object.task_type, disabled: current_user.company.basic? ? ["create_invoice_payable", "xero_send_invoice", "create_invoice_receivable", "coding_invoice"] : []), {}, { required: true, class: "dropdown-overlay"}
 
@@ -11,6 +8,9 @@ tr
     p
       a data-toggle="collapse" href="#task-index-#{f.index}-section-#{g.id}" aria-expanded="false" class="collapsed"
         i.fa aria-hidden="true"
+  td.task-fields
+    = f.hidden_field :_destroy
+    = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks mr-4'
 tr
   td.table-active.p-0.border-top-0 colspan="6"
     div id="task-index-#{f.index}-section-#{g.id}" class="collapse"
@@ -20,6 +20,9 @@ tr
       .form-group.col-sm-12.pt-2
         = f.label :document_template_id, 'Document Template'
         = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "dropdown-overlay mb-2"}
+      .form-group.col-sm-12
+        = f.label :survey_template_id, 'Survey Template'
+        = f.select :survey_template_id, options_for_select(SurveyTemplate.all.collect{|sur_tem| [sur_tem.title, sur_tem.id]}, selected: f.object.survey_template&.id), {include_blank: true}, {class: "dropdown-overlay mb-2"}
       .form-inline.col-sm-12.p-0.mb-2
         .form-group.col-sm-2
           = f.label :days_to_complete

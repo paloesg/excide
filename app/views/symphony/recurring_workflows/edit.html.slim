@@ -1,7 +1,5 @@
 .row
   .col-sm-12
     h1 Edit Recurring Workflow
-.row
-  .col-md-12
-    = form_for(@recurring_workflow, url: symphony_recurring_workflow_path(recurring_workflow_name: params[:recurring_workflow_name])) do |f|
-      = render 'form', f: f
+= form_for(@recurring_workflow, url: symphony_recurring_workflow_path(recurring_workflow_name: params[:recurring_workflow_name])) do |f|
+  = render 'form', f: f

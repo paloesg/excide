@@ -1,3 +1,4 @@
+//= require ./actiontext
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -31,6 +32,8 @@
 @import "metronic/pages/pricing/pricing-1";
 @import "dashboard/admin";
 @import "symphony/pagination";
+@import "symphony/survey_templates";
+@import "metronic/actiontext";
 
 
 //icon

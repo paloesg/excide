@@ -1,0 +1,20 @@
+.nested-fields.border.shadow.p-2
+  .form-group.col-sm-12.mt-2
+    = link_to_remove_association "X", f, class: 'btn btn-danger text-dark pull-right'
+  .form-group.row
+    = f.label :position, 'Position:', class: 'col-sm-2 col-form-label text-large'
+    .col-sm-10
+      = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control col-sm-1 b-bottom text-center"}
+  .form-group.row
+    = f.label :content, 'Content:', class: 'col-sm-2 ml-3 col-form-label text-large'
+    .col-sm-8.p-1
+      = f.text_field :content, {required: true, class: "form-control col-sm-12 b-bottom"}
+  .form-group.col-sm-12
+    = f.label :question_type, 'Question Type: ', class: 'text-large'
+    = f.select :question_type, Question.question_types.map{|k,v| [k.humanize, k]}, {}, { required: true, class: "selectize question-choice", data: {question_id: f.object.id}}
+
+  #multiple-choice-field.kt-hide
+    = f.fields_for :choices do |choice|
+      = render 'choice_fields', f: choice
+    .links
+      = link_to_add_association 'Add Choice', f, :choices, class: 'btn btn-primary mt-3'

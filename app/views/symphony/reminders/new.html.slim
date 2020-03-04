@@ -1,7 +1,5 @@
-.row.mb-3
-  .col
-    h1 Create Reminder
 .row
   .col-sm-12
-    = form_for(@reminder, url: symphony_reminders_path) do |f|
+    h1 Create Reminder
+= form_for(@reminder, url: symphony_reminders_path) do |f|
       = render 'form', f: f
