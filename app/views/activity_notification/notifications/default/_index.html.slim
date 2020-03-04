@@ -1,8 +1,10 @@
 .kt-header__topbar-item.dropdown
   .kt-header__topbar-wrapper data-offset="10px,0px" data-toggle="dropdown" 
     span.kt-header__topbar-icon.kt-header__topbar-icon--success
-      i.flaticon2-bell-alarm-symbol
-    span.kt-hidden.kt-badge.kt-badge--danger
+      i.flaticon2-bell-alarm-symbol.
+      - if @target.has_unopened_notifications?(parameters)
+        span.kt-badge.kt-badge--danger.mb-3
+          = @target.unopened_notification_count(parameters)
   .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim.dropdown-menu-xl
     form
       /! begin: Head
