@@ -34,9 +34,11 @@ $(document).on("turbolinks:load", function(){
   })
   //removing a task in template
   $('form').on('click', '.remove_tasks', function(event){
-    $(this).closest('tr').find('.destroy').val('1');
-    console.log("THIS CLOSEST ", $(this).closest('tr').find('.destroy').val('1'));
-    $(this).closest('tr').remove();
+    $(this).prev('input[type=hidden]').val('1');
+    $(this).closest('tr').hide();
+    // Remove all the required validation to skip html5 validation error
+    $(this).closest('tr').find('td input').removeAttr('required')
+    $(this).closest('tr').find('td textarea').removeAttr('required')
     return event.preventDefault();
   })
 
