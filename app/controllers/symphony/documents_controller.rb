@@ -54,7 +54,11 @@ class Symphony::DocumentsController < ApplicationController
 
           # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable" and workflow actions of first workflow should be created
           if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type and first_workflow.workflow_actions.present?
-            link = new_symphony_invoice_path(workflow_name: document.workflow.template.slug, workflow_id: first_workflow, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
+            if @company.session_handle.nil?
+              link = connect_to_xero_path(workflow_name: document.workflow.template.slug, workflow_id: first_workflow.id, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
+            else
+              link = new_symphony_invoice_path(workflow_name: document.workflow.template.slug, workflow_id: first_workflow, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
+            end
           else
             link = symphony_batch_path(batch_template_name: document.workflow.template.slug, id: document.workflow.batch)
           end
@@ -79,6 +83,7 @@ class Symphony::DocumentsController < ApplicationController
         error_message = "There was an error creating document of batch. Please contact your admin with details of this error: #{@generate_document.message}"
         flash[:alert] = error_message
         if params[:document_type] == 'batch-uploads'
+          puts "FAILING MESSAGE :("
           output = { :status => "error", :message => error_message}
           format.json  { render :json => output }
         else

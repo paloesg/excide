@@ -13,9 +13,15 @@ class XeroSessionsController < ApplicationController
         request.headers.merge! "User-Agent" => ENV['XERO_CONSUMER_KEY']
       }
     )
+    if params[:invoice_type].present?
+      invoice_type = params[:invoice_type]
+      workflow_action_id = params[:workflow_action_id]
+      workflow_id = params[:workflow_id]
 
-
-    request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
+      request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + xero_callback_and_update_path(workflow_action_id: workflow_action_id, workflow_id: workflow_id, invoice_type: invoice_type))
+    else
+      request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + "/xero_callback_and_update")
+    end
     session[:request_token] = request_token.token
     session[:request_secret] = request_token.secret
     
@@ -39,10 +45,15 @@ class XeroSessionsController < ApplicationController
         xli.update(description: item.description, quantity: item.quantity_on_hand, price: item.sales_details.unit_price, account: item.sales_details.account_code, tax: item.sales_details.tax_type, company: current_user.company)
       end
       templates = Template.where(company: current_user.company)
-      flash[:notice] = "User signed in and connected to Xero."
-      if templates.present?
+
+      if params[:invoice_type].present? and templates.present?
+        flash[:notice] = "User is connected to Xero."
+        redirect_to new_symphony_invoice_path(workflow_name: Workflow.find_by(id: params[:workflow_id]).template.slug, workflow_id: params[:workflow_id], workflow_action_id: params[:workflow_action_id], invoice_type: params[:invoice_type])
+      elsif templates.present?
+        flash[:notice] = "User signed in and connected to Xero."
         redirect_to symphony_root_path
       else
+        flash[:notice] = "User signed in and connected to Xero."
         redirect_to new_symphony_template_path
       end
     else
