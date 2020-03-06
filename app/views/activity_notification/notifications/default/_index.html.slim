@@ -27,6 +27,13 @@ css:
     width: 50px !important;
   }
 
+  .notifications {
+    position: relative;
+    width: 100%;
+    height: calc(500px - 37px - 37px);
+    overflow: scroll;
+  }
+  
 javascript:
   $(".dropdown_notification").click(function(){
     $(this).parent().toggleClass("open");
