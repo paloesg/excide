@@ -9,11 +9,13 @@
     form
       /! begin: Head
       .kt-head.kt-head--skin-light.kt-head--fit-x.kt-head--fit-b.dropdown_notification
-        h3.kt-head__title
+        h3.kt-head__title.cursor-auto
           | User Notifications
           | &nbsp;
           span.btn.btn-label-primary.btn-sm.btn-bold.btn-font-md class=("#{'unopened' if @target.has_unopened_notifications?(parameters)}") 
             = "#{@target.unopened_notification_count(parameters)} new"
+          .notification_header_menu
+            = link_to "Open all", open_all_user_notifications_path(@target, parameters.slice(:routing_scope, :devise_default_routes)), method: :post, remote: true
         ul.nav.nav-tabs.nav-tabs-line.nav-tabs-bold.nav-tabs-line-3x.nav-tabs-line-brand.kt-notification-item-padding-x role="tablist" 
           li.nav-item
             a.nav-link.active.show aria-selected="true" data-toggle="tab" href="#topbar_notifications_notifications" role="tab"  Notifications  ​
@@ -25,6 +27,10 @@
 css:
   span.icon-size{
     width: 50px !important;
+  }
+
+  h3.cursor-auto{
+    cursor: auto;
   }
 
   .notifications {
