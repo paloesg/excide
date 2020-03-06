@@ -3,54 +3,6 @@ html lang="ja"
   head
     meta content=("text/html; charset=UTF-8") http-equiv="Content-Type"
     meta content=("text/html; charset=UTF-8")
-    css:
-      body {
-        font-family: 'Lucida Grande', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-        color: #4f4f4f;
-        font-weight: normal;
-        font-style: normal;
-      }
-      p{
-        font-size: 14px;
-      }
-      .activity_wrapper {
-        padding: 15px 10px;
-        position: relative;
-      }
-      .activity_wrapper:after{
-        content: "";
-        clear: both;
-        display: block;
-      }
-      .activity_wrapper .user_image {
-        float: left;
-        width: 40px;
-        height: 40px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-color: #979797;
-      }
-      .activity_wrapper .user_desc_wrapper {
-        float: left;
-        width: calc(100% - 130px);
-        margin-top: 0;
-        margin-left: 10px;
-      }
-      .activity_wrapper .user_desc_wrapper .user_desc {
-        font-size: 12px;
-        line-height: 1.6;
-        margin-top: 0;
-        margin-bottom: 0;
-      }
-      .activity_wrapper .user_desc_wrapper .user_desc span{
-        color: #979797;
-        font-weight: bold;
-      }
-      .activity_wrapper .user_desc_wrapper .user_desc strong{
-        font-weight: bold;
-      }
-
     = yield :head
   body
     = render 'activity_notification/mailer/default/task_notification'

@@ -39,6 +39,12 @@ class WorkflowAction < ApplicationRecord
     # This is an optional configuration since activity_notification uses polymorphic_path as default
     notifiable_path: :wf_notifiable_path
 
+  # Overwrite email subject head
+  def overriding_notification_email_subject(target, key)
+    # Track the most recent created notification
+    "[New Task] - #{target.notifications.last.notifiable.task.instructions} - #{target.notifications.last.notifiable.workflow.friendly_id} "
+  end
+
   def wf_notifiable_path
     symphony_workflow_path(self.workflow.template, self.workflow)
   end
