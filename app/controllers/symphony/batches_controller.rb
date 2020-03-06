@@ -11,6 +11,7 @@ class Symphony::BatchesController < ApplicationController
   def index
     @batches = policy_scope(Batch).includes(:user, [workflows: :workflow_actions], :template)
     @completed = @batches.where(completed: true).count
+    @total = @batches.count
 
     if current_user.has_role?(:admin, current_user.company)
       @batches = @batches.order(created_at: :desc)
@@ -20,7 +21,7 @@ class Symphony::BatchesController < ApplicationController
       #Get batches If the current_user has the same role as a role in workflow_actions
       @batches = @batches.includes({workflows: [{template: [{sections: :tasks}]}]}).where(tasks: {role_id: @current_user_roles}).order(created_at: :desc)
     end
-    @batches_paginated = Kaminari.paginate_array(@batches).page(params[:page]).per(10)
+    @batches = Kaminari.paginate_array(@batches).page(params[:page]).per(10)
   end
 
   def new

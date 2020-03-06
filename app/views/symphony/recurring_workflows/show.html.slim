@@ -43,4 +43,4 @@
                     td = workflow.remarks || '-'
                     td = workflow.deadline&.strftime("%d/%m/%Y") || '-'
                     td = workflow.completed ? 'Completed' : workflow.current_section&.section_name
-              = paginate @workflows, views_prefix: 'dashboards'
+              = paginate @workflows

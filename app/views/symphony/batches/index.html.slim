@@ -10,7 +10,7 @@
         .kt-portlet__head-toolbar
           .kt-portlet__head-actions
             .pull-right
-              element #{@completed} of #{@batches.count} completed
+              element #{@completed} of #{@total} completed
       .kt-portlet__body
         .kt-widget11
           table.table
@@ -24,7 +24,7 @@
                 - if current_user.has_role? :superadmin
                   th
             tbody
-              - @batches_paginated.each_with_index do |batch, index|
+              - @batches.each_with_index do |batch, index|
                 tr
                   td = link_to batch.name, symphony_batch_path(id: batch.id, batch_template_name: batch.template.slug)
                   td = batch.user&.full_name
@@ -33,4 +33,4 @@
                   td
                     .progress
                       .progress-bar.progress-bar-striped aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{batch.task_progress ? batch.task_progress : 100}%") #{batch.task_progress ? (batch.task_progress.to_s + "%") : "ERROR: Please delete batch"}
-            = paginate @batches_paginated, views_prefix: 'dashboards'
+          = paginate @batches
