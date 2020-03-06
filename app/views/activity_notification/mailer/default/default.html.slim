@@ -53,19 +53,20 @@ html lang="ja"
 
     = yield :head
   body
-    p
-      | Dear #{@target.printable_target_name}
-    .activity_wrapper
-      .user_image
-      .user_desc_wrapper
-        p.user_desc
-          strong= @notification.notifier.present? ? @notification.notifier.printable_notifier_name : 'Someone '
-          | notified you of
-          | #{@notification.notifiable.printable_notifiable_name(@notification.target)}#{@notification.group.present? ? " in #{@notification.group.printable_group_name}." : "."}
-          br/
-          span= @notification.created_at.strftime("%b %d %H:%M")
-        p.user_desc
-          span
-            = link_to "Move to notified #{@notification.notifiable.printable_type.downcase}", move_notification_url_for(@notification, open: true)
-    p Thank you!
+    = render 'activity_notification/mailer/default/task_notification'
+    / p
+    /   | Dear #{@target.printable_target_name}
+    / .activity_wrapper
+    /   .user_image
+    /   .user_desc_wrapper
+    /     p.user_desc
+    /       strong= @notification.notifier.present? ? @notification.notifier.printable_notifier_name : 'Someone '
+    /       | notified you of
+    /       | #{@notification.notifiable.printable_notifiable_name(@notification.target)}#{@notification.group.present? ? " in #{@notification.group.printable_group_name}." : "."}
+    /       br/
+    /       span= @notification.created_at.strftime("%b %d %H:%M")
+    /     p.user_desc
+    /       span
+    /         = link_to "Move to notified #{@notification.notifiable.printable_type.downcase}", move_notification_url_for(@notification, open: true)
+    / p Thank you!
 
