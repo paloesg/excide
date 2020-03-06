@@ -5,8 +5,8 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show, :destroy]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index, :create, :load_batch]
-  after_action :verify_policy_scoped, only: :load_batch
+  after_action :verify_authorized, except: [:index, :create]
+  after_action :verify_policy_scoped, only: :index
 
   def index
     @batches = policy_scope(Batch).includes(:user, [workflows: :workflow_actions], :template)
