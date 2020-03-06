@@ -31,6 +31,6 @@
                   td = batch.updated_at.strftime('%y%m%d-%H:%M:%S')
                   td #{batch.workflow_progress} / #{batch.workflows.count}
                   td
-                    .progress
-                      .progress-bar.progress-bar-striped aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{batch.task_progress ? batch.task_progress : 100}%") #{batch.task_progress ? (batch.task_progress.to_s + "%") : "ERROR: Please delete batch"}
+                    .progress.progress-lg
+                      .progress-bar.progress-bar-striped.kt-bg-primary aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{batch.task_progress ? batch.task_progress : 100}%") #{batch.task_progress ? (batch.task_progress.to_s + "%") : "ERROR: Please delete batch"}
           = paginate @batches
