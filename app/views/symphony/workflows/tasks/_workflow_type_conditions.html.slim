@@ -1,9 +1,13 @@
 / Check if task is current task AND check if it's assigned to a particular user OR whether user has the required role OR user has admin role.
 - if @workflow.template.ordered?
   - if task == @workflow.current_task and (action.assigned_user == current_user or task.role_id == nil or (@roles.map(&:id).include? task.role_id) or (@user.has_role? :admin, @company))
-    = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST" }, :onclick => "this.checked=true;"
+    label.kt-checkbox.kt-checkbox--single
+      = check_box_tag 'completed', action.id, action.completed, data: { remote: true, url: url_for(action: :toggle, task_id: task.id), method: "POST" }, :onclick => "this.checked=true;"
+      span
   - else
-    = check_box_tag 'completed', action.id, action.completed, disabled: true
+    label.kt-checkbox.kt-checkbox--single
+      = check_box_tag 'completed', action.id, action.completed, disabled: true
+      span
 /For unordered workflow, no need to check for current task.
 - else
   - if action.assigned_user == current_user or task.role_id == nil or (@roles.map(&:id).include? task.role_id) or (@user.has_role? :admin, @company)
@@ -11,4 +15,3 @@
     = check_box_tag 'completed', action.id, action.completed, disabled: true if action.completed?
   - else
     = check_box_tag 'completed', action.id, action.completed, disabled: true
-

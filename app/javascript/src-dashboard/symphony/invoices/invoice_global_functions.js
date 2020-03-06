@@ -7,7 +7,7 @@ window.convertCurrency = function(currency) {
 
 //Convert number to currency format
 window.replaceNumberWithCurrencyFormat = function(num) {
-  return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  return parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1");
 }
 
 // Automatically calculate the subtotal field
@@ -41,21 +41,31 @@ window.calculateTotalTax = function(amount, rate) {
         $("#subtotal-wrapper").append("<div class='form-row total-tax-row calculated-tax' data-rate='"+rate+"'>"+
           "<div class='form-inline col-auto ml-auto mb-2 pull-right'>" +
             "<label class='mr-2'> Total tax "+ rate + "%  </label>" +
-            "<input type='text' value='" + replaceNumberWithCurrencyFormat(result) + "' class='form-control' disabled='disabled'>" +
+            "<input type='text' value='" + replaceNumberWithCurrencyFormat(result) + "' class='form-control tax-value' disabled='disabled'>" +
           "</div>" +
         "</div>");
       }
     }
   }
-
   if ( $("#invoice_line_amount_type").val() === "exclusive" ) {
-    result = (amount*(rate/100)).toFixed(2);
-    addElementCalculatedTax(result);
+    result = (amount*(rate/100));
+    addElementCalculatedTax(result.toFixed(2));
+    var totalTax = 0;
+    // Increment the tax value
+    $(".calculated-tax").each(function(){
+      totalTax += parseFloat($(this).find("input.tax-value").val());
+      return totalTax;
+    });
+    // Add tax + subtotal
+    $(".total-calculated").val( totalTax + parseFloat($(".subtotal-calculated").val().replace(/,/g, '')) );
   } else if ( $("#invoice_line_amount_type").val() === "inclusive" ) {
-    result = (amount-(amount/((100+rate)/100))).toFixed(2);
-    addElementCalculatedTax(result);
+    result = (amount-(amount/((100+rate)/100)));
+    addElementCalculatedTax(result.toFixed(2));
+    // total = subtotal
+    $(".total-calculated").val(  parseFloat($(".subtotal-calculated").val().replace(/,/g, '')) );
   } else {
     $( ".total-tax-row" ).remove();
+    $(".total-calculated").val(  parseFloat($(".subtotal-calculated").val().replace(/,/g, '')) );
   }
 }
 

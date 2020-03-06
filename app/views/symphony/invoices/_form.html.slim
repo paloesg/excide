@@ -33,9 +33,9 @@
                   i.fa.fa-calendar
           .form-group.col-md-2
             = f.label :due_date, 'Due Date'
-            #datetimepicker1.input-group.date.dateinvoice data-target-input="nearest"
-              = f.text_field :due_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.due_date.present? ? @invoice.due_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker2', 'data-target': '#datetimepicker2'
-              .input-group-append data-target="#datetimepicker1" data-toggle="datetimepicker"
+            #datetimepicker2.input-group.date.dateinvoice data-target-input="nearest"
+              = f.text_field :due_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.due_date.present? ? @invoice.due_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker3', 'data-target': '#datetimepicker3'
+              .input-group-append data-target="#datetimepicker2" data-toggle="datetimepicker"
                 .input-group-text
                   i.fa.fa-calendar
           .form-group.col-md-2
@@ -86,7 +86,7 @@
               .form-row
                 .form-inline.col-auto.ml-auto.mb-3.pull-right
                   = f.label :subtotal, 'Subtotal (calculated)', class: 'mr-2'
-                  = text_field_tag :subtotal, nil, class: 'form-control', disabled: true
+                  = text_field_tag :subtotal, nil, class: 'form-control subtotal-calculated', disabled: true
         .row
           .col-md-6
             .col-md-12
@@ -99,9 +99,9 @@
               .form-row.mb-2
                 .form-inline.col-auto.ml-auto.pull-right
                   = f.label :total, 'Total (including tax): ', class: 'mr-2'
-                  = f.text_field :total, class: 'form-control'
+                  = f.text_field :total, class: 'form-control total-calculated'
             .col-md-12
-              .textract-total
+              .textract-total-message.d-none
                 .text-danger * Total calculated does not match total extracted. Please check the amounts.
 .btn-group role='group'
   - if @previous_document.present?
