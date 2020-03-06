@@ -129,7 +129,7 @@
                     th Deadline
                 tbody
                   - @outstanding_actions.each do |action|
-                    tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
+                    tr
                       td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
                       td = action.workflow.template.title
                       td = action.task.instructions
