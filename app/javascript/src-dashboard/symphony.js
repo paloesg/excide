@@ -37,8 +37,8 @@ $(document).on("turbolinks:load", function(){
     $(this).prev('input[type=hidden]').val('1');
     $(this).closest('tr').hide();
     // Remove all the required validation to skip html5 validation error
-    $(this).closest('tr').find('td input').removeAttr('required')
-    $(this).closest('tr').find('td textarea').removeAttr('required')
+    $(this).closest('tr').find('td input').removeAttr('required');
+    $(this).closest('tr').find('td textarea').removeAttr('required');
     return event.preventDefault();
   })
 
