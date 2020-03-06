@@ -2,7 +2,7 @@
   div class=("notification_list #{notification.opened? ? "opened" : "unopened"}")
     .tab-content
       #topbar_notifications_notifications.tab-pane.active.show role="tabpanel" 
-        .kt-notification.kt-margin-t-10.kt-margin-b-10.kt-scroll data-height="150" data-mobile-height="50" 
+        .kt-notification.kt-scroll data-height="150" data-mobile-height="50" 
           .kt-notification__item 
             .kt-notification__item-icon
               i.flaticon2-line-chart.kt-font-success
@@ -99,7 +99,7 @@ css:
 
   /* list */
   .notification_list {
-    padding: 15px 10px;
+    padding: 0;
     position: relative;
     border-bottom: 1px solid #e5e5e5;
   }
