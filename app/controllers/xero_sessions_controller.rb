@@ -13,11 +13,12 @@ class XeroSessionsController < ApplicationController
         request.headers.merge! "User-Agent" => ENV['XERO_CONSUMER_KEY']
       }
     )
+    # Check if connecting to xero from batch upload or from login/sign up. If it's batch upload, params are passed in. 
     if params[:invoice_type].present?
       invoice_type = params[:invoice_type]
       workflow_action_id = params[:workflow_action_id]
       workflow_id = params[:workflow_id]
-
+      # Pass the params to the callback url.
       request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + xero_callback_and_update_path(workflow_action_id: workflow_action_id, workflow_id: workflow_id, invoice_type: invoice_type))
     else
       request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + "/xero_callback_and_update")
@@ -45,7 +46,7 @@ class XeroSessionsController < ApplicationController
         xli.update(description: item.description, quantity: item.quantity_on_hand, price: item.sales_details.unit_price, account: item.sales_details.account_code, tax: item.sales_details.tax_type, company: current_user.company)
       end
       templates = Template.where(company: current_user.company)
-
+      # Check if param is passed in. If it is, link to invoice new page with a different flash message.
       if params[:invoice_type].present? and templates.present?
         flash[:notice] = "User is connected to Xero."
         redirect_to new_symphony_invoice_path(workflow_name: Workflow.find_by(id: params[:workflow_id]).template.slug, workflow_id: params[:workflow_id], workflow_action_id: params[:workflow_action_id], invoice_type: params[:invoice_type])

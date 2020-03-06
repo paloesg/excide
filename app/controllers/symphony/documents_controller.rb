@@ -54,6 +54,7 @@ class Symphony::DocumentsController < ApplicationController
 
           # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable" and workflow actions of first workflow should be created
           if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type and first_workflow.workflow_actions.present?
+            # check if company is connected to xero via the session handle. If it's not, then link to connect_to_xero_path and passed in the necessary params
             if @company.session_handle.nil?
               link = connect_to_xero_path(workflow_name: document.workflow.template.slug, workflow_id: first_workflow.id, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
             else
