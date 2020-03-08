@@ -36,6 +36,9 @@ $(document).on("turbolinks:load", function(){
   $('form').on('click', '.remove_tasks', function(event){
     $(this).prev('input[type=hidden]').val('1');
     $(this).closest('tr').hide();
+    // Remove all the required validation to skip html5 validation error
+    $(this).closest('tr').find('td input').removeAttr('required');
+    $(this).closest('tr').find('td textarea').removeAttr('required');
     return event.preventDefault();
   })
 
@@ -65,13 +68,13 @@ $(document).on("turbolinks:load", function(){
       $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_role_id']").selectize({
         dropdownParent: "body"
       });
-      $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_template_id']").selectize({
+      $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_child_workflow_template_id']").selectize({
         dropdownParent: "body"
       });
       $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_document_template_id']").selectize({
         dropdownParent: "body"
       });
-      $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_survey_template']").selectize({
+      $("select[id$='template_sections_attributes_" + index + "_tasks_attributes_" + time + "_survey_template_id']").selectize({
         dropdownParent: "body"
       });
       $('.data-attributes').find('tr:last-child').find('.create').val('1');
