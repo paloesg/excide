@@ -24,7 +24,7 @@ tr
           .btn-group.mr-2 role="group" aria-label="Task actions"
             - if @workflow.invoice.blank?
               - if @company.session_handle.nil?
-                = link_to "Create Invoice Receivable", connect_to_xero_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, workflow_action_id: @workflow.workflow_actions.first, invoice_type: "#{@workflow.workflow_actions.first.task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }"), role: 'button', class: 'btn btn-success btn-sm'
+                = link_to "Create Invoice Receivable", connect_to_xero_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, workflow_action_id: @workflow.workflow_actions.select{|wfa| wfa.task.task_type == 'create_invoice_receivable'}.first, invoice_type: "#{@workflow.workflow_actions.first.task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }"), role: 'button', class: 'btn btn-success btn-sm'
               - else
                 = link_to "Create Invoice Receivable", new_symphony_invoice_path(workflow_id: @workflow.id, invoice_type: 'receivable', workflow_action_id: action.id), role: 'button', class: 'btn btn-success btn-sm'
             - else
