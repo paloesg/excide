@@ -2,6 +2,9 @@
   = render "symphony/batches/tasks/completed"
 - else
   - if (current_user.include_role?(action.task.role) or current_user.has_role?(:admin, @company)) and workflow.invoice.blank?
-    = link_to 'Start', new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, workflow_action_id: action.id, invoice_type: 'payable'), role: 'button', class:  "btn btn-success btn-sm mb-2 #{"disabled" if (!action.task.first? and !action.task.check_previous.get_workflow_action(workflow.company, workflow.id)&.completed?)}"
+  	- if @company.session_handle.nil?
+  	  = link_to 'Start', connect_to_xero_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, workflow_action_id: action.id, invoice_type: "#{action.task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }"), role: 'button', class: "btn btn-success btn-sm mb-2 #{"disabled" if (!action.task.first? and !action.task.check_previous.get_workflow_action(workflow.company, workflow.id)&.completed?)}"
+  	- else
+    	= link_to 'Start', new_symphony_invoice_path(workflow_name: workflow.template.slug, workflow_id: workflow.id, workflow_action_id: action.id, invoice_type: 'payable'), role: 'button', class:  "btn btn-success btn-sm mb-2 #{"disabled" if (!action.task.first? and !action.task.check_previous.get_workflow_action(workflow.company, workflow.id)&.completed?)}"
   - else
     = link_to "Start", '#', role: 'button', class: 'btn btn-success btn-sm mb-2 disabled'
