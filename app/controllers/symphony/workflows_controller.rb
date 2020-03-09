@@ -174,7 +174,6 @@ class Symphony::WorkflowsController < ApplicationController
       if current_task.role.present?
         users = User.with_role(current_task.role.name.to_sym, @company)
         users.each do |user|
-          # NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
           SlackService.new.task_notification(current_task, current_action, user).deliver if (user.settings[0]&.reminder_slack == 'true' && @company.basic? == 'false')
           if @company.basic? == 'false'
             to_number = '+65' + user.contact_number
