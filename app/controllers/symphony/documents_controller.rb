@@ -84,7 +84,6 @@ class Symphony::DocumentsController < ApplicationController
         error_message = "There was an error creating document of batch. Please contact your admin with details of this error: #{@generate_document.message}"
         flash[:alert] = error_message
         if params[:document_type] == 'batch-uploads'
-          puts "FAILING MESSAGE :("
           output = { :status => "error", :message => error_message}
           format.json  { render :json => output }
         else
