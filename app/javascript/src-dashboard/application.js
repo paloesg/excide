@@ -41,8 +41,6 @@ require("./components/document_popover");
 require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");
 
-window.deleteBatch = require("./components/delete_batch");
-
 require("./turbolinks-compatibility");
 
 // Actiontext
