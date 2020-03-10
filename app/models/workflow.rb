@@ -151,6 +151,7 @@ class Workflow < ApplicationRecord
     if ordered_workflow?
       trigger_first_task
     else
+      self.current_task.get_workflow_action(self.company_id, self.id).notify :users, parameters: { printable_notifiable_name: "#{self.current_task.instructions}", workflow_action_id: self.current_task.get_workflow_action(self.company_id, self.id).id, unordered_workflow: true }, send_later: false
       unordered_tasks_trigger_email
     end
   end

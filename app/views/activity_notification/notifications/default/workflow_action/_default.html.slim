@@ -21,8 +21,10 @@
                           = " #{notification.group_notification_count} #{notification.notifiable_type.humanize.downcase.pluralize(notification.group_notification_count)} including"
                         = " '#{notification.parameters[:printable_notifiable_name]}' "
                         br/
-                        / = "in #{notification.group.printable_group_name}" if notification.group.present?
-                        = " in workflow: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
+                        - if notification.parameters[:unordered_workflow]
+                          = " in unordered workflow: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
+                        - else
+                          = " in workflow: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
                       - else
                         - if notification.group_member_exists?
                           = " #{notification.group_notification_count} #{notification.notifiable_type.humanize.downcase.pluralize(notification.group_notification_count)}"
