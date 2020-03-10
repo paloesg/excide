@@ -11,23 +11,14 @@
                 .list_text_wrapper
                     p.list_text
                       strong= notification.notifier.present? ? notification.notifier.printable_notifier_name : 'Complete '
-                      - if notification.group_member_notifier_exists?
-                        = " and #{notification.group_member_notifier_count} other"
-                        = notification.notifier.present? ? notification.notifier.printable_type.downcase.pluralize(notification.group_member_notifier_count) : 'people'
                       | the task
                       br/
                       - if notification.notifiable.present?
-                        - if notification.group_member_exists?
-                          = " #{notification.group_notification_count} #{notification.notifiable_type.humanize.downcase.pluralize(notification.group_notification_count)} including"
                         = " '#{notification.parameters[:printable_notifiable_name]}' "
                         br/
-                        / = "in #{notification.group.printable_group_name}" if notification.group.present?
                         = " in workflow: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
                       - else
-                        - if notification.group_member_exists?
-                          = " #{notification.group_notification_count} #{notification.notifiable_type.humanize.downcase.pluralize(notification.group_notification_count)}"
-                        - else
-                          = " a #{notification.notifiable_type.humanize.downcase.singularize}"
+                        = " a #{notification.notifiable_type.humanize.downcase.singularize}"
                         = "in #{notification.group.printable_group_name}" if notification.group.present?
                         | but the notifiable is not found. It may have been deleted.
                       br/
