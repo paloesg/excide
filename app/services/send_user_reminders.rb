@@ -28,6 +28,11 @@ class SendUserReminders
 
   def send_email_reminders
     email_reminders = @reminders.where(email: true)
+    puts 'hello 1'
+    email_reminders.each do |email_reminder|
+      email_reminder.notify :users, parameters: { printable_notifiable_name: "#{email_reminder.title}: #{email_reminder.content}", workflow_action_id: email_reminder.workflow_action_id, deadline: email_reminder.next_reminder }, send_later: false
+    end
+    puts ' hello 2'
     NotificationMailer.batch_reminder(email_reminders, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
   end
 
