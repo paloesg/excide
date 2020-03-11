@@ -40,7 +40,7 @@
           .kt-header__topbar-wrapper data-offset="20px,0px"
             span.kt-header__topbar-icon
               / uses view notifications/default/_index.html.slim
-              = render_notifications_of current_user, index_content: :with_attributes
+              = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
         /! end: Notification bar
         - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
           /! begin: Admin bar

@@ -32,10 +32,19 @@ class WorkflowAction < ApplicationRecord
   acts_as_notifiable :users,
     # Notification targets as :targets is a necessary option
     # Set to notify to author and users commented to the article, except comment owner self
-    targets: ->(workflow_action, _key) { workflow_action.task.role.users.uniq },
+    targets: :custom_notification_targets,
     # Path to move when the notification is opened by the target user
     # This is an optional configuration since activity_notification uses polymorphic_path as default
     notifiable_path: :wf_notifiable_path
+
+  def custom_notification_targets(key)
+    if key === 'workflow_action.task_notify'
+      self.task.role.users.uniq
+    elsif key === 'workflow_action.all_completed'
+      # when completed all workflow actions, notify the one that created the workflow
+      self.workflow.user
+    end
+  end
 
   def wf_notifiable_path
     symphony_workflow_path(self.workflow.template, self.workflow)
@@ -51,7 +60,7 @@ class WorkflowAction < ApplicationRecord
     if (next_task.role.present? and self.workflow.batch.nil?) or (next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?)
       users = User.with_role(next_task.role.name.to_sym, self.company)
       # create notification
-      next_action.notify :users, parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
+      next_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
       # Trigger email notification for next task if role present
       users.each do |user|
         NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
