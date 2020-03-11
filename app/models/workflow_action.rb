@@ -38,9 +38,9 @@ class WorkflowAction < ApplicationRecord
     notifiable_path: :wf_notifiable_path
 
   def custom_notification_targets(key)
-    if key === 'workflow_action.task_notify'
+    if key == 'workflow_action.task_notify'
       self.task.role.users.uniq
-    elsif key === 'workflow_action.workflow_completed'
+    elsif key == 'workflow_action.workflow_completed'
       # when completed all workflow actions, notify the one that created the workflow
       [self.workflow.user]
     end
