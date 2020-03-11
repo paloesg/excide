@@ -100,9 +100,11 @@ class WorkflowAction < ApplicationRecord
   end
 
   def batch_completed
-    workflows = self.workflow.batch.workflows.where(completed: false)
-    if workflows.blank?
-      self.workflow.batch.update_column(:completed, true)
+    if self.workflow.batch.present?
+      workflows = self.workflow.batch.workflows.where(completed: false)
+      if workflows.blank?
+        self.workflow.batch.update_column(:completed, true)
+      end
     end
   end
 
