@@ -61,16 +61,19 @@ class Symphony::WorkflowsController < ApplicationController
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
     @surveys = Survey.all.where(workflow_id: @workflow.id)
     @templates = policy_scope(Template).assigned_templates(current_user)
+    @sections = @template.sections
+    @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
     if @workflow.completed?
-      redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
+      # redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
+      # test code cause niu already done it
+      @section = params[:section_id] ? @sections.find(params[:section_id]) : @sections.last
     else
       @sections = @template.sections
       @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
       @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
-
-      set_tasks
-      set_documents
     end
+    set_tasks
+    set_documents
   end
 
   def edit
