@@ -19,10 +19,10 @@ class Reminder < ApplicationRecord
     targets: ->(reminder, _key) { [reminder.user] },
     # Path to move when the notification is opened by the target user
     # This is an optional configuration since activity_notification uses polymorphic_path as default
-    notifiable_path: :wf_notifiable_path
+    notifiable_path: :reminder_notifiable_path
 
-  def wf_notifiable_path
-    symphony_workflow_path(self.task.template, WorkflowAction.find_by(id: self.workflow_action_id).workflow)
+  def reminder_notifiable_path
+    symphony_workflow_path(workflow_name: self.workflow_action.workflow.template.slug, workflow_id: self.workflow_action.workflow.slug)
   end
 
   def self.today
