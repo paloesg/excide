@@ -110,7 +110,7 @@ class WorkflowAction < ApplicationRecord
     if self.workflow.update_column('completed', true)
       # Notify the user that created the workflow that it is completed
       self.notify :users, key: "workflow_action.workflow_completed", parameters: { workflow_slug: self.workflow.slug }, send_later: false
-      WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later unless self.workflow.batch.present?
+      # WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later unless self.workflow.batch.present?
       batch_completed
     end
   end
