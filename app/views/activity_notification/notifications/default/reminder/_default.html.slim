@@ -10,20 +10,19 @@
               .kt-notification__item-title
                 .list_text_wrapper
                     p.list_text
-                      strong= notification.notifier.present? ? notification.notifier.printable_notifier_name : 'You are reminded to complete '
-                      | the task
+                      strong= notification.notifier.present? ? notification.notifier.printable_notifier_name : "You have an overdue task [#{notification.parameters[:printable_notifiable_name]}]. Please complete it in workflow: "
                       br/
                       - if notification.notifiable.present?
-                        = " '#{notification.parameters[:printable_notifiable_name]}' "
-                        br/
-                        = " in workflow: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
+                        / = " '#{notification.parameters[:printable_notifiable_name]}' "
+                        / br/
+                        = " #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
                       - else
                         = " a #{notification.notifiable_type.humanize.downcase.singularize}"
                         = "in #{notification.group.printable_group_name}" if notification.group.present?
                         | but the notifiable is not found. It may have been deleted.
                       br/
                       | by
-                      = notification.parameters[:deadline]
+                      = " #{notification.parameters[:deadline].strftime("%b %d")}"
                       br/
                       span= notification.created_at.strftime("%b %d %H:%M")
 
