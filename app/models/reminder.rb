@@ -17,12 +17,18 @@ class Reminder < ApplicationRecord
     # Notification targets as :targets is a necessary option
     # Set to notify to author and users commented to the article, except comment owner self
     targets: ->(reminder, _key) { [reminder.user] },
+    # Allow notification email
+    email_allowed: true,
     # Path to move when the notification is opened by the target user
     # This is an optional configuration since activity_notification uses polymorphic_path as default
     notifiable_path: :reminder_notifiable_path
 
   def reminder_notifiable_path
     symphony_workflow_path(workflow_name: self.workflow_action.workflow.template.slug, workflow_id: self.workflow_action.workflow.slug)
+  end
+
+  def overriding_notification_email_subject(target, key)
+    "[Reminder] - #{target.notifications.last.notifiable.title} - #{target.notifications.last.notifiable.content}"    
   end
 
   def self.today

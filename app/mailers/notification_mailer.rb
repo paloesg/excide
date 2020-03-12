@@ -20,14 +20,14 @@ class NotificationMailer < ApplicationMailer
   #   mail(to: address.format, subject: '[New Task] Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.friendly_id)
   # end
 
-  def batch_reminder(reminders, user)
-    @reminders = reminders
-    @user = user
+  # def batch_reminder(reminders, user)
+  #   @reminders = reminders
+  #   @user = user
 
-    address = Mail::Address.new @user.email
-    address.display_name = @user.first_name
-    mail(to: address.format, subject: 'Here are your reminders for today')
-  end
+  #   address = Mail::Address.new @user.email
+  #   address.display_name = @user.first_name
+  #   mail(to: address.format, subject: 'Here are your reminders for today')
+  # end
 
   def create_event(event, user)
     event_notification(event, user, 'A new event has been created')

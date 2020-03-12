@@ -55,8 +55,7 @@ class WorkflowAction < ApplicationRecord
       "[New Task] - #{target.notifications.last.notifiable.task.instructions} - #{target.notifications.last.notifiable.workflow.friendly_id} "
     elsif key == 'workflow_action.workflow_completed'
       "Workflow - #{target.notifications.last.notifiable.workflow.friendly_id} - has been completed"
-    end
-    
+    end 
   end
 
   def wf_notifiable_path
