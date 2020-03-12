@@ -5,33 +5,24 @@
         .kt-notification.kt-scroll data-height="150" data-mobile-height="50" 
           .kt-notification__item 
             .kt-notification__item-icon
-              i.flaticon2-line-chart.kt-font-success
+              i.flaticon2-exclamation.kt-font-danger
             .kt-notification__item-details
               .kt-notification__item-title
                 .list_text_wrapper
                     p.list_text
-                      strong= notification.notifier.present? ? notification.notifier.printable_notifier_name : 'Complete '
-                      - if notification.group_member_notifier_exists?
-                        = " and #{notification.group_member_notifier_count} other"
-                        = notification.notifier.present? ? notification.notifier.printable_type.downcase.pluralize(notification.group_member_notifier_count) : 'people'
-                      | the task
+                      strong= notification.notifier.present? ? notification.notifier.printable_notifier_name : "You have an overdue task [#{notification.parameters[:printable_notifiable_name]}]. Please complete it in workflow: "
                       br/
                       - if notification.notifiable.present?
-                        - if notification.group_member_exists?
-                          = " #{notification.group_notification_count} #{notification.notifiable_type.humanize.downcase.pluralize(notification.group_notification_count)} including"
-                        = " '#{notification.parameters[:printable_notifiable_name]}' "
-                        br/
-                        - if notification.parameters[:unordered_workflow]
-                          = " in unordered workflow: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
-                        - else
-                          = " in workflow: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
+                        / = " '#{notification.parameters[:printable_notifiable_name]}' "
+                        / br/
+                        = " #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
                       - else
-                        - if notification.group_member_exists?
-                          = " #{notification.group_notification_count} #{notification.notifiable_type.humanize.downcase.pluralize(notification.group_notification_count)}"
-                        - else
-                          = " a #{notification.notifiable_type.humanize.downcase.singularize}"
+                        = " a #{notification.notifiable_type.humanize.downcase.singularize}"
                         = "in #{notification.group.printable_group_name}" if notification.group.present?
                         | but the notifiable is not found. It may have been deleted.
+                      br/
+                      | by
+                      = " #{notification.parameters[:deadline].strftime("%b %d")}"
                       br/
                       span= notification.created_at.strftime("%b %d %H:%M")
 

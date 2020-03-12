@@ -42,9 +42,6 @@ class CompaniesController < ApplicationController
     end
   end
 
-  def plan
-  end
-
   private
 
   def set_company

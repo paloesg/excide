@@ -1,7 +1,3 @@
-- @navbar_batches_active = true
-.row.mb-3
-  .col
-    h1 Symphony AP
 .row
   .col-xl-12
     .loading
@@ -10,7 +6,7 @@
       .kt-portlet__head
         .kt-portlet__head-label
           h3.kt-portlet__head-title
-            | List of batches
+            | Batch listing
         .kt-portlet__head-toolbar
           .kt-portlet__head-actions
             .pull-right
@@ -19,19 +15,17 @@
               element#batches-count 0
               |  completed
       .kt-portlet__body
-        .table-responsive
+        .kt-widget11
           table#table-batches.table
             thead
               tr
-                th S/N
-                th Batch Name
+                th ID
                 th Created By
                 th Last Updated
-                th No. Completed Workflows
-                th No. of Workflows
-                th Progress
+                th style="width: 15%" Completed / Total
+                th style="width: 25%" Task Progress
                 - if current_user.has_role? :superadmin
-                  th Action
+                  th
             tbody
               - 7.times do
                 tr.batch-loader

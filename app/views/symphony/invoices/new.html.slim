@@ -12,7 +12,33 @@
         .img-magnifier-container
           = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
       - else
-        iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" id="iframe-document"
+        - display_url = url_for(@document.converted_image.first) if @document.converted_image.attached?
+        .img-magnifier-container
+          div#carouselExampleIndicators.carousel.slide data-ride="carousel" data-interval="false"
+            ol.carousel-indicators
+              - @document.converted_image.each.with_index(0) do |image, index|
+                li. data-target="#carouselExampleIndicators" data-slide-to="#{index}" class=[index.zero? ? 'active' : '']
+              end
+            div.carousel-inner
+              - @document.converted_image.each.with_index(0) do |image, index|
+                div. class=["carousel-item", index.zero? ? 'active' : '' ]
+                  = link_to url_for(image)
+                    = image_tag(image, class: 'img-responsive zoomed-image')
+              end
+            a.carousel-control-prev data-slide="prev" href="#carouselExampleIndicators" role="button"
+              span.carousel-control-prev-icon aria-hidden="true"
+              span.sr-only Previous
+            a.carousel-control-next data-slide="next" href="#carouselExampleIndicators" role="button"
+              span.carousel-control-next-icon aria-hidden="true"
+              span.sr-only Next
+      end
+      span.form-group.float-right
+        .kt-switch
+          label
+            label.col-form-label Magnifier
+            = check_box_tag "zoom", "true", true
+            span
+    end
   .col-md-8
     .card.mb-3
       .row.m-2
@@ -64,7 +90,7 @@
       .row
         .col-md-8
           - if @workflow.batch.present?
-            = link_to "View Batch", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning'
+            = link_to "View Batch", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning ml-2'
           - else
             = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
           - if params[:workflow_action].present?
@@ -75,3 +101,4 @@
           .pull-right
             = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, invoice_type: params[:invoice_type], workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2') if policy(@invoice).reject?
             = f.submit 'Save', class: "btn btn-primary"
+

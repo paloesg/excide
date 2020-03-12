@@ -61,16 +61,19 @@ class Symphony::WorkflowsController < ApplicationController
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
     @surveys = Survey.all.where(workflow_id: @workflow.id)
     @templates = policy_scope(Template).assigned_templates(current_user)
+    @sections = @template.sections
+    @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
     if @workflow.completed?
-      redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
+      # redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
+      # test code cause niu already done it
+      @section = params[:section_id] ? @sections.find(params[:section_id]) : @sections.last
     else
       @sections = @template.sections
       @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
       @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
-
-      set_tasks
-      set_documents
     end
+    set_tasks
+    set_documents
   end
 
   def edit
@@ -388,12 +391,10 @@ class Symphony::WorkflowsController < ApplicationController
 
   def sort_column(array)
     array.sort_by{
-      |item| if params[:sort] == "template" then item.template.title.upcase
-      elsif params[:sort] == "remarks" then item.remarks ? item.remarks.upcase : ""
+      |item| if params[:sort] == "remarks" then item.remarks ? item.remarks.upcase : ""
       elsif params[:sort] == "deadline" then item.deadline ? item.deadline : Time.at(0)
       elsif params[:sort] == "workflowable" then item.workflowable ? item.workflowable&.name.upcase : ""
       elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.section_name
-      elsif params[:sort] == "identifier" then item.identifier ? item.identifier.upcase : ""
       end
     }
   end
