@@ -18,7 +18,7 @@ class Reminder < ApplicationRecord
     # Set to notify to author and users commented to the article, except comment owner self
     targets: :custom_notification_targets,
     # Allow notification email
-    email_allowed: true,
+    email_allowed: :check_reminder_email_notification_settings,
     # Path to move when the notification is opened by the target user
     # This is an optional configuration since activity_notification uses polymorphic_path as default
     notifiable_path: :reminder_notifiable_path
@@ -31,6 +31,10 @@ class Reminder < ApplicationRecord
     if key == 'reminder.send_reminder'
       [self.user]
     end
+  end
+
+  def check_reminder_email_notification_settings
+    self.user.settings[0]&.reminder_email == 'true' ? true : false
   end
 
   def overriding_notification_email_subject(target, key)
