@@ -33,6 +33,8 @@ class WorkflowAction < ApplicationRecord
     # Notification targets as :targets is a necessary option
     # Set to notify to author and users commented to the article, except comment owner self
     targets: :custom_notification_targets,
+    # Allow notification email
+    email_allowed: true,
     # Path to move when the notification is opened by the target user
     # This is an optional configuration since activity_notification uses polymorphic_path as default
     notifiable_path: :wf_notifiable_path
@@ -44,6 +46,16 @@ class WorkflowAction < ApplicationRecord
       # when completed all workflow actions, notify the one that created the workflow
       [self.workflow.user]
     end
+  end
+
+  # Overwrite email subject head
+  def overriding_notification_email_subject(target, key)
+    if key == "workflow_action.task_notify"
+      # Track the most recent created notification
+      "[New Task] - #{target.notifications.last.notifiable.task.instructions} - #{target.notifications.last.notifiable.workflow.friendly_id} "
+    elsif key == 'workflow_action.workflow_completed'
+      "Workflow - #{target.notifications.last.notifiable.workflow.friendly_id} - has been completed"
+    end 
   end
 
   def wf_notifiable_path
@@ -61,10 +73,10 @@ class WorkflowAction < ApplicationRecord
       users = User.with_role(next_task.role.name.to_sym, self.company)
       # create task notification
       next_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
-      # Trigger email notification for next task if role present
-      users.each do |user|
-        NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
-      end
+      # # Trigger email notification for next task if role present
+      # users.each do |user|
+      #   NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
+      # end
     end
   end
 
@@ -97,7 +109,6 @@ class WorkflowAction < ApplicationRecord
     if self.workflow.update_column('completed', true)
       # Notify the user that created the workflow that it is completed
       self.notify :users, key: "workflow_action.workflow_completed", parameters: { workflow_slug: self.workflow.slug }, send_later: false
-      WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later unless self.workflow.batch.present?
       batch_completed if workflow.batch.present?
     end
   end

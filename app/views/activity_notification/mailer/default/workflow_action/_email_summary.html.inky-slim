@@ -1,0 +1,80 @@
+/*move the above styles into your custom stylesheet /
+container
+  row.collapse
+    columns small="6" valign="middle"
+      = image_tag("https://excide.s3-ap-southeast-1.amazonaws.com/excide-logo.png", style: "width: 50%; height: 50%")
+  spacer size="16"
+  row
+    columns
+      p Hi, #{@target.full_name}
+      p.lead
+        | The workflow
+        span.red 
+          = " #{@notification.notifiable.workflow.id}"
+        | has been archived.
+      p.lead Deadline: #{@notification.notifiable.workflow&.deadline&.strftime("%d/%m/%Y")}
+      p.lead.email-margin-top Company Details:
+      table border="1"
+        thead
+          tr
+            th Name
+            th UEN
+            th Contact Details
+        tbody
+          tr
+            td = @notification.notifiable.company.name
+            td = @notification.notifiable.company.uen
+            td = @notification.notifiable.company.contact_details
+      - if @notification.notifiable.workflow.documents.present?
+        p.lead.email-margin-top Document uploaded:
+        table border="1"
+          thead
+            tr
+              th Document Filename
+              th Uploaded By
+              th Uploaded On
+          tbody
+            - @notification.notifiable.workflow.documents.each do |doc|
+              tr
+                td
+                  a href="#{doc.file_url}" #{doc.filename}
+                td = doc.user.full_name
+                td = doc.created_at.strftime('%Y-%m-%d %H:%M:%S')
+      - else
+        p.lead.email-margin-top No document uploaded
+      - if @notification.notifiable.workflow.invoice.present?
+        p.lead.email-margin-top Invoice created:
+        table border="1"
+          thead
+            tr
+              th Invoice Reference
+              th Created By
+              th Created On
+          tbody
+            tr
+              td
+                = link_to @notification.notifiable.invoice.invoice_reference, symphony_invoice_url(workflow_name: @notification.notifiable.workflow.template.slug, workflow_id: @notification.notifiable.workflow.id, id: @notification.notifiable.invoice.id)
+              td = @notification.notifiable.invoice.user.full_name
+              td = @notification.notifiable.invoice.created_at.strftime('%Y-%m-%d %H:%M:%S')
+      - else
+        p.lead No invoice created
+      p.lead.email-margin-top Below is a summary of the workflow completed:
+      table border="1"
+        thead
+          tr
+            th width="30%" Instruction
+            th width="15%" Time Completed
+            th width="15%" Completed by
+            th width="40%" Remarks
+        tbody
+          - @notification.notifiable.workflow.workflow_actions.order(:id).each do |wfa|
+            tr
+              td = wfa.task.instructions
+              td = Time.current.strftime('%Y-%m-%d %H:%M:%S')
+              - if wfa.completed_user.nil?
+                td.not-completed-mark Not completed
+              - else
+                td = wfa.completed_user.full_name.to_s
+              td = wfa.remarks
+      p.lead.email-margin-top
+        a href="#{symphony_workflow_url(@notification.notifiable.workflow.template.slug, @notification.notifiable.workflow.id)}" View the workflow

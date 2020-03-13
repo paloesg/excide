@@ -1,15 +1,6 @@
 class NotificationMailer < ApplicationMailer
   default from: 'Excide Symphony <admin@excide.co>'
 
-  def task_notification(task, action, user)
-    @task = task
-    @action = action
-    @user = user
-    address = Mail::Address.new @user.email
-    address.display_name = @user.full_name
-    mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.friendly_id)
-  end
-
   def first_task_notification(task, batch, user)
     @task = task
     @batch = batch
@@ -19,24 +10,24 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: '[New Task] ' + @task.instructions + ' - ' + @batch.id)
   end
 
-  def unordered_workflow_notification(user, workflow_tasks, action)
-    @user = user
-    #find relevant tasks through intersection that the particular user have in that workflow
-    @relevant_tasks = @user.roles.map(&:tasks).flatten & workflow_tasks
-    @action = action
-    address = Mail::Address.new @user.email
-    address.display_name = @user.full_name
-    mail(to: address.format, subject: '[New Task] Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.friendly_id)
-  end
+  # def unordered_workflow_notification(user, workflow_tasks, action)
+  #   @user = user
+  #   #find relevant tasks through intersection that the particular user have in that workflow
+  #   @relevant_tasks = @user.roles.map(&:tasks).flatten & workflow_tasks
+  #   @action = action
+  #   address = Mail::Address.new @user.email
+  #   address.display_name = @user.full_name
+  #   mail(to: address.format, subject: '[New Task] Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.friendly_id)
+  # end
 
-  def batch_reminder(reminders, user)
-    @reminders = reminders
-    @user = user
+  # def batch_reminder(reminders, user)
+  #   @reminders = reminders
+  #   @user = user
 
-    address = Mail::Address.new @user.email
-    address.display_name = @user.first_name
-    mail(to: address.format, subject: 'Here are your reminders for today')
-  end
+  #   address = Mail::Address.new @user.email
+  #   address.display_name = @user.first_name
+  #   mail(to: address.format, subject: 'Here are your reminders for today')
+  # end
 
   def create_event(event, user)
     event_notification(event, user, 'A new event has been created')
