@@ -146,7 +146,7 @@ gem 'mini_mime'
 gem 'shortuuid'
 
 # Backend admin
-gem "administrate", "0.12.0"
+gem "administrate", "0.13.0"
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
 gem 'administrate-field-jsonb'
