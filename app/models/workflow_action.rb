@@ -109,17 +109,14 @@ class WorkflowAction < ApplicationRecord
     if self.workflow.update_column('completed', true)
       # Notify the user that created the workflow that it is completed
       self.notify :users, key: "workflow_action.workflow_completed", parameters: { workflow_slug: self.workflow.slug }, send_later: false
-      # WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later unless self.workflow.batch.present?
-      batch_completed
+      batch_completed if workflow.batch.present?
     end
   end
 
   def batch_completed
-    if self.workflow.batch.present?
-      workflows = self.workflow.batch.workflows.where(completed: false)
-      if workflows.blank?
-        self.workflow.batch.update_column(:completed, true)
-      end
+    workflows = self.workflow.batch.workflows.where(completed: nil)
+    if workflows.blank?
+      self.workflow.batch.update_column(:completed, true)
     end
   end
 
