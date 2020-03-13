@@ -10,7 +10,7 @@ container
       p.lead
         | The workflow
         span.red 
-          = " #{@notification.notifiable.workflow.id}"
+          = " #{@notification.notifiable.workflow.id} "
         | has been archived.
       p.lead Deadline: #{@notification.notifiable.workflow&.deadline&.strftime("%d/%m/%Y")}
       p.lead.email-margin-top Company Details:
