@@ -37,7 +37,7 @@ class Reminder < ApplicationRecord
     self.user.settings[0]&.reminder_email == 'true' ? true : false
   end
 
-  def overriding_notification_email_subject(target, key)
+  def overriding_notification_email_subject(target, _key)
     "[Reminder] - #{target.notifications.last.notifiable.title} - #{target.notifications.last.notifiable.content}"    
   end
 
