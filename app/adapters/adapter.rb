@@ -11,17 +11,24 @@ module Adapter
           request.headers.merge! "User-Agent" => ENV['XERO_CONSUMER_KEY']
         }
       )
-
       #check for token expiring and renew it. After renew, update company's attribute
       if company.expires_at.present? and (Time.at(company.expires_at) < Time.now)
         @xero_client.renew_access_token(company.access_key, company.access_secret, company.session_handle)
         company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle)
       end
-      if company
-        @xero_client.authorize_from_access(
-          company.access_key,
-          company.access_secret
-        )
+      # if company
+      #   @xero_client.authorize_from_access(
+      #     company.access_key,
+      #     company.access_secret
+      #   )
+      # end
+    end
+
+    def request_token(company, invoice_params={})
+      if invoice_params.nil?
+        request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
+      else
+        request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + Rails.application.routes.url_helpers.xero_callback_and_update_path(workflow_action_id: invoice_params[:workflow_action_id], workflow_id: invoice_params[:workflow_id], invoice_type: invoice_params[:invoice_type]))
       end
     end
 

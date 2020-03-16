@@ -4,21 +4,10 @@ class XeroSessionsController < ApplicationController
   
   def connect_to_xero
     authorize :xero_session, :connect_to_xero?
-    @xero_client = Xeroizer::PartnerApplication.new(
-      ENV["XERO_CONSUMER_KEY"],
-      ENV["XERO_CONSUMER_SECRET"],
-      "| echo \"#{ENV["XERO_PRIVATE_KEY"]}\" ",
-      :rate_limit_sleep => 2,
-      before_request: ->(request) {
-        request.headers.merge! "User-Agent" => ENV['XERO_CONSUMER_KEY']
-      }
-    )
-
-
-    request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
+    @xero = Xero.new(current_user.company)
+    request_token = @xero.request_token(current_user.company)
     session[:request_token] = request_token.token
     session[:request_secret] = request_token.secret
-    
     redirect_to request_token.authorize_url
   end
 
@@ -75,5 +64,10 @@ class XeroSessionsController < ApplicationController
       xli.update(description: item.description, quantity: item.quantity_on_hand, price: item.sales_details.unit_price, account: item.sales_details.account_code, tax: item.sales_details.tax_type, company: current_user.company)
     end
     redirect_to edit_company_path, notice: "Line Items have been updated from Xero."
+  end
+
+  private
+  def connect
+    
   end
 end
