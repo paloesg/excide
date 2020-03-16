@@ -16,12 +16,12 @@ module Adapter
         @xero_client.renew_access_token(company.access_key, company.access_secret, company.session_handle)
         company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle)
       end
-      # if company
-      #   @xero_client.authorize_from_access(
-      #     company.access_key,
-      #     company.access_secret
-      #   )
-      # end
+      if company
+        @xero_client.authorize_from_access(
+          company.access_key,
+          company.access_secret
+        )
+      end
     end
 
     def request_token(company, invoice_params={})
