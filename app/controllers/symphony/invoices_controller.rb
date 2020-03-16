@@ -133,12 +133,7 @@ class Symphony::InvoicesController < ApplicationController
     #if invoice is sent to xero already, then set xero invoice status to deleted or voided, depending on the current status
     if @invoice.xero_invoice_id.present?
       @delete_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
-      if (@delete_invoice.status == "SUBMITTED")
-        @delete_invoice.status = "DELETED"
-      #if invoice is "AUTHORISED", it could only be voided
-      else
-        @delete_invoice.status = "VOIDED"
-      end
+      @delete_invoice.status = (@delete_invoice.status == "SUBMITTED") ? "DELETED" : "VOIDED"
       @delete_invoice.save
     end
     @invoice.destroy!
