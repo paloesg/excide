@@ -143,10 +143,6 @@ class Symphony::InvoicesController < ApplicationController
     end
     @invoice.destroy!
     @batch = @workflow.batch
-    if @batch.present?
-      Document.where(workflow_id: @workflow.id).destroy_all
-      @workflow.destroy!
-    end
     respond_to do |format|
       flash[:notice] = "Invoice has been deleted successfully."
       if @batch.present?
