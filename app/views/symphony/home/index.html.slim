@@ -108,7 +108,7 @@
                 td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
                 td = w.template.title
                 td = w.completed ? 'Completed' : w.current_section&.section_name
-        = paginate @workflows, views_prefix: 'dashboards'
+        = paginate @workflows, views_prefix: 'dashboard'
   .col-md-6.col-sm-12
     .kt-portlet
       .kt-portlet__head
@@ -129,7 +129,7 @@
                     th Deadline
                 tbody
                   - @outstanding_actions.each do |action|
-                    tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
+                    tr
                       td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
                       td = action.workflow.template.title
                       td = action.task.instructions

@@ -20,11 +20,7 @@ class BatchPolicy < ApplicationPolicy
   end
 
   def edit?
-    update? 
-  end
-
-  def load_batch?
-    user.present? and trial_or_pro_only?
+    update?
   end
 
   def destroy?

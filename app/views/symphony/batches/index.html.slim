@@ -1,7 +1,5 @@
 .row
   .col-xl-12
-    .loading
-      .loader
     .kt-portlet
       .kt-portlet__head
         .kt-portlet__head-label
@@ -10,26 +8,34 @@
         .kt-portlet__head-toolbar
           .kt-portlet__head-actions
             .pull-right
-              element#completed-batches 0
-              '  of
-              element#batches-count 0
-              |  completed
+              element #{@completed} of #{@total} completed
       .kt-portlet__body
-        .kt-widget11
-          table#table-batches.table
-            thead
-              tr
-                th ID
-                th Created By
-                th Last Updated
-                th style="width: 15%" Completed / Total
-                th style="width: 25%" Task Progress
-                - if current_user.has_role? :superadmin
-                  th
-            tbody
-              - 7.times do
-                tr.batch-loader
-                  - 8.times do
-                    td
-                      .timeline-item
-                        .animated-background
+        .kt-section
+          .kt-section__content
+            .kt-widget11
+              table.table
+                thead
+                  tr
+                    td ID
+                    td Template
+                    td Created by
+                    td Last updated
+                    td style="width: 10%" Completed
+                    td style="width: 25%" Task progress
+                    - if current_user.has_role? :superadmin
+                      td
+                tbody
+                  - @batches.each_with_index do |batch, index|
+                    tr
+                      td = link_to batch.name, symphony_batch_path(batch.template, batch)
+                      td = batch.template.title
+                      td = batch.user&.full_name
+                      td = batch.updated_at.strftime('%y%m%d-%H:%M:%S')
+                      td #{batch.workflow_progress} / #{batch.workflows.count}
+                      td
+                        .progress.progress-lg
+                          .progress-bar.progress-bar-striped.kt-bg-primary aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar" style=("width: #{batch.task_progress}%") #{batch.task_progress.to_s + "%"}
+                      - if current_user.has_role? :superadmin
+                        td
+                          = link_to 'Delete', symphony_batch_path(batch.template, batch), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm kt-pull-right'
+              = paginate @batches, views_prefix: 'dashboard'
