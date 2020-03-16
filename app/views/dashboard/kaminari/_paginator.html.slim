@@ -1,6 +1,6 @@
 = paginator.render do
-  .kt-pagination.kt-pagination--brand
-    ul.kt-pagination__links
+  .kt-pagination.kt-pagination--brand.justify-content-center
+    ul.kt-pagination__links.pagination
       == first_page_tag unless current_page.first?
       == prev_page_tag unless current_page.first?
 

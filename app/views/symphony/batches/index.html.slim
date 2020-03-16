@@ -38,4 +38,4 @@
                       - if current_user.has_role? :superadmin
                         td
                           = link_to 'Delete', symphony_batch_path(batch.template, batch), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm kt-pull-right'
-              = paginate @batches
+              = paginate @batches, views_prefix: 'dashboard'

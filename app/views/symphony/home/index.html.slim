@@ -108,7 +108,7 @@
                 td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
                 td = w.template.title
                 td = w.completed ? 'Completed' : w.current_section&.section_name
-        = paginate @workflows
+        = paginate @workflows, views_prefix: 'dashboard'
   .col-md-6.col-sm-12
     .kt-portlet
       .kt-portlet__head
