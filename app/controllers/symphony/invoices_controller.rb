@@ -338,6 +338,7 @@ class Symphony::InvoicesController < ApplicationController
       workflow_name: params[:workflow_name],
       workflow_id: params[:workflow_id]
     }
+    # Check if company is connected to xero
     if @company.session_handle.nil?
       @xero = Xero.new(current_user.company)
       @request_token = @xero.request_token(@company, @invoice_params)

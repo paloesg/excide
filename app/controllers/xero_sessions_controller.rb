@@ -68,9 +68,4 @@ class XeroSessionsController < ApplicationController
     end
     redirect_to edit_company_path, notice: "Line Items have been updated from Xero."
   end
-
-  private
-  def connect
-    
-  end
 end
