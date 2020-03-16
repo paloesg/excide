@@ -13,7 +13,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :get_xero_details
   before_action :update_textract_job_id, only: [:new, :edit]
 
-  after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice, :get_document_analysis, :get_xero_details_json]
+  after_action :verify_authorized, only: [:new, :create, :edit, :update, :show, :destroy, :reject]
   after_action :verify_policy_scoped, only: :index
 
   def new
