@@ -203,6 +203,7 @@ Rails.application.routes.draw do
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
   get 'plan', to: 'companies#plan'
+  get 'company/annual_subscription_plan_update', to: 'companies#annual_subscription_plan_update', as: :annual_subscription_plan_update
 
   # Hosted files
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')

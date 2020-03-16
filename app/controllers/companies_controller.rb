@@ -3,7 +3,7 @@ class CompaniesController < ApplicationController
   layout 'metronic/application', only: [:edit]
 
   before_action :authenticate_user!
-  before_action :set_company, only: [:show, :edit, :update, :plan]
+  before_action :set_company, only: [:show, :edit, :update, :plan, :annual_subscription_plan_update]
 
   def show
     @address = @company&.address
@@ -39,6 +39,26 @@ class CompaniesController < ApplicationController
       redirect_to edit_company_path, notice: 'Company was successfully updated.'
     else
       render :edit
+    end
+  end
+
+  def annual_subscription_plan_update
+    subscription = Stripe::Subscription.retrieve(@company.stripe_subscription_plan_data['subscription']['id'])
+    if Stripe::Subscription.update(
+      subscription.id,
+      {
+        cancel_at_period_end: false,
+        items: [
+          {
+            id: subscription.items.data[0].id,
+            plan: ENV['STRIPE_ANNUAL_PLAN']
+          }
+        ]
+      }
+    )
+      redirect_to symphony_root_path, notice: 'Your subscription has been updated to annual subscription.'
+    else
+      redirect_to root_path
     end
   end
 

@@ -68,6 +68,8 @@
             h5.mt-2 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
             br
             = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-primary'
+            br
+            = link_to 'Subscribe to Annual', annual_subscription_plan_update_path, role: 'button',  class: 'btn btn-sm btn-success'
     .card.mb-4
       .card-header Invoices
       .card-body
