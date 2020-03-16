@@ -5,7 +5,7 @@
     "@fullcalendar/daygrid": "^4.3.0",
     "@rails/actiontext": "^6.0.1",
     "@rails/ujs": "^6.0.1",
-    "@rails/webpacker": "^4.2.2",
+    "@rails/webpacker": "4.2.2",
     "algoliasearch": "^3.35.1",
     "blueimp-file-upload": "^10.7.0",
     "bootstrap": "^4.4.1",
@@ -29,6 +29,6 @@
     "turbolinks": "^5.2.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "^3.9.0"
+    "webpack-dev-server": "^3.10.3"
   }
 }
