@@ -15,10 +15,11 @@
           span.btn.btn-label-primary.btn-sm.btn-bold.btn-font-md class=("#{'unopened' if @target.has_unopened_notifications?(parameters)}") 
             = "#{@target.unopened_notification_count(parameters)} new"
           .notification_header_menu
-            = link_to "Open all", open_all_user_notifications_path(@target, parameters.slice(:routing_scope, :devise_default_routes)), method: :post, remote: true
+            span.pull-right
+              = link_to "Mark all as read", open_all_user_notifications_path(@target, parameters.slice(:routing_scope, :devise_default_routes)), method: :post, remote: true, class: 'btn btn-sm btn-outline-danger mt-4 mr-2'
         ul.nav.nav-tabs.nav-tabs-line.nav-tabs-bold.nav-tabs-line-3x.nav-tabs-line-brand.kt-notification-item-padding-x role="tablist" 
           li.nav-item
-            a.nav-link.active.show aria-selected="true" data-toggle="tab" href="#topbar_notifications_notifications" role="tab"  Notifications  ​
+            a.nav-link.active.show aria-selected="true" data-toggle="tab" href="#topbar_notifications_notifications" role="tab"  Notifications
       / ! end: Head
       .notifications
         = yield :notification_index
