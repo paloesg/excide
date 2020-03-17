@@ -111,12 +111,15 @@ class Symphony::UsersController < ApplicationController
     Stripe::Subscription.create({
       customer: customer.id,
       items: [{plan: ENV['STRIPE_MONTHLY_PLAN']}],
-      trial_end: current_user.company.trial_end_date.to_i
     })
+
 
     user = User.find(user_id)
     # update account stripe in user
-    user.update_attributes(stripe_card_token: card_token, stripe_customer_id:customer.id)
+    user.update_attributes(stripe_card_token: card_token, stripe_customer_id: customer.id)
+
+    user.company.upgrade
+    user.save
 
     # Do Charge
     # charge = Stripe::Charge.create({

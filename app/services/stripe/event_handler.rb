@@ -35,6 +35,18 @@ module Stripe
     #   StripeNotificationMailer.upcoming_payment_notification(@current_user).deliver_later
     # end
 
+    def handle_customer_subscription_created(event)
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      if @current_user.company.stripe_subscription_plan_data.empty?
+        @current_user.company.stripe_subscription_plan_data = {
+          subscription: Stripe::Subscription.retrieve(event.data.object.id),
+          invoices: [ Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.id)["latest_invoice"]) ],
+          cancel: false,
+        }
+      end
+      @current_user.company.save
+    end
+
     def handle_customer_subscription_updated(event)
       if event.data.object.plan.id == ENV['STRIPE_PLAN']
         @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
