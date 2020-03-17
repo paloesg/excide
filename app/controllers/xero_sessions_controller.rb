@@ -13,20 +13,18 @@ class XeroSessionsController < ApplicationController
 
   def xero_callback_and_update
     if params[:oauth_verifier].present?
-      @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "| echo \"#{ENV["XERO_PRIVATE_KEY"]}\" ")
+      @xero_client = Xero.new(current_user.company)
 
-      @xero_client.authorize_from_request(session[:request_token], session[:request_secret], oauth_verifier: params[:oauth_verifier])
-      current_user.company.update(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle, xero_organisation_name: @xero_client.Organisation.first.name)
+      # authorize requests
+      @xero_client.authorize_from_request(session[:request_token], session[:request_secret], params[:oauth_verifier])
+      # Update company with xero's oauth properties
+      @xero_client.update_company_after_connecting_to_xero(current_user.company)
       session.delete(:request_token)
       session.delete(:request_secret)
-      @xero_client.Contact.all.each do |contact|
-        xc = XeroContact.find_or_initialize_by(contact_id: contact.contact_id)
-        xc.update(name: contact.name, company: current_user.company)
-      end
-      @xero_client.Item.all.each do |item|
-        xli = XeroLineItem.find_or_initialize_by(item_code: item.code)
-        xli.update(description: item.description, quantity: item.quantity_on_hand, price: item.sales_details.unit_price, account: item.sales_details.account_code, tax: item.sales_details.tax_type, company: current_user.company)
-      end
+      # Save xero contacts to database
+      @xero_client.save_xero_contacts(current_user.company)
+      # Save xero lineitems to database
+      @xero_client.save_xero_line_items(current_user.company)
       templates = Template.where(company: current_user.company)
       if params[:invoice_type].present? and templates.present?
         flash[:notice] = "User is connected to Xero."
