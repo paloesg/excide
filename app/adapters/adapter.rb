@@ -24,11 +24,11 @@ module Adapter
       end
     end
 
-    def request_token(company, invoice_params={})
+    def request_token(invoice_params={})
       if invoice_params.nil?
-        request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
+        @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
       else
-        request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + Rails.application.routes.url_helpers.xero_callback_and_update_path(workflow_action_id: invoice_params[:workflow_action_id], workflow_id: invoice_params[:workflow_id], invoice_type: invoice_params[:invoice_type]))
+        @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + Rails.application.routes.url_helpers.xero_callback_and_update_path(workflow_action_id: invoice_params[:workflow_action_id], workflow_id: invoice_params[:workflow_id], invoice_type: invoice_params[:invoice_type]))
       end
     end
 

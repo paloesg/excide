@@ -5,7 +5,7 @@ class XeroSessionsController < ApplicationController
   def connect_to_xero
     authorize :xero_session, :connect_to_xero?
     @xero = Xero.new(current_user.company)
-    request_token = @xero.request_token(current_user.company)
+    request_token = @xero.request_token()
     session[:request_token] = request_token.token
     session[:request_secret] = request_token.secret
     redirect_to request_token.authorize_url
