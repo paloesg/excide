@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.6.1'
+ruby '2.6.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
@@ -88,7 +88,8 @@ gem 'acts_as_list'
 # Use user friendly slugs
 gem 'friendly_id', '~> 5.3.0'
 # Amazon S3 SDK
-gem 'aws-sdk', '~> 3'
+gem 'aws-sdk-s3', '~> 1'
+gem 'aws-sdk-textract', '~> 1'
 # Sitemap generator
 gem 'sitemap_generator'
 # Uploading of sitemap to AWS
@@ -146,7 +147,7 @@ gem 'mini_mime'
 gem 'shortuuid'
 
 # Backend admin
-gem "administrate", "0.12.0"
+gem "administrate", "0.13.0"
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
 gem 'administrate-field-jsonb'
