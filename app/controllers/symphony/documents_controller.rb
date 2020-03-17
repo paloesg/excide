@@ -1,7 +1,7 @@
 class Symphony::DocumentsController < ApplicationController
   # layout 'dashboard/application'
   layout 'metronic/application'
-  
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_templates, only: [:new, :edit, :multiple_edit]
@@ -44,10 +44,10 @@ class Symphony::DocumentsController < ApplicationController
     respond_to do |format|
       if @generate_document.success?
         @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate
+        document = @generate_document.document
+        # Run convert job asynchronously. Service object is performed during the job.
+        ConvertPdfToImagesJob.perform_later(document)
         if params[:document_type] == 'batch-uploads'
-          document = @generate_document.document
-          # Run convert job asynchronously. Service object is performed during the job.
-          ConvertPdfToImagesJob.perform_later(document)
           batch = document.workflow.batch
           first_task = batch.template&.sections.first.tasks.first
           first_workflow = batch.workflows.order(created_at: :asc).first
@@ -151,7 +151,7 @@ class Symphony::DocumentsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def document_params
-    params.require(:document).permit(:filename, :remarks, :company_id, :date_signed, :date_uploaded, :file_url, :workflow_id, :document_template_id)
+    params.require(:document).permit(:filename, :remarks, :company_id, :date_signed, :date_uploaded, :file_url, :workflow_id, :document_template_id, converted_image: [])
   end
 
   def set_s3_direct_post
