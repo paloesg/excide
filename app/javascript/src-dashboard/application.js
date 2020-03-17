@@ -38,11 +38,8 @@ require("./components/multiple_uploads_and_edit");
 require("./components/popover_initialize");
 require("./components/selectize_initialize");
 require("./components/document_popover");
-require("./components/load_batch");
 require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");
-
-window.deleteBatch = require("./components/delete_batch");
 
 require("./turbolinks-compatibility");
 
