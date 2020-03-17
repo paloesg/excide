@@ -70,8 +70,7 @@ class Symphony::UsersController < ApplicationController
       # Free trial period ends after 30 days
       @user.company.trial_end_date = @user.company.created_at + 30.days
       @user.company.save
-      # Take out process payment since credit card is not added in the sign up page
-      # process_payment(@user.id, @user.email, user_params[:stripe_card_token])
+      process_payment(@user.id, @user.email, user_params[:stripe_card_token]) if !params[:user][:subscription_type].empty?
       flash[:notice] = 'Additional Information updated successfully! You are currently using the 30-days free trial Symphony Pro!'
       if @user.company.connect_xero
         redirect_to connect_to_xero_path
@@ -109,6 +108,11 @@ class Symphony::UsersController < ApplicationController
 
   def process_payment(user_id, email, card_token)
     customer = Stripe::Customer.create({email: email, card: card_token})
+    Stripe::Subscription.create({
+      customer: customer.id,
+      items: [{plan: ENV['STRIPE_MONTHLY_PLAN']}],
+      trial_end: current_user.company.trial_end_date.to_i
+    })
 
     user = User.find(user_id)
     # update account stripe in user

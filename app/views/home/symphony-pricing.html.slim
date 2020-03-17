@@ -16,6 +16,7 @@ section.pricing-section-2.text-center
               span.pricing__dollar> $
               | 0
             p.type--fine-print With basic features
+            = link_to 'Start your free trial now!', new_user_registration_path, class: 'btn btn--sm btn--orange type--uppercase'
           ul
             li
               strong Basic workflow features:
@@ -49,6 +50,7 @@ section.pricing-section-2.text-center
               span.text-white.pricing__dollar> $
               | 49
             p.text-white.type--fine-print Per Month, SGD.
+            = link_to 'Subscribe Monthly', new_user_registration_path(subscription_type: 'monthly'), class: 'btn btn--sm btn--orange type--uppercase'
           ul
             li
               strong PRO workflow features:
