@@ -75,7 +75,7 @@ module Stripe
 
     def handle_invoice_payment_succeeded(event)
       subscription = Stripe::Subscription.retrieve(event.data.object.subscription)
-      if subscription.plan.id == ENV['STRIPE_MONTHLY_PLAN']
+      if subscription.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or subscription.plan.id == ENV['STRIPE_ANNUAL_PLAN']
         @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
         invoice = Stripe::Invoice.retrieve(event.data.object.id)
         period_start = subscription["current_period_start"]
