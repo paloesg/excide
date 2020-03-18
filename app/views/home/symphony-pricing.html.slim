@@ -8,7 +8,7 @@ section.text-center.imagebg.space--lg data-overlay="3"
 section.pricing-section-2.text-center
   .container
     .row
-      .col-md-6.col-lg-6
+      .col-md-4.col-lg-4
         .pricing.pricing-3
           .pricing__head.bg--secondary.boxed
             h5 Basic
@@ -37,19 +37,21 @@ section.pricing-section-2.text-center
             li
               span No external app integrations
             li
-              span Basic notifications and reminders (Email only)
+              span Basic notifications and reminders 
+              br
+              | (Email only)
             li
               span Email support
         /! end pricing
-      .col-md-6.col-lg-6
+      .col-md-4.col-lg-4
         .pricing.pricing-3
           .pricing__head.pricing-color.boxed
             span.label.label-color Value
             h5.text-white PRO
             span.h1.text-white
               span.text-white.pricing__dollar> $
-              | 49
-            p.text-white.type--fine-print Per Month, SGD.
+              | 100
+            p.text-white.type--fine-print Per Year, SGD.
             = link_to 'Subscribe Monthly', new_user_registration_path(subscription_type: 'monthly'), class: 'btn btn--sm btn--orange type--uppercase'
           ul
             li
@@ -71,10 +73,47 @@ section.pricing-section-2.text-center
             li
               span External app integrations (Xero, WhatsApp, Slack)
             li
-              span Advanced notifications and reminders (WhatsApp, SMS, Email)
+              span Advanced notifications and reminders
+              br
+              | (WhatsApp, SMS, Email)
+            li
+              span Live chat support
+      .col-md-4.col-lg-4
+        .pricing.pricing-3
+          .pricing__head.bg--secondary.boxed
+            h5 PRO
+            span.h1
+              span.pricing__dollar> $
+              | 49
+            p.type--fine-print Per Month, SGD.
+            = link_to 'Subscribe Annually', new_user_registration_path(subscription_type: 'monthly'), class: 'btn btn--sm btn--orange type--uppercase'
+          ul
+            li
+              strong PRO workflow features:
+              br
+              span Batch file uploads
+              br
+              span Automated batching of repetitive tasks
+              br
+              span Automated recurring workflows
+            li
+              strong PRO task types:
+              br
+              span Create payable and receivable invoices
+              br
+              span One-click send invoice to Xero
+              br
+              span All basic task types
+            li
+              span External app integrations (Xero, WhatsApp, Slack)
+            li
+              span Advanced notifications and reminders
+              br
+              | (WhatsApp, SMS, Email)
             li
               span Live chat support
 hr
+
 section#contactus
   .container
     .row.mb--2
