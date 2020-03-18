@@ -48,8 +48,8 @@ module Stripe
     end
 
     def handle_customer_subscription_updated(event)
-      if event.data.object.plan.id == ENV['STRIPE_PLAN']
-        @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      if event.data.object.plan.id == ENV['STRIPE_MONTHLY_PLAN']
         period_end = event.data.object.current_period_end
         # Run mailer only when cancel_at_period_end is true
         if event.data.object.cancel_at_period_end
@@ -58,11 +58,15 @@ module Stripe
           # Assuming customer_subscription_updated method only runs upon clicking the cancellation button
           StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
         end
+      elsif event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
+        subscription = Stripe::Subscription.retrieve(event.data.object.id)
+        @current_user.company.stripe_subscription_plan_data['subscription'] = subscription
       end
+      @current_user.company.save
     end
 
     def handle_customer_subscription_deleted(event)
-      if event.data.object.plan.id == ENV['STRIPE_MONTHLY_PLAN']
+      if event.data.object.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
         @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
         # Downgrade service runs when stripe deleted subscription
         DowngradeSubscriptionService.new(@current_user.company).run

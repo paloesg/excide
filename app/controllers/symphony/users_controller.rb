@@ -70,6 +70,7 @@ class Symphony::UsersController < ApplicationController
       # Free trial period ends after 30 days
       @user.company.trial_end_date = @user.company.created_at + 30.days
       @user.company.save
+      # Only process payment when customer click to subscribe during sign up
       process_payment(@user.id, @user.email, user_params[:stripe_card_token]) if !params[:user][:subscription_type].empty?
       flash[:notice] = 'Additional Information updated successfully! You are currently using the 30-days free trial Symphony Pro!'
       if @user.company.connect_xero
@@ -117,7 +118,7 @@ class Symphony::UsersController < ApplicationController
     user = User.find(user_id)
     # update account stripe in user
     user.update_attributes(stripe_card_token: card_token, stripe_customer_id: customer.id)
-
+    # upgrade company to pro immediately
     user.company.upgrade
     user.save
 
