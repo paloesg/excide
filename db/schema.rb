@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_27_085317) do
+ActiveRecord::Schema.define(version: 2020_03_14_153100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 2020_02_27_085317) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
-    t.boolean "completed"
+    t.boolean "completed", default: false
     t.integer "workflow_progress"
     t.integer "task_progress"
     t.index ["company_id"], name: "index_batches_on_company_id"
@@ -578,7 +578,7 @@ ActiveRecord::Schema.define(version: 2020_02_27_085317) do
     t.integer "user_id"
     t.integer "company_id"
     t.integer "template_id"
-    t.boolean "completed"
+    t.boolean "completed", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deadline"
