@@ -56,7 +56,7 @@ class CompaniesController < ApplicationController
         ]
       }
     )
-      redirect_to symphony_root_path, notice: 'Your subscription has been updated to annual subscription.'
+      redirect_to edit_company_path, notice: 'Your subscription has been updated to annual subscription.'
     else
       redirect_to root_path
     end
