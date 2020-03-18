@@ -69,7 +69,8 @@
             br
             = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-primary'
             br
-            = link_to 'Change to annual plan', annual_subscription_plan_update_path, class: 'text-danger'
+            - if @company.stripe_subscription_plan_data['subscription']['plan']['id'] != ENV['STRIPE_ANNUAL_PLAN']
+              = link_to 'Change to annual plan', annual_subscription_plan_update_path, class: 'text-danger'
     .card.mb-4
       .card-header Invoices
       .card-body
