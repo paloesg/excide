@@ -22,13 +22,13 @@ section.height-100.imagebg data-overlay="4"
                       = f.text_field :last_name, class: 'form-control', required: true
               - if params[:subscription_type].present?
                 .feature.boxed
-                  h5.uppercase #{params[:company]} Credit Card Detail 
+                  h5.uppercase.mb-2 #{params[:company]} Credit Card Detail 
                   .row
                     .col-md-12
                       .form-group
                         = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
                         .stripe-elements
-                          #card-element
+                          #card-element style="background-color: #ffffff; padding: 10px; margin-bottom: 20px"
                   .row
                     .col-md-12
                       .form-group
@@ -50,5 +50,10 @@ section.height-100.imagebg data-overlay="4"
                       = render 'companies/address_fields', f: fca
           .row
             .col-sm-4.offset-md-8.text-right
-              = f.hidden_field :subscription_type, value: params[:subscription_type].present? ? params[:subscription_type] : nil
-              = f.submit "Save Additional Information", class: 'btn additional-information-submit btn--orange'
+              - if params[:subscription_type].present?
+                span.text-white.font-weight-bold
+                  | (Note: You will be making payment for your subscription upon clicking the button!)
+                = f.hidden_field :subscription_type, value: params[:subscription_type].present? ? params[:subscription_type] : nil
+                = f.submit "Save Additional Information", data: { confirm: "You are about to make payment. Proceed?" }, class: 'btn additional-information-submit btn--orange'
+              - else
+                = f.submit "Save Additional Information", class: 'btn additional-information-submit btn--orange'
