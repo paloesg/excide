@@ -71,7 +71,7 @@ class Symphony::UsersController < ApplicationController
       @user.company.trial_end_date = @user.company.created_at + 30.days
       @user.company.save
       # Only process payment when customer click to subscribe during sign up
-      process_payment(@user.id, @user.email, user_params[:stripe_card_token], params[:user][:subscription_type]) if !params[:user][:subscription_type].empty?
+      process_payment(@user.id, @user.email, user_params[:stripe_card_token], params[:user][:subscription_type]) if !params[:user][:subscription_type].nil?
       flash[:notice] = 'Additional Information updated successfully! You are currently using the 30-days free trial Symphony Pro!'
       if @user.company.connect_xero
         redirect_to connect_to_xero_path

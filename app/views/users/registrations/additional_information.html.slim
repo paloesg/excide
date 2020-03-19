@@ -49,11 +49,11 @@ section.height-100.imagebg data-overlay="4"
                     = fc.fields_for :address do |fca|
                       = render 'companies/address_fields', f: fca
           .row
-            .col-sm-4.offset-md-8.text-right
+            .col-sm-4.offset-md-8.text-left
               - if params[:subscription_type].present?
                 span.text-white.font-weight-bold
-                  | (Note: You will be making payment for your subscription upon clicking the button!)
+                  | (Note: You will be paying for your #{params[:subscription_type]} subscription upon clicking the button below)
                 = f.hidden_field :subscription_type, value: params[:subscription_type].present? ? params[:subscription_type] : nil
-                = f.submit "Save Additional Information", data: { confirm: "You are about to make payment. Proceed?" }, class: 'btn additional-information-submit btn--orange'
+                = f.submit "Confirm subscription", class: 'btn additional-information-submit btn--orange'
               - else
                 = f.submit "Save Additional Information", class: 'btn additional-information-submit btn--orange'
