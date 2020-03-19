@@ -67,10 +67,6 @@
             br
             h5.mt-2 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
             br
-            / if plan is already annual plan, hide this link
-            - if @company.stripe_subscription_plan_data['subscription']['plan']['id'] != ENV['STRIPE_ANNUAL_PLAN']
-              = link_to 'Change to annual plan', annual_subscription_plan_update_path, class: 'text-primary'
-            br
             = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-danger'
             
     .card.mb-4
@@ -80,10 +76,19 @@
         .row
           .col-sm-12
             - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data["invoices"].present?
-              - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
-                / only display invoices that are in the 12 months span period
-                = link_to Time.at(invoice['period_end']).strftime("%d-%b-%Y"), invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
-                br
+              table.table
+                thead
+                  tr
+                    th Date
+                    th Description
+                    th
+                tbody    
+                  - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
+                    tr
+                      / only display invoices that are in the 12 months span period
+                      td = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
+                      td = invoice['lines']['data'][0]['description']
+                      td = link_to "Download", invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
     .card.mb-4
       .card-header Xero Details
       .card-body
