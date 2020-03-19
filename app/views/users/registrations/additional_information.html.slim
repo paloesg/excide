@@ -2,7 +2,7 @@
 section.height-100.imagebg data-overlay="4"
   .background-image-holder
     img.background-image alt="Growing your business" src=image_path('hero-image.jpg')
-  .container.pos-vertical-center
+  .container.pos-vertical-center.mt-4
     .row
       .col-md-12
         = form_for(@user, as: :user, url: edit_additional_information_symphony_users_path, html: { class: 'additional-information-page' }) do |f|
@@ -51,7 +51,7 @@ section.height-100.imagebg data-overlay="4"
           .row
             .col-sm-4.offset-md-8.text-left
               - if params[:subscription_type].present?
-                span.text-white.font-weight-bold
+                span.text-white.font-weight-bold.small
                   | (Note: You will be paying for your #{params[:subscription_type]} subscription upon clicking the button below)
                 = f.hidden_field :subscription_type, value: params[:subscription_type].present? ? params[:subscription_type] : nil
                 = f.submit "Confirm subscription", class: 'btn additional-information-submit btn--orange'
