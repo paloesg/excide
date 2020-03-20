@@ -1,5 +1,5 @@
 .kt-header__topbar-item.dropdown
-  .kt-header__topbar-wrapper data-offset="10px,0px" data-toggle="dropdown" 
+  .kt-header__topbar-wrapper data-offset="10px,0px" data-toggle="dropdown"
     span.kt-header__topbar-icon.kt-header__topbar-icon--success.icon-size.mr-3
       i.flaticon2-bell-alarm-symbol
       - if @target.has_unopened_notifications?(parameters)
@@ -11,13 +11,10 @@
       .kt-head.kt-head--skin-light.kt-head--fit-x.kt-head--fit-b.dropdown_notification
         h3.kt-head__title.cursor-auto
           | User Notifications
-          | &nbsp;
-          span.btn.btn-label-primary.btn-sm.btn-bold.btn-font-md class=("#{'unopened' if @target.has_unopened_notifications?(parameters)}") 
+          span.btn.btn-label-primary.btn-sm.btn-bold.btn-font-md.ml-2 class=("#{'unopened' if @target.has_unopened_notifications?(parameters)}")
             = "#{@target.unopened_notification_count(parameters)} new"
-          .notification_header_menu
-            span.pull-right
-              = link_to "Mark all as read", open_all_user_notifications_path(@target, parameters.slice(:routing_scope, :devise_default_routes)), method: :post, remote: true, class: 'btn btn-sm btn-outline-danger mt-4 mr-2'
-        ul.nav.nav-tabs.nav-tabs-line.nav-tabs-bold.nav-tabs-line-3x.nav-tabs-line-brand.kt-notification-item-padding-x role="tablist" 
+          = link_to "Mark all as read", open_all_user_notifications_path(@target, parameters.slice(:routing_scope, :devise_default_routes)), method: :post, remote: true, class: 'btn btn-sm btn-outline-danger ml-2'
+        ul.nav.nav-tabs.nav-tabs-line.nav-tabs-bold.nav-tabs-line-3x.nav-tabs-line-brand.kt-notification-item-padding-x role="tablist"
           li.nav-item
             a.nav-link.active.show aria-selected="true" data-toggle="tab" href="#topbar_notifications_notifications" role="tab"  Notifications
       / ! end: Head
@@ -39,7 +36,7 @@ css:
     height: calc(500px - 37px - 37px);
     overflow: scroll;
   }
-  
+
 javascript:
   $(".dropdown_notification").click(function(){
     $(this).parent().toggleClass("open");
