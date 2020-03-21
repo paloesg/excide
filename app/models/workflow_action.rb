@@ -73,10 +73,6 @@ class WorkflowAction < ApplicationRecord
       users = User.with_role(next_task.role.name.to_sym, self.company)
       # create task notification
       next_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
-      # # Trigger email notification for next task if role present
-      # users.each do |user|
-      #   NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
-      # end
     end
   end
 
