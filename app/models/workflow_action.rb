@@ -40,11 +40,11 @@ class WorkflowAction < ApplicationRecord
     notifiable_path: :wf_notifiable_path
 
   def custom_notification_targets(key)
-    if key == 'workflow_action.task_notify'
+    if key == 'workflow_action.task_notify' or key == 'workflow_action.unordered_workflow_notify'
       self.task.role.users.uniq
     elsif key == 'workflow_action.workflow_completed'
       # when completed all workflow actions, notify the one that created the workflow
-      [self.workflow.user]
+      [self.workflow.user]      
     end
   end
 
@@ -73,15 +73,6 @@ class WorkflowAction < ApplicationRecord
       users = User.with_role(next_task.role.name.to_sym, self.company)
       # create task notification
       next_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
-    end
-  end
-
-  def unordered_workflow_email_notification
-    workflow_tasks = self.workflow.template.sections.map{|sect| sect.tasks }.flatten.compact
-    task_users = workflow_tasks.map{|task| task.role.users}.flatten.compact.uniq
-    #loop through all the users that have a role in that workflow
-    task_users.each do |user|
-      NotificationMailer.unordered_workflow_notification(user, workflow_tasks, self).deliver_later if user.settings[0]&.task_email == 'true'
     end
   end
 
