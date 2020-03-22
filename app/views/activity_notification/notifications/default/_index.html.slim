@@ -8,7 +8,7 @@
   .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim.dropdown-menu-xl
     form
       /! begin: Head
-      .kt-head.kt-head--skin-light.kt-head--fit-x.kt-head--fit-b.dropdown_notification
+      .kt-head.kt-head--skin-light.kt-head--fit-x.kt-head--fit-b
         h3.kt-head__title.cursor-auto
           | User Notifications
           span.btn.btn-label-primary.btn-sm.btn-bold.btn-font-md.ml-2 class=("#{'unopened' if @target.has_unopened_notifications?(parameters)}")
@@ -20,8 +20,3 @@
       / ! end: Head
       .notifications
         = yield :notification_index
-
-javascript:
-  $(".dropdown_notification").click(function(){
-    $(this).parent().toggleClass("open");
-  });
