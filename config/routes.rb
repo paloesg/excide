@@ -176,6 +176,9 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
+  # Integrated with Devise
+  notify_to :users, with_devise: :users
+
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account
   get 'account', to: 'accounts#edit', as: :edit_account
