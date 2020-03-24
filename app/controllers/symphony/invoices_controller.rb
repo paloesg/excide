@@ -19,7 +19,6 @@ class Symphony::InvoicesController < ApplicationController
   def new
     @invoice = Invoice.new
     authorize @invoice
-
     @invoice.build_line_item
   end
 
