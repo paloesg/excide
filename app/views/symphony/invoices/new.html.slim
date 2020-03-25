@@ -5,7 +5,10 @@
   .loading
     .loader
   .col-md-4
-    = render "document"
+    - if File.extname(@document.file_url) == ".pdf" && @document.converted_image.count != @page_count
+      div.mt-md-5.text-center Please refresh the page.
+    - else
+      = render 'document'
   .col-md-8
     .card.mb-3
       .row.m-2
