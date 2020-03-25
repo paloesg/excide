@@ -1,6 +1,5 @@
 class ConversionService
   # This service is to convert things. Eg PDF document converts to images
-  require "mini_magick"
   def initialize(document)
     @document = document
   end
