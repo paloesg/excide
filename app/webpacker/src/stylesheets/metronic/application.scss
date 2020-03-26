@@ -22,8 +22,14 @@
 //Actiontext
 @import 'trix/dist/trix.css';
 @import 'actiontext';
+
 //Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+//Selectize
+@import "selectize/dist/css/selectize";
+@import "selectize/dist/css/selectize.default";
+
 // fontawesome 4
 $fa-font-path: "~font-awesome/fonts";
 @import '~font-awesome/scss/font-awesome';
