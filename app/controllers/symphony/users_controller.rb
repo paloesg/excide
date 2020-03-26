@@ -72,10 +72,10 @@ class Symphony::UsersController < ApplicationController
       @user.company.save
       # Only process payment when customer click to subscribe during sign up
       if !params[:user][:subscription_type].nil?
-        process_payment(@user.id, @user.email, user_params[:stripe_card_token], params[:user][:subscription_type]) 
+        process_payment(@user.id, @user.email, user_params[:stripe_card_token], params[:user][:subscription_type])
         flash[:notice] = 'Thank you for your subscription. Your payment has been successfully processed.'
       else
-        flash[:notice] = 'Additional Information updated successfully! You are currently using the 30-days free trial Symphony Pro!'
+        flash[:notice] = 'Thank you for signing up. You are currently using the 30-days free trial Symphony Pro.'
       end
       if @user.company.connect_xero
         redirect_to connect_to_xero_path
@@ -125,7 +125,7 @@ class Symphony::UsersController < ApplicationController
         items: [{plan: ENV['STRIPE_ANNUAL_PLAN']}],
       })
     end
-    
+
     user = User.find(user_id)
     # update account stripe in user
     user.update_attributes(stripe_card_token: card_token, stripe_customer_id: customer.id)
