@@ -19,8 +19,7 @@
  *= require_tree ./css
  */
 
-@import "bootstrap";
-// @import "font-awesome";
+@import '~bootstrap/scss/bootstrap';
 // fontawesome 4
 $fa-font-path: "~font-awesome/fonts";
 @import '~font-awesome/scss/font-awesome';

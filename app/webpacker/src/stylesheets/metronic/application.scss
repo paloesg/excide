@@ -1,0 +1,93 @@
+//= require ./actiontext
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require trix
+ *= require_self
+ *= require dropzone
+ *= require font-awesome
+ *= require selectize
+ *= require selectize.default
+
+ */
+
+@import '~bootstrap/scss/bootstrap';
+// fontawesome 4
+$fa-font-path: "~font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome';
+
+@import "../src/stylesheets/metronic/css/custom";
+@import "../src/stylesheets/metronic/css/invoices";
+@import "../src/stylesheets/metronic/css/zoom";
+@import "../src/stylesheets/metronic/css/batches";
+@import "../src/stylesheets/metronic/css/companies";
+@import "../src/stylesheets/metronic/css/templates";
+@import "../src/stylesheets/metronic/css/pagination";
+@import "../src/stylesheets/metronic/css/notification";
+@import "../src/stylesheets/metronic/pages/pricing/pricing-1";
+// @import "dashboard/admin";
+// @import "symphony/pagination";
+// @import "symphony/survey_templates";
+@import "../src/stylesheets/metronic/actiontext";
+
+
+//icon
+@import "../src/stylesheets/metronic/css/flaticon";
+@import "../src/stylesheets/metronic/css/socicon";
+
+//
+// Main Stylesheet
+//
+
+////////////////////////////////////////////////////////////////
+///////////// DO NOT MODIFY BELOW INCLUDE ORDER ////////////////
+////////////////////////////////////////////////////////////////
+
+// 1: Include global config
+@import "../src/stylesheets/metronic/config";
+
+// 2: Include demo config (that overrides the above global config)
+@import "../src/stylesheets/metronic/global/layout/config";
+
+// 3: Bootstrap Include
+@import "../src/stylesheets/metronic/global/integration/frameworks/bootstrap/variables";
+@import "../src/stylesheets/metronic/global/integration/frameworks/bootstrap/bootstrap.scss";
+
+// 3: Components include
+@import "../src/stylesheets/metronic/global/include";
+////////////////////////////////////////////////////////////////
+///////////// DO NOT MODIFY ABOVE INCLUDE ORDER ////////////////
+////////////////////////////////////////////////////////////////
+
+// 5: Demo Configs
+@import "../src/stylesheets/metronic/global/layout/header/config";
+@import "../src/stylesheets/metronic/global/layout/aside/config";
+@import "../src/stylesheets/metronic/global/layout/footer/config";
+
+
+// 6: Demo Includes
+// Layout
+@import "../src/stylesheets/metronic/global/layout/base/base";
+
+@import "../src/stylesheets/metronic/global/layout/header/header";
+@import "../src/stylesheets/metronic/global/layout/header/base-mobile";
+@import "../src/stylesheets/metronic/global/layout/header/menu";
+@import "../src/stylesheets/metronic/global/layout/header/topbar";
+@import "../src/stylesheets/metronic/global/layout/header/brand";
+
+@import "../src/stylesheets/metronic/global/layout/aside/aside";
+@import "../src/stylesheets/metronic/global/layout/aside/menu";
+
+@import "../src/stylesheets/metronic/global/layout/content/content";
+@import "../src/stylesheets/metronic/global/components/calendar/fullcalendar.bundle";
+@import "../src/stylesheets/metronic/global/components/base/switch";
+@import "../src/stylesheets/metronic/global/layout/footer/footer";
