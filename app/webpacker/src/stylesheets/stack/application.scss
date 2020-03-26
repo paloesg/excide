@@ -21,6 +21,10 @@
 
 @import "bootstrap";
 // @import "font-awesome";
+// fontawesome 4
+$fa-font-path: "~font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome';
+
 @import '../src/stylesheets/stack/css/1-theme';
 @import '../src/stylesheets/stack/css/custom';
 @import '../src/stylesheets/stack/css/flickity';
