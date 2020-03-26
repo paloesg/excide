@@ -34,6 +34,10 @@
 $fa-font-path: "~font-awesome/fonts";
 @import '~font-awesome/scss/font-awesome';
 
+//Dropzone
+@import "dropzone/dist/min/dropzone.min.css";
+@import "dropzone/dist/min/basic.min.css";
+
 @import "../src/stylesheets/metronic/css/custom";
 @import "../src/stylesheets/metronic/css/invoices";
 @import "../src/stylesheets/metronic/css/zoom";
