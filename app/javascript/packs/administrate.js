@@ -7,6 +7,6 @@ require("@rails/ujs").start();
 require("turbolinks").start();
 
 // Currently no way to implement cocoon in rails 6, so this was an alternative to use cocoon before the creator start changing to use webpack
-require("../src-dashboard/cocoon");
+require("../src/dashboard/cocoon");
 
-require("../administrate/index");
+require("../src/administrate/index");

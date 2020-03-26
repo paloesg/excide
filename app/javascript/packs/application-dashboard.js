@@ -20,11 +20,11 @@ require("turbolinks").start()
 import 'bootstrap/dist/js/bootstrap';
 import 'dropzone/dist/dropzone';
 import 'tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min';
-import '../src-dashboard/application.js';
-import '../src-dashboard/metronic/application.js';
+import '../src/dashboard/application.js';
+import '../src/dashboard/metronic/application.js';
 
 // Currently no way to implement cocoon in rails 6, so this was an alternative to use cocoon before the creator start changing to use webpack
-require("src-dashboard/cocoon");
+require("src/dashboard/cocoon");
 
 // Actiontext
 require("trix");
