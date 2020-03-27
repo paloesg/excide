@@ -21,9 +21,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.account_type = 0
       company.save
       resource.company = company
-      # Save user as stripe customer upon registration
-      customer = Stripe::Customer.create({email: resource.email})
-      resource.stripe_customer_id = customer.id
+      if params[:user][:subscription_type].empty?
+        # Save user as stripe customer upon registration if there is no subscription type params
+        customer = Stripe::Customer.create({email: resource.email})
+        resource.stripe_customer_id = customer.id
+      end
     end
     resource.save
     role = params[:role].present? ? params[:role] : "admin"
@@ -122,7 +124,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(_resource)
-    additional_information_path
+    additional_information_path(subscription_type: params[:user][:subscription_type].present? ? params[:user][:subscription_type] : nil)
   end
 
   # The path used after sign up for inactive accounts.
