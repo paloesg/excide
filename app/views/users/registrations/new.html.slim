@@ -9,9 +9,6 @@ section.height-100.imagebg.text-center data-overlay="4"
             | Create your
             br
             | Symphony account
-          - if params[:subscription_type].present?
-            p 
-              | (for #{params[:subscription_type]} subscription)
           = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
             .row
               .col-md-12
@@ -22,7 +19,7 @@ section.height-100.imagebg.text-center data-overlay="4"
                   = f.password_field :password_confirmation, required: true, input_html: { autocomplete: "new-password" }, placeholder: "Confirm password"
                 form.group
                   = f.hidden_field :subscription_type, value: params[:subscription_type]
-                  = f.submit "Sign Up", class:"btn btn--excide type--uppercase"
+                  = f.submit "Create", class:"btn btn--excide type--uppercase"
             .row.mt-3
               .col-md-12
                 ' Already a member?

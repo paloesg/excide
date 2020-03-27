@@ -22,7 +22,7 @@ section.height-100.imagebg data-overlay="4"
                       = f.text_field :last_name, class: 'form-control', required: true
               - if params[:subscription_type].present?
                 .feature.boxed
-                  h5.uppercase.mb-2 #{params[:company]} Credit Card Detail 
+                  h5.uppercase.mb-2 #{params[:company]} Payment Details
                   .row
                     .col-md-12
                       .form-group
@@ -35,7 +35,7 @@ section.height-100.imagebg data-overlay="4"
                         #card-errors role='alert'
             .col-sm-6
               .feature.boxed
-                h5.uppercase #{params[:company]} Company Information
+                h5.uppercase #{params[:company]} Company Details
                 = f.fields_for :company do |fc|
                   .col-md-12
                     = fc.label :name, 'Company name'
@@ -49,10 +49,10 @@ section.height-100.imagebg data-overlay="4"
                     = fc.fields_for :address do |fca|
                       = render 'companies/address_fields', f: fca
           .row
-            .col-sm-4.offset-md-8.text-left
+            .col-sm-6.offset-md-6.text-left
               - if params[:subscription_type].present?
                 span.text-white.font-weight-bold.small
-                  | (Note: You will be paying for your #{params[:subscription_type]} subscription upon clicking the button below)
+                  | You will be charged for your #{params[:subscription_type]} subscription upon clicking the button below.
                 = f.hidden_field :subscription_type, value: params[:subscription_type].present? ? params[:subscription_type] : nil
                 = f.submit "Confirm subscription", class: 'btn additional-information-submit btn--orange'
               - else
