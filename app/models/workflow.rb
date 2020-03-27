@@ -151,7 +151,7 @@ class Workflow < ApplicationRecord
     if ordered_workflow?
       trigger_first_task
     else
-      self.current_task.get_workflow_action(self.company_id, self.id).notify :users, key: 'workflow_action.unordered_workflow_notify', parameters: { printable_notifiable_name: "#{self.current_task.instructions}", workflow_action_id: self.current_task.get_workflow_action(self.company_id, self.id).id }, send_later: false
+      unordered_tasks_trigger_email
     end
   end
 
@@ -161,6 +161,10 @@ class Workflow < ApplicationRecord
 
   def trigger_first_task
     self.current_task.get_workflow_action(self.company_id, self.id).set_deadline_and_notify(self.current_task)
+  end
+
+  def unordered_tasks_trigger_email
+    self.current_task.get_workflow_action(self.company, self.id).unordered_workflow_email_notification
   end
 
   def uppercase_identifier
