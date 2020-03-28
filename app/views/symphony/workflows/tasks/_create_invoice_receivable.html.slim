@@ -23,7 +23,7 @@ tr
         .btn-toolbar role="toolbar"
           .btn-group.mr-2 role="group" aria-label="Task actions"
             - if @workflow.invoice.blank?
-              = link_to "Create Invoice Receivable", new_symphony_invoice_path(workflow_id: @workflow.id, invoice: 'receivable', workflow_action_id: action.id), role: 'button', class: 'btn btn-success btn-sm'
+              = link_to "Create Invoice Receivable", new_symphony_invoice_path(workflow_id: @workflow.id, invoice_type: 'receivable', workflow_action_id: action.id), role: 'button', class: 'btn btn-success btn-sm'
             - else
               = link_to "Create Invoice", new_symphony_invoice_path(workflow_id: @workflow.id, workflow_action_id: action.id), role: 'button', class: 'btn btn-success btn-sm disabled', disabled: true
           .btn-group.mr-2 role="group" aria-label="Reminder actions"
