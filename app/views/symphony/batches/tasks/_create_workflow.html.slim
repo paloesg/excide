@@ -2,6 +2,6 @@
   = render "symphony/batches/tasks/completed"
 - else
   - if current_user.include_role?(action.task.role) or current_user.has_role?(:admin, @company)
-    = link_to 'Start', action.sub_workflow ? symphony_workflow_path(workflow_name: action.sub_workflow.template.slug, workflow_id: action.sub_workflow.id) : "/symphony/#{action.task.template.slug}/new?action_id=#{action.id}", class: "btn btn-success btn-sm mb-2 #{"disabled" if !action.task.first? and !action.task.check_previous.get_workflow_action(workflow.company, workflow.id)&.completed?}", id: 'new-workflow'
+    = link_to 'Start', action.sub_workflow ? symphony_workflow_path(workflow_name: action.sub_workflow.template.slug, workflow_id: action.sub_workflow.id) : "/symphony/#{action.task.child_workflow_template.slug}/new?action_id=#{action.id}", class: "btn btn-success btn-sm mb-2 #{"disabled" if !action.task.first? and !action.task.check_previous.get_workflow_action(workflow.company, workflow.id)&.completed?}", id: 'new-workflow'
   - else
     = link_to "Start", '#', role: 'button', class: 'btn btn-success btn-sm mb-2 disabled'

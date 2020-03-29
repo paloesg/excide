@@ -9,6 +9,7 @@ StripeEvent.signing_secret = Rails.configuration.stripe[:signing_secret]
 
 StripeEvent.configure do |events|
   events.subscribe 'checkout.session.completed', Stripe::EventHandler.new
+  events.subscribe 'customer.subscription.created', Stripe::EventHandler.new
   events.subscribe 'customer.subscription.updated', Stripe::EventHandler.new
   events.subscribe 'customer.subscription.deleted', Stripe::EventHandler.new
   events.subscribe 'invoice.upcoming', Stripe::EventHandler.new

@@ -52,4 +52,18 @@ namespace :update do
       company.save
     end
   end
+
+  desc "Update workflows completed nil to false"
+  task workflows_completed_false: :environment do
+    Workflow.where(completed: nil).each do |wf|
+      wf.update(completed: false)
+    end
+  end
+
+  desc "Update batches completed nil to false"
+  task batches_completed_false: :environment do
+    Batch.where(completed: nil).each do |batch|
+      batch.update(completed: false)
+    end
+  end
 end

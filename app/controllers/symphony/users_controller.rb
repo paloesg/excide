@@ -70,9 +70,13 @@ class Symphony::UsersController < ApplicationController
       # Free trial period ends after 30 days
       @user.company.trial_end_date = @user.company.created_at + 30.days
       @user.company.save
-      # Take out process payment since credit card is not added in the sign up page
-      # process_payment(@user.id, @user.email, user_params[:stripe_card_token])
-      flash[:notice] = 'Additional Information updated successfully! You are currently using the 30-days free trial Symphony Pro!'
+      # Only process payment when customer click to subscribe during sign up
+      if !params[:user][:subscription_type].nil?
+        process_payment(@user.id, @user.email, user_params[:stripe_card_token], params[:user][:subscription_type])
+        flash[:notice] = 'Thank you for your subscription. Your payment has been successfully processed.'
+      else
+        flash[:notice] = 'Thank you for signing up. You are currently using the 30-days free trial Symphony Pro.'
+      end
       if @user.company.connect_xero
         redirect_to connect_to_xero_path
       else
@@ -107,12 +111,27 @@ class Symphony::UsersController < ApplicationController
     end
   end
 
-  def process_payment(user_id, email, card_token)
+  def process_payment(user_id, email, card_token, subscription_type)
     customer = Stripe::Customer.create({email: email, card: card_token})
+    # Create the plan based on what user clicked (monthly or annually)
+    if subscription_type == 'monthly'
+      Stripe::Subscription.create({
+        customer: customer.id,
+        items: [{plan: ENV['STRIPE_MONTHLY_PLAN']}],
+      })
+    elsif subscription_type == 'annual'
+      Stripe::Subscription.create({
+        customer: customer.id,
+        items: [{plan: ENV['STRIPE_ANNUAL_PLAN']}],
+      })
+    end
 
     user = User.find(user_id)
     # update account stripe in user
-    user.update_attributes(stripe_card_token: card_token, stripe_customer_id:customer.id)
+    user.update_attributes(stripe_card_token: card_token, stripe_customer_id: customer.id)
+    # upgrade company to pro immediately
+    user.company.upgrade
+    user.save
 
     # Do Charge
     # charge = Stripe::Charge.create({
