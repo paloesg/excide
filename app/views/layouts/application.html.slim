@@ -7,9 +7,8 @@ html lang="en"
     = render 'application/favicon'
     = display_meta_tags site: "Virtual CFO | Excide"
 
-    / = stylesheet_link_tag    "stack/application", media: "all"
     <script src="https://js.stripe.com/v3/"></script>
-    = stylesheet_pack_tag 'stack', media: "all"
+    = stylesheet_pack_tag 'stack', media: "all", 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'home/application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']

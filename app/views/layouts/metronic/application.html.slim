@@ -15,12 +15,11 @@ html lang="en"
     /! end::Page Vendors Styles
 
     /! begin::Global Theme Styles(used by all pages)
-    / = stylesheet_link_tag "metronic/application"
     /! end::Global Theme Styles
     <script src="https://js.stripe.com/v3/"></script>
     = render 'application/favicon'
     = display_meta_tags site: "Virtual CFO | Excide"
-    = stylesheet_pack_tag 'metronic', media: "all"
+    = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application-dashboard', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
