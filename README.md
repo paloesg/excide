@@ -100,4 +100,11 @@ Do remember to specify the app name when running Heroku commands like so:
 
     heroku run --a excide rake db:migrate
     heroku run --a excide-staging rake db:migrate
-
+    
+Heroku buildpack:
+1. ImageMagick buildpack (For file's conversion using ActiveStorage's Image processing gem)
+    * [https://github.com/DuckyTeam/heroku-buildpack-imagemagick/](https://github.com/DuckyTeam/heroku-buildpack-imagemagick/)
+    
+    `heroku buildpacks:add https://github.com/DuckyTeam/heroku-buildpack-imagemagick --app HEROKU_APP_NAME`
+    
+2. Others... (To be added!)
