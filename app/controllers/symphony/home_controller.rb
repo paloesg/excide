@@ -7,7 +7,7 @@ class Symphony::HomeController < ApplicationController
     @templates = policy_scope(Template).assigned_templates(current_user)
     @template_pro = @templates.joins(sections: :tasks).where(tasks: {task_type: ["create_invoice_payable", "xero_send_invoice", "create_invoice_receivable", "coding_invoice"]})
 
-    @workflows_array = policy_scope(Workflow).includes(:template, :workflowable).where(template: @templates)
+    @workflows_array = policy_scope(Workflow).includes(:template).where(template: @templates)
     workflows_sort = sort_column(@workflows_array)
     params[:direction] == "desc" ? workflows_sort.reverse! : workflows_sort
     if params[:workflow_type].blank?
@@ -17,7 +17,7 @@ class Symphony::HomeController < ApplicationController
     end
     @workflows = Kaminari.paginate_array(templates_type).page(params[:page]).per(5)
 
-    @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: @company).order(:deadline).includes(:task)
+    @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
 
     @batch_count = policy_scope(Batch).count
     @reminder_count = current_user.reminders.where(company: current_user.company).count

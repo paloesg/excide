@@ -70,7 +70,7 @@ class WorkflowAction < ApplicationRecord
   def workflow_completed
     self.workflow.update_column('completed', true)
     WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later unless self.workflow.batch.present?
-    batch_completed
+    batch_completed if workflow.batch.present?
   end
 
   def batch_completed

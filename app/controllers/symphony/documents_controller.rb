@@ -44,17 +44,17 @@ class Symphony::DocumentsController < ApplicationController
     respond_to do |format|
       if @generate_document.success?
         @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate
+        document = @generate_document.document
+        # Run convert job asynchronously. Service object is performed during the job.
+        ConvertPdfToImagesJob.perform_later(document)
         if params[:document_type] == 'batch-uploads'
-          document = @generate_document.document
-          # Run convert job asynchronously. Service object is performed during the job.
-          ConvertPdfToImagesJob.perform_later(document)
           batch = document.workflow.batch
           first_task = batch.template&.sections.first.tasks.first
           first_workflow = batch.workflows.order(created_at: :asc).first
 
           # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable" and workflow actions of first workflow should be created
           if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type and first_workflow.workflow_actions.present?
-            link = new_symphony_invoice_path(workflow_name: document.workflow.template.slug, workflow_id: first_workflow, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
+            link = new_symphony_invoice_path(workflow_name: document.workflow.template.slug, workflow_id: first_workflow.id, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
           else
             link = symphony_batch_path(batch_template_name: document.workflow.template.slug, id: document.workflow.batch)
           end

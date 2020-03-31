@@ -4,45 +4,36 @@ class XeroSessionsController < ApplicationController
   
   def connect_to_xero
     authorize :xero_session, :connect_to_xero?
-    @xero_client = Xeroizer::PartnerApplication.new(
-      ENV["XERO_CONSUMER_KEY"],
-      ENV["XERO_CONSUMER_SECRET"],
-      "| echo \"#{ENV["XERO_PRIVATE_KEY"]}\" ",
-      :rate_limit_sleep => 2,
-      before_request: ->(request) {
-        request.headers.merge! "User-Agent" => ENV['XERO_CONSUMER_KEY']
-      }
-    )
-
-
-    request_token = @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
+    @xero = Xero.new(current_user.company)
+    request_token = @xero.request_token()
     session[:request_token] = request_token.token
     session[:request_secret] = request_token.secret
-    
     redirect_to request_token.authorize_url
   end
 
   def xero_callback_and_update
     if params[:oauth_verifier].present?
-      @xero_client = Xeroizer::PartnerApplication.new(ENV["XERO_CONSUMER_KEY"], ENV["XERO_CONSUMER_SECRET"], "| echo \"#{ENV["XERO_PRIVATE_KEY"]}\" ")
+      @xero_client = Xero.new(current_user.company)
 
-      @xero_client.authorize_from_request(session[:request_token], session[:request_secret], oauth_verifier: params[:oauth_verifier])
-      current_user.company.update_attributes(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle, xero_organisation_name: @xero_client.Organisation.first.name)
+      # authorize requests
+      @xero_client.authorize_from_request(session[:request_token], session[:request_secret], params[:oauth_verifier])
+      # Update company with xero's oauth properties
+      @xero_client.update_company_after_connecting_to_xero(current_user.company)
       session.delete(:request_token)
       session.delete(:request_secret)
-      @xero_client.Contact.all.each do |contact|
-        xc = XeroContact.find_or_initialize_by(contact_id: contact.contact_id)
-        xc.update(name: contact.name, company: current_user.company)
-      end
-      @xero_client.Item.all.each do |item|
-        xli = XeroLineItem.find_or_initialize_by(item_code: item.code)
-        xli.update(description: item.description, quantity: item.quantity_on_hand, price: item.sales_details.unit_price, account: item.sales_details.account_code, tax: item.sales_details.tax_type, company: current_user.company)
-      end
+      # Save xero contacts to database
+      @xero_client.save_xero_contacts(current_user.company)
+      # Save xero lineitems to database
+      @xero_client.save_xero_line_items(current_user.company)
       templates = Template.where(company: current_user.company)
-      flash[:notice] = "User signed in and connected to Xero."
-      if templates.present?
+      if params[:invoice_type].present? and templates.present?
+        flash[:notice] = "User is connected to Xero."
+        redirect_to new_symphony_invoice_path(workflow_name: Workflow.find_by(id: params[:workflow_id]).template.slug, workflow_id: params[:workflow_id], workflow_action_id: params[:workflow_action_id], invoice_type: params[:invoice_type])
+      elsif templates.present?
+        flash[:notice] = "User signed in and connected to Xero."
         redirect_to symphony_root_path
       else
+        flash[:notice] = "User signed in and connected to Xero."
         redirect_to new_symphony_template_path
       end
     else
