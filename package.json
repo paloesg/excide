@@ -1,7 +1,6 @@
 {
   "license": "UNLICENSED",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.0",
     "@fullcalendar/core": "^4.3.1",
     "@fullcalendar/daygrid": "^4.3.0",
     "@rails/actiontext": "^6.0.1",
