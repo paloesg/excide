@@ -1,5 +1,6 @@
 class Symphony::InvoicesController < ApplicationController
   include Adapter
+  require "mini_magick"
   layout 'metronic/application'
 
   before_action :authenticate_user!
