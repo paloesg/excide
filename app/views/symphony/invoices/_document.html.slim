@@ -28,10 +28,9 @@
             span.sr-only Next
   end
   span.form-group.float-right
-    .kt-switch
-      label
-        label.col-form-label
-          i.flaticon2-magnifier-tool
+    div.kt-switch
+      label.form-inline
         = check_box_tag "zoom", "true", false
         span
+        i.form-control-lg.p-lg-1.form-inline.flaticon2-magnifier-tool
 end
