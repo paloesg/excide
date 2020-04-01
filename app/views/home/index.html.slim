@@ -39,7 +39,7 @@ section.bg--secondary
 
 section.imagebg.parallax.height-60
   .background-image-holder style=("background: url(\"#{image_path('tailored-solutions.jpg')}\"); opacity: 1;")
-    img alt="background" src=image_path('tailored-solutions.jpg')
+    = image_pack_tag 'media/src/images/tailored-solutions.jpg', alt: "background"
   .container.pos-vertical-center
     .row
       .col-md-7.col-lg-12

@@ -17,6 +17,8 @@ require("turbolinks").start()
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
+const images = require.context('../src/images', true)
+
 import 'bootstrap/dist/js/bootstrap';
 import 'dropzone/dist/dropzone';
 import 'tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min';
