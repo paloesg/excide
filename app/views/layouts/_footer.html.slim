@@ -2,7 +2,7 @@ footer.footer-4.space--sm.text-center-xs.bg--dark
   .container
     .row
       .col-md-6.d-flex.align-items-center
-        img.logo alt="Image" src=image_url('excide-logo-light.png')
+        = image_pack_tag 'media/src/images/excide-logo-light.png', alt: "Image", class: 'logo'
     .row
       .col-md-6
         span &copy; #{Time.current.year} VFO Asia Pte. Ltd. All rights reserved. | #{link_to "Privacy Policy", privacy_path}
