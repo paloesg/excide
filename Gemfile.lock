@@ -92,6 +92,11 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
+    activity_notification (2.1.2)
+      i18n (>= 0.5.0)
+      jquery-rails (>= 3.1.1)
+      railties (>= 4.2.0, < 6.1)
+      swagger-blocks (>= 3.0.0)
     acts_as_list (1.0.0)
       activerecord (>= 4.2)
     addressable (2.7.0)
@@ -558,6 +563,7 @@ GEM
       stripe (>= 2.8, < 6)
     sucker_punch (2.1.2)
       concurrent-ruby (~> 1.0)
+    swagger-blocks (3.0.0)
     temple (0.8.2)
     thor (1.0.1)
     thread_safe (0.3.6)
@@ -603,6 +609,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
+  activity_notification
   acts_as_list
   administrate (= 0.13.0)
   administrate-field-image
