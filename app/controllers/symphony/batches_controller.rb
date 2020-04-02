@@ -13,7 +13,7 @@ class Symphony::BatchesController < ApplicationController
     @completed = @batches.where(completed: true).count
     @total = @batches.count
 
-    if current_user.has_role?(:admin, current_user.company)
+    if current_user.has_role?(:admin, current_user.company) or current_user.has_role? :superadmin
       @batches = @batches.order(created_at: :desc)
     else
       #Get current_user's id roles
