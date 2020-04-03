@@ -69,14 +69,9 @@ namespace :update do
 
   desc "PDF conversion for documents"
   task documents_pdf_conversion: :environment do
-    count = 0
     Document.all.each do |d|
-      puts "#{d.id}"
       if File.extname(d.file_url) == ".pdf" && !d.converted_image.attached?
-        puts "#{d.id}"
-        puts "#{count}"
         ConvertPdfToImagesJob.perform_now(d)
-        count += 1
       end
     end
   end
