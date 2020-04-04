@@ -29,8 +29,12 @@ class BatchPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      # Scope Batch by company where user in same company
-      scope.where(company: user.company)
+      if user.has_role?(:admin, user.company) or user.has_role? :superadmin
+        scope.where(company: user.company)
+      else
+      # Scope workflow by user has a role in
+        scope.where(company: user.company, id: user.relevant_batch_ids)
+      end
     end
   end
 
