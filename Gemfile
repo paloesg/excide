@@ -158,6 +158,9 @@ gem 'deep_cloneable', '~> 3.0.0'
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
 
+# In-app notification feature
+gem 'activity_notification'
+
 group :development do
   gem 'rails_real_favicon'
   gem 'rubocop', require: false
