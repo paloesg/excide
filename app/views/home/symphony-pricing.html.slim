@@ -3,8 +3,8 @@ section.text-center.imagebg.space--lg data-overlay="3"
     img.background-image alt="image" src=image_path('laptop-with-charts.jpg')
   .container
     .row
-      .col-md-5.d-flex.align-content-center.flex-wrap.offset-md-2.mb-2
-        h1.type--uppercase Symphony Pricing
+      .col-md-10.d-flex.align-content-center.flex-wrap.offset-md-2.mb-2
+        h1 Pricing plans that scale with your business
 section.pricing-section-2.text-center
   .container
     .row
@@ -15,7 +15,7 @@ section.pricing-section-2.text-center
             span.h1
               span.pricing__dollar> $
               | 0
-            p.type--fine-print With basic features
+            p.type--fine-print Free forever
             = link_to 'Sign Up Now', new_user_registration_path, class: 'btn btn--sm btn--orange type--uppercase'
           ul
             li
@@ -41,7 +41,7 @@ section.pricing-section-2.text-center
               br
               span No Xero integration
             li
-              p 30 day trial of Symphony Pro
+              p 30-day trial of Symphony Pro
               = link_to 'Sign Up Now', new_user_registration_path, class: 'btn btn--sm btn--orange type--uppercase mb-4'
         /! end pricing
       .col-md-4.col-lg-4
@@ -52,7 +52,7 @@ section.pricing-section-2.text-center
             span.h1.text-white
               span.text-white.pricing__dollar> $
               | 199
-            p.text-white.type--fine-print Per Year, SGD.
+            p.text-white.type--fine-print Per Year (SGD)
             = link_to 'Subscribe Now', new_user_registration_path(subscription_type: 'annual'), class: 'btn btn--sm btn--orange type--uppercase'
           ul
             li
@@ -87,7 +87,7 @@ section.pricing-section-2.text-center
             span.h1
               span.pricing__dollar> $
               | 49
-            p.type--fine-print Per Month, SGD.
+            p.type--fine-print Per Month (SGD)
             = link_to 'Subscribe Now', new_user_registration_path(subscription_type: 'monthly'), class: 'btn btn--sm btn--orange type--uppercase'
           ul
             li
@@ -115,11 +115,11 @@ section.pricing-section-2.text-center
             li
               p Monthly commitment
               = link_to 'Subscribe Now', new_user_registration_path(subscription_type: 'monthly'), class: 'btn btn--sm btn--orange type--uppercase mb-4'
-hr
-section#contactus
+section#contactus.bg--secondary
   .container
     .row.mb--2
       .col-sm-6.offset-sm-3.text-center
-        h2.mb64.uppercase Sign up now and get a 1-month free trial of Symphony Pro!
-        p.lead No credit card required.
-        = link_to 'Sign up for Symphony', new_user_registration_path, class: 'btn btn--excide type--uppercase'
+        h2.mb64.uppercase Sign up now and get a free trial of Symphony Pro
+        p.lead Access all Symphopny Pro features for 30 days when you sign up now, no credit card required!
+        = link_to new_user_registration_path, class: 'btn btn--excide type--uppercase' do
+          span.btn__text Sign Up For Symphony

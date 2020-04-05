@@ -75,7 +75,7 @@ class Symphony::UsersController < ApplicationController
         process_payment(@user.id, @user.email, user_params[:stripe_card_token], params[:user][:subscription_type])
         flash[:notice] = 'Thank you for your subscription. Your payment has been successfully processed.'
       else
-        flash[:notice] = 'Thank you for signing up. You are currently using the 30-days free trial Symphony Pro.'
+        flash[:notice] = 'Thank you for signing up. You are currently using the 30-day free trial of Symphony Pro.'
       end
       if @user.company.connect_xero
         redirect_to connect_to_xero_path
