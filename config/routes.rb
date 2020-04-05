@@ -237,6 +237,8 @@ Rails.application.routes.draw do
   get '/symphony-features', to: 'home#symphony-features', as: :symphony_features
   get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
   get '/symphony-pricing', to: 'home#symphony-pricing', as: :symphony_pricing
+  get '/symphony-business-continuity-planning', to: 'home#symphony-bcp', as: :symphony_bcp
+  get '/symphony-remote-working', to: 'home#symphony-remote', as: :symphony_remote
 
   get '/robots.txt' => 'home#robots'
 
