@@ -66,4 +66,13 @@ namespace :update do
       batch.update(completed: false)
     end
   end
+
+  desc "Delete batches with no workflows"
+  task delete_empty_batches: :environment do
+    Batch.includes(:workflows).where(workflows: { batch_id: nil }).each do |batch|
+      if batch.destroy
+        puts "Batch with no workflows - #{batch.id} - has been successfully deleted."
+      end
+    end
+  end
 end
