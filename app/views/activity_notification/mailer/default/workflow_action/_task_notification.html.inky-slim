@@ -1,0 +1,23 @@
+container
+  row.collapse
+    columns small="6" valign="middle"
+      = image_tag("https://excide.s3-ap-southeast-1.amazonaws.com/excide-logo.png", style: "width: 50%; height: 50%")
+  spacer size="16"
+  row
+    columns
+      p Hi #{@target.full_name},
+      p
+        | You have a new task that you are required to complete
+        - if @notification.notifiable.deadline.present?
+          |  by #{@notification.notifiable.deadline.strftime("%d/%m/%Y")}
+        |.
+      p
+        ' The instructions for the task are as follows: "#{@notification.parameters[:printable_notifiable_name]}". You can access the task from this link:
+        - if ['create_invoice_payable','create_invoice_receivable'].include? @notification.notifiable.task.task_type
+          a href="#{new_symphony_invoice_url(@notification.notifiable.task.section.template.slug, @notification.notifiable.workflow.friendly_id)}" #{@notification.notifiable.task.section.template.title} - #{@notification.notifiable.workflow.friendly_id}
+        - else
+          a href="#{symphony_workflow_url(@notification.notifiable.task.section.template.slug, @notification.notifiable.workflow.friendly_id)}" #{@notification.notifiable.task.section.template.title} - #{@notification.notifiable.workflow.friendly_id}
+      p If you have any queries regarding your task, please contact the workflow creator: #{@notification.notifiable.workflow.user.first_name}.
+  row
+    columns
+      = render(partial: 'activity_notification/mailer/default/footer')

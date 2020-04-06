@@ -176,6 +176,9 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
+  # Integrated with Devise
+  notify_to :users, with_devise: :users
+
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account
   get 'account', to: 'accounts#edit', as: :edit_account
@@ -237,6 +240,8 @@ Rails.application.routes.draw do
   get '/symphony-features', to: 'home#symphony-features', as: :symphony_features
   get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
   get '/symphony-pricing', to: 'home#symphony-pricing', as: :symphony_pricing
+  get '/symphony-business-continuity-planning', to: 'home#symphony-bcp', as: :symphony_bcp
+  get '/symphony-remote-working', to: 'home#symphony-remote', as: :symphony_remote
 
   get '/robots.txt' => 'home#robots'
 
