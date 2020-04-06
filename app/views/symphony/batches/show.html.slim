@@ -44,7 +44,14 @@
                             = d.filename
                             br
                             a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" Preview
-
+                            br
+                            - if !d.converted_image.attached?
+                              p.font-italic 
+                                | PDF is not ready to preview yet.
+                                br
+                                | Please refresh the page or download it:
+                                br
+                              a href="#{d.file_url}" #{truncate(d.file_url, length: 10)}
                       td
                         - if wf.invoice.blank?
                           i.flaticon2-paper.icon.mr-3.text-center.medium-icon.gray-icon
