@@ -1,8 +1,7 @@
 .row.mb-3
-  .col-md-6
-    h1 New Templates
-  .col-md-6
-    h1 Clone Templates
+  .col-md-12
+    h3 Manage templates
+    p Set up templates for a series of tasks that you frequently perform together. Each time you need to do those tasks, you create a new workflow based on the templates you have created. You can either start from scratch or clone our existing templates and customise them to your needs.
 .row
   .col-md-6
     = form_for(@template, url: symphony_templates_path(@template) ) do |f|
@@ -11,8 +10,7 @@
           .kt-portlet
             .kt-portlet__head
               .kt-portlet__head-label
-                h3.kt-portlet__head-title
-                  | Template Details
+                h3.kt-portlet__head-title New Templates
             .kt-portlet__body
               .form-group
                 = f.label :title, "Title:"
@@ -29,8 +27,7 @@
           .kt-portlet
             .kt-portlet__head
               .kt-portlet__head-label
-                h3.kt-portlet__head-title
-                  | Template Details
+                h3.kt-portlet__head-title Clone Templates
             .kt-portlet__body
               .form-group
                 = f.label :title, "Title:"

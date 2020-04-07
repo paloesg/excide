@@ -116,8 +116,6 @@ gem "skylight"
 gem 'scout_apm'
 
 gem 'popper_js'
-# Frontend framework
-gem 'bootstrap', '~> 4.3'
 # Themify icon set web fonts
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
 # Font Awesome Rails
@@ -157,6 +155,9 @@ gem 'deep_cloneable', '~> 3.0.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
+
+# In-app notification feature
+gem 'activity_notification'
 
 group :development do
   gem 'rails_real_favicon'

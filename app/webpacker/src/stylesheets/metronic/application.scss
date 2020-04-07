@@ -1,0 +1,84 @@
+
+//Actiontext
+@import 'trix/dist/trix.css';
+@import 'actiontext';
+
+//Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+//Selectize
+@import "selectize/dist/css/selectize";
+@import "selectize/dist/css/selectize.default";
+
+// fontawesome 4
+$fa-font-path: "~font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome';
+
+//Dropzone
+@import "dropzone/dist/min/dropzone.min.css";
+@import "dropzone/dist/min/basic.min.css";
+
+@import "../src/stylesheets/metronic/css/custom";
+@import "../src/stylesheets/metronic/css/invoices";
+@import "../src/stylesheets/metronic/css/notification";
+@import "../src/stylesheets/metronic/css/zoom";
+@import "../src/stylesheets/metronic/css/batches";
+@import "../src/stylesheets/metronic/css/companies";
+@import "../src/stylesheets/metronic/css/templates";
+@import "../src/stylesheets/metronic/css/pagination";
+@import "../src/stylesheets/metronic/pages/pricing/pricing-1";
+@import "../src/stylesheets/dashboard/admin";
+@import "../src/stylesheets/metronic/actiontext";
+
+
+//icon
+@import "../src/stylesheets/metronic/css/flaticon";
+@import "../src/stylesheets/metronic/css/socicon";
+
+//
+// Main Stylesheet
+//
+
+////////////////////////////////////////////////////////////////
+///////////// DO NOT MODIFY BELOW INCLUDE ORDER ////////////////
+////////////////////////////////////////////////////////////////
+
+// 1: Include global config
+@import "../src/stylesheets/metronic/config";
+
+// 2: Include demo config (that overrides the above global config)
+@import "../src/stylesheets/metronic/global/layout/config";
+
+// 3: Bootstrap Include
+@import "../src/stylesheets/metronic/global/integration/frameworks/bootstrap/variables";
+@import "../src/stylesheets/metronic/global/integration/frameworks/bootstrap/bootstrap.scss";
+
+// 3: Components include
+@import "../src/stylesheets/metronic/global/include";
+////////////////////////////////////////////////////////////////
+///////////// DO NOT MODIFY ABOVE INCLUDE ORDER ////////////////
+////////////////////////////////////////////////////////////////
+
+// 5: Demo Configs
+@import "../src/stylesheets/metronic/global/layout/header/config";
+@import "../src/stylesheets/metronic/global/layout/aside/config";
+@import "../src/stylesheets/metronic/global/layout/footer/config";
+
+
+// 6: Demo Includes
+// Layout
+@import "../src/stylesheets/metronic/global/layout/base/base";
+
+@import "../src/stylesheets/metronic/global/layout/header/header";
+@import "../src/stylesheets/metronic/global/layout/header/base-mobile";
+@import "../src/stylesheets/metronic/global/layout/header/menu";
+@import "../src/stylesheets/metronic/global/layout/header/topbar";
+@import "../src/stylesheets/metronic/global/layout/header/brand";
+
+@import "../src/stylesheets/metronic/global/layout/aside/aside";
+@import "../src/stylesheets/metronic/global/layout/aside/menu";
+
+@import "../src/stylesheets/metronic/global/layout/content/content";
+@import "../src/stylesheets/metronic/global/components/calendar/fullcalendar.bundle";
+@import "../src/stylesheets/metronic/global/components/base/switch";
+@import "../src/stylesheets/metronic/global/layout/footer/footer";
