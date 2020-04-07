@@ -155,16 +155,16 @@ function formatDate(dateStr){
   var d = new Date(dsplit[2],dsplit[1]-1,dsplit[0]);
 
   //if cannot get the date it will run create new date again with other format, because sometimes user input month with text, for example: "20 Aug"
-  if (d === "Invalid Date"){
+  if (d === ""){
     dateStr = dsplit.join();
     d = new Date(dateStr);
     //if cannot get the date again, the default is today
-    if (d === "Invalid Date"){
+    if (d === ""){
       d = new Date();
     }
   }
-  //format date "20 Aug 2019"
-  d = moment(d).format("D MMM YYYY");
+  //format date "20 Aug 2019". If it's not valid, return empty string rather than 'Invalid Date'
+  d = moment(d).isValid() ? moment(d).format("D MMM YYYY") : '';
   return d;
 }
 
