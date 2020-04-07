@@ -7,7 +7,7 @@ section.bg--secondary
         = link_to new_user_registration_path, class: 'btn btn--excide type--uppercase' do
           span.btn__text Sign Up - It's Free!
       .col-6
-        img alt="Symphony features image" src=image_path('crypto-1.svg')
+        = image_pack_tag "media/src/images/crypto-1.svg", alt: "Symphony features image"
 section.text-center
   .container
     .row.justify-content-around
@@ -18,7 +18,7 @@ section
   .container
     .row.justify-content-around
       .col-md-6
-        img alt="Symphony workflow page" src=image_path('symphony-workflow-screenshot.png')
+        = image_pack_tag "media/src/images/symphony-workflow-screenshot.png", alt: "Symphony workflow page"
       .col-md-6.col-lg-5
         ol.process-3
           li.process_item

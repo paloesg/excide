@@ -1,7 +1,7 @@
 - set_meta_tags title: 'Fund Raising', description: 'Whether you are raising money from venture capital, angel investors, banks, financial institutions, PE funds, IPO, Excide advises you as a virtual CFO does.', reverse: true
 section.text-center.imagebg.space--lg data-overlay="3"
   .background-image-holder
-    img.background-image alt="image" src=image_path('tall-skyscraper.jpg')
+    = image_pack_tag "media/src/images/tall-skyscraper.jpg", alt: "image", class: 'background-image'
   .container
     .row
       .col-md-8.col-lg-12
@@ -22,7 +22,7 @@ section
         p.lead.m32.pb32 A fund raising exercise is a monetary injection into the company through interested investors. Such possible options for fundraising is from venture capital, angel investors, banks, financial institutions, PE funds and IPO.
 section.pt240.pb240.imagebg.height-50
   .background-image-holder
-    img.background-image alt="image" src=image_path('seminar-room.jpg')
+    = image_pack_tag "media/src/images/seminar-room.jpg", alt: "image", class: 'background-image'
 section
   .container
     .row
@@ -36,7 +36,7 @@ section
           li Investor/Bank meetings
 section.imagebg.overlay
   .background-image-holder
-    img.background-image alt="image" src=image_path('table-top-post-its.jpg')
+    = image_pack_tag "media/src/images/table-top-post-its.jpg", alt: "image", class: 'background-image'
   .container
     .row
       .col-sm-12.text-center
