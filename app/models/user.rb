@@ -162,7 +162,7 @@ class User < ApplicationRecord
   end
 
   def relevant_batch_ids
-    #Get batches If the current_user has the same role as a role in workflow_actions
+    # Get batches If the current_user has the same role as a role in workflow_actions
     self.company.batches.includes({workflows: [{template: [{sections: :tasks}]}]}).where(tasks: {role_id: current_user.roles.pluck(:id)})
   end
 
