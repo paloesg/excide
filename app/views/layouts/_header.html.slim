@@ -1,7 +1,7 @@
 nav.menu1.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top
   .container-fluid
     a.navbar-brand href="/"
-      img.logo.logo-light alt="logo" width="100" src=image_url('excide-logo.png')
+      = image_pack_tag 'media/src/images/excide-logo.png', alt: "logo", width: "100", class: "logo logo-light"
     button.navbar-toggler aria-controls="navbarsExample07" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarsExample07" data-toggle="collapse" type="button"
       span.navbar-toggler-icon
     #navbarsExample07.collapse.navbar-collapse

@@ -1,0 +1,26 @@
+.content-survey-section {
+  width: 32% !important;
+}
+
+.question-type {
+  width: 20% !important;
+}
+
+span.trix-button-group--file-tools{
+  display: none !important;
+}
+
+// remove border for forms and change to underline
+.b-bottom{
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000000;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+.text-large {
+  font-size: 150% !important;
+}

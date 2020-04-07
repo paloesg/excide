@@ -1,7 +1,7 @@
 - set_meta_tags title: 'Financial Analytics Reporting', description: 'Through detailed analysis of your company\'s finances through customized financial reporting, Excide helps you make better financial decisions for your business.', reverse: true
 section.text-center.imagebg.space--lg data-overlay="3"
-  .background-image-holder
-    img alt="background" src=image_path("laptop-with-charts.jpg")
+  .background-image-holder    
+    = image_pack_tag "media/src/images/laptop-with-charts.jpg", alt: "background"
   .container
     .row
       .col-md-8.col-lg-12
@@ -22,7 +22,7 @@ section
         p.lead.m32.pb32 By knowing how your finances are flowing within your company, you are able to make better business decisions to reap in more profits. Knowing how your finances flow is important to ensure that your company finances are efficiently used.
 section.text-center.height-50.imagebg
   .background-image-holder
-    img alt="background" src=image_path("ipad-business-charts.jpg")
+    = image_pack_tag "media/src/images/ipad-business-charts.jpg", alt: "background"
 section
   .container
     .row
@@ -32,7 +32,7 @@ section
         p.lead.m32.pb32 At Excide, we are able to provide you with a detailed analysis of your finances and help you prepare financial reports. By comparing industries and studying your financial trends, we are able to deduce the most profitable way to use your finances effectively. These detailed anaysis will be suited towards your business, allowing you to make better financial decisions on improving your business.
 section.imagebg
   .background-image-holder.overlay
-    img.background-image alt="image" src=image_path('table-top-post-its.jpg')
+    = image_pack_tag "media/src/images/table-top-post-its.jpg", alt: "image", class: 'background-image'
   .container
     .row
       .col-sm-12.text-center
