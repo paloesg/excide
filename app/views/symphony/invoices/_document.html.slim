@@ -5,7 +5,7 @@
     .img-magnifier-container
       = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
   - else
-    - display_url = url_for(@document.converted_image.first) if @document.converted_image.attached?
+    - display_url = url_for(@document.converted_image.first)
     .img-magnifier-container
       div#carouselExampleIndicators.carousel.slide data-ride="carousel" data-interval="false"
         - if @document.converted_image.count > 1
