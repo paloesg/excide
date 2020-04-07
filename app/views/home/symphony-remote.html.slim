@@ -1,0 +1,76 @@
+section.bg--secondary
+  .container
+    .row.align-items-center.justify-content-around
+      .col-md-6.col-lg-5
+        h1 Remote working with Symphony workflow management.
+        p.lead A workflow coordination tool that allows you to remotely manage your business processes so that they can continue to operate seamlessly across physical boundaries.
+        = link_to new_user_registration_path, class: 'btn btn--excide type--uppercase' do
+          span.btn__text Sign Up - It's Free!
+      .col-6
+        img alt="Symphony features image" src=image_path('crypto-1.svg')
+section.text-center
+  .container
+    .row.justify-content-around
+      .col-md-10.col-lg-8
+        h2 Get started on your first workflow in seconds
+        p.lead Choose from our pre-built templates or customise your own templates to manage your team's workflow in just the right way.
+section
+  .container
+    .row.justify-content-around
+      .col-md-6
+        img alt="Symphony workflow page" src=image_path('symphony-workflow-screenshot.png')
+      .col-md-6.col-lg-5
+        ol.process-3
+          li.process_item
+            .process__number
+              span 1
+            .process__body
+              h4 Create new template
+              p Choose to customise our pre-built templates or start with a blank slate to build your own template from scratch.
+          li.process_item
+            .process__number
+              span 2
+            .process__body
+              h4 Fill in task details
+              p Choose from dozens of task types and fill in the instructions, user roles assigned to the task type and other relevant details for each task.
+          li.process_item
+            .process__number
+              span 3
+            .process__body
+              h4 Trigger new workflow
+              p Once a new workflow is triggered for a template, the person assigned to the first task will be notified and can login to perform the task.
+section.bg--secondary
+  .container
+    .row
+      .col-md-6
+        .feature.feature-5.boxed.boxed--lg.boxed--border
+          i.icon.icon-Arrow-Shuffle.icon--lg
+          .feature__body
+            strong Workflow coordination
+            p Symphony allows for complex workflow coordination involving multiple users and roles, ensuring that no one is left out of the loop and every step is accounted for.
+      .col-md-6
+        .feature.feature-5.boxed.boxed--lg.boxed--border
+          i.icon.icon-Bulleted-List.icon--lg
+          .feature__body
+            strong Custom templates
+            p Build your own templates to manage your team's workflow in just the right way. With dozens of task types, there are endless customisations available.
+      .col-md-6
+        .feature.feature-5.boxed.boxed--lg.boxed--border
+          i.icon.icon-Bell.icon--lg
+          .feature__body
+            strong Automated reminders
+            p Set reminders and recurring reminders any day in the future to ensure that no task is missed or forgotten. Choose from email, SMS or WhatsApp notifications.
+      .col-md-6
+        .feature.feature-5.boxed.boxed--lg.boxed--border
+          i.icon.icon-Sharethis.icon--lg
+          .feature__body
+            strong Third-party app integrations
+            p Ability to integrate with other apps like Xero, WhatsApp and Slack ensures that Symphony works with your existing tools and workflows for seamless coordination and data flow.
+section#contactus
+  .container
+    .row.mb--2
+      .col-sm-6.offset-sm-3.text-center
+        h2.mb64.uppercase Sign up now and get a free trial of Symphony Pro
+        p.lead Access all Symphopny Pro features for 30 days when you sign up now, no credit card required!
+        = link_to new_user_registration_path, class: 'btn btn--excide type--uppercase' do
+          span.btn__text Sign Up For Symphony

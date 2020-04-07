@@ -14,7 +14,7 @@ class Symphony::CheckoutController < ApplicationController
       payment_method_types: ['card'],
       subscription_data: {
         items: [{
-          plan: ENV['STRIPE_PLAN'],
+          plan: ENV['STRIPE_MONTHLY_PLAN'],
         }],
       },
       success_url: symphony_checkout_success_url + '?session_id={CHECKOUT_SESSION_ID}',

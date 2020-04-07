@@ -37,7 +37,7 @@ class User < ApplicationRecord
   # with parameters as value or custom methods defined in your model as lambda or symbol.
   # This is an example without any options (default configuration) as the target.
   
-  # Check the user's notification settings before sending out the email
+  # Check the user's notification settings before sending out the email.
   acts_as_target email: :email, email_allowed: :check_notification_setting
 
   include AASM
