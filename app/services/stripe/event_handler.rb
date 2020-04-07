@@ -58,10 +58,9 @@ module Stripe
           @current_user.company.save
           # Assuming customer_subscription_updated method only runs upon clicking the cancellation button
           StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
-        elsif event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
-          # only update to subscription plan data if it's annual plan
-          @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription
         end
+        # only update to subscription plan data if it's annual plan
+        @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription if event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
         @current_user.company.save
       end
     end
