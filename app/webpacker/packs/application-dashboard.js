@@ -16,7 +16,7 @@ require("turbolinks").start()
 //
 
 // const imagePath = (name) => images(name, true)
-// Importing images
+// Importing images through webpack
 const images = require.context('../src/images', true)
 
 import 'bootstrap/dist/js/bootstrap';
