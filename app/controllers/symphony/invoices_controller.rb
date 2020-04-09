@@ -139,11 +139,7 @@ class Symphony::InvoicesController < ApplicationController
     @batch = @workflow.batch
     respond_to do |format|
       flash[:notice] = "Invoice has been deleted successfully."
-      if @batch.present?
-        format.html { redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id) }
-      else
-        format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id) }
-      end
+      @batch.present? ? (format.html { redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id) }) : (format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id) })
     end
   end
 
@@ -171,18 +167,10 @@ class Symphony::InvoicesController < ApplicationController
           redirect_to symphony_workflow_path(@nvoice.workflow.template.slug, @nvoice.workflow.friendly_id)
         end
       else
-        if invoice_id.present?
-          render :edit
-        else
-          render :new
-        end
+        invoice_id.present? ? (render :edit) : (render :new)
       end
     else
-      if invoice_id.present?
-        render :edit
-      else
-        render :new
-      end
+      invoice_id.present? ? (render :edit) : (render :new)
     end
   end
 
@@ -190,22 +178,14 @@ class Symphony::InvoicesController < ApplicationController
     next_wf = @workflow.batch.next_workflow(@workflow)
     next_wf_action = next_wf.workflow_actions.where(completed: false).first
     next_wf_action ||= next_wf.workflow_actions.where(completed: true).last
-    if next_wf_action.present?
-      render_action_invoice(next_wf, next_wf_action)
-    else
-      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
-    end
+    next_wf_action.present? ? (render_action_invoice(next_wf, next_wf_action)) : (redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id))
   end
 
   def prev_invoice
     prev_wf = @workflow.batch.previous_workflow(@workflow)
     if prev_wf.present?
       # check if previous workflow have invoice and is that invoice xero total mismatch? if yes go to previous page if not go to first invoice
-      if prev_wf.invoice.present? and prev_wf.invoice.xero_total_mismatch?
-        render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)
-      else
-        render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first)
-      end
+      (prev_wf.invoice.present? and prev_wf.invoice.xero_total_mismatch?) ? (render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: true).last)) : (render_action_invoice(prev_wf, prev_wf.workflow_actions.where(completed: false).first))
     else
       redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
     end
@@ -215,22 +195,14 @@ class Symphony::InvoicesController < ApplicationController
     next_workflow_invoice = @workflow_invoices.where('workflows.created_at > ?', @workflow.created_at).order(created_at: :asc).first
     next_workflow_invoice ||= @workflow_invoices.where('workflows.created_at < ?', @workflow.created_at).order(created_at: :asc).first
     # redirect page
-    if next_workflow_invoice.present?
-      redirect_to symphony_invoice_path(workflow_name: next_workflow_invoice.template.slug, workflow_id: next_workflow_invoice.id, id: next_workflow_invoice.invoice.id)
-    else
-      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
-    end
+    next_workflow_invoice.present? ? (redirect_to symphony_invoice_path(workflow_name: next_workflow_invoice.template.slug, workflow_id: next_workflow_invoice.id, id: next_workflow_invoice.invoice.id)) : (redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id))
   end
 
   def prev_show_invoice
     prev_workflow_invoice = @workflow_invoices.where('workflows.created_at < ?', @workflow.created_at).order(created_at: :asc).last
     prev_workflow_invoice ||= @workflow_invoices.where('workflows.created_at > ?', @workflow.created_at).order(created_at: :asc).last
     # redirect page
-    if prev_workflow_invoice.present?
-      redirect_to symphony_invoice_path(workflow_name: prev_workflow_invoice.template.slug, workflow_id: prev_workflow_invoice.id, id: prev_workflow_invoice.invoice.id)
-    else
-      redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id)
-    end
+    prev_workflow_invoice.present? ? (redirect_to symphony_invoice_path(workflow_name: prev_workflow_invoice.template.slug, workflow_id: prev_workflow_invoice.id, id: prev_workflow_invoice.invoice.id)) : (redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id))
   end
 
   def get_document_analysis
