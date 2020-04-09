@@ -6,7 +6,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_company
   before_action :set_workflow, except: [:get_xero_item_code_detail]
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
-  before_action :set_documents, except: [:get_xero_item_code_detail]
+  before_action :set_documents
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :set_show_invoice_navigation, only: [:show, :next_show_invoice, :prev_show_invoice]
   before_action :set_last_workflow_action, only: :show
@@ -143,17 +143,6 @@ class Symphony::InvoicesController < ApplicationController
         format.html { redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id) }
       else
         format.html { redirect_to symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id) }
-      end
-    end
-  end
-
-  def get_xero_item_code_detail
-    @item_code_list = @xero.get_item_attributes(params[:item_code])
-    respond_to do |format|
-      if @item_code_list.present?
-        format.json { render json: @item_code_list[0], status: :ok }
-      else
-        format.json { render json: @item_code_list[0].errors, status: :unprocessable_entity }
       end
     end
   end
