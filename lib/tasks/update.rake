@@ -66,4 +66,13 @@ namespace :update do
       batch.update(completed: false)
     end
   end
+
+  desc "PDF conversion for documents"
+  task documents_pdf_conversion: :environment do
+    Document.all.each do |d|
+      if File.extname(d.file_url) == ".pdf" && !d.converted_image.attached?
+        ConvertPdfToImagesJob.perform_now(d)
+      end
+    end
+  end
 end
