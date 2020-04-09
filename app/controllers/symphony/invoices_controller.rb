@@ -27,7 +27,7 @@ class Symphony::InvoicesController < ApplicationController
     authorize @invoice
     @invoice.workflow_id = @workflow.id
     @invoice.user_id = current_user.id
-    @invoice.company_id = current_user.company_id
+    @invoice.company_id = @company.id
     if @invoice.xero_contact_id.present?
       @invoice.xero_contact_name = @clients.find_by(contact_id: @invoice.xero_contact_id).name
     else
@@ -164,7 +164,7 @@ class Symphony::InvoicesController < ApplicationController
       @invoice = Invoice.new
       @invoice.workflow_id = @workflow.id
       @invoice.user_id = current_user.id
-      @invoice.company_id = current_user.company_id
+      @invoice.company_id = @company.id
       @invoice.invoice_type = params[:invoice_type]
     else
       @invoice = Invoice.find(invoice_id)
@@ -322,7 +322,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def get_xero_details
-    @xero = Xero.new(current_user.company)
+    @xero = Xero.new(@company)
     @clients                = @company.xero_contacts
     # Combine account codes and account names as a string
     @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing
