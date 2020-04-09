@@ -11,47 +11,48 @@
               | #{section.section_name} - #{section.tasks.count.to_s} tasks
           .kt-portlet__head-toolbar
             .kt-portlet__head-actions
-              .pull-right #{@completed_workflow_count} of #{@batch.workflows.count} files completed
+              .pull-right #{@completed} of #{@batch.workflows.count} files completed
         .kt-portlet__body
-          .table-responsive
-            table.table.table-hover
-              thead
-                tr
-                  th Documents
-                  th Invoices
-                  - section.tasks.includes(:role).order(position: :asc).each do |task|
-                    th
-                      a.pop data-container="body" title="#{task.role&.display_name}" data-content=("<div>#{task.instructions}</div>") data-html="true" data-placement="top" data-toggle="popover" data-trigger="hover"
+          .kt-widget11
+            .table-responsive
+              table.table
+                thead
+                  tr
+                    th Documents
+                    th Invoices
+                    - section.tasks.includes(:role).order(position: :asc).each do |task|
+                      th
                         .header-properties
                           ' #{task.task_type.humanize}
-                          i.flaticon2-information
+                          a.pop data-container="body" title="" data-original-title=task.instructions data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+                            i.fa.fa-info-circle
                         .header-info
                           ' #{task.role.name.humanize}
-              tbody
-                - @batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc).each do |wf|
-                  tr
-                    td
-                      - if wf.documents.empty?
-                        i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
-                      - else
-                        - wf.documents.each do |d|
-                          - if File.extname(d.file_url) == '.pdf'
-                            / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
-                            - display_url = url_for(d.converted_image.first) if d.converted_image.attached?
-                          - else
-                            - display_url = d.file_url
-                          = d.filename
-                          br
-                          a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" Preview
+                tbody
+                  - @batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc).each do |wf|
+                    tr
+                      td
+                        - if wf.documents.empty?
+                          i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
+                        - else
+                          - wf.documents.each do |d|
+                            - if File.extname(d.file_url) == '.pdf'
+                              / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
+                              - display_url = url_for(d.converted_image.first) if d.converted_image.attached?
+                            - else
+                              - display_url = d.file_url
+                            = d.filename
+                            br
+                            a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" Preview
 
-                    td
-                      - if wf.invoice.blank?
-                        i.flaticon2-paper.icon.mr-3.text-center.medium-icon.gray-icon
-                      - else
-                        = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id)
-                          i.flaticon2-paper.icon.mr-3.medium-icon
-                        - if wf.invoice.rejected?
-                          .rejected-invoice-circle R
-                    - section.tasks.includes(:role).order(position: :asc).each do |task|
-                      td class="text-center #{'important-task' if task.important}"
-                        = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
+                      td
+                        - if wf.invoice.blank?
+                          i.flaticon2-paper.icon.mr-3.text-center.medium-icon.gray-icon
+                        - else
+                          = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id)
+                            i.flaticon2-paper.icon.mr-3.medium-icon
+                          - if wf.invoice.rejected?
+                            .rejected-invoice-circle R
+                      - section.tasks.includes(:role).order(position: :asc).each do |task|
+                        td class="text-center #{'important-task' if task.important}"
+                          = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)

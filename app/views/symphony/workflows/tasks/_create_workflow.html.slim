@@ -25,7 +25,7 @@ tr
             - if action.sub_workflow
               = link_to 'View Workflow', symphony_workflow_path(workflow_name: action.sub_workflow.template.slug, workflow_id: action.sub_workflow.id), class: 'btn btn-success btn-sm', id: 'new-workflow'
             - else
-              = link_to 'Create Workflow', "/symphony/#{task.template.slug}/new?action_id=#{action.id}", class: 'btn btn-primary btn-sm', id: 'new-workflow'
+              = link_to 'Create Workflow', "/symphony/#{task.child_workflow_template.slug}/new?action_id=#{action.id}", class: 'btn btn-primary btn-sm', id: 'new-workflow'
           .btn-group.mr-2 role="group" aria-label="Reminder actions"
             / the below condition checks whether user is admin. If template is ordered, it will check whether the task is the current task and if unordered, it will check whether the workflowaction is uncompleted.
             - if (@user.has_role? :admin, @company) && (task == @workflow.current_task || (@workflow.template.unordered? && !action.completed))

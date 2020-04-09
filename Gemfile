@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.6.1'
+ruby '2.6.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
@@ -88,7 +88,8 @@ gem 'acts_as_list'
 # Use user friendly slugs
 gem 'friendly_id', '~> 5.3.0'
 # Amazon S3 SDK
-gem 'aws-sdk', '~> 3'
+gem 'aws-sdk-s3', '~> 1'
+gem 'aws-sdk-textract', '~> 1'
 # Sitemap generator
 gem 'sitemap_generator'
 # Uploading of sitemap to AWS
@@ -156,6 +157,9 @@ gem 'deep_cloneable', '~> 3.0.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
+
+# In-app notification feature
+gem 'activity_notification'
 
 group :development do
   gem 'rails_real_favicon'

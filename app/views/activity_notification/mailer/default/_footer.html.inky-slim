@@ -1,0 +1,6 @@
+hr
+p
+  center
+    small
+      u
+        a style="color:grey;" href = notification_settings_symphony_user_url(@target) Click here if you wish to unsubscribe or modify your notification settings.

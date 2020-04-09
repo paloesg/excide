@@ -77,7 +77,6 @@ Rails.application.routes.draw do
     end
     resources :batches, path: '/batches/:batch_template_name', except: [:index, :create]
     get '/batches', to: 'batches#index', as: :batches_index
-    post '/batches/load_batch', to: 'batches#load_batch', as: :load_batch_json
     post '/batches', to: 'batches#create'
 
     resources :document_templates
@@ -176,6 +175,9 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
+
+  # Integrated with Devise
+  notify_to :users, with_devise: :users
 
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account

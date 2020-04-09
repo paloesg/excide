@@ -80,7 +80,7 @@
               .col-md-6
                 = label_tag "template", "Select template:"
                 = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
-                = submit_tag 'Submit', disabled: current_user.company.basic?, class: 'btn btn-primary btn-block mt-3', id: 'drag-and-drop-submit'
+                = submit_tag 'Submit', disabled: true, class: 'btn btn-primary btn-block mt-3', id: 'drag-and-drop-submit'
 .row
   .col-md-6.col-sm-12
     .kt-portlet
@@ -108,7 +108,7 @@
                 td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
                 td = w.template.title
                 td = w.completed ? 'Completed' : w.current_section&.section_name
-        = paginate @workflows, views_prefix: 'dashboards'
+        = paginate @workflows, views_prefix: 'dashboard'
   .col-md-6.col-sm-12
     .kt-portlet
       .kt-portlet__head
@@ -129,7 +129,7 @@
                     th Deadline
                 tbody
                   - @outstanding_actions.each do |action|
-                    tr class=([('warning' if (!action.deadline.try(:past?))), ('danger' if (action.deadline.try(:past?)))].compact.join(''))
+                    tr
                       td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
                       td = action.workflow.template.title
                       td = action.task.instructions

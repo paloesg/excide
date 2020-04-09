@@ -33,6 +33,13 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true, on: :additional_information
   validates :company, presence: true
 
+  # acts_as_target configures your model as ActivityNotification::Target
+  # with parameters as value or custom methods defined in your model as lambda or symbol.
+  # This is an example without any options (default configuration) as the target.
+  
+  # Check the user's notification settings before sending out the email
+  acts_as_target email: :email, email_allowed: :check_notification_setting
+
   include AASM
 
   aasm do
@@ -163,6 +170,10 @@ class User < ApplicationRecord
 
   def get_role_ids
     self.roles.pluck(:id)
+  end
+
+  def check_notification_setting
+    self.settings[0]&.task_email == 'true'
   end
 
   def settings

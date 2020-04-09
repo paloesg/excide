@@ -11,6 +11,7 @@ class WorkflowMailer < ApplicationMailer
     mail(to: @url, subject: 'Xero bill invoice')
   end
 
+  # For scheduler: deadline_send_summary_email
   def email_summary(workflow, user, company)
     @workflow = workflow
     @user = user
