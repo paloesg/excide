@@ -200,9 +200,7 @@ class Symphony::InvoicesController < ApplicationController
   def next_invoice
     next_wf = @workflow.batch.next_workflow(@workflow)
     next_wf_action = next_wf.workflow_actions.where(completed: false).first
-    if next_wf_action.blank?
-      next_wf_action = next_wf.workflow_actions.where(completed: true).last
-    end
+    next_wf_action ||= next_wf.workflow_actions.where(completed: true).last
     if next_wf_action.present?
       render_action_invoice(next_wf, next_wf_action)
     else
@@ -226,9 +224,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def next_show_invoice
     next_workflow_invoice = @workflow_invoices.where('workflows.created_at > ?', @workflow.created_at).order(created_at: :asc).first
-    if next_workflow_invoice.blank?
-      next_workflow_invoice = @workflow_invoices.where('workflows.created_at < ?', @workflow.created_at).order(created_at: :asc).first
-    end
+    next_workflow_invoice ||= @workflow_invoices.where('workflows.created_at < ?', @workflow.created_at).order(created_at: :asc).first
     # redirect page
     if next_workflow_invoice.present?
       redirect_to symphony_invoice_path(workflow_name: next_workflow_invoice.template.slug, workflow_id: next_workflow_invoice.id, id: next_workflow_invoice.invoice.id)
@@ -239,9 +235,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def prev_show_invoice
     prev_workflow_invoice = @workflow_invoices.where('workflows.created_at < ?', @workflow.created_at).order(created_at: :asc).last
-    if prev_workflow_invoice.blank?
-      prev_workflow_invoice = @workflow_invoices.where('workflows.created_at > ?', @workflow.created_at).order(created_at: :asc).last
-    end
+    prev_workflow_invoice ||= @workflow_invoices.where('workflows.created_at > ?', @workflow.created_at).order(created_at: :asc).last
     # redirect page
     if prev_workflow_invoice.present?
       redirect_to symphony_invoice_path(workflow_name: prev_workflow_invoice.template.slug, workflow_id: prev_workflow_invoice.id, id: prev_workflow_invoice.invoice.id)
@@ -357,9 +351,7 @@ class Symphony::InvoicesController < ApplicationController
 
     if incomplete_workflows.count > 0
       next_wf = incomplete_workflows.where('workflows.created_at > ?', workflow.created_at).first
-      if next_wf.blank?
-        next_wf = incomplete_workflows.where('workflows.created_at < ?', workflow.created_at).first
-      end
+      next_wf ||= incomplete_workflows.where('workflows.created_at < ?', workflow.created_at).first
 
       if next_wf.present?
         next_wf_action = next_wf.workflow_actions.where(completed: false).first
