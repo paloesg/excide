@@ -5,13 +5,14 @@ class Task < ApplicationRecord
   belongs_to :section
   belongs_to :role
   belongs_to :document_template
+  belongs_to :survey_template
   belongs_to :child_workflow_template, class_name: 'Template'
   belongs_to :template
 
   has_many :reminders, dependent: :destroy
   has_many :workflow_actions, dependent: :destroy
 
-  enum task_type: { instructions: 0, upload_file: 1, approval: 2, download_file: 3, visit_link: 4, upload_photo: 5, enter_data: 6, upload_multiple_files: 8, send_xero_email: 9, create_invoice_payable: 10, xero_send_invoice: 11, create_invoice_receivable: 12, coding_invoice: 13, create_workflow: 14}
+  enum task_type: { instructions: 0, upload_file: 1, approval: 2, download_file: 3, visit_link: 4, upload_photo: 5, enter_data: 6, upload_multiple_files: 8, send_xero_email: 9, create_invoice_payable: 10, xero_send_invoice: 11, create_invoice_receivable: 12, coding_invoice: 13, create_workflow: 14, do_survey: 15 }
 
   acts_as_list scope: :section
 

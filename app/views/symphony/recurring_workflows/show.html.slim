@@ -1,46 +1,46 @@
 .row
   .col-sm-12
-    h1
-      | #{@template.title}
+    h1 = @template.title
 .row
-  .col-sm-12
-    .card
-      h5.card-header Recurring Workflow
-      .table-responsive
-        table.table
-          thead
-            tr
-              th Template
-              th Repeats Every
-              th Next Repeat Date
-          tbody
-            tr
-              td = @recurring_workflow.template.title
-              td = pluralize(@recurring_workflow.freq_value, @recurring_workflow.freq_unit.singularize)
-              td = @recurring_workflow.next_workflow_date
-.row.mt-2
-  .col-sm-12
-    .card
-      h5.card-header Workflows Generated
-      .table-responsive
-        table.table
-          thead
-            tr
-              th = sortable "id", "Workflow ID"
-              th = sortable "template", "Workflow Type"
-              th = sortable "workflowable", "Client Name"
-              th = sortable "remarks", "Remarks"
-              th = sortable "deadline", "Deadline"
-              th = sortable "completed", "Status"
-          tbody
-            - @recurring_workflow.workflows.each do |workflow|
+  .col-md-4.col-sm-12
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title Recurring Workflow Settings
+      .kt-portlet__body
+        .kt-widget11
+          table.table
+            thead
               tr
-                td
-                  = link_to workflow.id, symphony_workflow_path(workflow_name: workflow.template.slug, workflow_id: workflow.id)
-                td = workflow.template.title
-                td = workflow.workflowable&.name || '-'
-                td = workflow.remarks || '-'
-                td = workflow.deadline&.strftime("%d/%m/%Y") || '-'
-                td = workflow.completed ? 'Completed' : workflow.current_section&.section_name
-        .card-footer.pt-4
-          = paginate @workflows, views_prefix: 'dashboards'
+                td Repeats Every
+                td Next Repeat Date
+            tbody
+              tr
+                td = pluralize(@recurring_workflow.freq_value, @recurring_workflow.freq_unit.singularize)
+                td = @recurring_workflow.next_workflow_date || '-'
+  .col-md-8.col-sm-12
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title Workflows Generated
+      .kt-portlet__body
+        .kt-widget11
+          .table-responsive
+            table.table
+              thead
+                tr
+                  th = sortable "id", "Workflow ID"
+                  th = sortable "workflowable", "Client Name"
+                  th = sortable "remarks", "Remarks"
+                  th = sortable "deadline", "Deadline"
+                  th = sortable "completed", "Status"
+              tbody
+                - @recurring_workflow.workflows.each do |workflow|
+                  tr
+                    td
+                      = link_to workflow.id, symphony_workflow_path(workflow_name: workflow.template.slug, workflow_id: workflow.id)
+                    td = workflow.workflowable&.name || '-'
+                    td = workflow.remarks || '-'
+                    td = workflow.deadline&.strftime("%d/%m/%Y") || '-'
+                    td = workflow.completed ? 'Completed' : workflow.current_section&.section_name
+              = paginate @workflows, views_prefix: 'dashboard'

@@ -1,0 +1,8 @@
+.nested-fields
+  .form-inline.col-sm-12.mb-2
+  	.form-group.col-sm-1.p-0
+  	  = link_to_remove_association "X", f, class: 'btn btn-danger text-dark pull-right'
+    .form-group.col-sm-2
+      = f.number_field :position, {min: 1, step: 1, class: "form-control col-sm-10 ml-2 b-bottom text-center", placeholder: ' Position...'}
+    .form-group.col-sm-9
+      = f.text_field :content, {class: "form-control col-sm-12 ml-2 b-bottom", placeholder: 'Enter content...'}

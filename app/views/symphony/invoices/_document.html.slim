@@ -1,0 +1,36 @@
+- if @documents.empty?
+  | No documents available. Please upload documents first.
+- else
+  - if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
+    .img-magnifier-container
+      = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
+  - else
+    - display_url = url_for(@document.converted_image.first)
+    .img-magnifier-container
+      div#carouselExampleIndicators.carousel.slide data-ride="carousel" data-interval="false"
+        - if @document.converted_image.count > 1
+          ol.carousel-indicators
+            - @document.converted_image.each.with_index(0) do |image, index|
+              li. data-target="#carouselExampleIndicators" data-slide-to="#{index}" class=[index.zero? ? 'active' : '']
+            end
+        div.carousel-inner
+          - @document.converted_image.each.with_index(0) do |image, index|
+            div. class=["carousel-item", index.zero? ? 'active' : '' ]
+              = link_to url_for(image)
+                = image_tag(image, class: 'img-responsive zoomed-image')
+          end
+        - if @document.converted_image.count > 1
+          a.carousel-control-prev data-slide="prev" href="#carouselExampleIndicators" role="button"
+            span.carousel-control-prev-icon aria-hidden="true"
+            span.sr-only Previous
+          a.carousel-control-next data-slide="next" href="#carouselExampleIndicators" role="button"
+            span.carousel-control-next-icon aria-hidden="true"
+            span.sr-only Next
+  end
+  span.form-group.float-right
+    div.kt-switch
+      label.form-inline
+        = check_box_tag "zoom", "true", false
+        span
+        i.form-control-lg.p-lg-1.form-inline.flaticon2-magnifier-tool
+end

@@ -33,6 +33,15 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true, on: :additional_information
   validates :company, presence: true
 
+  validates_confirmation_of :password
+
+  # acts_as_target configures your model as ActivityNotification::Target
+  # with parameters as value or custom methods defined in your model as lambda or symbol.
+  # This is an example without any options (default configuration) as the target.
+  
+  # Check the user's notification settings before sending out the email.
+  acts_as_target email: :email, email_allowed: :check_notification_setting
+
   include AASM
 
   aasm do
@@ -165,6 +174,10 @@ class User < ApplicationRecord
     self.roles.pluck(:id)
   end
 
+  def check_notification_setting
+    self.settings[0]&.task_email == 'true'
+  end
+
   def settings
     read_attribute(:settings).map { |s| Setting.new(s) }
   end
@@ -180,6 +193,11 @@ class User < ApplicationRecord
 
   def include_role?(role)
     self.roles.pluck(:name).include? role.name
+  end
+
+  # In administrate, the json is updated to string in the database. This code is to check that if setting is a string, it will parse it to a JSON.
+  def settings=(value)
+    self[:settings] = value.is_a?(String) ? JSON.parse(value) : value
   end
 
   class Setting

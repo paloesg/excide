@@ -1,4 +1,3 @@
-- @navbar_workflows_active = true
 .row.mb-3
   .col
     h1.text-truncate #{@template.title} – #{@workflow.friendly_id}
@@ -48,6 +47,7 @@
         = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
     = render partial: 'symphony/workflows/documents'
     = render partial: 'symphony/workflows/invoice'
+    = render partial: 'symphony/workflows/surveys'
     - if @workflow.recurring_workflow.present?
       .kt-portlet.mb-3
         .kt-portlet__head

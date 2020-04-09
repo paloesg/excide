@@ -1,6 +1,6 @@
 class Workflow < ApplicationRecord
   include FriendlyId
-  friendly_id :short_uuid, use: [:slugged, :finders]
+  friendly_id :slug, use: [:slugged, :finders]
 
   belongs_to :user
   belongs_to :company
@@ -18,10 +18,12 @@ class Workflow < ApplicationRecord
 
   has_many :workflow_actions, dependent: :destroy
   has_many :documents, dependent: :destroy
+  has_many :surveys, dependent: :destroy
 
   validate :check_data_fields
 
   after_commit :create_actions_and_trigger_first_task, on: :create
+  after_create :short_uuid
 
   self.implicit_order_column = "created_at"
 
@@ -45,7 +47,8 @@ class Workflow < ApplicationRecord
   end
 
   def short_uuid
-    ShortUUID.shorten id
+    self.slug = ShortUUID.shorten id
+    self.save
   end
 
   def build_workflowable(params)
@@ -148,7 +151,7 @@ class Workflow < ApplicationRecord
     if ordered_workflow?
       trigger_first_task
     else
-      unordered_tasks_trigger_email
+      self.current_task.get_workflow_action(self.company_id, self.id).notify :users, key: 'workflow_action.unordered_workflow_notify', parameters: { printable_notifiable_name: "#{self.current_task.instructions}", workflow_action_id: self.current_task.get_workflow_action(self.company_id, self.id).id }, send_later: false
     end
   end
 
@@ -158,10 +161,6 @@ class Workflow < ApplicationRecord
 
   def trigger_first_task
     self.current_task.get_workflow_action(self.company_id, self.id).set_deadline_and_notify(self.current_task)
-  end
-
-  def unordered_tasks_trigger_email
-    self.current_task.get_workflow_action(self.company, self.id).unordered_workflow_email_notification
   end
 
   def uppercase_identifier

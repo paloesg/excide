@@ -59,17 +59,20 @@ class Symphony::WorkflowsController < ApplicationController
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
+    @surveys = Survey.all.where(workflow_id: @workflow.id)
     @templates = policy_scope(Template).assigned_templates(current_user)
-    if @workflow.completed?
-      redirect_to symphony_archive_path(@workflow.template.slug, @workflow.id)
-    else
-      @sections = @template.sections
-      @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
-      @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+    @sections = @template.sections
+    @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
 
-      set_tasks
-      set_documents
+
+    if @workflow.completed?
+      @section = params[:section_id] ? @sections.find(params[:section_id]) : @sections.last
+    else
+      @section = params[:section_id] ? @sections.find(params[:section_id]) : @workflow.current_section
     end
+
+    set_tasks
+    set_documents
   end
 
   def edit
@@ -172,8 +175,8 @@ class Symphony::WorkflowsController < ApplicationController
     respond_to do |format|
       if current_task.role.present?
         users = User.with_role(current_task.role.name.to_sym, @company)
-        users.each do |user|
-          NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
+        current_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{current_action.task.instructions}", workflow_action_id: current_action.id }, send_later: false
+        users.each do |user|     
           SlackService.new.task_notification(current_task, current_action, user).deliver if (user.settings[0]&.reminder_slack == 'true' && @company.basic? == 'false')
           if @company.basic? == 'false'
             to_number = '+65' + user.contact_number
@@ -388,12 +391,10 @@ class Symphony::WorkflowsController < ApplicationController
 
   def sort_column(array)
     array.sort_by{
-      |item| if params[:sort] == "template" then item.template.title.upcase
-      elsif params[:sort] == "remarks" then item.remarks ? item.remarks.upcase : ""
+      |item| if params[:sort] == "remarks" then item.remarks ? item.remarks.upcase : ""
       elsif params[:sort] == "deadline" then item.deadline ? item.deadline : Time.at(0)
       elsif params[:sort] == "workflowable" then item.workflowable ? item.workflowable&.name.upcase : ""
       elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.section_name
-      elsif params[:sort] == "identifier" then item.identifier ? item.identifier.upcase : ""
       end
     }
   end

@@ -42,6 +42,9 @@ Rails.application.routes.draw do
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
     get '/xero_line_items', to: 'xero_line_items#show'
 
+    resources :survey_templates, param: :survey_template_slug, except: [:destroy]
+    delete '/survey_templates/:survey_template_slug/destroy_survey_section', to: 'survey_templates#destroy_survey_section', as: :destroy_survey_section
+
     # get '/plan', to: 'companies#plan'
     scope '/checkout' do
       post 'create', to: 'checkout#create', as: :checkout_create
@@ -50,7 +53,6 @@ Rails.application.routes.draw do
     end
 
     resources :templates, param: :template_slug, except: [:destroy]
-    post '/templates/:template_slug/create_section', to: 'templates#create_section', as: :create_section
     delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
 
     resources :clients do
@@ -76,7 +78,6 @@ Rails.application.routes.draw do
     end
     resources :batches, path: '/batches/:batch_template_name', except: [:index, :create]
     get '/batches', to: 'batches#index', as: :batches_index
-    post '/batches/load_batch', to: 'batches#load_batch', as: :load_batch_json
     post '/batches', to: 'batches#create'
 
     resources :document_templates
@@ -121,6 +122,7 @@ Rails.application.routes.draw do
           post '/next', to:'invoices#next_show_invoice', as: :next_show_invoice
           post '/prev', to:'invoices#prev_show_invoice', as: :prev_show_invoice
         end
+        resources :surveys
       end
     end
 
@@ -175,6 +177,9 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
+  # Integrated with Devise
+  notify_to :users, with_devise: :users
+
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account
   get 'account', to: 'accounts#edit', as: :edit_account
@@ -210,7 +215,6 @@ Rails.application.routes.draw do
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'home#privacy'
   get 'about-us', to: 'home#about', as: :about
-  get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
 
   # VFO services
   get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
@@ -232,6 +236,13 @@ Rails.application.routes.draw do
   get 'accounting-services', to: 'home#accounting-services', as: :accounting
   get 'annual-return-filing', to: 'home#annual-return-filing', as: :return
   get 'bookkeeping', to: 'home#bookkeeping', as: :bookkeeping
+
+  # Symphony pages
+  get '/symphony-features', to: 'home#symphony-features', as: :symphony_features
+  get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
+  get '/symphony-pricing', to: 'home#symphony-pricing', as: :symphony_pricing
+  get '/symphony-business-continuity-planning', to: 'home#symphony-bcp', as: :symphony_bcp
+  get '/symphony-remote-working', to: 'home#symphony-remote', as: :symphony_remote
 
   get '/robots.txt' => 'home#robots'
 

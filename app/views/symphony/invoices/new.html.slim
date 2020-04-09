@@ -4,15 +4,12 @@
 .row
   .loading
     .loader
-  .col-md-4.forward
-    - if @documents.empty?
-      | No documents available. Please upload documents first.
+  .col-md-4
+    / document must convert every pages fully
+    - if File.extname(@document.file_url) == ".pdf" && @document.converted_image.attached? && @document.converted_image.count != @page_count
+      div.mt-md-5.text-center Please refresh the page in a few seconds.
     - else
-      - if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
-        .img-magnifier-container
-          = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
-      - else
-        iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" id="iframe-document"
+      = render 'document'
   .col-md-8
     .card.mb-3
       .row.m-2
@@ -56,7 +53,7 @@
                 .spinner-border.ml-auto aria-hidden="true" role="status"
             .result-textract
               = label_tag :textract_json, 'Result Textract JSON'
-              = text_area_tag 'body', nil, rows: 10, class:"form-control aws-textract-result"
+              = text_area_tag 'textract', nil, rows: 10, class:"form-control aws-textract-result"
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
@@ -64,7 +61,7 @@
       .row
         .col-md-8
           - if @workflow.batch.present?
-            = link_to "View Batch", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning'
+            = link_to "View Batch", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning ml-2'
           - else
             = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
           - if params[:workflow_action].present?
@@ -75,3 +72,4 @@
           .pull-right
             = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, invoice_type: params[:invoice_type], workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2') if policy(@invoice).reject?
             = f.submit 'Save', class: "btn btn-primary"
+

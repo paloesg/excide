@@ -1,4 +1,3 @@
-- @navbar_workflows_active = true
 .row
   .col-sm-12
     h1 #{@template.title} – #{@workflow.id} Workflow History
@@ -15,4 +14,4 @@
           - @activities.each do |activity|
             tr = render_activity activity
       .text-center
-        = paginate @activities, views_prefix: 'dashboards'
+        = paginate @activities, views_prefix: 'dashboard'

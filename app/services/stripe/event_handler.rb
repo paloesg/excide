@@ -16,8 +16,6 @@ module Stripe
     def handle_checkout_session_completed(event)
       # Find the current_user using the data returned by stripe webhook
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      # Store the event data into database of company
-      puts "stripe Subscription: #{event.data.object.subscription}"
       # If stripe data is empty, initialize it
       if @current_user.company.stripe_subscription_plan_data.empty?
         @current_user.company.stripe_subscription_plan_data = {
@@ -25,10 +23,7 @@ module Stripe
           invoices: [ Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"]) ],
           cancel: false,
         }
-      #else, append the invoice data to the invoices key
-      else
-        @current_user.company.stripe_subscription_plan_data['subscription'] = Stripe::Subscription.retrieve(event.data.object.subscription)
-        @current_user.company.stripe_subscription_plan_data['invoices'] << Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"])
+      # Else, append the invoice data to the invoices key if the user decides to checkout again upon cancellation. This else method will be moved to invoice payment succeeded event handler.
       end
       @current_user.company.upgrade
       @current_user.company.save
@@ -40,13 +35,59 @@ module Stripe
     #   StripeNotificationMailer.upcoming_payment_notification(@current_user).deliver_later
     # end
 
-    def handle_invoice_payment_succeeded(event)
+    def handle_customer_subscription_created(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      subscription = Stripe::Subscription.retrieve(event.data.object.subscription)
-      period_start = subscription["current_period_start"]
-      period_end = subscription["current_period_end"]
-      invoice_pdf = event.data.object["invoice_pdf"]
-      StripeNotificationMailer.payment_successful(@current_user, period_start, period_end, invoice_pdf).deliver_later
+      if @current_user.company.stripe_subscription_plan_data.empty?
+        @current_user.company.stripe_subscription_plan_data = {
+          subscription: Stripe::Subscription.retrieve(event.data.object.id),
+          invoices: [ Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.id)["latest_invoice"]) ],
+          cancel: false,
+        }
+      end
+      @current_user.company.save
+    end
+
+    def handle_customer_subscription_updated(event)
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      @subscription = Stripe::Subscription.retrieve(event.data.object.id)
+      if event.data.object.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
+        period_end = event.data.object.current_period_end
+        # Run mailer only when cancel_at_period_end is true
+        if event.data.object.cancel_at_period_end
+          @current_user.company.stripe_subscription_plan_data['cancel'] = true
+          @current_user.company.save
+          # Assuming customer_subscription_updated method only runs upon clicking the cancellation button
+          StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
+        end
+        # only update to subscription plan data if it's annual plan
+        @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription if event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
+      end
+      @current_user.company.save
+    end
+
+    def handle_customer_subscription_deleted(event)
+      if event.data.object.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
+        @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+        # Downgrade service runs when stripe deleted subscription
+        DowngradeSubscriptionService.new(@current_user.company).run
+      end
+    end
+
+    def handle_invoice_payment_succeeded(event)
+      @subscription = Stripe::Subscription.retrieve(event.data.object.subscription)
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      if (@subscription.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or @subscription.plan.id == ENV['STRIPE_ANNUAL_PLAN']) and  @current_user.company.stripe_subscription_plan_data.present?
+        invoice = Stripe::Invoice.retrieve(event.data.object.id)
+        # This codes updates the stripe subscription plan data in DB upon recurring biling from Stripe. The if-condition checks for it being recurring (there should be subscription plan data rather than an empty array). 
+        @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription
+        # Check for no duplicate invoices in the database, in case webhook send back twice the response
+        if @current_user.company.stripe_subscription_plan_data['invoices'].all?{|inv| inv['id'] != invoice.id }
+          @current_user.company.stripe_subscription_plan_data['invoices'].push( invoice )
+          @current_user.company.save
+        end
+      end
+      # Send email to inform user that payment is successful.
+      StripeNotificationMailer.payment_successful(@current_user, @subscription["current_period_start"], @subscription["current_period_end"], event.data.object["invoice_pdf"]).deliver_later
     end
 
     def handle_charge_failed(event)

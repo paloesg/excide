@@ -1,68 +1,136 @@
-- @navbar_dashboard_active = true
 .row
-  .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
-    .kt-portlet.text-center
-      .kt-portlet__body
-        h5.kt-widget14__title Workflows
-        h1.kt-widget14__desc = @workflow_count
-  .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
-    .kt-portlet.text-center
-      .kt-portlet__body
-        h5.kt-widget14__title Tasks
-        h1.kt-widget14__desc = @outstanding_actions
-  .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
-    .kt-portlet.text-center
-      .kt-portlet__body
-        h5.kt-widget14__title Batches
-        h1.kt-widget14__desc = @batch_count
-  .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
-    .kt-portlet.text-center
-      .kt-portlet__body
-        h5.kt-widget14__title Reminders
-        h1.kt-widget14__desc = link_to @reminder_count, symphony_reminders_path, class: 'text-dark'
-  .col-xl-2dot4.col-lg-2dot4.col-md-2dot4
-    .kt-portlet.text-center
-      .kt-portlet__body
-        h5.kt-widget14__title Recurring
-        h1.kt-widget14__desc = link_to @recurring_count, symphony_workflows_recurring_path, class: 'text-dark'
+  .col-sm-6
+    .row
+      .col-sm-12.col-md-6.col-lg-6
+        .kt-portlet.kt-portlet--border-bottom-brand
+          .kt-portlet__body.kt-portlet__body--fluid
+            .kt-widget26
+              .kt-widget26__content
+                .kt-widget26__number = @workflows_array.count
+                .kt-widget26__desc Workflows
+              .kt-widget26__chart style="height:100px; width: 230px;"
+                .chartjs-size-monitor
+                  .chartjs-size-monitor-expand
+                    div
+                  .chartjs-size-monitor-shrink
+                    div
+                canvas.chartjs-render-monitor id="kt_chart_quick_stats_1" style="display: block; width: 230px; height: 115px;" width="230" height="115"
+      .col-sm-12.col-md-6.col-lg-6
+        .kt-portlet.kt-portlet--border-bottom-success
+          .kt-portlet__body.kt-portlet__body--fluid
+            .kt-widget26
+              .kt-widget26__content
+                .kt-widget26__number = @outstanding_actions.count
+                .kt-widget26__desc Tasks
+              .kt-widget26__chart style="height:100px; width: 230px;"
+      .col-sm-12.col-md-6.col-lg-6
+        .kt-portlet.kt-portlet--border-bottom-danger
+          .kt-portlet__body.kt-portlet__body--fluid
+            .kt-widget26
+              .kt-widget26__content
+                .kt-widget26__number = @batch_count
+                .kt-widget26__desc Batches
+              .kt-widget26__chart style="height:100px; width: 230px;"
+      .col-sm-12.col-md-6.col-lg-6
+        .kt-portlet.kt-portlet--border-bottom-warning
+          .kt-portlet__body.kt-portlet__body--fluid
+            .kt-widget26
+              .kt-widget26__content
+                .kt-widget26__number = @recurring_count
+                .kt-widget26__desc Recurring
+              .kt-widget26__chart style="height:100px; width: 230px;"
+  .col-sm-6
+    .row
+      .col-md-6
+        .kt-portlet
+          .kt-portlet__head
+            .kt-portlet__head-label
+              h3.kt-portlet__head-title New Workflow
+          .kt-portlet__body
+            .form-group
+              = label_tag "template", "Select template:"
+              = select_tag "template", options_for_select(@templates.map{|t| (@template_pro.include? t and current_user.company.basic?) ? ["[PRO] " + t.title.humanize, t.slug] : [t.title.humanize, t.slug]}, disabled: @template_pro.map{|t| t.slug if current_user.company.basic?}), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
+            .kt-form__actions
+              = link_to 'New Workflow', '/symphony', class: 'btn btn-primary d-block', id: 'new-workflow'
+      .col-md-6
+        .kt-portlet
+          .kt-portlet__head
+            .kt-portlet__head-label
+              h3.kt-portlet__head-title New Recurring Workflow
+              = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
+          .kt-portlet__body
+            .form-group
+              = label_tag "template", "Select template:"
+              = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
+            .kt-form__actions
+              = link_to 'New Recurring Workflow', '', class: ['btn', 'btn-primary', 'd-block', ('disabled' if current_user.company.basic?) ], id: 'new-recurring-workflow'
+      .col-md-12
+        .kt-portlet
+          .kt-portlet__head
+            .kt-portlet__head-label
+              h3.kt-portlet__head-title Batch Upload
+              = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
+          .kt-portlet__body
+            .row
+              .col-md-6
+                = form_tag @s3_direct_post.url, class: 'dropzone dropzone-default dz-clickable multiple_uploads', id: 'batch-uploader'
+                  - @s3_direct_post.fields.each do |key, value|
+                    = hidden_field_tag key, value
+                    = hidden_field_tag "utf8", "√"
+              .col-md-6
+                = label_tag "template", "Select template:"
+                = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
+                = submit_tag 'Submit', disabled: true, class: 'btn btn-primary btn-block mt-3', id: 'drag-and-drop-submit'
 .row
-  .col-md-4
+  .col-md-6.col-sm-12
     .kt-portlet
       .kt-portlet__head
         .kt-portlet__head-label
-          h3.kt-portlet__head-title New Workflow
+          h3.kt-portlet__head-title Workflows In Progress
       .kt-portlet__body
-        .form-group
-          = label_tag "template", "Select template:"
-          = select_tag "template", options_for_select(@templates.map{|t| (@template_pro.include? t and current_user.company.basic?) ? ["[PRO] " + t.title.humanize, t.slug] : [t.title.humanize, t.slug]}, disabled: @template_pro.map{|t| t.slug if current_user.company.basic?}), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-        .kt-form__actions
-          = link_to 'New Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-workflow'
-  .col-md-4
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title New Recurring Workflow
-          = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
-      .kt-portlet__body
-        .form-group
-          = label_tag "template", "Select template:"
-          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
-        .kt-form__actions
-          = link_to 'New Recurring Workflow', '', class: ['btn', 'btn-primary', 'd-block', 'mb-2', ('disabled' if current_user.company.basic?) ], id: 'new-recurring-workflow'
-  .col-md-4
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title Batch Upload
-          = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
-      .kt-portlet__body
-        .form-group
-          = form_tag @s3_direct_post.url, class: 'dropzone dropzone-default dz-clickable multiple_uploads', id: 'batch-uploader'
-            - @s3_direct_post.fields.each do |key, value|
-              = hidden_field_tag key, value
-              = hidden_field_tag "utf8", "√"
+        - if @workflows_array.blank?
+          | No outstanding workflows at the moment. Click on a workflow to begin.
+        - else
           .row
-            .col-md-12
-              = label_tag "template", "Select template:", class: "mt-4"
-              = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
-              = submit_tag 'Submit', disabled: current_user.company.basic?, class: 'btn btn-primary btn-block mt-4', id: 'drag-and-drop-submit'
+            .col-sm-5
+              = select_tag('workflow_type', options_for_select(@templates.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'selectize-workflow-type')
+            .offset-sm-1.col-sm-6
+              .float-right = page_entries_info @workflows, entry_name: 'workflow'
+        table.table
+          thead
+            tr
+              th Workflow ID
+              th = sortable "template", "Workflow Type"
+              th = sortable "completed", "Status"
+          tbody
+            - @workflows.each do |w|
+              tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
+                td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
+                td = w.template.title
+                td = w.completed ? 'Completed' : w.current_section&.section_name
+        = paginate @workflows, views_prefix: 'dashboard'
+  .col-md-6.col-sm-12
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title Your Outstanding Tasks
+      .kt-portlet__body
+        .kt-section
+          .kt-section__content
+            - if @outstanding_actions.blank?
+              | Hooray! You have no outstanding tasks at the moment.
+            - else
+              table.table
+                thead
+                  tr
+                    th Workflow ID
+                    th Workflow Type
+                    th Task Instructions
+                    th Deadline
+                tbody
+                  - @outstanding_actions.each do |action|
+                    tr
+                      td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
+                      td = action.workflow.template.title
+                      td = action.task.instructions
+                      td = action.deadline&.strftime("%d/%m/%Y")

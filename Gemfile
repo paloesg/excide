@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.6.1'
+ruby '2.6.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
@@ -88,7 +88,8 @@ gem 'acts_as_list'
 # Use user friendly slugs
 gem 'friendly_id', '~> 5.3.0'
 # Amazon S3 SDK
-gem 'aws-sdk', '~> 2'
+gem 'aws-sdk-s3', '~> 1'
+gem 'aws-sdk-textract', '~> 1'
 # Sitemap generator
 gem 'sitemap_generator'
 # Uploading of sitemap to AWS
@@ -115,16 +116,16 @@ gem "skylight"
 gem 'scout_apm'
 
 gem 'popper_js'
-# Frontend framework
-gem 'bootstrap', '~> 4.3'
 # Themify icon set web fonts
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
 # Font Awesome Rails
 gem "font-awesome-rails"
-#Use inky for email templating
+# Use inky for email templating
 gem 'inky-rb', require: 'inky'
 # Stylesheet inlining for email
 gem 'premailer-rails'
+# Default processer: MiniMagick. Enable variant for image using ActiveStorage
+gem 'image_processing', '~> 1.2'
 
 # Nested form helper
 # gem "cocoon"
@@ -144,7 +145,7 @@ gem 'mini_mime'
 gem 'shortuuid'
 
 # Backend admin
-gem "administrate", "0.12.0"
+gem "administrate", "0.13.0"
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
 gem 'administrate-field-jsonb'
@@ -154,6 +155,9 @@ gem 'deep_cloneable', '~> 3.0.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
+
+# In-app notification feature
+gem 'activity_notification'
 
 group :development do
   gem 'rails_real_favicon'

@@ -1,49 +1,49 @@
 .row
-  .col-sm-12
-    h1
-      | Recurring Workflows
-.row
   .col-sm-8
-    .card
-      h5.card-header Upcoming Recurring Workflow
-      .table-responsive
-          table.table.table-hover
-            thead
-              tr
-                th Template
-                th Repeats Every
-                th Next Repeat Date
-                th
-            tbody
-              - if @recurring_workflows.blank?
-                tr
-                  td colspan="6" No upcoming workflow at the moment.
-              - else
-                - @recurring_workflows.order(created_at: :desc).each do |recurring_workflow|
-                  tr
-                    td = recurring_workflow.template.title
-                    td = pluralize(recurring_workflow.freq_value, recurring_workflow.freq_unit.singularize)
-                    td = recurring_workflow.next_workflow_date
-                    td
-                      .btn-group.mr-3
-                        = link_to symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), method: :get, role: 'button', class: 'btn btn-outline-primary btn-sm' do
-                          i.ti-eye
-                          |  View
-                        = link_to edit_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-outline-primary btn-sm' do
-                          i.ti-pencil
-                          |  Edit
-                        = link_to trigger_workflow_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-outline-primary btn-sm' do
-                          i.ti-control-play
-                          |  Trigger
-                        - if recurring_workflow.next_workflow_date.present?
-                          = link_to stop_recurring_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), method: :post, role: 'button', class: 'btn btn-outline-primary btn-sm' do
-                            i.ti-control-stop
-                            |  Stop
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title Recurring Workflows
+      .kt-portlet__body
+        .kt-section
+          .kt-section__content
+            .table-responsive
+                table.table.table-hover
+                  thead
+                    tr
+                      th Template
+                      th Repeats Every
+                      th Next Repeat Date
+                      th
+                  tbody
+                    - if @recurring_workflows.blank?
+                      tr
+                        td colspan="6" No recurring workflows at the moment.
+                    - else
+                      - @recurring_workflows.order(created_at: :desc).each do |recurring_workflow|
+                        tr
+                          td = recurring_workflow.template.title
+                          td = pluralize(recurring_workflow.freq_value, recurring_workflow.freq_unit.singularize)
+                          td = recurring_workflow.next_workflow_date
+                          td.kt-align-right
+                            = link_to symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), method: :get, role: 'button', class: 'btn btn-primary btn-sm mr-1' do
+                              | View
+                            = link_to edit_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-warning btn-sm mr-1' do
+                              | Edit
+                            = link_to trigger_workflow_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), role: 'button', class: 'btn btn-success btn-sm mr-1' do
+                              | Trigger
+                            - if recurring_workflow.next_workflow_date.present?
+                              = link_to stop_recurring_symphony_recurring_workflow_path(recurring_workflow_name: recurring_workflow.template, id: recurring_workflow.id), method: :post, role: 'button', class: 'btn btn-danger btn-sm mr-1' do
+                                | Stop
   .col-sm-4
-    .card.mb-3
-      h5.card-header New Recurring Workflow
-      .card-body
-        .form-group
-          = label_tag "template", "Select template:"
-          = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
-        = link_to 'New Recurring Workflow', '', class: 'btn btn-primary d-block mb-2', id: 'new-recurring-workflow'
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title New Recurring Workflow
+      .kt-portlet__body
+        .kt-section
+          .kt-section__content
+            .form-group
+              = label_tag "template", "Select template:"
+              = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
+            = link_to 'New Recurring Workflow', '', class: 'btn btn-primary d-block', id: 'new-recurring-workflow'

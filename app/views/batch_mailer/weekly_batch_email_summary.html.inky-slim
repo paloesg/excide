@@ -5,7 +5,7 @@ container
   spacer size="16"
   row
     columns
-      p Hi Chris,
+      p Hi Han Sheng,
       - if @batches.present?
         p Here is your weekly report on batch progress:
         table border="1"
@@ -26,7 +26,7 @@ container
                   td = link_to m.name, symphony_batch_url(id: m.id, batch_template_name: m.template.slug)
                   td = m.created_at.strftime('%m/%d/%Y %H:%M')
                   td = m.user&.full_name
-                  td = m.action_completed_progress
+                  td = m.task_progress
                   td = m.updated_at.strftime('%m/%d/%Y %H:%M')
       - else
         p There is no batch updates for the last week

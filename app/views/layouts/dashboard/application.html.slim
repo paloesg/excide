@@ -14,12 +14,10 @@ html lang="en"
     / link href="assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css"
     /! end::Page Vendors Styles
 
-    /! begin::Global Theme Styles(used by all pages)
-    = stylesheet_link_tag    "metronic/application"
-    /! end::Global Theme Styles
     <script src="https://js.stripe.com/v3/"></script>
     = render 'application/favicon'
     = display_meta_tags site: "Virtual CFO | Excide"
+    = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application-dashboard', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
@@ -39,9 +37,9 @@ html lang="en"
           /! end:: Header
           .kt-container.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
             #kt_body.kt-body.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
-              #kt_content.kt-content.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor  
+              #kt_content.kt-content.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor
                 #kt_subheader.kt-subheader.kt-grid__item
-                  .kt-container  
+                  .kt-container
                 /! begin:: Content
                 .kt-container.kt-grid__item.kt-grid__item--fluid
                   = render 'layouts/metronic/messages'
@@ -57,7 +55,7 @@ html lang="en"
       var KTAppOptions = {
       	"colors": {
           "state": {
-            "brand": "#5d78ff",
+            "brand": "#5f6caf",
             "light": "#ffffff",
             "dark": "#282a3c",
             "primary": "#5867dd",

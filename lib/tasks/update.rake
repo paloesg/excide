@@ -42,7 +42,7 @@ namespace :update do
 
   desc "Update workflows to generate short uuid and save as slug"
   task generate_short_uuid: :environment do
-    Workflow.find_each(&:save)
+    Workflow.find_each(&:short_uuid)
   end
 
   desc "Update all existing companies to PRO account if account type is nil"
@@ -50,6 +50,29 @@ namespace :update do
     Company.where(account_type: nil).each do |company|
       company.upgrade
       company.save
+    end
+  end
+
+  desc "Update workflows completed nil to false"
+  task workflows_completed_false: :environment do
+    Workflow.where(completed: nil).each do |wf|
+      wf.update(completed: false)
+    end
+  end
+
+  desc "Update batches completed nil to false"
+  task batches_completed_false: :environment do
+    Batch.where(completed: nil).each do |batch|
+      batch.update(completed: false)
+    end
+  end
+
+  desc "PDF conversion for documents"
+  task documents_pdf_conversion: :environment do
+    Document.all.each do |d|
+      if File.extname(d.file_url) == ".pdf" && !d.converted_image.attached?
+        ConvertPdfToImagesJob.perform_now(d)
+      end
     end
   end
 end

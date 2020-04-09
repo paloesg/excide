@@ -11,7 +11,6 @@ RSpec.describe TemplatePolicy, type: :policy do
     it { should_not permit(:new) }
     it { should_not permit(:update) }
     it { should_not permit(:edit) }
-    it { should_not permit(:create_section) }
     it { should_not permit(:destroy_section ) }
   end
 
@@ -22,7 +21,6 @@ RSpec.describe TemplatePolicy, type: :policy do
     it { should permit(:new) }
     it { should permit(:update) }
     it { should permit(:edit) }
-    it { should permit(:create_section) }
     it { should permit(:destroy_section ) }
   end
 end

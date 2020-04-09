@@ -26,6 +26,42 @@ class WorkflowAction < ApplicationRecord
   has_one :sub_workflow, class_name: 'Workflow'
   has_one :invoice
 
+  # acts_as_notifiable configures your model as ActivityNotification::Notifiable
+  # with parameters as value or custom methods defined in your model as lambda or symbol.
+  # The first argument is the plural symbol name of your target model.
+  acts_as_notifiable :users,
+    # Notification targets as :targets is a necessary option
+    # Set to notify to author and users commented to the article, except comment owner self
+    targets: :custom_notification_targets,
+    # Allow notification email
+    email_allowed: true,
+    # Path to move when the notification is opened by the target user
+    # This is an optional configuration since activity_notification uses polymorphic_path as default
+    notifiable_path: :wf_notifiable_path
+
+  def custom_notification_targets(key)
+    if key == 'workflow_action.task_notify' or key == 'workflow_action.unordered_workflow_notify'
+      self.task.role.users.uniq
+    elsif key == 'workflow_action.workflow_completed'
+      # when completed all workflow actions, notify the one that created the workflow
+      [self.workflow.user]      
+    end
+  end
+
+  # Overwrite email subject head
+  def overriding_notification_email_subject(target, key)
+    if key == "workflow_action.task_notify"
+      # Track the most recent created notification
+      "[New Task] - #{target.notifications.last.notifiable.task.instructions} - #{target.notifications.last.notifiable.workflow.friendly_id} "
+    elsif key == 'workflow_action.workflow_completed'
+      "Workflow - #{target.notifications.last.notifiable.workflow.friendly_id} - has been completed"
+    end 
+  end
+
+  def wf_notifiable_path
+    symphony_workflow_path(self.workflow.template, self.workflow)
+  end
+
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_workflow_action(self.company, self.workflow.id)
     next_action.update(deadline: next_task.days_to_complete.business_days.after(Date.current)) unless next_task.days_to_complete.nil?
@@ -35,19 +71,8 @@ class WorkflowAction < ApplicationRecord
 
     if (next_task.role.present? and self.workflow.batch.nil?) or (next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?)
       users = User.with_role(next_task.role.name.to_sym, self.company)
-      # Trigger email notification for next task if role present
-      users.each do |user|
-        NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
-      end
-    end
-  end
-
-  def unordered_workflow_email_notification
-    workflow_tasks = self.workflow.template.sections.map{|sect| sect.tasks }.flatten.compact
-    task_users = workflow_tasks.map{|task| task.role.users}.flatten.compact.uniq
-    #loop through all the users that have a role in that workflow
-    task_users.each do |user|
-      NotificationMailer.unordered_workflow_notification(user, workflow_tasks, self).deliver_later if user.settings[0]&.task_email == 'true'
+      # create task notification
+      next_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
     end
   end
 
@@ -68,9 +93,11 @@ class WorkflowAction < ApplicationRecord
   end
 
   def workflow_completed
-    self.workflow.update_column('completed', true)
-    WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later unless self.workflow.batch.present?
-    batch_completed
+    if self.workflow.update_column('completed', true)
+      # Notify the user that created the workflow that it is completed
+      self.notify :users, key: "workflow_action.workflow_completed", parameters: { workflow_slug: self.workflow.slug }, send_later: false
+      batch_completed if workflow.batch.present?
+    end
   end
 
   def batch_completed

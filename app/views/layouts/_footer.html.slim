@@ -2,10 +2,10 @@ footer.footer-4.space--sm.text-center-xs.bg--dark
   .container
     .row
       .col-md-6.d-flex.align-items-center
-        img.logo alt="Image" src=image_url('excide-logo-light.png')
+        = image_pack_tag 'media/src/images/excide-logo-light.png', alt: "Image", class: 'logo'
     .row
       .col-md-6
-        span &copy; #{Time.current.year} Excide Pte. Ltd. All rights reserved. | #{link_to "Privacy Policy", privacy_path}
+        span &copy; #{Time.current.year} VFO Asia Pte. Ltd. All rights reserved. | #{link_to "Privacy Policy", privacy_path}
       .col-md-6
         ul.list-inline.list--hover.d-flex.justify-content-center.justify-content-lg-end
           li.pr-2
