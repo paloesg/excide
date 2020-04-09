@@ -4,7 +4,7 @@ class Symphony::InvoicesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_workflow, except: [:get_xero_item_code_detail]
+  before_action :set_workflow
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents
   before_action :set_invoice, only: [:edit, :update, :show, :destroy]
