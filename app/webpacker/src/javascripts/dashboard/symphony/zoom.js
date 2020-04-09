@@ -24,6 +24,7 @@ $(document).on("turbolinks:load", function() {
         glass.addClass("img-magnifier-glass");
         /* Insert magnifier glass: */
         img.parent()[0].insertBefore(glass[0], img[0]);
+        glass.hide();
         /* Set background properties for the magnifier glass: */
         imageUrl = "url('" + img[0].src + "')";
         glass.css({

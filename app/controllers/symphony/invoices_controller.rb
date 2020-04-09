@@ -1,5 +1,6 @@
 class Symphony::InvoicesController < ApplicationController
   include Adapter
+  require "mini_magick"
   layout 'metronic/application'
 
   before_action :authenticate_user!
@@ -322,6 +323,7 @@ class Symphony::InvoicesController < ApplicationController
     @documents = @workflow.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
     unless @documents.empty?
       @document = @documents.where(id: params[:document_id]).exists? ? @documents.find(params[:document_id]) : @documents.last
+      @page_count = MiniMagick::Image.open("https:" + @document.file_url).pages.count
       @previous_document = @documents.where('id < ?', @document.id).first
       @next_document = @documents.where('id > ?', @document.id).last
     end
