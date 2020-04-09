@@ -5,7 +5,11 @@
   .loading
     .loader
   .col-md-4
-    = render "document"
+    / document must convert every pages fully
+    - if File.extname(@document.file_url) == ".pdf" && @document.converted_image.attached? && @document.converted_image.count != @page_count
+      div.mt-md-5.text-center Please refresh the page in a few seconds.
+    - else
+      = render 'document'
   .col-md-8
     .card.mb-3
       .row.m-2

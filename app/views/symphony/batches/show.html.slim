@@ -43,8 +43,15 @@
                               - display_url = d.file_url
                             = d.filename
                             br
-                            a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" Preview
-
+                            a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="text-primary" Preview
+                            br
+                            - if !d.converted_image.attached?
+                              p.font-italic.mb-0
+                                | PDF is not ready to preview yet.
+                                br
+                                | Please refresh the page or download it:
+                                br
+                              a href="#{d.file_url}" class="text-primary" Download
                       td
                         - if wf.invoice.blank?
                           i.flaticon2-paper.icon.mr-3.text-center.medium-icon.gray-icon
