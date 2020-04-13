@@ -3,20 +3,20 @@ class GenerateTextract
     @document_id = document_id
   end
 
-  # def run_generate
-  #   begin
-  #     get_document
-  #     @document.save
-  #     OpenStruct.new(success?: true, document: @document)
-  #   rescue => e
-  #     OpenStruct.new(success?: false, document: @document, message: e.message)
-  #   end
-  # end
+  def run_generate
+    begin
+      get_document
+      generate_textract
+      @document.save
+      OpenStruct.new(success?: true, document: @document)
+    rescue => e
+      OpenStruct.new(success?: false, document: @document, message: e.message)
+    end
+  end
 
   def run_analyze
     begin
       get_document
-      generate_textract
       analyze_document
       get_table # convert json textract to json table
       get_data_table # convert json table to json array with fix format 

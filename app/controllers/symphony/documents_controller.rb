@@ -42,8 +42,9 @@ class Symphony::DocumentsController < ApplicationController
 
     authorize @generate_document.document
     respond_to do |format|
-      if @generate_document.success?
-        # @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate
+      if @generate_document.success? 
+        # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'
+        @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate if @generate_document.document.workflow.workflow_actions.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
         document = @generate_document.document
         # Run convert job asynchronously. Service object is performed during the job.
         ConvertPdfToImagesJob.perform_later(document)
