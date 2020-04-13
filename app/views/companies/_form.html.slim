@@ -101,6 +101,7 @@
         .form-group
           = link_to 'Update contacts from Xero', update_contacts_from_xero_path, method: :post, class: "btn btn-warning mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
           = link_to 'Update line items from Xero', update_line_items_from_xero_path, method: :post, class: "btn btn-warning #{current_user.company.basic? ? 'disabled' : nil}"
+          = link_to 'Update tracking categories from Xero', update_tracking_categories_from_xero_path, method: :post, class: "btn btn-warning mr-2 mb-1 mt-2 #{current_user.company.basic? ? 'disabled' : nil}"
         .form-group
           = f.label :xero_organisation_name
           = f.text_field :xero_organisation_name, class: 'form-control', disabled: true
