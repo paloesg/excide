@@ -12,7 +12,6 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_show_invoice_navigation, only: [:show, :next_show_invoice, :prev_show_invoice]
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
-  # before_action :update_textract_job_id, only: [:new, :edit]
 
   after_action :verify_authorized, except: [:create, :index, :get_xero_item_code_detail, :next_invoice, :prev_invoice, :next_show_invoice, :prev_show_invoice, :get_document_analysis, :get_xero_details_json]
   after_action :verify_policy_scoped, only: :index
@@ -408,8 +407,4 @@ class Symphony::InvoicesController < ApplicationController
     workflow_action = WorkflowAction.find(workflow_action_id)
     workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
   end
-
-  # def update_textract_job_id
-  #   GenerateTextract.new(@document.id).run_generate if @document.aws_textract_job_id.nil?
-  # end
 end
