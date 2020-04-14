@@ -48,9 +48,9 @@ module Stripe
     end
 
     def handle_customer_subscription_updated(event)
-      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      @subscription = Stripe::Subscription.retrieve(event.data.object.id)
       if event.data.object.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
+        @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+        @subscription = Stripe::Subscription.retrieve(event.data.object.id)
         period_end = event.data.object.current_period_end
         # Run mailer only when cancel_at_period_end is true
         if event.data.object.cancel_at_period_end
@@ -61,8 +61,8 @@ module Stripe
         end
         # only update to subscription plan data if it's annual plan
         @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription if event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
+        @current_user.company.save
       end
-      @current_user.company.save
     end
 
     def handle_customer_subscription_deleted(event)
