@@ -42,7 +42,7 @@ class Symphony::DocumentsController < ApplicationController
     authorize @generate_document.document
     respond_to do |format|
       if @generate_document.success?
-        d = Document.find(@generate_document.document.id)
+        d = Document.find_by(id: @generate_document.document.id)
         # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'
         @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate if d.workflow.workflow_actions.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
         document = @generate_document.document
