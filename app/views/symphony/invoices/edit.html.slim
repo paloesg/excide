@@ -59,6 +59,7 @@
                   - if @invoice.xero_total_mismatch?
                     = f.submit 'Save and update invoice in Xero', class: 'btn btn-warning float-right'
                   - else
+<<<<<<< HEAD
                     = link_to "View Xero invoice", "https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm', target: :_blank if @workflow.invoice&.payable?
                     = link_to "View Xero invoice", "https://go.xero.com/AccountsReceivable/Edit.aspx?InvoiceID=#{@workflow.invoice.xero_invoice_id}", role: 'button', class: 'btn btn-warning btn-sm', target: :_blank if @workflow.invoice&.receivable?
                 - else
@@ -77,3 +78,4 @@
                   - else
                     = f.submit 'Save', class: 'btn btn-primary float-right'
                     = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id, id: @invoice.id, workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger float-right ml-2') if @invoice.status == nil and policy(@invoice).reject?
+                    
