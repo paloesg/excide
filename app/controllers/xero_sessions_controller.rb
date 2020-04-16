@@ -58,6 +58,16 @@ class XeroSessionsController < ApplicationController
     redirect_to edit_company_path, notice: "Contacts have been updated from Xero."
   end
 
+  def update_tracking_categories_from_xero
+    authorize :xero_session, :update_tracking_categories_from_xero?
+    @xero_client = Xero.new(current_user.company)
+    @xero_client.get_tracking_options.each do |tracking|
+      @tc = XeroTrackingCategory.find_or_initialize_by(tracking_category_id: tracking.tracking_category_id)
+      @tc.update(name: tracking.name, status: tracking.status, options: tracking.options, company: current_user.company)
+    end
+    redirect_to edit_company_path, notice: "Tracking categories have been updated from Xero."
+  end
+
   def update_line_items_from_xero
     authorize :xero_session, :update_line_items_from_xero?
     @xero_client = Xero.new(current_user.company)
