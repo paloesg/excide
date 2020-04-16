@@ -19,4 +19,5 @@
             a.nav-link.active.show aria-selected="true" data-toggle="tab" href="#topbar_notifications_notifications" role="tab"  Notifications
       / ! end: Head
       .notifications
+        // yield views with keys as filename in views and notifier name as folder
         = yield :notification_index

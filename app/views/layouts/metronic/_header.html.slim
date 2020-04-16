@@ -6,7 +6,7 @@
       #kt_header_brand.kt-header__brand.kt-grid__item
         .kt-header__brand-logo
           = link_to symphony_root_path do
-            img.kt-header__brand-logo-default alt="Logo" src=image_url('logo-symphony.png')
+            = image_pack_tag 'media/src/images/logo-symphony.png', alt: "Logo", class: "kt-header__brand-logo-default"
           = content_tag :span, "Staging", class: "badge badge-danger badge-header" if ENV['APP_NAME'] == "excide-staging"
           = content_tag :span, "Trial", class: "badge badge-warning badge-header ml-2" if current_user.company.free_trial?
           = content_tag :span, "Basic", class: "badge badge-secondary badge-header ml-2" if current_user.company.basic?
@@ -73,9 +73,10 @@
               li.kt-nav__item
                 = link_to edit_user_registration_path, class: 'kt-nav__link' do
                   span.kt-nav__link-text User Profile
-              li.kt-nav__item
-                = link_to edit_company_path, class: 'kt-nav__link' do
-                  span.kt-nav__link-text Company Details
+              - if current_user.has_role? :superadmin or current_user.has_role?(:admin, current_user.company)
+                li.kt-nav__item
+                  = link_to edit_company_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Company Details
               li.kt-nav__item
                 = link_to symphony_archives_path, class: 'kt-nav__link' do
                   span.kt-nav__link-text Archived Workflows

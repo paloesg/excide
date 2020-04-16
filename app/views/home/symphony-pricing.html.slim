@@ -3,19 +3,20 @@ section.text-center.imagebg.space--lg data-overlay="3"
     img.background-image alt="image" src=image_path('laptop-with-charts.jpg')
   .container
     .row
-      .col-md-5.d-flex.align-content-center.flex-wrap.offset-md-2.mb-2
-        h1.type--uppercase Symphony Pricing
+      .col-md-10.d-flex.align-content-center.flex-wrap.offset-md-2.mb-2
+        h1 Pricing plans that scale with your business
 section.pricing-section-2.text-center
   .container
     .row
-      .col-md-6.col-lg-6
+      .col-md-4.col-lg-4
         .pricing.pricing-3
           .pricing__head.bg--secondary.boxed
             h5 Basic
             span.h1
               span.pricing__dollar> $
               | 0
-            p.type--fine-print With basic features
+            p.type--fine-print Free forever
+            = link_to 'Sign Up Now', new_user_registration_path, class: 'btn btn--sm btn--orange type--uppercase'
           ul
             li
               strong Basic workflow features:
@@ -34,24 +35,28 @@ section.pricing-section-2.text-center
               br
               span Task reminders and many more
             li
-              span No external app integrations
+              strong No external app integrations
+              br
+              span Basic email notifications and reminders
+              br
+              span No Xero integration
             li
-              span Basic notifications and reminders (Email only)
-            li
-              span Email support
+              p 30-day trial of Symphony Pro
+              = link_to 'Sign Up Now', new_user_registration_path, class: 'btn btn--sm btn--orange type--uppercase mb-4'
         /! end pricing
-      .col-md-6.col-lg-6
+      .col-md-4.col-lg-4
         .pricing.pricing-3
           .pricing__head.pricing-color.boxed
-            span.label.label-color Value
+            span.label.label-color Best Value!
             h5.text-white PRO
             span.h1.text-white
               span.text-white.pricing__dollar> $
-              | 49
-            p.text-white.type--fine-print Per Month, SGD.
+              | 199
+            p.text-white.type--fine-print Per Year (SGD)
+            = link_to 'Subscribe Now', new_user_registration_path(subscription_type: 'annual'), class: 'btn btn--sm btn--orange type--uppercase'
           ul
             li
-              strong PRO workflow features:
+              strong Advanced workflow features:
               br
               span Batch file uploads
               br
@@ -59,7 +64,7 @@ section.pricing-section-2.text-center
               br
               span Automated recurring workflows
             li
-              strong PRO task types:
+              strong Advanced task types:
               br
               span Create payable and receivable invoices
               br
@@ -67,17 +72,54 @@ section.pricing-section-2.text-center
               br
               span All basic task types
             li
-              span External app integrations (Xero, WhatsApp, Slack)
+              strong External app integrations
+              br
+              span SMS, WhatsApp and Slack notifications
+              br
+              span Xero integration
             li
-              span Advanced notifications and reminders (WhatsApp, SMS, Email)
+              p Save by paying annually
+              = link_to 'Subscribe Now', new_user_registration_path(subscription_type: 'annual'), class: 'btn btn--sm btn--orange type--uppercase mb-4'
+      .col-md-4.col-lg-4
+        .pricing.pricing-3
+          .pricing__head.bg--secondary.boxed
+            h5 PRO
+            span.h1
+              span.pricing__dollar> $
+              | 49
+            p.type--fine-print Per Month (SGD)
+            = link_to 'Subscribe Now', new_user_registration_path(subscription_type: 'monthly'), class: 'btn btn--sm btn--orange type--uppercase'
+          ul
             li
-              span Live chat support
-hr
-section#contactus
+              strong Advanced workflow features:
+              br
+              span Batch file uploads
+              br
+              span Automated batching of repetitive tasks
+              br
+              span Automated recurring workflows
+            li
+              strong Advanced task types:
+              br
+              span Create payable and receivable invoices
+              br
+              span One-click send invoice to Xero
+              br
+              span All basic task types
+            li
+              strong External app integrations
+              br
+              span SMS, WhatsApp and Slack notifications
+              br
+              span Xero integration
+            li
+              p Monthly commitment
+              = link_to 'Subscribe Now', new_user_registration_path(subscription_type: 'monthly'), class: 'btn btn--sm btn--orange type--uppercase mb-4'
+section#contactus.bg--secondary
   .container
     .row.mb--2
       .col-sm-6.offset-sm-3.text-center
-        h2.mb64.uppercase Sign up now and get a 1-month free trial of PRO features
-        p.lead Click on the Sign Up button below to get a 1-month free trial of all the Pro features, no credit card required!
-        = link_to 'Sign up for Symphony', new_user_registration_path, class: 'btn btn--excide type--uppercase'
-    = render 'contact'
+        h2.mb64.uppercase Sign up now and get a free trial of Symphony Pro
+        p.lead Access all Symphopny Pro features for 30 days when you sign up now, no credit card required!
+        = link_to new_user_registration_path, class: 'btn btn--excide type--uppercase' do
+          span.btn__text Sign Up For Symphony

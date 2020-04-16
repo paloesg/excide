@@ -1,5 +1,6 @@
 module Adapter
   class Xero
+    include Rails.application.routes.url_helpers
     def initialize(company)
       # Sleep for 2 seconds every time the rate limit is exceeded.
       @xero_client = Xeroizer::PartnerApplication.new(
@@ -11,7 +12,6 @@ module Adapter
           request.headers.merge! "User-Agent" => ENV['XERO_CONSUMER_KEY']
         }
       )
-
       #check for token expiring and renew it. After renew, update company's attribute
       if company.expires_at.present? and (Time.at(company.expires_at) < Time.now)
         @xero_client.renew_access_token(company.access_key, company.access_secret, company.session_handle)
@@ -25,6 +25,37 @@ module Adapter
       end
     end
 
+#-----------------------------------------Used in xero_sessions_controller.rb-----------------------------------------------
+    def request_token(invoice_params={})
+      if invoice_params.nil?
+        @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
+      else
+        @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + xero_callback_and_update_path(workflow_action_id: invoice_params[:workflow_action_id], workflow_id: invoice_params[:workflow_id], invoice_type: invoice_params[:invoice_type]))
+      end
+    end
+
+    def authorize_from_request(request_token, request_secret, oauth_verifier)
+      @xero_client.authorize_from_request(request_token, request_secret, oauth_verifier: oauth_verifier)
+    end
+
+    def update_company_after_connecting_to_xero(company)
+      company.update(expires_at: @xero_client.client.expires_at, access_key: @xero_client.access_token.token, access_secret: @xero_client.access_token.secret, session_handle: @xero_client.session_handle, xero_organisation_name: @xero_client.Organisation.first.name)
+    end
+
+    def save_xero_contacts(company)
+      @xero_client.Contact.all.each do |contact|
+        xc = XeroContact.find_or_initialize_by(contact_id: contact.contact_id)
+        xc.update(name: contact.name, company: company)
+      end
+    end
+
+    def save_xero_line_items(company)
+      @xero_client.Item.all.each do |item|
+        xli = XeroLineItem.find_or_initialize_by(item_code: item.code)
+        xli.update(description: item.description, quantity: item.quantity_on_hand, price: item.sales_details.unit_price, account: item.sales_details.account_code, tax: item.sales_details.tax_type, company: company)
+      end
+    end
+#---------------------------------------------------------------------------------------------------------------------------
     def get_organisation
       @xero_client.Organisation.first
     end

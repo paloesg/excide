@@ -26,6 +26,10 @@
                         = s.check_box :reminder_slack,{ class: 'form-check-input', disabled: current_user.company.basic? }, 'true', 'false'
                         = s.label :reminder_slack, 'Slack', class: 'form-check-label'
                         = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
+                    .form-group.form-check
+                        = s.check_box :reminder_whatsapp,{ class: 'form-check-input', disabled: current_user.company.basic? }, 'true', 'false'
+                        = s.label :reminder_whatsapp, 'Whatsapp', class: 'form-check-label'
+                        = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
           .col-md-4.col-sm-12
             .row
               .col-sm-12
@@ -46,7 +50,10 @@
                         = s.check_box :task_slack, { class: 'form-check-input', disabled: current_user.company.basic?}, 'true', 'false'
                         = s.label :task_slack, 'Slack', class: 'form-check-label'
                         = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
-
+                    .form-group.form-check
+                        = s.check_box :task_whatsapp, { class: 'form-check-input', disabled: current_user.company.basic? }, 'true', 'false'
+                        = s.label :task_whatsapp, 'Whatsapp', class: 'form-check-label'
+                        = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
           .col-md-4.col-sm-12
             .row
               .col-sm-12
@@ -67,7 +74,10 @@
                         = s.check_box :batch_slack, { class: 'form-check-input', disabled:current_user.company.basic?}, 'true', 'false'
                         = s.label :batch_slack, 'Slack', class: 'form-check-label'
                         = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
-
+                    .form-group.form-check
+                        = s.check_box :batch_whatsapp, { class: 'form-check-input', disabled:current_user.company.basic? }, 'true', 'false'
+                        = s.label :batch_whatsapp, 'Whatsapp', class: 'form-check-label'
+                        = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
         .row
           .col-sm-12
             = s.submit 'Save', class: 'btn btn-primary pull-right'

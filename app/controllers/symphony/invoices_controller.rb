@@ -1,6 +1,7 @@
 class Symphony::InvoicesController < ApplicationController
   include Adapter
   include Symphony::InvoicesHelper
+  require "mini_magick"
   layout 'metronic/application'
 
   before_action :authenticate_user!
@@ -261,6 +262,7 @@ class Symphony::InvoicesController < ApplicationController
     @documents = @workflow.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
     unless @documents.empty?
       @document = @documents.where(id: params[:document_id]).exists? ? @documents.find(params[:document_id]) : @documents.last
+      @page_count = MiniMagick::Image.open("https:" + @document.file_url).pages.count
       @previous_document = @documents.where('id < ?', @document.id).first
       @next_document = @documents.where('id > ?', @document.id).last
     end
@@ -271,16 +273,31 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def get_xero_details
-    @xero = Xero.new(@company)
-    @clients                = @company.xero_contacts
-    # Combine account codes and account names as a string
-    @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing
-    @full_tax_code          = @xero.get_tax_rates.map.map{|t| [t.name + ' (' + t.display_tax_rate.to_s + '%) - ' + t.tax_type, {'data-rate': "#{t.display_tax_rate}"}] } # Combine tax codes and tax names as a string
-    @currencies             = @xero.get_currencies
-    @tracking_name          = @xero.get_tracking_options
-    @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| option}
-    @tracking_categories_2  = @tracking_name[1]&.options&.map{|option| option}
-    @items                  = @company.xero_line_items.map{|item| (item.item_code + ': ' + (item.description || '-')) if item.item_code.present?}
+    @invoice_params = {
+      invoice_type: params[:invoice_type],
+      workflow_action_id: params[:workflow_action_id],
+      workflow_name: params[:workflow_name],
+      workflow_id: params[:workflow_id]
+    }
+    # Check if company is connected to xero
+    if @company.session_handle.nil?
+      @xero = Xero.new(current_user.company)
+      @request_token = @xero.request_token(@invoice_params)
+      session[:request_token] = @request_token.token
+      session[:request_secret] = @request_token.secret
+      redirect_to @request_token.authorize_url
+    else
+      @xero = Xero.new(current_user.company)
+      @clients                = @company.xero_contacts
+      # Combine account codes and account names as a string
+      @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing
+      @full_tax_code          = @xero.get_tax_rates.map.map{|t| [t.name + ' (' + t.display_tax_rate.to_s + '%) - ' + t.tax_type, {'data-rate': "#{t.display_tax_rate}"}] } # Combine tax codes and tax names as a string
+      @currencies             = @xero.get_currencies
+      @tracking_name          = @xero.get_tracking_options
+      @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| option}
+      @tracking_categories_2  = @tracking_name[1]&.options&.map{|option| option}
+      @items                  = @company.xero_line_items.map{|item| (item.item_code + ': ' + (item.description || '-')) if item.item_code.present?}    
+    end
   end
 
   def invoice_params

@@ -32,11 +32,52 @@ For rails 5 and above:
 
     rails db:setup
 
+Install ImageMagick for Image Processing gem.
+
+    brew install imagemagick vips
+
 Start the application server.
 
     bin/rails server
 
 Access the application at [http://localhost:3000/](http://localhost:3000/).
+
+## Folder Structure Conventions
+### A typical top-level directory layout (only include folders)
+
+    .
+    ├── app
+        ├── adapters            # API integration methods like Xero etc
+        ├── controllers         # Includes symphony, conductors, admin controllers
+        ├── dashboards
+        ├── decorators          # Design patterns for views
+        ├── fields              # Custom methods used in administrate gem
+        ├── helpers
+        ├── jobs                # Activejob class
+        ├── mailers             # Email sending (Action mailer)
+        ├── models
+        ├── policies            # Pundit policies for authorization
+        ├── services            # Service object
+        ├── views
+        ├── webpacker           # Holds javascripts, css, images and fonts, compiled using webpacker
+            ├── packs
+            ├── src
+                ├── fonts
+                ├── images
+                ├── javascripts
+                ├── stylesheets
+    ├── bin                    
+    ├── config                  # Holds database, webpacker, gems etc configuration                     
+    ├── db                      # Contain schemas and migration files
+    ├── lib                   
+    ├── log
+    ├── node_modules
+    ├── public
+    ├── spec                    # Rspec testing
+    ├── tmp
+    ├── vendor
+    ├── tmp
+    └── README.md
 
 ## Testing
 
@@ -96,4 +137,11 @@ Do remember to specify the app name when running Heroku commands like so:
 
     heroku run --a excide rake db:migrate
     heroku run --a excide-staging rake db:migrate
-
+    
+Heroku buildpack:
+1. ImageMagick buildpack (For file's conversion using ActiveStorage's Image processing gem)
+    * [https://github.com/DuckyTeam/heroku-buildpack-imagemagick/](https://github.com/DuckyTeam/heroku-buildpack-imagemagick/)
+    
+    `heroku buildpacks:add https://github.com/DuckyTeam/heroku-buildpack-imagemagick --app HEROKU_APP_NAME`
+    
+2. Others... (To be added!)
