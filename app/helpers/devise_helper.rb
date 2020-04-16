@@ -10,7 +10,7 @@ module DeviseHelper
     html = <<-HTML
     <div id='error_explanation' class='alert alert-danger' role='alert'>
       <strong>#{sentence}</strong>
-      <ul>#{messages}</ul>
+      <ul class="text-dark">#{messages}</ul>
     </div>
     HTML
 

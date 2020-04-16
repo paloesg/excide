@@ -33,6 +33,8 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true, on: :additional_information
   validates :company, presence: true
 
+  validates_confirmation_of :password
+
   # acts_as_target configures your model as ActivityNotification::Target
   # with parameters as value or custom methods defined in your model as lambda or symbol.
   # This is an example without any options (default configuration) as the target.
