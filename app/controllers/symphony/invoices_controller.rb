@@ -140,6 +140,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def reject
     invoice_id = params[:id]
+    # invoice_id is blank = NEW invoice page
     if invoice_id.blank?
       @invoice = Invoice.new
       @invoice.workflow_id = @workflow.id
@@ -147,12 +148,15 @@ class Symphony::InvoicesController < ApplicationController
       @invoice.company_id = @company.id
       @invoice.invoice_type = params[:invoice_type]
     else
+      # This is from EDIT invoice page
       @invoice = Invoice.find(invoice_id)
     end
     authorize @invoice
     if @invoice.save(validate: false)
-      if @invoice.reject!
+      if @invoice.may_reject?
         flash[:notice] = "Invoice has been rejected."
+        @invoice.reject
+        @invoice.save(validate: false)
         if @invoice.workflow.batch.present?
           #set completed task
           update_workflow_action_completed(params[:workflow_action_id])
@@ -323,7 +327,7 @@ class Symphony::InvoicesController < ApplicationController
 
     if incomplete_workflows.count > 0
       next_wf = incomplete_workflows.where('workflows.created_at > ?', workflow.created_at).first
-      next_wf ||= incomplete_workflows.where('workflows.created_at < ?', workflow.created_at).first
+      next_wf = incomplete_workflows.where('workflows.created_at < ?', workflow.created_at).first if next_wf.blank?
 
       if next_wf.present?
         next_wf_action = next_wf.workflow_actions.where(completed: false).first
