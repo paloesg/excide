@@ -1,5 +1,6 @@
 class Symphony::InvoicesController < ApplicationController
   include Adapter
+  include Symphony::InvoicesHelper
   layout 'metronic/application'
 
   before_action :authenticate_user!
@@ -66,14 +67,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def update
     authorize @invoice
-    if params[:invoice][:xero_contact_name].blank?
-      @invoice.xero_contact_name = @clients.find_by(contact_id: params[:invoice][:xero_contact_id]).name
-    else
-      contact_id = @xero.create_contact(name: params[:invoice][:xero_contact_name])
-      @invoice.xero_contact_id = contact_id
-      @xero_contact = XeroContact.create(name: params[:invoice][:xero_contact_name], contact_id: contact_id, company: @company)
-    end
-    @invoice.save
+    update_xero_contacts(params[:invoice][:xero_contact_name], params[:invoice][:xero_contact_id], @invoice, @clients)    
     if @invoice.update(invoice_params)
       #If associate wants to update invoice before sending to xero, symphony finds the params update_field and then redirect to the same invoice EDIT page
       if params[:update_field] == "success"
