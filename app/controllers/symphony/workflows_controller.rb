@@ -258,6 +258,7 @@ class Symphony::WorkflowsController < ApplicationController
       xero_invoice.status = "AUTHORISED"
       @workflow.invoice.approved
     end
+    @workflow.invoice.save
     xero_invoice.save
 
     respond_to do |format|
@@ -272,6 +273,7 @@ class Symphony::WorkflowsController < ApplicationController
         else
           #set invoice to status: xero_total_mismatch if symphony invoice total doesn't tally with xero's total
           @workflow.invoice.mismatch
+          @workflow.invoice.save
           flash[:alert] = "Xero invoice has been created successfully but the invoice totals do not match. Please check rounding and then update on Xero!"
         end
 
