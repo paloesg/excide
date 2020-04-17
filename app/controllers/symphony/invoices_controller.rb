@@ -30,17 +30,7 @@ class Symphony::InvoicesController < ApplicationController
     @invoice.workflow_id = @workflow.id
     @invoice.user_id = current_user.id
     @invoice.company_id = @company.id
-    if @invoice.xero_contact_id.present?
-      @invoice.xero_contact_name = @clients.find_by(contact_id: @invoice.xero_contact_id).name
-    else
-      #if invoice.xero_contact_id is not present, then create a contact in Xero
-      contact_id = @xero.create_contact(name: @invoice.xero_contact_name)
-      @invoice.xero_contact_id = contact_id
-      @xero_contact = XeroContact.create(name: @invoice.xero_contact_name, contact_id: contact_id, company: @company)
-      unless @xero_contact.save
-        render 'new'
-      end
-    end
+    update_xero_contacts(params[:invoice][:xero_contact_name], params[:invoice][:xero_contact_id], @invoice, @clients)
 
     if @invoice.save
       if @workflow.batch
@@ -153,6 +143,7 @@ class Symphony::InvoicesController < ApplicationController
     end
     authorize @invoice
     if @invoice.save(validate: false)
+      # Check if invoice can be rejected using AASM
       if @invoice.may_reject?
         flash[:notice] = "Invoice has been rejected."
         @invoice.reject
