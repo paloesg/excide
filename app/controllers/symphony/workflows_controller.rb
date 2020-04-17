@@ -252,9 +252,11 @@ class Symphony::WorkflowsController < ApplicationController
     #this is to send invoice to xero 'awaiting approval'
     if params[:approved].present?
       xero_invoice.status = "SUBMITTED"
+      @workflow.invoice.verified
     #this is to send invoice to xero 'awaiting payment', default status will be 'draft'
     elsif params[:payment].present?
       xero_invoice.status = "AUTHORISED"
+      @workflow.invoice.approved
     end
     xero_invoice.save
 
@@ -269,7 +271,7 @@ class Symphony::WorkflowsController < ApplicationController
           flash[:notice] = "Xero invoice has been created successfully and the invoice totals match."
         else
           #set invoice to status: xero_total_mismatch if symphony invoice total doesn't tally with xero's total
-          @workflow.invoice.xero_total_mismatch!
+          @workflow.invoice.mismatch
           flash[:alert] = "Xero invoice has been created successfully but the invoice totals do not match. Please check rounding and then update on Xero!"
         end
 
