@@ -35,7 +35,7 @@ class Symphony::InvoicesController < ApplicationController
     if @invoice.save
       if @workflow.batch
         #set completed task
-        update_workflow_action_completed(params[:workflow_action_id])
+        update_workflow_action_completed(params[:workflow_action_id], current_user)
         #go to the next invoice
         redirect_to_next_action(@workflow, params[:workflow_action_id])
       else
@@ -89,11 +89,10 @@ class Symphony::InvoicesController < ApplicationController
         else
           redirect_to edit_symphony_invoice_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, id: @invoice.id, workflow_action_id: params[:workflow_action_id])
         end
+      # If invoice already sent to xero and there is no mismatch
       elsif @invoice.workflow.batch.present? && params[:workflow_action_id].present?
         #set completed task
-        if @invoice.approved?
-          update_workflow_action_completed(params[:workflow_action_id])
-        end
+        update_workflow_action_completed(params[:workflow_action_id], current_user) if @invoice.xero_awaiting_approval? or @invoice.xero_approved?
         #go to the next invoice
         redirect_to_next_action(@workflow, params[:workflow_action_id])
       else
@@ -150,7 +149,7 @@ class Symphony::InvoicesController < ApplicationController
         @invoice.save(validate: false)
         if @invoice.workflow.batch.present?
           #set completed task
-          update_workflow_action_completed(params[:workflow_action_id])
+          update_workflow_action_completed(params[:workflow_action_id], current_user)
           #go to the next invoice
           redirect_to_next_action(@workflow, params[:workflow_action_id])
         else
@@ -334,11 +333,6 @@ class Symphony::InvoicesController < ApplicationController
     else
       redirect_to symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id, notice: "#{workflow_action.task.task_type.humanize}task has been completed")
     end
-  end
-
-  def update_workflow_action_completed(workflow_action_id)
-    workflow_action = WorkflowAction.find(workflow_action_id)
-    workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
   end
 
   def update_textract_job_id

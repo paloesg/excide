@@ -8,5 +8,10 @@ module Symphony::InvoicesHelper
     end
     invoice.save
   end
+
+  def update_workflow_action_completed(workflow_action_id, current_user)
+    workflow_action = WorkflowAction.find(workflow_action_id)
+    workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
+  end
   
 end
