@@ -13,7 +13,6 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_show_invoice_navigation, only: [:show, :next_show_invoice, :prev_show_invoice]
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
-  before_action :update_textract_job_id, only: [:new, :edit]
 
   after_action :verify_authorized, only: [:new, :create, :edit, :update, :show, :destroy, :reject]
   after_action :verify_policy_scoped, only: :index
@@ -287,18 +286,14 @@ class Symphony::InvoicesController < ApplicationController
       @full_account_code      = @xero.get_accounts.map{|account| (account.code + ' - ' + account.name) if account.code.present?} #would not display account if account.code is missing
       @full_tax_code          = @xero.get_tax_rates.map.map{|t| [t.name + ' (' + t.display_tax_rate.to_s + '%) - ' + t.tax_type, {'data-rate': "#{t.display_tax_rate}"}] } # Combine tax codes and tax names as a string
       @currencies             = @xero.get_currencies
-      @tracking_name          = @xero.get_tracking_options
-      @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| option}
-      @tracking_categories_2  = @tracking_name[1]&.options&.map{|option| option}
+      @tracking_name          = current_user.company.xero_tracking_categories
+      @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| JSON.parse(option)}
+      @tracking_categories_2  = @tracking_name[1]&.options&.map{|option| JSON.parse(option)}
       @items                  = @company.xero_line_items.map{|item| (item.item_code + ': ' + (item.description || '-')) if item.item_code.present?}    
     end
   end
 
   def invoice_params
     params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :workflow_action_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :status, :subtotal, :total, :user_id, line_items_attributes: [:item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :amount, :_destroy])
-  end
-
-  def update_textract_job_id
-    GenerateTextract.new(@document.id).run_generate if @document.aws_textract_job_id.nil?
   end
 end
