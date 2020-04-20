@@ -1,12 +1,12 @@
 section.text-center.imagebg.space--lg data-overlay="3"
   .background-image-holder
-    img.background-image alt="image" src=image_path('laptop-with-charts.jpg')
+    = image_pack_tag "media/src/images/laptop-with-charts.jpg", alt: "image"
   .container
     .row
       .col-md-5.d-flex.align-content-center.flex-wrap.offset-md-2
         h1 Xero Automation
       .col-md-3
-        img.img-fluid.float-right alt="xero-app-partner-logo" src=image_path("logo_Xero App Partner Connected Badge.svg")
+        = image_pack_tag "media/src/images/logo_Xero-App-Partner-Connected-Badge.svg", alt: "xero-app-partner-logo", class: 'img-fluid float-right'
 section
   .container
     .row
@@ -21,10 +21,10 @@ section
     .row
       .col-lg-6.col-md-6
         .text-center
-          img.img-fluid alt="xero-app-partner-logo" src=image_path("symphony-screenshot.png")
+          = image_pack_tag "media/src/images/symphony-screenshot.png", alt: "xero-app-partner-logo", class: 'img-fluid'
       .col-lg-6.col-md-6
         .text-center.d-sm-none.d-none.d-md-block.d-lg-block
-          img.img-fluid alt="xero-app-partner-logo" src=image_path("xero-screenshot.png")
+          = image_pack_tag "media/src/images/xero-screenshot.png", alt: "xero-app-partner-logo", class: 'img-fluid'
 section.switchable.bg--secondary
   .container
     .row.justify-content-around
@@ -57,7 +57,7 @@ section.switchable.bg--secondary
               span.btn__text Get Symphony
       .col-md-6.col-lg-5
         .d-none.d-lg-block.d-flex.align-items-center.text-center
-          img.img-fluid alt="Xero Product Image" src=image_path("myapp-product-image.png")
+          = image_pack_tag "media/src/images/myapp-product-image.png", alt: "Xero Product Image", class: 'img-fluid'
 section
   .container
     .row
@@ -77,7 +77,7 @@ section.switchable.bg--secondary
   .container
     .row.justify-content-around
       .col-lg.d-flex.align-items-center
-          img.img-fluid src=image_path('xero-screenshot@2x.png') alt="Xero Product Image"
+        = image_pack_tag "media/src/images/xero-screenshot@2x.png", alt: "Xero Product Image", class: 'img-fluid'
       .col-lg
         .row
           .col
