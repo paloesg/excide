@@ -37,13 +37,6 @@ Rails.application.routes.draw do
   post '/update_tracking_categories_from_xero', to: 'xero_sessions#update_tracking_categories_from_xero', as: :update_tracking_categories_from_xero
   delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
-  # Company related routes
-  get 'company', to: 'companies#show', as: :company
-  get 'company/new', to: 'companies#new', as: :new_company
-  post 'company/create', to: 'companies#create', as: :create_company
-  get 'company/edit', to: 'companies#edit', as: :edit_company
-  patch 'company', to: 'companies#update'
-
   namespace :symphony do
     get '/search', to: 'home#search'
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
@@ -206,6 +199,12 @@ Rails.application.routes.draw do
   post 'segment/create-and-new', to: 'segments#create_and_new', as: :segment_create_and_new
 
   resources :responses
+
+  get 'company', to: 'companies#show', as: :company
+  get 'company/new', to: 'companies#new', as: :new_company
+  post 'company/create', to: 'companies#create', as: :create_company
+  get 'company/edit', to: 'companies#edit', as: :edit_company
+  patch 'company', to: 'companies#update'
 
   # Hosted files
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
