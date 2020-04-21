@@ -23,6 +23,7 @@ class Invoice < ApplicationRecord
     state :xero_awaiting_approval
     state :xero_approved
     state :xero_total_mismatch
+    state :rounding_added
 
     event :reject do
       transitions from: :created, to: :rejected

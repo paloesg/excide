@@ -66,7 +66,9 @@ class Symphony::InvoicesController < ApplicationController
       elsif @invoice.xero_total_mismatch?
         @xero_invoice = @xero.get_invoice(@invoice.xero_invoice_id)
         @update_xero_invoice = @xero.updating_invoice_payable(@xero_invoice, @invoice.line_items)
-
+        # After updating, update inv status to rounding_added
+        @invoice.rounding
+        @invoice.save
         if @workflow.batch.present?
           #In batch, check whether there is a next workflow
           workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
