@@ -37,4 +37,4 @@ require("algoliasearch");
 require("tempusdominus-bootstrap-4");
 
 require("../../src/javascripts/dashboard/components/stripe");
-require("../../src/javascripts/dashboard/components/turbolinks-compatibility")
+require("../../src/javascripts/dashboard/components/turbolinks-compatibility");
