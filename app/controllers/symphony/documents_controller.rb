@@ -39,14 +39,16 @@ class Symphony::DocumentsController < ApplicationController
 
   def create
     @generate_document = GenerateDocumentAction.new(@user, @company, params[:workflow], params[:workflow_action], document_params, params[:document_type], params[:document][:template_id], params[:batch_id]).run
-
     authorize @generate_document.document
     respond_to do |format|
       if @generate_document.success?
-        @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate
+        d = Document.find_by(id: @generate_document.document.id)
+        # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'
+        @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate if d.workflow.workflow_actions.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
         document = @generate_document.document
         # Run convert job asynchronously. Service object is performed during the job.
         ConvertPdfToImagesJob.perform_later(document)
+        # Upload in batches dropzone
         if params[:document_type] == 'batch-uploads'
           batch = document.workflow.batch
           first_task = batch.template&.sections.first.tasks.first
@@ -58,11 +60,11 @@ class Symphony::DocumentsController < ApplicationController
           else
             link = symphony_batch_path(batch_template_name: document.workflow.template.slug, id: document.workflow.batch)
           end
-
            #return output in json
           output = { link_to: link, status: "ok", message: "batch documents created", document: document.id, batch: batch.id, template: document.workflow.template.slug }
           flash[:notice] = "New batch of #{Batch.find(params[:batch_id]).workflows.count} documents successfully created!"
           format.json  { render :json => output }
+        # Upload in workflow action with task type: upload file for batches
         elsif params[:upload_type] == "batch_upload"
           @batch = @document.workflow.batch
           workflow_action = WorkflowAction.find(params[:workflow_action])
