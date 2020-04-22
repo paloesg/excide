@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
   # Slack callback path
   get '/oauth/authorization', to: 'slack#callback'
+  delete '/disconnect_from_slack', to: 'slack#disconnect_from_slack', as: :disconnect_from_slack
 
   # Company workflow management
   get 'dashboard', to: 'dashboards#show', as: :dashboard

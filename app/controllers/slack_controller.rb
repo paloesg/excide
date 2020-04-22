@@ -6,14 +6,18 @@ class SlackController < ApplicationController
       client_id: ENV['SLACK_CLIENT_ID'],
       client_secret: ENV['SLACK_CLIENT_SECRET'],
       code: params[:code],
-      redirect_uri: "https://45afdfda.ngrok.io/oauth/authorization"
+      redirect_uri: ENV['ASSET_HOST'] + '/oauth/authorization'
     )
     Rails.logger.info response.inspect
-    puts "RESPONSE DATA: #{response}"
     current_user.company.update(
-      authorize_slack_code: response.access_token,
       slack_access_response: response
     )
-    redirect_to root_path, notice: 'Successfully connected'
+    redirect_to edit_company_path, notice: 'Successfully connected'
+  end
+
+  def disconnect_from_slack
+    current_user.company.update_attributes(slack_access_response: nil)
+
+    redirect_to edit_company_path, notice: "You have been disconnected from Slack."
   end
 end
