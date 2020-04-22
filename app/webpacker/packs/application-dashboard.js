@@ -7,8 +7,8 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-require("@rails/ujs").start()
-require("turbolinks").start()
+require("@rails/ujs").start();
+require("turbolinks").start();
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
@@ -17,7 +17,7 @@ require("turbolinks").start()
 
 // const imagePath = (name) => images(name, true)
 // Importing images through webpack
-const images = require.context('../src/images', true)
+const images = require.context('../src/images', true);
 
 import 'bootstrap/dist/js/bootstrap';
 import 'dropzone/dist/dropzone';

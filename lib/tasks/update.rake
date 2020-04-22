@@ -67,6 +67,16 @@ namespace :update do
     end
   end
 
+  desc "Delete batches with no workflows"
+  task delete_empty_batches: :environment do
+    Batch.includes(:workflows).where(workflows: { batch_id: nil }).each do |batch|
+      if batch.destroy
+        # Log message in console to check whether the batch has been deleted!
+        puts "Batch with no workflows - #{batch.id} - has been successfully deleted."
+      end
+    end
+  end
+
   desc "PDF conversion for documents"
   task documents_pdf_conversion: :environment do
     Document.all.each do |d|
