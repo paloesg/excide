@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   # Stripe event path for webhook
   mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
 
+  # Slack callback path
+  get '/oauth/authorize', to: 'slack#callback'
+
   # Company workflow management
   get 'dashboard', to: 'dashboards#show', as: :dashboard
   get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow

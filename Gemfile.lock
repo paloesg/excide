@@ -204,6 +204,8 @@ GEM
       railties (>= 4.2.0)
     faraday (0.17.1)
       multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.14.0)
+      faraday (>= 0.7.4, < 1.0)
     ffi (1.12.2)
     fog-aws (3.5.2)
       fog-core (~> 2.1)
@@ -227,6 +229,7 @@ GEM
     foundation_emails (2.2.1.0)
     friendly_id (5.3.0)
       activerecord (>= 4.0.0)
+    gli (2.19.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     guard (2.16.1)
@@ -533,6 +536,13 @@ GEM
       skylight-core (= 4.2.0)
     skylight-core (4.2.0)
       activesupport (>= 4.2.0)
+    slack-ruby-client (0.14.6)
+      activesupport
+      faraday (>= 0.9)
+      faraday_middleware
+      gli
+      hashie
+      websocket-driver
     slim (4.0.1)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -680,6 +690,7 @@ DEPENDENCIES
   simple_calendar (~> 2.0)
   sitemap_generator
   skylight
+  slack-ruby-client
   slim-rails
   snitcher
   spring

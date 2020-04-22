@@ -159,6 +159,9 @@ gem 'rails_12factor', group: :production
 # In-app notification feature
 gem 'activity_notification'
 
+# Integrate Slack API
+gem 'slack-ruby-client'
+
 group :development do
   gem 'rails_real_favicon'
   gem 'rubocop', require: false
