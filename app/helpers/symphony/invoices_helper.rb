@@ -1,4 +1,5 @@
 module Symphony::InvoicesHelper
+  # Check if the invoice has existing xero contact or a new contact. If new, create contact in Xero and in db
   def update_xero_contacts(xero_contact_name, xero_contact_id, invoice, clients)
     if xero_contact_name.blank?
       invoice.xero_contact_name = clients.find_by(contact_id: xero_contact_id).name
@@ -14,6 +15,7 @@ module Symphony::InvoicesHelper
     incomplete_workflows = workflow.batch.workflows.includes(workflow_actions: :task).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).order(created_at: :asc)
     incomplete_workflows = incomplete_workflows.includes(:invoice).where.not(invoices: {id: nil}) if params[:action] == "update"
 
+    # Check for workflows with invoice yet action is not completed and set the next workflow
     if incomplete_workflows.count > 0
       next_wf = incomplete_workflows.where('workflows.created_at > ?', workflow.created_at).first
       next_wf = incomplete_workflows.where('workflows.created_at < ?', workflow.created_at).first if next_wf.blank?
@@ -30,12 +32,13 @@ module Symphony::InvoicesHelper
       redirect_to symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id, notice: "#{workflow_action.task.task_type.humanize}task has been completed")
     end
   end
-
+  # Update action to true if it is completed for batches
   def update_workflow_action_completed(workflow_action_id, current_user)
     workflow_action = WorkflowAction.find(workflow_action_id)
     workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
   end
 
+  # Navigate to next invoice or previous invoice depending on which workflow and action are passed in
   def render_action_invoice(workflow, workflow_action)
     if workflow.invoice.blank?
       invoice_type = params[:invoice_type].present? ? params[:invoice_type] : @workflow.invoice&.invoice_type
