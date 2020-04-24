@@ -7,9 +7,14 @@ class SlackService
   WARNING = 'warning'
   DANGER = 'danger'
 
-  def initialize(user)
-    @uri = URI(user.company.slack_access_response['incoming_webhook']['url'])
-    @channel = user.company.slack_access_response['incoming_webhook']['channel']
+  def initialize(user=nil)
+    if user.nil?
+      @uri = URI(ENV['SLACK_WEBHOOK_URL'])
+      @channel = ENV['SLACK_EXCIDE_CHANNEL']
+    else
+      @uri = URI(user.company.slack_access_response['incoming_webhook']['url'])
+      @channel = user.company.slack_access_response['incoming_webhook']['channel']
+    end
   end
 
   def new_enquiry(enquiry)
