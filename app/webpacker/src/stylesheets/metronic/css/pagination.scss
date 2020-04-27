@@ -1,0 +1,70 @@
+// Pagination (for algolia search)
+// --------------------------------------------------
+.ais-pagination {
+  padding-top: 1.5rem !important;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.25rem;
+  justify-content: center !important;
+
+
+  > li {
+    display: inline;
+    > a,
+    > span {
+      position: relative;
+      display: block;
+      padding: 0.5rem 0.75rem;
+      margin-left: -1px;
+      line-height: 1.25;
+      color: #007bff;
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+
+      &:hover,
+      &:focus {
+        z-index: 2;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+      &:link {
+        text-decoration: none;
+      }
+    }
+    &:first-child {
+      > a,
+      > span {
+        margin-left: 0;
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+      }
+    }
+    &:last-child {
+      > a,
+      > span {
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+      }
+    }
+    &.ais-pagination--item__disabled {
+      > a,
+      > span {
+        color: #a7a7a7;
+        background-color: #f3f3f3;
+      }
+    }
+  }
+
+  > .ais-pagination--item__active > a,
+  > .ais-pagination--item__active > span {
+    &,
+    &:hover,
+    &:focus {
+      z-index: 1;
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+  }
+}

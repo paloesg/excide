@@ -290,6 +290,28 @@ ActiveRecord::Schema.define(version: 2020_03_14_153100) do
     t.index ["user_id"], name: "index_invoices_on_user_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.string "target_type", null: false
+    t.bigint "target_id", null: false
+    t.string "notifiable_type", null: false
+    t.bigint "notifiable_id", null: false
+    t.string "key", null: false
+    t.string "group_type"
+    t.bigint "group_id"
+    t.integer "group_owner_id"
+    t.string "notifier_type"
+    t.bigint "notifier_id"
+    t.text "parameters"
+    t.datetime "opened_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_owner_id"], name: "index_notifications_on_group_owner_id"
+    t.index ["group_type", "group_id"], name: "index_notifications_on_group_type_and_group_id"
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
+    t.index ["notifier_type", "notifier_id"], name: "index_notifications_on_notifier_type_and_notifier_id"
+    t.index ["target_type", "target_id"], name: "index_notifications_on_target_type_and_target_id"
+  end
+
   create_table "profiles", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -394,6 +416,24 @@ ActiveRecord::Schema.define(version: 2020_03_14_153100) do
     t.datetime "updated_at", null: false
     t.index ["survey_id"], name: "index_segments_on_survey_id"
     t.index ["survey_section_id"], name: "index_segments_on_survey_section_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "target_type", null: false
+    t.bigint "target_id", null: false
+    t.string "key", null: false
+    t.boolean "subscribing", default: true, null: false
+    t.boolean "subscribing_to_email", default: true, null: false
+    t.datetime "subscribed_at"
+    t.datetime "unsubscribed_at"
+    t.datetime "subscribed_to_email_at"
+    t.datetime "unsubscribed_to_email_at"
+    t.text "optional_targets"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_subscriptions_on_key"
+    t.index ["target_type", "target_id", "key"], name: "index_subscriptions_on_target_type_and_target_id_and_key", unique: true
+    t.index ["target_type", "target_id"], name: "index_subscriptions_on_target_type_and_target_id"
   end
 
   create_table "survey_sections", id: :serial, force: :cascade do |t|
@@ -584,6 +624,17 @@ ActiveRecord::Schema.define(version: 2020_03_14_153100) do
     t.index ["company_id"], name: "index_xero_line_items_on_company_id"
   end
 
+  create_table "xero_tracking_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "status"
+    t.string "tracking_category_id"
+    t.json "options"
+    t.bigint "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_xero_tracking_categories_on_company_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "allocations", "availabilities"
   add_foreign_key "allocations", "events"
@@ -651,4 +702,5 @@ ActiveRecord::Schema.define(version: 2020_03_14_153100) do
   add_foreign_key "workflows", "workflow_actions"
   add_foreign_key "xero_contacts", "companies"
   add_foreign_key "xero_line_items", "companies"
+  add_foreign_key "xero_tracking_categories", "companies"
 end

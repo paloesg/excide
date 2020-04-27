@@ -1,7 +1,7 @@
 - set_meta_tags title: 'Budgeting and Forecasting', description: 'At Excide, we help companies create robust budgeting and forecasting systems to help you know your cashflow, prepare for contingencies and achieve growth.', reverse: true
 section.text-center.imagebg.space--lg data-overlay="3"
   .background-image-holder
-    img alt="background" src=image_path('laptop-with-charts.jpg')
+    = image_pack_tag "media/src/images/laptop-with-charts.jpg", alt: "background"
   .container
     .row
       .col-md-8.col-lg-12
@@ -28,7 +28,7 @@ section
           li Drawing up growth strategy and identifying milestones
 section.pt240.pb240.imagebg.height-50
   .background-image-holder
-    img.background-image alt="image" src=image_path('charts-with-iphone.jpg')
+    = image_pack_tag "media/src/images/charts-with-iphone.jpg", alt: "image", class: 'background-image'
 section
   .container
     .row
@@ -44,7 +44,7 @@ section
         p.lead.m32.pb32 These steps will be crucial in knowing how your business will do in the years to come.
 section.imagebg.overlay
   .background-image-holder
-    img.background-image alt="image" src=image_path('table-top-post-its.jpg')
+    = image_pack_tag "media/src/images/table-top-post-its.jpg", alt: "image", class: 'background-image'
   .container
     .row
       .col-sm-12.text-center

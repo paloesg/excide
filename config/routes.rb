@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   get '/xero_callback_and_update', to: 'xero_sessions#xero_callback_and_update', as: :xero_callback_and_update
   post '/update_contacts_from_xero', to: 'xero_sessions#update_contacts_from_xero', as: :update_contacts_from_xero
   post '/update_line_items_from_xero', to: 'xero_sessions#update_line_items_from_xero', as: :update_line_items_from_xero
+  post '/update_tracking_categories_from_xero', to: 'xero_sessions#update_tracking_categories_from_xero', as: :update_tracking_categories_from_xero
   delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
   namespace :symphony do
@@ -175,6 +176,9 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
+
+  # Integrated with Devise
+  notify_to :users, with_devise: :users
 
   get 'account/new', to: 'accounts#new', as: :new_account
   patch 'account/create', to: 'accounts#create', as: :create_account

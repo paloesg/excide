@@ -1,20 +1,12 @@
 # Preview all emails at http://localhost:3000/rails/mailers/notification_mailer
 #you can either log in to User.last account or change the User.last to User.find(your id)
 class NotificationMailerPreview < ActionMailer::Preview
-  def task_notification
-    NotificationMailer.task_notification(WorkflowAction.last.task, WorkflowAction.last, User.find(189))
-  end
-
   def first_task_notification
     NotificationMailer.first_task_notification(Task.last, Batch.last, User.last)
   end
 
   def unordered_workflow_notification
     NotificationMailer.unordered_workflow_notification(Template.where(workflow_type: 1).first.workflows.first.user, Template.where(workflow_type: 1).first.sections.map{|sect| sect.tasks }.flatten.compact, WorkflowAction.last)
-  end
-
-  def batch_reminder
-    NotificationMailer.batch_reminder(Reminder.where(user: User.last), User.last)
   end
 
   def create_event

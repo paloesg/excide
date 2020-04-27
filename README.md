@@ -42,6 +42,43 @@ Start the application server.
 
 Access the application at [http://localhost:3000/](http://localhost:3000/).
 
+## Folder Structure Conventions
+### A typical top-level directory layout (only include folders)
+
+    .
+    ├── app
+        ├── adapters            # API integration methods like Xero etc
+        ├── controllers         # Includes symphony, conductors, admin controllers
+        ├── dashboards
+        ├── decorators          # Design patterns for views
+        ├── fields              # Custom methods used in administrate gem
+        ├── helpers
+        ├── jobs                # Activejob class
+        ├── mailers             # Email sending (Action mailer)
+        ├── models
+        ├── policies            # Pundit policies for authorization
+        ├── services            # Service object
+        ├── views
+        ├── webpacker           # Holds javascripts, css, images and fonts, compiled using webpacker
+            ├── packs
+            ├── src
+                ├── fonts
+                ├── images
+                ├── javascripts
+                ├── stylesheets
+    ├── bin                    
+    ├── config                  # Holds database, webpacker, gems etc configuration                     
+    ├── db                      # Contain schemas and migration files
+    ├── lib                   
+    ├── log
+    ├── node_modules
+    ├── public
+    ├── spec                    # Rspec testing
+    ├── tmp
+    ├── vendor
+    ├── tmp
+    └── README.md
+
 ## Testing
 
 Run the test suite with [RSpec](https://github.com/rspec/rspec-rails).

@@ -6,7 +6,7 @@
       #kt_header_brand.kt-header__brand.kt-grid__item
         .kt-header__brand-logo
           a href="/"
-            img.kt-header__brand-logo-default alt="Logo" src=image_url('logo-symphony.png')
+            = image_pack_tag 'media/src/images/logo-symphony.png', alt: "Logo", class: "kt-header__brand-logo-default"
         .kt-header__brand-nav
           .dropdown
             - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
