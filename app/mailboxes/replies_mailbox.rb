@@ -3,7 +3,8 @@ class RepliesMailbox < ApplicationMailbox
 
   def process
     return unless @user
-    puts "MAIL DECODED: #{mail.decoded}"
+    @user.remarks = mail.decoded
+    @user.save
   end
 
   private
