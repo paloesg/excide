@@ -23,6 +23,10 @@ Rails.application.routes.draw do
   # Stripe event path for webhook
   mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
 
+  # Slack callback path
+  get '/oauth/authorization', to: 'slack#callback'
+  delete '/disconnect_from_slack', to: 'slack#disconnect_from_slack', as: :disconnect_from_slack
+
   # Company workflow management
   get 'dashboard', to: 'dashboards#show', as: :dashboard
   get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
@@ -205,7 +209,6 @@ Rails.application.routes.draw do
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
-  get 'plan', to: 'companies#plan'
 
   # Hosted files
   get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
