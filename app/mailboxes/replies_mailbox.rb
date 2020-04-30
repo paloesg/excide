@@ -17,11 +17,19 @@ class RepliesMailbox < ApplicationMailbox
     #   end
     # end
     mail.attachments.each do |attachment|
-      blob = ActiveStorage::Blob.create_after_upload!(
-        io: StringIO.new(attachment.body.to_s),
-        filename: attachment.filename,
-        content_type: attachment.content_type
-      )
+      document = Document.new
+      document.converted_image.attach(io: StringIO.new(attachment.body.to_s), filename: attachment.filename,
+      content_type: attachment.content_type)
+      document.filename = attachment.filename
+      document.file_url = attachment.filename
+      document.user = @user
+      document.company = @user.company
+      document.save
+      # blob = ActiveStorage::Blob.create_after_upload!(
+      #   io: StringIO.new(attachment.body.to_s),
+      #   filename: attachment.filename,
+      #   content_type: attachment.content_type
+      # )
       # Document.create(filename: attachment.filename, file_url: )
     end
     # puts "mailcatcher mailbox: #{mail}"
