@@ -26,7 +26,7 @@
           .kt-portlet__head-label
             h3.kt-portlet__head-title Client
         .kt-portlet__body
-          = @workflow.workflowable&.name
+          h5 = @workflow.workflowable&.name
           - if @workflow.archive.blank?
             - if @workflow.workflowable.xero_contact_id.present?
               = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right'
