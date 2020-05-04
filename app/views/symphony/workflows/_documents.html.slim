@@ -12,7 +12,7 @@
             .media
               .align-self-center
                 = link_to symphony_document_path(d)
-                  i.ti-file.icon.mr-3 style="font-size: 50px"
+                  = fa_icon "file", style: 'font-size: 50px;', class: 'mr-3'
               .media-body
                 h5.card-title = d.filename
                 h6.card-subtitle = d.user&.full_name
