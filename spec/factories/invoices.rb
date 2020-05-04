@@ -10,7 +10,7 @@ FactoryBot.define do
     xero_contact_id { 0 }
     xero_contact_name { "sansa" }
     currency { "USD" }
-    status { "approved" }
+    status { "created" }
     total { 123 }
     user
   end
