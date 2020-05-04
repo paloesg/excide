@@ -20,9 +20,8 @@
  */
 
 @import '~bootstrap/scss/bootstrap';
-// fontawesome 4
-$fa-font-path: "~font-awesome/fonts";
-@import '~font-awesome/scss/font-awesome';
+// fontawesome 5
+@import '@fortawesome/fontawesome-free';
 
 @import '../src/stylesheets/stack/css/1-theme';
 @import '../src/stylesheets/stack/css/users';

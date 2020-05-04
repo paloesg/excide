@@ -119,7 +119,7 @@ gem 'popper_js'
 # Themify icon set web fonts
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
 # Font Awesome Rails
-gem "font-awesome-rails"
+gem 'font_awesome5_rails'
 # Use inky for email templating
 gem 'inky-rb', require: 'inky'
 # Stylesheet inlining for email

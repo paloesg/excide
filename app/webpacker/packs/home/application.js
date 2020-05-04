@@ -23,6 +23,9 @@ import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap';
 import 'dropzone/dist/dropzone';
 
+// Import font awesome 5
+import "@fortawesome/fontawesome-free/js/all";
+
 import $ from 'jquery';
 window.jQuery = $;
 window.$ = $;
