@@ -43,8 +43,8 @@ class Symphony::DocumentsController < ApplicationController
     respond_to do |format|
       if @generate_document.success?
         d = Document.find_by(id: @generate_document.document.id)
-        # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'
-        @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate if d.workflow.workflow_actions.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
+        # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'. Check for workflow present in case user uploads using document NEW page instead.
+        @generate_textract = GenerateTextract.new(@generate_document.document.id).run_generate if d.workflow.present? and (d.workflow.workflow_actions.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'})
         document = @generate_document.document
         # Run convert job asynchronously. Service object is performed during the job.
         ConvertPdfToImagesJob.perform_later(document)
@@ -74,7 +74,8 @@ class Symphony::DocumentsController < ApplicationController
             format.json { render json: workflow_action.errors, status: :unprocessable_entity }
           end
         else
-          format.html { redirect_to @generate_document.document.nil? && @generate_document.document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(@generate_document.document.workflow.template.slug, @generate_document.document.workflow.id), notice: 'Document was successfully created.' }
+          # the OR statement is to check that document is uploaded from document NEW pass the ternary condition
+          format.html { redirect_to @generate_document.document.nil? || @generate_document.document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(@generate_document.document.workflow.template.slug, @generate_document.document.workflow.id), notice: 'Document was successfully created.' }
         end
       else
         set_templates
