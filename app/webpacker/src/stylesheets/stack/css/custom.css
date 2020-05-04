@@ -1,5 +1,7 @@
+
 /*! Place your custom styles here */
-/*From font-awesome 5 onwards, font-awesome icons that are free requires attribute of font-weight of 900*/
+
+/* From font-awesome 5 onwards, font-awesome icons that are free requires attribute of font-weight of 900 */
 @import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
 
 .btn.type--uppercase .btn__text {
