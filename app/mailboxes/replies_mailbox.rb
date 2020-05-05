@@ -1,5 +1,5 @@
 class RepliesMailbox < ApplicationMailbox
-  RepliesMailbox::MATCHER = /reply-(.+)@reply.example.com/i
+  RepliesMailbox::MATCHER = /fileupload-(.+)@symphony.excide.com/i
   before_processing :find_user
 
   def process
@@ -20,27 +20,22 @@ class RepliesMailbox < ApplicationMailbox
     #     # ActiveStorage::Attachment.last.blob.service_url.sub(/\?.*/, '')
     #   end
     # end
-    # mail.attachments.each do |attachment|
-    #   document = Document.new
-    #   # Add to active storage
-    #   document.converted_image.attach(io: StringIO.new(attachment.body.to_s), filename: attachment.filename,
-    #   content_type: attachment.content_type)
-    #   document.filename = attachment.filename
-    #   document.file_url = attachment.filename
-    #   document.user = @user
-    #   document.company = @user.company
-    #   document.save
-    #   # blob = ActiveStorage::Blob.create_after_upload!(
-    #   #   io: StringIO.new(attachment.body.to_s),
-    #   #   filename: attachment.filename,
-    #   #   content_type: attachment.content_type
-    #   # )
-    #   # Document.create(filename: attachment.filename, file_url: )
-    # end
+    mail.attachments.each do |attachment|
+      document = Document.new
+      # Add to active storage
+      document.converted_image.attach(io: StringIO.new(attachment.body.to_s), filename: attachment.filename,
+      content_type: attachment.content_type)
+      document.filename = attachment.filename
+      document.file_url = attachment.filename
+      document.user = @user
+      # Get document's company by matching it with company mailbox token
+      document.company = company
+      document.save
+    end
   end
 
   def company
-    @company ||= Company.find_by(mailbox_token: company_mailbox_token).name
+    @company ||= Company.find_by(mailbox_token: company_mailbox_token)
   end
 
   def company_mailbox_token
