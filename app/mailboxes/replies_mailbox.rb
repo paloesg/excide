@@ -5,7 +5,7 @@ class RepliesMailbox < ApplicationMailbox
   def process
     return unless @user
     # Find the mail.to address (recipient address)
-    puts "Company is : #{@company}"
+    puts "Company is : #{company}"
 
     # puts "mail attahcments: #{mail.attachments}"
     # if mail.attachments.empty?
@@ -40,15 +40,13 @@ class RepliesMailbox < ApplicationMailbox
   end
 
   def company
-    @company ||= Company.find_by(slug: company_slug)
-    puts "Company method: #{@company}"
+    @company ||= Company.find_by(mailbox_token: company_mailbox_token).name
   end
 
-  def company_slug
+  def company_mailbox_token
     recipient = mail.recipients.find{|r| MATCHER.match?(r)}
     # Returns the first enclosed capture in the regexp
     recipient[MATCHER, 1]
-    puts "mailcatcher mailbox recipient: #{recipient}"
   end
 
   private

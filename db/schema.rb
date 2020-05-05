@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_28_085117) do
+ActiveRecord::Schema.define(version: 2020_05_05_050913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -193,6 +193,7 @@ ActiveRecord::Schema.define(version: 2020_04_28_085117) do
     t.datetime "trial_end_date"
     t.json "stripe_subscription_plan_data", default: []
     t.json "slack_access_response"
+    t.string "mailbox_token"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
