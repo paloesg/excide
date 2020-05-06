@@ -1,6 +1,7 @@
 {
   "license": "UNLICENSED",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "@fullcalendar/core": "^4.3.1",
     "@fullcalendar/daygrid": "^4.3.0",
     "@rails/actiontext": "^6.0.1",
@@ -14,7 +15,6 @@
     "dropzone": "^5.5.1",
     "flatpickr": "^4.6.3",
     "flickity": "^2.2.1",
-    "font-awesome": "^4.7.0",
     "jquery": "3.4.1",
     "jquery-bridget": "^2.0.1",
     "jquery-ui": "^1.12.1",
@@ -29,7 +29,9 @@
     "trix": "^1.0.0",
     "turbolinks": "^5.2.0"
   },
-  "resolutions": { "jquery": "3.4.1" },
+  "resolutions": {
+    "jquery": "3.4.1"
+  },
   "devDependencies": {
     "webpack-dev-server": "^3.9.0"
   }

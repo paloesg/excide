@@ -1,4 +1,8 @@
+
 /*! Place your custom styles here */
+
+/* From font-awesome 5 onwards, font-awesome icons that are free requires attribute of font-weight of 900 */
+@import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
 
 .btn.type--uppercase .btn__text {
   margin-right: 0px !important;
@@ -94,7 +98,6 @@
 
 .dropdown-submenu>a:after {
   display: block;
-  content: "\f105";
   float: right;
   width: 0;
   height: 0;
@@ -104,7 +107,11 @@
   border-left-color: transparent;
   margin-top: 0;
   margin-right: -10px;
-  font: normal normal normal 18px FontAwesome !important;
+  font-size: 18px;
+  line-height: normal;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f105";
 }
 
 .dropdown > ul > .dropdown-item, .dropdown > ul > .dropdown-item > ul > li {
@@ -131,8 +138,11 @@
   border-top: 0.3em solid transparent !important;
   border-right: 0.3em solid transparent;
   border-left: 0.3em solid transparent;
-  font: normal normal normal 9px FontAwesome !important;
-  content: "\f107"!important;
+  line-height: normal;
+  font-size: 9px;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f078";
 }
 
 .dropdown-menu {
@@ -161,8 +171,6 @@
 }
 
 .link-list a:after {
-  content: "\f061";
-  font: normal normal normal 10px FontAwesome !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -172,6 +180,9 @@
   font-size: 11px;
   display: inline-block;
   margin-left: 8px;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f061";
 }
 
 .icon {
@@ -190,7 +201,7 @@
   z-index: 2;
 }
 
-.feature-1 i {
+.feature-1 > svg.svg-inline--fa {
   display: inline-block;
   margin-bottom: 16px;
   color: #c3502e;
