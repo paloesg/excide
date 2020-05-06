@@ -2,11 +2,12 @@ class GenerateDocumentAction
   def initialize(user, company, workflow_param, action_param, document_params, document_type_param, document_template_param, batch_id)
     @user = user
     @company = company
-    @workflow_param = workflow_param
-    @action_param = action_param
     @document_params = document_params
-    @document_type_param = document_type_param
     @document_template_param = document_template_param
+    # Generate document through workflow (with action param) and batches
+    @workflow_param = workflow_param
+    @action_param = action_param # Only document generated through workflow task will have specific action_param (not batches)
+    @document_type_param = document_type_param
     @batch_id = batch_id
   end
 

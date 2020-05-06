@@ -58,18 +58,18 @@ class Symphony::DocumentsController < ApplicationController
           if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type and first_workflow.workflow_actions.present?
             link = new_symphony_invoice_path(workflow_name: generated_document.workflow.template.slug, workflow_id: first_workflow.id, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
           else
-            link = symphony_batch_path(batch_template_name: generated_document.workflow.template.slug, id: document.workflow.batch)
+            link = symphony_batch_path(batch_template_name: generated_document.workflow.template.slug, id: generated_document.workflow.batch)
           end
            #return output in json
           output = { link_to: link, status: "ok", message: "batch documents created", document: generated_document.id, batch: batch.id, template: generated_document.workflow.template.slug }
           flash[:notice] = "New batch of #{Batch.find(params[:batch_id]).workflows.count} documents successfully created!"
           format.json  { render :json => output }
-        # Upload in workflow action with task type: upload file for batches
-        elsif params[:upload_type] == "batch_upload"
-          @batch = @document.workflow.batch
+        # Upload in workflow action with task type - upload_file - in batches (Is this still necessary ???)
+        elsif params[:upload_type] == "file_upload_task_in_batches"
+          @batch = generated_document.workflow.batch
           workflow_action = WorkflowAction.find(params[:workflow_action])
           if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
-            format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id), notice: "#{@workflow_action.task.instructions} done!"}
+            format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id), notice: "#{workflow_action.task.instructions} done!"}
           else
             format.json { render json: workflow_action.errors, status: :unprocessable_entity }
           end
