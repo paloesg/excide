@@ -4,6 +4,9 @@
 var linkTo = "";
 function uploadDocuments(data){
   $.post("/symphony/documents", data).done((result) => {
+    console.log("Documents data", data);
+    console.log("Documents data document", data.document);
+    console.log("Documents result", result);
     linkTo = result["link_to"];
     Turbolinks.visit(linkTo);
   })
@@ -15,8 +18,8 @@ $(document).on("turbolinks:load", function() {
 
   var fileName, get_extension, filter_filename;
   // Show dropzone after client and template selected
-  $("#template_id").on('change', function() {
-    if ( $("#template_id").val() ) {
+  $("#template_slug").on('change', function() {
+    if ( $("#template_slug").val() ) {
       $(".multiple_uploads").collapse();
     }
   })
@@ -90,7 +93,7 @@ $(document).on("turbolinks:load", function() {
     };
     documentUpload.on("addedfile", function (file) {
       // Check if file name are same & rename the file
-      if (this.files.length && $('#template_id').val()) {
+      if (this.files.length && $('#template_slug').val()) {
         let _i, _len;
         for (_i = 0, _len = this.files.length; _i < _len - 1; _i++) {
           if (this.files[_i].name === file.name) {
@@ -106,7 +109,7 @@ $(document).on("turbolinks:load", function() {
       }
     });
     // active button submit if any files on dropzone, when any template selected
-    $('#template_id').change(function() {
+    $('#template_slug').change(function() {
       if (documentUpload.files.length) {
         $('#drag-and-drop-submit').removeAttr('disabled');
       }
@@ -115,7 +118,7 @@ $(document).on("turbolinks:load", function() {
       $.post("/symphony/batches", {
         authenticity_token: $.rails.csrfToken(),
         batch: {
-          template_id: $('#template_id').val(),
+          template_slug: $('#template_slug').val(),
         }
       }).done(result => {
         if(result.status == "ok"){
@@ -123,7 +126,7 @@ $(document).on("turbolinks:load", function() {
           documentUpload.processQueue();
         }
         else {
-          Turbolinks.visit('/symphony/batches/'+$('#template_id').val()+'/new');
+          Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
         }
       });
     });
@@ -140,8 +143,8 @@ $(document).on("turbolinks:load", function() {
           document: {
             filename: file.name,
             file_url: responseURL + responseKey,
-            template_id: $('#template_id').val()
-          }
+          },
+          template_slug: $('#template_slug').val()
         };
         let result = uploadDocuments(data_input);
       })

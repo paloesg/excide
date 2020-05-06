@@ -1,5 +1,5 @@
-class GenerateDocumentAction
-  def initialize(user, company, workflow_param, action_param, document_params, document_type_param, document_template_param, batch_id)
+class GenerateDocument
+  def initialize(user, company, document_params, document_template_param, workflow_param, action_param, document_type_param, batch_id)
     @user = user
     @company = company
     @document_params = document_params
@@ -13,7 +13,7 @@ class GenerateDocumentAction
 
   def run
     begin
-      set_common_document_attributes
+      create_document
       set_document_associations
       @document.save
       OpenStruct.new(success?: true, document: @document)
@@ -24,7 +24,8 @@ class GenerateDocumentAction
 
   private
 
-  def set_common_document_attributes
+  def create_document
+    # Create document with the common parameters
     @document = Document.new(@document_params)
     @document.company = @company
     @document.user = @user
