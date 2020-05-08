@@ -12,9 +12,7 @@ class Document < ApplicationRecord
   belongs_to :user
   belongs_to :workflow_action
 
-  validates :file_url, :filename, presence: true
-  validate :file_format, if: :file_url
-
+  has_one_attached :raw_file
   has_many_attached :converted_image
 
   before_validation :set_filename
