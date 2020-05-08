@@ -35,7 +35,7 @@ window.Dropzone = require("dropzone");
 window.mixpanel = require("mixpanel-browser");
 window.Turbolinks = require("turbolinks");
 
-require("../../src/javascripts/google-analytics")
+require("../../src/javascripts/google-analytics");
 require("selectize");
 require("algoliasearch");
 require("tempusdominus-bootstrap-4");
