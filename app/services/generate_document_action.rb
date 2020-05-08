@@ -14,7 +14,7 @@ class GenerateDocumentAction
     begin
       set_common_document_attributes
       set_document_associations
-      @document.save
+      @document.save!
       OpenStruct.new(success?: true, document: @document)
     rescue => e
       OpenStruct.new(success?: false, document: @document, message: e.message)
