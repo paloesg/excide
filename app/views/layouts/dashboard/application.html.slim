@@ -14,7 +14,15 @@ html lang="en"
     / link href="assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css"
     /! end::Page Vendors Styles
 
-    <script src="https://js.stripe.com/v3/"></script>
+    script async=true src="https://www.googletagmanager.com/gtag/js?id=UA-93342323-1"
+    javascript:
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-93342323-1');
+
+    script src="https://js.stripe.com/v3/"
     = render 'application/favicon'
     = display_meta_tags site: "Virtual CFO | Excide"
     = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
