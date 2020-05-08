@@ -12,9 +12,7 @@ require("algoliasearch");
 require("tempusdominus-bootstrap-4");
 require("blueimp-file-upload");
 
-require("./analytics");
 require("./symphony");
-
 require("./symphony/new_workflow");
 require("./symphony/assign_ui");
 require("./symphony/remarks");
