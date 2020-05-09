@@ -19,7 +19,7 @@ require("turbolinks").start();
 // Importing images through webpack
 const images = require.context('../src/images', true);
 // Moments
-require("moment/locale/ja")
+require("moment/locale/ja");
 
 import 'bootstrap/dist/js/bootstrap';
 import 'dropzone/dist/dropzone';
