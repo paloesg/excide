@@ -38,12 +38,7 @@ class Symphony::DocumentsController < ApplicationController
   end
 
   def create
-    puts "params[document]: #{document_params}"
-    puts "params[template_slug]: #{params[:document][:template_slug]}"
-    puts "params[batch_id]: #{params[:batch_id]}"
-    puts "params[wfa]: #{params[:workflow_action]}"
     @generate_document = GenerateDocument.new(@user, @company, document_params, params[:template_slug], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
-    puts "Generated document openstruct is: #{@generated_document}"
     generated_document = @generate_document.document
     authorize generated_document
     respond_to do |format|

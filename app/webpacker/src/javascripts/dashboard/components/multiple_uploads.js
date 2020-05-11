@@ -3,7 +3,7 @@
 /*eslint camelcase: ["error", {allow: ["authenticity_token", "url_files"]}]*/
 var linkTo = "";
 function uploadDocuments(data){
-  $.post("/symphony/documents", data).done((result) => {
+  $.post("/symphony/batch_upload_documents", data).done((result) => {
     console.log("Documents data", data);
     console.log("Documents data document", data.document);
     console.log("Documents result", result);

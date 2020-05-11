@@ -5,7 +5,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show, :destroy]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index, :create]
+  after_action :verify_authorized, except: [:index, :create, :create_documents_in_batch_uploads]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -50,8 +50,8 @@ class Symphony::BatchesController < ApplicationController
     redirect_to symphony_batches_index_path, notice: 'Batch was successfully deleted.'
   end
 
-  def create_documents_in_batch_uploads
-    @generate_document = GenerateDocument.new(current_user, current_user.company, params[:document], params[:document][:template_id], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
+  def batch_upload_documents
+    @generate_document = GenerateDocument.new(current_user, current_user.company, params[:document], params[:template_slug], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
     generated_document = @generate_document.document
     respond_to do |format|
       if @generate_document.success?

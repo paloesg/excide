@@ -1,9 +1,9 @@
 class GenerateDocument
-  def initialize(user, company, document_params, document_template_param, workflow_param, action_param, document_type_param, batch_id)
+  def initialize(user, company, document_params, template_slug_param, workflow_param, action_param, document_type_param, batch_id)
     @user = user
     @company = company
     @document_params = document_params
-    @document_template_param = document_template_param
+    @template_slug_param = template_slug_param
     # Generate document through workflow (with action param) and batches
     @workflow_param = workflow_param
     @action_param = action_param # Only document generated through workflow task will have specific action_param (not batches)
@@ -47,7 +47,7 @@ class GenerateDocument
 
   def generate_workflow
     if @document_type_param == 'batch-uploads'
-      @template = Template.find(@document_template_param)
+      @template = Template.find(@template_slug_param)
       # Create new workflow
       @workflow = Workflow.new(user: @document.user, company: @document.company, template: @template, workflowable: @client)
       @workflow.template_data(@template)
