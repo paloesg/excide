@@ -4,6 +4,8 @@
       .kt-portlet__head
         .kt-portlet__head-label
           h3.kt-portlet__head-title Company Information
+          a data-toggle="popover" title="Upload your document through the email: " data-content="<a href='mailto: fileupload-#{@company.mailbox_token}@symphony.excide.com'> fileupload-#{@company.mailbox_token}@symphony.excide.com </a>"
+            = fa_icon 'exclamation-circle 1x', class: 'ml-2 icon'
       .kt-portlet__body
         .form-group
           = f.label :name, 'Company name'
@@ -17,8 +19,6 @@
         .form-group
           = f.fields_for :address do |a|
             = render 'companies/address_fields', f: a
-        .card-text
-          = "Upload your document through this email: fileupload-#{@company.mailbox_token}@symphony.excide.com"
     .kt-portlet
       .kt-portlet__head
         .kt-portlet__head-label
