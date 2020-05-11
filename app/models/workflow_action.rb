@@ -51,10 +51,11 @@ class WorkflowAction < ApplicationRecord
   # Overwrite email subject head
   def overriding_notification_email_subject(target, key)
     if key == "workflow_action.task_notify"
-      # Track the most recent created notification
       "[New Task] - #{target.notifications.last.notifiable.task.instructions} - #{target.notifications.last.notifiable.workflow.friendly_id} "
     elsif key == 'workflow_action.workflow_completed'
       "Workflow - #{target.notifications.last.notifiable.workflow.friendly_id} - has been completed"
+    elsif key == 'workflow_action.unordered_workflow_notify'
+      "[Unordered Workflow] - #{target.notifications.last.notifiable.workflow.friendly_id}"
     end 
   end
 
