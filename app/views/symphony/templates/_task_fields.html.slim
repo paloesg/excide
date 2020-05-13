@@ -7,7 +7,7 @@ tr
   td.task-fields
     p
       a data-toggle="collapse" href="#task-index-#{f.index}-section-#{g.id}" aria-expanded="false" class="collapsed"
-        i.fa aria-hidden="true"
+        = fa_icon 'chevron-down', aria: {hidden: true}
   td.task-fields
     = f.hidden_field :_destroy
     = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks mr-4'

@@ -5,14 +5,15 @@
 
 //Bootstrap
 @import '~bootstrap/scss/bootstrap';
+//Bootstrap datetimepicker
+@import "~tempusdominus-bootstrap-4/src/sass/tempusdominus-bootstrap-4";
+
+// fontawesome 5
+@import '@fortawesome/fontawesome-free';
 
 //Selectize
 @import "selectize/dist/css/selectize";
 @import "selectize/dist/css/selectize.default";
-
-// fontawesome 4
-$fa-font-path: "~font-awesome/fonts";
-@import '~font-awesome/scss/font-awesome';
 
 //Dropzone
 @import "dropzone/dist/min/dropzone.min.css";
