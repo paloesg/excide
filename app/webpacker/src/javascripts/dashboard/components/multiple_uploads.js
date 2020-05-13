@@ -79,6 +79,7 @@ $(document).on("turbolinks:load", function() {
       autoProcessQueue: false,
       parallelUploads: 100,
       uploadMultiple: false,
+      url: "/http://localhost:3000/rails/active_storage/direct_uploads"
     });
     Dropzone.options.documentUpload = {
       chunking: true,      // enable chunking
