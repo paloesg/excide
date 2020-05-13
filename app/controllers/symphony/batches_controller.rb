@@ -5,7 +5,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show, :destroy]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index, :create, :batch_upload_documents]
+  after_action :verify_authorized, except: [:index, :create]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -50,40 +50,10 @@ class Symphony::BatchesController < ApplicationController
     redirect_to symphony_batches_index_path, notice: 'Batch was successfully deleted.'
   end
 
-  def batch_upload_documents
-    @generate_document = GenerateDocument.new(current_user, current_user.company, document_params, params[:template_slug], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
-    generated_document = @generate_document.document
-    # Upload in batches dropzone
-    respond_to do |format|
-      if @generate_document.success?
-        if params[:document_type] == 'batch-uploads'
-          batch = generated_document.workflow.batch
-          first_task = batch.template&.sections.first.tasks.first
-          first_workflow = batch.workflows.order(created_at: :asc).first
-          # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable" and workflow actions of first workflow should be created
-          if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type and first_workflow.workflow_actions.present?
-            link = new_symphony_invoice_path(workflow_name: generated_document.workflow.template.slug, workflow_id: first_workflow.id, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
-          else
-            link = symphony_batch_path(batch_template_name: generated_document.workflow.template.slug, id: generated_document.workflow.batch)
-          end
-           #return output in json
-          output = { link_to: link, status: "ok", message: "batch documents created", document: generated_document.id, batch: batch.id, template: generated_document.workflow.template.slug }
-          flash[:notice] = "New batch of #{Batch.find(params[:batch_id]).workflows.count} documents successfully created!"
-          format.json  { render :json => output }
-        end
-      end
-    end
-  end
-
   private
 
   def batch_params
     params.permit(:company_id, :template_id)
-  end
-
-   # Never trust parameters from the scary internet, only allow the white list through.
-  def document_params
-    params.require(:document).permit(:filename, :remarks, :company_id, :date_signed, :date_uploaded, :file_url, :workflow_id, :document_template_id, converted_image: [])
   end
 
   def set_batch

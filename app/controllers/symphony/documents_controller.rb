@@ -39,18 +39,31 @@ class Symphony::DocumentsController < ApplicationController
 
   def create
     @generate_document = GenerateDocument.new(@user, @company, document_params, params[:template_slug], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
-    generated_document = @generate_document.document
-    authorize generated_document
     respond_to do |format|
+      # Only run textract and conversion method when document is generated successfully
       if @generate_document.success?
-        d = Document.find_by(id: generated_document.id)
+        document = @generate_document.document
+        authorize document
         # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'. Check for workflow present in case user uploads using document NEW page instead.
-        @generate_textract = GenerateTextract.new(generated_document.id).run_generate if d.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
-        # Run convert job asynchronously. Service object is performed during the job.
-        ConvertPdfToImagesJob.perform_later(generated_document)
-        # Upload in workflow action with task type - upload_file - in batches (Is this still necessary ???)
-        if params[:upload_type] == "file_upload_task_in_batches"
-          @batch = generated_document.workflow.batch
+        @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow.workflow_actions.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
+        # Run convert job asynchronously. Conversion Service object is performed during the job.
+        ConvertPdfToImagesJob.perform_later(document)
+        @batch = document.workflow.batch
+        if params[:document_type] == 'batch-uploads'
+          first_task = @batch.template&.sections.first.tasks.first
+          first_workflow = @batch.workflows.order(created_at: :asc).first
+          # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable" and workflow actions of first workflow should be created
+          if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type and first_workflow.workflow_actions.present?
+            link = new_symphony_invoice_path(workflow_name: @batch.template.slug, workflow_id: first_workflow.id, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
+          else
+            link = symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch)
+          end
+          #return output in json
+          output = { link_to: link, status: "ok", message: "batch documents created", document: document.id, batch: @batch.id, template: @batch.template.slug }
+          flash[:notice] = "New batch of #{@batch.workflows.count} documents successfully created!"
+          format.json  { render :json => output }
+        # Upload in workflow action with task type - upload_file - in batches 
+        elsif params[:upload_type] == "file_upload_task_in_batches"
           workflow_action = WorkflowAction.find(params[:workflow_action])
           if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
             format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id), notice: "#{workflow_action.task.instructions} done!"}
@@ -59,7 +72,7 @@ class Symphony::DocumentsController < ApplicationController
           end
         else
           # the OR statement is to check that document is uploaded from document NEW pass the ternary condition
-          format.html { redirect_to generated_document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(generated_document.workflow.template.slug, generated_document.workflow.id), notice: 'Document was successfully created.' }
+          format.html { redirect_to document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(document.workflow.template.slug, document.workflow.id), notice: 'Document was successfully created.' }
         end
       else
         set_templates

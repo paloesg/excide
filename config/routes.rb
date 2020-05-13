@@ -83,7 +83,6 @@ Rails.application.routes.draw do
     resources :batches, path: '/batches/:batch_template_name', except: [:index, :create]
     get '/batches', to: 'batches#index', as: :batches_index
     post '/batches', to: 'batches#create'
-    post '/batch_upload_documents', to: 'batches#batch_upload_documents'
 
     resources :document_templates
     resources :documents do

@@ -3,10 +3,7 @@
 /*eslint camelcase: ["error", {allow: ["authenticity_token", "url_files"]}]*/
 var linkTo = "";
 function uploadDocuments(data){
-  $.post("/symphony/batch_upload_documents", data).done((result) => {
-    console.log("Documents data", data);
-    console.log("Documents data document", data.document);
-    console.log("Documents result", result);
+  $.post("/symphony/documents", data).done((result) => {
     linkTo = result["link_to"];
     Turbolinks.visit(linkTo);
   })
@@ -24,7 +21,7 @@ $(document).on("turbolinks:load", function() {
     }
   })
 
-  //upload documents on workflows and batch page
+  //upload multiple documents on workflows and batch page
   if ($(".action_id").length){
     $( ".action_id" ).each(function( index ) {
       let actionId = $(this).attr('id')
