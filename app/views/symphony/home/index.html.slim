@@ -78,7 +78,7 @@
                     = file_field_tag :raw_file, multiple: true
               .col-md-6
                 = label_tag "template", "Select template:"
-                = select_tag('template_id', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
+                = select_tag('template_slug', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
                 = submit_tag 'Submit', disabled: true, class: 'btn btn-primary btn-block mt-3', id: 'drag-and-drop-submit'
 .row
   .col-md-6.col-sm-12

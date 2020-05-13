@@ -1,18 +1,19 @@
-class GenerateDocumentAction
-  def initialize(user, company, workflow_param, action_param, document_params, document_type_param, document_template_param, batch_id)
+class GenerateDocument
+  def initialize(user, company, document_params, template_slug_param, workflow_param, action_param, document_type_param, batch_id)
     @user = user
     @company = company
-    @workflow_param = workflow_param
-    @action_param = action_param
     @document_params = document_params
+    @template_slug_param = template_slug_param
+    # Generate document through workflow (with action param) and batches
+    @workflow_param = workflow_param
+    @action_param = action_param # Only document generated through workflow task will have specific action_param (not batches)
     @document_type_param = document_type_param
-    @document_template_param = document_template_param
     @batch_id = batch_id
   end
 
   def run
     begin
-      set_common_document_attributes
+      create_document
       set_document_associations
       @document.save!
       OpenStruct.new(success?: true, document: @document)
@@ -23,7 +24,8 @@ class GenerateDocumentAction
 
   private
 
-  def set_common_document_attributes
+  def create_document
+    # Create document with the common parameters
     @document = Document.new(@document_params)
     @document.company = @company
     @document.user = @user
@@ -45,7 +47,7 @@ class GenerateDocumentAction
 
   def generate_workflow
     if @document_type_param == 'batch-uploads'
-      @template = Template.find(@document_template_param)
+      @template = Template.find(@template_slug_param)
       # Create new workflow
       @workflow = Workflow.new(user: @document.user, company: @document.company, template: @template, workflowable: @client)
       @workflow.template_data(@template)
