@@ -107,6 +107,15 @@ class Symphony::WorkflowsController < ApplicationController
     end
   end
 
+  def destroy
+    authorize @workflow
+    if @workflow.destroy
+      respond_to do |format|
+        format.js  { render js: 'Turbolinks.visit(location.toString());' }
+      end
+    end
+  end
+
   def workflow_action_complete
     @workflow = policy_scope(Workflow).find(params[:workflow_id])
     authorize @workflow

@@ -44,10 +44,11 @@
                             = d.filename
                             br
                             - if d.converted_image.attached?
-                              a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="text-primary" Preview
+                              a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="flaticon2-search-1 text-primary mr-1"
                             - else
                               p.font-italic.mb-0
                                 | No preview available.
+                            = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'flaticon2-rubbish-bin-delete-button text-danger'
                       td
                         - if wf.invoice.blank?
                           i.flaticon2-paper.icon.mr-3.text-center.medium-icon.gray-icon
