@@ -15,7 +15,7 @@
     "dropzone": "^5.5.1",
     "flatpickr": "^4.6.3",
     "flickity": "^2.2.1",
-    "jquery": "3.5.0",
+    "jquery": "^3.5.1",
     "jquery-bridget": "^2.0.1",
     "jquery-ui": "^1.12.1",
     "jquery.ui.widget": "^1.10.3",
@@ -28,9 +28,6 @@
     "tempusdominus-bootstrap-4": "^5.0.0",
     "trix": "^1.0.0",
     "turbolinks": "^5.2.0"
-  },
-  "resolutions": {
-    "jquery": "3.5.0"
   },
   "devDependencies": {
     "webpack-dev-server": "^3.9.0"
