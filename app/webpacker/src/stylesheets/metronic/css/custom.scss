@@ -66,6 +66,13 @@
   text-overflow: ellipsis;
 }
 
+.media .media-body .text-truncate.with-icon  {
+  width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .form-control{
   height: 37px;
 }
