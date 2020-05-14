@@ -13,7 +13,7 @@ class Document < ApplicationRecord
   belongs_to :workflow_action
 
   has_one_attached :raw_file
-  has_many_attached :converted_image
+  has_many_attached :converted_images
 
   before_validation :set_filename
   # after_create :convert_to_image
@@ -32,14 +32,7 @@ class Document < ApplicationRecord
       { name: company&.name, slug: company&.slug }
     end
   end
-
-  # def convert_to_image
-  #   if File.extname(self.file_url) == ".pdf"
-  #     result = ImageProcessing::MiniMagick.source("https:" + self.file_url).loader(page: 0).convert("png").call
-  #     self.converted_image.attach(io: result, filename: result.path.split('/').last, content_type: "image/png")
-  #   end
-  # end
-
+  
   private
 
   def file_format

@@ -5,21 +5,21 @@
     .img-magnifier-container
       = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
   - else
-    - display_url = url_for(@document.converted_image.first)
+    - display_url = url_for(@document.converted_images.first)
     .img-magnifier-container
       div#carouselExampleIndicators.carousel.slide data-ride="carousel" data-interval="false"
-        - if @document.converted_image.count > 1
+        - if @document.converted_images.count > 1
           ol.carousel-indicators
-            - @document.converted_image.each.with_index(0) do |image, index|
+            - @document.converted_images.each.with_index(0) do |image, index|
               li. data-target="#carouselExampleIndicators" data-slide-to="#{index}" class=[index.zero? ? 'active' : '']
             end
         div.carousel-inner
-          - @document.converted_image.each.with_index(0) do |image, index|
+          - @document.converted_images.each.with_index(0) do |image, index|
             div. class=["carousel-item", index.zero? ? 'active' : '' ]
               = link_to url_for(image)
                 = image_tag(image, class: 'img-responsive zoomed-image')
           end
-        - if @document.converted_image.count > 1
+        - if @document.converted_images.count > 1
           a.carousel-control-prev data-slide="prev" href="#carouselExampleIndicators" role="button"
             span.carousel-control-prev-icon aria-hidden="true"
             span.sr-only Previous

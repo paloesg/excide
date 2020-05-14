@@ -6,7 +6,7 @@
     .loader
   .col-md-4
     / Check for document conversion completion by comparing the page count
-    - if File.extname(@document.file_url) == ".pdf" && (!@document.converted_image.attached? || @document.converted_image.count != @page_count)
+    - if File.extname(@document.file_url) == ".pdf" && (!@document.converted_images.attached? || @document.converted_images.count != @page_count)
       div.mt-md-5.text-center Document not available. Please try again later.
     - else
       = render 'document'
