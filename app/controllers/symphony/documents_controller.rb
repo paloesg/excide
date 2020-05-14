@@ -45,10 +45,10 @@ class Symphony::DocumentsController < ApplicationController
         document = @generate_document.document
         authorize document
         # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'. Check for workflow present in case user uploads using document NEW page instead.
-        @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow.workflow_actions.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
+        @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
         # Run convert job asynchronously. Conversion Service object is performed during the job.
         ConvertPdfToImagesJob.perform_later(document)
-        @batch = document.workflow.batch
+        @batch = document&.workflow&.batch
         if params[:document_type] == 'batch-uploads'
           first_task = @batch.template&.sections.first.tasks.first
           first_workflow = @batch.workflows.order(created_at: :asc).first
