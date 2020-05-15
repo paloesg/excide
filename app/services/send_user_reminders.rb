@@ -27,7 +27,7 @@ class SendUserReminders
   end
 
   def send_email_reminders
-    email_reminders = @reminders.where(email: true) 
+    email_reminders = @reminders.where(email: true)
     email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
   end
 
