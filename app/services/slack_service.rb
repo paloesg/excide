@@ -8,7 +8,7 @@ class SlackService
   DANGER = 'danger'
 
   def initialize(user=nil)
-    if user.nil? or user.company.slack_access_response.nil?
+    if user.nil?
       @uri = URI(ENV['SLACK_WEBHOOK_URL'])
       @channel = ENV['SLACK_EXCIDE_CHANNEL']
     else
