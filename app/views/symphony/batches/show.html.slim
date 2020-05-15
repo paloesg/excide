@@ -36,19 +36,20 @@
                           i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
                         - else
                           - wf.documents.each do |d|
-                            - if File.extname(d.file_url) == '.pdf'
-                              / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
-                              - display_url = url_for(d.converted_image.first) if d.converted_image.attached?
-                            - else
-                              - display_url = d.file_url
-                            = d.filename
-                            br
-                            - if d.converted_image.attached?
-                              a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="flaticon2-search-1 text-primary mr-1"
-                            - else
-                              p.font-italic.mb-0
-                                | No preview available.
-                            = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'flaticon2-rubbish-bin-delete-button text-danger'
+                            .row
+                              .col-8
+                                - if File.extname(d.file_url) == '.pdf'
+                                  / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
+                                  - display_url = url_for(d.converted_image.first) if d.converted_image.attached?
+                                - else
+                                  - display_url = d.file_url
+                                = d.filename
+                              .col-4
+                                - if d.converted_image.attached? #need to add condition for raw_file next time
+                                  a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="flaticon2-search-1 text-success mr-1"
+                                - else
+                                  a class="flaticon2-search-1 text-muted mr-1"
+                                = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'flaticon2-rubbish-bin-delete-button text-danger'
                       td
                         - if wf.invoice.blank?
                           i.flaticon2-paper.icon.mr-3.text-center.medium-icon.gray-icon
