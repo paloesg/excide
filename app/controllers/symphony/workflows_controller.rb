@@ -109,9 +109,13 @@ class Symphony::WorkflowsController < ApplicationController
 
   def destroy
     authorize @workflow
+    @batch = @workflow.batch
     if @workflow.destroy
-      respond_to do |format|
-        format.js  { render js: 'Turbolinks.visit(location.toString());' }
+      if @batch.present?
+        redirect_to symphony_batch_path(@template.slug, @batch.id)
+        respond_to do |format|
+          format.js  { flash[:notice] = 'Workflow was successfully destoyed.' }
+        end
       end
     end
   end

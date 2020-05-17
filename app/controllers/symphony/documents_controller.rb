@@ -130,9 +130,10 @@ class Symphony::DocumentsController < ApplicationController
     authorize @document
 
     if @document.destroy
+      redirect_to symphony_documents_path
       respond_to do |format|
         format.html { redirect_to symphony_document_path, notice: 'Document was successfully destoyed.' }
-        format.js  { render js: 'Turbolinks.visit(location.toString());' }
+        format.js  { flash[:notice] = 'Document was successfully destoyed.' }
       end
     end
   end
