@@ -114,7 +114,7 @@ class Symphony::WorkflowsController < ApplicationController
       if @batch.present?
         redirect_to symphony_batch_path(@template.slug, @batch.id)
         respond_to do |format|
-          format.js  { flash[:notice] = 'Workflow was successfully destoyed.' }
+          format.js  { flash[:notice] = 'Workflow was successfully deleted.' }
         end
       end
     end

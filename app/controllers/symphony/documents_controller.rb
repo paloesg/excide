@@ -132,8 +132,8 @@ class Symphony::DocumentsController < ApplicationController
     if @document.destroy
       redirect_to symphony_documents_path
       respond_to do |format|
-        format.html { redirect_to symphony_document_path, notice: 'Document was successfully destoyed.' }
-        format.js  { flash[:notice] = 'Document was successfully destoyed.' }
+        format.html { redirect_to symphony_document_path, notice: 'Document was successfully deleted.' }
+        format.js  { flash[:notice] = 'Document was successfully deleted.' }
       end
     end
   end
