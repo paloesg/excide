@@ -1,6 +1,6 @@
 const Uppy = require('@uppy/core');
 const Dashboard = require('@uppy/dashboard');
-const ActiveStorageUpload = require('@excid3/uppy-activestorage-upload')
+const ActiveStorageUpload = require('@excid3/uppy-activestorage-upload');
 
 require('@uppy/core/dist/style.css');
 require('@uppy/dashboard/dist/style.css');
@@ -25,7 +25,7 @@ function setupUppy(element){
 
 	let uppy = Uppy({
 		// Automatically upload file when you drop file into it
-		autoProceed: true,
+		autoProceed: false,
 		allowMultipleUploads: false,
 		// In case of typos
 		logger: Uppy.debugLogger
@@ -37,8 +37,15 @@ function setupUppy(element){
 
 	uppy.use(Dashboard, {
 		inline: true,
-		trigger: trigger,
+		// trigger: trigger,
+		id: 'Dashboard',
+		theme: 'dark',
+  	// target: 'body',
+		target: '.dashboard-body',
 		note: 'Images and video only, 2–3 files, up to 1 MB',
+		width: 750,
+		height: 550,
+		thumbnailWidth: 280,
 		// After uploading done, immediately close modal
 		// closeAfterFinish: true
 	})

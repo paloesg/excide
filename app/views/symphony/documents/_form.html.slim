@@ -19,6 +19,7 @@
           - else
             img src="" data-behavior="uppy-preview"
         = link_to 'Upload', '#', data: {behavior: 'uppy-trigger'}
+        .dashboard-body#Dashboard
           / = f.file_field :raw_file, direct_upload: true, class: 'form-control'
       - else
         .file-path-wrapper
