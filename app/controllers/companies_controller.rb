@@ -1,21 +1,25 @@
 class CompaniesController < ApplicationController
-  layout "dashboard/application", except: [:edit]
-  layout 'metronic/application', only: [:edit]
+  layout 'metronic/application'
 
   before_action :authenticate_user!
-  before_action :set_company, only: [:show, :edit, :update, :plan]
+  before_action :set_company, only: [:show, :edit, :update]
+
+  after_action :verify_authorized
 
   def show
+    authorize @company
     @address = @company&.address
     @users = User.where(company: @company).order(:id).includes(:roles)
   end
 
   def new
     @company = Company.new
+    authorize @company
   end
 
   def create
     @company = Company.new(company_params)
+    authorize @company
 
     if @company.save
       set_company_roles
@@ -25,10 +29,12 @@ class CompaniesController < ApplicationController
   end
 
   def edit
+    authorize @company
     build_addresses
   end
 
   def update
+    authorize @company
     # Store old roles
     @old_roles = { consultant: @company.consultant, associate: @company.associate, shared_service: @company.shared_service }
 
