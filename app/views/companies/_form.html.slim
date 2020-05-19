@@ -44,71 +44,72 @@
           = f.label :form_cs_date, 'Form C-S date'
           = f.date_field :form_cs_date, class: 'form-control'
   .col-sm-6
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title Subscription
-      .kt-portlet__body
-        h4.mb-2 #{@company.account_type.capitalize.humanize} Plan
-        / if cancel is true, it will inform the user when is their pro features going to stop
-        - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data['cancel'] == true
-          | You have cancelled your subscription. Your PRO features will not be accessible after the following date below:
-          h5.mt-2 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y")
-        - else
-          / check for company's account_type/plans
-          - if @company.free_trial?
-            | You are currently on Symphony free trial plan, which expires in 30 days.
-            br
-            | Trial ends on:
-            h5.mt-2 = @company.trial_end_date&.strftime("%d-%b-%Y")
-            | To Upgrade, click the button below:
-            br
-            = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary mt-2'
-          - elsif @company.basic?
-            | Upgrade to Symphony Pro for more advanced features!
-            br
-            = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary mt-2'
+    - if action_name == 'edit'
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title Subscription
+        .kt-portlet__body
+          h4.mb-2 #{@company.account_type.capitalize.humanize} Plan
+          / if cancel is true, it will inform the user when is their pro features going to stop
+          - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data['cancel'] == true
+            | You have cancelled your subscription. Your PRO features will not be accessible after the following date below:
+            h5.mt-2 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y")
           - else
-            | End subscription date:
-            br
-            h5.mt-2 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
-            br
-            = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-danger'
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title Invoices
-      .kt-portlet__body
-        h5 Download Invoices:
-        .row
-          .col-sm-12
-            - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data["invoices"].present?
-              table.table
-                thead
-                  tr
-                    th Date
-                    th Description
-                    th
-                tbody
-                  - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
+            / check for company's account_type/plans
+            - if @company.free_trial?
+              | You are currently on Symphony free trial plan, which expires in 30 days.
+              br
+              | Trial ends on:
+              h5.mt-2 = @company.trial_end_date&.strftime("%d-%b-%Y")
+              | To Upgrade, click the button below:
+              br
+              = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary mt-2'
+            - elsif @company.basic?
+              | Upgrade to Symphony Pro for more advanced features!
+              br
+              = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary mt-2'
+            - else
+              | End subscription date:
+              br
+              h5.mt-2 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
+              br
+              = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-danger'
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title Invoices
+        .kt-portlet__body
+          h5 Download Invoices:
+          .row
+            .col-sm-12
+              - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data["invoices"].present?
+                table.table
+                  thead
                     tr
-                      / only display invoices that are in the 12 months span period
-                      td = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
-                      td = invoice['lines']['data'][0]['description']
-                      td = link_to "Download", invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title Slack
-      .kt-portlet__body
-        .form-group
-          - if @company.slack_access_response.present?
-            h5 Connected to channel: #{@company.slack_access_response['incoming_webhook']['channel']}
-            br
-            = link_to 'Disconnect from Slack', disconnect_from_slack_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
-          - else
-            a href='https://slack.com/oauth/v2/authorize?client_id=#{ENV['SLACK_CLIENT_ID']}&scope=incoming-webhook&redirect_uri=#{ENV['ASSET_HOST'] + '/oauth/authorization'}'
-              img alt=("Add to Slack") height="40" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" width="139"
+                      th Date
+                      th Description
+                      th
+                  tbody
+                    - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
+                      tr
+                        / only display invoices that are in the 12 months span period
+                        td = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
+                        td = invoice['lines']['data'][0]['description']
+                        td = link_to "Download", invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title Slack
+        .kt-portlet__body
+          .form-group
+            - if @company.slack_access_response.present?
+              h5 Connected to channel: #{@company.slack_access_response['incoming_webhook']['channel']}
+              br
+              = link_to 'Disconnect from Slack', disconnect_from_slack_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
+            - else
+              a href='https://slack.com/oauth/v2/authorize?client_id=#{ENV['SLACK_CLIENT_ID']}&scope=incoming-webhook&redirect_uri=#{ENV['ASSET_HOST'] + '/oauth/authorization'}'
+                img alt=("Add to Slack") height="40" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" width="139"
     .kt-portlet
       .kt-portlet__head
         .kt-portlet__head-label
