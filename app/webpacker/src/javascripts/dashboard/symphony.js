@@ -1,4 +1,4 @@
-// Cocoon code with selectize 
+// Cocoon code with selectize
 $(document).on("cocoon:after-insert", function(e, addedItem) {
   $(addedItem).find('.question-choice').selectize({
     sortField: 'text'
@@ -129,4 +129,9 @@ $(document).on("turbolinks:load", function(){
   return $('input').change(function(event) {
     return $(this).closest('td').next().find('.update').val('1');
   });
+});
+
+// A workaround to ensure that zendesk widget works with turbolinks
+window.addEventListener('turbolinks:before-render', function () {
+  window.zEACLoaded = undefined;
 });
