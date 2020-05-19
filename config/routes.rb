@@ -249,5 +249,5 @@ Rails.application.routes.draw do
 
   get '/robots.txt' => 'home#robots'
 
-  root 'home#index'
+  root 'symphony/home#index'
 end
