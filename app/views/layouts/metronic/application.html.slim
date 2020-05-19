@@ -1,22 +1,21 @@
 doctype html
 html lang="en"
-  /! begin::Head
   head
     base href="../../"
     meta charset="utf-8"
-    / title Metronic | Empty Page
     meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"
     meta name="turbolinks-cache-control" content="no-cache"
-    /! begin::Fonts
     link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Asap+Condensed:500" rel="stylesheet"
-    /! end::Fonts
-    /! begin::Page Vendors Styles(used by this page)
-    / link href="assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css"
-    /! end::Page Vendors Styles
 
-    /! begin::Global Theme Styles(used by all pages)
-    /! end::Global Theme Styles
-    <script src="https://js.stripe.com/v3/"></script>
+    script async=true src="https://www.googletagmanager.com/gtag/js?id=UA-93342323-1"
+    javascript:
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-93342323-1');
+
+    script src="https://js.stripe.com/v3/"
     = render 'application/favicon'
     = display_meta_tags :site => "Virtual CFO | Excide"
     = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
@@ -24,8 +23,6 @@ html lang="en"
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
 
-  /! end::Head
-  /! begin::Body
   body.kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading
     /! begin:: Page
     /! begin:: Header Mobile
@@ -55,6 +52,10 @@ html lang="en"
     #kt_scrolltop.kt-scrolltop
       i.fa.fa-arrow-up
     /! end::Scrolltop
+
+    <!-- Start of excide Zendesk Widget script -->
+    script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=d91fc85f-b1cf-4d65-b9f8-0c90f5132187"
+    <!-- End of excide Zendesk Widget script -->
 
     /! begin::Global Config(global config for global JS sciprts)
     javascript:
