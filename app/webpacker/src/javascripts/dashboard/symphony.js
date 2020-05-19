@@ -133,5 +133,5 @@ $(document).on("turbolinks:load", function(){
 
 // A workaround to ensure that zendesk widget works with turbolinks
 window.addEventListener('turbolinks:before-render', function () {
-  window.zEACLoaded = undefined;
+  window.zEACLoaded = void 0;
 });
