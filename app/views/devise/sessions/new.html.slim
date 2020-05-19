@@ -1,31 +1,32 @@
-section.height-100.imagebg.text-center data-overlay="4"
-  .background-image-holder
-    = image_pack_tag 'media/src/images/hero-image.jpg', alt: "background"
-  .container.pos-vertical-center
-    .row
-      .col-md-7.col-lg-5
-        .boxed.boxed--lg.boxed--border
-          h2
-            | Login to your
-            br
-            | Symphony account
-          = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-            .row
-              .col-md-12
-                = f.email_field :email, placeholder: "Email"
-                = f.password_field :password, placeholder: "Password", autocomplete: "off"
-              - if devise_mapping.rememberable?
-                .col-md-12
-                  .float-left= f.label :remember_me
-                  .input-checkbox.input-checkbox--switch.float-right
-                    = f.check_box :remember_me, id:"checkbox-switch"
-                    label for="checkbox-switch"
-              .col-md-12
-                = f.submit "Log in", class:"btn btn--excide type--uppercase"
-            .row.mt-3
-              .col-md-12
-                = link_to "Forgot password?", new_password_path(@user)
-            .row
-              .col-md-12
-                ' Don't have an account?
-                = link_to "Sign up now", new_user_registration_path
+.row.justify-content-center
+  .col-4.text-center
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          .kt-portlet__head-title
+            | Login to your Symphony account
+      .kt-portlet__body
+        = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+          .form-group
+            = f.email_field :email, placeholder: "Email", class: 'form-control'
+          .form-group
+            = f.password_field :password, placeholder: "Password", autocomplete: "off", class: 'form-control'
+          - if devise_mapping.rememberable?
+            span.form-group
+              div.kt-switch.kt-switch--sm
+                label.form-inline
+                  = f.label :remember_me, class:"mr-2"
+                  = f.check_box :remember_me, id:"checkbox-switch"
+                  span
+            / .form-group.form-check
+            /   = f.label
+            /   = f.check_box :remember_me, id:"checkbox-switch"
+          .form-group
+            = f.submit "Log in", class:"btn btn-primary"
+        .row.mt-3
+          .col-md-12
+            = link_to "Forgot password?", new_password_path(@user)
+        .row
+          .col-md-12
+            ' Don't have an account?
+            = link_to "Sign up now", new_user_registration_path

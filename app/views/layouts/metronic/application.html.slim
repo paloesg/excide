@@ -29,13 +29,13 @@ html lang="en"
   body.kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading
     /! begin:: Page
     /! begin:: Header Mobile
-    = render 'layouts/metronic/header_mobile'
+    = render 'layouts/metronic/header_mobile' unless (current_user.nil? || current_page?(additional_information_path))
     /! end:: Header Mobile
     .kt-grid.kt-grid--hor.kt-grid--root
       .kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--ver.kt-page
         #kt_wrapper.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-wrapper
           /! begin:: Header
-          = render 'layouts/metronic/header'
+          = render 'layouts/metronic/header' unless (current_user.nil? || current_page?(additional_information_path))
           /! end:: Header
           .kt-container.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
             #kt_body.kt-body.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
