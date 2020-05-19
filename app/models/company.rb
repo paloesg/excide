@@ -68,8 +68,10 @@ class Company < ApplicationRecord
   private
 
   def generate_mailbox_token
+    # Generate friendly_token as mailbox_token for each company unless company's mailbox token already exist (loop through all companies)
     loop do
-      self.mailbox_token = Devise.friendly_token.first(10).downcase
+      self.mailbox_token = Devise.friendly_token.first(15).downcase
+      # Break when there is no other user having the same mailbox_token
       break unless Company.where(mailbox_token: self.mailbox_token).exists?
     end
   end

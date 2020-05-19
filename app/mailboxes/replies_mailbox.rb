@@ -1,5 +1,6 @@
 class RepliesMailbox < ApplicationMailbox
   RepliesMailbox::MATCHER = /fileupload-(.+)@symphony.excide.com/i
+  # Verify that user is in Symphony database
   before_processing :find_user
 
   def process
@@ -25,8 +26,10 @@ class RepliesMailbox < ApplicationMailbox
   end
 
   def company_mailbox_token
+    # Find the recipient which email matches the regexp
     recipient = mail.recipients.find{|r| MATCHER.match?(r)}
-    # Returns the first enclosed capture in the regexp
+    # Recipient returns output like this: ["fileupload-<MAILBOX_TOKEN>@symphony.excide.com"]
+    # Returns the first enclosed capture (which is the mailbox token) in the regexp
     recipient[MATCHER, 1]
   end
 
