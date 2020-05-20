@@ -12,7 +12,6 @@ class UserDashboard < Administrate::BaseDashboard
     last_name: Field::String,
     email: Field::String,
     contact_number: Field::String,
-    profile: Field::HasOne,
     company: Field::BelongsTo,
     id: Field::Number,
     provider: Field::String,

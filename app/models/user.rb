@@ -7,7 +7,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:linkedin]
 
-  has_one :profile, dependent: :destroy
   has_one :address, as: :addressable, dependent: :destroy
   has_many :reminders, dependent: :destroy
   has_many :clients

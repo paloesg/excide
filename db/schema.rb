@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_22_120329) do
+ActiveRecord::Schema.define(version: 2020_05_20_070329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -311,22 +311,6 @@ ActiveRecord::Schema.define(version: 2020_04_22_120329) do
     t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
     t.index ["notifier_type", "notifier_id"], name: "index_notifications_on_notifier_type_and_notifier_id"
     t.index ["target_type", "target_id"], name: "index_notifications_on_target_type_and_target_id"
-  end
-
-  create_table "profiles", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.string "headline"
-    t.text "summary"
-    t.string "industry"
-    t.string "specialties"
-    t.string "image_url"
-    t.string "linkedin_url"
-    t.string "location"
-    t.string "country_code"
-    t.string "display_name"
-    t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -662,7 +646,6 @@ ActiveRecord::Schema.define(version: 2020_04_22_120329) do
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
-  add_foreign_key "profiles", "users"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"
