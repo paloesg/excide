@@ -215,8 +215,8 @@ Rails.application.routes.draw do
 
   # Static pages
   get 'faq', to: 'home#faq'
-  get 'terms', to: 'home#terms'
-  get 'privacy', to: 'home#privacy'
+  get 'terms', to: 'symphony/home#terms'
+  get 'privacy', to: 'symphony/home#privacy'
   get 'about-us', to: 'home#about', as: :about
 
   # VFO services
