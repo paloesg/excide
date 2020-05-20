@@ -72,14 +72,12 @@
               = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
           .kt-portlet__body
             .row
-              .col-md-6
-                = file_field_tag 'batch-uploader', multiple: true, direct_upload: true, class: 'dropzone dropzone-default dz-clickable multiple_uploads', id: 'batch-uploader'
-                /= form_tag symphony_documents_path, :method => :post, class: 'dropzone dropzone-default dz-clickable multiple_uploads', id: 'batch-uploader', multipart: true do |d|
-                    = file_field_tag :raw_file, multiple: true
-              .col-md-6
+              .col-md-12
                 = label_tag "template", "Select template:"
-                = select_tag('template_slug', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-batch').attr('href', '/symphony/batches/' + $(this).val() + '/new')")
-                = submit_tag 'Submit', disabled: true, class: 'btn btn-primary btn-block mt-3', id: 'drag-and-drop-submit'
+                = select_tag('template_slug', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize")
+            .row.mt-3
+              .col-md-12
+                .dashboard-body#Dashboard
 .row
   .col-md-6.col-sm-12
     .kt-portlet

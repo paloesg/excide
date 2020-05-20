@@ -38,7 +38,7 @@ class Symphony::DocumentsController < ApplicationController
   end
 
   def create
-    @generate_document = GenerateDocument.new(@user, @company, document_params, params[:template_slug], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
+    @generate_document = GenerateDocument.new(@user, @company, document_params, params[:document][:template_slug], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
     respond_to do |format|
       # Only run textract and conversion method when document is generated successfully
       if @generate_document.success?

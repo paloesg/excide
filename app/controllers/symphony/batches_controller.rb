@@ -29,12 +29,11 @@ class Symphony::BatchesController < ApplicationController
     respond_to do |format|
       if @generate_batch.success?
         flash[:notice] = "Batch created"
-        format.json  { render :json => {:status => "ok", :batch_id => @generate_batch.batch.id} }
+        format.json { render json: { status: "ok", batch_id: @generate_batch.batch.id } }
       else
         error_message = "There was an error creating this batch. Please contact your admin with details of this error: #{@generate_batch.message}"
         flash[:alert] = error_message
-        output = { :status => "error", :message => error_message}
-        format.json  { render :json => output }
+        format.json { render json: { status: "error", message: error_message } }
       end
     end
   end

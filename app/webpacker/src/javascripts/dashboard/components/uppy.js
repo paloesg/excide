@@ -6,51 +6,84 @@ require('@uppy/core/dist/style.css');
 require('@uppy/dashboard/dist/style.css');
 
 document.addEventListener('turbolinks:load', () => {
-	document.querySelectorAll('[data-uppy]').forEach(element => setupUppy(element))
+  document.querySelectorAll('.dashboard-body').forEach(element => setupUppy(element))
 })
 
+function uploadDocuments(data){
+  $.post("/symphony/documents", data).done((result) => {
+    linkTo = result["link_to"];
+    Turbolinks.visit(linkTo);
+  })
+}
+
 function setupUppy(element){
-	let trigger = element.querySelector('[data-behavior="uppy-trigger"]')
-	console.log("trigger is: ", trigger);
-	let form = element.closest('form')
-	console.log("form is: ", form);
+  let form = element.closest('form')
+  // Get direct_upload content out of the head tag (meta tag)
+  let direct_upload_url = document.querySelector("meta[name='direct-upload-url']").getAttribute("content")
+  // data-uppy="document[raw_file]" from form
+  let field_name = element.dataset.uppy
 
-	let direct_upload_url = document.querySelector("meta[name='direct-upload-url']").getAttribute("content")
-	console.log("direct_upload_url is: ", direct_upload_url);
+  // trigger.addEventListener("click", (event) => event.preventDefault())
 
-	let field_name = element.dataset.uppy
-	console.log("field name: ", field_name);
+  let uppy = Uppy({
+    // Automatically upload file when you drop file into it
+    autoProceed: false,
+    allowMultipleUploads: false,
+    // In case of typos
+    logger: Uppy.debugLogger
+  });
 
-	trigger.addEventListener("click", (event) => event.preventDefault())
+  uppy.use(ActiveStorageUpload, {
+    directUploadUrl: direct_upload_url
+  })
 
-	let uppy = Uppy({
-		// Automatically upload file when you drop file into it
-		autoProceed: false,
-		allowMultipleUploads: false,
-		// In case of typos
-		logger: Uppy.debugLogger
-	});
-
-	uppy.use(ActiveStorageUpload, {
-		directUploadUrl: direct_upload_url
-	})
-
-	uppy.use(Dashboard, {
-		inline: true,
-		// trigger: trigger,
-		id: 'Dashboard',
-		theme: 'dark',
-  	// target: 'body',
-		target: '.dashboard-body',
-		note: 'Images and video only, 2–3 files, up to 1 MB',
-		width: 750,
-		height: 550,
-		thumbnailWidth: 280,
-		// After uploading done, immediately close modal
-		// closeAfterFinish: true
-	})
-
-	uppy.on('complete', (result) => {
-		console.log(result)
-	})
+  uppy.use(Dashboard, {
+    inline: true,
+    id: 'Dashboard',
+    theme: 'dark',
+    target: '.dashboard-body',
+    note: 'Images and video only, 2–3 files, up to 1 MB',
+    width: 570,
+    height: 300,
+    thumbnailWidth: 280,
+    metaFields: [
+      { id: 'name', name: 'Name', placeholder: 'file name' }
+    ]
+  })
+  uppy.on('upload', (data) => {
+    // Create batch when file(s) are starting to be uploaded
+    console.log("data when initially uploading: ", data);
+    if ($('#template_slug').val()){
+      $.post("/symphony/batches", {
+        authenticity_token: $.rails.csrfToken(),
+        batch: {
+          template_slug: $('#template_slug').val(),
+        }
+      }).done(result => {
+        console.log("Result = ", result);
+        if(result.status == "ok"){
+          batchId = result.batch_id;
+        }
+        else {
+          Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
+        }
+      })
+    }
+  })
+  // Create document upon completion of all the files upload. Loop through the document and post a request per document
+  uppy.on('complete', (result) => {
+    console.log(result);
+    result.successful.forEach(file => {
+      console.log("result successful file", file);
+      let data_input = {
+        authenticity_token: $.rails.csrfToken(),
+        document_type: 'batch-uploads',
+        batch_id: batchId,
+        document: {
+          template_slug: $('#template_slug').val()
+        },
+      };
+      let result = uploadDocuments(data_input);
+    })
+  })
 }
