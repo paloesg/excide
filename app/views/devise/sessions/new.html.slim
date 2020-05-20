@@ -12,15 +12,12 @@
           .form-group
             = f.password_field :password, placeholder: "Password", autocomplete: "off", class: 'form-control'
           - if devise_mapping.rememberable?
-            span.form-group
+            span.form-group.form-check
               div.kt-switch.kt-switch--sm
                 label.form-inline
                   = f.label :remember_me, class:"mr-2"
                   = f.check_box :remember_me, id:"checkbox-switch"
                   span
-            / .form-group.form-check
-            /   = f.label
-            /   = f.check_box :remember_me, id:"checkbox-switch"
           .form-group
             = f.submit "Log in", class:"btn btn-primary"
         .row.mt-3
