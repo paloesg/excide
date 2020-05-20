@@ -50,6 +50,13 @@ class Symphony::DocumentsController < ApplicationController
         ConvertPdfToImagesJob.perform_later(document)
         @batch = document&.workflow&.batch
         if params[:document_type] == 'batch-uploads'
+          # Attach the blob to the document using the response given back by active storage through Uppy
+          ActiveStorage::Attachment.create(
+            name: 'raw_file',
+            record_type: 'Document',
+            record_id: document.id,
+            blob_id: ActiveStorage::Blob.find_by(key: params[:response_key]).id,
+          )
           first_task = @batch.template&.sections.first.tasks.first
           first_workflow = @batch.workflows.order(created_at: :asc).first
           # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable" and workflow actions of first workflow should be created

@@ -82,8 +82,10 @@ function setupUppy(element){
         document: {
           template_slug: $('#template_slug').val()
         },
+        response_key: file.response.key
       };
-      let result = uploadDocuments(data_input);
+      // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
+      let result = setTimeout(uploadDocuments(data_input), 5000);
     })
   })
 }
