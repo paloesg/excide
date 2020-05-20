@@ -1,6 +1,4 @@
 class Conductor::HomeController < ApplicationController
-  layout 'dashboard/application'
-
   before_action :authenticate_user!
   before_action :set_company_and_roles
 

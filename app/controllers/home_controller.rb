@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
-	layout 'metronic/application'
   def index
     @enquiry = Enquiry.new
   end

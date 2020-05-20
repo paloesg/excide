@@ -1,6 +1,4 @@
 class Symphony::HomeController < ApplicationController
-  layout 'metronic/application'
-
   before_action :authenticate_user!
 
   def index

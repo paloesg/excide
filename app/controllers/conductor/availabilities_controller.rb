@@ -1,6 +1,4 @@
 class Conductor::AvailabilitiesController < ApplicationController
-  layout 'dashboard/application'
-
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_availability, only: [:show, :edit, :update, :destroy]
