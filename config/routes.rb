@@ -189,10 +189,6 @@ Rails.application.routes.draw do
   get 'account', to: 'accounts#edit', as: :edit_account
   patch 'account', to: 'accounts#update'
 
-  get 'profile', to: 'profiles#show'
-  get 'profile/edit', to: 'profiles#edit', as: :edit_profile
-  patch 'profile', to: 'profiles#update'
-
   resources :enquiries
 
   get 'surveys/complete', to: 'surveys#complete', as: :survey_complete
