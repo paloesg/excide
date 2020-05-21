@@ -77,7 +77,7 @@
                 = select_tag('template_slug', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize")
             .row.mt-3
               .col-md-12
-                .dashboard-body#Dashboard
+                .dashboard-body.batchUploads#Dashboard
 .row
   .col-md-6.col-sm-12
     .kt-portlet

@@ -51,9 +51,12 @@ function setupUppy(element){
     ]
   })
 
-  // batchUploads(uppy);
-  multipleDocumentsUpload(uppy);
-  
+  if($('.batchUploads').length){
+    batchUploads(uppy);
+  }
+  else if ($('.documentMultipleUploads').length){
+    multipleDocumentsUpload(uppy);
+  }  
 }
 
 const batchUploads = uppy => {

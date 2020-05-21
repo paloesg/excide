@@ -9,7 +9,7 @@ class Symphony::DocumentsController < ApplicationController
   before_action :set_document, only: [:show, :edit, :update, :destroy]
   before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
-  after_action :verify_authorized, except: [:index, :search, :index_create]
+  after_action :verify_authorized, except: [:index, :search]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -98,10 +98,11 @@ class Symphony::DocumentsController < ApplicationController
   def index_create
     puts "successful files: #{JSON.parse(params[:successful_files])[0]}"
     @files = []
-    parsed_file = JSON.parse(params[:successful_files])
-    parsed_file.each do |file|
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, nil, params[:document_type], nil).run
+    parsed_files = JSON.parse(params[:successful_files])
+    parsed_files.each do |file|
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, nil, params[:document_type], nil).run 
       document = @generate_document.document
+      authorize document
       @files.append document
     end
     respond_to do |format|
