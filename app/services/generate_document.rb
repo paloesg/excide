@@ -25,8 +25,6 @@ class GenerateDocument
 
   def create_document
     # Create document with the common parameters
-    puts "Condiitonal document params: #{@document_params.present?}"
-    puts " document params: #{@document_params}"
     @document = Document.new
     @document.company = @company
     @document.user = @user
