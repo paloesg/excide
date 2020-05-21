@@ -37,12 +37,8 @@ gem "rack-reverse-proxy", require: "rack/reverse_proxy"
 gem 'squasher', '>= 0.6.0'
 # The default JavaScript compiler for Rails 6
 gem "webpacker"
-# Calculate business days
-gem "business_time"
-# Used for area code
-gem 'countries', require: 'countries/global'
-# CHecks phone number validity
-gem 'phonelib'
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', require: false
 
 #################################################
 #                                               #
@@ -103,18 +99,6 @@ gem 'money-rails', '~>1'
 # Ruby asynchronous processing
 gem 'sucker_punch', '~> 2.0'
 
-# Analytics
-gem 'mixpanel-ruby'
-
-# Error monitoring
-gem 'rollbar'
-gem 'oj'
-gem 'snitcher'
-
-# Performance reporting
-gem "skylight"
-gem 'scout_apm'
-
 gem 'popper_js'
 # Themify icon set web fonts
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
@@ -144,6 +128,17 @@ gem 'mini_mime'
 # Shorten UUID to make it more user friendly
 gem 'shortuuid'
 
+# Calculate business days
+gem "business_time"
+# Used for area code
+gem 'countries', require: 'countries/global'
+# CHecks phone number validity
+gem 'phonelib'
+# In-app notification feature
+gem 'activity_notification'
+# Integrate Slack API
+gem 'slack-ruby-client'
+
 # Backend admin
 gem "administrate", "0.13.0"
 gem 'administrate-field-image'
@@ -156,11 +151,17 @@ gem 'deep_cloneable', '~> 3.0.0'
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
 
-# In-app notification feature
-gem 'activity_notification'
+# Analytics
+gem 'mixpanel-ruby'
 
-# Integrate Slack API
-gem 'slack-ruby-client'
+# Error monitoring
+gem 'rollbar'
+gem 'oj'
+gem 'snitcher'
+
+# Performance reporting
+gem "skylight"
+gem 'scout_apm'
 
 group :development do
   gem 'rails_real_favicon'
