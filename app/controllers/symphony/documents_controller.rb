@@ -129,8 +129,13 @@ class Symphony::DocumentsController < ApplicationController
   def destroy
     authorize @document
 
-    @document.destroy
-    redirect_to symphony_documents_path, notice: 'Document was successfully destroyed.'
+    if @document.destroy
+      redirect_to symphony_documents_path
+      respond_to do |format|
+        format.html { redirect_to symphony_document_path, notice: 'Document was successfully deleted.' }
+        format.js  { flash[:notice] = 'Document was successfully deleted.' }
+      end
+    end
   end
 
   private
