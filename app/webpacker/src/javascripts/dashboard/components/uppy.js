@@ -23,14 +23,13 @@ function setupUppy(element){
   // data-uppy="document[raw_file]" from form
   let field_name = element.dataset.uppy
 
-  // trigger.addEventListener("click", (event) => event.preventDefault())
-
   let uppy = Uppy({
     // Automatically upload file when you drop file into it
     autoProceed: false,
     allowMultipleUploads: false,
     // In case of typos
     logger: Uppy.debugLogger,
+    // Create batch before upload, only when .batchUploads element exists (which is dashboard drag and drop)
     onBeforeUpload: (files) => {
       if($('.batchUploads').length){
         $.post("/symphony/batches", {
@@ -72,32 +71,15 @@ function setupUppy(element){
   if($('.batchUploads').length){
     batchUploads(uppy);
   }
-  else if ($('.documentMultipleUploads').length){
+  else if($('.documentMultipleUploads').length){
     multipleDocumentsUpload(uppy);
-  }  
+  }
+  else if($('.workflowMultipleUploads').length){
+    workflowMultipleUpload(uppy);
+  }
 }
 
 const batchUploads = uppy => {
-  // uppy.on('upload', (data) => {
-  //   // Create batch when file(s) are starting to be uploaded
-  //   console.log("data when initially uploading: ", data);
-  //   if ($('#template_slug').val()){
-  //     $.post("/symphony/batches", {
-  //       authenticity_token: $.rails.csrfToken(),
-  //       batch: {
-  //         template_slug: $('#template_slug').val(),
-  //       }
-  //     }).done(result => {
-  //       console.log("Result = ", result);
-  //       if(result.status == "ok"){
-  //         batchId = result.batch_id;
-  //       }
-  //       else {
-  //         Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
-  //       }
-  //     })
-  //   }
-  // })
   // Create document upon completion of all the files upload. Loop through the document and post a request per document
   uppy.on('complete', (result) => {
     console.log(result);
@@ -118,14 +100,38 @@ const batchUploads = uppy => {
   })
 }
 
+// Multiple uploads through document's INDEX page
 const multipleDocumentsUpload = uppy => {
   uppy.on('complete', (result) => {
-    console.log("result is : ", result);
     $.post("/symphony/documents/index-create", {
       authenticity_token: $.rails.csrfToken(),
       // Number of file uploads that were uploaded successfully
       successful_files: JSON.stringify(result.successful),
       document_type: 'documents-multiple-uploads'
     });
+  })
+}
+
+// Multiple uploads through workflow's task
+const workflowMultipleUpload = uppy => {
+  uppy.on('complete', (result) => {
+    let actionId = $(".action_id").attr('id')
+    let workflowActionId = $('#'+actionId).val();
+    let actionIdStr = actionId.substr(10);
+    result.successful.forEach(file => {
+      console.log("Result file", file);
+      let data_input = {
+        authenticity_token: $.rails.csrfToken(),
+        workflow: $('#workflow_id_'+actionIdStr).val(),
+        workflow_action: workflowActionId,
+        document: {
+          // have to pass in a null value to GenerateDocumentService if not will get undefined method error
+          template_slug: null,
+        },
+        response_key: file.response.key
+      };
+      // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
+      let result = setTimeout(uploadDocuments(data_input), 3000);
+    })
   })
 }
