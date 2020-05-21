@@ -1,8 +1,7 @@
 class GenerateDocument
-  def initialize(user, company, document_params, template_slug_param, workflow_param, action_param, document_type_param, batch_id)
+  def initialize(user, company, template_slug_param, workflow_param, action_param, document_type_param, batch_id)
     @user = user
     @company = company
-    @document_params = document_params
     @template_slug_param = template_slug_param
     # Generate document through workflow (with action param) and batches
     @workflow_param = workflow_param
@@ -26,8 +25,9 @@ class GenerateDocument
 
   def create_document
     # Create document with the common parameters
-    @document = Document.new(@document_params) if @document_params.present?
-    @document = Document.new if @document_params.nil?
+    puts "Condiitonal document params: #{@document_params.present?}"
+    puts " document params: #{@document_params}"
+    @document = Document.new
     @document.company = @company
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if @document_type_param == 'invoice'

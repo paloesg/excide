@@ -38,7 +38,7 @@ class Symphony::DocumentsController < ApplicationController
   end
 
   def create
-    @generate_document = GenerateDocument.new(@user, @company, document_params, params[:document][:template_slug], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
+    @generate_document = GenerateDocument.new(@user, @company, params[:document][:template_slug], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
     respond_to do |format|
       # Only run textract and conversion method when document is generated successfully
       if @generate_document.success?
@@ -100,7 +100,7 @@ class Symphony::DocumentsController < ApplicationController
     @files = []
     parsed_files = JSON.parse(params[:successful_files])
     parsed_files.each do |file|
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, nil, params[:document_type], nil).run 
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run 
       document = @generate_document.document
       authorize document
       @files.append document
