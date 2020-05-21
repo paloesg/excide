@@ -95,7 +95,7 @@ const batchUploads = uppy => {
         response_key: file.response.key
       };
       // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
-      let result = setTimeout(uploadDocuments(data_input), 5000);
+      let result = uploadDocuments(data_input);
     })
   })
 }
