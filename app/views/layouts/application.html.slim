@@ -16,11 +16,8 @@ html lang="en"
       gtag('config', 'UA-93342323-1');
 
     script src="https://js.stripe.com/v3/"
-    <!-- Start of excide Zendesk Widget script -->
-    script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=d91fc85f-b1cf-4d65-b9f8-0c90f5132187"
-    <!-- End of excide Zendesk Widget script -->
     = render 'application/favicon'
-    = display_meta_tags :site => "Virtual CFO | Excide"
+    = display_meta_tags site: "Virtual CFO | Excide"
     = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application-dashboard', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
@@ -58,6 +55,10 @@ html lang="en"
     #kt_scrolltop.kt-scrolltop
       i.fa.fa-arrow-up
     /! end::Scrolltop
+
+    <!-- Start of excide Zendesk Widget script -->
+    script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=d91fc85f-b1cf-4d65-b9f8-0c90f5132187"
+    <!-- End of excide Zendesk Widget script -->
 
     /! begin::Global Config(global config for global JS sciprts)
     javascript:

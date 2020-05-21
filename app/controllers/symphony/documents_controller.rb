@@ -55,7 +55,7 @@ class Symphony::DocumentsController < ApplicationController
           if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type and first_workflow.workflow_actions.present?
             link = new_symphony_invoice_path(workflow_name: generated_document.workflow.template.slug, workflow_id: first_workflow.id, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
           else
-            link = symphony_batch_path(batch_template_name: generated_document.workflow.template.slug, id: document.workflow.batch)
+            link = symphony_batch_path(batch_template_name: generated_document.workflow.template.slug, id: d.workflow.batch)
           end
            #return output in json
           output = { link_to: link, status: "ok", message: "batch documents created", document: generated_document.id, batch: batch.id, template: generated_document.workflow.template.slug }

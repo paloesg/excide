@@ -28,7 +28,7 @@ class SendUserReminders
 
   def send_email_reminders
     email_reminders = @reminders.where(email: true)
-    email_reminders[0].notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
+    email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
   end
 
   def send_sms_reminders
@@ -63,8 +63,8 @@ class SendUserReminders
 
   def send_slack_reminders
     slack_reminders = @reminders.where(slack: true)
-
-    SlackService.new(@user).send_reminders(slack_reminders, @user).deliver if @user.settings[0]&.reminder_slack == 'true'
+    # check whether company is connected to slack or user's reminder setting is true. If it is not, don't send reminders.
+    SlackService.new(@user).send_reminders(slack_reminders, @user).deliver if (@user.settings[0]&.reminder_slack == 'true' and @user.company.slack_access_response.present?)
   end
 
   def set_next_reminder
