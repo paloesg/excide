@@ -44,19 +44,26 @@ class Symphony::DocumentsController < ApplicationController
       if @generate_document.success?
         document = @generate_document.document
         authorize document
+        # Attach the blob to the document using the response given back by active storage through Uppy
+        ActiveStorage::Attachment.create(
+          name: 'raw_file',
+          record_type: 'Document',
+          record_id: document.id,
+          blob_id: ActiveStorage::Blob.find_by(key: params[:response_key]).id,
+        )
         # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'. Check for workflow present in case user uploads using document NEW page instead.
         @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
         # Run convert job asynchronously. Conversion Service object is performed during the job.
-        ConvertPdfToImagesJob.perform_later(document)
+        puts "Conversion starts!"
+        @converted_document = ConvertPdfToImagesJob.perform_now(document)
+        if @converted_document.success?
+          puts "SUCESS DOCUMENT #{@converted_document.document}"
+        else
+          puts "Conversion failed #{@converted_document.document}"
+          puts "Error message #{@converted_document.message}"
+        end
         @batch = document&.workflow&.batch
         if params[:document_type] == 'batch-uploads'
-          # Attach the blob to the document using the response given back by active storage through Uppy
-          ActiveStorage::Attachment.create(
-            name: 'raw_file',
-            record_type: 'Document',
-            record_id: document.id,
-            blob_id: ActiveStorage::Blob.find_by(key: params[:response_key]).id,
-          )
           first_task = @batch.template&.sections.first.tasks.first
           first_workflow = @batch.workflows.order(created_at: :asc).first
           # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable" and workflow actions of first workflow should be created
