@@ -30,7 +30,25 @@ function setupUppy(element){
     autoProceed: false,
     allowMultipleUploads: false,
     // In case of typos
-    logger: Uppy.debugLogger
+    logger: Uppy.debugLogger,
+    onBeforeUpload: (files) => {
+      if($('.batchUploads').length){
+        $.post("/symphony/batches", {
+          authenticity_token: $.rails.csrfToken(),
+          batch: {
+            template_slug: $('#template_slug').val(),
+          }
+        }).done(result => {
+          console.log("Result = ", result);
+          if(result.status == "ok"){
+            batchId = result.batch_id;
+          }
+          else {
+            Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
+          }
+        })
+      }
+    }
   });
 
   uppy.use(ActiveStorageUpload, {
@@ -60,26 +78,26 @@ function setupUppy(element){
 }
 
 const batchUploads = uppy => {
-  uppy.on('upload', (data) => {
-    // Create batch when file(s) are starting to be uploaded
-    console.log("data when initially uploading: ", data);
-    if ($('#template_slug').val()){
-      $.post("/symphony/batches", {
-        authenticity_token: $.rails.csrfToken(),
-        batch: {
-          template_slug: $('#template_slug').val(),
-        }
-      }).done(result => {
-        console.log("Result = ", result);
-        if(result.status == "ok"){
-          batchId = result.batch_id;
-        }
-        else {
-          Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
-        }
-      })
-    }
-  })
+  // uppy.on('upload', (data) => {
+  //   // Create batch when file(s) are starting to be uploaded
+  //   console.log("data when initially uploading: ", data);
+  //   if ($('#template_slug').val()){
+  //     $.post("/symphony/batches", {
+  //       authenticity_token: $.rails.csrfToken(),
+  //       batch: {
+  //         template_slug: $('#template_slug').val(),
+  //       }
+  //     }).done(result => {
+  //       console.log("Result = ", result);
+  //       if(result.status == "ok"){
+  //         batchId = result.batch_id;
+  //       }
+  //       else {
+  //         Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
+  //       }
+  //     })
+  //   }
+  // })
   // Create document upon completion of all the files upload. Loop through the document and post a request per document
   uppy.on('complete', (result) => {
     console.log(result);
@@ -95,7 +113,7 @@ const batchUploads = uppy => {
         response_key: file.response.key
       };
       // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
-      let result = uploadDocuments(data_input);
+      let result = setTimeout(uploadDocuments(data_input), 3000);
     })
   })
 }
