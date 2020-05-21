@@ -26,7 +26,8 @@ class GenerateDocument
 
   def create_document
     # Create document with the common parameters
-    @document = Document.new(@document_params)
+    @document = Document.new(@document_params) if @document_params.present?
+    @document = Document.new if @document_params.nil?
     @document.company = @company
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if @document_type_param == 'invoice'

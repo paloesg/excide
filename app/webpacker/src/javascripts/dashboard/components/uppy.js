@@ -50,6 +50,13 @@ function setupUppy(element){
       { id: 'name', name: 'Name', placeholder: 'file name' }
     ]
   })
+
+  // batchUploads(uppy);
+  multipleDocumentsUpload(uppy);
+  
+}
+
+const batchUploads = uppy => {
   uppy.on('upload', (data) => {
     // Create batch when file(s) are starting to be uploaded
     console.log("data when initially uploading: ", data);
@@ -87,5 +94,17 @@ function setupUppy(element){
       // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
       let result = setTimeout(uploadDocuments(data_input), 5000);
     })
+  })
+}
+
+const multipleDocumentsUpload = uppy => {
+  uppy.on('complete', (result) => {
+    console.log("result is : ", result);
+    $.post("/symphony/documents/index-create", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+      document_type: 'documents-multiple-uploads'
+    });
   })
 }

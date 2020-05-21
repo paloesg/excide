@@ -9,7 +9,7 @@ class Symphony::DocumentsController < ApplicationController
   before_action :set_document, only: [:show, :edit, :update, :destroy]
   before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
-  after_action :verify_authorized, except: [:index, :search]
+  after_action :verify_authorized, except: [:index, :search, :index_create]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -96,14 +96,13 @@ class Symphony::DocumentsController < ApplicationController
   end
 
   def index_create
+    puts "successful files: #{JSON.parse(params[:successful_files])[0]}"
     @files = []
-    params[:url_files].each do |url_file|
-      document = Document.new(file_url: url_file)
-      document.company = @company
-      document.user = @user
-      document.save
+    parsed_file = JSON.parse(params[:successful_files])
+    parsed_file.each do |file|
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, nil, params[:document_type], nil).run
+      document = @generate_document.document
       @files.append document
-      authorize document
     end
     respond_to do |format|
       format.html { redirect_to multiple_edit_symphony_documents_path files: @files }
