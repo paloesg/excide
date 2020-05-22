@@ -169,6 +169,7 @@ group :development do
   gem 'brakeman', require: false
   gem 'pry-rails'
   gem 'bullet'
+  gem 'derailed_benchmarks'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
