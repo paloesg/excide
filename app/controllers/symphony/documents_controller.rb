@@ -79,7 +79,9 @@ class Symphony::DocumentsController < ApplicationController
           end
         else
           # the OR statement is to check that document is uploaded from document NEW pass the ternary condition
-          format.html { redirect_to document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(document.workflow.template.slug, document.workflow.id), notice: 'Document was successfully created.' }
+          link = document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(document.workflow.template.slug, document.workflow.id)
+          output = { link_to: link, status: "ok" }
+          format.json  { render :json => output }
         end
       else
         set_templates
