@@ -7,12 +7,12 @@ gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 6.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
-gem "slim-rails"
+gem 'slim-rails'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -21,8 +21,6 @@ gem 'turbolinks', '~> 5.1.0'
 gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
 # Force sprockets rails to use version 2.3.3 to fix Heroku deployment issue
 gem 'sprockets-rails', '2.3.3'
 # Use puma web server
@@ -30,19 +28,11 @@ gem 'puma'
 # Set timeout for long running processes
 gem 'rack-timeout'
 # Better Rails logging
-gem "lograge"
-# Reverse proxy to proxy blog server to primary domain
-gem "rack-reverse-proxy", require: "rack/reverse_proxy"
-# Add squasher to collate old migration file
-gem 'squasher', '>= 0.6.0'
+gem 'lograge'
 # The default JavaScript compiler for Rails 6
-gem "webpacker"
-# Calculate business days
-gem "business_time"
-# Used for area code
-gem 'countries', require: 'countries/global'
-# CHecks phone number validity
-gem 'phonelib'
+gem 'webpacker', '~> 5.0'
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', require: false
 
 #################################################
 #                                               #
@@ -103,18 +93,6 @@ gem 'money-rails', '~>1'
 # Ruby asynchronous processing
 gem 'sucker_punch', '~> 2.0'
 
-# Analytics
-gem 'mixpanel-ruby'
-
-# Error monitoring
-gem 'rollbar'
-gem 'oj'
-gem 'snitcher'
-
-# Performance reporting
-gem "skylight"
-gem 'scout_apm'
-
 gem 'popper_js'
 # Themify icon set web fonts
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
@@ -134,18 +112,29 @@ gem 'cocoon'
 # WYSIWYG editor
 gem 'trix'
 # Render calendar
-gem "simple_calendar", "~> 2.0"
+gem 'simple_calendar', '~> 2.0'
 # Algolia search
-gem "algoliasearch-rails"
+gem 'algoliasearch-rails'
 # Selectize autocomplete selection
-gem "selectize-rails"
+gem 'selectize-rails'
 # Get mime type from filename
 gem 'mini_mime'
 # Shorten UUID to make it more user friendly
 gem 'shortuuid'
 
+# Calculate business days
+gem 'business_time'
+# Used for area code
+gem 'countries', require: 'countries/global'
+# CHecks phone number validity
+gem 'phonelib'
+# In-app notification feature
+gem 'activity_notification'
+# Integrate Slack API
+gem 'slack-ruby-client'
+
 # Backend admin
-gem "administrate", "0.13.0"
+gem 'administrate', '0.13.0'
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
 gem 'administrate-field-jsonb'
@@ -156,11 +145,17 @@ gem 'deep_cloneable', '~> 3.0.0'
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
 
-# In-app notification feature
-gem 'activity_notification'
+# Analytics
+gem 'mixpanel-ruby'
 
-# Integrate Slack API
-gem 'slack-ruby-client'
+# Error monitoring
+gem 'rollbar'
+gem 'oj'
+gem 'snitcher'
+
+# Performance reporting
+gem 'skylight'
+gem 'scout_apm'
 
 group :development do
   gem 'rails_real_favicon'
@@ -168,6 +163,7 @@ group :development do
   gem 'brakeman', require: false
   gem 'pry-rails'
   gem 'bullet'
+  gem 'derailed_benchmarks'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -179,11 +175,14 @@ group :development do
   gem 'web-console'
 
   # Better error page in development
-  gem "better_errors"
-  gem "binding_of_caller"
+  gem 'better_errors'
+  gem 'binding_of_caller'
 
   gem 'rails-erd'
   gem 'rack-mini-profiler'
+
+  # Add squasher to collate old migration file
+  gem 'squasher', '>= 0.6.0'
 end
 
 group :development, :test do
