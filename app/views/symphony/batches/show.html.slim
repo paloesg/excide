@@ -36,14 +36,10 @@
                           i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
                         - else
                           - wf.documents.each do |d|
-                            - if File.extname(d.file_url) == '.pdf'
-                              / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
-                              - display_url = url_for(d.converted_images.first) if d.converted_images.attached?
-                            - else
-                              - display_url = d.file_url
-                            = d.filename
-                            br
+                            = d.raw_file.blob.filename if d.raw_file.attached?
                             - if d.converted_images.attached?
+                              / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
+                              - display_url = url_for(d.converted_images.first)
                               a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="text-primary" Preview
                             - else
                               p.font-italic.mb-0
