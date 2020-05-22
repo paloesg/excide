@@ -107,6 +107,19 @@ class Symphony::WorkflowsController < ApplicationController
     end
   end
 
+  def destroy
+    authorize @workflow
+    @batch = @workflow.batch
+    if @workflow.destroy
+      if @batch.present?
+        redirect_to symphony_batch_path(@template.slug, @batch.id)
+        respond_to do |format|
+          format.js  { flash[:notice] = 'Workflow was successfully deleted.' }
+        end
+      end
+    end
+  end
+
   def workflow_action_complete
     @workflow = policy_scope(Workflow).find(params[:workflow_id])
     authorize @workflow
