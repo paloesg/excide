@@ -50,7 +50,7 @@ javascript:
         '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
         '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.id}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
         '<td>{{created_at}}</td>' +
-        '<td><a href="/symphony/documents/{{objectID}}" class="btn btn-primary btn-sm mr-1">View</a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1 mt-1">Download</a> </td>' +
+        '<td><a href="/symphony/documents/{{objectID}}" class="btn btn-primary btn-sm mr-1 flaticon2-search-1"></a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1 flaticon2-download-2"></a> <a data-confirm="Are you sure?" data-method="delete" data-remote="true" href="/symphony/documents/{{objectID}}" class="btn btn-danger btn-sm flaticon2-rubbish-bin-delete-button"></a></td>' +
         '{{/hits}}</tbody>'
       '</div>';
       var search = instantsearch({

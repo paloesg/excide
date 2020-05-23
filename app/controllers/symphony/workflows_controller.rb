@@ -107,6 +107,19 @@ class Symphony::WorkflowsController < ApplicationController
     end
   end
 
+  def destroy
+    authorize @workflow
+    @batch = @workflow.batch
+    if @workflow.destroy
+      if @batch.present?
+        redirect_to symphony_batch_path(@template.slug, @batch.id)
+        respond_to do |format|
+          format.js  { flash[:notice] = 'Workflow was successfully deleted.' }
+        end
+      end
+    end
+  end
+
   def workflow_action_complete
     @workflow = policy_scope(Workflow).find(params[:workflow_id])
     authorize @workflow
@@ -177,8 +190,10 @@ class Symphony::WorkflowsController < ApplicationController
         users = User.with_role(current_task.role.name.to_sym, @company)
         current_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{current_action.task.instructions}", workflow_action_id: current_action.id }, send_later: false
         users.each do |user|
-          SlackService.new(user).task_notification(current_task, current_action, user).deliver if (user.settings[0]&.reminder_slack == 'true' && @company.basic? == false)
-          if @company.basic? == 'false'
+          # Only send slack, whatsapp and sms notification when company is PRO
+          if @company.pro?
+            # Check if slack is connected using company.slack_access_response.present?
+            SlackService.new(user).task_notification(current_task, current_action, user).deliver if (user.settings[0]&.reminder_slack == 'true' && user.company.slack_access_response.present?)
             to_number = '+65' + user.contact_number
             message_body = current_task.instructions
             message_head = current_action.workflow.template.title

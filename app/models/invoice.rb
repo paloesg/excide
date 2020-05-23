@@ -17,7 +17,7 @@ class Invoice < ApplicationRecord
 
   enum status: { created: 0, rejected: 1, xero_awaiting_approval: 2, xero_approved: 3, xero_total_mismatch: 4, rounding_added: 5 }
 
-  aasm column: :status do
+  aasm column: :status, enum: true do
     state :created, initial: true
     state :rejected
     state :xero_awaiting_approval

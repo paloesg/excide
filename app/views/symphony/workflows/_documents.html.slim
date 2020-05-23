@@ -14,9 +14,11 @@
                 = link_to symphony_document_path(d)
                   = fa_icon "file", style: 'font-size: 50px;', class: 'mr-3'
               .media-body
-                h5.text-truncate = d.filename
+                h5.text-truncate.with-icon = d.filename
                 h6.card-subtitle = d.user&.full_name
-                .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+                .text-muted = d.created_at.strftime("%d/%m/%Y %R")
+              .align-self-center
+                = link_to "", symphony_document_path(d), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', remote: true, class: 'btn btn-danger btn-sm flaticon2-rubbish-bin-delete-button'
 .kt-portlet.mb-3
   .kt-portlet__head
     .kt-portlet__head-label

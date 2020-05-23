@@ -2,7 +2,7 @@
 
 [Please include a summary of the change and which issue is fixed. Please also include relevant reasons for the chosen solution and context. List any dependencies that are required for this change.]
 
-Trello link: https://trello.com/c/{card-id}
+Notion link: https://www.notion.so/{unique-id}
 
 ## Remarks
 
