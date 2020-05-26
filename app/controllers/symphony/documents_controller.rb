@@ -130,7 +130,7 @@ class Symphony::DocumentsController < ApplicationController
     authorize @document
 
     if @document.destroy
-      redirect_to symphony_documents_path
+      redirect_back fallback_location: symphony_documents_path
       respond_to do |format|
         format.html { redirect_to symphony_document_path, notice: 'Document was successfully deleted.' }
         format.js  { flash[:notice] = 'Document was successfully deleted.' }
