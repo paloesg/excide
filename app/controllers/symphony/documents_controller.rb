@@ -96,10 +96,9 @@ class Symphony::DocumentsController < ApplicationController
     parsed_files.each do |file|
       @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run 
       document = @generate_document.document
-      puts "WHat is document? #{document.id}"
       authorize document
-      # attach and convert method
-      attach_and_convert_document(document, params[:response_key])
+      # attach and convert method with the response key to create blob
+      attach_and_convert_document(document, file['response']['key'])
       @files.append document
     end
     respond_to do |format|
@@ -169,7 +168,6 @@ class Symphony::DocumentsController < ApplicationController
 
   # Attach the blob from direct upload to activestorage and convert all PDF to images (Used in method Create and index_create)
   def attach_and_convert_document(document, response_key)
-    puts "WHAT IS DOCUMENT: #{document.id}"
     # Attach the blob to the document using the response given back by active storage through Uppy
     ActiveStorage::Attachment.create(
       name: 'raw_file',
