@@ -44,17 +44,10 @@ class Symphony::DocumentsController < ApplicationController
       if @generate_document.success?
         document = @generate_document.document
         authorize document
-        # Attach the blob to the document using the response given back by active storage through Uppy
-        ActiveStorage::Attachment.create(
-          name: 'raw_file',
-          record_type: 'Document',
-          record_id: document.id,
-          blob_id: ActiveStorage::Blob.find_by(key: params[:response_key]).id,
-        )
+        # attach and convert method
+        attach_and_convert_document(document, params[:response_key])
         # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'.
         @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
-        # Run convert job asynchronously. Conversion Service object is performed during the job.
-        @converted_document = ConvertPdfToImagesJob.perform_later(document)
         @batch = document&.workflow&.batch
         if params[:document_type] == 'batch-uploads'
           first_task = @batch.template&.sections.first.tasks.first
@@ -98,13 +91,15 @@ class Symphony::DocumentsController < ApplicationController
   end
 
   def index_create
-    puts "successful files: #{JSON.parse(params[:successful_files])[0]}"
     @files = []
     parsed_files = JSON.parse(params[:successful_files])
     parsed_files.each do |file|
       @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run 
       document = @generate_document.document
+      puts "WHat is document? #{document.id}"
       authorize document
+      # attach and convert method
+      attach_and_convert_document(document, params[:response_key])
       @files.append document
     end
     respond_to do |format|
@@ -170,5 +165,19 @@ class Symphony::DocumentsController < ApplicationController
 
   def set_s3_direct_post
     @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
+  end
+
+  # Attach the blob from direct upload to activestorage and convert all PDF to images (Used in method Create and index_create)
+  def attach_and_convert_document(document, response_key)
+    puts "WHAT IS DOCUMENT: #{document.id}"
+    # Attach the blob to the document using the response given back by active storage through Uppy
+    ActiveStorage::Attachment.create(
+      name: 'raw_file',
+      record_type: 'Document',
+      record_id: document.id,
+      blob_id: ActiveStorage::Blob.find_by(key: response_key).id,
+    )
+    # Run convert job asynchronously. Conversion Service object is performed during the job.
+    ConvertPdfToImagesJob.perform_later(document)
   end
 end

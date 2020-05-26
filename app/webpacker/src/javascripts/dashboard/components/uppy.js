@@ -103,11 +103,14 @@ const batchUploads = uppy => {
 // Multiple uploads through document's INDEX page
 const multipleDocumentsUpload = uppy => {
   uppy.on('complete', (result) => {
-    $.post("/symphony/documents/index-create", {
-      authenticity_token: $.rails.csrfToken(),
-      // Number of file uploads that were uploaded successfully
-      successful_files: JSON.stringify(result.successful),
-      document_type: 'documents-multiple-uploads'
+    result.successful.forEach(file => {
+      $.post("/symphony/documents/index-create", {
+        authenticity_token: $.rails.csrfToken(),
+        // Number of file uploads that were uploaded successfully
+        successful_files: JSON.stringify(result.successful),
+        document_type: 'documents-multiple-uploads',
+        response_key: file.response.key
+      });
     });
   })
 }
@@ -119,7 +122,6 @@ const workflowMultipleUpload = uppy => {
     let workflowActionId = $('#'+actionId).val();
     let actionIdStr = actionId.substr(10);
     result.successful.forEach(file => {
-      console.log("Result file", file);
       let data_input = {
         authenticity_token: $.rails.csrfToken(),
         workflow: $('#workflow_id_'+actionIdStr).val(),
