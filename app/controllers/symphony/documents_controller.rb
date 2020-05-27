@@ -61,16 +61,17 @@ class Symphony::DocumentsController < ApplicationController
           output = { link_to: link, status: "ok", message: "batch documents created", document: document.id, batch: @batch.id, template: @batch.template.slug }
           flash[:notice] = "New batch of #{@batch.workflows.count} documents successfully created!"
           format.json  { render :json => output }
-        # Upload in workflow action with task type - upload_file - in batches 
-        elsif params[:upload_type] == "file_upload_task_in_batches"
+        # Upload single file task!
+        elsif params[:upload_type] == "file-upload-task"
           workflow_action = WorkflowAction.find(params[:workflow_action])
           if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
-            format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id), notice: "#{workflow_action.task.instructions} done!"}
+            # If batch is present, redirect to batch page, else go to workflow page
+            workflow_action.workflow.batch.present? ? format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id)} : format.html{ redirect_to symphony_workflow_path(workflow_action.workflow.template.slug, workflow_action.workflow.id) } 
+            flash[:notice] = "#{workflow_action.task.instructions} done!"
           else
             format.json { render json: workflow_action.errors, status: :unprocessable_entity }
           end
         else
-          # the OR statement is to check that document is uploaded from document NEW pass the ternary condition
           link = document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(document.workflow.template.slug, document.workflow.id)
           output = { link_to: link, status: "ok" }
           document.workflow.nil? ? (format.html { redirect_to link }) : (format.json  { render :json => output })
