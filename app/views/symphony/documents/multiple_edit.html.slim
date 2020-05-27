@@ -15,17 +15,17 @@
               td.w-50
                 figure.figure
                   - if document.converted_images.attached?
-                    - display_url = []
+                    - url_array = []
                     - document.converted_images.each do |image|
-                      - display_url << image
-                    - display_url.each do |url|
-                      - display_image_url = url_for(url)
-                      img src='#{display_image_url}' class='img-responsive figure-img img-fluid' style="width:500px;"
+                      - url_array << image
+                    - url_array.each do |url|
+                      - display_url = url_for(url)
+                      img src='#{display_url}' class='img-responsive figure-img img-fluid' style="width:500px;"
                     figcaption.figure-caption.text-center = document.raw_file.blob.filename
                   - else
                     // IF document dont have filename, it is assumed that conversion has yet to be done
                     - if document.filename.nil?
-                      span Please refresh and wait for conversion to be finished
+                      span Please refresh and wait for the images to load
                     - elsif File.extname(document.file_url) == '.pdf'
                       iframe src="https://docs.google.com/viewer?url=https:#{document.file_url}&embedded=true" width="100%" height="500" style="border: none;"
                     - else
