@@ -61,20 +61,25 @@ class Symphony::DocumentsController < ApplicationController
           output = { link_to: link, status: "ok", message: "batch documents created", document: document.id, batch: @batch.id, template: @batch.template.slug }
           flash[:notice] = "New batch of #{@batch.workflows.count} documents successfully created!"
           format.json  { render :json => output }
-        # Upload single file task!
+        # Upload single file task in workflow and batch!
         elsif params[:upload_type] == "file-upload-task"
           workflow_action = WorkflowAction.find(params[:workflow_action])
           if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
             # If batch is present, redirect to batch page, else go to workflow page
-            workflow_action.workflow.batch.present? ? format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id)} : format.html{ redirect_to symphony_workflow_path(workflow_action.workflow.template.slug, workflow_action.workflow.id) } 
+            @batch.present? ? format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id)} : format.html{ redirect_to symphony_workflow_path(@batch.template.slug, workflow_action.workflow.id) } 
             flash[:notice] = "#{workflow_action.task.instructions} done!"
           else
             format.json { render json: workflow_action.errors, status: :unprocessable_entity }
           end
-        else
-          link = document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(document.workflow.template.slug, document.workflow.id)
+        # Upload multiple file task in workflow and batch!
+        elsif params[:document_type] == "multiple-file-upload-task"
+          workflow = Workflow.find(params[:workflow])
+          link = workflow.batch.present? ? symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id) : symphony_workflow_path(document.workflow.template.slug, document.workflow.id)
           output = { link_to: link, status: "ok" }
-          document.workflow.nil? ? (format.html { redirect_to link }) : (format.json  { render :json => output })
+          format.json  { render :json => output }
+        else
+          # For document single file upload
+          format.html { redirect_to symphony_documents_path } if document.workflow.nil?
         end
       else
         set_templates

@@ -45,7 +45,7 @@ const multipleDocumentsUpload = (uppy) => {
 }
 
 // Multiple uploads through workflow's task
-const workflowMultipleUpload = (uppy) => {
+const MultipleUploadTask = (uppy) => {
   uppy.on('complete', (result) => {
     let actionId = $(".action_id").attr('id');
     let workflowActionId = $('#'+actionId).val();
@@ -59,6 +59,7 @@ const workflowMultipleUpload = (uppy) => {
           // have to pass in a null value to GenerateDocumentService if not will get undefined method error
           template_slug: null,
         },
+        document_type: "multiple-file-upload-task",
         response_key: file.response.key
       };
       // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
@@ -123,8 +124,8 @@ function setupUppy(element){
   else if($('.documentMultipleUploads').length){
     multipleDocumentsUpload(uppy);
   }
-  else if($('.workflowMultipleUploads').length){
-    workflowMultipleUpload(uppy);
+  else if($('.multipleUploadsTask').length){
+    MultipleUploadTask(uppy);
   }
 }
 //-----------------------------------Initialize Uppy------------------------------------
