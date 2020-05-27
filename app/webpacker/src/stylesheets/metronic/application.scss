@@ -15,10 +15,6 @@
 @import "selectize/dist/css/selectize";
 @import "selectize/dist/css/selectize.default";
 
-//Dropzone
-@import "dropzone/dist/min/dropzone.min.css";
-@import "dropzone/dist/min/basic.min.css";
-
 @import "../src/stylesheets/metronic/css/custom";
 @import "../src/stylesheets/metronic/css/invoices";
 @import "../src/stylesheets/metronic/css/notification";
@@ -33,7 +29,6 @@
 
 // Active storage direct upload
 @import "../src/stylesheets/dashboard/direct_upload";
-
 
 //icon
 @import "../src/stylesheets/metronic/css/flaticon";

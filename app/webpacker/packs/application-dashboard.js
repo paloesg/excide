@@ -22,7 +22,6 @@ const images = require.context('../src/images', true);
 require("moment/locale/ja");
 
 import 'bootstrap/dist/js/bootstrap';
-import 'dropzone/dist/dropzone';
 // For bootstrap datetimepicker
 import 'tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min';
 // Import font awesome 5
