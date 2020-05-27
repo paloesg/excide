@@ -28,7 +28,7 @@ const batchUploads = (uppy) => {
       };
       // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
       let result = setTimeout(uploadDocuments(dataInput), 3000);
-    })
+    });
   })
 };
 
@@ -42,7 +42,7 @@ const multipleDocumentsUpload = (uppy) => {
       document_type: 'documents-multiple-uploads',
     });
   })
-}
+};
 
 // Multiple uploads through workflow's task
 const MultipleUploadTask = (uppy) => {
