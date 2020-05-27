@@ -40,19 +40,18 @@ class Symphony::DocumentsController < ApplicationController
   def create
     @generate_document = GenerateDocument.new(@user, @company, params[:document][:template_slug], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
     respond_to do |format|
-      # Only run textract and conversion method when document is generated successfully
       if @generate_document.success?
         document = @generate_document.document
         authorize document
         # attach and convert method
         attach_and_convert_document(document, params[:response_key])
-        # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'.
+        # Generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'.
         @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
         @batch = document&.workflow&.batch
         if params[:document_type] == 'batch-uploads'
           first_task = @batch.template&.sections.first.tasks.first
           first_workflow = @batch.workflows.order(created_at: :asc).first
-          # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable" and workflow actions of first workflow should be created
+          # Redirect to invoice page if task type is "create invoice payable" or "create invoice receivable"
           if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type and first_workflow.workflow_actions.present?
             link = new_symphony_invoice_path(workflow_name: @batch.template.slug, workflow_id: first_workflow.id, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
           else
@@ -74,7 +73,7 @@ class Symphony::DocumentsController < ApplicationController
           # the OR statement is to check that document is uploaded from document NEW pass the ternary condition
           link = document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(document.workflow.template.slug, document.workflow.id)
           output = { link_to: link, status: "ok" }
-          format.json  { render :json => output }
+          document.workflow.nil? ? (format.html { redirect_to link }) : (format.json  { render :json => output })
         end
       else
         set_templates
@@ -166,16 +165,16 @@ class Symphony::DocumentsController < ApplicationController
     @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
   end
 
-  # Attach the blob from direct upload to activestorage and convert all PDF to images (Used in method Create and index_create)
+  # Attach the blob from direct upload to activestorage and convert all PDF to images
   def attach_and_convert_document(document, response_key)
-    # Attach the blob to the document using the response given back by active storage through Uppy
-    ActiveStorage::Attachment.create(
-      name: 'raw_file',
-      record_type: 'Document',
-      record_id: document.id,
-      blob_id: ActiveStorage::Blob.find_by(key: response_key).id,
-    )
-    # Run convert job asynchronously. Conversion Service object is performed during the job.
+    if response_key.present?
+      # Attach the blob to the document using the response key given back by active storage through uppy.js file
+      ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: document.id, blob_id: ActiveStorage::Blob.find_by(key: response_key).id)
+    else
+      # For cases without response key like document NEW page and workflow "upload file" task
+      ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: document.id, blob_id: ActiveStorage::Blob.last.id)
+    end
+    # Perform convert job asynchronously to run conversion service
     ConvertPdfToImagesJob.perform_later(document)
   end
 end

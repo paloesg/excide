@@ -8,19 +8,13 @@
 = f.hidden_field(:workflow_action_id, value: @workflow_action&.id)
 .row
   .col-md-6
-    .form-group data-uppy="document[raw_file]"
+    .form-group
       - if @document.new_record?
         = f.label :raw_file, 'Choose file'
         - if params[:camera] == "true"
           = f.file_field :raw_file, accept: 'image/*', capture: 'camera', class: 'custom-file-input', id: 'customFile'
         - else
-          - if @document.raw_file.attached?
-            = image_tag @document.raw_file, width: 280, data: {behavior: 'uppy-preview'}
-          - else
-            img src="" data-behavior="uppy-preview"
-        = link_to 'Upload', '#', data: {behavior: 'uppy-trigger'}
-        .dashboard-body#Dashboard
-          / = f.file_field :raw_file, direct_upload: true, class: 'form-control'
+          = f.file_field :raw_file, direct_upload: true, class: 'form-control'
       - else
         .file-path-wrapper
           = f.label 'Raw file'
