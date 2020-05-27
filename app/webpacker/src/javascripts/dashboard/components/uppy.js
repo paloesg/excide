@@ -10,14 +10,14 @@ function uploadDocuments(data){
   $.post("/symphony/documents", data).done((result) => {
     const linkTo = result["link_to"];
     Turbolinks.visit(linkTo);
-  })
+  });
 }
 //---------------------Different multiple upload methods--------------------------------
 const batchUploads = (uppy) => {
   // Create document upon completion of all the files upload. Loop through the document and post a request per document
   uppy.on('complete', (result) => {
     result.successful.forEach((file) => {
-      let data_input = {
+      let dataInput = {
         authenticity_token: $.rails.csrfToken(),
         document_type: 'batch-uploads',
         batch_id: batchId,
@@ -27,10 +27,10 @@ const batchUploads = (uppy) => {
         response_key: file.response.key
       };
       // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
-      let result = setTimeout(uploadDocuments(data_input), 3000);
+      let result = setTimeout(uploadDocuments(dataInput), 3000);
     })
   })
-}
+};
 
 // Multiple uploads through document's INDEX page
 const multipleDocumentsUpload = (uppy) => {
@@ -87,8 +87,7 @@ function setupUppy(element){
           batch: {
             template_slug: $('#template_slug').val(),
           }
-        }).done(result => {
-          console.log("Result = ", result);
+        }).done((result) => {
           if(result.status === "ok"){
             batchId = result.batch_id;
           }
@@ -101,7 +100,7 @@ function setupUppy(element){
   });
 
   uppy.use(ActiveStorageUpload, {
-    directUploadUrl: directUploadUrl
+    directUploadUrl
   })
 
   uppy.use(Dashboard, {

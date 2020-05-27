@@ -9,12 +9,12 @@ addEventListener("direct-upload:initialize", (event) => {
     </div>
   `);
   target.previousElementSibling.querySelector(`.direct-upload__filename`).textContent = file.name;
-})
+});
 
 addEventListener("direct-upload:start", (event) => {
   const { id } = event.detail;
   const element = document.getElementById(`direct-upload-${id}`);
-  element.classList.remove("direct-upload--pending")
+  element.classList.remove("direct-upload--pending");
 })
 
 addEventListener("direct-upload:progress", (event) => {
