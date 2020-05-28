@@ -4,6 +4,7 @@
       h1 #{@survey_template.title}
       .kt-portlet
         - @survey_template.survey_sections.each do |sur_section|
+          / Define global variable for using it in _segment_fields.html.slim
           - @survey_section = sur_section
           .kt-portlet__head
             .kt-portlet__head-label
@@ -11,7 +12,8 @@
           .kt-portlet__body
             .form-group.mt-2.border.shadow.p-3
               = f.hidden_field :survey_template_id, value: @survey_template.id
-              .border.shadow.p-2.mt-3 =  @survey_section.description.body.to_rendered_html_with_layout()
+              h6 Description: 
+              span #{@survey_section.description.body.to_rendered_html_with_layout()}
             #segment-section
               = f.fields_for :segments do |segment|
                 = render 'segment_fields', f: segment
