@@ -1,7 +1,7 @@
 class XeroSessionsController < ApplicationController
   include Adapter
   after_action :verify_authorized, except: :xero_callback_and_update
-  
+
   def connect_to_xero
     authorize :xero_session, :connect_to_xero?
     @xero = Xero.new(current_user.company)
@@ -30,14 +30,12 @@ class XeroSessionsController < ApplicationController
         flash[:notice] = "User is connected to Xero."
         redirect_to new_symphony_invoice_path(workflow_name: Workflow.find_by(id: params[:workflow_id]).template.slug, workflow_id: params[:workflow_id], workflow_action_id: params[:workflow_action_id], invoice_type: params[:invoice_type])
       elsif templates.present?
-        flash[:notice] = "User signed in and connected to Xero."
-        redirect_to symphony_root_path
+        redirect_to edit_company_path, notice: "User signed in and connected to Xero."
       else
-        flash[:notice] = "User signed in and connected to Xero."
-        redirect_to new_symphony_template_path
+        redirect_to new_symphony_template_path, notice: "User signed in and connected to Xero."
       end
     else
-      redirect_to root_path, alert: "Connection to Xero failed."
+      redirect_to symphony_root_path, alert: "Connection to Xero failed."
     end
   end
 
