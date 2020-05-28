@@ -118,8 +118,13 @@
             = f.check_box :connect_xero, { class: 'form-check-input', disabled: current_user.company.basic?}
             = f.label :connect_xero, 'Enable Xero', class: 'form-check-label'
           .form-group
-            = link_to 'Connect to Xero', connect_to_xero_path, class: "btn btn-primary mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
-            = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
+            - if current_user.company.session_handle.present?
+              p
+                ' Connected Xero organisation:
+                = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
+              = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
+            - else
+              = link_to 'Connect to Xero', connect_to_xero_path, class: "btn btn-primary mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
           .form-group
             h5 Update from Xero
             = link_to 'Contacts', update_contacts_from_xero_path, method: :post, class: "btn btn-warning mr-2 #{current_user.company.basic? ? 'disabled' : nil}"

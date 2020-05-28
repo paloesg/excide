@@ -20,7 +20,7 @@
           - @users.each do |u|
             tr
               td = u.id
-              td = u.roles.map(&:display_name).join('<br />').html_safe
+              td = u.roles.where(resource_id: @company.id).map{|role| role.name.humanize}.join('<br />').html_safe
               td = u.first_name
               td = u.last_name
               td = u.email
