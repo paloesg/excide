@@ -21,6 +21,5 @@
               = f.label :survey_type, "Form Type:"
               = f.select :survey_type, ::SurveyTemplate.survey_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width", required: true}
   .col-md-9.col-sm-12
-    .kt-portlet
-      = f.fields_for :survey_sections do |section|
-        = render 'survey_section_fields', f: section
+    = f.fields_for :survey_sections do |section|
+      = render 'survey_section_fields', f: section
