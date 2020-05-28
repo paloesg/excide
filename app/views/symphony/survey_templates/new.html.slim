@@ -1,6 +1,6 @@
 .row.mb-3
   .col-md-12
-    h1 New Survey Template
+    h1 New Form Template
 .row
   .col-md-12
     = form_for(@survey_template, url: symphony_survey_templates_path(@survey_template) ) do |f|
@@ -10,13 +10,13 @@
             .kt-portlet__head
               .kt-portlet__head-label
                 h3.kt-portlet__head-title
-                  | Survey Template Details
+                  | Form Template Details
             .kt-portlet__body
               .form-group
                 = f.label :title, "Title:"
                 = f.text_field :title, class: "form-control"
               .form-group
-                = f.label :survey_type, "Workflow Type:"
+                = f.label :survey_type, "Form Type:"
                 = f.select :survey_type, ::SurveyTemplate.survey_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, {class: "dropdown-overlay task-items-dropdown-width"}
               .form-group
-                = f.submit "Save Template", class: 'btn btn-primary pull-left mb-3'
+                = f.submit "Create Form Template", class: 'btn btn-primary pull-left mb-3'
