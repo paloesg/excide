@@ -8,7 +8,7 @@ class Symphony::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :change_company, :notification_settings, :update_notification]
 
   def index
-    @users = User.where(company: @company).order(:id).includes(:roles)
+    @users = User.joins(:roles).where(:roles => {resource_id: @company.id}).order(:id).uniq
   end
 
   def show
