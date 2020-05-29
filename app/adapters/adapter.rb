@@ -26,11 +26,16 @@ module Adapter
     end
 
 #-----------------------------------------Used in xero_sessions_controller.rb-----------------------------------------------
-    def request_token(invoice_params={})
-      if invoice_params.nil?
+    def request_token(xero_connects_from_params={})
+      # Normal connecting to xero
+      if xero_connects_from_params.nil?
         @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
+      # Connect to xero when adding client to xero on the workflow SHOW page
+      elsif xero_connects_from_params[:client].present?
+        @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + xero_callback_and_update_path(workflow_id: xero_connects_from_params[:workflow_id]))
+      # Connect to xero to get invoices details
       else
-        @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + xero_callback_and_update_path(workflow_action_id: invoice_params[:workflow_action_id], workflow_id: invoice_params[:workflow_id], invoice_type: invoice_params[:invoice_type]))
+        @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + xero_callback_and_update_path(workflow_action_id: xero_connects_from_params[:workflow_action_id], workflow_id: xero_connects_from_params[:workflow_id], invoice_type: xero_connects_from_params[:invoice_type]))
       end
     end
 
