@@ -276,11 +276,7 @@ class Symphony::InvoicesController < ApplicationController
     }
     # Check if company is connected to xero
     if @company.session_handle.nil?
-      @xero = Xero.new(current_user.company)
-      @request_token = @xero.request_token(@invoice_params)
-      session[:request_token] = @request_token.token
-      session[:request_secret] = @request_token.secret
-      redirect_to @request_token.authorize_url
+      redirect_to connect_to_xero_path(xero_connects_from: @invoice_params)
     else
       @xero = Xero.new(current_user.company)
       @clients                = @company.xero_contacts
