@@ -8,7 +8,7 @@ class Symphony::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :change_company, :notification_settings, :update_notification]
 
   def index
-    @users = User.where(company: @company).order(:id).includes(:roles)
+    @users = User.joins(:roles).where(:roles => {resource_id: @company.id}).order(:id).uniq
   end
 
   def show
@@ -47,9 +47,9 @@ class Symphony::UsersController < ApplicationController
 
   def change_company
     if @user.update(user_params)
-      redirect_to symphony_root_path, notice: 'Company changed to ' + @user.company.name + '.'
+      redirect_back fallback_location: symphony_root_path, notice: 'Company changed to ' + @user.company.name + '.'
     else
-      redirect_to symphony_root_path, error: 'Sorry, there was an error when trying to switch company.'
+      redirect_back fallback_location: symphony_root_path, error: 'Sorry, there was an error when trying to switch company.'
     end
   end
 
