@@ -1,7 +1,7 @@
 h1
-  | All Survey Templates
+  | All Form Templates
   .btn-toolbar.float-right
-    = link_to 'Create Survey Template', new_symphony_survey_template_path, role: 'button', class: 'btn btn-primary'
+    = link_to 'Create Form Template', new_symphony_survey_template_path, role: 'button', class: 'btn btn-primary'
 .row
   .col-sm-12
     .table-responsive
@@ -9,8 +9,8 @@ h1
         thead
           tr
             th Title
-            th Survey Type
-            th No of Survey Sections
+            th Form Type
+            th No of Sections
             th
         tbody
           - @survey_templates.each do |survey_template|

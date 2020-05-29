@@ -50,7 +50,7 @@
           .kt-portlet__head-label
             h3.kt-portlet__head-title Subscription
         .kt-portlet__body
-          h4.mb-2 #{@company.account_type.capitalize.humanize} Plan
+          h5.mb-2 #{@company.account_type.capitalize.humanize} Plan
           / if cancel is true, it will inform the user when is their pro features going to stop
           - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data['cancel'] == true
             | You have cancelled your subscription. Your PRO features will not be accessible after the following date below:
@@ -58,23 +58,22 @@
           - else
             / check for company's account_type/plans
             - if @company.free_trial?
-              | You are currently on Symphony free trial plan, which expires in 30 days.
-              br
-              | Trial ends on:
-              h5.mt-2 = @company.trial_end_date&.strftime("%d-%b-%Y")
-              | To Upgrade, click the button below:
-              br
-              = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary mt-2'
+              p You are currently on Symphony's free trial, which gives you access to all Pro features.
+              p
+                | Trial ends on:
+                = @company.trial_end_date&.strftime("%d-%b-%Y")
+              .form-group
+                = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary'
             - elsif @company.basic?
-              | Upgrade to Symphony Pro for more advanced features!
-              br
-              = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary mt-2'
+              p Upgrade to Symphony Pro for more advanced features!
+              .form-group
+                = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary mt-2'
             - else
-              | End subscription date:
-              br
-              h5.mt-2 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
-              br
-              = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-danger'
+              p
+                | Next renewal date:
+                = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
+              .form-group
+                = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-danger'
       .kt-portlet
         .kt-portlet__head
           .kt-portlet__head-label
@@ -119,8 +118,13 @@
             = f.check_box :connect_xero, { class: 'form-check-input', disabled: current_user.company.basic?}
             = f.label :connect_xero, 'Enable Xero', class: 'form-check-label'
           .form-group
-            = link_to 'Connect to Xero', connect_to_xero_path, class: "btn btn-primary mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
-            = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
+            - if current_user.company.session_handle.present?
+              p
+                ' Connected Xero organisation:
+                = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
+              = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
+            - else
+              = link_to 'Connect to Xero', connect_to_xero_path, class: "btn btn-primary mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
           .form-group
             h5 Update from Xero
             = link_to 'Contacts', update_contacts_from_xero_path, method: :post, class: "btn btn-warning mr-2 #{current_user.company.basic? ? 'disabled' : nil}"

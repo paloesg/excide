@@ -7,7 +7,7 @@ class Symphony::WorkflowsController < ApplicationController
   before_action :set_template, except: [:toggle_all]
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero, :activities]
-  before_action :set_attributes_metadata, only: [:create, :update]
+  before_action :set_attributes_metadata, only: [:update]
   before_action :set_twilio_account, only:[:send_reminder]
 
   after_action :verify_authorized, except: [:index, :send_reminder, :stop_reminder]
@@ -29,27 +29,17 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def create
-    @workflow = Workflow.new(workflow_params)
-    authorize @workflow
-
+    @workflow = Workflow.new
     @workflow.user = current_user
     @workflow.completed = false
     @workflow.company = @company
     @workflow.template = @template
     @workflow.workflow_action_id = params[:action_id] if params[:action_id]
-
-    if params[:workflow][:client][:name].present?
-      @xero = Xero.new(@workflow.company)
-      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user)
-    end
+    authorize @workflow
 
     if @workflow.save
-      log_data_activity
-      if params[:assign]
-        redirect_to assign_symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully created.'
-      else
-        redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully created.'
-      end
+      # log_data_activity
+      redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully created.'
     else
       render :new
     end
@@ -104,6 +94,19 @@ class Symphony::WorkflowsController < ApplicationController
       end
     else
       render :edit
+    end
+  end
+
+  def destroy
+    authorize @workflow
+    @batch = @workflow.batch
+    if @workflow.destroy
+      if @batch.present?
+        redirect_to symphony_batch_path(@template.slug, @batch.id)
+        respond_to do |format|
+          format.js  { flash[:notice] = 'Workflow was successfully deleted.' }
+        end
+      end
     end
   end
 

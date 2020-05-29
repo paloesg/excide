@@ -12,8 +12,15 @@ html lang="en"
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'UA-93342323-1');
+
+      document.addEventListener('turbolinks:load', event => {
+        if (typeof gtag === 'function') {
+          gtag('config', 'UA-93342323-1', {
+            'page_location': event.data.url
+          });
+        }
+      });
 
     script src="https://js.stripe.com/v3/"
     = render 'application/favicon'
