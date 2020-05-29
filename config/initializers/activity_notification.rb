@@ -18,7 +18,7 @@ ActivityNotification.configure do |config|
   # Configure if email notification is enabled as default.
   # Note that you can configure them for each model by acts_as roles.
   # Set true when you want to turn on email notifications as default.
-  config.email_enabled = true
+  config.email_enabled = false
 
   # Configure if subscription is managed.
   # Note that this parameter must be true when you want use subscription management.
