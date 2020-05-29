@@ -55,22 +55,6 @@
                       = template.title
                     .col-sm-2
                       = submit_tag 'Go >'
-            /   = label_tag "template", "Select template:"
-            /   = select_tag "template", options_for_select(@templates.map{|t| (@template_pro.include? t and current_user.company.basic?) ? ["[PRO] " + t.title.humanize, t.slug] : [t.title.humanize, t.slug]}, disabled: @template_pro.map{|t| t.slug if current_user.company.basic?}), include_blank: true, class: "selectize", onchange: "$('#new-workflow').attr('href', '/symphony/' + $(this).val() + '/new')"
-            / .kt-form__actions
-            /   = link_to 'New Workflow', '/symphony', class: 'btn btn-primary d-block', id: 'new-workflow'
-      / .col-md-6
-      /   .kt-portlet
-      /     .kt-portlet__head
-      /       .kt-portlet__head-label
-      /         h3.kt-portlet__head-title New Recurring Workflow
-      /         = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
-      /     .kt-portlet__body
-      /       .form-group
-      /         = label_tag "template", "Select template:"
-      /         = select_tag "template", options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize", onchange: "$('#new-recurring-workflow').attr('href', '/symphony/recurring_workflows/' + $(this).val() + '/new')"
-      /       .kt-form__actions
-      /         = link_to 'New Recurring Workflow', '', class: ['btn', 'btn-primary', 'd-block', ('disabled' if current_user.company.basic?) ], id: 'new-recurring-workflow'
       .col-md-12
         .kt-portlet
           .kt-portlet__head

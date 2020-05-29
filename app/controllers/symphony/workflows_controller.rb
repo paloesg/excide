@@ -29,27 +29,17 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def create
-    # @workflow = Workflow.new(workflow_params)
     @workflow = Workflow.new
-
     @workflow.user = current_user
     @workflow.completed = false
     @workflow.company = @company
     @workflow.template = @template
     @workflow.workflow_action_id = params[:action_id] if params[:action_id]
     authorize @workflow
-    # if params[:workflow][:client][:name].present?
-    #   @xero = Xero.new(@workflow.company)
-    #   @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user)
-    # end
 
     if @workflow.save
-    #   log_data_activity
-    #   if params[:assign]
-    #     redirect_to assign_symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully created.'
-    #   else
+      # log_data_activity
       redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully created.'
-      # end
     else
       render :new
     end
