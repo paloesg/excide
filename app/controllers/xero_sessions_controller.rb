@@ -26,12 +26,20 @@ class XeroSessionsController < ApplicationController
       # Save xero lineitems to database
       @xero_client.save_xero_line_items(current_user.company)
       templates = Template.where(company: current_user.company)
-      if params[:invoice_type].present? and templates.present?
-        flash[:notice] = "User is connected to Xero."
-        redirect_to new_symphony_invoice_path(workflow_name: Workflow.find_by(id: params[:workflow_id]).template.slug, workflow_id: params[:workflow_id], workflow_action_id: params[:workflow_action_id], invoice_type: params[:invoice_type])
-      elsif templates.present?
-        flash[:notice] = "User signed in and connected to Xero."
-        redirect_to symphony_root_path
+      # Check if user's company has a template
+      if templates.present?
+        # Redirect to invoice NEW page if its an invoice task
+        if params[:invoice_type].present?
+          flash[:notice] = "User is connected to Xero."
+          redirect_to new_symphony_invoice_path(workflow_name: Workflow.find_by(id: params[:workflow_id]).template.slug, workflow_id: params[:workflow_id], workflow_action_id: params[:workflow_action_id], invoice_type: params[:invoice_type])
+        # Redirect to workflow SHOW page if add client to xero
+        elsif params[:workflow_id].present?
+          wf = Workflow.find_by(id: params[:workflow_id])
+          redirect_to symphony_workflow_path(workflow_name: wf.template.slug , workflow_id: wf.id)
+        else templates.present?
+          flash[:notice] = "User signed in and connected to Xero."
+          redirect_to symphony_root_path
+        end
       else
         flash[:notice] = "User signed in and connected to Xero."
         redirect_to new_symphony_template_path
