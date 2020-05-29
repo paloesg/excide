@@ -44,12 +44,12 @@
         .kt-portlet
           .kt-portlet__head
             .kt-portlet__head-label
-              h3.kt-portlet__head-title Your Outstanding Tasks
+              h3.kt-portlet__head-title My tasks
           .kt-portlet__body
             .kt-section
               .kt-section__content
                 - if @outstanding_actions.blank?
-                  | Hooray! You have no outstanding tasks at the moment.
+                  | Hooray! No outstanding tasks at the moment.
                 - else
                   table.table
                     thead
@@ -70,7 +70,7 @@
         .kt-portlet
           .kt-portlet__head
             .kt-portlet__head-label
-              h3.kt-portlet__head-title Workflows In Progress
+              h3.kt-portlet__head-title Workflows in progress
           .kt-portlet__body
             - if @workflows_array.blank?
               | No outstanding workflows at the moment. Click on a workflow to begin.
