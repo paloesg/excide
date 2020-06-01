@@ -282,8 +282,9 @@ class Symphony::WorkflowsController < ApplicationController
           flash[:alert] = "Xero invoice has been created successfully but the invoice totals do not match. Please check rounding and then update on Xero!"
         end
 
-        incomplete_workflows = @workflow.batch.workflows.includes([{workflow_actions: :task}, :invoice]).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where.not(invoices: {id: nil}).order(created_at: :asc)
         if @workflow.batch
+          incomplete_workflows = @workflow.batch.workflows.includes([{workflow_actions: :task}, :invoice]).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where.not(invoices: {id: nil}).order(created_at: :asc)
+
           if incomplete_workflows.count > 0 and !@workflow.invoice.xero_total_mismatch?
             next_wf = incomplete_workflows.where('workflows.created_at > ?', @workflow.created_at).first
             if next_wf.blank?

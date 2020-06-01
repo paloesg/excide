@@ -108,7 +108,7 @@
         strong.pull-right.mb-3.invoice-total-subtotal-size Total($): #{number_with_precision(@invoice.total, precision: 2, delimiter: ',')}
     .row
       .col-sm-12
-        = link_to "View Workflow", symphony_workflow_path(workflow_id: @invoice.workflow.friendly_id), role: 'button', class: 'btn btn-primary pull-right'
+        = link_to "View Workflow", symphony_workflow_path(workflow_id: @invoice.workflow.friendly_id), role: 'button', class: 'mr-2 btn btn-primary pull-right'
         - if @invoice.workflow.archive.empty?
           /To view xero invoice created in xero (if it is already created in Xero)
           - if @workflow.invoice.xero_invoice_id.present?
