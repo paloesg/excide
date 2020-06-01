@@ -1,4 +1,4 @@
-.kt-portlet.mb-3
+.kt-portlet.mb-3#history
   .kt-portlet__head
     .kt-portlet__head-label
       h3.kt-portlet__head-title History
@@ -11,6 +11,8 @@
             th Action
             th Time
         tbody
-          - get_activities = @workflow.archive.blank? ? @activities.take(10) : @activities
-          - get_activities.each do |activity|
+          - @activities.each do |activity|
             tr = render_activity activity
+          end
+      .text-center
+        = paginate @activities, views_prefix: 'dashboard', params: {anchor: "history"}

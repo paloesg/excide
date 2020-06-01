@@ -62,7 +62,8 @@ class Symphony::WorkflowsController < ApplicationController
     @surveys = Survey.all.where(workflow_id: @workflow.id)
     @templates = policy_scope(Template).assigned_templates(current_user)
     @sections = @template.sections
-    @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+    @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(5)
 
 
     if @workflow.completed?
