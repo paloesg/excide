@@ -29,6 +29,7 @@ class SendUserReminders
   def send_email_reminders
     email_reminders = @reminders.where(email: true)
     email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
+    NotificationMailer.batch_reminder(email_reminders, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
   end
 
   def send_sms_reminders
