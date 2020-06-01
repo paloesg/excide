@@ -31,7 +31,7 @@
             - if @workflow.workflowable.xero_contact_id.present?
               = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right'
             - else
-              = link_to 'Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id), method: 'post', class: 'btn btn-sm btn-primary pull-right'
+              = link_to 'Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id, workflow_id: @workflow.id), method: 'post', class: 'btn btn-sm btn-primary pull-right'
     - if @workflow.remarks.present?
       .kt-portlet
         .kt-portlet__head
