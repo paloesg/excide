@@ -6,7 +6,7 @@ class Symphony::WorkflowsController < ApplicationController
   before_action :set_company_and_roles
   before_action :set_template, except: [:toggle_all]
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero, :activities]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero]
   before_action :set_attributes_metadata, only: [:create, :update]
   before_action :set_twilio_account, only:[:send_reminder]
 
@@ -237,12 +237,6 @@ class Symphony::WorkflowsController < ApplicationController
     @workflow_actions.update_all(completed: false, completed_user_id: nil)
     @workflow.create_activity key: 'workflow.reset', owner: @user
     redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully reset.'
-  end
-
-  def activities
-    authorize @workflow
-    @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
-    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
   end
 
   def data_entry

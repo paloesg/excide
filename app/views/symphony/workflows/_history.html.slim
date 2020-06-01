@@ -14,5 +14,3 @@
           - get_activities = @workflow.archive.blank? ? @activities.take(10) : @activities
           - get_activities.each do |activity|
             tr = render_activity activity
-    - if (@activities.count > 10) and @workflow.archive.blank?
-      = link_to "View more...", activities_symphony_workflow_path(workflow_id: @workflow.id), class: 'btn btn-sm btn-outline-secondary float-right'
