@@ -17,7 +17,8 @@
             #segment-section
               = f.fields_for :segments do |segment|
                 = render 'segment_fields', f: segment
-              .links
-                = link_to_add_association 'Add Segments', f, :segments, class: 'btn btn-primary mt-3 pull-right'
+              - if sur_section.multiple_response?
+                .links
+                  = link_to_add_association 'Add Segments', f, :segments, class: 'btn btn-primary mt-3 pull-right'
         .form-inline.col-sm-12.p-0
           = f.submit 'Submit Survey', class: 'btn btn-primary col-sm-12 pull-right'
