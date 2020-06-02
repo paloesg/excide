@@ -1,9 +1,3 @@
-// Cocoon code with selectize
-$(document).on("cocoon:after-insert", function(e, addedItem) {
-  $(addedItem).find('.question-choice').selectize({
-    sortField: 'text'
-  })
-});
 $(document).on("turbolinks:load", function(){
   $(".submit-next").click(function () {
     $(".submit-position").val("next_page");
