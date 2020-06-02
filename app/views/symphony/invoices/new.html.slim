@@ -5,11 +5,15 @@
   .loading
     .loader
   .col-md-4
-    / Check for document conversion completion by comparing the page count
-    - if File.extname(@document.file_url) == ".pdf" && (!@document.converted_images.attached? || @document.converted_images.count != @page_count)
-      div.mt-md-5.text-center Document not available. Please try again later.
-    - else
+    / Check for document conversion completion (new files) or file_url exists (for old files)
+    - if @document.converted_images.attached? || @document.file_url.present?
       = render 'document'
+    / Document not converted yet or doesnt match page_count
+    - elsif @document.raw_file.attached? || @document.converted_images.count != @page_count
+      div.mt-md-5.text-center Document not available. Please try again later.
+    / Cater for existing document not attached to active storage yet
+    - elsif File.extname(@document.file_url) == ".pdf"
+      div.mt-md-5.text-center Document not available. Please try again later.
   .col-md-8
     .card.mb-3
       .row.m-2

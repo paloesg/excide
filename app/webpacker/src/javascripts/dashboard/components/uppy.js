@@ -106,7 +106,7 @@ function setupUppy(element){
   uppy.use(Dashboard, {
     inline: true,
     id: 'Dashboard',
-    theme: 'dark',
+    theme: 'light',
     target: '.dashboard-body',
     note: 'Images and video only, 2–3 files, up to 1 MB',
     width: 570,

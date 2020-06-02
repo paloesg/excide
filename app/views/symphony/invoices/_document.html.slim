@@ -1,10 +1,8 @@
 - if @documents.empty?
   | No documents available. Please upload documents first.
 - else
-  - if ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
-    .img-magnifier-container
-      = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
-  - else
+  / Check if document is from active storage or database
+  - if @document.converted_images.attached?
     - display_url = url_for(@document.converted_images.first)
     .img-magnifier-container
       div#carouselExampleIndicators.carousel.slide data-ride="carousel" data-interval="false"
@@ -26,6 +24,11 @@
           a.carousel-control-next data-slide="next" href="#carouselExampleIndicators" role="button"
             span.carousel-control-next-icon aria-hidden="true"
             span.sr-only Next
+  - elsif ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
+    .img-magnifier-container
+      = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
+  - else
+    
   end
   span.form-group.float-right
     div.kt-switch
