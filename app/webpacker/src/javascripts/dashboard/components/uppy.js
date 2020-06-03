@@ -41,11 +41,11 @@ const multipleDocumentsUpload = (uppy) => {
       successful_files: JSON.stringify(result.successful),
       document_type: 'documents-multiple-uploads',
     });
-  })
+  });
 };
 
 // Multiple uploads through workflow's task
-const MultipleUploadTask = (uppy) => {
+const multipleUploadTask = (uppy) => {
   uppy.on('complete', (result) => {
     let actionId = $(".action_id").attr('id');
     let workflowActionId = $('#'+actionId).val();
@@ -66,7 +66,7 @@ const MultipleUploadTask = (uppy) => {
       let result = setTimeout(uploadDocuments(data_input), 3000);
     })
   })
-}
+};
 //-----------------------------------Setup Uppy-----------------------------------------
 function setupUppy(element){
   let form = element.closest('form');
@@ -97,7 +97,6 @@ function setupUppy(element){
               template_slug: $('#template_slug').val(),
             }
           }).done((result) => {
-            console.log("Result :", result)
             if(result.status === "ok"){
               batchId = result.batch_id;
             }
@@ -139,7 +138,7 @@ function setupUppy(element){
     multipleDocumentsUpload(uppy);
   }
   else if($('.multipleUploadsTask').length){
-    MultipleUploadTask(uppy);
+    multipleUploadTask(uppy);
   }
 }
 //-----------------------------------Initialize Uppy------------------------------------
