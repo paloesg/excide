@@ -64,8 +64,8 @@ const multipleUploadTask = (uppy) => {
       };
       // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
       let result = setTimeout(uploadDocuments(data_input), 3000);
-    })
-  })
+    });
+  });
 };
 //-----------------------------------Setup Uppy-----------------------------------------
 function setupUppy(element){
