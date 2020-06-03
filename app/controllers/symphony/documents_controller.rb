@@ -66,7 +66,7 @@ class Symphony::DocumentsController < ApplicationController
           workflow_action = WorkflowAction.find(params[:workflow_action])
           if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
             # If batch is present, redirect to batch page, else go to workflow page
-            @batch.present? ? format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id)} : format.html{ redirect_to symphony_workflow_path(@batch.template.slug, workflow_action.workflow.id) } 
+            @batch.present? ? format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id)} : format.html{ redirect_to symphony_workflow_path(workflow_action.workflow.template.slug, workflow_action.workflow.id) } 
             flash[:notice] = "#{workflow_action.task.instructions} done!"
           else
             format.json { render json: workflow_action.errors, status: :unprocessable_entity }
