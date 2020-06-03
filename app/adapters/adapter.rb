@@ -123,7 +123,8 @@ module Adapter
       end
       line_items.each do |line_item|
         tracking = [{name: tracking_name[0]&.name, option: line_item.tracking_option_1}, {name: tracking_name[1]&.name, option: line_item.tracking_option_2}]
-        inv.add_line_item(item_code: nil, description: line_item.description, quantity: line_item.quantity, unit_amount: line_item.price, account_code: line_item.account.slice(0..2), tax_type: line_item.tax.split.last, tracking: tracking)
+        # The strip method is called to remove whitespaces
+        inv.add_line_item(item_code: nil, description: line_item.description, quantity: line_item.quantity, unit_amount: line_item.price, account_code: line_item.account.split("-")[0].strip, tax_type: line_item.tax.split.last, tracking: tracking)
       end
       inv.save
       return inv
@@ -132,7 +133,7 @@ module Adapter
     def updating_invoice_payable(xero_invoice, updated_line_items)
       #update line item with the rounding line item
       rounding_line_item = updated_line_items.last
-      xero_invoice.add_line_item(item_code: nil, description: rounding_line_item.description, quantity: rounding_line_item.quantity, unit_amount: rounding_line_item.price, account_code: rounding_line_item.account&.slice(0..2), tax_type: rounding_line_item.tax&.split&.last, tracking: nil)
+      xero_invoice.add_line_item(item_code: nil, description: rounding_line_item.description, quantity: rounding_line_item.quantity, unit_amount: rounding_line_item.price, account_code: rounding_line_item.account&.split("-")[0].strip, tax_type: rounding_line_item.tax&.split&.last, tracking: nil)
       xero_invoice.save
     end
   end

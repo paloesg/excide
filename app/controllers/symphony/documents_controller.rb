@@ -38,44 +38,48 @@ class Symphony::DocumentsController < ApplicationController
   end
 
   def create
-    @generate_document = GenerateDocumentAction.new(@user, @company, params[:workflow], params[:workflow_action], document_params, params[:document_type], params[:document][:template_id], params[:batch_id]).run
-    generated_document = @generate_document.document
-    authorize generated_document
+    @generate_document = GenerateDocument.new(@user, @company, params[:document][:template_slug], params[:workflow], params[:workflow_action], params[:document_type], params[:batch_id]).run
     respond_to do |format|
       if @generate_document.success?
-        d = Document.find_by(id: generated_document.id)
-        # Only generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'. Check for workflow present in case user uploads using document NEW page instead.
-        @generate_textract = GenerateTextract.new(generated_document.id).run_generate if d.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
-        # Run convert job asynchronously. Service object is performed during the job.
-        ConvertPdfToImagesJob.perform_later(generated_document)
-        # Upload in batches dropzone
+        document = @generate_document.document
+        authorize document
+        # attach and convert method
+        attach_and_convert_document(document, params[:response_key])
+        # Generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'.
+        @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
+        @batch = document&.workflow&.batch
         if params[:document_type] == 'batch-uploads'
-          batch = generated_document.workflow.batch
-          first_task = batch.template&.sections.first.tasks.first
-          first_workflow = batch.workflows.order(created_at: :asc).first
-
-          # A link for redirect to invoice page if task type is "create invoice payable" or "create invoice receivable" and workflow actions of first workflow should be created
+          first_task = @batch.template&.sections.first.tasks.first
+          first_workflow = @batch.workflows.order(created_at: :asc).first
+          # Redirect to invoice page if task type is "create invoice payable" or "create invoice receivable"
           if ['create_invoice_payable', 'create_invoice_receivable'].include? first_task.task_type and first_workflow.workflow_actions.present?
-            link = new_symphony_invoice_path(workflow_name: generated_document.workflow.template.slug, workflow_id: first_workflow.id, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
+            link = new_symphony_invoice_path(workflow_name: @batch.template.slug, workflow_id: first_workflow.id, workflow_action_id: first_workflow.workflow_actions.first, invoice_type: "#{first_task.task_type == 'create_invoice_payable' ? 'payable' : 'receivable' }")
           else
-            link = symphony_batch_path(batch_template_name: generated_document.workflow.template.slug, id: d.workflow.batch)
+            link = symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch)
           end
-           #return output in json
-          output = { link_to: link, status: "ok", message: "batch documents created", document: generated_document.id, batch: batch.id, template: generated_document.workflow.template.slug }
-          flash[:notice] = "New batch of #{Batch.find(params[:batch_id]).workflows.count} documents successfully created!"
+          #return output in json
+          output = { link_to: link, status: "ok", message: "batch documents created", document: document.id, batch: @batch.id, template: @batch.template.slug }
+          flash[:notice] = "New batch of #{@batch.workflows.count} documents successfully created!"
           format.json  { render :json => output }
-        # Upload in workflow action with task type: upload file for batches
-        elsif params[:upload_type] == "batch_upload"
-          @batch = @document.workflow.batch
+        # Upload single file task in workflow and batch!
+        elsif params[:upload_type] == "file-upload-task"
           workflow_action = WorkflowAction.find(params[:workflow_action])
           if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
-            format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id), notice: "#{@workflow_action.task.instructions} done!"}
+            # If batch is present, redirect to batch page, else go to workflow page
+            @batch.present? ? format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id)} : format.html{ redirect_to symphony_workflow_path(workflow_action.workflow.template.slug, workflow_action.workflow.id) } 
+            flash[:notice] = "#{workflow_action.task.instructions} done!"
           else
             format.json { render json: workflow_action.errors, status: :unprocessable_entity }
           end
+        # Upload multiple file task in workflow and batch!
+        elsif params[:document_type] == "multiple-file-upload-task"
+          workflow = @company.workflows.find(params[:workflow])
+          link = workflow.batch.present? ? symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id) : symphony_workflow_path(document.workflow.template.slug, document.workflow.id)
+          output = { link_to: link, status: "ok" }
+          format.json  { render :json => output }
         else
-          # the OR statement is to check that document is uploaded from document NEW pass the ternary condition
-          format.html { redirect_to generated_document.workflow.nil? ? symphony_documents_path : symphony_workflow_path(generated_document.workflow.template.slug, generated_document.workflow.id), notice: 'Document was successfully created.' }
+          # For document single file upload
+          format.html { redirect_to symphony_documents_path } if document.workflow.nil?
         end
       else
         set_templates
@@ -93,13 +97,14 @@ class Symphony::DocumentsController < ApplicationController
 
   def index_create
     @files = []
-    params[:url_files].each do |url_file|
-      document = Document.new(file_url: url_file)
-      document.company = @company
-      document.user = @user
-      document.save
-      @files.append document
+    parsed_files = JSON.parse(params[:successful_files])
+    parsed_files.each do |file|
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run 
+      document = @generate_document.document
       authorize document
+      # attach and convert method with the response key to create blob
+      attach_and_convert_document(document, file['response']['key'])
+      @files.append document
     end
     respond_to do |format|
       format.html { redirect_to multiple_edit_symphony_documents_path files: @files }
@@ -159,10 +164,23 @@ class Symphony::DocumentsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def document_params
-    params.require(:document).permit(:filename, :remarks, :company_id, :date_signed, :date_uploaded, :file_url, :workflow_id, :document_template_id, converted_image: [])
+    params.require(:document).permit(:filename, :remarks, :company_id, :date_signed, :date_uploaded, :file_url, :workflow_id, :document_template_id, :raw_file, converted_images: [])
   end
 
   def set_s3_direct_post
     @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
+  end
+
+  # Attach the blob from direct upload to activestorage and convert all PDF to images
+  def attach_and_convert_document(document, response_key)
+    if response_key.present?
+      # Attach the blob to the document using the response key given back by active storage through uppy.js file
+      ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: document.id, blob_id: ActiveStorage::Blob.find_by(key: response_key).id)
+    else
+      # For cases without response key like document NEW page and workflow "upload file" task
+      ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: document.id, blob_id: ActiveStorage::Blob.last.id)
+    end
+    # Perform convert job asynchronously to run conversion service
+    ConvertPdfToImagesJob.perform_later(document)
   end
 end
