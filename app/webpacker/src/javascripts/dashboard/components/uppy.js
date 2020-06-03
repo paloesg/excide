@@ -16,25 +16,19 @@ function uploadDocuments(data){
 const batchUploads = (uppy) => {
   // Create document upon completion of all the files upload. Loop through the document and post a request per document
   uppy.on('complete', (result) => {
-    if ($('#template_slug').val() != ""){
-      result.successful.forEach((file) => {
-        let dataInput = {
-          authenticity_token: $.rails.csrfToken(),
-          document_type: 'batch-uploads',
-          batch_id: batchId,
-          document: {
-            template_slug: $('#template_slug').val()
-          },
-          response_key: file.response.key
-        };
-        // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
-        let result = setTimeout(uploadDocuments(dataInput), 3000);
-      });
-    }
-    else {
-      // Cancel uploading process if template is not found
-      uppy.cancelAll();
-    }
+    result.successful.forEach((file) => {
+      let dataInput = {
+        authenticity_token: $.rails.csrfToken(),
+        document_type: 'batch-uploads',
+        batch_id: batchId,
+        document: {
+          template_slug: $('#template_slug').val()
+        },
+        response_key: file.response.key
+      };
+      // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
+      let result = setTimeout(uploadDocuments(dataInput), 3000);
+    });
   });
 };
 
@@ -87,6 +81,12 @@ function setupUppy(element){
     allowMultipleUploads: false,
     // In case of typos
     logger: Uppy.debugLogger,
+    restrictions: {
+      maxFileSize: null,
+      maxNumberOfFiles: 30,
+      minNumberOfFiles: null,
+      allowedFileTypes: null
+    },
     // Create batch on upload, only when .batchUploads element exists (which is dashboard drag and drop)
     onBeforeUpload: (files) => {
       if ($('#template_slug').val() != ""){
@@ -106,11 +106,10 @@ function setupUppy(element){
             }
           })
         }
-      }        
+      }
       else{
-        if(!alert('No template found. Please refresh and try again!')){
-          window.location.reload(); 
-        };
+        alert('No template found. Please refresh and try again!');
+        return false;
       }
     }
   });
