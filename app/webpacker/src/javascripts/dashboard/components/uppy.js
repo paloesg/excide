@@ -34,7 +34,6 @@ const batchUploads = (uppy) => {
 
 // Multiple uploads through document's INDEX page
 const multipleDocumentsUpload = (uppy) => {
-  console.log("IM at Multiple documents uploads");
   uppy.on('complete', (result) => {
     $.post("/symphony/documents/index-create", {
       authenticity_token: $.rails.csrfToken(),
@@ -47,7 +46,6 @@ const multipleDocumentsUpload = (uppy) => {
 
 // Multiple uploads through workflow's task
 const MultipleUploadTask = (uppy) => {
-  console.log("IM at Multiple  uploads task");
   uppy.on('complete', (result) => {
     let actionId = $(".action_id").attr('id');
     let workflowActionId = $('#'+actionId).val();
