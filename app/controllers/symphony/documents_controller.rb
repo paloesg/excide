@@ -73,7 +73,7 @@ class Symphony::DocumentsController < ApplicationController
           end
         # Upload multiple file task in workflow and batch!
         elsif params[:document_type] == "multiple-file-upload-task"
-          workflow = Workflow.find(params[:workflow])
+          workflow = @company.workflows.find(params[:workflow])
           link = workflow.batch.present? ? symphony_batch_path(batch_template_name: workflow.batch.template.slug, id: workflow.batch.id) : symphony_workflow_path(document.workflow.template.slug, document.workflow.id)
           output = { link_to: link, status: "ok" }
           format.json  { render :json => output }
