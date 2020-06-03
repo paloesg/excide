@@ -16,24 +16,31 @@ function uploadDocuments(data){
 const batchUploads = (uppy) => {
   // Create document upon completion of all the files upload. Loop through the document and post a request per document
   uppy.on('complete', (result) => {
-    result.successful.forEach((file) => {
-      let dataInput = {
-        authenticity_token: $.rails.csrfToken(),
-        document_type: 'batch-uploads',
-        batch_id: batchId,
-        document: {
-          template_slug: $('#template_slug').val()
-        },
-        response_key: file.response.key
-      };
-      // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
-      let result = setTimeout(uploadDocuments(dataInput), 3000);
-    });
-  })
+    if ($('#template_slug').val() != ""){
+      result.successful.forEach((file) => {
+        let dataInput = {
+          authenticity_token: $.rails.csrfToken(),
+          document_type: 'batch-uploads',
+          batch_id: batchId,
+          document: {
+            template_slug: $('#template_slug').val()
+          },
+          response_key: file.response.key
+        };
+        // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
+        let result = setTimeout(uploadDocuments(dataInput), 3000);
+      });
+    }
+    else {
+      // Cancel uploading process if template is not found
+      uppy.cancelAll();
+    }
+  });
 };
 
 // Multiple uploads through document's INDEX page
 const multipleDocumentsUpload = (uppy) => {
+  console.log("IM at Multiple documents uploads");
   uppy.on('complete', (result) => {
     $.post("/symphony/documents/index-create", {
       authenticity_token: $.rails.csrfToken(),
@@ -46,6 +53,7 @@ const multipleDocumentsUpload = (uppy) => {
 
 // Multiple uploads through workflow's task
 const MultipleUploadTask = (uppy) => {
+  console.log("IM at Multiple  uploads task");
   uppy.on('complete', (result) => {
     let actionId = $(".action_id").attr('id');
     let workflowActionId = $('#'+actionId).val();
@@ -79,22 +87,30 @@ function setupUppy(element){
     allowMultipleUploads: false,
     // In case of typos
     logger: Uppy.debugLogger,
-    // Create batch before upload, only when .batchUploads element exists (which is dashboard drag and drop)
+    // Create batch on upload, only when .batchUploads element exists (which is dashboard drag and drop)
     onBeforeUpload: (files) => {
-      if($('.batchUploads').length){
-        $.post("/symphony/batches", {
-          authenticity_token: $.rails.csrfToken(),
-          batch: {
-            template_slug: $('#template_slug').val(),
-          }
-        }).done((result) => {
-          if(result.status === "ok"){
-            batchId = result.batch_id;
-          }
-          else {
-            Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
-          }
-        })
+      if ($('#template_slug').val() != ""){
+        if($('.batchUploads').length){
+          $.post("/symphony/batches", {
+            authenticity_token: $.rails.csrfToken(),
+            batch: {
+              template_slug: $('#template_slug').val(),
+            }
+          }).done((result) => {
+            console.log("Result :", result)
+            if(result.status === "ok"){
+              batchId = result.batch_id;
+            }
+            else {
+              Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
+            }
+          })
+        }
+      }        
+      else{
+        if(!alert('No template found. Please refresh and try again!')){
+          window.location.reload(); 
+        };
       }
     }
   });
