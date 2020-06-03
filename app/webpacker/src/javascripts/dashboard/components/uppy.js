@@ -80,10 +80,12 @@ function setupUppy(element){
     // In case of typos
     logger: Uppy.debugLogger,
     restrictions: {
-      maxFileSize: null,
+      // 5MB size
+      maxFileSize: 5 * 1024 * 1024,
       maxNumberOfFiles: 30,
       minNumberOfFiles: null,
-      allowedFileTypes: null
+      // Only allow images or PDF
+      allowedFileTypes: ['image/*', '.pdf']
     },
     // Create batch on upload, only when .batchUploads element exists (which is dashboard drag and drop)
     onBeforeUpload: (files) => {
