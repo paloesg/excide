@@ -81,7 +81,10 @@ class ClientsController < ApplicationController
   private
 
   def xero_login
-    redirect_to user_xero_omniauth_authorize_path and return
+    redirect_to connect_to_xero_path(xero_connects_from: {
+      client: 'client',
+      workflow_id: params[:workflow_id]
+    })
   end
 
   def set_client

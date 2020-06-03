@@ -7,7 +7,7 @@ class Symphony::WorkflowsController < ApplicationController
   before_action :set_template, except: [:toggle_all]
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero]
-  before_action :set_attributes_metadata, only: [:create, :update]
+  before_action :set_attributes_metadata, only: [:update]
   before_action :set_twilio_account, only:[:send_reminder]
 
   after_action :verify_authorized, except: [:index, :send_reminder, :stop_reminder]
@@ -29,27 +29,17 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def create
-    @workflow = Workflow.new(workflow_params)
-    authorize @workflow
-
+    @workflow = Workflow.new
     @workflow.user = current_user
     @workflow.completed = false
     @workflow.company = @company
     @workflow.template = @template
     @workflow.workflow_action_id = params[:action_id] if params[:action_id]
-
-    if params[:workflow][:client][:name].present?
-      @xero = Xero.new(@workflow.company)
-      @workflow.workflowable = Client.create(name: params[:workflow][:client][:name], identifier: params[:workflow][:client][:identifier], company: @company, user: current_user)
-    end
+    authorize @workflow
 
     if @workflow.save
-      log_data_activity
-      if params[:assign]
-        redirect_to assign_symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully created.'
-      else
-        redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully created.'
-      end
+      # log_data_activity
+      redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully created.'
     else
       render :new
     end
@@ -191,6 +181,7 @@ class Symphony::WorkflowsController < ApplicationController
         users = User.with_role(current_task.role.name.to_sym, @company)
         current_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{current_action.task.instructions}", workflow_action_id: current_action.id }, send_later: false
         users.each do |user|
+          NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
           # Only send slack, whatsapp and sms notification when company is PRO
           if @company.pro?
             # Check if slack is connected using company.slack_access_response.present?
@@ -287,8 +278,9 @@ class Symphony::WorkflowsController < ApplicationController
           flash[:alert] = "Xero invoice has been created successfully but the invoice totals do not match. Please check rounding and then update on Xero!"
         end
 
-        incomplete_workflows = @workflow.batch.workflows.includes([{workflow_actions: :task}, :invoice]).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where.not(invoices: {id: nil}).order(created_at: :asc)
         if @workflow.batch
+          incomplete_workflows = @workflow.batch.workflows.includes([{workflow_actions: :task}, :invoice]).where(workflow_actions: {tasks: {id: workflow_action.task_id}, completed: false}).where.not(invoices: {id: nil}).order(created_at: :asc)
+
           if incomplete_workflows.count > 0 and !@workflow.invoice.xero_total_mismatch?
             next_wf = incomplete_workflows.where('workflows.created_at > ?', @workflow.created_at).first
             if next_wf.blank?
