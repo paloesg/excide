@@ -103,7 +103,7 @@ function setupUppy(element){
             else {
               Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
             }
-          })
+          });
         }
       }
       else{
@@ -115,7 +115,7 @@ function setupUppy(element){
 
   uppy.use(ActiveStorageUpload, {
     directUploadUrl
-  })
+  });
 
   uppy.use(Dashboard, {
     inline: true,
@@ -129,7 +129,7 @@ function setupUppy(element){
     metaFields: [
       { id: 'name', name: 'Name', placeholder: 'file name' }
     ]
-  })
+  });
 
   if($('.batchUploads').length){
     batchUploads(uppy);
@@ -140,7 +140,7 @@ function setupUppy(element){
   else if($('.multipleUploadsTask').length){
     multipleUploadTask(uppy);
   }
-}
+};
 //-----------------------------------Initialize Uppy------------------------------------
 document.addEventListener('turbolinks:load', () => {
   document.querySelectorAll('.dashboard-body').forEach((element) => setupUppy(element));
