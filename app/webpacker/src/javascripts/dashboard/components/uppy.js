@@ -140,7 +140,7 @@ function setupUppy(element){
   else if($('.multipleUploadsTask').length){
     multipleUploadTask(uppy);
   }
-};
+}
 //-----------------------------------Initialize Uppy------------------------------------
 document.addEventListener('turbolinks:load', () => {
   document.querySelectorAll('.dashboard-body').forEach((element) => setupUppy(element));
