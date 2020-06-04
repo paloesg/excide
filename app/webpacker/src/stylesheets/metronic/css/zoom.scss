@@ -12,8 +12,9 @@
 
 * {box-sizing: border-box;}
 
-.img-magnifier-container {
+.img-magnifier-container > div > div{
   position: relative;
+  overflow: visible !important;
 }
 
 .img-magnifier-glass {
