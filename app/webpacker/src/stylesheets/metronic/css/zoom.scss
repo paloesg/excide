@@ -12,6 +12,10 @@
 
 * {box-sizing: border-box;}
 
+.img-magnifier-container {
+  position: relative;
+}
+
 .img-magnifier-container > div > div{
   position: relative;
   overflow: visible !important;
