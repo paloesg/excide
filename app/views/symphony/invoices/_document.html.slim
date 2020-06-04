@@ -14,8 +14,7 @@
         div.carousel-inner
           - @document.converted_images.each.with_index(0) do |image, index|
             div. class=["carousel-item", index.zero? ? 'active' : '' ]
-              = link_to url_for(image)
-                = image_tag(image, class: 'img-responsive zoomed-image')
+              = link_to image_tag(image, class: 'img-responsive zoomed-image')
           end
         - if @document.converted_images.count > 1
           a.carousel-control-prev data-slide="prev" href="#carouselExampleIndicators" role="button"
