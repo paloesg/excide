@@ -24,16 +24,15 @@
           a.carousel-control-next data-slide="next" href="#carouselExampleIndicators" role="button"
             span.carousel-control-next-icon aria-hidden="true"
             span.sr-only Next
-  - elsif ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
+  - elsif @document.raw_file.attached?
+    .img-magnifier-container
+      = link_to image_tag(@document.raw_file, class: 'img-responsive zoomed-image'), @document.raw_file , {target: "_blank"}
+  - else
     .img-magnifier-container
       = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
-  - else
-    
-  end
   span.form-group.float-right
     div.kt-switch
       label.form-inline
         = check_box_tag "zoom", "true", false
         span
         i.form-control-lg.p-lg-1.form-inline.flaticon2-magnifier-tool
-end

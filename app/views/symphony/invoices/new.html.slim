@@ -5,14 +5,10 @@
   .loading
     .loader
   .col-md-4
-    / Check for document conversion completion (new files) or file_url exists (for old files)
-    - if @document.converted_images.attached? || @document.file_url.present?
+    / First two checks for old pdf and non pdf files, third checks for new non pdf files.
+    - if (@document.converted_images.attached? && @document.converted_images.count == @page_count) || (@document.file_url.present? && File.extname(@document.file_url) != ".pdf") || (@document.raw_file.attached? && @document.raw_file.content_type != "application/pdf")
       = render 'document'
-    / Document not converted yet or doesnt match page_count
-    - elsif @document.raw_file.attached? || @document.converted_images.count != @page_count
-      div.mt-md-5.text-center Document not available. Please try again later.
-    / Cater for existing document not attached to active storage yet
-    - elsif File.extname(@document.file_url) == ".pdf"
+    - else
       div.mt-md-5.text-center Document not available. Please try again later.
   .col-md-8
     .card.mb-3
