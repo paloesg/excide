@@ -44,7 +44,7 @@ class CompaniesController < ApplicationController
       set_company_roles
       redirect_to edit_company_path, notice: 'Company was successfully updated.'
     else
-      redirect_to edit_company_path, alert: 'Error updating company.'
+      render :edit
     end
   end
 
