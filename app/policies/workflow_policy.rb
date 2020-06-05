@@ -25,7 +25,7 @@ class WorkflowPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user_admin?
+    user_admin? or user.has_role?(:associate, user.company)
   end
 
   def workflow_action_complete?
