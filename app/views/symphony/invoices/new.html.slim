@@ -5,8 +5,8 @@
   .loading
     .loader
   .col-md-4
-    / First two checks for old pdf and non pdf files, third checks for new non pdf files.
-    - if (@document.converted_images.attached? && @document.converted_images.count == @page_count) || (@document.file_url.present? && File.extname(@document.file_url) != ".pdf") || (@document.raw_file.attached? && @document.raw_file.content_type != "application/pdf")
+    / First two checks for old pdf and non pdf files, third checks for new non pdf files. && @document.converted_images.count == @page_count
+    - if (@document.converted_images.attached?) || (@document.file_url.present? && File.extname(@document.file_url) != ".pdf") || (@document.raw_file.attached? && @document.raw_file.content_type != "application/pdf")
       = render 'document'
     - else
       div.mt-md-5.text-center Document not available. Please try again later.
