@@ -16,10 +16,14 @@
   position: relative;
 }
 
+.img-magnifier-container > div > div {
+  position: relative;
+  overflow: visible !important;
+}
+
 .img-magnifier-glass {
   position: absolute;
-  border: 3px solid #000;
-  border-radius: 50%;
+  border: 1px solid #000;
   cursor: none;
   /*Set the size of the magnifier glass:*/
   width: 150px;
