@@ -18,8 +18,6 @@ require("turbolinks").start();
 // const imagePath = (name) => images(name, true)
 // Importing images through webpack
 const images = require.context('../src/images', true);
-// Moments
-require("moment/locale/ja");
 
 import 'bootstrap/dist/js/bootstrap';
 // For bootstrap datetimepicker
