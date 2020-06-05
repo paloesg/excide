@@ -247,7 +247,11 @@ class Symphony::WorkflowsController < ApplicationController
     xero_invoice = @xero.create_invoice(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency, @workflow.invoice.invoice_type)
     @workflow.invoice.xero_invoice_id = xero_invoice.id
     @workflow.documents.each do |document|
-      xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+      if document.raw_file.attached?
+        xero_invoice.attach_data(document.raw_file.filename.to_s, Net::HTTP.get(URI.parse(document.raw_file.service_url)), document.raw_file.blob.content_type)
+      else
+        xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+      end
     end
     @workflow.invoice.save
     #this is to send invoice to xero 'awaiting approval'
