@@ -248,7 +248,8 @@ class Symphony::WorkflowsController < ApplicationController
     @workflow.invoice.xero_invoice_id = xero_invoice.id
     @workflow.documents.each do |document|
       if document.raw_file.attached?
-        xero_invoice.attach_data(document.raw_file.filename.to_s, Net::HTTP.get(URI.parse(document.raw_file.service_url)), document.raw_file.blob.content_type)
+        # Remove whitespaces for filename and certain special characters
+        xero_invoice.attach_data(document.raw_file.filename.to_s.gsub(/\s+/, "").gsub(/[!@%&$"]/,''), Net::HTTP.get(URI.parse(document.raw_file.service_url)), document.raw_file.blob.content_type)
       else
         xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
       end
