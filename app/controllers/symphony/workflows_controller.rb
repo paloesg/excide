@@ -2,6 +2,8 @@ class Symphony::WorkflowsController < ApplicationController
   layout 'metronic/application'
   include Adapter
 
+  rescue_from Xeroizer::InvoiceNotFoundError, with: :xero_error_invoice_not_found
+
   before_action :authenticate_user!
   before_action :set_company_and_roles
   before_action :set_template, except: [:toggle_all]
@@ -390,6 +392,12 @@ class Symphony::WorkflowsController < ApplicationController
         @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last} }
       end
     end
+  end
+
+  def xero_error_invoice_not_found(e)
+    message = 'Xero returned an API error - ' + e.to_s + '. Please check the document that was uploaded or contact admin.'
+    Rails.logger.error("Xero API error: #{message}")
+    redirect_to session[:previous_url], alert: message
   end
 
   def workflow_params
