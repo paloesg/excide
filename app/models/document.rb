@@ -16,7 +16,6 @@ class Document < ApplicationRecord
   has_many_attached :converted_images
 
   before_validation :set_filename
-  # after_create :convert_to_image
   after_destroy :delete_file_on_s3
 
   include AlgoliaSearch
@@ -47,7 +46,13 @@ class Document < ApplicationRecord
   end
 
   def delete_file_on_s3
-    key = self.file_url.split('amazonaws.com/')[1]
-    S3_BUCKET.object(key).delete
+    # For those document using the old uploading system
+    if self.file_url.present?
+      key = self.file_url.split('amazonaws.com/')[1]
+      S3_BUCKET.object(key).delete
+    end
+    # File uploaded by active storage
+    self.raw_file.purge_later if self.raw_file.present?
+    self.converted_images.purge_later if self.converted_images.present?
   end
 end

@@ -2,6 +2,8 @@ class Symphony::WorkflowsController < ApplicationController
   layout 'metronic/application'
   include Adapter
 
+  rescue_from Xeroizer::InvoiceNotFoundError, with: :xero_error_invoice_not_found
+
   before_action :authenticate_user!
   before_action :set_company_and_roles
   before_action :set_template, except: [:toggle_all]
@@ -247,7 +249,12 @@ class Symphony::WorkflowsController < ApplicationController
     xero_invoice = @xero.create_invoice(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency, @workflow.invoice.invoice_type)
     @workflow.invoice.xero_invoice_id = xero_invoice.id
     @workflow.documents.each do |document|
-      xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+      if document.raw_file.attached?
+        # Remove whitespaces for filename and certain special characters
+        xero_invoice.attach_data(document.raw_file.filename.to_s.gsub(/\s+/, "").gsub(/[!@%&$"]/,''), Net::HTTP.get(URI.parse(document.raw_file.service_url)), document.raw_file.blob.content_type)
+      else
+        xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+      end
     end
     @workflow.invoice.save
     #this is to send invoice to xero 'awaiting approval'
@@ -385,6 +392,12 @@ class Symphony::WorkflowsController < ApplicationController
         @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last} }
       end
     end
+  end
+
+  def xero_error_invoice_not_found(e)
+    message = 'Xero returned an API error - ' + e.to_s + '. Please check the document that was uploaded or contact admin.'
+    Rails.logger.error("Xero API error: #{message}")
+    redirect_to session[:previous_url], alert: message
   end
 
   def workflow_params
