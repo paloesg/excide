@@ -28,5 +28,5 @@
         - @company_roles.each do |role|
           .form-group.form-check
             label.form-check-label
-              = check_box_tag 'user[role_ids][]', role.id, (@user.roles.include? role), class: 'form-check-input'
+              = check_box_tag 'user[role_ids][]', role.id, (@user.roles.include? role), disabled: true, class: 'form-check-input'
               = role.name.humanize
