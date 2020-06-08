@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   def xero_unauthorized(e)
     message = 'Xero authorization failed - ' + CGI.unescape(e.request.body)
     Rails.logger.error("Xero OAuth error: #{message}")
-    redirect_to edit_company_path, alert: message
+    redirect_to session[:previous_url], alert: message
   end
 
   def xero_rate_limit_exceeded
