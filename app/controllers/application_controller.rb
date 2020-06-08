@@ -80,6 +80,6 @@ class ApplicationController < ActionController::Base
   end
 
   def record_not_found
-    redirect_to symphony_root_path, Notice: 'Company changed!'
+    redirect_to symphony_root_path
   end
 end
