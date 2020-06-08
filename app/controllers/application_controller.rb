@@ -15,6 +15,9 @@ class ApplicationController < ActionController::Base
   rescue_from OAuth::Unauthorized, with: :xero_unauthorized
   rescue_from Xeroizer::OAuth::RateLimitExceeded, with: :xero_rate_limit_exceeded
 
+  #Change company in pages that have params in the url. Eg. batches SHOW or workflow SHOW. It will return an error because the changed company doesn't have the particular id to find batch or workflow. Hence this is to rescue from all pages
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+
   after_action :store_location
 
   def store_location
@@ -74,5 +77,9 @@ class ApplicationController < ActionController::Base
     message = 'You have exceeded the number of times you can access Xero in 1 minute. Please wait a few minutes and try again.'
     Rails.logger.error("Xero error: Rate limited exceeded")
     redirect_to symphony_root_path, alert: message
+  end
+
+  def record_not_found
+    redirect_to symphony_root_path, Notice: 'Company changed!'
   end
 end
