@@ -80,9 +80,9 @@ function setupUppy(element){
     // In case of typos
     logger: Uppy.debugLogger,
     restrictions: {
-      // 5MB size
+      // 5MB max size
       maxFileSize: 5 * 1024 * 1024,
-      maxNumberOfFiles: 30,
+      maxNumberOfFiles: 50,
       minNumberOfFiles: null,
       // Only allow images or PDF
       allowedFileTypes: ['image/*', '.pdf']
@@ -107,7 +107,7 @@ function setupUppy(element){
         }
       }
       else{
-        alert('No template found. Please refresh and try again!');
+        alert('No template found. Please select a template and upload again!');
         return false;
       }
     }
