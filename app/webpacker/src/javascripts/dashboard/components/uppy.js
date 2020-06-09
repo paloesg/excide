@@ -107,7 +107,7 @@ function setupUppy(element){
         }
       }
       else{
-        alert('No template found. Please refresh and try again!');
+        alert('No template found. Please select a template and upload again!');
         return false;
       }
     }
