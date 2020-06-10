@@ -47,9 +47,9 @@ class Symphony::UsersController < ApplicationController
 
   def change_company
     if @user.update(user_params)
-      redirect_back fallback_location: symphony_root_path, notice: 'Company changed to ' + @user.company.name + '.'
+      redirect_to symphony_root_path, notice: 'Company changed to ' + @user.company.name + '.'
     else
-      redirect_back fallback_location: symphony_root_path, error: 'Sorry, there was an error when trying to switch company.'
+      redirect_to symphony_root_path, error: 'Sorry, there was an error when trying to switch company.'
     end
   end
 
