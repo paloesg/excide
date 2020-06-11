@@ -24,7 +24,14 @@ class Symphony::BatchesController < ApplicationController
 
   def create
     @template = Template.find_by(slug: params[:batch][:template_slug])
-    @generate_batch = GenerateBatch.new(current_user, @template).run
+    files = params[:batch][:successful_results]
+    # Add attributes of batches
+    @batch = Batch.new
+    @batch.user_id = current_user.id
+    @batch.template_id = @template.id
+    @batch.company_id = current_user.company.id
+    # Run background job to generate documents
+    BatchUploadsJob.new(current_user, @template, files).perform_later
     authorize @generate_batch.batch
     respond_to do |format|
       if @generate_batch.success?

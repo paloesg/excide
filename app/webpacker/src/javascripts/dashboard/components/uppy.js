@@ -16,19 +16,36 @@ function uploadDocuments(data){
 const batchUploads = (uppy) => {
   // Create document upon completion of all the files upload. Loop through the document and post a request per document
   uppy.on('complete', (result) => {
-    result.successful.forEach((file) => {
-      let dataInput = {
+    console.log("Results: ", result.successful);
+    // result.successful.forEach((file) => {
+    if($('.batchUploads').length){
+      $.post("/symphony/batches", {
         authenticity_token: $.rails.csrfToken(),
-        document_type: 'batch-uploads',
-        batch_id: batchId,
-        document: {
-          template_slug: $('#template_slug').val()
-        },
-        response_key: file.response.key
-      };
-      // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
-      let result = setTimeout(uploadDocuments(dataInput), 3000);
-    });
+        batch: {
+          template_slug: $('#template_slug').val(),
+          successful_results: result.successful
+        }
+      }).done((result) => {
+        if(result.status === "ok"){
+          batchId = result.batch_id;
+        }
+        else {
+          Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
+        }
+      });
+    }
+      // let dataInput = {
+      //   authenticity_token: $.rails.csrfToken(),
+      //   document_type: 'batch-uploads',
+      //   batch_id: batchId,
+      //   document: {
+      //     template_slug: $('#template_slug').val()
+      //   },
+      //   response_key: file.response.key
+      // };
+      // // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
+      // let result = setTimeout(uploadDocuments(dataInput), 3000);
+    // });
   });
 };
 
@@ -87,26 +104,9 @@ function setupUppy(element){
       // Only allow images or PDF
       allowedFileTypes: ['image/*', '.pdf']
     },
-    // Create batch on upload, only when .batchUploads element exists (which is dashboard drag and drop)
+    // Check if there is a templat value, before uploading files
     onBeforeUpload: (files) => {
-      if ($('#template_slug').val() != ""){
-        if($('.batchUploads').length){
-          $.post("/symphony/batches", {
-            authenticity_token: $.rails.csrfToken(),
-            batch: {
-              template_slug: $('#template_slug').val(),
-            }
-          }).done((result) => {
-            if(result.status === "ok"){
-              batchId = result.batch_id;
-            }
-            else {
-              Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
-            }
-          });
-        }
-      }
-      else{
+      if ($('#template_slug').val() == ""){
         alert('No template found. Please select a template and upload again!');
         return false;
       }
