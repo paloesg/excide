@@ -36,7 +36,7 @@ class Symphony::BatchesController < ApplicationController
       if @batch.save!
         # Run background job to generate documents
         BatchUploadsJob.perform_later(current_user, @template, files, @batch, document_type)
-        flash[:notice] = "Batch created"
+        flash[:notice] = "Your documents are still being processed. Please refresh and start your first task."
         format.json { render json: { status: "ok", link_to: symphony_batch_path(@template.slug, @batch.id) } }
       else
         error_message = "There was an error creating this batch. Please contact your admin with details of this error: #{@generate_batch.message}"
