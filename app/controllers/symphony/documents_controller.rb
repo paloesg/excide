@@ -170,17 +170,4 @@ class Symphony::DocumentsController < ApplicationController
   def set_s3_direct_post
     @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
   end
-
-  # Attach the blob from direct upload to activestorage and convert all PDF to images
-  def attach_and_convert_document(document, response_key)
-    if response_key.present?
-      # Attach the blob to the document using the response key given back by active storage through uppy.js file
-      ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: document.id, blob_id: ActiveStorage::Blob.find_by(key: response_key).id)
-    else
-      # For cases without response key like document NEW page and workflow "upload file" task
-      ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: document.id, blob_id: ActiveStorage::Blob.last.id)
-    end
-    # Perform convert job asynchronously to run conversion service
-    ConvertPdfToImagesJob.perform_later(document)
-  end
 end
