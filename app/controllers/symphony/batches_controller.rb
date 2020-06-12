@@ -24,19 +24,22 @@ class Symphony::BatchesController < ApplicationController
 
   def create
     @template = Template.find_by(slug: params[:batch][:template_slug])
-    files = params[:batch][:successful_results]
+    files = JSON.parse(params[:successful_results])['successful']
+    puts "FILES ARE: #{files}"
+    document_type = params[:document_type]
     # Add attributes of batches
     @batch = Batch.new
     @batch.user_id = current_user.id
     @batch.template_id = @template.id
     @batch.company_id = current_user.company.id
-    # Run background job to generate documents
-    BatchUploadsJob.new(current_user, @template, files).perform_later
-    authorize @generate_batch.batch
+    # authorize @generate_batch.batch
     respond_to do |format|
-      if @generate_batch.success?
+      # if @generate_batch.success?
+      if @batch.save!
+        # Run background job to generate documents
+        BatchUploadsJob.perform_later(current_user, @template, files, @batch, document_type)
         flash[:notice] = "Batch created"
-        format.json { render json: { status: "ok", batch_id: @generate_batch.batch.id } }
+        format.json { render json: { status: "ok", link_to: symphony_batch_path(@template.slug, @batch.id) } }
       else
         error_message = "There was an error creating this batch. Please contact your admin with details of this error: #{@generate_batch.message}"
         flash[:alert] = error_message
