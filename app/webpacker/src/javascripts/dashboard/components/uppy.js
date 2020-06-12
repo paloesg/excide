@@ -16,8 +16,6 @@ function uploadDocuments(data){
 const batchUploads = (uppy) => {
   // Create document upon completion of all the files upload. Loop through the document and post a request per document
   uppy.on('complete', (result) => {
-    console.log("Results: ", result);
-    // result.successful.forEach((file) => {
     if($('.batchUploads').length){
       $.post("/symphony/batches", {
         authenticity_token: $.rails.csrfToken(),
@@ -29,26 +27,8 @@ const batchUploads = (uppy) => {
       }).done((result) => {
         const linkTo = result["link_to"];
         Turbolinks.visit(linkTo);
-        // if(result.status === "ok"){
-        //   batchId = result.batch_id;
-        // }
-        // else {
-        //   Turbolinks.visit('/symphony/batches/'+$('#template_slug').val()+'/new');
-        // }
       });
     }
-      // let dataInput = {
-      //   authenticity_token: $.rails.csrfToken(),
-      //   document_type: 'batch-uploads',
-      //   batch_id: batchId,
-      //   document: {
-      //     template_slug: $('#template_slug').val()
-      //   },
-      //   response_key: file.response.key
-      // };
-      // // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
-      // let result = setTimeout(uploadDocuments(dataInput), 3000);
-    // });
   });
 };
 

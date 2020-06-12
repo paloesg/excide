@@ -25,7 +25,6 @@ class Symphony::BatchesController < ApplicationController
   def create
     @template = Template.find_by(slug: params[:batch][:template_slug])
     files = JSON.parse(params[:successful_results])['successful']
-    puts "FILES ARE: #{files}"
     document_type = params[:document_type]
     # Add attributes of batches
     @batch = Batch.new
@@ -34,7 +33,6 @@ class Symphony::BatchesController < ApplicationController
     @batch.company_id = current_user.company.id
     # authorize @generate_batch.batch
     respond_to do |format|
-      # if @generate_batch.success?
       if @batch.save!
         # Run background job to generate documents
         BatchUploadsJob.perform_later(current_user, @template, files, @batch, document_type)
