@@ -59,4 +59,4 @@
                               = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'btn btn-secondary flaticon2-rubbish-bin text-danger'
                       - section.tasks.includes(:role).order(position: :asc).each do |task|
                         td class="text-center #{'important-task' if task.important}"
-                          = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
+                          = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id) if task.get_workflow_action(wf.company, wf.id).present?
