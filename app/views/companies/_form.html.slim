@@ -1,6 +1,6 @@
 - if @company.errors.any?
   .alert.alert-danger role='alert'
-    strong = "#{pluralize(@company.errors.count, "error")} prohibited this reminder from being saved:"
+    strong = "#{pluralize(@company.errors.count, "error")} prohibited this company from being saved:"
     ul
       - @company.errors.full_messages.each do |message|
         li = message
