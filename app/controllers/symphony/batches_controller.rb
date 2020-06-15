@@ -27,10 +27,7 @@ class Symphony::BatchesController < ApplicationController
     files = JSON.parse(params[:successful_results])['successful']
     document_type = params[:document_type]
     # Add attributes of batches
-    @batch = Batch.new
-    @batch.user_id = current_user.id
-    @batch.template_id = @template.id
-    @batch.company_id = current_user.company.id
+    @batch = Batch.new(user: current_user, template: @template, company: current_user.company)
     # authorize @generate_batch.batch
     respond_to do |format|
       if @batch.save!
