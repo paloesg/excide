@@ -31,17 +31,26 @@
                 tbody
                   - @batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc).each do |wf|
                     tr
-                      - if wf.documents.empty?
+                      / Only show the processing buttons and line when workflow_actions are created
+                      - if wf.documents.empty? and wf.workflow_actions.present?
                         td
-                          i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
+                          / i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
+                          | Document is still processing
+                        td
+                          .btn-group.btn-group-sm
+                            button class="btn btn-secondary flaticon2-search-1" disabled=""
+                            button class="btn btn-secondary flaticon2-paper" disabled=""
+                            button class="btn btn-secondary flaticon2-rubbish-bin text-danger" disabled=""
                       - else
                         - wf.documents.each do |d|
                           td.align-middle
                             / Check if raw file is attached. If it's not (like the older documents), display the filename instead
                             - if d.raw_file.attached?
                               = d.raw_file.blob.filename
-                            - else
+                            - elsif d.filename.present?
                               = d.filename
+                            - else
+                              | Document is still processing
                           td
                             .btn-group.btn-group-sm
                               - if d.converted_images.attached?
