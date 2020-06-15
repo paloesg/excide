@@ -5,4 +5,4 @@
   = f.text_field :name, class: 'form-control'
 .form-group
   = f.label :users
-  = f.collection_select :user_ids, @users, :id, :first_name, {}, {multiple: true, class: "role-select-users"}
+  = f.collection_select :user_ids, @users, :id, :full_name, {}, {multiple: true, class: "role-select-users"}

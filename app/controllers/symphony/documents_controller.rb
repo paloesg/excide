@@ -46,7 +46,7 @@ class Symphony::DocumentsController < ApplicationController
         # attach and convert method
         attach_and_convert_document(document, params[:response_key])
         # Generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'.
-        @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
+        # @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
         @batch = document&.workflow&.batch
         if params[:document_type] == 'batch-uploads'
           first_task = @batch.template&.sections.first.tasks.first
