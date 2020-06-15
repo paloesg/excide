@@ -5,6 +5,7 @@ class Batch < ApplicationRecord
   belongs_to :template
   belongs_to :user
   has_many :workflows, dependent: :destroy
+  has_many :documents, through: :workflows
   # after_create :send_email_notification
 
   enum status: { processing: 0, complete: 1 }
