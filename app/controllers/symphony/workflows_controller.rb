@@ -2,11 +2,13 @@ class Symphony::WorkflowsController < ApplicationController
   layout 'metronic/application'
   include Adapter
 
+  rescue_from Xeroizer::InvoiceNotFoundError, with: :xero_error_invoice_not_found
+
   before_action :authenticate_user!
   before_action :set_company_and_roles
   before_action :set_template, except: [:toggle_all]
   before_action :set_clients, only: [:new, :create, :edit, :update]
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero, :activities]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero]
   before_action :set_attributes_metadata, only: [:update]
   before_action :set_twilio_account, only:[:send_reminder]
 
@@ -52,7 +54,8 @@ class Symphony::WorkflowsController < ApplicationController
     @surveys = Survey.all.where(workflow_id: @workflow.id)
     @templates = policy_scope(Template).assigned_templates(current_user)
     @sections = @template.sections
-    @activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+    @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(5)
 
 
     if @workflow.completed?
@@ -230,12 +233,6 @@ class Symphony::WorkflowsController < ApplicationController
     redirect_to symphony_workflow_path(@template.slug, @workflow.id), notice: 'Workflow was successfully reset.'
   end
 
-  def activities
-    authorize @workflow
-    @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
-    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
-  end
-
   def data_entry
     authorize @workflow
     set_documents
@@ -252,7 +249,12 @@ class Symphony::WorkflowsController < ApplicationController
     xero_invoice = @xero.create_invoice(@workflow.invoice.xero_contact_id, @workflow.invoice.invoice_date, @workflow.invoice.due_date, @workflow.invoice.line_items, @workflow.invoice.line_amount_type, @workflow.invoice.invoice_reference, @workflow.invoice.currency, @workflow.invoice.invoice_type)
     @workflow.invoice.xero_invoice_id = xero_invoice.id
     @workflow.documents.each do |document|
-      xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+      if document.raw_file.attached?
+        # Remove whitespaces for filename and certain special characters
+        xero_invoice.attach_data(document.raw_file.filename.to_s.gsub(/\s+/, "").gsub(/[!@%&$"]/,''), Net::HTTP.get(URI.parse(document.raw_file.service_url)), document.raw_file.blob.content_type)
+      else
+        xero_invoice.attach_data(document.filename, open(URI('http:' + document.file_url)).read, MiniMime.lookup_by_filename(document.file_url).content_type)
+      end
     end
     @workflow.invoice.save
     #this is to send invoice to xero 'awaiting approval'
@@ -390,6 +392,12 @@ class Symphony::WorkflowsController < ApplicationController
         @workflow.create_activity key: 'workflow.update', owner: User.find_by(id: current_user.id), params: { attribute: {name: key, value: value.last} }
       end
     end
+  end
+
+  def xero_error_invoice_not_found(e)
+    message = 'Xero returned an API error - ' + e.to_s + '. Please check the document that was uploaded or contact admin.'
+    Rails.logger.error("Xero API error: #{message}")
+    redirect_to session[:previous_url], alert: message
   end
 
   def workflow_params

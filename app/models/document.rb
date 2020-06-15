@@ -12,13 +12,10 @@ class Document < ApplicationRecord
   belongs_to :user
   belongs_to :workflow_action
 
-  validates :file_url, :filename, presence: true
-  validate :file_format, if: :file_url
-
-  has_many_attached :converted_image
+  has_one_attached :raw_file
+  has_many_attached :converted_images
 
   before_validation :set_filename
-  # after_create :convert_to_image
   after_destroy :delete_file_on_s3
 
   include AlgoliaSearch
@@ -34,14 +31,7 @@ class Document < ApplicationRecord
       { name: company&.name, slug: company&.slug }
     end
   end
-
-  # def convert_to_image
-  #   if File.extname(self.file_url) == ".pdf"
-  #     result = ImageProcessing::MiniMagick.source("https:" + self.file_url).loader(page: 0).convert("png").call
-  #     self.converted_image.attach(io: result, filename: result.path.split('/').last, content_type: "image/png")
-  #   end
-  # end
-
+  
   private
 
   def file_format
@@ -56,7 +46,13 @@ class Document < ApplicationRecord
   end
 
   def delete_file_on_s3
-    key = self.file_url.split('amazonaws.com/')[1]
-    S3_BUCKET.object(key).delete
+    # For those document using the old uploading system
+    if self.file_url.present?
+      key = self.file_url.split('amazonaws.com/')[1]
+      S3_BUCKET.object(key).delete
+    end
+    # File uploaded by active storage
+    self.raw_file.purge_later if self.raw_file.present?
+    self.converted_images.purge_later if self.converted_images.present?
   end
 end

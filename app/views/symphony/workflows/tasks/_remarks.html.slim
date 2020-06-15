@@ -1,10 +1,10 @@
-.row
-  .col-md-12
-  	/ specifying data type of js
-    = form_for(action, url:workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
-      .form-group
-        = f.label :remarks
-        = f.text_field :remarks, class: 'form-control', id: "remark-post-#{action.id}",placeholder: 'Enter remarks here...'
-      .form-group
-        = f.submit 'Submit', class: 'btn btn-primary btn-sm', data: {toggle: "modal", target: "#exampleModal"}
-        i.fa.fa-check.text-success.ml-3 style="opacity: 0;" id="check-#{action.id}"
+/ specifying data type of js
+= form_for(action, url:workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
+  .form-row
+    .col-md-8
+      = f.text_field :remarks, class: 'form-control', id: "remark-post-#{action.id}", placeholder: 'Remarks'
+    .col-md-3
+      = f.text_field :time_spent_mins, class: 'form-control', id: "remark-post-#{action.id}", placeholder: 'Time spent (mins)'
+    .col-md-1
+      = f.submit 'Submit', class: 'btn btn-primary'
+      i.fa.fa-check.text-success.ml-3 style="opacity: 0;" id="check-#{action.id}"
