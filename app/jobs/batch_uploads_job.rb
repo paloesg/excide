@@ -9,5 +9,7 @@ class BatchUploadsJob < ApplicationJob
       # Check that document is generated properly before attaching and converting. It wont attach if document is not generated
       @generate_document.document.attach_and_convert_document(file['response']['key']) if @generate_document.success?
     end
+    batch.batch_upload
+    batch.save
   end
 end

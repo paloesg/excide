@@ -1,9 +1,21 @@
 class Batch < ApplicationRecord
+  include AASM
+
   belongs_to :company
   belongs_to :template
   belongs_to :user
   has_many :workflows, dependent: :destroy
-  after_create :send_email_notification
+  # after_create :send_email_notification
+
+  enum status: { processing: 0, complete: 1 }
+  aasm column: :status, enum: true do
+    state :processing, initial: true
+    state :complete
+  
+    event :batch_upload do
+      transitions from: :processing, to: :complete
+    end
+  end
 
   # replacement for .first/.last because we use uuids
   def self.first
