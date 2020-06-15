@@ -1,10 +1,10 @@
 / specifying data type of js
 = form_for(action, url:workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
-  .col-md-4
-    .form-group
+  .form-row
+    .col-md-8
       = f.text_field :remarks, class: 'form-control', id: "remark-post-#{action.id}", placeholder: 'Remarks'
-    .form-group
+    .col-md-3
       = f.text_field :time_spent_mins, class: 'form-control', id: "remark-post-#{action.id}", placeholder: 'Time spent (mins)'
-    .form-group
-      = f.submit 'Submit', class: 'btn btn-primary btn-sm'
+    .col-md-1
+      = f.submit 'Submit', class: 'btn btn-primary'
       i.fa.fa-check.text-success.ml-3 style="opacity: 0;" id="check-#{action.id}"
