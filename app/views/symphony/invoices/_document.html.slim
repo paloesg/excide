@@ -14,7 +14,7 @@
         div.carousel-inner
           - @document.converted_images.each.with_index(0) do |image, index|
             div. class=["carousel-item", index.zero? ? 'active' : '' ]
-              = link_to image_tag(image, class: 'img-responsive zoomed-image')
+              = link_to image_tag(image, class: 'zoomed-image')
           end
         - if @document.converted_images.count > 1
           a.carousel-control-prev data-slide="prev" href="#carouselExampleIndicators" role="button"
@@ -25,10 +25,10 @@
             span.sr-only Next
   - elsif @document.raw_file.attached?
     .img-magnifier-container
-      = link_to image_tag(@document.raw_file, class: 'img-responsive zoomed-image'), @document.raw_file , {target: "_blank"}
+      = link_to image_tag(@document.raw_file, class: 'zoomed-image'), @document.raw_file , {target: "_blank"}
   - else
     .img-magnifier-container
-      = link_to image_tag(@document.file_url, class: 'img-responsive zoomed-image'), @document.file_url , {target: "_blank"}
+      = link_to image_tag(@document.file_url, class: 'zoomed-image'), @document.file_url , {target: "_blank"}
   span.form-group.float-right.mt-4
     div.kt-switch.mt-1
       label.form-inline
