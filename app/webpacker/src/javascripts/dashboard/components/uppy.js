@@ -87,7 +87,7 @@ function setupUppy(element){
       // Only allow images or PDF
       allowedFileTypes: ['image/*', '.pdf']
     },
-    // Check if there is a templat value, before uploading files
+    // Check if there is a template value, before uploading files
     onBeforeUpload: (files) => {
       if ($('#template_slug').val() == ""){
         alert('No template found. Please select a template and upload again!');

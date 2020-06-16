@@ -9,6 +9,7 @@
           .kt-portlet__head-label
             h3.kt-portlet__head-title
               | #{section.section_name} - #{section.tasks.count.to_s} tasks
+              / Check if any files failed during processing (eg document not created, hence no attachment)
               - if @batch.failed_blob['blobs'].present?
                 a.pop.ml-2 data-container="body" title="" data-original-title="#{@batch.failed_blob['blobs'].count} files has failed to be processed successfully. Please contact admin for support." data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
                   i.fa.fa-info-circle.text-danger
@@ -53,10 +54,8 @@
                             / Check if raw file is attached. If it's not (like the older documents), display the filename instead
                             - if d.raw_file.attached?
                               = d.raw_file.blob.filename
-                            - elsif d.filename.present?
-                              = d.filename
                             - else
-                              | File uploading failed!
+                              = d.filename
                           td
                             .btn-group.btn-group-sm
                               - if d.converted_images.attached?
