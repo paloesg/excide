@@ -10,11 +10,10 @@ class BatchUploadsJob < ApplicationJob
       # Check that document is generated properly before attaching and converting. It wont attach if document is not generated
       if @generate_document.success?
         @generate_document.document.attach_and_convert_document(file['response']['key'])
-        blob.has_document = true
       else
-        blob.has_document = false
+        # Save the blob (raw file) into the batch as failed_blob
+        batch.failed_blob['blobs'] << file['response']['key']
       end
-      blob.save
     end
     batch.batch_upload
     batch.save

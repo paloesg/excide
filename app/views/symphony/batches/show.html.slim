@@ -9,6 +9,9 @@
           .kt-portlet__head-label
             h3.kt-portlet__head-title
               | #{section.section_name} - #{section.tasks.count.to_s} tasks
+              - if @batch.failed_blob['blobs'].present?
+                a.pop.ml-2 data-container="body" title="" data-original-title="#{@batch.failed_blob['blobs'].count} files has failed to be processed successfully. Please contact admin for support." data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+                  i.fa.fa-info-circle.text-danger
           .kt-portlet__head-toolbar
             .kt-portlet__head-actions
               - if @batch.complete?
@@ -53,7 +56,7 @@
                             - elsif d.filename.present?
                               = d.filename
                             - else
-                              | Document is still processing
+                              | File uploading failed!
                           td
                             .btn-group.btn-group-sm
                               - if d.converted_images.attached?
