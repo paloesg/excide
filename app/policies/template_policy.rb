@@ -19,6 +19,10 @@ class TemplatePolicy < ApplicationPolicy
     update?
   end
 
+  def destroy?
+    user_admin?
+  end
+  
   def destroy_section?
     user_admin?
   end
