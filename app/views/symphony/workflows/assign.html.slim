@@ -25,10 +25,11 @@
                     = t.instructions
                   td = t.role&.name&.humanize
                   td = form_for action, remote: true do |f|
-                    = f.collection_select(:assigned_user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = {data: {action_id: action.id}, class: 'selectize-user-assignment', onchange: 'assign(this)'})
+                      = hidden_field_tag :authenticity_token, form_authenticity_token
+                      = f.collection_select(:assigned_user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = {data: {action_id: action.id}, class: 'selectize-user-assignment'})
                   td
-                    i.fa.fa-check.text-success style="opacity: 0;"
-                    i.fa.fa-times.text-danger style="opacity: 0;"
+                    = fa_icon "check", class: 'text-success', style: "opacity: 0; font-size: 25px;"
+                    = fa_icon "times", class: 'text-danger', style: "opacity: 0; font-size: 25px;"
   .col-md-4.col-sm-6
     = link_to "Finish Assignment", symphony_workflow_path(@template.slug, @workflow.id), class: 'btn btn-primary btn-block'
     br
