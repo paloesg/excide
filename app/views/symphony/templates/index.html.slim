@@ -22,3 +22,5 @@
               td
                 / link to the first section of the template
                 = link_to "Edit", edit_symphony_template_path(template_slug: template.slug), class: 'btn btn-sm btn-success' if policy(template).edit?
+              td 
+                = link_to "Delete", symphony_template_path(template_slug: template.slug), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
