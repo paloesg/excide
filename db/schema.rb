@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_15_141924) do
+ActiveRecord::Schema.define(version: 2020_06_16_020253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2020_06_15_141924) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
-    t.boolean "attached"
+    t.boolean "has_document"
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -571,6 +571,7 @@ ActiveRecord::Schema.define(version: 2020_06_15_141924) do
     t.integer "completed_user_id"
     t.text "remarks"
     t.uuid "workflow_id"
+    t.integer "time_spent_mins"
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
     t.index ["company_id"], name: "index_workflow_actions_on_company_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"
