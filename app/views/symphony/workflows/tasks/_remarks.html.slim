@@ -4,7 +4,7 @@
     .col-md-7
       = f.text_field :remarks, class: 'form-control', id: "remark-post-#{action.id}", placeholder: 'Remarks'
     .col-md-3
-      = f.text_field :time_spent_mins, class: 'form-control', id: "remark-post-#{action.id}", placeholder: 'Time spent (mins)'
+      = f.number_field :time_spent_mins, class: 'form-control', id: "remark-post-#{action.id}", placeholder: 'Time spent (mins)'
     .col-md-1
       = f.submit 'Submit', class: 'btn btn-primary'
     .col-md-1
