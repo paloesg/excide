@@ -32,7 +32,7 @@
           li.list-group-item
             .media
               .align-self-center
-                a href = d.file_url
+                a href = rails_blob_path(d.file)
                   = fa_icon "file", style: 'font-size: 50px;', class: 'mr-3'
               .media-body
                 h5.text-truncate = d.title
