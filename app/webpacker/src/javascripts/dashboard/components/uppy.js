@@ -85,7 +85,7 @@ function setupUppy(element){
       maxNumberOfFiles: 50,
       minNumberOfFiles: null,
       // Only allow images or PDF
-      allowedFileTypes: ['image/*', '.pdf']
+      allowedFileTypes: ['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', 'text/csv']
     },
     // Create batch on upload, only when .batchUploads element exists (which is dashboard drag and drop)
     onBeforeUpload: (files) => {
