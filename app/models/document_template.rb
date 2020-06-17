@@ -2,12 +2,14 @@ class DocumentTemplate < ApplicationRecord
   belongs_to :template
   belongs_to :user
 
-  has_many :documents
-  has_many :tasks
+  has_many :documents, dependent: :destroy
+  has_many :tasks, dependent: :destroy
 
   before_destroy :remove_associations
 
-  validates :title, :file_url, :template, presence: true
+  has_one_attached :file
+
+  # validates :title, :file_url, :template, presence: true
 
   private
 
