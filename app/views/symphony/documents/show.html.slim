@@ -9,9 +9,9 @@
         - url_array << image
       - url_array.each do |url|
         - display_url = url_for(url)
-        img src='#{display_url}' class='img-responsive figure-img img-fluid' style="width:500px;"
+        img src='#{display_url}' class='figure-img img-fluid' style="width:500px;"
     - elsif @document.file_url.present? and ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
-      = image_tag(@document.file_url, class: 'img-responsive')
+      = image_tag(@document.file_url, class: 'img-fluid')
     - else
       iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
   .col-md-4.col-sm-12
