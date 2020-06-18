@@ -46,7 +46,7 @@ class Symphony::BatchesController < ApplicationController
   def show
     authorize @batch
     # Come from batch uploads (create method)
-    @files_count = params[:files_count] if params[:files_count].present?
+    @processing_files = (params[:files_count].to_i - @batch.workflows.count) if params[:files_count].present?
     @completed = @batch.workflows.where(completed: true).length
   end
 

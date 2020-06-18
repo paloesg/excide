@@ -11,14 +11,14 @@
               | #{section.section_name} - #{section.tasks.count.to_s} tasks
               / Check if any files failed during processing (eg document not created, hence no attachment)
               - if @batch.failed_blob['blobs'].present?
-                a.pop.ml-2 data-container="body" title="" data-original-title="#{@batch.failed_blob['blobs'].count} files has failed to be processed successfully. Please contact admin for support." data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
-                  i.fa.fa-info-circle.text-danger
+                a.pop.ml-2 data-container="body" title="" data-original-title="#{pluralize(@batch.failed_blob['blobs'].length, 'file')} failed to be processed. Please contact admin for support." data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+                  i.fa.fa-exclamation-triangle.text-danger
           .kt-portlet__head-toolbar
             .kt-portlet__head-actions
               - if @batch.processing_complete?
-                .pull-right #{@completed} of #{@batch.workflows.count} files completed
+                .pull-right #{@completed} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
               - else
-                .pull-right #{@files_count.to_i - @batch.workflows.count} of #{@files_count} files are still being processed but you may start on your tasks first.
+                .pull-right Processing #{@processing_files} #{'file'.pluralize(@processing_files)} at the moment. You may start on your tasks first.
         .kt-portlet__body
           .kt-widget11
             .table-responsive
