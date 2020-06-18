@@ -15,7 +15,7 @@
                   i.fa.fa-info-circle.text-danger
           .kt-portlet__head-toolbar
             .kt-portlet__head-actions
-              - if @batch.complete?
+              - if @batch.processing_complete?
                 .pull-right #{@completed} of #{@batch.workflows.count} files completed
               - else
                 .pull-right #{@files_count.to_i - @batch.workflows.count} of #{@files_count} files are still being processed but you may start on your tasks first.

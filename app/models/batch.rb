@@ -8,13 +8,13 @@ class Batch < ApplicationRecord
   has_many :documents, through: :workflows
   after_create :send_email_notification
 
-  enum status: { processing: 0, complete: 1 }
+  enum status: { processing: 0, processing_complete: 1 }
   aasm column: :status, enum: true do
     state :processing, initial: true
-    state :complete
+    state :processing_complete
   
     event :batch_upload do
-      transitions from: :processing, to: :complete
+      transitions from: :processing, to: :processing_complete
     end
   end
 
