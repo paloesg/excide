@@ -446,6 +446,7 @@ ActiveRecord::Schema.define(version: 2020_06_16_024356) do
     t.integer "survey_template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "multiple_response"
     t.index ["survey_template_id"], name: "index_survey_sections_on_survey_template_id"
   end
 
