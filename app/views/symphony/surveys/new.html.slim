@@ -2,23 +2,22 @@
   .col-sm-12
     = form_for(@survey, url: symphony_surveys_path(params[:workflow_name], params[:workflow_id], action_id: params[:action_id]), html: { method: :post }) do |f|
       h1 #{@survey_template.title}
-      .kt-portlet
-        - @survey_template.survey_sections.each do |sur_section|
+      - @survey_template.survey_sections.each do |survey_section|
           / Define global variable for using it in _segment_fields.html.slim
-          - @survey_section = sur_section
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h1.kt-portlet__head-title #{@survey_section.display_name}
-          .kt-portlet__body
-            .form-group.mt-2.border.shadow.p-3
-              = f.hidden_field :survey_template_id, value: @survey_template.id
-              h6 Description: 
-              span #{@survey_section.description.body.to_rendered_html_with_layout()}
-            #segment-section
-              = f.fields_for :segments do |segment|
-                = render 'segment_fields', f: segment
-              - if sur_section.multiple_response?
-                .links
-                  = link_to_add_association 'Add Segments', f, :segments, class: 'btn btn-primary mt-3 pull-right'
-        .form-inline.col-sm-12.p-0
-          = f.submit 'Submit Survey', class: 'btn btn-primary col-sm-12 pull-right'
+          - @survey_section = survey_section
+          .kt-portlet.shadow
+            .kt-portlet__head
+              .kt-portlet__head-label
+                h2 #{@survey_section.display_name}
+            .kt-portlet__body
+              .form-group.mt-2.border.p-3
+                = f.hidden_field :survey_template_id, value: @survey_template.id
+                h4 Instructions:
+                span #{@survey_section.description.body.to_rendered_html_with_layout()}
+              #segment-section
+                = f.fields_for :segments do |segment|
+                  = render 'segment_fields', f: segment
+                - if survey_section.multiple_response?
+                  .links
+                    = link_to_add_association 'Add another response', f, :segments, class: 'btn btn-primary mt-3 pull-right'
+      = f.submit 'Submit Form', class: 'btn btn-primary pull-right'
