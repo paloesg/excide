@@ -9,7 +9,7 @@ class DocumentTemplate < ApplicationRecord
 
   has_one_attached :file
 
-  # validates :title, :file_url, :template, presence: true
+  validates :title, :template, presence: true
 
   private
 

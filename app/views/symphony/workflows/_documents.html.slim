@@ -28,13 +28,16 @@
       | No document templates yet.
     - else
       - @document_templates.each do |d|
-        ul.list-group.list-group-flush
-          li.list-group-item
-            .media
-              .align-self-center
-                a href = rails_blob_path(d.file)
-                  = fa_icon "file", style: 'font-size: 50px;', class: 'mr-3'
-              .media-body
-                h5.text-truncate = d.title
-                h6.card-subtitle = d.file.filename
-                .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+        - if d.file.attached?
+          ul.list-group.list-group-flush
+            li.list-group-item
+                .media
+                  .align-self-center
+                    a href = rails_blob_path(d.file)
+                      = fa_icon "file", style: 'font-size: 50px;', class: 'mr-3'
+                  .media-body
+                    h5.text-truncate = d.title
+                    h6.card-subtitle = d.file.filename
+                    .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+        - else
+          | No document templates yet.
