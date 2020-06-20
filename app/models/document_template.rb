@@ -2,8 +2,8 @@ class DocumentTemplate < ApplicationRecord
   belongs_to :template
   belongs_to :user
 
-  has_many :documents, dependent: :destroy
-  has_many :tasks, dependent: :destroy
+  has_many :documents
+  has_many :tasks
 
   before_destroy :remove_associations
 
