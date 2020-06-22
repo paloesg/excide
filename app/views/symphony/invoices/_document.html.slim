@@ -1,9 +1,9 @@
 - if @documents.empty?
   | No documents available. Please upload documents first.
 - else
+  - display_url = @document.raw_file.attached? ? @document.raw_file : @document.file_url
   / Check if document is from active storage or database
   - if @document.converted_images.attached?
-    - display_url = url_for(@document.converted_images.first)
     .img-magnifier-container
       div#carouselExampleIndicators.carousel.slide data-ride="carousel" data-interval="false"
         - if @document.converted_images.count > 1
@@ -14,7 +14,7 @@
         div.carousel-inner
           - @document.converted_images.each.with_index(0) do |image, index|
             div. class=["carousel-item", index.zero? ? 'active' : '' ]
-              = link_to image_tag(image, class: 'zoomed-image')
+              = image_tag(image, class: 'zoomed-image')
           end
         - if @document.converted_images.count > 1
           a.carousel-control-prev data-slide="prev" href="#carouselExampleIndicators" role="button"
@@ -23,15 +23,16 @@
           a.carousel-control-next data-slide="next" href="#carouselExampleIndicators" role="button"
             span.carousel-control-next-icon aria-hidden="true"
             span.sr-only Next
-  - elsif @document.raw_file.attached?
-    .img-magnifier-container
-      = link_to image_tag(@document.raw_file, class: 'zoomed-image'), @document.raw_file , {target: "_blank"}
   - else
     .img-magnifier-container
-      = link_to image_tag(@document.file_url, class: 'zoomed-image'), @document.file_url , {target: "_blank"}
-  span.form-group.float-right.mt-4
-    div.kt-switch.mt-1
-      label.form-inline
-        = check_box_tag "zoom", "true", false
-        span
-        i.form-control-lg.p-lg-1.form-inline.flaticon2-magnifier-tool
+      = image_tag(display_url, class: 'zoomed-image')
+  .row.mt-4
+    .col
+      = link_to "View original file", display_url, target: "_blank", role: 'button', class: 'btn btn-primary mt-2'
+    .col
+      span.form-group.float-right
+        div.kt-switch.mt-1
+          label.form-inline
+            = check_box_tag "zoom", "true", false
+            span
+            i.form-control-lg.p-lg-1.form-inline.flaticon2-magnifier-tool
