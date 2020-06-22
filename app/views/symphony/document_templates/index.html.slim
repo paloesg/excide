@@ -22,6 +22,9 @@
               td = document_template.description
               td = document_template&.template&.title
               td style="min-width: 225px;"
-                = link_to "Download", document_template.file_url, role: 'button', class: 'btn btn-success btn-sm mr-1'
+                - if document_template.file.attached?
+                  = link_to "Download", rails_blob_path(document_template.file, disposition: "attachment"), role: 'button', class: 'btn btn-success btn-sm mr-1'
+                - else
+                  = link_to "Download", '#', role: 'button', class: 'btn btn-success btn-sm mr-1 disabled'
                 = link_to 'Edit', edit_symphony_document_template_path(document_template), role: 'button', class: 'btn btn-primary btn-sm mr-1' if current_user.has_role? :admin, @company
                 = link_to 'Destroy', symphony_document_template_path(document_template), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm' if current_user.has_role? :admin, @company
