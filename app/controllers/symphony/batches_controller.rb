@@ -24,12 +24,17 @@ class Symphony::BatchesController < ApplicationController
 
   def create
     @template = Template.find_by(slug: params[:batch][:template_slug])
-    @generate_batch = GenerateBatch.new(current_user, @template).run
-    authorize @generate_batch.batch
+    files = JSON.parse(params[:successful_results])['successful']
+    document_type = params[:document_type]
+    # Add attributes of batches
+    @batch = Batch.new(user: current_user, template: @template, company: current_user.company)
+    # authorize @generate_batch.batch
     respond_to do |format|
-      if @generate_batch.success?
-        flash[:notice] = "Batch created"
-        format.json { render json: { status: "ok", batch_id: @generate_batch.batch.id } }
+      if @batch.save!
+        # Run background job to generate documents
+        BatchUploadsJob.perform_later(current_user, @template, files, @batch, document_type)
+        flash[:notice] = "Your documents are still being processed. Please refresh and start your first task."
+        format.json { render json: { status: "ok", link_to: symphony_batch_path(batch_template_name: @template.slug, id: @batch.id, files_count: files.count) } }
       else
         error_message = "There was an error creating this batch. Please contact your admin with details of this error: #{@generate_batch.message}"
         flash[:alert] = error_message
@@ -40,6 +45,8 @@ class Symphony::BatchesController < ApplicationController
 
   def show
     authorize @batch
+    # Come from batch uploads (create method). [number, 0].max() is to prevent negative number from being passed in
+    @processing_files = [(params[:files_count].to_i - @batch.workflows.count), 0].max() if params[:files_count].present?
     @completed = @batch.workflows.where(completed: true).length
   end
 

@@ -56,7 +56,7 @@ Rails.application.routes.draw do
       get 'success', to: 'checkout#success', as: :checkout_success
     end
 
-    resources :templates, param: :template_slug, except: [:destroy]
+    resources :templates, param: :template_slug
     delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
 
     resources :clients do

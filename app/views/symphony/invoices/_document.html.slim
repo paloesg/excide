@@ -14,7 +14,7 @@
         div.carousel-inner
           - @document.converted_images.each.with_index(0) do |image, index|
             div. class=["carousel-item", index.zero? ? 'active' : '' ]
-              = image_tag(image, class: 'img-responsive zoomed-image')
+              = image_tag(image, class: 'zoomed-image')
           end
         - if @document.converted_images.count > 1
           a.carousel-control-prev data-slide="prev" href="#carouselExampleIndicators" role="button"
@@ -25,7 +25,7 @@
             span.sr-only Next
   - else
     .img-magnifier-container
-      = image_tag(display_url, class: 'img-responsive zoomed-image')
+      = image_tag(display_url, class: 'zoomed-image')
   .row.mt-4
     .col
       = link_to "View original file", display_url, target: "_blank", role: 'button', class: 'btn btn-primary mt-2'
