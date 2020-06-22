@@ -4,12 +4,11 @@
 .row
   .col-12
     = form_for(@survey_template, url: symphony_survey_template_path(id: @survey_template.id)) do |f|
-      - if @survey_template.survey_sections.present?
-        = render 'form', f: f
-        .row
-          .col-8
-            .form-inline
-              = text_field_tag :new_survey_section, params[:new_survey_section], {class: 'form-control mr-2 col-md-6', placeholder: 'Enter form section name'}
-              = submit_tag 'Add section', class: 'btn btn-success', name: 'new_survey_section_submit'
-          .col-4
-            = f.submit 'Save Form Template', class: 'btn btn-primary float-right mb-3'
+      = render 'form', f: f
+      .row
+        .col-8
+          .form-inline
+            = text_field_tag :new_survey_section, params[:new_survey_section], {class: 'form-control mr-2 col-md-6', placeholder: 'Enter form section name'}
+            = submit_tag 'Add section', class: 'btn btn-success', name: 'new_survey_section_submit'
+        .col-4
+          = f.submit 'Save Form Template', class: 'btn btn-primary float-right mb-3'

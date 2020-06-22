@@ -92,4 +92,11 @@ namespace :update do
       attachment.update(name: "converted_images")
     end
   end
+
+  desc "Update existing batch with status processing complete"
+  task update_existing_batch_status: :environment do
+    Batch.where(status: nil).each do |batch|
+      batch.update(status: 1)
+    end
+  end
 end

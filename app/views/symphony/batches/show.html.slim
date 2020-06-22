@@ -11,7 +11,14 @@
               | #{section.section_name} - #{section.tasks.count.to_s} tasks
           .kt-portlet__head-toolbar
             .kt-portlet__head-actions
-              .pull-right #{@completed} of #{@batch.workflows.count} files completed
+              - if @batch.processing_complete?
+                .pull-right #{@completed} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
+              - else
+                .pull-right Processing #{@processing_files} #{'file'.pluralize(@processing_files)} at the moment. You may start on your tasks first.
+            / Check if any files failed during processing (eg document not created, hence no attachment)
+            - if @batch.failed_blob['blobs'].present?
+              a.pop.ml-2 data-container="body" title="" data-original-title="#{pluralize(@batch.failed_blob['blobs'].length, 'file')} failed to be processed. Please contact admin for support." data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+                i.fa.fa-exclamation-triangle.text-danger
         .kt-portlet__body
           .kt-widget11
             .table-responsive
@@ -31,9 +38,16 @@
                 tbody
                   - @batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc).each do |wf|
                     tr
-                      - if wf.documents.empty?
+                      / Only show the processing buttons and line when workflow_actions are created
+                      - if wf.documents.empty? and wf.workflow_actions.present?
                         td
-                          i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
+                          / i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
+                          | Document is still processing
+                        td
+                          .btn-group.btn-group-sm
+                            button class="btn btn-secondary flaticon2-search-1" disabled=""
+                            button class="btn btn-secondary flaticon2-paper" disabled=""
+                            button class="btn btn-secondary flaticon2-rubbish-bin text-danger" disabled=""
                       - else
                         - wf.documents.each do |d|
                           td.align-middle
@@ -59,4 +73,4 @@
                               = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'btn btn-secondary flaticon2-rubbish-bin text-danger'
                       - section.tasks.includes(:role).order(position: :asc).each do |task|
                         td class="text-center #{'important-task' if task.important}"
-                          = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
+                          = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id) if task.get_workflow_action(wf.company, wf.id).present?
