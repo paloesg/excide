@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_16_024356) do
+ActiveRecord::Schema.define(version: 2020_06_22_083243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -191,7 +191,7 @@ ActiveRecord::Schema.define(version: 2020_06_16_024356) do
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
   end
 
-  create_table "document_templates", id: :serial, force: :cascade do |t|
+  create_table "document_templates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.string "file_url"
@@ -211,14 +211,13 @@ ActiveRecord::Schema.define(version: 2020_06_16_024356) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "file_url"
-    t.integer "document_template_id"
     t.integer "user_id"
     t.bigint "workflow_action_id"
     t.uuid "workflow_id"
     t.string "aws_textract_job_id"
     t.json "aws_textract_data"
+    t.uuid "document_template_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
-    t.index ["document_template_id"], name: "index_documents_on_document_template_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
@@ -486,13 +485,12 @@ ActiveRecord::Schema.define(version: 2020_06_16_024356) do
     t.boolean "set_reminder"
     t.integer "role_id"
     t.integer "task_type"
-    t.integer "document_template_id"
     t.string "link_url"
     t.boolean "important"
     t.bigint "child_workflow_template_id"
     t.bigint "survey_template_id"
+    t.uuid "document_template_id"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
-    t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
@@ -507,6 +505,9 @@ ActiveRecord::Schema.define(version: 2020_06_16_024356) do
     t.integer "company_id"
     t.json "data_names", default: []
     t.integer "workflow_type", default: 0
+    t.integer "deadline_day"
+    t.integer "deadline_type"
+    t.integer "days_to_complete"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
