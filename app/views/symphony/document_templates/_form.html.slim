@@ -15,7 +15,7 @@
   = f.label :template_id, 'Workflow Template'
   = f.collection_select :template_id, @templates, :id, :title, {include_blank: true}, class: 'selectize'
 .form-group.file-field
-  = f.label :file_url, 'Upload file'
-  = f.file_field :file_url, class: "form-control-file"
+  = f.label :file, 'Upload file'
+  = f.file_field :file, direct_upload: true, class: "form-control"
 = f.submit class: 'btn btn-primary mr-1'
 = link_to 'Cancel', symphony_document_templates_path, role: 'button', data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
