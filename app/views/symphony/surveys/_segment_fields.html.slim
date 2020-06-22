@@ -1,16 +1,11 @@
-.nested-fields.border.shadow.p-3
-  .form-inline.col-sm-12.p-0.mt-2.mb-2
-    .form-group.col-sm-1
-      = link_to_remove_association "X", f, class: 'btn btn-danger text-dark pull-right'
-    .form-group.col-sm-11
-      = f.label :name, 'Name:', class: 'text-large'
-      = f.text_field :name, {required: true, class: "form-control b-bottom text-large ml-2 col-sm-11"}
+.nested-fields.border.pt-2.mb-3
+  .col-sm-12.mt-2.mb-2.d-flex.flex-row-reverse
+    = link_to_remove_association "X", f, class: 'btn btn-danger' if @survey_section.multiple_response?
     = f.hidden_field :survey_section_id, value: @survey_section.id
-  hr
-  .response-block.mt-3
+  .col-sm-12.response-block
     - @survey_section.questions.each do |qn|
       - f.object.build_responses
       = f.fields_for :responses do |response|
-        h3 = qn.content
+        p = qn.content
         = render "symphony/surveys/questions/#{qn.question_type}", q: qn, r: response
         = response.hidden_field :question_id, value: qn.id

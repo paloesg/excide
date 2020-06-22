@@ -7,9 +7,9 @@
             | Survey Details
       .kt-portlet__body
         - @survey.survey_template.survey_sections.each_with_index do |sur_sec, index|
-          h4 Survey Section #{index + 1}: 
-          p.text-dark = sur_sec.display_name
-          p = sur_sec.description.body.to_rendered_html_with_layout()
+          h4 Survey Section #{index + 1}
+          p.text-dark Name: #{sur_sec.display_name}
+          span.mb-2 Description: #{sur_sec.description.body.to_rendered_html_with_layout()}
           - sur_sec.segments.where(survey_id: @survey.id).each do |s|
             .border.shadow.p-3.mb-3
               h4 Segment Name: 

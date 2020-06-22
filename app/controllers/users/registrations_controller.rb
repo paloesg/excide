@@ -16,7 +16,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if params[:company].present?
       resource.company = Company.friendly.find(params[:company])
     else
-      company = Company.new()
+      company = Company.new(name: resource.email + "'s company")
       # Set company to basic plan for now
       company.account_type = 0
       company.save

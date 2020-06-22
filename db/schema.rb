@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_05_050913) do
+ActiveRecord::Schema.define(version: 2020_06_17_085121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -125,6 +125,8 @@ ActiveRecord::Schema.define(version: 2020_05_05_050913) do
     t.boolean "completed", default: false
     t.integer "workflow_progress"
     t.integer "task_progress"
+    t.integer "status"
+    t.json "failed_blob", default: {"blobs"=>[]}
     t.index ["company_id"], name: "index_batches_on_company_id"
     t.index ["template_id"], name: "index_batches_on_template_id"
     t.index ["user_id"], name: "index_batches_on_user_id"
@@ -199,7 +201,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_050913) do
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
   end
 
-  create_table "document_templates", id: :serial, force: :cascade do |t|
+  create_table "document_templates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.string "file_url"
@@ -219,14 +221,13 @@ ActiveRecord::Schema.define(version: 2020_05_05_050913) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "file_url"
-    t.integer "document_template_id"
     t.integer "user_id"
     t.bigint "workflow_action_id"
     t.uuid "workflow_id"
     t.string "aws_textract_job_id"
     t.json "aws_textract_data"
+    t.uuid "document_template_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
-    t.index ["document_template_id"], name: "index_documents_on_document_template_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
@@ -454,6 +455,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_050913) do
     t.integer "survey_template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "multiple_response"
     t.index ["survey_template_id"], name: "index_survey_sections_on_survey_template_id"
   end
 
@@ -493,13 +495,12 @@ ActiveRecord::Schema.define(version: 2020_05_05_050913) do
     t.boolean "set_reminder"
     t.integer "role_id"
     t.integer "task_type"
-    t.integer "document_template_id"
     t.string "link_url"
     t.boolean "important"
     t.bigint "child_workflow_template_id"
     t.bigint "survey_template_id"
+    t.uuid "document_template_id"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
-    t.index ["document_template_id"], name: "index_tasks_on_document_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
@@ -579,6 +580,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_050913) do
     t.integer "completed_user_id"
     t.text "remarks"
     t.uuid "workflow_id"
+    t.integer "time_spent_mins"
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
     t.index ["company_id"], name: "index_workflow_actions_on_company_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"

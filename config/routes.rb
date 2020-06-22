@@ -56,7 +56,7 @@ Rails.application.routes.draw do
       get 'success', to: 'checkout#success', as: :checkout_success
     end
 
-    resources :templates, param: :template_slug, except: [:destroy]
+    resources :templates, param: :template_slug
     delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
 
     resources :clients do
@@ -105,7 +105,6 @@ Rails.application.routes.draw do
 
     resources :workflows, param: :workflow_id, path: '/:workflow_name' do
       member do
-        get '/history', to: 'workflows#activities', as: :activities
         post '/archive', to: 'workflows#archive', as: :archive
         post '/reset', to: 'workflows#reset', as: :reset
         get '/section/:section_id', to: 'workflows#show', as: :section

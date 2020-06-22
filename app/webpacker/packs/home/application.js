@@ -21,7 +21,6 @@ require("jquery");
 
 import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap';
-import 'dropzone/dist/dropzone';
 
 // Import font awesome 5
 import "@fortawesome/fontawesome-free/js/all";
@@ -31,10 +30,10 @@ window.jQuery = $;
 window.$ = $;
 
 window.moment = require("moment");
-window.Dropzone = require("dropzone");
 window.mixpanel = require("mixpanel-browser");
 window.Turbolinks = require("turbolinks");
 
+require("../../src/javascripts/google-analytics");
 require("selectize");
 require("algoliasearch");
 require("tempusdominus-bootstrap-4");

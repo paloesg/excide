@@ -4,7 +4,7 @@ class WorkflowActionsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @workflow_action.update_attributes(workflow_action_params)
+      if @workflow_action.update(workflow_action_params)
         format.json { render json: @workflow_action, status: :ok }
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
@@ -19,6 +19,6 @@ class WorkflowActionsController < ApplicationController
   end
 
   def workflow_action_params
-    params.require(:workflow_action).permit(:assigned_user_id, :remarks)
+    params.require(:workflow_action).permit(:assigned_user_id, :remarks, :time_spent_mins)
   end
 end

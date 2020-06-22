@@ -12,15 +12,14 @@
           .kt-portlet__head
             .kt-portlet__head-label
               h3.kt-portlet__head-title
-                | Survey Template Details
+                | Form Template Details
           .kt-portlet__body
             .form-group
               = f.label :title, "Title:"
               = f.text_field :title, class: "form-control", required: true
             .form-group
-              = f.label :survey_type, "Survey Type:"
+              = f.label :survey_type, "Form Type:"
               = f.select :survey_type, ::SurveyTemplate.survey_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width", required: true}
   .col-md-9.col-sm-12
-    .kt-portlet
-      = f.fields_for :survey_sections do |section|
-        = render 'survey_section_fields', f: section
+    = f.fields_for :survey_sections do |section|
+      = render 'survey_section_fields', f: section

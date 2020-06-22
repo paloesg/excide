@@ -28,7 +28,8 @@
                   - else
                     - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
                       - if company.name.present?
-                        = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'kt-nav__link', tabindex: -1
+                        li.kt-nav__item
+                          = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'kt-nav__link', tabindex: -1
             - else
               = link_to(symphony_root_path, class: "btn btn-pill btn-default") do
                 ' #{current_user.company.name}
@@ -52,16 +53,16 @@
               ul.kt-nav.kt-margin-t-10.kt-margin-b-10
                 li.kt-nav__item
                   = link_to symphony_users_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Manage Users
+                    span.kt-nav__link-text Users
                 li.kt-nav__item
                   = link_to symphony_roles_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Manage Roles
+                    span.kt-nav__link-text Roles
                 li.kt-nav__item
                   = link_to symphony_templates_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Manage Templates
+                    span.kt-nav__link-text Templates
                 li.kt-nav__item
                   = link_to symphony_survey_templates_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Manage Survey Templates
+                    span.kt-nav__link-text Form Templates
           /! end: Admin bar
         /! begin: User bar
         .kt-header__topbar-item.kt-header__topbar-item--langs
@@ -72,7 +73,7 @@
             ul.kt-nav.kt-margin-t-10.kt-margin-b-10
               li.kt-nav__item
                 = link_to edit_user_registration_path, class: 'kt-nav__link' do
-                  span.kt-nav__link-text User Profile
+                  span.kt-nav__link-text My Profile
               - if current_user.has_role? :superadmin or current_user.has_role?(:admin, current_user.company)
                 li.kt-nav__item
                   = link_to edit_company_path, class: 'kt-nav__link' do

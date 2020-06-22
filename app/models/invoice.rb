@@ -17,7 +17,7 @@ class Invoice < ApplicationRecord
 
   enum status: { created: 0, rejected: 1, xero_awaiting_approval: 2, xero_approved: 3, xero_total_mismatch: 4, rounding_added: 5 }
 
-  aasm column: :status do
+  aasm column: :status, enum: true do
     state :created, initial: true
     state :rejected
     state :xero_awaiting_approval
@@ -45,8 +45,6 @@ class Invoice < ApplicationRecord
       transitions from: :xero_total_mismatch, to: :rounding_added
     end
   end
-
-  after_destroy :delete_workflow_for_batches
 
   def line_items
     read_attribute(:line_items).map {|l| LineItem.new(l) }
@@ -89,14 +87,6 @@ class Invoice < ApplicationRecord
   def total_amount
     array = self.line_items
     array.inject(0) { |sum, h| sum + (h.quantity.to_i * h.price.to_f)}
-  end
-
-  def delete_workflow_for_batches
-    @workflow = self.workflow
-    if @workflow.batch.present?
-      Document.where(workflow_id: @workflow.id).destroy_all
-      @workflow.destroy!
-    end
   end
 
   class LineItem

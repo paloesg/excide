@@ -11,15 +11,22 @@
               | #{section.section_name} - #{section.tasks.count.to_s} tasks
           .kt-portlet__head-toolbar
             .kt-portlet__head-actions
-              .pull-right #{@completed} of #{@batch.workflows.count} files completed
+              - if @batch.processing_complete?
+                .pull-right #{@completed} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
+              - else
+                .pull-right Processing #{@processing_files} #{'file'.pluralize(@processing_files)} at the moment. You may start on your tasks first.
+            / Check if any files failed during processing (eg document not created, hence no attachment)
+            - if @batch.failed_blob['blobs'].present?
+              a.pop.ml-2 data-container="body" title="" data-original-title="#{pluralize(@batch.failed_blob['blobs'].length, 'file')} failed to be processed. Please contact admin for support." data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+                i.fa.fa-exclamation-triangle.text-danger
         .kt-portlet__body
           .kt-widget11
             .table-responsive
               table.table
                 thead
                   tr
-                    th Documents
-                    th Invoices
+                    th Filename
+                    th
                     - section.tasks.includes(:role).order(position: :asc).each do |task|
                       th
                         .header-properties
@@ -31,31 +38,39 @@
                 tbody
                   - @batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc).each do |wf|
                     tr
-                      td
-                        - if wf.documents.empty?
-                          i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
-                        - else
-                          - wf.documents.each do |d|
-                            - if File.extname(d.file_url) == '.pdf'
-                              / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
-                              - display_url = url_for(d.converted_image.first) if d.converted_image.attached?
+                      / Only show the processing buttons and line when workflow_actions are created
+                      - if wf.documents.empty? and wf.workflow_actions.present?
+                        td
+                          / i.ti-file.icon.mr-3.text-center.large-icon.gray-icon
+                          | Document is still processing
+                        td
+                          .btn-group.btn-group-sm
+                            button class="btn btn-secondary flaticon2-search-1" disabled=""
+                            button class="btn btn-secondary flaticon2-paper" disabled=""
+                            button class="btn btn-secondary flaticon2-rubbish-bin text-danger" disabled=""
+                      - else
+                        - wf.documents.each do |d|
+                          td.align-middle
+                            / Check if raw file is attached. If it's not (like the older documents), display the filename instead
+                            - if d.raw_file.attached?
+                              = d.raw_file.blob.filename
                             - else
-                              - display_url = d.file_url
-                            = d.filename
-                            br
-                            - if d.converted_image.attached?
-                              a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="text-primary" Preview
-                            - else
-                              p.font-italic.mb-0
-                                | No preview available.
-                      td
-                        - if wf.invoice.blank?
-                          i.flaticon2-paper.icon.mr-3.text-center.medium-icon.gray-icon
-                        - else
-                          = link_to symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id)
-                            i.flaticon2-paper.icon.mr-3.medium-icon
-                          - if wf.invoice.rejected?
-                            .rejected-invoice-circle R
+                              = d.filename
+                          td
+                            .btn-group.btn-group-sm
+                              - if d.converted_images.attached?
+                                / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
+                                - display_url = url_for(d.converted_images.first)
+                                a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="btn btn-secondary flaticon2-search-1"
+                              - else
+                                button class="btn btn-secondary flaticon2-search-1" disabled=""
+                              - if wf.invoice.blank?
+                                button class="btn btn-secondary flaticon2-paper" disabled=""
+                              - else
+                                = link_to "", symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id), class: 'btn btn-secondary flaticon2-paper'
+                                - if wf.invoice.rejected?
+                                  .rejected-invoice-circle R
+                              = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'btn btn-secondary flaticon2-rubbish-bin text-danger'
                       - section.tasks.includes(:role).order(position: :asc).each do |task|
                         td class="text-center #{'important-task' if task.important}"
-                          = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id)
+                          = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id) if task.get_workflow_action(wf.company, wf.id).present?

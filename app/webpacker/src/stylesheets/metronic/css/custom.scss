@@ -1,5 +1,5 @@
 .selectize-dropdown {
-  z-index: 1001 !important;
+  z-index: 1005 !important;
 }
 
 .carousel-indicators,
@@ -61,6 +61,13 @@
 
 .media .media-body .text-truncate {
   width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.media .media-body .text-truncate.with-icon {
+  width: 140px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
