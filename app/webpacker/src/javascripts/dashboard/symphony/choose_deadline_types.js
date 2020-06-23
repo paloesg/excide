@@ -10,8 +10,6 @@ $(document).on("turbolinks:load", function() {
   }
   // Show the form field on change
   $('select.deadlines-type').on('change', function() {
-    console.log("OPTION VALUE: ", $('select.deadlines-type').val());
-    console.log("days to comple VALUE: ", $('.template_days_to_complete').closest('.form-group'));
     if($('select.deadlines-type').val() === 'xth_day_of_the_month'){
       $('#template_deadline_day').closest('.form-group').removeClass('kt-hide');
       $('#template_days_to_complete').closest('.form-group').addClass('kt-hide');
