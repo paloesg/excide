@@ -57,8 +57,8 @@ class Workflow < ApplicationRecord
       if self.template.xth_day_of_the_month?
         # Check if day exists in that month (for eg, June only have 30 days), so if it is 31st, we bring it forward to the next month.
         if Date.new(Date.current.year, Date.current.month, -1).day < self.template.deadline_day
-          # Add the offset to the end of the month
-          self.deadline = Date.new(Date.current.year, Date.current.month).end_of_month + (self.template.deadline_day - Date.new(Date.current.year, Date.current.month, -1).day)
+          # The deadline will become the end of the month
+          self.deadline = Date.new(Date.current.year, Date.current.month).end_of_month
         else
           # Check if the xth day has past in the current month. If it is, set deadline as the next month
           self.deadline = Date.new(Date.current.year, Date.current.month, self.template.deadline_day) > Date.today ? Date.new(Date.current.year, Date.current.month, self.template.deadline_day) : Date.new(Date.current.year, Date.current.month, self.template.deadline_day).next_month()
