@@ -7,7 +7,9 @@ class DocumentTemplate < ApplicationRecord
 
   before_destroy :remove_associations
 
-  validates :title, :file_url, :template, presence: true
+  has_one_attached :file
+
+  validates :title, :template, presence: true
 
   private
 
