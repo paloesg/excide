@@ -63,6 +63,8 @@ class Workflow < ApplicationRecord
           # Check if the xth day has past in the current month. If it is, set deadline as the next month
           self.deadline = Date.new(Date.current.year, Date.current.month, self.template.deadline_day) > Date.today ? Date.new(Date.current.year, Date.current.month, self.template.deadline_day) : Date.new(Date.current.year, Date.current.month, self.template.deadline_day).next_month()
         end
+        # Set to the next business day if self.deadline above is not a work day
+        self.deadline = 1.business_days.after(self.deadline) - 1.day if !self.deadline.workday? 
       else
         self.deadline = self.template.days_to_complete.business_days.after(Date.current)
       end
