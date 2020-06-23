@@ -23,7 +23,7 @@
             - if @document.present?
               strong File Name:
               br
-              = @document.filename
+              = @document.raw_file.attached? ? @document.raw_file.filename : @document.filename
           // button to run textract
           / button class="btn btn-primary do-textract" Extract Invoice Data
           / = hidden_field_tag :template, @workflow.template.slug, class:"template-field"
