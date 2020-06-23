@@ -9,15 +9,13 @@ class RepliesMailbox < ApplicationMailbox
     mail.attachments.each do |attachment|
       document = Document.new
       # Add to active storage
-      document.converted_image.attach(io: StringIO.new(attachment.body.to_s), filename: attachment.filename,
-      content_type: attachment.content_type)
-      document.filename = attachment.filename
-      # Have to check active storage (currently not sure how to add the file_url pattern)
-      document.file_url = attachment.filename
+      document.raw_file.attach(io: StringIO.new(attachment.body.to_s), filename: attachment.filename, content_type: attachment.content_type)
       document.user = @user
       # Get document's company by matching it with company mailbox token
       document.company = company
       document.save
+      # Run conversion
+      ConversionService.new(document).run
     end
   end
 
