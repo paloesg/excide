@@ -31,7 +31,7 @@
                       th
                         .header-properties
                           ' #{task.task_type.humanize}
-                          a.pop data-container="body" title="" data-original-title=task.instructions data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+                          a.pop data-container="body" title=task.instructions data-html="true" data-placement="right" data-toggle="kt-tooltip" data-trigger="hover"
                             i.fa.fa-info-circle
                         .header-info
                           ' #{task.role.name.humanize}
