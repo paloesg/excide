@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_23_135753) do
+ActiveRecord::Schema.define(version: 2020_06_24_021808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -487,17 +487,13 @@ ActiveRecord::Schema.define(version: 2020_06_23_135753) do
   create_table "taggings", id: :serial, force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
-    t.integer "taggable_id"
     t.string "tagger_type"
     t.integer "tagger_id"
     t.string "context", limit: 128
     t.datetime "created_at"
+    t.uuid "taggable_id", default: -> { "gen_random_uuid()" }, null: false
     t.index ["context"], name: "index_taggings_on_context"
-    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
-    t.index ["taggable_id", "taggable_type", "context"], name: "taggings_taggable_context_idx"
-    t.index ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy"
-    t.index ["taggable_id"], name: "index_taggings_on_taggable_id"
     t.index ["taggable_type"], name: "index_taggings_on_taggable_type"
     t.index ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type"
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
@@ -542,6 +538,9 @@ ActiveRecord::Schema.define(version: 2020_06_23_135753) do
     t.integer "company_id"
     t.json "data_names", default: []
     t.integer "workflow_type", default: 0
+    t.integer "deadline_day"
+    t.integer "deadline_type"
+    t.integer "days_to_complete"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
