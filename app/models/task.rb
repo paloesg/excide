@@ -4,6 +4,7 @@ class Task < ApplicationRecord
 
   belongs_to :section
   belongs_to :role
+  belongs_to :user
   belongs_to :document_template
   belongs_to :survey_template
   belongs_to :child_workflow_template, class_name: 'Template'
