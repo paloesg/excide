@@ -14,6 +14,8 @@ class RepliesMailbox < ApplicationMailbox
       # Get document's company by matching it with company mailbox token
       document.company = company
       document.save
+      # Tagged document
+      document.tag_list.add('Email')
       # Run conversion
       ConversionService.new(document).run
     end
