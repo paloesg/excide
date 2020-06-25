@@ -53,7 +53,7 @@
                           td.align-middle
                             / Check if raw file is attached. If it's not (like the older documents), display the filename instead
                             - if d.raw_file.attached?
-                              = d.raw_file.blob.filename
+                              = d.raw_file.filename
                             - else
                               = d.filename
                           td
