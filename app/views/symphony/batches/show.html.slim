@@ -36,7 +36,7 @@
                         .header-info
                           ' #{task.role.name.humanize}
                 tbody
-                  - @batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc).each do |wf|
+                  - @per_batch.each do |wf|
                     tr
                       / Only show the processing buttons and line when workflow_actions are created
                       - if wf.documents.empty? and wf.workflow_actions.present?
@@ -74,3 +74,4 @@
                       - section.tasks.includes(:role).order(position: :asc).each do |task|
                         td class="text-center #{'important-task' if task.important}"
                           = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id) if task.get_workflow_action(wf.company, wf.id).present?
+              = paginate @per_batch, views_prefix: 'dashboard'
