@@ -24,7 +24,8 @@ $(document).on("turbolinks:load", function(){
       sideBySide: true
     });
     $('.datetimepicker').val($(this).attr('td-date'));
-    $('.datetoday').val($(this).attr('td-date'));
+    // Get date from the data attribute
+    $('.datetoday').val($(this).data('date'));
     $($(this).data("bs.popover").tip).find('select').selectize();
 
     timepickers = $('.timepickers');

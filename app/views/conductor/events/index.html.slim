@@ -28,7 +28,7 @@
             th Start time
             th End time
             th Location
-            - if @user.has_role? :associate, :any
+            - if @user.has_role? :associate, @company
               th Remarks
             - else
               th Consultant
