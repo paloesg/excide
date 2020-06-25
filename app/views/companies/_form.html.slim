@@ -4,8 +4,6 @@
       .kt-portlet__head
         .kt-portlet__head-label
           h3.kt-portlet__head-title Company Information
-          a data-toggle="popover" title="Upload your document through the email: " data-content="<a href='mailto: fileupload-#{@company.mailbox_token}@symphony.excide.com'> fileupload-#{@company.mailbox_token}@symphony.excide.com </a>"
-            = fa_icon 'exclamation-circle 1x', class: 'ml-2 icon'
       .kt-portlet__body
         .form-group
           = f.label :name, 'Company name'
@@ -98,6 +96,14 @@
                         td = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
                         td = invoice['lines']['data'][0]['description']
                         td = link_to "Download", invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title Email Upload
+        .kt-portlet__body
+          .form-group
+            = label_tag '', 'Send documents to Symphony using this unique email:'
+            = text_field_tag '', 'fileupload-'+@company.mailbox_token+'@symphony.excide.com', class: 'form-control', disabled: true
       .kt-portlet
         .kt-portlet__head
           .kt-portlet__head-label
