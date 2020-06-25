@@ -4,6 +4,7 @@ tr
 
   td.task-fields = f.text_area :instructions, {required: true, class: "form-control"}
   td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.name.humanize, role.id]}, selected: f.object.role&.id), {include_blank: true} , {required: true, class: "dropdown-overlay option"}
+  td.task-fields = f.select :user_id, options_for_select(@users.collect{|user| [user.first_name, user.id]}, selected: f.object.user&.id), {include_blank: true} , {class: "dropdown-overlay option"}
   td.task-fields
     p
       a data-toggle="collapse" href="#task-index-#{f.index}-section-#{g.id}" aria-expanded="false" class="collapsed"
