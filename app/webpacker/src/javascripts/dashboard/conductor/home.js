@@ -1,17 +1,5 @@
-// Show message validation in popover when creating event
-$(document).on("ajax:error", "form", function (xhr, status, error) {
-  $(this).find('#popover_validation').text('')
-  data = JSON.parse(status.responseText)
-  let message, results;
-  if (data) {
-    results = [];
-    for (let message in data) {
-      results.push($(this).find('#popover_validation').prepend(' *' + message.replace(/_/g, ' ') + ' ' + data[message]));
-    }
-    $(this).find('.alert').show()
-  }
-});
 $(document).on("turbolinks:load", function(){
+  console.log("HERE I AM", $('.new_events'))
   // Create new event
   $('.new_events').popover({
     html: true,
@@ -22,6 +10,7 @@ $(document).on("turbolinks:load", function(){
       return $('#new-event').html();
     }
   }).on('shown.bs.popover', function () {
+    console.log("IM HERE!");
     datetimepickers = $('.datetimepicker')
     // get last of .datetimepicker
     datetimepickers.eq(datetimepickers.length - 1).attr('id', 'newdatetimepicker')
@@ -100,4 +89,17 @@ $(document).on("turbolinks:load", function(){
   $('body').on("shown.bs.popover", function (e) {
     $('.popover-close').click(function () { $(e.target).popover('hide') });
   });
+});
+// Show message validation in popover when creating event
+$(document).on("ajax:error", "form", function (xhr, status, error) {
+  $(this).find('#popover_validation').text('')
+  data = JSON.parse(status.responseText)
+  let message, results;
+  if (data) {
+    results = [];
+    for (let message in data) {
+      results.push($(this).find('#popover_validation').prepend(' *' + message.replace(/_/g, ' ') + ' ' + data[message]));
+    }
+    $(this).find('.alert').show()
+  }
 });
