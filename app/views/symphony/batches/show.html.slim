@@ -31,7 +31,7 @@
                       th
                         .header-properties
                           ' #{task.task_type.humanize}
-                          a.pop data-container="body" title="" data-original-title=task.instructions data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+                          a.pop data-container="body" title=task.instructions data-html="true" data-placement="right" data-toggle="kt-tooltip" data-trigger="hover"
                             i.fa.fa-info-circle
                         .header-info
                           ' #{task.role.name.humanize}
@@ -45,9 +45,9 @@
                           | Document is still processing
                         td
                           .btn-group.btn-group-sm
-                            button class="btn btn-secondary flaticon2-search-1" disabled=""
+                            button class="btn btn-secondary flaticon2-search-1" disabled="" 
                             button class="btn btn-secondary flaticon2-paper" disabled=""
-                            button class="btn btn-secondary flaticon2-rubbish-bin text-danger" disabled=""
+                            button class="btn btn-secondary flaticon2-rubbish-bin text-danger" disabled="" 
                       - else
                         - wf.documents.each do |d|
                           td.align-middle
@@ -63,14 +63,14 @@
                                 - display_url = url_for(d.converted_images.first)
                                 a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="btn btn-secondary flaticon2-search-1"
                               - else
-                                button class="btn btn-secondary flaticon2-search-1" disabled=""
+                                button class="btn btn-secondary flaticon2-search-1 disabled" data-html="true" data-toggle="kt-tooltip" data-placement="top" title="No preview available"
                               - if wf.invoice.blank?
-                                button class="btn btn-secondary flaticon2-paper" disabled=""
+                                button class="btn btn-secondary flaticon2-paper disabled" data-html="true" data-toggle="kt-tooltip" data-placement="top" title="No invoice available"
                               - else
-                                = link_to "", symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id), class: 'btn btn-secondary flaticon2-paper'
-                                - if wf.invoice.rejected?
-                                  .rejected-invoice-circle R
-                              = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'btn btn-secondary flaticon2-rubbish-bin text-danger'
+                                = link_to "", symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id), data: { toggle: "kt-tooltip", placement: "top", title: "View invoice" }, class: 'btn btn-secondary flaticon2-paper' 
+                              = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { toggle: "kt-tooltip", placement: "top", title: "Delete", confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'btn btn-secondary flaticon2-rubbish-bin text-danger'
+                              - if wf.invoice.present? and wf.invoice.rejected?
+                                button class="btn btn-light flaticon2-warning disabled text-danger" data-html="true" data-toggle="kt-tooltip" data-placement="top" title="Invoice rejected"
                       - section.tasks.includes(:role).order(position: :asc).each do |task|
                         td class="text-center #{'important-task' if task.important}"
                           = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id) if task.get_workflow_action(wf.company, wf.id).present?
