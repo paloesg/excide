@@ -48,7 +48,10 @@ class Conductor::EventsController < ApplicationController
     @event.company = @company
 
     respond_to do |format|
-      if @event.save
+      if @event.save!
+        if current_user.has_role? :associate, current_user.company or current_user.has_role? :consultant, current_user.company
+          @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, current_user).run
+        end
         format.html { redirect_to conductor_events_path, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
