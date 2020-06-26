@@ -16,6 +16,7 @@
   .col-md-3.col-sm-12
     - if @workflow.archive.blank?
       = link_to "Edit routine", edit_symphony_workflow_path(workflow_id: @workflow.id), class: 'btn btn-primary btn-block'
+      / - if assigned to user instead of role; no need for assigning again
       = link_to "Assign users", assign_symphony_workflow_path(@template.slug, @workflow.id), class: 'btn btn-primary btn-block'
       = link_to "Archive routine", archive_symphony_workflow_path(workflow_id: @workflow.id), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-danger btn-block'
       - if @user.has_role? :superadmin
