@@ -46,7 +46,8 @@ $(document).on("turbolinks:load", function(){
   }).children().on('click', function (e) {
     e.stopPropagation();
   });
-  // event details
+
+  // event details in the event index page
   $('.event').popover({
     html: true,
     container: 'body',

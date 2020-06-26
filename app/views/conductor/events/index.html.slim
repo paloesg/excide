@@ -28,7 +28,7 @@
             th Start time
             th End time
             th Location
-            - if @user.has_role? :associate, @company
+            - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
               th Remarks
             - else
               th Consultant
@@ -46,7 +46,7 @@
               td = event.start_time.strftime("%d/%m/%y %H:%M")
               td = event.end_time.strftime("%d/%m/%y %H:%M")
               td = event.location
-              - if @user.has_role? :associate, @company
+              - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
                 td = event.remarks
               - else
                 td
