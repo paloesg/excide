@@ -7,12 +7,12 @@
 .row
   .col-sm-12.mb-3
     .btn-group.float-right role='group'
-      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm'
+      = link_to "conductor/events?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
         i.fa.fa-chevron-left
         | Previous Month
-      = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm'
+      = link_to "conductor/events?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
         | Current Month
-      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm'
+      = link_to "conductor/events?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
         | Next Month
         i.fa.fa-chevron-right
 .row
