@@ -31,7 +31,7 @@
 
           tbody
             - @allocations.each do |allocation|
-              tr data-allocation='#{allocation.id}' class="#{@allocation == allocation ? 'info' : ''}"
+              tr data-allocation='#{allocation.id}' class="#{@allocation == allocation ? 'table-info' : ''}"
                 td = allocation.event.name
                 td = allocation.allocation_date
                 td = allocation.start_time.strftime("%H:%M")
