@@ -99,6 +99,14 @@
       .kt-portlet
         .kt-portlet__head
           .kt-portlet__head-label
+            h3.kt-portlet__head-title Email Upload
+        .kt-portlet__body
+          .form-group
+            = label_tag '', 'Send documents to Symphony using this unique email:'
+            = text_field_tag '', 'fileupload-'+@company.mailbox_token+'@symphony.excide.com', class: 'form-control', disabled: true
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
             h3.kt-portlet__head-title Slack
         .kt-portlet__body
           .form-group

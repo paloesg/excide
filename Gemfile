@@ -75,6 +75,8 @@ gem 'docusign_rest'
 gem 'twilio-ruby'
 # Manage ordering for survey objects
 gem 'acts_as_list'
+# For tagging
+gem 'acts-as-taggable-on', '~> 6.0'
 # Use user friendly slugs
 gem 'friendly_id', '~> 5.3.0'
 # Amazon S3 SDK
