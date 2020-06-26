@@ -22,7 +22,7 @@ class Conductor::AvailabilitiesController < ApplicationController
   def new
     user_id = (current_user.has_role? :associate, @company) ? current_user.id : params[:user_id]
     last_availability = Availability.where(user_id: user_id).order('available_date ASC').last
-
+    # If user has availability, the date from will start from the last date
     if last_availability.present?
       @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_week : last_availability.available_date.next_week
       @date_to = @date_from.end_of_week
