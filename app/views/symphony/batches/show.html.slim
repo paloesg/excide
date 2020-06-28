@@ -61,6 +61,14 @@
                               - if d.converted_images.attached?
                                 / To prevent getting error message, check if converted image is attached before displaying. This is because activejob might take longer to convert than rails creating the batches.
                                 - display_url = url_for(d.converted_images.first)
+                              - elsif d.raw_file.attached? && d.raw_file.content_type != "application/pdf"
+                                / check for content_type as pdf also have raw_file
+                                - display_url = url_for(d.raw_file)
+                              - elsif d.file_url.present?
+                                - display_url = d.file_url
+                              - else
+                                - display_url = nil
+                              - if display_url.present?
                                 a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="btn btn-secondary flaticon2-search-1"
                               - else
                                 button class="btn btn-secondary flaticon2-search-1 disabled" data-html="true" data-toggle="kt-tooltip" data-placement="top" title="No preview available"
