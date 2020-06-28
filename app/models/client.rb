@@ -6,4 +6,7 @@ class Client < ApplicationRecord
   has_many :events
 
   validates :name, presence: true
+
+  # Tagging documents to indicate where document is created from
+  acts_as_taggable_on :tags
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_24_021808) do
+ActiveRecord::Schema.define(version: 2020_06_28_150517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -145,7 +145,7 @@ ActiveRecord::Schema.define(version: 2020_06_24_021808) do
     t.index ["question_id", "choice_id"], name: "index_choices_questions_on_question_id_and_choice_id"
   end
 
-  create_table "clients", id: :serial, force: :cascade do |t|
+  create_table "clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "identifier"
     t.integer "user_id"
@@ -261,8 +261,7 @@ ActiveRecord::Schema.define(version: 2020_06_24_021808) do
     t.datetime "updated_at", null: false
     t.integer "company_id"
     t.integer "staffer_id"
-    t.integer "client_id"
-    t.index ["client_id"], name: "index_events_on_client_id"
+    t.uuid "client_id"
     t.index ["company_id"], name: "index_events_on_company_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end

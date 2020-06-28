@@ -8,6 +8,7 @@ class Conductor::ClientsController < ClientsController
 
   def new
     @client = Client.new
+    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
   end
 
   def edit
