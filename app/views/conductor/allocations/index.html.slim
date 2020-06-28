@@ -42,7 +42,7 @@
                 td = link_to 'Edit', edit_conductor_allocation_path(allocation)
 
   .col-md-4.col-xs-12
-    = link_to 'Export ' + @date_from.strftime("%B") + ' Allocations', {action: :export, start_date: params[:start_date]} ,class: 'btn btn-success btn-block'
+    = link_to 'Export ' + @date_from.strftime("%B") + ' Allocations', {action: :export, start_date: params[:start_date]} , target: "_blank", class: 'btn btn-success btn-block'
     br
     .card
       h5.card-header Available Staff
