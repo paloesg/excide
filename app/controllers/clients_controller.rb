@@ -30,8 +30,7 @@ class ClientsController < ApplicationController
       contact_id = @xero.create_contact(client_params)
       @client.xero_contact_id = contact_id
     end
-    @client.tag_list.add(params[:service_line]) if params[:service_line].present?
-
+    
     respond_to do |format|
       if @client.save
         format.html { redirect_to conductor_clients_path, notice: 'Client successfully created!' }
@@ -97,6 +96,6 @@ class ClientsController < ApplicationController
   end
 
   def client_params
-    params.require(:client).permit(:name, :identifier, :xero_contact_id, :tag_list)
+    params.require(:client).permit(:name, :identifier, :xero_contact_id)
   end
 end

@@ -13,7 +13,6 @@
             th ID
             th Name
             th Identifier
-            th Tag
             th Created by
             th
         tbody
@@ -22,7 +21,6 @@
               td = c.id
               td = c.name
               td = c.identifier
-              td = c.tag_list.last
               td = c.user&.full_name
               td.btn-toolbar
                 = link_to 'Edit', edit_conductor_client_path(c.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'

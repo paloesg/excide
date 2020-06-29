@@ -46,6 +46,7 @@ class Conductor::EventsController < ApplicationController
 
     @event = Event.new(event_params)
     @event.company = @company
+    @event.tag_list.add(params[:service_line]) if params[:service_line].present?
 
     respond_to do |format|
       if @event.save!
@@ -140,6 +141,6 @@ class Conductor::EventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :tag_list, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
   end
 end

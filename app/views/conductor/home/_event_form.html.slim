@@ -10,8 +10,8 @@
       = f.label :client_id
       = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, class: 'selectize'
     .form-group
-      = f.label :location
-      = f.text_field :location, class: 'form-control'
+      = label_tag 'Service Line'
+      = select_tag :service_line, options_for_select(@service_lines), include_blank: true,prompt: 'Select service line...', class: 'selectize'
     .form-group
       = f.label :start_time
       = hidden_field_tag 'date_today', nil, class: 'form-control datetoday'
@@ -21,11 +21,8 @@
       = f.text_field :end_time, class: 'form-control timepickers', 'data-toggle': 'datetimepicker', id: 'datetimepicker1', 'data-target': '#datetimepicker1'
   .col-sm-6
     .form-group
-      = f.label :event_type_id
-      = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }, {selected: @event.event_type, prompt: 'Select event type...'}, class: 'selectize'
-    .form-group
-      = f.label :staffer_id
-      = f.select :staffer_id, @staffers.map { |key, value| [key.full_name, key.id] }, {selected: @event.staffer_id, prompt: 'Select event owner...'}, class: 'selectize'    
+      = f.label :event_type_id, 'Job Nature'
+      = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }, {selected: @event.event_type, prompt: 'Select event type...'}, class: 'selectize'    
     .form-group
       = f.label :remarks
       = f.text_area :remarks, class: 'form-control'

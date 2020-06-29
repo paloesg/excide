@@ -39,6 +39,8 @@ class Conductor::HomeController < ApplicationController
     @event.build_address
     @clients = Client.where(company_id: @company.id)
     @staffers = User.where(company: @company).with_role :staffer, @company
+
+    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
   end
 
   private
