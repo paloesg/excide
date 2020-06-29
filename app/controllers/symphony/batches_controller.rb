@@ -48,6 +48,8 @@ class Symphony::BatchesController < ApplicationController
     # Come from batch uploads (create method). [number, 0].max() is to prevent negative number from being passed in
     @processing_files = [(params[:files_count].to_i - @batch.workflows.count), 0].max() if params[:files_count].present?
     @completed = @batch.workflows.where(completed: true).length
+    
+    @per_batch = Kaminari.paginate_array(@batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc)).page(params[:page]).per(10)
   end
 
   def destroy
