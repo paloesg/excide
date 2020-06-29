@@ -3,12 +3,12 @@ tr class="#{'important-task' if task.important}"
   td
     = task.instructions
   td
-    - if action.assigned_user.present?
-      span.fa.fa-user aria-hidden="true"
-      |  #{action.assigned_user&.full_name}
-    - elsif task.user_id.present?
+    - if task.user_id.present?
       span.fa.fa-user aria-hidden="true"
       |  #{task.display_user(task.user_id)}
+    - elsif action.assigned_user.present?
+      span.fa.fa-user aria-hidden="true"
+      |  #{action.assigned_user&.full_name}
     - else
       = task.display_role
   td = action.deadline.try(:strftime, "%d/%m/%Y") || '-'

@@ -27,7 +27,6 @@
                 td = task['position']
                 td = task['instructions']
                 td = task['workflow_actions']['assigned_user'] || task['role_name'] || task['user_name'] 
-                / shouldn't assigned_user = user_name somehow?
                 td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
                 td
                   label.kt-checkbox.kt-checkbox--single

@@ -13,8 +13,8 @@
               tr
                 th No.
                 th Instructions
-                th Role
-                th.w-25 User
+                th Role/User
+                th.w-25 Assigned User
                 th
             tbody
               - section.tasks.each do |t|
@@ -23,9 +23,14 @@
                   td = t.position.to_s + '.'
                   td
                     = t.instructions
-                  td = t.role&.name&.humanize
-                  td = form_for action, remote: true do |f|
-                      = f.collection_select(:assigned_user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = { data: { action_id: action.id}, class: 'selectize-user-assignment', onchange: "assign(this);" })
+                  td = t.user_id ? User.find(t.user_id).first_name : t.role&.name&.humanize
+                  - if t.user_id.present?                  
+                    // should assign :assigned_user_id with the selected User at the beginning
+                    td = form_for action, remote: true do |f|
+                        = f.select :assigned_user_id, options_for_select(User.all.collect{|user_id| t.user_id}, selected: t.user_id), {include_blank: true}, html_options = { data: { action_id: action.id}, class: 'selectize-user-assignment', onchange: "assign(this);" }
+                  - else
+                    td = form_for action, remote: true do |f|
+                        = f.collection_select(:assigned_user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = { data: { action_id: action.id}, class: 'selectize-user-assignment', onchange: "assign(this);" })
                   td
                     = fa_icon "check", class: 'text-success ajax-icons'
                     = fa_icon "times", class: 'text-danger ajax-icons'

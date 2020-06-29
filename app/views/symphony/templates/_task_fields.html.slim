@@ -3,9 +3,9 @@ tr
   td.task-fields = f.select :task_type, options_for_select(Task.task_types.map{|k, v| ((k == "create_invoice_payable" || k == "xero_send_invoice" || k ==  "create_invoice_receivable" || k == "coding_invoice") && current_user.company.basic?) ? ["[PRO] " + k.humanize, k] : [k.humanize, k]}, selected: f.object.task_type, disabled: current_user.company.basic? ? ["create_invoice_payable", "xero_send_invoice", "create_invoice_receivable", "coding_invoice"] : []), {}, { required: true, class: "dropdown-overlay"}
 
   td.task-fields = f.text_area :instructions, {required: true, class: "form-control"}
-  td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.name.humanize, role.id]}, selected: f.object.role&.id), {include_blank: true} , {required: true, class: "dropdown-overlay option"}
-  td.task-fields = f.select :user_id, options_for_select(@users.collect{|user| [user.first_name, user.id]}, selected: f.object.user&.id), {include_blank: 'Optional'} , {class: "dropdown-overlay option"}
-  / = f.collection_select(:assigned_user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = { data: { action_id: action.id}, class: 'selectize-user-assignment', onchange: "assign(this);" })
+  td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.name.humanize, role.id]}, selected: f.object.role&.id), {include_blank: 'Either...'} , {required: true, class: "dropdown-overlay option"}
+  td.task-fields = f.select :user_id, options_for_select(@users.collect{|user| [user.first_name, user.id]}, selected: f.object.user&.id), {include_blank: "Or..."} , {class: "dropdown-overlay option"}
+  // should be either select role or particular user - how to validate in that case?
   td.task-fields
     p
       a data-toggle="collapse" href="#task-index-#{f.index}-section-#{g.id}" aria-expanded="false" class="collapsed"
