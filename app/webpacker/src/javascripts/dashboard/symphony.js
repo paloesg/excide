@@ -62,7 +62,7 @@ $(document).on("turbolinks:load", function () {
 
   //General way of adding attribute through link_to_add_row method in application helper
   $("form").on("click", ".add_task_fields", function (event) {
-    let regexp, time;
+    let regexp, time, roleId;
     time = new Date().getTime();
     regexp = new RegExp($(this).data("id"), "g");
     $(".task-in-section-" + $(this).data("sectionId")).append(
@@ -87,6 +87,10 @@ $(document).on("turbolinks:load", function () {
           "_role_id']"
       ).selectize({
         dropdownParent: "body",
+        onChange: (role_id) => {
+          if (!role_id.length) return;
+          roleId = role_id; // store global roleId variable for usage
+        },
       });
       $(
         "select[id$='template_sections_attributes_" +
@@ -122,7 +126,16 @@ $(document).on("turbolinks:load", function () {
           time +
           "_user_id']"
       ).selectize({
-        dropdownParent: "body",
+        dropdownParent: "body", // need to filter this according to roleId chosen
+        // onChange: (user_id) => {
+        //   console.log(user_id);
+        // },
+        // options: [
+        //   {
+        //     id: roleId,
+        //     title: "TESTING",
+        //   },
+        // ],
       });
       $(".data-attributes").find("tr:last-child").find(".create").val("1");
       return event.preventDefault();
