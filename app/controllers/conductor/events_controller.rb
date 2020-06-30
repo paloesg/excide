@@ -12,7 +12,7 @@ class Conductor::EventsController < ApplicationController
     @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
     @date_to = @date_from.end_of_month
     @events = @company.events.includes(:address, :client, :staffer, :event_type, [allocations: :user]).where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
-    # Only show events relevant to associate if logged in as associate
+    # Only show events relevant to associate if logged in as associate or consultant
     @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role?(:associate, @company) or @user.has_role?(:consultant, @company)
   end
 
@@ -50,12 +50,14 @@ class Conductor::EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save!
-        if current_user.has_role? :associate, current_user.company or current_user.has_role? :consultant, current_user.company
-          @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, current_user).run
+        @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, current_user).run if current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company
+        # Inform user if timesheet was not allocated 
+        if current_user.has_role? :admin, @company or @timesheet_allocation.success?
+          format.json { render :show, status: :created, location: @event }
+          format.js   { render js: 'Turbolinks.visit(location.toString());' }
+        else
+          format.html { redirect_to conductor_root_path, alert: "Event was not created due to error: #{@timesheet_allocation.message}."}
         end
-        format.html { redirect_to conductor_events_path, notice: 'Event was successfully created.' }
-        format.json { render :show, status: :created, location: @event }
-        format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         set_staffers
         @event.build_address unless @event.address.present?

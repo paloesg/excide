@@ -1,5 +1,4 @@
 $(document).on("turbolinks:load", function(){
-  console.log("HERE I AM", $('.new_events'))
   // Create new event
   $('.new_events').popover({
     html: true,
@@ -10,7 +9,6 @@ $(document).on("turbolinks:load", function(){
       return $('#new-event').html();
     }
   }).on('shown.bs.popover', function () {
-    console.log("IM HERE!");
     datetimepickers = $('.datetimepicker')
     // get last of .datetimepicker
     datetimepickers.eq(datetimepickers.length - 1).attr('id', 'newdatetimepicker')
