@@ -17,7 +17,8 @@ class Task < ApplicationRecord
 
   acts_as_list scope: :section
 
-  validates :instructions, :position, :task_type, :role_id, presence: true
+  validates :instructions, :position, :task_type, presence: true
+  validates :role_id, presence: true, if: :is_user_selected
 
   def get_workflow_action(company_id, workflow_id = nil)
     workflow_id = workflow_id.present? ? Workflow.find(workflow_id).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id
@@ -27,6 +28,10 @@ class Task < ApplicationRecord
 
   def check_previous
     Task.where("id < ?", self.id).order(created_at: :asc).last
+  end
+
+  def is_user_selected
+    Task.find_by(user_id: self.user_id).user_id.blank?
   end
 
   private
