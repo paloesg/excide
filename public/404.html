@@ -165,11 +165,17 @@ License: You must have a valid license purchased only from themeforest(the above
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
 
 		<!--end::Fonts -->
-
+    <link
 		<!--begin::Page Custom Styles(used by this page) -->
 		<style>
       /* @import "../../global/layout/config.scss"; */
-
+      html,
+      body {
+        height: 100%;
+        font-family: 'Poppins', 'Helvetica', sans-serif;
+        color: #fff;
+        text-align: center;
+      }
       .kt-error-v6 {
         background-position: center;
         background-repeat: no-repeat;
@@ -184,11 +190,33 @@ License: You must have a valid license purchased only from themeforest(the above
           margin-top: 12rem;
           font-weight: 700;
       }
-      .kt-error-v6 .kt-error_container .kt-error_description {
+      .kt-error-v6 .kt-error_description {
           margin-top: 3rem;
           font-size: 2.3rem;
           font-weight: 500;
           line-height: 3rem;
+      }
+
+      .kt-grid.kt-grid--hor{
+        display: flex;
+        flex-direction: column;
+      }
+
+      .kt-grid--root {
+        flex: 1;
+        -ms-flex: 1 0 0px; // IE10-11 fix
+      }
+      
+      .kt-grid__item {
+        flex: none;
+      }
+      .kt-grid__item--fluid {
+        flex: 1 0 auto;
+        //-ms-flex: 1 0 0px;  // IE10-11 fix
+      }	
+      .kt-grid--ver {
+        display: flex;
+		    flex-direction: row;
       }
     </style>
 
@@ -203,7 +231,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 		<!-- begin:: Page -->
 		<div class="kt-grid kt-grid--ver kt-grid--root">
-			<div class="kt-grid__item kt-grid__item--fluid kt-grid  kt-error-v6" style="background-image: url(assets/media/error/bg6.jpg);">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-error-v6" style="background-image: url(assets/media/error/bg6.jpg);">
 				<div class="kt-error_container">
 					<div class="kt-error_subtitle kt-font-light">
 						<h1>Oops...</h1>
