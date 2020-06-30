@@ -22,7 +22,7 @@ class Document < ApplicationRecord
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :filename, :file_url, :created_at, :updated_at
+    attribute :filename, :file_url, :created_at, :updated_at, :raw_file
     attribute :workflow do
       { id: workflow&.id, template_title: workflow&.template&.title, template_slug: workflow&.template&.slug }
     end
