@@ -14,7 +14,7 @@ class Conductor::AllocationsController < ApplicationController
     if params[:allocation].present?
       @allocation = Allocation.find(params[:allocation])
       # Check if allocation type is associate in charge first.
-      # Next, heck if the availability date and allocation date matches.
+      # Next, check if the availability date and allocation date matches.
       # Then check whether the availability start time is less than the allocation start time.
       # Finally check whether the availability end time is greater than the allocation end time.
       # If all conditions are met, the user is available for the assignment.

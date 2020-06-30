@@ -15,6 +15,9 @@ class Event < ApplicationRecord
   validates :company, :client, :event_type, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
 
+  # Tagging documents to indicate where document is created from
+  acts_as_taggable_on :tags
+
   include PublicActivity::Model
   tracked owner: ->(controller, _model) { controller && controller.current_user },
           recipient: ->(_controller, model) { model },

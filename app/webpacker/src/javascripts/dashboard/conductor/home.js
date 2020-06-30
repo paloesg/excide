@@ -1,16 +1,3 @@
-// Show message validation in popover when creating event
-$(document).on("ajax:error", "form", function (xhr, status, error) {
-  $(this).find('#popover_validation').text('')
-  data = JSON.parse(status.responseText)
-  let message, results;
-  if (data) {
-    results = [];
-    for (let message in data) {
-      results.push($(this).find('#popover_validation').prepend(' *' + message.replace(/_/g, ' ') + ' ' + data[message]));
-    }
-    $(this).find('.alert').show()
-  }
-});
 $(document).on("turbolinks:load", function(){
   // Create new event
   $('.new_events').popover({
@@ -35,7 +22,8 @@ $(document).on("turbolinks:load", function(){
       sideBySide: true
     });
     $('.datetimepicker').val($(this).attr('td-date'));
-    $('.datetoday').val($(this).attr('td-date'));
+    // Get date from the data attribute
+    $('.datetoday').val($(this).data('date'));
     $($(this).data("bs.popover").tip).find('select').selectize();
 
     timepickers = $('.timepickers');
@@ -56,7 +44,8 @@ $(document).on("turbolinks:load", function(){
   }).children().on('click', function (e) {
     e.stopPropagation();
   });
-  // event details
+
+  // event details in the event index page
   $('.event').popover({
     html: true,
     container: 'body',
@@ -100,4 +89,17 @@ $(document).on("turbolinks:load", function(){
   $('body').on("shown.bs.popover", function (e) {
     $('.popover-close').click(function () { $(e.target).popover('hide') });
   });
+});
+// Show message validation in popover when creating event
+$(document).on("ajax:error", "form", function (xhr, status, error) {
+  $(this).find('#popover_validation').text('')
+  data = JSON.parse(status.responseText)
+  let message, results;
+  if (data) {
+    results = [];
+    for (let message in data) {
+      results.push($(this).find('#popover_validation').prepend(' *' + message.replace(/_/g, ' ') + ' ' + data[message]));
+    }
+    $(this).find('.alert').show()
+  }
 });

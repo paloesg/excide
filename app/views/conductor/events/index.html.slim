@@ -7,12 +7,12 @@
 .row
   .col-sm-12.mb-3
     .btn-group.float-right role='group'
-      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm'
+      = link_to "conductor/events?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
         i.fa.fa-chevron-left
         | Previous Month
-      = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm'
+      = link_to "conductor/events?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
         | Current Month
-      = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm'
+      = link_to "conductor/events?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
         | Next Month
         i.fa.fa-chevron-right
 .row
@@ -24,11 +24,11 @@
             th
             th Event type
             th Client
-            th Staffer
+            th Service Line
+            th Job Nature
             th Start time
             th End time
-            th Location
-            - if @user.has_role? :associate, :any
+            - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
               th Remarks
             - else
               th Consultant
@@ -42,21 +42,21 @@
                 i.fa.fa-circle.mr-1 style="color: #{event.event_type.colour};"
               td = event.event_type.name
               td = event.client&.name
-              td = event.staffer&.full_name
+              td = event.tag_list.last
+              td = event.event_type.name
               td = event.start_time.strftime("%d/%m/%y %H:%M")
               td = event.end_time.strftime("%d/%m/%y %H:%M")
-              td = event.location
-              - if @user.has_role? :associate, :any
+              - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
                 td = event.remarks
               - else
                 td
                   - if event.allocations.consultant.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((event.allocations.consultant.count..5).to_a, event.allocations.consultant.count), onchange: "createAllocation(#{event.id}, 'consultant', this);")
+                    = select_tag('allocations', options_for_select((event.allocations.consultant.count..5).to_a, event.allocations.consultant.count), onchange: "createAllocation('#{event.id}', 'consultant', this);")
                   - else
                     = select_tag('allocations', options_for_select([event.allocations.consultant.count]), disabled: true)
                 td
                   - if event.allocations.associate.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((event.allocations.associate.count..20).to_a, event.allocations.associate.count), onchange: "createAllocation(#{event.id}, 'associate', this);")
+                    = select_tag('allocations', options_for_select((event.allocations.associate.count..20).to_a, event.allocations.associate.count), onchange: "createAllocation('#{event.id}', 'associate', this);")
                   - else
                     = select_tag('allocations', options_for_select([event.allocations.associate.count]), disabled: true)
                 td
