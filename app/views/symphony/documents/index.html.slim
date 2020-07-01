@@ -8,26 +8,13 @@
 .row
   .col-sm-6.offset-sm-3.mb-3
     input.form-control#q type="search"
-.row
-  .col-sm-3#facets
-    #document_templates
-  .col-sm-6
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title
-            | Search Results
-      .kt-portlet__body
-        .table-responsive#hits
-        #pagination
-  .col-md-3
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title
-            | Upload Documents
-      .kt-portlet__body
-        .dashboard-body.documentMultipleUploads#Dashboard
+= form_tag symphony_create_batches_through_email_path do
+  .row.mb-3
+    .col-sm-3
+      = select_tag('template_slug', options_for_select(@templates.map {|k,v| [k.title, k.slug] }), include_blank: 'Select template', class: 'selectize')
+    .col-sm-6
+      = submit_tag 'Create Batch', class: 'btn btn-primary float-right'
+  = render 'search_box'
 
 javascript:
   function loadExtJS(src, callback) {
@@ -39,14 +26,18 @@ javascript:
 
   loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
     var hitTemplate = '<table class="table table-striped">' +
-        '<thead><tr><th width="20%">Filename</th>' +
+        '<thead><tr><th>Check</th>' +
+        '<th width="20%">Filename</th>' +
+        '<th width="20%">Tags</th>' +
         '<th width="20%">Document Template</th>' +
         '<th width="20%">Workflow</th>' +
         '<th width="20%">Uploaded At</th>' +
         '<th width="20%">Actions</th>' +
         '</tr></thead>' +
         '<tbody>{{#hits}}' +
-        '<tr><td>{{{_highlightResult.raw_file.value}}}</td>' +
+        '<tr><td><input type="checkbox" name="tag_ids[]" value={{{objectID}}} class="create-batch" /></td>' +
+        '<td>{{{_highlightResult.filename.value}}}</td>' +
+        '<td>{{_highlightResult._tags.0.value}}</td>' +
         '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
         '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.id}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
         '<td>{{created_at}}</td>' +

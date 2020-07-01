@@ -5,7 +5,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :set_batch, only: [:show, :destroy]
   before_action :set_s3_direct_post, only: [:show, :new]
 
-  after_action :verify_authorized, except: [:index, :create]
+  after_action :verify_authorized, except: [:index, :create, :create_batches_through_email]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -56,6 +56,19 @@ class Symphony::BatchesController < ApplicationController
     authorize @batch
     @batch.destroy
     redirect_to symphony_batches_index_path, notice: 'Batch was successfully deleted.'
+  end
+
+  def create_batches_through_email
+    # Add attributes of batches
+    @template = Template.find_by(slug: params[:template_slug])
+    @generate_batch = GenerateBatchesService.new(current_user, @template, params[:tag_ids]).run
+    if @generate_batch.success?
+      redirect_to symphony_batch_path(batch_template_name: @template.slug, id: @generate_batch.batch.id), notice: 'Batches created successfully.'
+    else
+      redirect_to symphony_documents_path, alert: "An error occurs while creating batch: #{@generate_batch.message}"
+    end
+    
+    puts "Batches params document: #{params[:tag_ids]}"
   end
 
   private
