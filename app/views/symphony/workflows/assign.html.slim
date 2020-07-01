@@ -23,11 +23,10 @@
                   td = t.position.to_s + '.'
                   td
                     = t.instructions
-                  td = t.user_id ? User.find(t.user_id).first_name : t.role&.name&.humanize
+                  td = t.role.present? ? t.role&.name&.humanize : WorkflowAction.find_by(workflow_id: @workflow.id).assigned_user_id ? User.find(WorkflowAction.find_by(workflow_id: @workflow.id).assigned_user_id).first_name : User.find(t.user_id).first_name
                   - if t.user_id.present?                  
-                    // should assign :assigned_user_id with the selected User at the beginning
                     td = form_for action, remote: true do |f|
-                        = f.select :assigned_user_id, options_for_select(User.all.collect{|user_id| t.user_id}, selected: t.user_id), {include_blank: true}, html_options = { data: { action_id: action.id}, class: 'selectize-user-assignment', onchange: "assign(this);" }
+                        = f.select :assigned_user_id, options_for_select(User.where(company_id: @company.id).collect {|user| [user.first_name, user.id]}, selected: f.object.assigned_user_id), {include_blank: 'Select user...'}, html_options = { data: { action_id: action.id}, class: 'selectize-user-assignment', onchange: "assign(this);" }
                   - else
                     td = form_for action, remote: true do |f|
                         = f.collection_select(:assigned_user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = { data: { action_id: action.id}, class: 'selectize-user-assignment', onchange: "assign(this);" })
@@ -36,13 +35,14 @@
                     = fa_icon "times", class: 'text-danger ajax-icons'
   .col-md-4.col-sm-6
     = link_to "Finish Assignment", symphony_workflow_path(@template.slug, @workflow.id), class: 'btn btn-primary btn-block mb-3'
-    h3 User List
-    - @workflow.template.get_roles.each do |role|
-      .kt-portlet.mt-3
-        .kt-portlet__head
-          h4.kt-portlet__head-label #{role.name.titleize}
-        .kt-portlet__body
-          - (User.with_role role.name, @company).each do |user|
-            p
-              i.fa.fa-user
-              |  #{user.full_name}
+    - if @workflow.template.get_roles.present?
+      h3 User List
+      - @workflow.template.get_roles.each do |role|
+        .kt-portlet.mt-3
+          .kt-portlet__head
+            h4.kt-portlet__head-label #{role.name.titleize}
+          .kt-portlet__body
+            - (User.with_role role.name, @company).each do |user|
+              p
+                i.fa.fa-user
+                |  #{user.full_name}
