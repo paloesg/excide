@@ -18,8 +18,9 @@ class Task < ApplicationRecord
   acts_as_list scope: :section
 
   validates :instructions, :position, :task_type, presence: true
-  validates :role_id, presence: true, if: :both_selected?
-  # validates :role_id, presence: true, if: :none_selected?
+  # validates :role_id, presence: true, if: :check_fields
+  # validates :user_id, presence: true, if: :check_fields
+  # validate :check_user_and_role_fields
 
   def get_workflow_action(company_id, workflow_id = nil)
     workflow_id = workflow_id.present? ? Workflow.find(workflow_id).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id
@@ -31,9 +32,9 @@ class Task < ApplicationRecord
     Task.where("id < ?", self.id).order(created_at: :asc).last
   end
 
-  def both_selected?
-    (self.user_id.present? && self.role_id.present?) || (self.user_id.blank? && self.role_id.blank?)
-  end
+  # def check_fields
+  #   (self.user.present? && self.role.present?) || (self.user.blank? && self.role.blank?)
+  # end
 
   private
   # Create company action for existing workflows that this task belongs to
@@ -41,5 +42,10 @@ class Task < ApplicationRecord
     self.section.template.workflows&.each do |workflow|
       WorkflowAction.create(task_id: self.id, company_id: workflow.company_id, workflow_id: workflow.id)
     end
+  end
+
+  def check_user_and_role_fields
+    self.errors.add(:role_id, "Either role or user must be filled") unless (self.role.present? && self.user.blank?)
+    self.errors.add(:user_id, "Either role or user must be filled") unless (self.user.present? && self.role.blank?)
   end
 end

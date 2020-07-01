@@ -6,6 +6,7 @@ class Symphony::TemplatesController < ApplicationController
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
   before_action :find_roles, :find_users, only: [:new, :edit, :update]
+  # before_action :find_task
 
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
@@ -110,6 +111,10 @@ class Symphony::TemplatesController < ApplicationController
   def find_users
     @users = User.where(company_id: @company.id)
   end
+
+  # def find_task
+  #   @task = Task.where(role_id: @roles).or(Task.where(user_id: @users))
+  # end
 
   def template_params
     params.require(:template).permit(:title, :company_id, :workflow_type, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :user_id, :document_template_id, :survey_template_id, :days_to_complete, :set_reminder, :important, :link_url, :image_url, :_destroy] ])
