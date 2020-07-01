@@ -521,10 +521,6 @@ ActiveRecord::Schema.define(version: 2020_06_29_042314) do
     t.bigint "child_workflow_template_id"
     t.bigint "survey_template_id"
     t.uuid "document_template_id"
-<<<<<<< HEAD
-    t.bigint "user_id"
-=======
->>>>>>> e649b30f124cd53b7c09af696bdd861f20364b27
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
