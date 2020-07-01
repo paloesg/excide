@@ -9,11 +9,10 @@
   .col-sm-6.offset-sm-3.mb-3
     input.form-control#q type="search"
 = form_tag symphony_create_batches_through_email_path do
-  .row.mb-3
-    .col-sm-3
+  .row
+    .col-sm-6.offset-sm-3.mb-3
       // Overwrite ID so that it won't clash with uppy upload that checks for template slug
       = select_tag('template_slug', options_for_select(@templates.map {|k,v| [k.title, k.slug] }), include_blank: 'Select template', required: true, id: 'template', class: 'selectize')
-    .col-sm-6
       = submit_tag 'Create Batch', class: 'btn btn-primary float-right'
   = render 'search_box'
 
@@ -29,11 +28,11 @@ javascript:
     var hitTemplate = '<table class="table table-striped">' +
         '<thead><tr><th></th>' +
         '<th></th>' +
-        '<th width="20%">Filename</th>' +
-        '<th width="20%">Document Template</th>' +
-        '<th width="20%">Workflow</th>' +
-        '<th width="20%">Uploaded At</th>' +
-        '<th width="20%">Actions</th>' +
+        '<th>Filename</th>' +
+        '<th>Document Template</th>' +
+        '<th>Workflow</th>' +
+        '<th>Uploaded At</th>' +
+        '<th>Actions</th>' +
         '</tr></thead>' +
         '<tbody>{{#hits}}' +
         '<tr><td><input type="checkbox" name="tag_ids[]" value={{{objectID}}} class="create-batch" /></td>' +
@@ -42,7 +41,7 @@ javascript:
         '<td>{{{_highlightResult.document_template.title.value}}}</td>' +
         '<td><a href="/symphony/{{workflow.template_slug}}/{{workflow.id}}">{{{_highlightResult.workflow.template_title.value}}}</td>' +
         '<td>{{created_at}}</td>' +
-        '<td><a href="/symphony/documents/{{objectID}}" class="btn btn-primary btn-sm mr-1 flaticon2-search-1"></a> <a href="{{file_url}}" class="btn btn-warning btn-sm mr-1 flaticon2-download-2"></a> <a data-confirm="Are you sure?" data-method="delete" data-remote="true" href="/symphony/documents/{{objectID}}" class="btn btn-danger btn-sm flaticon2-rubbish-bin-delete-button"></a></td>' +
+        '<td><a href="/symphony/documents/{{objectID}}" class="btn btn-primary btn-sm mb-1 flaticon2-search-1"></a> <a href="{{file_url}}" class="btn btn-warning btn-sm mb-1 flaticon2-download-2"></a> <a data-confirm="Are you sure?" data-method="delete" data-remote="true" href="/symphony/documents/{{objectID}}" class="btn btn-danger btn-sm flaticon2-rubbish-bin-delete-button"></a></td>' +
         '{{/hits}}</tbody>'
       '</div>';
       var search = instantsearch({
