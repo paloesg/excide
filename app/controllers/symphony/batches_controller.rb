@@ -48,6 +48,8 @@ class Symphony::BatchesController < ApplicationController
     # Come from batch uploads (create method). [number, 0].max() is to prevent negative number from being passed in
     @processing_files = [(params[:files_count].to_i - @batch.workflows.count), 0].max() if params[:files_count].present?
     @completed = @batch.workflows.where(completed: true).length
+    # This comes from create batch through email method
+    @document_count = params[:document_count] if params[:document_count].present?
     
     @per_batch = Kaminari.paginate_array(@batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc)).page(params[:page]).per(10)
   end
@@ -63,7 +65,8 @@ class Symphony::BatchesController < ApplicationController
     @template = Template.find_by(slug: params[:template_slug])
     @generate_batch = GenerateBatchesService.new(current_user, @template, params[:tag_ids]).run
     if @generate_batch.success?
-      redirect_to symphony_batch_path(batch_template_name: @template.slug, id: @generate_batch.batch.id), notice: 'Batches created successfully.'
+      # Send document count to batches SHOW to indicate how many documents there are in the batch
+      redirect_to symphony_batch_path(batch_template_name: @template.slug, id: @generate_batch.batch.id, document_count: params[:tag_ids].count), notice: 'Batches created successfully.'
     else
       redirect_to symphony_documents_path, alert: "An error occurs while creating batch: #{@generate_batch.message}"
     end
