@@ -23,15 +23,9 @@
                   td = t.position.to_s + '.'
                   td
                     = t.instructions
-                  - if t.role.present?
-                    td = t.role&.name&.humanize 
-                  - elsif action.assigned_user.present?
-                    td = action.assigned_user&.full_name
-                  - else
-                    td = User.find(t.user_id).first_name
+                  td = t.role.present? ? t.role&.name&.humanize : action.assigned_user&.full_name
                   - if t.user_id.present?                  
-                    td = form_for action, remote: true do |f|
-                        = f.select :assigned_user_id, options_for_select(User.where(company_id: @company.id).collect {|user| [user.first_name, user.id]}, selected: f.object.assigned_user_id), {include_blank: User.find(t.user_id).first_name}, html_options = { data: { action_id: action.id}, class: 'selectize-user-assignment', onchange: "assign(this);" }
+                    td = action.assigned_user&.full_name
                   - else
                     td = form_for action, remote: true do |f|
                         = f.collection_select(:assigned_user_id, (User.with_role t.role&.name, @company), 'id', 'full_name', options = {include_blank: 'Select user...'}, html_options = { data: { action_id: action.id}, class: 'selectize-user-assignment', onchange: "assign(this);" })
