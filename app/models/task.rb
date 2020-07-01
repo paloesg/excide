@@ -18,7 +18,8 @@ class Task < ApplicationRecord
   acts_as_list scope: :section
 
   validates :instructions, :position, :task_type, presence: true
-  validates :role_id, presence: true, if: :is_user_selected
+  # validate :role_id, if: [:none_selected?, :both_selected?]
+  validates :role_id, presence: true, if: :none_selected?
 
   def get_workflow_action(company_id, workflow_id = nil)
     workflow_id = workflow_id.present? ? Workflow.find(workflow_id).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id
@@ -30,8 +31,14 @@ class Task < ApplicationRecord
     Task.where("id < ?", self.id).order(created_at: :asc).last
   end
 
-  def is_user_selected
-    Task.find_by(user_id: self.user_id).user_id.blank?
+  def both_selected?
+    both_selected = self.user_id.present? && self.role_id.present?
+    return both_selected
+  end
+
+  def none_selected?
+    none_selected = self.user_id.blank? && self.role_id.blank?
+    return none_selected
   end
 
   private
