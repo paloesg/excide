@@ -25,8 +25,8 @@ class Conductor::HomeController < ApplicationController
     @events = @events.allocation(params[:allocation_users]) unless params[:allocation_users].blank?
     @events = @events.client(params[:project_clients]) unless params[:project_clients].blank?
 
-    # Only show events relevant to associate if logged in as associate
-    @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role?(:associate, @company)
+    # Only show events relevant to associate if logged in as associate or consultant
+    @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role?(:associate, @company) or @user.has_role?(:consultant, @company)
     @upcoming_events = @events.where("events.end_time > ?", Time.current)
 
     # Get event id to validate activities only event(by recipient_id) with current company will show
@@ -37,6 +37,8 @@ class Conductor::HomeController < ApplicationController
     @event.build_address
     @clients = Client.where(company_id: @company.id)
     @staffers = User.where(company: @company).with_role :staffer, @company
+
+    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
   end
 
   private

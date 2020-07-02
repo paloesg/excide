@@ -15,10 +15,6 @@
 @import "selectize/dist/css/selectize";
 @import "selectize/dist/css/selectize.default";
 
-//Dropzone
-@import "dropzone/dist/min/dropzone.min.css";
-@import "dropzone/dist/min/basic.min.css";
-
 @import "../src/stylesheets/metronic/css/custom";
 @import "../src/stylesheets/metronic/css/invoices";
 @import "../src/stylesheets/metronic/css/notification";
@@ -27,11 +23,14 @@
 @import "../src/stylesheets/metronic/css/companies";
 @import "../src/stylesheets/metronic/css/templates";
 @import "../src/stylesheets/metronic/css/pagination";
+@import "../src/stylesheets/metronic/css/workflows";
 @import "../src/stylesheets/metronic/pages/pricing/pricing-1";
 @import "../src/stylesheets/metronic/pages/error/error-6";
 @import "../src/stylesheets/dashboard/admin";
 @import "../src/stylesheets/metronic/actiontext";
 
+// Active storage direct upload
+@import "../src/stylesheets/dashboard/direct_upload";
 
 //icon
 @import "../src/stylesheets/metronic/css/flaticon";

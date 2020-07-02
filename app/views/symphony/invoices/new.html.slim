@@ -1,15 +1,15 @@
 .row
-  .col-sm-12
+  .col-sm-12.mb-4
     h1 Create Invoice
 .row
   .loading
     .loader
   .col-md-4
-    / Check for document conversion completion by comparing the page count
-    - if File.extname(@document.file_url) == ".pdf" && (!@document.converted_image.attached? || @document.converted_image.count != @page_count)
-      div.mt-md-5.text-center Document not available. Please try again later.
-    - else
+    / First two checks for old pdf and non pdf files, third checks for new non pdf files. && @document.converted_images.count == @page_count
+    - if (@document.converted_images.attached?) || (@document.file_url.present? && File.extname(@document.file_url) != ".pdf") || (@document.raw_file.attached? && @document.raw_file.content_type != "application/pdf")
       = render 'document'
+    - else
+      div.mt-md-5.text-center Document not available. Please try again later.
   .col-md-8
     .card.mb-3
       .row.m-2
@@ -23,12 +23,12 @@
             - if @document.present?
               strong File Name:
               br
-              = @document.filename
+              = @document.raw_file.attached? ? @document.raw_file.filename : @document.filename
           // button to run textract
-          button class="btn btn-primary do-textract" Extract Invoice Data
-          = hidden_field_tag :template, @workflow.template.slug, class:"template-field"
-          = hidden_field_tag :workflow_id, @workflow.id, class:"workflow-field"
-          = hidden_field_tag :textract_job_id, @document.aws_textract_job_id, class:"textract-job-id-field"
+          / button class="btn btn-primary do-textract" Extract Invoice Data
+          / = hidden_field_tag :template, @workflow.template.slug, class:"template-field"
+          / = hidden_field_tag :workflow_id, @workflow.id, class:"workflow-field"
+          / = hidden_field_tag :textract_job_id, @document.aws_textract_job_id, class:"textract-job-id-field"
         .col-auto.ml-auto.text-center
           | Invoice
           .invoice-nav

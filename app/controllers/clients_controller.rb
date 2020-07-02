@@ -28,7 +28,7 @@ class ClientsController < ApplicationController
       contact_id = @xero.create_contact(client_params)
       @client.xero_contact_id = contact_id
     end
-
+    
     respond_to do |format|
       if @client.save
         format.html { redirect_to conductor_clients_path, notice: 'Client successfully created!' }
@@ -79,7 +79,10 @@ class ClientsController < ApplicationController
   private
 
   def xero_login
-    redirect_to user_xero_omniauth_authorize_path and return
+    redirect_to connect_to_xero_path(xero_connects_from: {
+      client: 'client',
+      workflow_id: params[:workflow_id]
+    })
   end
 
   def set_client

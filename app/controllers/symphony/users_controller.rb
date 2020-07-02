@@ -2,10 +2,10 @@ class Symphony::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles, only: [:new, :create, :edit]
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :change_company, :notification_settings, :update_notification]
+  before_action :set_user, except: [:index, :new, :create, :edit_additional_information]
 
   def index
-    @users = User.where(company: @company).order(:id).includes(:roles)
+    @users = User.joins(:roles).where(:roles => {resource_id: @company.id}).order(:id).uniq
   end
 
   def show
@@ -30,7 +30,15 @@ class Symphony::UsersController < ApplicationController
   end
 
   def update
-    if @user.update(user_params)
+    # Get all the updated roles by finding the role instance 
+    updated_roles = Role.where(id: params[:user][:role_ids])
+    # Remove all the roles in that company and then add in the new
+    @user.roles.where(resource_id: current_user.company.id).each do |role|
+      @user.remove_role(role.name, current_user.company)
+    end
+    # Append update roles to user's roles
+    @user.roles << updated_roles
+    if @user.update(first_name: params[:user][:first_name], last_name: params[:user][:last_name], email: params[:user][:email], contact_number: params[:user][:contact_number])
       redirect_to symphony_users_path, notice: 'User successfully updated!'
     else
       render :edit
@@ -91,7 +99,7 @@ class Symphony::UsersController < ApplicationController
   end
 
   def set_user
-    @user = User.find_by(id: params[:id], company: @company)
+    @user = User.find_by(id: params[:id])
   end
 
   def set_company_roles

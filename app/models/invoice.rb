@@ -46,8 +46,6 @@ class Invoice < ApplicationRecord
     end
   end
 
-  after_destroy :delete_workflow_for_batches
-
   def line_items
     read_attribute(:line_items).map {|l| LineItem.new(l) }
   end
@@ -89,14 +87,6 @@ class Invoice < ApplicationRecord
   def total_amount
     array = self.line_items
     array.inject(0) { |sum, h| sum + (h.quantity.to_i * h.price.to_f)}
-  end
-
-  def delete_workflow_for_batches
-    @workflow = self.workflow
-    if @workflow.batch.present?
-      Document.where(workflow_id: @workflow.id).destroy_all
-      @workflow.destroy!
-    end
   end
 
   class LineItem

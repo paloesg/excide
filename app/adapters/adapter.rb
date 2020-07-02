@@ -26,11 +26,16 @@ module Adapter
     end
 
 #-----------------------------------------Used in xero_sessions_controller.rb-----------------------------------------------
-    def request_token(invoice_params={})
-      if invoice_params.nil?
+    def request_token(xero_connects_from_params={})
+      # Normal connecting to xero
+      if xero_connects_from_params.nil?
         @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + '/xero_callback_and_update')
+      # Connect to xero when adding client to xero on the workflow SHOW page
+      elsif xero_connects_from_params[:client].present?
+        @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + xero_callback_and_update_path(workflow_id: xero_connects_from_params[:workflow_id]))
+      # Connect to xero to get invoices details
       else
-        @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + xero_callback_and_update_path(workflow_action_id: invoice_params[:workflow_action_id], workflow_id: invoice_params[:workflow_id], invoice_type: invoice_params[:invoice_type]))
+        @xero_client.request_token(oauth_callback: ENV['ASSET_HOST'] + xero_callback_and_update_path(workflow_action_id: xero_connects_from_params[:workflow_action_id], workflow_id: xero_connects_from_params[:workflow_id], invoice_type: xero_connects_from_params[:invoice_type]))
       end
     end
 
@@ -118,7 +123,8 @@ module Adapter
       end
       line_items.each do |line_item|
         tracking = [{name: tracking_name[0]&.name, option: line_item.tracking_option_1}, {name: tracking_name[1]&.name, option: line_item.tracking_option_2}]
-        inv.add_line_item(item_code: nil, description: line_item.description, quantity: line_item.quantity, unit_amount: line_item.price, account_code: line_item.account.slice(0..2), tax_type: line_item.tax.split.last, tracking: tracking)
+        # The strip method is called to remove whitespaces
+        inv.add_line_item(item_code: nil, description: line_item.description, quantity: line_item.quantity, unit_amount: line_item.price, account_code: line_item.account.split("-")[0].strip, tax_type: line_item.tax.split.last, tracking: tracking)
       end
       inv.save
       return inv
@@ -127,7 +133,7 @@ module Adapter
     def updating_invoice_payable(xero_invoice, updated_line_items)
       #update line item with the rounding line item
       rounding_line_item = updated_line_items.last
-      xero_invoice.add_line_item(item_code: nil, description: rounding_line_item.description, quantity: rounding_line_item.quantity, unit_amount: rounding_line_item.price, account_code: rounding_line_item.account&.slice(0..2), tax_type: rounding_line_item.tax&.split&.last, tracking: nil)
+      xero_invoice.add_line_item(item_code: nil, description: rounding_line_item.description, quantity: rounding_line_item.quantity, unit_amount: rounding_line_item.price, account_code: rounding_line_item.account&.split("-")[0].strip, tax_type: rounding_line_item.tax&.split&.last, tracking: nil)
       xero_invoice.save
     end
   end

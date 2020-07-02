@@ -74,6 +74,13 @@ class Symphony::TemplatesController < ApplicationController
     end
   end
 
+  def destroy
+    authorize @template 
+    if @template.destroy
+      redirect_to symphony_templates_path, notice: 'Template was successfully deleted.'
+    end
+  end
+
   def destroy_section
     authorize @template
     @section = Section.find(params[:section_id])

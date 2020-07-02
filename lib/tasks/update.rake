@@ -80,9 +80,23 @@ namespace :update do
   desc "PDF conversion for documents"
   task documents_pdf_conversion: :environment do
     Document.all.each do |d|
-      if File.extname(d.file_url) == ".pdf" && !d.converted_image.attached?
+      if File.extname(d.file_url) == ".pdf" && !d.converted_images.attached?
         ConvertPdfToImagesJob.perform_now(d)
       end
+    end
+  end
+
+  desc "Rename converted_image to converted_images in active storage"
+  task pluralize_converted_image: :environment do
+    ActiveStorage::Attachment.where(name: "converted_image").each do |attachment|
+      attachment.update(name: "converted_images")
+    end
+  end
+
+  desc "Update existing batch with status processing complete"
+  task update_existing_batch_status: :environment do
+    Batch.where(status: nil).each do |batch|
+      batch.update(status: 1)
     end
   end
 end

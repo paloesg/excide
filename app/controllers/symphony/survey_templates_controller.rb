@@ -63,8 +63,7 @@ class Symphony::SurveyTemplatesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def survey_template_params
     params.require(:survey_template).permit(:title, :slug, :survey_type, :company_id, 
-      survey_sections_attributes: [:id, :display_name, :position, :description, 
-      questions_attributes: [:id, :content, :question_type, :position, :choice_id, :_destroy, 
+      survey_sections_attributes: [:id, :display_name, :position, :description, :multiple_response, questions_attributes: [:id, :content, :question_type, :position, :choice_id, :_destroy, 
       choices_attributes: [:id, :position, :content, :_destroy] ] ])
   end
 end

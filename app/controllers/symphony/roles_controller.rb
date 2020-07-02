@@ -22,7 +22,7 @@ class Symphony::RolesController < ApplicationController
   end
 
   def edit
-    @users = User.where(company: @company).order(:id)
+    @users = User.joins(:roles).where(roles: {resource_id: @company.id}).order(:id)
   end
 
   def update
