@@ -14,7 +14,7 @@
       .form-group
         // Overwrite ID so that it won't clash with uppy upload that checks for template slug
         = select_tag('template_slug', options_for_select(@templates.map {|k,v| [k.title, k.slug] }), include_blank: 'Select template', required: true, id: 'template', class: 'selectize')
-      .form-group.ml-auto
+      .form-group.ml-2
         = submit_tag 'Create Batch', class: 'btn btn-primary'
   = render 'search_box'
 
