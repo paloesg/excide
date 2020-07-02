@@ -9,7 +9,7 @@
   .col-sm-6.offset-sm-3.mb-3
     input.form-control#q type="search"
 = form_tag symphony_batches_path(source: 'email'), method: :post do
-  .row
+  .row.create-batch-through-documents.d-none
     .form-inline.col-sm-6.offset-sm-3.mb-3
       .form-group
         // Overwrite ID so that it won't clash with uppy upload that checks for template slug
