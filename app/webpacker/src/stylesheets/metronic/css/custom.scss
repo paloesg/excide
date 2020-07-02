@@ -98,12 +98,12 @@ td.day.has-events.fc-day-top.fc-past {
   position: relative;
 }
 
+.selectize-input {
+  padding: 6px 6px;
+  height: 31.25px;
+}
+
 .selectize-input > * {
-  vertical-align: baseline;
-  display: -moz-inline-stack;
-  display: inline-block;
-  zoom: 1;
-  *display: inline;
   width: 90%;
   overflow: hidden;
   text-overflow: ellipsis;
