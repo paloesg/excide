@@ -53,7 +53,10 @@ $(document).on("turbolinks:load", function() {
           let date = new Date($(".invoicedate").val());
           let dueDate = date.setDate(date.getDate() + parseInt(dateStr));
           let d = moment(dueDate).format("D MMM YYYY");
-          $(".duedate").val(d)
+          $(".duedate").val(d);
+        }
+        else{
+          $(".duedate").val("Invalid Date");
         }
       }
       else{
