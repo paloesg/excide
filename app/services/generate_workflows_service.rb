@@ -1,13 +1,13 @@
-class GenerateBatchesService
-  def initialize(user, template, document_ids)
+class GenerateWorkflowsService
+  def initialize(user, template, document_ids, batch)
     @user = user
     @template = template
     @document_ids = document_ids
+    @batch = batch
   end
 
   def run
     begin
-      generate_batch
       set_document_associations
       OpenStruct.new(success?: true, batch: @batch)
     rescue => e
@@ -16,12 +16,6 @@ class GenerateBatchesService
   end
 
   private
-
-  def generate_batch
-    @batch = Batch.new(user: @user, template: @template, company: @user.company)
-    @batch.save!
-    return @batch
-  end
 
   def set_document_associations
     @document_ids.each do |document_id|

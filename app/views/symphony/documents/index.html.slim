@@ -8,7 +8,7 @@
 .row
   .col-sm-6.offset-sm-3.mb-3
     input.form-control#q type="search"
-= form_tag symphony_create_batches_through_email_path do
+= form_tag symphony_batches_path(source: 'email'), method: :post do
   .row
     .col-sm-6.offset-sm-3.mb-3
       // Overwrite ID so that it won't clash with uppy upload that checks for template slug
