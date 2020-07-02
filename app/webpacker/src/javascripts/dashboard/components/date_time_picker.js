@@ -47,10 +47,23 @@ $(document).on("turbolinks:load", function() {
     // check if tab keyboard button pressed
     if (event.keyCode === 9) {
       let dateStr = $(this).val();
-      // do change the field value with date format
-      $(this).val(changeDateValue(dateStr));
+      // Check if the 1st character is + 
+      if (dateStr.slice(0, 1) === "+"){
+        if ($(".invoicedate").val()){
+          let date = new Date($(".invoicedate").val());
+          let dueDate = date.setDate(date.getDate() + parseInt(dateStr));
+          let d = moment(dueDate).format("D MMM YYYY");
+          $(".duedate").val(d)
+        }
+      }
+      else{
+        // do change the field value with date format
+        $(this).val(changeDateValue(dateStr));
+      }
     }
   });
+
+  
 
   $(".dateinvoice").datetimepicker({
     format: "D MMM YYYY",
