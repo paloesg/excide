@@ -51,7 +51,7 @@ $(document).on("turbolinks:load", function() {
       if (dateStr.slice(0, 1) === "+"){
         if ($(".invoicedate").val()){
           let date = new Date($(".invoicedate").val());
-          let dueDate = date.setDate(date.getDate() + parseInt(dateStr));
+          let dueDate = date.setDate(date.getDate() + parseInt(dateStr, 10));
           let d = moment(dueDate).format("D MMM YYYY");
           $(".duedate").val(d);
         }
