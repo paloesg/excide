@@ -47,7 +47,7 @@ class Task < ApplicationRecord
   end
 
   def check_user_and_role_fields
-    self.errors.add(:role_id, "Either role or user must be filled") if (self.check_both_fields_empty || self.check_both_fields_present)
-    self.errors.add(:user_id, "Either role or user must be filled") if (self.check_both_fields_empty || self.check_both_fields_present)
+    self.errors.add(:role_id, "or user must be filled") if (self.check_both_fields_empty || self.check_both_fields_present)
+    self.errors.add(:user_id, "or role must be filled") if (self.check_both_fields_empty || self.check_both_fields_present)
   end
 end

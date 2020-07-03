@@ -112,10 +112,11 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def set_task
-    # @task = Task.where(role_id: @roles).or(Task.where(user_id: @users))
     # @task = Task.where(section: @section)
-    # @task = Task.where(template: @template.id)
-    # how to set current task being edited (and where error message is stored)?
+
+    @task = Task.find_by(section: params[:section_id])
+    # @task.validate!
+    # @task.errors.full_messages
   end
 
   def template_params
