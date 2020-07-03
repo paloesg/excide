@@ -33,6 +33,11 @@ class Symphony::TemplatesController < ApplicationController
             role = Role.create(name: task.role.name, resource_id: @company.id, resource_type: "Company") if role.blank?
             task.role = role
           end
+          if task.user
+            user = User.find_by(name: task.user.name, company: @company.id)
+            user = User.create(name: task.user.name, company: @company.id) if user.blank?
+            task.user = user
+          end
         end
       end
       @template.title = template_params[:title]
@@ -96,7 +101,7 @@ class Symphony::TemplatesController < ApplicationController
 
   private
   def set_template
-    @template = Template.includes(sections: [tasks: [:role, :document_template]]).find(params[:template_slug])
+    @template = Template.includes(sections: [tasks: [:role, :user, :document_template]]).find(params[:template_slug])
   end
 
   def set_company
@@ -112,11 +117,7 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def set_task
-    # @task = Task.where(section: @section)
-
     @task = Task.find_by(section: params[:section_id])
-    # @task.validate!
-    # @task.errors.full_messages
   end
 
   def template_params
