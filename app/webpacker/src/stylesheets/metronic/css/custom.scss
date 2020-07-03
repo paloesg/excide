@@ -103,6 +103,10 @@ td.day.has-events.fc-day-top.fc-past {
   height: 31.25px;
 }
 
+.multi .selectize-input {
+  height: auto;
+}
+
 .selectize-input > * {
   width: 90%;
   overflow: hidden;
