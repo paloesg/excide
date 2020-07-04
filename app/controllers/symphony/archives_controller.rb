@@ -31,7 +31,8 @@ class Symphony::ArchivesController < ApplicationController
     select_section = params[:section] ? @sections.find{|section| section['position'] == params[:section].to_i} : @sections.last
     @section = OpenStruct.new(select_section)
     @tasks = select_section['tasks'].sort_by{|task| task['position']}
-    @activities = @workflow.activities
+    @get_activities = @workflow.activities
+    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(5)
     @documents = @company.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
     @document_templates = DocumentTemplate.where(template: @get_workflow.template)
     @invoice = @get_workflow.invoice

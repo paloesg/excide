@@ -1,4 +1,7 @@
 Rails.application.configure do
+  # Prepare the ingress controller used to receive mail
+  # config.action_mailbox.ingress = :relay
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -85,6 +88,8 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
   config.action_mailer.default_url_options = { :host => ENV['HOST_DOMAIN'], :protocol => 'https' }
+
+  config.action_mailbox.ingress = :sendgrid
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

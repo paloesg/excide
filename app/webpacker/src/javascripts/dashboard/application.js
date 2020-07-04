@@ -19,6 +19,7 @@ require("./symphony/assign_ui");
 require("./symphony/remarks");
 require("./symphony/popover");
 require("./symphony/batches/select_all_by_task");
+require("./symphony/batches/create_batch_through_documents");
 require("./symphony/zoom");
 require("./symphony/invoices/xero");
 require("./symphony/invoices/aws");

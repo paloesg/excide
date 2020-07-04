@@ -10,6 +10,8 @@
       - url_array.each do |url|
         - display_url = url_for(url)
         img src='#{display_url}' class='figure-img img-fluid' style="width:500px;"
+    - elsif @document.raw_file.attached?
+      = image_tag(@document.raw_file, class: 'img-fluid')
     - elsif @document.file_url.present? and ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
       = image_tag(@document.file_url, class: 'img-fluid')
     - else

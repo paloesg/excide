@@ -34,6 +34,8 @@ class Company < ApplicationRecord
 
   enum account_type: { free_trial: 0, basic: 1, pro: 2 }
 
+  before_create :generate_mailbox_token
+
   include AASM
 
   aasm column: :account_type, enum: true do
@@ -56,10 +58,22 @@ class Company < ApplicationRecord
 
   enum gst_quarter: { mar_jun_sep_dec: 0, apr_jul_oct_jan: 1, may_aug_nov_feb: 2}
 
-  validates :name, presence: true, on: :additional_information
+  validates :name, presence: true, uniqueness: true
+  validates :mailbox_token, uniqueness: true
 
   # Get all other companies that user has roles for excpet the current company that user belongs to
   def self.assigned_companies(user)
     user.roles.includes(:resource).map(&:resource).compact.uniq.reject{ |c| c == user.company }
+  end
+
+  private
+
+  def generate_mailbox_token
+    # Generate friendly_token as mailbox_token for each company unless company's mailbox token already exist (loop through all companies)
+    loop do
+      self.mailbox_token = Devise.friendly_token.first(15).downcase
+      # Break when there is no other user having the same mailbox_token
+      break unless Company.where(mailbox_token: self.mailbox_token).exists?
+    end
   end
 end

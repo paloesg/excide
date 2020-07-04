@@ -9,7 +9,8 @@ class Template < ApplicationRecord
   has_many :tasks, through: :sections, dependent: :destroy
   has_many :document_templates, dependent: :destroy
   has_many :workflows, dependent: :destroy
-  has_many :recurring_workflows
+  has_many :recurring_workflows, dependent: :destroy
+  has_many :batches, dependent: :destroy
 
   belongs_to :company
 

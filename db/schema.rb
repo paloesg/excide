@@ -10,12 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_22_083243) do
+ActiveRecord::Schema.define(version: 2020_06_29_042314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "action_mailbox_inbound_emails", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "status", default: 0, null: false
+    t.string "message_id", null: false
+    t.string "message_checksum", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["message_id", "message_checksum"], name: "index_action_mailbox_inbound_emails_uniqueness", unique: true
+  end
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -33,7 +42,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_083243) do
     t.bigint "record_id_int"
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
-    t.uuid "record_id", null: false
+    t.uuid "record_id"
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -81,7 +90,6 @@ ActiveRecord::Schema.define(version: 2020_06_22_083243) do
 
   create_table "allocations", id: :serial, force: :cascade do |t|
     t.integer "user_id"
-    t.integer "event_id"
     t.date "allocation_date"
     t.time "start_time"
     t.time "end_time"
@@ -91,8 +99,8 @@ ActiveRecord::Schema.define(version: 2020_06_22_083243) do
     t.boolean "last_minute", default: false
     t.integer "rate_cents"
     t.bigint "availability_id"
+    t.uuid "event_id"
     t.index ["availability_id"], name: "index_allocations_on_availability_id"
-    t.index ["event_id"], name: "index_allocations_on_event_id"
     t.index ["user_id"], name: "index_allocations_on_user_id"
   end
 
@@ -136,7 +144,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_083243) do
     t.index ["question_id", "choice_id"], name: "index_choices_questions_on_question_id_and_choice_id"
   end
 
-  create_table "clients", id: :serial, force: :cascade do |t|
+  create_table "clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "identifier"
     t.integer "user_id"
@@ -186,6 +194,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_083243) do
     t.datetime "trial_end_date"
     t.json "stripe_subscription_plan_data", default: []
     t.json "slack_access_response"
+    t.string "mailbox_token"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -241,7 +250,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_083243) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "events", id: :serial, force: :cascade do |t|
+  create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "event_type_id"
     t.datetime "start_time"
     t.datetime "end_time"
@@ -251,8 +260,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_083243) do
     t.datetime "updated_at", null: false
     t.integer "company_id"
     t.integer "staffer_id"
-    t.integer "client_id"
-    t.index ["client_id"], name: "index_events_on_client_id"
+    t.uuid "client_id"
     t.index ["company_id"], name: "index_events_on_company_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
@@ -474,6 +482,29 @@ ActiveRecord::Schema.define(version: 2020_06_22_083243) do
     t.index ["workflow_id"], name: "index_surveys_on_workflow_id"
   end
 
+  create_table "taggings", id: :serial, force: :cascade do |t|
+    t.integer "tag_id"
+    t.string "taggable_type"
+    t.string "tagger_type"
+    t.integer "tagger_id"
+    t.string "context", limit: 128
+    t.datetime "created_at"
+    t.uuid "taggable_id", default: -> { "gen_random_uuid()" }, null: false
+    t.index ["context"], name: "index_taggings_on_context"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["taggable_type"], name: "index_taggings_on_taggable_type"
+    t.index ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type"
+    t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
+  end
+
+  create_table "tags", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer "taggings_count", default: 0
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
   create_table "tasks", id: :serial, force: :cascade do |t|
     t.string "instructions"
     t.integer "position"
@@ -661,7 +692,6 @@ ActiveRecord::Schema.define(version: 2020_06_22_083243) do
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
-  add_foreign_key "events", "clients"
   add_foreign_key "events", "companies"
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "invoices", "companies"
@@ -688,6 +718,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_083243) do
   add_foreign_key "surveys", "survey_templates"
   add_foreign_key "surveys", "users"
   add_foreign_key "surveys", "workflows"
+  add_foreign_key "taggings", "tags"
   add_foreign_key "tasks", "document_templates"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"

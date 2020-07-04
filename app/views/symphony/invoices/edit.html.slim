@@ -23,7 +23,7 @@
             - if @document.present?
               strong File Name:
               br
-              = @document.filename
+              = @document.raw_file.attached? ? @document.raw_file.blob.filename : @document.filename
         .col-auto.ml-auto.text-center
           | Invoice
           .invoice-nav

@@ -1,3 +1,9 @@
+- if @company.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@company.errors.count, "error")} prohibited this company from being saved:"
+    ul
+      - @company.errors.full_messages.each do |message|
+        li = message
 .row
   .col-sm-6
     .kt-portlet
@@ -96,6 +102,14 @@
                         td = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
                         td = invoice['lines']['data'][0]['description']
                         td = link_to "Download", invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
+            h3.kt-portlet__head-title Email Upload
+        .kt-portlet__body
+          .form-group
+            = label_tag '', 'Send documents to Symphony using this unique email:'
+            = text_field_tag '', 'sendfile-'+@company.mailbox_token+'@upload.'+ENV['HOST_DOMAIN'], class: 'form-control', disabled: true
       .kt-portlet
         .kt-portlet__head
           .kt-portlet__head-label

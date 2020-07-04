@@ -17,10 +17,15 @@ class Document < ApplicationRecord
 
   before_validation :set_filename
   after_destroy :delete_file_on_s3
+  # Tagging documents to indicate where document is created from
+  acts_as_taggable_on :tags
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :filename, :file_url, :created_at, :updated_at
+    attribute :file_url, :created_at, :updated_at
+    attribute :filename do
+      "#{ raw_file.present? ? raw_file&.filename : filename }"
+    end
     attribute :workflow do
       { id: workflow&.id, template_title: workflow&.template&.title, template_slug: workflow&.template&.slug }
     end
@@ -29,6 +34,9 @@ class Document < ApplicationRecord
     end
     attribute :company do
       { name: company&.name, slug: company&.slug }
+    end
+    tags do
+      tags.map(&:name)
     end
   end
 
