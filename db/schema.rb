@@ -520,9 +520,6 @@ ActiveRecord::Schema.define(version: 2020_06_29_042314) do
     t.integer "company_id"
     t.json "data_names", default: []
     t.integer "workflow_type", default: 0
-    t.integer "deadline_day"
-    t.integer "deadline_type"
-    t.integer "days_to_complete"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end

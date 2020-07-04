@@ -88,7 +88,7 @@ class Symphony::UsersController < ApplicationController
         redirect_to new_symphony_template_path
       end
     else
-      render :additional_information
+      render 'users/registrations/additional_information', layout: 'application'
     end
   end
 

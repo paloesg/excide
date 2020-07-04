@@ -11,7 +11,7 @@ class Symphony::DocumentsController < ApplicationController
 
   def index
     @get_documents = policy_scope(Document).includes(:document_template, :workflow)
-
+    @templates = policy_scope(Template).assigned_templates(current_user)
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     # TODO: Generate secured api key per user tag, only relevant users are tagged to each workflow.
     @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'company.slug:' + current_user.company.slug})
