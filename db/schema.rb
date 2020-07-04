@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_24_021808) do
+ActiveRecord::Schema.define(version: 2020_06_29_042314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -90,7 +90,6 @@ ActiveRecord::Schema.define(version: 2020_06_24_021808) do
 
   create_table "allocations", id: :serial, force: :cascade do |t|
     t.integer "user_id"
-    t.integer "event_id"
     t.date "allocation_date"
     t.time "start_time"
     t.time "end_time"
@@ -100,8 +99,8 @@ ActiveRecord::Schema.define(version: 2020_06_24_021808) do
     t.boolean "last_minute", default: false
     t.integer "rate_cents"
     t.bigint "availability_id"
+    t.uuid "event_id"
     t.index ["availability_id"], name: "index_allocations_on_availability_id"
-    t.index ["event_id"], name: "index_allocations_on_event_id"
     t.index ["user_id"], name: "index_allocations_on_user_id"
   end
 
@@ -145,7 +144,7 @@ ActiveRecord::Schema.define(version: 2020_06_24_021808) do
     t.index ["question_id", "choice_id"], name: "index_choices_questions_on_question_id_and_choice_id"
   end
 
-  create_table "clients", id: :serial, force: :cascade do |t|
+  create_table "clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "identifier"
     t.integer "user_id"
@@ -251,7 +250,7 @@ ActiveRecord::Schema.define(version: 2020_06_24_021808) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "events", id: :serial, force: :cascade do |t|
+  create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "event_type_id"
     t.datetime "start_time"
     t.datetime "end_time"
@@ -261,8 +260,7 @@ ActiveRecord::Schema.define(version: 2020_06_24_021808) do
     t.datetime "updated_at", null: false
     t.integer "company_id"
     t.integer "staffer_id"
-    t.integer "client_id"
-    t.index ["client_id"], name: "index_events_on_client_id"
+    t.uuid "client_id"
     t.index ["company_id"], name: "index_events_on_company_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
@@ -694,7 +692,6 @@ ActiveRecord::Schema.define(version: 2020_06_24_021808) do
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
-  add_foreign_key "events", "clients"
   add_foreign_key "events", "companies"
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "invoices", "companies"

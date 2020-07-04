@@ -43,7 +43,7 @@
                 li.kt-nav__item
                   = link_to conductor_clients_path, class: 'kt-nav__link' do
                     span.kt-nav__link-text Clients
-              - if current_user.has_role?(:associate, @company)
+              - if current_user.has_role?(:associate, @company) or current_user.has_role?(:consultant, @company)
                 li.kt-nav__item
                   = link_to conductor_user_path(current_user), class: 'kt-nav__link' do
                     span.kt-nav__link-text User Details

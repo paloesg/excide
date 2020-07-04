@@ -38,7 +38,12 @@
                           tbody
                             tr
                               - week.each do |day|
-                                td class="fc-day fc-widget-content #{current_user.has_role?(:staffer, current_user.company) or current_user.has_role?(:admin, current_user.company) ? 'new_events' : ''}" data-date="#{day}"
+                                - if current_user.has_role?(:staffer, current_user.company) or current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:associate, current_user.company) or current_user.has_role?(:consultant, current_user.company)
+                                  - event_class = 'new_events'
+                                - else
+                                  - event_class = ''
+                                // WHY THIS?
+                                td class="fc-day fc-widget-content #{event_class}" data-date="#{day}"
                       .fc-content-skeleton
                         table
                           thead

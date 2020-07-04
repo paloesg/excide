@@ -1,3 +1,6 @@
+$(document).on("turbolinks:before-render", function() {
+  $('select.selectize')[0].selectize.destroy();
+})
 $(document).on("turbolinks:load", function() {
   $('select.selectize-workflow-type').selectize({
     allowEmptyOption: true,
@@ -11,6 +14,7 @@ $(document).on("turbolinks:load", function() {
     $('select.selectize').selectize({
       onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
     });
+
     $('select.selectize-user-assignment').selectize();
   }
 

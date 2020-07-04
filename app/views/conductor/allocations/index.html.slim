@@ -8,12 +8,12 @@
       h4.card-header
         = @date_from.strftime("%B %Y")
         .btn-group.float-right role='group'
-          = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
+          = link_to "conductor/allocations?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
             i.fa.fa-chevron-left
             | Previous Month
-          = link_to "?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
+          = link_to "conductor/allocations?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
             | Current Month
-          = link_to "?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
+          = link_to "conductor/allocations?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
             | Next Month
             i.fa.fa-chevron-right
       .table-responsive
@@ -31,7 +31,7 @@
 
           tbody
             - @allocations.each do |allocation|
-              tr data-allocation='#{allocation.id}' class="#{@allocation == allocation ? 'info' : ''}"
+              tr data-allocation='#{allocation.id}' class="#{@allocation == allocation ? 'table-info' : ''}"
                 td = allocation.event.name
                 td = allocation.allocation_date
                 td = allocation.start_time.strftime("%H:%M")
@@ -42,7 +42,7 @@
                 td = link_to 'Edit', edit_conductor_allocation_path(allocation)
 
   .col-md-4.col-xs-12
-    = link_to 'Export ' + @date_from.strftime("%B") + ' Allocations', {action: :export, start_date: params[:start_date]} ,class: 'btn btn-success btn-block'
+    = link_to 'Export ' + @date_from.strftime("%B") + ' Allocations', {action: :export, start_date: params[:start_date]} , target: "_blank", class: 'btn btn-success btn-block'
     br
     .card
       h5.card-header Available Staff

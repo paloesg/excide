@@ -30,7 +30,7 @@ class ClientsController < ApplicationController
       contact_id = @xero.create_contact(client_params)
       @client.xero_contact_id = contact_id
     end
-
+    
     respond_to do |format|
       if @client.save
         format.html { redirect_to conductor_clients_path, notice: 'Client successfully created!' }
