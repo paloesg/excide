@@ -5,7 +5,7 @@
       strong = "#{pluralize(@user.errors.count, "error")} prohibited this company from being saved:"
       ul
         - @user.errors.full_messages.each do |message|
-          li.text-dark = message
+          li = message
   .row.justify-content-center
     .col-5
       .kt-portlet
