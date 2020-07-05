@@ -108,7 +108,7 @@ td.day.has-events.fc-day-top.fc-past {
 }
 
 .selectize-input > * {
-  width: 90%;
+  width: 90% !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
