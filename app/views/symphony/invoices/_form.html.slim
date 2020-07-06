@@ -26,13 +26,17 @@
         .form-row
           .form-group.col-md-2
             = f.label :invoice_date, 'Invoice Date'
+            a.pop.ml-2 data-container="body" title='Eg. Enter "3 6 tab" to get 3 June 2020' data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+              i.fa.fa-info-circle
             #datetimepicker.input-group.date.dateinvoice data-target-input="nearest"
               = f.text_field :invoice_date, class: 'form-control autodate invoicedate dateinvoice', value:"#{@invoice.invoice_date.present? ? @invoice.invoice_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker1', 'data-target': '#datetimepicker1'
               .input-group-append data-target="#datetimepicker" data-toggle="datetimepicker"
                 .input-group-text
                   i.fa.fa-calendar
           .form-group.col-md-2
-            = f.label :due_date, 'Due Date'
+            = f.label :due_date, 'Due Date '
+            a.pop.ml-2 data-container="body" title='Type "+30" to add 30 days from invoice date to due date' data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+              i.fa.fa-info-circle
             #datetimepicker2.input-group.date.dateinvoice data-target-input="nearest"
               = f.text_field :due_date, class: 'form-control autodate duedate dateinvoice', value:"#{@invoice.due_date.present? ? @invoice.due_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker3', 'data-target': '#datetimepicker3'
               .input-group-append data-target="#datetimepicker2" data-toggle="datetimepicker"

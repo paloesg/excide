@@ -55,9 +55,6 @@ $(document).on("turbolinks:load", function() {
           let d = moment(dueDate).format("D MMM YYYY");
           $(".duedate").val(d);
         }
-        else{
-          $(".duedate").val("Invalid Date");
-        }
       }
       else{
         // do change the field value with date format
