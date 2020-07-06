@@ -5,7 +5,7 @@ class Symphony::TemplatesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
-  before_action :find_roles, :find_users, :set_task, only: [:new, :edit, :update]
+  before_action :find_roles, :find_users, only: [:new, :edit, :update]
 
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
@@ -83,7 +83,7 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def destroy
-    authorize @template 
+    authorize @template
     if @template.destroy
       redirect_to symphony_templates_path, notice: 'Template was successfully deleted.'
     end
@@ -114,10 +114,6 @@ class Symphony::TemplatesController < ApplicationController
 
   def find_users
     @users = User.where(company_id: @company.id)
-  end
-
-  def set_task
-    @task = Task.find_by(section: params[:section_id])
   end
 
   def template_params
