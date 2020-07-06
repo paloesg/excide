@@ -4,6 +4,7 @@ class Task < ApplicationRecord
 
   belongs_to :section
   belongs_to :role
+  belongs_to :user
   belongs_to :document_template
   belongs_to :survey_template
   belongs_to :child_workflow_template, class_name: 'Template'
@@ -16,7 +17,8 @@ class Task < ApplicationRecord
 
   acts_as_list scope: :section
 
-  validates :instructions, :position, :task_type, :role_id, presence: true
+  validates :instructions, :position, :task_type, presence: true
+  validate :check_user_and_role_fields
 
   def get_workflow_action(company_id, workflow_id = nil)
     workflow_id = workflow_id.present? ? Workflow.find(workflow_id).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id
@@ -28,11 +30,24 @@ class Task < ApplicationRecord
     Task.where("id < ?", self.id).order(created_at: :asc).last
   end
 
+  def check_both_fields_empty
+    ((self.role_id.to_i == 0) && (self.user_id.to_i == 0))
+  end
+
+  def check_both_fields_present
+    ((self.role_id.to_i != 0) && (self.user_id.to_i != 0))
+  end
+
   private
   # Create company action for existing workflows that this task belongs to
   def add_workflow_action
     self.section.template.workflows&.each do |workflow|
       WorkflowAction.create(task_id: self.id, company_id: workflow.company_id, workflow_id: workflow.id)
     end
+  end
+
+  def check_user_and_role_fields
+    self.errors.add(:role_id, "should not be empty ") if self.check_both_fields_empty
+    self.errors.add(:user_id, "should not be filled ") if self.check_both_fields_present
   end
 end

@@ -105,7 +105,7 @@ class Template < ApplicationRecord
       Template.where(company: user.company).order(:created_at)
     else
       # Work backwards from tasks to get to the templates that have tasks assigned to the user role
-      section_ids = Task.where(role_id: user.roles).pluck(:section_id).uniq
+      section_ids = Task.where(role_id: user.roles).or(Task.where(user_id: user.id)).pluck(:section_id).uniq
       template_ids = Section.where(id: section_ids).pluck(:template_id).uniq
       Template.where(id: template_ids, company: user.company).order(:created_at)
     end

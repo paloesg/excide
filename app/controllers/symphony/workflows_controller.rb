@@ -339,7 +339,7 @@ class Symphony::WorkflowsController < ApplicationController
 
   def set_tasks
     @next_section = @workflow.next_section
-    @tasks = @section&.tasks.includes(:role)
+    @tasks = @section&.tasks.includes(:role, :user)
     @current_task = @workflow.current_task
   end
 
