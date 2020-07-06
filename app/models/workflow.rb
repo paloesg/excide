@@ -67,7 +67,7 @@ class Workflow < ApplicationRecord
         # Set to the next business day if self.deadline above is not a work day
         self.deadline = 1.business_days.after(self.deadline) - 1.day unless self.deadline.workday? 
       else
-        self.deadline = self.template.days_to_complete.business_days.after(Date.current)
+        self.deadline = self.template.deadline_day.business_days.after(Date.current)
       end
       self.save
     end

@@ -108,6 +108,6 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:template).permit(:title, :company_id, :workflow_type, :deadline_day, :deadline_type, :days_to_complete, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :document_template_id, :survey_template_id, :days_to_complete, :set_reminder, :important, :link_url, :image_url, :_destroy] ])
+    params.require(:template).permit(:title, :company_id, :workflow_type, :deadline_day, :deadline_type, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :document_template_id, :survey_template_id, :days_to_complete, :set_reminder, :important, :link_url, :image_url, :_destroy] ])
   end
 end
