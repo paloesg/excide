@@ -38,9 +38,8 @@ $(document).on("turbolinks:load", function() {
 
   $('.timepickers').datetimepicker({
     format: 'HH:mm',
-    stepping: 15
+    stepping: 15,
   });
-
 
   //auto convert date
   $(".autodate").keydown(function (event) {
