@@ -36,7 +36,11 @@ $(document).on("turbolinks:load", function(){
     timepickers.datetimepicker({
       format: "HH:mm",
       stepping: 15,
-      sideBySide: true
+      sideBySide: true,
+    });
+    // Hide bootstrap widget when click anywhere
+    timepickers.on('focusout', function(){
+      $('.bootstrap-datetimepicker-widget').hide();
     });
   }).on("show.bs.popover", function () {
     $('.popover').popover('hide');
