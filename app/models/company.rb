@@ -22,6 +22,7 @@ class Company < ApplicationRecord
   has_many :xero_line_items, dependent: :destroy
   has_many :xero_tracking_categories, dependent: :destroy
   has_many :survey_templates, dependent: :destroy
+  has_one :prior_days, dependent: :destroy
   has_one :address, as: :addressable, dependent: :destroy
 
   belongs_to :consultant, class_name: 'User'

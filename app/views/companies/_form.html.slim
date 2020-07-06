@@ -113,6 +113,21 @@
       .kt-portlet
         .kt-portlet__head
           .kt-portlet__head-label
+            h3.kt-portlet__head-title Reminder Settings
+        .kt-portlet__body
+          .form-group
+            = f.label :prior_days, 'Reminder prior to every deadline (in days)'
+            / = f.number_field :prior_days, class: 'form-control'
+          / .row
+          /   .col-sm-6
+          /     .form-group
+          /       = f.number_field :prior_days, class: 'form-control'
+          /   .col-sm-6
+          /     .form-group
+          /       = f.select :freq_unit, Reminder.freq_units.map { |key, value| [key.titleize, key] }, {selected: @reminder.freq_unit}, class: 'form-control'
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
             h3.kt-portlet__head-title Slack
         .kt-portlet__body
           .form-group
