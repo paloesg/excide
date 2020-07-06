@@ -5,7 +5,7 @@ class Symphony::TemplatesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
-  before_action :find_roles, only: [:new, :edit, :update]
+  before_action :find_roles, :find_users, :set_task, only: [:new, :edit, :update]
 
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
@@ -29,9 +29,14 @@ class Symphony::TemplatesController < ApplicationController
         section.tasks.each do |task|
           if task.role
             # Get role of user company, if the role not exist, create the same role for current user company
-            role = Role.find_by(name: task.role.name, resource_id: current_user.company.id, resource_type: "Company")
-            role = Role.create(name: task.role.name, resource_id: current_user.company.id, resource_type: "Company") if role.blank?
+            role = Role.find_by(name: task.role.name, resource_id: @company.id, resource_type: "Company")
+            role = Role.create(name: task.role.name, resource_id: @company.id, resource_type: "Company") if role.blank?
             task.role = role
+          end
+          if task.user
+            user = User.find_by(name: task.user.name, company: @company.id)
+            user = User.create(name: task.user.name, company: @company.id) if user.blank?
+            task.user = user
           end
         end
       end
@@ -96,7 +101,7 @@ class Symphony::TemplatesController < ApplicationController
 
   private
   def set_template
-    @template = Template.includes(sections: [tasks: [:role, :document_template]]).find(params[:template_slug])
+    @template = Template.includes(sections: [tasks: [:role, :user, :document_template]]).find(params[:template_slug])
   end
 
   def set_company
@@ -107,7 +112,15 @@ class Symphony::TemplatesController < ApplicationController
     @roles = Role.where(resource: @company)
   end
 
+  def find_users
+    @users = User.where(company_id: @company.id)
+  end
+
+  def set_task
+    @task = Task.find_by(section: params[:section_id])
+  end
+
   def template_params
-    params.require(:template).permit(:title, :company_id, :workflow_type, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :document_template_id, :survey_template_id, :days_to_complete, :set_reminder, :important, :link_url, :image_url, :_destroy] ])
+    params.require(:template).permit(:title, :company_id, :workflow_type, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :user_id, :document_template_id, :survey_template_id, :days_to_complete, :set_reminder, :important, :link_url, :image_url, :_destroy] ])
   end
 end
