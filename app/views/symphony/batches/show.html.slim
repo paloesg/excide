@@ -13,6 +13,8 @@
             .kt-portlet__head-actions
               - if @batch.processing_complete?
                 .pull-right #{@completed} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
+              - elsif @document_count.present?
+                .pull-right #{@document_count} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
               - else
                 .pull-right Processing #{@processing_files} #{'file'.pluralize(@processing_files)} at the moment. You may start on your tasks first.
             / Check if any files failed during processing (eg document not created, hence no attachment)

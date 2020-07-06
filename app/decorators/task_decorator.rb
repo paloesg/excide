@@ -18,6 +18,12 @@ class TaskDecorator < SimpleDelegator
     role&.name&.humanize
   end
 
+  def display_user(user_id)
+    user = User.find(user_id).first_name
+
+    return user
+  end
+
   def helpers
     ActionController::Base.helpers
   end

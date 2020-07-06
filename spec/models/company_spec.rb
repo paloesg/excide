@@ -23,4 +23,7 @@ RSpec.describe Company, type: :model do
 
   it { should define_enum_for(:company_type) }
   it { should define_enum_for(:gst_quarter) }
+
+  it { should validate_presence_of(:name) }
+  it { should validate_uniqueness_of(:name) }
 end

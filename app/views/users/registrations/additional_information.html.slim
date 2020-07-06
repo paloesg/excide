@@ -3,6 +3,12 @@ section.height-100.imagebg data-overlay="4"
   .background-image-holder
     = image_pack_tag 'media/src/images/hero-image.jpg', alt: "Growing your business", class: 'background-image'
   .container.pos-vertical-center.mt-4
+    - if @user.errors.any?
+      .alert.alert-danger role='alert'
+        strong = "#{pluralize(@user.errors.count, "error")} prohibited this company from being saved:"
+        ul
+          - @user.errors.full_messages.each do |message|
+            li.text-dark = message
     .row
       .col-md-12
         = form_for(@user, as: :user, url: edit_additional_information_symphony_users_path, html: { class: 'additional-information-page' }) do |f|
