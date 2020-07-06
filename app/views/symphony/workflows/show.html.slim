@@ -1,6 +1,6 @@
 .row.mb-3
   .col
-    h1.text-truncate #{@template.title} – #{@workflow.friendly_id} - Deadline: #{@workflow.deadline.present? ? @workflow.deadline.strftime('%F') : 'No deadline'}
+    h1.text-truncate #{@template.title} – #{@workflow.deadline.present? ? @workflow.deadline.strftime('%d %b') : ''}
     - unless @workflow.archive.blank?
       h1 = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row

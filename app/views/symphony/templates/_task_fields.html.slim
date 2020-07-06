@@ -1,4 +1,4 @@
-- if @task.errors.any?
+- if @task&.errors&.any?
   .alert.alert-danger role='alert'
     strong = "#{pluralize(@task.errors.count, "error")} prohibited this template from being saved:"
     ul
