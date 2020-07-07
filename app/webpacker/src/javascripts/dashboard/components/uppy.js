@@ -22,6 +22,7 @@ const batchUploads = (uppy) => {
         batch: {
           template_slug: $('#template_slug').val()
         },
+        source: 'upload',
         document_type: 'batch-uploads',
         successful_results: JSON.stringify(result)
       }).done((result) => {
