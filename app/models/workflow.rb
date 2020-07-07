@@ -24,6 +24,7 @@ class Workflow < ApplicationRecord
 
   after_commit :create_actions_and_trigger_first_task, on: :create
   after_create :short_uuid
+  after_create :set_workflow_deadline
 
   self.implicit_order_column = "created_at"
 
@@ -49,6 +50,27 @@ class Workflow < ApplicationRecord
   def short_uuid
     self.slug = ShortUUID.shorten id
     self.save
+  end
+
+  def set_workflow_deadline
+    if self.template.deadline_type.present?
+      case self.template.deadline_type
+      when "xth_day_of_the_month"
+        # Check if day exists in that month (for eg, June only have 30 days), so if it is 31st, we bring it forward to the next month.
+        if Date.new(Date.current.year, Date.current.month, -1).day < self.template.deadline_day
+          # The deadline will become the end of the month
+          self.deadline = Date.new(Date.current.year, Date.current.month).end_of_month
+        else
+          # Check if the xth day has past in the current month. If it is, set deadline as the next month
+          self.deadline = Date.new(Date.current.year, Date.current.month, self.template.deadline_day) > Date.current ? Date.new(Date.current.year, Date.current.month, self.template.deadline_day) : Date.new(Date.current.year, Date.current.month, self.template.deadline_day).next_month()
+        end
+        # Set to the next business day if self.deadline above is not a work day
+        self.deadline = 1.business_days.after(self.deadline) - 1.day unless self.deadline.workday? 
+      else
+        self.deadline = self.template.deadline_day.business_days.after(Date.current)
+      end
+      self.save
+    end
   end
 
   def build_workflowable(params)

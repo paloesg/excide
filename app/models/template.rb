@@ -3,6 +3,7 @@ class Template < ApplicationRecord
   friendly_id :title, use: [:slugged, :finders]
 
   enum workflow_type: { ordered: 0, unordered: 1 }
+  enum deadline_type: { xth_day_of_the_month: 0, days_to_complete: 1 }
 
   has_many :sections, -> { order(position: :asc) }, dependent: :destroy
   has_many :tasks, through: :sections, dependent: :destroy
