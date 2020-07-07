@@ -2,6 +2,7 @@ class Symphony::RemindersController < ApplicationController
   # layout 'dashboard/application'
   layout 'metronic/application'
   before_action :set_reminder, only: [:edit, :update, :cancel]
+  after_action :update_reminder_with_prior_day, only: [:create, :update]
 
   def index
     @user = current_user
@@ -59,6 +60,14 @@ class Symphony::RemindersController < ApplicationController
 
   def set_reminder
     @reminder = Reminder.find(params[:id])
+  end
+
+  def update_reminder_with_prior_day
+    @company = Company.find_by(id: @reminder.company.id)
+    if @company.prior_day
+      @reminder.next_reminder -= @company.prior_day.days
+      @reminder.save
+    end
   end
 
   def reminder_params
