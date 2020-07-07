@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_06_014658) do
+ActiveRecord::Schema.define(version: 2020_07_07_113729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -322,22 +322,6 @@ ActiveRecord::Schema.define(version: 2020_07_06_014658) do
     t.index ["target_type", "target_id"], name: "index_notifications_on_target_type_and_target_id"
   end
 
-  create_table "profiles", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.string "headline"
-    t.text "summary"
-    t.string "industry"
-    t.string "specialties"
-    t.string "image_url"
-    t.string "linkedin_url"
-    t.string "location"
-    t.string "country_code"
-    t.string "display_name"
-    t.index ["user_id"], name: "index_profiles_on_user_id"
-  end
-
   create_table "questions", id: :serial, force: :cascade do |t|
     t.text "content"
     t.integer "question_type"
@@ -512,7 +496,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_014658) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
-    t.integer "days_to_complete"
+    t.integer "deadline_day"
     t.boolean "set_reminder"
     t.integer "role_id"
     t.integer "task_type"
@@ -522,6 +506,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_014658) do
     t.bigint "survey_template_id"
     t.uuid "document_template_id"
     t.bigint "user_id"
+    t.integer "deadline_type"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
@@ -698,7 +683,6 @@ ActiveRecord::Schema.define(version: 2020_07_06_014658) do
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
-  add_foreign_key "profiles", "users"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"
