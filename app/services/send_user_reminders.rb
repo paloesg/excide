@@ -3,6 +3,7 @@ class SendUserReminders
 
   def initialize(user)
     @user = user
+    @company = @company = @user.company
     @from_number = ENV['TWILIO_NUMBER']
     @account_sid = ENV['TWILIO_ACCOUNT_SID']
     @auth_token = ENV['TWILIO_AUTH_TOKEN']

@@ -116,15 +116,18 @@
             h3.kt-portlet__head-title Reminder Settings
         .kt-portlet__body
           .form-group
-            = f.label :prior_days, 'Reminder prior to every deadline (in days)'
-            / = f.number_field :prior_days, class: 'form-control'
-          / .row
-          /   .col-sm-6
-          /     .form-group
-          /       = f.number_field :prior_days, class: 'form-control'
-          /   .col-sm-6
-          /     .form-group
-          /       = f.select :freq_unit, Reminder.freq_units.map { |key, value| [key.titleize, key] }, {selected: @reminder.freq_unit}, class: 'form-control'
+            = f.label :prior_day, 'Reminder prior to every deadline (in days)'
+            = f.number_field :prior_day, class: 'form-control'
+          / .col-md-6
+            .form-check
+              input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing" checked="checked"
+              label.form-check-label for="radioContact" Existing Contact:
+              = f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'selectize existing-contact-width existing-contact-disable', required: true }
+          / .col-md-6
+            .form-check
+              input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
+              label.form-check-label.mr-3 for="radioContact" New Contact:
+              = f.text_field :xero_contact_name, class: 'form-control new-disable', required: true, placeholder: 'New contact here...', value: nil, disabled: true
       .kt-portlet
         .kt-portlet__head
           .kt-portlet__head-label
