@@ -19,11 +19,11 @@
               = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type dropdown-overlay task-items-dropdown-width" }
             .form-group
               .xth-day.kt-hide
-                = f.label :deadline_day, "Set a deadline (the date of the month that you want to set the deadline): "
+                = f.label :deadline_day, "Deadline - Day of the month:"
                 span.text-danger.kt-hide.deadline-warning Note: Symphony will auto set the deadline to the previous date if the month does not consist of the date 29, 30 or 31.
                 = f.number_field :deadline_day, min: 0, max: 31, class: "form-control"
               .days-to-complete.kt-hide
-                = f.label :deadline_day, "Set a deadline (number of days to complete): "
+                = f.label :deadline_day, "Deadline - Number of days after start:"
                 = f.number_field :deadline_day, class: "form-control"
   .col-md-9.col-sm-12
     .kt-portlet
