@@ -1,126 +1,51 @@
 .row
-  .col-sm-6
-    .row
-      .col-sm-12.col-md-6.col-lg-6
-        .kt-portlet.kt-portlet--border-bottom-brand
-          .kt-portlet__body.kt-portlet__body--fluid
-            .kt-widget26
-              .kt-widget26__content
-                .kt-widget26__number = @workflows_array.count
-                .kt-widget26__desc Workflows
-              .kt-widget26__chart style="height:100px; width: 230px;"
-                .chartjs-size-monitor
-                  .chartjs-size-monitor-expand
-                    div
-                  .chartjs-size-monitor-shrink
-                    div
-                canvas.chartjs-render-monitor id="kt_chart_quick_stats_1" style="display: block; width: 230px; height: 115px;" width="230" height="115"
-      .col-sm-12.col-md-6.col-lg-6
-        .kt-portlet.kt-portlet--border-bottom-success
-          .kt-portlet__body.kt-portlet__body--fluid
-            .kt-widget26
-              .kt-widget26__content
-                .kt-widget26__number = @outstanding_actions.count
-                .kt-widget26__desc Tasks
-              .kt-widget26__chart style="height:100px; width: 230px;"
-      .col-sm-12.col-md-6.col-lg-6
-        .kt-portlet.kt-portlet--border-bottom-danger
-          .kt-portlet__body.kt-portlet__body--fluid
-            .kt-widget26
-              .kt-widget26__content
-                .kt-widget26__number = @batch_count
-                .kt-widget26__desc Batches
-              .kt-widget26__chart style="height:100px; width: 230px;"
-      .col-sm-12.col-md-6.col-lg-6
-        .kt-portlet.kt-portlet--border-bottom-warning
-          .kt-portlet__body.kt-portlet__body--fluid
-            .kt-widget26
-              .kt-widget26__content
-                .kt-widget26__number = @recurring_count
-                .kt-widget26__desc Recurring
-              .kt-widget26__chart style="height:100px; width: 230px;"
-    .row
-      .col-md-12
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title My tasks
-          .kt-portlet__body
-            .kt-section
-              .kt-section__content
-                - if @outstanding_actions.blank?
-                  | Hooray! No outstanding tasks at the moment.
-                - else
-                  table.table
-                    thead
-                      tr
-                        th Workflow ID
-                        th Workflow Type
-                        th Task Instructions
-                        th Deadline
-                    tbody
-                      - @outstanding_actions.each do |action|
-                        tr
-                          td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
-                          td = action.workflow.template.title
-                          td = action.task.instructions
-                          td = action.deadline&.strftime("%d/%m/%Y")
-    .row
-      .col-md-12
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title Workflows in progress
-          .kt-portlet__body
-            - if @workflows_array.blank?
-              | No outstanding workflows at the moment. Click on a workflow to begin.
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title Tasks Due Soon
+      .kt-portlet__body
+        .kt-section
+          .kt-section__content
+            - if @outstanding_actions.blank?
+              | Hooray! No outstanding tasks at the moment.
             - else
-              .row
-                .col-sm-5
-                  = select_tag('workflow_type', options_for_select(@templates.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'selectize-workflow-type')
-                .offset-sm-1.col-sm-6
-                  .float-right = page_entries_info @workflows, entry_name: 'workflow'
-            table.table
-              thead
-                tr
-                  th Workflow ID
-                  th = sortable "template", "Workflow Type"
-                  th = sortable "completed", "Status"
-              tbody
-                - @workflows.each do |w|
-                  tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                    td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
-                    td = w.template.title
-                    td = w.completed ? 'Completed' : w.current_section&.section_name
-            = paginate @workflows, views_prefix: 'dashboard'
-  .col-sm-6
-    .row
-      .col-md-12
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title I want to work on...
-          .kt-portlet__body
-            .form-group
-              - @templates.each do |template|
-                = form_tag symphony_workflows_path(template.slug)
-                  .row.mt-2
-                    .col-sm-10
-                      = template.title
-                    .col-sm-2
-                      = submit_tag 'Go >', class: 'btn btn-sm btn-primary'
-                  hr
-      .col-md-12
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title Batch Upload
-              = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
-          .kt-portlet__body
-            .row
-              .col-md-12
-                = label_tag "template", "Select template:"
-                = select_tag('template_slug', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize")
-            .row.mt-3
-              .col-md-12
-                .dashboard-body.batchUploads#Dashboard
+              table.table
+                tbody
+                  - @outstanding_actions.each do |action|
+                    tr
+                      td
+                        label.kt-checkbox.kt-checkbox--single
+                          = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"
+                          span
+                      td = action.task.instructions
+                      td = action.workflow.template.title
+                      td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
+                      td = action.deadline&.strftime("%d %B %Y")
+.row
+  .col-md-12
+    .kt-portlet
+      .kt-portlet__head
+        .kt-portlet__head-label
+          h3.kt-portlet__head-title All Routines
+      .kt-portlet__body
+        - if @workflows_array.blank?
+          | No outstanding workflows at the moment. Click on a workflow to begin.
+        - else
+          .row
+            .col-sm-5
+              = select_tag('workflow_type', options_for_select(@templates.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'selectize-workflow-type')
+            .offset-sm-1.col-sm-6
+              .float-right = page_entries_info @workflows, entry_name: 'workflow'
+        table.table
+          thead
+            tr
+              th Workflow ID
+              th = sortable "template", "Workflow Type"
+              th = sortable "completed", "Status"
+          tbody
+            - @workflows.each do |w|
+              tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
+                td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
+                td = w.template.title
+                td = w.completed ? 'Completed' : w.current_section&.section_name
+        = paginate @workflows, views_prefix: 'dashboard'
