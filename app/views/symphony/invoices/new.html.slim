@@ -1,6 +1,72 @@
-.row
-  .col-sm-12.mb-4
-    h1 Create Invoice
+/! begin:: Header
+#kt_header.kt-header.kt-grid__item.kt-header--fixed.forward data-ktheader-minimize="on"
+  .kt-header__top
+    .kt-container
+      /! begin:: Brand
+      #kt_header_brand.kt-header__brand.kt-grid__item
+        .kt-header__brand-logo
+          = link_to symphony_root_path do
+            = image_pack_tag 'media/src/images/logo-symphony.png', alt: "Logo", class: "kt-header__brand-logo-default"
+      /! end:: Brand
+      /! begin:: Header Topbar
+      .kt-header__topbar.kt-grid__item.kt-grid__item--fluid
+        /! begin: Notification bar
+        .kt-header__topbar-item.kt-header__topbar-item--langs
+          .kt-header__topbar-wrapper data-offset="20px,0px"
+            span.kt-header__topbar-icon
+              / uses view notifications/default/workflow_action/:key.html.slim
+              = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
+        /! end: Notification bar
+        - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
+          /! begin: Admin bar
+          .kt-header__topbar-item.kt-header__topbar-item--langs
+            .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
+              span.kt-header__topbar-icon.kt-header__topbar-icon--warning
+                i.flaticon2-gear
+            .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+              ul.kt-nav.kt-margin-t-10.kt-margin-b-10
+                li.kt-nav__item
+                  = link_to symphony_users_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Users
+                li.kt-nav__item
+                  = link_to symphony_roles_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Roles
+                li.kt-nav__item
+                  = link_to symphony_templates_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Templates
+                li.kt-nav__item
+                  = link_to symphony_survey_templates_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Survey Templates
+          /! end: Admin bar
+        /! begin: User bar
+        .kt-header__topbar-item.kt-header__topbar-item--langs
+          .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
+            span.kt-header__topbar-icon.kt-header__topbar-icon--success
+              i.flaticon2-user
+          .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+            ul.kt-nav.kt-margin-t-10.kt-margin-b-10
+              li.kt-nav__item
+                = link_to edit_user_registration_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text User Profile
+              - if current_user.has_role? :superadmin or current_user.has_role?(:admin, current_user.company)
+                li.kt-nav__item
+                  = link_to edit_company_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Company Details
+              li.kt-nav__item
+                = link_to symphony_archives_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text Archived Workflows
+              li.kt-nav__item
+                = link_to symphony_documents_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text Documents
+              li.kt-nav__item
+                = link_to notification_settings_symphony_user_path(current_user), class: 'kt-nav__link' do
+                  span.kt-nav__link-text Notifications
+              li.kt-nav__item
+                = link_to destroy_user_session_path, {method: :delete, class: 'kt-nav__link'} do
+                  span.kt-nav__link-text Log Out
+        /! end: User bar
+  /! end:: Header Topbar
+
 .row
   .loading
     .loader
@@ -11,37 +77,37 @@
     - else
       div.mt-md-5.text-center Document not available. Please try again later.
   .col-md-8
-    .card.mb-3
-      .row.m-2
-        .col-auto
-          .document-info
-            - if @workflow.batch.present?
-              strong Batch Name:
-              br
-              = @workflow.batch.name
-              br
-            - if @document.present?
-              strong File Name:
-              br
-              = @document.raw_file.attached? ? @document.raw_file.filename : @document.filename
+    / .card.mb-3
+      / .row.m-2
+        / .col-auto
+        /   .document-info
+        /     - if @workflow.batch.present?
+        /       strong Batch Name:
+        /       br
+        /       = @workflow.batch.name
+        /       br
+        /     - if @document.present?
+        /       strong File Name:
+        /       br
+        /       = @document.raw_file.attached? ? @document.raw_file.filename : @document.filename
           // button to run textract
           / button class="btn btn-primary do-textract" Extract Invoice Data
           / = hidden_field_tag :template, @workflow.template.slug, class:"template-field"
           / = hidden_field_tag :workflow_id, @workflow.id, class:"workflow-field"
           / = hidden_field_tag :textract_job_id, @document.aws_textract_job_id, class:"textract-job-id-field"
-        .col-auto.ml-auto.text-center
-          | Invoice
-          .invoice-nav
-            .invoice-nav-button.btn-right
-              - if @total_task > 1
-                = link_to prev_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
-                  i.fa.fa-caret-left
-            .invoice-nav-number
-              | #{@current_position} of #{@total_task}
-            .invoice-nav-button.btn-left
-              - if @total_task > 1
-                = link_to next_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
-                  i.fa.fa-caret-right
+        / .col-auto.ml-auto.text-center
+        /   | Invoice
+        /   .invoice-nav
+        /     .invoice-nav-button.btn-right
+        /       - if @total_task > 1
+        /         = link_to prev_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
+        /           i.fa.fa-caret-left
+        /     .invoice-nav-number
+        /       | #{@current_position} of #{@total_task}
+        /     .invoice-nav-button.btn-left
+        /       - if @total_task > 1
+        /         = link_to next_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
+        /           i.fa.fa-caret-right
     // Show textract result
     .row.mb-3.d-none
       .col-md-12
