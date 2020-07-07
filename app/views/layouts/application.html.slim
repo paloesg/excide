@@ -26,7 +26,7 @@ html lang="en"
   body.kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading
     /! begin:: Page
     /! begin:: Header Mobile
-    = render 'layouts/header_mobile' unless (current_user.nil? || current_page?(additional_information_path))
+    = render 'layouts/header_mobile' unless (current_user.nil? || current_page?(additional_information_path) || controller_name == ('invoices'))
     /! end:: Header Mobile
     .kt-grid.kt-grid--hor.kt-grid--root
       .kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--ver.kt-page
@@ -35,7 +35,7 @@ html lang="en"
           - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys')) 
             = render 'layouts/conductor_header'
           - else
-            = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path))
+            = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path) || controller_name == ('invoices'))
           /! end:: Header
           .kt-container.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
             #kt_body.kt-body.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
