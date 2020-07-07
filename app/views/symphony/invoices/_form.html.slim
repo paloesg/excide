@@ -10,54 +10,79 @@
       .card-body.contact-body
         .row.m-2
           .col-md-6
-            .form-check
-              input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing" checked="checked"
-              label.form-check-label for="radioContact" Existing Contact:
-              = f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'selectize existing-contact-width existing-contact-disable', required: true }
-          .col-md-6
-            .form-check
-              input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
-              label.form-check-label.mr-3 for="radioContact" New Contact:
-              = f.text_field :xero_contact_name, class: 'form-control new-disable', required: true, placeholder: 'New contact here...', value: nil, disabled: true
-.row
-  .col-md-12.mt-3
-    .card.mb-3
-      .col-md-12.mt-2
-        .form-row
-          .form-group.col-md-2
-            = f.label :invoice_date, 'Invoice Date'
+            .form-group
+              label for="InvoiceNo" Invoice No. #
+              input type="text" class="form-control" id="InvoiceNo"
+        .row.m-2
+          .form-group.col-md-6
+            / input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing" checked="checked"
+            label To
+            = f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'selectize existing-contact-width existing-contact-disable', required: true }
+          .form-group.col-md-6
+            = f.label :invoice_reference, 'Reference'
+            = f.text_field :invoice_reference, class: 'form-control inv-reference'
+        .row.m-2
+          .form-group.col-md-6
+            = f.label :invoice_date, 'Date'
             #datetimepicker.input-group.date.dateinvoice data-target-input="nearest"
               = f.text_field :invoice_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.invoice_date.present? ? @invoice.invoice_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker1', 'data-target': '#datetimepicker1'
               .input-group-append data-target="#datetimepicker" data-toggle="datetimepicker"
                 .input-group-text
                   i.fa.fa-calendar
-          .form-group.col-md-2
+          .form-group.col-md-6
             = f.label :due_date, 'Due Date'
             #datetimepicker2.input-group.date.dateinvoice data-target-input="nearest"
               = f.text_field :due_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.due_date.present? ? @invoice.due_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker3', 'data-target': '#datetimepicker3'
               .input-group-append data-target="#datetimepicker2" data-toggle="datetimepicker"
                 .input-group-text
                   i.fa.fa-calendar
-          .form-group.col-md-2
-            = f.label :line_amount_type, 'Amounts are: ', class: 'mr-2'
-            = f.select :line_amount_type, [["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "no_tax"]], {include_blank: true}, {class: 'form-control', required: true}
-          .form-group.col-md-2
-            = f.label :invoice_type, 'Invoice Type', class: 'mr-2'
-            = f.select :invoice_type, Invoice.invoice_types.map{|k, v| [k.humanize, k]}, {selected: params[:invoice_type] || @invoice.invoice_type, include_blank: true}, {class: 'form-control', required: true}
-          .form-group.col-md-2
-            = f.label :invoice_reference, 'Reference', class: 'mr-2'
-            = f.text_field :invoice_reference, class: 'form-control inv-reference'
-          .form-group.col-md-2
+        .row.m-2
+          .form-group.col-md-6
             = f.label :currency, 'Currency', class: 'mr-2'
             = f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'selectize'
+          /   .form-check
+          /     input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
+          /     label.form-check-label.mr-3 for="radioContact" New Contact:
+          /     = f.text_field :xero_contact_name, class: 'form-control new-disable', required: true, placeholder: 'New contact here...', value: nil, disabled: true
+/ .row
+/   .col-md-12.mt-3
+/     .card.mb-3
+/       .col-md-12.mt-2
+/         .form-row
+/           .form-group.col-md-2
+/             = f.label :invoice_date, 'Invoice Date'
+/             #datetimepicker.input-group.date.dateinvoice data-target-input="nearest"
+/               = f.text_field :invoice_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.invoice_date.present? ? @invoice.invoice_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker1', 'data-target': '#datetimepicker1'
+/               .input-group-append data-target="#datetimepicker" data-toggle="datetimepicker"
+/                 .input-group-text
+/                   i.fa.fa-calendar
+/           .form-group.col-md-2
+/             = f.label :due_date, 'Due Date'
+/             #datetimepicker2.input-group.date.dateinvoice data-target-input="nearest"
+/               = f.text_field :due_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.due_date.present? ? @invoice.due_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker3', 'data-target': '#datetimepicker3'
+/               .input-group-append data-target="#datetimepicker2" data-toggle="datetimepicker"
+/                 .input-group-text
+/                   i.fa.fa-calendar
+/           .form-group.col-md-2
+/             = f.label :line_amount_type, 'Amounts are: ', class: 'mr-2'
+/             = f.select :line_amount_type, [["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "no_tax"]], {include_blank: true}, {class: 'form-control', required: true}
+/           .form-group.col-md-2
+/             = f.label :invoice_type, 'Invoice Type', class: 'mr-2'
+/             = f.select :invoice_type, Invoice.invoice_types.map{|k, v| [k.humanize, k]}, {selected: params[:invoice_type] || @invoice.invoice_type, include_blank: true}, {class: 'form-control', required: true}
+/           .form-group.col-md-2
+/             = f.label :invoice_reference, 'Reference', class: 'mr-2'
+/             = f.text_field :invoice_reference, class: 'form-control inv-reference'
+/           .form-group.col-md-2
+/             = f.label :currency, 'Currency', class: 'mr-2'
+/             = f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'selectize'
 .row
   .col-md-12
     .card.mb-3
       .table-responsive
         table.table
           thead
-            th.minimize-header-text Item
-            th.minimize-header-text Description
+            th.minimize-header-text Item & description
+            / th.minimize-header-text Description
             th.minimize-header-text Quantity
             th.minimize-header-text Price ($)
             th.minimize-header-text Account
