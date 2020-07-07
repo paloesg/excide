@@ -83,14 +83,14 @@
           thead
             th.minimize-header-text Item & description
             / th.minimize-header-text Description
-            th.minimize-header-text Quantity
-            th.minimize-header-text Price ($)
             th.minimize-header-text Account
-            th.minimize-header-text Tax
+            th.minimize-header-text Qty
+            th.minimize-header-text Unit Price $
+            th.minimize-header-text Tax %
             th.minimize-header-text #{@tracking_name[0]&.name}
             - if @tracking_categories_2.present?
               th.minimize-header-text #{@tracking_name[1]&.name}
-            th.minimize-header-text Amount
+            th.minimize-header-text Amount $
           tbody.data-attributes
             tr
             = f.fields_for :line_items do |line_item|
