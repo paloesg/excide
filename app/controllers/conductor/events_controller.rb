@@ -45,15 +45,15 @@ class Conductor::EventsController < ApplicationController
     @event = Event.new(event_params)
     @event.company = @company
     @event.tag_list.add(params[:service_line]) if params[:service_line].present?
-
     respond_to do |format|
       if @event.save!
-        @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, current_user).run if current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company
-        # Inform user if timesheet was not allocated 
+        # Allocate yourself to the timesheet allocation
+        @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, params[:user].present? ? @company.users.find(params[:user]) : current_user).run if current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company or current_user.has_role? :staffer, @company
         if current_user.has_role? :admin, @company or @timesheet_allocation.success?
           format.json { render :show, status: :created, location: @event }
           format.js   { render js: 'Turbolinks.visit(location.toString());' }
         else
+          # Inform user if timesheet was not allocated 
           format.html { redirect_to conductor_root_path, alert: "Event was not created due to error: #{@timesheet_allocation.message}."}
         end
       else
