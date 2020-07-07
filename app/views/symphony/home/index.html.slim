@@ -22,30 +22,25 @@
                       td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
                       td = action.deadline&.strftime("%d %B %Y")
 .row
-  .col-md-12
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title All Routines
-      .kt-portlet__body
-        - if @workflows_array.blank?
-          | No outstanding workflows at the moment. Click on a workflow to begin.
-        - else
-          .row
-            .col-sm-5
-              = select_tag('workflow_type', options_for_select(@templates.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'selectize-workflow-type')
-            .offset-sm-1.col-sm-6
-              .float-right = page_entries_info @workflows, entry_name: 'workflow'
-        table.table
-          thead
-            tr
-              th Workflow ID
-              th = sortable "template", "Workflow Type"
-              th = sortable "completed", "Status"
-          tbody
-            - @workflows.each do |w|
-              tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
-                td = w.template.title
-                td = w.completed ? 'Completed' : w.current_section&.section_name
-        = paginate @workflows, views_prefix: 'dashboard'
+  .kt-portlet
+    .kt-portlet__head
+      .kt-portlet__head-label
+        h3.kt-portlet__head-title All Routines
+    .kt-portlet__body
+      - if @workflows_array.blank?
+        | No outstanding workflows at the moment. Click on a workflow to begin.
+      - else
+        .row
+          - @workflows.first(5).each do |w|
+            .col-sm-4
+              .kt-portlet
+                .kt-portlet__head.bg-warning
+                  .kt-portlet__head-label
+                    h3.kt-portlet__head-title = w.friendly_id
+                .kt-portlet__body
+
+        /       tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
+        /         td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
+        /         td = w.template.title
+        /         td = w.completed ? 'Completed' : w.current_section&.section_name
+        / = paginate @workflows, views_prefix: 'dashboard'
