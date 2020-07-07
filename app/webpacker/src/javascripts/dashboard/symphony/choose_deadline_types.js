@@ -40,16 +40,15 @@ $(document).on("turbolinks:load", function() {
 //-----------------------------Deadline type through tasks-------------------------
   
   $("select.task-deadlines-type").each(function(index){
-    $(".section-count").each(function (section_index) {
-      $("select[id$=template_sections_attributes_" + section_index + "_tasks_attributes_" + index + "_deadline_type").on("change", function(){
-        if ($("select[id$=template_sections_attributes_" + section_index + "_tasks_attributes_" + index + "_deadline_type").val() === 'xth_day_of_the_month'){
+    $(".section-count").each(function (sectionIndex) {
+      $("select[id$=template_sections_attributes_" + sectionIndex + "_tasks_attributes_" + index + "_deadline_type").on("change", function(){
+        if ($("select[id$=template_sections_attributes_" + sectionIndex + "_tasks_attributes_" + index + "_deadline_type").val() === 'xth_day_of_the_month'){
           $(".task-deadline-warning").removeClass('kt-hide');
         }
         else{
           $(".task-deadline-warning").addClass('kt-hide');
-        };
-      })     
+        }
+      });    
     });
-  });
-  
+  }); 
 });
