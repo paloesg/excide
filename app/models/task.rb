@@ -1,5 +1,5 @@
 class Task < ApplicationRecord
-  validates :days_to_complete, numericality: {allow_nil: true, greater_than_or_equal_to: 1}
+  validates :deadline_day, numericality: { less_than_or_equal_to: 31 }, if: :deadline_type_is_xth_month?
   after_create :add_workflow_action
 
   belongs_to :section
@@ -14,6 +14,7 @@ class Task < ApplicationRecord
   has_many :workflow_actions, dependent: :destroy
 
   enum task_type: { instructions: 0, upload_file: 1, approval: 2, download_file: 3, visit_link: 4, upload_photo: 5, enter_data: 6, upload_multiple_files: 8, send_xero_email: 9, create_invoice_payable: 10, xero_send_invoice: 11, create_invoice_receivable: 12, coding_invoice: 13, create_workflow: 14, do_survey: 15 }
+  enum deadline_type: { xth_day_of_the_month: 0, days_to_complete: 1 }
 
   acts_as_list scope: :section
 
@@ -36,6 +37,11 @@ class Task < ApplicationRecord
 
   def check_both_fields_present
     ((self.role_id.to_i != 0) && (self.user_id.to_i != 0))
+  end
+
+  def deadline_type_is_xth_month?
+    # Check that deadline type is xth day of the month. If it is, validates that number is less than 31
+    self.xth_day_of_the_month?
   end
 
   private
