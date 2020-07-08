@@ -323,19 +323,19 @@ ActiveRecord::Schema.define(version: 2020_07_07_113729) do
   end
 
   create_table "profiles", id: :serial, force: :cascade do |t|
-     t.datetime "created_at", null: false
-     t.datetime "updated_at", null: false
-     t.integer "user_id"
-     t.string "headline"
-     t.text "summary"
-     t.string "industry"
-     t.string "specialties"
-     t.string "image_url"
-     t.string "linkedin_url"
-     t.string "location"
-     t.string "country_code"
-     t.string "display_name"
-     t.index ["user_id"], name: "index_profiles_on_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.string "headline"
+    t.text "summary"
+    t.string "industry"
+    t.string "specialties"
+    t.string "image_url"
+    t.string "linkedin_url"
+    t.string "location"
+    t.string "country_code"
+    t.string "display_name"
+    t.index ["user_id"], name: "index_profiles_on_user_id"
    end
 
   create_table "questions", id: :serial, force: :cascade do |t|
