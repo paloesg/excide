@@ -514,7 +514,7 @@ ActiveRecord::Schema.define(version: 2020_07_08_053548) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
-    t.integer "days_to_complete"
+    t.integer "deadline_day"
     t.boolean "set_reminder"
     t.integer "role_id"
     t.integer "task_type"
@@ -524,6 +524,7 @@ ActiveRecord::Schema.define(version: 2020_07_08_053548) do
     t.bigint "survey_template_id"
     t.uuid "document_template_id"
     t.bigint "user_id"
+    t.integer "deadline_type"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
@@ -540,6 +541,8 @@ ActiveRecord::Schema.define(version: 2020_07_08_053548) do
     t.integer "company_id"
     t.json "data_names", default: []
     t.integer "workflow_type", default: 0
+    t.integer "deadline_day"
+    t.integer "deadline_type"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
