@@ -2,7 +2,7 @@ class Symphony::RemindersController < ApplicationController
   # layout 'dashboard/application'
   layout 'metronic/application'
   before_action :set_reminder, only: [:edit, :update, :cancel]
-  after_action :update_reminder_with_prior_day, only: [:create, :update]
+  after_action :update_prior_reminder, only: [:create, :update]
 
   def index
     @user = current_user
@@ -62,10 +62,11 @@ class Symphony::RemindersController < ApplicationController
     @reminder = Reminder.find(params[:id])
   end
 
-  def update_reminder_with_prior_day
+  def update_prior_reminder
     @company = Company.find_by(id: @reminder.company.id)
     if @company.prior_day
-      @reminder.next_reminder -= @company.prior_day.days
+      # should be able to work for both +/- days (i.e. before/after deadline)
+      @reminder.prior_reminder = @reminder.next_reminder - @company.prior_day.days
       @reminder.save
     end
   end

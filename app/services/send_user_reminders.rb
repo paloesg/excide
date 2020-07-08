@@ -25,16 +25,19 @@ class SendUserReminders
 
   def get_user_reminders
     @reminders = Reminder.today.where(user: @user)
+    # To check for prior reminders that are today as well
+    today = Date.current
+    @prior_reminders = Reminder.where(user: @user, prior_reminder: today.beginning_of_day..today.end_of_day)
   end
 
   def send_email_reminders
-    email_reminders = @reminders.where(email: true)
+    email_reminders = @reminders.where(email: true).or(@prior_reminders.where(email: true))
     email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
     NotificationMailer.batch_reminder(email_reminders, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
   end
 
   def send_sms_reminders
-    sms_reminders = @reminders.where(sms: true)
+    sms_reminders = @reminders.where(sms: true).or(@prior_reminders.where(sms: true))
 
     sms_reminders.each do |reminder|
       send_sms(reminder)
@@ -42,7 +45,7 @@ class SendUserReminders
   end
 
   def send_whatsapp_reminders
-    whatsapp_reminders = @reminders.where(sms: true)
+    whatsapp_reminders = @reminders.where(sms: true).or(@prior_reminders.where(sms: true))
 
     whatsapp_reminders.each do |reminder|
       send_whatsapp(reminder)
@@ -64,7 +67,7 @@ class SendUserReminders
   end
 
   def send_slack_reminders
-    slack_reminders = @reminders.where(slack: true)
+    slack_reminders = @reminders.where(slack: true).or(@prior_reminders.where(slack: true))
     # check whether company is connected to slack or user's reminder setting is true. If it is not, don't send reminders.
     SlackService.new(@user).send_reminders(slack_reminders, @user).deliver if (@user.settings[0]&.reminder_slack == 'true' and @user.company.slack_access_response.present?)
   end

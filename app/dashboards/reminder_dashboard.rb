@@ -25,6 +25,7 @@ class ReminderDashboard < Administrate::BaseDashboard
     email: Field::Boolean,
     sms: Field::Boolean,
     slack: Field::Boolean,
+    prior_reminder: Field::DateTime,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -38,6 +39,7 @@ class ReminderDashboard < Administrate::BaseDashboard
     :user,
     :title,
     :next_reminder,
+    :prior_reminder,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -72,6 +74,7 @@ class ReminderDashboard < Administrate::BaseDashboard
     :task,
     :workflow_action,
     :next_reminder,
+    :prior_reminder,
     :repeat,
     :freq_value,
     :freq_unit,

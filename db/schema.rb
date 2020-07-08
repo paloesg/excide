@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_06_040034) do
+ActiveRecord::Schema.define(version: 2020_07_08_053548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -380,6 +380,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_040034) do
     t.boolean "email"
     t.boolean "sms"
     t.boolean "slack"
+    t.datetime "prior_reminder"
     t.index ["company_id"], name: "index_reminders_on_company_id"
     t.index ["task_id"], name: "index_reminders_on_task_id"
     t.index ["user_id"], name: "index_reminders_on_user_id"

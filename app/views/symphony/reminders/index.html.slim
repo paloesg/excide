@@ -21,11 +21,12 @@
                 table.table
                   thead
                     tr
-                      td Date
+                      td Deadline
                       td Title
                       td Content
                       td Task
                       td Repeat
+                      td Next Reminder
                       td
                   tbody
                     - @reminders.each do |reminder|
@@ -35,6 +36,7 @@
                         td = reminder.content || '-'
                         td = reminder.task.present? ? link_to(reminder.task.section.template.title, symphony_workflow_path(reminder.task.section.template.slug, reminder.workflow_action.workflow.id)) : '-'
                         td = reminder.repeat ? "Every #{reminder.freq_value} #{reminder.freq_unit}" : "No repeat"
+                        td = reminder.prior_reminder ? reminder.prior_reminder&.strftime("%F") : reminder.next_reminder&.strftime("%F")
                         td.kt-align-right
                           = link_to 'Edit', edit_symphony_reminder_path(reminder.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
                           = link_to 'Stop', cancel_symphony_reminder_path(reminder.id), method: :post, role: 'button', class: 'btn btn-danger btn-sm' if reminder.next_reminder.present?
