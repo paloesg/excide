@@ -336,7 +336,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_113729) do
     t.string "country_code"
     t.string "display_name"
     t.index ["user_id"], name: "index_profiles_on_user_id"
-   end
+  end
 
   create_table "questions", id: :serial, force: :cascade do |t|
     t.text "content"
