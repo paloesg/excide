@@ -69,6 +69,10 @@ class WorkflowAction < ApplicationRecord
 
   def unordered_workflow_email_notification
     workflow_tasks = self.workflow.template.sections.map{|sect| sect.tasks }.flatten.compact
+    workflow_tasks.each do |task|
+      wfa = task.get_workflow_action(self.company.id, self.workflow.id)
+      create_reminder(task, wfa) if (task.set_reminder && wfa.deadline.present?)
+    end
     task_users = workflow_tasks.map{|task| task.role.users}.flatten.compact.uniq
     #loop through all the users that have a role in that workflow
     task_users.each do |user|
