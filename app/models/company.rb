@@ -34,6 +34,8 @@ class Company < ApplicationRecord
 
   enum account_type: { free_trial: 0, basic: 1, pro: 2 }
 
+  enum prior_day_status: { before: 0, after: 1 }
+  
   before_create :generate_mailbox_token
 
   include AASM
