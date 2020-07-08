@@ -144,6 +144,8 @@ class WorkflowAction < ApplicationRecord
   end
 
   def create_reminder(task, action)
+    prior_day = Company.find(self.company.id).prior_day
+
     reminder = Reminder.new(
       next_reminder: action.deadline,
       repeat: true,
@@ -155,7 +157,8 @@ class WorkflowAction < ApplicationRecord
       title: '[Reminder] ' + task.section.template.title + ' - ' + action.workflow.id,
       content: task.instructions,
       slack: true,
-      email: true
+      email: true,
+      prior_reminder: prior_day ? (((action.deadline - prior_day.days) > Date.current) ? (action.deadline - prior_day.days) : nil) : nil
     )
 
     if action.assigned_user.present?
