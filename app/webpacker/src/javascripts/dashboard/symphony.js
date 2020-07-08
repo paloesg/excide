@@ -143,7 +143,7 @@ $(document).on("turbolinks:load", function () {
           else{
             $(".task-deadline-warning").addClass('kt-hide');
           }
-        })
+        });
       });
       $(".data-attributes").find("tr:last-child").find(".create").val("1");
       return event.preventDefault();
