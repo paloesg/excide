@@ -18,21 +18,30 @@
             / input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing" checked="checked"
             label To
             = f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'selectize existing-contact-width existing-contact-disable', required: true }
+            / .col-md-6
+            /   .form-check
+            /     input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
+            /     label.form-check-label.mr-3 for="radioContact" New Contact:
+            /     = f.text_field :xero_contact_name, class: 'form-control new-disable', required: true, placeholder: 'New contact here...', value: nil, disabled: true
           .form-group.col-md-6
             = f.label :invoice_reference, 'Reference'
             = f.text_field :invoice_reference, class: 'form-control inv-reference'
         .row.m-2
           .form-group.col-md-6
             = f.label :invoice_date, 'Date'
+            a.pop.ml-2 data-container="body" title='Eg. Enter "3 6 tab" to get 3 June 2020' data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+              i.fa.fa-info-circle
             #datetimepicker.input-group.date.dateinvoice data-target-input="nearest"
-              = f.text_field :invoice_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.invoice_date.present? ? @invoice.invoice_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker1', 'data-target': '#datetimepicker1'
+              = f.text_field :invoice_date, class: 'form-control autodate invoicedate dateinvoice', value:"#{@invoice.invoice_date.present? ? @invoice.invoice_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker1', 'data-target': '#datetimepicker1'
               .input-group-append data-target="#datetimepicker" data-toggle="datetimepicker"
                 .input-group-text
                   i.fa.fa-calendar
           .form-group.col-md-6
-            = f.label :due_date, 'Due Date'
+            = f.label :due_date, 'Due Date '
+            a.pop.ml-2 data-container="body" title='Type "+30" to add 30 days from invoice date to due date' data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+              i.fa.fa-info-circle
             #datetimepicker2.input-group.date.dateinvoice data-target-input="nearest"
-              = f.text_field :due_date, class: 'form-control autodate dateinvoice', value:"#{@invoice.due_date.present? ? @invoice.due_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker3', 'data-target': '#datetimepicker3'
+              = f.text_field :due_date, class: 'form-control autodate duedate dateinvoice', value:"#{@invoice.due_date.present? ? @invoice.due_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker3', 'data-target': '#datetimepicker3'
               .input-group-append data-target="#datetimepicker2" data-toggle="datetimepicker"
                 .input-group-text
                   i.fa.fa-calendar
@@ -87,7 +96,8 @@
             th.minimize-header-text Qty
             th.minimize-header-text Unit Price $
             th.minimize-header-text Tax %
-            th.minimize-header-text #{@tracking_name[0]&.name}
+            - if @tracking_categories_1.present?
+              th.minimize-header-text #{@tracking_name[0]&.name}
             - if @tracking_categories_2.present?
               th.minimize-header-text #{@tracking_name[1]&.name}
             th.minimize-header-text Amount $

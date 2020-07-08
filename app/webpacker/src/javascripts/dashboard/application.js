@@ -24,6 +24,7 @@ require("./symphony/zoom");
 require("./symphony/invoices/xero");
 require("./symphony/invoices/aws");
 require("./symphony/choice");
+require("./symphony/choose_deadline_types");
 
 window.createAllocation = require("./conductor/create_allocations");
 window.addAvailability = require("./conductor/add_availabilities");
