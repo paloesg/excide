@@ -1,26 +1,49 @@
-// Keentheme"s plugins
-window.Sticky = require("sticky-js");
+// Import components
+require('./components/datatable/core.datatable.js');
+require('./components/datatable/datatable.checkbox.js');
+require('./components/datatable/datatable.rtl.js');
+require('./components/app.js');
+require('./components/card.js');
+require('./components/cookie.js');
+require('./components/dialog.js');
+require('./components/header.js');
+require('./components/image-input.js');
+require('./components/menu.js');
+require('./components/offcanvas.js');
+require('./components/scrolltop.js');
+require('./components/toggle.js');
+require('./components/util.js');
+require('./components/wizard.js');
 
-window.KTUtil = require("./assets/js/global/components/base/util");
-window.KTApp = require("./assets/js/global/components/base/app");
-window.KTHeader = require("./assets/js/global/components/base/header");
-window.KTMenu = require("./assets/js/global/components/base/menu");
-window.KTOffcanvas = require("./assets/js/global/components/base/offcanvas");
-window.KTScrolltop = require("./assets/js/global/components/base/scrolltop");
-window.KTToggle = require("./assets/js/global/components/base/toggle");
-require("./assets/js/global/components/base/datatable/core.datatable");
-require("./assets/js/global/components/base/datatable/datatable.checkbox");
-require("./assets/js/global/components/base/datatable/datatable.rtl");
+// Initialise layout
+require('./layout/initialize.js');
 
-// Layout scripts
-window.KTLayout = require("./assets/js/global/layout/layout");
-window.KTChat = require("./assets/js/global/layout/chat");
-require("./assets/js/global/layout/demo-panel");
-require("./assets/js/global/layout/offcanvas-panel");
-require("./assets/js/global/layout/quick-panel");
-require("./assets/js/global/layout/quick-search");
+// Import layout base
+require('./layout/base/aside-menu.js');
+require('./layout/base/aside.js');
+require('./layout/base/content.js');
+require('./layout/base/footer.js');
+require('./layout/base/header-menu.js');
+require('./layout/base/header-topbar.js');
+require('./layout/base/header.js');
+require('./layout/base/sticky-card.js');
+require('./layout/base/stretched-card.js');
+require('./layout/base/subheader.js');
 
-require("./assets/js/global/components/calendar/basic");
-require("./assets/js/global/components/calendar/fullcalendar.bundle");
+// Import layout extended
+require('./layout/extended/chat.js');
+require('./layout/extended/demo-panel.js');
+require('./layout/extended/examples.js');
+require('./layout/extended/quick-actions.js');
+require('./layout/extended/quick-cart.js');
+require('./layout/extended/quick-notifications.js');
+require('./layout/extended/quick-panel.js');
+require('./layout/extended/quick-search.js');
+require('./layout/extended/quick-user.js');
+require('./layout/extended/scrolltop.js');
+require('./layout/extended/search.js');
 
-require("../turbolinks-compatibility")
+
+
+
+

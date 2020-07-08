@@ -1,0 +1,49 @@
+//
+// Main init file of global bootstrap and theme functions, mixins, variables and config
+//
+
+
+// Theme functions
+@import "base/functions/get";
+@import "base/functions/math";
+@import "base/functions/valueif";
+@import "base/functions/theme-colors";
+
+// Theme mixins
+@import "base/mixins/attr";
+@import "base/mixins/browsers";
+@import "base/mixins/fixes";
+@import "base/mixins/reset";
+@import "base/mixins/placeholder";
+@import "components/mixins/tooltip";
+@import "components/mixins/buttons";
+@import "components/mixins/burger-icon";
+@import "components/mixins/checkbox";
+@import "components/mixins/burger-icon";
+@import "components/mixins/radio";
+@import "components/mixins/switch";
+@import "components/mixins/ki";
+@import "components/mixins/symbol";
+@import "components/mixins/menu-horizontal";
+@import "components/mixins/menu-vertical";
+@import "components/mixins/offcanvas";
+@import "components/mixins/spinner";
+@import "components/mixins/svg-icon";
+@import "components/mixins/navi";
+@import "components/mixins/label";
+@import "vendors/plugins/mixins/perfect-scrollbar";
+
+// Bootstrap mixins
+@import "../../../node_modules/bootstrap/scss/mixins";
+
+// Global variables
+@import "components/variables.demo";
+@import "components/variables.bootstrap";
+@import "components/variables.custom";
+
+// 3rd-Party plugins variables
+@import "vendors/plugins/variables";
+
+// Theme layout variables
+@import "layout/variables";
+
