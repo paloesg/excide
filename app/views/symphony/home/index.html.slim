@@ -20,7 +20,7 @@
                       td = action.task.instructions
                       td = action.workflow.template.title
                       td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
-                      td = action.deadline&.strftime("%d %B %Y")
+                      td = action.deadline&.strftime("%d %b %Y")
 .row
   .kt-portlet
     .kt-portlet__head
@@ -36,7 +36,7 @@
               .kt-portlet
                 .kt-portlet__head.bg-warning
                   .kt-portlet__head-label
-                    h3.kt-portlet__head-title = w.friendly_id
+                    h3.kt-portlet__head-title = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
                 .kt-portlet__body
                   | NEXT TO COMPLETE
                   | Repetition 1
@@ -46,7 +46,7 @@
                       = w.deadline&.strftime("%d %b %Y")
                     .col
                       div.progress
-                        div.progress-bar role="progressbar" style="width: #{w.workflow_actions.where(completed: true).count} / #{w.workflow_actions.count} * 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                        div.progress-bar role="progressbar" style="width: #{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}%" aria-valuenow="#{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}" aria-valuemin="0" aria-valuemax="100"
                       | #{w.workflow_actions.where(completed: true).count} / #{w.workflow_actions.count}
 
         /       tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
