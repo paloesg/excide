@@ -13,7 +13,7 @@ class Symphony::HomeController < ApplicationController
     else
       templates_type = workflows_sort.select{ |t| t.template.slug == params[:workflow_type] }
     end
-    @workflows = Kaminari.paginate_array(templates_type).page(params[:page]).per(5)
+    @workflows = workflows_sort.uniq(&:template).first(5)
 
     @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
 

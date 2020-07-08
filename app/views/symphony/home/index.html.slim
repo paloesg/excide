@@ -19,7 +19,6 @@
                           span
                       td = action.task.instructions
                       td = action.workflow.template.title
-                      td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
                       td = action.deadline&.strftime("%d %b %Y")
 .row
   .kt-portlet
@@ -31,15 +30,16 @@
         | No outstanding workflows at the moment. Click on a workflow to begin.
       - else
         .row
-          - @workflows.first(5).each do |w|
+          - @workflows.each do |w|
             .col-sm-4
               .kt-portlet
                 .kt-portlet__head.bg-warning
                   .kt-portlet__head-label
-                    h3.kt-portlet__head-title = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
+                    h3.kt-portlet__head-title = w.template.title
                 .kt-portlet__body
                   | NEXT TO COMPLETE
-                  | Repetition 1
+                  br
+                  = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
                   .row
                     .col
                       i.flaticon2-calendar-9.mr-2
