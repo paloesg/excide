@@ -1,6 +1,8 @@
 .row
-  .col-md-12
+  .col-md-6
     h4 Tasks Due Soon
+  .col-md-6
+    .float-right = link_to "See all my tasks", root_path, role: "button", class: "btn btn-light text-primary"
 .row
   .col-md-12
     - if @outstanding_actions.blank?
@@ -18,8 +20,10 @@
               td.border-top-0 = action.workflow.template.title
               td.border-top-0 = action.deadline&.strftime("%d %b %Y")
 .row
-  .col-md-12
+  .col-md-6
     h4 All Routines
+  .col-md-6
+    .float-right = link_to "+ New Routine", new_symphony_template_path, role: "button", class: "btn btn-outline-secondary text-primary"
 .row
   - if @workflows_array.blank?
     | No outstanding workflows at the moment. Click on a workflow to begin.
@@ -28,7 +32,16 @@
       .col-sm-4
         .card.mt-3
           .card-header
-            h5 = w.template.title
+            .row
+              .col-sm-9
+                h5 = w.template.title
+              .col-sm-3
+                div.dropdown.float-right
+                  a.btn.btn-sm.btn-icon aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#"
+                    i.flaticon2-user
+                  div.dropdown-menu.dropdown-menu-right
+                    .dropdown-item = link_to "Duplicate", root_path
+                    .dropdown-item = link_to "Delete", symphony_template_path(template_slug: w.template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' , remote: true}, method: :delete if policy(w.template).destroy?
           .card-body
             | NEXT TO COMPLETE
             br
