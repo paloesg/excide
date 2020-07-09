@@ -122,10 +122,17 @@
                 label.form-check-label for="radioContact" Reminder prior to deadline (in days)
                 = f.number_field :prior_day, class: 'form-control'
             .col-md-6
+              / .form-check
+                / input.form-check-input name="radioContact" id="afterDeadline" type="radio" value="after"
+                / label.form-check-label.mr-3 for="radioContact" Reminder after deadline (in days)
+                / = f.number_field :prior_day, class: 'form-control', disabled: true
+                / = radio_button_tag 'prior_day', 'before'
+                / #f.radio_button
+                / https://apidock.com/rails/ActionView/Helpers/FormTagHelper/radio_button_tag
+            - Company.prior_day_statuses.keys.each do |prior_day_status|
               .form-check
-                input.form-check-input name="radioContact" id="afterDeadline" type="radio" value="after"
-                label.form-check-label.mr-3 for="radioContact" Reminder after deadline (in days)
-                = f.number_field :prior_day, class: 'form-control', disabled: true
+                = f.radio_button :prior_day_status, prior_day_status, class: 'form-check-input'
+                = f.label "#{:prior_day_status}", prior_day_status.titlecase, class: 'form-check-label'
       .kt-portlet
         .kt-portlet__head
           .kt-portlet__head-label
