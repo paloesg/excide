@@ -67,7 +67,7 @@ class WorkflowAction < ApplicationRecord
     end
   end
 
-  def unordered_workflow_email_notification
+  def unordered_workflow_create_reminder_and_send_email
     workflow_tasks = self.workflow.template.sections.map{|sect| sect.tasks }.flatten.compact
     workflow_tasks.each do |task|
       wfa = task.get_workflow_action(self.company.id, self.workflow.id)
