@@ -115,8 +115,8 @@
           .kt-portlet__head-label
             h3.kt-portlet__head-title Reminder Settings
         .kt-portlet__body
-          .form-check
-            label.form-check-label for="radioContact" Reminder prior to deadline (in days)
+          .form-group
+            = f.label :prior_day, 'Reminder prior to deadline (in days)'
             = f.number_field :prior_day, class: 'form-control'
       .kt-portlet
         .kt-portlet__head
