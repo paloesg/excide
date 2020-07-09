@@ -38,7 +38,7 @@ module ApplicationHelper
     fields = f.fields_for(association, new_object, child_index: id) do |builder|
       render "line_items", f: builder
     end
-    link_to(name, '#', class: "add_attribute_fields btn btn-primary", data: {id: id, fields: fields.gsub("\n", "")})
+    link_to(name, '#', class: "add_attribute_fields btn btn-light bg-light", data: {id: id, fields: fields.gsub("\n", "")})
   end
 
   def link_to_add_tasks(name, f, association, locals={})
