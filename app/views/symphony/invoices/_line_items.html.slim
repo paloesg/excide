@@ -12,5 +12,5 @@ tr.line_items
   - elsif @tracking_categories_1.present? and @tracking_categories_2.nil?
     td.line-item-field = f.select :tracking_option_1, @tracking_categories_1.map{|option| option['name']}, { include_blank: true }, { class:  'minimize-text dropdown-overlay' }
   td.line-item-field = f.text_field :amount, class: 'form-control minimize-text', readonly: true
-  td.line-item-field.pr-2 = link_to "x", '#', class: 'btn btn-danger remove_line_items'
+  td.line-item-field.pr-2 = link_to "x", '#', class: 'btn btn-light remove_line_items'
   = f.hidden_field :_destroy, class: 'destroy'
