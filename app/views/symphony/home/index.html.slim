@@ -1,56 +1,49 @@
 .row
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title Tasks Due Soon
-      .kt-portlet__body
-        .kt-section
-          .kt-section__content
-            - if @outstanding_actions.blank?
-              | Hooray! No outstanding tasks at the moment.
-            - else
-              table.table
-                tbody
-                  - @outstanding_actions.each do |action|
-                    tr
-                      td
-                        label.kt-checkbox.kt-checkbox--single
-                          = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"
-                          span
-                      td = action.task.instructions
-                      td = action.workflow.template.title
-                      td = action.deadline&.strftime("%d %b %Y")
+  .col-md-12
+    h4 Tasks Due Soon
 .row
-  .kt-portlet
-    .kt-portlet__head
-      .kt-portlet__head-label
-        h3.kt-portlet__head-title All Routines
-    .kt-portlet__body
-      - if @workflows_array.blank?
-        | No outstanding workflows at the moment. Click on a workflow to begin.
-      - else
-        .row
-          - @workflows.each do |w|
-            .col-sm-4
-              .kt-portlet
-                .kt-portlet__head.bg-warning
-                  .kt-portlet__head-label
-                    h3.kt-portlet__head-title = w.template.title
-                .kt-portlet__body
-                  | NEXT TO COMPLETE
-                  br
-                  = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
-                  .row
-                    .col
-                      i.flaticon2-calendar-9.mr-2
-                      = w.deadline&.strftime("%d %b %Y")
-                    .col
-                      div.progress
-                        div.progress-bar role="progressbar" style="width: #{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}%" aria-valuenow="#{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}" aria-valuemin="0" aria-valuemax="100"
-                      | #{w.workflow_actions.where(completed: true).count} / #{w.workflow_actions.count}
+  .col-md-12
+    - if @outstanding_actions.blank?
+      | Hooray! No outstanding tasks at the moment.
+    - else
+      table.table
+        tbody
+          - @outstanding_actions.each do |action|
+            tr.border-bottom
+              td.border-top-0
+                label.checkbox
+                  = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"
+                  span
+              td.border-top-0 = action.task.instructions
+              td.border-top-0 = action.workflow.template.title
+              td.border-top-0 = action.deadline&.strftime("%d %b %Y")
+.row
+  .col-md-12
+    h4 All Routines
+.row
+  - if @workflows_array.blank?
+    | No outstanding workflows at the moment. Click on a workflow to begin.
+  - else
+    - @workflows.each do |w|
+      .col-sm-4
+        .card.mt-3
+          .card-header
+            h5 = w.template.title
+          .card-body
+            | NEXT TO COMPLETE
+            br
+            = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
+            .row
+              .col
+                i.flaticon2-calendar-9.mr-2
+                = w.deadline&.strftime("%d %b %Y")
+              .col
+                div.progress
+                  div.progress-bar role="progressbar" style="width: #{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}%" aria-valuenow="#{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}" aria-valuemin="0" aria-valuemax="100"
+                | #{w.workflow_actions.where(completed: true).count} / #{w.workflow_actions.count}
 
-        /       tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-        /         td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
-        /         td = w.template.title
-        /         td = w.completed ? 'Completed' : w.current_section&.section_name
-        / = paginate @workflows, views_prefix: 'dashboard'
+    /       tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
+    /         td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
+    /         td = w.template.title
+    /         td = w.completed ? 'Completed' : w.current_section&.section_name
+    / = paginate @workflows, views_prefix: 'dashboard'
