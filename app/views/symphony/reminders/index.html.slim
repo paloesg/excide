@@ -36,7 +36,7 @@
                         td = reminder.content || '-'
                         td = reminder.task.present? ? link_to(reminder.task.section.template.title, symphony_workflow_path(reminder.task.section.template.slug, reminder.workflow_action.workflow.id)) : '-'
                         td = reminder.repeat ? "Every #{reminder.freq_value} #{reminder.freq_unit}" : "No repeat"
-                        td = reminder.prior_reminder ? reminder.prior_reminder&.strftime("%F") : reminder.next_reminder&.strftime("%F") || '-'
+                        td = reminder.prior_reminder ? (reminder.prior_reminder > Date.current ? reminder.prior_reminder&.strftime("%F") : reminder.next_reminder&.strftime("%F")) : reminder.next_reminder&.strftime("%F") || '-'
                         td.kt-align-right
                           = link_to 'Edit', edit_symphony_reminder_path(reminder.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
                         td.kt-align-right
