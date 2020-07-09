@@ -3,7 +3,6 @@ class SendUserReminders
 
   def initialize(user)
     @user = user
-    @company = @company = @user.company
     @from_number = ENV['TWILIO_NUMBER']
     @account_sid = ENV['TWILIO_ACCOUNT_SID']
     @auth_token = ENV['TWILIO_AUTH_TOKEN']
@@ -26,8 +25,7 @@ class SendUserReminders
   def get_user_reminders
     @reminders = Reminder.today.where(user: @user)
     # To check for prior reminders that are today as well
-    today = Date.current
-    @prior_reminders = Reminder.where(user: @user, prior_reminder: today.beginning_of_day..today.end_of_day)
+    @prior_reminders = Reminder.where(user: @user, prior_reminder: Date.current.beginning_of_day..Date.current.end_of_day)
   end
 
   def send_email_reminders

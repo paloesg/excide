@@ -65,7 +65,6 @@ class Symphony::RemindersController < ApplicationController
   def update_prior_reminder
     @company = Company.find_by(id: @reminder.company.id)
     if @company.prior_day && ((@reminder.next_reminder - @company.prior_day.days) > Date.current)
-      # should be able to work for both +/- days (i.e. before/after deadline)
       @reminder.prior_reminder = @reminder.next_reminder - @company.prior_day.days
     else 
       @reminder.prior_reminder = nil
