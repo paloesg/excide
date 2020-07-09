@@ -1,9 +1,9 @@
 .row.justify-content-center
   .col-4.text-center
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          .kt-portlet__head-title
+    .card.card-custom
+      .card-header
+        .card-label
+          .card-title
             | Login to your Symphony account
       .kt-portlet__body
         = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|

@@ -43,6 +43,42 @@ require('./layout/extended/quick-user.js');
 require('./layout/extended/scrolltop.js');
 require('./layout/extended/search.js');
 
+// Import pages features
+require('./pages/features/base/dropdown.js');
+require('./pages/features/calendar/background-events.js');
+require('./pages/features/calendar/basic.js');
+require('./pages/features/calendar/external-events.js');
+require('./pages/features/calendar/basic.js');
+require('./pages/features/calendar/basic.js');
+require('./pages/features/cards/tools.js');
+require('./pages/features/cards/draggable.js');
+require('./pages/features/charts/amcharts/charts.js');
+require('./pages/features/charts/amcharts/maps.js');
+require('./pages/features/charts/amcharts/stock-charts.js');
+require('./pages/features/charts/apexcharts.js');
+require('./pages/features/charts/flotcharts.js');
+require('./pages/features/charts/google-charts.js');
+require('./pages/features/custom/spinners.js');
+require('./pages/features/maps/google-maps.js');
+require('./pages/features/maps/jqvmap.js');
+require('./pages/features/maps/jvectormap.js');
+require('./pages/features/maps/leaflet.js');
+require('./pages/features/miscellaneous/blockui.js');
+require('./pages/features/miscellaneous/bootstrap-notify.js');
+require('./pages/features/miscellaneous/cropper.js');
+require('./pages/features/miscellaneous/dual-listbox.js');
+require('./pages/features/miscellaneous/idle-timer.js');
+require('./pages/features/miscellaneous/kanban-board.js');
+require('./pages/features/miscellaneous/perfect-scrollbar.js');
+require('./pages/features/miscellaneous/session-timeout.js');
+require('./pages/features/miscellaneous/sticky-panels.js');
+require('./pages/features/miscellaneous/sweetalert2.js');
+require('./pages/features/miscellaneous/toastr.js');
+require('./pages/features/miscellaneous/treeview.js');
+
+
+
+
 
 
 
