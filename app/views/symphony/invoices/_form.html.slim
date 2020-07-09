@@ -15,14 +15,8 @@
               input type="text" class="form-control" id="InvoiceNo"
         .row.m-2
           .form-group.col-md-6
-            / input.form-check-input name="radioContact" id="existingContact" type="radio" value="existing" checked="checked"
-            label To
-            = f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'selectize existing-contact-width existing-contact-disable', required: true }
-            / .col-md-6
-            /   .form-check
-            /     input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
-            /     label.form-check-label.mr-3 for="radioContact" New Contact:
-            /     = f.text_field :xero_contact_name, class: 'form-control new-disable', required: true, placeholder: 'New contact here...', value: nil, disabled: true
+            = f.label :xero_contact_id, 'To'
+            = f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'selectize existing-contact-width existing-contact-disable', required: true}
           .form-group.col-md-6
             = f.label :invoice_reference, 'Reference'
             = f.text_field :invoice_reference, class: 'form-control inv-reference'
@@ -33,7 +27,7 @@
               i.fa.fa-info-circle
             #datetimepicker.input-group.date.dateinvoice data-target-input="nearest"
               .input-group-append data-target="#datetimepicker" data-toggle="datetimepicker"
-                .input-group-text
+                .input-group-text style="background-color: #fff"
                   i.fa.fa-calendar
               = f.text_field :invoice_date, class: 'form-control autodate invoicedate dateinvoice', value:"#{@invoice.invoice_date.present? ? @invoice.invoice_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker1', 'data-target': '#datetimepicker1'
           .form-group.col-md-6
@@ -42,30 +36,18 @@
               i.fa.fa-info-circle
             #datetimepicker2.input-group.date.dateinvoice data-target-input="nearest"
               .input-group-append data-target="#datetimepicker2" data-toggle="datetimepicker"
-                .input-group-text
+                .input-group-text style="background-color: #fff"
                   i.fa.fa-calendar
               = f.text_field :due_date, class: 'form-control autodate duedate dateinvoice', value:"#{@invoice.due_date.present? ? @invoice.due_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker3', 'data-target': '#datetimepicker3'
               
         .row.m-2
           .form-group.col-md-6
-            = f.label :currency, 'Currency', class: 'mr-2'
+            = f.label :currency, 'Currency'
             = f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'selectize'
-          /   .form-check
-          /     input.form-check-input name="radioContact" id="newContact" type="radio" value="new"
-          /     label.form-check-label.mr-3 for="radioContact" New Contact:
-          /     = f.text_field :xero_contact_name, class: 'form-control new-disable', required: true, placeholder: 'New contact here...', value: nil, disabled: true
-/ .row
-/   .col-md-12.mt-3
-/     .card.mb-3
-/       .col-md-12.mt-2
-/         .form-row
-/           .form-group.col-md-2
-/             = f.label :line_amount_type, 'Amounts are: ', class: 'mr-2'
-/             = f.select :line_amount_type, [["Tax Exclusive", "exclusive"], ["Tax Inclusive", "inclusive"], ["No Tax", "no_tax"]], {include_blank: true}, {class: 'form-control', required: true}
+
 /           .form-group.col-md-2
 /             = f.label :invoice_type, 'Invoice Type', class: 'mr-2'
 /             = f.select :invoice_type, Invoice.invoice_types.map{|k, v| [k.humanize, k]}, {selected: params[:invoice_type] || @invoice.invoice_type, include_blank: true}, {class: 'form-control', required: true}
-
 
 .row
   .col-md-12
@@ -88,6 +70,10 @@
             tr
             = f.fields_for :line_items do |line_item|
               = render 'line_items', f: line_item
+          tfoot
+            tr
+              td.line-item-field
+                = link_to_add_line_items "+ Click to add item...", f, :line_items if @invoice.new_record? or policy(@invoice).update?
       .card-body
         .row
           .col-md-12.mb-2
@@ -96,15 +82,12 @@
                 strong Loading...
                 .spinner-border.ml-auto aria-hidden="true" role="status"
         .row
-          .col-md-6
-            .col-md-12
-              = link_to_add_line_items "Add Line Item", f, :line_items if @invoice.new_record? or policy(@invoice).update?
-          .col-md-6
-            #subtotal-wrapper.col-md-12
-              .form-row
-                .form-inline.col-auto.ml-auto.mb-3.pull-right
-                  = f.label :subtotal, 'Subtotal (calculated)', class: 'mr-2'
-                  = text_field_tag :subtotal, nil, class: 'form-control subtotal-calculated', disabled: true
+          #subtotal-wrapper.col-md-12
+            .form-row
+              .form-inline.col-auto.ml-auto.mb-3.pull-right
+                = f.label :subtotal, 'Subtotal ', class: 'mr-2'
+                = f.select :line_amount_type, [["Exclusive tax", "exclusive"], ["Inclusive tax", "inclusive"], ["No Tax", "no_tax"]], {include_blank: true}, {class: 'form-control', required: true}
+                = text_field_tag :subtotal, nil, class: 'form-control subtotal-calculated ml-5', disabled: true
         .row
           .col-md-6
             .col-md-12
@@ -112,15 +95,14 @@
                 .form-inline.col-auto.ml-1.pull-left
                   = f.label :total, 'Total (extracted): ', class: 'mr-2'
                   = text_field_tag :total_textract, nil, class: 'form-control textract-total-value', disabled: true
-          .col-md-6
-            .col-md-12
-              .form-row.mb-2
-                .form-inline.col-auto.ml-auto.pull-right
-                  = f.label :total, 'Total (including tax): ', class: 'mr-2'
-                  = f.text_field :total, class: 'form-control total-calculated'
-            .col-md-12
-              .textract-total-message.d-none
-                .text-danger * Total calculated does not match total extracted. Please check the amounts.
+          .col-md-12
+            .form-row.mb-2
+              .form-inline.col-auto.ml-auto.pull-right
+                = f.label :total, 'Total ', class: 'mr-2', style: 'font-weight: bold'
+                = f.text_field :total, class: 'form-control total-calculated ml-5'
+          .col-md-12
+            .textract-total-message.d-none
+              .text-danger * Total calculated does not match total extracted. Please check the amounts.
 .btn-group role='group'
   - if @previous_document.present?
     = f.button name: 'document_id', value: @previous_document.id, class: 'btn btn-primary'
