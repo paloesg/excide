@@ -23,7 +23,7 @@ html lang="en"
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
 
-  body.kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading
+  body.page-content-white.quick-panel--right.demo-panel--right.offcanvas-panel--right.header--fixed.header-mobile--fixed.subheader--enabled.subheader--transparent.page--loading
     /! begin:: Page
     /! begin:: Header Mobile
     = render 'layouts/header_mobile' unless (current_user.nil? || current_page?(additional_information_path))

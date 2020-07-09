@@ -1,11 +1,11 @@
-.row.justify-content-center
+.row.justify-content-center.mt-5
   .col-4.text-center
-    .card.card-custom
+    .card.card-custom.gutter-b
       .card-header
-        .card-label
-          .card-title
+        .card-title
+          h3.card-label
             | Login to your Symphony account
-      .kt-portlet__body
+      .card-body
         = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
           .form-group
             = f.email_field :email, placeholder: "Email", class: 'form-control'
@@ -13,9 +13,9 @@
             = f.password_field :password, placeholder: "Password", autocomplete: "off", class: 'form-control'
           - if devise_mapping.rememberable?
             span.form-group.form-check
-              div.kt-switch.kt-switch--sm
+              div.switch.switch--sm
                 label.form-inline
-                  = f.label :remember_me, class:"mr-2"
+                  = f.label :remember_me, class: "mr-2"
                   = f.check_box :remember_me, id:"checkbox-switch"
                   span
           .form-group
