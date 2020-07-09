@@ -10,34 +10,34 @@
       /! end:: Brand
       /! begin:: Header Topbar
       .kt-header__topbar.kt-grid__item.kt-grid__item--fluid
-        /! begin: Notification bar
-        .kt-header__topbar-item.kt-header__topbar-item--langs
-          .kt-header__topbar-wrapper data-offset="20px,0px"
-            span.kt-header__topbar-icon
-              / uses view notifications/default/workflow_action/:key.html.slim
-              = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
-        /! end: Notification bar
-        - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
-          /! begin: Admin bar
-          .kt-header__topbar-item.kt-header__topbar-item--langs
-            .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
-              span.kt-header__topbar-icon.kt-header__topbar-icon--warning
-                i.flaticon2-gear
-            .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
-              ul.kt-nav.kt-margin-t-10.kt-margin-b-10
-                li.kt-nav__item
-                  = link_to symphony_users_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Manage Users
-                li.kt-nav__item
-                  = link_to symphony_roles_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Manage Roles
-                li.kt-nav__item
-                  = link_to symphony_templates_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Manage Templates
-                li.kt-nav__item
-                  = link_to symphony_survey_templates_path, class: 'kt-nav__link' do
-                    span.kt-nav__link-text Manage Survey Templates
-          /! end: Admin bar
+        / /! begin: Notification bar
+        / .kt-header__topbar-item.kt-header__topbar-item--langs
+        /   .kt-header__topbar-wrapper data-offset="20px,0px"
+        /     span.kt-header__topbar-icon
+        /       / uses view notifications/default/workflow_action/:key.html.slim
+        /       = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
+        / /! end: Notification bar
+        / - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
+        /   /! begin: Admin bar
+        /   .kt-header__topbar-item.kt-header__topbar-item--langs
+        /     .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
+        /       span.kt-header__topbar-icon.kt-header__topbar-icon--warning
+        /         i.flaticon2-gear
+        /     .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+        /       ul.kt-nav.kt-margin-t-10.kt-margin-b-10
+        /         li.kt-nav__item
+        /           = link_to symphony_users_path, class: 'kt-nav__link' do
+        /             span.kt-nav__link-text Manage Users
+        /         li.kt-nav__item
+        /           = link_to symphony_roles_path, class: 'kt-nav__link' do
+        /             span.kt-nav__link-text Manage Roles
+        /         li.kt-nav__item
+        /           = link_to symphony_templates_path, class: 'kt-nav__link' do
+        /             span.kt-nav__link-text Manage Templates
+        /         li.kt-nav__item
+        /           = link_to symphony_survey_templates_path, class: 'kt-nav__link' do
+        /             span.kt-nav__link-text Manage Survey Templates
+        /   /! end: Admin bar
         /! begin: User bar
         .kt-header__topbar-item.kt-header__topbar-item--langs
           .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
@@ -65,6 +65,7 @@
                 = link_to destroy_user_session_path, {method: :delete, class: 'kt-nav__link'} do
                   span.kt-nav__link-text Log Out
         /! end: User bar
+    
   /! end:: Header Topbar
 
 .row
@@ -123,19 +124,19 @@
     = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
-      = render 'remaining_invoice'
+      / = render 'remaining_invoice'
       .row
-        .col-md-8
-          - if @workflow.batch.present?
-            = link_to "View Batch", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning ml-2'
-          - else
-            = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
-          - if params[:workflow_action].present?
-            = hidden_field_tag :workflow_action, params[:workflow_action_id]
-            = hidden_field_tag :invoice_type, params[:invoice_type]
+        / .col-md-8
+        /   - if @workflow.batch.present?
+        /     = link_to "View Batch", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning ml-2'
+        /   - else
+        /     = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
+        /   - if params[:workflow_action].present?
+        /     = hidden_field_tag :workflow_action, params[:workflow_action_id]
+        /     = hidden_field_tag :invoice_type, params[:invoice_type]
         .col-md-4
           = hidden_field_tag :submit_position, '', class: 'submit-position'
           .pull-right
             = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, invoice_type: params[:invoice_type], workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2') if policy(@invoice).reject?
-            = f.submit 'Save', class: "btn btn-primary"
+            = f.submit ' Save & Next ', class: "btn btn-white", style: "border: 0.5px solid"
 
