@@ -45,12 +45,11 @@
 ////////////////////////////////////////////////////////////////
 
 // Color scheme
-@import "../src/stylesheets/metronic/style.bundle";
+
 // // 1: Include global config
 @import "../src/stylesheets/metronic/init";
 @import "../src/stylesheets/metronic/style";
-
-
+@import "../src/stylesheets/metronic/style.bundle";
 
 // // 2: Include demo config (that overrides the above global config)
 // @import "../src/stylesheets/metronic/global/layout/config";

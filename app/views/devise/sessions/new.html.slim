@@ -13,13 +13,13 @@
             = f.password_field :password, placeholder: "Password", autocomplete: "off", class: 'form-control'
           - if devise_mapping.rememberable?
             span.form-group.form-check
-              div.switch.switch--sm
-                label.form-inline
+              div.switch
+                label.form-inline.col-sm-12.justify-content-center
                   = f.label :remember_me, class: "mr-2"
-                  = f.check_box :remember_me, id:"checkbox-switch"
+                  = f.check_box :remember_me
                   span
           .form-group
-            = f.submit "Log in", class:"btn btn-primary"
+            = f.submit "Log in", class: "btn btn-primary"
         .row.mt-3
           .col-md-12
             = link_to "Forgot password?", new_password_path(@user)

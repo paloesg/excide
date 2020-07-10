@@ -203,15 +203,3 @@ require('./vendors/plugins/dropzone.init.js');
 require('./vendors/plugins/jquery-validation.init.js');
 require('./vendors/plugins/prism.init.js');
 require('./vendors/plugins/sweetalert2.init.js');
-
-
-
-
-
-
-
-
-
-
-
-
