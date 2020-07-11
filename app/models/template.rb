@@ -3,6 +3,7 @@ class Template < ApplicationRecord
   friendly_id :title, use: [:slugged, :finders]
 
   enum workflow_type: { ordered: 0, unordered: 1 }
+  enum deadline_type: { xth_day_of_the_month: 0, days_to_complete: 1 }
 
   has_many :sections, -> { order(position: :asc) }, dependent: :destroy
   has_many :tasks, through: :sections, dependent: :destroy
@@ -104,7 +105,7 @@ class Template < ApplicationRecord
       Template.where(company: user.company).order(:created_at)
     else
       # Work backwards from tasks to get to the templates that have tasks assigned to the user role
-      section_ids = Task.where(role_id: user.roles).pluck(:section_id).uniq
+      section_ids = Task.where(role_id: user.roles).or(Task.where(user_id: user.id)).pluck(:section_id).uniq
       template_ids = Section.where(id: section_ids).pluck(:template_id).uniq
       Template.where(id: template_ids, company: user.company).order(:created_at)
     end
