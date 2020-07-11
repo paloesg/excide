@@ -23,33 +23,35 @@ html lang="en"
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
 
-  body.page-content-white.quick-panel--right.demo-panel--right.offcanvas-panel--right.header--fixed.header-mobile--fixed.subheader--enabled.subheader--transparent.page--loading
+  body#kt_header.header.flex-column.header-fixed
+    / .kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading
     /! begin:: Page
     /! begin:: Header Mobile
     = render 'layouts/header_mobile' unless (current_user.nil? || current_page?(additional_information_path))
     /! end:: Header Mobile
-    .kt-grid.kt-grid--hor.kt-grid--root
-      .kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--ver.kt-page
-        #kt_wrapper.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-wrapper
-          /! begin:: Header
-          - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys')) 
-            = render 'layouts/conductor_header'
-          - else
-            = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path))
+    / .kt-grid.kt-grid--hor.kt-grid--root
+    /   .kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--ver.kt-page
+    /     #kt_wrapper.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-wrapper
+    /       /! begin:: Header
+    /       - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys')) 
+    /         = render 'layouts/conductor_header'
+    /       - else
+    /         = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path))
           /! end:: Header
-          .kt-container.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
-            #kt_body.kt-body.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
-              #kt_content.kt-content.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor
-                #kt_subheader.kt-subheader.kt-grid__item
-                  .kt-container
-                /! begin:: Content
-                .kt-container.kt-grid__item.kt-grid__item--fluid
-                  = render 'layouts/messages'
-                  = yield
+          
+    /! begin:: Content
+    .d-flex.flex-row.flex-column-fluid.container.h-100
+      .main.d-flex.flex-column.flex-row-fluid
+        .content.flex-column-fluid#kt_content
+          .row.justify-content-center.mt-5
+            .col-4.text-center
+              .card.card-custom.gutter-b
+                = render 'layouts/messages'
+                = yield
                 /! end:: Content
-          /! begin:: Footer
-          = render 'layouts/footer'
-          /! end:: Footer
+    /! begin:: Footer
+    = render 'layouts/footer'
+    /! end:: Footer
     /! end:: Page
     /! begin::Scrolltop
     .scrolltop
