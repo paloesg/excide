@@ -5,8 +5,8 @@ class Symphony::HomeController < ApplicationController
     @templates = policy_scope(Template).assigned_templates(current_user)
     @template_pro = @templates.joins(sections: :tasks).where(tasks: {task_type: ["create_invoice_payable", "xero_send_invoice", "create_invoice_receivable", "coding_invoice"]})
 
-    @workflows_array = policy_scope(Workflow).includes(:template).where(template: @templates)
-    workflows_sort = sort_column(@workflows_array)
+    @workflows_array = policy_scope(Workflow).includes(:template).where(template: @templates).where(completed: [false, nil]).where.not(deadline: nil)
+    workflows_sort = @workflows_array.sort_by(&:deadline)
     params[:direction] == "desc" ? workflows_sort.reverse! : workflows_sort
     if params[:workflow_type].blank?
       templates_type = workflows_sort
