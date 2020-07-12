@@ -2,12 +2,21 @@
   .col-md-6
     h4 Tasks Due Soon
   .col-md-6
-    .float-right = link_to "See all my tasks", root_path, role: "button", class: "btn btn-light text-primary"
+    .float-right = link_to "See all my tasks", root_path, role: "button", class: "btn btn-light text-primary" if @outstanding_actions.present?
 .row
-  .col-md-12
-    - if @outstanding_actions.blank?
-      | Hooray! No outstanding tasks at the moment.
-    - else
+  - if @outstanding_actions.blank?
+    .col-md-5.border.py-4.px-5
+      .row.align-items-center
+        .col-sm-2
+          = image_pack_tag 'media/src/images/add-personal-task@2x.png'
+        .col-sm-10
+          h5
+            | Good job! You have done all your tasks!
+          h5.mb-0
+            span.font-weight-normal Any new task coming up? 
+            = link_to "Add new task", root_path
+  - else
+    .col-md-12
       table.table
         tbody
           - @outstanding_actions.each do |action|
@@ -19,7 +28,7 @@
               td.border-top-0 = action.task.instructions
               td.border-top-0 = action.workflow.template.title
               td.border-top-0 = action.deadline&.strftime("%d %b %Y")
-.row
+.row.mt-5
   .col-md-6
     h4 All Routines
   .col-md-6
