@@ -144,8 +144,10 @@ class WorkflowAction < ApplicationRecord
   end
 
   def create_reminder(task, action)
+    prior_day = Company.find(self.company.id).prior_day
+
     reminder = Reminder.new(
-      next_reminder: action.deadline,
+      next_reminder: (prior_day && (action.deadline - prior_day.days) > Date.current) ? (action.deadline - prior_day.days) : action.deadline,
       repeat: true,
       freq_value: 2,
       freq_unit: "days",

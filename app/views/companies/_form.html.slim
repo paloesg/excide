@@ -115,17 +115,10 @@
           .kt-portlet__head-label
             h3.kt-portlet__head-title Reminder Settings
         .kt-portlet__body
-          .row.m-1
-            .col-md-6
-              .form-check
-                input.form-check-input name="radioContact" id="beforeDeadline" type="radio" value="before" checked="checked"
-                label.form-check-label for="radioContact" Reminder prior to deadline (in days)
-                = f.number_field :prior_day, class: 'form-control'
-            .col-md-6
-              .form-check
-                input.form-check-input name="radioContact" id="afterDeadline" type="radio" value="after"
-                label.form-check-label.mr-3 for="radioContact" Reminder after deadline (in days)
-                = f.number_field :prior_day, class: 'form-control', disabled: true
+          .form-group
+            = f.label :prior_day, 'Reminder prior to deadline (in days)'
+            = f.number_field :prior_day, class: 'form-control'
+
       .kt-portlet
         .kt-portlet__head
           .kt-portlet__head-label

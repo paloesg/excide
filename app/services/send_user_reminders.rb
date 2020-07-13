@@ -3,7 +3,6 @@ class SendUserReminders
 
   def initialize(user)
     @user = user
-    @company = @company = @user.company
     @from_number = ENV['TWILIO_NUMBER']
     @account_sid = ENV['TWILIO_ACCOUNT_SID']
     @auth_token = ENV['TWILIO_AUTH_TOKEN']
@@ -70,8 +69,16 @@ class SendUserReminders
   end
 
   def set_next_reminder
+    prior_day = Company.find(@user.company.id).prior_day
+    
     @reminders.each do |reminder|
-      day = Date.current + 1.day
+      deadline = reminder.task_id ? WorkflowAction.find_by(task_id: reminder.task_id).deadline : nil
+      # check if prior day is present, reminder is from workflow action (i.e. task_id is present) and compare current date to deadline to set next reminder
+      if prior_day && deadline && (Date.current < deadline)
+        day = Date.current + prior_day.days
+      else
+        day = Date.current + 1.day
+      end
       reminder.next_reminder = day.on_weekday? ? day : day.next_weekday
       reminder.save
     end
