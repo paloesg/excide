@@ -22,10 +22,10 @@
         thead
           tr
             th
-            th Event type
+            th Job Nature
             th Client
             th Service Line
-            th Job Nature
+            th Allocated to
             th Start time
             th End time
             - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
@@ -43,7 +43,7 @@
               td = event.event_type.name
               td = event.client&.name
               td = event.tag_list.last
-              td = event.event_type.name
+              td = event.allocations.last.user.present? ? event.allocations.last.user.full_name : 'Nil'
               td = event.start_time.strftime("%d/%m/%y %H:%M")
               td = event.end_time.strftime("%d/%m/%y %H:%M")
               - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
