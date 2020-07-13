@@ -48,6 +48,7 @@
               td = event.end_time.strftime("%d/%m/%y %H:%M")
               - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
                 td = event.remarks
+                td = link_to 'Edit', edit_conductor_event_path(event), role: 'button', class: 'btn btn-primary btn-sm mr-1 mt-1'
               - else
                 td
                   - if event.allocations.consultant.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
