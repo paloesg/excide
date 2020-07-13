@@ -51,8 +51,8 @@
                   h5 = w.template.title
                 .col-sm-3
                   div.dropdown.float-right
-                    a.btn.btn-sm.btn-icon aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#"
-                      i.flaticon2-user
+                    a.btn.btn-icon aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#"
+                      i.fa.fa-ellipsis-h.text-secondary
                     div.dropdown-menu.dropdown-menu-right
                       .dropdown-item = link_to "Duplicate", root_path
                       .dropdown-item = link_to "Delete", symphony_template_path(template_slug: w.template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' , remote: true}, method: :delete if policy(w.template).destroy?
