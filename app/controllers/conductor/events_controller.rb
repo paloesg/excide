@@ -34,6 +34,7 @@ class Conductor::EventsController < ApplicationController
   # GET /conductor/events/1/edit
   def edit
     @event.build_address if @event.address.blank?
+    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
     @users = User.includes(:roles).where(company: @company.id).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq
   end
 
@@ -72,8 +73,7 @@ class Conductor::EventsController < ApplicationController
   # PATCH/PUT /conductor/events/1
   # PATCH/PUT /conductor/events/1.json
   def update
-
-    update_event_time = UpdateEventTime.new(@event, event_params['start_time'], event_params['end_time'], params[:user].present? ? @company.users.find(params[:user]) : current_user).run
+    update_event_time = UpdateEventTime.new(@event, event_params['start_time'], event_params['end_time'], params[:user].present? ? @company.users.find(params[:user]) : current_user, params[:service_line]).run
 
     respond_to do |format|
       if update_event_time.success? and @event.update(event_params)

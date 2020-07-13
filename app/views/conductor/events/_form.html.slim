@@ -10,6 +10,9 @@
       = f.label :client_id
       = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, class: 'selectize'
     .form-group
+      = label_tag 'Service Line', 'Service Line'
+      = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), include_blank: true, prompt: 'Select service line...', class: 'selectize'
+    .form-group
       = f.label :start_time
       = f.text_field :start_time, class: 'form-control datetimepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
     .form-group

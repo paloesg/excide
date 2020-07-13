@@ -1,10 +1,11 @@
 class UpdateEventTime
 
-  def initialize(event, new_start_time, new_end_time, user)
+  def initialize(event, new_start_time, new_end_time, user, service_line)
     @event     = event
     @new_start_time = new_start_time
     @new_end_time   = new_end_time
     @user = user
+    @service_line = service_line
     @associates_updated = 0
     @associates_unassigned = 0
   end
@@ -14,6 +15,7 @@ class UpdateEventTime
       begin
         @event.transaction do
           update_event
+          update_event_tag if @service_line.present?
           @event.allocations.each do |allocation|
             # Update availability
             update_availability(allocation)
@@ -42,6 +44,13 @@ class UpdateEventTime
 
   def update_event
     @event.update_attributes!(start_time: @new_start_time, end_time: @new_end_time)
+  end
+
+  def update_event_tag
+    # Remove all tags
+    @event.tags = []
+    # Add new updated tag
+    @event.tag_list.add(@service_line)
   end
 
   def update_allocation(allocation)
