@@ -141,6 +141,10 @@ class Workflow < ApplicationRecord
     self.workflow_actions.where(task_id: task_id).first
   end
 
+  def name
+    self.created_at.strftime('%y%m%d-%H%M')
+  end
+
   private
 
   # Create all the actions that need to be completed for a workflow that is associated with a company

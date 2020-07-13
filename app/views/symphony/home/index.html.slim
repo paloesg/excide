@@ -31,7 +31,16 @@
                     span
                 td.border-top-0 = action.task.instructions
                 td.border-top-0 = action.workflow.template.title
-                td.border-top-0 = action.deadline&.strftime("%d %b %Y")
+                td.border-top-0
+                  - if action.deadline.past?
+                    i.fa.fa-xs.fa-circle.text-danger.mr-3
+                    = action.deadline&.strftime("%d %b %Y")
+                  - elsif action.deadline <= Date.tomorrow
+                    i.fa.fa-xs.fa-circle.text-warning.mr-3
+                    | Tomorrow
+                  - else
+                    i.fa.fa-xs.fa-circle.text-primary.mr-3
+                    = action.deadline&.strftime("%d %b %Y")
   - if @workflows.blank?
     .row.justify-content-center.mt-5
       = render "empty_routines"
@@ -59,11 +68,18 @@
             .card-body
               | NEXT TO COMPLETE
               br
-              = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
+              = link_to w.name, symphony_workflow_path(w.template.slug, w.friendly_id)
               .row
                 .col
-                  i.flaticon2-calendar-9.mr-2
-                  = w.deadline&.strftime("%d %b %Y")
+                  - if w.deadline.past?
+                    i.flaticon2-calendar-9.text-danger.mr-2
+                    = w.deadline&.strftime("%d %b %Y")
+                  - elsif w.deadline <= Date.tomorrow
+                    i.flaticon2-calendar-9.text-warning.mr-2
+                    | Tomorrow
+                  - else
+                    i.flaticon2-calendar-9.text-primary.mr-2
+                    = w.deadline&.strftime("%d %b %Y")
                 .col
                   div.progress
                     div.progress-bar role="progressbar" style="width: #{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}%" aria-valuenow="#{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}" aria-valuemin="0" aria-valuemax="100"
