@@ -1,5 +1,5 @@
 class RepliesMailbox < ApplicationMailbox
-  RepliesMailbox::MATCHER = /sendfile-(.+)@upload\.excide\.co/i
+  RepliesMailbox::MATCHER = /sendfile-(.+)@upload.#{Regexp.escape(ENV['EMAIL_UPLOAD_DOMAIN'])}/i
   # Verify that user is in Symphony database
   before_processing :find_user
 
