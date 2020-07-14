@@ -3,6 +3,12 @@
 @import 'trix/dist/trix.css';
 @import 'actiontext';
 
+// Import fonts
+// @font-face {
+//   font-family: Futura;
+//   src: url('./fonts/metronic/futura/futura-bold-font.ttf') format('truetype');
+// }
+
 //Bootstrap
 @import '~bootstrap/scss/bootstrap';
 //Bootstrap datetimepicker
@@ -24,8 +30,6 @@
 @import "../src/stylesheets/metronic/css/templates";
 @import "../src/stylesheets/metronic/css/pagination";
 @import "../src/stylesheets/metronic/css/workflows";
-// @import "../src/stylesheets/metronic/pages/pricing/pricing-1";
-// @import "../src/stylesheets/metronic/pages/error/error-6";
 @import "../src/stylesheets/dashboard/admin";
 @import "../src/stylesheets/metronic/actiontext";
 
