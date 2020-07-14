@@ -48,14 +48,14 @@ class SendUserReminders
     end
   end
 
-  def send_sms(reminder)    
+  def send_sms(reminder)
     to_number = '+65' + reminder.user.contact_number
     message_body = reminder.content
 
     message = @client.api.account.messages.create( from: @from_number, to: to_number, body: message_body ) if @user.settings[0]&.reminder_sms == 'true'
   end
 
-  def send_whatsapp(reminder)    
+  def send_whatsapp(reminder)
     to_number = '+65' + reminder.user.contact_number
     message_body = reminder.content
 
@@ -69,12 +69,10 @@ class SendUserReminders
   end
 
   def set_next_reminder
-    prior_day = Company.find(@user.company.id).prior_day
-    
     @reminders.each do |reminder|
       deadline = reminder.task_id ? WorkflowAction.find_by(task_id: reminder.task_id).deadline : nil
-      # check if prior day is present, reminder is from workflow action (i.e. task_id is present) and compare current date to deadline to set next reminder
-      if prior_day && deadline && (Date.current < deadline)
+      # check if before deadline reminder is present, reminder is from workflow action (i.e. task_id is present) and compare current date to deadline to set next reminder
+      if @user.company.before_deadline_reminder_days.present? && deadline && (Date.current < deadline)
         day = deadline
       else
         day = Date.current + 1.day
