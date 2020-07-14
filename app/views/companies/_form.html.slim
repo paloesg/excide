@@ -113,6 +113,14 @@
       .kt-portlet
         .kt-portlet__head
           .kt-portlet__head-label
+            h3.kt-portlet__head-title Reminder Settings
+        .kt-portlet__body
+          .form-group
+            = f.label :prior_day, 'Reminder prior to deadline (in days)'
+            = f.number_field :prior_day, {min: 0, class: 'form-control'}
+      .kt-portlet
+        .kt-portlet__head
+          .kt-portlet__head-label
             h3.kt-portlet__head-title Slack
         .kt-portlet__body
           .form-group

@@ -195,6 +195,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_113729) do
     t.json "stripe_subscription_plan_data", default: []
     t.json "slack_access_response"
     t.string "mailbox_token"
+    t.integer "prior_day"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
