@@ -7,7 +7,7 @@
     .col-md-6
       h4 Tasks Due Soon
     .col-md-6
-      .float-right = link_to "See all my tasks", root_path, role: "button", class: "btn btn-light text-primary" if @outstanding_actions.present?
+      .float-right = link_to "See all my tasks", symphony_tasks_path, role: "button", class: "btn btn-light text-primary" if @outstanding_actions.present?
   .row
     - if @outstanding_actions.blank?
       .col-md-5.border.py-4.px-5
@@ -18,7 +18,7 @@
             h5 Good job! You have done all your tasks!
             h5.mb-0
               span.font-weight-normal Any new task coming up? 
-              = link_to "Add new task", root_path
+              = link_to "Add new task", symphony_tasks_path
     - else
       .col-md-12
         table.table
