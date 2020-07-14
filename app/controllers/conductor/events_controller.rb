@@ -34,6 +34,8 @@ class Conductor::EventsController < ApplicationController
   # GET /conductor/events/1/edit
   def edit
     @event.build_address if @event.address.blank?
+    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
+    @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq
   end
 
   # POST /conductor/events
@@ -50,7 +52,7 @@ class Conductor::EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         # Allocate yourself to the timesheet allocation
-        @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, params[:user].present? ? @company.users.find(params[:user]) : current_user).run if current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company or current_user.has_role? :staffer, @company
+        @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, params[:user].present? ? User.find(params[:user]) : current_user).run if current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company or current_user.has_role? :staffer, @company
         if current_user.has_role? :admin, @company or @timesheet_allocation.success?
           format.json { render :show, status: :created, location: @event }
           format.js   { render js: 'Turbolinks.visit(location.toString());' }
@@ -71,13 +73,12 @@ class Conductor::EventsController < ApplicationController
   # PATCH/PUT /conductor/events/1
   # PATCH/PUT /conductor/events/1.json
   def update
-    update_event_time = UpdateEventTime.new(@event, event_params['start_time'], event_params['end_time']).run
+    update_event_time = UpdateEventTime.new(@event, event_params['start_time'], event_params['end_time'], params[:user].present? ? User.find_by(id: params[:user]) : current_user, params[:service_line]).run
 
     respond_to do |format|
       if update_event_time.success? and @event.update(event_params)
         @event.update_event_notification
-        flash[:notice] = update_event_time.message
-        flash[:notice] << 'Event was successfully updated.'
+        flash[:notice] = 'Event was successfully updated.'
         format.html { redirect_to conductor_events_path }
         format.json { render :show, status: :ok, location: @event }
       else
