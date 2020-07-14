@@ -23,7 +23,7 @@ class UpdateEventTime
             allocation.user.blank? ? next : update_allocation(allocation)
           end
         end
-        OpenStruct.new(success?: true, event: @event, message: 'Edited event successfully')
+        OpenStruct.new(success?: true, event: @event)
       rescue ActiveRecord::RecordInvalid
         OpenStruct.new(success?: false, event: @event)
       end
