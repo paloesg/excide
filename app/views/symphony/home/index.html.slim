@@ -32,12 +32,12 @@
                 td.border-top-0 = action.task.instructions
                 td.border-top-0 = action.workflow.template.title
                 td.border-top-0
-                  - if action.deadline.past?
+                  - if action.deadline.to_date < Date.today
                     i.fa.fa-xs.fa-circle.text-danger.mr-3
                     = action.deadline&.strftime("%d %b %Y")
-                  - elsif action.deadline <= Date.tomorrow
+                  - elsif action.deadline.to_date <= Date.tomorrow
                     i.fa.fa-xs.fa-circle.text-warning.mr-3
-                    | Tomorrow
+                    = action.deadline.to_date == Date.today ? "Today" : "Tomorrow"
                   - else
                     i.fa.fa-xs.fa-circle.text-primary.mr-3
                     = action.deadline&.strftime("%d %b %Y")
@@ -71,12 +71,12 @@
               = link_to w.name, symphony_workflow_path(w.template.slug, w.friendly_id)
               .row
                 .col
-                  - if w.deadline.past?
+                  - if w.deadline.to_date < Date.today
                     i.flaticon2-calendar-9.text-danger.mr-2
                     = w.deadline&.strftime("%d %b %Y")
-                  - elsif w.deadline <= Date.tomorrow
+                  - elsif w.deadline.to_date <= Date.tomorrow
                     i.flaticon2-calendar-9.text-warning.mr-2
-                    | Tomorrow
+                    = w.deadline.to_date == Date.today ? "Today" : "Tomorrow"
                   - else
                     i.flaticon2-calendar-9.text-primary.mr-2
                     = w.deadline&.strftime("%d %b %Y")
