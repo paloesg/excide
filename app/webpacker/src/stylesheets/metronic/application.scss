@@ -4,10 +4,8 @@
 @import 'actiontext';
 
 // Import fonts
-// @font-face {
-//   font-family: Futura;
-//   src: url('./fonts/metronic/futura/futura-bold-font.ttf') format('truetype');
-// }
+@import '../src/stylesheets/metronic/css/futura';
+
 
 //Bootstrap
 @import '~bootstrap/scss/bootstrap';
