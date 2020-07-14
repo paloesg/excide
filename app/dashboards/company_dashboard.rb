@@ -31,7 +31,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     expires_at: Field::Number,
     account_type: EnumField,
     stripe_subscription_plan_data: Field::JSONB,
-    prior_day: Field::Number
+    before_deadline_reminder_days: Field::Number
   }
 
   # COLLECTION_ATTRIBUTES
@@ -75,7 +75,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :expires_at,
     :account_type,
     :stripe_subscription_plan_data,
-    :prior_day
+    :before_deadline_reminder_days
   ]
 
   # Overwrite this method to customize how profiles are displayed
