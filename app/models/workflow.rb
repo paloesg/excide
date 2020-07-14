@@ -201,7 +201,7 @@ class Workflow < ApplicationRecord
   end
 
   def unordered_tasks_trigger_email
-    self.current_task.get_workflow_action(self.company, self.id).unordered_workflow_email_notification
+    self.current_task.get_workflow_action(self.company, self.id).unordered_workflow_create_reminder_and_send_email
   end
 
   def uppercase_identifier

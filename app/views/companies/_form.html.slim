@@ -109,7 +109,7 @@
         .kt-portlet__body
           .form-group
             = label_tag '', 'Send documents to Symphony using this unique email:'
-            = text_field_tag '', 'sendfile-'+@company.mailbox_token+'@upload.'+ENV['HOST_DOMAIN'], class: 'form-control', disabled: true
+            = text_field_tag '', 'sendfile-'+@company.mailbox_token+'@upload.'+ ENV['EMAIL_UPLOAD_DOMAIN'], class: 'form-control', disabled: true
       .kt-portlet
         .kt-portlet__head
           .kt-portlet__head-label
