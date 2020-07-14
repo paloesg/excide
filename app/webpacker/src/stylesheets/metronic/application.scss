@@ -5,7 +5,7 @@
 
 // Import fonts
 @import '../src/stylesheets/metronic/css/futura';
-
+@import '../src/stylesheets/metronic/css/nunitosans';
 
 //Bootstrap
 @import '~bootstrap/scss/bootstrap';
@@ -38,6 +38,9 @@
 @import "../src/stylesheets/metronic/css/flaticon";
 @import "../src/stylesheets/metronic/css/socicon";
 
+// Import font css
+@import "../src/stylesheets/metronic/font-style";
+
 //
 // Main Stylesheet
 //
@@ -52,40 +55,3 @@
 @import "../src/stylesheets/metronic/init";
 @import "../src/stylesheets/metronic/style";
 @import "../src/stylesheets/metronic/style.bundle";
-
-// // 2: Include demo config (that overrides the above global config)
-// @import "../src/stylesheets/metronic/global/layout/config";
-
-// // 3: Bootstrap Include
-// @import "../src/stylesheets/metronic/global/integration/frameworks/bootstrap/variables";
-// @import "../src/stylesheets/metronic/global/integration/frameworks/bootstrap/bootstrap.scss";
-
-// // 3: Components include
-// @import "../src/stylesheets/metronic/global/include";
-// ////////////////////////////////////////////////////////////////
-// ///////////// DO NOT MODIFY ABOVE INCLUDE ORDER ////////////////
-// ////////////////////////////////////////////////////////////////
-
-// // 5: Demo Configs
-// @import "../src/stylesheets/metronic/global/layout/header/config";
-// @import "../src/stylesheets/metronic/global/layout/aside/config";
-// @import "../src/stylesheets/metronic/global/layout/footer/config";
-
-
-// // 6: Demo Includes
-// // Layout
-// @import "../src/stylesheets/metronic/global/layout/base/base";
-
-// @import "../src/stylesheets/metronic/global/layout/header/header";
-// @import "../src/stylesheets/metronic/global/layout/header/base-mobile";
-// @import "../src/stylesheets/metronic/global/layout/header/menu";
-// @import "../src/stylesheets/metronic/global/layout/header/topbar";
-// @import "../src/stylesheets/metronic/global/layout/header/brand";
-
-// @import "../src/stylesheets/metronic/global/layout/aside/aside";
-// @import "../src/stylesheets/metronic/global/layout/aside/menu";
-
-// @import "../src/stylesheets/metronic/global/layout/content/content";
-// @import "../src/stylesheets/metronic/global/components/calendar/fullcalendar.bundle";
-// @import "../src/stylesheets/metronic/global/components/base/switch";
-// @import "../src/stylesheets/metronic/global/layout/footer/footer";

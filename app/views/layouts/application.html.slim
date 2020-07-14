@@ -23,7 +23,7 @@ html lang="en"
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
 
-  body#kt_header.header.flex-column.header-fixed
+  body
     / .kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading
     /! begin:: Page
     /! begin:: Header Mobile
@@ -37,12 +37,10 @@ html lang="en"
     /! end:: Header
           
     /! begin:: Content
-    .d-flex.flex-row.flex-column-fluid.container.h-100
-      .main.d-flex.flex-column.flex-row-fluid
-        .content.flex-column-fluid#kt_content
-          = render 'layouts/messages'
-          = yield
-          /! end:: Content
+    .container.h-100
+      = render 'layouts/messages'
+      = yield
+      /! end:: Content
     /! begin:: Footer
     = render 'layouts/footer'
     /! end:: Footer

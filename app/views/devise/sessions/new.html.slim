@@ -1,32 +1,25 @@
-.d-flex.flex-row.flex-column-fluid.container.h-100
+.d-flex.align-items-center.flex-row.flex-column-fluid.container.h-100
   .main.d-flex.flex-column.flex-row-fluid
-    .content.flex-column-fluid#kt_content
-      .row.justify-content-center.mt-5
-        .col-4.text-center
-          .card.card-custom.gutter-b
-            .card-header
-              .card-title
-                h3.card-label
-                  | Login to your Symphony account
-            .card-body
-              = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-                .form-group
-                  = f.email_field :email, placeholder: "Email", class: 'form-control'
-                .form-group
-                  = f.password_field :password, placeholder: "Password", autocomplete: "off", class: 'form-control'
-                - if devise_mapping.rememberable?
-                  span.form-group.form-check
-                    div.switch
-                      label.form-inline.col-sm-12.justify-content-center
-                        = f.label :remember_me, class: "mr-2"
-                        = f.check_box :remember_me
-                        span
-                .form-group
-                  = f.submit "Log in", class: "btn btn-primary"
-              .row.mt-3
-                .col-md-12
-                  = link_to "Forgot password?", new_password_path(@user)
-              .row
-                .col-md-12
-                  ' Don't have an account?
-                  = link_to "Sign up now", new_user_registration_path
+    .row
+      .col-sm-6.mt-3
+        .row.d-flex.justify-content-center
+          .col-sm-6
+            h1.header-bold.mb-5.text-center Sign in
+            = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+              .form-group
+                = f.email_field :email, placeholder: "Email", class: 'form-control'
+              .form-group
+                = f.password_field :password, placeholder: "Password", autocomplete: "off", class: 'form-control'
+              - if devise_mapping.rememberable?
+                span.form-group.form-check
+                  div.switch
+                    label.form-inline.col-sm-12.justify-content-center
+                      = f.label :remember_me, class: "mr-2"
+                      = f.check_box :remember_me
+                      span
+              .form-group
+                = f.submit "Log in", class: "btn btn-primary text-nunito col-sm-12"
+            .text-center
+              = link_to 'Create Account', new_user_registration_path, class: 'text-primary font-weight-bold'
+      .col-sm-6
+        = image_pack_tag 'media/src/images/symphony/login.png', alt: "login-page", class: 'img-fluid float-right'
