@@ -1,47 +1,7 @@
 = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
-  nav.navbar.navbar-default.navbar-fixed-top
-    .container-fluid
-      .navbar-header
-        .row
-          .col.navbar-brand
-            = link_to symphony_root_path do
-              = image_pack_tag 'media/src/images/logo-symphony.png', alt: "Logo"
-          .col.navbar-nav
-            h1 Bulk Invoices
-        .document-info
-          .row
-            .col
-              - if @document.present?
-                strong File Name
-                br
-                = @document.raw_file.attached? ? @document.raw_file.filename : @document.filename
-            .col
-              - if @workflow.batch.present?
-                strong Batch Untitled
-                br
-                = @workflow.batch.name
-      .nav.navbar-nav.navbar-right
-        = f.submit ' Save & Next ', class: "btn btn-white navbar-btn", style: "border: 0.5px solid"
-        = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, invoice_type: "payable", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger navbar-btn mr-2')
-        .dropdown
-          .dropdown-toggle data-toggle="dropdown"
-            i.flaticon2-user
-          .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
-            li.nav-item
-              = link_to "User Profile", edit_user_registration_path
-            - if current_user.has_role? :superadmin or current_user.has_role?(:admin, current_user.company)
-              li.nav-item
-                = link_to "Company Details", edit_company_path
-            li.nav-item
-              = link_to "Archived Workflows", symphony_archives_path
-            li.nav-item
-              = link_to "Documents", symphony_documents_path
-            li.nav-item
-              = link_to "Notifications", notification_settings_symphony_user_path(current_user)
-            li.nav-item
-              = link_to "Log Out", destroy_user_session_path, {method: :delete}
-
-
+  .row
+    = f.submit ' Save & Next ', class: "btn btn-white navbar-btn", style: "border: 0.5px solid"
+    = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, invoice_type: "payable", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger navbar-btn mr-2') if policy(@invoice).reject?
   .row
     .loading
       .loader
@@ -52,38 +12,6 @@
       - else
         div.mt-md-5.text-center Document not available. Please try again later.
     .col-md-8
-      / .card.mb-3
-        / .row.m-2
-          / .col-auto
-          /   .document-info
-          /     - if @workflow.batch.present?
-          /       strong Batch Name:
-          /       br
-          /       = @workflow.batch.name
-          /       br
-          /     - if @document.present?
-          /       strong File Name:
-          /       br
-          /       = @document.raw_file.attached? ? @document.raw_file.filename : @document.filename
-            // button to run textract
-            / button class="btn btn-primary do-textract" Extract Invoice Data
-            / = hidden_field_tag :template, @workflow.template.slug, class:"template-field"
-            / = hidden_field_tag :workflow_id, @workflow.id, class:"workflow-field"
-            / = hidden_field_tag :textract_job_id, @document.aws_textract_job_id, class:"textract-job-id-field"
-          / .col-auto.ml-auto.text-center
-          /   | Invoice
-          /   .invoice-nav
-          /     .invoice-nav-button.btn-right
-          /       - if @total_task > 1
-          /         = link_to prev_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
-          /           i.fa.fa-caret-left
-          /     .invoice-nav-number
-          /       | #{@current_position} of #{@total_task}
-          /     .invoice-nav-button.btn-left
-          /       - if @total_task > 1
-          /         = link_to next_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id, invoice_type: params[:invoice_type]), method: 'post', role: 'button' do
-          /           i.fa.fa-caret-right
-      // Show textract result
       .row.mb-3.d-none
         .col-md-12
           .card
@@ -97,18 +25,10 @@
                 = text_area_tag 'textract', nil, rows: 10, class:"form-control aws-textract-result"
       = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
       = render 'form', f: f
-      / = render 'remaining_invoice'
       .row
-        / .col-md-8
-        /   - if @workflow.batch.present?
-        /     = link_to "View Batch", symphony_batch_path(id: @workflow.batch.id, batch_template_name: @workflow.batch.template.slug), role: 'button', class: 'btn btn-warning ml-2'
-        /   - else
-        /     = link_to "Back to Workflow", symphony_workflow_path(workflow_id: @workflow.id), role: 'button', class: 'btn btn-warning'
-        /   - if params[:workflow_action].present?
-        /     = hidden_field_tag :workflow_action, params[:workflow_action_id]
-        /     = hidden_field_tag :invoice_type, params[:invoice_type]
+        .col-md-8
+          - if params[:workflow_action].present?
+            = hidden_field_tag :workflow_action, params[:workflow_action_id]
+            = hidden_field_tag :invoice_type, "0"
         .col-md-4
           = hidden_field_tag :submit_position, '', class: 'submit-position'
-          .pull-right
-            = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, invoice_type: params[:invoice_type], workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2') if policy(@invoice).reject?
-            = f.submit ' Save & Next ', class: "btn btn-white", style: "border: 0.5px solid"
