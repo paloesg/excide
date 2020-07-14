@@ -1,0 +1,33 @@
+.row
+  .col-md-12
+    h4 My Tasks
+.row
+  .col-md-12
+    table.table
+      thead
+        tr
+          th 
+          th TASKS
+          th ASSIGNED BY
+          th RELATE TO
+          th = sortable "deadline", "DUE"
+      tbody
+        - @actions_sort.each do |action|
+          tr.border-bottom
+            td.border-top-0
+              label.checkbox
+                = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"
+                span
+            td.border-top-0 = action.task.instructions
+            td.border-top-0 = action.workflow.user.first_name
+            td.border-top-0 = action.workflow.template.title
+            td.border-top-0
+              - if action.deadline.to_date < Date.today
+                i.fa.fa-xs.fa-circle.text-danger.mr-3
+                = action.deadline&.strftime("%d %b %Y")
+              - elsif action.deadline.to_date <= Date.tomorrow
+                i.fa.fa-xs.fa-circle.text-warning.mr-3
+                = action.deadline.to_date == Date.today ? "Today" : "Tomorrow"
+              - else
+                i.fa.fa-xs.fa-circle.text-primary.mr-3
+                = action.deadline&.strftime("%d %b %Y")

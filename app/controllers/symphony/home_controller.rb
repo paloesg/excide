@@ -23,13 +23,18 @@ class Symphony::HomeController < ApplicationController
     # @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
+  def tasks
+    @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
+    @actions_sort = sort_column(@outstanding_actions)
+    params[:direction] == "desc" ? @actions_sort.reverse! : @actions_sort
+  end
+
   private
 
-  # def sort_column(array)
-  #   array.sort_by{
-  #     |item| if params[:sort] == "template" then item.template.title.upcase
-  #     elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.section_name
-  #     end
-  #   }
-  # end
+  def sort_column(array)
+    array.sort_by{
+      |item| if params[:sort] == "deadline" then item.deadline ? item.deadline : Time.at(0)
+      end
+    }
+  end
 end
