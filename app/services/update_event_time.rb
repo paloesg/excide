@@ -54,7 +54,7 @@ class UpdateEventTime
   end
 
   def update_allocation(allocation)
-    allocation.update_attributes!(allocation_date: @new_start_time, start_time: @new_start_time, end_time: @new_end_time, user_id: @user.id)
+    allocation.update_attributes(allocation_date: @new_start_time, start_time: @new_start_time, end_time: @new_end_time, user_id: @user.id)
   end
 
   def update_availability(allocation)
