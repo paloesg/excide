@@ -1,0 +1,38 @@
+nav.navbar.navbar-default.navbar-fixed-top
+  .container-fluid
+    .navbar-header
+      .navbar-brand
+        .row
+          .col
+            = link_to symphony_root_path do
+              = image_pack_tag 'media/src/images/logo-symphony.png', alt: "Logo"
+          .col
+            h1 Bulk Invoices
+      .row.document-info
+        - if @document.present?
+          span.mx-5
+            strong #{@document.raw_file.attached? ? @document.raw_file.filename : @document.filename} 
+        - if @workflow.batch.present?
+          | | 
+          span.mx-5 #{@workflow.batch.name} 
+          | |
+        span.mx-5 
+          | AP Invoice #{@current_position} of #{@total_task}
+    .nav.navbar-nav.navbar-right
+      .dropdown
+        .dropdown-toggle data-toggle="dropdown"
+          i.flaticon2-user
+        .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+          li.nav-item
+            = link_to "User Profile", edit_user_registration_path
+          - if current_user.has_role? :superadmin or current_user.has_role?(:admin, current_user.company)
+            li.nav-item
+              = link_to "Company Details", edit_company_path
+          li.nav-item
+            = link_to "Archived Workflows", symphony_archives_path
+          li.nav-item
+            = link_to "Documents", symphony_documents_path
+          li.nav-item
+            = link_to "Notifications", notification_settings_symphony_user_path(current_user)
+          li.nav-item
+            = link_to "Log Out", destroy_user_session_path, {method: :delete}
