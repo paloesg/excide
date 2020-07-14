@@ -98,6 +98,23 @@ td.day.has-events.fc-day-top.fc-past {
   position: relative;
 }
 
+.selectize-input {
+  padding: 6px 6px;
+  height: 31.25px;
+}
+
+.multi .selectize-input {
+  height: auto;
+}
+
+.selectize-input > * {
+  display: block;
+  width: 90% !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 $theme-colors: (
