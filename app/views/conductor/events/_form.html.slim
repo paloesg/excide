@@ -25,7 +25,7 @@
     - if current_user.has_role? :staffer, @company
       .form-group
         = label_tag "Allocate User", "Allocate User"
-        / the assumption here is that event has only one allocations (for the timesheet allocation service)
+        / the assumption here is that event has only one allocation (for the timesheet allocation service)
         = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last.user.id), class: 'selectize'   
     .form-group
       = f.label :remarks

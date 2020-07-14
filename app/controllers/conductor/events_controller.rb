@@ -35,7 +35,7 @@ class Conductor::EventsController < ApplicationController
   def edit
     @event.build_address if @event.address.blank?
     @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
-    @users = User.includes(:roles).where(company: @company.id).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq
+    @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq
   end
 
   # POST /conductor/events
