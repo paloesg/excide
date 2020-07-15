@@ -4,7 +4,7 @@
       .col-sm-6.mt-3
         .row.d-flex.justify-content-center
           .col-sm-6
-            h1.header-bold.mb-5.text-center Sign in
+            h1.header-bold-futura.mb-5.text-center Sign in
             = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
               .form-group
                 = f.email_field :email, placeholder: "Email", class: 'form-control'
