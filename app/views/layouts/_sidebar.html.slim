@@ -1,0 +1,47 @@
+.sidebar-sticky
+  ul.nav.flex-column
+    li.nav-item.m-4
+      = link_to '#', class: 'col-sm-12' do
+        = image_pack_tag 'media/src/images/symphony/sidebar-home.svg'
+        span.ml-2 Home
+    li.nav-item.m-4
+      = link_to '#', class: 'col-sm-12' do
+        = image_pack_tag 'media/src/images/symphony/sidebar-checked.svg'
+        span.ml-2 My Tasks
+    li.nav-item.m-4
+      = link_to '#', class: 'col-sm-12' do
+        = image_pack_tag 'media/src/images/symphony/sidebar-history.svg'
+        span.ml-2 Activity History
+  hr
+  ul.nav.flex-column
+    li.active.m-4
+      a.dropdown-toggle aria-expanded="false" data-toggle="collapse" href="#routineMenu"  ROUTINES
+      ul#routineMenu.collapse.list-unstyled
+        li.m-4
+          a href="#"  Routine 1
+        li.m-4
+          a href="#"  Routine 2
+        li.m-4
+          a href="#"  Routine 3
+  hr
+  ul.nav.flex-column
+    li.active.m-4
+      a.dropdown-toggle aria-expanded="false" data-toggle="collapse" href="#toolsMenu"  TOOLS
+      ul#toolsMenu.collapse.list-unstyled
+        li.m-4
+          = link_to '#', class: 'col-sm-12' do
+            = image_pack_tag 'media/src/images/symphony/sidebar-assign-adhoc.svg'
+            span.ml-2 Assign Adhoc Tasks
+        li.m-4
+          = link_to '#', class: 'col-sm-12' do
+            = image_pack_tag 'media/src/images/symphony/sidebar-bulk-invoice.svg'
+            span.ml-2 Bulk Invoices Tool
+        li.m-4
+          = link_to '#', class: 'col-sm-12' do
+            = image_pack_tag 'media/src/images/symphony/sidebar-forms.svg'
+            span.ml-2 Forms & Surveys
+        li.m-4
+          = link_to '#', class: 'col-sm-12' do
+            = image_pack_tag 'media/src/images/symphony/sidebar-document-repo.svg'
+            span.ml-2 Documents Repository
+

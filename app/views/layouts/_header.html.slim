@@ -11,7 +11,7 @@
     #navbarSupportedContent.collapse.navbar-collapse
       ul.navbar-nav.mr-auto
         / Change company dropdown
-        .dropdown.border.border-dark.rounded
+        .dropdown.border.border-light.rounded
           - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
             button#dropdownMenuButton.btn.btn-white.dropdown-toggle.change-company-dropdown.text-left aria-expanded="true" aria-haspopup="true" data-toggle="dropdown" type="button" #{current_user.company.name}
             .dropdown-menu aria-labelledby="dropdownMenuButton"

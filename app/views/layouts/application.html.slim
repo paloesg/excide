@@ -39,11 +39,15 @@ html lang="en"
     /! begin:: Content
     .container.h-100
       = render 'layouts/messages'
-      = yield
+      .row
+        .col-sm-3.d-none.d-md-block.bg-white.sidebar
+          = render 'layouts/sidebar'
+        .col-sm-9
+          = yield
       /! end:: Content
+      hr
+      = render 'layouts/footer'
     /! begin:: Footer
-    hr
-    = render 'layouts/footer'
     /! end:: Footer
     /! end:: Page
     /! begin::Scrolltop
