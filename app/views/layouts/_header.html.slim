@@ -31,7 +31,7 @@
                     = link_to(symphony_root_path, class: "btn btn-secondary btn-default") do
                       ' #{current_user.company.name}
       ul.navbar-nav.ml-auto
-        = link_to symphony_root_path, class: 'btn btn-white mr-3' do
+        = link_to symphony_root_path, class: 'btn btn-white mr-3 border border-secondary' do
           = image_pack_tag 'media/src/images/symphony/book-24-px.svg'
           span.ml-2 Guides
         /! begin: Notification bar
@@ -39,7 +39,7 @@
           / uses view notifications/default/workflow_action/:key.html.slim
           = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
         = link_to symphony_root_path
-           = fa_icon "cog", style: 'font-size: 35px;', class: 'text-primary mr-3'
+           = fa_icon "cog", style: 'font-size: 35px;', class: 'text-dark mr-3'
         = link_to symphony_root_path
-           = fa_icon "circle", type: :regular, style: 'font-size: 35px;', class: 'text-primary mr-3'
+           = fa_icon "circle", type: :regular, style: 'font-size: 35px;', class: 'text-dark mr-3'
         
