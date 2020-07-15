@@ -24,7 +24,13 @@ class Symphony::HomeController < ApplicationController
   end
 
   def tasks
-    @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
+    if params[:tasks].blank? || params[:tasks] == "Only incomplete tasks"
+      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where(company: current_user.company).order(:deadline).includes(:task)
+    elsif params[:tasks] == "All tasks"
+      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
+    else
+      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
+    end
     @actions_sort = sort_column(@outstanding_actions)
     params[:direction] == "desc" ? @actions_sort.reverse! : @actions_sort
   end
