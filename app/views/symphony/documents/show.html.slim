@@ -1,21 +1,24 @@
 .row
-  .col-sm-12
+  .col-sm-9
     h1 View Document
+  .col-sm-3
+    = link_to 'Documents Listing', symphony_documents_path, role: 'button', class: 'btn btn-primary btn-sm mr-1 float-right'
 .row
   .col-md-8.col-sm-12
-    - if @document.converted_images.attached?
-      - url_array = []
-      - @document.converted_images.each do |image|
-        - url_array << image
-      - url_array.each do |url|
-        - display_url = url_for(url)
-        img src='#{display_url}' class='figure-img img-fluid' style="width:500px;"
-    - elsif @document.raw_file.attached?
-      = image_tag(@document.raw_file, class: 'img-fluid')
-    - elsif @document.file_url.present? and ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
-      = image_tag(@document.file_url, class: 'img-fluid')
-    - else
-      iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
+    .card
+      - if @document.converted_images.attached?
+        - url_array = []
+        - @document.converted_images.each do |image|
+          - url_array << image
+        - url_array.each do |url|
+          - display_url = url_for(url)
+          img src='#{display_url}' class='figure-img img-fluid' style="width:500px;"
+      - elsif @document.raw_file.attached?
+        = image_tag(@document.raw_file, class: 'img-fluid')
+      - elsif @document.file_url.present? and ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(@document.file_url)
+        = image_tag(@document.file_url, class: 'img-fluid')
+      - else
+        iframe src="https://docs.google.com/viewer?url=https:#{@document.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
   .col-md-4.col-sm-12
     .card
       .card-header
@@ -56,8 +59,5 @@
           = link_to "Download", @document.raw_file.attached? ? rails_blob_path(@document.raw_file, disposition: "attachment") : @document.file_url, role: 'button', class: 'btn btn-success btn-sm mr-1'
           = link_to 'Edit', edit_symphony_document_path(@document), role: 'button', class: 'btn btn-warning btn-sm mr-1' if policy(@document).edit?
           = link_to 'Delete', symphony_document_path(@document), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm mr-1' if policy(@document).destroy?
-        br
-        .btn-toolbar
           - if @document.workflow.present?
             = link_to 'View Workflow', symphony_workflow_path(@document.workflow.template.slug, @document.workflow.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
-          = link_to 'Documents Listing', symphony_documents_path, role: 'button', class: 'btn btn-primary btn-sm mr-1'
