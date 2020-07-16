@@ -43,3 +43,26 @@ h1.header-bold-futura {
 #sidebar{
   background-color: white;
 }
+
+.logo-size{
+  width: 70%;
+}
+
+// User icon on navbar
+.user-icon{
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.nunito-sidebar{
+  font-family: 'NunitoSans';
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.1px;
+  color: black;
+}
