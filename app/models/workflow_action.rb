@@ -52,7 +52,6 @@ class WorkflowAction < ApplicationRecord
 
   def set_deadline_and_notify(next_task)
     next_action = next_task.get_workflow_action(self.company, self.workflow.id)
-    next_action.update(deadline: next_task.days_to_complete.business_days.after(Date.current)) unless next_task.days_to_complete.nil?
 
     # Create new reminder based on deadline of action and repeat every 2 days
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
@@ -68,8 +67,12 @@ class WorkflowAction < ApplicationRecord
     end
   end
 
-  def unordered_workflow_email_notification
+  def unordered_workflow_create_reminder_and_send_email
     workflow_tasks = self.workflow.template.sections.map{|sect| sect.tasks }.flatten.compact
+    workflow_tasks.each do |task|
+      wfa = task.get_workflow_action(self.company.id, self.workflow.id)
+      create_reminder(task, wfa) if (task.set_reminder && wfa.deadline.present?)
+    end
     task_users = workflow_tasks.map{|task| task.role.users}.flatten.compact.uniq
     #loop through all the users that have a role in that workflow
     task_users.each do |user|

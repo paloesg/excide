@@ -22,6 +22,10 @@ html lang="en"
     = javascript_pack_tag 'application-dashboard', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
+    // For uppy use with active storage
+    = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
+  /! end::Head
+  /! begin::Body
 
   body
     / .kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_042314) do
+ActiveRecord::Schema.define(version: 2020_07_07_113729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -496,7 +496,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_042314) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
-    t.integer "days_to_complete"
+    t.integer "deadline_day"
     t.boolean "set_reminder"
     t.integer "role_id"
     t.integer "task_type"
@@ -505,10 +505,13 @@ ActiveRecord::Schema.define(version: 2020_06_29_042314) do
     t.bigint "child_workflow_template_id"
     t.bigint "survey_template_id"
     t.uuid "document_template_id"
+    t.bigint "user_id"
+    t.integer "deadline_type"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "templates", id: :serial, force: :cascade do |t|
@@ -520,6 +523,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_042314) do
     t.integer "company_id"
     t.json "data_names", default: []
     t.integer "workflow_type", default: 0
+    t.integer "deadline_day"
+    t.integer "deadline_type"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
@@ -704,6 +709,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_042314) do
   add_foreign_key "tasks", "sections"
   add_foreign_key "tasks", "survey_templates"
   add_foreign_key "tasks", "templates", column: "child_workflow_template_id"
+  add_foreign_key "tasks", "users"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
   add_foreign_key "workflow_actions", "companies"

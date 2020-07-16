@@ -24,6 +24,7 @@ class Workflow < ApplicationRecord
 
   after_commit :create_actions_and_trigger_first_task, on: :create
   after_create :short_uuid
+  after_create :set_workflow_deadline
 
   self.implicit_order_column = "created_at"
 
@@ -49,6 +50,10 @@ class Workflow < ApplicationRecord
   def short_uuid
     self.slug = ShortUUID.shorten id
     self.save
+  end
+
+  def set_workflow_deadline
+    conditionally_set_deadline(self.template, self)
   end
 
   def build_workflowable(params)
@@ -143,7 +148,12 @@ class Workflow < ApplicationRecord
     sections = self.template.sections
     sections.each do |s|
       s.tasks.each do |t|
-        WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
+        if t.user_id.present?
+          wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id)
+        else
+          wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
+        end
+        conditionally_set_deadline(t, wfa)
       end
       # Automatically set first task as completed if workflow is part of a batch and first task is a file upload task
       s.tasks.first.get_workflow_action(self.company_id, self.id).update(completed: true) if (s.position == 1 && s.tasks.first.task_type == "upload_file" && self.batch.present?)
@@ -156,6 +166,27 @@ class Workflow < ApplicationRecord
       self.current_task.get_workflow_action(self.company_id, self.id).notify :users, key: 'workflow_action.unordered_workflow_notify', parameters: { printable_notifiable_name: "#{self.current_task.instructions}", workflow_action_id: self.current_task.get_workflow_action(self.company_id, self.id).id }, send_later: false
     end
   end
+  # Set deadline based on settings of template and task (model), while target_model are workflows and workflow actions
+  def conditionally_set_deadline(model, target_model)
+    if model.deadline_type.present?     
+      case model.deadline_type
+      when "xth_day_of_the_month"
+        # Check if day exists in that month (for eg, June only have 30 days), so if it is 31st, we bring it forward to the next month.
+        if Date.new(Date.current.year, Date.current.month, -1).day < model.deadline_day
+          # The deadline will become the end of the month
+          target_model.deadline = Date.new(Date.current.year, Date.current.month).end_of_month
+        else
+          # Check if the xth day has past in the current month. If it is, set deadline as the next month
+          target_model.deadline = Date.new(Date.current.year, Date.current.month, model.deadline_day) > Date.current ? Date.new(Date.current.year, Date.current.month, model.deadline_day) : Date.new(Date.current.year, Date.current.month, model.deadline_day).next_month()
+        end
+        # Set to the next business day if self.deadline above is not a work day
+        target_model.deadline = 1.business_days.after(target_model.deadline) - 1.day unless target_model.deadline.workday? 
+      else
+        target_model.deadline = model.deadline_day.business_days.after(Date.current)
+      end
+      target_model.save
+    end
+  end
 
   def ordered_workflow?
     template.ordered?
@@ -166,7 +197,7 @@ class Workflow < ApplicationRecord
   end
 
   def unordered_tasks_trigger_email
-    self.current_task.get_workflow_action(self.company, self.id).unordered_workflow_email_notification
+    self.current_task.get_workflow_action(self.company, self.id).unordered_workflow_create_reminder_and_send_email
   end
 
   def uppercase_identifier
