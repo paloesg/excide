@@ -1,7 +1,7 @@
 .sidebar-sticky
   ul.nav.flex-column
     li.nav-item.m-4
-      = link_to '#', class: 'col-sm-12' do
+      = link_to symphony_root_path, class: 'col-sm-12' do
         = image_pack_tag 'media/src/images/symphony/sidebar-home.svg'
         span.ml-2 Home
     li.nav-item.m-4
@@ -17,31 +17,28 @@
     li.active.m-4
       a.dropdown-toggle aria-expanded="false" data-toggle="collapse" href="#routineMenu"  ROUTINES
       ul#routineMenu.collapse.list-unstyled
-        li.m-4
-          a href="#"  Routine 1
-        li.m-4
-          a href="#"  Routine 2
-        li.m-4
-          a href="#"  Routine 3
+        - ::Template.assigned_templates(current_user).each do |template|
+          li.m-4
+            = link_to template.title, symphony_workflows_path(template.slug), class: 'nunito-sidebar text-dark'
   hr
   ul.nav.flex-column
     li.active.m-4
-      a.dropdown-toggle aria-expanded="false" data-toggle="collapse" href="#toolsMenu"  TOOLS
+      a.dropdown-toggle aria-expanded="false" data-toggle="collapse" href="#toolsMenu" TOOLS
       ul#toolsMenu.collapse.list-unstyled
         li.m-4
           = link_to '#', class: 'col-sm-12' do
             = image_pack_tag 'media/src/images/symphony/sidebar-assign-adhoc.svg'
-            span.ml-2 Assign Adhoc Tasks
+            span.ml-2.nunito-sidebar Assign Adhoc Tasks
         li.m-4
-          = link_to '#', class: 'col-sm-12' do
+          = link_to symphony_batches_index_path, class: 'col-sm-12' do
             = image_pack_tag 'media/src/images/symphony/sidebar-bulk-invoice.svg'
-            span.ml-2 Bulk Invoices Tool
+            span.ml-2.nunito-sidebar Bulk Invoices Tool
         li.m-4
-          = link_to '#', class: 'col-sm-12' do
+          = link_to symphony_survey_templates_path, class: 'col-sm-12' do
             = image_pack_tag 'media/src/images/symphony/sidebar-forms.svg'
-            span.ml-2 Forms & Surveys
+            span.ml-2.nunito-sidebar Forms & Surveys
         li.m-4
-          = link_to '#', class: 'col-sm-12' do
+          = link_to symphony_documents_path, class: 'col-sm-12' do
             = image_pack_tag 'media/src/images/symphony/sidebar-document-repo.svg'
-            span.ml-2 Documents Repository
+            span.ml-2.nunito-sidebar Documents Repository
 
