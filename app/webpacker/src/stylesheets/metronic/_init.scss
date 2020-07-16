@@ -1,0 +1,104 @@
+//
+// Main init file of global bootstrap and theme functions, mixins, variables and config
+//
+
+
+// Theme functions
+@import "base/functions/get";
+@import "base/functions/math";
+@import "base/functions/valueif";
+@import "base/functions/theme-colors";
+
+// Theme mixins
+@import "base/mixins/attr";
+@import "base/mixins/browsers";
+@import "base/mixins/fixes";
+@import "base/mixins/reset";
+@import "base/mixins/placeholder";
+@import "components/mixins/tooltip";
+@import "components/mixins/buttons";
+@import "components/mixins/burger-icon";
+@import "components/mixins/checkbox";
+@import "components/mixins/burger-icon";
+@import "components/mixins/radio";
+@import "components/mixins/switch";
+@import "components/mixins/ki";
+@import "components/mixins/symbol";
+@import "components/mixins/menu-horizontal";
+@import "components/mixins/menu-vertical";
+@import "components/mixins/offcanvas";
+@import "components/mixins/spinner";
+@import "components/mixins/svg-icon";
+@import "components/mixins/navi";
+@import "components/mixins/label";
+@import "vendors/plugins/mixins/perfect-scrollbar";
+
+// Bootstrap mixins
+@import "../../../node_modules/bootstrap/scss/mixins";
+
+// Global variables
+@import "components/variables.demo";
+@import "components/variables.bootstrap";
+@import "components/variables.custom";
+
+// Import components
+@import "components/accordion";
+@import "components/alert";
+@import "components/bar-chart";
+@import "components/breadcrumb";
+@import "components/bullet";
+@import "components/burger-icon";
+@import "components/buttons";
+@import "components/card";
+@import "components/checkbox";
+@import "components/code";
+@import "components/datatable";
+@import "components/demo";
+@import "components/dialog";
+@import "components/dropdown";
+@import "components/forms";
+@import "components/grid";
+@import "components/image-input";
+@import "components/label";
+@import "components/list";
+@import "components/loader";
+@import "components/modal";
+@import "components/nav";
+@import "components/navi";
+@import "components/option";
+@import "components/overlay";
+@import "components/page-loader";
+@import "components/pagination";
+@import "components/popover";
+@import "components/progress";
+@import "components/pulse";
+@import "components/quick-search";
+@import "components/radio";
+@import "components/ribbon";
+@import "components/scrolltop";
+@import "components/separator";
+@import "components/spinner";
+@import "components/sticky-toolbar";
+@import "components/strikethrough";
+@import "components/svg-icon";
+@import "components/svg";
+@import "components/switch";
+@import "components/symbol";
+@import "components/table";
+@import "components/timeline-2";
+@import "components/timeline-3";
+@import "components/timeline-4";
+@import "components/timeline-5";
+@import "components/timeline";
+@import "components/toggle";
+@import "components/tooltip";
+@import "components/type";
+@import "components/wave";
+@import "components/wizard";
+
+// 3rd-Party plugins variables
+@import "vendors/plugins/variables";
+
+// Theme layout variables
+@import "layout/variables";
+
