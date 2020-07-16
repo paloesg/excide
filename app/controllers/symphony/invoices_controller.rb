@@ -146,6 +146,7 @@ class Symphony::InvoicesController < ApplicationController
     if @invoice.save(validate: false)
       # Check if invoice can be rejected using AASM
       if @invoice.may_reject?
+        @invoice.remark = params[:remark]
         flash[:notice] = "Invoice has been rejected."
         @invoice.reject
         @invoice.save(validate: false)
@@ -155,7 +156,7 @@ class Symphony::InvoicesController < ApplicationController
           #go to the next invoice
           redirect_to_next_action(@workflow, params[:workflow_action_id])
         else
-          redirect_to symphony_workflow_path(@nvoice.workflow.template.slug, @nvoice.workflow.friendly_id)
+          redirect_to symphony_workflow_path(@invoice.workflow.template.slug, @invoice.workflow.friendly_id)
         end
       else
         invoice_id.present? ? (render :edit) : (render :new)
@@ -293,6 +294,6 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :workflow_action_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :status, :subtotal, :total, :user_id, line_items_attributes: [:item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :amount, :_destroy])
+    params.require(:invoice).permit(:invoice_date, :due_date, :workflow_id, :workflow_action_id, :line_amount_type, :invoice_type, :xero_invoice_id, :invoice_reference, :xero_contact_id, :xero_contact_name, :currency, :status, :subtotal, :total, :user_id, :remarks, line_items_attributes: [:item, :description, :quantity, :price, :account, :tax, :tracking_option_1, :tracking_option_2, :amount, :_destroy])
   end
 end
