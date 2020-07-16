@@ -18394,7 +18394,7 @@ button.bg-white:focus {
   color: #ffffff !important; }
 
 .text-primary {
-  color: #3699FF !important; }
+  color: #475ad4 !important; }
 
 a.text-primary:hover, a.text-primary:focus {
   color: #0073e9 !important; }
@@ -32832,7 +32832,7 @@ a.text-hover-white,
     transition: fill 0.3s ease; }
 
 .text-primary {
-  color: #3699FF !important; }
+  color: #475ad4 !important; }
 
 .text-inverse-primary {
   color: #FFFFFF !important; }
@@ -36573,7 +36573,10 @@ button {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
-  content: ""; }
+  /*From font-awesome 5 onwards, free font-awesome icon must have font-weight of 900*/
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f063"; }
 
 .dropdown-toggle.nav-link:before, .dropdown-toggle.btn:before {
   margin-right: 0.5rem/*rtl:ignore*/;
@@ -36788,8 +36791,8 @@ button {
 
 .btn.btn-primary {
   color: #FFFFFF;
-  background-color: #3699FF;
-  border-color: #3699FF; }
+  background-color: #475ad4;
+  border-color: #475ad4; }
   .btn.btn-primary i {
     color: #FFFFFF; }
   .btn.btn-primary .svg-icon svg g [fill] {

@@ -1,26 +1,29 @@
-.header#kt_header.header-fixed data-header-scroll="on"
-  .header-top
-    .container
-      /! begin:: Brand
-      .navbar.navbar-expand-lg.navbar-light.bg-light
-        .navbar-brand
-          = link_to symphony_root_path do
-            = image_pack_tag 'media/src/images/logo-symphony.png', alt: "Logo"
-          = content_tag :span, "Staging", class: "badge badge-danger badge-header" if ENV['APP_NAME'] == "excide-staging"
-          = content_tag :span, "Trial", class: "badge badge-warning badge-header ml-2" if current_user.company.free_trial?
-          = content_tag :span, "Basic", class: "badge badge-secondary badge-header ml-2" if current_user.company.basic?
-          = content_tag :span, "Pro", class: "badge badge-success badge-header ml-2" if current_user.company.pro?
-        .dropdown
+.header.bg-white.w-100 data-header-scroll="on"
+  / ! begin:: Brand
+  nav.navbar.navbar-expand-lg.navbar-light.w-100
+    .navbar-brand
+      = link_to symphony_root_path do
+        = image_pack_tag 'media/src/images/symphony/symphony-logo.png', alt: "Logo", class: 'logo-size'
+      = content_tag :span, "Staging", class: "badge badge-danger badge-header" if ENV['APP_NAME'] == "excide-staging"
+      = content_tag :span, "Trial", class: "badge badge-warning badge-header ml-2" if current_user.company.free_trial?
+      = content_tag :span, "Basic", class: "badge badge-secondary badge-header ml-2" if current_user.company.basic?
+      = content_tag :span, "Pro", class: "badge badge-success badge-header ml-2" if current_user.company.pro?
+    button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button" 
+      span.navbar-toggler-icon
+    #navbarSupportedContent.collapse.navbar-collapse
+      ul.navbar-nav.mr-auto
+        / Change company dropdown
+        .dropdown.border.border-light.rounded
           - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
-            button#dropdownMenuButton.btn.btn-secondary.btn-default.dropdown-toggle aria-expanded="true" aria-haspopup="true" data-toggle="dropdown" type="button" #{current_user.company.name}
-            .dropdown-menu aria-labelledby="dropdownMenuButton"
+            button#dropdownMenuButton.btn.btn-white.dropdown-toggle.change-company-dropdown.text-left aria-expanded="true" aria-haspopup="true" data-toggle="dropdown" type="button" #{current_user.company.name}
+            .dropdown-menu.dropdown-menu-right aria-labelledby="dropdownMenuButton"
               - if current_user.has_role? :superadmin
                 - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
                   - if company.name.present?
-                    li
+                    li.nav-item
                       = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
                 .dropdown-divider
-                li
+                li.nav-item
                   = link_to 'Add New Company', new_company_path, class: 'dropdown-item text-primary'
               - else
                 - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
@@ -29,41 +32,38 @@
                   - else
                     = link_to(symphony_root_path, class: "btn btn-secondary btn-default") do
                       ' #{current_user.company.name}
-      /! end:: Brand
-      /! begin:: Header Topbar
-      #kt_header_topbar.topbar
-        /! begin: Notification bar
-        .topbar-item
-          span.btn.btn-icon.btn-success.mr-3
+      ul.navbar-nav.ml-auto
+        li.nav-item
+          = link_to symphony_root_path, class: 'btn btn-white mr-3 border border-secondary' do
+            = image_pack_tag 'media/src/images/symphony/book-24-px.svg'
+            span.ml-2 Guides
+        li.nav-item
+          /! begin: Notification bar
+          span.btn.btn-icon.btn-primary.mr-3
             / uses view notifications/default/workflow_action/:key.html.slim
             = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
-        /! end: Notification bar
         - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
           /! begin: Admin bar
-          .dropdown.mr-3.show
-            .topbar-item data-toggle="dropdown" data-offset="10px,10px" data-container="body" aria-expanded="true"
-              span.btn.btn-icon.btn-warning.btn-dropdown
-                i.flaticon2-gear
-            .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
-              li
+          .dropdown.mr-3
+            button#settingDropdown.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+              = fa_icon "cog", style: 'font-size: 25px;', class: 'mt-2 text-dark'
+            .dropdown-menu aria-labelledby="settingDropdown"  
+              li.nav-item
                 = link_to symphony_users_path, class: 'dropdown-item' do
                   span Manage Users
-              li
+              li.nav-item
                 = link_to symphony_roles_path, class: 'dropdown-item' do
                   span Manage Roles
-              li
+              li.nav-item
                 = link_to symphony_templates_path, class: 'dropdown-item' do
                   span Manage Templates
-              li
+              li.nav-item
                 = link_to symphony_survey_templates_path, class: 'dropdown-item' do
                   span Manage Survey Templates
-          /! end: Admin bar
-        /! begin: User bar
-        .dropdown.mr-3.show
-          .topbar-item data-offset="20px,0px" data-toggle="dropdown" data-container="body" aria-expanded="true"
-            span.btn.btn-icon.btn-success.btn-dropdown
-              i.flaticon2-user
-          .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+        .dropdown.mr-3
+          button#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+            = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'user-icon mt-2'
+          .dropdown-menu aria-labelledby="userDropdownMenu" 
             li
               = link_to edit_user_registration_path, class: 'dropdown-item' do
                 span User Profile
@@ -83,71 +83,6 @@
             li
               = link_to destroy_user_session_path, {method: :delete, class: 'dropdown-item'} do
                 span Log Out
-        /! end: User bar
-  /! end:: Header Topbar
-#kt_header_bottom.header-bottom
-  .container.d-flex.flex-column
-    ul.header-tabs.nav.flex-column-auto role="tablist"
-      li.nav-item.active
-        = link_to symphony_root_path, class: "nav-link" do
-          span.nav-title.text-uppercase Dashboard
-      li.nav-item.active
-        = link_to symphony_root_path, class: "nav-link" do
-          span.nav-title.text-uppercase Dashboard
-      li.nav-item.active
-        = link_to symphony_root_path, class: "nav-link" do
-          span.nav-title.text-uppercase Dashboard
-      li.nav-item.active
-        = link_to symphony_root_path, class: "nav-link" do
-          span.nav-title.text-uppercase Dashboard
-      li.nav-item.active
-        = link_to symphony_root_path, class: "nav-link" do
-          span.nav-title.text-uppercase Dashboard
-
-/   .kt-header__bottom
-/     .kt-container
-/       /! begin: Header Menu
-/       button#kt_header_menu_mobile_close_btn.kt-header-menu-wrapper-close
-/         i.la.la-close
-/       #kt_header_menu_wrapper.kt-header-menu-wrapper
-/         #kt_header_menu.kt-header-menu.kt-header-menu-mobile
-/           ul.kt-menu__nav
-/             li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'home'}"
-/               = link_to symphony_root_path, class:"kt-menu__link" do
-/                 span.kt-menu__link-text Dashboard
-/             li.kt-menu__item.kt-menu__item--submenu.kt-menu__item--rel aria-haspopup="true" data-ktmenu-submenu-toggle="click" class="#{'kt-menu__item--here' if controller_name == 'workflows'}"
-/               a.kt-menu__link.kt-menu__toggle href="javascript:;"
-/                 span.kt-menu__link-text Workflows
-/                 i.kt-menu__ver-arrow.la.la-angle-right
-/               .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left.columns
-/                 ul.kt-menu__subnav
-/                   - ::Template.assigned_templates(current_user).each do |t|
-/                     li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--active' if @template && @template.slug == t.slug}"
-/                       = link_to symphony_workflows_path(t.slug), class: 'kt-menu__link' do
-/                         span.kt-menu__link-text #{t.title}
-/                         span.kt-badge.kt-badge--unified-primary.kt-badge--md.kt-badge-bold = t.company_workflows(current_user.company).where(completed: [false, nil]).count
-/             li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'batches'}"
-/               = link_to symphony_batches_index_path, class:"kt-menu__link" do
-/                 span.kt-menu__link-text
-/                   | Batches
-/                   = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
-/             li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'recurring_workflows'}"
-/               = link_to symphony_workflows_recurring_path, class:"kt-menu__link" do
-/                 span.kt-menu__link-text
-/                   | Recurring
-/                   = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
-/             li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'reminders'}"
-/               = link_to symphony_reminders_path, class:"kt-menu__link" do
-/                 span.kt-menu__link-text Reminders
-
-/         .xero-info.ml-3
-/           - if current_user.company.session_handle.present? and (current_user.company.free_trial? or current_user.company.pro?)
-/             ' Connected Xero organisation:
-/             = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
-/             // If user is disconnected from xero, session handle is empty instead of nil
-/           - elsif (current_user.company.session_handle.nil? or current_user.company.session_handle.empty?) and (current_user.company.free_trial? or current_user.company.pro?)
-/             ' Not connected to Xero:
-/             = link_to('Connect', connect_to_xero_path)
-/           - else
-/             = link_to 'Subscribe to Symphony Pro for more advanced features', edit_company_path
-/ /! end:: Header
+            
+            
+        
