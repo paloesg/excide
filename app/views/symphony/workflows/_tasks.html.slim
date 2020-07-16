@@ -1,87 +1,85 @@
-.kt-portlet
-  .kt-portlet__head
-    .kt-portlet__head-label
-      h3.kt-portlet__head-title
-        = @section.section_name
-  .kt-portlet__body
-    .kt-widget11
-      table.table
-        thead
-          tr
-            td #
-            td style="width: 70%" Instructions
-            td style="width: 10%" Assigned To
-            td style="width: 10%" Deadline
-            td style="width: 10%" Done
-            - if @workflow.archive.present?
-              td Completed By
-            td
-        tbody
-          - @tasks.each do |task|
-            - if @workflow.archive.blank?
-              - t = TaskDecorator.new(task)
-              - a = t.workflow_action(@workflow.id)
-              = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
-            - else
-              tr
-                td = task['position']
-                td = task['instructions']
-                td = task['workflow_actions']['assigned_user'] || task['role_name']
-                td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
-                td
-                  label.kt-checkbox.kt-checkbox--single
-                    = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
-                    span
-                td = task['workflow_actions']['completed_user'] || '-'
-                td
-                  a data-toggle="collapse" href="#task_#{task['position']}" aria-expanded="false" class="collapsed"
-                    i.fa aria-hidden="true"
+.card
+  .card-header
+    h3.card-title
+      = @section.section_name
+  .card-body
+    table.table
+      thead
+        tr
+          td #
+          td style="width: 60%" Instructions
+          td style="width: 20%" Assigned To
+          td style="width: 10%" Deadline
+          td style="width: 10%" Done
+          - if @workflow.archive.present?
+            td Completed By
+          td
+      tbody
+        - @tasks.each do |task|
+          - if @workflow.archive.blank?
+            - t = TaskDecorator.new(task)
+            - a = t.workflow_action(@workflow.id)
+            = render "symphony/workflows/tasks/#{task.task_type}", task: t, action: a
+          - else
+            tr
+              td = task['position']
+              td = task['instructions']
+              td = task['workflow_actions']['assigned_user'] || task['role_name']
+              td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
+              td
+                label.form-check-label
+                  = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
+                  span
+              td = task['workflow_actions']['completed_user'] || '-'
+              td
+                a data-toggle="collapse" href="#task_#{task['position']}" aria-expanded="false" class="collapsed"
+                  i.fa aria-hidden="true"
+            tr
+              td.p-0.border-top-0 colspan="6"
+                div id="task_#{task['position']}" class="collapse"
+                  .m-3
+                    = label_tag :remarks
+                    = text_field_tag :remarks, task['workflow_actions']['remarks'], class: 'form-control', disabled: true
+                    = image_tag(task['image_url'], class: "img-fluid pt-4") if task['image_url'].present?
+            - if task['workflow_actions']['documents'].present?
               tr
                 td.p-0.border-top-0 colspan="6"
-                  div id="task_#{task['position']}" class="collapse"
-                    .m-3
-                      = label_tag :remarks
-                      = text_field_tag :remarks, task['workflow_actions']['remarks'], class: 'form-control', disabled: true
-                      = image_tag(task['image_url'], class: "img-fluid pt-4") if task['image_url'].present?
-              - if task['workflow_actions']['documents'].present?
-                tr
-                  td.p-0.border-top-0 colspan="6"
-                    .m-3
-                      br
-                      .row
-                        .col-md-12
-                          h6 Files:
-                          .workflow-action-documents
-                            ul
-                              - task['workflow_actions']['documents'].each do |d|
-                                - d = Document.find(d['document_id']) if @workflow.archive.present?
-                                li
-                                  .media
-                                    .align-self-center
-                                      = link_to symphony_document_path(d)
-                                        i.ti-file.icon.mr-3 style="font-size: 40px"
-                                    .media-body
-                                      h5.text-truncate = d.filename
-                                      h6.card-subtitle = d.user&.full_name
-                                      .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
-    .row
-      .col
-        - if @workflow.archive.blank?
-          - unless @section.first?
-            = link_to section_symphony_workflow_path(@template.slug, @workflow.id, @section.higher_item.id), class: 'btn btn-sm btn-outline-secondary float-left'
-              i.fa.fa-chevron-left
-              |  Previous Section
-          - unless @section.last?
-            = link_to section_symphony_workflow_path(@template.slug, @workflow.id, @section.lower_item.id), class: 'btn btn-sm btn-outline-secondary float-right'
-              ' Next Section
-              i.fa.fa-chevron-right
-        - else
-          - unless @sections.first['section_name'] == @section['section_name']
-            = link_to symphony_archive_path(@template.slug, @workflow.id, section: @section['position'] - 1), class: 'btn btn-sm btn-outline-secondary float-left'
-              i.fa.fa-chevron-left
-              |  Previous Section
-          - unless @sections.last['section_name'] == @section['section_name']
-            = link_to symphony_archive_path(@template.slug, @workflow.id, section: @section['position'] + 1), class: 'btn btn-sm btn-outline-secondary float-right'
-              ' Next Section
-              i.fa.fa-chevron-right
-        .clearfix
+                  .m-3
+                    br
+                    .row
+                      .col-md-12
+                        h6 Files:
+                        .workflow-action-documents
+                          ul
+                            - task['workflow_actions']['documents'].each do |d|
+                              - d = Document.find(d['document_id']) if @workflow.archive.present?
+                              li
+                                .media
+                                  .align-self-center
+                                    = link_to symphony_document_path(d)
+                                      i.ti-file.icon.mr-3 style="font-size: 40px"
+                                  .media-body
+                                    h5.text-truncate = d.filename
+                                    h6.card-subtitle = d.user&.full_name
+                                    .text-muted = d.created_at.strftime("Uploaded at %d/%m/%Y %R")
+  .row
+    .col
+      - if @workflow.archive.blank?
+        - unless @section.first?
+          = link_to section_symphony_workflow_path(@template.slug, @workflow.id, @section.higher_item.id), class: 'btn btn-sm btn-outline-secondary float-left'
+            i.fa.fa-chevron-left
+            |  Previous Section
+        - unless @section.last?
+          = link_to section_symphony_workflow_path(@template.slug, @workflow.id, @section.lower_item.id), class: 'btn btn-sm btn-outline-secondary float-right'
+            ' Next Section
+            i.fa.fa-chevron-right
+      - else
+        - unless @sections.first['section_name'] == @section['section_name']
+          = link_to symphony_archive_path(@template.slug, @workflow.id, section: @section['position'] - 1), class: 'btn btn-sm btn-outline-secondary float-left'
+            i.fa.fa-chevron-left
+            |  Previous Section
+        - unless @sections.last['section_name'] == @section['section_name']
+          = link_to symphony_archive_path(@template.slug, @workflow.id, section: @section['position'] + 1), class: 'btn btn-sm btn-outline-secondary float-right'
+            ' Next Section
+            i.fa.fa-chevron-right
+      .clearfix

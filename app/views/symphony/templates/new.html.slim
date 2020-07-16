@@ -7,11 +7,10 @@
     = form_for(@template, url: symphony_templates_path(@template) ) do |f|
       .row
         .col-md-10
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title New Templates
-            .kt-portlet__body
+          .card
+            .card-header
+              h3.card-title New Templates
+            .card-body
               .form-group
                 = f.label :title, "Title:"
                 = f.text_field :title, class: "form-control"
@@ -35,11 +34,10 @@
     = form_for(@template, url: symphony_templates_path(@template) ) do |f|
       .row
         .col-md-12
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title Clone Templates
-            .kt-portlet__body
+          .card
+            .card-header
+              h3.card-title Clone Templates
+            .card-body
               .form-group
                 = f.label :title, "Title:"
                 = f.text_field :title, class: "form-control"

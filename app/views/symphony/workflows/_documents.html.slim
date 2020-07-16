@@ -1,8 +1,7 @@
-.kt-portlet.mb-3
-  .kt-portlet__head
-    .kt-portlet__head-label
-      h3.kt-portlet__head-title Documents
-  .kt-portlet__body
+.card.mb-4.mt-4
+  .card-header
+    h3.card-title Documents
+  .card-body
     - if @documents.empty?
       | No documents yet.
     - else
@@ -19,11 +18,10 @@
                 .text-muted = d.created_at.strftime("%d/%m/%Y %R")
               .align-self-center
                 = link_to "", symphony_document_path(d), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', remote: true, class: 'btn btn-danger btn-sm flaticon2-rubbish-bin-delete-button'
-.kt-portlet.mb-3
-  .kt-portlet__head
-    .kt-portlet__head-label
-      h3.kt-portlet__head-title Documents Templates
-  .kt-portlet__body
+.card.mb-4
+  .card-header
+    h3.card-title Documents Templates
+  .card-body
     - if @document_templates.empty?
       | No document templates yet.
     - else
