@@ -2,12 +2,11 @@
   .col-md-3.col-sm-12
     .row
       .col-sm-12
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title
-                | Template Details
-          .kt-portlet__body
+        .card
+          .card-header
+            h3.card-title
+              | Template Details
+          .card-body
             .form-group
               = f.label :title, "Title:"
               = f.text_field :title, class: "form-control", required: true
@@ -26,6 +25,6 @@
                 = f.label :deadline_day, "Deadline - Number of days after start:"
                 = f.number_field :deadline_day, class: "form-control"
   .col-md-9.col-sm-12
-    .kt-portlet
+    .card
       = f.fields_for :sections do |section|
         = render 'section_fields', f: section
