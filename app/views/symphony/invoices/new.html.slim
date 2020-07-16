@@ -86,5 +86,3 @@
           = g.submit "Reject", method: 'post', role: 'button', class: 'btn btn-danger ml-2 mt-2 float-right'
           button.btn.btn-secondary.mt-2.float-right data-dismiss="modal" type="button" Close
             
-            = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, invoice_type: params[:invoice_type], workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2') if policy(@invoice).reject?
-            
