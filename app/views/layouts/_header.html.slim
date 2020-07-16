@@ -1,4 +1,4 @@
-.header.bg-white.w-100 data-header-scroll="on"
+.header.bg-white.w-100.border.border-bottom data-header-scroll="on"
   / ! begin:: Brand
   nav.navbar.navbar-expand-lg.navbar-light.w-100
     .navbar-brand
@@ -49,17 +49,13 @@
               = fa_icon "cog", style: 'font-size: 25px;', class: 'mt-2 text-dark'
             .dropdown-menu aria-labelledby="settingDropdown"  
               li.nav-item
-                = link_to symphony_users_path, class: 'dropdown-item' do
-                  span Manage Users
+                = link_to 'Manage Users', symphony_users_path, class: 'dropdown-item'
               li.nav-item
-                = link_to symphony_roles_path, class: 'dropdown-item' do
-                  span Manage Roles
+                = link_to 'Manage Roles', symphony_roles_path, class: 'dropdown-item'
               li.nav-item
-                = link_to symphony_templates_path, class: 'dropdown-item' do
-                  span Manage Templates
+                = link_to 'Manage Templates', symphony_templates_path, class: 'dropdown-item'
               li.nav-item
-                = link_to symphony_survey_templates_path, class: 'dropdown-item' do
-                  span Manage Survey Templates
+                = link_to 'Manage Survey Templates', symphony_survey_templates_path, class: 'dropdown-item'
         .dropdown.mr-3
           button#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
             = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'user-icon mt-2'
