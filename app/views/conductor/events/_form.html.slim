@@ -21,7 +21,7 @@
   .col-sm-6
     .form-group
       = f.label :event_type_id
-      = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }, {selected: @event.event_type, prompt: 'Select event type...'}, class: 'selectize'
+      = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }, {selected: @event.event_type_id, prompt: 'Select event type...'}, class: 'selectize'
     - if current_user.has_role? :staffer, @company
       .form-group
         = label_tag "Allocate User", "Allocate User"
