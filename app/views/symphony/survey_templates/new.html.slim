@@ -6,12 +6,11 @@
     = form_for(@survey_template, url: symphony_survey_templates_path(@survey_template) ) do |f|
       .row
         .col-md-6
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title
-                  | Form Template Details
-            .kt-portlet__body
+          .card
+            .card-header
+              h3.card-title
+                | Form Template Details
+            .card-body
               .form-group
                 = f.label :title, "Title:"
                 = f.text_field :title, class: "form-control"
