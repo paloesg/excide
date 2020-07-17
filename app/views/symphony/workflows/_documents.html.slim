@@ -1,6 +1,5 @@
 .card.mb-4.mt-4
-  .card-header
-    h3.card-title Documents
+  h3.card-header Documents
   .card-body
     - if @documents.empty?
       | No documents yet.
@@ -19,8 +18,7 @@
               .align-self-center
                 = link_to "", symphony_document_path(d), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', remote: true, class: 'btn btn-danger btn-sm flaticon2-rubbish-bin-delete-button'
 .card.mb-4
-  .card-header
-    h3.card-title Documents Templates
+  h3.card-header Documents Templates
   .card-body
     - if @document_templates.empty?
       | No document templates yet.

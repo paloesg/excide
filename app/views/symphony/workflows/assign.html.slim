@@ -5,8 +5,7 @@
   .col-md-8.col-sm-6
     - @sections.each do |section|
       .card.mb-3
-        .card-header
-          h3.card-title = section.section_name
+        h3.card-header = section.section_name
         .card-body
           table.table
             thead
@@ -38,8 +37,7 @@
       h3 User List
       - @workflow.template.get_roles.each do |role|
         .card.mt-3
-          .card-header
-            h4.card-title #{role.name.titleize}
+          h4.card-header #{role.name.titleize}
           .card-body
             - (User.with_role role.name, @company).each do |user|
               p

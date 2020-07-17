@@ -23,8 +23,7 @@
       br
     - if @workflow.workflowable.present?
       .card.mb-3
-        .card-header
-          h3.card-title Client
+        h3.card-header Client
         .card-body
           h5 = @workflow.workflowable&.name
           - if @workflow.archive.blank?
@@ -33,18 +32,15 @@
             - else
               = link_to 'Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id, workflow_id: @workflow.id), method: 'post', class: 'btn btn-sm btn-primary pull-right'
     .card
-      .card-header
-        h3.card-title Routine ID
+      h3.card-header Routine ID
       .card-body
         = @workflow.friendly_id
     .card.mt-4
-      .card-header
-        h3.card-title Routine Deadline
+      h3.card-header Routine Deadline
       .card-body
         = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
     .card.mt-4
-      .card-header
-        h3.card-title Routine Remarks
+      h3.card-header Routine Remarks
       .card-body
         = @workflow.remarks || '-'
     = render partial: 'symphony/workflows/documents'
@@ -52,8 +48,7 @@
     = render partial: 'symphony/workflows/surveys'
     - if @workflow.recurring_workflow.present?
       .card.mb-3
-        .card-header
-          h3.card-title Next Recurring Workflow
+        h3.card-header Next Recurring Workflow
         .card-body
           = @workflow.recurring_workflow.next_workflow_date
   #task-popover-content.d-none
