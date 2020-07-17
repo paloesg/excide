@@ -8,14 +8,14 @@
     table.table
       thead
         tr
-          th 
-          th TASKS
-          th ASSIGNED BY
-          th
+          th width="5%"
+          th width="55%" TASKS
+          th width="10%" ASSIGNED BY
+          th width="15%"
             | RELATE TO
             a.pop.ml-1 data-container="body" title="This column is filled If a task id related to a routine. Personal tasks added here cannot be connected to any routine." data-html="true" data-placement="bottom" data-toggle="kt-tooltip" data-trigger="hover"
               i.fa.fa-info-circle
-          th = sortable "deadline", "DUE"
+          th width="15%" = sortable "deadline", "DUE"
       tbody
         - @actions_sort.each do |action|
           tr.border-bottom
