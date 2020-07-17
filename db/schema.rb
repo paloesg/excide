@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_14_151510) do
+ActiveRecord::Schema.define(version: 2020_07_15_023927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -297,6 +297,7 @@ ActiveRecord::Schema.define(version: 2020_07_14_151510) do
     t.bigint "user_id"
     t.uuid "workflow_id"
     t.bigint "company_id"
+    t.string "remarks"
     t.index ["company_id"], name: "index_invoices_on_company_id"
     t.index ["user_id"], name: "index_invoices_on_user_id"
   end
