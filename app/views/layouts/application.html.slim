@@ -22,39 +22,44 @@ html lang="en"
     = javascript_pack_tag 'application-dashboard', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
+    // For uppy use with active storage
+    = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
+  /! end::Head
+  /! begin::Body
 
-  body.kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading
+  body
+    / .kt-page-content-white.kt-quick-panel--right.kt-demo-panel--right.kt-offcanvas-panel--right.kt-header--fixed.kt-header-mobile--fixed.kt-subheader--enabled.kt-subheader--transparent.kt-page--loading
     /! begin:: Page
     /! begin:: Header Mobile
-    = render 'layouts/header_mobile' unless (current_user.nil? || current_page?(additional_information_path) || controller_name == ('invoices'))
+    / = render 'layouts/header_mobile' unless (current_user.nil? || current_page?(additional_information_path))
     /! end:: Header Mobile
-    .kt-grid.kt-grid--hor.kt-grid--root
-      .kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--ver.kt-page
-        #kt_wrapper.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-wrapper
-          /! begin:: Header
-          - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys')) 
-            = render 'layouts/conductor_header'
-          - elsif controller_name == ('invoices')
-            = render 'layouts/invoice_header'
-          - else
-            = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path))
-          /! end:: Header
-          .kt-container.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
-            #kt_body.kt-body.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-grid--stretch
-              #kt_content.kt-content.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor
-                #kt_subheader.kt-subheader.kt-grid__item
-                  .kt-container
-                /! begin:: Content
-                .kt-container.kt-grid__item.kt-grid__item--fluid
-                  = render 'layouts/messages'
-                  = yield
-                /! end:: Content
-          /! begin:: Footer
-          = render 'layouts/footer'
-          /! end:: Footer
+    /! begin:: Header
+    - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys')) 
+      = render 'layouts/conductor_header'
+    - else
+      = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path))
+    /! end:: Header
+          
+    /! begin:: Content
+    / = render 'layouts/messages'
+    - if user_signed_in?
+      .container-fluid.w-100.pl-0
+        .row
+          .col-sm-3.d-none.d-md-block.bg-white.sidebar.border-right
+            = render 'layouts/sidebar'
+          .col-sm-9.mt-5
+            = yield
+    - else
+      .container.h-100
+        = yield
+      /! end:: Content
+    hr
+    = render 'layouts/footer'
+    /! begin:: Footer
+    /! end:: Footer
     /! end:: Page
     /! begin::Scrolltop
-    #kt_scrolltop.kt-scrolltop
+    .scrolltop
       i.fa.fa-arrow-up
     /! end::Scrolltop
 
