@@ -146,7 +146,7 @@ class Symphony::InvoicesController < ApplicationController
     if @invoice.save(validate: false)
       # Check if invoice can be rejected using AASM
       if @invoice.may_reject?
-        @invoice.remark = params[:remark]
+        @invoice.remarks = params[:invoice][:remarks]
         flash[:notice] = "Invoice has been rejected."
         @invoice.reject
         @invoice.save(validate: false)
