@@ -1,8 +1,12 @@
 .row
   .col-md-6
     h4 My Tasks
-  .col-md-6
-    = select_tag('tasks', options_for_select(["Only incomplete tasks", "All tasks", "Only completed tasks"], selected: params[:tasks], include_blank: "Only incomplete tasks"), class: 'selectize-tasks')
+  .col-md-3
+    = select_tag('tasks', options_for_select(["Only incomplete tasks", "All tasks", "Only completed tasks"], selected: params[:tasks], include_blank: "Only incomplete tasks"), class: 'selectize selectize-tasks')
+  .col-md-2
+    = select_tag('created_at', options_for_select(["Last 7 days", "Last 30 days", "All"], selected: params[:created_at], include_blank: "Last 7 days"), class: 'selectize selectize-created-at')
+  .col-md-1
+    = button_tag 'Filter', type: 'button', class: 'btn btn-primary tasks-filter-button'
 .row
   .col-md-12
     table.table
@@ -20,12 +24,14 @@
         - @actions_sort.each do |action|
           tr.border-bottom
             td.border-top-0
-              label.checkbox
-                - if action.completed?
+              - if action.completed?
+                label.checkbox.checkbox-disabled
                   = check_box_tag 'completed', action.id, action.completed, disabled: true
-                - else
+                  span
+              - else
+                label.checkbox
                   = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"
-                span
+                  span
             td.border-top-0 = action.task.instructions
             td.border-top-0 = action.workflow.user.first_name
             td.border-top-0 = action.workflow.template.title
