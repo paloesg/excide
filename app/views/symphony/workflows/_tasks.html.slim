@@ -28,7 +28,7 @@
                 td = task['workflow_actions']['assigned_user'] || task['role_name']
                 td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
                 td
-                  label.kt-checkbox.kt-checkbox--single
+                  label.checkbox
                     = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
                     span
                 td = task['workflow_actions']['completed_user'] || '-'
