@@ -75,9 +75,9 @@
                         = link_to("Submit for approval", xero_create_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-warning submit-approval-button ml-2 float-right')
                         span.float-right Send to Xero:
                   - else
-                    - if @invoice.status == nil and policy(@invoice).reject?
+                    - if policy(@invoice).reject?
                       button type="button" class="btn btn-danger mr-2" data-target="#remarkModal" data-toggle="modal" Reject 
-                    = f.submit 'Save', class: "btn btn-primary"
+                  = f.submit 'Save', class: "btn btn-primary"
 #remarkModal.modal.fade aria-hidden="true" aria-labelledby="remarkModalLabel" role="dialog" tabindex="-1" 
   .modal-dialog.modal-dialog-centered
     .modal-content
@@ -85,9 +85,9 @@
         h5#remarkModalLabel.modal-title Reject Invoice?
       .modal-body
         .form-group.mb-0
-        = form_for(@invoice, url: reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id, id: @invoice.id, workflow_action_id: params[:workflow_action_id])) do |g|
+        = form_for(@invoice, url: reject_invoice_symphony_workflow_path(workflow_name: @workflow.template.slug,workflow_id: @workflow.friendly_id, id: @invoice.id, workflow_action_id: params[:workflow_action_id]), method: 'post') do |g|
           = g.label :remarks, 'Let your teammate know why you cannot accept the invoice.', class: 'mr-2'
           = g.text_area :remarks, class: 'form-control', placeholder: 'Type a message...'
-          = g.submit "Reject", method: 'post', role: 'button', class: 'btn btn-danger ml-2 mt-2 float-right'
+          = g.submit "Reject", role: 'button', class: 'btn btn-danger ml-2 mt-2 float-right'
           button.btn.btn-secondary.mt-2.float-right data-dismiss="modal" type="button" Close
                     
