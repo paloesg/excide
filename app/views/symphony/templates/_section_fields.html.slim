@@ -11,13 +11,13 @@
   table.table
     thead
       tr
-        th.position-width No.
-        th.task-type Task Type
-        th.instruction Instruction
-        th.assigned-role Assigned Role
-        th.assigned-user Assigned User
+        th style="width: 10%" No.
+        th style="width: 20%" Task Type
+        th style="width: 29%" Instruction
+        th style="width: 15%" Assigned Role
+        th style="width: 15%" Assigned User
         th
-        th.collapse-arrow-width
+        th style="width: 1%"
     tbody.section-count class=("task-in-section-#{f.object.id}")
       = f.fields_for :tasks do |task|
         = render partial: 'task_fields', locals: { f: task, g: f.object}
