@@ -44,9 +44,9 @@ html lang="en"
     .container-fluid.w-100.pl-0
       / = render 'layouts/messages'
       .row
-        .col-sm-3.d-none.d-md-block.bg-white.sidebar.border.border-right
+        .col-sm-3.d-none.d-md-block.bg-white.sidebar.border-right
           = render 'layouts/sidebar'
-        .col-sm-9
+        .col-sm-9.mt-5
           = yield
       /! end:: Content
     hr
