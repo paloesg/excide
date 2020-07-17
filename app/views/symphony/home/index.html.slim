@@ -75,17 +75,24 @@
                 .col
                   - if w.deadline.to_date < Date.today
                     i.flaticon2-calendar-9.text-danger.mr-2
-                    = w.deadline&.strftime("%d %b %Y")
+                    = (Date.today - w.deadline.to_date).to_i.to_s + "d overdue"
+                    - bg = "bg-danger"
                   - elsif w.deadline.to_date <= Date.tomorrow
                     i.flaticon2-calendar-9.text-warning.mr-2
                     = w.deadline.to_date == Date.today ? "Today" : "Tomorrow"
+                    - bg = "bg-warning"
+                  - elsif w.company.before_deadline_reminder_days.present? && w.deadline.to_date - w.company.before_deadline_reminder_days <= Date.today
+                    i.flaticon2-calendar-9.text-warning.mr-2
+                    = w.deadline&.strftime("%d %b %Y")
+                    - bg = "bg-warning"
                   - else
                     i.flaticon2-calendar-9.text-primary.mr-2
                     = w.deadline&.strftime("%d %b %Y")
+                    - bg = "bg-primary"
                 .col
                   div.progress
-                    div.progress-bar role="progressbar" style="width: #{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}%" aria-valuenow="#{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}" aria-valuemin="0" aria-valuemax="100"
-                  | #{w.workflow_actions.where(completed: true).count} / #{w.workflow_actions.count}
+                    div.progress-bar role="progressbar" style="width: #{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}%" aria-valuenow="#{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}" aria-valuemin="0" aria-valuemax="100" class=bg
+                  | #{w.workflow_actions.where(completed: true).count} / #{w.workflow_actions.count} 
 
       /       tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
       /         td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
