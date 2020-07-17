@@ -42,7 +42,7 @@ class WorkflowAction < ApplicationRecord
       self.task.role.users.uniq
     elsif key == 'workflow_action.workflow_completed'
       # when completed all workflow actions, notify the one that created the workflow
-      [self.workflow.user]      
+      [self.workflow.user]
     end
   end
 
@@ -148,8 +148,10 @@ class WorkflowAction < ApplicationRecord
   end
 
   def create_reminder(task, action)
+    reminder_date = action.deadline - (self.company.before_deadline_reminder_days&.days || 0)
+
     reminder = Reminder.new(
-      next_reminder: action.deadline,
+      next_reminder: (reminder_date > Date.current) ? (reminder_date) : action.deadline,
       repeat: true,
       freq_value: 2,
       freq_unit: "days",

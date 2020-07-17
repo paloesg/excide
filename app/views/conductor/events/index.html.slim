@@ -22,10 +22,10 @@
         thead
           tr
             th
-            th Event type
+            th Job Nature
             th Client
             th Service Line
-            th Job Nature
+            th Allocated to
             th Start time
             th End time
             - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
@@ -43,11 +43,12 @@
               td = event.event_type.name
               td = event.client&.name
               td = event.tag_list.last
-              td = event.event_type.name
+              td = event.allocations.last&.user.present? ? event.allocations.last.user.full_name : 'Nil'
               td = event.start_time.strftime("%d/%m/%y %H:%M")
               td = event.end_time.strftime("%d/%m/%y %H:%M")
               - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
                 td = event.remarks
+                td = link_to 'Edit', edit_conductor_event_path(event), role: 'button', class: 'btn btn-primary btn-sm mr-1 mt-1'
               - else
                 td
                   - if event.allocations.consultant.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
