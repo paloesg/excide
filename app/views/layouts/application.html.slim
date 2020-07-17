@@ -41,13 +41,17 @@ html lang="en"
     /! end:: Header
           
     /! begin:: Content
-    .container-fluid.w-100.pl-0
-      / = render 'layouts/messages'
-      .row
-        .col-sm-3.d-none.d-md-block.bg-white.sidebar.border.border-right
-          = render 'layouts/sidebar'
-        .col-sm-9
-          = yield
+    / = render 'layouts/messages'
+    - if user_signed_in?
+      .container-fluid.w-100.pl-0
+        .row
+          .col-sm-3.d-none.d-md-block.bg-white.sidebar.border-right
+            = render 'layouts/sidebar'
+          .col-sm-9.mt-5
+            = yield
+    - else
+      .container.h-100
+        = yield
       /! end:: Content
     hr
     = render 'layouts/footer'

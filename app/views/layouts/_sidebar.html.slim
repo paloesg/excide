@@ -3,19 +3,19 @@
     li.nav-item.m-4
       = link_to symphony_root_path, class: 'col-sm-12' do
         = image_pack_tag 'media/src/images/symphony/sidebar-home.svg'
-        span.ml-2 Home
+        span.ml-2.nunito-sidebar Home
     li.nav-item.m-4
       = link_to '#', class: 'col-sm-12' do
         = image_pack_tag 'media/src/images/symphony/sidebar-checked.svg'
-        span.ml-2 My Tasks
+        span.ml-2.nunito-sidebar My Tasks
     li.nav-item.m-4
       = link_to '#', class: 'col-sm-12' do
         = image_pack_tag 'media/src/images/symphony/sidebar-history.svg'
-        span.ml-2 Activity History
+        span.ml-2.nunito-sidebar Activity History
   hr
   ul.nav.flex-column
     li.active.m-4
-      a.dropdown-toggle aria-expanded="false" data-toggle="collapse" href="#routineMenu"  ROUTINES
+      a.dropdown-toggle.nunito-sidebar.col-sm-12 aria-expanded="false" data-toggle="collapse" href="#routineMenu"  ROUTINES
       ul#routineMenu.collapse.list-unstyled
         - ::Template.assigned_templates(current_user).each do |template|
           li.m-4
@@ -23,7 +23,7 @@
   hr
   ul.nav.flex-column
     li.active.m-4
-      a.dropdown-toggle aria-expanded="false" data-toggle="collapse" href="#toolsMenu" TOOLS
+      a.dropdown-toggle.nunito-sidebar.col-sm-12 aria-expanded="false" data-toggle="collapse" href="#toolsMenu" TOOLS
       ul#toolsMenu.collapse.list-unstyled
         li.m-4
           = link_to '#', class: 'col-sm-12' do
