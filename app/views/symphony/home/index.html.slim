@@ -34,10 +34,13 @@
                 td.border-top-0
                   - if action.deadline.to_date < Date.today
                     i.fa.fa-xs.fa-circle.text-danger.mr-3
-                    = action.deadline&.strftime("%d %b %Y")
+                    = (Date.today - action.deadline.to_date).to_i.to_s + "d overdue"
                   - elsif action.deadline.to_date <= Date.tomorrow
                     i.fa.fa-xs.fa-circle.text-warning.mr-3
                     = action.deadline.to_date == Date.today ? "Today" : "Tomorrow"
+                  - elsif action.company.before_deadline_reminder_days.present? && action.deadline.to_date - action.company.before_deadline_reminder_days <= Date.today
+                    i.fa.fa-xs.fa-circle.text-warning.mr-3
+                    = action.deadline&.strftime("%d %b %Y")
                   - else
                     i.fa.fa-xs.fa-circle.text-primary.mr-3
                     = action.deadline&.strftime("%d %b %Y")
