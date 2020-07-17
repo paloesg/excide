@@ -36,6 +36,8 @@ html lang="en"
     /! begin:: Header
     - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys')) 
       = render 'layouts/conductor_header'
+    - elsif controller_name == ('invoices')
+      = render 'layouts/invoice_header'
     - else
       = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path))
     /! end:: Header
