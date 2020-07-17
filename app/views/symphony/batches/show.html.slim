@@ -80,7 +80,7 @@
                                 = link_to "", symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id), data: { toggle: "kt-tooltip", placement: "top", title: "View invoice" }, class: 'btn btn-secondary flaticon2-paper' 
                               = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { toggle: "kt-tooltip", placement: "top", title: "Delete", confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'btn btn-secondary flaticon2-rubbish-bin text-danger'
                               - if wf.invoice.present? and wf.invoice.rejected?
-                                button class="btn btn-light flaticon2-warning disabled text-danger" data-html="true" data-toggle="kt-tooltip" data-placement="top" title="Invoice rejected: #{wf.invoice.remark}"
+                                button class="btn btn-light flaticon2-warning disabled text-danger" data-html="true" data-toggle="kt-tooltip" data-placement="top" title="Invoice rejected: #{wf.invoice.remarks}"
                       - section.tasks.includes(:role).order(position: :asc).each do |task|
                         td class="text-center #{'important-task' if task.important}"
                           = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id) if task.get_workflow_action(wf.company, wf.id).present?

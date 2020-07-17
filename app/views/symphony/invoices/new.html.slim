@@ -81,8 +81,8 @@
       .modal-body
         .form-group.mb-0
         = form_for(@invoice, url: reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id, id: @invoice.id, workflow_action_id: params[:workflow_action_id])) do |g|
-          = g.label :remark, 'Let your teammate know why you cannot accept the invoice.', class: 'mr-2'
-          = g.text_area :remark, class: 'form-control', placeholder: 'Type a message...'
+          = g.label :remarks, 'Let your teammate know why you cannot accept the invoice.', class: 'mr-2'
+          = g.text_area :remarks, class: 'form-control', placeholder: 'Type a message...'
           = g.submit "Reject", method: 'post', role: 'button', class: 'btn btn-danger ml-2 mt-2 float-right'
           button.btn.btn-secondary.mt-2.float-right data-dismiss="modal" type="button" Close
             
