@@ -11,9 +11,9 @@ class Event < ApplicationRecord
   has_many :allocations, dependent: :destroy
 
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
-
   validates :company, :client, :event_type, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
+  validate :start_date_equals_to_end_date
 
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
@@ -72,5 +72,9 @@ class Event < ApplicationRecord
     if end_time < start_time
       errors.add(:end_time, "must be after start time")
     end
+  end
+
+  def start_date_equals_to_end_date
+    errors.add(:end_time, "date must be the same as start time date") unless self.start_time.to_date === self.end_time.to_date
   end
 end
