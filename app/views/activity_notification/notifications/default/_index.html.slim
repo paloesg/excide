@@ -1,10 +1,9 @@
-.dropdown.mr-3
+.dropdown.mr-3.mt-2
   .topbar-item data-toggle="dropdown" data-offset="10px,10px" data-container="body" aria-expanded="true"
-    span.btn.btn-icon.btn-primary.icon-size.mr-3
-      i.flaticon2-bell-alarm-symbol
-      - if @target.has_unopened_notifications?(parameters)
-        span.badge.badge-danger.mb-3
-          = @target.unopened_notification_count(parameters)
+    = image_pack_tag 'media/src/images/symphony/notification-bell.svg', class: 'icon-size'
+    - if @target.has_unopened_notifications?(parameters)
+      span.badge.badge-danger.rounded-circle.notification-count.mb-3.p-1
+        = @target.unopened_notification_count(parameters)
   .dropdown-menu.p-0.m-0.dropdown-menu-right.dropdown-menu-anim-up.dropdown-menu-lg
     form
       /! begin: Head
