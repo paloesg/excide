@@ -77,6 +77,6 @@ class Event < ApplicationRecord
   def start_date_equals_to_end_date
     # Skip this validation if start and end time not present to prevent errors
     return if start_time.blank? or end_time.blank?
-    errors.add(:end_time, "date must be the same as start time date") unless start_time.to_date === end_time.to_date
+    errors.add(:end_time, "date must be the same as start time date") unless start_time.to_date == end_time.to_date
   end
 end
