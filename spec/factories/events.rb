@@ -3,10 +3,10 @@ FactoryBot.define do
     company
     client
     staffer
+    event_type
 
-    event_type { "happy_cart" }
-    start_time { "2018-02-22 10:00:00" }
-    end_time { "2018-02-22 12:00:00" }
+    start_time { 2.hours.ago }
+    end_time { 1.hour.ago }
     remarks { Faker::Lorem.sentence }
     location { Faker::Lorem.sentence }
   end
