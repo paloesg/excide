@@ -1,7 +1,8 @@
 .row.mb-3
   .col
-    h1 Manage Users
-    = link_to "Add New User", new_symphony_user_path, role: 'button', class: 'btn btn-warning float-right'
+    h1 Teammates
+    p.font-size-{h6} Add your colleagues and teammates to collaborate on Symphony. A link to set up Symphony will be sent to the emails you add.
+    = link_to "+ Add a teammate", new_symphony_user_path, role: 'button', class: 'btn btn-outline-secondary float-right'
 .row
   .col-xl-12
     .table-responsive
