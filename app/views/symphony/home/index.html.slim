@@ -13,7 +13,7 @@
       .col-md-5.border.rounded.p-5.ml-3
         .row.align-items-center
           .col-sm-2
-            = image_pack_tag 'media/src/images/add-personal-task.png'
+            = image_pack_tag 'media/src/images/symphony/add-personal-task@2x.png', size: "55x55"
           .col-sm-10
             h5 Good job! You have done all your tasks!
             h5.mb-0
@@ -52,13 +52,15 @@
       .col-md-6
         h4 All Routines
       .col-md-6
-        .float-right = link_to "+ New Routine", new_symphony_template_path, role: "button", class: "btn btn-outline-secondary text-primary font-weight-bold"
+        .float-right
+          = link_to new_symphony_template_path do
+            i.flaticon2-plus.text-primary
     .row
       - @workflows.each do |w|
         .col-sm-4.mt-3
           .card.h-100.card-custom.card-stretch.gutter-b
-            .card-header.border-0.bg-secondary
-              .card-title
+            .card-header.border-0.card-header-height
+              .card-title.w-75
                 h5 = w.template.title
               .card-toolbar
                 .dropdown.dropdown-inline.float-right
