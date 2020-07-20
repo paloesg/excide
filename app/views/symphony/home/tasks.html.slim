@@ -1,11 +1,13 @@
 .row
-  .col-md-6
-    h4 My Tasks
   .col-md-3
-    = select_tag('tasks', options_for_select(["Only incomplete tasks", "All tasks", "Only completed tasks"], selected: params[:tasks], include_blank: "Only incomplete tasks"), class: 'selectize selectize-tasks')
-  .col-md-2
+    h4 My Tasks
+  .col-md-3.px-2
+    = select_tag('tasks', options_for_select(["Only incomplete tasks", "Only completed tasks", "All tasks"], selected: params[:tasks], include_blank: "Only incomplete tasks"), class: 'selectize selectize-tasks')
+  .col-md-2.px-2
     = select_tag('created_at', options_for_select(["Last 7 days", "Last 30 days", "All"], selected: params[:created_at], include_blank: "Last 7 days"), class: 'selectize selectize-created-at')
-  .col-md-1
+  .col-md-3.px-2
+    = select_tag('types', options_for_select(["All types", "Tasks related to Routine", "Adhoc tasks"], selected: params[:types], include_blank: "All types"), class: 'selectize selectize-types')
+  .col-md-1.px-2
     = button_tag 'Filter', type: 'button', class: 'btn btn-primary tasks-filter-button'
 .row
   .col-md-12

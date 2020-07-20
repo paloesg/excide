@@ -36,6 +36,11 @@ class Symphony::HomeController < ApplicationController
     elsif params[:created_at] == "Last 30 days"
       @outstanding_actions = @outstanding_actions.where('created_at >= ?', Time.zone.now - 30.days)
     end
+    if params[:types] == "Tasks related to Routine"
+      @outstanding_actions = @outstanding_actions.select {|action| action.workflow_id.present?}
+    elsif params[:types] == "Adhoc tasks"
+      @outstanding_actions = @outstanding_actions.select {|action| action.workflow_id.nil?}
+    end
     @actions_sort = sort_column(@outstanding_actions).reverse!
     params[:direction] == "desc" ? @actions_sort.reverse! : @actions_sort
   end
