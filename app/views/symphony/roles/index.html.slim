@@ -1,28 +1,23 @@
 .row
   .col-sm-12
-    h1
-      | Manage Roles
-      = link_to "Add New Role", new_symphony_role_path, role: 'button', class: 'btn btn-warning float-right'
+    h1 Groups
+    p.font-size-{h6} Create groups based on certain categories (e.g. job title or roles) consisting of your added Teammates. This will be useful when you are assigning tasks or routines to a group of people in the same category.
+    = link_to new_symphony_role_path, role: 'button', class: 'btn btn-outline-secondary float-right' do
+      i.material-icons.text-primary add 
+      | Create a Group
+
 .row
   .col-sm-12
     .table-responsive
       table.table
-        thead
-          tr
-            th ID
-            th Name
-            th No. of users
-            th User names
-            th
         tbody
           - @roles.each do |r|
-            tr
-              td = r.id
-              td = r.name.humanize
-              td = r.users.count
+            tr.border-bottom
+              td.border-top-0 = r.name.humanize
+              td.border-top-0 = r.users.count
               / concatenate first name and last name using pluck, which is more efficient as it works in db level
               / Arel.sql to prevent sql injection through raw SQL
-              td = r.users.pluck(Arel.sql("CONCAT_WS(' ', users.first_name, users.last_name)")).join('<br />').html_safe
-              td style="min-width: 135px;"
+              td.border-top-0 = r.users.pluck(Arel.sql("CONCAT_WS(' ', users.first_name, users.last_name)")).join('<br />').html_safe
+              td.border-top-0 style="min-width: 135px;"
                 = link_to "Edit", edit_symphony_role_path(r.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
                 = link_to "Delete", symphony_role_path(r.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
