@@ -4,24 +4,21 @@
 .row
   .col-xl-12
     - @batch.template.sections.each do |section|
-      .kt-portlet
-        .kt-portlet__head
-          .kt-portlet__head-label
-            h3.kt-portlet__head-title
-              | #{section.section_name} - #{section.tasks.count.to_s} tasks
-          .kt-portlet__head-toolbar
-            .kt-portlet__head-actions
-              - if @batch.processing_complete?
-                .pull-right #{@completed} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
-              - elsif @document_count.present?
-                .pull-right #{@document_count} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
-              - else
-                .pull-right Processing #{@processing_files} #{'file'.pluralize(@processing_files)} at the moment. You may start on your tasks first.
-            / Check if any files failed during processing (eg document not created, hence no attachment)
-            - if @batch.failed_blob['blobs'].present?
-              a.pop.ml-2 data-container="body" title="" data-original-title="#{pluralize(@batch.failed_blob['blobs'].length, 'file')} failed to be processed. Please contact admin for support." data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
-                i.fa.fa-exclamation-triangle.text-danger
-        .kt-portlet__body
+      .card
+        h3.card-header.d-flex.justify-content-between
+          | #{section.section_name} - #{section.tasks.count.to_s} tasks
+          .card-toolbar
+            - if @batch.processing_complete?
+              small #{@completed} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
+            - elsif @document_count.present?
+              small #{@document_count} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
+            - else
+              small Processing #{@processing_files} #{'file'.pluralize(@processing_files)} at the moment. You may start on your tasks first.
+          / Check if any files failed during processing (eg document not created, hence no attachment)
+          - if @batch.failed_blob['blobs'].present?
+            a.pop.ml-2 data-container="body" title="" data-original-title="#{pluralize(@batch.failed_blob['blobs'].length, 'file')} failed to be processed. Please contact admin for support." data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+              i.fa.fa-exclamation-triangle.text-danger
+        .card-body
           .kt-widget11
             .table-responsive
               table.table
