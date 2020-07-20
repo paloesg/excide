@@ -1,10 +1,8 @@
 .row
   .col-xl-12
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title = @template.title
-      .kt-portlet__body
+    .card
+      h3.card-header = @template.title
+      .card-body
         .kt-section
           .kt-section__content
             - if @workflows.blank?

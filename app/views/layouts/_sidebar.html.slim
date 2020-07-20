@@ -2,20 +2,20 @@
   ul.nav.flex-column
     li.nav-item.m-4
       = link_to symphony_root_path, class: 'col-sm-12' do
-        = image_pack_tag 'media/src/images/symphony/sidebar-home.svg'
-        span.ml-2 Home
+        = image_pack_tag 'media/src/images/symphony/sidebar-home.svg', class: 'img-icon-size'
+        span.ml-2.nunito-sidebar Home
     li.nav-item.m-4
       = link_to '#', class: 'col-sm-12' do
-        = image_pack_tag 'media/src/images/symphony/sidebar-checked.svg'
-        span.ml-2 My Tasks
+        = image_pack_tag 'media/src/images/symphony/sidebar-checked.svg', class: 'img-icon-size'
+        span.ml-2.nunito-sidebar My Tasks
     li.nav-item.m-4
       = link_to '#', class: 'col-sm-12' do
-        = image_pack_tag 'media/src/images/symphony/sidebar-history.svg'
-        span.ml-2 Activity History
+        = image_pack_tag 'media/src/images/symphony/sidebar-history.svg', class: 'img-icon-size'
+        span.ml-2.nunito-sidebar Activity History
   hr
   ul.nav.flex-column
     li.active.m-4
-      a.dropdown-toggle aria-expanded="false" data-toggle="collapse" href="#routineMenu"  ROUTINES
+      a.dropdown-toggle.nunito-sidebar.col-sm-12 aria-expanded="false" data-toggle="collapse" href="#routineMenu"  ROUTINES
       ul#routineMenu.collapse.list-unstyled
         - ::Template.assigned_templates(current_user).each do |template|
           li.m-4
@@ -23,22 +23,22 @@
   hr
   ul.nav.flex-column
     li.active.m-4
-      a.dropdown-toggle aria-expanded="false" data-toggle="collapse" href="#toolsMenu" TOOLS
+      a.dropdown-toggle.nunito-sidebar.col-sm-12 aria-expanded="false" data-toggle="collapse" href="#toolsMenu" TOOLS
       ul#toolsMenu.collapse.list-unstyled
         li.m-4
           = link_to '#', class: 'col-sm-12' do
-            = image_pack_tag 'media/src/images/symphony/sidebar-assign-adhoc.svg'
+            = image_pack_tag 'media/src/images/symphony/sidebar-assign-adhoc.svg', class: 'img-icon-size'
             span.ml-2.nunito-sidebar Assign Adhoc Tasks
         li.m-4
           = link_to symphony_batches_index_path, class: 'col-sm-12' do
-            = image_pack_tag 'media/src/images/symphony/sidebar-bulk-invoice.svg'
+            = image_pack_tag 'media/src/images/symphony/sidebar-bulk-invoice.svg', class: 'img-icon-size'
             span.ml-2.nunito-sidebar Bulk Invoices Tool
         li.m-4
           = link_to symphony_survey_templates_path, class: 'col-sm-12' do
-            = image_pack_tag 'media/src/images/symphony/sidebar-forms.svg'
+            = image_pack_tag 'media/src/images/symphony/sidebar-forms.svg', class: 'img-icon-size'
             span.ml-2.nunito-sidebar Forms & Surveys
         li.m-4
           = link_to symphony_documents_path, class: 'col-sm-12' do
-            = image_pack_tag 'media/src/images/symphony/sidebar-document-repo.svg'
+            = image_pack_tag 'media/src/images/symphony/sidebar-document-repo.svg', class: 'img-icon-size'
             span.ml-2.nunito-sidebar Documents Repository
 

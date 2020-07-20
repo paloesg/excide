@@ -11,7 +11,7 @@
     button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button" 
       span.navbar-toggler-icon
     #navbarSupportedContent.collapse.navbar-collapse
-      ul.navbar-nav.mr-auto
+      ul.navbar-nav
         / Change company dropdown
         .dropdown.border.border-light.rounded
           - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
@@ -32,16 +32,15 @@
                   - else
                     = link_to(symphony_root_path, class: "btn btn-secondary btn-default") do
                       ' #{current_user.company.name}
-      ul.navbar-nav.ml-auto
+      ul.navbar-nav
         li.nav-item
-          = link_to symphony_root_path, class: 'btn btn-white mr-3 border border-secondary' do
+          = link_to 'https://excide.zendesk.com/hc/en-us/articles/360051369953-Changelog', target: '_blank', class: 'btn btn-white mr-3 border border-secondary' do
             = image_pack_tag 'media/src/images/symphony/book-24-px.svg'
             span.ml-2 Guides
         li.nav-item
           /! begin: Notification bar
-          span.btn.btn-icon.btn-primary.mr-3
-            / uses view notifications/default/workflow_action/:key.html.slim
-            = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
+          / uses view notifications/default/workflow_action/:key.html.slim
+          = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
         - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
           /! begin: Admin bar
           .dropdown.mr-3

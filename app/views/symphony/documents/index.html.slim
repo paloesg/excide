@@ -1,13 +1,12 @@
 .row.mb-3
-  .col-md-6
-    h1 Documents  
-  .col-md-6
-    .btn-toolbar.float-right
-      = link_to "Document Templates", symphony_document_templates_path, role: 'button', class: 'btn btn-success mr-1'
-      = link_to 'New Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
+  .col-sm-12
+    h1 Document Repository
 .row
   .col-sm-6.offset-sm-3.mb-3
     input.form-control#q type="search"
+  .col-sm-3
+    .btn-toolbar.float-right
+      = link_to 'Upload Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
 = form_tag symphony_batches_path(source: 'email'), method: :post do
   .row
     .col-sm-3#facets
@@ -19,23 +18,12 @@
             = select_tag('template_slug', options_for_select(@templates.map {|k,v| [k.title, k.slug] }), include_blank: 'Select template', required: true, id: 'template', class: 'selectize mt-1')
           .form-group.ml-2
             = submit_tag 'Create Batch', class: 'btn btn-lg btn-primary'
-    .col-sm-6
-      .kt-portlet
-        .kt-portlet__head
-          .kt-portlet__head-label
-            h3.kt-portlet__head-title
-              | Search Results
-        .kt-portlet__body
+    .col-sm-9
+      .card
+        h3.card-header Search Results
+        .card-body
           .table-responsive#hits
           #pagination
-    .col-md-3
-      .kt-portlet
-        .kt-portlet__head
-          .kt-portlet__head-label
-            h3.kt-portlet__head-title
-              | Upload Documents
-        .kt-portlet__body
-          .dashboard-body.documentMultipleUploads#Dashboard
 
 javascript:
   function loadExtJS(src, callback) {
@@ -102,11 +90,11 @@ javascript:
           attributeName: 'document_template.title',
           limit: 10,
           templates: {
-            header: '<div class="kt-portlet__head"><div class="kt-portlet__head-label"><h3 class="kt-portlet__head-title">Document Templates</h3></div></div>'
+            header: '<h3 class="card-header">Document Templates</h3>'
           },
           cssClasses: {
-            root: 'kt-portlet',
-            body: 'kt-portlet__body list-group list-group-flush',
+            root: 'card',
+            body: 'list-group list-group-flush',
             item: 'list-group-item',
             count: 'badge badge-pill badge-secondary'
           }
