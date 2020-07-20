@@ -2,12 +2,10 @@
   .col-md-3.col-sm-12
     .row
       .col-sm-12
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title
-                | Template Details
-          .kt-portlet__body
+        .card
+          h3.card-header
+            | Template Details
+          .card-body
             .form-group
               = f.label :title, "Title:"
               = f.text_field :title, class: "form-control", required: true
@@ -18,14 +16,14 @@
               = f.label :deadline_type, "Deadline Type:"
               = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type dropdown-overlay task-items-dropdown-width" }
             .form-group
-              .xth-day.kt-hide
+              .xth-day.d-none
                 = f.label :deadline_day, "Deadline - Day of the month:"
-                span.text-danger.kt-hide.deadline-warning Note: Symphony will auto set the deadline to the previous date if the month does not consist of the date 29, 30 or 31.
+                span.text-danger.d-none.deadline-warning Note: Symphony will auto set the deadline to the previous date if the month does not consist of the date 29, 30 or 31.
                 = f.number_field :deadline_day, min: 0, max: 31, class: "form-control"
-              .days-to-complete.kt-hide
+              .days-to-complete.d-none
                 = f.label :deadline_day, "Deadline - Number of days after start:"
                 = f.number_field :deadline_day, class: "form-control"
   .col-md-9.col-sm-12
-    .kt-portlet
+    .card
       = f.fields_for :sections do |section|
         = render 'section_fields', f: section
