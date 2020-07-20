@@ -25,13 +25,18 @@ class Symphony::HomeController < ApplicationController
 
   def tasks
     if params[:tasks].blank? || params[:tasks] == "Only incomplete tasks"
-      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where(company: current_user.company).order(:deadline).includes(:task)
+      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where(company: current_user.company).includes(:task)
     elsif params[:tasks] == "All tasks"
-      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
+      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(company: current_user.company).includes(:task)
     else
-      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
+      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(completed: true).where(company: current_user.company).includes(:task)
     end
-    @actions_sort = sort_column(@outstanding_actions)
+    if params[:created_at].blank? || params[:created_at] == "Last 7 days"
+      @outstanding_actions = @outstanding_actions.where('created_at >= ?', Time.zone.now - 7.days)
+    elsif params[:created_at] == "Last 30 days"
+      @outstanding_actions = @outstanding_actions.where('created_at >= ?', Time.zone.now - 30.days)
+    end
+    @actions_sort = sort_column(@outstanding_actions).reverse!
     params[:direction] == "desc" ? @actions_sort.reverse! : @actions_sort
   end
 
@@ -39,8 +44,7 @@ class Symphony::HomeController < ApplicationController
 
   def sort_column(array)
     array.sort_by{
-      |item| if params[:sort] == "deadline" then item.deadline ? item.deadline : Time.at(0)
-      end
+      |item| item.deadline ? item.deadline : Time.at(0)
     }
   end
 end
