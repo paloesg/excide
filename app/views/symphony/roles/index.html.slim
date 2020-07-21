@@ -1,11 +1,12 @@
 .row
   .col.m-5
     h1 Groups
-    p.font-size-{h6} Create groups based on certain categories (e.g. job title or roles) consisting of your added Teammates. This will be useful when you are assigning tasks or routines to a group of people in the same category.
+    h6 Create groups based on certain categories (e.g. job title or roles) consisting of your added Teammates. This will be useful when you are assigning tasks or routines to a group of people in the same category.
     = link_to new_symphony_role_path, role: 'button', class: 'btn btn-outline-secondary float-right' do
       i.material-icons.text-primary add 
       | Create a Group
 
+.row
   .col.m-5
     .table-responsive
       table.table
@@ -16,7 +17,11 @@
                 .row.p-2
                     h5 #{r.name.humanize} (#{r.users.count})
                 .row.p-2
-                  = r.users.pluck(Arel.sql("CONCAT_WS(' ', users.first_name, users.last_name)")).join('<br />').html_safe
+                  .col
+                    - r.users.each do |user|
+                      = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size my-2'
+                      = user.full_name
+                      br
               td.border-top-0 style="min-width: 135px;"
                 = link_to "Edit", edit_symphony_role_path(r.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
                 = link_to "Delete", symphony_role_path(r.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
