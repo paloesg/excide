@@ -49,12 +49,12 @@ html lang="en"
             = render 'layouts/sidebar'
           .col-sm-9.mt-5
             = yield
+        hr
+        = render 'layouts/footer'
     - else
       .container.h-100
         = yield
       /! end:: Content
-    hr
-    = render 'layouts/footer'
     /! begin:: Footer
     /! end:: Footer
     /! end:: Page

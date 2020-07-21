@@ -47,7 +47,7 @@ h1.header-bold-futura {
 .sidebar-sticky{
   padding-top: 60px;
   position: fixed;
-  overflow-y: scroll;
+  overflow-y: auto;
   top: 0;
   bottom: 0;
 }
@@ -75,4 +75,9 @@ h1.header-bold-futura {
 .img-icon-size{
   width: 10%;
   height: 10%;
+}
+
+// dropdown 
+.dropdown-menu-right{
+  left: auto !important
 }
