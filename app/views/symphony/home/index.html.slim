@@ -54,7 +54,7 @@
       .col-md-6
         .float-right
           = link_to new_symphony_template_path do
-            i.flaticon2-plus.text-primary
+            i.material-icons.text-primary add
     .row
       - @workflows.each do |w|
         .col-sm-4.mt-3
@@ -74,21 +74,21 @@
               br
               = link_to w.name, symphony_workflow_path(w.template.slug, w.friendly_id)
               .row
-                .col
+                .col.d-flex.align-items-center
                   - if w.deadline.to_date < Date.today
-                    i.flaticon2-calendar-9.text-danger.mr-2
+                    i.material-icons-outlined.text-danger.font-size-h6.mr-2 calendar_today
                     = (Date.today - w.deadline.to_date).to_i.to_s + "d overdue"
                     - bg = "bg-danger"
                   - elsif w.deadline.to_date <= Date.tomorrow
-                    i.flaticon2-calendar-9.text-warning.mr-2
+                    i.material-icons-outlined.text-warning.mr-2 calendar_today
                     = w.deadline.to_date == Date.today ? "Today" : "Tomorrow"
                     - bg = "bg-warning"
                   - elsif w.company.before_deadline_reminder_days.present? && w.deadline.to_date - w.company.before_deadline_reminder_days <= Date.today
-                    i.flaticon2-calendar-9.text-warning.mr-2
+                    i.material-icons-outlined.text-warning.mr-2 calendar_today
                     = w.deadline&.strftime("%d %b %Y")
                     - bg = "bg-warning"
                   - else
-                    i.flaticon2-calendar-9.text-primary.mr-2
+                    i.material-icons-outlined.text-primary.mr-2 calendar_today
                     = w.deadline&.strftime("%d %b %Y")
                     - bg = "bg-primary"
                 .col
