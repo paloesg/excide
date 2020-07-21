@@ -76,8 +76,8 @@
                         span.float-right Send to Xero:
                   - else
                     - if policy(@invoice).reject?
-                      button type="button" class="btn btn-danger mr-2" data-target="#remarkModal" data-toggle="modal" Reject 
-                  = f.submit 'Save', class: "btn btn-primary"
+                      button type="button" class="btn btn-danger float-right ml-2" data-target="#remarkModal" data-toggle="modal" Reject 
+                      = f.submit 'Update', class: 'btn btn-warning update-invoice-button float-right'
 #remarkModal.modal.fade aria-hidden="true" aria-labelledby="remarkModalLabel" role="dialog" tabindex="-1" 
   .modal-dialog.modal-dialog-centered
     .modal-content
