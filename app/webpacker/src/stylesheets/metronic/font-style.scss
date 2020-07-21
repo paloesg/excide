@@ -40,12 +40,16 @@ h1.header-bold-futura {
 }
 
 // Sidebar
-#sidebar{
-  background-color: white;
-}
-
 .logo-size{
   width: 70%;
+}
+
+.sidebar-sticky{
+  padding-top: 60px;
+  position: fixed;
+  overflow-y: scroll;
+  top: 0;
+  bottom: 0;
 }
 
 // User icon on navbar

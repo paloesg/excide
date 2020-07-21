@@ -4,7 +4,7 @@
     - if @target.has_unopened_notifications?(parameters)
       span.badge.badge-danger.rounded-circle.notification-count.mb-3.p-1
         = @target.unopened_notification_count(parameters)
-  .dropdown-menu.dropdown-menu-right.p-0.m-0
+  .dropdown-menu.notification-content-width.dropdown-menu-right.p-0.m-0
     form
       /! begin: Head
       .d-flex.flex-column.flex-center.bg-dark-o-5.rounded-top.bg-light
