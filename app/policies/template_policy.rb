@@ -11,6 +11,10 @@ class TemplatePolicy < ApplicationPolicy
     create?
   end
 
+  def show?
+    user_admin?
+  end
+
   def update?
     user_admin?
   end

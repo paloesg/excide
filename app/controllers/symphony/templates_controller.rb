@@ -50,6 +50,11 @@ class Symphony::TemplatesController < ApplicationController
     end
   end
 
+  def show
+    authorize @template
+    @workflows = @template.workflows
+  end
+
   def edit
     authorize @template
     @templates = policy_scope(Template).assigned_templates(current_user)
