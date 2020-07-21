@@ -7,20 +7,9 @@ class Symphony::HomeController < ApplicationController
 
     @workflows_array = policy_scope(Workflow).includes(:template).where(template: @templates).where(completed: [false, nil]).where.not(deadline: nil)
     workflows_sort = @workflows_array.sort_by(&:deadline)
-    # params[:direction] == "desc" ? workflows_sort.reverse! : workflows_sort
-    # if params[:workflow_type].blank?
-    #   templates_type = workflows_sort
-    # else
-    #   templates_type = workflows_sort.select{ |t| t.template.slug == params[:workflow_type] }
-    # end
     @workflows = workflows_sort.uniq(&:template).first(5)
 
     @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task).first(3)
-
-    # @batch_count = policy_scope(Batch).count
-    # @reminder_count = current_user.reminders.where(company: current_user.company).count
-    # @recurring_count = current_user.company.recurring_workflows.all.count
-    # @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
   end
 
   def tasks

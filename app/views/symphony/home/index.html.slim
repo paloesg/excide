@@ -95,9 +95,3 @@
                   div.progress
                     div.progress-bar role="progressbar" style="width: #{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}%" aria-valuenow="#{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}" aria-valuemin="0" aria-valuemax="100" class=bg
                   | #{w.workflow_actions.where(completed: true).count} / #{w.workflow_actions.count} 
-
-      /       tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-      /         td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
-      /         td = w.template.title
-      /         td = w.completed ? 'Completed' : w.current_section&.section_name
-      / = paginate @workflows, views_prefix: 'dashboard'
