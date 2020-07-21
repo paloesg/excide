@@ -32,7 +32,7 @@
     ul.navbar-nav.ml-auto
       li.nav-item
         = link_to 'https://paloe.zendesk.com/hc/en-us', target: '_blank', class: 'btn btn-white mr-3 border border-secondary' do
-          = image_pack_tag 'media/src/images/symphony/book-24-px.svg'
+          i.material-icons-outlined book
           span.ml-2 Guides
       li.nav-item
         /! begin: Notification bar
@@ -42,7 +42,7 @@
         /! begin: Admin bar
         li.dropdown.mr-3
           a.nav-link href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-            = image_pack_tag 'media/src/images/symphony/settings.svg', class: 'text-primary icon-size'
+            i.material-icons-outlined settings
           .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
             = link_to 'Manage Users', symphony_users_path, class: 'dropdown-item'
             = link_to 'Manage Roles', symphony_roles_path, class: 'dropdown-item'
