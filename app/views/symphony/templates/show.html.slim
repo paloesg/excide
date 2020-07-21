@@ -1,0 +1,30 @@
+= link_to "BACK", symphony_templates_path
+h2.mt-3
+	= @template.title
+	span
+		.btn.btn-dark.px-2.py-0.ml-4 = "On-demand"
+.row
+	.col-md-5
+		table.table
+			thead.thead-light
+				tr
+					th colspan="2" To complete
+					th Due
+			tbody
+				- @workflows.each do |wf|
+					tr
+						td = check_box_tag 'completed', wf.id, wf.completed
+						td hellow
+						td = wf.deadline&.strftime("%d %b %Y")
+	.col-md-7
+		table.table
+			thead.thead-light
+				tr
+					th colspan="2" Steps
+					th width="15%" Total: #{@template.tasks.count}
+			tbody
+				- @template.tasks.each_with_index do |t, index|
+					tr
+						td = (index+1).to_s + "."
+						td = t.instructions
+						td = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
