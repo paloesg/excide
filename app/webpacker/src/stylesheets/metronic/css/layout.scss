@@ -27,6 +27,10 @@ h1.header-bold-futura {
   border: solid 0.5px grey;
 }
 
+.dropdown-pointer{
+  cursor: pointer;
+}
+
 // Footer
 .nunito-footer{
   font-family: 'NunitoSans';
@@ -45,15 +49,21 @@ h1.header-bold-futura {
 }
 .sidebar{
   max-width: 250px !important;
-  position: absolute;
 }
 .sidebar-sticky{
-  padding-top: 0;
-  position: fixed;
+  padding-top: .5rem;
+  position: sticky;
   overflow-y: auto;
-  height: 100%;
-  // top: 0;
-  // bottom: 0;
+  overflow-x: hidden;
+  top: 48px;
+  bottom: 0;
+  height: calc(100vh - 48px);
+  // position: sticky;
+  // top: 48px;
+  // height: calc(100vh - 48px);
+  // padding-top: .5rem;
+  
+  // overflow-y: auto;
 }
 
 // User icon on navbar
@@ -68,8 +78,6 @@ h1.header-bold-futura {
   font-family: 'NunitoSans';
   font-size: 15px;
   font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
   line-height: normal;
   letter-spacing: 0.1px;
   color: black;

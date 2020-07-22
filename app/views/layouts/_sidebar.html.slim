@@ -1,43 +1,44 @@
-ul.nav.flex-column
-  li.nav-item.m-4
-    = link_to symphony_root_path, class: 'col-sm-12 d-flex align-items-center' do
-      i.material-icons-outlined home
-      .ml-2.nunito-sidebar Home
-  li.nav-item.m-4
-    = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
-      i.material-icons-outlined assignment_turned_in
-      .ml-2.nunito-sidebar My Tasks
-  li.nav-item.m-4
-    = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
-      i.material-icons-outlined history
-      .ml-2.nunito-sidebar Activity History
-hr
-ul.nav.flex-column
-  li.active.m-4
-    a.dropdown-toggle.nunito-sidebar.col-sm-6 aria-expanded="false" data-toggle="collapse" href="#routineMenu"  ROUTINES
-    ul#routineMenu.collapse.list-unstyled
-      - ::Template.assigned_templates(current_user).each do |template|
+.sidebar-sticky
+  ul.nav.flex-column
+    li.nav-item.m-4
+      = link_to symphony_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined home
+        .ml-2.nunito-sidebar Home
+    li.nav-item.m-4
+      = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined assignment_turned_in
+        .ml-2.nunito-sidebar My Tasks
+    li.nav-item.m-4
+      = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined history
+        .ml-2.nunito-sidebar Activity History
+  hr
+  ul.nav.flex-column
+    li.active.m-4
+      a.dropdown-toggle.nunito-sidebar.col-sm-6 aria-expanded="false" data-toggle="collapse" href="#routineMenu"  ROUTINES
+      ul#routineMenu.collapse.list-unstyled
+        - ::Template.assigned_templates(current_user).each do |template|
+          li.m-4
+            = link_to template.title, symphony_workflows_path(template.slug), class: 'nunito-sidebar text-dark'
+  hr
+  ul.nav.flex-column
+    li.active.m-4
+      a.dropdown-toggle.nunito-sidebar.col-sm-6 aria-expanded="false" data-toggle="collapse" href="#toolsMenu" TOOLS
+      ul#toolsMenu.collapse.list-unstyled
         li.m-4
-          = link_to template.title, symphony_workflows_path(template.slug), class: 'nunito-sidebar text-dark'
-hr
-ul.nav.flex-column
-  li.active.m-4
-    a.dropdown-toggle.nunito-sidebar.col-sm-6 aria-expanded="false" data-toggle="collapse" href="#toolsMenu" TOOLS
-    ul#toolsMenu.collapse.list-unstyled
-      li.m-4
-        = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined people
-          span.ml-2.nunito-sidebar Assign Adhoc Tasks
-      li.m-4
-        = link_to symphony_batches_index_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined collections_bookmark
-          span.ml-2.nunito-sidebar Bulk Invoices Tool
-      li.m-4
-        = link_to symphony_survey_templates_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined format_list_bulleted
-          span.ml-2.nunito-sidebar Forms & Surveys
-      li.m-4
-        = link_to symphony_documents_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined insert_drive_file
-          span.ml-2.nunito-sidebar Documents Repository
+          = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined people
+            span.ml-2.nunito-sidebar Assign Adhoc Tasks
+        li.m-4
+          = link_to symphony_batches_index_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined collections_bookmark
+            span.ml-2.nunito-sidebar Bulk Invoices Tool
+        li.m-4
+          = link_to symphony_survey_templates_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined format_list_bulleted
+            span.ml-2.nunito-sidebar Forms & Surveys
+        li.m-4
+          = link_to symphony_documents_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined insert_drive_file
+            span.ml-2.nunito-sidebar Documents Repository
 
