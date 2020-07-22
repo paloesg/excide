@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root to: redirect('/symphony')
+
   namespace :admin do
     DashboardManifest::DASHBOARDS.each do |dashboard_resource|
       resources dashboard_resource do
@@ -42,6 +44,8 @@ Rails.application.routes.draw do
   delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
   namespace :symphony do
+    root to: 'home#index'
+
     get '/search', to: 'home#search'
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
     get '/xero_line_items', to: 'xero_line_items#show'
@@ -128,8 +132,6 @@ Rails.application.routes.draw do
         resources :surveys
       end
     end
-
-    root to: 'home#index'
   end
 
   namespace :conductor do
@@ -208,6 +210,4 @@ Rails.application.routes.draw do
   # Static pages
   get 'terms', to: 'symphony/home#terms'
   get 'privacy', to: 'symphony/home#privacy'
-
-  root 'symphony/home#index'
 end
