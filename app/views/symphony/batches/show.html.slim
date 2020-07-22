@@ -4,24 +4,21 @@
 .row
   .col-xl-12
     - @batch.template.sections.each do |section|
-      .kt-portlet
-        .kt-portlet__head
-          .kt-portlet__head-label
-            h3.kt-portlet__head-title
-              | #{section.section_name} - #{section.tasks.count.to_s} tasks
-          .kt-portlet__head-toolbar
-            .kt-portlet__head-actions
-              - if @batch.processing_complete?
-                .pull-right #{@completed} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
-              - elsif @document_count.present?
-                .pull-right #{@document_count} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
-              - else
-                .pull-right Processing #{@processing_files} #{'file'.pluralize(@processing_files)} at the moment. You may start on your tasks first.
-            / Check if any files failed during processing (eg document not created, hence no attachment)
-            - if @batch.failed_blob['blobs'].present?
-              a.pop.ml-2 data-container="body" title="" data-original-title="#{pluralize(@batch.failed_blob['blobs'].length, 'file')} failed to be processed. Please contact admin for support." data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
-                i.fa.fa-exclamation-triangle.text-danger
-        .kt-portlet__body
+      .card
+        h3.card-header.d-flex.justify-content-between
+          | #{section.section_name} - #{section.tasks.count.to_s} tasks
+          .card-toolbar
+            - if @batch.processing_complete?
+              small #{@completed} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
+            - elsif @document_count.present?
+              small #{@document_count} of #{@batch.workflows.count} #{'file'.pluralize(@batch.workflows.count)} completed
+            - else
+              small Processing #{@processing_files} #{'file'.pluralize(@processing_files)} at the moment. You may start on your tasks first.
+          / Check if any files failed during processing (eg document not created, hence no attachment)
+          - if @batch.failed_blob['blobs'].present?
+            a.pop.ml-2 data-container="body" title="" data-original-title="#{pluralize(@batch.failed_blob['blobs'].length, 'file')} failed to be processed. Please contact admin for support." data-html="true" data-placement="top" data-toggle="tooltip" data-trigger="hover"
+              i.fa.fa-exclamation-triangle.text-danger
+        .card-body
           .kt-widget11
             .table-responsive
               table.table
@@ -33,7 +30,7 @@
                       th
                         .header-properties
                           ' #{task.task_type.humanize}
-                          a.pop data-container="body" title=task.instructions data-html="true" data-placement="right" data-toggle="kt-tooltip" data-trigger="hover"
+                          a.pop data-container="body" title=task.instructions data-html="true" data-placement="right" data-toggle="tooltip" data-trigger="hover"
                             i.fa.fa-info-circle
                         .header-info
                           ' #{task.role.name.humanize}
@@ -73,14 +70,14 @@
                               - if display_url.present?
                                 a data-container="body" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="true" data-content="<img src='#{display_url}' class='img-fluid'/>" class="btn btn-secondary flaticon2-search-1"
                               - else
-                                button class="btn btn-secondary flaticon2-search-1 disabled" data-html="true" data-toggle="kt-tooltip" data-placement="top" title="No preview available"
+                                button class="btn btn-secondary flaticon2-search-1 disabled" data-html="true" data-toggle="tooltip" data-placement="top" title="No preview available"
                               - if wf.invoice.blank?
-                                button class="btn btn-secondary flaticon2-paper disabled" data-html="true" data-toggle="kt-tooltip" data-placement="top" title="No invoice available"
+                                button class="btn btn-secondary flaticon2-paper disabled" data-html="true" data-toggle="tooltip" data-placement="top" title="No invoice available"
                               - else
-                                = link_to "", symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id), data: { toggle: "kt-tooltip", placement: "top", title: "View invoice" }, class: 'btn btn-secondary flaticon2-paper' 
-                              = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { toggle: "kt-tooltip", placement: "top", title: "Delete", confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'btn btn-secondary flaticon2-rubbish-bin text-danger'
+                                = link_to "", symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id), data: { toggle: "tooltip", placement: "top", title: "View invoice" }, class: 'btn btn-secondary flaticon2-paper' 
+                              = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { toggle: "tooltip", placement: "top", title: "Delete", confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'btn btn-secondary flaticon2-rubbish-bin text-danger'
                               - if wf.invoice.present? and wf.invoice.rejected?
-                                button class="btn btn-light flaticon2-warning disabled text-danger" data-html="true" data-toggle="kt-tooltip" data-placement="top" title="Invoice rejected"
+                                button class="btn btn-light flaticon2-warning disabled text-danger" data-html="true" data-toggle="tooltip" data-placement="top" title="Invoice rejected"
                       - section.tasks.includes(:role).order(position: :asc).each do |task|
                         td class="text-center #{'important-task' if task.important}"
                           = render "symphony/batches/tasks/#{task.task_type}", workflow: wf, action: task.get_workflow_action(wf.company, wf.id) if task.get_workflow_action(wf.company, wf.id).present?
