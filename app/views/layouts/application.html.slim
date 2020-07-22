@@ -12,8 +12,15 @@ html lang="en"
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'UA-93342323-1');
+
+      document.addEventListener('turbolinks:load', event => {
+        if (typeof gtag === 'function') {
+          gtag('config', 'UA-93342323-1', {
+            'page_location': event.data.url
+          });
+        }
+      });
 
     script src="https://js.stripe.com/v3/"
     = render 'application/favicon'
@@ -36,7 +43,7 @@ html lang="en"
       .kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--ver.kt-page
         #kt_wrapper.kt-grid__item.kt-grid__item--fluid.kt-grid.kt-grid--hor.kt-wrapper
           /! begin:: Header
-          - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys')) 
+          - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys'))
             = render 'layouts/conductor_header'
           - else
             = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path))
