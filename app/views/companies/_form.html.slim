@@ -75,42 +75,11 @@
               .form-group
                 = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-danger'
       .card.mt-4
-        h3.card-header Invoices
-        .card-body
-          h5 Download Invoices:
-          .row
-            .col-sm-12
-              - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data["invoices"].present?
-                table.table
-                  thead
-                    tr
-                      th Date
-                      th Description
-                      th
-                  tbody
-                    - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
-                      tr
-                        / only display invoices that are in the 12 months span period
-                        td = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
-                        td = invoice['lines']['data'][0]['description']
-                        td = link_to "Download", invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
-      .card.mt-4
         h3.card-header Email Upload
         .card-body
           .form-group
             = label_tag '', 'Send documents to Symphony using this unique email:'
             = text_field_tag '', 'sendfile-'+@company.mailbox_token+'@upload.'+ ENV['EMAIL_UPLOAD_DOMAIN'], class: 'form-control', disabled: true
-      .card.mt-4
-        h3.card-header Slack
-        .card-body
-          .form-group
-            - if @company.slack_access_response.present?
-              h5 Connected to channel: #{@company.slack_access_response['incoming_webhook']['channel']}
-              br
-              = link_to 'Disconnect from Slack', disconnect_from_slack_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
-            - else
-              a href='https://slack.com/oauth/v2/authorize?client_id=#{ENV['SLACK_CLIENT_ID']}&scope=incoming-webhook&redirect_uri=#{ENV['ASSET_HOST'] + '/oauth/authorization'}'
-                img alt=("Add to Slack") height="40" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" width="139"
       .card.mt-4.mb-4
         h3.card-header Xero
         .card-body

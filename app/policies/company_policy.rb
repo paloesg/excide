@@ -22,4 +22,8 @@ class CompanyPolicy < ApplicationPolicy
   def billing?
     show?
   end
+
+  def integration?
+    show?
+  end
 end

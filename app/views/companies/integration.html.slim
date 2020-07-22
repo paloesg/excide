@@ -1,0 +1,46 @@
+.row.mb-3
+  .col
+    h1 Connect to Apps
+.row
+  .col-xl-12
+    .d-flex.flex-row.justify-content-between
+    	.d-flex.flex-column
+          strong Slack
+          - if @company.slack_access_response.present?
+            h5 Connected to channel: #{@company.slack_access_response['incoming_webhook']['channel']}
+          - else
+            h5 Not connected
+            p Get notified and updates promptly
+	    .form-group
+	      - if @company.slack_access_response.present?
+	        = link_to 'Disconnect from Slack', disconnect_from_slack_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
+	      - else
+	        a href='https://slack.com/oauth/v2/authorize?client_id=#{ENV['SLACK_CLIENT_ID']}&scope=incoming-webhook&redirect_uri=#{ENV['ASSET_HOST'] + '/oauth/authorization'}'
+	          img alt=("Add to Slack") height="40" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" width="139"
+    = form_for(@company, url: {action: "integration"}) do |f|
+	    .card.mt-4.mb-4
+	      h3.card-header Xero
+	      .card-body
+	        .form-group.form-check
+	          = f.check_box :connect_xero, { class: 'form-check-input', disabled: current_user.company.basic?}
+	          = f.label :connect_xero, 'Enable Xero', class: 'form-check-label'
+	        .form-group
+	          - if current_user.company.session_handle.present?
+	            p
+	              ' Connected Xero organisation:
+	              = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
+	            = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
+	          - else
+	            = link_to 'Connect to Xero', connect_to_xero_path, class: "btn btn-primary mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
+	        .form-group
+	          h5 Update from Xero
+	          = link_to 'Contacts', update_contacts_from_xero_path, method: :post, class: "btn btn-warning mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
+	          = link_to 'Line items', update_line_items_from_xero_path, method: :post, class: "btn btn-warning mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
+	          = link_to 'Tracking categories', update_tracking_categories_from_xero_path, method: :post, class: "btn btn-warning #{current_user.company.basic? ? 'disabled' : nil}"
+	        .form-group
+	          = f.label :xero_organisation_name
+	          = f.text_field :xero_organisation_name, class: 'form-control', disabled: true
+	        .form-group
+	          = f.label :xero_email
+	          = f.text_field :xero_email, class: 'form-control', disabled: current_user.company.basic?
+	  	= f.submit "Save details", class: 'btn btn-primary'

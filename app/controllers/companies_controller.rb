@@ -1,6 +1,6 @@
 class CompaniesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_company, only: [:show, :edit, :update, :billing]
+  before_action :set_company, only: [:show, :edit, :update, :billing, :integration]
 
   after_action :verify_authorized
 
@@ -47,6 +47,10 @@ class CompaniesController < ApplicationController
   end
 
   def billing
+    authorize @company
+  end
+
+  def integration
     authorize @company
   end
 

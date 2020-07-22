@@ -204,6 +204,7 @@ Rails.application.routes.draw do
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
   get 'company/billing', to: 'companies#billing', as: :billing_company
+  get 'company/integration', to: 'companies#integration', as: :integration_company
   patch 'company', to: 'companies#update'
 
   # Static pages
