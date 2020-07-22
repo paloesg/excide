@@ -1,6 +1,9 @@
+.dropdown-pointer{
+  cursor: pointer;
+}
+
 // Login page
-h1.header-bold-futura { 
-  font-family: 'Futura';
+h1.header-bold { 
   font-weight: bold;
   font-stretch: normal;
   font-style: normal;
@@ -8,28 +11,16 @@ h1.header-bold-futura {
   color: #17172e;
 }
 
-.text-nunito{
-  font-family: 'NunitoSans';
-  font-size: 8px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: 0.1px;
-  color: white;
-}
 // Header
 .change-company-dropdown{
   width: 300px;
-  font-family: 'NunitoSans';
   font-size: 15px !important;
   border-radius: 4px;
   border: solid 0.5px grey;
 }
 
 // Footer
-.nunito-footer{
-  font-family: 'NunitoSans';
+.footer-size{
   font-size: 12px;
   font-weight: normal;
   font-stretch: normal;
@@ -45,15 +36,15 @@ h1.header-bold-futura {
 }
 .sidebar{
   max-width: 250px !important;
-  position: absolute;
 }
 .sidebar-sticky{
-  padding-top: 0;
-  position: fixed;
+  padding-top: .5rem;
+  position: sticky;
   overflow-y: auto;
-  height: 100%;
-  // top: 0;
-  // bottom: 0;
+  overflow-x: hidden;
+  top: 48px;
+  bottom: 0;
+  height: calc(100vh - 48px);
 }
 
 // User icon on navbar
@@ -64,12 +55,9 @@ h1.header-bold-futura {
   border-radius: 50%;
 }
 
-.nunito-sidebar{
-  font-family: 'NunitoSans';
+.sidebar-font{
   font-size: 15px;
   font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
   line-height: normal;
   letter-spacing: 0.1px;
   color: black;

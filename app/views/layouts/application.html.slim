@@ -44,8 +44,8 @@ html lang="en"
     / = render 'layouts/messages'
     - if user_signed_in?
       .container-fluid.w-100.pl-0
-        .row.border.border-right
-          .col-sm-3.d-md-block.bg-white.sidebar.sidebar-sticky
+        .row
+          .col-sm-3.bg-white.sidebar.border-right
             / TODO: FIND BY COMPANIES CONTROLLER CLASS OR FIND BY PATH/PAGES - e.g. accounts tab?
             / = render 'layouts/sidebar'
             = render 'layouts/sidebar_settings'

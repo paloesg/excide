@@ -1,30 +1,31 @@
-ul.nav.flex-column
-  strong.col-sm-6.mt-4 SETTINGS
-  li.nav-item.m-4
-    = link_to edit_user_registration_path, class: 'col-sm-12 d-flex align-items-center' do
-      i.material-icons-outlined account_circle
-      .ml-2.nunito-sidebar Account
-  li.nav-item.m-4
-    = link_to edit_company_path, class: 'col-sm-12 d-flex align-items-center' do
-      i.material-icons-outlined dashboard
-      .ml-2.nunito-sidebar Workspace
-  li.nav-item.m-4
-    = link_to symphony_roles_path, class: 'col-sm-12 d-flex align-items-center' do
-      i.material-icons-outlined group
-      .ml-2.nunito-sidebar Teammates
-  li.nav-item.m-4
-    = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
-      i.material-icons-outlined apps
-      .ml-2.nunito-sidebar Connect to Apps
-  li.nav-item.m-4
-    = link_to notification_settings_symphony_user_path(current_user), class: 'col-sm-12 d-flex align-items-center' do
-      i.material-icons-outlined notifications
-      .ml-2.nunito-sidebar Notification
-  li.nav-item.m-4
-    = link_to billing_company_path, class: 'col-sm-12 d-flex align-items-center' do
-      i.material-icons-outlined attach_money
-      .ml-2.nunito-sidebar Billing
-  li.nav-item.m-4
-    = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
-      i.material-icons-outlined widgets
-      .ml-2.nunito-sidebar Upgrade Plan
+.sidebar-sticky
+  ul.nav.flex-column
+    strong.col-sm-6.mt-4 SETTINGS
+    li.nav-item.m-4
+      = link_to edit_user_registration_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined account_circle
+        .ml-2.sidebar-font Account
+    li.nav-item.m-4
+      = link_to edit_company_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined dashboard
+        .ml-2.sidebar-font Workspace
+    li.nav-item.m-4
+      = link_to symphony_roles_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined group
+        .ml-2.sidebar-font Teammates
+    li.nav-item.m-4
+      = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined apps
+        .ml-2.sidebar-font Connect to Apps
+    li.nav-item.m-4
+      = link_to notification_settings_symphony_user_path(current_user), class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined notifications
+        .ml-2.sidebar-font Notification
+    li.nav-item.m-4
+      = link_to billing_company_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined attach_money
+        .ml-2.sidebar-font Billing
+    li.nav-item.m-4
+      = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined widgets
+        .ml-2.sidebar-font Upgrade Plan
