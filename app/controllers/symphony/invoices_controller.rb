@@ -9,7 +9,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_workflow
   before_action :set_workflows_navigation, only: [:new, :create, :edit]
   before_action :set_documents
-  before_action :set_invoice, only: [:edit, :update, :show, :destroy, :reject]
+  before_action :set_invoice, only: [:edit, :update, :show, :destroy]
   before_action :set_show_invoice_navigation, only: [:show, :next_show_invoice, :prev_show_invoice]
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
