@@ -178,7 +178,7 @@ Rails.application.routes.draw do
     get 'users/additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
   end
 
-  devise_for :users, controllers: { confirmations: 'confirmations', omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
+  devise_for :users, controllers: { confirmations: 'confirmations', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
 
   # Integrated with Devise
   notify_to :users, with_devise: :users
@@ -187,10 +187,6 @@ Rails.application.routes.draw do
   patch 'account/create', to: 'accounts#create', as: :create_account
   get 'account', to: 'accounts#edit', as: :edit_account
   patch 'account', to: 'accounts#update'
-
-  get 'profile', to: 'profiles#show'
-  get 'profile/edit', to: 'profiles#edit', as: :edit_profile
-  patch 'profile', to: 'profiles#update'
 
   resources :enquiries
 
@@ -209,44 +205,9 @@ Rails.application.routes.draw do
   get 'company/edit', to: 'companies#edit', as: :edit_company
   patch 'company', to: 'companies#update'
 
-  # Hosted files
-  get 'financial-model-course' => redirect('https://excide.s3-ap-southeast-1.amazonaws.com/financial-model-course-info.pdf')
-
   # Static pages
-  get 'faq', to: 'home#faq'
-  get 'terms', to: 'home#terms'
-  get 'privacy', to: 'home#privacy'
-  get 'about-us', to: 'home#about', as: :about
+  get 'terms', to: 'symphony/home#terms'
+  get 'privacy', to: 'symphony/home#privacy'
 
-  # VFO services
-  get 'virtual-financial-officer', to: 'home#vfo', as: :vfo
-  get 'virtual-technology-officer', to: 'home#vto', as: :vto
-  get 'financial-analytics-reporting', to: 'home#financial-analytics-reporting', as: :financial_analytics_reporting
-  get 'business-plan-assistance', to: 'home#business-plan-assistance', as: :business_plan_assistance
-  get 'corporate-planning', to: 'home#corporate-planning', as: :corporate_planning
-  get 'forecasting-sensitivity-analysis', to: 'home#forecasting-sensitivity-analysis', as: :forecasting_sensitivity_analysis
-  get 'budgeting-forecasting', to: 'home#budgeting-forecasting', as: :bugeting_forecasting
-  get 'ipo-support', to: 'home#ipo-support', as: :ipo_support
-  get 'mergers-acquisitions-support', to: 'home#mergers-acquisitions-support', as: :mergers_acquisitions_support
-  get 'exit-strategy', to: 'home#exit-strategy', as: :exit_strategy
-  get 'turnaround-management', to: 'home#turnaround-management', as: :turnaround_management
-  get 'fund-raising', to: 'home#fund-raising', as: :fund_raising
-
-  # Corp sec services
-  get 'corporate-secretary', to: 'home#corp-sec', as: :corp_sec
-  get 'services', to: 'home#services', as: :services
-  get 'accounting-services', to: 'home#accounting-services', as: :accounting
-  get 'annual-return-filing', to: 'home#annual-return-filing', as: :return
-  get 'bookkeeping', to: 'home#bookkeeping', as: :bookkeeping
-
-  # Symphony pages
-  get '/symphony-features', to: 'home#symphony-features', as: :symphony_features
-  get 'symphony-xero-automation', to: 'home#symphony-xero-automation', as: :symphony_xero_automation
-  get '/symphony-pricing', to: 'home#symphony-pricing', as: :symphony_pricing
-  get '/symphony-business-continuity-planning', to: 'home#symphony-bcp', as: :symphony_bcp
-  get '/symphony-remote-working', to: 'home#symphony-remote', as: :symphony_remote
-
-  get '/robots.txt' => 'home#robots'
-
-  root 'home#index'
+  root 'symphony/home#index'
 end

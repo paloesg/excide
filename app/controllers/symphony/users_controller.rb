@@ -1,7 +1,4 @@
 class Symphony::UsersController < ApplicationController
-  # layout 'dashboard/application'
-  layout 'metronic/application'
-
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles, only: [:new, :create, :edit]

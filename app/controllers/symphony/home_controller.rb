@@ -1,7 +1,5 @@
 class Symphony::HomeController < ApplicationController
-  layout 'metronic/application'
-
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:terms, :privacy]
 
   def index
     @templates = policy_scope(Template).assigned_templates(current_user)

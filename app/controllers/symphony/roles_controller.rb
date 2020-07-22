@@ -1,5 +1,4 @@
 class Symphony::RolesController < ApplicationController
-  layout "metronic/application"
   before_action :set_company
   before_action :set_role, only: [:edit, :update, :destroy]
 

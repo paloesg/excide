@@ -1,65 +1,140 @@
-nav.menu1.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top
-  .container-fluid
-    a.navbar-brand href="/"
-      = image_pack_tag 'media/src/images/excide-logo.png', alt: "logo", width: "100", class: "logo logo-light"
-    button.navbar-toggler aria-controls="navbarsExample07" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarsExample07" data-toggle="collapse" type="button"
-      span.navbar-toggler-icon
-    #navbarsExample07.collapse.navbar-collapse
-      ul.navbar-nav.ml-auto
-        li.nav-item
-          a.nav-link href="/about-us" About Us
-        li.nav-item
-          a.nav-link href="/virtual-financial-officer" Virtual CFO
-        li.nav-item
-          a.nav-link href="/virtual-technology-officer" Virtual CTO
-        li.nav-item.dropdown
-          a#dropdown07.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" Financial Advisory
-          ul.dropdown-menu.multi-level aria-labelledby="dropdownMenu" role="menu"
-            li.dropdown-submenu.dropdown-item
-              a.nav-link.dropdown-item data-toggle="dropdown" href="#" tabindex="-1" Financial Analytics
-              ul.dropdown-menu
-                li.dropdown-item
-                  a.nav-link href="/financial-analytics-reporting" tabindex="-1" Financial Analytics & Reporting
-                li.dropdown-item
-                  a.nav-link href="/forecasting-sensitivity-analysis" tabindex="-1"  Forecasting & Sensitivity Analysis
-                li.dropdown-item
-                  a.nav-link href="/budgeting-forecasting" tabindex="-1" Budgeting & Forecasting
-            li.dropdown-submenu.dropdown-item
-              a.nav-link.dropdown-item data-toggle="dropdown" href="#" tabindex="-1"  Financial Planning
-              ul.dropdown-menu
-                li.dropdown-item
-                  a.nav-link href="/business-plan-assistance" tabindex="-1" Business Plan Assistance
-                li.dropdown-item
-                  a.nav-link href="/corporate-planning" tabindex="-1" Corporate Planning & Structure
-                li.dropdown-item
-                  a.nav-link href="/ipo-support" tabindex="-1" IPO Support
-                li.dropdown-item
-                  a.nav-link href="/mergers-acquisitions-support" tabindex="-1" M&A Suppport
-            li.dropdown-submenu.dropdown-item
-              a.nav-link.dropdown-item data-toggle="dropdown" href="#" tabindex="-1"  Growth Strategy
-              ul.dropdown-menu
-                li.dropdown-item
-                  a.nav-link href="/exit-strategy" tabindex="-1" Exit Strategy
-                li.dropdown-item
-                  a.nav-link href="/turnaround-management" tabindex="-1" Turnaround Management
-                li.dropdown-item
-                  a.nav-link href="/fund-raising" tabindex="-1" Fund Raising
-        li.nav-item.dropdown.mr-3
-          a#dropdown07.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" Symphony
-          ul.dropdown-menu aria-labelledby="dropdownMenu" role="menu"
-            li.dropdown-item
-              a.nav-link href="/symphony-remote-working" tabindex="-1" Remote Working
-            li.dropdown-item
-              a.nav-link href="/symphony-xero-automation" tabindex="-1" Xero Automation
-            li.dropdown-item
-              a.nav-link href="/symphony-pricing" tabindex="-1" Pricing Plans
-        - if current_user
-          = link_to symphony_root_path, class: "btn btn--sm type--uppercase" do
-            span.btn__text Dashboard
-        - else
-          li.nav-item.btn.btn--sm.btn--orange.type--uppercase.mb-1.mb-md-0
-            = link_to new_user_registration_path do
-              span.btn__text Sign Up
-          li.nav-item.btn.btn--sm.type--uppercase.ml-0.ml-md-1
-            = link_to new_user_session_path do
-              span.btn__text Sign In
+/! begin:: Header
+#kt_header.kt-header.kt-grid__item.kt-header--fixed.forward data-ktheader-minimize="on"
+  .kt-header__top
+    .kt-container
+      /! begin:: Brand
+      #kt_header_brand.kt-header__brand.kt-grid__item
+        .kt-header__brand-logo
+          = link_to symphony_root_path do
+            = image_pack_tag 'media/src/images/logo-symphony.png', alt: "Logo", class: "kt-header__brand-logo-default"
+          = content_tag :span, "Staging", class: "badge badge-danger badge-header" if ENV['APP_NAME'] == "excide-staging"
+          = content_tag :span, "Trial", class: "badge badge-warning badge-header ml-2" if current_user.company.free_trial?
+          = content_tag :span, "Basic", class: "badge badge-secondary badge-header ml-2" if current_user.company.basic?
+          = content_tag :span, "Pro", class: "badge badge-success badge-header ml-2" if current_user.company.pro?
+        .kt-header__brand-nav
+          .dropdown
+            - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
+              button.btn.btn-pill.btn-default.dropdown-toggle aria-expanded="true" aria-haspopup="true" data-toggle="dropdown" type="button" #{current_user.company.name}
+              .dropdown-menu.dropdown-menu-fit.dropdown-menu-md.columns
+                ul.kt-nav.kt-nav--bold.kt-nav--md-space.kt-margin-t-20.kt-margin-b-20
+                  - if current_user.has_role? :superadmin
+                    - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
+                      - if company.name.present?
+                        li.kt-nav__item
+                          = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'kt-nav__link', tabindex: -1
+                    .kt-separator.kt-separator--space-lg.kt-separator--border-dashed
+                      li.kt-nav__item
+                        = link_to 'Add New Company', new_company_path, class: 'kt-nav__link'
+                  - else
+                    - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
+                      - if company.name.present?
+                        = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'kt-nav__link', tabindex: -1
+            - else
+              = link_to(symphony_root_path, class: "btn btn-pill btn-default") do
+                ' #{current_user.company.name}
+      /! end:: Brand
+      /! begin:: Header Topbar
+      .kt-header__topbar.kt-grid__item.kt-grid__item--fluid
+        /! begin: Notification bar
+        .kt-header__topbar-item.kt-header__topbar-item--langs
+          .kt-header__topbar-wrapper data-offset="20px,0px"
+            span.kt-header__topbar-icon
+              / uses view notifications/default/workflow_action/:key.html.slim
+              = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
+        /! end: Notification bar
+        - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
+          /! begin: Admin bar
+          .kt-header__topbar-item.kt-header__topbar-item--langs
+            .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
+              span.kt-header__topbar-icon.kt-header__topbar-icon--warning
+                i.flaticon2-gear
+            .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+              ul.kt-nav.kt-margin-t-10.kt-margin-b-10
+                li.kt-nav__item
+                  = link_to symphony_users_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Users
+                li.kt-nav__item
+                  = link_to symphony_roles_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Roles
+                li.kt-nav__item
+                  = link_to symphony_templates_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Templates
+                li.kt-nav__item
+                  = link_to symphony_survey_templates_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Manage Survey Templates
+          /! end: Admin bar
+        /! begin: User bar
+        .kt-header__topbar-item.kt-header__topbar-item--langs
+          .kt-header__topbar-wrapper data-offset="20px,0px" data-toggle="dropdown"
+            span.kt-header__topbar-icon.kt-header__topbar-icon--success
+              i.flaticon2-user
+          .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim
+            ul.kt-nav.kt-margin-t-10.kt-margin-b-10
+              li.kt-nav__item
+                = link_to edit_user_registration_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text User Profile
+              - if current_user.has_role? :superadmin or current_user.has_role?(:admin, current_user.company)
+                li.kt-nav__item
+                  = link_to edit_company_path, class: 'kt-nav__link' do
+                    span.kt-nav__link-text Company Details
+              li.kt-nav__item
+                = link_to symphony_archives_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text Archived Workflows
+              li.kt-nav__item
+                = link_to symphony_documents_path, class: 'kt-nav__link' do
+                  span.kt-nav__link-text Documents
+              li.kt-nav__item
+                = link_to notification_settings_symphony_user_path(current_user), class: 'kt-nav__link' do
+                  span.kt-nav__link-text Notifications
+              li.kt-nav__item
+                = link_to destroy_user_session_path, {method: :delete, class: 'kt-nav__link'} do
+                  span.kt-nav__link-text Log Out
+        /! end: User bar
+  /! end:: Header Topbar
+  .kt-header__bottom
+    .kt-container
+      /! begin: Header Menu
+      button#kt_header_menu_mobile_close_btn.kt-header-menu-wrapper-close
+        i.la.la-close
+      #kt_header_menu_wrapper.kt-header-menu-wrapper
+        #kt_header_menu.kt-header-menu.kt-header-menu-mobile
+          ul.kt-menu__nav
+            li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'home'}"
+              = link_to symphony_root_path, class:"kt-menu__link" do
+                span.kt-menu__link-text Dashboard
+            li.kt-menu__item.kt-menu__item--submenu.kt-menu__item--rel aria-haspopup="true" data-ktmenu-submenu-toggle="click" class="#{'kt-menu__item--here' if controller_name == 'workflows'}"
+              a.kt-menu__link.kt-menu__toggle href="javascript:;"
+                span.kt-menu__link-text Workflows
+                i.kt-menu__ver-arrow.la.la-angle-right
+              .kt-menu__submenu.kt-menu__submenu--classic.kt-menu__submenu--left.columns
+                ul.kt-menu__subnav
+                  - ::Template.assigned_templates(current_user).each do |t|
+                    li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--active' if @template && @template.slug == t.slug}"
+                      = link_to symphony_workflows_path(t.slug), class: 'kt-menu__link' do
+                        span.kt-menu__link-text #{t.title}
+                        span.kt-badge.kt-badge--unified-primary.kt-badge--md.kt-badge-bold = t.company_workflows(current_user.company).where(completed: [false, nil]).count
+            li.kt-menu__item aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'batches'}"
+              = link_to symphony_batches_index_path, class:"kt-menu__link" do
+                span.kt-menu__link-text
+                  | Batches
+                  = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
+            li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'recurring_workflows'}"
+              = link_to symphony_workflows_recurring_path, class:"kt-menu__link" do
+                span.kt-menu__link-text
+                  | Recurring
+                  = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
+            li.kt-menu__item.kt-menu__item--rel aria-haspopup="true" class="#{'kt-menu__item--open kt-menu__item--here' if controller_name == 'reminders'}"
+              = link_to symphony_reminders_path, class:"kt-menu__link" do
+                span.kt-menu__link-text Reminders
+
+        .xero-info.ml-3
+          - if current_user.company.session_handle.present? and (current_user.company.free_trial? or current_user.company.pro?)
+            ' Connected Xero organisation:
+            = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
+            // If user is disconnected from xero, session handle is empty instead of nil
+          - elsif (current_user.company.session_handle.nil? or current_user.company.session_handle.empty?) and (current_user.company.free_trial? or current_user.company.pro?)
+            ' Not connected to Xero:
+            = link_to('Connect', connect_to_xero_path)
+          - else
+            = link_to 'Subscribe to Symphony Pro for more advanced features', edit_company_path
+/! end:: Header
