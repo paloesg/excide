@@ -1,9 +1,9 @@
 = paginator.render do
-  .kt-pagination.kt-pagination--brand.justify-content-center
-    ul.kt-pagination__links.pagination
+  nav
+    ul.pagination.justify-content-center
       == first_page_tag unless current_page.first?
       == prev_page_tag unless current_page.first?
-
+      
       - each_page do |page|
         - if page.left_outer? || page.right_outer? || page.inside_window?
           == page_tag page

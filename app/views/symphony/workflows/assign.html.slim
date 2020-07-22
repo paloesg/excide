@@ -4,10 +4,9 @@
 .row
   .col-md-8.col-sm-6
     - @sections.each do |section|
-      .kt-portlet.mb-3
-        .kt-portlet__head
-          h3.kt-portlet__head-label = section.section_name
-        .kt-portlet__body
+      .card.mb-3
+        h3.card-header = section.section_name
+        .card-body
           table.table
             thead
               tr
@@ -37,10 +36,9 @@
     - if @workflow.template.get_roles.present?
       h3 User List
       - @workflow.template.get_roles.each do |role|
-        .kt-portlet.mt-3
-          .kt-portlet__head
-            h4.kt-portlet__head-label #{role.name.titleize}
-          .kt-portlet__body
+        .card.mt-3
+          h4.card-header #{role.name.titleize}
+          .card-body
             - (User.with_role role.name, @company).each do |user|
               p
                 i.fa.fa-user
