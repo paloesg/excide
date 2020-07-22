@@ -6,17 +6,19 @@
       i.material-icons.text-primary add
       | Add a teammate
 .row
-  .col-xl-12
+  .col-12
     .table-responsive
       table.table
         tbody
           - @users.each do |u|
             tr.border-bottom
-              td.border-top-0
-                .row.m-2
-                  h6 = u.full_name
-                .row.m-2
-                  = u.email
-              td.border-top-0 style="min-width: 135px;"
-                = link_to 'Edit', edit_symphony_user_path(u.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
-                = link_to 'Delete', symphony_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
+              .col-8
+                td.border-top-0
+                  .row.m-2
+                    h6 = u.full_name
+                  .row.m-2
+                    = u.email
+              .col-4
+                td.border-top-0.float-right
+                  = link_to 'Edit', edit_symphony_user_path(u.id), role: 'button', class: 'btn btn-primary btn-sm mr-1'
+                  = link_to 'Delete', symphony_user_path(u.id), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm'
