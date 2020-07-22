@@ -30,10 +30,19 @@ h1.header-bold {
   color: black;
 }
 
-// Sidebar
+// Logo size in header
+.inv-logo-size{
+  width: 10%;
+}
 .logo-size{
   width: 70%;
 }
+
+.small-font{
+  font-size: 2rem;
+}
+
+// Sidebar
 .sidebar{
   max-width: 250px !important;
 }
