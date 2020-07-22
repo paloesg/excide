@@ -43,13 +43,17 @@ h1.header-bold-futura {
 .logo-size{
   width: 70%;
 }
-
+.sidebar{
+  max-width: 250px !important;
+  position: absolute;
+}
 .sidebar-sticky{
-  padding-top: 60px;
+  padding-top: 0;
   position: fixed;
   overflow-y: auto;
-  top: 0;
-  bottom: 0;
+  height: 100%;
+  // top: 0;
+  // bottom: 0;
 }
 
 // User icon on navbar

@@ -44,10 +44,10 @@ html lang="en"
     / = render 'layouts/messages'
     - if user_signed_in?
       .container-fluid.w-100.pl-0
-        .row
-          .col-sm-3.d-none.d-md-block.bg-white.sidebar.border-right
+        .row.border.border-right
+          .col-sm-3.d-md-block.bg-white.sidebar.sidebar-sticky
             = render 'layouts/sidebar'
-          .col-sm-9.mt-5
+          .col-sm-9.mt-5.mx-4
             = yield
         hr
         = render 'layouts/footer'
