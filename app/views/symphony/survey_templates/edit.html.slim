@@ -5,7 +5,7 @@
   .col-12
     = form_for(@survey_template, url: symphony_survey_template_path(id: @survey_template.id)) do |f|
       = render 'form', f: f
-      .row
+      .row.mt-4
         .col-8
           .form-inline
             = text_field_tag :new_survey_section, params[:new_survey_section], {class: 'form-control mr-2 col-md-6', placeholder: 'Enter form section name'}

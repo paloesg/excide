@@ -7,11 +7,9 @@
     = form_for(@template, url: symphony_templates_path(@template) ) do |f|
       .row
         .col-md-10
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title New Templates
-            .kt-portlet__body
+          .card
+            h3.card-header New Templates
+            .card-body
               .form-group
                 = f.label :title, "Title:"
                 = f.text_field :title, class: "form-control"
@@ -22,11 +20,11 @@
                 = f.label :deadline_type, "Deadline Type:"
                 = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type dropdown-overlay task-items-dropdown-width" }
               .form-group
-                .xth-day.kt-hide
+                .xth-day.d-none
                   = f.label :deadline_day, "Set a deadline (the date of the month that you want to set the deadline): "
-                  span.text-danger.kt-hide.deadline-warning Note: Symphony will auto set the deadline to the previous date if the month does not consist of the date 29, 30 or 31.
+                  span.text-danger.d-none.deadline-warning Note: Symphony will auto set the deadline to the previous date if the month does not consist of the date 29, 30 or 31.
                   = f.number_field :deadline_day, min: 0, max: 31, class: "form-control"
-                .days-to-complete.kt-hide
+                .days-to-complete.d-none
                   = f.label :deadline_day, "Set a deadline (number of days to complete): "
                   = f.number_field :deadline_day, class: "form-control"
               .form-group
@@ -35,11 +33,9 @@
     = form_for(@template, url: symphony_templates_path(@template) ) do |f|
       .row
         .col-md-12
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title Clone Templates
-            .kt-portlet__body
+          .card
+            h3.card-header Clone Templates
+            .card-body
               .form-group
                 = f.label :title, "Title:"
                 = f.text_field :title, class: "form-control"

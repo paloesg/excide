@@ -1,3 +1,13 @@
+// -----------------------------------------General font---------------------------------------
+* {
+  font-family: "NunitoSans"
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Futura";
+}
+
+// ------------------------------------ Custom css -----------------------------------------s
 .selectize-dropdown {
   z-index: 1005 !important;
 }
@@ -115,6 +125,9 @@ td.day.has-events.fc-day-top.fc-past {
   white-space: nowrap;
 }
 
+.material-icons-outlined {
+  color: #515163;
+}
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 $theme-colors: (
