@@ -18,4 +18,8 @@ class CompanyPolicy < ApplicationPolicy
   def update?
     show?
   end
+
+  def billing?
+    show?
+  end
 end

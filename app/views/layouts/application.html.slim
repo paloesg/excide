@@ -46,7 +46,9 @@ html lang="en"
       .container-fluid.w-100.pl-0
         .row.border.border-right
           .col-sm-3.d-md-block.bg-white.sidebar.sidebar-sticky
-            = render 'layouts/sidebar'
+            / TODO: FIND BY COMPANIES CONTROLLER CLASS OR FIND BY PATH/PAGES - e.g. accounts tab?
+            / = render 'layouts/sidebar'
+            = render 'layouts/sidebar_settings'
           .col-sm-9.mt-5.mx-4
             = yield
         hr
