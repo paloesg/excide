@@ -1,4 +1,5 @@
 = form_for(@invoice, url: symphony_invoices_path(workflow_id: params[:workflow_id])) do |f|
+  // Header
   .navbar.navbar-expand-lg.navbar-light.fixed-top.bg-white.border.border-bottom.w-100.px-3
     .navbar-brand
       .row
@@ -44,33 +45,35 @@
             li
               = link_to destroy_user_session_path, {method: :delete, class: 'dropdown-item'} do
                 span Log Out
-  .row
-    .loading
-      .loader
-    .col-md-4
-      / First two checks for old pdf and non pdf files, third checks for new non pdf files. && @document.converted_images.count == @page_count
-      - if (@document.converted_images.attached?) || (@document.file_url.present? && File.extname(@document.file_url) != ".pdf") || (@document.raw_file.attached? && @document.raw_file.content_type != "application/pdf")
-        = render 'document'
-      - else
-        div.mt-md-5.text-center Document not available. Please try again later.
-    .col-md-8
-      .row.mb-3.d-none
-        .col-md-12
-          .card
-            .card-body.contact-body
-              .loading-textract
-                .d-flex.align-items-center
-                  strong Loading...
-                  .spinner-border.ml-auto aria-hidden="true" role="status"
-              .result-textract
-                = label_tag :textract_json, 'Result Textract JSON'
-                = text_area_tag 'textract', nil, rows: 10, class:"form-control aws-textract-result"
-      = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
-      = render 'form', f: f
-      .row
-        .col-md-8
-          - if params[:workflow_action].present?
-            = hidden_field_tag :workflow_action, params[:workflow_action_id]
-            = hidden_field_tag :invoice_type, "0"
-        .col-md-4
-          = hidden_field_tag :submit_position, '', class: 'submit-position'
+  // Content
+  .container.invoice-form-wrapper
+    .row
+      .loading
+        .loader
+      .col-md-4.inv-margin
+        / First two checks for old pdf and non pdf files, third checks for new non pdf files. && @document.converted_images.count == @page_count
+        - if (@document.converted_images.attached?) || (@document.file_url.present? && File.extname(@document.file_url) != ".pdf") || (@document.raw_file.attached? && @document.raw_file.content_type != "application/pdf")
+          = render 'document'
+        - else
+          div.mt-md-5.text-center Document not available. Please try again later.
+      .col-md-8.inv-margin
+        .row.mb-3.d-none
+          .col-md-12
+            .card
+              .card-body.contact-body
+                .loading-textract
+                  .d-flex.align-items-center
+                    strong Loading...
+                    .spinner-border.ml-auto aria-hidden="true" role="status"
+                .result-textract
+                  = label_tag :textract_json, 'Result Textract JSON'
+                  = text_area_tag 'textract', nil, rows: 10, class:"form-control aws-textract-result"
+        = hidden_field_tag :workflow_action_id, params[:workflow_action_id] if params[:workflow_action_id].present?
+        = render 'form', f: f
+        .row
+          .col-md-8
+            - if params[:workflow_action].present?
+              = hidden_field_tag :workflow_action, params[:workflow_action_id]
+              = hidden_field_tag :invoice_type, "0"
+          .col-md-4
+            = hidden_field_tag :submit_position, '', class: 'submit-position'
