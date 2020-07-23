@@ -34,6 +34,10 @@ class Symphony::HomeController < ApplicationController
     params[:direction] == "desc" ? @actions_sort.reverse! : @actions_sort
   end
 
+  def activity_history
+    
+  end
+
   private
 
   def sort_column(array)
