@@ -3,23 +3,20 @@
     h1 Billing
 .row
   .col-xl-12
-	  .card
-	    h3.card-header Invoices
-	    .card-body
-	      h5 Download Invoices:
-	      .row
-	        .col-sm-12
-	          - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data["invoices"].present?
-	            table.table
-	              thead
-	                tr
-	                  th Date
-	                  th Description
-	                  th
-	              tbody
-	                - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
-	                  tr
-	                    / only display invoices that are in the 12 months span period
-	                    td = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
-	                    td = invoice['lines']['data'][0]['description']
-	                    td = link_to "Download", invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
+    h3 Invoices
+    .row
+      .col-sm-12
+        - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data["invoices"].present?
+          table.table
+            thead
+              tr
+                th Date
+                th Description
+                th
+            tbody
+              - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
+                tr
+                  / only display invoices that are in the 12 months span period
+                  td = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
+                  td = invoice['lines']['data'][0]['description']
+                  td = link_to "Download", invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
