@@ -43,11 +43,11 @@ html lang="en"
     /! begin:: Content
     / = render 'layouts/messages'
     - if user_signed_in?
-      .container-fluid.w-100.pl-0
+      .container-fluid.w-100.px-2
         .row
-          .col-sm-3.bg-white.sidebar.border-right
+          .col-sm-2.bg-white.border-right
             = render 'layouts/sidebar'
-          .col-sm-9.mt-5.mx-4
+          .col-sm-10.mt-5
             = yield
         hr
         = render 'layouts/footer'
