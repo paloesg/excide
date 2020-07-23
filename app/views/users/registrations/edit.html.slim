@@ -8,8 +8,10 @@
       = devise_error_messages!
       .row
         .col-md-6
-          .card
-            h3.card-header User Information
+          .card.card-custom
+            .card-header
+              .card-title
+                | User Information
             .card-body
               .form-group
                 = f.label :first_name
@@ -31,9 +33,10 @@
                     = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'selectize'
                   .col-md-8
                     = text_field_tag "contact", @contact, class: 'form-control'
-          .card.mt-4
-            h3.card-header
-              | Confirm Password
+          .card.card-custom.mt-4
+            .card-header
+              .card-title
+                | Confirm Password
             .card-body
               .form-group
                 em We need your current password to confirm your changes.
@@ -43,9 +46,10 @@
               .form-group.pull-right
                 = f.submit "Update", class: "btn green darken-3", class: 'btn btn-primary'
         .col-md-6
-          .card
-            h3.card-header
-              | Change Password
+          .card.card-custom
+            .card-header
+              .card-title
+                | Change Password
             .card-body
               .form-group
                 em Leave blank if you don't want to change your password.
@@ -56,9 +60,10 @@
                 = f.label :password_confirmation
                 = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
           - if current_user.has_role? :superadmin
-            .card.mt-4
-              h3.card-header
-                | Company Details Information
+            .card.card-custom.mt-4
+              .card-header
+                .card-title
+                  | Company Details Information
               .card-body
                 .form-group
                   = f.label :company_id

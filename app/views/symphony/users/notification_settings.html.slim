@@ -9,9 +9,10 @@
           .col-md-4.col-sm-12
             .row
               .col-sm-12
-                .card
-                  h3.card-header
-                    | Reminders Setting
+                .card.card-custom
+                  .card-header
+                    .card-title
+                      | General Reminders Setting
                   .card-body
                     .form-group.form-check
                       = s.check_box :reminder_email,{ class: 'form-check-input' }, 'true', 'false'
@@ -31,9 +32,10 @@
           .col-md-4.col-sm-12
             .row
               .col-sm-12
-                .card
-                  h3.card-header
-                    | Tasks Setting
+                .card.card-custom
+                  .card-header
+                    .card-title
+                      | Routine Setting
                   .card-body
                     .form-group.form-check
                       = s.check_box :task_email, { class: 'form-check-input' }, 'true', 'false'
@@ -53,9 +55,10 @@
           .col-md-4.col-sm-12
             .row
               .col-sm-12
-                .card
-                  h3.card-header
-                    | Batches Setting
+                .card.card-custom
+                  .card-header
+                    .card-title
+                      | Invoice Batches Setting
                   .card-body
                     .form-group.form-check
                       = s.check_box :batch_email, { class: 'form-check-input' }, 'true', 'false'

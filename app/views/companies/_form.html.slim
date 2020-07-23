@@ -6,8 +6,10 @@
         li = message
 .row
   .col-sm-6
-    .card
-      h3.card-header Company Information
+    .card.card-custom.mt-4
+      .card-header
+        .card-title 
+          | Company Information
       .card-body
         .form-group
           = f.label :name, 'Company name'
@@ -21,8 +23,10 @@
         .form-group
           = f.fields_for :address do |a|
             = render 'companies/address_fields', f: a
-    .card.mt-4.mb-4
-      h3.card-header Filing Dates
+    .card.card-custom.mt-4.mb-4
+      .card-header
+        .card-title
+          | Filing Dates
       .card-body
         .form-group
           = f.label :financial_year_end
@@ -47,8 +51,10 @@
           = f.date_field :form_cs_date, class: 'form-control'
   .col-sm-6
     - if action_name == 'edit'
-      .card
-        h3.card-header Subscription
+      .card.card-custom.mt-4
+        .card-header
+          .card-title
+            | Subscription
         .card-body
           h5.mb-2 #{@company.account_type.capitalize.humanize} Plan
           / if cancel is true, it will inform the user when is their pro features going to stop
@@ -74,20 +80,26 @@
                 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
               .form-group
                 = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-danger'
-      .card.mt-4
-        h3.card-header Email Upload
+      .card.card-custom.mt-4
+        .card-header
+          .card-title
+            | Email Upload
         .card-body
           .form-group
             = label_tag '', 'Send documents to Symphony using this unique email:'
             = text_field_tag '', 'sendfile-'+@company.mailbox_token+'@upload.'+ ENV['EMAIL_UPLOAD_DOMAIN'], class: 'form-control', disabled: true
-      .card.mt-4
-        h3.card-header Reminder Settings
+      .card.card-custom.mt-4
+        .card-header
+          .card-title
+            | Reminder Settings
         .card-body
           .form-group
             = f.label :before_deadline_reminder_days, 'Reminder before deadline (in days)'
             = f.number_field :before_deadline_reminder_days, {min: 0, class: 'form-control'}
-    .card.mt-4
-      h3.card-header Project Information
+    .card.card-custom.mt-4
+      .card-header
+        .card-title
+          | Project Information
       .card-body
         .form-group
           = f.label :project_start_date
