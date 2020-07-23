@@ -20,6 +20,8 @@
         - ::Template.assigned_templates(current_user).each do |template|
           li.m-4
             = link_to template.title, symphony_workflows_path(template.slug), class: 'sidebar-font text-dark'
+      = link_to new_symphony_template_path, class: 'float-right' do
+        i.material-icons-outlined add
   hr
   ul.nav.flex-column
     li.active.m-4
