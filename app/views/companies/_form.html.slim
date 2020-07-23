@@ -101,6 +101,12 @@
             = label_tag '', 'Send documents to Symphony using this unique email:'
             = text_field_tag '', 'sendfile-'+@company.mailbox_token+'@upload.'+ ENV['EMAIL_UPLOAD_DOMAIN'], class: 'form-control', disabled: true
       .card.mt-4
+        h3.card-header Reminder Settings
+        .card-body
+          .form-group
+            = f.label :before_deadline_reminder_days, 'Reminder before deadline (in days)'
+            = f.number_field :before_deadline_reminder_days, {min: 0, class: 'form-control'}
+      .card.mt-4
         h3.card-header Slack
         .card-body
           .form-group

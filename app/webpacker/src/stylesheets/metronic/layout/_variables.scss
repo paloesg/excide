@@ -9,17 +9,17 @@ $root-font-size-lg:                             	12px; // custom parameter
 $root-font-size-md:                             	12px; // custom parameter
 
 // Page Background Color
-$page-bg:	 										#ffffff !default;
+$page-bg:	 										#FFFFFF !default;
 
 // Page Content Background Color
-$content-bg:            							#ffffff !default;
+$content-bg:            							#FFFFFF !default;
 
 // Header Tab Item Background Color
 $header-tab-item-bg-color:                          #F0F3F5 !default;
 
 // Page Paddings
 $page-padding: (
-	desktop: 40px, 			// Padding for desktop mode
+	desktop: 15px, 			// Padding for desktop mode
 	tablet-and-mobile: 15px // Padding for tablet and mobile modes
 ) !default;
 

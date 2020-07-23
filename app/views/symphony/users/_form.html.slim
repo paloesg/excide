@@ -4,13 +4,12 @@
     ul
       - @user.errors.full_messages.each do |message|
         li = message
-.row.mb-3
-  .col-sm-6
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title User Details
-      .kt-portlet__body
+.row
+  .col
+    .card
+      .card-header.p-7
+        h3.card-title.mb-0 User Details
+      .card_body.p-7
         .form-group
           = f.label :first_name
           = f.text_field :first_name, class: 'form-control'
@@ -23,12 +22,11 @@
         .form-group
           = f.label :contact_number
           = f.text_field :contact_number, class: 'form-control'
-  .col-sm-6
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title #{@company.name} User Roles
-      .kt-portlet__body
+  .col
+    .card
+      .card-header.p-7
+        h3.card-title.mb-0 #{@company.name} User Roles
+      .card_body.p-7
         - @company_roles.each do |role|
           .form-group.form-check
             label.form-check-label

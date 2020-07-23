@@ -1,8 +1,12 @@
 = hidden_field :role, :resource_id, value: @company.id
 = hidden_field :role, :resource_type, value: "Company"
 .form-group
-  = f.label :role_name
-  = f.text_field :name, class: 'form-control'
-.form-group
-  = f.label :users
-  = f.collection_select :user_ids, @users, :id, :full_name, {}, {multiple: true, class: "role-select-users"}
+  = f.text_field :name, class: 'form-control', placeholder: "Type a group name"
+  p.ml-2 E.g. Associates, Team Gold, Finance Mogul
+
+input.form-control#q type="search"
+- @company_users.each do |user|
+  .form-group.form-check.m-3
+    label.form-check-label
+      = check_box_tag 'role[user_ids][]', user.id, (@role.users.include? user), class: 'form-check-input'
+      = user.full_name

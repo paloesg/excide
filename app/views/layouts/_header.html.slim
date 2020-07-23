@@ -2,7 +2,7 @@
 .navbar.navbar-expand-lg.navbar-light.fixed-top.bg-white.border.border-bottom.w-100
   .navbar-brand
     = link_to symphony_root_path do
-      = image_pack_tag 'media/src/images/symphony/symphony-logo.png', alt: "Logo", class: 'logo-size'
+      = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo"
     = content_tag :span, "Staging", class: "badge badge-danger badge-header" if ENV['APP_NAME'] == "excide-staging"
     = content_tag :span, "Trial", class: "badge badge-warning badge-header ml-2" if current_user.company.free_trial?
     = content_tag :span, "Basic", class: "badge badge-secondary badge-header ml-2" if current_user.company.basic?

@@ -5,31 +5,40 @@ class Symphony::HomeController < ApplicationController
     @templates = policy_scope(Template).assigned_templates(current_user)
     @template_pro = @templates.joins(sections: :tasks).where(tasks: {task_type: ["create_invoice_payable", "xero_send_invoice", "create_invoice_receivable", "coding_invoice"]})
 
-    @workflows_array = policy_scope(Workflow).includes(:template).where(template: @templates)
-    workflows_sort = sort_column(@workflows_array)
-    params[:direction] == "desc" ? workflows_sort.reverse! : workflows_sort
-    if params[:workflow_type].blank?
-      templates_type = workflows_sort
+    @workflows_array = policy_scope(Workflow).includes(:template).where(template: @templates).where(completed: [false, nil]).where.not(deadline: nil)
+    workflows_sort = @workflows_array.sort_by(&:deadline)
+    @workflows = workflows_sort.uniq(&:template).first(5)
+
+    @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task).first(3)
+  end
+
+  def tasks
+    if params[:tasks].blank? || params[:tasks] == "Only incomplete tasks"
+      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where(company: current_user.company).includes(:task)
+    elsif params[:tasks] == "All tasks"
+      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(company: current_user.company).includes(:task)
     else
-      templates_type = workflows_sort.select{ |t| t.template.slug == params[:workflow_type] }
+      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(completed: true).where(company: current_user.company).includes(:task)
     end
-    @workflows = Kaminari.paginate_array(templates_type).page(params[:page]).per(5)
-
-    @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
-
-    @batch_count = policy_scope(Batch).count
-    @reminder_count = current_user.reminders.where(company: current_user.company).count
-    @recurring_count = current_user.company.recurring_workflows.all.count
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
+    if params[:created_at].blank? || params[:created_at] == "Last 7 days"
+      @outstanding_actions = @outstanding_actions.where('created_at >= ?', Time.zone.now - 7.days)
+    elsif params[:created_at] == "Last 30 days"
+      @outstanding_actions = @outstanding_actions.where('created_at >= ?', Time.zone.now - 30.days)
+    end
+    if params[:types] == "Tasks related to Routine"
+      @outstanding_actions = @outstanding_actions.select {|action| action.workflow_id.present?}
+    elsif params[:types] == "Adhoc tasks"
+      @outstanding_actions = @outstanding_actions.select {|action| action.workflow_id.nil?}
+    end
+    @actions_sort = sort_column(@outstanding_actions).reverse!
+    params[:direction] == "desc" ? @actions_sort.reverse! : @actions_sort
   end
 
   private
 
   def sort_column(array)
     array.sort_by{
-      |item| if params[:sort] == "template" then item.template.title.upcase
-      elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.section_name
-      end
+      |item| item.deadline ? item.deadline : Time.at(0)
     }
   end
 end

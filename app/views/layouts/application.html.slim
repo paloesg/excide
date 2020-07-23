@@ -34,24 +34,24 @@ html lang="en"
     / = render 'layouts/header_mobile' unless (current_user.nil? || current_page?(additional_information_path))
     /! end:: Header Mobile
     /! begin:: Header
-    - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys')) 
+    - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys'))
       = render 'layouts/conductor_header'
     - else
       = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path) || controller_name == 'invoices')
     /! end:: Header
-          
+
     /! begin:: Content
     / = render 'layouts/messages'
     - if user_signed_in?
-      .container-fluid.w-100.px-0
+      .container-fluid
         .row
           - if controller_name == 'invoices'
             .col-sm-12.mt-5.mx-4.px-5
               = yield
           - else
-            .col-sm-3.bg-white.sidebar.border-right
+            .col-sm-2.bg-white.border-right
               = render 'layouts/sidebar'
-            .col-sm-9.mt-5.mx-4
+            .col-sm-10.mt-5
               = yield
         hr
         = render 'layouts/footer'

@@ -1,126 +1,97 @@
-.row
-  .col-sm-6
-    .row
-      .col-sm-12.col-md-6.col-lg-6
-        .kt-portlet.kt-portlet--border-bottom-brand
-          .kt-portlet__body.kt-portlet__body--fluid
-            .kt-widget26
-              .kt-widget26__content
-                .kt-widget26__number = @workflows_array.count
-                .kt-widget26__desc Workflows
-              .kt-widget26__chart style="height:100px; width: 230px;"
-                .chartjs-size-monitor
-                  .chartjs-size-monitor-expand
-                    div
-                  .chartjs-size-monitor-shrink
-                    div
-                canvas.chartjs-render-monitor id="kt_chart_quick_stats_1" style="display: block; width: 230px; height: 115px;" width="230" height="115"
-      .col-sm-12.col-md-6.col-lg-6
-        .kt-portlet.kt-portlet--border-bottom-success
-          .kt-portlet__body.kt-portlet__body--fluid
-            .kt-widget26
-              .kt-widget26__content
-                .kt-widget26__number = @outstanding_actions.count
-                .kt-widget26__desc Tasks
-              .kt-widget26__chart style="height:100px; width: 230px;"
-      .col-sm-12.col-md-6.col-lg-6
-        .kt-portlet.kt-portlet--border-bottom-danger
-          .kt-portlet__body.kt-portlet__body--fluid
-            .kt-widget26
-              .kt-widget26__content
-                .kt-widget26__number = @batch_count
-                .kt-widget26__desc Batches
-              .kt-widget26__chart style="height:100px; width: 230px;"
-      .col-sm-12.col-md-6.col-lg-6
-        .kt-portlet.kt-portlet--border-bottom-warning
-          .kt-portlet__body.kt-portlet__body--fluid
-            .kt-widget26
-              .kt-widget26__content
-                .kt-widget26__number = @recurring_count
-                .kt-widget26__desc Recurring
-              .kt-widget26__chart style="height:100px; width: 230px;"
-    .row
+- if @outstanding_actions.blank? && @workflows.blank?
+  .row.justify-content-center
+    = render "empty_routines"
+    = render "empty_tasks"
+- else
+  .row.mt-5
+    .col-md-6
+      h4 Tasks Due Soon
+    .col-md-6
+      .float-right = link_to "See all my tasks", symphony_tasks_path, role: "button", class: "btn btn-light text-primary" if @outstanding_actions.present?
+  .row
+    - if @outstanding_actions.blank?
+      .col-md-5.border.rounded.p-5.ml-3
+        .row.align-items-center
+          .col-sm-2
+            = image_pack_tag 'media/src/images/symphony/add-personal-task@2x.png', size: "55x55"
+          .col-sm-10
+            h5 Good job! You have done all your tasks!
+            h5.mb-0
+              span.font-weight-normal Any new task coming up? 
+              = link_to "Add new task", symphony_tasks_path, class: 'text-primary font-weight-bold'
+    - else
       .col-md-12
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title My tasks
-          .kt-portlet__body
-            .kt-section
-              .kt-section__content
-                - if @outstanding_actions.blank?
-                  | Hooray! No outstanding tasks at the moment.
-                - else
-                  table.table
-                    thead
-                      tr
-                        th Workflow ID
-                        th Workflow Type
-                        th Task Instructions
-                        th Deadline
-                    tbody
-                      - @outstanding_actions.each do |action|
-                        tr
-                          td = link_to action.workflow.friendly_id, symphony_workflow_path(action.workflow.template.slug, action.workflow.friendly_id)
-                          td = action.workflow.template.title
-                          td = action.task.instructions
-                          td = action.deadline&.strftime("%d/%m/%Y")
+        table.table
+          tbody
+            - @outstanding_actions.each do |action|
+              tr.border-bottom
+                td.border-top-0
+                  label.checkbox
+                    = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"
+                    span
+                td.border-top-0 = action.task.instructions
+                td.border-top-0 = action.workflow.template.title
+                td.border-top-0
+                  - if action.deadline.to_date < Date.today
+                    i.fa.fa-xs.fa-circle.text-danger.mr-3
+                    = (Date.today - action.deadline.to_date).to_i.to_s + "d overdue"
+                  - elsif action.deadline.to_date <= Date.tomorrow
+                    i.fa.fa-xs.fa-circle.text-warning.mr-3
+                    = action.deadline.to_date == Date.today ? "Today" : "Tomorrow"
+                  - elsif action.company.before_deadline_reminder_days.present? && action.deadline.to_date - action.company.before_deadline_reminder_days <= Date.today
+                    i.fa.fa-xs.fa-circle.text-warning.mr-3
+                    = action.deadline&.strftime("%d %b %Y")
+                  - else
+                    i.fa.fa-xs.fa-circle.text-primary.mr-3
+                    = action.deadline&.strftime("%d %b %Y")
+  - if @workflows.blank?
+    .row.justify-content-center.mt-5
+      = render "empty_routines"
+  - else
+    .row.mt-5
+      .col-md-6
+        h4 All Routines
+      .col-md-6
+        .float-right
+          = link_to new_symphony_template_path do
+            i.material-icons.text-primary add
     .row
-      .col-md-12
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title Workflows in progress
-          .kt-portlet__body
-            - if @workflows_array.blank?
-              | No outstanding workflows at the moment. Click on a workflow to begin.
-            - else
+      - @workflows.each do |w|
+        .col-sm-4.mt-3
+          .card.h-100.card-custom.card-stretch.gutter-b
+            .card-header.border-0.card-header-height
+              .card-title.w-75
+                h5 = w.template.title
+              .card-toolbar
+                .dropdown.dropdown-inline.float-right
+                  a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                    i.fa.fa-ellipsis-h.text-secondary
+                  .dropdown-menu.dropdown-menu-right
+                    .dropdown-item = link_to "Duplicate", root_path
+                    .dropdown-item = link_to "Delete", symphony_template_path(template_slug: w.template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' , remote: true}, method: :delete if policy(w.template).destroy?
+            .card-body
+              | NEXT TO COMPLETE
+              br
+              = link_to w.name, symphony_workflow_path(w.template.slug, w.friendly_id)
               .row
-                .col-sm-5
-                  = select_tag('workflow_type', options_for_select(@templates.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'selectize-workflow-type')
-                .offset-sm-1.col-sm-6
-                  .float-right = page_entries_info @workflows, entry_name: 'workflow'
-            table.table
-              thead
-                tr
-                  th Workflow ID
-                  th = sortable "template", "Workflow Type"
-                  th = sortable "completed", "Status"
-              tbody
-                - @workflows.each do |w|
-                  tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                    td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
-                    td = w.template.title
-                    td = w.completed ? 'Completed' : w.current_section&.section_name
-            = paginate @workflows, views_prefix: 'dashboard'
-  .col-sm-6
-    .row
-      .col-md-12
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title I want to work on...
-          .kt-portlet__body
-            .form-group
-              - @templates.each do |template|
-                = form_tag symphony_workflows_path(template.slug)
-                  .row.mt-2
-                    .col-sm-10
-                      = template.title
-                    .col-sm-2
-                      = submit_tag 'Go >', class: 'btn btn-sm btn-primary'
-                  hr
-      .col-md-12
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              h3.kt-portlet__head-title Batch Upload
-              = content_tag :span, "Pro", class: "badge badge-success ml-2" if current_user.company.basic?
-          .kt-portlet__body
-            .row
-              .col-md-12
-                = label_tag "template", "Select template:"
-                = select_tag('template_slug', options_from_collection_for_select(@templates, "slug", "title"), include_blank: true, disabled: current_user.company.basic?, class: "selectize")
-            .row.mt-3
-              .col-md-12
-                .dashboard-body.batchUploads#Dashboard
+                .col.d-flex.align-items-center
+                  - if w.deadline.to_date < Date.today
+                    i.material-icons-outlined.text-danger.font-size-h6.mr-2 calendar_today
+                    = (Date.today - w.deadline.to_date).to_i.to_s + "d overdue"
+                    - bg = "bg-danger"
+                  - elsif w.deadline.to_date <= Date.tomorrow
+                    i.material-icons-outlined.text-warning.mr-2 calendar_today
+                    = w.deadline.to_date == Date.today ? "Today" : "Tomorrow"
+                    - bg = "bg-warning"
+                  - elsif w.company.before_deadline_reminder_days.present? && w.deadline.to_date - w.company.before_deadline_reminder_days <= Date.today
+                    i.material-icons-outlined.text-warning.mr-2 calendar_today
+                    = w.deadline&.strftime("%d %b %Y")
+                    - bg = "bg-warning"
+                  - else
+                    i.material-icons-outlined.text-primary.mr-2 calendar_today
+                    = w.deadline&.strftime("%d %b %Y")
+                    - bg = "bg-primary"
+                .col
+                  div.progress
+                    div.progress-bar role="progressbar" style="width: #{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}%" aria-valuenow="#{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}" aria-valuemin="0" aria-valuemax="100" class=bg
+                  | #{w.workflow_actions.where(completed: true).count} / #{w.workflow_actions.count} 
