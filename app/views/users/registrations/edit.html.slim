@@ -8,11 +8,9 @@
       = devise_error_messages!
       .row
         .col-md-6
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title User Information
-            .kt-portlet__body
+          .card
+            h3.card-header User Information
+            .card-body
               .form-group
                 = f.label :first_name
                 = f.text_field :first_name, class: 'form-control'
@@ -34,21 +32,17 @@
                   .col-md-8
                     = text_field_tag "contact", @contact, class: 'form-control'
           - if current_user.has_role? :superadmin
-            .kt-portlet
-              .kt-portlet__head
-                .kt-portlet__head-label
-                  h3.kt-portlet__head-title
-                    | Company Details Information
-              .kt-portlet__body
+            .card.mt-4
+              h3.card-header
+                | Company Details Information
+              .card-body
                 .form-group
                   = f.label :company_id
                   = f.select :company_id, Company.all.map{|company| [company.name, company.id]}, {selected: resource.company.id}, class: 'selectize'
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title
-                  | Credit Card Information
-            .kt-portlet__body
+          .card.mt-4
+            h3.card-header
+              | Credit Card Information
+            .card-body
               .form-group.form-check
                 = check_box_tag :update_credit_card, nil, false, class: 'form-check-input update-credit-card'
                 = label_tag :update_credit_card, 'Change Credit Card Details', class: 'form-check-label'
@@ -59,12 +53,10 @@
               .form-group
                 #card-errors role='alert'
         .col-md-6
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title
-                  | Change Password
-            .kt-portlet__body
+          .card
+            h3.card-header
+              | Change Password
+            .card-body
               .form-group
                 em Leave blank if you don't want to change your password.
               .form-group
@@ -73,12 +65,10 @@
               .form-group
                 = f.label :password_confirmation
                 = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title
-                  | Confirm Password
-            .kt-portlet__body
+          .card.mt-4
+            h3.card-header
+              | Confirm Password
+            .card-body
               .form-group
                 em We need your current password to confirm your changes.
               .form-group

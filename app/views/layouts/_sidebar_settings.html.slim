@@ -10,9 +10,13 @@
         i.material-icons-outlined dashboard
         .ml-2.sidebar-font Workspace
     li.nav-item.m-4
-      = link_to symphony_roles_path, class: 'col-sm-12 d-flex align-items-center' do
+      = link_to symphony_users_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined group
         .ml-2.sidebar-font Teammates
+    li.nav-item.m-4
+      = link_to symphony_roles_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined group_work
+        .ml-2.sidebar-font Groups
     li.nav-item.m-4
       = link_to integration_company_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined apps
@@ -25,7 +29,3 @@
       = link_to billing_company_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined attach_money
         .ml-2.sidebar-font Billing
-    li.nav-item.m-4
-      = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined widgets
-        .ml-2.sidebar-font Upgrade Plan
