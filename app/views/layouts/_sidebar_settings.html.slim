@@ -5,10 +5,11 @@
       = link_to edit_user_registration_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined account_circle
         .ml-2.sidebar-font Account
-    li.nav-item.m-4
-      = link_to edit_company_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined dashboard
-        .ml-2.sidebar-font Workspace
+    - if current_user.has_role? :superadmin or current_user.has_role?(:admin, current_user.company)
+      li.nav-item.m-4
+        = link_to edit_company_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined dashboard
+          .ml-2.sidebar-font Workspace
     li.nav-item.m-4
       = link_to symphony_users_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined group
