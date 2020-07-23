@@ -37,7 +37,7 @@ html lang="en"
     - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys'))
       = render 'layouts/conductor_header'
     - else
-      = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path))
+      = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path) || controller_name == 'invoices')
     /! end:: Header
 
     /! begin:: Content
@@ -45,13 +45,17 @@ html lang="en"
     - if user_signed_in?
       .container-fluid
         .row
-          .col-sm-2.bg-white.border-right
-            - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)))
-              = render 'layouts/sidebar_settings'
-            - else
-              = render 'layouts/sidebar'
-          .col-sm-10.mt-5
-            = yield
+          - if controller_name == 'invoices'
+            .col-sm-12.mt-5.mx-4.px-5
+              = yield
+          - else
+            .col-sm-2.bg-white.border-right
+              - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)))
+                = render 'layouts/sidebar_settings'
+              - else
+                = render 'layouts/sidebar'
+            .col-sm-10.mt-5
+              = yield
         hr
         = render 'layouts/footer'
     - else
