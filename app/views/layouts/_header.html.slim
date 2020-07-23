@@ -31,9 +31,12 @@
                     ' #{current_user.company.name}
     ul.navbar-nav.ml-auto
       li.nav-item
-        = link_to 'https://paloe.zendesk.com/hc/en-us', target: '_blank', class: 'btn btn-white mr-3 border border-secondary' do
+        = link_to 'https://paloe.zendesk.com/hc/en-us', target: '_blank', class: 'btn btn-white mr-2 border border-secondary' do
           i.material-icons-outlined.text-primary book
           span.ml-2 Guides
+      li.nav-item
+        = link_to symphony_users_path, class: 'btn btn-white mr-2' do
+          i.material-icons-outlined wb_incandescent
       li.nav-item
         /! begin: Notification bar
         / uses view notifications/default/workflow_action/:key.html.slim

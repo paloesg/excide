@@ -46,9 +46,10 @@ html lang="en"
       .container-fluid.w-100.pl-0
         .row
           .col-sm-3.bg-white.sidebar.border-right
-            / TODO: FIND BY COMPANIES CONTROLLER CLASS OR FIND BY PATH/PAGES - e.g. accounts tab?
-            / = render 'layouts/sidebar'
-            = render 'layouts/sidebar_settings'
+            - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)))
+              = render 'layouts/sidebar_settings'
+            - else
+              = render 'layouts/sidebar'
           .col-sm-9.mt-5.mx-4
             = yield
         hr
