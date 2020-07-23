@@ -35,7 +35,7 @@ class Symphony::HomeController < ApplicationController
   end
 
   def activity_history
-    
+    @activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).order("created_at desc").last(30)
   end
 
   private
