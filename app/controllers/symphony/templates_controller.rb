@@ -53,6 +53,7 @@ class Symphony::TemplatesController < ApplicationController
   def show
     authorize @template
     @workflows = @template.workflows
+    @workflow = Workflow.find(params[:workflow]) if params[:workflow]
   end
 
   def edit

@@ -1,0 +1,62 @@
+.modal.fade id="exampleModal#{index}" aria-hidden="true" aria-labelledby="exampleModalLabel#{index}" role="dialog" tabindex="-1" 
+  .modal-dialog role="document" 
+    .modal-content
+      .modal-header
+        - if action.completed?
+          .btn.btn-sm.btn-success.text-white style="pointer-events: none"
+            .d-flex.align-items-center
+              i.material-icons-outlined.font-size-h6 check
+              | Completed
+        - else
+          .btn.btn-sm.btn-outline-secondary
+            .d-flex.align-items-center
+              i.material-icons-outlined.font-size-h6 check
+              = link_to "Mark as Complete", task_toggle_symphony_workflow_path(workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), data: {remote: true, method: "POST"}, class: "text-dark"
+        button.close aria-label="Close" data-dismiss="modal" type="button" 
+          i.flaticon2-cross aria-hidden="true"
+      .modal-body
+        h3.mb-4 Step #{index+1}: #{action.task.instructions}
+        .row.mb-4
+          .col-3 Action
+          .col-9
+            = render "symphony/workflows/tasks/#{action.task.task_type}", template: template, workflow: workflow, action: action
+            = link_to "Edit", edit_symphony_template_path(template_slug: template.slug), class: "float-right"
+        - if action.assigned_user_id.present?
+          .row.mb-4
+            .col-3 Assignee
+            .col-9
+              .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
+                = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "16x16", class: "rounded-circle mr-2"
+                = User.find(action.assigned_user_id).full_name
+        - if action.deadline.present?
+          .row.mb-4
+            .col-3 Due Date
+            .col-9
+              .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
+                .d-flex.align-items-center
+                  i.material-icons-outlined.font-size-h6 calendar_today
+                  = action.deadline&.strftime("%d %b")
+        .row.mb-4
+          .col-3 Attachments
+          .col-9
+            - workflow.documents.each do |d|
+             = link_to "", symphony_document_path(d), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', remote: true, class: 'fas fa-times-circle mr-2'
+             = link_to d.filename, symphony_document_path(d)
+             br
+        / table.table
+        /   tbody
+        /     tr
+        /       th Action
+        /         td = (index+1)
+        /     tr
+        /       th Asignee
+        /         td
+        /           = t.instructions
+        /     tr
+        /       th Due Date
+        /         td
+        /           = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
+        /     tr
+        /       th Attachments
+        /         td
+        /           = "hi"

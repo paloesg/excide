@@ -1,30 +1,62 @@
 = link_to "BACK", symphony_templates_path
-h2.mt-3
+h2.mt-3.d-flex.align-items-center
 	= @template.title
-	span
-		.btn.btn-dark.px-2.py-0.ml-4 = "On-demand"
+	.label.label-inline.label-dark.ml-4
+		span On-demand
 .row
 	.col-md-5
-		table.table
+		table.table.table-hover
 			thead.thead-light
 				tr
 					th colspan="2" To complete
 					th Due
 			tbody
 				- @workflows.each do |wf|
-					tr
-						td = check_box_tag 'completed', wf.id, wf.completed
-						td hellow
-						td = wf.deadline&.strftime("%d %b %Y")
+					tr 
+						td width="5%"
+							label.checkbox
+								= check_box_tag 'completed', wf.id, wf.completed, disabled: wf.completed
+								span
+						td width="70%"
+							= link_to "hellow", symphony_template_path(@template.slug, workflow: wf.id)
+						td width="25%"
+							= wf.deadline&.strftime("%d %b %Y")
 	.col-md-7
-		table.table
-			thead.thead-light
-				tr
-					th colspan="2" Steps
-					th width="15%" Total: #{@template.tasks.count}
-			tbody
-				- @template.tasks.each_with_index do |t, index|
+		- if @workflow.present?
+			table.table
+				thead.thead-light
 					tr
-						td = (index+1).to_s + "."
-						td = t.instructions
-						td = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
+						th colspan="5" Hellow
+				tbody
+					- @workflow.workflow_actions.each_with_index do |wfa, index|
+						tr
+							td width="5%"
+								= (index+1).to_s + "."
+							td width="55%"
+								= link_to wfa.task.instructions, "#", data: {toggle: "modal", target: "#exampleModal#{index}"}
+							td.py-2 width="10%"
+								= image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"
+							td.d-flex.align-items-center
+								- if wfa.deadline.present?
+									= wfa.deadline&.strftime("%d %b")
+									i.material-icons-outlined.font-size-h6.ml-1 calendar_today
+							td width="5%"
+								label.checkbox
+									= check_box_tag 'completed', wfa.id, wfa.completed, disabled: wfa.completed
+									span
+						= render "task", template: @template, workflow: @workflow, action: wfa, index: index
+		- else
+			table.table
+				thead.thead-light
+					tr
+						th colspan="2" Steps
+						th Total: #{@template.tasks.count}
+				tbody
+					- @template.tasks.each_with_index do |t, index|
+						tr
+							td width="5%"
+								= (index+1).to_s + "."
+							td width="80%"
+								= t.instructions
+							td.py-2 width="15%"
+								= image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"
