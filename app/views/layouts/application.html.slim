@@ -50,7 +50,10 @@ html lang="en"
               = yield
           - else
             .col-sm-2.bg-white.border-right
-              = render 'layouts/sidebar'
+              - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)))
+                = render 'layouts/sidebar_settings'
+              - else
+                = render 'layouts/sidebar'
             .col-sm-10.mt-5
               = yield
         hr
