@@ -31,14 +31,6 @@
                     = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'selectize'
                   .col-md-8
                     = text_field_tag "contact", @contact, class: 'form-control'
-          - if current_user.has_role? :superadmin
-            .card.mt-4
-              h3.card-header
-                | Company Details Information
-              .card-body
-                .form-group
-                  = f.label :company_id
-                  = f.select :company_id, Company.all.map{|company| [company.name, company.id]}, {selected: resource.company.id}, class: 'selectize'
           .card.mt-4
             h3.card-header
               | Confirm Password
@@ -63,16 +55,11 @@
               .form-group
                 = f.label :password_confirmation
                 = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
-          .card.mt-4
-            h3.card-header
-              | Credit Card Information
-            .card-body
-              .form-group.form-check
-                = check_box_tag :update_credit_card, nil, false, class: 'form-check-input update-credit-card'
-                = label_tag :update_credit_card, 'Change Credit Card Details', class: 'form-check-label'
-              .form-group
-                = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
-                .stripe-elements
-                  #card-element-update
-              .form-group
-                #card-errors role='alert'
+          - if current_user.has_role? :superadmin
+            .card.mt-4
+              h3.card-header
+                | Company Details Information
+              .card-body
+                .form-group
+                  = f.label :company_id
+                  = f.select :company_id, Company.all.map{|company| [company.name, company.id]}, {selected: resource.company.id}, class: 'selectize'

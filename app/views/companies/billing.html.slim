@@ -3,7 +3,20 @@
     h1 Billing
 .row
   .col-xl-12
-    h3 Invoices
+	h3 Credit Card Information
+    .form-group.form-check
+      = check_box_tag :update_credit_card, nil, false, class: 'form-check-input update-credit-card'
+      = label_tag :update_credit_card, 'Change Credit Card Details', class: 'form-check-label'
+    .form-group
+      = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
+      .stripe-elements
+        #card-element-update
+    .form-group
+    #card-errors role='alert'
+hr
+.row
+  .col-xl-12
+    h1 Invoices
     .row
       .col-sm-12
         - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data["invoices"].present?
