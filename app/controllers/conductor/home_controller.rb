@@ -40,7 +40,7 @@ class Conductor::HomeController < ApplicationController
 
     @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
     # Choose users to allocate to timesheet in events create
-    @users = User.includes(:roles).where(company: @company.id).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq
+    @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq
   end
 
   private
