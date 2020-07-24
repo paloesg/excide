@@ -35,7 +35,14 @@ class Symphony::HomeController < ApplicationController
   end
 
   def activity_history
-    @activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).order("created_at desc").last(30)
+    if params[:created_at].blank? || params[:created_at] == "Past 7 days"
+      @activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).where('created_at >= ?', Time.zone.now - 7.days).order("created_at desc")
+    elsif params[:created_at] == "Past 14 days"
+      @activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).where('created_at >= ?', Time.zone.now - 14.days).order("created_at desc")
+    elsif params[:created_at] == "Past 1 month"
+      @activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).where('created_at >= ?', Time.zone.now - 1.month).order("created_at desc")
+    end
+    # @activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).order("created_at desc").last(30)
   end
 
   private

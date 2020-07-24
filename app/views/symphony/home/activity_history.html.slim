@@ -1,21 +1,27 @@
-.row.mb-5
-  .col-md-12
-    h1 Activity History
-/ .row.justify-content-center.h-100
-/   .col-md-3.text-center.p-4.my-auto
-/     = image_pack_tag 'media/src/images/symphony/no-history.svg'
-/     h2.mt-5 No history for now
-/     p.mt-4 There is no activity history yet. Keep using Symphony to make history! 
 .row
-  .col-md-12
-    - @activities.each do |activity|
-      .row
-        .col-md-1
-          .d-flex.align-items-center.mb-10
-            = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
-        .col-md-11
-          .d-flex.flex-column.font-weight-bold
-          = render_activities activity
+  .col-md-3
+    h1 Activity History
+.row.mb-5
+  .col-sm-12
+    = button_tag 'Filter', type: 'button', class: 'btn btn-primary float-right activity-history-filter-button ml-2'
+    = select_tag('created_at', options_for_select(["Past 7 days", "Past 14 days", "Past 1 month"], selected: params[:created_at], include_blank: "Past 7 days"), class: 'float-right selectize selectize-created-at')
+- if @activities.empty?
+  .row.justify-content-center.h-100
+    .col-md-3.text-center.p-4.my-auto
+      = image_pack_tag 'media/src/images/symphony/no-history.svg'
+      h2.mt-5 No history for now
+      p.mt-4 There is no activity history yet. Keep using Symphony to make history!
+- else
+  .row
+    .col-md-12
+      - @activities.each do |activity|
+        .row
+          .col-md-1
+            .d-flex.align-items-center.mb-10
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
+          .col-md-11
+            .d-flex.flex-column.font-weight-bold
+            = render_activities activity
 
       
         
