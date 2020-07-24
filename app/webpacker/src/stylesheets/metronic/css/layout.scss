@@ -1,9 +1,9 @@
-.dropdown-pointer{
+.dropdown-pointer {
   cursor: pointer;
 }
 
 // Login page
-h1.header-bold { 
+h1.header-bold {
   font-weight: bold;
   font-stretch: normal;
   font-style: normal;
@@ -12,7 +12,7 @@ h1.header-bold {
 }
 
 // Header
-.change-company-dropdown{
+.change-company-dropdown {
   width: 300px;
   font-size: 15px !important;
   border-radius: 4px;
@@ -20,7 +20,7 @@ h1.header-bold {
 }
 
 // Footer
-.footer-size{
+.footer-size {
   font-size: 12px;
   font-weight: normal;
   font-stretch: normal;
@@ -30,15 +30,21 @@ h1.header-bold {
   color: black;
 }
 
-// Sidebar
-.logo-size{
+// Logo size in header
+.inv-logo-size {
+  width: 10%;
+}
+.logo-size {
   width: 70%;
 }
-.sidebar{
-  max-width: 250px !important;
+
+.small-font {
+  font-size: 2rem;
 }
-.sidebar-sticky{
-  padding-top: .5rem;
+
+// Sidebar
+.sidebar-sticky {
+  padding-top: 0.5rem;
   position: sticky;
   overflow-y: auto;
   overflow-x: hidden;
@@ -48,14 +54,14 @@ h1.header-bold {
 }
 
 // User icon on navbar
-.icon-size{
+.icon-size {
   vertical-align: middle;
   width: 30px;
   height: 30px;
   border-radius: 50%;
 }
 
-.sidebar-font{
+.sidebar-font {
   font-size: 15px;
   font-weight: normal;
   line-height: normal;
@@ -70,12 +76,12 @@ h1.header-bold {
 }
 
 // Image size
-.img-icon-size{
+.img-icon-size {
   width: 10%;
   height: 10%;
 }
 
-// dropdown 
-.dropdown-menu-right{
-  left: auto !important
+// dropdown
+.dropdown-menu-right {
+  left: auto !important;
 }

@@ -1,18 +1,18 @@
 = javascript_include_tag "https://js.stripe.com/v3/"
 .row.mb-3
   .col
-    h1 Edit My Profile
+    h1 Edit Account
 .row
   .col-md-12
     = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'edit-user-page' }) do |f|
       = devise_error_messages!
       .row
         .col-md-6
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title User Information
-            .kt-portlet__body
+          .card.card-custom
+            .card-header
+              .card-title
+                | User Information
+            .card-body
               .form-group
                 = f.label :first_name
                 = f.text_field :first_name, class: 'form-control'
@@ -33,38 +33,24 @@
                     = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'selectize'
                   .col-md-8
                     = text_field_tag "contact", @contact, class: 'form-control'
-          - if current_user.has_role? :superadmin
-            .kt-portlet
-              .kt-portlet__head
-                .kt-portlet__head-label
-                  h3.kt-portlet__head-title
-                    | Company Details Information
-              .kt-portlet__body
-                .form-group
-                  = f.label :company_id
-                  = f.select :company_id, Company.all.map{|company| [company.name, company.id]}, {selected: resource.company.id}, class: 'selectize'
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title
-                  | Credit Card Information
-            .kt-portlet__body
-              .form-group.form-check
-                = check_box_tag :update_credit_card, nil, false, class: 'form-check-input update-credit-card'
-                = label_tag :update_credit_card, 'Change Credit Card Details', class: 'form-check-label'
+          .card.card-custom.mt-4
+            .card-header
+              .card-title
+                | Confirm Password
+            .card-body
               .form-group
-                = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
-                .stripe-elements
-                  #card-element-update
+                em We need your current password to confirm your changes.
               .form-group
-                #card-errors role='alert'
+                = f.label :current_password, "Current password"
+                = f.password_field :current_password, autocomplete: "off", class: 'form-control'
+              .form-group.pull-right
+                = f.submit "Update", class: "btn green darken-3", class: 'btn btn-primary'
         .col-md-6
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title
-                  | Change Password
-            .kt-portlet__body
+          .card.card-custom
+            .card-header
+              .card-title
+                | Change Password
+            .card-body
               .form-group
                 em Leave blank if you don't want to change your password.
               .form-group
@@ -73,16 +59,12 @@
               .form-group
                 = f.label :password_confirmation
                 = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title
-                  | Confirm Password
-            .kt-portlet__body
-              .form-group
-                em We need your current password to confirm your changes.
-              .form-group
-                = f.label :current_password, "Current password"
-                = f.password_field :current_password, autocomplete: "off", class: 'form-control'
-              .form-group.pull-right
-                = f.submit "Update", class: "btn green darken-3", class: 'btn btn-primary'
+          - if current_user.has_role? :superadmin
+            .card.card-custom.mt-4
+              .card-header
+                .card-title
+                  | Company Details Information
+              .card-body
+                .form-group
+                  = f.label :company_id
+                  = f.select :company_id, Company.all.map{|company| [company.name, company.id]}, {selected: resource.company.id}, class: 'selectize'
