@@ -6,9 +6,9 @@
           h1.header-bold.mb-5.text-center Sign in
           = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
             .form-group
-              = f.email_field :email, placeholder: "Email", class: 'form-control'
+              = f.email_field :email, required: true, autofocus: true, placeholder: "Email", class: 'form-control'
             .form-group
-              = f.password_field :password, placeholder: "Password", autocomplete: "off", class: 'form-control'
+              = f.password_field :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), placeholder: "Password", autocomplete: "off", class: 'form-control'
             - if devise_mapping.rememberable?
               span.form-group.form-check
                 div.switch

@@ -3,10 +3,10 @@
     - alert_type = 'danger'
   - else
     - alert_type = 'success'
-  .row
-    .col
-      .alert.alert-elevate.fade.show role="alert"  class="alert-#{alert_type}"
+  .row.mt-5.d-flex.justify-content-center
+    .col-6
+      .alert.alert-dismissible.fade.show role="alert"  class="alert-#{alert_type}"
         .alert-text = msg
         .alert-close
           button.close aria-label="Close" data-dismiss="alert" type="button" 
-            span aria-hidden="true" x
+            span aria-hidden="true" &times;
