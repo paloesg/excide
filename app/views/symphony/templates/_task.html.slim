@@ -1,21 +1,23 @@
 .modal.fade id="exampleModal#{index}" aria-hidden="true" aria-labelledby="exampleModalLabel#{index}" role="dialog" tabindex="-1" 
   .modal-dialog role="document" 
     .modal-content
-      .modal-header
-        - if action.completed?
-          .btn.btn-sm.btn-success.text-white style="pointer-events: none"
-            .d-flex.align-items-center
-              i.material-icons-outlined.font-size-h6 check
-              | Completed
-        - else
-          .btn.btn-sm.btn-outline-secondary
-            .d-flex.align-items-center
-              i.material-icons-outlined.font-size-h6 check
-              = link_to "Mark as Complete", task_toggle_symphony_workflow_path(workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), data: {remote: true, method: "POST"}, class: "text-dark"
-        button.close aria-label="Close" data-dismiss="modal" type="button" 
-          i.flaticon2-cross aria-hidden="true"
       .modal-body
-        h3.mb-4 Step #{index+1}: #{action.task.instructions}
+        .row.mb-6
+          .col
+            - if action.completed?
+              .btn.btn-sm.btn-success.text-white style="pointer-events: none"
+                .d-flex.align-items-center
+                  i.material-icons-outlined.font-size-h6 check
+                  | Completed
+            - else
+              .btn.btn-sm.btn-outline-secondary
+                .d-flex.align-items-center
+                  i.material-icons-outlined.font-size-h6 check
+                  = link_to "Mark as Complete", task_toggle_symphony_workflow_path(workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), data: {remote: true, method: "POST"}, class: "text-dark"
+          .col.float-right
+            button.close aria-label="Close" data-dismiss="modal" type="button" 
+              i.flaticon2-cross aria-hidden="true"
+        h3.mb-6 Step #{index+1}: #{action.task.instructions}
         .row.mb-4
           .col-3 Action
           .col-9
@@ -33,9 +35,19 @@
             .col-3 Due Date
             .col-9
               .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
-                .d-flex.align-items-center
-                  i.material-icons-outlined.font-size-h6 calendar_today
-                  = action.deadline&.strftime("%d %b")
+                .d-flex
+                  i.material-icons-outlined.font-size-h6 class=color calendar_today
+                  div class=color 
+                    - if !action.completed?
+                      - if action.deadline.to_date < Date.today
+                        = "Overdue " + (Date.today - action.deadline.to_date).to_i.to_s + "d"
+                      - elsif action.deadline.to_date <= Date.tomorrow
+                        = action.deadline.to_date == Date.today ? "Today" : "Tomorrow"
+                      - else
+                        = action.deadline&.strftime("%d %b %Y") + " (in " + (Date.today - action.deadline.to_date).to_i.to_s + "d)"
+                    - else
+                      = action.deadline&.strftime("%d %b %Y")
+
         .row.mb-4
           .col-3 Attachments
           .col-9
