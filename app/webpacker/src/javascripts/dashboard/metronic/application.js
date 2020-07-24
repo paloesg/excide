@@ -53,8 +53,6 @@ require('./pages/features/base/dropdown.js');
 require('./pages/features/calendar/background-events.js');
 require('./pages/features/calendar/basic.js');
 require('./pages/features/calendar/external-events.js');
-require('./pages/features/calendar/basic.js');
-require('./pages/features/calendar/basic.js');
 require('./pages/features/cards/tools.js');
 require('./pages/features/cards/draggable.js');
 require('./pages/features/charts/amcharts/charts.js');
