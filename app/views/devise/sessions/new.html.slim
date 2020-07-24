@@ -1,8 +1,8 @@
 .d-flex.align-items-center.container.h-100
-  .row
+  .row.w-100
     .col-sm-6.mt-5
       .row.d-flex.justify-content-center
-        .col-sm-8
+        .col-sm-9
           h1.header-bold.mb-5.text-center Sign in
           = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
             .form-group
