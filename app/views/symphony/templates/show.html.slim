@@ -12,28 +12,28 @@ h2.mt-3.d-flex.align-items-center
 					th Due
 			tbody
 				- @workflows.each do |wf|
-					tr 
+					tr style="cursor: pointer" onclick="window.location='#{symphony_template_path(@template.slug, workflow: wf.id)}'"
 						td width="5%"
 							label.checkbox
 								= check_box_tag 'completed', wf.id, wf.completed, disabled: wf.completed
 								span
 						td width="70%"
-							= link_to "hellow", symphony_template_path(@template.slug, workflow: wf.id)
+							= wf.name
 						td width="25%"
 							= wf.deadline&.strftime("%d %b %Y")
 	.col-md-7
 		- if @workflow.present?
-			table.table
+			table.table.table-hover
 				thead.thead-light
 					tr
-						th colspan="5" Hellow
+						th colspan="5" = @workflow.name
 				tbody
 					- @workflow.workflow_actions.each_with_index do |wfa, index|
-						tr
+						tr data-toggle="modal" data-target="#exampleModal#{index}" style="cursor: pointer"
 							td width="5%"
 								= (index+1).to_s + "."
 							td width="55%"
-								= link_to wfa.task.instructions, "#", data: {toggle: "modal", target: "#exampleModal#{index}"}
+								= wfa.task.instructions
 							td.py-2 width="10%"
 								= image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"
 							td.d-flex.align-items-center
