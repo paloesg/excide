@@ -20,11 +20,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.account_type = 0
       company.save
       resource.company = company
-      if params[:user][:subscription_type].empty?
-        # Save user as stripe customer upon registration if there is no subscription type params
-        customer = Stripe::Customer.create({email: resource.email})
-        resource.stripe_customer_id = customer.id
-      end
     end
     resource.save
     role = params[:role].present? ? params[:role] : "admin"

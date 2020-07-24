@@ -41,26 +41,29 @@ html lang="en"
     /! end:: Header
 
     /! begin:: Content
-    / = render 'layouts/messages'
     - if user_signed_in?
       .container-fluid
         .row
           - if controller_name == 'invoices'
+            / no sidebar for invoices page
             .col-sm-12.mt-5.mx-4.px-5
               = yield
           - else
             .col-sm-2.bg-white.border-right
+              / for settings page, render a different sidebar
               - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)))
                 = render 'layouts/sidebar_settings'
               - else
                 = render 'layouts/sidebar'
             .col-sm-10.mt-5
               = yield
+              = render 'layouts/messages'
         hr
         = render 'layouts/footer'
     - else
-      .container.h-100
+      .container
         = yield
+        = render 'layouts/messages'
       /! end:: Content
     /! begin:: Footer
     /! end:: Footer
