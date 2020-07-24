@@ -33,3 +33,5 @@ hr
                   td = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
                   td = invoice['lines']['data'][0]['description']
                   td = link_to "Download", invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
+        - else
+          h3.mt-3 Currently no invoice

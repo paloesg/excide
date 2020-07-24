@@ -1,23 +1,28 @@
 h1
-  | All Form Templates
-  .btn-toolbar.float-right
-    = link_to 'Create Form Template', new_symphony_survey_template_path, role: 'button', class: 'btn btn-primary'
-.row
-  .col-sm-12
-    .table-responsive
-      table.table.table-hover
-        thead
-          tr
-            th Title
-            th Form Type
-            th No of Sections
-            th
-        tbody
-          - @survey_templates.each do |survey_template|
+  | Forms & Surveys
+  - if @survey_templates.present?
+    .btn-toolbar.float-right
+      = link_to 'Create Form Template', new_symphony_survey_template_path, role: 'button', class: 'btn btn-primary'
+- if @survey_templates.blank?
+  .row.justify-content-center
+    = render "empty_survey_templates"
+- else
+  .row
+    .col-sm-12
+      .table-responsive
+        table.table.table-hover
+          thead
             tr
-              td = survey_template.title
-              td = survey_template.survey_type.humanize
-              td = survey_template.survey_sections.count
-              td
-                / link to the first section of the template
-                = link_to "Edit", edit_symphony_survey_template_path(survey_template_slug: survey_template.slug), class: 'btn btn-sm btn-success'
+              th Title
+              th Form Type
+              th No of Sections
+              th
+          tbody
+            - @survey_templates.each do |survey_template|
+              tr
+                td = survey_template.title
+                td = survey_template.survey_type.humanize
+                td = survey_template.survey_sections.count
+                td
+                  / link to the first section of the template
+                  = link_to "Edit", edit_symphony_survey_template_path(survey_template_slug: survey_template.slug), class: 'btn btn-sm btn-success'
