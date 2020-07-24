@@ -25,9 +25,6 @@ $(document).on("turbolinks:load", function() {
   $('.activity-history-filter-button').click(function (e) {
     var created_at_selectize = $('select.selectize-created-at').selectize();
     var createdAtData = (created_at_selectize[0].selectize).getValue();
-    console.log("HOST: ", location.host);
-    console.log("pathname: ", location.pathname);
-
     Turbolinks.visit('//' + location.host + location.pathname + '?created_at=' + createdAtData);
   });
 
