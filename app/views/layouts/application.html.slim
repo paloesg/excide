@@ -44,7 +44,7 @@ html lang="en"
     - if user_signed_in?
       - if controller.class.parents.include?(Conductor)
         .container
-          .row
+          .row.mt-5
             .col-sm-12
               = yield
       - else
