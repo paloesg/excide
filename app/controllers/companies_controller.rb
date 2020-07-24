@@ -1,6 +1,6 @@
 class CompaniesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_company, only: [:show, :edit, :update]
+  before_action :set_company, only: [:show, :edit, :update, :billing, :integration]
 
   after_action :verify_authorized
 
@@ -46,6 +46,14 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def billing
+    authorize @company
+  end
+
+  def integration
+    authorize @company
+  end
+
   private
 
   def set_company
@@ -69,7 +77,7 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:id, :name, :uen, :contact_details, :financial_year_end, :gst_quarter, :agm_date, :ar_date, :eci_date, :form_cs_date, :project_start_date, :consultant_id, :associate_id, :shared_service_id, :designated_working_time, :xero_email, :connect_xero, :account_type, :stripe_subscription_plan_data, :trial_end_date, :slack_access_response, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state]
+    params.require(:company).permit(:id, :name, :uen, :contact_details, :financial_year_end, :gst_quarter, :agm_date, :ar_date, :eci_date, :form_cs_date, :project_start_date, :consultant_id, :associate_id, :shared_service_id, :designated_working_time, :xero_email, :connect_xero, :account_type, :stripe_subscription_plan_data, :trial_end_date, :slack_access_response, :before_deadline_reminder_days, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state]
     )
   end
 

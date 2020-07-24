@@ -3,23 +3,21 @@
     h1 Archives
 .row
   .col-xl-12
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title Completed workflows
-      .kt-portlet__body
+    .card
+      h3.card-header Completed workflows
+      .card-body
         /! begin::Section
-        .kt-section
+        .section
           - if @workflows.blank?
-            span.kt-section__info
+            span.section-info
               | No archives workflows at the moment.
-          .kt-section__content
+          .section-content
             .row
               .col-sm-3
                 = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'selectize-workflow-type')
               .offset-sm-6.col-sm-3
                 .float-right = page_entries_info @workflows, entry_name: 'workflow'
-            .kt-separator.kt-separator--space-lg.kt-separator--border-dashed
+            hr
             .table-responsive
               table.table
                 thead

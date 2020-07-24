@@ -28,6 +28,8 @@ class Symphony::InvoicesController < ApplicationController
     @invoice.workflow_id = @workflow.id
     @invoice.user_id = current_user.id
     @invoice.company_id = @company.id
+    # Since only payable is used, we can manually set payable to invoice type
+    @invoice.invoice_type = "payable"
     update_xero_contacts(params[:invoice][:xero_contact_name], params[:invoice][:xero_contact_id], @invoice, @clients)
 
     if @invoice.save

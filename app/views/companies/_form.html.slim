@@ -6,8 +6,10 @@
         li = message
 .row
   .col-sm-6
-    .card
-      h3.card-header Company Information
+    .card.card-custom.mt-4
+      .card-header
+        .card-title 
+          | Company Information
       .card-body
         .form-group
           = f.label :name, 'Company name'
@@ -21,8 +23,10 @@
         .form-group
           = f.fields_for :address do |a|
             = render 'companies/address_fields', f: a
-    .card.mt-4
-      h3.card-header Filing Dates
+    .card.card-custom.mt-4.mb-4
+      .card-header
+        .card-title
+          | Filing Dates
       .card-body
         .form-group
           = f.label :financial_year_end
@@ -47,8 +51,10 @@
           = f.date_field :form_cs_date, class: 'form-control'
   .col-sm-6
     - if action_name == 'edit'
-      .card
-        h3.card-header Subscription
+      .card.card-custom.mt-4
+        .card-header
+          .card-title
+            | Subscription
         .card-body
           h5.mb-2 #{@company.account_type.capitalize.humanize} Plan
           / if cancel is true, it will inform the user when is their pro features going to stop
@@ -74,70 +80,26 @@
                 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
               .form-group
                 = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-danger'
-      .card.mt-4
-        h3.card-header Invoices
-        .card-body
-          h5 Download Invoices:
-          .row
-            .col-sm-12
-              - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data["invoices"].present?
-                table.table
-                  thead
-                    tr
-                      th Date
-                      th Description
-                      th
-                  tbody
-                    - @company.stripe_subscription_plan_data['invoices'].each do |invoice|
-                      tr
-                        / only display invoices that are in the 12 months span period
-                        td = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
-                        td = invoice['lines']['data'][0]['description']
-                        td = link_to "Download", invoice['invoice_pdf'], class: 'text-primary' if Time.current - Time.at(invoice['period_end']) < 12.months
-      .card.mt-4
-        h3.card-header Email Upload
+      .card.card-custom.mt-4
+        .card-header
+          .card-title
+            | Email Upload
         .card-body
           .form-group
             = label_tag '', 'Send documents to Symphony using this unique email:'
             = text_field_tag '', 'sendfile-'+@company.mailbox_token+'@upload.'+ ENV['EMAIL_UPLOAD_DOMAIN'], class: 'form-control', disabled: true
-      .card.mt-4
-        h3.card-header Slack
+      .card.card-custom.mt-4
+        .card-header
+          .card-title
+            | Reminder Settings
         .card-body
           .form-group
-            - if @company.slack_access_response.present?
-              h5 Connected to channel: #{@company.slack_access_response['incoming_webhook']['channel']}
-              br
-              = link_to 'Disconnect from Slack', disconnect_from_slack_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
-            - else
-              a href='https://slack.com/oauth/v2/authorize?client_id=#{ENV['SLACK_CLIENT_ID']}&scope=incoming-webhook&redirect_uri=#{ENV['ASSET_HOST'] + '/oauth/authorization'}'
-                img alt=("Add to Slack") height="40" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" width="139"
-      .card.mt-4.mb-4
-        h3.card-header Xero
-        .card-body
-          .form-group.form-check
-            = f.check_box :connect_xero, { class: 'form-check-input', disabled: current_user.company.basic?}
-            = f.label :connect_xero, 'Enable Xero', class: 'form-check-label'
-          .form-group
-            - if current_user.company.session_handle.present?
-              p
-                ' Connected Xero organisation:
-                = link_to(current_user.company.xero_organisation_name || 'Please reconnect', edit_company_path)
-              = link_to 'Disconnect from Xero', disconnect_from_xero_path, method: :delete, class: "btn btn-danger #{current_user.company.basic? ? 'disabled' : nil}"
-            - else
-              = link_to 'Connect to Xero', connect_to_xero_path, class: "btn btn-primary mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
-          .form-group
-            h5 Update from Xero
-            = link_to 'Contacts', update_contacts_from_xero_path, method: :post, class: "btn btn-warning mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
-            = link_to 'Line items', update_line_items_from_xero_path, method: :post, class: "btn btn-warning mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
-            = link_to 'Tracking categories', update_tracking_categories_from_xero_path, method: :post, class: "btn btn-warning #{current_user.company.basic? ? 'disabled' : nil}"
-          .form-group
-            = f.label :xero_organisation_name
-            = f.text_field :xero_organisation_name, class: 'form-control', disabled: true
-          .form-group
-            = f.label :xero_email
-            = f.text_field :xero_email, class: 'form-control', disabled: current_user.company.basic?
-    .card
-      h3.card-header Project Information
+            = f.label :before_deadline_reminder_days, 'Reminder before deadline (in days)'
+            = f.number_field :before_deadline_reminder_days, {min: 0, class: 'form-control'}
+    .card.card-custom.mt-4
+      .card-header
+        .card-title
+          | Project Information
       .card-body
         .form-group
           = f.label :project_start_date

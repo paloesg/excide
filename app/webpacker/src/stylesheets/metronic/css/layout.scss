@@ -1,6 +1,9 @@
+.dropdown-pointer {
+  cursor: pointer;
+}
+
 // Login page
-h1.header-bold-futura { 
-  font-family: 'Futura';
+h1.header-bold {
   font-weight: bold;
   font-stretch: normal;
   font-style: normal;
@@ -8,28 +11,16 @@ h1.header-bold-futura {
   color: #17172e;
 }
 
-.text-nunito{
-  font-family: 'NunitoSans';
-  font-size: 8px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: 0.1px;
-  color: white;
-}
 // Header
-.change-company-dropdown{
+.change-company-dropdown {
   width: 300px;
-  font-family: 'NunitoSans';
   font-size: 15px !important;
   border-radius: 4px;
   border: solid 0.5px grey;
 }
 
 // Footer
-.nunito-footer{
-  font-family: 'NunitoSans';
+.footer-size {
   font-size: 12px;
   font-weight: normal;
   font-stretch: normal;
@@ -39,45 +30,58 @@ h1.header-bold-futura {
   color: black;
 }
 
-// Sidebar
+// Logo size in header
+.inv-logo-size{
+  width: 10%;
+}
 .logo-size{
   width: 70%;
 }
 
+.small-font{
+  font-size: 2rem;
+}
+
+// Sidebar
 .sidebar-sticky{
-  padding-top: 60px;
-  position: fixed;
+  padding-top: .5rem;
+  position: sticky;
   overflow-y: auto;
-  top: 0;
+  overflow-x: hidden;
+  top: 48px;
   bottom: 0;
+  height: calc(100vh - 48px);
 }
 
 // User icon on navbar
-.icon-size{
+.icon-size {
   vertical-align: middle;
   width: 30px;
   height: 30px;
   border-radius: 50%;
 }
 
-.nunito-sidebar{
-  font-family: 'NunitoSans';
+.sidebar-font {
   font-size: 15px;
   font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
   line-height: normal;
   letter-spacing: 0.1px;
   color: black;
 }
 
+// Card in dashboard page
+.card-header-height {
+  height: 40%;
+  background-color: #eef1ff !important;
+}
+
 // Image size
-.img-icon-size{
+.img-icon-size {
   width: 10%;
   height: 10%;
 }
 
-// dropdown 
-.dropdown-menu-right{
-  left: auto !important
+// dropdown
+.dropdown-menu-right {
+  left: auto !important;
 }

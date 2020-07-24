@@ -4,8 +4,7 @@
 @import 'actiontext';
 
 // Import fonts
-@import '../src/stylesheets/metronic/css/futura';
-@import '../src/stylesheets/metronic/css/nunitosans';
+@import '../src/stylesheets/metronic/css/font';
 
 //Bootstrap
 @import '~bootstrap/scss/bootstrap';
@@ -30,6 +29,9 @@
 @import "../src/stylesheets/metronic/css/workflows";
 @import "../src/stylesheets/dashboard/admin";
 @import "../src/stylesheets/metronic/actiontext";
+// Layout styling (Application html)
+@import "../src/stylesheets/metronic/css/layout";
+
 
 // Active storage direct upload
 @import "../src/stylesheets/dashboard/direct_upload";
@@ -37,10 +39,6 @@
 //icon
 @import "../src/stylesheets/metronic/css/flaticon";
 @import "../src/stylesheets/metronic/css/socicon";
-
-// Import font css
-@import "../src/stylesheets/metronic/font-style";
-
 //
 // Main Stylesheet
 //

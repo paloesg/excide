@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     get '/search', to: 'home#search'
     post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
     get '/xero_line_items', to: 'xero_line_items#show'
+    get '/tasks', to: 'home#tasks'
 
     resources :survey_templates, param: :survey_template_slug, except: [:destroy]
     delete '/survey_templates/:survey_template_slug/destroy_survey_section', to: 'survey_templates#destroy_survey_section', as: :destroy_survey_section
@@ -203,6 +204,8 @@ Rails.application.routes.draw do
   get 'company/new', to: 'companies#new', as: :new_company
   post 'company/create', to: 'companies#create', as: :create_company
   get 'company/edit', to: 'companies#edit', as: :edit_company
+  get 'company/billing', to: 'companies#billing', as: :billing_company
+  get 'company/integration', to: 'companies#integration', as: :integration_company
   patch 'company', to: 'companies#update'
 
   # Static pages
