@@ -1,26 +1,30 @@
 .row.mb-3
   .col-sm-12
     h1 Document Repository
-.row
-  .col-sm-6.mb-3
-    input.form-control#q type="search"
-  .col-sm-3.offset-sm-3
-    .btn-toolbar.float-right
-      = link_to '+ Upload Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
-= form_tag symphony_batches_path(source: 'email'), method: :post do
+- if @get_documents.blank?
+  .row.justify-content-center
+    = render "empty_documents"
+- else
   .row
-    .card-body
-      .table-responsive#hits
-      #pagination
-      #facets
-        #document_templates
-        .row.create-batch-through-documents.d-none
-          .form-inline.mb-3
-            .form-group
-              // Overwrite ID so that it won't clash with uppy upload that checks for template slug
-              = select_tag('template_slug', options_for_select(@templates.map {|k,v| [k.title, k.slug] }), include_blank: 'Select template', required: true, id: 'template', class: 'selectize mt-1')
-            .form-group.ml-2
-              = submit_tag 'Create Batch', class: 'btn btn-lg btn-primary'
+    .col-sm-6.mb-3
+      input.form-control#q type="search"
+    .col-sm-3.offset-sm-3
+      .btn-toolbar.float-right
+        = link_to '+ Upload Document', new_symphony_document_path, role: 'button', class: 'btn btn-primary mr-1'
+  = form_tag symphony_batches_path(source: 'email'), method: :post do
+    .row
+      .card-body
+        .table-responsive#hits
+        #pagination
+        #facets
+          #document_templates
+          .row.create-batch-through-documents.d-none
+            .form-inline.mb-3
+              .form-group
+                // Overwrite ID so that it won't clash with uppy upload that checks for template slug
+                = select_tag('template_slug', options_for_select(@templates.map {|k,v| [k.title, k.slug] }), include_blank: 'Select template', required: true, id: 'template', class: 'selectize mt-1')
+              .form-group.ml-2
+                = submit_tag 'Create Batch', class: 'btn btn-lg btn-primary'
 
 javascript:
   function loadExtJS(src, callback) {
@@ -36,8 +40,8 @@ javascript:
         '<th></th>' +
         '<th>Filename</th>' +
         '<th>Document Template</th>' +
-        '<th>Workflow</th>' +
-        '<th>Uploaded At</th>' +
+        '<th>Uploaded For</th>' +
+        '<th>Uploaded On</th>' +
         '<th>Actions</th>' +
         '</tr></thead>' +
         '<tbody>{{#hits}}' +
