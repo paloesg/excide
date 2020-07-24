@@ -16,7 +16,7 @@
   ul.nav.flex-column
     li.active.m-4
       a.dropdown-toggle.sidebar-font.col-sm-6 aria-expanded="false" data-toggle="collapse" href="#routineMenu"  ROUTINES
-      = link_to new_symphony_template_path, class: 'float-right' do
+      = link_to symphony_templates_path, class: 'float-right' do
         i.material-icons-outlined add
       ul#routineMenu.collapse.list-unstyled
         - ::Template.assigned_templates(current_user).each do |template|
