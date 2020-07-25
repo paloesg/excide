@@ -37,7 +37,7 @@ h2.mt-3.d-flex.align-items-center
         tr
           th colspan="5" = @workflow.name
       tbody
-        - @workflow.workflow_actions.sort_by{|action| action.task.position}.each_with_index do |wfa, index|
+        - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
           tr data-toggle="modal" data-target="#exampleModal#{index}" style="cursor: pointer"
             td width="5%"
               = (index+1).to_s + "."

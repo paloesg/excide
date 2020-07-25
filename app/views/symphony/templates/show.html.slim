@@ -38,10 +38,10 @@ h2.mt-3.d-flex.align-items-center
           th colspan="2" Steps
           th Total: #{@template.tasks.count}
       tbody
-        - @template.tasks.sort_by{|t| t.position}.each do |t|
+        - @template.tasks.sort_by{|t| [t.section.position, t.position]}.each_with_index do |t, index|
           tr
             td width="5%"
-              = t.position.to_s + "."
+              = (index+1).to_s + "."
             td width="80%"
               = t.instructions
             td.py-2 width="15%"
