@@ -12,7 +12,7 @@ h2.mt-3.d-flex.align-items-center
           th Due
       tbody
         - @workflows.each do |wf|
-          tr style="cursor: pointer" onclick="window.location='#{symphony_template_path(@template.slug, workflow: wf.id)}'"
+          tr style="cursor: pointer" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
             td width="5%"
               label.checkbox
                 = check_box_tag 'completed', wf.id, wf.completed, disabled: true
@@ -32,55 +32,17 @@ h2.mt-3.d-flex.align-items-center
             td width="25%"
               = wf.deadline&.strftime("%d %b %Y")
   .col-md-7
-    - if @workflow.present?
-      table.table.table-hover
-        thead.thead-light
+    table.table
+      thead.thead-light
+        tr
+          th colspan="2" Steps
+          th Total: #{@template.tasks.count}
+      tbody
+        - @template.tasks.sort_by{|t| t.position}.each do |t|
           tr
-            th colspan="5" = @workflow.name
-        tbody
-          - @workflow.workflow_actions.sort_by{|action| action.task.position}.each_with_index do |wfa, index|
-            tr data-toggle="modal" data-target="#exampleModal#{index}" style="cursor: pointer"
-              td width="5%"
-                = (index+1).to_s + "."
-              td width="55%"
-                = wfa.task.instructions
-              td.py-2 width="10%"
-                = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"
-              td.d-flex
-                - if !wfa.completed? && wfa.deadline.present?
-                  - if wfa.deadline.to_date < Date.today
-                    .text-danger = wfa.deadline&.strftime("%d %b")
-                    i.material-icons-outlined.font-size-h6.ml-1.text-danger calendar_today
-                    - color = "text-danger"
-                  - elsif (wfa.deadline.to_date <= Date.tomorrow || (wfa.company.before_deadline_reminder_days.present? && wfa.deadline.to_date - wfa.company.before_deadline_reminder_days <= Date.today))
-                    .text-warning = wfa.deadline&.strftime("%d %b")
-                    i.material-icons-outlined.font-size-h6.ml-1.text-warning calendar_today
-                    - color = "text-warning"
-                  - else
-                    .text-primary = wfa.deadline&.strftime("%d %b")
-                    i.material-icons-outlined.font-size-h6.ml-1.text-primary calendar_today
-                    - color = "text-primary"
-                - elsif wfa.deadline.present?
-                  .text-muted = wfa.deadline&.strftime("%d %b")
-                  i.material-icons-outlined.font-size-h6.ml-1.text-muted calendar_today
-                  - color = "text-muted"
-              td width="5%"
-                label.checkbox
-                  = check_box_tag 'completed', wfa.id, wfa.completed, disabled: true
-                  span
-            = render "task", template: @template, workflow: @workflow, action: wfa, index: index, color: color
-    - else
-      table.table
-        thead.thead-light
-          tr
-            th colspan="2" Steps
-            th Total: #{@template.tasks.count}
-        tbody
-          - @template.tasks.sort_by{|t| t.position}.each do |t|
-            tr
-              td width="5%"
-                = t.position.to_s + "."
-              td width="80%"
-                = t.instructions
-              td.py-2 width="15%"
-                = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"
+            td width="5%"
+              = t.position.to_s + "."
+            td width="80%"
+              = t.instructions
+            td.py-2 width="15%"
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"

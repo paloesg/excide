@@ -47,7 +47,14 @@
                         = action.deadline&.strftime("%d %b %Y") + " (in " + (action.deadline.to_date - Date.today).to_i.to_s + "d)"
                     - else
                       = action.deadline&.strftime("%d %b %Y")
-
+        - if action.completed?
+          .row.mb-4
+            .col-3 Completed
+            .col-9
+              .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
+                .d-flex
+                  i.material-icons-outlined.font-size-h6.text-muted calendar_today
+                  .text-muted = action.updated_at&.strftime("%d %b %Y")
         .row.mb-4
           .col-3 Attachments
           .col-9

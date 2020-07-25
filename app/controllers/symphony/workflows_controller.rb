@@ -55,7 +55,7 @@ class Symphony::WorkflowsController < ApplicationController
     @sections = @template.sections
     @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
     @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(5)
-
+    @workflows = @template.workflows
 
     if @workflow.completed?
       @section = params[:section_id] ? @sections.find(params[:section_id]) : @sections.last
