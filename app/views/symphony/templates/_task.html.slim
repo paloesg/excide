@@ -44,7 +44,7 @@
                       - elsif action.deadline.to_date <= Date.tomorrow
                         = action.deadline.to_date == Date.today ? "Today" : "Tomorrow"
                       - else
-                        = action.deadline&.strftime("%d %b %Y") + " (in " + (Date.today - action.deadline.to_date).to_i.to_s + "d)"
+                        = action.deadline&.strftime("%d %b %Y") + " (in " + (action.deadline.to_date - Date.today).to_i.to_s + "d)"
                     - else
                       = action.deadline&.strftime("%d %b %Y")
 
