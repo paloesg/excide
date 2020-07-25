@@ -1,6 +1,4 @@
 class Symphony::RemindersController < ApplicationController
-  # layout 'dashboard/application'
-  layout 'metronic/application'
   before_action :set_reminder, only: [:edit, :update, :cancel]
 
   def index

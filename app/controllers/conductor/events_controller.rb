@@ -1,6 +1,4 @@
 class Conductor::EventsController < ApplicationController
-  layout 'dashboard/application'
-
   before_action :authenticate_user!
   before_action :set_company_and_clients
   before_action :set_staffers, only: [:new, :edit]

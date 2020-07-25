@@ -54,7 +54,6 @@ gem 'pundit'
 gem 'omniauth'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-oauth2'
-gem 'omniauth-linkedin-oauth2'
 # Xero API integration for partner app
 gem 'xeroizer', git: 'https://github.com/waynerobinson/xeroizer.git'
 

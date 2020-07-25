@@ -1,6 +1,4 @@
 class Conductor::AllocationsController < ApplicationController
-  layout 'dashboard/application'
-
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_allocation, only: [:show, :edit, :update, :destroy]

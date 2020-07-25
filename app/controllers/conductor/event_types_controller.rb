@@ -1,5 +1,4 @@
 class Conductor::EventTypesController < ApplicationController
-  layout 'dashboard/application'
   before_action :set_user_and_company, only: [:show, :new, :edit, :create, :index]
   before_action :set_event_type, only: [:show, :edit, :update, :destroy]
 
