@@ -5,7 +5,7 @@ h2.mt-3.d-flex.align-items-center
     span On-demand
 .row
   .col-md-5
-    table.table.table-hover
+    table.table.table-hover.table-blue
       thead.thead-light
         tr
           th colspan="4" To complete
@@ -38,7 +38,7 @@ h2.mt-3.d-flex.align-items-center
           tr
             th colspan="5" = @workflow.name
         tbody
-          - @workflow.workflow_actions.each_with_index do |wfa, index|
+          - @workflow.workflow_actions.sort_by{|action| action.task.position}.each_with_index do |wfa, index|
             tr data-toggle="modal" data-target="#exampleModal#{index}" style="cursor: pointer"
               td width="5%"
                 = (index+1).to_s + "."
@@ -76,10 +76,10 @@ h2.mt-3.d-flex.align-items-center
             th colspan="2" Steps
             th Total: #{@template.tasks.count}
         tbody
-          - @template.tasks.each_with_index do |t, index|
+          - @template.tasks.sort_by{|t| t.position}.each do |t|
             tr
               td width="5%"
-                = (index+1).to_s + "."
+                = t.position.to_s + "."
               td width="80%"
                 = t.instructions
               td.py-2 width="15%"
