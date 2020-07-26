@@ -10,7 +10,7 @@
                   i.material-icons-outlined.font-size-h6 check
                   | Completed
             - else
-              .btn.btn-sm.btn-outline-secondary
+              .btn.btn-sm.btn-outline-secondary style=((action.task != task && template.ordered?) ? "pointer-events: none" : "")
                 .d-flex.align-items-center
                   i.material-icons-outlined.font-size-h6 check
                   = link_to "Mark as Complete", task_toggle_symphony_workflow_path(workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), data: {remote: true, method: "POST"}, class: "text-dark"
@@ -20,7 +20,7 @@
         h3.mb-6 Step #{index+1}: #{action.task.instructions}
         .row.mb-4
           .col-3 Action
-          .col-8
+          .col-8 style=((action.task != task && template.ordered?) ? "pointer-events: none" : "")
             = render "symphony/workflows/tasks/#{action.task.task_type}", template: template, workflow: workflow, action: action
           .col-1
             = link_to "Edit", edit_symphony_template_path(template_slug: template.slug), class: "float-right"

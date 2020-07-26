@@ -67,4 +67,4 @@ h2.mt-3.d-flex.align-items-center
               label.checkbox
                 = check_box_tag 'completed', wfa.id, wfa.completed, disabled: true
                 span
-          = render "task", template: @template, workflow: @workflow, action: wfa, index: index, color: color
+          = render "task", template: @template, workflow: @workflow, action: wfa, index: index, color: color, task: @current_task
