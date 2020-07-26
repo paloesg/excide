@@ -21,6 +21,6 @@
 /         = render "symphony/workflows/tasks/remarks", action: action
 /         br
 /         = task.display_image
-.btn.btn-outline-secondary.btn-sm
+.btn.btn-outline-secondary.btn-sm style=(action.completed? ? "pointer-events: none" : "")
   i.material-icons-outlined class=(action.completed? ? "text-muted" : "text-primary") receipt
-  = link_to "Create Invoice Payable", new_symphony_invoice_path(workflow_id: workflow.id, invoice_type: 'payable', workflow_action_id: action.id, workflow_name: template.slug), role: 'button', style: (action.completed? ? "pointer-events: none" : ""), class: (action.completed? ? "text-muted" : "text-primary")
+  = link_to "Create Invoice Payable", new_symphony_invoice_path(workflow_id: workflow.id, invoice_type: 'payable', workflow_action_id: action.id, workflow_name: template.slug), role: 'button', class: (action.completed? ? "text-muted" : "text-primary")

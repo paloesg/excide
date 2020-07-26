@@ -20,4 +20,4 @@
 /         = task.display_image
 .btn.btn-outline-secondary.btn-sm
   i.material-icons-outlined class=(action.completed? ? "text-muted" : "text-primary") format_list_bulleted
-  = link_to "Fill up form", new_symphony_survey_path(action.workflow.template.slug, action.workflow.id, task: task.id), role: 'button', style: (action.completed? ? "pointer-events: none" : ""), class: (action.completed? ? "text-muted" : "text-primary")
+  = link_to "Fill up form", new_symphony_survey_path(action.workflow.template.slug, action.workflow.id, task: action.task.id), role: 'button', style: (action.completed? ? "pointer-events: none" : ""), class: (action.completed? ? "text-muted" : "text-primary")

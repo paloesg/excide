@@ -20,4 +20,4 @@
 /         = task.display_image
 .btn.btn-outline-secondary.btn-sm
   i.material-icons-outlined class=(action.completed? ? "text-muted" : "text-primary") send
-  = link_to "Send Email", send_email_to_xero_symphony_workflow_path, style: (action.completed? ? "pointer-events: none" : ""), class: (action.completed? ? "text-muted" : "text-primary")
+  = link_to "Send Email", send_email_to_xero_symphony_workflow_path(workflow_name: template.slug, workflow_id: workflow.id), style: (action.completed? ? "pointer-events: none" : ""), class: (action.completed? ? "text-muted" : "text-primary")
