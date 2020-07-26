@@ -1,10 +1,10 @@
 .row
   .col-xl-12
     .card
-      h3.card-header.d-flex.justify-content-between
-        | Batch listing
-        .card-toolbar
-          small #{@completed} of #{@total} completed
+      .card-header.d-flex.justify-content-between
+        h3 
+          | Batch listing
+          .h6.badge.badge-header.badge-secondary.ml-2 AP Invoices only
         button.btn.btn-primary data-target="#newInvoiceBatch" data-toggle="modal" type="button"
           i.material-icons-outlined.text-white add
           | New Invoice Batch
