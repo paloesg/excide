@@ -24,9 +24,9 @@ class Symphony::HomeController < ApplicationController
     @get_outstanding_actions = @get_outstanding_actions.where('created_at >= ?', Time.current - params[:created_at].to_i.days) unless params[:created_at].blank?
     # Actions that depends the type of task (with repetition task or adhoc)
     if params[:types] == "Tasks related to Routine"
-      @get_outstanding_actions = @outstanding_actions.select {|action| action.workflow_id.present?}
+      @get_outstanding_actions = @get_outstanding_actions.select {|action| action.workflow_id.present?}
     elsif params[:types] == "Adhoc tasks"
-      @get_outstanding_actions = @outstanding_actions.select {|action| action.workflow_id.nil?}
+      @get_outstanding_actions = @get_outstanding_actions.select {|action| action.workflow_id.nil?}
     end
     @outstanding_actions = Kaminari.paginate_array(@get_outstanding_actions).page(params[:page]).per(10)
     @actions_sort = sort_column(@outstanding_actions).reverse!
