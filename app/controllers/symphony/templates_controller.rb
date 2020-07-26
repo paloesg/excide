@@ -52,8 +52,7 @@ class Symphony::TemplatesController < ApplicationController
 
   def show
     authorize @template
-    @workflows = @template.workflows
-    @workflow = Workflow.find(params[:workflow]) if params[:workflow]
+    @workflows = @template.workflows.sort_by{|wf| wf.created_at}
   end
 
   def edit
