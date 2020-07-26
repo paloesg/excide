@@ -52,7 +52,7 @@ class Symphony::TemplatesController < ApplicationController
 
   def show
     authorize @template
-    @workflows = @template.workflows.sort_by{|wf| wf.created_at}
+    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == 2020}.sort_by{|wf| wf.created_at}
   end
 
   def edit

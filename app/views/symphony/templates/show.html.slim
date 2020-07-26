@@ -1,8 +1,13 @@
 = link_to "BACK", symphony_templates_path
-h2.mt-3.d-flex.align-items-center
-  = @template.title
-  .label.label-inline.label-dark.ml-4
-    span On-demand
+.row
+  .col-md-6
+    h2.mt-3.d-flex.align-items-center
+      = @template.title
+      .label.label-inline.label-dark.ml-4
+        span On-demand
+  .col-md-6
+    .float-right
+      = select_tag('year', options_for_select(["2020", "2019", "2018"], selected: params[:year], include_blank: "2020"), class: 'selectize selectize-year')
 .row
   .col-md-5
     table.table.table-hover.table-blue
