@@ -2,9 +2,9 @@
   .col-md-3
     h1 Activity History
 .row.mb-5
-  .col-sm-12
-    = button_tag 'Filter', type: 'button', class: 'btn btn-primary float-right activity-history-filter-button ml-2'
-    = select_tag('created_at', options_for_select([["Past 7 days", 7], ["Past 14 days", 14], ["Past 1 month", 30]], selected: params[:created_at], include_blank: "Filter by days..."), class: 'float-right selectize selectize-created-at')
+  .col-2.offset-10.form-inline
+    = select_tag('created_at', options_for_select([["Past 7 days", 7], ["Past 14 days", 14], ["Past 1 month", 30]], selected: params[:created_at], include_blank: "Filter by days..."), class: 'form-control selectize-created-at')
+    = button_tag 'Filter', type: 'button', class: 'btn btn-primary activity-history-filter-button ml-2 form-control'
 - if @activities.empty?
   .row.justify-content-center.h-100
     .col-md-3.text-center.p-4.my-auto
@@ -26,6 +26,3 @@
     .col-md-12
       .text-center
         = paginate @activities, views_prefix: 'dashboard'
-
-      
-        
