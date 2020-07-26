@@ -14,22 +14,21 @@ class Symphony::HomeController < ApplicationController
 
   def tasks
     if params[:tasks].blank? || params[:tasks] == "Only incomplete tasks"
-      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where(company: current_user.company).includes(:task)
+      @get_outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where(company: current_user.company).includes(:task)
     elsif params[:tasks] == "All tasks"
-      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(company: current_user.company).includes(:task)
+      @get_outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(company: current_user.company).includes(:task)
     else
-      @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(completed: true).where(company: current_user.company).includes(:task)
+      @get_outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(completed: true).where(company: current_user.company).includes(:task)
     end
-    if params[:created_at].blank? || params[:created_at] == "Last 7 days"
-      @outstanding_actions = @outstanding_actions.where('created_at >= ?', Time.zone.now - 7.days)
-    elsif params[:created_at] == "Last 30 days"
-      @outstanding_actions = @outstanding_actions.where('created_at >= ?', Time.zone.now - 30.days)
-    end
+    # Filtering by days
+    @get_outstanding_actions = @get_outstanding_actions.where('created_at >= ?', Time.current - params[:created_at].to_i.days) unless params[:created_at].blank?
+    # Actions that depends the type of task (with repetition task or adhoc)
     if params[:types] == "Tasks related to Routine"
-      @outstanding_actions = @outstanding_actions.select {|action| action.workflow_id.present?}
+      @get_outstanding_actions = @outstanding_actions.select {|action| action.workflow_id.present?}
     elsif params[:types] == "Adhoc tasks"
-      @outstanding_actions = @outstanding_actions.select {|action| action.workflow_id.nil?}
+      @get_outstanding_actions = @outstanding_actions.select {|action| action.workflow_id.nil?}
     end
+    @outstanding_actions = Kaminari.paginate_array(@get_outstanding_actions).page(params[:page]).per(10)
     @actions_sort = sort_column(@outstanding_actions).reverse!
     params[:direction] == "desc" ? @actions_sort.reverse! : @actions_sort
   end
