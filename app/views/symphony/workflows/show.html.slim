@@ -16,7 +16,7 @@
           .dropdown-item = link_to "Delete", symphony_template_path(template_slug: @template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' , remote: true}, method: :delete if policy(@template).destroy?
 .row
   .col-md-5
-    table.table.table-hover.table-blue
+    table.table.table-hover
       thead.thead-light
         tr
           th colspan="4" To complete
@@ -53,7 +53,7 @@
             td width="5%"
               = (index+1).to_s + "."
             td width="55%"
-              = wfa.task.task_type
+              = wfa.task.instructions
             td.py-2 width="10%"
               = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"
             td.d-flex
