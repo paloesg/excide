@@ -35,14 +35,13 @@ class Symphony::HomeController < ApplicationController
   end
 
   def activity_history
-    if params[:created_at].blank? || params[:created_at] == "Past 7 days"
-      @activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).where('created_at >= ?', Time.zone.now - 7.days).order("created_at desc")
-    elsif params[:created_at] == "Past 14 days"
-      @activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).where('created_at >= ?', Time.zone.now - 14.days).order("created_at desc")
-    elsif params[:created_at] == "Past 1 month"
-      @activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).where('created_at >= ?', Time.zone.now - 1.month).order("created_at desc")
+    if params[:created_at].present?
+      @get_activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).where('created_at >= ?', Time.current - params[:created_at].to_i.days).order("created_at desc")
+    else
+      # Get all current_user activities
+      @get_activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).order("created_at desc")
     end
-    # @activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).order("created_at desc").last(30)
+    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
   end
 
   private
