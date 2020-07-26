@@ -23,6 +23,9 @@
                 .row.mt-3
                   .col-md-12
                     .dashboard-body.batchUploads#Dashboard
+    - if @batches.empty?
+      = render "empty_batches"
+    - else
       .card-body
         .section
           .kt-widget11
