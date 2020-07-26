@@ -8,9 +8,18 @@ module DeviseHelper
                       :resource => @user.class.model_name.human.downcase)
 
     html = <<-HTML
-    <div id='error_explanation' class='alert alert-danger' role='alert'>
-      <strong>#{sentence}</strong>
-      <ul class="text-dark">#{messages}</ul>
+    <div class="row d-flex justify-content-center">
+      <div class="col-6">
+        <div id='error_explanation' class='alert alert-danger' role='alert'>
+          <div class="alert-close">
+            <button aria-label="Close" data-dismiss="alert" type="button" class="close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <strong>#{sentence}</strong>
+          <ul class="text-dark">#{messages}</ul>
+        </div>
+      </div>
     </div>
     HTML
 
