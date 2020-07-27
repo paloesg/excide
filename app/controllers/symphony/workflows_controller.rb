@@ -51,7 +51,7 @@ class Symphony::WorkflowsController < ApplicationController
     @sections = @template.sections
     @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
     @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(5)
-    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == 2020}.sort_by{|wf| wf.created_at}
+    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == @workflow.created_at.year}.sort_by{|wf| wf.created_at}
 
     if @workflow.completed?
       @section = params[:section_id] ? @sections.find(params[:section_id]) : @sections.last
