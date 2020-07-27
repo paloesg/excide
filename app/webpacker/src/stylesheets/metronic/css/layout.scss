@@ -53,6 +53,12 @@ h1.header-bold {
   height: calc(100vh - 48px);
 }
 
+// Sidebar-items hover effect
+.hover-blue:hover {
+  background-color: #eef1ff;
+  border-radius: 10px;
+}
+
 // User icon on navbar
 .icon-size {
   vertical-align: middle;
