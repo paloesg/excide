@@ -48,14 +48,14 @@
           th colspan="5" = @workflow.name
       tbody
         - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
-          tr data-toggle="modal" data-target="#exampleModal#{index}" style="cursor: pointer"
-            td width="5%"
+          tr
+            td width="5%" data-toggle="modal" data-target="#exampleModal#{index}" style="cursor: pointer"
               = (index+1).to_s + "."
-            td width="55%"
+            td width="55%" data-toggle="modal" data-target="#exampleModal#{index}" style="cursor: pointer"
               = wfa.task.instructions
-            td.py-2 width="10%"
+            td.py-2 width="10%" data-toggle="modal" data-target="#exampleModal#{index}" style="cursor: pointer"
               = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"
-            td.d-flex
+            td.d-flex data-toggle="modal" data-target="#exampleModal#{index}" style="cursor: pointer"
               - if !wfa.completed? && wfa.deadline.present?
                 - if wfa.deadline.to_date < Date.today
                   .text-danger = wfa.deadline&.strftime("%d %b")
@@ -74,7 +74,7 @@
                 i.material-icons-outlined.font-size-h6.ml-1.text-muted calendar_today
                 - color = "text-muted"
             td width="5%"
-              label.checkbox
-                = check_box_tag 'completed', wfa.id, wfa.completed, disabled: true
+              label.checkbox style=(wfa.completed? ? "pointer-events: none" : "")
+                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: @template.slug, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: wfa.completed
                 span
           = render "task", template: @template, workflow: @workflow, action: wfa, index: index, color: color, task: @current_task
