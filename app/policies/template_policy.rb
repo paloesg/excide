@@ -1,6 +1,6 @@
 class TemplatePolicy < ApplicationPolicy
   def index?
-    user.present?
+    user_admin?
   end
 
   def create?
@@ -9,10 +9,6 @@ class TemplatePolicy < ApplicationPolicy
 
   def new?
     create?
-  end
-
-  def show?
-    user.present?
   end
 
   def update?

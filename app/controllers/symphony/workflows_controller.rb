@@ -15,11 +15,7 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: @template, completed: [false, nil]).order(created_at: :desc)
-
-    @workflows_sort = sort_column(@workflows)
-    params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
-    @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
+    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == 2020}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
   end
 
   def new
