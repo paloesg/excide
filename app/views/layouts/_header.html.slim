@@ -39,10 +39,10 @@
         / uses view notifications/default/workflow_action/:key.html.slim
         = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
       /! begin: Admin bar
-      li.nav-link.mr-3
+      li.nav-link
         = link_to edit_user_registration_path do
           i.material-icons-outlined settings
-      .dropdown.mr-3
+      .dropdown.ml-3
         a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
           = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
         .dropdown-menu.dropdown-menu-right aria-labelledby="userDropdownMenu" 
