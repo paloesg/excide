@@ -1,28 +1,58 @@
 .row
-  .col-xl-12
-    .card
-      h3.card-header = @template.title
-      .card-body
-        .kt-section
-          .kt-section__content
-            - if @workflows.blank?
-              | No outstanding #{@template.title} workflows at the moment.
-            - else
-              .kt-widget11
-                table.table
-                  thead
-                    tr
-                      td ID
-                      td = sortable "workflowable", "Client Name"
-                      td = sortable "remarks", "Remarks"
-                      td = sortable "deadline", "Deadline"
-                      td = sortable "completed", "Status"
-                  tbody
-                    - @workflows.each do |w|
-                      tr class=([('success' if w.completed?), ('warning' if (!w.completed? && !w.deadline.try(:past?))), ('danger' if (!w.completed? && w.deadline.try(:past?)))].compact.join(''))
-                        td = link_to w.friendly_id, symphony_workflow_path(w.template.slug, w.friendly_id)
-                        td = w.workflowable&.name || '-'
-                        td = w.remarks || '-'
-                        td = w.deadline&.strftime("%d/%m/%Y") || '-'
-                        td = w.completed ? 'Completed' : w.current_section&.section_name
-                = paginate @workflows, views_prefix: 'dashboard'
+  .col-md-6
+    h2.mt-3.d-flex.align-items-center
+      = @template.title
+      .label.label-inline.label-dark.ml-4
+        span On-demand
+  .col-md-6.d-flex.justify-content-end
+    = select_tag('year', options_for_select(["2020", "2019", "2018"], selected: params[:year], include_blank: "2020"), class: 'selectize selectize-year mr-2')
+    - if policy(@template).edit? || policy(@template).destroy?
+      .dropdown.dropdown-inline.float-right
+        a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+          i.material-icons.font-size-h2.text-secondary more_horiz
+        .dropdown-menu.dropdown-menu-right
+          .dropdown-item = link_to "Edit Master Routine", edit_symphony_template_path(template_slug: @template.slug), class: "float-right" if policy(@template).edit?
+          .dropdown-item = link_to "Delete", symphony_template_path(template_slug: @template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' , remote: true}, method: :delete if policy(@template).destroy?
+.row
+  .col-md-5
+    table.table.table-hover
+      thead.thead-light
+        tr
+          th colspan="4" To complete
+          th Due
+      tbody
+        - @workflows.each do |wf|
+          tr style="cursor: pointer" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+            td width="5%"
+              label.checkbox
+                = check_box_tag 'completed', wf.id, wf.completed, disabled: true
+                span
+            td width="45%"
+              = wf.name
+            td width="20%"
+              = "(" + (wf.workflow_actions.where(completed: true).count*100/wf.workflow_actions.count).to_s + "%)" if (wf.workflow_actions.present? && !wf.completed?)
+            td width="5%"
+              - if !wf.completed? && wf.deadline.present?
+                - if wf.deadline.to_date < Date.today
+                  i.fa.fa-xs.fa-circle.text-danger.mr-3
+                - elsif wf.deadline.to_date <= Date.tomorrow
+                  i.fa.fa-xs.fa-circle.text-warning.mr-3
+                - else
+                  i.fa.fa-xs.fa-circle.text-primary.mr-3
+            td width="25%"
+              = wf.deadline&.strftime("%d %b %Y")
+  .col-md-7
+    table.table.table-borderless
+      thead.thead-light
+        tr
+          th colspan="2" Steps
+          th Total: #{@template.tasks.count}
+      tbody
+        - @template.tasks.sort_by{|t| [t.section.position, t.position]}.each_with_index do |t, index|
+          tr
+            td width="5%"
+              = (index+1).to_s + "."
+            td width="80%"
+              = t.instructions
+            td.py-2 width="15%"
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"
