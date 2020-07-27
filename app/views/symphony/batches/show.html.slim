@@ -74,7 +74,7 @@
                               - if wf.invoice.blank?
                                 button class="btn btn-secondary flaticon2-paper disabled" data-html="true" data-toggle="tooltip" data-placement="top" title="No invoice available"
                               - else
-                                = link_to "", symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id), data: { toggle: "tooltip", placement: "top", title: "View invoice" }, class: 'btn btn-secondary flaticon2-paper' 
+                                = link_to "", edit_symphony_invoice_path(workflow_name: wf.template.slug, workflow_id: wf.friendly_id, id: wf.invoice.id, workflow_action_id: wf.workflow_actions.includes(:task).where(completed: false).order("tasks.position ASC").first&.id), data: { toggle: "tooltip", placement: "top", title: "Edit invoice" }, class: 'btn btn-secondary flaticon2-paper' 
                               = link_to "", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), method: :delete, data: { toggle: "tooltip", placement: "top", title: "Delete", confirm: 'Are you sure?' }, remote: true, role: 'button', remote: true, class: 'btn btn-secondary flaticon2-rubbish-bin text-danger'
                               - if wf.invoice.present? and wf.invoice.rejected?
                                 button class="btn btn-light flaticon2-warning disabled text-danger" data-html="true" data-toggle="tooltip" data-placement="top" title="Invoice rejected: #{wf.invoice.remarks}"

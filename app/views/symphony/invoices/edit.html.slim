@@ -49,7 +49,7 @@
                 = link_to("Submit for approval", xero_create_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-warning submit-approval-button ml-2 float-right')
           - else
             - if policy(@invoice).reject?
-              button type="button" class="btn btn-danger float-right ml-2" data-target="#remarkModal" data-toggle="modal" Reject 
+              button type="button" class="btn btn-danger float-right mr-2" data-target="#remarkModal" data-toggle="modal" Reject 
               = f.submit 'Update', class: 'btn btn-warning update-invoice-button float-right'
       .row.ml-3
         .dropdown.mr-3
