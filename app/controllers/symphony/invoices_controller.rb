@@ -58,7 +58,7 @@ class Symphony::InvoicesController < ApplicationController
 
   def update
     authorize @invoice
-    update_xero_contacts(params[:invoice][:xero_contact_name], params[:invoice][:xero_contact_id], @invoice, @clients)    
+    update_xero_contacts(params[:invoice][:xero_contact_name], params[:invoice][:xero_contact_id], @invoice, @clients)
     if @invoice.update(invoice_params)
       #If associate wants to update invoice before sending to xero, symphony finds the params update_field and then redirect to the same invoice EDIT page
       if params[:update_field] == "success"
@@ -148,7 +148,6 @@ class Symphony::InvoicesController < ApplicationController
       # Check if invoice can be rejected using AASM
       if @invoice.may_reject?
         @invoice.remarks = params[:invoice][:remarks]
-        flash[:notice] = "Invoice has been rejected."
         @invoice.reject
         @invoice.save(validate: false)
         if @invoice.workflow.batch.present?
@@ -159,6 +158,7 @@ class Symphony::InvoicesController < ApplicationController
         else
           redirect_to symphony_workflow_path(@invoice.workflow.template.slug, @invoice.workflow.friendly_id)
         end
+        flash[:notice] = "Invoice has been rejected."
       else
         invoice_id.present? ? (render :edit) : (render :new)
       end
@@ -290,7 +290,7 @@ class Symphony::InvoicesController < ApplicationController
       @tracking_name          = current_user.company.xero_tracking_categories
       @tracking_categories_1  = @tracking_name[0]&.options&.map{|option| JSON.parse(option)}
       @tracking_categories_2  = @tracking_name[1]&.options&.map{|option| JSON.parse(option)}
-      @items                  = @company.xero_line_items.map{|item| (item.item_code + ': ' + (item.description || '-')) if item.item_code.present?}    
+      @items                  = @company.xero_line_items.map{|item| (item.item_code + ': ' + (item.description || '-')) if item.item_code.present?}
     end
   end
 
