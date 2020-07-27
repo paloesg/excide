@@ -145,6 +145,14 @@ class Workflow < ApplicationRecord
     self.created_at.strftime('%y%m%d-%H%M')
   end
 
+  def progress
+    if self.workflow_actions.present?
+      self.workflow_actions.where(completed: true).count*100/self.workflow_actions.count
+    else
+      0
+    end
+  end
+
   private
 
   # Create all the actions that need to be completed for a workflow that is associated with a company
@@ -172,7 +180,7 @@ class Workflow < ApplicationRecord
   end
   # Set deadline based on settings of template and task (model), while target_model are workflows and workflow actions
   def conditionally_set_deadline(model, target_model)
-    if model.deadline_type.present?     
+    if model.deadline_type.present?
       case model.deadline_type
       when "xth_day_of_the_month"
         # Check if day exists in that month (for eg, June only have 30 days), so if it is 31st, we bring it forward to the next month.
@@ -184,7 +192,7 @@ class Workflow < ApplicationRecord
           target_model.deadline = Date.new(Date.current.year, Date.current.month, model.deadline_day) > Date.current ? Date.new(Date.current.year, Date.current.month, model.deadline_day) : Date.new(Date.current.year, Date.current.month, model.deadline_day).next_month()
         end
         # Set to the next business day if self.deadline above is not a work day
-        target_model.deadline = 1.business_days.after(target_model.deadline) - 1.day unless target_model.deadline.workday? 
+        target_model.deadline = 1.business_days.after(target_model.deadline) - 1.day unless target_model.deadline.workday?
       else
         target_model.deadline = model.deadline_day.business_days.after(Date.current)
       end

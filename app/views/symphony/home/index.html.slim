@@ -17,7 +17,7 @@
           .col-sm-10
             h5 Good job! You have done all your tasks!
             h5.mb-0
-              span.font-weight-normal Any new task coming up? 
+              span.font-weight-normal Any new task coming up?
               = link_to "Add new task", symphony_tasks_path, class: 'text-primary font-weight-bold'
     - else
       .col-md-12
@@ -93,5 +93,5 @@
                     - bg = "bg-primary"
                 .col
                   div.progress
-                    div.progress-bar role="progressbar" style="width: #{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}%" aria-valuenow="#{w.workflow_actions.where(completed: true).count*100/w.workflow_actions.count}" aria-valuemin="0" aria-valuemax="100" class=bg
-                  | #{w.workflow_actions.where(completed: true).count} / #{w.workflow_actions.count} 
+                    div.progress-bar role="progressbar" style="width: #{w.progress}%" aria-valuenow="#{w.progress}" aria-valuemin="0" aria-valuemax="100" class=bg
+                  | #{w.workflow_actions.where(completed: true).count} / #{w.workflow_actions.count}
