@@ -22,7 +22,7 @@
           th Due
       tbody
         - @workflows.each do |wf|
-          tr style="cursor: pointer" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+          tr style=("cursor: pointer;" + ((wf == @workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
             td width="5%"
               label.checkbox
                 = check_box_tag 'completed', wf.id, wf.completed, disabled: true
