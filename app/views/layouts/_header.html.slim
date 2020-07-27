@@ -38,11 +38,10 @@
         /! begin: Notification bar
         / uses view notifications/default/workflow_action/:key.html.slim
         = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
-      - if current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:superadmin)
-        /! begin: Admin bar
-        li.nav-link.mr-3
-          = link_to edit_user_registration_path do
-            i.material-icons-outlined settings
+      /! begin: Admin bar
+      li.nav-link.mr-3
+        = link_to edit_user_registration_path do
+          i.material-icons-outlined settings
       .dropdown.mr-3
         a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
           = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
