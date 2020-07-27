@@ -14,7 +14,9 @@
       / Change company dropdown
       li.nav-item.dropdown.border.border-secondary.rounded
         - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
-          button#dropdownMenuButton.btn.btn-white.dropdown-toggle.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button" #{current_user.company.name}
+          button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button" 
+            | #{current_user.company.name}
+            i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
           .dropdown-menu aria-labelledby="dropdownMenuButton"
             - if current_user.has_role? :superadmin
               - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
@@ -52,6 +54,3 @@
           li
             = link_to destroy_user_session_path, {method: :delete, class: 'dropdown-item'} do
               span Log Out
-          
-          
-      
