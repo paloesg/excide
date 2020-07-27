@@ -22,6 +22,12 @@ $(document).on("turbolinks:load", function() {
     Turbolinks.visit('//' + location.host + location.pathname + '?tasks=' + tasksData + '&created_at=' + createdAtData + '&types=' + typesData);
   });
 
+  $('.activity-history-filter-button').click(function (e) {
+    var created_at_selectize = $('select.selectize-created-at').selectize();
+    var createdAtData = (created_at_selectize[0].selectize).getValue();
+    Turbolinks.visit('//' + location.host + location.pathname + '?created_at=' + createdAtData);
+  });
+
   if ($('#new-event.d-none')[0] == undefined) {
     $('select.selectize').selectize({
       onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
