@@ -1,28 +1,27 @@
 - content_for :notification_content, flush: true do
   div class=("notification_list #{notification.opened? ? "opened" : "unopened"}")
     .tab-content
-      #topbar_notifications_notifications.tab-pane.active.show role="tabpanel" 
-        .kt-notification.kt-scroll data-height="150" data-mobile-height="50" 
-          .kt-notification__item 
-            .kt-notification__item-icon
-              i.flaticon2-checking.kt-font-primary
-            .kt-notification__item-details
-              .kt-notification__item-title
-                .list_text_wrapper
-                    p.list_text
-                      strong= notification.notifier.present? ? notification.notifier.printable_notifier_name : 'Complete '
-                      | the task
-                      br/
-                      - if notification.notifiable.present?
-                        = " '#{notification.parameters[:printable_notifiable_name]}' "
-                        br/
-                        = " in workflow: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
-                      - else
-                        = " a #{notification.notifiable_type.humanize.downcase.singularize}"
-                        = "in #{notification.group.printable_group_name}" if notification.group.present?
-                        | but the notifiable is not found. It may have been deleted.
-                      br/
-                      span= notification.created_at.strftime("%b %d %H:%M")
+      #topbar_notifications_notifications.tab-pane.fade.pt-2.pr-5.mr-n5.scroll.ps.active.show role="tabpanel"
+        .navi.navi-icon-circle.navi-spacer-x-0
+          .navi-item
+            .navi-link.rounded
+              .symbol.symbol-50.mx-3.px-5
+                i.flaticon2-checking.text-primary
+              .navi-text
+                p.font-weight-bold.font-size-lg
+                  strong = notification.notifier.present? ? notification.notifier.printable_notifier_name : 'Complete '
+                  | the task
+                  br/
+                  - if notification.notifiable.present?
+                    = " '#{notification.parameters[:printable_notifiable_name]}' "
+                    br/
+                    = " in workflow: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
+                  - else
+                    = " a #{notification.notifiable_type.humanize.downcase.singularize}"
+                    = "in #{notification.group.printable_group_name}" if notification.group.present?
+                    | but the notifiable is not found. It may have been deleted.
+                  br/
+                  span= notification.created_at.strftime("%b %d %H:%M")
 
 div class="notification_#{notification.id}"
   - if notification.unopened?

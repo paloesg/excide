@@ -5,31 +5,49 @@ class Symphony::HomeController < ApplicationController
     @templates = policy_scope(Template).assigned_templates(current_user)
     @template_pro = @templates.joins(sections: :tasks).where(tasks: {task_type: ["create_invoice_payable", "xero_send_invoice", "create_invoice_receivable", "coding_invoice"]})
 
-    @workflows_array = policy_scope(Workflow).includes(:template).where(template: @templates)
-    workflows_sort = sort_column(@workflows_array)
-    params[:direction] == "desc" ? workflows_sort.reverse! : workflows_sort
-    if params[:workflow_type].blank?
-      templates_type = workflows_sort
+    @workflows_array = policy_scope(Workflow).includes(:template).where(template: @templates).where(completed: [false, nil]).where.not(deadline: nil)
+    workflows_sort = @workflows_array.sort_by(&:deadline)
+    @workflows = workflows_sort.uniq(&:template).first(5)
+
+    @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task).first(3)
+  end
+
+  def tasks
+    if params[:tasks].blank? || params[:tasks] == "Only incomplete tasks"
+      @get_outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where(company: current_user.company).includes(:task)
+    elsif params[:tasks] == "All tasks"
+      @get_outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(company: current_user.company).includes(:task)
     else
-      templates_type = workflows_sort.select{ |t| t.template.slug == params[:workflow_type] }
+      @get_outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where(completed: true).where(company: current_user.company).includes(:task)
     end
-    @workflows = Kaminari.paginate_array(templates_type).page(params[:page]).per(5)
+    # Filtering by days
+    @get_outstanding_actions = @get_outstanding_actions.where('created_at >= ?', Time.current - params[:created_at].to_i.days) unless params[:created_at].blank?
+    # Actions that depends the type of task (with repetition task or adhoc)
+    if params[:types] == "Tasks related to Routine"
+      @get_outstanding_actions = @get_outstanding_actions.select {|action| action.workflow_id.present?}
+    elsif params[:types] == "Adhoc tasks"
+      @get_outstanding_actions = @get_outstanding_actions.select {|action| action.workflow_id.nil?}
+    end
+    @outstanding_actions = Kaminari.paginate_array(@get_outstanding_actions).page(params[:page]).per(10)
+    @actions_sort = sort_column(@outstanding_actions).reverse!
+    params[:direction] == "desc" ? @actions_sort.reverse! : @actions_sort
+  end
 
-    @outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where.not(deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
-
-    @batch_count = policy_scope(Batch).count
-    @reminder_count = current_user.reminders.where(company: current_user.company).count
-    @recurring_count = current_user.company.recurring_workflows.all.count
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
+  def activity_history
+    if params[:created_at].present?
+      @get_activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).where('created_at >= ?', Time.current - params[:created_at].to_i.days).order("created_at desc")
+    else
+      # Get all current_user activities
+      @get_activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).order("created_at desc")
+    end
+    @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
   end
 
   private
 
   def sort_column(array)
     array.sort_by{
-      |item| if params[:sort] == "template" then item.template.title.upcase
-      elsif params[:sort] == "completed" then item.completed ? 'Completed' : item.current_section&.section_name
-      end
+      |item| item.deadline ? item.deadline : Time.at(0)
     }
   end
 end

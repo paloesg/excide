@@ -1,16 +1,14 @@
-.kt-portlet
-  .kt-portlet__head
-    .kt-portlet__head-label
-      h3.kt-portlet__head-title
-        = @section.section_name
-  .kt-portlet__body
+.card
+  h3.card-header
+    = @section.section_name
+  .card-body
     .kt-widget11
       table.table
         thead
           tr
             td #
-            td style="width: 70%" Instructions
-            td style="width: 10%" Assigned To
+            td style="width: 60%" Instructions
+            td style="width: 20%" Assigned To
             td style="width: 10%" Deadline
             td style="width: 10%" Done
             - if @workflow.archive.present?
@@ -29,7 +27,7 @@
                 td = task['workflow_actions']['assigned_user'] || task['role_name']
                 td = task['workflow_actions']['deadline'] ? task['workflow_actions']['deadline'].to_time.strftime("%d/%m/%Y") : '-'
                 td
-                  label.kt-checkbox.kt-checkbox--single
+                  label.checkbox
                     = check_box_tag 'completed', nil, task['workflow_actions']['completed'], disabled: true
                     span
                 td = task['workflow_actions']['completed_user'] || '-'

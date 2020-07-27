@@ -8,12 +8,10 @@
           li = message
   .row.justify-content-center
     .col-5
-      .kt-portlet
-        .kt-portlet__head
-          .kt-portlet__head-label
-            .kt-portlet__head-title
-              | User Details
-        .kt-portlet__body
+      .card
+        .card-header
+          | User Details
+        .card-body
           .form-group
             = f.label :first_name
             = f.text_field :first_name, class: 'form-control', required: true
@@ -21,12 +19,10 @@
             = f.label :last_name
             = f.text_field :last_name, class: 'form-control', required: true
       - if params[:subscription_type].present?
-        .kt-portlet
-          .kt-portlet__head
-            .kt-portlet__head-label
-              .kt-portlet__head-title
-                | Payment Details
-          .kt-portlet__body
+        .card
+          .card-header
+            | Payment Details
+          .card-body
             .row
               .col-md-12
                 .form-group
@@ -38,13 +34,11 @@
                 .form-group
                   #card-errors role='alert'
     .col-5
-      .kt-portlet
-        .kt-portlet__head
-          .kt-portlet__head-label
-            .kt-portlet__head-title
-              | Company Details
+      .card
+        .card-header
+          | Company Details
         = f.fields_for :company do |fc|
-          .kt-portlet__body
+          .card-body
             .form-group
               = fc.label :name, 'Company name'
               = fc.text_field :name, class: 'form-control', required: true

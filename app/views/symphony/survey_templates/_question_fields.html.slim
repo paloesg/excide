@@ -12,7 +12,7 @@
     .form-group.col-md-2.align-self-start
       = f.label :question_type, 'Question Type:'
       = f.select :question_type, Question.question_types.map{|k,v| [k.humanize, k]}, {}, { required: true, class: "form-control question-choice", data: {question_id: f.object.id}}
-    .col-md-10#multiple-choice-field.kt-hide
+    .col-md-10#multiple-choice-field.d-none
       = f.fields_for :choices do |choice|
         = render 'choice_fields', f: choice
       .links

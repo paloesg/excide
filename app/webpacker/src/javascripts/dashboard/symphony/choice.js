@@ -1,9 +1,9 @@
 $(document).on("turbolinks:load", function() {
   // Show all the choices after cocoon save when the select value is single or multiple
-  // Loop through all the question choice and then remove kt-hide for #multiple-choice-field
+  // Loop through all the question choice and then remove d-none for #multiple-choice-field
   $('select.question-choice').each(function(){
     if(($(this).children("option:selected").val() == 'multiple') || ($(this).children("option:selected").val() == 'single')){
-      $(this).closest('div').next().removeClass('kt-hide');
+      $(this).closest('div').next().removeClass('d-none');
     }
   })
 
@@ -12,10 +12,10 @@ $(document).on("turbolinks:load", function() {
     var selectedValue = $(this).val();
     var multipleChoiceDetails = $(this).closest('#multiple-choice-field');
     if(selectedValue === 'multiple' || selectedValue ===  'single') {
-      $(this).closest('div').next().removeClass('kt-hide');
+      $(this).closest('div').next().removeClass('d-none');
     }
     else{
-      $(this).closest('div').next().addClass('kt-hide');
+      $(this).closest('div').next().addClass('d-none');
     }
   });
 
@@ -24,10 +24,10 @@ $(document).on("turbolinks:load", function() {
     $('select.question-choice').on('change', function() {
       if ( ($(addedItem).find('.question-choice').val()) ){
         if ($(addedItem).find('.question-choice').val() === 'multiple' || $(addedItem).find('.question-choice').val() === 'single'){
-          $(this).closest('div').next().removeClass('kt-hide');
+          $(this).closest('div').next().removeClass('d-none');
         }
         else{
-          $(this).closest('div').next().addClass('kt-hide');
+          $(this).closest('div').next().addClass('d-none');
         }
       }   
     });

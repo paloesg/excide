@@ -1,5 +1,7 @@
-td = activity.owner&.full_name or 'Unknown'
-td
-  ' updated company details for
-  strong #{activity.trackable.name}
-td = activity.created_at.strftime("%d/%m/%Y %R")
+.row
+  .col-sm-8
+    span 
+      = "#{activity.owner&.full_name or 'Unknown'} updated company details for: #{activity.trackable.name}"
+  .col-sm-4
+    span.float-right
+      = activity.created_at.strftime("%d/%m/%Y %R")
