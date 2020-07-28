@@ -1,0 +1,3 @@
+row.collapse
+  columns small="6" valign="middle"
+    = image_pack_tag("media/src/images/symphony/symphony-logo.svg")

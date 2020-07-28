@@ -1,0 +1,98 @@
+.dropdown-pointer {
+  cursor: pointer;
+}
+
+// Login page
+h1.header-bold {
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  font-size: 30px;
+  color: #17172e;
+}
+
+// Header
+.change-company-dropdown {
+  width: 300px;
+  font-size: 15px !important;
+  border-radius: 4px;
+  border: solid 0.5px grey;
+}
+
+.company-scroll {
+  max-height: 400px;
+  overflow-y: auto; 
+}
+
+// Footer
+.footer-size {
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.1px;
+  color: black;
+}
+
+// Logo size in header
+.inv-logo-size {
+  width: 10%;
+}
+.logo-size {
+  width: 70%;
+}
+
+.small-font {
+  font-size: 2rem;
+}
+
+// Sidebar
+.sidebar-sticky {
+  padding-top: 0.5rem;
+  position: sticky;
+  overflow-y: auto;
+  overflow-x: hidden;
+  top: 48px;
+  bottom: 0;
+  height: calc(100vh - 48px);
+}
+
+// Sidebar-items hover effect
+.hover-blue:hover {
+  background-color: #eef1ff;
+  border-radius: 10px;
+}
+
+// User icon on navbar
+.icon-size {
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.sidebar-font {
+  font-size: 15px;
+  font-weight: normal;
+  line-height: normal;
+  letter-spacing: 0.1px;
+  color: black;
+}
+
+// Card in dashboard page
+.card-header-height {
+  height: 40%;
+  background-color: #eef1ff !important;
+}
+
+// Image size
+.img-icon-size {
+  width: 10%;
+  height: 10%;
+}
+
+// dropdown
+.dropdown-menu-right {
+  left: auto !important;
+}

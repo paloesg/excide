@@ -1,77 +1,83 @@
-.row.mb-3
-  .col
-    h1.text-truncate #{@template.title}
-    - unless @workflow.archive.blank?
-      h1 = content_tag :span, "Archived", class: "badge badge-secondary pull-right"
 .row
-  .col-md-9.col-sm-12
-    /! begin::workflow task
-    = render partial: 'symphony/workflows/tasks'
-    /! end
-    .row
-      .col-lg-6.col-sm-12
-        = render partial: 'symphony/workflows/data_attributes'
-      .col-lg-6.col-sm-12
-        = render partial: 'symphony/workflows/history'
-  .col-md-3.col-sm-12
-    - if @workflow.archive.blank?
-      = link_to "Edit routine", edit_symphony_workflow_path(workflow_id: @workflow.id), class: 'btn btn-primary btn-block'
-      = link_to "Assign users", assign_symphony_workflow_path(@template.slug, @workflow.id), class: 'btn btn-primary btn-block'
-      = link_to "Archive routine", archive_symphony_workflow_path(workflow_id: @workflow.id), data: { confirm: 'Are you sure you want to archive all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-danger btn-block'
-      - if @user.has_role? :superadmin
-        = link_to 'Reset progress', reset_symphony_workflow_path(workflow_id: @workflow.id), data: { confirm: 'Are you sure you want to reset all task progress for this workflow?' }, method: :post, role: 'button', class: 'btn btn-danger btn-block'
-      br
-    - if @workflow.workflowable.present?
-      .kt-portlet.mb-3
-        .kt-portlet__head
-          .kt-portlet__head-label
-            h3.kt-portlet__head-title Client
-        .kt-portlet__body
-          h5 = @workflow.workflowable&.name
-          - if @workflow.archive.blank?
-            - if @workflow.workflowable.xero_contact_id.present?
-              = link_to 'View in Xero', 'https://go.xero.com/Contacts/View/' + @workflow.workflowable.xero_contact_id, target: '_blank', class: 'btn btn-sm btn-primary pull-right'
-            - else
-              = link_to 'Add Client to Xero', xero_create_symphony_client_path(@workflow.workflowable.id, workflow_id: @workflow.id), method: 'post', class: 'btn btn-sm btn-primary pull-right'
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title Routine ID
-      .kt-portlet__body
-        = @workflow.friendly_id
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title Routine Deadline
-      .kt-portlet__body
-        = @workflow.deadline&.strftime("%d/%m/%Y") || '-'
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title Routine Remarks
-      .kt-portlet__body
-        = @workflow.remarks || '-'
-    = render partial: 'symphony/workflows/documents'
-    = render partial: 'symphony/workflows/invoice'
-    = render partial: 'symphony/workflows/surveys'
-    - if @workflow.recurring_workflow.present?
-      .kt-portlet.mb-3
-        .kt-portlet__head
-          .kt-portlet__head-label
-            h3.kt-portlet__head-title Next Recurring Workflow
-        .kt-portlet__body
-          = @workflow.recurring_workflow.next_workflow_date
-  #task-popover-content.d-none
-    p.pt-2
-      strong
-        ' Next reminder:
-      span#next_reminder
-      a.btn.btn-warning.btn-sm.btn-block#stop_reminder data-remote="true" data-method="post" href="#" Stop reminder
-    p
-      strong
-        ' Completed by:
-      span#completed_by
-    p.pb-0
-      strong
-        ' Completed on:
-      span#completed_on &mdash;
+  .col-md-6
+    h2.mt-3.d-flex.align-items-center
+      = @template.title
+      .label.label-inline.label-dark.ml-4
+        span On-demand
+  .col-md-6.d-flex.justify-content-end
+    = select_tag('year', options_for_select(["2020", "2019", "2018"], selected: params[:year].present? ? params[:year] : @workflow.created_at.year.to_s), class: 'selectize selectize-year mr-2')
+    - if policy(@template).edit? || policy(@template).destroy?
+      .dropdown.dropdown-inline.float-right
+        a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+          i.material-icons.font-size-h2.text-secondary more_horiz
+        .dropdown-menu.dropdown-menu-right
+          .dropdown-item = link_to "Edit Master Routine", edit_symphony_template_path(template_slug: @template.slug), class: "float-right" if policy(@template).edit?
+          .dropdown-item = link_to "Delete", symphony_template_path(template_slug: @template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' , remote: true}, method: :delete if policy(@template).destroy?
+.row
+  .col-md-5
+    table.table.table-hover.mb-0
+      thead.thead-light
+        tr
+          th colspan="4" To complete
+          th Due
+      tbody
+        - @workflows.each do |wf|
+          tr style=("cursor: pointer;" + ((wf == @workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+            td width="5%"
+              label.checkbox
+                = check_box_tag 'completed', wf.id, wf.completed, disabled: true
+                span
+            td width="45%"
+              = wf.name
+            td width="20%"
+              = "(" + (wf.workflow_actions.where(completed: true).count*100/wf.workflow_actions.count).to_s + "%)" if (wf.workflow_actions.present? && !wf.completed?)
+            td width="5%"
+              - if !wf.completed? && wf.deadline.present?
+                - if wf.deadline.to_date < Date.today
+                  i.fa.fa-xs.fa-circle.text-danger.mr-3
+                - elsif wf.deadline.to_date <= Date.tomorrow
+                  i.fa.fa-xs.fa-circle.text-warning.mr-3
+                - else
+                  i.fa.fa-xs.fa-circle.text-primary.mr-3
+            td width="25%"
+              = wf.deadline&.strftime("%d %b %Y")
+    .btn.btn-block.btn-hover-light-secondary.text-center
+      i.material-icons.text-muted add
+      = link_to "Add new cycle", new_symphony_workflow_path(@template.slug), class: "text-muted"
+  .col-md-7
+    table.table.table-borderless.table-hover
+      thead.thead-light
+        tr
+          th colspan="5" = @workflow.name
+      tbody
+        - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
+          tr
+            td width="5%" data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+              = (index+1).to_s + "."
+            td width="55%" data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+              = wfa.task.instructions
+            td.py-2 width="10%" data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"
+            td.d-flex data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+              - if !wfa.completed? && wfa.deadline.present?
+                - if wfa.deadline.to_date < Date.today
+                  .text-danger = wfa.deadline&.strftime("%d %b")
+                  i.material-icons-outlined.font-size-h6.ml-1.text-danger calendar_today
+                  - color = "text-danger"
+                - elsif (wfa.deadline.to_date <= Date.tomorrow || (wfa.company.before_deadline_reminder_days.present? && wfa.deadline.to_date - wfa.company.before_deadline_reminder_days <= Date.today))
+                  .text-warning = wfa.deadline&.strftime("%d %b")
+                  i.material-icons-outlined.font-size-h6.ml-1.text-warning calendar_today
+                  - color = "text-warning"
+                - else
+                  .text-primary = wfa.deadline&.strftime("%d %b")
+                  i.material-icons-outlined.font-size-h6.ml-1.text-primary calendar_today
+                  - color = "text-primary"
+              - elsif wfa.deadline.present?
+                .text-muted = wfa.deadline&.strftime("%d %b")
+                i.material-icons-outlined.font-size-h6.ml-1.text-muted calendar_today
+                - color = "text-muted"
+            td width="5%"
+              label.checkbox style=((wfa.completed? || (wfa.task != @current_task && @template.ordered?)) ? "pointer-events: none" : "")
+                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: @template.slug, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: wfa.completed
+                span
+          = render "task", template: @template, workflow: @workflow, action: wfa, index: index, color: color, task: @current_task

@@ -1,7 +1,7 @@
-td = activity.owner&.full_name or 'Unknown'
-td
-  ' updated attribute
-  strong #{activity.parameters[:attribute][:name]}
-  '  with value
-  strong #{activity.parameters[:attribute][:value]}
-td = activity.created_at.strftime("%d/%m/%Y %R")
+.row
+  .col-sm-8
+    span 
+      = "#{activity.owner&.full_name or 'Symphony'} updated attribute: #{activity.parameters[:attribute][:name]} with value #{activity.parameters[:attribute][:value]}."
+  .col-sm-4
+    span.float-right
+      = activity.created_at.strftime("%d/%m/%Y %R")

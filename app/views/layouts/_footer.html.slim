@@ -1,14 +1,12 @@
 /! begin:: Footer
-#kt_footer.kt-footer.kt-grid__item
-  .kt-container
-    .kt-footer__wrapper
-      .kt-footer__copyright
-        | #{Time.current.year} &copy; VFO Asia Pte. Ltd. All rights reserved.&nbsp; #{link_to "Privacy Policy", privacy_path}
-      .kt-footer__menu
-        a href="https://twitter.com/excidevfo/"
-          i.socicon-twitter
-        a href="https://www.facebook.com/excidevfo/"
-          i.socicon-facebook
-        a href="https://www.linkedin.com/company/excide/"
-          i.socicon-linkedin
+footer.navbar.navbar-fixed-bottom.d-flex.justify-content-between.mt-2
+  .container
+    span.footer-size #{Time.current.year} &copy; VFO Asia Pte. Ltd. All rights reserved.&nbsp; #{link_to "Privacy Policy", privacy_path}
+    .float-right
+      a href="https://twitter.com/excidevfo/"
+        i.socicon-twitter.p-2
+      a href="https://www.facebook.com/excidevfo/"
+        i.socicon-facebook.p-2
+      a href="https://www.linkedin.com/company/excide/"
+        i.socicon-linkedin.p-2
 /! end:: Footer

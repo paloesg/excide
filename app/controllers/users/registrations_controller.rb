@@ -20,11 +20,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.account_type = 0
       company.save
       resource.company = company
-      if params[:user][:subscription_type].empty?
-        # Save user as stripe customer upon registration if there is no subscription type params
-        customer = Stripe::Customer.create({email: resource.email})
-        resource.stripe_customer_id = customer.id
-      end
     end
     resource.save
     role = params[:role].present? ? params[:role] : "admin"
@@ -145,7 +140,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @country_code = @contact.country_code
       @contact = @user.contact_number.remove(@country_code)
       @country = Country.find_country_by_country_code(@country_code).name + " (+" + @country_code + ")"
-    elsif @user.company.address.country.present?
+    elsif @user&.company&.address&.country.present?
       @country = @user.company.address.country + " (+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
     else
       @country = nil;
