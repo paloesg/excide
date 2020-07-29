@@ -148,6 +148,7 @@ class Symphony::InvoicesController < ApplicationController
       # Check if invoice can be rejected using AASM
       if @invoice.may_reject?
         @invoice.remarks = params[:invoice][:remarks]
+        flash[:notice] = "Invoice has been rejected."
         @invoice.reject
         @invoice.save(validate: false)
         if @invoice.workflow.batch.present?
@@ -158,7 +159,6 @@ class Symphony::InvoicesController < ApplicationController
         else
           redirect_to symphony_workflow_path(@invoice.workflow.template.slug, @invoice.workflow.friendly_id)
         end
-        flash[:notice] = "Invoice has been rejected."
       else
         invoice_id.present? ? (render :edit) : (render :new)
       end
