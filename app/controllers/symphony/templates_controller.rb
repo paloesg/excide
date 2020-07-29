@@ -1,7 +1,4 @@
 class Symphony::TemplatesController < ApplicationController
-  # layout 'dashboard/application'
-  layout 'metronic/application'
-
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
@@ -85,7 +82,10 @@ class Symphony::TemplatesController < ApplicationController
   def destroy
     authorize @template
     if @template.destroy
-      redirect_to symphony_templates_path, notice: 'Template was successfully deleted.'
+      respond_to do |format|
+        format.html { redirect_back fallback_location: symphony_templates_path, notice: 'Routine was successfully deleted.' }
+        format.js  { flash[:notice] = 'Routine was successfully deleted.' }
+      end
     end
   end
 

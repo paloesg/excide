@@ -1,5 +1,7 @@
-td = activity.owner&.full_name or 'Unknown'
-td
-  ' uploaded file
-  strong #{activity.parameters[:filename]}
-td = activity.created_at.strftime("%d/%m/%Y %R")
+.row
+  .col-sm-8
+    span 
+      = "#{activity.owner&.full_name or 'Unknown'} uploaded file: #{activity.parameters[:filename]}"
+  .col-sm-4
+    span.float-right
+      = activity.created_at.strftime("%d/%m/%Y %R")

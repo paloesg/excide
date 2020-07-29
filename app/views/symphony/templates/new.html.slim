@@ -1,45 +1,41 @@
 .row.mb-3
   .col-md-12
-    h3 Manage templates
-    p Set up templates for a series of tasks that you frequently perform together. Each time you need to do those tasks, you create a new workflow based on the templates you have created. You can either start from scratch or clone our existing templates and customise them to your needs.
+    h3 Manage routines
+    p Set up routines for a series of tasks that you frequently perform together. Each time you need to do those tasks, you create a new cycle based on the routines you have created. You can either start from scratch or clone our existing routines and customise them to your needs.
 .row
   .col-md-6
     = form_for(@template, url: symphony_templates_path(@template) ) do |f|
       .row
         .col-md-10
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title New Templates
-            .kt-portlet__body
+          .card
+            h3.card-header New Routines
+            .card-body
               .form-group
                 = f.label :title, "Title:"
                 = f.text_field :title, class: "form-control"
               .form-group
-                = f.label :workflow_type, "Workflow Type:"
+                = f.label :workflow_type, "Routine Type:"
                 = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
               .form-group
                 = f.label :deadline_type, "Deadline Type:"
                 = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type dropdown-overlay task-items-dropdown-width" }
               .form-group
-                .xth-day.kt-hide
+                .xth-day.d-none
                   = f.label :deadline_day, "Set a deadline (the date of the month that you want to set the deadline): "
-                  span.text-danger.kt-hide.deadline-warning Note: Symphony will auto set the deadline to the previous date if the month does not consist of the date 29, 30 or 31.
+                  span.text-danger.d-none.deadline-warning Note: Symphony will auto set the deadline to the previous date if the month does not consist of the date 29, 30 or 31.
                   = f.number_field :deadline_day, min: 0, max: 31, class: "form-control"
-                .days-to-complete.kt-hide
+                .days-to-complete.d-none
                   = f.label :deadline_day, "Set a deadline (number of days to complete): "
                   = f.number_field :deadline_day, class: "form-control"
               .form-group
-                = f.submit "Save Template", class: 'btn btn-primary pull-left mb-3'
+                = f.submit "Create Routine", class: 'btn btn-primary pull-left mb-3'
   .col-md-6
     = form_for(@template, url: symphony_templates_path(@template) ) do |f|
       .row
         .col-md-12
-          .kt-portlet
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h3.kt-portlet__head-title Clone Templates
-            .kt-portlet__body
+          .card
+            h3.card-header Template Routines
+            .card-body
               .form-group
                 = f.label :title, "Title:"
                 = f.text_field :title, class: "form-control"
@@ -47,10 +43,10 @@
                 = label_tag :clone, "Template:"
                 = select_tag "template[clone]", options_from_collection_for_select(@general_templates, "id", "title"), class: "selectize"
               .form-group
-                = f.label :workflow_type, "Workflow Type:"
+                = f.label :workflow_type, "Routine Type:"
                 = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
               .form-group
-                = f.submit "Clone Template", class: 'btn btn-primary pull-left mb-3'
+                = f.submit "Create Routine", class: 'btn btn-primary pull-left mb-3'
 
 - if @templates.length < 1
   .row

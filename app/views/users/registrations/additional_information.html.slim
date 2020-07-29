@@ -1,65 +1,59 @@
 = javascript_include_tag "https://js.stripe.com/v3/"
-section.height-100.imagebg data-overlay="4"
-  .background-image-holder
-    = image_pack_tag 'media/src/images/hero-image.jpg', alt: "Growing your business", class: 'background-image'
-  .container.pos-vertical-center.mt-4
-    - if @user.errors.any?
-      .alert.alert-danger role='alert'
-        strong = "#{pluralize(@user.errors.count, "error")} prohibited this company from being saved:"
-        ul
-          - @user.errors.full_messages.each do |message|
-            li.text-dark = message
-    .row
-      .col-md-12
-        = form_for(@user, as: :user, url: edit_additional_information_symphony_users_path, html: { class: 'additional-information-page' }) do |f|
-          .row.mb-3
-            .col-sm-6
-              .feature.boxed
-                h5.uppercase User Details
-                .row
-                  .col-md-12
-                    .form-group
-                      = f.label :first_name
-                      = f.text_field :first_name, class: 'form-control', required: true
-                .row
-                  .col-md-12
-                    .form-group
-                      = f.label :last_name
-                      = f.text_field :last_name, class: 'form-control', required: true
-              - if params[:subscription_type].present?
-                .feature.boxed
-                  h5.uppercase.mb-2 Payment Details
-                  .row
-                    .col-md-12
-                      .form-group
-                        = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
-                        .stripe-elements
-                          #card-element style="background-color: #ffffff; padding: 10px; margin-bottom: 20px"
-                  .row
-                    .col-md-12
-                      .form-group
-                        #card-errors role='alert'
-            .col-sm-6
-              .feature.boxed
-                h5.uppercase Company Details
-                = f.fields_for :company do |fc|
-                  .col-md-12
-                    = fc.label :name, 'Company name'
-                    = fc.text_field :name, class: 'form-control', required: true
-                  .col-md-12
-                    .input-checkbox
-                      = fc.check_box :connect_xero, {class: "input-assigned-8"}
-                      label for="input-assigned-8"
-                    span Connect Xero
-                  .col-md-12
-                    = fc.fields_for :address do |fca|
-                      = render 'companies/address_fields', f: fca
-          .row
-            .col-sm-6.offset-md-6.text-left
-              - if params[:subscription_type].present?
-                span.text-white.font-weight-bold.small
-                  | You will be charged for your #{params[:subscription_type]} subscription upon clicking the button below.
-                = f.hidden_field :subscription_type, value: params[:subscription_type].present? ? params[:subscription_type] : nil
-                = f.submit "Confirm subscription", class: 'btn additional-information-submit btn--orange'
-              - else
-                = f.submit "Save Additional Information", class: 'btn additional-information-submit btn--orange'
+= form_for(@user, as: :user, url: edit_additional_information_symphony_users_path, html: { class: 'additional-information-page' }) do |f|
+  - if @user.errors.any?
+    .alert.alert-danger role='alert'
+      strong = "#{pluralize(@user.errors.count, "error")} prohibited this company from being saved:"
+      ul
+        - @user.errors.full_messages.each do |message|
+          li = message
+  .row.justify-content-center
+    .col-5
+      .card
+        .card-header
+          | User Details
+        .card-body
+          .form-group
+            = f.label :first_name
+            = f.text_field :first_name, class: 'form-control', required: true
+          .form-group
+            = f.label :last_name
+            = f.text_field :last_name, class: 'form-control', required: true
+      - if params[:subscription_type].present?
+        .card
+          .card-header
+            | Payment Details
+          .card-body
+            .row
+              .col-md-12
+                .form-group
+                  = hidden_field_tag 'stripe_key', ENV['STRIPE_PUBLISHABLE_KEY']
+                  .stripe-elements
+                    #card-element style="background-color: #FAFAFA; padding: 10px; margin-bottom: 20px"
+            .row
+              .col-md-12
+                .form-group
+                  #card-errors role='alert'
+    .col-5
+      .card
+        .card-header
+          | Company Details
+        = f.fields_for :company do |fc|
+          .card-body
+            .form-group
+              = fc.label :name, 'Company name'
+              = fc.text_field :name, class: 'form-control', required: true
+            .form-group.form-check
+              = fc.label :connect_xero, 'Connect Xero', class: 'mr-1'
+              = fc.check_box :connect_xero
+            .form-group
+              = fc.fields_for :address do |fca|
+                = render 'companies/address_fields', f: fca
+            - if params[:subscription_type].present?
+              h6
+                | You will be charged for your #{params[:subscription_type]} subscription upon clicking the button below.
+              = f.hidden_field :subscription_type, value: params[:subscription_type].present? ? params[:subscription_type] : nil
+              .form-group
+                = f.submit "Confirm subscription", class: 'btn btn-primary'
+            - else
+              .form-group
+                = f.submit "Save Additional Information", class: 'btn btn-primary'

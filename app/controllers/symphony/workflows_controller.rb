@@ -1,5 +1,4 @@
 class Symphony::WorkflowsController < ApplicationController
-  layout 'metronic/application'
   include Adapter
 
   rescue_from Xeroizer::InvoiceNotFoundError, with: :xero_error_invoice_not_found
@@ -16,11 +15,7 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @workflows = policy_scope(Workflow).includes(:template, :workflowable).where(template: @template, completed: [false, nil]).order(created_at: :desc)
-
-    @workflows_sort = sort_column(@workflows)
-    params[:direction] == "desc" ? @workflows_sort.reverse! : @workflows_sort
-    @workflows = Kaminari.paginate_array(@workflows_sort).page(params[:page]).per(10)
+    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == 2020}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
   end
 
   def new
@@ -56,7 +51,7 @@ class Symphony::WorkflowsController < ApplicationController
     @sections = @template.sections
     @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
     @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(5)
-
+    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == @workflow.created_at.year}.sort_by{|wf| wf.created_at}
 
     if @workflow.completed?
       @section = params[:section_id] ? @sections.find(params[:section_id]) : @sections.last

@@ -17,7 +17,6 @@ RSpec.describe User, type: :model do
   it { should have_many(:invoices) }
   it { should have_many(:batches) }
 
-  it { should have_one(:profile) }
   it { should have_one(:address) }
 
   it { should accept_nested_attributes_for(:address) }

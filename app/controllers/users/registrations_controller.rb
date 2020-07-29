@@ -1,6 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 
-  layout :multi_layout
 
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
@@ -21,11 +20,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.account_type = 0
       company.save
       resource.company = company
-      if params[:user][:subscription_type].empty?
-        # Save user as stripe customer upon registration if there is no subscription type params
-        customer = Stripe::Customer.create({email: resource.email})
-        resource.stripe_customer_id = customer.id
-      end
     end
     resource.save
     role = params[:role].present? ? params[:role] : "admin"
@@ -108,7 +102,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def additional_information
     build_addresses
     @user = current_user
-    render layout: 'application'
   end
 
   protected
@@ -140,15 +133,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def multi_layout
-    case action_name
-    when "new", "additional_information", "create"
-      "application"
-    else
-      "metronic/application"
-    end
-  end
-
   # As country code and contact are displayed as tags in the edit page, user[contact_number] is not used in the edit and update and country code and contact field have to be manually set in controller.
   def set_contact
     @contact = Phonelib.parse(@user.contact_number)
@@ -156,7 +140,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @country_code = @contact.country_code
       @contact = @user.contact_number.remove(@country_code)
       @country = Country.find_country_by_country_code(@country_code).name + " (+" + @country_code + ")"
-    elsif @user.company.address.country.present?
+    elsif @user&.company&.address&.country.present?
       @country = @user.company.address.country + " (+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
     else
       @country = nil;

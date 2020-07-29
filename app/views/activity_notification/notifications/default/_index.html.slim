@@ -1,20 +1,19 @@
-.kt-header__topbar-item.dropdown
-  .kt-header__topbar-wrapper data-offset="10px,0px" data-toggle="dropdown"
-    span.kt-header__topbar-icon.kt-header__topbar-icon--success.icon-size.mr-3
-      i.flaticon2-bell-alarm-symbol
-      - if @target.has_unopened_notifications?(parameters)
-        span.kt-badge.kt-badge--danger.mb-3
-          = @target.unopened_notification_count(parameters)
-  .dropdown-menu.dropdown-menu-fit.dropdown-menu-right.dropdown-menu-anim.dropdown-menu-xl
+.dropdown.mt-2
+  .topbar-item data-toggle="dropdown" data-offset="10px,10px" data-container="body" aria-expanded="true"
+    i.material-icons-outlined.icon-size.dropdown-pointer notifications
+    - if @target.has_unopened_notifications?(parameters)
+      span.badge.badge-danger.rounded-circle.notification-count.mb-3.p-1
+        = @target.unopened_notification_count(parameters)
+  .dropdown-menu.notification-content-width.dropdown-menu-right.p-0.m-0
     form
       /! begin: Head
-      .kt-head.kt-head--skin-light.kt-head--fit-x.kt-head--fit-b
-        h3.kt-head__title.cursor-auto
+      .d-flex.flex-column.flex-center.bg-dark-o-5.rounded-top.bg-light
+        h5.text-center.text-dark.m-2.font-weight-bold
           | User Notifications
           span.btn.btn-label-primary.btn-sm.btn-bold.btn-font-md.ml-2 class=("#{'unopened' if @target.has_unopened_notifications?(parameters)}")
             = "#{@target.unopened_notification_count(parameters)} new"
           = link_to "Mark all as read", open_all_user_notifications_path(@target, parameters.slice(:routing_scope, :devise_default_routes)), method: :post, remote: true, class: 'btn btn-sm btn-outline-danger ml-2'
-        ul.nav.nav-tabs.nav-tabs-line.nav-tabs-bold.nav-tabs-line-3x.nav-tabs-line-brand.kt-notification-item-padding-x role="tablist"
+        ul.nav.nav-bold.nav-tabs.nav-tabs-line.nav-tabs-line-3x.nav-tabs-primary.flex-grow-1.px-10 role="tablist"
           li.nav-item
             a.nav-link.active.show aria-selected="true" data-toggle="tab" href="#topbar_notifications_notifications" role="tab"  Notifications
       / ! end: Head

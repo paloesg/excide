@@ -1,0 +1,52 @@
+.row
+  .col-md-3
+    h4 My Tasks
+  .col-md-3.px-2
+    = select_tag('tasks', options_for_select(["Only incomplete tasks", "Only completed tasks", "All tasks"], selected: params[:tasks], include_blank: "Only incomplete tasks"), class: 'selectize selectize-tasks')
+  .col-md-2.px-2
+    = select_tag('created_at', options_for_select([["Last 7 days", 7], ["Last 30 days", 30], ["All", " "]], selected: params[:created_at], include_blank: "Last 7 days"), class: 'selectize selectize-created-at')
+  .col-md-3.px-2
+    = select_tag('types', options_for_select(["All types", "Tasks related to Routine", "Adhoc tasks"], selected: params[:types], include_blank: "All types"), class: 'selectize selectize-types')
+  .col-md-1.px-2
+    = button_tag 'Filter', type: 'button', class: 'btn btn-primary tasks-filter-button'
+.row
+  .col-md-12
+    table.table
+      thead
+        tr
+          th width="5%"
+          th width="50%" TASKS
+          th width="15%" ASSIGNED BY
+          th width="15%"
+            | RELATE TO
+            a.ml-1 data-container="body" data-placement="bottom" data-toggle="tooltip" title="This column is filled If a task id related to a routine. Personal tasks added here cannot be connected to any routine."
+              i.fa.fa-info-circle
+          th width="15%" = sortable "deadline", "DUE"
+      tbody
+        - @actions_sort.each do |action|
+          tr.border-bottom
+            td.border-top-0
+              - if action.completed?
+                label.checkbox.checkbox-disabled
+                  = check_box_tag 'completed', action.id, action.completed, disabled: true
+                  span
+              - else
+                label.checkbox
+                  = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"
+                  span
+            td.border-top-0 = action.task.instructions
+            td.border-top-0 = action.workflow.user.first_name
+            td.border-top-0 = action.workflow.template.title
+            td.border-top-0
+              - if action.deadline.present?
+                - if action.deadline.to_date < Date.today
+                  i.fa.fa-xs.fa-circle.text-danger.mr-3
+                  = action.deadline&.strftime("%d %b %Y")
+                - elsif action.deadline.to_date <= Date.tomorrow
+                  i.fa.fa-xs.fa-circle.text-warning.mr-3
+                  = action.deadline.to_date == Date.today ? "Today" : "Tomorrow"
+                - else
+                  i.fa.fa-xs.fa-circle.text-primary.mr-3
+                  = action.deadline&.strftime("%d %b %Y")
+    .text-center
+      = paginate @outstanding_actions, views_prefix: 'dashboard'

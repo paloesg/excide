@@ -1,139 +1,122 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-  <title>We're sorry, but something went wrong (500)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600"
-    rel="stylesheet" type="text/css" />
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
-  <link rel="manifest" href="assets/favicon/manifest.json">
-  <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
-  <link rel="shortcut icon" href="assets/favicon/favicon.ico">
-  <meta name="msapplication-config" content="favicon/browserconfig.xml">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <style>
-
-    /* Links */
-    a,
-    a:focus,
-    a:hover {
-      color: #fff;
-    }
-
-    h1, .h1 {
-      font-size: 56px;
-    }
-
-    /* Custom default button */
-    .btn-excide {
-      border-color: #c3502e;
+<!--
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 4 & Angular 8
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<html lang="en">
+  <!-- begin::Head -->
+  <head>
+    <base href="../../../">
+    <meta charset="utf-8" />
+    <title>We're sorry, but something went wrong (500)</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--begin::Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
+    <!--end::Fonts -->
+    <link
+    <!--begin::Page Custom Styles(used by this page) -->
+    <style>
+      /* @import "../../global/layout/config.scss"; */
+      html,
+      body {
+        height: 100%;
+        font-family: 'Poppins', 'Helvetica', sans-serif;
+        font-size: 12px !important;
+        color: #fff;
+        text-align: center;
+        display: flex;
+        flex-direction: column!important;
+        margin: 0;
+        padding: 0;
+      }
+      .kt-error-v6 {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+      }
+      .kt-error-v6 .kt-error_container {
+          text-align: center;
+      }
+      .kt-error-v6 .kt-error_container .kt-error_subtitle > h1 {
+          font-size: 60px;
+          line-height: 1.2;
+          margin-top: 7rem;
+          margin-bottom: 0px;
+          font-weight: 700;
+      }
+      .kt-error-v6 .kt-error_description {
+          margin-top: 0px;
+          margin-bottom: 13px;
+          font-size: 25px;
+          font-weight: 500;
+          line-height: 39px
+      }
+      .kt-grid.kt-grid--hor{
+        display: flex;
+        flex-direction: column;
+      }
+      .kt-grid--root {
+        flex: 1;
+        -ms-flex: 1 0 0px; // IE10-11 fix
+      }
+      .kt-grid__item {
+        flex: none;
+      }
+      .kt-grid__item--fluid {
+        flex: 1 0 auto;
+        //-ms-flex: 1 0 0px;  // IE10-11 fix
+      } 
+      .kt-grid--ver {
+        display: flex;
+        flex-direction: row;
+      }
+      .btn-excide {
+      border-color: #fff;
       border-radius: 6px;
-      background: #c3502e;
-      color: #fff;
-      font-size: 12px;
+      background: #fff;
+      color: #046b9b;
+      font-family: 'Poppins', 'Helvetica', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
       /* width: 100%; */
       text-shadow: none;
       text-transform: uppercase;
+      text-decoration: none;
       padding: 14px 16px;
-      transition: 0.1s linear;
-      -webkit-transition: 0.1s linear;
-      -moz-transition: 0.1s linear;
-    }
-
-    .btn-excide:hover {
-      background: #d45b37;
-      color: #fff;
-      transform: translate3d(0, -2px, 0);
-      -webkit-transform: translate3d(0, -2px, 0);
-    }
-
-    html,
-    body {
-      height: 100%;
-      background-color: #333;
-      font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif;
-      color: #fff;
-      text-align: center;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, .5);
-    }
-
-    /* Extra markup and styles for table-esque vertical and horizontal centering */
-    .site-wrapper {
-      display: table;
-      width: 100%;
-      height: 100%;
-      /* For at least Firefox */
-      min-height: 100%;
-      -webkit-box-shadow: inset 0 0 100px rgba(0, 0, 0, .5);
-      box-shadow: inset 0 0 100px rgba(0, 0, 0, .5);
-    }
-
-    .site-wrapper-inner {
-      display: table-cell;
-      vertical-align: top;
-      background: url("/assets/hero-image-b494b5f26ae7e71cb32ce44f91b303aad54222f83ae3d0ee102e2b4ae4d65a46.jpg");
-      top: -55px;
-      transform: translate3d(0px, 0px, 0px);
-    }
-
-    .cover-container {
-      margin-right: auto;
-      margin-left: auto;
-    }
-
-    /* Padding for spacing */
-    .inner {
-      padding: 30px;
-    }
-
-    @media (min-width: 768px) {
-      .cover {
-        padding: 0 20px;
       }
-    }
-
-    @media (min-width: 768px) {
-      /* Start the vertical centering */
-      .site-wrapper-inner {
-        vertical-align: middle;
-      }
-      /* Handle the widths */
-      .cover-container {
-        width: 100%;
-        /* Must be percentage or pixels for horizontal alignment */
-      }
-    }
-
-    @media (min-width: 992px) {
-      .cover-container {
-        width: 700px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="site-wrapper">
-    <div class="site-wrapper-inner">
-      <div class="cover-container">
-        <div class="inner cover">
-          <a href="/">
-            <img src="assets/excide-logo-light-ee31ec8c78e4ad2b5b69fb582dd2daf3dded8a254767ae241b68ba5ac8375382.png" style="padding: 50px 100px 0;" class="img-fluid" title="Excide Logo" alt="Excide">
-          </a>
-          <h1>We're sorry, but something went wrong.</h1>
-          <p class="lead">There was an error in the application. If the problem persists, please contact us via the chat function in the application.</p>
+    </style>
+    <!--end::Layout Skins -->
+    <link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+  </head>
+  <!-- end::Head -->
+  <!-- begin::Body -->
+  <body>
+    <!-- begin:: Page -->
+    <div class="kt-grid kt-grid--ver kt-grid--root">
+      <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-error-v6" style="background-image: url(assets/media/error/bg6.jpg)">
+        <div class="kt-error_container">
+          <div class="kt-error_subtitle kt-font-light">
+            <h1>We're sorry, but <br>something went wrong.</h1>
+          </div>
+          <p class="kt-error_description kt-font-light" style="margin-bottom: 30px;">
+            There was an error in the application. <br>If the problem persists, please contact us via the chat function in the application.
+          </p>
           <a href="/" class="btn btn-excide">Go to Homepage</a>
         </div>
       </div>
     </div>
-  </div>
-</body>
-
+    <!-- end:: Page -->
+    
+  </body>
+  <!-- end::Body -->
 </html>

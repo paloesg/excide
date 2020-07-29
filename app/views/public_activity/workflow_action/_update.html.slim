@@ -1,10 +1,11 @@
-td = activity.owner&.full_name or 'Unknown'
-- if activity.parameters[:completed]
-  td
-    ' completed task
-    strong #{activity.parameters[:instructions]}
-- else
-  td
-    ' updated task
-    strong #{activity.parameters[:instructions]}
-td = activity.created_at.strftime("%d/%m/%Y %R")
+.row
+  .col-sm-8
+    - if activity.parameters[:completed]
+      span
+        = "#{activity.owner&.full_name or 'Symphony'} completed task: #{activity.parameters[:instructions]}."
+    - else
+      span
+        = "#{activity.owner&.full_name or 'Symphony'} updated task: #{activity.parameters[:instructions]}."
+  .col-sm-4
+    span.float-right
+      = activity.created_at.strftime("%d/%m/%Y %R")

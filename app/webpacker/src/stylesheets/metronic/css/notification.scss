@@ -28,6 +28,7 @@ h3.cursor-auto{
   position: absolute;
   border-radius: 50%;
   background-color: #27a5eb;
+  top: 3px;
   z-index: 2;
 }
 .unopened_wrapper:hover > .unopened_description_wrapper{
@@ -133,4 +134,15 @@ h3.cursor-auto{
   line-height: 0;
   position: relative;
   color: #74788d;
+}
+
+.notification-count{
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  cursor: pointer;
+}
+
+.notification-content-width.dropdown-menu{
+  width: 350px;  
 }

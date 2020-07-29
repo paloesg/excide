@@ -1,6 +1,4 @@
 class Symphony::BatchesController < ApplicationController
-  layout 'metronic/application'
-
   before_action :authenticate_user!
   before_action :set_batch, only: [:show, :destroy]
   before_action :set_s3_direct_post, only: [:show, :new]
@@ -9,6 +7,7 @@ class Symphony::BatchesController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    @templates = policy_scope(Template).assigned_templates(current_user)
     @batches = policy_scope(Batch).includes(:user, [workflows: :workflow_actions], :template).order(created_at: :desc)
     @completed = @batches.where(completed: true).count
     @total = @batches.count

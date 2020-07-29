@@ -1,6 +1,4 @@
 class Symphony::CheckoutController < ApplicationController
-  layout "dashboard/application"
-  layout 'metronic/application'
   after_action :verify_authorized
   def create
     authorize :checkout, :create?

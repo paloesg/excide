@@ -1,8 +1,6 @@
 class CompaniesController < ApplicationController
-  layout 'metronic/application'
-
   before_action :authenticate_user!
-  before_action :set_company, only: [:show, :edit, :update]
+  before_action :set_company, only: [:show, :edit, :update, :billing, :integration]
 
   after_action :verify_authorized
 
@@ -46,6 +44,14 @@ class CompaniesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def billing
+    authorize @company
+  end
+
+  def integration
+    authorize @company
   end
 
   private

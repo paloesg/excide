@@ -1,6 +1,5 @@
 class Symphony::RolesController < ApplicationController
-  layout "metronic/application"
-  before_action :set_company
+  before_action :set_company, :set_company_users
   before_action :set_role, only: [:edit, :update, :destroy]
 
   def index
@@ -59,6 +58,10 @@ class Symphony::RolesController < ApplicationController
   def set_company
     @user = current_user
     @company = @user.company
+  end
+
+  def set_company_users
+    @company_users = User.where(company_id: @company.id)
   end
 
   def role_params
