@@ -135,13 +135,26 @@ $(document).on("turbolinks:load", function () {
         dropdownParent: "body",
       });
       // Show deadline warning message on NEW task
-      $("select.task-deadlines-type").each(function(){
-        $("select[id$=template_sections_attributes_" + index + "_tasks_attributes_" + time + "_deadline_type").on("change", function(){
-          if ($("select[id$=template_sections_attributes_" + index + "_tasks_attributes_" + time + "_deadline_type").val() === 'xth_day_of_the_month'){
-            $(".task-deadline-warning").removeClass('d-none');
-          }
-          else{
-            $(".task-deadline-warning").addClass('d-none');
+      $("select.task-deadlines-type").each(function () {
+        $(
+          "select[id$=template_sections_attributes_" +
+            index +
+            "_tasks_attributes_" +
+            time +
+            "_deadline_type"
+        ).on("change", function () {
+          if (
+            $(
+              "select[id$=template_sections_attributes_" +
+                index +
+                "_tasks_attributes_" +
+                time +
+                "_deadline_type"
+            ).val() === "xth_day_of_the_month"
+          ) {
+            $(".task-deadline-warning").removeClass("d-none");
+          } else {
+            $(".task-deadline-warning").addClass("d-none");
           }
         });
       });
