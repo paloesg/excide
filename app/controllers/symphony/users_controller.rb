@@ -17,6 +17,16 @@ class Symphony::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    # @user = User.find_or_create_by(user_params)
+    if @user.email
+      @user = User.find_or_create_by(email: @user.email)
+      puts "WHAT is email #{@user.email}"
+      # @user = User.create_or_find_by(email: @user.email) do |user|
+      #   user.assign_attributes(user_params)
+      #   puts "WHAT is email #{user.email}"
+      # end
+    end
+
     @user.company = @company
     if @user.save
       redirect_to symphony_users_path, notice: 'User successfully created!'
@@ -30,7 +40,7 @@ class Symphony::UsersController < ApplicationController
   end
 
   def update
-    # Get all the updated roles by finding the role instance 
+    # Get all the updated roles by finding the role instance
     updated_roles = Role.where(id: params[:user][:role_ids])
     # Remove all the roles in that company and then add in the new
     @user.roles.where(resource_id: current_user.company.id).each do |role|
