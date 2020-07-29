@@ -44,7 +44,7 @@ $(document).on("turbolinks:load", function(){
     });
   }).on("show.bs.popover", function () {
     $('.popover').popover('hide');
-    $($(this).data("bs.popover").tip).css({ "max-width": "500px" })
+    $($(this).data("bs.popover").tip).css({ "max-width": "400px" })
   }).children().on('click', function (e) {
     e.stopPropagation();
   });

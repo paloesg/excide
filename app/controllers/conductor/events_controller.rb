@@ -3,6 +3,8 @@ class Conductor::EventsController < ApplicationController
   before_action :set_company_and_clients
   before_action :set_staffers, only: [:new, :edit]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
+  before_action :get_users_and_service_lines, only: [:new, :edit, :create, :update]
+
 
   # GET /conductor/events
   # GET /conductor/events.json
@@ -32,8 +34,6 @@ class Conductor::EventsController < ApplicationController
   # GET /conductor/events/1/edit
   def edit
     @event.build_address if @event.address.blank?
-    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
-    @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq
   end
 
   # POST /conductor/events
@@ -138,6 +138,13 @@ class Conductor::EventsController < ApplicationController
 
   def set_staffers
     @staffers = User.where(company: @company).with_role :staffer, @company
+  end
+
+  def get_users_and_service_lines
+    # To be tagged using acts_as_taggable_on gem
+    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
+    # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
+    @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

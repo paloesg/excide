@@ -19,8 +19,9 @@
           | AP Invoice #{@current_position} of #{@total_task}     
     ul.navbar-nav.ml-auto
       .row.mr-5
-        = f.submit ' Save & Next ', class: "btn btn-white"
-        = link_to("Reject", reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.id, invoice_type: "payable", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-danger mr-2') if policy(@invoice).reject?
+        = f.submit 'Save & Next', class: "btn btn-white mr-2"
+        - if policy(@invoice).reject?
+          button type="button" class="btn btn-danger mr-2" data-target="#remarkModal" data-toggle="modal" Reject
       .row
         .dropdown.mr-3
           a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
@@ -76,4 +77,16 @@
               = hidden_field_tag :workflow_action, params[:workflow_action_id]
               = hidden_field_tag :invoice_type, "0"
           .col-md-4
-            = hidden_field_tag :submit_position, '', class: 'submit-position'
+            = hidden_field_tag :submit_position, '', class: 'submit-position'             
+#remarkModal.modal.fade aria-hidden="true" aria-labelledby="remarkModalLabel" role="dialog" tabindex="-1" 
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h5#remarkModalLabel.modal-title Reject Invoice?
+      .modal-body
+        .form-group.mb-0
+        = form_for(@invoice, url: reject_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id, id: @invoice.id, workflow_action_id: params[:workflow_action_id])) do |g|
+          = g.label :remarks, 'Let your teammate know why you cannot accept the invoice.', class: 'mr-2'
+          = g.text_area :remarks, class: 'form-control', placeholder: 'Type a message...'
+          = g.submit "Reject", method: 'post', role: 'button', class: 'btn btn-danger ml-2 mt-2 float-right'
+          button.btn.btn-secondary.mt-2.float-right data-dismiss="modal" type="button" Close

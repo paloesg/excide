@@ -9,6 +9,14 @@ $(document).on("turbolinks:load", function() {
     },
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
+
+  $('select.selectize-year').selectize({
+    allowEmptyOption: true,
+    onItemAdd: function (value, $item) {
+      Turbolinks.visit('//' + location.host + location.pathname + '?year=' + value);
+    },
+    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
+  });
   
   $('.tasks-filter-button').click(function (e) {
     var tasks_selectize = $('select.selectize-tasks').selectize();
@@ -20,6 +28,12 @@ $(document).on("turbolinks:load", function() {
     var typesData = (types_selectize[0].selectize).getValue();
 
     Turbolinks.visit('//' + location.host + location.pathname + '?tasks=' + tasksData + '&created_at=' + createdAtData + '&types=' + typesData);
+  });
+
+  $('.activity-history-filter-button').click(function (e) {
+    var created_at_selectize = $('select.selectize-created-at').selectize();
+    var createdAtData = (created_at_selectize[0].selectize).getValue();
+    Turbolinks.visit('//' + location.host + location.pathname + '?created_at=' + createdAtData);
   });
 
   if ($('#new-event.d-none')[0] == undefined) {
