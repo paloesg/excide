@@ -5,8 +5,8 @@
     - alert_type = 'success'
   .row.mt-5.d-flex.justify-content-center
     .col-6
-      .alert.alert-dismissible.fade.show role="alert"  class="alert-#{alert_type}"
+      .alert.alert-dismissible.fade.show.fixed-bottom.w-50.mx-auto.mb-12 role="alert"  class="alert-#{alert_type}"
         .alert-text = msg
         .alert-close
-          button.close aria-label="Close" data-dismiss="alert" type="button" 
+          button.close aria-label="Close" data-dismiss="alert" type="button"
             span aria-hidden="true" &times;
