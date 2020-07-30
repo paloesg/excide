@@ -22,9 +22,6 @@ class Symphony::UsersController < ApplicationController
       @user = User.find_or_create_by(email: @user.email)
 
       updated_roles = Role.where(id: params[:user][:role_ids])
-      @user.roles.each do |role|
-        @user.remove_role(role.name, @company)
-      end
       @user.roles << updated_roles
     end
 
