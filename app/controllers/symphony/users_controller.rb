@@ -17,14 +17,15 @@ class Symphony::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    # @user = User.find_or_create_by(user_params)
-    if @user.email
+
+    if (User.exists?(:email => @user.email))
       @user = User.find_or_create_by(email: @user.email)
-      puts "WHAT is email #{@user.email}"
-      # @user = User.create_or_find_by(email: @user.email) do |user|
-      #   user.assign_attributes(user_params)
-      #   puts "WHAT is email #{user.email}"
-      # end
+
+      updated_roles = Role.where(id: params[:user][:role_ids])
+      @user.roles.each do |role|
+        @user.remove_role(role.name, @company)
+      end
+      @user.roles << updated_roles
     end
 
     @user.company = @company
