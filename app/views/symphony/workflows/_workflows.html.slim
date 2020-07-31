@@ -1,7 +1,7 @@
 table.table.table-hover.mb-0
   thead.thead-light
     tr
-      th colspan="4" To complete
+      th colspan="5" To complete
       th Due
   tbody
     - @workflows.each do |wf|
@@ -12,8 +12,10 @@ table.table.table-hover.mb-0
             span
         td width="45%"
           = wf.name
-        td width="20%"
+        td width="10%"
           = "(" + (wf.workflow_actions.where(completed: true).count*100/wf.workflow_actions.count).to_s + "%)" if (wf.workflow_actions.present? && !wf.completed?)
+        td width="10%"
+          = wf.total_time.to_s + "m" unless wf.total_time == 0
         td width="5%"
           - if !wf.completed? && wf.deadline.present?
             - if wf.deadline.to_date < Date.today

@@ -120,6 +120,10 @@ class Workflow < ApplicationRecord
     self.data = data_attributes
   end
 
+  def total_time
+    self.workflow_actions.sum(:time_spent_mins)
+  end
+
   class Data
     attr_accessor :name, :value, :placeholder, :user_id, :updated_at
     def initialize(hash)
