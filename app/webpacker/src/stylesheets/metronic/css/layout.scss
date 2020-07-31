@@ -19,9 +19,20 @@ h1.header-bold {
   border: solid 0.5px grey;
 }
 
-.dropdown-menu.change-company-menu {
-  width: 1000px;
-  overflow-y: auto;
+.col2 {
+  column-count:2;
+}
+
+.col3 {
+  column-count:3;
+}
+
+.break-inside-avoid {
+  break-inside: avoid;
+}
+
+#company-dropdown {
+  min-width: 300px;
 }
 
 // Footer
