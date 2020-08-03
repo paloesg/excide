@@ -15,7 +15,7 @@
 	              - if @general_templates
 	                .form-group
 	                  = label_tag :clone, "Template:"
-	                  = select_tag "template[clone]", options_from_collection_for_select(@general_templates, "id", "title"), class: "selectize"
+	                  = select_tag "template[clone]", options_from_collection_for_select(@general_templates, "id", "title"),  class: "dropdown-overlay", style: "width: 100%"
 	              .form-group
 	                = f.label :workflow_type, "Workflow Type:"
 	                = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
