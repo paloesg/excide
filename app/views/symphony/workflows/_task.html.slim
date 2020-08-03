@@ -1,5 +1,5 @@
-.modal.fade id="taskModal#{index}" aria-hidden="true" aria-labelledby="taskModalLabel#{index}" role="dialog" tabindex="-1" 
-  .modal-dialog role="document" 
+.modal.fade id="taskModal#{index}" aria-hidden="true" aria-labelledby="taskModalLabel#{index}" role="dialog" tabindex="-1"
+  .modal-dialog role="document"
     .modal-content
       .modal-body
         = form_for(action, url:workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
@@ -16,7 +16,7 @@
                     i.material-icons-outlined.font-size-h6 check
                     = link_to "Mark as Complete", task_toggle_symphony_workflow_path(workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), data: {remote: true, method: "POST"}, class: "text-dark"
             .col.float-right
-              button.close aria-label="Close" data-dismiss="modal" type="button" 
+              button.close aria-label="Close" data-dismiss="modal" type="button"
                 i.flaticon2-cross aria-hidden="true"
           h3.mb-6 Step #{index+1}: #{action.task.instructions}
           .row.mb-4
@@ -39,7 +39,7 @@
                 .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
                   .d-flex
                     i.material-icons-outlined.font-size-h6 class=color calendar_today
-                    div class=color 
+                    div class=color
                       - if !action.completed?
                         - if action.deadline.to_date < Date.today
                           = "Overdue " + (Date.today - action.deadline.to_date).to_i.to_s + "d"
@@ -68,7 +68,7 @@
             .col-9
               = f.text_field :remarks, class: 'form-control', id: "remark-post-#{action.id}"
           - if workflow.documents.present?
-            .row.mb-4 
+            .row.mb-4
               .col-3 Attachments
               .col-9
                 - workflow.documents.each do |d|
@@ -77,6 +77,13 @@
                       i.material-icons.font-size-h6.text-dark.mr-3 cancel
                     = link_to d.filename, symphony_document_path(d)
                     br
+          - if workflow.invoice.present? && (["create_invoice_payable", "xero_send_invoice", "coding_invoice"].include? action.task.task_type)
+            .row.mb-4
+              .col-3 Invoice
+              .col-9
+                = link_to symphony_invoice_path(workflow_name: template.slug, workflow_id: workflow.id, id: workflow.invoice.id), class: "d-flex" do
+                  i.material-icons.font-size-h6.text-primary.mr-3 receipt
+                  = workflow.invoice.id
           .row.mb-4.justify-content-end
             = f.submit 'Submit', class: 'btn btn-primary'
             = fa_icon 'check', class: 'text-success mx-3 ajax-icons', id: "check-#{action.id}"
