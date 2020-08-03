@@ -17,22 +17,21 @@ require("turbolinks").start();
 
 // const imagePath = (name) => images(name, true)
 // Importing images through webpack
-const images = require.context('../src/images', true);
+const images = require.context("../src/images", true);
 
-
-import 'bootstrap/dist/js/bootstrap';
-// Bootstrap tooltip 
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+import "bootstrap/dist/js/bootstrap";
+// Bootstrap tooltip
+$(document).on("turbolinks:load", function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
 
 // For bootstrap datetimepicker
-import 'tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min';
+import "tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min";
 // Import font awesome 5
 import "@fortawesome/fontawesome-free/js/all";
-import '../src/javascripts/dashboard/application.js';
-import '../src/javascripts/dashboard/metronic/application.js';
-import '../src/javascripts/dashboard/metronic/fullcalendar.bundle.js';
+import "../src/javascripts/dashboard/application.js";
+import "../src/javascripts/dashboard/metronic/application.js";
+import "../src/javascripts/dashboard/metronic/fullcalendar.bundle.js";
 
 require("../src/javascripts/google-analytics");
 // Currently no way to implement cocoon in rails 6, so this was an alternative to use cocoon before the creator start changing to use webpack
