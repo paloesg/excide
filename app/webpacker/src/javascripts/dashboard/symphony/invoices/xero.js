@@ -181,7 +181,10 @@ $(document).on("turbolinks:load", function () {
   $(".loading").hide();
   // dropdownParent is required to avoid dropdown clipping issue so that the dropdown isn't a child of an element with clipping
 
-  $(".dropdown-overlay").select2();
+  $(".dropdown-overlay").select2({
+    dropdownParent: "body",
+    width: "resolve",
+  });
 
   $("#invoice_line_amount_type").change(function () {
     updateTotalTax();
