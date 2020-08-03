@@ -43,7 +43,7 @@
               = wf.deadline&.strftime("%d %b %Y")
     .btn.btn-block.btn-hover-light-secondary.text-center
       i.material-icons.text-muted add
-      = link_to "Add new cycle", new_symphony_workflow_path(@template.slug), class: "text-muted"
+      = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
   .col-md-7
     table.table.table-borderless.table-hover
       thead.thead-light
