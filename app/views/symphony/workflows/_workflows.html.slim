@@ -15,7 +15,7 @@ table.table.table-hover.mb-0
         td width="10%"
           = "(" + (wf.workflow_actions.where(completed: true).count*100/wf.workflow_actions.count).to_s + "%)" if (wf.workflow_actions.present? && !wf.completed?)
         td width="10%"
-          = wf.total_time.to_s + "m" unless wf.total_time == 0
+          = wf.total_time_mins.to_s + "m" unless wf.total_time_mins == 0
         td width="5%"
           - if !wf.completed? && wf.deadline.present?
             - if wf.deadline.to_date < Date.today
