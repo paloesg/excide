@@ -18,7 +18,7 @@
                 = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
               .form-group
                 = f.label :deadline_type, "Deadline Type:"
-                = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type dropdown-overlay task-items-dropdown-width" }
+                = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type select2 task-items-dropdown-width" }
               .form-group
                 .xth-day.d-none
                   = f.label :deadline_day, "Set a deadline (the date of the month that you want to set the deadline): "
@@ -41,10 +41,10 @@
                 = f.text_field :title, class: "form-control"
               .form-group
                 = label_tag :clone, "Template:"
-                = select_tag "template[clone]", options_from_collection_for_select(@general_templates, "id", "title"), class: "dropdown-overlay", style: "width: 100%"
+                = select_tag "template[clone]", options_from_collection_for_select(@general_templates, "id", "title"), class: "select2", style: "width: 100%"
               .form-group
                 = f.label :workflow_type, "Routine Type:"
-                = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
+                = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "select2 task-items-dropdown-width"}
               .form-group
                 = f.submit "Create Routine", class: 'btn btn-primary pull-left mb-3'
 

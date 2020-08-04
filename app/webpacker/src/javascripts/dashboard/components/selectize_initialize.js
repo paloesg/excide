@@ -17,7 +17,7 @@ $(document).on("turbolinks:load", function() {
     },
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
-  
+
   $('.tasks-filter-button').click(function (e) {
     var tasks_selectize = $('select.selectize-tasks').selectize();
     var created_at_selectize = $('select.selectize-created-at').selectize();

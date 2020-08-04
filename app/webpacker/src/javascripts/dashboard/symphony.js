@@ -1,4 +1,9 @@
 $(document).on("turbolinks:load", function () {
+  $(".select2").select2({
+    dropdownParent: "body",
+    width: "resolve",
+  });
+
   $(".submit-next").click(function () {
     $(".submit-position").val("next_page");
   });
@@ -76,7 +81,7 @@ $(document).on("turbolinks:load", function () {
           "_tasks_attributes_" +
           time +
           "_task_type']"
-      ).selectize({
+      ).select2({
         dropdownParent: "body",
       });
       $(
@@ -85,7 +90,7 @@ $(document).on("turbolinks:load", function () {
           "_tasks_attributes_" +
           time +
           "_role_id']"
-      ).selectize({
+      ).select2({
         dropdownParent: "body",
       });
       $(
@@ -94,7 +99,7 @@ $(document).on("turbolinks:load", function () {
           "_tasks_attributes_" +
           time +
           "_child_workflow_template_id']"
-      ).selectize({
+      ).select2({
         dropdownParent: "body",
       });
       $(
@@ -103,7 +108,7 @@ $(document).on("turbolinks:load", function () {
           "_tasks_attributes_" +
           time +
           "_document_template_id']"
-      ).selectize({
+      ).select2({
         dropdownParent: "body",
       });
       $(
@@ -112,7 +117,7 @@ $(document).on("turbolinks:load", function () {
           "_tasks_attributes_" +
           time +
           "_survey_template_id']"
-      ).selectize({
+      ).select2({
         dropdownParent: "body",
       });
       $(
@@ -121,7 +126,7 @@ $(document).on("turbolinks:load", function () {
           "_tasks_attributes_" +
           time +
           "_user_id']"
-      ).selectize({
+      ).select2({
         dropdownParent: "body",
       });
       // Selectize for deadline type when adding NEW tasks
@@ -131,7 +136,7 @@ $(document).on("turbolinks:load", function () {
           "_tasks_attributes_" +
           time +
           "_deadline_type']"
-      ).selectize({
+      ).select2({
         dropdownParent: "body",
       });
       // Show deadline warning message on NEW task
