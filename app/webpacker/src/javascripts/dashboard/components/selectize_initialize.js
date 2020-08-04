@@ -27,13 +27,13 @@ $(document).on("turbolinks:load", function () {
   });
 
   $(".tasks-filter-button").click(function (e) {
-    var tasks_selectize = $("select.select2-tasks").select2();
-    var created_at_selectize = $("select.select2-created-at").select2();
-    var types_selectize = $("select.select2-types").select2();
+    var tasks_select2 = $("select.select2-tasks").select2();
+    var created_at_select2 = $("select.select2-created-at").select2();
+    var types_select2 = $("select.select2-types").select2();
 
-    var tasksData = tasks_selectize[0].value;
-    var createdAtData = created_at_selectize[0].value;
-    var typesData = types_selectize[0].value;
+    var tasksData = tasks_select2[0].value;
+    var createdAtData = created_at_select2[0].value;
+    var typesData = types_select2[0].value;
 
     Turbolinks.visit(
       "//" +
@@ -49,8 +49,8 @@ $(document).on("turbolinks:load", function () {
   });
 
   $(".activity-history-filter-button").click(function (e) {
-    var created_at_selectize = $("select.select2-created-at").select2();
-    var createdAtData = created_at_selectize[0].value;
+    var created_at_select2 = $("select.select2-created-at").select2();
+    var createdAtData = created_at_select2[0].value;
     Turbolinks.visit(
       "//" + location.host + location.pathname + "?created_at=" + createdAtData
     );
