@@ -23,7 +23,7 @@
                   td
                     = t.instructions
                   td = t.role.present? ? t.role&.name&.humanize : action.assigned_user&.full_name
-                  - if t.user_id.present?                  
+                  - if t.user_id.present?
                     td = action.assigned_user&.full_name
                   - else
                     td = form_for action, remote: true do |f|

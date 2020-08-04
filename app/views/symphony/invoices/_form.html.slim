@@ -16,7 +16,7 @@
         .row.m-2
           .form-group.col-md-6
             = f.label :xero_contact_id, 'To'
-            = f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'select2 existing-contact-width existing-contact-disable', style: "width: 100%", required: true}
+            = f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'select2 existing-contact-width existing-contact-disable', style: 'width: 100%', required: true}
           .form-group.col-md-6
             = f.label :invoice_reference, 'Reference'
             = f.text_field :invoice_reference, class: 'form-control inv-reference'
@@ -43,7 +43,7 @@
         .row.m-2
           .form-group.col-md-6
             = f.label :currency, 'Currency'
-            = f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'select2', style: "width: 100%"
+            = f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'select2', style: 'width: 100%'
 
 /           .form-group.col-md-2
 /             = f.label :invoice_type, 'Invoice Type', class: 'mr-2'
