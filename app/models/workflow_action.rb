@@ -122,8 +122,7 @@ class WorkflowAction < ApplicationRecord
 
   def update_workflow_total_time_mins
     workflow = self.workflow
-    workflow.total_time_mins = workflow.workflow_actions.sum(:time_spent_mins)
-    workflow.save
+    workflow.update(total_time_mins: workflow.workflow_actions.sum(:time_spent_mins))
   end
 
   def update_batch_progress
