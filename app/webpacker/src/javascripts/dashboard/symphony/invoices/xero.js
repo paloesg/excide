@@ -295,7 +295,7 @@ $(document).on("turbolinks:load", function () {
         getXeroItem(itemCode, time);
       },
     });
-    $("select[id$='" + time + "_account']").selectize({
+    $("select[id$='" + time + "_account']").select2({
       dropdownParent: "body",
     });
     // Add tax selectize object into array of dropdownTax
@@ -336,10 +336,10 @@ $(document).on("turbolinks:load", function () {
         },
       })[0]
     );
-    $("select[id$='" + time + "_tracking_option_1']").selectize({
+    $("select[id$='" + time + "_tracking_option_1']").select2({
       dropdownParent: "body",
     });
-    $("select[id$='" + time + "_tracking_option_2']").selectize({
+    $("select[id$='" + time + "_tracking_option_2']").select2({
       dropdownParent: "body",
     });
     $(".data-attributes").find("tr:last-child").find(".create").val("1");
