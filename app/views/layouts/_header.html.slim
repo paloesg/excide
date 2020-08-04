@@ -3,34 +3,34 @@
   .navbar-brand
     = link_to symphony_root_path do
       = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo"
-    = content_tag :span, "Staging", class: "badge badge-danger badge-header" if ENV['APP_NAME'] == "excide-staging"
+    = content_tag :span, "Staging", class: "badge badge-danger badge-header ml-2" if ENV['APP_NAME'] == "excide-staging"
     = content_tag :span, "Trial", class: "badge badge-warning badge-header ml-2" if current_user.company.free_trial?
     = content_tag :span, "Basic", class: "badge badge-secondary badge-header ml-2" if current_user.company.basic?
     = content_tag :span, "Pro", class: "badge badge-success badge-header ml-2" if current_user.company.pro?
-  button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button" 
+  button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button"
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav
       / Change company dropdown
       li.nav-item.dropdown.border.border-secondary.rounded
         - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
-          button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button" 
+          button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
             | #{current_user.company.name}
             i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
-          .dropdown-menu.company-scroll aria-labelledby="dropdownMenuButton"
+          #company-dropdown.dropdown-menu aria-labelledby="dropdownMenuButton"
             - if current_user.has_role? :superadmin
               - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
                 - if company.name.present?
-                  = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1
+                  = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
               .dropdown-divider
-                = link_to 'Add New Company', new_company_path, class: 'dropdown-item text-primary', tabindex: -1
+              = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
             - else
               - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
                 - if company.name.present?
-                  = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item', tabindex: -1        
-                - else
-                  = link_to(symphony_root_path, class: "btn btn-secondary btn-default") do
-                    ' #{current_user.company.name}
+                  = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
+        - else
+          = link_to(symphony_root_path, class: "btn btn-secondary btn-default") do
+            ' #{current_user.company.name}
     ul.navbar-nav.ml-auto
       li.nav-item
         = link_to 'https://paloe.zendesk.com/hc/en-us', target: '_blank', class: 'btn btn-white mr-2 border border-secondary' do
@@ -47,7 +47,7 @@
       .dropdown.ml-3
         a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
           = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
-        .dropdown-menu.dropdown-menu-right aria-labelledby="userDropdownMenu" 
+        .dropdown-menu.dropdown-menu-right aria-labelledby="userDropdownMenu"
           li
             = link_to symphony_archives_path, class: 'dropdown-item' do
               span Archived Workflows
