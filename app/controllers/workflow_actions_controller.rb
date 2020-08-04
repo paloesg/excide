@@ -6,10 +6,6 @@ class WorkflowActionsController < ApplicationController
     respond_to do |format|
       if @workflow_action.update(workflow_action_params)
         format.json { render json: @workflow_action, status: :ok }
-        #update workflow total time
-        workflow = @workflow_action.workflow
-        workflow.total_time = workflow.workflow_actions.sum(:time_spent_mins)
-        workflow.save
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
