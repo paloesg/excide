@@ -16,18 +16,18 @@ class Symphony::UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-
-    if (User.exists?(:email => @user.email))
-      @user = User.find_or_create_by(email: @user.email)
-
+    @user = User.find_or_initialize_by(email: user_params[:email])
+    if @user.first_name.nil?
+      @user.update(user_params)
+      message = 'User successfully created!'
+    else
       updated_roles = Role.where(id: params[:user][:role_ids])
       @user.roles << updated_roles
+      message = 'User successfully added!'
     end
-
     @user.company = @company
     if @user.save
-      redirect_to symphony_users_path, notice: 'User successfully created!'
+      redirect_to symphony_users_path, notice: message
     else
       render :new
     end
