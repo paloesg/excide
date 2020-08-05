@@ -11,7 +11,7 @@
                     i.material-icons-outlined.font-size-h6 check
                     | Completed
               - else
-                .btn.btn-sm.btn-outline-secondary style=((action.task != task && template.ordered?) ? "pointer-events: none" : "")
+                .btn.btn-sm.btn-outline-secondary class=((action.task != task && template.ordered?) ? "disabled" : "")
                   .d-flex.align-items-center
                     i.material-icons-outlined.font-size-h6 check
                     = link_to "Mark as Complete", task_toggle_symphony_workflow_path(workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), data: {remote: true, method: "POST"}, class: "text-dark"
