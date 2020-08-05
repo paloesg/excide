@@ -56,7 +56,7 @@ html lang="en"
       - else
         .container-fluid
           .row
-            - if controller_name == 'invoices'
+            - if (controller_name == 'invoices' || current_page?(additional_information_path))
               / no sidebar for invoices page and conductor
               .col-sm-12.mt-5.mx-4.px-5
                 = yield
