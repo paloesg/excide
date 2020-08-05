@@ -44,8 +44,8 @@
               td width="5%"
                 wf.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                   i.fa.fa-ellipsis-h.text-secondary
-                .dropdown-menu.dropdown-menu-right
-                      .dropdown-item = link_to "Delete"
+                .dropdown-menu
+                      .dropdown-item = link_to "Delete", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), data: { confirm: 'This will delete the workflow cycle. Are you sure?' , remote: true}, method: :delete 
     .btn.btn-block.btn-hover-light-secondary.text-center
       i.material-icons.text-muted add
       = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
