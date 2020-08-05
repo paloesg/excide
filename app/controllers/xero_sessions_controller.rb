@@ -62,7 +62,7 @@ class XeroSessionsController < ApplicationController
       xc = XeroContact.find_or_initialize_by(contact_id: contact.contact_id)
       xc.update(name: contact.name, company: current_user.company)
     end
-    redirect_to edit_company_path, notice: "Contacts have been updated from Xero."
+    params[:action].present? ? (redirect_to session[:previous_url], notice: "Contacts have been updated from Xero.") : (redirect_to edit_company_path, notice: "Contacts have been updated from Xero.")
   end
 
   def update_tracking_categories_from_xero
