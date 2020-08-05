@@ -20,8 +20,6 @@ h1, h2, h3, h4, h5, h6 {
 
 //remove on click highlight of dropdown-item
 .dropdown-item.active, .dropdown-item:active {
-  color: transparent !important;
-  text-decoration: none;
   background-color: #F3F6F9 !important; }
 
 // Class to make five column in one row
