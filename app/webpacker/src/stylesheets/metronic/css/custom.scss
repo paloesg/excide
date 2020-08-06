@@ -18,6 +18,11 @@ h1, h2, h3, h4, h5, h6 {
     filter: invert(100%);
 }
 
+//remove on click highlight of dropdown-item
+.dropdown-item.active, .dropdown-item:active {
+  background-color: #F3F6F9 !important; 
+}
+
 // Class to make five column in one row
 .col-2dot4,
 .col-sm-2dot4,
@@ -127,6 +132,10 @@ td.day.has-events.fc-day-top.fc-past {
 
 .material-icons-outlined {
   color: #515163;
+}
+
+.disabled {
+  pointer-events: none;
 }
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
