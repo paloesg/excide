@@ -104,6 +104,8 @@ class Symphony::WorkflowsController < ApplicationController
         respond_to do |format|
           format.js  { flash[:notice] = 'Workflow was successfully deleted.' }
         end
+      else
+        redirect_to symphony_workflows_path(workflow_name: @template.slug)
       end
     end
   end
