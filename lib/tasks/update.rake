@@ -99,4 +99,11 @@ namespace :update do
       batch.update(status: 1)
     end
   end
+
+  desc "Update workflows with total time mins"
+  task update_workflows_total_time_mins: :environment do
+    Workflow.all.each do |wf|
+      wf.update(total_time_mins: wf.workflow_actions.sum(:time_spent_mins))
+    end
+  end
 end
