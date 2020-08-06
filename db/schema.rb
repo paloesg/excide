@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_15_023927) do
+ActiveRecord::Schema.define(version: 2020_08_03_191742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -507,8 +507,8 @@ ActiveRecord::Schema.define(version: 2020_07_15_023927) do
     t.bigint "child_workflow_template_id"
     t.bigint "survey_template_id"
     t.uuid "document_template_id"
-    t.bigint "user_id"
     t.integer "deadline_type"
+    t.bigint "user_id"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
@@ -617,6 +617,7 @@ ActiveRecord::Schema.define(version: 2020_07_15_023927) do
     t.uuid "batch_id"
     t.bigint "workflow_action_id"
     t.string "slug"
+    t.integer "total_time_mins", default: 0
     t.index ["batch_id"], name: "index_workflows_on_batch_id"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"

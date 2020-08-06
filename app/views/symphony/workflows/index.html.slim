@@ -12,43 +12,10 @@
           i.material-icons.font-size-h2.text-secondary more_horiz
         .dropdown-menu.dropdown-menu-right
           .dropdown-item = link_to "Edit Master Routine", edit_symphony_template_path(template_slug: @template.slug), class: "float-right" if policy(@template).edit?
-          .dropdown-item = link_to "Delete", symphony_template_path(template_slug: @template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' , remote: true}, method: :delete if policy(@template).destroy?
+          .dropdown-item = link_to "Delete", symphony_template_path(template_slug: @template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' }, method: :delete if policy(@template).destroy?
 .row
   .col-md-5
-    table.table.table-hover.mb-0
-      thead.thead-light
-        tr
-          th colspan="4" To complete
-          th colspan="2" Due
-      tbody
-        - @workflows.each do |wf|
-            tr style="cursor: pointer"
-              td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
-                label.checkbox
-                  = check_box_tag 'completed', wf.id, wf.completed, disabled: true
-                  span
-              td width="40%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
-                = wf.name
-              td width="20%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
-                = "(" + (wf.workflow_actions.where(completed: true).count*100/wf.workflow_actions.count).to_s + "%)" if (wf.workflow_actions.present? && !wf.completed?)
-              td width="5%"
-                - if !wf.completed? && wf.deadline.present?
-                  - if wf.deadline.to_date < Date.today
-                    i.fa.fa-xs.fa-circle.text-danger.mr-3
-                  - elsif wf.deadline.to_date <= Date.tomorrow
-                    i.fa.fa-xs.fa-circle.text-warning.mr-3
-                  - else
-                    i.fa.fa-xs.fa-circle.text-primary.mr-3
-              td width="25%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
-                = wf.deadline&.strftime("%d %b %Y")
-              td width="5%"
-                wf.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-                  i.fa.fa-ellipsis-h.text-secondary
-                .dropdown-menu
-                      .dropdown-item = link_to "Delete", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), data: { confirm: 'This will delete the cycle. Are you sure?'}, method: :delete
-    .btn.btn-block.btn-hover-light-secondary.text-center
-      i.material-icons.text-muted add
-      = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
+    = render "workflows"
   .col-md-7
     table.table.table-borderless
       thead.thead-light
