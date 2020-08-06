@@ -15,6 +15,7 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    # Find list of workflows with deadline of the current year.
     @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.deadline.year == Time.current.year}.sort_by{|wf| wf.created_at}
   end
 

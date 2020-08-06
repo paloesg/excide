@@ -24,30 +24,37 @@
           th colspan="4" To complete
           th Due
       tbody
-        - @workflows.each do |wf|
-          tr style="cursor: pointer" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
-            td width="5%"
-              label.checkbox
-                = check_box_tag 'completed', wf.id, wf.completed, disabled: true
-                span
-            td width="45%"
-              = wf.name
-            td width="20%"
-              = "(" + (wf.workflow_actions.where(completed: true).count*100/wf.workflow_actions.count).to_s + "%)" if (wf.workflow_actions.present? && !wf.completed?)
-            td width="5%"
-              - if !wf.completed? && wf.deadline.present?
-                - if wf.deadline.to_date < Date.today
-                  i.fa.fa-xs.fa-circle.text-danger.mr-3
-                - elsif wf.deadline.to_date <= Date.tomorrow
-                  i.fa.fa-xs.fa-circle.text-warning.mr-3
-                - else
-                  i.fa.fa-xs.fa-circle.text-primary.mr-3
-            td width="25%"
-              = wf.deadline&.strftime("%d %b %Y")
-    - if @template.on_demand?
-      .btn.btn-block.btn-hover-light-secondary.text-center
-        i.material-icons.text-muted add
-        = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
+        - if @template.monthly?
+          - (1..12).to_a.count.times do |i|
+            - if @workflows.map{|wf| wf.deadline.month}.include? (i+1)
+              / the assumption is that there is only 1 workflow per month, hence we can use @workflows[0]
+              tr style="cursor: pointer" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @workflows[0].id)}'"
+                td width="5%"
+                  label.checkbox
+                    = check_box_tag 'completed', @workflows[0].id, @workflows[0].completed, disabled: true
+                    span
+                td width="45%"
+                  = @workflows[0].name
+                td width="20%"
+                  = "(" + (@workflows[0].workflow_actions.where(completed: true).count*100/@workflows[0].workflow_actions.count).to_s + "%)" if (@workflows[0].workflow_actions.present? && !@workflows[0].completed?)
+                td width="5%"
+                  - if !@workflows[0].completed? && @workflows[0].deadline.present?
+                    - if @workflows[0].deadline.to_date < Date.today
+                      i.fa.fa-xs.fa-circle.text-danger.mr-3
+                    - elsif @workflows[0].deadline.to_date <= Date.tomorrow
+                      i.fa.fa-xs.fa-circle.text-warning.mr-3
+                    - else
+                      i.fa.fa-xs.fa-circle.text-primary.mr-3
+                td width="25%"
+                  = @workflows[0].deadline&.strftime("%d %b %Y")
+            - else
+              tr
+                td.text-center colspan="6"
+                  = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
+        - else
+          .btn.btn-block.btn-hover-light-secondary.text-center
+            i.material-icons.text-muted add
+            = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
   .col-md-7
     table.table.table-borderless
       thead.thead-light
