@@ -23,27 +23,34 @@
       .col-md-12
         table.table
           tbody
-            - @outstanding_actions.each do |action|
+            - @outstanding_actions.each_with_index do |action, index|
               tr.border-bottom
                 td.border-top-0
                   label.checkbox
                     = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"
                     span
-                td.border-top-0 = action.task.instructions
-                td.border-top-0 = action.workflow.template.title
-                td.border-top-0
+                td.border-top-0 data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+                  = action.task.instructions
+                td.border-top-0 data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+                  = action.workflow.template.title
+                td.border-top-0 data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
                   - if action.deadline.to_date < Date.today
                     i.fa.fa-xs.fa-circle.text-danger.mr-3
                     = (Date.today - action.deadline.to_date).to_i.to_s + "d overdue"
+                    - color = "text-danger"
                   - elsif action.deadline.to_date <= Date.tomorrow
                     i.fa.fa-xs.fa-circle.text-warning.mr-3
                     = action.deadline.to_date == Date.today ? "Today" : "Tomorrow"
+                    - color = "text-warning"
                   - elsif action.company.before_deadline_reminder_days.present? && action.deadline.to_date - action.company.before_deadline_reminder_days <= Date.today
                     i.fa.fa-xs.fa-circle.text-warning.mr-3
                     = action.deadline&.strftime("%d %b %Y")
+                    - color = "text-warning"
                   - else
                     i.fa.fa-xs.fa-circle.text-primary.mr-3
                     = action.deadline&.strftime("%d %b %Y")
+                    - color = "text-primary"
+              = render "symphony/workflows/task", template: action.workflow.template, workflow: action.workflow, action: action, index: index, color: color, task: action.task
   - if @workflows.blank?
     .row.justify-content-center.mt-5
       = render "empty_routines"
