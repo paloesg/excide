@@ -21,7 +21,7 @@
               = link_to "Add new task", symphony_tasks_path, class: 'text-primary font-weight-bold'
     - else
       .col-md-12
-        table.table
+        table.table.table-hover
           tbody
             - @outstanding_actions.each_with_index do |action, index|
               tr.border-bottom
