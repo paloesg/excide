@@ -14,16 +14,12 @@ $(document).on("turbolinks:load", function () {
     },
   });
 
-  $("select.selectize-year").selectize({
-    allowEmptyOption: true,
-    onItemAdd: function (value, $item) {
-      Turbolinks.visit(
-        "//" + location.host + location.pathname + "?year=" + value
-      );
-    },
-    onFocus: function () {
-      $(".selectize-input input").attr("style", "width: auto;");
-    },
+  $(".select2-year").on("select2:select", function(e) {
+    var data = e.params.data;
+    console.log(data.text);
+    Turbolinks.visit(
+      "//" + location.host + location.pathname + "?year=" + data.text
+    );
   });
 
   $(".tasks-filter-button").click(function (e) {
