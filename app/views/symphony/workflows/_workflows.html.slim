@@ -25,7 +25,7 @@ table.table.table-hover.mb-0
         td width="25%"  onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
           = wf.deadline&.strftime("%d %b %Y")
         td width="5%"
-          .btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+          a href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
             i.fa.fa-ellipsis-h.text-secondary
           .dropdown-menu
             .dropdown-item = link_to "Delete", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), data: { confirm: 'This will delete the cycle. Are you sure?'}, method: :delete
