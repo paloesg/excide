@@ -25,7 +25,8 @@
           th Due
       tbody
         - if @template.monthly?
-          - (1..12).to_a.count.times do |i|
+          / Create 12 rows
+          - 12.times do |i|
             - if @workflows.map{|wf| wf.deadline.month}.include? (i+1)
               / the assumption is that there is only 1 workflow per month, hence we can use @workflows[0]
               tr style="cursor: pointer" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @workflows[0].id)}'"
@@ -50,7 +51,7 @@
             - else
               tr
                 td.text-center colspan="6"
-                  = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
+                  = link_to "Add new cycle", symphony_workflows_path(@template.slug, cycle_position: i+1 ), method: :post, class: "text-muted"
         - else
           .btn.btn-block.btn-hover-light-secondary.text-center
             i.material-icons.text-muted add
