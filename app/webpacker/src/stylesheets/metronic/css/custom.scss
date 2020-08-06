@@ -133,6 +133,10 @@ td.day.has-events.fc-day-top.fc-past {
 .material-icons-outlined {
   color: #515163;
 }
+
+.disabled {
+  pointer-events: none;
+}
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 $theme-colors: (
