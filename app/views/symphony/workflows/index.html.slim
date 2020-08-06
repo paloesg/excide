@@ -3,7 +3,10 @@
     h2.mt-3.d-flex.align-items-center
       = @template.title
       .label.label-inline.label-dark.ml-4
-        span On-demand
+        - if @template.monthly?
+          span Monthly
+        - else
+          span On-demand
   .col-md-6.d-flex.justify-content-end
     = select_tag('year', options_for_select(["2020", "2019", "2018"], selected: params[:year], include_blank: "2020"), class: 'selectize selectize-year mr-2')
     - if policy(@template).edit? || policy(@template).destroy?
@@ -41,9 +44,10 @@
                   i.fa.fa-xs.fa-circle.text-primary.mr-3
             td width="25%"
               = wf.deadline&.strftime("%d %b %Y")
-    .btn.btn-block.btn-hover-light-secondary.text-center
-      i.material-icons.text-muted add
-      = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
+    - if @template.on_demand?
+      .btn.btn-block.btn-hover-light-secondary.text-center
+        i.material-icons.text-muted add
+        = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
   .col-md-7
     table.table.table-borderless
       thead.thead-light

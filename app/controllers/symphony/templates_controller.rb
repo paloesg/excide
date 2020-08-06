@@ -44,6 +44,8 @@ class Symphony::TemplatesController < ApplicationController
     authorize @template
     @template.company = @company
     if @template.save
+      # Instead of removing section model completely, create a default section that links template with task, but don't show in the UI
+      @section = Section.create(position: 1, template_id: @template.id)
       redirect_to edit_symphony_template_path(@template)
     else
       render :new
@@ -57,15 +59,6 @@ class Symphony::TemplatesController < ApplicationController
 
   def update
     authorize @template
-    if params[:new_section_submit].present?
-      @position = @template.sections.count + 1
-      @section = Section.create(section_name: params[:new_section], template_id: @template.id, position: @position)
-      if @section.save
-        flash[:notice] = 'Section was successfully created.'
-      else
-        flash[:alert] = @section.errors.full_messages.join
-      end
-    end
     if params[:template].present?
       if @template.update(template_params)
         flash[:notice] = 'Template has been saved.'
@@ -117,6 +110,6 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:template).permit(:title, :company_id, :workflow_type, :deadline_day, :deadline_type, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :user_id, :document_template_id, :survey_template_id, :deadline_day, :deadline_type, :set_reminder, :important, :link_url, :image_url, :_destroy] ])
+    params.require(:template).permit(:title, :company_id, :workflow_type, :deadline_day, :deadline_type, :template_pattern, :start_date, :end_date, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :user_id, :document_template_id, :survey_template_id, :deadline_day, :deadline_type, :set_reminder, :important, :link_url, :image_url, :_destroy] ])
   end
 end
