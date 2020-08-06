@@ -36,7 +36,8 @@ class WorkflowAction < ApplicationRecord
     targets: :custom_notification_targets,
     # Path to move when the notification is opened by the target user
     # This is an optional configuration since activity_notification uses polymorphic_path as default
-    notifiable_path: :wf_notifiable_path
+    notifiable_path: :wf_notifiable_path,
+    dependent_notifications: :delete_all
 
   def custom_notification_targets(key)
     if key == 'workflow_action.task_notify' or key == 'workflow_action.unordered_workflow_notify'
