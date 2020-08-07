@@ -64,7 +64,7 @@ class Symphony::TemplatesController < ApplicationController
         if params[:last_action].present?
           GenerateWorkflowsJob.perform_later(current_user, @template)
           # @generate_routines.success? ? (redirect_to symphony_workflows_path(workflow_name: @template.slug), notice: 'Cycles created successfully.') : (redirect_to symphony_templates_path, alert: "An error occurs while creating routine: #{@generate_routines.message}")
-          redirect_to symphony_workflows_path(workflow_name: @template.slug), notice: 'Cycles are being created right now.'
+          redirect_to symphony_workflows_path(workflow_name: @template.slug), notice: 'Cycles are being created right now. Please refresh the page.'
         else
           flash[:notice] = 'Template has been saved.'
           redirect_to edit_symphony_template_path(@template)
