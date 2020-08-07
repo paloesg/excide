@@ -122,4 +122,8 @@ $(document).on("turbolinks:load", function () {
         allocationUserData
     );
   });
+
+  $(".select2").select2({
+      minimumResultsForSearch: 5
+  });
 });
