@@ -8,8 +8,14 @@ class GenerateWorkflowsService
 
   def run
     begin
-      set_document_associations
-      OpenStruct.new(success?: true, batch: @batch)
+      # If batch is present, then it is creating by batch uploads. Else, it is generating the workflows from template pattern
+      if @batch.present?
+        set_document_associations
+        OpenStruct.new(success?: true, batch: @batch)
+      else
+        generate_routine(@user, @template)
+        OpenStruct.new(success?: true)
+      end
     rescue => e
       OpenStruct.new(success?: false, message: e.message)
     end
@@ -34,5 +40,16 @@ class GenerateWorkflowsService
     @workflow.save
 
     return @workflow
+  end
+
+  def generate_routine(user, template)
+    case template.template_pattern
+    when 'monthly'
+      # Calculate the number of months between start_date and end_date
+      # The range between start date to end date returns every single day in the range. The map find the unique value of month and year, join together with '-' into a string, eg "8-2020", "10-2021"
+      (template.start_date..template.end_date).map{|d| [d.month, d.year].join('-')}.uniq.each do |month_year| 
+        Workflow.create!(user_id: user.id, company_id: template.company.id, template_id: template.id, identifier: month_year)
+      end
+    end
   end
 end

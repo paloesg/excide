@@ -27,10 +27,10 @@
         - if @template.monthly?
           / Create 12 rows
           - 12.times do |i|
-            - if @workflows.select { |wf| wf.identifier == (i+1).to_s}.present?
+            - if @workflows.select { |wf| wf.identifier.split('-')[0] == (i+1).to_s}.present?
               / Set workflow instance by checking if the identifier and template
               / the assumption is that there is only 1 workflow per month, hence we can use @workflows[0]
-              - @workflow = Workflow.where(identifier: (i+1).to_s, template: @template)[0]
+              - @workflow = @workflows.select { |wf| wf.identifier.split('-')[0] == (i+1).to_s}[0]
               tr style="cursor: pointer" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @workflow.id)}'"
                 td width="5%"
                   label.checkbox
