@@ -31,7 +31,7 @@ td.task-fields {
   width: 1% !important;
 }
 
-.select2-container--default .select2-selection--single:before {
+.select2-container--default .select2-selection--single::before {
   content: " ";
   display: block;
   position: absolute;
@@ -47,7 +47,7 @@ td.task-fields {
   cursor: pointer;
 }
 
-.select2-container--open .select2-selection--single:before {
+.select2-container--open .select2-selection--single::before {
   content: " ";
   display: block;
   position: absolute;
