@@ -23,7 +23,7 @@
 - unless params[:camera] == "true"
   .form-group.row
     .col-3.col-form-label.text-lg-right = f.label :document_template_id, 'Document Template'
-    .col-6 = f.collection_select :document_template_id, @document_templates, :id, :title, {include_blank: true}, {class: 'select2', style: 'width: 100%'}
+    .col-6 = f.collection_select :document_template_id, @document_templates, :id, :title, {include_blank: true}, {class: 'select2 form-control'}
 .form-group.row
   .col-3.col-form-label.text-lg-right = f.label :remarks
   .col-6 = f.text_area :remarks, rows: '3', class: 'form-control'

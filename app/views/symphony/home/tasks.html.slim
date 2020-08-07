@@ -2,11 +2,11 @@
   .col-md-3
     h4 My Tasks
   .col-md-3.px-2
-    = select_tag('tasks', options_for_select(["Only incomplete tasks", "Only completed tasks", "All tasks"], selected: params[:tasks], include_blank: "Only incomplete tasks"), class: 'select2 select2-tasks', style: 'width: 100%')
+    = select_tag('tasks', options_for_select(["Only incomplete tasks", "Only completed tasks", "All tasks"], selected: params[:tasks], include_blank: "Only incomplete tasks"), class: 'select2 select2-tasks form-control')
   .col-md-2.px-2
-    = select_tag('created_at', options_for_select([["Last 7 days", 7], ["Last 30 days", 30], ["All", " "]], selected: params[:created_at], include_blank: "Last 7 days"), class: 'select2 select2-created-at', style: 'width: 100%')
+    = select_tag('created_at', options_for_select([["Last 7 days", 7], ["Last 30 days", 30], ["All", " "]], selected: params[:created_at], include_blank: "Last 7 days"), class: 'select2 select2-created-at form-control')
   .col-md-3.px-2
-    = select_tag('types', options_for_select(["All types", "Tasks related to Routine", "Adhoc tasks"], selected: params[:types], include_blank: "All types"), class: 'select2 select2-types', style: 'width: 100%')
+    = select_tag('types', options_for_select(["All types", "Tasks related to Routine", "Adhoc tasks"], selected: params[:types], include_blank: "All types"), class: 'select2 select2-types form-control')
   .col-md-1.px-2
     = button_tag 'Filter', type: 'button', class: 'btn btn-primary tasks-filter-button'
 .row

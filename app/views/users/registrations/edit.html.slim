@@ -30,7 +30,7 @@
                 = f.label :contact_number
                 .row
                   .col-md-4
-                    = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'select2', style: 'width: 100%'
+                    = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'select2 form-control'
                   .col-md-8
                     = text_field_tag "contact", @contact, class: 'form-control'
           .card.card-custom.mt-4
@@ -67,4 +67,4 @@
               .card-body
                 .form-group
                   = f.label :company_id
-                  = f.select :company_id, Company.all.map{|company| [company.name, company.id]}, {selected: resource.company.id}, class: 'select2', style: 'width: 100%'
+                  = f.select :company_id, Company.all.map{|company| [company.name, company.id]}, {selected: resource.company.id}, class: 'select2 form-control'

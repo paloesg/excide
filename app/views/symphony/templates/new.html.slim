@@ -41,7 +41,7 @@
                 = f.text_field :title, class: "form-control"
               .form-group
                 = label_tag :clone, "Template:"
-                = select_tag "template[clone]", options_from_collection_for_select(@general_templates, "id", "title"), class: "select2", style: 'width: 100%'
+                = select_tag "template[clone]", options_from_collection_for_select(@general_templates, "id", "title"), class: "select2 form-control"
               .form-group
                 = f.label :workflow_type, "Routine Type:"
                 = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "select2 task-items-dropdown-width"}
