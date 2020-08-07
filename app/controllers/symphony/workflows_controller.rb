@@ -16,7 +16,7 @@ class Symphony::WorkflowsController < ApplicationController
 
   def index
     # Find list of workflows with deadline of the current year.
-    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == Time.current.year}.sort_by{|wf| wf.created_at}
+    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.deadline&.year == Time.current.year}.sort_by{|wf| wf.created_at}
     # Determine how many years in the filtering options based on deadline
     @years_to_filter = @template.workflows.pluck(:deadline).map { |d| d.present? ? d.year : [Time.current.year] }.uniq
   end
