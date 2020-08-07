@@ -620,6 +620,7 @@ ActiveRecord::Schema.define(version: 2020_08_06_075935) do
     t.uuid "batch_id"
     t.bigint "workflow_action_id"
     t.string "slug"
+    t.integer "total_time_mins", default: 0
     t.index ["batch_id"], name: "index_workflows_on_batch_id"
     t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"

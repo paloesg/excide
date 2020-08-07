@@ -18,7 +18,7 @@
             .col.float-right
               button.close aria-label="Close" data-dismiss="modal" type="button"
                 i.flaticon2-cross aria-hidden="true"
-          h3.mb-6 Step #{index+1}: #{action.task.instructions}
+          h3.mb-6 Step #{action.task.position}: #{action.task.instructions}
           .row.mb-4
             .col-3 Action
             .col-8 style=((action.task != task && template.ordered?) ? "pointer-events: none" : "")

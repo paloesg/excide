@@ -1,0 +1,74 @@
+table.table.table-hover.mb-0
+  thead.thead-light
+    tr
+      th colspan="4" To complete
+      th Due
+  tbody
+    - if @template.monthly?
+      / Create 12 rows
+      - 12.times do |i|
+        - if @workflows.select { |wf| wf.identifier.split('-')[0] == (i+1).to_s}.present?
+          / Set workflow instance by checking if the identifier and template
+          / the assumption is that there is only 1 workflow per month, hence we can use @workflows[0]
+          - @workflow = @workflows.select { |wf| wf.identifier.split('-')[0] == (i+1).to_s}[0]
+          tr style="cursor: pointer" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @workflow.id)}'"
+            td width="5%"
+              label.checkbox
+                = check_box_tag 'completed', @workflow.id, @workflow.completed, disabled: true
+                span
+            td width="45%"
+              = Date::ABBR_MONTHNAMES[@workflow.identifier.to_i]
+            td width="20%"
+              = "(" + (@workflow.workflow_actions.where(completed: true).count*100/@workflow.workflow_actions.count).to_s + "%)" if (@workflow.workflow_actions.present? && !@workflow.completed?)
+            td width="5%"
+              - if !@workflow.completed? && @workflow.deadline.present?
+                - if @workflow.deadline.to_date < Date.today
+                  i.fa.fa-xs.fa-circle.text-danger.mr-3
+                - elsif @workflow.deadline.to_date <= Date.tomorrow
+                  i.fa.fa-xs.fa-circle.text-warning.mr-3
+                - else
+                  i.fa.fa-xs.fa-circle.text-primary.mr-3
+            td width="25%"
+              = @workflow.deadline&.strftime("%d %b %Y")
+        - else
+          tr
+            td
+            td
+              = Date::ABBR_MONTHNAMES[i+1]
+            td.text-left colspan="4"
+              = link_to "Add new cycle", symphony_workflows_path(@template.slug, cycle_position: i+1 ), method: :post, class: "text-muted"
+    - else
+      .btn.btn-block.btn-hover-light-secondary.text-center
+        i.material-icons.text-muted add
+        = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
+/ table.table.table-hover.mb-0
+/   thead.thead-light
+/     tr
+/       th colspan="5" To Complete
+/       th Due
+/   tbody
+/     - @workflows.each do |wf|
+/       tr style=("cursor: pointer;" + ((wf == @workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+/         td width="5%"
+/           label.checkbox
+/             = check_box_tag 'completed', wf.id, wf.completed, disabled: true
+/             span
+/         td width="45%"
+/           = wf.name
+/         td width="10%"
+/           = "(" + (wf.workflow_actions.where(completed: true).count*100/wf.workflow_actions.count).to_s + "%)" if (wf.workflow_actions.present? && !wf.completed?)
+/         td width="10%"
+/           = wf.total_time_mins.to_s + "m" unless wf.total_time_mins == 0
+/         td width="5%"
+/           - if !wf.completed? && wf.deadline.present?
+/             - if wf.deadline.to_date < Date.today
+/               i.fa.fa-xs.fa-circle.text-danger.mr-3
+/             - elsif wf.deadline.to_date <= Date.tomorrow
+/               i.fa.fa-xs.fa-circle.text-warning.mr-3
+/             - else
+/               i.fa.fa-xs.fa-circle.text-primary.mr-3
+/         td width="25%"
+/           = wf.deadline&.strftime("%d %b %Y")
+/ .btn.btn-block.btn-hover-light-secondary.text-center
+/   i.material-icons.text-muted add
+/   = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
