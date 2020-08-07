@@ -27,30 +27,35 @@
         - if @template.monthly?
           / Create 12 rows
           - 12.times do |i|
-            - if @workflows.map{|wf| wf.deadline.month}.include? (i+1)
+            - if @workflows.select { |wf| wf.identifier == (i+1).to_s}.present?
+              / Set workflow instance by checking if the identifier and template
               / the assumption is that there is only 1 workflow per month, hence we can use @workflows[0]
-              tr style="cursor: pointer" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @workflows[0].id)}'"
+              - @workflow = Workflow.where(identifier: (i+1).to_s, template: @template)[0]
+              tr style="cursor: pointer" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @workflow.id)}'"
                 td width="5%"
                   label.checkbox
-                    = check_box_tag 'completed', @workflows[0].id, @workflows[0].completed, disabled: true
+                    = check_box_tag 'completed', @workflow.id, @workflow.completed, disabled: true
                     span
                 td width="45%"
-                  = @workflows[0].name
+                  = Date::ABBR_MONTHNAMES[@workflow.identifier.to_i]
                 td width="20%"
-                  = "(" + (@workflows[0].workflow_actions.where(completed: true).count*100/@workflows[0].workflow_actions.count).to_s + "%)" if (@workflows[0].workflow_actions.present? && !@workflows[0].completed?)
+                  = "(" + (@workflow.workflow_actions.where(completed: true).count*100/@workflow.workflow_actions.count).to_s + "%)" if (@workflow.workflow_actions.present? && !@workflow.completed?)
                 td width="5%"
-                  - if !@workflows[0].completed? && @workflows[0].deadline.present?
-                    - if @workflows[0].deadline.to_date < Date.today
+                  - if !@workflow.completed? && @workflow.deadline.present?
+                    - if @workflow.deadline.to_date < Date.today
                       i.fa.fa-xs.fa-circle.text-danger.mr-3
-                    - elsif @workflows[0].deadline.to_date <= Date.tomorrow
+                    - elsif @workflow.deadline.to_date <= Date.tomorrow
                       i.fa.fa-xs.fa-circle.text-warning.mr-3
                     - else
                       i.fa.fa-xs.fa-circle.text-primary.mr-3
                 td width="25%"
-                  = @workflows[0].deadline&.strftime("%d %b %Y")
+                  = @workflow.deadline&.strftime("%d %b %Y")
             - else
               tr
-                td.text-center colspan="6"
+                td
+                td
+                  = Date::ABBR_MONTHNAMES[i+1]
+                td.text-left colspan="4"
                   = link_to "Add new cycle", symphony_workflows_path(@template.slug, cycle_position: i+1 ), method: :post, class: "text-muted"
         - else
           .btn.btn-block.btn-hover-light-secondary.text-center
