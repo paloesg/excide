@@ -52,6 +52,7 @@ class GenerateWorkflowsService
           Workflow.create(user_id: user.id, company_id: template.company.id, template_id: template.id, identifier: month_year)
         end
       else
+        # If no start and end date, generate for 1 year after current month
         12.times.map { |i| [(Date.today + (i+1).month).month, (Date.today + (i+1).month).year].join('-') }.each do |month_year|
           Workflow.create(user_id: user.id, company_id: template.company.id, template_id: template.id, identifier: month_year)
         end

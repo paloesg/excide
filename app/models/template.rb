@@ -19,7 +19,7 @@ class Template < ApplicationRecord
 
   enum business_model: [:ecommerce, :marketplace, :media, :mobile, :saas, :others]
 
-  validates :title, :slug, presence: true
+  validates :title, :slug, :deadline_type, presence: true
 
   before_save :data_names_to_json
 

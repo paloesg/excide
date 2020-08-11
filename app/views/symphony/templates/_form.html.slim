@@ -23,7 +23,7 @@
               = f.text_field :end_date, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker2', 'data-target': '#datetimepicker2'
             .form-group
               = f.label :deadline_type, "Deadline Type:"
-              = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type dropdown-overlay task-items-dropdown-width" }
+              = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, {required: true,  class: "deadlines-type dropdown-overlay task-items-dropdown-width" }
             .form-group
               .xth-day.d-none
                 = f.label :deadline_day, "Deadline - Day of the month:"
