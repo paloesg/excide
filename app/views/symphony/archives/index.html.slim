@@ -14,7 +14,7 @@
           .section-content
             .row
               .col-sm-3
-                = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'selectize-workflow-type')
+                = select_tag('workflow_type', options_for_select(@templates_completed.map {|k,v| [k.title, k.slug] }, selected: params[:workflow_type]), include_blank: 'All', class: 'select2 select2-workflow-type')
               .offset-sm-6.col-sm-3
                 .float-right = page_entries_info @workflows, entry_name: 'workflow'
             hr

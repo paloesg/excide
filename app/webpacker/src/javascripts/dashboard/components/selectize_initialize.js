@@ -2,16 +2,11 @@ $(document).on("turbolinks:before-render", function () {
   $("select.selectize")[0].selectize.destroy();
 });
 $(document).on("turbolinks:load", function () {
-  $("select.selectize-workflow-type").selectize({
-    allowEmptyOption: true,
-    onItemAdd: function (value, $item) {
-      Turbolinks.visit(
-        "//" + location.host + location.pathname + "?workflow_type=" + value
-      );
-    },
-    onFocus: function () {
-      $(".selectize-input input").attr("style", "width: auto;");
-    },
+  $(".select2-workflow-type").on("select2:select", function(e) {
+    var data = e.params.data;
+    Turbolinks.visit(
+      "//" + location.host + location.pathname + "?workflow_type=" + data.id
+    );
   });
 
   $(".select2-year").on("select2:select", function(e) {
