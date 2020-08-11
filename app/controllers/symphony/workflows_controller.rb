@@ -328,7 +328,16 @@ class Symphony::WorkflowsController < ApplicationController
   private
 
   def set_template
-    @template = policy_scope(Template).find(params[:workflow_name])
+    @template = policy_scope(Template).where(title: params[:workflow_name])
+    #this is for clicking notifications of other companies
+    if @template.empty?
+      #if scope fails, find template without scope and change user's company if user has role in that company
+      @template = Template.find(params[:workflow_name])
+      if @user.roles.where(resource_id: @template.company_id, resource_type: "Company").present?
+        @user.company = @template.company
+        @user.save
+      end
+    end
   end
 
   def set_tasks
