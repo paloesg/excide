@@ -36,7 +36,7 @@ class Symphony::WorkflowsController < ApplicationController
     @workflow.template = @template
     @workflow.workflow_action_id = params[:action_id] if params[:action_id]
     # To generate deadline when it is monthly template pattern
-    @workflow.identifier = params[:cycle_position] if params[:cycle_position]
+    @workflow.identifier = "#{params[:cycle_position].to_s}-#{params[:year]}" if params[:cycle_position]
     authorize @workflow
 
     if @workflow.save

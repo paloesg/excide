@@ -38,7 +38,7 @@ table.table.table-hover.mb-0
             td
               = Date::ABBR_MONTHNAMES[i+1]
             td.text-left colspan="4"
-              = link_to "Add new cycle", symphony_workflows_path(@template.slug, cycle_position: i+1 ), method: :post, class: "text-muted"
+              = link_to "Add new cycle", symphony_workflows_path(@template.slug, cycle_position: i+1, year: (params[:year].present? ? params[:year] : Date.current.year)), method: :post, class: "text-muted"
     - else
       - @workflows.each do |wf|
         tr style=("cursor: pointer;" + ((wf == @workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
