@@ -336,6 +336,7 @@ class Symphony::WorkflowsController < ApplicationController
       @template = Template.find(params[:workflow_name])
       if @user.roles.where(resource_id: @template.company_id, resource_type: "Company").present?
         @user.company = @template.company
+        @user.save
       end
     end
   end
