@@ -2,6 +2,8 @@ FactoryBot.define do
   factory :template do
     title { Faker::Job.title }
     company
+    deadline_type { 0 }
+    deadline_day { 2 }
 
     factory :template_with_workflow do
       after(:create) do |t|
