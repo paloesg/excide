@@ -20,10 +20,10 @@
                 = f.label :template_pattern, "This routine repeats:"
                 = f.select :template_pattern, ::Template.template_patterns.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width", required: true}
               .form-group
-                = f.label :start_date, "This routine repeats:"
+                = f.label :start_date, "Start routine:"
                 = f.text_field :start_date, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
               .form-group
-                = f.label :end_date, "This routine repeats:"
+                = f.label :end_date, "End routine:"
                 = f.text_field :end_date, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker2', 'data-target': '#datetimepicker2'
               .form-group
                 = f.label :deadline_type, "Deadline Type:"

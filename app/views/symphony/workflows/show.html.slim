@@ -3,9 +3,12 @@
     h2.mt-3.d-flex.align-items-center
       = @template.title
       .label.label-inline.label-dark.ml-4
-        span On-demand
+        - if @template.monthly?
+          span Monthly
+        - else
+          span On-demand
   .col-md-6.d-flex.justify-content-end
-    = select_tag('year', options_for_select(["2020", "2019", "2018"], selected: params[:year].present? ? params[:year] : @workflow.created_at.year.to_s), class: 'selectize selectize-year mr-2')
+    = select_tag('year', options_for_select(@years_to_filter, selected: params[:year], include_blank: "2020"), class: 'selectize selectize-year mr-2')
     - if policy(@template).edit? || policy(@template).destroy?
       .dropdown.dropdown-inline.float-right
         a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
@@ -20,7 +23,7 @@
     table.table.table-borderless.table-hover
       thead.thead-light
         tr
-          th colspan="5" = @workflow.name
+          th colspan="5" = @workflow.identifier
       tbody
         - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
           tr
