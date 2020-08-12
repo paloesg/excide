@@ -217,7 +217,14 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   def set_workflow
-    @workflow = @company.workflows.find(params[:workflow_id])
+    @workflow = @company.workflows.find_by(id: params[:workflow_id])
+    if @workflow.nil?
+      @workflow = Workflow.find(params[:workflow_id])
+      if current_user.roles.where(resource_id: @workflow.company_id, resource_type: "Company").present?
+        current_user.company = @workflow.company
+        current_user.save
+      end
+    end
   end
 
   def set_show_invoice_navigation
