@@ -58,7 +58,7 @@ class Symphony::BatchesController < ApplicationController
     @completed = @batch.workflows.where(completed: true).length
     # This comes from create batch through email method
     @document_count = params[:document_count] if params[:document_count].present?
-    
+
     @per_batch = Kaminari.paginate_array(@batch.workflows.includes(:documents, :invoice, :template, :company).order(created_at: :asc)).page(params[:page]).per(10)
   end
 
@@ -75,7 +75,14 @@ class Symphony::BatchesController < ApplicationController
   end
 
   def set_batch
-    @batch = policy_scope(Batch).find(params[:id])
+    @batch = policy_scope(Batch).find_by(id: params[:id])
+    if @batch.nil?
+      @batch = Batch.find(params[:id])
+      if current_user.roles.where(resource_id: @batch.company_id, resource_type: "Company").present?
+        current_user.company = @batch.company
+        current_user.save
+      end
+    end
   end
 
   def set_s3_direct_post
