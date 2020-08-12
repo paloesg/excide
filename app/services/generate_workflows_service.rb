@@ -13,7 +13,7 @@ class GenerateWorkflowsService
         set_document_associations
         OpenStruct.new(success?: true, batch: @batch)
       else
-        generate_routine(@user, @template)
+        generate_workflows_with_template_pattern(@user, @template)
         OpenStruct.new(success?: true)
       end
     rescue => e
@@ -42,7 +42,7 @@ class GenerateWorkflowsService
     return @workflow
   end
 
-  def generate_routine(user, template)
+  def generate_workflows_with_template_pattern(user, template)
     case template.template_pattern
     when 'monthly'
       # Calculate the number of months between start_date and end_date
@@ -53,7 +53,7 @@ class GenerateWorkflowsService
         end
       else
         # If no start and end date, generate for 1 year after current month
-        12.times.map { |i| [(Date.today + (i+1).month).month, (Date.today + (i+1).month).year].join('-') }.each do |month_year|
+        12.times.map { |i| [(Date.current + i.month).month, (Date.current + i.month).year].join('-') }.each do |month_year|
           Workflow.create(user_id: user.id, company_id: template.company.id, template_id: template.id, identifier: month_year)
         end
       end
