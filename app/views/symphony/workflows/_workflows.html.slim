@@ -14,7 +14,7 @@ table.table.table-hover.mb-0
           = wf.name
         td width="10%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
           = "(" + (wf.workflow_actions.where(completed: true).count*100/wf.workflow_actions.count).to_s + "%)" if (wf.workflow_actions.present? && !wf.completed?)
-        td width="10%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'
+        td width="10%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
           = wf.total_time_mins.to_s + "m" unless wf.total_time_mins == 0
         td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
           - if !wf.completed? && wf.deadline.present?
