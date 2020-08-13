@@ -285,7 +285,6 @@ $(document).on("turbolinks:load", function () {
     );
     $("select[id$='" + time + "_item']").select2();
     $("select[id$='" + time + "_item']").on('select2:select', function (e){
-      dropdownParent: "body",
       let obj = e.params.data.id;
       let itemCode = obj.split(": ")[0];
       getXeroItem(itemCode, time);
