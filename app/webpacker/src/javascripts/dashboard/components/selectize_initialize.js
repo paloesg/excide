@@ -45,7 +45,7 @@ $(document).on("turbolinks:load", function() {
   }
 
   $('select.project-clients').selectize({
-    placeholder: "Choose project clients",
+    placeholder: "Choose project clients...",
     plugins: ['remove_button'],
     allowEmptyOption: true,
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
@@ -78,7 +78,7 @@ $(document).on("turbolinks:load", function() {
   });
 
   $('.conductor-filter-button').click(function (e) {
-    var project_client_selectize = $('select.project-clients').selectize();
+    
     var allocation_user_selectize = $('select.allocation-users').selectize();
     var event_type_selectize = $('select.event-type').selectize();
 
@@ -88,5 +88,14 @@ $(document).on("turbolinks:load", function() {
 
     Turbolinks.visit('//' + location.host + location.pathname + '?event_types=' + eventTypeData +'&project_clients='+ projectClientData +'&allocation_users='+ allocationUserData);
   });
+
+  $('.timesheet-filter-button').click(function() {
+    let startDate = $("#startDate").val()
+    let endDate = $("#endDate").val()
+    let project_client_selectize = $('select.project-clients').selectize();
+    let projectClientData = (project_client_selectize[0].selectize).getValue();
+
+    Turbolinks.visit('//' + location.host + location.pathname + '?start_date=' + startDate +'&end_date='+ endDate +'&project_clients='+ projectClientData);
+  })
 
 })

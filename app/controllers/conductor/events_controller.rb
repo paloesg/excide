@@ -11,11 +11,11 @@ class Conductor::EventsController < ApplicationController
   def index
     @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
     @date_to = @date_from.end_of_month
-    # @events = @company.events.includes(:address, :client, :staffer, :event_type, [allocations: :user]).where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
-    # Only show events relevant to associate if logged in as associate or consultant
+    # Staffer or admin gets to see all the event listing
     if @user.has_role?(:staffer, @company) or @user.has_role?(:admin, @company)
-      @events = @company.events
+      @events = @company.events.includes(:address, :client, :staffer, :event_type, [allocations: :user]).where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
     else
+      # Only show events relevant to associate if logged in as associate or consultant
       @events = @company.events.joins(:allocations).where(allocations: { user_id: @user.id })
     end 
   end
