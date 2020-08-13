@@ -75,11 +75,11 @@ class Conductor::EventsController < ApplicationController
   # PATCH/PUT /conductor/events/1
   # PATCH/PUT /conductor/events/1.json
   def update
-    update_event_time = UpdateEventTime.new(@event, event_params['start_time'], event_params['end_time'], params[:user].present? ? User.find_by(id: params[:user]) : current_user, params[:service_line]).run
+    # update_event_time = UpdateEventTime.new(@event, event_params['start_time'], event_params['end_time'], params[:user].present? ? User.find_by(id: params[:user]) : current_user, params[:service_line]).run
 
     respond_to do |format|
-      if update_event_time.success? and @event.update(event_params)
-        @event.update_event_notification
+      if @event.update(event_params)
+        # @event.update_event_notification
         flash[:notice] = 'Event was successfully updated.'
         format.html { redirect_to conductor_events_path }
         format.json { render :show, status: :ok, location: @event }
@@ -153,6 +153,6 @@ class Conductor::EventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :tag_list, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :tag_list, :number_of_hours, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
   end
 end

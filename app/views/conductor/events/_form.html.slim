@@ -13,11 +13,8 @@
       = label_tag 'Service Line', 'Service Line'
       = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), include_blank: true, prompt: 'Select service line...', class: 'selectize'
     .form-group
-      = f.label :start_time
-      = f.text_field :start_time, class: 'form-control datetimepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
-    .form-group
-      = f.label :end_time
-      = f.text_field :end_time, class: 'form-control datetimepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker1', 'data-target': '#datetimepicker1'
+      = f.label :number_of_hours, 'Number of hours'
+      = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control'}
   .col-sm-6
     .form-group
       = f.label :event_type_id, 'Job Nature'
