@@ -12,13 +12,15 @@ class Conductor::EventsController < ApplicationController
     @date_from = params[:start_date].present? ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
     @date_to = @date_from.end_of_month
     # Filter by users
-    @events = @company.events.joins(:allocations).where(allocations: { user_id: User.find(params[:users].to_i) }) if params[:users].present?
+    # @events = @company.events.joins(:allocations).where(allocations: { user_id: User.find(params[:users].to_i) }) if params[:users].present?
     # Staffer or admin gets to see all the event listing
     if @user.has_role?(:staffer, @company) or @user.has_role?(:admin, @company)
-      @events = params[:users].present? ? @events.includes(:address, :client, :staffer, :event_type, [allocations: :user]).where(start_time: @date_from.beginning_of_day..@date_to.end_of_day) : @company.events.includes(:address, :client, :staffer, :event_type, [allocations: :user]).where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
+      @events = @company.events.includes(:address, :client, :staffer, :event_type, [allocations: :user]).where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
+      # params[:users].present? ? @events.includes(:address, :client, :staffer, :event_type, [allocations: :user]).where(start_time: @date_from.beginning_of_day..@date_to.end_of_day) : @company.events.includes(:address, :client, :staffer, :event_type, [allocations: :user]).where(start_time: @date_from.beginning_of_day..@date_to.end_of_day)
     else
       # Only show events relevant to associate if logged in as associate or consultant
-      @events = params[:users].present? ? @events.joins(:allocations).where(allocations: { user_id: @user.id }) : @company.events.joins(:allocations).where(allocations: { user_id: @user.id })
+      @events = @company.events.joins(:allocations).where(allocations: { user_id: @user.id })
+      # params[:users].present? ? @events.joins(:allocations).where(allocations: { user_id: @user.id }) : @company.events.joins(:allocations).where(allocations: { user_id: @user.id })
     end 
   end
 
@@ -78,6 +80,12 @@ class Conductor::EventsController < ApplicationController
   # PATCH/PUT /conductor/events/1.json
   def update
     # update_event_time = UpdateEventTime.new(@event, event_params['start_time'], event_params['end_time'], params[:user].present? ? User.find_by(id: params[:user]) : current_user, params[:service_line]).run
+    if params[:service_line].present?
+      # Remove all tags
+      @event.tags = []
+      # Add new updated tag
+      @event.tag_list.add(params[:service_line])
+    end
 
     respond_to do |format|
       if @event.update(event_params)
@@ -155,6 +163,6 @@ class Conductor::EventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :tag_list, :number_of_hours, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :tag_list, :number_of_hours, :user_id, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
   end
 end

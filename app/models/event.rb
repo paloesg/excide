@@ -6,6 +6,7 @@ class Event < ApplicationRecord
   belongs_to :company
   belongs_to :client
   belongs_to :event_type, class_name: 'EventType'
+  belongs_to :user
 
   has_one :address, as: :addressable, dependent: :destroy
   has_many :allocations, dependent: :destroy
@@ -13,7 +14,7 @@ class Event < ApplicationRecord
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
   validates :company, :event_type, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
-  validate :start_date_equals_to_end_date
+  # validate :start_date_equals_to_end_date
 
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags

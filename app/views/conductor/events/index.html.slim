@@ -35,11 +35,12 @@
             th Hours
             th
         tbody
-
           - @events.each do |event|
             tr
               td.text-center width="5%"
-                i.fa.fa-circle.mr-1 style="color: #{event.event_type&.colour};"
+                .avatar-circle
+                  span.initials
+                    = event.user.first_name[0] + event.user.last_name[0]
               td width="35%" = event.event_type&.name
               td width="10%" = event.client&.name
               td width="15%" = event.tag_list.last
