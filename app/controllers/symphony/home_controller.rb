@@ -49,7 +49,7 @@ class Symphony::HomeController < ApplicationController
       @event = Event.create!(event_type_id: @event_type.id, company_id: current_user.company.id, start_time: DateTime.current, end_time: DateTime.current + 1.hour)
       @generated_allocation = GenerateTimesheetAllocationService.new(@event, current_user).run
     end
-    redirect_to symphony_root_path, notice: "YAY"
+    redirect_to conductor_events_path, notice: "Timesheet has been added!"
   end
 
   private
