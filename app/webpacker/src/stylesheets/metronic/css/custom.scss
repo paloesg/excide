@@ -137,6 +137,18 @@ td.day.has-events.fc-day-top.fc-past {
 .disabled {
   pointer-events: none;
 }
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  padding: 0.65rem 2rem 0.65rem 1rem !important;
+}
+
+.select2-selection > * {
+  display: block !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 $theme-colors: (
