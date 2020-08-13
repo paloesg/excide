@@ -11,7 +11,7 @@ class Event < ApplicationRecord
   has_many :allocations, dependent: :destroy
 
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
-  validates :company, :client, :event_type, :start_time, :end_time, presence: true
+  validates :company, :event_type, :start_time, :end_time, presence: true
   validate :end_must_be_after_start
   validate :start_date_equals_to_end_date
 
@@ -34,7 +34,7 @@ class Event < ApplicationRecord
   scope :start_time, ->(time){where(start_time: time) if time.present?}
 
   def name
-    client.name + ' ' + event_type&.name.to_s
+    "#{client&.name} " + event_type&.name.to_s
   end
 
   def update_event_notification
