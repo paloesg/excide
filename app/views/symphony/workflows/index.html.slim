@@ -35,4 +35,6 @@
                   span.initials
                     = t.user.first_name[0] + t.user.last_name[0]
               - else
-                .avatar-circle.circles data-container="body" data-placement="bottom" data-toggle="tooltip" title=t.role.name
+                .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=(t.role.name + "(" + t.role.users.length.to_s + ")")
+                  span.initials
+                    i.material-icons.font-size-h5.text-white people
