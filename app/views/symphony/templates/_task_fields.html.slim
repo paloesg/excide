@@ -22,7 +22,8 @@ tr
           = f.select :deadline_type, ::Task.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, {class: "task-deadlines-type dropdown-overlay mb-2"}
         .form-group.col-sm-5
           = f.label :deadline_day, "Day of deadline"
-          span.text-danger.d-none.task-deadline-warning Note: Symphony will auto set the deadline to the previous date if the month does not consist of the date 29, 30 or 31.
+          span.text-danger.d-none.task-deadline-warning 
+            br Note: The due date for each cycle will be set to the last day of the month if the month does not consist of the dates 29, 30 or 31.
           = f.number_field :deadline_day, class: "form-control col-sm-12"
         .form-group.col-sm-2.mt-2
           = f.label :set_reminder

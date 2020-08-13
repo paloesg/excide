@@ -12,6 +12,7 @@ class WorkflowAction < ApplicationRecord
   after_save :trigger_next_task, if: :ordered_workflow_task_completed?
   after_save :workflow_completed , if: :check_all_actions_completed?
   after_save :update_batch_progress, if: :workflow_has_batch?
+  after_update :update_workflow_total_time_mins
 
   belongs_to :task
   belongs_to :company
@@ -35,7 +36,8 @@ class WorkflowAction < ApplicationRecord
     targets: :custom_notification_targets,
     # Path to move when the notification is opened by the target user
     # This is an optional configuration since activity_notification uses polymorphic_path as default
-    notifiable_path: :wf_notifiable_path
+    notifiable_path: :wf_notifiable_path,
+    dependent_notifications: :delete_all
 
   def custom_notification_targets(key)
     if key == 'workflow_action.task_notify' or key == 'workflow_action.unordered_workflow_notify'
@@ -118,6 +120,10 @@ class WorkflowAction < ApplicationRecord
   end
 
   private
+
+  def update_workflow_total_time_mins
+    self.workflow.update(total_time_mins: self.workflow.workflow_actions.sum(:time_spent_mins))
+  end
 
   def update_batch_progress
     self.workflow.batch.update_workflow_progress

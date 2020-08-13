@@ -10,17 +10,17 @@
       .row.my-3.document-info
         - if @document.present?
           span.mx-5
-            strong #{@document.raw_file.attached? ? @document.raw_file.filename : @document.filename} 
+            strong #{@document.raw_file.attached? ? @document.raw_file.filename : @document.filename}
         - if @workflow.batch.present?
-          | | 
-          span.mx-5 #{@workflow.batch.name} 
           | |
-        span.mx-5 
-          | AP Invoice #{@current_position} of #{@total_task} 
+          span.mx-5 #{@workflow.batch.name}
+          | |
+        span.mx-5
+          | AP Invoice #{@current_position} of #{@total_task}
         - if @invoice.rejected?
           .text-danger.pull-right
             i.fa.fa-times-circle
-            '  Rejected    
+            '  Rejected
     ul.navbar-nav.ml-auto
       .row.mr-5
         = hidden_field_tag :submit_position, '', class: 'submit-position'
@@ -39,7 +39,7 @@
           - if policy(@workflow).update?
             .row
               .col-md-12
-                = link_to 'Delete', symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id), method: :delete, data: { confirm: "Are you sure you want to delete this invoice?" }, remote: true, role: 'button', remote: true, class: 'btn btn-danger float-right ml-2'
+                = link_to 'Delete', symphony_workflow_path(workflow_name: @workflow.template.slug, workflow_id: @workflow.id), method: :delete, data: { confirm: "Are you sure you want to delete this invoice?" }, role: 'button', class: 'btn btn-danger float-right ml-2'
                 = f.submit 'Update', class: 'btn btn-warning update-invoice-button float-right'
                 = hidden_field_tag(:update_field, 'success')
             .row
@@ -49,13 +49,13 @@
                 = link_to("Submit for approval", xero_create_invoice_symphony_workflow_path(@workflow.template.slug, @workflow.friendly_id, approved: "approved", workflow_action_id: params[:workflow_action_id]), method: 'post', role: 'button', class: 'btn btn-warning submit-approval-button ml-2 float-right')
           - else
             - if policy(@invoice).reject?
-              button type="button" class="btn btn-danger float-right mr-2" data-target="#remarkModal" data-toggle="modal" Reject 
+              button type="button" class="btn btn-danger float-right mr-2" data-target="#remarkModal" data-toggle="modal" Reject
               = f.submit 'Update', class: 'btn btn-warning update-invoice-button float-right'
       .row.ml-3
         .dropdown.mr-3
           a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
             = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
-          .dropdown-menu.dropdown-menu-right aria-labelledby="userDropdownMenu" 
+          .dropdown-menu.dropdown-menu-right aria-labelledby="userDropdownMenu"
             li
               = link_to edit_user_registration_path, class: 'dropdown-item' do
                 span User Profile
@@ -85,7 +85,7 @@
       .col-md-8.inv-margin
         = render 'form', f: f
         = render 'remaining_invoice'
-#remarkModal.modal.fade aria-hidden="true" aria-labelledby="remarkModalLabel" role="dialog" tabindex="-1" 
+#remarkModal.modal.fade aria-hidden="true" aria-labelledby="remarkModalLabel" role="dialog" tabindex="-1"
   .modal-dialog.modal-dialog-centered
     .modal-content
       .modal-header
