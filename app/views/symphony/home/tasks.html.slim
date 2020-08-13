@@ -1,14 +1,35 @@
 .row
-  .col-md-3
+  .col-md-9
     h4 My Tasks
-  .col-md-3.px-2
+  .col-md-3
+    button.btn.btn-outline-secondary.text-primary.offset-3 data-target="#addTasksToTimesheet" data-toggle="modal" type="button" 
+      | Add tasks to Timesheet
+    #addTasksToTimesheet.modal.fade aria-hidden="true" aria-labelledby="timesheetTaskLife" role="dialog" tabindex="-1" 
+      .modal-dialog role="document" 
+        .modal-content
+          .modal-header.flex-column.align-items-start
+            h5#timesheetTaskLife.modal-title Add Tasks to Timesheet
+            p.mb-0.py-2 Record and calculate the cost what you have done weekly on Timesheet.
+          = form_tag symphony_add_tasks_to_timesheet_path do
+            .modal-body
+              - @actions_sort.each do |action|
+                .row.pb-5
+                  .col-md-1
+                    = check_box_tag "tasks[]", action.task.id
+                  .col-md-10
+                    = action.task.instructions
+            .modal-footer
+              button.btn.btn-secondary data-dismiss="modal" type="button"  Close
+              = submit_tag 'Submit', class: 'btn btn-primary'
+.row.mt-3
+  .col-md-3.px-2.offset-2
     = select_tag('tasks', options_for_select(["Only incomplete tasks", "Only completed tasks", "All tasks"], selected: params[:tasks], include_blank: "Only incomplete tasks"), class: 'selectize selectize-tasks')
-  .col-md-2.px-2
+  .col-md-3.px-2
     = select_tag('created_at', options_for_select([["Last 7 days", 7], ["Last 30 days", 30], ["All", " "]], selected: params[:created_at], include_blank: "Last 7 days"), class: 'selectize selectize-created-at')
   .col-md-3.px-2
     = select_tag('types', options_for_select(["All types", "Tasks related to Routine", "Adhoc tasks"], selected: params[:types], include_blank: "All types"), class: 'selectize selectize-types')
-  .col-md-1.px-2
-    = button_tag 'Filter', type: 'button', class: 'btn btn-primary tasks-filter-button'
+  .col-md-1.px-1
+    = button_tag 'Filter', type: 'button', class: 'btn btn-sm btn-primary tasks-filter-button'
 .row
   .col-md-12
     table.table

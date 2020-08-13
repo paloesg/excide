@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     get '/xero_line_items', to: 'xero_line_items#show'
     get '/tasks', to: 'home#tasks'
     get '/activity-history', to: 'home#activity_history'
+    post '/add_tasks_to_timesheet', to: 'home#add_tasks_to_timesheet'
 
     resources :survey_templates, param: :survey_template_slug, except: [:destroy]
     delete '/survey_templates/:survey_template_slug/destroy_survey_section', to: 'survey_templates#destroy_survey_section', as: :destroy_survey_section
