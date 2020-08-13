@@ -20,3 +20,26 @@ tr.important-task, tr.important-task + tr, td.important-task {
   opacity: 0;
   font-size: 25px;
 }
+
+.avatar-circle {
+  width: 26px;
+  height: 26px;
+  background-color: #475ad4;
+  text-align: center;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+
+.circles {
+  box-shadow: 15px 0 #a4a5ff;
+}
+
+.initials {
+  position: relative;
+  top: 5px;
+  font-size: 13px; /* 50% of parent */
+  line-height: 13px; /* 50% of parent */
+  color: #fff;
+  font-weight: bold;
+}
