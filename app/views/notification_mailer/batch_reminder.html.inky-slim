@@ -8,16 +8,17 @@ container
       - else
         p Good day! You have #{@reminders.count} reminders today.
 
-      - @reminders.each do |reminder|
+      - @templates.each do |template|
         p
-          strong #{reminder.title}
-          br
-          | #{reminder.content}
-          br
-          - if reminder.task.present?
-            em
-              ' You can access the task from this link:
-              a href="#{symphony_workflow_url(reminder.task.section.template.slug, reminder.workflow_action.workflow.friendly_id)}" #{reminder.task.section.template.title} - #{reminder.workflow_action.workflow.friendly_id}
+          strong #{template.company.name} - #{template.title}
+          - @reminders.each do |reminder|
+            - if reminder.title.split(' -')[0][11..] == template.title
+              em
+                p 
+                  - if reminder.task.present?
+                    em
+                      '
+                      a href="#{symphony_workflow_url(reminder.task.section.template.slug, reminder.workflow_action.workflow.friendly_id)}" #{reminder.content} (due #{reminder.workflow_action.workflow.deadline})
 
       p If you have any queries regarding your task, please contact your admin.
   row

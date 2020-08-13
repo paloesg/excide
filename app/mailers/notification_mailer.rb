@@ -32,6 +32,19 @@ class NotificationMailer < ApplicationMailer
   def batch_reminder(reminders, user)
     @reminders = reminders
     @user = user
+    # Sorts the reminders according to their title
+    @reminders = @reminders.sort_by do |reminder| 
+      reminder[:title]
+    end
+    # An array of templates which the reminders belong to
+    @templates = []
+    @reminders.each do |reminder|
+      if @templates.include? reminder.workflow_action.workflow.template
+        next
+      else
+        @templates[@templates.length()] = reminder.workflow_action.workflow.template
+      end
+    end
     address = Mail::Address.new @user.email
     address.display_name = @user.first_name
     mail(to: address.format, subject: 'Here are your reminders for today')
