@@ -258,16 +258,11 @@ $(document).on("turbolinks:load", function () {
     },
   });
 
-  $(".dropdown-items").selectize({
-    dropdownParent: "body",
-    onChange: function (value) {
-      let obj = $(this)[0];
-      let itemCode = value.split(": ")[0];
-      let thisId = obj.$input["0"].id.split("_")[4];
-      getXeroItem(itemCode, thisId);
-    },
+  $(".dropdown-items").on('select2:select', function (e){
+    let obj = e.params.data.id;
+    let itemCode = obj.split(": ")[0];
+    getXeroItem(itemCode, "0");
   });
-
   //Disable the send xero button when form is changed
   $("form").on("change", function () {
     //disable submit approval button
@@ -288,12 +283,14 @@ $(document).on("turbolinks:load", function () {
     $(".table>tbody>tr:last-child").after(
       $(this).data("fields").replace(regexp, time)
     );
-    $("select[id$='" + time + "_item']").selectize({
+    $("select[id$='" + time + "_item']").select2();
+    $("select[id$='" + time + "_item']").on('select2:select', function (e){
       dropdownParent: "body",
-      onChange: function (value) {
-        let itemCode = value.split(": ")[0];
-        getXeroItem(itemCode, time);
-      },
+      console.log("good");
+      let obj = e.params.data.id;
+      console.log(obj);
+      let itemCode = obj.split(": ")[0];
+      getXeroItem(itemCode, time);
     });
     $("select[id$='" + time + "_account']").select2({
       dropdownParent: "body",
