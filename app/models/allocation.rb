@@ -13,7 +13,7 @@ class Allocation < ApplicationRecord
   validate :end_must_be_after_start
 
   def self.to_csv
-    attributes = ['S. S/N', 'Full Name', 'Date', 'Hours Charged', 'Job Nature', 'Client', 'Service Line', 'Type', 'Start', 'End']
+    attributes = ['S. S/N', 'Full Name', 'Date', 'Hours Charged', 'Job Nature', 'Client', 'Service Line']
 
     CSV.generate do |csv|
       csv << attributes
@@ -25,13 +25,10 @@ class Allocation < ApplicationRecord
             allocation.user&.full_name,
             allocation.allocation_date.strftime('%v'),
             # Find hours charged
-            (allocation.end_time - allocation.start_time)/3600,
+            allocation.event.number_of_hours,
             allocation.event.event_type.name,
             allocation.event.client&.name,
             allocation.event.tag_list.present? ? allocation.event.tag_list.last : 'Nil',
-            allocation.allocation_type.titleize,
-            allocation.start_time.in_time_zone.strftime("%H:%M"),
-            allocation.end_time.in_time_zone.strftime("%H:%M"),
           ]
           csv << row
         end

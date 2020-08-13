@@ -51,6 +51,13 @@ $(document).on("turbolinks:load", function() {
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
+  $('select.users').selectize({
+    placeholder: "User",
+    plugins: ['remove_button'],
+    allowEmptyOption: true,
+    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
+  });
+
   $('select.allocation-users').selectize({
     placeholder: "Choose associates",
     plugins: ['remove_button'],
@@ -92,10 +99,14 @@ $(document).on("turbolinks:load", function() {
   $('.timesheet-filter-button').click(function() {
     let startDate = $("#startDate").val()
     let endDate = $("#endDate").val()
+
     let project_client_selectize = $('select.project-clients').selectize();
     let projectClientData = (project_client_selectize[0].selectize).getValue();
 
-    Turbolinks.visit('//' + location.host + location.pathname + '?start_date=' + startDate +'&end_date='+ endDate +'&project_clients='+ projectClientData);
+    let users_selectize = $('select.users').selectize();
+    let userData = (users_selectize[0].selectize).getValue();
+
+    Turbolinks.visit('//' + location.host + location.pathname + '?start_date=' + startDate +'&end_date='+ endDate +'&project_clients='+ projectClientData + '&users=' + userData);
   })
 
 })

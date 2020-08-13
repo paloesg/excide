@@ -12,6 +12,8 @@
     .col-md-1.float-left.mt-3.px-0
       span FILTER BY
     .col-md-2.float-left.px-1
+      = select_tag('user', options_for_select(@company.users.map {|k,v| [k.full_name, k.id] }, selected: params[:users]), class: 'selectize-event-type users', multiple: true)
+    .col-md-2.float-left.px-1
       = text_field_tag :start_date, params[:start_date], {class: 'col-md-12 form-control datepicker', 'data-toggle': 'datetimepicker', id: 'startDate', 'data-target': '#startDate', placeholder: "Start date..."}
     .col-md-2.float-left.px-1
       = text_field_tag :end_date, params[:end_date], {class: 'col-md-12 form-control datepicker', 'data-toggle': 'datetimepicker', id: 'endDate', 'data-target': '#endDate', placeholder: "End date..."}
@@ -29,7 +31,7 @@
             th Activity Task
             th Client
             / th Service Line
-            th Tag
+            th Service Line
             th Hours
             th
         tbody
