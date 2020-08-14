@@ -29,17 +29,10 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: '[New Task] Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.friendly_id)
   end
 
-  def batch_reminder(reminders, user)
+  def batch_reminder(reminders, templates, user)
     @reminders = reminders
+    @templates = templates
     @user = user
-    # Sorts the reminders according to their title in ascending order
-    @reminders = @reminders.order(:title)
-    # An array of distinct templates which the reminders belong to
-    @templates = []
-    @reminders.each do |reminder|
-      @templates << reminder.workflow_action.workflow.template
-    end
-    @templates = @templates.uniq
     address = Mail::Address.new @user.email
     address.display_name = @user.first_name
     mail(to: address.format, subject: 'Here are your reminders for today')

@@ -27,9 +27,17 @@ class SendUserReminders
   end
 
   def send_email_reminders
+    # Sorts the reminders according to their title in ascending
+    @reminders = @reminders.order(:title)
     email_reminders = @reminders.where(email: true)
     email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
-    NotificationMailer.batch_reminder(email_reminders, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
+    # An array of distinct templates which the reminders belong to
+    @templates = []
+    @reminders.each do |reminder|
+      @templates << reminder.workflow_action.workflow.template
+    end
+    @templates = @templates.uniq
+    NotificationMailer.batch_reminder(email_reminders, @templates, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
   end
 
   def send_sms_reminders
