@@ -28,10 +28,16 @@
         thead
           tr
             th
-            th Activity Task
+            th
+              | Activity Task
+              a.ml-2 data-container="body" title="Your timesheet records" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
+                  i.fa.fa-info-circle
             th Client
             th Service Line
-            th Hours
+            th 
+              | Hours
+              a.ml-2 data-container="body" title="An estimation of the number of hours you worked" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
+                  i.fa.fa-info-circle
             th
         tbody
           - @events.each do |event|
