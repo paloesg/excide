@@ -51,6 +51,13 @@ $(document).on("turbolinks:load", function() {
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
+  $('select.service-line').selectize({
+    placeholder: "Choose service line...",
+    plugins: ['remove_button'],
+    allowEmptyOption: true,
+    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
+  });
+
   $('select.allocation-users').selectize({
     placeholder: "Choose user...",
     plugins: ['remove_button'],
@@ -99,7 +106,10 @@ $(document).on("turbolinks:load", function() {
     let allocation_user_selectize = $('select.allocation-users').selectize();
     let allocationUserData = (allocation_user_selectize[0].selectize).getValue();
 
-    Turbolinks.visit('//' + location.host + location.pathname + '?start_date=' + startDate +'&end_date='+ endDate +'&project_clients='+ projectClientData + '&allocation_users=' + allocationUserData);
+    let service_line_selectize = $('select.service-line').selectize();
+    let serviceLineData = (service_line_selectize[0].selectize).getValue();
+
+    Turbolinks.visit('//' + location.host + location.pathname + '?start_date=' + startDate +'&end_date='+ endDate +'&project_clients='+ projectClientData + '&allocation_users=' + allocationUserData + '&service_line=' + serviceLineData);
   })
 
 })

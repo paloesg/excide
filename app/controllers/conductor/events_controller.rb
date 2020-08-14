@@ -3,7 +3,7 @@ class Conductor::EventsController < ApplicationController
   before_action :set_company_and_clients
   before_action :set_staffers, only: [:new, :edit]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
-  before_action :get_users_and_service_lines, only: [:new, :edit, :create, :update]
+  before_action :get_users_and_service_lines, only: [:index, :new, :edit, :create, :update]
 
 
   # GET /conductor/events
