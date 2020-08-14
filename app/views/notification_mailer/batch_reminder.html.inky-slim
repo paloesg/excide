@@ -10,7 +10,7 @@ container
 
       - @templates.each do |template|
         p
-          strong #{template.title} 
+          strong #{template.title} - #{template.company.name}
           - @reminders.each do |reminder|
             - if reminder.title.split(' -')[0][11..] == template.title
               em
