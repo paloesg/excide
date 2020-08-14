@@ -30,7 +30,6 @@
             th
             th Activity Task
             th Client
-            / th Service Line
             th Service Line
             th Hours
             th
@@ -40,7 +39,7 @@
               td.text-center width="5%"
                 .avatar-circle
                   span.initials
-                    = event.user.first_name[0] + event.user.last_name[0]
+                    = event.allocations[0].user.first_name[0] + event.allocations[0].user.last_name[0]
               td width="35%" = event.event_type&.name
               td width="10%" = event.client&.name
               td width="15%" = event.tag_list.last

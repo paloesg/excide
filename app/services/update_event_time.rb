@@ -11,25 +11,25 @@ class UpdateEventTime
   end
 
   def run
-    if time_change?
-      begin
-        @event.transaction do
-          update_event
-          update_event_tag if @service_line.present?
-          @event.allocations.each do |allocation|
-            # Update availability
-            update_availability(allocation)
-            # update allocation for the event
-            allocation.user.blank? ? next : update_allocation(allocation)
-          end
+    # if time_change?
+    begin
+      @event.transaction do
+        update_event
+        update_event_tag if @service_line.present?
+        @event.allocations.each do |allocation|
+          # Update availability
+          update_availability(allocation)
+          # update allocation for the event
+          allocation.user.blank? ? next : update_allocation(allocation)
         end
-        OpenStruct.new(success?: true, event: @event)
-      rescue ActiveRecord::RecordInvalid
-        OpenStruct.new(success?: false, event: @event)
       end
-    else
-      OpenStruct.new(success?:true, event: @event, message: 'No time change. ')
+      OpenStruct.new(success?: true, event: @event)
+    rescue ActiveRecord::RecordInvalid
+      OpenStruct.new(success?: false, event: @event)
     end
+    # else
+    #   OpenStruct.new(success?:true, event: @event, message: 'No time change. ')
+    # end
   end
 
   private

@@ -79,16 +79,10 @@ class Conductor::EventsController < ApplicationController
   # PATCH/PUT /conductor/events/1
   # PATCH/PUT /conductor/events/1.json
   def update
-    # update_event_time = UpdateEventTime.new(@event, event_params['start_time'], event_params['end_time'], params[:user].present? ? User.find_by(id: params[:user]) : current_user, params[:service_line]).run
-    if params[:service_line].present?
-      # Remove all tags
-      @event.tags = []
-      # Add new updated tag
-      @event.tag_list.add(params[:service_line])
-    end
+    update_event_time = UpdateEventTime.new(@event, DateTime.current, DateTime.current + 1.hour, params[:user].present? ? User.find_by(id: params[:user]) : current_user, params[:service_line]).run
 
     respond_to do |format|
-      if @event.update(event_params)
+      if update_event_time.success? and @event.update(event_params)
         # @event.update_event_notification
         flash[:notice] = 'Event was successfully updated.'
         format.html { redirect_to conductor_events_path }
