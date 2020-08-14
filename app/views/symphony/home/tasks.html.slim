@@ -10,17 +10,20 @@
           .modal-header.flex-column.align-items-start
             h5#timesheetTaskLife.modal-title Add Tasks to Timesheet
             p.mb-0.py-2 Record and calculate the cost what you have done weekly on Timesheet.
-          = form_tag symphony_add_tasks_to_timesheet_path do
-            .modal-body
+          .modal-body
+            .row.mb-5
+              .col-md-12
+                = button_tag 'Complete all', type: 'button', class: "btn btn-primary btn-sm timesheetSelectAll float-right"
+            = form_tag symphony_add_tasks_to_timesheet_path do
               - @actions_sort.each do |action|
                 .row.pb-5
                   .col-md-1
-                    = check_box_tag "tasks[]", action.task.id
+                    = check_box_tag "tasks[]", action.task.id, false, { id: "tasks_#{action.task.id}", class: 'task-checkboxes' }
                   .col-md-10
                     = action.task.instructions
-            .modal-footer
-              button.btn.btn-secondary data-dismiss="modal" type="button"  Close
-              = submit_tag 'Submit', class: 'btn btn-primary'
+              .modal-footer
+                button.btn.btn-secondary data-dismiss="modal" type="button"  Close
+                = submit_tag 'Submit', class: 'btn btn-primary'
 .row.mt-3
   .col-md-3.px-2.offset-2
     = select_tag('tasks', options_for_select(["Only incomplete tasks", "Only completed tasks", "All tasks"], selected: params[:tasks], include_blank: "Only incomplete tasks"), class: 'selectize selectize-tasks')

@@ -17,4 +17,9 @@ $(document).on("turbolinks:load", function(){
       location.reload();
     });
   });
+
+  $(".timesheetSelectAll").on("click", function() {
+    $(".task-checkboxes").prop('checked', !clicked);
+    clicked = !clicked;
+  })
 });
