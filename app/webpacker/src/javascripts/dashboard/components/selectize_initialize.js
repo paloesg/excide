@@ -51,15 +51,8 @@ $(document).on("turbolinks:load", function() {
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
-  $('select.users').selectize({
-    placeholder: "User",
-    plugins: ['remove_button'],
-    allowEmptyOption: true,
-    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
-  });
-
   $('select.allocation-users').selectize({
-    placeholder: "Choose associates",
+    placeholder: "Choose user...",
     plugins: ['remove_button'],
     allowEmptyOption: true,
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
@@ -103,10 +96,10 @@ $(document).on("turbolinks:load", function() {
     let project_client_selectize = $('select.project-clients').selectize();
     let projectClientData = (project_client_selectize[0].selectize).getValue();
 
-    let users_selectize = $('select.users').selectize();
-    let userData = (users_selectize[0].selectize).getValue();
+    let allocation_user_selectize = $('select.allocation-users').selectize();
+    let allocationUserData = (allocation_user_selectize[0].selectize).getValue();
 
-    Turbolinks.visit('//' + location.host + location.pathname + '?start_date=' + startDate +'&end_date='+ endDate +'&project_clients='+ projectClientData + '&users=' + userData);
+    Turbolinks.visit('//' + location.host + location.pathname + '?start_date=' + startDate +'&end_date='+ endDate +'&project_clients='+ projectClientData + '&allocation_users=' + allocationUserData);
   })
 
 })
