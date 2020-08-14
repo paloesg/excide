@@ -7,7 +7,7 @@ class NotificationMailer < ApplicationMailer
     @user = user
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
-    mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.friendly_id)
+    #mail(to: address.format, subject: '[New Task] ' + @task.section.template.title + ' - ' + @action.workflow.friendly_id)
   end
 
   def first_task_notification(task, batch, user)
@@ -16,7 +16,7 @@ class NotificationMailer < ApplicationMailer
     @user = user
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
-    mail(to: address.format, subject: '[New Task] ' + @task.instructions + ' - ' + @batch.id)
+    #mail(to: address.format, subject: '[New Task] ' + @task.instructions + ' - ' + @batch.id)
   end
 
   def unordered_workflow_notification(user, workflow_tasks, action)
@@ -26,7 +26,7 @@ class NotificationMailer < ApplicationMailer
     @action = action
     address = Mail::Address.new @user.email
     address.display_name = @user.full_name
-    mail(to: address.format, subject: '[New Task] Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.friendly_id)
+    #mail(to: address.format, subject: '[New Task] Unordered Workflow - '+ @relevant_tasks[0].section.section_name + ' - ' + @action.workflow.friendly_id)
   end
 
   def batch_reminder(reminders, templates, user)
@@ -60,18 +60,18 @@ class NotificationMailer < ApplicationMailer
     @event = event
     address = Mail::Address.new @user.email
     address.display_name = @user.first_name + @user.last_name
-    mail(to: address.format, subject: @subject)
+    #mail(to: address.format, subject: @subject)
   end
 
   def associate_notification(user)
     @user = user
     address = Mail::Address.new @user.email
     address.display_name = @user.first_name + @user.last_name
-    mail(to: address.format, subject: 'Assign your availability for the next month')
+    #mail(to: address.format, subject: 'Assign your availability for the next month')
   end
 
   def free_trial_ending_notification(user)
     @user = user
-    mail(to: @user.email, subject: '[Free trial ending]')
+    #mail(to: @user.email, subject: '[Free trial ending]')
   end
 end

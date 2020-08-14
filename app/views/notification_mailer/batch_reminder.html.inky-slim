@@ -9,10 +9,12 @@ container
         p Good day! You have #{@reminders.count} reminders today.
       br
 
+      /! cycles through all the templates with reminders
       - @templates.each do |template|
         p
           strong #{template.title} - #{template.company.name}
           - @reminders.each do |reminder|
+            /! checks if current reminder belongs to current template, if so, the template name does not have to be output again
             - if reminder.title.split(' -')[0][11..] == template.title
               em
                 p 
