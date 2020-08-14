@@ -7,6 +7,7 @@ container
         p Good day! You only have 1 reminder today.
       - else
         p Good day! You have #{@reminders.count} reminders today.
+      br
 
       - @templates.each do |template|
         p
@@ -20,6 +21,7 @@ container
                       '
                       a href="#{symphony_workflow_url(reminder.task.section.template.slug, reminder.workflow_action.workflow.friendly_id)}" #{reminder.content} (due #{reminder.workflow_action.workflow.deadline})
 
+      br
       p If you have any queries regarding your task, please contact your admin.
   row
     columns
