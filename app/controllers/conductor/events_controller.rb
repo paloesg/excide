@@ -157,6 +157,6 @@ class Conductor::EventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :tag_list, :number_of_hours, :user_id, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :tag_list, :number_of_hours, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
   end
 end
