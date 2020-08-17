@@ -15,12 +15,13 @@
             .form-group
               = f.label :template_pattern, "This routine repeats:"
               = f.select :template_pattern, ::Template.template_patterns.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width", required: true}
-            .form-group
-              = f.label :start_date, "Start routine:"
-              = f.text_field :start_date, disabled: true, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
-            .form-group
-              = f.label :end_date, "End routine:"
-              = f.text_field :end_date, disabled: true, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker2', 'data-target': '#datetimepicker2'
+            .template-date-range.d-none
+              .form-group
+                = f.label :start_date, "Start routine:"
+                = f.text_field :start_date, disabled: true, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker', 'data-target': '#datetimepicker'
+              .form-group
+                = f.label :end_date, "End routine:"
+                = f.text_field :end_date, disabled: true, class: 'form-control datepicker', 'data-toggle': 'datetimepicker', id: 'datetimepicker2', 'data-target': '#datetimepicker2'
             .form-group
               = f.label :deadline_type, "Deadline Type:"
               = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, {required: true,  class: "deadlines-type dropdown-overlay task-items-dropdown-width" }
