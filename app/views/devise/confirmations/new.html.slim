@@ -1,18 +1,15 @@
-section.height-100.imagebg data-overlay="4"
-  .background-image-holder
-    = image_pack_tag 'media/src/images/hero-image.jpg', alt: "background"
-  .container.pos-vertical-center
-    .row.d-flex.justify-content-center
-      .col-md-7.col-lg-5
-        .boxed.boxed--lg.boxed--border
-          h2.text-center Resend confirmation instructions
+.d-flex.align-items-center.container.h-100
+  .row.w-100
+    .col-sm-6.mt-5
+      .row.d-flex.justify-content-center
+        .col-sm-9
+          h1.header-bold.mb-5.text-center Resend confirmation instructions
           = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
-            .row
-              .col-md-12
-                = devise_error_messages!
-                .field = f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), placeholder: "Email"
-
-              .col-md-12
-                = f.submit "Resend confirmation instructions", class:"btn btn--excide type--uppercase"
-
-          = render "devise/shared/links"
+            = devise_error_messages!
+            .form-group
+              = f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), placeholder: "Email", class: 'form-control'
+            = hidden_field_tag :confirmation_token,@confirmation_token
+            .form-group
+              = f.submit "Resend confirmation instructions", class: "btn btn-primary col-sm-12"
+    .col-sm-6
+      = image_pack_tag 'media/src/images/symphony/login.png', alt: "login-page", class: 'img-fluid float-right'
