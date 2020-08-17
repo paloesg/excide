@@ -1,3 +1,6 @@
+// Spin for 3 seconds while background job to generate workflows starts for monthly pattern
+#loading.d-none
+  .spinner-1
 .row.mb-3
   .col
     h1 Edit #{@template.title}
@@ -6,4 +9,4 @@
     = form_for(@template, url: symphony_template_path(template_slug: @template.slug,last_action: params[:last_action])) do |f|
       - if @template.sections.present?
         = render 'form', f: f
-        = f.submit 'Save Template', class: 'btn btn-primary float-right' 
+        = f.submit 'Save Template', class: "btn btn-primary float-right #{params[:last_action].present? ? 'start-loading' : ''}" 

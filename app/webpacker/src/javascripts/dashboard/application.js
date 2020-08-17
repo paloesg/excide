@@ -27,6 +27,7 @@ require("./symphony/choice");
 require("./symphony/templates/choose_deadline_types");
 require("./symphony/templates/choose_template_patterns");
 require("./symphony/header");
+require("./symphony/spinner");
 
 window.createAllocation = require("./conductor/create_allocations");
 window.addAvailability = require("./conductor/add_availabilities");
