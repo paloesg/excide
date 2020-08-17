@@ -24,6 +24,7 @@ class TaskDashboard < Administrate::BaseDashboard
     set_reminder: Field::Boolean,
     important: Field::Boolean,
     document_template: Field::BelongsTo,
+    survey_template: Field::BelongsTo,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -40,20 +41,15 @@ class TaskDashboard < Administrate::BaseDashboard
     :position,
     :user,
     :role,
-    :document_template,
-    :deadline_type,
-    :deadline_day,
     :set_reminder,
-    :important,
     :workflow_actions,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :id,
-    :task_type,
     :instructions,
+    :task_type,
     :section,
     :position,
     :user,
@@ -63,20 +59,22 @@ class TaskDashboard < Administrate::BaseDashboard
     :link_url,
     :deadline_type,
     :deadline_day,
+    :document_template,
+    :survey_template,
+    :child_workflow_template,
     :set_reminder,
     :important,
-    :workflow_actions,
     :created_at,
     :updated_at,
+    :workflow_actions,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :task_type,
-    :child_workflow_template,
     :instructions,
+    :task_type,
     :section,
     :position,
     :user,
@@ -86,6 +84,9 @@ class TaskDashboard < Administrate::BaseDashboard
     :link_url,
     :deadline_type,
     :deadline_day,
+    :document_template,
+    :survey_template,
+    :child_workflow_template,
     :set_reminder,
     :important,
     :workflow_actions,
