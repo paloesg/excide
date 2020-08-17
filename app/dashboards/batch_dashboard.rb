@@ -18,7 +18,7 @@ class BatchDashboard < Administrate::BaseDashboard
     completed: Field::Boolean,
     workflow_progress: Field::Number,
     task_progress: Field::Number,
-    status: Field::EnumField,
+    status: EnumField,
     failed_blob: Field::JSONB,
   }.freeze
 
