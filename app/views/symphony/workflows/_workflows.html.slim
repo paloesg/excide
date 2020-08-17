@@ -33,12 +33,17 @@ table.table.table-hover.mb-0
             td width="25%"
               = @selected_workflow.deadline&.strftime("%d %b %Y")
         - else
-          tr
+          - month = i + 1
+          / Only disable the row before template's start date
+          tr class="#{(Date.new(@year, month) < @template.start_date) ? 'bg-secondary' : ''}"
             td
             td
               = Date::ABBR_MONTHNAMES[i+1]
             td.text-left colspan="4"
-              = link_to "Add new cycle", symphony_workflows_path(@template.slug, cycle_position: i+1, year: (params[:year].present? ? params[:year] : Date.current.year)), method: :post, class: "text-muted"
+              - if Date.new(@year, month) < @template.start_date
+                = link_to 'Past cycles', '#', class: 'text-muted disabled'
+              - else
+                = link_to "Create cycle for this month", symphony_workflows_path(@template.slug, cycle_position: i+1, year: (params[:year].present? ? params[:year] : Date.current.year)), method: :post, class: "text-muted"
     - else
       - @workflows.each do |wf|
         tr style=("cursor: pointer;" + ((wf == @workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
