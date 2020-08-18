@@ -10,10 +10,12 @@ class CompanyDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     name: Field::String,
+    users: Field::HasMany,
     workflows: Field::HasMany,
     templates: Field::HasMany,
     documents: Field::HasMany,
-    users: Field::HasMany,
+    batches: Field::HasMany,
+    invoices: Field::HasMany,
     address: Field::HasOne,
     description: Field::Text,
     image_url: Field::Image,
@@ -21,8 +23,6 @@ class CompanyDashboard < Administrate::BaseDashboard
     ssic_code: Field::String,
     financial_year_end: Field::DateTime,
     xero_email: Field::String,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
     connect_xero: Field::Boolean,
     xero_organisation_name: Field::String,
     session_handle: Field::String,
@@ -31,7 +31,9 @@ class CompanyDashboard < Administrate::BaseDashboard
     expires_at: Field::Number,
     account_type: EnumField,
     stripe_subscription_plan_data: Field::JSONB,
-    before_deadline_reminder_days: Field::Number
+    before_deadline_reminder_days: Field::Number,
+    created_at: Field::DateTime,
+    updated_at: Field::DateTime,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -42,12 +44,12 @@ class CompanyDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :name,
-    :xero_organisation_name,
+    :users,
     :workflows,
     :templates,
     :documents,
-    :users,
-    :account_type,
+    :batches,
+    :invoices,
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -59,11 +61,11 @@ class CompanyDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :name,
-    :company_type,
-    :image_url,
-    :description,
-    :address,
     :users,
+    :company_type,
+    :address,
+    :description,
+    :image_url,
     :ssic_code,
     :financial_year_end,
     :xero_email,
@@ -82,6 +84,6 @@ class CompanyDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(company)
-    "#{company.name}"
+    company.name
   end
 end
