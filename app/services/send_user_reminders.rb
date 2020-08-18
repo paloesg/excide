@@ -28,6 +28,7 @@ class SendUserReminders
 
   def send_email_reminders
     # Sorts the reminders according to their title in ascending
+    @curr_reminders = []
     @reminders = @reminders.order(:title)
     email_reminders = @reminders.where(email: true)
     email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false

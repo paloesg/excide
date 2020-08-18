@@ -13,15 +13,32 @@ container
       - @templates.each do |template|
         p
           strong #{template.title} - #{template.company.name}
+          - @curr_reminders = []
           - @reminders.each do |reminder|
             /! checks if current reminder belongs to current template, if so, the template name does not have to be output again
             - if reminder.title.split(' -')[0][11..] == template.title
-              em
+              - @curr_reminders.push(reminder)
+          - @curr_reminders = @curr_reminders.sort_by { |curr_reminder| curr_reminder.workflow_action.deadline }
+          - @curr_reminders.each do |curr_reminder|
+            em
                 p 
-                  - if reminder.task.present?
+                  - if curr_reminder.task.present? && curr_reminder.workflow_action.deadline.to_date < Date.today
                     em
                       '
-                      a href="#{symphony_workflow_url(reminder.task.section.template.slug, reminder.workflow_action.workflow.friendly_id)}" #{reminder.content} (due #{reminder.workflow_action.workflow.deadline})
+                      a href="#{symphony_workflow_url(curr_reminder.task.section.template.slug, curr_reminder.workflow_action.workflow.friendly_id)}" style="color:#F64E60;" #{curr_reminder.content} (due #{curr_reminder.workflow_action.workflow.deadline.strftime('%a, %d %b %Y')}) 
+                  - elsif curr_reminder.task.present? && curr_reminder.workflow_action.deadline.to_date <= Date.tomorrow
+                    em
+                      '
+                      a href="#{symphony_workflow_url(curr_reminder.task.section.template.slug, curr_reminder.workflow_action.workflow.friendly_id)}" style="color:#FFA800;" #{curr_reminder.content} (due #{curr_reminder.workflow_action.workflow.deadline.strftime('%a, %d %b %Y')}) 
+                  - elsif curr_reminder.task.present? && curr_reminder.workflow_action.company.before_deadline_reminder_days.present? && curr_reminder.workflow_action.deadline.to_date - curr_reminder.workflow_action.company.before_deadline_reminder_days <= Date.today
+                    em
+                      '
+                      a href="#{symphony_workflow_url(curr_reminder.task.section.template.slug, curr_reminder.workflow_action.workflow.friendly_id)}" style="color:#FFA800;" #{curr_reminder.content} (due #{curr_reminder.workflow_action.workflow.deadline.strftime('%a, %d %b %Y')}) 
+                  - else  
+                    em
+                      '
+                      a href="#{symphony_workflow_url(curr_reminder.task.section.template.slug, curr_reminder.workflow_action.workflow.friendly_id)}" style="color:#3699FF;" #{curr_reminder.content} (due #{curr_reminder.workflow_action.workflow.deadline.strftime('%a, %d %b %Y')}) 
+                  
 
       br
       p If you have any queries regarding your task, please contact your admin.

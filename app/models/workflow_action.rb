@@ -158,7 +158,7 @@ class WorkflowAction < ApplicationRecord
     reminder = Reminder.new(
       next_reminder: (reminder_date > Date.current) ? (reminder_date) : action.deadline,
       repeat: true,
-      freq_value: 2,
+      freq_value: 2, 
       freq_unit: "days",
       company_id: action.company_id,
       task_id: task.id,
