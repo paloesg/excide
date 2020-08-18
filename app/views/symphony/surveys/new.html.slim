@@ -5,7 +5,7 @@
       - @survey_template.survey_sections.each do |survey_section|
           / Define global variable for using it in _segment_fields.html.slim
           - @survey_section = survey_section
-          .card
+          .card.mb-5
             .card-header
               h2 #{@survey_section.display_name}
             .card-body
