@@ -2,7 +2,7 @@ table.table.table-hover.mb-0
   thead.thead-light
     tr
       th colspan="5" To Complete
-      th Due
+      th colspan="2" Due
   tbody
     - @workflows.each do |wf|
       tr style=("cursor: pointer;" + ((wf == @workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : ""))
