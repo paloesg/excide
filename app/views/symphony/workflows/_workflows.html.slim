@@ -41,7 +41,7 @@ table.table.table-hover.mb-0
               = Date::ABBR_MONTHNAMES[i+1]
             td.text-left colspan="4"
               - if Date.new(@year, month) < @template.start_date
-                = link_to 'Past cycles', '#', class: 'text-muted disabled'
+                = link_to '', '#', class: 'text-muted disabled'
               - else
                 = link_to "Create cycle for this month", symphony_workflows_path(@template.slug, cycle_position: i+1, year: (params[:year].present? ? params[:year] : Date.current.year)), method: :post, class: "text-muted"
     - else
