@@ -82,8 +82,17 @@
               .col-3 Invoice
               .col-9
                 = link_to symphony_invoice_path(workflow_name: template.slug, workflow_id: workflow.id, id: workflow.invoice.id), class: "d-flex" do
-                  i.material-icons.font-size-h6.text-primary.mr-3 receipt
+                  i.material-icons.font-size-h6.text-primary.mr-3 List
                   = workflow.invoice.id
+          - if workflow.surveys.present?
+            .row.mb-4
+              .col-3 Survey
+              .col-9
+                - workflow.surveys.each do |s|
+                  .d-flex
+                    = link_to symphony_survey_path(workflow_name: template.slug, workflow_id: workflow.id, id: s.id) do
+                      i.material-icons.font-size-h6.text-primary.mr-3 receipt
+                      = s.id
           .row.mb-4.justify-content-end
             = f.submit 'Submit', class: 'btn btn-primary'
             = fa_icon 'check', class: 'text-success mx-3 ajax-icons', id: "check-#{action.id}"
