@@ -11,8 +11,8 @@ class RoleDashboard < Administrate::BaseDashboard
     users: Field::HasMany,
     id: Field::Number,
     name: Field::String,
-    resource_type: Field::String,
-    resource_id: Field::Number,
+    resource: Field::Polymorphic,
+    tasks: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -25,8 +25,7 @@ class RoleDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :name,
-    :resource_type,
-    :resource_id,
+    :resource,
     :users,
   ].freeze
 
@@ -35,8 +34,7 @@ class RoleDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = [
     :id,
     :name,
-    :resource_type,
-    :resource_id,
+    :resource,
     :users,
     :created_at,
     :updated_at,
@@ -47,8 +45,6 @@ class RoleDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :name,
-    :resource_type,
-    :resource_id,
     :users,
   ].freeze
 
