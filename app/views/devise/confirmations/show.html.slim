@@ -1,22 +1,18 @@
-section.height-100.imagebg.text-center data-overlay="4"
-  .background-image-holder
-    = image_pack_tag 'media/src/images/hero-image.jpg', alt: "background"
-  .container.pos-vertical-center
-    .row
-      .col-md-7.col-lg-5
-        .boxed.boxed--lg.boxed--border
-          h2 Account Event
+.d-flex.align-items-center.container.h-100
+  .row.w-100
+    .col-sm-6.mt-5
+      .row.d-flex.justify-content-center
+        .col-sm-9
+          h1.header-bold.mb-5.text-center Activate Account
           = form_for resource, :as => resource_name, :url => update_user_confirmation_path, :html => {:method => 'put'}, :id => 'event-form' do |f|
-            .row
-              .col-md-12
-                = devise_error_messages!
-                ' Account Event
-                - if resource.first_name
-                  | for #{resource.email}
-              - if @requires_password
-                .col-md-12
-                  = f.password_field :password, placeholder: "Choose a Password"
-                  = f.password_field :password_confirmation, placeholder: "Password Confirmation"
-              .col-md-12
-                = hidden_field_tag :confirmation_token,@confirmation_token
-                p= f.submit "Activate", class:"btn btn--excide type--uppercase"
+            = devise_error_messages!
+            - if @requires_password
+              .form-group
+                = f.password_field :password, placeholder: "Choose a Password", class: 'form-control'
+              .form-group
+                = f.password_field :password_confirmation, placeholder: "Password Confirmation", class: 'form-control'
+            = hidden_field_tag :confirmation_token,@confirmation_token
+            .form-group
+              = f.submit "Activate", class: "btn btn-primary col-sm-12"
+    .col-sm-6
+      = image_pack_tag 'media/src/images/symphony/login.png', alt: "login-page", class: 'img-fluid float-right'
