@@ -1,17 +1,16 @@
 .row
   .col-md-12
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          h3.kt-portlet__head-title
-            | Survey Details
-      .kt-portlet__body
+    .card
+      .card-header
+        h1
+          | Survey Details
+      .card-body
         - @survey.survey_template.survey_sections.each_with_index do |sur_sec, index|
           h4 Survey Section #{index + 1}
           p.text-dark Name: #{sur_sec.display_name}
           span.mb-2 Description: #{sur_sec.description.body.to_rendered_html_with_layout()}
           - sur_sec.segments.where(survey_id: @survey.id).each do |s|
-            .border.shadow.p-3.mb-3
+            .border.shadow.p-3.my-5
               h4 Segment Name: 
               p.text-dark = s.name
               hr
