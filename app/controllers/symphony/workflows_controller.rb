@@ -15,11 +15,8 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    # Find list of workflows with deadline of the current year.
-    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.deadline&.year.to_s == params[:year] : wf.deadline&.year == Time.current.year}.sort_by{|wf| wf.created_at}
-    @year = params[:year].present? ? params[:year].to_i : Date.current.year
-    # Determine how many years in the filtering options based on deadline
-    @years_to_filter = @template.workflows.pluck(:deadline).map { |d| d.present? ? d.year : [Time.current.year] }.uniq
+    # Get variables for positioning in _workflows.html.slim
+    get_wf_variables_for_position_and_filtering
   end
 
   def new
@@ -57,11 +54,8 @@ class Symphony::WorkflowsController < ApplicationController
     @sections = @template.sections
     @get_activities = PublicActivity::Activity.includes(:owner).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
     @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(5)
-    # Find list of workflows with deadline of the current year.
-    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.deadline&.year.to_s == params[:year] : wf.deadline&.year == Time.current.year}.sort_by{|wf| wf.created_at}
-    # Determine how many years in the filtering options based on deadline
-    @years_to_filter = @template.workflows.pluck(:deadline).map { |d| d.present? ? d.year : [Time.current.year] }.uniq
-    @year = params[:year].present? ? params[:year].to_i : Date.current.year
+    # Get variables for positioning in _workflows.html.slim
+    get_wf_variables_for_position_and_filtering
 
     if @workflow.completed?
       @section = params[:section_id] ? @sections.find(params[:section_id]) : @sections.last
@@ -371,6 +365,15 @@ class Symphony::WorkflowsController < ApplicationController
         value[:updated_at] = Time.current
       end
     end
+  end
+
+  def get_wf_variables_for_position_and_filtering
+    # Find list of workflows with deadline of the current year.
+    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.deadline&.year.to_s == params[:year] : wf.deadline&.year == Time.current.year}.sort_by{|wf| wf.created_at}
+    # Display the year and compare with start date to find out which row to disable in _workflows.html.slim 
+    @year = params[:year].present? ? params[:year].to_i : Date.current.year
+    # Determine how many years in the filtering options based on deadline
+    @years_to_filter = @template.workflows.pluck(:deadline).map { |d| d.present? ? d.year : [Time.current.year] }.uniq
   end
 
   def log_data_activity
