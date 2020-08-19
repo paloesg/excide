@@ -47,15 +47,8 @@ class GenerateWorkflowsService
     when 'monthly'
       # Calculate the number of months between start_date and end_date
       # The range between start date to end date returns every single day in the range. The map find the unique value of month and year, join together with '-' into a string, eg "8-2020", "10-2021"
-      if template.start_date.present? and template.end_date.present?
-        (template.start_date..template.end_date).map{|d| [d.month, d.year].join('-')}.uniq.each do |month_year| 
-          Workflow.create(user_id: user.id, company_id: template.company.id, template_id: template.id, identifier: month_year)
-        end
-      else
-        # If no start and end date, generate for 1 year after current month
-        12.times.map { |i| [(Date.current + i.month).month, (Date.current + i.month).year].join('-') }.each do |month_year|
-          Workflow.create(user_id: user.id, company_id: template.company.id, template_id: template.id, identifier: month_year)
-        end
+      (template.start_date..template.end_date).map{|d| [d.month, d.year].join('-')}.uniq.each do |month_year| 
+        Workflow.create(user_id: user.id, company_id: template.company.id, template_id: template.id, identifier: month_year)
       end
     else
       Workflow.create(user_id: user.id, company_id: template.company.id, template_id: template.id)
