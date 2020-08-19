@@ -169,7 +169,7 @@ class Workflow < ApplicationRecord
         else
           wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
         end
-        conditionally_set_deadline(t, wfa, Date.current.month, Date.current.year)
+        self.template.monthly? ? conditionally_set_deadline(t, wfa, self.identifier.split('-')[0].to_i, self.identifier.split('-')[1].to_i) : conditionally_set_deadline(t, wfa, Date.current.month, Date.current.year)
       end
       # Automatically set first task as completed if workflow is part of a batch and first task is a file upload task
       s.tasks.first.get_workflow_action(self.company_id, self.id).update(completed: true) if (s.position == 1 && s.tasks.first.task_type == "upload_file" && self.batch.present?)
