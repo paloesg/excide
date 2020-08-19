@@ -15,6 +15,11 @@ class BatchDashboard < Administrate::BaseDashboard
     updated_at: Field::DateTime,
     id: Field::String.with_options(searchable: false),
     name: Field::String,
+    completed: Field::Boolean,
+    workflow_progress: Field::Number,
+    task_progress: Field::Number,
+    status: EnumField,
+    failed_blob: Field::JSONB,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -27,17 +32,25 @@ class BatchDashboard < Administrate::BaseDashboard
     :company,
     :template,
     :workflows,
+    :workflow_progress,
+    :task_progress,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
+    :name,
+    :id,
     :company,
     :template,
-    :workflows,
+    :status,
+    :completed,
+    :workflow_progress,
+    :task_progress,
     :created_at,
     :updated_at,
-    :id,
+    :workflows,
+    :failed_blob,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -46,13 +59,17 @@ class BatchDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :company,
     :template,
+    :status,
+    :completed,
+    :workflow_progress,
+    :task_progress,
     :workflows,
   ].freeze
 
   # Overwrite this method to customize how batches are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(batch)
-  #   "Batch ##{batch.id}"
-  # end
+  def display_resource(batch)
+    "Batch #{batch.name}"
+  end
 end

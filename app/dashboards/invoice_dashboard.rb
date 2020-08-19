@@ -8,16 +8,26 @@ class InvoiceDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    workflow: Field::BelongsTo,
     id: Field::String.with_options(searchable: false),
+    company: Field::BelongsTo,
+    user: Field::BelongsTo,
+    workflow: Field::BelongsTo,
+    status: EnumField,
+    remarks: Field::String,
     invoice_identifier: Field::String,
+    invoice_reference: Field::String,
     invoice_date: Field::DateTime,
+    invoice_type: EnumField,
     due_date: Field::DateTime,
-    line_items: Field::String.with_options(searchable: false),
+    line_amount_type: EnumField,
+    currency: Field::String,
+    xero_invoice_id: Field::String,
+    xero_contact_id: Field::String,
+    xero_contact_name: Field::String,
+    line_items: Field::JSONB,
+    total: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    line_amount_type: EnumField,
-    invoice_type: EnumField
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -26,38 +36,35 @@ class InvoiceDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :workflow,
-    :id,
-    :invoice_identifier,
+    :company,
     :invoice_date,
+    :total,
+    :status,
+    :workflow,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
-  SHOW_PAGE_ATTRIBUTES = [
-    :workflow,
-    :id,
-    :invoice_identifier,
-    :invoice_date,
-    :due_date,
-    :line_items,
-    :created_at,
-    :updated_at,
-    :line_amount_type,
-    :invoice_type,
-  ].freeze
+  SHOW_PAGE_ATTRIBUTES = ATTRIBUTE_TYPES.keys
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :workflow,
+    :status,
+    :remarks,
     :invoice_identifier,
+    :invoice_reference,
     :invoice_date,
-    :due_date,
-    :line_items,
-    :line_amount_type,
     :invoice_type,
+    :due_date,
+    :line_amount_type,
+    :currency,
+    :xero_invoice_id,
+    :xero_contact_id,
+    :xero_contact_name,
+    :line_items,
+    :total,
   ].freeze
 
   # Overwrite this method to customize how invoices are displayed
