@@ -1,0 +1,27 @@
+- @workflows.each do |wf|
+  tr style=("cursor: pointer;" + ((wf == @workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : ""))
+    td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+      label.checkbox
+        = check_box_tag 'completed', wf.id, wf.completed, disabled: true
+        span
+    td width="40%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+      = wf.name
+    td width="10%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+      = "(" + (wf.workflow_actions.where(completed: true).count*100/wf.workflow_actions.count).to_s + "%)" if (wf.workflow_actions.present? && !wf.completed?)
+    td width="10%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+      = wf.total_time_mins.to_s + "m" unless wf.total_time_mins == 0
+    td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+      - if !wf.completed? && wf.deadline.present?
+        - if wf.deadline.to_date < Date.today
+          i.fa.fa-xs.fa-circle.text-danger.mr-3
+        - elsif wf.deadline.to_date <= Date.tomorrow
+          i.fa.fa-xs.fa-circle.text-warning.mr-3
+        - else
+          i.fa.fa-xs.fa-circle.text-primary.mr-3
+    td width="25%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+      = wf.deadline&.strftime("%d %b %Y")
+    td width="5%"
+      a href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+        i.fa.fa-ellipsis-h.text-secondary
+      .dropdown-menu
+        .dropdown-item = link_to "Delete", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), data: { confirm: 'This will delete the cycle. Are you sure?'}, method: :delete
