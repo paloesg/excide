@@ -10,13 +10,14 @@ class AllocationDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     user: Field::BelongsTo,
     event: Field::BelongsTo,
+    availability: Field::BelongsTo,
     id: Field::Number,
     allocation_date: Field::DateTime,
     start_time: Field::Time,
     end_time: Field::Time,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    allocation_type: Field::String.with_options(searchable: false),
+    allocation_type: EnumField,
     last_minute: Field::Boolean,
     rate_cents: Field::Number,
   }.freeze
@@ -27,37 +28,40 @@ class AllocationDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :user,
-    :event,
     :id,
+    :user,
     :allocation_date,
+    :start_time,
+    :end_time,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :user,
-    :event,
     :id,
     :allocation_date,
     :start_time,
     :end_time,
-    :created_at,
-    :updated_at,
+    :user,
+    :event,
+    :availability,
     :allocation_type,
     :last_minute,
     :rate_cents,
+    :created_at,
+    :updated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :user,
-    :event,
     :allocation_date,
     :start_time,
     :end_time,
+    :user,
+    :event,
+    :availability,
     :allocation_type,
     :last_minute,
     :rate_cents,

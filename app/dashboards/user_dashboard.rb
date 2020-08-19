@@ -29,6 +29,11 @@ class UserDashboard < Administrate::BaseDashboard
     assigned_tasks: Field::HasMany.with_options(class_name: WorkflowAction),
     completed_tasks: Field::HasMany.with_options(class_name: WorkflowAction),
     settings: Field::JSONB,
+    reminders: Field::HasMany,
+    clients: Field::HasMany,
+    documents: Field::HasMany,
+    invoices: Field::HasMany,
+    batches: Field::HasMany,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -56,9 +61,21 @@ class UserDashboard < Administrate::BaseDashboard
     :contact_number,
     :company,
     :roles,
+    :confirmed_at,
+    :reset_password_sent_at,
+    :sign_in_count,
+    :current_sign_in_at,
+    :current_sign_in_ip,
+    :last_sign_in_at,
+    :last_sign_in_ip,
+    :settings,
+    :reminders,
+    :clients,
+    :documents,
+    :invoices,
+    :batches,
     :assigned_tasks,
     :completed_tasks,
-    :settings,
   ].freeze
 
   # FORM_ATTRIBUTES

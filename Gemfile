@@ -135,10 +135,11 @@ gem 'activity_notification'
 gem 'slack-ruby-client'
 
 # Backend admin
-gem 'administrate', '0.13.0'
+gem 'administrate', '0.14.0'
 gem 'administrate-field-image'
-gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
+gem 'administrate-field-nested_has_many'
 gem 'administrate-field-jsonb'
+gem 'administrate-field-active_storage'
 
 # Deep cloning for cloning of template with associated sections
 gem 'deep_cloneable', '~> 3.0.0'

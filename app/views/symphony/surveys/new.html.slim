@@ -5,14 +5,13 @@
       - @survey_template.survey_sections.each do |survey_section|
           / Define global variable for using it in _segment_fields.html.slim
           - @survey_section = survey_section
-          .kt-portlet.shadow
-            .kt-portlet__head
-              .kt-portlet__head-label
-                h2 #{@survey_section.display_name}
-            .kt-portlet__body
+          .card.mb-5
+            .card-header
+              h2 #{@survey_section.display_name}
+            .card-body
               .form-group.mt-2.border.p-3
                 = f.hidden_field :survey_template_id, value: @survey_template.id
-                h4 Instructions:
+                h4 Description:
                 span #{@survey_section.description.body.to_rendered_html_with_layout()}
               #segment-section
                 = f.fields_for :segments do |segment|

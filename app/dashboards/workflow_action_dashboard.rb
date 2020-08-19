@@ -19,6 +19,8 @@ class WorkflowActionDashboard < Administrate::BaseDashboard
     completed: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    time_spent_mins: Field::Number,
+    remarks: Field::Text,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -40,7 +42,6 @@ class WorkflowActionDashboard < Administrate::BaseDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :id,
     :company,
     :task,
     :workflow,
@@ -49,6 +50,8 @@ class WorkflowActionDashboard < Administrate::BaseDashboard
     :reminders,
     :completed,
     :completed_user,
+    :remarks,
+    :time_spent_mins,
     :created_at,
     :updated_at,
   ].freeze
@@ -62,8 +65,11 @@ class WorkflowActionDashboard < Administrate::BaseDashboard
     :workflow,
     :assigned_user,
     :deadline,
+    :reminders,
     :completed,
     :completed_user,
+    :remarks,
+    :time_spent_mins,
   ].freeze
 
   # Overwrite this method to customize how actions are displayed
