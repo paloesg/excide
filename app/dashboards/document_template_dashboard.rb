@@ -12,10 +12,11 @@ class DocumentTemplateDashboard < Administrate::BaseDashboard
     tasks: Field::HasMany,
     user: Field::BelongsTo,
     documents: Field::HasMany,
-    id: Field::Number,
+    id: Field::String,
     title: Field::String,
     description: Field::Text,
     file_url: Field::String,
+    file: Field::ActiveStorage,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -26,37 +27,40 @@ class DocumentTemplateDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
+    :file,
+    :title,
     :template,
     :tasks,
-    :user,
     :documents,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
+    :file,
+    :title,
+    :description,
     :template,
     :tasks,
     :user,
     :documents,
     :id,
-    :title,
-    :description,
-    :file_url,
     :created_at,
     :updated_at,
+    :file_url,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
+    :file,
+    :title,
+    :description,
     :template,
     :tasks,
     :user,
     :documents,
-    :title,
-    :description,
     :file_url,
   ].freeze
 

@@ -104,10 +104,9 @@ class Symphony::WorkflowsController < ApplicationController
     @batch = @workflow.batch
     if @workflow.destroy
       if @batch.present?
-        redirect_to symphony_batch_path(@template.slug, @batch.id)
-        respond_to do |format|
-          format.js  { flash[:notice] = 'Workflow was successfully deleted.' }
-        end
+        redirect_to symphony_batch_path(@template.slug, @batch.id), notice: 'Workflow was successfully deleted.'
+      else
+        redirect_to symphony_workflows_path(workflow_name: @template.slug), notice: 'Workflow was successfully deleted.'
       end
     end
   end
@@ -333,7 +332,16 @@ class Symphony::WorkflowsController < ApplicationController
   private
 
   def set_template
-    @template = policy_scope(Template).find(params[:workflow_name])
+    @template = policy_scope(Template).where(title: params[:workflow_name])
+    #this is for clicking notifications of other companies
+    if @template.empty?
+      #if scope fails, find template without scope and change user's company if user has role in that company
+      @template = Template.find(params[:workflow_name])
+      if @user.roles.where(resource_id: @template.company_id, resource_type: "Company").present?
+        @user.company = @template.company
+        @user.save
+      end
+    end
   end
 
   def set_tasks
