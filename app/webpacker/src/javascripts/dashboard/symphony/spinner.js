@@ -7,6 +7,6 @@ $(document).on("turbolinks:load", function() {
       $("#loading").addClass("d-none");
       // Refresh the page
       Turbolinks.visit(window.location.href.split('?')[0]);
-    }, 6000);
+    }, 5000);
   } 
 });
