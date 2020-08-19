@@ -1,8 +1,12 @@
 $(document).on("turbolinks:load", function() {
-  $(".start-loading").click(function(e){
-    $("#loading").removeClass("d-none");
-    setInterval(function(){ 
-     $("#loading").addClass("d-none");
-    }, 5000);
-  });
+	// Check for the class "first-reload" to trigger the loading spinner
+	// Afterwards, redirect to the same URL but without the params
+	if ($("div#loading").hasClass('first-reload')) {
+		$("#loading").removeClass("d-none");
+		setTimeout(function(){ 
+		  $("#loading").addClass("d-none");
+		  // Refresh the page
+		  Turbolinks.visit(window.location.href.split('?')[0])
+		}, 6000);
+	} 
 });

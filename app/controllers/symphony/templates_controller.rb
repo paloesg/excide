@@ -64,7 +64,7 @@ class Symphony::TemplatesController < ApplicationController
         if params[:last_action].present?
           # params[:last_action] checks that last action comes from template create, and hence will generate workflows
           GenerateWorkflowsJob.perform_later(current_user, @template)
-          redirect_to symphony_workflows_path(workflow_name: @template.slug), notice: 'Cycles are being created right now. Please refresh the page.'
+          redirect_to symphony_workflows_path(workflow_name: @template.slug, first_reload: 'first-reload'), notice: 'Cycles are being created right now. Please refresh the page.'
         else
           flash[:notice] = 'Template has been saved.'
           redirect_to edit_symphony_template_path(@template)
