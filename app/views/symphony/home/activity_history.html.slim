@@ -3,7 +3,7 @@
     h1 Activity History
 .row.mb-5
   .col-3.offset-9.form-inline.justify-content-end
-    = select_tag('created_at', options_for_select([["Past 7 days", 7], ["Past 14 days", 14], ["Past 1 month", 30]], selected: params[:created_at]), {  include_blank: "Select by days...", class: 'form-control select2 select2-created-at' })
+    = select_tag('created_at', options_for_select([["Past 7 days", 7], ["Past 14 days", 14], ["Past 1 month", 30]], selected: params[:created_at]), {  include_blank: true, class: 'form-control select2 select2-created-at' })
     = button_tag 'Filter', type: 'button', class: 'btn btn-primary ml-3 activity-history-filter-button form-control'
 - if @activities.empty?
   .row.justify-content-center.h-100

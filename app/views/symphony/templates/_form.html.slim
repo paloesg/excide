@@ -14,7 +14,7 @@
               = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "select2 task-items-dropdown-width", required: true}
             .form-group
               = f.label :deadline_type, "Deadline Type:"
-              = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type select2 task-items-dropdown-width" }
+              = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type select2 task-items-dropdown-width select2-allow-clear" }
             .form-group
               .xth-day.d-none
                 = f.label :deadline_day, "Deadline - Day of the month:"
