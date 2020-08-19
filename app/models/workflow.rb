@@ -53,11 +53,7 @@ class Workflow < ApplicationRecord
   end
 
   def set_workflow_deadline
-    if self.template.monthly?
-      conditionally_set_deadline(self.template, self, self.identifier.split('-')[0].to_i, self.identifier.split('-')[1].to_i)
-    else
-      conditionally_set_deadline(self.template, self, Date.current.month, Date.current.year)
-    end
+    self.template.monthly? ? conditionally_set_deadline(self.template, self, self.identifier.split('-')[0].to_i, self.identifier.split('-')[1].to_i) : conditionally_set_deadline(self.template, self, Date.current.month, Date.current.year)
   end
 
   def build_workflowable(params)
