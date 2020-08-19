@@ -28,7 +28,6 @@ class SendUserReminders
 
   def send_email_reminders
     # Sorts the reminders according to their title in ascending
-    @curr_reminders = []
     @reminders = @reminders.order(:title)
     email_reminders = @reminders.where(email: true)
     email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
@@ -38,7 +37,20 @@ class SendUserReminders
       @templates << reminder.workflow_action.workflow.template
     end
     @templates = @templates.uniq
-    NotificationMailer.batch_reminder(email_reminders, @templates, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
+    # Ordering the reminders by deadline within each routine
+    @sorted_reminders = []
+    @templates.each do |template|
+      @curr_reminders = []
+      @reminders.each do |reminder|
+        # Stores the reminders belonging to the current template in @curr_reminders
+        if reminder.title.split(' -')[0][11..] == template.title
+          @curr_reminders << reminder
+        end
+      end
+      @curr_reminders = @curr_reminders.sort_by { |curr_reminder| curr_reminder.workflow_action.deadline }
+      @sorted_reminders.concat(@curr_reminders)
+    end
+    NotificationMailer.batch_reminder(email_reminders, @templates, @sorted_reminders, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
   end
 
   def send_sms_reminders

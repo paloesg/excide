@@ -26,9 +26,10 @@ class NotificationMailer < ApplicationMailer
     address.display_name = @user.full_name
   end
 
-  def batch_reminder(reminders, templates, user)
+  def batch_reminder(reminders, templates, sorted_reminders, user)
     @reminders = reminders
     @templates = templates
+    @sorted_reminders = sorted_reminders
     @user = user
     address = Mail::Address.new @user.email
     address.display_name = @user.first_name
