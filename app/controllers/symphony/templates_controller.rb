@@ -68,13 +68,8 @@ class Symphony::TemplatesController < ApplicationController
     end
     if params[:template].present?
       if @template.update(template_params)
-        @update_workflow_action = UpdateWorkflowAction.new(@template).run
-        if @update_workflow_action.success?
-          flash[:notice] = 'Template has been saved.'
-          redirect_to edit_symphony_template_path(@template)
-        else
-          redirect_to edit_symphony_template_path(@template), alert: 'Updating task(s) failed. Please try again or contact tech support.'
-        end
+        flash[:notice] = 'Template has been saved.'
+        redirect_to edit_symphony_template_path(@template)
       else
         flash[:alert] = @template.errors.full_messages.join
         render :edit
