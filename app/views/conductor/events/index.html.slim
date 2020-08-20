@@ -41,21 +41,28 @@
               a.ml-2 data-container="body" title="An estimation of the number of hours you worked" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
                   i.fa.fa-info-circle
             th
+            th
         tbody
           - @events.each do |event|
-            tr
-              td.text-center width="5%"
-                .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=(event.allocations[0].user.full_name)
-                  span.initials
-                    = event.allocations[0].user.first_name[0] + event.allocations[0].user.last_name[0]
-              td width="35%" = event.event_type&.name
-              td width="10%" = event.client&.name
-              td width="15%" = event.tag_list.last
-              td width="10%" = event.number_of_hours
-              td width="5%"
-                .dropdown.dropdown-inline.float-right
-                  a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-                    i.fa.fa-ellipsis-h.text-secondary
-                  .dropdown-menu.dropdown-menu-right
-                    .dropdown-item = link_to "Edit timesheet", edit_conductor_event_path(event)
-                    .dropdown-item = link_to "Delete", conductor_event_path(event), method: :delete
+            = form_for event, url: conductor_event_path(event.id), remote: true do |f|
+              tr
+                td.text-center width="5%"
+                  .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=(event.allocations[0].user.full_name)
+                    span.initials
+                      = event.allocations[0].user.first_name[0] + event.allocations[0].user.last_name[0]
+                td width="35%" = event.event_type&.name
+                td width="20%"
+                  = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'selectize', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
+                td width="20%"
+                  = f.select :tag_list, @service_lines.map { |sl| [sl, sl]}, { selected: event.tags.last, prompt: 'Select service line...' }, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
+                td width="10%"
+                  = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this);"}
+                td width="5%"
+                  .dropdown.dropdown-inline.float-right
+                    a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                      i.fa.fa-ellipsis-h.text-secondary
+                    .dropdown-menu.dropdown-menu-right
+                      .dropdown-item = link_to "Delete", conductor_event_path(event), method: :delete
+                td width="5%"
+                  = fa_icon "check", class: 'text-success ajax-icons'
+                  = fa_icon "times", class: 'text-danger ajax-icons'

@@ -78,14 +78,10 @@ class Conductor::EventsController < ApplicationController
   # PATCH/PUT /conductor/events/1
   # PATCH/PUT /conductor/events/1.json
   def update
-    update_event_time = UpdateEventTime.new(@event, DateTime.current, DateTime.current + 1.hour, params[:user].present? ? User.find_by(id: params[:user]) : current_user, params[:service_line]).run
-
     respond_to do |format|
-      if update_event_time.success? and @event.update(event_params)
-        # @event.update_event_notification
+      if @event.update(event_params)
         flash[:notice] = 'Event was successfully updated.'
-        format.html { redirect_to conductor_events_path }
-        format.json { render :show, status: :ok, location: @event }
+        format.json { render json: @event, status: :ok }
       else
         set_staffers
         @event.build_address unless @event.address.present?
