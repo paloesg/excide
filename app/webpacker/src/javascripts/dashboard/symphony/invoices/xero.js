@@ -219,7 +219,7 @@ $(document).on("turbolinks:load", function () {
       .closest(".line_items")
       .find("input[id$='_amount']")
       .val();
-    calculateTotalTax(itemAmount, itemRate);
+    updateTotalTax();
   });
 
   $(".dropdown-items").on('select2:select', function (e){
@@ -275,7 +275,7 @@ $(document).on("turbolinks:load", function () {
         .closest(".line_items")
         .find("input[id$='_amount']")
         .val();
-      calculateTotalTax(itemAmount, itemRate);
+      updateTotalTax();
     });
     return event.preventDefault();
   });
