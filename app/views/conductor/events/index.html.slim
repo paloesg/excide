@@ -31,6 +31,7 @@
         thead
           tr
             th
+            th Date
             th
               | Activity Task
               a.ml-2 data-container="body" title="Job nature of your task" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
@@ -51,7 +52,10 @@
                   .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=(event.allocations[0].user.full_name)
                     span.initials
                       = event.allocations[0].user.first_name[0] + event.allocations[0].user.last_name[0]
-                td width="35%" = event.event_type&.name
+                td width="20%"
+                  = f.date_field :start_time, { class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
+                td width="20%"
+                  = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
                 td width="20%"
                   = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'selectize', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
