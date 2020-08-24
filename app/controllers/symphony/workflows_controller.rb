@@ -177,7 +177,6 @@ class Symphony::WorkflowsController < ApplicationController
         users = User.with_role(current_task.role.name.to_sym, @company)
         current_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{current_action.task.instructions}", workflow_action_id: current_action.id }, send_later: false
         users.each do |user|
-          NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
           # Only send slack, whatsapp and sms notification when company is PRO
           if @company.pro?
             # Check if slack is connected using company.slack_access_response.present?
