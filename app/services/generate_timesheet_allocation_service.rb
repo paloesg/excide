@@ -17,13 +17,13 @@ class GenerateTimesheetAllocationService
   private
   def generate_availability
     # Generate availabilities when the associate/consultant records the timesheet themselves. Assigned will be automatically true
-    @availability = Availability.new(user_id: @user.id, available_date: @event.start_time.to_date, start_time: @event.start_time.strftime("%H:%M"), end_time: @event.end_time.strftime("%H:%M"), assigned: true)
+    @availability = Availability.new(user_id: @user.id, available_date: @event.start_time.to_date, start_time: @event.start_time.strftime("%H:%M"), end_time: (@event.start_time + 1.day).strftime("%H:%M"), assigned: true)
     @availability.save
   end
 
   def generate_allocation
-    @allocation = Allocation.new(user_id: @user.id, event_id: @event.id, allocation_date: @event.start_time.to_date, start_time: @event.start_time.strftime("%H:%M"), end_time: @event.end_time.strftime("%H:%M"), allocation_type: (@user.has_role? :associate, @user.company) ? "associate" : "consultant", availability_id: @availability.id)
-    @allocation.save!
+    @allocation = Allocation.new(user_id: @user.id, event_id: @event.id, allocation_date: @event.start_time.to_date, start_time: @event.start_time.strftime("%H:%M"), end_time: (@event.start_time + 1.day).strftime("%H:%M"), allocation_type: (@user.has_role? :associate, @user.company) ? "associate" : "consultant", availability_id: @availability.id)
+    @allocation.save
   end
 
 end
