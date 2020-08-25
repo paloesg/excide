@@ -75,8 +75,23 @@
 hr
 .row
   .col-sm-12
-    h1 New Event
+    h1 Create new task
 .row
   .col-md-12
     = form_for @event, url: conductor_events_path do |f|
-      = render 'form', f: f
+      .form-inline
+        - if current_user.has_role? :staffer, @company or current_user.has_role? :admin, @company
+          .form-group.mr-3
+            = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last&.user&.id), {prompt: 'Allocate someone...', class: 'selectize'}  
+        .form-group.mr-3
+          = f.date_field :start_time, class: 'form-control'
+        .form-group.mr-3 
+          = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }, {selected: @event.event_type_id, prompt: 'Select job nature...'}, class: 'selectize'
+        .form-group.mr-3
+          = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, class: 'selectize'
+        .form-group.mr-3
+          = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), include_blank: true, prompt: 'Select service line...', class: 'selectize'
+        .form-group.mr-3
+          = f.number_field :number_of_hours, {min: 0, step: 0.1, placeholder: 'No. of hours spent...', class: 'form-control'}
+        .form-group
+          = f.submit 'Save Event', class: 'btn btn-primary'
