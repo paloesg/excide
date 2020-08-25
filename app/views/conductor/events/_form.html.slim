@@ -23,10 +23,10 @@
       .form-group
         = label_tag "Allocate User", "Allocate User"
         / the assumption here is that event has only one allocation (for the timesheet allocation service)
-        = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last&.user&.id), {prompt: 'Allocate someone...', class: 'selectize'}   
-    .form-group
-      = f.label :remarks
-      = f.text_area :remarks, class: 'form-control'
+        = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last&.user&.id), {prompt: 'Allocate someone...', class: 'selectize'}  
+    .form-group 
+      = f.label :start_time, 'Date of task'
+      = f.date_field :start_time, class: 'form-control'
 .row
   .col-sm-12
     = f.submit 'Save Event', class: 'btn btn-primary'

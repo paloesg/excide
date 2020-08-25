@@ -9,8 +9,8 @@ class Conductor::EventsController < ApplicationController
   # GET /conductor/events
   # GET /conductor/events.json
   def index
-    date_from = params[:start_date].present? ? params[:start_date].to_date : Date.current
-    date_to = params[:end_date].present? ? params[:end_date].to_date : (Date.current + 1.month)
+    date_from = params[:start_date].present? ? params[:start_date].to_date : Date.current.beginning_of_month
+    date_to = params[:end_date].present? ? params[:end_date].to_date : Date.current.end_of_month
 
     #filter event using scope setup in model
     @events = Event.includes(:address, :client, :staffer, :event_type, [allocations: :user]).company(@company.id)
@@ -21,6 +21,10 @@ class Conductor::EventsController < ApplicationController
     
     # Only show events relevant to associate if logged in as associate or consultant
     @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role?(:associate, @company) or @user.has_role?(:consultant, @company)
+
+    # Create new form in index page
+    @event = Event.new
+    @event.build_address
   end
 
   # GET /conductor/events/1
@@ -59,6 +63,7 @@ class Conductor::EventsController < ApplicationController
         # Allocate yourself to the timesheet allocation
         @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, params[:user].present? ? User.find(params[:user]) : current_user).run if current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company or current_user.has_role? :staffer, @company
         if current_user.has_role? :admin, @company or @timesheet_allocation.success?
+          format.html { redirect_to conductor_events_path, notice: 'Event created successfully.'}
           format.json { render :show, status: :created, location: @event }
           format.js   { render js: 'Turbolinks.visit(location.toString());' }
         else

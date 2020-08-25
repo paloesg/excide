@@ -6,8 +6,9 @@
       = link_to export_conductor_allocations_path(start_date: params[:start_date], end_date: params[:end_date]), target: "_blank", class: 'btn btn-primary float-right mr-1' do
         i.material-icons-outlined get_app
         span.ml-2 Export
-    = link_to 'Event Types', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, @company or @user.has_role? :staffer, @company
-    = link_to 'New Event', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1' if @user.has_role?(:staffer, @company) or @user.has_role?(:admin, @company)
+    = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, @company or @user.has_role? :staffer, @company
+    = link_to 'Add Job Nature', new_conductor_event_type_path, role: 'button', class: 'btn btn-primary float-right mr-1'
+    = link_to 'New Task', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1'
 .row.mt-5
   .col-md-12.m-2
     .col-md-1.float-left.mt-3.px-0
@@ -27,7 +28,7 @@
 .row
   .col-sm-12
     .table-responsive
-      table.table.table-hover
+      table.table.table-striped
         thead
           tr
             th
@@ -45,14 +46,14 @@
             th
             th
         tbody
-          - @events.each do |event|
+          - @events.order(start_time: :desc).each do |event|
             = form_for event, url: conductor_event_path(event.id), remote: true do |f|
               tr
                 td.text-center width="5%"
                   .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=(event.allocations[0].user.full_name)
                     span.initials
                       = event.allocations[0].user.first_name[0] + event.allocations[0].user.last_name[0]
-                td width="20%"
+                td width="15%"
                   = f.date_field :start_time, { class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
                 td width="20%"
                   = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
@@ -60,14 +61,22 @@
                   = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'selectize', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
                   = f.select :tag_list, @service_lines.map { |sl| [sl, sl]}, { selected: event.tags.last, prompt: 'Select service line...' }, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
-                td width="10%"
-                  = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this);"}
-                td width="5%"
+                td width="15%"
+                  = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control col-sm-12', data: { event_id: event.id }, onchange: "eventsUpdate(this);"}
+                td.p-0 width="5%"
                   .dropdown.dropdown-inline.float-right
                     a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                       i.fa.fa-ellipsis-h.text-secondary
                     .dropdown-menu.dropdown-menu-right
-                      .dropdown-item = link_to "Delete", conductor_event_path(event), method: :delete
+                      .dropdown-item = link_to "Delete", conductor_event_path(event), method: :delete, data: {confirm: "Are you sure you want to delete task?"}
                 td width="5%"
                   = fa_icon "check", class: 'text-success ajax-icons'
                   = fa_icon "times", class: 'text-danger ajax-icons'
+hr
+.row
+  .col-sm-12
+    h1 New Event
+.row
+  .col-md-12
+    = form_for @event, url: conductor_events_path do |f|
+      = render 'form', f: f
