@@ -24,7 +24,6 @@ class Conductor::EventsController < ApplicationController
 
     # Create new form in index page
     @event = Event.new
-    @event.build_address
   end
 
   # GET /conductor/events/1
@@ -39,7 +38,6 @@ class Conductor::EventsController < ApplicationController
   # GET /conductor/events/new
   def new
     @event = Event.new
-    @event.build_address
   end
 
   # GET /conductor/events/1/edit
