@@ -110,7 +110,7 @@ $(document).on("turbolinks:load", function() {
     let serviceLineSelectize = $("select.service-line").selectize();
     let serviceLineData = (serviceLineSelectize[0].selectize).getValue();
 
-    Turbolinks.visit('//' + location.host + location.pathname + '?start_date=' + startDate +'&end_date='+ endDate +'&project_clients='+ projectClientData + '&allocation_users=' + allocationUserData + '&service_line=' + serviceLineData);
+    Turbolinks.visit("//" + location.host + location.pathname + "?start_date=" + startDate +"&end_date="+ endDate +"&project_clients="+ projectClientData + "&allocation_users=" + allocationUserData + "&service_line=" + serviceLineData);
   })
 
 })
