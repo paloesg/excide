@@ -46,7 +46,7 @@ class Symphony::TemplatesController < ApplicationController
     if @template.save
       # Instead of removing section model completely, create a default section that links template with task, but don't show in the UI
       @section = Section.create(position: 1, template_id: @template.id)
-      redirect_to edit_symphony_template_path(@template)
+      redirect_to edit_symphony_template_path(@template, last_action: 'create')
     else
       render :new
     end
@@ -61,8 +61,16 @@ class Symphony::TemplatesController < ApplicationController
     authorize @template
     if params[:template].present?
       if @template.update(template_params)
-        flash[:notice] = 'Template has been saved.'
-        redirect_to edit_symphony_template_path(@template)
+        if params[:last_action].present?
+          # params[:last_action] checks that last action comes from template create method, then set recurring attributes to template and create the first workflow
+          @workflow = Workflow.create(user: current_user, company: current_user.company, template: @template)
+          # Set the 1st next_workflow_date after workflow is created
+          @template.set_recurring_attributes_and_next_workflow_date(@workflow)
+          redirect_to symphony_workflows_path(workflow_name: @template.slug)
+        else
+          flash[:notice] = 'Template has been saved.'
+          redirect_to edit_symphony_template_path(@template)
+        end
       else
         flash[:alert] = @template.errors.full_messages.join
         render :edit

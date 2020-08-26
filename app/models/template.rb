@@ -112,4 +112,28 @@ class Template < ApplicationRecord
       Template.where(id: template_ids, company: user.company).order(:created_at)
     end
   end
+
+  def set_recurring_attributes_and_next_workflow_date(workflow)
+    case self.template_pattern
+    when 'daily'
+      self.freq_unit = 'days'
+      self.freq_value = 1
+    when 'weekly'
+      self.freq_unit = 'weeks'
+      self.freq_value = 1
+    when 'monthly'
+      self.freq_unit = 'months'
+      self.freq_value = 1
+    when 'quarterly'
+      self.freq_unit = 'months'
+      self.freq_value = 3
+    when 'annually'
+      self.freq_unit = 'years'
+      self.freq_value = 1
+    else
+      puts "On-demand no recurring!"
+    end
+    self.next_workflow_date = workflow.created_at + self.freq_value.send(self.freq_unit) unless self.template_pattern == 'on_demand'
+    self.save
+  end
 end

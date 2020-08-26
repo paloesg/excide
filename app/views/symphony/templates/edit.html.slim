@@ -3,7 +3,7 @@
     h1 Edit #{@template.title}
 .row
   .col-xl-12
-    = form_for(@template, url: symphony_template_path(template_slug: @template.slug), html: {class:'save-form-template'}) do |f|
+    = form_for(@template, url: symphony_template_path(template_slug: @template.slug, last_action: params[:last_action])) do |f|
       - if @template.sections.present?
         = render 'form', f: f
         = f.submit 'Save Template', class: 'btn btn-primary float-right'    
