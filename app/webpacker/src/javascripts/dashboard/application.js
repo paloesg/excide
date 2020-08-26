@@ -31,6 +31,7 @@ window.createAllocation = require("./conductor/create_allocations");
 window.addAvailability = require("./conductor/add_availabilities");
 require("./conductor/home");
 require("./conductor/go_to_allocation");
+require("./conductor/event_update");
 require("./components/calendar_style");
 
 // Import Uppy drag-and-drop
