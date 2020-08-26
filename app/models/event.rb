@@ -32,7 +32,7 @@ class Event < ApplicationRecord
   scope :start_time, ->(time){where(start_time: time) if time.present?}
 
   def name
-    "#{client&.name} " + event_type&.name.to_s
+    client&.name + " " + event_type&.name
   end
 
   def update_event_notification
