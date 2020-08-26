@@ -86,12 +86,13 @@ $(document).on("turbolinks:load", function() {
 
   $('.conductor-filter-button').click(function (e) {
     
-    var allocation_user_selectize = $("select.allocation-users").selectize();
-    var event_type_selectize = $("select.event-type").selectize();
+    var allocationUserSelectize = $("select.allocation-users").selectize();
+    var eventTypeSelectize = $("select.event-type").selectize();
+    var projectClientSelectize = $("select.project-clients").selectize();
 
-    var projectClientData = (project_client_selectize[0].selectize).getValue();
-    var allocationUserData = (allocation_user_selectize[0].selectize).getValue();
-    var eventTypeData = (event_type_selectize[0].selectize).getValue();
+    var projectClientData = (projectClientSelectize[0].selectize).getValue();
+    var allocationUserData = (allocationUserSelectize[0].selectize).getValue();
+    var eventTypeData = (eventTypeSelectize[0].selectize).getValue();
 
     Turbolinks.visit('//' + location.host + location.pathname + '?event_types=' + eventTypeData +'&project_clients='+ projectClientData +'&allocation_users='+ allocationUserData);
   });
@@ -100,14 +101,14 @@ $(document).on("turbolinks:load", function() {
     let startDate = $("#startDate").val();
     let endDate = $("#endDate").val();
 
-    let project_client_selectize = $("select.project-clients").selectize();
-    let projectClientData = (project_client_selectize[0].selectize).getValue();
+    let projectClientSelectize = $("select.project-clients").selectize();
+    let projectClientData = (projectClientSelectize[0].selectize).getValue();
 
-    let allocation_user_selectize = $("select.allocation-users").selectize();
-    let allocationUserData = (allocation_user_selectize[0].selectize).getValue();
+    let allocationUserSelectize = $("select.allocation-users").selectize();
+    let allocationUserData = (allocationUserSelectize[0].selectize).getValue();
 
-    let service_line_selectize = $("select.service-line").selectize();
-    let serviceLineData = (service_line_selectize[0].selectize).getValue();
+    let serviceLineSelectize = $("select.service-line").selectize();
+    let serviceLineData = (serviceLineSelectize[0].selectize).getValue();
 
     Turbolinks.visit('//' + location.host + location.pathname + '?start_date=' + startDate +'&end_date='+ endDate +'&project_clients='+ projectClientData + '&allocation_users=' + allocationUserData + '&service_line=' + serviceLineData);
   })
