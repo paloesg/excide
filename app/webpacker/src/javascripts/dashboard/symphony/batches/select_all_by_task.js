@@ -19,7 +19,7 @@ $(document).on("turbolinks:load", function(){
   });
 
   $(".timesheetSelectAll").on("click", function() {
-    $(".task-checkboxes").prop('checked', !clicked);
+    $(".task-checkboxes").prop("checked", !clicked);
     clicked = !clicked;
-  })
+  });
 });

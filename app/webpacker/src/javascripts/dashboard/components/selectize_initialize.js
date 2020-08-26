@@ -51,7 +51,7 @@ $(document).on("turbolinks:load", function() {
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
 
-  $('select.service-line').selectize({
+  $("select.service-line").selectize({
     placeholder: "Choose service line...",
     plugins: ['remove_button'],
     allowEmptyOption: true,
@@ -86,8 +86,8 @@ $(document).on("turbolinks:load", function() {
 
   $('.conductor-filter-button').click(function (e) {
     
-    var allocation_user_selectize = $('select.allocation-users').selectize();
-    var event_type_selectize = $('select.event-type').selectize();
+    var allocation_user_selectize = $("select.allocation-users").selectize();
+    var event_type_selectize = $("select.event-type").selectize();
 
     var projectClientData = (project_client_selectize[0].selectize).getValue();
     var allocationUserData = (allocation_user_selectize[0].selectize).getValue();
@@ -96,17 +96,17 @@ $(document).on("turbolinks:load", function() {
     Turbolinks.visit('//' + location.host + location.pathname + '?event_types=' + eventTypeData +'&project_clients='+ projectClientData +'&allocation_users='+ allocationUserData);
   });
 
-  $('.timesheet-filter-button').click(function() {
-    let startDate = $("#startDate").val()
-    let endDate = $("#endDate").val()
+  $(".timesheet-filter-button").click(function() {
+    let startDate = $("#startDate").val();
+    let endDate = $("#endDate").val();
 
-    let project_client_selectize = $('select.project-clients').selectize();
+    let project_client_selectize = $("select.project-clients").selectize();
     let projectClientData = (project_client_selectize[0].selectize).getValue();
 
-    let allocation_user_selectize = $('select.allocation-users').selectize();
+    let allocation_user_selectize = $("select.allocation-users").selectize();
     let allocationUserData = (allocation_user_selectize[0].selectize).getValue();
 
-    let service_line_selectize = $('select.service-line').selectize();
+    let service_line_selectize = $("select.service-line").selectize();
     let serviceLineData = (service_line_selectize[0].selectize).getValue();
 
     Turbolinks.visit('//' + location.host + location.pathname + '?start_date=' + startDate +'&end_date='+ endDate +'&project_clients='+ projectClientData + '&allocation_users=' + allocationUserData + '&service_line=' + serviceLineData);

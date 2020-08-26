@@ -1,11 +1,11 @@
-window.eventsUpdate = function(form_element) {
-  let formJquery = $(form_element);
+window.eventsUpdate = function(formElement) {
+  let formJquery = $(formElement);
   let tableRow = formJquery.parent().parent();
   $.ajax({
-    type: 'PATCH',
-    url: '/conductor/events/' + formJquery.data('event-id'),
+    type: "PATCH",
+    url: "/conductor/events/" + formJquery.data("event-id"),
     data: formJquery,
-    dataType: 'JSON'
+    dataType: "JSON"
   }).done(function(data){
     $(tableRow.find(".fa-check")).show().fadeTo(500, 200, function () {
         $(tableRow.find(".fa-check")).fadeTo(200, 0);
@@ -15,4 +15,4 @@ window.eventsUpdate = function(form_element) {
         $(tableRow.find(".fa-times")).fadeTo(200, 0);
       });
   });
-}
+};
