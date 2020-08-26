@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_03_191742) do
+ActiveRecord::Schema.define(version: 2020_08_26_061405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -262,6 +262,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_191742) do
     t.integer "company_id"
     t.integer "staffer_id"
     t.uuid "client_id"
+    t.decimal "number_of_hours"
     t.index ["company_id"], name: "index_events_on_company_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
@@ -507,8 +508,8 @@ ActiveRecord::Schema.define(version: 2020_08_03_191742) do
     t.bigint "child_workflow_template_id"
     t.bigint "survey_template_id"
     t.uuid "document_template_id"
-    t.integer "deadline_type"
     t.bigint "user_id"
+    t.integer "deadline_type"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
@@ -527,6 +528,12 @@ ActiveRecord::Schema.define(version: 2020_08_03_191742) do
     t.integer "workflow_type", default: 0
     t.integer "deadline_day"
     t.integer "deadline_type"
+    t.integer "template_pattern"
+    t.integer "freq_value"
+    t.integer "freq_unit"
+    t.date "next_workflow_date"
+    t.date "start_date"
+    t.date "end_date"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end

@@ -4,6 +4,8 @@ class Template < ApplicationRecord
 
   enum workflow_type: { ordered: 0, unordered: 1 }
   enum deadline_type: { xth_day_of_the_month: 0, days_to_complete: 1 }
+  enum template_pattern: { on_demand: 0, daily: 1, weekly: 2, monthly: 3, quarterly: 4, annually: 5 }
+  enum freq_unit: {days: 0, weeks: 1, months: 2, years: 3}
 
   has_many :sections, -> { order(position: :asc) }, dependent: :destroy
   has_many :tasks, through: :sections, dependent: :destroy
