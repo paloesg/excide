@@ -54,6 +54,7 @@ class Conductor::EventsController < ApplicationController
     end
 
     @event = Event.new(event_params)
+    @event.end_time = @event.start_time + 1.hour
     @event.company = @company
     @event.tag_list.add(params[:service_line]) if params[:service_line].present?
     respond_to do |format|
