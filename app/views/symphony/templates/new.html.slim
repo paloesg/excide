@@ -12,10 +12,19 @@
             .card-body
               .form-group
                 = f.label :title, "Title:"
-                = f.text_field :title, class: "form-control"
+                = f.text_field :title, required: true, class: "form-control"
               .form-group
                 = f.label :workflow_type, "Routine Type:"
                 = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width"}
+              .form-group
+                = f.label :template_pattern, "This routine repeats:"
+                = f.select :template_pattern, ::Template.template_patterns.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width", required: true}
+              .form-group
+                = f.label :start_date, "Start routine:"
+                = f.date_field :start_date, class: 'form-control'
+              .form-group
+                = f.label :end_date, "End routine:"
+                = f.date_field :end_date, class: 'form-control'
               .form-group
                 = f.label :deadline_type, "Deadline Type:"
                 = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type dropdown-overlay task-items-dropdown-width" }
