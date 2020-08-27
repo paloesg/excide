@@ -1,0 +1,36 @@
+container
+  = render(partial: 'header')
+  row
+    columns
+      p Hi #{@user.first_name},
+      - if @email_summary_notifications.length == 1
+        p Good day! You only have 1 task today.
+      - else
+        p Good day! You have #{@email_summary_notifications.length} tasks today.
+      br
+
+      /! cycles through the sorted array of email email_summary_notifications
+      - @email_summary_notifications.each do |notification|
+        p
+          - if notification.get_overdue_status_colour == "text-danger"
+            em
+              '
+              a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#F64E60;" #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
+
+          - elsif notification.get_overdue_status_colour == "text-warning"
+            em
+              '
+              a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#FFA800;" #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
+
+          - elsif notification.get_overdue_status_colour == "text-primary"
+            em
+              '
+              a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#3699FF;" #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
+
+
+
+      br
+      p If you have any queries regarding your task, please contact your admin.
+  row
+    columns
+      = render(partial: 'footer')

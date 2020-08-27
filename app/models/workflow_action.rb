@@ -119,6 +119,19 @@ class WorkflowAction < ApplicationRecord
     self.workflow.batch ? WorkflowAction.where(workflow: [self.workflow.batch.workflows.pluck(:id)], task_id: self.task.id).pluck(:completed).uniq.exclude?(false) : false
   end
 
+  def get_overdue_status_colour
+    # same logic as symphony homepage colour (app/views/symphony/home/index.html.slim)
+    if self.deadline.to_date < Date.today
+      return "text-danger"
+    elsif self.deadline.to_date <= Date.tomorrow
+      return "text-warning"
+    elsif self.company.before_deadline_reminder_days.present? && workflow_action.deadline.to_date - workflow_action.company.before_deadline_reminder_days <= Date.today
+      return "text-warning"
+    else
+      return "text-primary"
+    end
+  end
+
   private
 
   def update_workflow_total_time_mins
