@@ -146,6 +146,13 @@ class Symphony::WorkflowsController < ApplicationController
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
     end
+    # completed action is no longer the current action
+    @action.update(current_action: false)
+    if !@action.workflow.completed?
+      # the next action is now the current action
+      next_action = @action.workflow.workflow_actions.where(completed: false).first
+      next_action.update(current_action: true)
+    end
   end
 
   def toggle_all

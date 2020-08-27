@@ -192,6 +192,7 @@ class Workflow < ApplicationRecord
 
   def trigger_first_task
     self.current_task.get_workflow_action(self.company_id, self.id).set_deadline_and_notify(self.current_task)
+    # sets the first workflow actions as the current action
     self.current_task.get_workflow_action(self.company_id, self.id).update(current_action: true)
   end
 
