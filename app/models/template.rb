@@ -113,7 +113,7 @@ class Template < ApplicationRecord
     end
   end
 
-  def set_recurring_attributes_and_next_workflow_date(workflow)
+  def set_recurring_attributes
     case self.template_pattern
     when 'daily'
       self.freq_unit = 'days'
@@ -133,7 +133,15 @@ class Template < ApplicationRecord
     else
       puts "On-demand no recurring!"
     end
+    self.save
+  end
+
+  def set_next_workflow_date(workflow)
     self.next_workflow_date = workflow.created_at + self.freq_value.send(self.freq_unit) unless self.template_pattern == 'on_demand'
     self.save
+  end
+
+  def self.today
+    Template.where(next_workflow_date: Date.current.beginning_of_day..Date.current.end_of_day)
   end
 end

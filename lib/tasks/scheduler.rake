@@ -11,6 +11,17 @@ namespace :scheduler do
     Snitcher.snitch(ENV['SNITCH_TOKEN'], message: "Finished in #{time.round(2)} seconds.")
   end
 
+  task :generate_next_workflow => :environment do
+    Template.today.each do |t|
+      # Check if next_workflow_date is after end date of project
+      if t.next_workflow_date < t.end_date
+        # Since user is the same for all workflows, we can do workflows[0].user
+        workflow = Workflow.create(user: t.workflows[0].user, company: t.company, template: t)
+        t.set_next_workflow_date(workflow)
+      end
+    end
+  end
+
   task :enquiry_emails => :environment do
     enquiries = Enquiry.yesterday.where(responded: false)
     enquiries.each do |enquiry|
