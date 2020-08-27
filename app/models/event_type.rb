@@ -3,5 +3,5 @@ class EventType < ApplicationRecord
   friendly_id :name, use: [:slugged, :finders]
 
   has_many :events
-  validates :name, :slug, :colour, presence: true
+  validates :name, :slug, presence: true
 end

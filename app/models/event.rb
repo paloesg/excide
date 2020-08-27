@@ -11,9 +11,7 @@ class Event < ApplicationRecord
   has_many :allocations, dependent: :destroy
 
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
-  validates :company, :client, :event_type, :start_time, :end_time, presence: true
-  validate :end_must_be_after_start
-  validate :start_date_equals_to_end_date
+  validates :company, :event_type, :start_time, presence: true
 
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
@@ -34,7 +32,7 @@ class Event < ApplicationRecord
   scope :start_time, ->(time){where(start_time: time) if time.present?}
 
   def name
-    client.name + ' ' + event_type&.name.to_s
+    client&.name + " " + event_type&.name
   end
 
   def update_event_notification
@@ -63,13 +61,5 @@ class Event < ApplicationRecord
 
   def destroy_event_notification
     NotificationMailer.destroy_event(self, self.staffer).deliver if self.staffer.present?
-  end
-
-  def end_must_be_after_start
-    errors.add(:end_time, "must be after start time") unless end_time > start_time
-  end
-
-  def start_date_equals_to_end_date
-    errors.add(:end_time, "must be on the same day as start time") unless start_time.to_date == end_time.to_date
   end
 end

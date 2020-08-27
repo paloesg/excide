@@ -6,8 +6,6 @@ ruby '2.6.5'
 gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 6.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -21,8 +19,6 @@ gem 'turbolinks', '~> 5.1.0'
 gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
-# Force sprockets rails to use version 2.3.3 to fix Heroku deployment issue
-gem 'sprockets-rails', '2.3.3'
 # Use puma web server
 gem 'puma'
 # Set timeout for long running processes
