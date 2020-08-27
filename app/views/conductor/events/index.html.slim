@@ -53,7 +53,7 @@
                   td.text-center width="5%"
                     .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=(event.allocations[0].user.full_name)
                       span.initials
-                        = event.allocations[0].user.first_name[0] + event.allocations[0].user.last_name[0]
+                        = "#{event.allocations[0].user.first_name[0]}#{event.allocations[0].user&.last_name[0]}"
                 - else
                   td
                 td width="15%"
