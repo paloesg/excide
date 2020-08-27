@@ -51,7 +51,7 @@ class SendDailySummary
     
     def get_user_notifications
       @email_summary_notifications
-      @user_actions = WorkflowAction.includes(:workflow).all_user_actions(@user).where.not(completed: true, deadline: nil).where(workflow: self.workflow, completed: false).first.order(:company_id, :deadline).includes(:task)
+      @user_actions = WorkflowAction.includes(:workflow).all_user_actions(@user).where.not(completed: true, deadline: nil).where(current_action: true).order(:company_id, :deadline).includes(:task)
       
 
       

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_03_191742) do
+ActiveRecord::Schema.define(version: 2020_08_27_082516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -593,6 +593,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_191742) do
     t.text "remarks"
     t.uuid "workflow_id"
     t.integer "time_spent_mins"
+    t.boolean "current_action", default: false
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
     t.index ["company_id"], name: "index_workflow_actions_on_company_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"

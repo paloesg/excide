@@ -219,4 +219,13 @@ class WorkflowAction < ApplicationRecord
       false
     end
   end
+
+  # if the workflow_action is complete, belongs to an ordered workflow, and is not the last workflow_action of the workflow, it sets the next task to be the 'current action'
+  def set_next_action_to_current
+    if ordered_workflow_task_completed? && self.workflow_action_id < self.workflow.workflow_actions.length
+      current_action_id = self.workflow_action_id + 1
+      self.current_action = false
+      self.workflow.where(workflow_action_id: current_action_id).current_action = true
+    end
+  end
 end
