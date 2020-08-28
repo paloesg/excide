@@ -8,24 +8,28 @@ container
       - else
         p Good day! You have #{@email_summary_notifications.length} tasks today.
       br
-
-      /! cycles through the sorted array of email email_summary_notifications
-      - @email_summary_notifications.each do |notification|
+        
+      - @companies.each do |current_company|
         p
-          - if notification.get_overdue_status_colour == "text-danger"
-            em
-              '
-              a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#F64E60;" #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
+          strong #{current_company.name}
+          /! cycles through the sorted array of email email_summary_notifications
+          - @email_summary_notifications.each do |notification|
+            p
+              - if notification.company.name == current_company.name
+                - if notification.get_overdue_status_colour == "text-danger"
+                  em
+                    '
+                    a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#F64E60;" [#{notification.workflow.template.title}] #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
 
-          - elsif notification.get_overdue_status_colour == "text-warning"
-            em
-              '
-              a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#FFA800;" #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
+                - elsif notification.get_overdue_status_colour == "text-warning"
+                  em
+                    '
+                    a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#FFA800;" [#{notification.workflow.template.title}] #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
 
-          - elsif notification.get_overdue_status_colour == "text-primary"
-            em
-              '
-              a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#3699FF;" #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
+                - elsif notification.get_overdue_status_colour == "text-primary"
+                  em
+                    '
+                    a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#3699FF;" [#{notification.workflow.template.title}] #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
 
 
 

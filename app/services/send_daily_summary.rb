@@ -17,51 +17,20 @@ class SendDailySummary
     end
   
     private
-  
-    # query from each of user's companies
-    # get the workflow_actions of the companies
-    # ensure that the workflow_actions' previous step is alr completed
-    # order the workflow_actions in ascending deadline 
-    # continue to next company
-    def get_user_notifications_draft
-      #@reminders = Reminder.today.where(user: @user)
-      @email_summary_notifications = []
-      @user.company.each do |company|
-        @sorted_company_workflow_actions = []
-        @company_workflow_actions = company.workflow_actions.where(user: @user, )
 
-        # INSERT VALIDATION FOR PREV STEP COMPLETION
-        @company_workflow_actions.each do |company_workflow_action|
-            # gets the first incomplete workflow_action (aka the one next up) in the task
-            first_incomplete_workflow_action = company_workflow_action.task.workflow_actions.where(completed: false).first  #not sure about the ordering, first may not return the next workflow_action
-
-            #checks if the company_workflow_action is indeed the next workflow_action to be completed
-            if first_incomplete_workflow_action == company_workflow_action && company_workflow_action.deadline != null
-                @sorted_company_workflow_actions.concat(company_workflow_action)
-            end
-        end
-
-
-        @sorted_company_workflow_actions = @sorted_company_workflow_actions.sort_by { |sorted_company_workflow_action| sorted_company_workflow_action.deadline }
-        @email_summary_notifications.concat(@sorted_company_workflow_actions)
-      end
-    end
-    
     # using app/controllers/symphony/home_controller.rb querying method
-    
     def get_user_notifications
-      @email_summary_notifications
-      @user_actions = WorkflowAction.includes(:workflow).all_user_actions(@user).where.not(completed: true, deadline: nil).where(current_action: true).order(:company_id, :deadline).includes(:task)
-      
-
-      
-      @email_summary_notifications = @user_actions
+      @email_summary_notifications = WorkflowAction.includes(:workflow).all_user_actions(@user).where.not(completed: true, deadline: nil).where(current_action: true).order(:company_id, :deadline).includes(:task)
     end
 
     def send_daily_summary
-      #email_reminders = @reminders.where(email: true)
-      #email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
-      NotificationMailer.daily_summary(@email_summary_notifications, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
+      # @email_summary_notifications = @email_summary_notifications.where(email: true)
+      @companies = []
+      @email_summary_notifications.each do |email_summary_notification|
+        @companies << email_summary_notification.company
+      end
+      @companies = @companies.uniq
+      NotificationMailer.daily_summary(@email_summary_notifications, @user, @companies).deliver_now if @user.settings[0]&.reminder_email == 'true'
     end
   end
   
