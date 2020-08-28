@@ -52,8 +52,6 @@ $(document).on("turbolinks:load", function () {
         $(".selectize-input input").attr("style", "width: auto;");
       },
     });
-
-    $("select.selectize-user-assignment").selectize();
   }
 
   $("select.project-clients").selectize({
