@@ -11,9 +11,9 @@ class SendDailySummary
   
     def run
       get_user_notifications
-      #return OpenStruct.new(success?:true, notifications_count: 0, user: @user, message: 'No reminders for this user.') if @email_summary_notifications.empty?
+      return OpenStruct.new(success?:true, notifications_count: 0, user: @user, message: 'No notifications for this user.') if @email_summary_notifications.empty?
       send_daily_summary
-      #return OpenStruct.new(success?:true, notifications_count: @email_summary_notifications.count, user: @user, message: 'Reminders for this user sent.')
+      return OpenStruct.new(success?:true, notifications_count: @email_summary_notifications.length, user: @user, message: 'Notifications for this user sent.')
     end
   
     private
@@ -24,7 +24,6 @@ class SendDailySummary
     end
 
     def send_daily_summary
-      # @email_summary_notifications = @email_summary_notifications.where(email: true)
       @companies = []
       @email_summary_notifications.each do |email_summary_notification|
         @companies << email_summary_notification.company

@@ -148,12 +148,14 @@ class Workflow < ApplicationRecord
       s.tasks.each do |t|
         if t.user_id.present?
           if self.template.unordered?
+            # workflow actions of an unordered routine can be done in any order, so they are all current actions
             wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id, current_action: true)
           else
             wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id)
           end
         else
           if self.template.unordered?
+            # workflow actions of an unordered routine can be done in any order, so they are all current actions
             wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, current_action: true)
           else
             wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
