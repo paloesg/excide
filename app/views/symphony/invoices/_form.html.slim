@@ -42,7 +42,7 @@
         .row.m-2
           .form-group.col-md-6
             = f.label :currency, 'Currency'
-            = f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'select2', style: 'width: 100%'
+            = f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'select2 form-control'
 .row
   .col-md-12
     .card.mb-3
