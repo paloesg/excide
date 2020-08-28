@@ -21,7 +21,7 @@ class Symphony::WorkflowsController < ApplicationController
     @current_workflow = @workflows.reverse.detect { |wf| wf.created_at.month <= Date.current.month}
     @current_month = @current_workflow.created_at.month
     @quarters = [@current_month]
-    @quarters.push(@current_month += @template.freq_value) while @current_month < 12
+    @quarters.push(@current_month += @template.freq_value) while @current_month <= 12
     @quarters.pop()
     # Determine how many years in the filtering options based on deadline
     @years_to_filter = @template.workflows.pluck(:deadline).map { |d| d.present? ? d.year : [Date.current.year] }.uniq

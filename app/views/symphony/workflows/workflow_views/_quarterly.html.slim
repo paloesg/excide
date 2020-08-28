@@ -1,3 +1,4 @@
+= @quarters
 - @quarters.each do |quarter|
   - if @workflows.select { |wf| wf.created_at.strftime('%F').split('-')[1].to_i == (quarter)}.present?
     tr style=("cursor: pointer;" + ((@workflow == @current_workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) 
