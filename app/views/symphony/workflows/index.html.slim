@@ -5,7 +5,8 @@
       .label.label-inline.label-dark.ml-4
         span = @template.template_pattern.humanize
   .col-md-6.d-flex.justify-content-end
-    = select_tag('year', options_for_select(@years_to_filter, selected: params[:year]), prompt: 'Choose a year...', class: 'selectize selectize-year mr-2')
+    - if @template.template_pattern != "annually"
+      = select_tag('year', options_for_select(@years_to_filter, selected: params[:year]), prompt: 'Choose a year...', class: 'selectize selectize-year mr-2')
     - if policy(@template).edit? || policy(@template).destroy?
       .dropdown.dropdown-inline.float-right
         a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
