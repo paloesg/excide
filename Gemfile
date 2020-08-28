@@ -181,6 +181,7 @@ group :development do
 
   # Add squasher to collate old migration file
   gem 'squasher', '>= 0.6.0'
+  gem 'foreman'
 end
 
 group :development, :test do
