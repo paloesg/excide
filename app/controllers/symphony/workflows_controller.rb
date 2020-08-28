@@ -17,6 +17,7 @@ class Symphony::WorkflowsController < ApplicationController
   def index
     @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == 2020}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
     @year = params[:year].present? ? params[:year].to_i : Date.current.year
+    # Create quarterly month array
     @current_workflow = @workflows.select { |wf| wf.created_at.month <= Date.today.month}.last
     @current_month = @current_workflow.created_at.month
     @quarters = [@current_month]
@@ -24,6 +25,8 @@ class Symphony::WorkflowsController < ApplicationController
     @quarters.pop()
     # Determine how many years in the filtering options based on deadline
     @years_to_filter = @template.workflows.pluck(:deadline).map { |d| d.present? ? d.year : [Date.current.year] }.uniq
+    # Create a year array from template
+    @years_from_deadline = @template.template_pattern == 'annually' && @template.end_date ? (@template.start_date.year..@template.end_date.year).to_a : [@template.start_date.year]
   end
 
   def new
