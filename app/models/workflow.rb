@@ -147,9 +147,17 @@ class Workflow < ApplicationRecord
     sections.each do |s|
       s.tasks.each do |t|
         if t.user_id.present?
-          wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id)
+          if self.template.unordered?
+            wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id, current_action: true)
+          else
+            wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id)
+          end
         else
-          wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
+          if self.template.unordered?
+            wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, current_action: true)
+          else
+            wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
+          end
         end
         conditionally_set_deadline(t, wfa)
       end
