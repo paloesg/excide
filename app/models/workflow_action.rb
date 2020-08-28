@@ -111,11 +111,11 @@ class WorkflowAction < ApplicationRecord
 
   def get_overdue_status_colour
     # same logic as symphony homepage colour (app/views/symphony/home/index.html.slim)
-    if self.deadline.to_date < Date.today
+    if self.deadline.to_date < Date.current
       return "text-danger"
     elsif self.deadline.to_date <= Date.tomorrow
       return "text-warning"
-    elsif self.company.before_deadline_reminder_days.present? && workflow_action.deadline.to_date - workflow_action.company.before_deadline_reminder_days <= Date.today
+    elsif self.company.before_deadline_reminder_days.present? && workflow_action.deadline.to_date - workflow_action.company.before_deadline_reminder_days <= Date.current
       return "text-warning"
     else
       return "text-primary"
