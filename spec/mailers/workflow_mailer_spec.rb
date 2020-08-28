@@ -11,7 +11,6 @@ RSpec.describe WorkflowMailer, type: :mailer do
     # workflow = build(:workflow, template: template)
     # user = build(:user)
     # company = build(:company)
-    # WorkflowMailer.email_summary(workflow, user, company).deliver
   end
 
   after(:each) do

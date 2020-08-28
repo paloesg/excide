@@ -31,8 +31,7 @@
             td.py-2 width="10%" data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
               - if wfa.assigned_user.present?
                 .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=wfa.assigned_user.full_name
-                  span.initials
-                    = wfa.assigned_user.first_name[0] + wfa.assigned_user.last_name[0]
+                  span.initials #{wfa.assigned_user.first_name[0]}#{wfa.assigned_user.last_name[0]}
               - else
                 .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip"  title=(wfa.task.role.name.humanize + " (" + wfa.task.role.users.length.to_s + ")")
                   span.initials

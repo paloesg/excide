@@ -43,6 +43,15 @@ class Symphony::HomeController < ApplicationController
     @activities = Kaminari.paginate_array(@get_activities).page(params[:page]).per(10)
   end
 
+  def add_tasks_to_timesheet
+    params[:tasks].each do |task_id|
+      @event_type = EventType.find_or_create_by(name: Task.find(task_id.to_i).instructions)
+      @event = Event.create(event_type: @event_type, company_id: current_user.company.id, start_time: DateTime.current, end_time: DateTime.current + 1.hour)
+      @generated_allocation = GenerateTimesheetAllocationService.new(@event, current_user).run
+    end
+    redirect_to conductor_events_path, notice: "Timesheet has been added!"
+  end
+
   private
 
   def sort_column(array)

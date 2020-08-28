@@ -11,6 +11,7 @@ namespace :scheduler do
     Snitcher.snitch(ENV['SNITCH_TOKEN'], message: "Finished in #{time.round(2)} seconds.")
   end
 
+
   # Rake task for the the daily summary email
   task :daily_summary => :environment do
     time = Benchmark.realtime {
@@ -22,12 +23,6 @@ namespace :scheduler do
     Snitcher.snitch(ENV['SNITCH_TOKEN'], message: "Finished in #{time.round(2)} seconds.")
   end
 
-  task :deadline_send_summary_email => :environment do
-    @workflows = Workflow.where(deadline: (Date.current - 1.day).beginning_of_day)
-    @workflows.each do |workflow|
-      WorkflowMailer.email_summary(workflow, workflow.user, workflow.company).deliver_later unless workflow.batch.present?
-    end
-  end
 
   task :enquiry_emails => :environment do
     enquiries = Enquiry.yesterday.where(responded: false)
