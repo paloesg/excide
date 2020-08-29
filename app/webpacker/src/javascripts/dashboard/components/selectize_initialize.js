@@ -2,14 +2,14 @@ $(document).on("turbolinks:before-render", function () {
   $("select.selectize")[0].selectize.destroy();
 });
 $(document).on("turbolinks:load", function () {
-  $(".select2-workflow-type").on("select2:select", function(e) {
+  $(".select2-workflow-type").on("select2:select", function (e) {
     var data = e.params.data;
     Turbolinks.visit(
       "//" + location.host + location.pathname + "?workflow_type=" + data.id
     );
   });
 
-  $(".select2-year").on("select2:select", function(e) {
+  $(".select2-year").on("select2:select", function (e) {
     var data = e.params.data;
     Turbolinks.visit(
       "//" + location.host + location.pathname + "?year=" + data.text
@@ -54,26 +54,27 @@ $(document).on("turbolinks:load", function () {
     });
   }
 
-  $('select.project-clients').selectize({
+  $("select.project-clients").selectize({
     placeholder: "Choose project clients...",
-    plugins: ['remove_button'],
-    allowEmptyOption: true,
-    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
-  });
-
-  $("select.service-line").selectize({
-    placeholder: "Choose service line...",
-    plugins: ['remove_button'],
+    plugins: ["remove_button"],
     allowEmptyOption: true,
     onFocus: function () {
       $(".selectize-input input").attr("style", "width: auto;");
     },
   });
 
+  $("select.service-line").selectize({
+    placeholder: "Choose service line...",
+    plugins: ["remove_button"],
+    allowEmptyOption: true,
+    onFocus: function () {
+      $(".selectize-input input").attr("style", "width: auto;");
+    },
+  });
 
-  $('select.allocation-users').selectize({
+  $("select.allocation-users").selectize({
     placeholder: "Choose user...",
-    plugins: ['remove_button'],
+    plugins: ["remove_button"],
     allowEmptyOption: true,
     onFocus: function () {
       $(".selectize-input input").attr("style", "width: auto;");
@@ -101,16 +102,14 @@ $(document).on("turbolinks:load", function () {
     },
   });
 
-
-  $('.conductor-filter-button').click(function (e) {
-    
+  $(".conductor-filter-button").click(function (e) {
     var allocationUserSelectize = $("select.allocation-users").selectize();
     var eventTypeSelectize = $("select.event-type").selectize();
     var projectClientSelectize = $("select.project-clients").selectize();
 
-    var projectClientData = (projectClientSelectize[0].selectize).getValue();
-    var allocationUserData = (allocationUserSelectize[0].selectize).getValue();
-    var eventTypeData = (eventTypeSelectize[0].selectize).getValue();
+    var projectClientData = projectClientSelectize[0].selectize.getValue();
+    var allocationUserData = allocationUserSelectize[0].selectize.getValue();
+    var eventTypeData = eventTypeSelectize[0].selectize.getValue();
 
     Turbolinks.visit(
       "//" +
@@ -127,40 +126,53 @@ $(document).on("turbolinks:load", function () {
 
   $(".select2").select2({
     minimumResultsForSearch: 5,
-    placeholder: "Select..."
+    placeholder: "Select...",
   });
 
   $(".select2-allow-clear").select2({
     minimumResultsForSearch: 5,
     placeholder: "Select...",
-    allowClear: true
+    allowClear: true,
   });
 
-  $(".timesheet-filter-button").click(function() {
+  $(".timesheet-filter-button").click(function () {
     let startDate = $("#startDate").val();
     let endDate = $("#endDate").val();
 
     let projectClientSelectize = $("select.project-clients").selectize();
-    let projectClientData = (projectClientSelectize[0].selectize).getValue();
+    let projectClientData = projectClientSelectize[0].selectize.getValue();
 
     let allocationUserSelectize = $("select.allocation-users").selectize();
-    let allocationUserData = (allocationUserSelectize[0].selectize).getValue();
+    let allocationUserData = allocationUserSelectize[0].selectize.getValue();
 
     let serviceLineSelectize = $("select.service-line").selectize();
-    let serviceLineData = (serviceLineSelectize[0].selectize).getValue();
+    let serviceLineData = serviceLineSelectize[0].selectize.getValue();
 
-    Turbolinks.visit("//" + location.host + location.pathname + "?start_date=" + startDate +"&end_date="+ endDate +"&project_clients="+ projectClientData + "&allocation_users=" + allocationUserData + "&service_line=" + serviceLineData);
+    Turbolinks.visit(
+      "//" +
+        location.host +
+        location.pathname +
+        "?start_date=" +
+        startDate +
+        "&end_date=" +
+        endDate +
+        "&project_clients=" +
+        projectClientData +
+        "&allocation_users=" +
+        allocationUserData +
+        "&service_line=" +
+        serviceLineData
+    );
   });
 
   $(".select2").select2({
     minimumResultsForSearch: 5,
-    placeholder: "Select..."
+    placeholder: "Select...",
   });
 
   $(".select2-allow-clear").select2({
     minimumResultsForSearch: 5,
     placeholder: "Select...",
-    allowClear: true
+    allowClear: true,
   });
 });
-

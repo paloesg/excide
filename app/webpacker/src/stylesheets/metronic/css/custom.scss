@@ -154,7 +154,7 @@ td.day.has-events.fc-day-top.fc-past {
   right: 0.4rem !important;
 }
 
-.select2-selection__clear:after {
+.select2-selection__clear::after {
   content: "" !important;
 }
 
