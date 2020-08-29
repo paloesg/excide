@@ -152,12 +152,10 @@ $(document).on("turbolinks:load", function () {
       let dontDestroyLineItem =
         $(item).closest("tr.line_items").find("input.destroy").val() !== "1";
       // Check tax field has value & status of the line item is not destroyed & value not empty
-      if (
-        dontDestroyLineItem &&
-        currentTaxRate.value !== ""
-      ) {
+      if (dontDestroyLineItem && currentTaxRate.value !== "") {
         let taxRate = currentTaxRate["dataset"]["rate"];
-        let currentAmount = $(item).parent()
+        let currentAmount = $(item)
+          .parent()
           .closest("tr.line_items")
           .find("input[id$='_amount']")
           .val();
@@ -209,10 +207,9 @@ $(document).on("turbolinks:load", function () {
     }
   });
 
-  
   dropdownTax = $(".dropdown-tax");
 
-  $(".dropdown-tax").on('select2:select', function (e){
+  $(".dropdown-tax").on("select2:select", function (e) {
     $(".total-tax-row").remove();
     let itemRate = this.options[this.selectedIndex]["dataset"]["rate"];
     let itemAmount = $(this)
@@ -222,7 +219,7 @@ $(document).on("turbolinks:load", function () {
     updateTotalTax();
   });
 
-  $(".dropdown-items").on('select2:select', function (e){
+  $(".dropdown-items").on("select2:select", function (e) {
     let obj = e.params.data.id;
     let itemCode = obj.split(": ")[0];
     getXeroItem(itemCode, "0");
@@ -249,17 +246,15 @@ $(document).on("turbolinks:load", function () {
     );
     $(".select2").select2({
       minimumResultsForSearch: 5,
-      placeholder: "Select..."
+      placeholder: "Select...",
     });
-    $("select[id$='" + time + "_item']").on('select2:select', function (e){
+    $("select[id$='" + time + "_item']").on("select2:select", function (e) {
       let obj = e.params.data.id;
       let itemCode = obj.split(": ")[0];
       getXeroItem(itemCode, time);
     });
     // Add tax selectize object into array of dropdownTax
-    dropdownTax.push(
-      $("select[id$='" + time + "_tax']")[0]
-    );
+    dropdownTax.push($("select[id$='" + time + "_tax']")[0]);
     $("select[id$='" + time + "_tracking_option_1']").select2({
       dropdownParent: "body",
     });
@@ -268,7 +263,7 @@ $(document).on("turbolinks:load", function () {
     });
     $(".data-attributes").find("tr:last-child").find(".create").val("1");
     calculateAmount();
-    $("select[id$='" + time + "_tax']").on('select2:select', function (e){
+    $("select[id$='" + time + "_tax']").on("select2:select", function (e) {
       $(".total-tax-row").remove();
       let itemRate = this.options[this.selectedIndex]["dataset"]["rate"];
       let itemAmount = $(this)
