@@ -40,7 +40,7 @@
                           = f.hidden_field :file_url, class: 'file-path form-control', disabled: true
                         .form-group
                           = f.label :document_template_id, 'Document Template'
-                          = f.collection_select :document_template_id, @document_templates, :id, :title, {include_blank: true}, {class: 'selectize'}
+                          = f.collection_select :document_template_id, @document_templates, :id, :title, {include_blank: true}, class: 'select2 select2-allow-clear form-control'
                       .form-group
                         = f.label :remarks
                         = f.text_area :remarks, class: 'form-control'
