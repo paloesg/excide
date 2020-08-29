@@ -20,8 +20,8 @@ class Conductor::EventsController < ApplicationController
     @events = @events.client(params[:project_clients]) unless params[:project_clients].blank?
     @events = Event.tagged_with(params[:service_line]) unless params[:service_line].blank?
     
-    # Only show events relevant to associate if logged in as associate or consultant
-    @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) if @user.has_role?(:associate, @company) or @user.has_role?(:consultant, @company)
+    # Only show their own timesheet events unless they are admin or staffer, as the 2 can see all events
+    @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) unless @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
 
     # Create new form in index page
     @event = Event.new
@@ -55,14 +55,15 @@ class Conductor::EventsController < ApplicationController
     end
 
     @event = Event.new(event_params)
+    # Placeholder for event's end time as there is no end time in the form
     @event.end_time = @event.start_time + 1.hour
     @event.company = @company
     @event.tag_list.add(params[:service_line]) if params[:service_line].present?
     respond_to do |format|
       if @event.save
         # Allocate yourself to the timesheet allocation
-        @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, params[:user].present? ? User.find(params[:user]) : current_user).run if current_user.has_role? :associate, @company or current_user.has_role? :consultant, @company or current_user.has_role? :staffer, @company
-        if current_user.has_role? :admin, @company or @timesheet_allocation.success?
+        @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, params[:user].present? ? User.find(params[:user]) : current_user).run 
+        if @timesheet_allocation.success?
           format.html { redirect_to conductor_events_path, notice: 'Event created successfully.'}
           format.json { render :show, status: :created, location: @event }
           format.js   { render js: 'Turbolinks.visit(location.toString());' }

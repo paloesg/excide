@@ -6,7 +6,7 @@
       = link_to export_conductor_allocations_path(start_date: params[:start_date], end_date: params[:end_date]), target: "_blank", class: 'btn btn-primary float-right mr-1' do
         i.material-icons-outlined get_app
         span.ml-2 Export
-    = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, @company or @user.has_role? :staffer, @company
+      = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' 
     = link_to 'New Task', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1'
 .row.mt-5
   .col-md-12.m-2
