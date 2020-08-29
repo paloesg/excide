@@ -51,9 +51,11 @@ html lang="en"
     /! begin:: Content
     - if user_signed_in?
       - if controller.class.parents.include?(Conductor)
-        .container
-          .row.mt-5
-            .col-sm-12
+        .container-fluid
+          .row
+            .col-sm-2.bg-white.border-right
+              = render 'layouts/sidebar'
+            .col-sm-10.mt-5
               = yield
       - else
         .container-fluid
@@ -66,7 +68,7 @@ html lang="en"
             - else
               .col-sm-2.bg-white.border-right
                 / for settings page, render a different sidebar
-                - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)))
+                - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)) || current_page?(conductor_events_path)) 
                   = render 'layouts/sidebar_settings'
                 - else
                   = render 'layouts/sidebar'

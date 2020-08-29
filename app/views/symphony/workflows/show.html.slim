@@ -29,7 +29,13 @@
             td width="55%" data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
               = wfa.task.instructions
             td.py-2 width="10%" data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
-              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "24x24", class: "rounded-circle"
+              - if wfa.assigned_user.present?
+                .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=wfa.assigned_user.full_name
+                  span.initials #{wfa.assigned_user.first_name[0]}#{wfa.assigned_user.last_name[0]}
+              - else
+                .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip"  title=(wfa.task.role.name.humanize + " (" + wfa.task.role.users.length.to_s + ")")
+                  span.initials
+                    i.material-icons.font-size-h5.text-white people
             td.d-flex data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
               - if !wfa.completed? && wfa.deadline.present?
                 - if wfa.deadline.to_date < Date.today

@@ -6,7 +6,6 @@ class Batch < ApplicationRecord
   belongs_to :user
   has_many :workflows, dependent: :destroy
   has_many :documents, through: :workflows
-  after_create :send_email_notification
 
   enum status: { processing: 0, processing_complete: 1 }
   aasm column: :status, enum: true do
@@ -50,15 +49,6 @@ class Batch < ApplicationRecord
   #Since each template's workflows have the same workflow_actions, can get the total number of actions by multiplying the number of workflows in batch with the workflow_actions of ANY one workflow
   def total_action
     self.workflows.present? ? (self.workflows.length * self.workflows.first.workflow_actions.length) : 0
-  end
-
-  def send_email_notification
-    first_task = self.template.sections.first.tasks.first
-    task = (first_task.task_type == "upload_file") ? first_task.lower_item : first_task
-    users = User.with_role(task.role.name.to_sym, self.company)
-    users.each do |user|
-      NotificationMailer.first_task_notification(task, self, user).deliver_later
-    end
   end
 
   def name

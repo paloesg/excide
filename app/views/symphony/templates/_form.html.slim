@@ -18,7 +18,8 @@
             .form-group
               .xth-day.d-none
                 = f.label :deadline_day, "Deadline - Day of the month:"
-                span.text-danger.d-none.deadline-warning Note: Symphony will auto set the deadline to the previous date if the month does not consist of the date 29, 30 or 31.
+                span.text-danger.d-none.deadline-warning 
+                  br Note: The due date for each cycle will be set to the last day of the month if the month does not consist of the dates 29, 30 or 31.
                 = f.number_field :deadline_day, min: 0, max: 31, class: "form-control"
               .days-to-complete.d-none
                 = f.label :deadline_day, "Deadline - Number of days after start:"

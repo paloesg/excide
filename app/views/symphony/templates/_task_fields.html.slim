@@ -18,12 +18,13 @@ tr
     div id="task-index-#{f.index}-section-#{g.id}" class="collapse"
       .form-inline.col-sm-12.p-0.mb-2
         .form-group.col-sm-5.d-block
-          = f.label :deadline_type, 'Deadline Type', class: 'float-left mb-2 mt-2'
+          = f.label :deadline_type, 'Deadline Type', class: 'float-left my-2'
           = f.select :deadline_type, ::Task.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, {class: "task-deadlines-type select2 select2-allow-clear mb-2", style:'width: 100%'}
         .form-group.col-sm-5
-          = f.label :deadline_day, "Day of deadline", class: 'mt-2'
-          span.text-danger.d-none.task-deadline-warning Note: Symphony will auto set the deadline to the previous date if the month does not consist of the date 29, 30 or 31.
-          = f.number_field :deadline_day, class: "form-control col-sm-12 mt-2"
+          = f.label :deadline_day, "Day of deadline", class: 'my-2'
+          span.text-danger.d-none.task-deadline-warning 
+            br Note: The due date for each cycle will be set to the last day of the month if the month does not consist of the dates 29, 30 or 31.
+          = f.number_field :deadline_day, class: "form-control col-sm-12"
         .form-group.col-sm-2.mt-2
           = f.label :set_reminder
           = f.check_box :set_reminder, {class: "form-control ml-4"}

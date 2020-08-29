@@ -6,8 +6,6 @@ ruby '2.6.5'
 gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 6.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -21,8 +19,6 @@ gem 'turbolinks', '~> 5.1.0'
 gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
-# Force sprockets rails to use version 2.3.3 to fix Heroku deployment issue
-gem 'sprockets-rails', '2.3.3'
 # Use puma web server
 gem 'puma'
 # Set timeout for long running processes
@@ -135,10 +131,11 @@ gem 'activity_notification'
 gem 'slack-ruby-client'
 
 # Backend admin
-gem 'administrate', '0.13.0'
+gem 'administrate', '0.14.0'
 gem 'administrate-field-image'
-gem 'administrate-field-nested_has_many', git: 'https://github.com/hschin/administrate-field-nested_has_many.git'
+gem 'administrate-field-nested_has_many'
 gem 'administrate-field-jsonb'
+gem 'administrate-field-active_storage'
 
 # Deep cloning for cloning of template with associated sections
 gem 'deep_cloneable', '~> 3.0.0'
@@ -184,6 +181,7 @@ group :development do
 
   # Add squasher to collate old migration file
   gem 'squasher', '>= 0.6.0'
+  gem 'foreman'
 end
 
 group :development, :test do

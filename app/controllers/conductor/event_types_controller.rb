@@ -21,7 +21,7 @@ class Conductor::EventTypesController < ApplicationController
 
     respond_to do |format|
       if @event_type.save
-        format.html { redirect_to conductor_event_types_path, notice: 'Event type was successfully created.' }
+        format.html { redirect_to conductor_events_path, notice: 'Event type was successfully created.' }
         format.json { render :show, status: :created, location: @event_type }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else

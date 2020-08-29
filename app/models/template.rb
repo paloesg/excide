@@ -14,6 +14,8 @@ class Template < ApplicationRecord
 
   belongs_to :company
 
+  after_update :update_workflow_actions
+
   accepts_nested_attributes_for :sections
 
   enum business_model: [:ecommerce, :marketplace, :media, :mobile, :saas, :others]
@@ -108,6 +110,16 @@ class Template < ApplicationRecord
       section_ids = Task.where(role_id: user.roles).or(Task.where(user_id: user.id)).pluck(:section_id).uniq
       template_ids = Section.where(id: section_ids).pluck(:template_id).uniq
       Template.where(id: template_ids, company: user.company).order(:created_at)
+    end
+  end
+
+  def update_workflow_actions
+    self.tasks.each do |task|
+      # If there's assigned_user, it will store the ID, else it will be nil
+      task.workflow_actions.map { |wfa| 
+        wfa.assigned_user_id = task.user_id
+        wfa.save
+      }
     end
   end
 end

@@ -33,20 +33,6 @@ class Workflow < ApplicationRecord
           owner: ->(controller, _model) { controller && controller.current_user },
           recipient: ->(_controller, model) { model }
 
-  include AlgoliaSearch
-  algoliasearch do
-    attribute :id, :completed, :created_at, :updated_at, :deadline
-    attribute :workflowable do
-      { client_name: workflowable&.name, client_identifier: workflowable&.identifier }
-    end
-    attribute :template do
-      { title: template&.title, slug: template&.slug }
-    end
-    attribute :company do
-      { name: company&.name, slug: company&.slug }
-    end
-  end
-
   def short_uuid
     self.slug = ShortUUID.shorten id
     self.save

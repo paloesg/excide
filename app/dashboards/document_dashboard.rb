@@ -8,17 +8,18 @@ class DocumentDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    company: Field::BelongsTo,
     id: Field::String,
-    filename: Field::String,
-    remarks: Field::Text,
-    date_signed: Field::DateTime,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
-    file_url: Field::String,
+    company: Field::BelongsTo,
     workflow: Field::BelongsTo,
     document_template: Field::BelongsTo,
     user: Field::BelongsTo,
+    remarks: Field::Text,
+    created_at: Field::DateTime,
+    updated_at: Field::DateTime,
+    filename: Field::String,
+    file_url: Field::String,
+    raw_file: Field::ActiveStorage,
+    converted_images: Field::ActiveStorage,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -27,28 +28,27 @@ class DocumentDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
+    :raw_file,
     :company,
     :user,
     :workflow,
-    :document_template,
     :id,
-    :filename,
-    :remarks,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
+    :raw_file,
     :company,
     :user,
     :workflow,
     :document_template,
     :id,
-    :filename,
     :remarks,
-    :date_signed,
     :created_at,
     :updated_at,
+    :converted_images,
+    :filename,
     :file_url,
   ].freeze
 
@@ -56,13 +56,14 @@ class DocumentDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
+    :raw_file,
     :company,
     :user,
     :workflow,
     :document_template,
-    :filename,
     :remarks,
-    :date_signed,
+    :converted_images,
+    :filename,
     :file_url,
   ].freeze
 
