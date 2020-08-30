@@ -43,9 +43,3 @@ require("./components/selectize_initialize");
 require("./components/document_popover");
 require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");
-
-require("./turbolinks-compatibility");
-
-// Actiontext
-require("trix");
-require("@rails/actiontext");
