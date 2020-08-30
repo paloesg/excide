@@ -3,8 +3,6 @@ require("jquery");
 import $ from "jquery";
 window.jQuery = $;
 window.$ = $;
-// Active storage direct upload
-require("@rails/activestorage").start();
 
 window.moment = require("moment");
 window.mixpanel = require("mixpanel-browser");
