@@ -122,6 +122,10 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :motif do
+    root to: 'home#index'
+  end
+
   namespace :conductor do
     resources :event_types
     resources :users do
