@@ -15,16 +15,17 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == 2020}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
-    @year = params[:year].present? ? params[:year].to_i : Date.current.year
+    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == Date.current.year}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
+    # Determine how many years and months in the filtering options based on deadline
+    @years_to_filter = @template.workflows.pluck(:created_at).map { |d| d.year }.uniq
+    @months_to_filter = (@template.start_date..@template.end_date).to_a.map { |d| d.month }.uniq
+    
     # Create quarterly month array
     @current_workflow = @workflows.reverse.detect { |wf| wf.created_at.month <= Date.current.month}
     @current_month = @current_workflow.created_at.month
     @quarters = [@current_month]
     @quarters.push(@current_month += @template.freq_value) while @current_month <= 12
     @quarters.pop()
-    # Determine how many years in the filtering options based on deadline
-    @years_to_filter = @template.workflows.pluck(:deadline).map { |d| d.present? ? d.year : [Date.current.year] }.uniq
     # Create a year array from template
     @years_from_deadline = @template.template_pattern == 'annually' && @template.end_date ? (@template.start_date.year..@template.end_date.year).to_a : [@template.start_date.year]
   end
