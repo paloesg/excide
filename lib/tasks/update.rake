@@ -106,4 +106,13 @@ namespace :update do
       wf.update(total_time_mins: wf.workflow_actions.sum(:time_spent_mins))
     end
   end
+
+  desc "Update existing notifications with group"
+  task update_existing_notifications_group: :environment do
+    ActivityNotification::Notification.where(notifiable_type: "WorkflowAction").where(group_id: nil).each do |notification|
+      notification.group = WorkflowAction.find(notification.notifiable_id).workflow.template
+      notification.save
+      puts "Updated group for notification #{notification.id}"
+    end
+  end
 end
