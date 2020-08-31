@@ -39,7 +39,7 @@
       li.nav-item
         /! begin: Notification bar
         / uses view notifications/default/workflow_action/:key.html.slim
-        = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
+        = render_notifications_of current_user, fallback: :default, index_content: :with_attributes, with_group_members: true
       /! begin: Admin bar
       li.nav-link
         = link_to edit_user_registration_path do

@@ -19,4 +19,27 @@
       / ! end: Head
       .notifications
         // yield views with keys as filename in views and notifier name as folder
-        = yield :notification_index
+        - templates = @target.notifications.unopened_only.pluck(:group_id).uniq
+        - ::Template.assigned_templates(current_user).find(templates).each do |template|
+          .navi.notification_list.unopened.border-bottom.border-secondary
+            a.navi-item.sidebar-font aria-expanded="false" data-toggle="collapse" href="#notificationMenu_#{template.id}"
+              .navi-link
+                .symbol.mx-3.pr-5
+                  i.flaticon2-checking.icon-3x.text-primary
+                  span.badge.badge-danger.rounded-circle.mb-3.p-1.ml-n4
+                    = @target.notifications.unopened_only.where(group_id: template.id).count
+                .navi-text.font-size-h6
+                  = template.title
+            .collapse id="notificationMenu_#{template.id}"
+              = render_notifications(@target.notifications.unopened_only.where(group_id: template.id).order(created_at: :desc))
+        - if @target.notifications.unopened_only.where(group_id: nil).present?
+          .navi.notification_list.unopened
+            a.navi-item.sidebar-font aria-expanded="false" data-toggle="collapse" href="#notificationMenu_others"
+              .navi-link
+                .symbol.mx-3.pr-5
+                  i.flaticon2-checking.icon-3x.text-primary
+                  span.badge.badge-danger.rounded-circle.mb-3.p-1.ml-n4
+                    = @target.notifications.unopened_only.where(group_id: nil).count
+                .navi-text.font-size-h6 Others
+            .collapse id="notificationMenu_others"
+              = render_notifications(@target.notifications.unopened_only.where(group_id: nil).order(created_at: :desc))
