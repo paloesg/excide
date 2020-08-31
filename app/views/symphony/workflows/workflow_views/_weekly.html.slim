@@ -1,0 +1,39 @@
+/ Loop through the weeks between the created_at date and end date, and then select workflows that matched the current date
+- (@template.start_date.to_date..@template.end_date).step(7).map(&:to_date).each do |date|
+  - if @workflows.select { |wf| wf.created_at.to_date == date}.present?
+    - @selected_workflow = @workflows.select { |wf| wf.created_at.to_date == date}[0]
+    tr style=("cursor: pointer;" + ((@workflow == @selected_workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) 
+      td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @selected_workflow.id)}'"
+        label.checkbox
+          = check_box_tag 'completed', @selected_workflow.id, @selected_workflow.completed, disabled: true
+          span
+      td width="25%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @selected_workflow.id)}'"
+        = @selected_workflow.created_at.strftime("%d %b %Y")
+      td width="20%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @selected_workflow.id)}'"
+        = "(" + (@selected_workflow.workflow_actions.where(completed: true).count*100/@selected_workflow.workflow_actions.count).to_s + "%)" if (@selected_workflow.workflow_actions.present? && !@selected_workflow.completed?)
+      td width="15%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @selected_workflow.id)}'"
+        = @selected_workflow.total_time_mins.to_s + "m" unless @selected_workflow.total_time_mins == 0
+      td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @selected_workflow.id)}'"
+        - if !@selected_workflow.completed? && @selected_workflow.deadline.present?
+          - if @selected_workflow.deadline.to_date < Date.today
+            i.fa.fa-xs.fa-circle.text-danger.mr-3
+          - elsif @selected_workflow.deadline.to_date <= Date.tomorrow
+            i.fa.fa-xs.fa-circle.text-warning.mr-3
+          - else
+            i.fa.fa-xs.fa-circle.text-primary.mr-3
+      td width="25%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @selected_workflow.id)}'"
+        = @selected_workflow.deadline&.strftime("%d %b %Y")
+      td width="5%"
+        a href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+          i.fa.fa-ellipsis-h.text-secondary
+        .dropdown-menu
+          .dropdown-item = link_to "Delete", symphony_workflow_path(workflow_name: @selected_workflow.template.slug, workflow_id: @selected_workflow.id), data: { confirm: 'This will delete the cycle. Are you sure?'}, method: :delete
+  - else
+    - if date.month == Date.current.month
+      / Only disable the row before template's start date
+      tr class="bg-secondary"
+        td
+        td
+          = date.strftime("%d %b %Y")
+        td.text-left colspan="5"
+          = link_to "Creating next cycle on #{@template.next_workflow_date}", '#', class: "text-muted disabled"
