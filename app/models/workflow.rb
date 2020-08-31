@@ -28,6 +28,8 @@ class Workflow < ApplicationRecord
 
   self.implicit_order_column = "created_at"
 
+  acts_as_notification_group
+
   include PublicActivity::Model
   tracked except: :update,
           owner: ->(controller, _model) { controller && controller.current_user },
@@ -161,7 +163,7 @@ class Workflow < ApplicationRecord
     else
       # Trigger email for unordered tasks notification
       unordered_tasks_trigger_email
-      self.current_task.get_workflow_action(self.company_id, self.id).notify :users, key: 'workflow_action.unordered_workflow_notify', parameters: { printable_notifiable_name: "#{self.current_task.instructions}", workflow_action_id: self.current_task.get_workflow_action(self.company_id, self.id).id }, send_later: false
+      self.current_task.get_workflow_action(self.company_id, self.id).notify :users, key: 'workflow_action.unordered_workflow_notify', group: self.template, parameters: { printable_notifiable_name: "#{self.current_task.instructions}", workflow_action_id: self.current_task.get_workflow_action(self.company_id, self.id).id }, send_later: false
     end
   end
   # Set deadline based on settings of template and task (model), while target_model are workflows and workflow actions
