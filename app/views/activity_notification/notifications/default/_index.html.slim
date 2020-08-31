@@ -18,8 +18,8 @@
             a.nav-link.active.show aria-selected="true" data-toggle="tab" href="#topbar_notifications_notifications" role="tab"  Notifications
       / ! end: Head
       .notifications
-        // yield views with keys as filename in views and notifier name as folder
-        - templates = @target.notifications.unopened_only.pluck(:group_id).uniq
+        //filter only unique group_id, compact to prevent having [nil]
+        - templates = @target.notifications.unopened_only.pluck(:group_id).uniq.compact
         - ::Template.assigned_templates(current_user).find(templates).each do |template|
           .navi.notification_list.unopened.border-bottom.border-secondary
             a.navi-item.sidebar-font aria-expanded="false" data-toggle="collapse" href="#notificationMenu_#{template.id}"
@@ -31,6 +31,7 @@
                 .navi-text.font-size-h6
                   = template.title
             .collapse id="notificationMenu_#{template.id}"
+              // yield views with keys as filename in views and notifier name as folder
               = render_notifications(@target.notifications.unopened_only.where(group_id: template.id).order(created_at: :desc))
         - if @target.notifications.unopened_only.where(group_id: nil).present?
           .navi.notification_list.unopened
