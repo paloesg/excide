@@ -15,10 +15,10 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == 2020}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
-    @year = params[:year].present? ? params[:year].to_i : Date.current.year
-    # Determine how many years in the filtering options based on deadline
-    @years_to_filter = @template.workflows.pluck(:deadline).map { |d| d.present? ? d.year : [Date.current.year] }.uniq
+    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == Date.current.year}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
+    # Determine how many years and months in the filtering options based on deadline
+    @years_to_filter = @template.workflows.pluck(:created_at).map { |d| d.year }.uniq
+    @months_to_filter = (@template.start_date..@template.end_date).to_a.map { |d| d.month }.uniq
   end
 
   def new

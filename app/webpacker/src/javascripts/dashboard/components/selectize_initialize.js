@@ -17,6 +17,14 @@ $(document).on("turbolinks:load", function() {
     },
     onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
   });
+
+  $('select.selectize-month').selectize({
+    allowEmptyOption: true,
+    onItemAdd: function (value, $item) {
+      Turbolinks.visit('//' + location.host + location.pathname + '?month=' + value);
+    },
+    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
+  });
   
   $('.tasks-filter-button').click(function (e) {
     var tasks_selectize = $('select.selectize-tasks').selectize();
