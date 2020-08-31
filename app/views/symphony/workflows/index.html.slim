@@ -23,6 +23,10 @@
       tbody
         / render different views based on template pattern
         = render "symphony/workflows/workflow_views/#{@template.template_pattern}"
+    - if @template.on_demand?
+      .btn.btn-block.btn-hover-light-secondary.text-center
+        i.material-icons.text-muted add
+        = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
   .col-md-7
     table.table.table-borderless
       thead.thead-light

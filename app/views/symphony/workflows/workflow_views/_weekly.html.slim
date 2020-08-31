@@ -1,5 +1,5 @@
 / Loop through the weeks between the created_at date and end date, and then select workflows that matched the current date
-- (@template.start_date.to_date..@template.end_date).step(7).map(&:to_date).each do |date|
+- (@template.created_at.to_date..@template.end_date).step(7).map(&:to_date).each do |date|
   - if @workflows.select { |wf| wf.created_at.to_date == date}.present?
     - @selected_workflow = @workflows.select { |wf| wf.created_at.to_date == date}[0]
     tr style=("cursor: pointer;" + ((@workflow == @selected_workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) 
