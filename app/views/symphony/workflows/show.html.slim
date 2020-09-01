@@ -1,11 +1,11 @@
 .row
-  .col-md-6
+  .col-md-10
     h2.mt-3.d-flex.align-items-center
       = @template.title
       .label.label-inline.label-dark.ml-4
         span On-demand
-  .col-md-6.d-flex.justify-content-end
-    = select_tag('year', options_for_select(["2020", "2019", "2018"], selected: params[:year].present? ? params[:year] : @workflow.created_at.year.to_s), class: 'selectize selectize-year mr-2')
+  .col-md-2.d-flex.justify-content-end
+    = select_tag('year', options_for_select(["2020", "2019", "2018"], selected: params[:year].present? ? params[:year] : @workflow.created_at.year.to_s), class: 'select2 select2-year mr-2 w-100')
     - if policy(@template).edit? || policy(@template).destroy?
       .dropdown.dropdown-inline.float-right
         a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
@@ -44,8 +44,7 @@
             td.py-2 width="10%" data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
               - if wfa.assigned_user.present?
                 .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=wfa.assigned_user.full_name
-                  span.initials
-                    = wfa.assigned_user.first_name[0] + wfa.assigned_user.last_name[0]
+                  span.initials #{wfa.assigned_user.first_name[0]}#{wfa.assigned_user.last_name[0]}
               - else
                 .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip"  title=(wfa.task.role.name.humanize + " (" + wfa.task.role.users.length.to_s + ")")
                   span.initials

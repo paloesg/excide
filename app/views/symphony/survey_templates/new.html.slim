@@ -15,6 +15,6 @@
                 = f.text_field :title, class: "form-control"
               .form-group
                 = f.label :survey_type, "Form Type:"
-                = f.select :survey_type, ::SurveyTemplate.survey_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, {class: "dropdown-overlay task-items-dropdown-width"}
+                = f.select :survey_type, ::SurveyTemplate.survey_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, {class: "select2 task-items-dropdown-width"}
               .form-group
                 = f.submit "Create Form Template", class: 'btn btn-primary pull-left mb-3'

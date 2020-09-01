@@ -1,10 +1,8 @@
-require("jquery")
+require("jquery");
 
-import $ from 'jquery';
+import $ from "jquery";
 window.jQuery = $;
 window.$ = $;
-// Active storage direct upload
-require("@rails/activestorage").start();
 
 window.moment = require("moment");
 window.mixpanel = require("mixpanel-browser");
@@ -12,6 +10,7 @@ require("selectize");
 require("algoliasearch");
 require("tempusdominus-bootstrap-4");
 require("blueimp-file-upload");
+require("select2");
 
 require("./symphony");
 require("./symphony/new_workflow");
@@ -31,10 +30,11 @@ window.createAllocation = require("./conductor/create_allocations");
 window.addAvailability = require("./conductor/add_availabilities");
 require("./conductor/home");
 require("./conductor/go_to_allocation");
+require("./conductor/event_update");
 require("./components/calendar_style");
 
 // Import Uppy drag-and-drop
-require('./components/uppy');
+require("./components/uppy");
 require("./components/direct_upload");
 // require("./components/document_upload");
 require("./components/date_time_picker");
@@ -43,9 +43,3 @@ require("./components/selectize_initialize");
 require("./components/document_popover");
 require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");
-
-require("./turbolinks-compatibility");
-
-// Actiontext
-require("trix");
-require("@rails/actiontext");

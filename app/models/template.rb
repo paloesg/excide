@@ -16,6 +16,8 @@ class Template < ApplicationRecord
 
   belongs_to :company
 
+  after_update :update_workflow_actions
+
   accepts_nested_attributes_for :sections
 
   enum business_model: [:ecommerce, :marketplace, :media, :mobile, :saas, :others]
@@ -145,5 +147,15 @@ class Template < ApplicationRecord
 
   def self.today
     Template.where(next_workflow_date: Date.current.beginning_of_day..Date.current.end_of_day)
+  end
+
+  def update_workflow_actions
+    self.tasks.each do |task|
+      # If there's assigned_user, it will store the ID, else it will be nil
+      task.workflow_actions.map { |wfa| 
+        wfa.assigned_user_id = task.user_id
+        wfa.save
+      }
+    end
   end
 end
