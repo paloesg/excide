@@ -177,11 +177,11 @@ class Template < ApplicationRecord
     @workflows = self.workflows.select{|wf| year_params.present? ? wf.created_at.year.to_s == year_params : wf.created_at.year == Date.current.year}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
 
     # Determine how many years and months in the filtering options based on deadline
-    @years_to_filter = self.end_date.present?  ? (self.start_date.year..self.end_date.year).to_a : [self.start_date.year]
+    @years_to_filter = self.end_date.present? ? (self.start_date.year..self.end_date.year).to_a : [self.start_date.year]
     # Filtering by months
-    @months_to_filter = (self.start_date..self.end_date).to_a.map { |d| d.month }.uniq
+    @month_years_to_filter = (self.start_date..self.end_date).to_a.map { |d| "#{d.month}-#{d.year}" }.uniq
     
     @year = year_params.present? ? year_params.to_i : Date.current.year
-    return @workflows, @years_to_filter, @months_to_filter, @year
+    return @workflows, @years_to_filter, @month_years_to_filter, @year
   end
 end

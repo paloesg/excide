@@ -16,16 +16,11 @@ $(document).on("turbolinks:load", function () {
     );
   });
 
-  $("select.selectize-month").selectize({
-    allowEmptyOption: true,
-    onItemAdd: function (value, $item) {
-      Turbolinks.visit(
-        "//" + location.host + location.pathname + "?month=" + value
-      );
-    },
-    onFocus: function () {
-      $(".selectize-input input").attr("style", "width: auto;");
-    },
+  $(".select2-month-year").on("select2:select", function (e) {
+    var data = e.params.data;
+    Turbolinks.visit(
+      "//" + location.host + location.pathname + "?month_year=" + data.text
+    );
   });
 
   $(".tasks-filter-button").click(function (e) {
