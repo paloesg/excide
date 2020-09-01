@@ -158,4 +158,32 @@ class Template < ApplicationRecord
       }
     end
   end
+
+  def get_date_range
+    case self.template_pattern
+    when "daily"
+      @date_range = (self.start_date..self.end_date).map(&:to_date)
+    when "weekly"
+      @date_range = (self.start_date.to_date..self.end_date).step(7).map(&:to_date)
+    when "quarterly"
+      # Create quarterly month array. Store the current_start_date into an array called @quarters. Append to the array in 3 months interval while the latest element of the array is less than or equals to end_date
+      # Set current start date so that we won't overwrite @template.start_date
+      @current_start_date = self.start_date
+      @date_range = [@current_start_date]
+      @date_range << ( @current_start_date += 3.months) while (@date_range.last <= self.end_date)
+    end
+    return @date_range
+  end
+
+  def get_filtering_attributes(year_params)
+    @workflows = self.workflows.select{|wf| year_params.present? ? wf.created_at.year.to_s == year_params : wf.created_at.year == Date.current.year}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
+
+    # Determine how many years and months in the filtering options based on deadline
+    @years_to_filter = self.end_date.present?  ? (self.start_date.year..self.end_date.year).to_a : [self.start_date.year]
+    # Filtering by months
+    @months_to_filter = (self.start_date..self.end_date).to_a.map { |d| d.month }.uniq
+    
+    @year = year_params.present? ? year_params.to_i : Date.current.year
+    return @workflows, @years_to_filter, @months_to_filter, @year
+  end
 end

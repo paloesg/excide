@@ -1,4 +1,4 @@
-- @quarters.each do |quarter|
+- @date_range.each do |quarter|
   - if quarter.year == (params[:year].present? ? params[:year].to_i : Date.current.year)
     - if @workflows.select { |wf| wf.created_at.to_date == (quarter)}.present?
       - @selected_workflow = @workflows.select { |wf| wf.created_at.to_date == (quarter)}[0]

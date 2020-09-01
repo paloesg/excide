@@ -15,8 +15,8 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    set_filtering_attributes(@template)
-    set_date_range(@template)
+    @date_range = @template.get_date_range
+    @workflows, @years_to_filter, @months_to_filter, @year = @template.get_filtering_attributes(params[:year])
   end
 
   def new
@@ -429,31 +429,5 @@ class Symphony::WorkflowsController < ApplicationController
     account_sid = ENV['TWILIO_ACCOUNT_SID']
     auth_token = ENV['TWILIO_AUTH_TOKEN']
     @client = Twilio::REST::Client.new account_sid, auth_token
-  end
-
-  def set_date_range(template)
-    case template.template_pattern
-    when "daily"
-      @date_range = (@template.start_date..@template.end_date).map(&:to_date)
-    when "weekly"
-      @date_range = (@template.start_date.to_date..@template.end_date).step(7).map(&:to_date)
-    when "quarterly"
-      # Create quarterly month array. Store the current_start_date into an array called @quarters. Append to the array in 3 months interval while the latest element of the array is less than or equals to end_date
-      # Set current start date so that we won't overwrite @template.start_date
-      @current_start_date = @template.start_date
-      @quarters = [@current_start_date]
-      @quarters << ( @current_start_date += 3.months) while (@quarters.last <= @template.end_date)
-    end
-  end
-
-  def set_filtering_attributes(template)
-    @workflows = template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == Date.current.year}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
-
-    # Determine how many years and months in the filtering options based on deadline
-    @years_to_filter = template.end_date.present?  ? (template.start_date.year..template.end_date.year).to_a : [template.start_date.year]
-    # Filtering by months
-    @months_to_filter = (template.start_date..template.end_date).to_a.map { |d| d.month }.uniq
-    
-    @year = params[:year].present? ? params[:year].to_i : Date.current.year
   end
 end
