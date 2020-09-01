@@ -23,7 +23,7 @@
     "jquery.ui.widget": "1.10.3",
     "jsoneditor": "8.6.6",
     "mixpanel-browser": "2.35.0",
-    "moment": "2.24.0",
+    "moment": "2.27.0",
     "popper.js": "1.16.1",
     "select2": "4.0.13",
     "selectize": "0.12.6",
