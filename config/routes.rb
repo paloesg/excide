@@ -14,9 +14,6 @@ Rails.application.routes.draw do
     root controller: DashboardManifest::ROOT_DASHBOARD, action: :index
   end
 
-  # Stripe event path for webhook
-  mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
-
   # Slack callback path
   get '/oauth/authorization', to: 'slack#callback'
   delete '/disconnect_from_slack', to: 'slack#disconnect_from_slack', as: :disconnect_from_slack
@@ -94,6 +91,8 @@ Rails.application.routes.draw do
         get :trigger_workflow, to: 'recurring_workflows#trigger_workflow'
       end
     end
+
+    patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
     resources :workflows, param: :workflow_id, path: '/:workflow_name' do
       member do
@@ -177,13 +176,6 @@ Rails.application.routes.draw do
   # Integrated with Devise
   notify_to :users, with_devise: :users
 
-  get 'account/new', to: 'accounts#new', as: :new_account
-  patch 'account/create', to: 'accounts#create', as: :create_account
-  get 'account', to: 'accounts#edit', as: :edit_account
-  patch 'account', to: 'accounts#update'
-
-  resources :enquiries
-
   get 'surveys/complete', to: 'surveys#complete', as: :survey_complete
   get 'surveys/:survey_id/section/:section_position', to: 'surveys#section', as: :survey_section
   resources :surveys
@@ -204,4 +196,7 @@ Rails.application.routes.draw do
   # Static pages
   get 'terms', to: 'symphony/home#terms'
   get 'privacy', to: 'symphony/home#privacy'
+
+  # Stripe event path for webhook
+  mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
 end
