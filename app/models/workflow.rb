@@ -20,8 +20,6 @@ class Workflow < ApplicationRecord
   has_many :documents, dependent: :destroy
   has_many :surveys, dependent: :destroy
 
-  # validate :check_data_fields
-
   after_commit :create_actions_and_trigger_first_task, on: :create
   after_create :short_uuid
   after_create :set_workflow_deadline
@@ -200,9 +198,5 @@ class Workflow < ApplicationRecord
 
   def uppercase_identifier
     self.identifier = identifier.parameterize.upcase
-  end
-
-  def check_data_fields
-    self.errors.add(:data, "attribute name cannot be blank") if self.data.map(&:name).include? ""
   end
 end
