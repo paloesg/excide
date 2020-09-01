@@ -12,7 +12,7 @@
     "@uppy/dashboard": "1.12.5",
     "algoliasearch": "3.35.1",
     "blueimp-file-upload": "10.31.0",
-    "bootstrap": "4.4.1",
+    "bootstrap": "4.5.2",
     "bootstrap-datetimepicker": "0.0.7",
     "cocoon": "github:nathanvda/cocoon#6364ce5",
     "flatpickr": "4.6.3",
