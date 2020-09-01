@@ -14,13 +14,13 @@
               = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "select2 task-items-dropdown-width", required: true}
             .form-group
               = f.label :template_pattern, "This routine repeats:"
-              = f.select :template_pattern, ::Template.template_patterns.map{|k, v| [k.humanize, k]}, {}, {class: "dropdown-overlay task-items-dropdown-width", required: true}
+              = f.select :template_pattern, ::Template.template_patterns.map{|k, v| [k.humanize, k]}, {}, {class: "select2 task-items-dropdown-width", required: true}
             .form-group
               = f.label :start_date, "Start routine:"
-              = f.date_field :start_date, class: 'form-control'
+              = f.date_field :start_date, required: true, class: 'form-control'
             .form-group
               = f.label :end_date, "End routine:"
-              = f.date_field :end_date, class: 'form-control'
+              = f.date_field :end_date, required: true, class: 'form-control'
             .form-group
               = f.label :deadline_type, "Deadline Type:"
               = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "deadlines-type select2 task-items-dropdown-width select2-allow-clear" }
