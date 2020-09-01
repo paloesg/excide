@@ -16,6 +16,7 @@ class Symphony::WorkflowsController < ApplicationController
 
   def index
     set_filtering_attributes(@template)
+    set_date_range(@template)
   end
 
   def new
@@ -430,7 +431,7 @@ class Symphony::WorkflowsController < ApplicationController
     @client = Twilio::REST::Client.new account_sid, auth_token
   end
 
-  def set_filtering_attributes(template)
+  def set_date_range(template)
     case template.template_pattern
     when "daily"
       @date_range = (@template.start_date..@template.end_date).map(&:to_date)
@@ -443,7 +444,9 @@ class Symphony::WorkflowsController < ApplicationController
       @quarters = [@current_start_date]
       @quarters << ( @current_start_date += 3.months) while (@quarters.last <= @template.end_date)
     end
-      
+  end
+
+  def set_filtering_attributes(template)
     @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == Date.current.year}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
 
     # Determine how many years and months in the filtering options based on deadline
