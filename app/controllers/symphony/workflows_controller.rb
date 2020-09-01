@@ -45,7 +45,8 @@ class Symphony::WorkflowsController < ApplicationController
 
   def show
     # Variables for workflow show page
-    set_filtering_attributes(@template)
+    @date_range = @template.get_date_range
+    @workflows, @years_to_filter, @months_to_filter, @year = @template.get_filtering_attributes(params[:year])
 
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
