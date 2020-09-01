@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :template do
     title { Faker::Job.title }
+    start_date { Faker::Date.forward(days: 2) }
     company
 
     factory :template_with_workflow do
