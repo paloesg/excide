@@ -15,13 +15,17 @@ $(document).on("turbolinks:load", function () {
       "//" + location.host + location.pathname + "?year=" + data.text
     );
   });
-  
-  $('select.selectize-month').selectize({
+
+  $("select.selectize-month").selectize({
     allowEmptyOption: true,
     onItemAdd: function (value, $item) {
-      Turbolinks.visit('//' + location.host + location.pathname + '?month=' + value);
+      Turbolinks.visit(
+        "//" + location.host + location.pathname + "?month=" + value
+      );
     },
-    onFocus: function () { $(".selectize-input input").attr("style", "width: auto;"); }
+    onFocus: function () {
+      $(".selectize-input input").attr("style", "width: auto;");
+    },
   });
 
   $(".tasks-filter-button").click(function (e) {
