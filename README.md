@@ -1,6 +1,7 @@
-# Excide 
+# Excide
+
 [![CircleCI](https://circleci.com/gh/hschin/excide.svg?style=svg&circle-token=f0bf150e8df63ae18c3f38683f3202a2e59fe5bb)](https://circleci.com/gh/hschin/excide)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/78b3a488b7c14a949e56b45e1505b241)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hschin/excide&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/78b3a488b7c14a949e56b45e1505b241)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=hschin/excide&utm_campaign=Badge_Grade)
 
 The Excide web platform hosts the main website of Excide and several backend processes such as enquiries, reminders and surveys.
 
@@ -8,7 +9,7 @@ The Excide web platform hosts the main website of Excide and several backend pro
 
 The following are needed by this project:
 
-* [PostgreSQL](http://www.postgresql.org/)
+-   [PostgreSQL](http://www.postgresql.org/)
 
 ## Getting Started
 
@@ -36,13 +37,14 @@ Install ImageMagick for Image Processing gem.
 
     brew install imagemagick vips
 
-Start the application server.
+We use the Foreman gem to start all the processes needed to run the app. Currently, the 3 processes are rails server, webpacker dev server and mailcatcher. The processes are configured in the Procfile.dev file to run on your localhost.
 
-    bin/rails server
+    foreman start -f Procfile.dev
 
-Access the application at [http://localhost:3000/](http://localhost:3000/).
+You can access the application in your browser at [http://localhost:3000/](http://localhost:3000/).
 
 ## Folder Structure Conventions
+
 ### A typical top-level directory layout (only include folders)
 
     .
@@ -66,10 +68,10 @@ Access the application at [http://localhost:3000/](http://localhost:3000/).
                 ├── images
                 ├── javascripts
                 ├── stylesheets
-    ├── bin                    
-    ├── config                  # Holds database, webpacker, gems etc configuration                     
+    ├── bin
+    ├── config                  # Holds database, webpacker, gems etc configuration
     ├── db                      # Contain schemas and migration files
-    ├── lib                   
+    ├── lib
     ├── log
     ├── node_modules
     ├── public
@@ -91,7 +93,7 @@ Or have them run automatically with [Guard](https://github.com/guard/guard-rspec
 
 ## Branching
 
-* `master` is the active development branch
+-   `master` is the active development branch
 
 Make a new branch to work on your development:
 
@@ -101,10 +103,10 @@ You can check the location of your branch using `git branch` command.
 
 All local development should be done in the appropriately named branches:
 
-* `feature/<branch-name>` for substantial new features or functions
-* `enhance/<branch-name>` for minor feature or function enhancement
-* `refactor/<branch-name>` for code refactoring of existing functions
-* `bugfix/<branch-name>` for bug fixes
+-   `feature/<branch-name>` for substantial new features or functions
+-   `enhance/<branch-name>` for minor feature or function enhancement
+-   `refactor/<branch-name>` for code refactoring of existing functions
+-   `bugfix/<branch-name>` for bug fixes
 
 **WARNING: Do not merge your changes directly into your local master
 branch and push to GitHub!!!**
@@ -120,8 +122,8 @@ code and take the next appropriate actions.
 
 The application is deployed to [Heroku](https://www.heroku.com/) at:
 
-* [https://excide.herokuapp.com/](https://excide.herokuapp.com/)
-* [https://excide-staging.herokuapp.com/](https://excide-staging.herokuapp.com/)
+-   [https://excide.herokuapp.com/](https://excide.herokuapp.com/)
+-   [https://excide-staging.herokuapp.com/](https://excide-staging.herokuapp.com/)
 
 Ensure the Git remotes are set up:
 
@@ -137,11 +139,13 @@ Do remember to specify the app name when running Heroku commands like so:
 
     heroku run --a excide rake db:migrate
     heroku run --a excide-staging rake db:migrate
-    
+
 Heroku buildpack:
+
 1. ImageMagick buildpack (For file's conversion using ActiveStorage's Image processing gem)
-    * [https://github.com/DuckyTeam/heroku-buildpack-imagemagick/](https://github.com/DuckyTeam/heroku-buildpack-imagemagick/)
-    
+
+    - [https://github.com/DuckyTeam/heroku-buildpack-imagemagick/](https://github.com/DuckyTeam/heroku-buildpack-imagemagick/)
+
     `heroku buildpacks:add https://github.com/DuckyTeam/heroku-buildpack-imagemagick --app HEROKU_APP_NAME`
-    
+
 2. Others... (To be added!)
