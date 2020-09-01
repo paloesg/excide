@@ -17,8 +17,17 @@ class Symphony::WorkflowsController < ApplicationController
   def index
     @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == Date.current.year}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
     # Determine how many years and months in the filtering options based on deadline
-    @years_to_filter = @template.workflows.pluck(:created_at).map { |d| d.year }.uniq
+    @years_to_filter = @template.end_date.present?  ? (@template.start_date.year..@template.end_date.year).to_a : [@template.start_date.year]
+    # Filtering by months
     @months_to_filter = (@template.start_date..@template.end_date).to_a.map { |d| d.month }.uniq
+    
+    @year = params[:year].present? ? params[:year].to_i : Date.current.year
+
+    # Create quarterly month array
+    # Set current start date so that we won't overwrite @template.start_date
+    @current_start_date = @template.start_date
+    @quarters = [@current_start_date]
+    @quarters << ( @current_start_date += 3.months) while (@quarters.last < @template.end_date)
   end
 
   def new

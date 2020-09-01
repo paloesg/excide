@@ -30,11 +30,12 @@
           .dropdown-menu
             .dropdown-item = link_to "Delete", symphony_workflow_path(workflow_name: @selected_workflow.template.slug, workflow_id: @selected_workflow.id), data: { confirm: 'This will delete the cycle. Are you sure?'}, method: :delete
     - else
-      / Only disable the row before template's start date
-      tr class="bg-secondary"
-        td
-        td
-          = date.strftime("%d %b %Y")
-        td.text-left colspan="5"
-          = link_to "Creating next cycle on #{@template.next_workflow_date}", '#', class: "text-muted disabled"
+      - if date.year == (params[:year].present? ? params[:year].to_i : Date.current.year)
+        / Only disable the row before template's start date
+        tr class="bg-secondary"
+          td
+          td
+            = date.strftime("%d %b %Y")
+          td.text-left colspan="5"
+            = link_to "Creating next cycle on #{@template.next_workflow_date}", '#', class: "text-muted disabled"
 

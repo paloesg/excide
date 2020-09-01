@@ -1,0 +1,35 @@
+- @years_from_deadline.each do |year|
+  - if @current_workflow.created_at.year == year
+    tr style=("cursor: pointer;" + ((@current_workflow == @workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : ""))
+      td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @current_workflow.id)}'"
+        label.checkbox
+          = check_box_tag 'completed', @current_workflow.id, @current_workflow.completed, disabled: true
+          span
+      td width="40%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @current_workflow.id)}'"
+        = @current_workflow.created_at&.strftime("%Y")
+      td width="10%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @current_workflow.id)}'"
+        = "(" + (@current_workflow.workflow_actions.where(completed: true).count*100/@current_workflow.workflow_actions.count).to_s + "%)" if (@current_workflow.workflow_actions.present? && !@current_workflow.completed?)
+      td width="10%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @current_workflow.id)}'"
+        = @current_workflow.total_time_mins.to_s + "m" unless @current_workflow.total_time_mins == 0
+      td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @current_workflow.id)}'"
+        - if !@current_workflow.completed? && @current_workflow.deadline.present?
+          - if @current_workflow.deadline.to_date < Date.today
+            i.fa.fa-xs.fa-circle.text-danger.mr-3
+          - elsif @current_workflow.deadline.to_date <= Date.tomorrow
+            i.fa.fa-xs.fa-circle.text-warning.mr-3
+          - else
+            i.fa.fa-xs.fa-circle.text-primary.mr-3
+      td width="25%"  onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @current_workflow.id)}'"
+        = @current_workflow.deadline&.strftime("%d %b %Y")
+      td width="5%"
+        a href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+          i.fa.fa-ellipsis-h.text-secondary
+        .dropdown-menu
+          .dropdown-item = link_to "Delete", symphony_workflow_path(workflow_name: @current_workflow.template.slug, workflow_id: @current_workflow.id), data: { confirm: 'This will delete the cycle. Are you sure?'}, method: :delete
+  - else
+    tr class="bg-secondary"
+      td
+      td
+        = year
+      td.text-left colspan="5"
+        = link_to "Creating next cycle on #{@template.next_workflow_date}", '#', class: "text-muted disabled"
