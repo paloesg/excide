@@ -1,5 +1,5 @@
 / specifying data type of js
-= form_for(action, url:workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
+= form_for(action, url: symphony_workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
   .form-row
     .col-md-7
       = f.text_field :remarks, class: 'form-control', id: "remark-post-#{action.id}", placeholder: 'Remarks'
