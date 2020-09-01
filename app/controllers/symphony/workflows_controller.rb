@@ -445,7 +445,6 @@ class Symphony::WorkflowsController < ApplicationController
     end
       
     @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == Date.current.year}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
-    @current_workflow = @workflows.reverse.detect { |wf| wf.created_at.month <= Date.current.month}
 
     # Determine how many years and months in the filtering options based on deadline
     @years_to_filter = @template.end_date.present?  ? (@template.start_date.year..@template.end_date.year).to_a : [@template.start_date.year]
