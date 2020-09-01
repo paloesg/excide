@@ -133,8 +133,6 @@ class Template < ApplicationRecord
     when 'annually'
       self.freq_unit = 'years'
       self.freq_value = 1
-    else
-      puts "On-demand no recurring!"
     end
     self.save
   end
