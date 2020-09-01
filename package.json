@@ -15,7 +15,7 @@
     "bootstrap": "4.5.2",
     "bootstrap-datetimepicker": "0.0.7",
     "cocoon": "github:nathanvda/cocoon#6364ce5",
-    "flatpickr": "4.6.3",
+    "flatpickr": "4.6.6",
     "flickity": "2.2.1",
     "jquery": "3.5.1",
     "jquery-bridget": "2.0.1",
