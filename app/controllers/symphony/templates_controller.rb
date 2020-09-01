@@ -48,6 +48,10 @@ class Symphony::TemplatesController < ApplicationController
       @section = Section.create(position: 1, template_id: @template.id)
       redirect_to edit_symphony_template_path(@template, last_action: 'create')
     else
+      # Validation error will render the new page due to not being saved. The clone template would return an error because it couldnt find @general_templates and @templates. Hence the variables are inserted here
+      @general_templates = Template.where(company: nil)
+      @templates = policy_scope(Template).assigned_templates(current_user)
+      flash[:alert] = @template.errors.full_messages.join
       render :new
     end
   end
