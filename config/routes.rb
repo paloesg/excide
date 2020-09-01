@@ -83,11 +83,11 @@ Rails.application.routes.draw do
     get '/archives', to: 'archives#index', as: :archives
     get '/archives/:workflow_name/:workflow_id', to: 'archives#show', as: :archive
 
+    #TODO: Remove recurring workflow after recurring templates are working
     get '/recurring_workflows', to: 'recurring_workflows#index', as: :workflows_recurring
     resources :recurring_workflows, path: '/recurring_workflows/:recurring_workflow_name', except: [:index] do
       member do
         post '/stop_recurring', to: 'recurring_workflows#stop_recurring'
-        # TODO: Trigger workflow should be POST request not GET
         get :trigger_workflow, to: 'recurring_workflows#trigger_workflow'
       end
     end
@@ -175,13 +175,6 @@ Rails.application.routes.draw do
 
   # Integrated with Devise
   notify_to :users, with_devise: :users
-
-  get 'surveys/complete', to: 'surveys#complete', as: :survey_complete
-  get 'surveys/:survey_id/section/:section_position', to: 'surveys#section', as: :survey_section
-  resources :surveys
-
-  resources :segments
-  post 'segment/create-and-new', to: 'segments#create_and_new', as: :segment_create_and_new
 
   resources :responses
 
