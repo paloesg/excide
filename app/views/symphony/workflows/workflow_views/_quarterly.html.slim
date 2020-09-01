@@ -2,7 +2,7 @@
   - if quarter.year == (params[:year].present? ? params[:year].to_i : Date.current.year)
     - if @workflows.select { |wf| wf.created_at.to_date == (quarter)}.present?
       - @selected_workflow = @workflows.select { |wf| wf.created_at.to_date == (quarter)}[0]
-      tr style=("cursor: pointer;" + ((@workflow == @selected_workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) 
+      tr
         td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @selected_workflow.id)}'"
           label.checkbox
             = check_box_tag 'completed', @selected_workflow.id, @selected_workflow.completed, disabled: true
@@ -35,4 +35,3 @@
         td
           = quarter.strftime("%d %b %Y")
         td.text-left colspan="5"
-          = link_to "Creating next cycle on #{@template.next_workflow_date}", '#', class: "text-muted disabled"

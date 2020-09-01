@@ -1,8 +1,8 @@
-- (@template.start_date..@template.end_date).map(&:to_date).each do |date|
+- @date_range.each do |date|
   - if date.month == (params[:month].present? ? params[:month].to_i : Date.current.month)
     - if @workflows.select { |wf| wf.created_at.to_date == date}.present?
       - @selected_workflow = @workflows.select { |wf| wf.created_at.to_date == date}[0]
-      tr style=("cursor: pointer;" + ((@workflow == @selected_workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) 
+      tr 
         td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @selected_workflow.id)}'"
           label.checkbox
             = check_box_tag 'completed', @selected_workflow.id, @selected_workflow.completed, disabled: true
@@ -29,20 +29,9 @@
           .dropdown-menu
             .dropdown-item = link_to "Delete", symphony_workflow_path(workflow_name: @selected_workflow.template.slug, workflow_id: @selected_workflow.id), data: { confirm: 'This will delete the cycle. Are you sure?'}, method: :delete
     - else
-      / Only disable the row before template's start date
+      / Disable the upcoming workflow's rows and display the dates
       tr class="bg-secondary"
         td
         td
           = date.strftime("%d %b %Y")
         td.text-left colspan="5"
-          = link_to "Creating next cycle on #{@template.next_workflow_date}", '#', class: "text-muted disabled"
-        / - else
-        /   tr class="bg-secondary"
-        /     td
-        /     td
-        /       = date.strftime("%d %b %Y")
-        /     td.text-left colspan="5"
-        /       = link_to '', '#', class: 'text-muted disabled'
-
-
-

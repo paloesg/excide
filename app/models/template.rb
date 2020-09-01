@@ -114,6 +114,7 @@ class Template < ApplicationRecord
   end
 
   def set_recurring_attributes
+    # Set freq unit and freq value based on template_pattern
     case self.template_pattern
     when 'daily'
       self.freq_unit = 'days'
@@ -137,6 +138,7 @@ class Template < ApplicationRecord
   end
 
   def set_next_workflow_date(workflow)
+    # Used when template is created (template Update action) and scheduler rake task to update next_workflow_date
     self.next_workflow_date = workflow.created_at + self.freq_value.send(self.freq_unit) unless self.template_pattern == 'on_demand'
     self.save
   end

@@ -1,4 +1,4 @@
-- @years_from_deadline.each do |year|
+- @years_to_filter.each do |year|
   - if @current_workflow.created_at.year == year
     tr style=("cursor: pointer;" + ((@current_workflow == @workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : ""))
       td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @current_workflow.id)}'"
