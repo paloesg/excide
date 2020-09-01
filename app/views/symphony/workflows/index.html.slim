@@ -5,7 +5,7 @@
       .label.label-inline.label-dark.ml-4
         span = @template.template_pattern.humanize
   .col-md-6.d-flex.justify-content-end
-    = select_tag('year', options_for_select(@years_to_filter, selected: params[:year]), prompt: 'Choose a year...', class: 'selectize selectize-year mr-2') unless @template.annually?
+    = select_tag('year', options_for_select(@years_to_filter, selected: params[:year]), prompt: 'Choose a year...', class: 'selectize selectize-year mr-2') unless @template.annually? or @template.on_demand?
     = select_tag('month', options_for_select(@months_to_filter, selected: params[:year]), prompt: 'Choose a month...', class: 'selectize selectize-month mr-2') if @template.weekly? or @template.daily?
     - if policy(@template).edit? || policy(@template).destroy?
       .dropdown.dropdown-inline.float-right
