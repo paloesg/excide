@@ -28,6 +28,8 @@
       .btn.btn-block.btn-hover-light-secondary.text-center
         i.material-icons.text-muted add
         = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
+    - else
+      .btn.btn-block.btn-secondary.text-center.disabled Next cycle on #{@template.next_workflow_date}
   .col-md-7
     table.table.table-borderless
       thead.thead-light
