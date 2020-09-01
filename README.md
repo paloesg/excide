@@ -146,6 +146,6 @@ Heroku buildpack:
 
     - [https://github.com/DuckyTeam/heroku-buildpack-imagemagick/](https://github.com/DuckyTeam/heroku-buildpack-imagemagick/)
 
-    `heroku buildpacks:add https://github.com/DuckyTeam/heroku-buildpack-imagemagick --app HEROKU_APP_NAME`
+    heroku buildpacks:add https://github.com/DuckyTeam/heroku-buildpack-imagemagick --app HEROKU_APP_NAME
 
 2. Others... (To be added!)
