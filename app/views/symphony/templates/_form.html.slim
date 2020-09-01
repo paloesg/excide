@@ -14,7 +14,7 @@
               = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "select2 task-items-dropdown-width", required: true}
             .form-group
               = f.label :template_pattern, "This routine repeats:"
-              = f.select :template_pattern, ::Template.template_patterns.map{|k, v| [k.humanize, k]}, {}, {class: "select2 task-items-dropdown-width", required: true}
+              = f.select :template_pattern, ::Template.template_patterns.map{|k, v| [k.humanize, k]}, {}, {class: "select2 task-items-dropdown-width", disabled: true}
             .form-group
               = f.label :start_date, "Start routine:"
               = f.date_field :start_date, required: true, class: 'form-control'
