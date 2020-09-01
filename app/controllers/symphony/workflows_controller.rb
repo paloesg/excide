@@ -43,6 +43,9 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def show
+    # Variables for workflow show page
+    set_filtering_attributes(@template)
+
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)

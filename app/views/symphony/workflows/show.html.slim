@@ -15,7 +15,20 @@
           .dropdown-item = link_to "Delete", symphony_template_path(template_slug: @template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' }, method: :delete if policy(@template).destroy?
 .row
   .col-md-5
-    = render "workflows"
+    table.table.table-hover.mb-0
+      thead.thead-light
+        tr
+          th colspan="5" To Complete
+          th colspan="2" Due
+      tbody
+        / render different views based on template pattern
+        = render "symphony/workflows/workflow_views/#{@template.template_pattern}"
+    - if @template.on_demand?
+      .btn.btn-block.btn-hover-light-secondary.text-center
+        i.material-icons.text-muted add
+        = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
+    - else
+      .btn.btn-block.btn-secondary.text-center.disabled Next cycle on #{@template.next_workflow_date}
   .col-md-7
     table.table.table-borderless.table-hover
       thead.thead-light

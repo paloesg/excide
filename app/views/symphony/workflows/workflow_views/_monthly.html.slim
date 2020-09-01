@@ -4,7 +4,7 @@
   - if @workflows.select { |wf| wf.created_at.strftime('%F').split('-')[1].to_i == (i+1)}.present?
     / the assumption is that there is only 1 workflow per month, hence we can use @workflows[0]
     - @selected_workflow = @workflows.select { |wf| wf.created_at.strftime('%F').split('-')[1].to_i == (i+1)}[0]
-    tr
+    tr style=("cursor: pointer;" + ((@workflow == @selected_workflow) ? "background-color: rgba(238, 241, 255, 0.7);" : "")) 
       td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: @selected_workflow.id)}'"
         label.checkbox
           = check_box_tag 'completed', @selected_workflow.id, @selected_workflow.completed, disabled: true
