@@ -130,6 +130,8 @@ gem 'activity_notification'
 # Integrate Slack API
 gem 'slack-ruby-client'
 
+gem 'ancestry'
+
 # Backend admin
 gem 'administrate', '0.14.0'
 gem 'administrate-field-image'
