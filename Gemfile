@@ -73,7 +73,7 @@ gem 'acts_as_list'
 # For tagging
 gem 'acts-as-taggable-on', '~> 6.0'
 # Use user friendly slugs
-gem 'friendly_id', '~> 5.4.0'
+gem 'friendly_id', '~> 5.3.0'
 # Amazon S3 SDK
 gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-textract', '~> 1'
