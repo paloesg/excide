@@ -19,6 +19,12 @@ class TemplateDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     data_names: Field::JSONB,
+    template_pattern: EnumField,
+    freq_value: Field::Number,
+    freq_unit: EnumField,
+    next_workflow_date: Field::DateTime,
+    start_date: Field::DateTime,
+    end_date: Field::DateTime,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -29,10 +35,11 @@ class TemplateDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :id,
     :title,
-    :slug,
     :company,
     :workflow_type,
-    :workflows
+    :workflows,
+    :template_pattern,
+    :next_workflow_date
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -47,7 +54,13 @@ class TemplateDashboard < Administrate::BaseDashboard
     :updated_at,
     :sections,
     :workflows,
-    :data_names
+    :data_names,
+    :template_pattern,
+    :freq_value,
+    :freq_unit,
+    :next_workflow_date,
+    :start_date,
+    :end_date
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -59,6 +72,12 @@ class TemplateDashboard < Administrate::BaseDashboard
     :workflow_type,
     :data_names,
     :sections,
+    :template_pattern,
+    :freq_value,
+    :freq_unit,
+    :next_workflow_date,
+    :start_date,
+    :end_date
   ].freeze
 
   # Overwrite this method to customize how templates are displayed
