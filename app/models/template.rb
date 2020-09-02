@@ -23,7 +23,6 @@ class Template < ApplicationRecord
   enum business_model: [:ecommerce, :marketplace, :media, :mobile, :saas, :others]
 
   validates :title, :slug, presence: true
-  validate :start_date_cannot_be_before_current_date
 
   before_save :data_names_to_json
 
@@ -175,7 +174,7 @@ class Template < ApplicationRecord
   end
 
   def get_filtering_attributes(year_params)
-    @workflows = self.workflows.select{|wf| year_params.present? ? wf.created_at.year.to_s == year_params : wf.created_at.year == Date.current.year}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
+    @workflows = self.workflows.select{|wf| year_params.present? ? wf.created_at.year.to_s == year_params : wf.created_at.year == Date.current.year}.sort_by{|wf| wf.created_at}
 
     unless self.on_demand?
       # Determine how many years and months in the filtering options based on deadline
@@ -186,12 +185,5 @@ class Template < ApplicationRecord
     
     @year = year_params.present? ? year_params.to_i : Date.current.year
     return @workflows, @years_to_filter, @month_years_to_filter, @year
-  end
-
-  private
-  def start_date_cannot_be_before_current_date
-    # Guards for rspec
-    return unless start_date
-    errors.add(:start_date, "can't be in the past") if start_date < Date.current
   end
 end

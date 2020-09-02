@@ -37,7 +37,7 @@ class Workflow < ApplicationRecord
   end
 
   def set_workflow_deadline
-    conditionally_set_deadline(self.template, self)
+    self.template.start_date.present? ? conditionally_set_deadline(self.template, self, self.template.start_date ) : conditionally_set_deadline(self.template, self, Date.current)
   end
 
   def build_workflowable(params)
@@ -149,7 +149,7 @@ class Workflow < ApplicationRecord
         else
           wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
         end
-        conditionally_set_deadline(t, wfa)
+        self.template.start_date.present? ? conditionally_set_deadline(t, wfa, self.template.start_date) : conditionally_set_deadline(t, wfa, Date.current)
       end
       # Automatically set first task as completed if workflow is part of a batch and first task is a file upload task
       s.tasks.first.get_workflow_action(self.company_id, self.id).update(completed: true) if (s.position == 1 && s.tasks.first.task_type == "upload_file" && self.batch.present?)
@@ -163,22 +163,22 @@ class Workflow < ApplicationRecord
     end
   end
   # Set deadline based on settings of template and task (model), while target_model are workflows and workflow actions
-  def conditionally_set_deadline(model, target_model)
+  def conditionally_set_deadline(model, target_model, current_date)
     if model.deadline_type.present?
       case model.deadline_type
       when "xth_day_of_the_month"
         # Check if day exists in that month (for eg, June only have 30 days), so if it is 31st, we bring it forward to the next month.
-        if Date.new(Date.current.year, Date.current.month, -1).day < model.deadline_day
+        if Date.new(current_date.year, current_date.month, -1).day < model.deadline_day
           # The deadline will become the end of the month
-          target_model.deadline = Date.new(Date.current.year, Date.current.month).end_of_month
+          target_model.deadline = Date.new(current_date.year, current_date.month).end_of_month
         else
           # Check if the xth day has past in the current month. If it is, set deadline as the next month
-          target_model.deadline = Date.new(Date.current.year, Date.current.month, model.deadline_day) > Date.current ? Date.new(Date.current.year, Date.current.month, model.deadline_day) : Date.new(Date.current.year, Date.current.month, model.deadline_day).next_month()
+          target_model.deadline = Date.new(current_date.year, current_date.month, model.deadline_day) > Date.current ? Date.new(current_date.year, current_date.month, model.deadline_day) : Date.new(current_date.year, current_date.month, model.deadline_day).next_month()
         end
         # Set to the next business day if self.deadline above is not a work day
         target_model.deadline = 1.business_days.after(target_model.deadline) - 1.day unless target_model.deadline.workday?
       else
-        target_model.deadline = model.deadline_day.business_days.after(Date.current)
+        target_model.deadline = model.deadline_day.business_days.after(current_date)
       end
       target_model.save
     end

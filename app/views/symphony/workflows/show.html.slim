@@ -3,7 +3,7 @@
     h2.mt-3.d-flex.align-items-center
       = @template.title
       .label.label-inline.label-dark.ml-4
-        span On-demand
+        span = @template.template_pattern.humanize
   .col-md-2.d-flex.justify-content-end
     = render "symphony/workflows/workflow_views/filter_dates"
     - if policy(@template).edit? || policy(@template).destroy?

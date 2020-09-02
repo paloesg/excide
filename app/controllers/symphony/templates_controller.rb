@@ -67,7 +67,7 @@ class Symphony::TemplatesController < ApplicationController
       if @template.update(template_params)
         if params[:last_action].present?
           # params[:last_action] checks that last action comes from template create method, then set recurring attributes to template and create the first workflow
-          @workflow = Workflow.create(user: current_user, company: current_user.company, template: @template)
+          @workflow = Workflow.create(user: current_user, company: current_user.company, template: @template, created_at: @template.start_date)
           # Set initial recurring attributes
           @template.set_recurring_attributes
           # Set the 1st next_workflow_date after workflow is created
