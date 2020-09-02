@@ -188,6 +188,8 @@ class Template < ApplicationRecord
 
   private
   def start_date_cannot_be_before_current_date
-    errors.add(:start_date, "can't be in the past") if self.start_date < Date.current
+    # Guards for rspec
+    return unless start_date
+    errors.add(:start_date, "can't be in the past") if start_date < Date.current
   end
 end
