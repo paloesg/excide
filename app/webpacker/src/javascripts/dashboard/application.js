@@ -23,7 +23,8 @@ require("./symphony/zoom");
 require("./symphony/invoices/xero");
 require("./symphony/invoices/aws");
 require("./symphony/choice");
-require("./symphony/choose_deadline_types");
+require("./symphony/templates/choose_deadline_types");
+require("./symphony/templates/choose_template_patterns");
 require("./symphony/header");
 
 window.createAllocation = require("./conductor/create_allocations");
