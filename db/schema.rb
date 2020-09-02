@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_26_061405) do
+ActiveRecord::Schema.define(version: 2020_09_02_165202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -265,6 +265,14 @@ ActiveRecord::Schema.define(version: 2020_08_26_061405) do
     t.decimal "number_of_hours"
     t.index ["company_id"], name: "index_events_on_company_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
+  end
+
+  create_table "folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "ancestry"
+    t.index ["ancestry"], name: "index_folders_on_ancestry"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
