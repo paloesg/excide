@@ -1,11 +1,11 @@
 .row
-  .col-md-10
+  .col-md-6
     h2.mt-3.d-flex.align-items-center
       = @template.title
       .label.label-inline.label-dark.ml-4
-        span On-demand
-  .col-md-2.d-flex.justify-content-end
-    = select_tag('year', options_for_select(["2020", "2019", "2018"], selected: params[:year], include_blank: true), class: 'select2 select2-year mr-2 w-100')
+        span = @template.template_pattern.humanize
+  .col-md-6.d-flex.justify-content-end
+    = render "symphony/workflows/workflow_views/filter_dates"
     - if policy(@template).edit? || policy(@template).destroy?
       .dropdown.dropdown-inline.float-right
         a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
@@ -15,7 +15,20 @@
           .dropdown-item = link_to "Delete", symphony_template_path(template_slug: @template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' }, method: :delete if policy(@template).destroy?
 .row
   .col-md-5
-    = render "workflows"
+    table.table.table-hover.mb-0
+      thead.thead-light
+        tr
+          th colspan="5" To Complete
+          th colspan="2" Due
+      tbody
+        / render different views based on template pattern
+        = render "symphony/workflows/workflow_views/#{@template.template_pattern}"
+    - if @template.on_demand?
+      .btn.btn-block.btn-hover-light-secondary.text-center
+        i.material-icons.text-muted add
+        = link_to "Add new cycle", symphony_workflows_path(@template.slug), method: :post, class: "text-muted"
+    - else
+      .btn.btn-block.btn-secondary.text-center.disabled Next cycle on #{@template.next_workflow_date}
   .col-md-7
     table.table.table-borderless
       thead.thead-light

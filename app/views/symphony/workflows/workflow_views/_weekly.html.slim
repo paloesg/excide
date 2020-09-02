@@ -1,0 +1,13 @@
+/ Loop through the weeks between the created_at date and end date, and then select workflows that matched the current date
+- @date_range.each do |date|
+  - if date.month == (params[:month_year].present? ? params[:month_year].split('-')[0].to_i : Date.current.month) and date.year == (params[:month_year].present? ? params[:month_year].split('-')[1].to_i : Date.current.year)
+    - if @workflows.select { |wf| wf.created_at.to_date == date}.present?
+      - @selected_workflow = @workflows.select { |wf| wf.created_at.to_date == date}[0]
+      = render 'symphony/workflows/workflow_views/active_table_row'
+    - else
+      / Only disable the row before template's start date
+      tr class="bg-secondary"
+        td
+        td
+          = date.strftime("%d %b %Y")
+        td.text-left colspan="5"

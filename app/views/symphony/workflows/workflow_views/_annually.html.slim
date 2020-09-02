@@ -1,0 +1,10 @@
+- @years_to_filter.each do |year|
+  - if @workflows.select { |wf| wf.created_at.year == year}.present?
+    - @selected_workflow = @workflows.select { |wf| wf.created_at.year == year}[0]
+    = render 'symphony/workflows/workflow_views/active_table_row'
+  - else
+    tr class="bg-secondary"
+      td
+      td
+        = year
+      td.text-left colspan="5"

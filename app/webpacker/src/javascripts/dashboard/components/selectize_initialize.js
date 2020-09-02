@@ -16,6 +16,13 @@ $(document).on("turbolinks:load", function () {
     );
   });
 
+  $(".select2-month-year").on("select2:select", function (e) {
+    var data = e.params.data;
+    Turbolinks.visit(
+      "//" + location.host + location.pathname + "?month_year=" + data.text
+    );
+  });
+
   $(".tasks-filter-button").click(function (e) {
     var tasks_select2 = $("select.select2-tasks").select2();
     var created_at_select2 = $("select.select2-created-at").select2();
