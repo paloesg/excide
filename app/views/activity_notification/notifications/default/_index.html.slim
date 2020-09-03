@@ -30,6 +30,7 @@
                     = @target.notifications.unopened_only.where(group_id: template.id).count
                 .navi-text.font-size-h6
                   = template.title
+                i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
             .collapse id="notificationMenu_#{template.id}"
               // yield views with keys as filename in views and notifier name as folder
               = render_notifications(@target.notifications.unopened_only.where(group_id: template.id).order(created_at: :desc))
