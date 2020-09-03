@@ -142,7 +142,7 @@ class Conductor::EventsController < ApplicationController
   def set_company_and_clients
     @user = current_user
     @company = @user.company
-    @clients = Client.where(company_id: @company.id)
+    @clients = Client.where(company_id: @company.id).sort_by(&:name)
   end
 
   def set_staffers
@@ -151,9 +151,9 @@ class Conductor::EventsController < ApplicationController
 
   def get_users_and_service_lines
     # To be tagged using acts_as_taggable_on gem
-    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
+    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy'].sort
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
-    @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq
+    @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

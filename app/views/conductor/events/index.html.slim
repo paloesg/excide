@@ -38,9 +38,9 @@ hr
         .form-group.mr-3
           = f.date_field :start_time, class: 'form-control', required: true
         .form-group.mr-3
-          = f.select :client_id, @clients.map { |client| [client.name, client.id] }.sort, {selected: @event.client_id, prompt: 'Select client...'}, { class: 'selectize', required: true }
+          = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, { class: 'selectize', required: true }
         .form-group.mr-3
-          = select_tag :service_line, options_for_select(@service_lines.sort, selected: @event.tag_list), include_blank: true, prompt: 'Select service line...', required: true, class: 'selectize'
+          = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), include_blank: true, prompt: 'Select service line...', required: true, class: 'selectize'
         .form-group.mr-3 
           = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }.sort, {selected: @event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', required: true }
         .form-group.mr-3
@@ -82,9 +82,9 @@ hr
                 td width="15%"
                   = f.date_field :start_time, { class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
                 td width="20%"
-                  = f.select :client_id, @clients.map { |client| [client.name, client.id] }.sort, {selected: event.client_id, prompt: 'Select client...'}, { class: 'selectize', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
+                  = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'selectize', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
-                  = f.select :tag_list, @service_lines.map { |sl| [sl, sl]}.sort, { selected: event.tags.last, prompt: 'Select service line...' }, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
+                  = f.select :tag_list, @service_lines.map { |sl| [sl, sl]}, { selected: event.tags.last, prompt: 'Select service line...' }, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
                 td width="20%"
                   = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}.sort, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
                 td width="15%"
