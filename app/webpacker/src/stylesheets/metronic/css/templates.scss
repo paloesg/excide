@@ -1,32 +1,67 @@
 td.task-fields {
-	padding: 0.5rem !important;
+  padding: 0.5rem !important;
 }
 
 .task-items-dropdown-width {
-	width: 100%;
-	min-width: 200px;
+  width: 100%;
+  min-width: 200px;
 }
 
 .task-type {
-	width: 20% !important;
+  width: 20% !important;
 }
 
 .instruction {
-	width: 32% !important;
+  width: 32% !important;
 }
 
 .position-width {
-	width: 7% !important;
+  width: 7% !important;
 }
 
 .assigned-role {
-	width: 15% !important;
+  width: 15% !important;
 }
 
 .assigned-user {
-	width: 15% !important;
+  width: 15% !important;
 }
 
 .collapse-arrow-width {
-	width: 1% !important;
+  width: 1% !important;
+}
+
+.select2-container--default .select2-selection--single::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  border-color: #888 transparent transparent transparent;
+  border-style: solid;
+  border-width: 5px 4px 0 4px;
+  height: 0;
+  right: 14px;
+  margin-left: -4px;
+  margin-top: -2px;
+  top: 50%;
+  width: 0;
+  cursor: pointer;
+}
+
+.select2-container--open .select2-selection--single::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  border-color: transparent transparent #888 transparent;
+  border-width: 0 4px 5px 4px;
+  height: 0;
+  right: 14px;
+  margin-left: -4px;
+  margin-top: -2px;
+  top: 50%;
+  width: 0;
+  cursor: pointer;
+}
+
+.select2-selection__arrow {
+  display: none !important;
 }

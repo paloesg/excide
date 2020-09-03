@@ -9,8 +9,8 @@ module Admin
     # end
 
     def edit
-        @roles = Role.all
-        super
+      @roles = Role.all
+      super
     end
 
     # Define a custom finder by overriding the `find_resource` method:
