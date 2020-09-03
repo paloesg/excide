@@ -123,6 +123,8 @@ Rails.application.routes.draw do
 
   namespace :motif do
     root to: 'home#index'
+
+    resources :documents
   end
 
   namespace :conductor do
