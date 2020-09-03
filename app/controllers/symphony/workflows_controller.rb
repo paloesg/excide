@@ -15,7 +15,8 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == 2020}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
+    @date_range = @template.get_date_range
+    @workflows, @years_to_filter, @month_years_to_filter, @year = @template.get_filtering_attributes(params[:year])
   end
 
   def new
@@ -43,6 +44,10 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def show
+    # Variables for workflow show page
+    @date_range = @template.get_date_range
+    @workflows, @years_to_filter, @month_years_to_filter, @year = @template.get_filtering_attributes(params[:year])
+
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)

@@ -23,7 +23,7 @@
             .form-inline.mb-3.flex-grow-1.justify-content-end
               .form-group
                 // Overwrite ID so that it won't clash with uppy upload that checks for template slug
-                = select_tag('template_slug', options_for_select(@templates.map {|k,v| [k.title, k.slug] }), include_blank: 'Select template', required: true, id: 'template', class: 'selectize mt-1')
+                = select_tag('template_slug', options_for_select(@templates.map {|k,v| [k.title, k.slug] }), include_blank: true, required: true, id: 'template', class: 'select2 mt-1 form-control')
               .form-group.ml-2
                 = submit_tag 'Create Batch', class: 'btn btn-primary'
 
@@ -52,7 +52,7 @@ javascript:
         '<td>{{created_at}}</td>' +
         '<td><div class="dropdown dropdown-inline"> <a href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" class="btn btn-icon btn-link btn-xs fa fa-ellipsis-h"></a> <div class="dropdown-menu dropdown-menu-right"> <a class="dropdown-item" href="/symphony/documents/{{objectID}}">View</a> <a class="dropdown-item" href="{{file_url}}">Download</a> <a class="dropdown-item" data-confirm="Are you sure?" data-method="delete" data-remote="true" href="/symphony/documents/{{objectID}}">Delete</a> </div></div></td>' +
         '{{/hits}}</tbody>'
-      '</div>';      
+      '</div>';
       var search = instantsearch({
         appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
         apiKey: '#{@public_key}',
