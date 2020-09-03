@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_13_070347) do
+ActiveRecord::Schema.define(version: 2020_08_26_061405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -529,6 +529,9 @@ ActiveRecord::Schema.define(version: 2020_08_13_070347) do
     t.integer "deadline_day"
     t.integer "deadline_type"
     t.integer "template_pattern"
+    t.integer "freq_value"
+    t.integer "freq_unit"
+    t.date "next_workflow_date"
     t.date "start_date"
     t.date "end_date"
     t.index ["company_id"], name: "index_templates_on_company_id"

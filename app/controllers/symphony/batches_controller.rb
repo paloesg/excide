@@ -7,7 +7,7 @@ class Symphony::BatchesController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @templates = policy_scope(Template).assigned_templates(current_user)
+    @templates = policy_scope(Template).assigned_templates(current_user).where(template_pattern: "on_demand")
     @batches = policy_scope(Batch).includes(:user, [workflows: :workflow_actions], :template).order(created_at: :desc)
     @completed = @batches.where(completed: true).count
     @total = @batches.count

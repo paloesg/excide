@@ -106,4 +106,11 @@ namespace :update do
       wf.update(total_time_mins: wf.workflow_actions.sum(:time_spent_mins))
     end
   end
+
+  desc "Update existing templates with on-demand template pattern"
+  task update_existing_template_to_on_demand: :environment do
+    Template.where(template_pattern: nil).each do |t|
+      t.update(template_pattern: "on_demand")
+    end
+  end
 end
