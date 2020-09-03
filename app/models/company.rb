@@ -9,6 +9,7 @@ class Company < ApplicationRecord
 
   has_many :users, dependent: :destroy
   has_many :documents, dependent: :destroy
+  has_many :folders, dependent: :destroy
   has_many :templates, dependent: :destroy
   has_many :workflows, dependent: :destroy
   has_many :recurring_workflows, dependent: :destroy

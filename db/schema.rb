@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_02_165202) do
+ActiveRecord::Schema.define(version: 2020_09_03_025743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -272,7 +272,9 @@ ActiveRecord::Schema.define(version: 2020_09_02_165202) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "ancestry"
+    t.bigint "company_id"
     t.index ["ancestry"], name: "index_folders_on_ancestry"
+    t.index ["company_id"], name: "index_folders_on_company_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -698,6 +700,7 @@ ActiveRecord::Schema.define(version: 2020_09_02_165202) do
   add_foreign_key "documents", "workflows"
   add_foreign_key "events", "companies"
   add_foreign_key "events", "users", column: "staffer_id"
+  add_foreign_key "folders", "companies"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
