@@ -13,21 +13,21 @@ br
     p
       - if notification.company.name == current_company.name
         - if notification.get_overdue_status_colour == "text-danger"
-          em
-            '
-            a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#F64E60;" [#{notification.workflow.template.title}] #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
+            span class="circle-danger"
+            a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#000000;" [#{notification.workflow.template.title}] #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
 
         - elsif notification.get_overdue_status_colour == "text-warning"
-          em
-            '
-            a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#FFA800;" [#{notification.workflow.template.title}] #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
+            span class="circle-warning"
+            a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#000000;" [#{notification.workflow.template.title}] #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
+            
 
         - elsif notification.get_overdue_status_colour == "text-primary"
-          em
-            '
-            a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#3699FF;" [#{notification.workflow.template.title}] #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
+            span class="circle-primary"
+            a href="#{symphony_workflow_url(notification.task.section.template.slug, notification.workflow.friendly_id)}" style="color:#000000;" [#{notification.workflow.template.title}] #{notification.task.instructions} (due #{notification.deadline.strftime('%a, %d %b %Y')})
 br
 p If you have any queries regarding your task, please contact your admin.
 row
   columns
     = render(partial: 'footer')
+
+
