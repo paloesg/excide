@@ -145,19 +145,11 @@ class Workflow < ApplicationRecord
     sections.each do |s|
       s.tasks.each do |t|
         if t.user_id.present?
-          if self.template.unordered?
-            # workflow actions of an unordered routine can be done in any order, so they are all current actions
-            wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id, current_action: true)
-          else
-            wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id)
-          end
+          # workflow actions of an unordered routine can be done in any order, so they are all current actions
+          wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id, current_action: self.template.unordered? ? true : false)
         else
-          if self.template.unordered?
-            # workflow actions of an unordered routine can be done in any order, so they are all current actions
-            wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, current_action: true)
-          else
-            wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self)
-          end
+          # workflow actions of an unordered routine can be done in any order, so they are all current actions
+          wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, current_action: self.template.unordered? ? true : false)
         end
         self.template.start_date.present? ? conditionally_set_deadline(t, wfa, self.template.start_date) : conditionally_set_deadline(t, wfa, Date.current)
       end
