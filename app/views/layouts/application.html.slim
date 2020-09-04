@@ -6,6 +6,8 @@ html lang="en"
     meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"
     meta name="turbolinks-cache-control" content="no-cache"
     link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet"
+    link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"
+    script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js">
 
     script async=true src="https://www.googletagmanager.com/gtag/js?id=UA-93342323-1"
     javascript:
@@ -26,7 +28,7 @@ html lang="en"
     = render 'application/favicon'
     = display_meta_tags site: "Virtual CFO | Excide"
     = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
-    = javascript_pack_tag 'application-dashboard', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
     // For uppy use with active storage
@@ -66,7 +68,7 @@ html lang="en"
             - else
               .col-sm-2.bg-white.border-right
                 / for settings page, render a different sidebar
-                - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)) || current_page?(conductor_events_path)) 
+                - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)) || current_page?(conductor_events_path))
                   = render 'layouts/sidebar_settings'
                 - else
                   = render 'layouts/sidebar'
@@ -89,5 +91,5 @@ html lang="en"
     /! end::Scrolltop
 
     /! Start of paloe Zendesk Widget script
-    script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66" 
+    script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66"
     /! End of paloe Zendesk Widget script

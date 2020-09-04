@@ -14,27 +14,9 @@ Rails.application.routes.draw do
     root controller: DashboardManifest::ROOT_DASHBOARD, action: :index
   end
 
-  # Admin pages for company workflow management
-  scope 'admin/companies/:company_name', as: 'admin_company' do
-    get 'dashboard', to: 'dashboards#show', as: :dashboard
-    get 'edit', to: 'companies#edit', as: :edit
-    get 'workflow/:workflow_name', to: 'workflows#show', as: :workflow
-    get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :workflow_section
-    post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :workflow_task_toggle
-  end
-  # Stripe event path for webhook
-  mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
-
   # Slack callback path
   get '/oauth/authorization', to: 'slack#callback'
   delete '/disconnect_from_slack', to: 'slack#disconnect_from_slack', as: :disconnect_from_slack
-
-  # Company workflow management
-  get 'dashboard', to: 'dashboards#show', as: :dashboard
-  get 'workflow/:workflow_name', to: 'workflows#show', as: :company_workflow
-  get 'workflow/:workflow_name/:section_id', to: 'workflows#section', as: :company_workflow_section
-  post 'workflow/:workflow_name/:task_id', to: 'workflows#toggle', as: :company_workflow_task_toggle
-  patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
   get '/connect_to_xero', to: 'xero_sessions#connect_to_xero', as: :connect_to_xero
   get '/xero_callback_and_update', to: 'xero_sessions#xero_callback_and_update', as: :xero_callback_and_update
@@ -101,14 +83,16 @@ Rails.application.routes.draw do
     get '/archives', to: 'archives#index', as: :archives
     get '/archives/:workflow_name/:workflow_id', to: 'archives#show', as: :archive
 
+    #TODO: Remove recurring workflow after recurring templates are working
     get '/recurring_workflows', to: 'recurring_workflows#index', as: :workflows_recurring
     resources :recurring_workflows, path: '/recurring_workflows/:recurring_workflow_name', except: [:index] do
       member do
         post '/stop_recurring', to: 'recurring_workflows#stop_recurring'
-        # TODO: Trigger workflow should be POST request not GET
         get :trigger_workflow, to: 'recurring_workflows#trigger_workflow'
       end
     end
+
+    patch 'workflow_actions/update/:id', to: 'workflow_actions#update', as: :workflow_action
 
     resources :workflows, param: :workflow_id, path: '/:workflow_name' do
       member do
@@ -135,6 +119,10 @@ Rails.application.routes.draw do
         resources :surveys
       end
     end
+  end
+
+  namespace :motif do
+    root to: 'home#index'
   end
 
   namespace :conductor do
@@ -188,20 +176,6 @@ Rails.application.routes.draw do
   # Integrated with Devise
   notify_to :users, with_devise: :users
 
-  get 'account/new', to: 'accounts#new', as: :new_account
-  patch 'account/create', to: 'accounts#create', as: :create_account
-  get 'account', to: 'accounts#edit', as: :edit_account
-  patch 'account', to: 'accounts#update'
-
-  resources :enquiries
-
-  get 'surveys/complete', to: 'surveys#complete', as: :survey_complete
-  get 'surveys/:survey_id/section/:section_position', to: 'surveys#section', as: :survey_section
-  resources :surveys
-
-  resources :segments
-  post 'segment/create-and-new', to: 'segments#create_and_new', as: :segment_create_and_new
-
   resources :responses
 
   get 'company', to: 'companies#show', as: :company
@@ -215,4 +189,7 @@ Rails.application.routes.draw do
   # Static pages
   get 'terms', to: 'symphony/home#terms'
   get 'privacy', to: 'symphony/home#privacy'
+
+  # Stripe event path for webhook
+  mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
 end

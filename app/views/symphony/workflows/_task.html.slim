@@ -2,7 +2,7 @@
   .modal-dialog role="document"
     .modal-content
       .modal-body
-        = form_for(action, url:workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
+        = form_for(action, url: symphony_workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
           .row.mb-6
             .col
               - if action.completed?

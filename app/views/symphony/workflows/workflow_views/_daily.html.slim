@@ -1,0 +1,12 @@
+- @date_range.each do |date|
+  - if date.month == (params[:month_year].present? ? params[:month_year].split('-')[0].to_i : Date.current.month)
+    - if @workflows.select { |wf| wf.created_at.to_date == date}.present?
+      - @selected_workflow = @workflows.select { |wf| wf.created_at.to_date == date}[0]
+      = render 'symphony/workflows/workflow_views/active_table_row'
+    - else
+      / Disable the upcoming workflow's rows and display the dates
+      tr class="bg-secondary"
+        td
+        td
+          = date.strftime("%d %b %Y")
+        td.text-left colspan="5"

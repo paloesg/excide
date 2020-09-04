@@ -1,0 +1,12 @@
+- @date_range.each do |quarter|
+  - if quarter.year == (params[:year].present? ? params[:year].to_i : Date.current.year)
+    - if @workflows.select { |wf| wf.created_at.to_date == (quarter)}.present?
+      - @selected_workflow = @workflows.select { |wf| wf.created_at.to_date == (quarter)}[0]
+      = render 'symphony/workflows/workflow_views/active_table_row'
+    - else
+      / Only disable the row before template's start date
+      tr class="bg-secondary"
+        td
+        td
+          = quarter.strftime("%d %b %Y")
+        td.text-left colspan="5"
