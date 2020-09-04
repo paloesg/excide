@@ -183,7 +183,7 @@ $(document).on("turbolinks:load", function () {
     allowClear: true,
   });
 
-  $("form").on("click", ".add_task_fields", function (event) {
+  $("form").on("click", ".add_task_fields", function () {
     $(".select2").select2({
       minimumResultsForSearch: 5,
       placeholder: "Select...",
@@ -193,6 +193,5 @@ $(document).on("turbolinks:load", function () {
       placeholder: "Select...",
       allowClear: true,
     });
-    return event.preventDefault();
   });
 });
