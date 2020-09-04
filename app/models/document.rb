@@ -12,6 +12,7 @@ class Document < ApplicationRecord
   belongs_to :user
   belongs_to :workflow_action
 
+  has_one :folder
   has_one_attached :raw_file
   has_many_attached :converted_images
 
@@ -52,7 +53,7 @@ class Document < ApplicationRecord
     # Perform convert job asynchronously to run conversion service
     ConvertPdfToImagesJob.perform_later(self)
   end
-  
+
   private
 
   def file_format

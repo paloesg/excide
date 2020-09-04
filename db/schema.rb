@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_03_025743) do
+ActiveRecord::Schema.define(version: 2020_09_03_042518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -227,7 +227,9 @@ ActiveRecord::Schema.define(version: 2020_09_03_025743) do
     t.string "aws_textract_job_id"
     t.json "aws_textract_data"
     t.uuid "document_template_id"
+    t.uuid "folder_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
+    t.index ["folder_id"], name: "index_documents_on_folder_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
@@ -695,6 +697,7 @@ ActiveRecord::Schema.define(version: 2020_09_03_025743) do
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
+  add_foreign_key "documents", "folders"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
