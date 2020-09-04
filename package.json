@@ -3,7 +3,7 @@
   "dependencies": {
     "@excid3/uppy-activestorage-upload": "https://github.com/excid3/uppy-activestorage-upload.git",
     "@fortawesome/fontawesome-free": "5.14.0",
-    "@fullcalendar/core": "4.4.2",
+    "@fullcalendar/core": "5.3.1",
     "@fullcalendar/daygrid": "4.4.2",
     "@rails/actiontext": "6.0.3",
     "@rails/ujs": "6.0.3",
