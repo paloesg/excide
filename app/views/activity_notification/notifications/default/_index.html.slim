@@ -37,5 +37,6 @@
                   span.badge.badge-danger.rounded-circle.mb-3.p-1.ml-n4
                     = @target.notifications.unopened_only.where(group_id: nil).count
                 .navi-text.font-size-h6 Others
+                i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
             .collapse id="notificationMenu_others"
               = render_notifications(@target.notifications.unopened_only.where(group_id: nil).order(created_at: :desc))
