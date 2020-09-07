@@ -144,13 +144,8 @@ class Workflow < ApplicationRecord
     sections = self.template.sections
     sections.each do |s|
       s.tasks.each do |t|
-        if t.user_id.present?
-          # workflow actions of an unordered routine can be done in any order, so they are all current actions
-          wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id, current_action: self.template.unordered? ? true : false)
-        else
-          # workflow actions of an unordered routine can be done in any order, so they are all current actions
-          wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, current_action: self.template.unordered? ? true : false)
-        end
+        # workflow actions of an unordered routine can be done in any order, so they are all current actions
+        wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id.present? ? t.user_id : nil, current_action: self.template.unordered? ? true : false)
         self.template.start_date.present? ? conditionally_set_deadline(t, wfa, self.template.start_date) : conditionally_set_deadline(t, wfa, Date.current)
       end
       # Automatically set first task as completed if workflow is part of a batch and first task is a file upload task
