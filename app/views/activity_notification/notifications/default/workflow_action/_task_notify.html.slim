@@ -1,21 +1,19 @@
 - content_for :notification_content, flush: true do
   div class=("notification_list #{notification.opened? ? "opened" : "unopened"}")
     .tab-content
-      #topbar_notifications_notifications.tab-pane.fade.pt-2.pr-5.mr-n5.scroll.ps.active.show role="tabpanel"
+      #topbar_notifications_notifications.tab-pane.fade.pt-2.pr-5.mr-n5.border-bottom.border-secondary.scroll.ps.active.show role="tabpanel"
         .navi.navi-icon-circle.navi-spacer-x-0
           .navi-item
             .navi-link.rounded
-              .symbol.symbol-50.mx-3.px-5
-                i.flaticon2-checking.text-primary
               .navi-text
-                p.font-weight-bold.font-size-lg
-                  strong = notification.notifier.present? ? notification.notifier.printable_notifier_name : 'Complete '
+                p.font-weight-bold.font-size-lg.ml-8
+                  strong = notification.notifier.present? ? notification.notifier.printable_notifier_name : 'Please complete '
                   | the task
                   br/
                   - if notification.notifiable.present?
                     = " '#{notification.parameters[:printable_notifiable_name]}' "
                     br/
-                    = " in workflow: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.slug unless notification.parameters[:workflow_action_id].nil?}"
+                    = " in cycle: #{WorkflowAction.find_by(id: notification.parameters[:workflow_action_id]).workflow.name unless notification.parameters[:workflow_action_id].nil?}"
                   - else
                     = " a #{notification.notifiable_type.humanize.downcase.singularize}"
                     = "in #{notification.group.printable_group_name}" if notification.group.present?
@@ -26,7 +24,7 @@
 div class="notification_#{notification.id}"
   - if notification.unopened?
     = link_to open_notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(reload: false)), method: :put, remote: true, class: "unopened_wrapper" do
-      .unopened_circle
+      .unopened_circle.bg-warning.mt-3
       .unopened_description_wrapper
         p.unopened_description Open
     = link_to open_notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(move: true)), method: :put do
