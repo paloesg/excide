@@ -29,7 +29,6 @@ Rails.application.routes.draw do
     root to: 'home#index'
 
     get '/search', to: 'home#search'
-    post '/workflow/task/toggle-all', to: 'workflows#toggle_all', as: :task_toggle_all
     get '/xero_line_items', to: 'xero_line_items#show'
     get '/tasks', to: 'home#tasks'
     get '/activity-history', to: 'home#activity_history'
