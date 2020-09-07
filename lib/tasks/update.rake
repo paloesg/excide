@@ -114,10 +114,11 @@ namespace :update do
       if wfa.present?
         notification.group = wfa.workflow.template
         notification.save
+        puts "Updated group for notification #{notification.id}"
       else
         notification.destroy
+        puts "Deleted notification #{notification.id}"
       end
-      puts "Updated group for notification #{notification.id}"
     end
   end
 
