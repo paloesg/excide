@@ -1,89 +1,85 @@
-.modal.fade id="taskModal#{index}" aria-hidden="true" aria-labelledby="taskModalLabel#{index}" role="dialog" tabindex="-1"
-  .modal-dialog role="document"
-    .modal-content
-      .modal-body
-        = form_for(action, url:workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
-          .row.mb-6
-            .col
-              - if action.completed?
-                .btn.btn-sm.btn-success.text-white style="pointer-events: none"
-                  .d-flex.align-items-center
-                    i.material-icons-outlined.font-size-h6 check
-                    | Completed
-              - else
-                .btn.btn-sm.btn-outline-secondary class=((action.task != task && template.ordered?) ? "disabled" : "")
-                  .d-flex.align-items-center
-                    i.material-icons-outlined.font-size-h6 check
-                    = link_to "Mark as Complete", task_toggle_symphony_workflow_path(workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), data: {remote: true, method: "POST"}, class: "text-dark"
-            .col.float-right
-              button.close aria-label="Close" data-dismiss="modal" type="button"
-                i.flaticon2-cross aria-hidden="true"
-          h3.mb-6 Step #{action.task.position}: #{action.task.instructions}
-          .row.mb-4
-            .col-3 Action
-            .col-8 style=((action.task != task && template.ordered?) ? "pointer-events: none" : "")
-              = render "symphony/workflows/tasks/#{action.task.task_type}", template: template, workflow: workflow, action: action
-            .col-1
-              = link_to "Edit", assign_symphony_workflow_path(template.slug, workflow.id), class: "float-right"
-          - if action.assigned_user_id.present? || action.task.role_id.present?
-            .row.mb-4
-              .col-3 Assignee
-              .col-9
-                .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
-                  = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "16x16", class: "rounded-circle mr-2"
-                  = action.assigned_user_id.present? ? User.find(action.assigned_user_id).full_name : Role.find(action.task.role_id).name
-          - if action.deadline.present?
-            .row.mb-4
-              .col-3 Due Date
-              .col-9
-                .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
-                  .d-flex
-                    i.material-icons-outlined.font-size-h6 class=color calendar_today
-                    div class=color
-                      - if !action.completed?
-                        - if action.deadline.to_date < Date.today
-                          = "Overdue " + (Date.today - action.deadline.to_date).to_i.to_s + "d"
-                        - elsif action.deadline.to_date <= Date.tomorrow
-                          = action.deadline.to_date == Date.today ? "Today" : "Tomorrow"
-                        - else
-                          = action.deadline&.strftime("%d %b %Y") + " (in " + (action.deadline.to_date - Date.today).to_i.to_s + "d)"
-                      - else
-                        = action.deadline&.strftime("%d %b %Y")
-          - if action.completed?
-            .row.mb-4
-              .col-3 Completed
-              .col-9
-                .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
-                  .d-flex
-                    i.material-icons-outlined.font-size-h6.text-muted calendar_today
-                    .text-muted = action.updated_at&.strftime("%d %b %Y")
-          .row.mb-4
-            .col-3
-              = f.label :time_spent_mins, "Time Spent (mins)"
-            .col-9
-              = f.number_field :time_spent_mins, class: 'form-control', id: "remark-post-#{action.id}"
-          .row.mb-4
-            .col-3
-              = f.label :remarks
-            .col-9
-              = f.text_field :remarks, class: 'form-control', id: "remark-post-#{action.id}"
-          - if workflow.documents.present?
-            .row.mb-4
-              .col-3 Attachments
-              .col-9
-                - workflow.documents.each do |d|
-                  .d-flex
-                    = link_to symphony_document_path(d), data: { confirm: 'Are you sure?' }, method: :delete, remote: true do
-                      i.material-icons.font-size-h6.text-dark.mr-3 cancel
-                    = link_to (d.raw_file.attached? ? d.raw_file.filename : d.filename), symphony_document_path(d)
-                    br
-          - if workflow.invoice.present? && (["create_invoice_payable", "xero_send_invoice", "coding_invoice"].include? action.task.task_type)
-            .row.mb-4
-              .col-3 Invoice
-              .col-9
-                = link_to symphony_invoice_path(workflow_name: template.slug, workflow_id: workflow.id, id: workflow.invoice.id), class: "d-flex" do
-                  i.material-icons.font-size-h6.text-primary.mr-3 receipt
-                  = workflow.invoice.id
-          .row.mb-4.justify-content-end
-            = f.submit 'Submit', class: 'btn btn-primary'
-            = fa_icon 'check', class: 'text-success mx-3 ajax-icons', id: "check-#{action.id}"
+.offcanvas.offcanvas-right.offcanvas-top.p-5 id="kt_quick_notifications"
+  = form_for(action, url:workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
+    .offcanvas-header.d-flex.align-items-center.justify-content-between.mb-6
+      - if action.completed?
+        .btn.btn-sm.btn-success.text-white style="pointer-events: none"
+          .d-flex.align-items-center
+            i.material-icons-outlined.font-size-h6 check
+            | Completed
+      - else
+        .btn.btn-sm.btn-outline-secondary class=((action.task != task && template.ordered?) ? "disabled" : "")
+          .d-flex.align-items-center
+            i.material-icons-outlined.font-size-h6 check
+            = link_to "Mark as Complete", task_toggle_symphony_workflow_path(workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), data: {remote: true, method: "POST"}, class: "text-dark"
+      a id="kt_quick_notifications_close"href="#" 
+        i.material-icons-outlined close
+    .offcanvas-content.pr-5
+      h3.mb-6 Step #{action.task.position}: #{action.task.instructions}
+      .row.mb-4
+        .col-3 Action
+        .col-8 style=((action.task != task && template.ordered?) ? "pointer-events: none" : "")
+          = render "symphony/workflows/tasks/#{action.task.task_type}", template: template, workflow: workflow, action: action
+        .col-1
+          = link_to "Edit", assign_symphony_workflow_path(template.slug, workflow.id), class: "float-right"
+      - if action.assigned_user_id.present? || action.task.role_id.present?
+        .row.mb-4
+          .col-3 Assignee
+          .col-9
+            .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "16x16", class: "rounded-circle mr-2"
+              = action.assigned_user_id.present? ? User.find(action.assigned_user_id).full_name : Role.find(action.task.role_id).name
+      - if action.deadline.present?
+        .row.mb-4
+          .col-3 Due Date
+          .col-9
+            .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
+              .d-flex
+                i.material-icons-outlined.font-size-h6 class=color calendar_today
+                div class=color
+                  - if !action.completed?
+                    - if action.deadline.to_date < Date.today
+                      = "Overdue " + (Date.today - action.deadline.to_date).to_i.to_s + "d"
+                    - elsif action.deadline.to_date <= Date.tomorrow
+                      = action.deadline.to_date == Date.today ? "Today" : "Tomorrow"
+                    - else
+                      = action.deadline&.strftime("%d %b %Y") + " (in " + (action.deadline.to_date - Date.today).to_i.to_s + "d)"
+                  - else
+                    = action.deadline&.strftime("%d %b %Y")
+      - if action.completed?
+        .row.mb-4
+          .col-3 Completed
+          .col-9
+            .btn.btn-sm.btn-outline-secondary style="pointer-events: none"
+              .d-flex
+                i.material-icons-outlined.font-size-h6.text-muted calendar_today
+                .text-muted = action.updated_at&.strftime("%d %b %Y")
+      .row.mb-4
+        .col-3
+          = f.label :time_spent_mins, "Time Spent (mins)"
+        .col-9
+          = f.number_field :time_spent_mins, class: 'form-control', id: "remark-post-#{action.id}"
+      .row.mb-4
+        .col-3
+          = f.label :remarks
+        .col-9
+          = f.text_field :remarks, class: 'form-control', id: "remark-post-#{action.id}"
+      - if workflow.documents.present?
+        .row.mb-4
+          .col-3 Attachments
+          .col-9
+            - workflow.documents.each do |d|
+              .d-flex
+                = link_to symphony_document_path(d), data: { confirm: 'Are you sure?' }, method: :delete, remote: true do
+                  i.material-icons.font-size-h6.text-dark.mr-3 cancel
+                = link_to (d.raw_file.attached? ? d.raw_file.filename : d.filename), symphony_document_path(d)
+                br
+      - if workflow.invoice.present? && (["create_invoice_payable", "xero_send_invoice", "coding_invoice"].include? action.task.task_type)
+        .row.mb-4
+          .col-3 Invoice
+          .col-9
+            = link_to symphony_invoice_path(workflow_name: template.slug, workflow_id: workflow.id, id: workflow.invoice.id), class: "d-flex" do
+              i.material-icons.font-size-h6.text-primary.mr-3 receipt
+              = workflow.invoice.id
+      .row.mb-4.justify-content-end
+        = f.submit 'Submit', class: 'btn btn-primary btn-sm'
+        = fa_icon 'check', class: 'text-success mx-3 ajax-icons', id: "check-#{action.id}"
