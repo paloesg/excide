@@ -124,6 +124,8 @@ GEM
     algoliasearch-rails (1.24.0)
       algoliasearch (>= 1.26.0, < 2.0.0)
       json (>= 1.5.1)
+    ancestry (3.1.0)
+      activerecord (>= 4.2.0)
     ast (2.4.0)
     autoprefixer-rails (9.8.6.1)
       execjs
@@ -636,6 +638,7 @@ DEPENDENCIES
   administrate-field-jsonb
   administrate-field-nested_has_many
   algoliasearch-rails
+  ancestry
   aws-sdk-s3 (~> 1)
   aws-sdk-textract (~> 1)
   better_errors
