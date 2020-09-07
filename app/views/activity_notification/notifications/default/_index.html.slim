@@ -12,6 +12,18 @@
           | Notifications
       / ! end: Head
       .notifications.border-top
+        - if @target.notifications.unopened_only.where(group_id: nil).present?
+          .navi.notification_list.unopened
+            a.navi-item.sidebar-font aria-expanded="false" data-toggle="collapse" href="#notificationMenu_others"
+              .navi-link
+                .symbol.mx-3.pr-5
+                  i.flaticon2-bell.icon-2x.text-primary
+                  span.badge.badge-danger.rounded-circle.mb-3.p-1.ml-n4
+                    = @target.notifications.unopened_only.where(group_id: nil).count
+                .navi-text.font-size-h6 Reminders
+                i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
+            .collapse id="notificationMenu_others"
+              = render_notifications(@target.notifications.unopened_only.where(group_id: nil).order(created_at: :desc))
         //filter only unique group_id, compact to prevent having [nil]
         - templates = @target.notifications.unopened_only.pluck(:group_id).uniq.compact
         - ::Template.assigned_templates(current_user).find(templates).each do |template|
@@ -28,15 +40,3 @@
             .collapse id="notificationMenu_#{template.id}"
               // yield views with keys as filename in views and notifier name as folder
               = render_notifications(@target.notifications.unopened_only.where(group_id: template.id).order(created_at: :desc))
-        - if @target.notifications.unopened_only.where(group_id: nil).present?
-          .navi.notification_list.unopened
-            a.navi-item.sidebar-font aria-expanded="false" data-toggle="collapse" href="#notificationMenu_others"
-              .navi-link
-                .symbol.mx-3.pr-5
-                  i.flaticon2-checking.icon-3x.text-primary
-                  span.badge.badge-danger.rounded-circle.mb-3.p-1.ml-n4
-                    = @target.notifications.unopened_only.where(group_id: nil).count
-                .navi-text.font-size-h6 Others
-                i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
-            .collapse id="notificationMenu_others"
-              = render_notifications(@target.notifications.unopened_only.where(group_id: nil).order(created_at: :desc))
