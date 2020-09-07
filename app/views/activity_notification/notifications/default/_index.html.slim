@@ -1,22 +1,42 @@
-.dropdown.mt-2
+#notificationDropdown.dropdown.mt-2
   .topbar-item data-toggle="dropdown" data-offset="10px,10px" data-container="body" aria-expanded="true"
     i.material-icons-outlined.icon-size.dropdown-pointer notifications
     - if @target.has_unopened_notifications?(parameters)
-      span.badge.badge-danger.rounded-circle.notification-count.mb-3.p-1
+      span#notificationCount.badge.badge-danger.rounded-circle.notification-count.mb-3.p-1
         = @target.unopened_notification_count(parameters)
   .dropdown-menu.notification-content-width.dropdown-menu-right.p-0.m-0
     form
       /! begin: Head
-      .d-flex.flex-column.flex-center.bg-dark-o-5.rounded-top.bg-light
-        h5.text-center.text-dark.m-2.font-weight-bold
-          | User Notifications
-          span.btn.btn-label-primary.btn-sm.btn-bold.btn-font-md.ml-2 class=("#{'unopened' if @target.has_unopened_notifications?(parameters)}")
-            = "#{@target.unopened_notification_count(parameters)} new"
-          = link_to "Mark all as read", open_all_user_notifications_path(@target, parameters.slice(:routing_scope, :devise_default_routes)), method: :post, remote: true, class: 'btn btn-sm btn-outline-danger ml-2'
-        ul.nav.nav-bold.nav-tabs.nav-tabs-line.nav-tabs-line-3x.nav-tabs-primary.flex-grow-1.px-10 role="tablist"
-          li.nav-item
-            a.nav-link.active.show aria-selected="true" data-toggle="tab" href="#topbar_notifications_notifications" role="tab"  Notifications
+      .d-flex.flex-column.rounded-top
+        h4.text-dark.font-weight-bold.m-5
+          | Notifications
       / ! end: Head
-      .notifications
-        // yield views with keys as filename in views and notifier name as folder
-        = yield :notification_index
+      .notifications.border-top
+        //filter only unique group_id, compact to prevent having [nil]
+        - templates = @target.notifications.unopened_only.pluck(:group_id).uniq.compact
+        - ::Template.assigned_templates(current_user).find(templates).each do |template|
+          .navi.notification_list.border-bottom.border-secondary
+            a.navi-item.sidebar-font aria-expanded="false" data-toggle="collapse" href="#notificationMenu_#{template.id}"
+              .navi-link
+                .symbol.mx-3.pr-5
+                  i.flaticon2-checking.icon-3x.text-primary
+                  span.badge.badge-danger.rounded-circle.mb-3.p-1.ml-n4
+                    = @target.notifications.unopened_only.where(group_id: template.id).count
+                .navi-text.font-size-h6
+                  = template.title
+                i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
+            .collapse id="notificationMenu_#{template.id}"
+              // yield views with keys as filename in views and notifier name as folder
+              = render_notifications(@target.notifications.unopened_only.where(group_id: template.id).order(created_at: :desc))
+        - if @target.notifications.unopened_only.where(group_id: nil).present?
+          .navi.notification_list.unopened
+            a.navi-item.sidebar-font aria-expanded="false" data-toggle="collapse" href="#notificationMenu_others"
+              .navi-link
+                .symbol.mx-3.pr-5
+                  i.flaticon2-checking.icon-3x.text-primary
+                  span.badge.badge-danger.rounded-circle.mb-3.p-1.ml-n4
+                    = @target.notifications.unopened_only.where(group_id: nil).count
+                .navi-text.font-size-h6 Others
+                i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
+            .collapse id="notificationMenu_others"
+              = render_notifications(@target.notifications.unopened_only.where(group_id: nil).order(created_at: :desc))
