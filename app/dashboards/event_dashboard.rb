@@ -14,7 +14,7 @@ class EventDashboard < Administrate::BaseDashboard
     event_type: Field::BelongsTo,
     address: Field::HasOne,
     allocations: Field::HasMany,
-    id: Field::Number,
+    id: Field::String,
     start_time: Field::DateTime,
     end_time: Field::DateTime,
     remarks: Field::Text,
@@ -38,13 +38,13 @@ class EventDashboard < Administrate::BaseDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
+    :id,
     :staffer,
     :company,
     :client,
     :event_type,
     :address,
     :allocations,
-    :id,
     :start_time,
     :end_time,
     :remarks,

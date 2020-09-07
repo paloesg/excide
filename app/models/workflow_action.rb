@@ -61,11 +61,7 @@ class WorkflowAction < ApplicationRecord
     if (next_task.role.present? and self.workflow.batch.nil?) or (next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?)
       users = User.with_role(next_task.role.name.to_sym, self.company)
       # create task notification
-      next_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
-      # Trigger email notification for next task if role present
-      users.each do |user|
-        NotificationMailer.task_notification(next_task, next_action, user).deliver_later if user.settings[0]&.task_email == 'true'
-      end
+      next_action.notify :users, key: "workflow_action.task_notify", group: next_action.workflow.template, parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
     end
   end
 
@@ -74,11 +70,6 @@ class WorkflowAction < ApplicationRecord
     workflow_tasks.each do |task|
       wfa = task.get_workflow_action(self.company.id, self.workflow.id)
       create_reminder(task, wfa) if (task.set_reminder && wfa.deadline.present?)
-    end
-    task_users = workflow_tasks.map{|task| task.role.users}.flatten.compact.uniq
-    #loop through all the users that have a role in that workflow
-    task_users.each do |user|
-      NotificationMailer.unordered_workflow_notification(user, workflow_tasks, self).deliver_later if user.settings[0]&.task_email == 'true'
     end
   end
 
@@ -101,8 +92,7 @@ class WorkflowAction < ApplicationRecord
   def workflow_completed
     if self.workflow.update_column('completed', true)
       # Notify the user that created the workflow that it is completed
-      self.notify :users, key: "workflow_action.workflow_completed", parameters: { workflow_slug: self.workflow.slug }, send_later: false
-      WorkflowMailer.email_summary(self.workflow, self.workflow.user,self.workflow.company).deliver_later unless self.workflow.batch.present?
+      self.notify :users, key: "workflow_action.workflow_completed", group: self.workflow.template, parameters: { workflow_slug: self.workflow.slug }, send_later: false
       batch_completed if workflow.batch.present?
     end
   end

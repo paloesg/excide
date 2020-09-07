@@ -14,6 +14,7 @@ class AvailabilityDashboard < Administrate::BaseDashboard
     start_time: Field::Time,
     end_time: Field::Time,
     assigned: Field::Boolean,
+    allocations: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -24,23 +25,27 @@ class AvailabilityDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :user,
     :id,
+    :user,
     :available_date,
     :start_time,
+    :end_time,
+    :assigned,
+    :allocations,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :user,
     :id,
+    :user,
     :available_date,
     :start_time,
     :end_time,
     :assigned,
     :created_at,
     :updated_at,
+    :allocations,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -52,6 +57,7 @@ class AvailabilityDashboard < Administrate::BaseDashboard
     :start_time,
     :end_time,
     :assigned,
+    :allocations,
   ].freeze
 
   # Overwrite this method to customize how availabilities are displayed

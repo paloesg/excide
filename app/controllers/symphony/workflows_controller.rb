@@ -15,7 +15,8 @@ class Symphony::WorkflowsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @workflows = @template.workflows.select{|wf| params[:year].present? ? wf.created_at.year.to_s == params[:year] : wf.created_at.year == 2020}.sort_by{|wf| wf.created_at}.sort_by{|wf| wf.created_at}
+    @date_range = @template.get_date_range
+    @workflows, @years_to_filter, @month_years_to_filter, @year = @template.get_filtering_attributes(params[:year])
   end
 
   def new
@@ -43,6 +44,10 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def show
+    # Variables for workflow show page
+    @date_range = @template.get_date_range
+    @workflows, @years_to_filter, @month_years_to_filter, @year = @template.get_filtering_attributes(params[:year])
+
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", allow_any: ['utf8', 'authenticity_token'], success_action_status: '201', acl: 'public-read')
     authorize @workflow
     @invoice = Invoice.find_by(workflow_id: @workflow.id)
@@ -175,9 +180,8 @@ class Symphony::WorkflowsController < ApplicationController
     respond_to do |format|
       if current_task.role.present?
         users = User.with_role(current_task.role.name.to_sym, @company)
-        current_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{current_action.task.instructions}", workflow_action_id: current_action.id }, send_later: false
+        current_action.notify :users, key: "workflow_action.task_notify", group: current_action.workflow.template, parameters: { printable_notifiable_name: "#{current_action.task.instructions}", workflow_action_id: current_action.id }, send_later: false
         users.each do |user|
-          NotificationMailer.task_notification(current_task, current_action, user).deliver_later if user.settings[0]&.reminder_email == 'true'
           # Only send slack, whatsapp and sms notification when company is PRO
           if @company.pro?
             # Check if slack is connected using company.slack_access_response.present?
@@ -328,9 +332,9 @@ class Symphony::WorkflowsController < ApplicationController
   private
 
   def set_template
-    @template = policy_scope(Template).where(title: params[:workflow_name])
+    @template = policy_scope(Template).find_by(title: params[:workflow_name])
     #this is for clicking notifications of other companies
-    if @template.empty?
+    if @template.nil?
       #if scope fails, find template without scope and change user's company if user has role in that company
       @template = Template.find(params[:workflow_name])
       if @user.roles.where(resource_id: @template.company_id, resource_type: "Company").present?

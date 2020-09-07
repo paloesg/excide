@@ -1,72 +1,100 @@
 .row
   .col-md-6
-    h1 Events Listing - #{@date_from.strftime("%B")}
+    h1 Timesheet
   .col-md-6
-    = link_to 'Event Types', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, @company or @user.has_role? :staffer, @company
-    = link_to 'New Event', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1' if @user.has_role?(:staffer, @company) or @user.has_role?(:admin, @company)
+    - if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
+      = link_to export_conductor_allocations_path(start_date: params[:start_date], end_date: params[:end_date]), target: "_blank", class: 'btn btn-primary float-right mr-1' do
+        i.material-icons-outlined get_app
+        span.ml-2 Export
+      = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' 
+    = link_to 'New Task', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1'
+.row.mt-5
+  .col-md-12.m-2
+    .col-md-1.float-left.mt-3.px-0
+      span FILTER BY
+    .col-md-2.float-left.px-1
+      = select_tag('allocation_user', options_for_select(@users.map {|k,v| [k.full_name, k.id] }, selected: params[:allocation_users]), class: 'selectize-event-type allocation-users', multiple: true)
+    .col-md-2.float-left.px-1
+      = text_field_tag :start_date, params[:start_date], {class: 'col-md-12 form-control datepicker', 'data-toggle': 'datetimepicker', id: 'startDate', 'data-target': '#startDate', placeholder: "Start date..."}
+    .col-md-2.float-left.px-1
+      = text_field_tag :end_date, params[:end_date], {class: 'col-md-12 form-control datepicker', 'data-toggle': 'datetimepicker', id: 'endDate', 'data-target': '#endDate', placeholder: "End date..."}
+    .col-md-2.float-left.px-1
+      = select_tag('project_client', options_for_select(@clients.map {|k,v| [k.name, k.id] }, selected: params[:project_clients]), class: 'selectize-event-type project-clients', multiple: true)
+    .col-md-2.float-left.px-1
+      = select_tag('service_line', options_for_select(@service_lines, selected: params[:service_line]), class: 'selectize-event-type service-line', multiple: true)
+    .col-md-1.float-left.px-1
+      = button_tag 'Filter', type: 'button', class: 'btn btn-sm btn-primary timesheet-filter-button'
+hr
 .row
-  .col-sm-12.my-3
-    .btn-group.float-right role='group'
-      = link_to "conductor/events?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.prev_month : Date.current.beginning_of_month.prev_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
-        i.fa.fa-chevron-left
-        | Previous Month
-      = link_to "conductor/events?start_date=#{Date.current.beginning_of_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
-        | Current Month
-      = link_to "conductor/events?start_date=#{params[:start_date].present? ? Date.parse(params[:start_date]).beginning_of_month.next_month : Date.current.beginning_of_month.next_month}", type: 'button', class: 'btn btn-sm btn-outline-secondary'
-        | Next Month
-        i.fa.fa-chevron-right
+  .col-sm-12
+    h1 Create new task
+.row
+  .col-md-12
+    = form_for @event, url: conductor_events_path do |f|
+      .form-inline
+        - if current_user.has_role? :staffer, @company or current_user.has_role? :admin, @company
+          .form-group.mr-3
+            = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last&.user&.id), {prompt: 'Allocate someone...', class: 'selectize'}
+        .form-group.mr-3
+          = f.date_field :start_time, class: 'form-control', required: true
+        .form-group.mr-3
+          = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, { class: 'selectize', required: true }
+        .form-group.mr-3
+          = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), include_blank: true, prompt: 'Select service line...', required: true, class: 'selectize'
+        .form-group.mr-3 
+          = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }.sort, {selected: @event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', required: true }
+        .form-group.mr-3
+          = f.number_field :number_of_hours, {min: 0, step: 0.1, placeholder: 'No. of hours spent...', class: 'form-control', required: true}
+        .form-group
+          = f.submit 'Save Event', class: 'btn btn-primary'
+hr
 .row
   .col-sm-12
     .table-responsive
-      table.table.table-hover
+      table.table.table-striped
         thead
           tr
             th
-            th Job Nature
+            th Date
             th Client
             th Service Line
-            th Allocated to
-            th Start time
-            th End time
-            - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
-              th Remarks
-            - else
-              th Consultant
-              th Associate
-              th
-              th
+            th
+              | Activity Task
+              a.ml-2 data-container="body" title="Job nature of your task" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
+                  i.fa.fa-info-circle
+            th 
+              | Hours
+              a.ml-2 data-container="body" title="An estimation of the number of hours you worked" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
+                  i.fa.fa-info-circle
+            th
+            th
         tbody
-          - @events.each do |event|
-            tr
-              td.text-center
-                i.fa.fa-circle.mr-1 style="color: #{event.event_type.colour};"
-              td = event.event_type.name
-              td = event.client&.name
-              td = event.tag_list.last
-              td = event.allocations.last&.user.present? ? event.allocations.last.user.full_name : 'Nil'
-              td = event.start_time.strftime("%d/%m/%y %H:%M")
-              td = event.end_time.strftime("%d/%m/%y %H:%M")
-              - if @user.has_role? :associate, @company or @user.has_role? :consultant, @company
-                td = event.remarks
-                td = link_to 'Edit', edit_conductor_event_path(event), role: 'button', class: 'btn btn-primary btn-sm mr-1 mt-1'
-              - else
-                td
-                  - if event.allocations.consultant.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((event.allocations.consultant.count..5).to_a, event.allocations.consultant.count), onchange: "createAllocation('#{event.id}', 'consultant', this);")
-                  - else
-                    = select_tag('allocations', options_for_select([event.allocations.consultant.count]), disabled: true)
-                td
-                  - if event.allocations.associate.empty? and ((@user.has_role? :staffer, @company) or @user.has_role? :admin, @company)
-                    = select_tag('allocations', options_for_select((event.allocations.associate.count..20).to_a, event.allocations.associate.count), onchange: "createAllocation('#{event.id}', 'associate', this);")
-                  - else
-                    = select_tag('allocations', options_for_select([event.allocations.associate.count]), disabled: true)
-                td
-                  i.fa.fa-check.text-success style="opacity: 0;"
-                  i.fa.fa-times.text-danger style="opacity: 0;"
-                td.btn-toolbar
-                  = link_to 'Details', '#', role: 'button', class: 'btn btn-success btn-sm mr-1 mt-1 event', 'event-data': "#{event.to_json}", 'event-address': "#{event.address.to_json}", 'event-client': "#{event.client&.name}", 'event-staffer': "#{event.staffer&.full_name}", get_allocated_users_length: "#{event.allocations.map(&:user).reject(&:blank?).length}", title: "Event Details <div class='float-right'><span class='popover-close fa fa-times' aria-hidden='true'></span></div>", 'data-placement': "left", 'event-type': "#{event.event_type.name}", data: { turbolinks: false }
-                  = link_to 'Edit', edit_conductor_event_path(event), role: 'button', class: 'btn btn-primary btn-sm mr-1 mt-1'
-                  = link_to 'Reset', reset_conductor_event_path(event), data: { confirm: 'This will remove all existing allocations for this event. Are you sure?' }, method: :post, role: 'button', class: 'btn btn-warning btn-sm mr-1 mt-1'
-                  = link_to 'Delete', conductor_event_path(event), data: { confirm: 'Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm mt-1'
-#event-details.d-none
-  = render 'conductor/home/event_details'
+          - @events.order(start_time: :desc).each do |event|
+            = form_for event, url: conductor_event_path(event.id), remote: true do |f|
+              tr
+                - if event.allocations.present?
+                  td.text-center width="5%"
+                    .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=(event.allocations[0].user.full_name)
+                      span.initials
+                        = "#{event.allocations[0].user.first_name[0]}#{event.allocations[0].user&.last_name[0]}"
+                - else
+                  td
+                td width="15%"
+                  = f.date_field :start_time, { class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
+                td width="20%"
+                  = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'selectize', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
+                td width="20%"
+                  = f.select :tag_list, @service_lines.map { |sl| [sl, sl]}, { selected: event.tags.last, prompt: 'Select service line...' }, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
+                td width="20%"
+                  = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}.sort, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
+                td width="15%"
+                  = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control col-sm-12', data: { event_id: event.id }, onchange: "eventsUpdate(this);"}
+                td.p-0 width="5%"
+                  .dropdown.dropdown-inline.float-right
+                    a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                      i.fa.fa-ellipsis-h.text-secondary
+                    .dropdown-menu.dropdown-menu-right
+                      .dropdown-item = link_to "Delete", conductor_event_path(event), method: :delete, data: {confirm: "Are you sure you want to delete task?"}
+                td width="5%"
+                  = fa_icon "check", class: 'text-success ajax-icons'
+                  = fa_icon "times", class: 'text-danger ajax-icons'

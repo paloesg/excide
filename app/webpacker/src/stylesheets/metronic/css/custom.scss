@@ -145,6 +145,29 @@ td.day.has-events.fc-day-top.fc-past {
 .offcanvas-top {
   top: 58px !important;
 }
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  padding: 0.65rem 2rem 0.65rem 1rem !important;
+}
+
+.select2-selection > * {
+  display: block !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select2-selection__clear {
+  font-size: 12px !important;
+  right: 0.4rem !important;
+}
+
+.select2-selection__clear::after {
+  content: "" !important;
+}
+
+.select2-allow-clear + .select2-container--default .select2-selection--single .select2-selection__rendered {
+  width: 90% !important;
+}
 
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";

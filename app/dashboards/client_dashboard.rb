@@ -10,12 +10,14 @@ class ClientDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     user: Field::BelongsTo,
     workflows: Field::HasMany,
-    id: Field::Number,
+    id: Field::String,
     name: Field::String,
     company: Field::BelongsTo,
     identifier: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    xero_contact_id: Field::String,
+    xero_email: Field::String,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -28,17 +30,18 @@ class ClientDashboard < Administrate::BaseDashboard
     :identifier,
     :name,
     :company,
-    :workflows,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :id,
-    :name,
     :identifier,
+    :name,
     :company,
     :workflows,
+    :xero_contact_id,
+    :xero_email,
     :created_at,
     :updated_at,
   ].freeze
@@ -51,7 +54,8 @@ class ClientDashboard < Administrate::BaseDashboard
     :name,
     :company,
     :workflows,
-    :user,
+    :xero_contact_id,
+    :xero_email,
   ].freeze
 
   # Overwrite this method to customize how clients are displayed

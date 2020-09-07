@@ -3,7 +3,7 @@
   .navbar-brand
     = link_to symphony_root_path do
       = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo"
-    = content_tag :span, "Staging", class: "badge badge-danger badge-header ml-2" if ENV['APP_NAME'] == "excide-staging"
+    = content_tag :span, "Staging", class: "badge badge-danger badge-header ml-2" unless ENV['HEROKU_APP_NAME'] == "excide"
     = content_tag :span, "Trial", class: "badge badge-warning badge-header ml-2" if current_user.company.free_trial?
     = content_tag :span, "Basic", class: "badge badge-secondary badge-header ml-2" if current_user.company.basic?
     = content_tag :span, "Pro", class: "badge badge-success badge-header ml-2" if current_user.company.pro?
@@ -39,7 +39,7 @@
       li.nav-item
         /! begin: Notification bar
         / uses view notifications/default/workflow_action/:key.html.slim
-        = render_notifications_of current_user, fallback: :default, index_content: :with_attributes
+        = render_notifications_of current_user, fallback: :default, index_content: :with_attributes, with_group_members: true
       /! begin: Admin bar
       li.nav-link
         = link_to edit_user_registration_path do

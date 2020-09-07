@@ -1,5 +1,5 @@
 .offcanvas.offcanvas-right.offcanvas-top.p-5 id="kt_quick_notifications"
-  = form_for(action, url:workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
+  = form_for(action, url:symphony_workflow_action_path(id: action.id, format: 'json'), method: :patch, remote: true) do |f|
     .offcanvas-header.d-flex.align-items-center.justify-content-between.mb-6
       - if action.completed?
         .btn.btn-sm.btn-success.text-white style="pointer-events: none"
@@ -78,8 +78,17 @@
           .col-3 Invoice
           .col-9
             = link_to symphony_invoice_path(workflow_name: template.slug, workflow_id: workflow.id, id: workflow.invoice.id), class: "d-flex" do
-              i.material-icons.font-size-h6.text-primary.mr-3 receipt
+              i.material-icons.font-size-h6.text-primary.mr-3 List
               = workflow.invoice.id
+      - if workflow.surveys.present?
+        .row.mb-4
+          .col-3 Survey
+          .col-9
+            - workflow.surveys.each do |s|
+              .d-flex
+                = link_to symphony_survey_path(workflow_name: template.slug, workflow_id: workflow.id, id: s.id) do
+                  i.material-icons.font-size-h6.text-primary.mr-3 receipt
+                  = s.id
       .row.mb-4.justify-content-end
         = f.submit 'Submit', class: 'btn btn-primary btn-sm'
         = fa_icon 'check', class: 'text-success mx-3 ajax-icons', id: "check-#{action.id}"
