@@ -31,7 +31,7 @@
             a.navi-item.sidebar-font aria-expanded="false" data-toggle="collapse" href="#notificationMenu_#{template.id}"
               .navi-link
                 .symbol.mx-3.pr-5
-                  i.flaticon2-checking.icon-3x.text-primary
+                  i.flaticon2-checking.icon-2x.text-primary
                   span.badge.badge-danger.rounded-circle.mb-3.p-1.ml-n4
                     = @target.notifications.unopened_only.where(group_id: template.id).count
                 .navi-text.font-size-h6
