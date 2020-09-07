@@ -110,8 +110,13 @@ namespace :update do
   desc "Update existing notifications with group"
   task update_existing_notifications_group: :environment do
     ActivityNotification::Notification.where(notifiable_type: "WorkflowAction").where(group_id: nil).each do |notification|
-      notification.group = WorkflowAction.find(notification.notifiable_id).workflow.template
-      notification.save
+      wfa = WorkflowAction.find_by(id: notification.notifiable_id)
+      if wfa.present?
+        notification.group = wfa.workflow.template
+        notification.save
+      else
+        notification.destroy
+      end
       puts "Updated group for notification #{notification.id}"
     end
   end
