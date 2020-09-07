@@ -299,3 +299,11 @@ var KTOffcanvas = function(elementId, options) {
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = KTOffcanvas;
 }
+
+// var headerMenuOffcanvas = new KTOffcanvas("task", {
+//     overlay: true,
+//     baseClass: 'offcanvas',
+//     placement: 'right',
+//     closeBy: 'task_close',
+//     toggleBy: 'task_toggle'
+// });

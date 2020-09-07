@@ -137,6 +137,15 @@ td.day.has-events.fc-day-top.fc-past {
 .disabled {
   pointer-events: none;
 }
+
+.offcanvas-on {
+  width: 500px !important;
+}
+
+.offcanvas-top {
+  top: 58px !important;
+}
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 $theme-colors: (
