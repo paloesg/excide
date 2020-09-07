@@ -125,7 +125,7 @@ namespace :update do
   desc "Update existing templates with on-demand template pattern"
   task update_existing_template_to_on_demand: :environment do
     Template.where(template_pattern: nil).each do |t|
-      t.update(template_pattern: "on_demand")
+      t.update_columns(template_pattern: "on_demand")
     end
   end
 end
