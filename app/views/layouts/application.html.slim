@@ -45,7 +45,7 @@ html lang="en"
     - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys'))
       = render 'layouts/conductor_header'
     - else
-      = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path) || controller_name == 'invoices')
+      = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path) || controller_name == 'invoices' || current_page?(products_url))
     /! end:: Header
 
     /! begin:: Content
@@ -60,8 +60,8 @@ html lang="en"
       - else
         .container-fluid
           .row
-            - if (controller_name == 'invoices' || current_page?(additional_information_path))
-              / no sidebar for invoices page and conductor
+            - if (controller_name == 'invoices' || current_page?(additional_information_path) || current_page?(products_url))
+              / no sidebar for invoices page, conductor, additional information page, and products selection menu page
               .col-sm-12.mt-5.mx-4.px-5
                 = yield
                 = render 'layouts/messages'

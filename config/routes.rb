@@ -25,6 +25,10 @@ Rails.application.routes.draw do
   post '/update_tracking_categories_from_xero', to: 'xero_sessions#update_tracking_categories_from_xero', as: :update_tracking_categories_from_xero
   delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
+  # Product selection menu page path
+
+  get '/products', to: 'home#index'
+
   namespace :symphony do
     root to: 'home#index'
 
