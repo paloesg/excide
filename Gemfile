@@ -101,6 +101,9 @@ gem 'inky-rb', require: 'inky'
 gem 'premailer-rails'
 # Default processer: MiniMagick. Enable variant for image using ActiveStorage
 gem 'image_processing', '~> 1.2'
+# Sendgrid web API
+gem 'sendgrid-ruby'
+gem 'sendgrid-actionmailer'
 
 # Nested form helper
 # gem "cocoon"

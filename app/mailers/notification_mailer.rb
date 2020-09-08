@@ -1,5 +1,7 @@
 class NotificationMailer < ApplicationMailer
   default from: 'Excide Symphony <admin@excide.co>'
+  require 'sendgrid-ruby'
+  include SendGrid
   
   def batch_reminder(reminders, user)
     @reminders = reminders
@@ -13,9 +15,12 @@ class NotificationMailer < ApplicationMailer
     @email_summary_notifications = email_summary_notifications
     @user = user
     @companies = companies
-    address = Mail::Address.new @user.email
-    address.display_name = @user.first_name
-    mail(to: address.format, subject: 'Here is your daily email summary')
+    # address = Mail::Address.new @user.email
+    # address.display_name = @user.first_name
+    mail(to: 'jonathan.lau@paloe.com.sg', from: 'Excide Symphony <admin@excide.co>', subject: 'Here is your daily email summary', body: 'Some body',  template_id: 'd-eb0e5c0edd7342529057a9058214a827', dynamic_template_data: {
+        firstName: @user.first_name
+      }
+    )
   end
 
   def create_event(event, user)
