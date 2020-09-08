@@ -36,10 +36,6 @@ class WorkflowPolicy < ApplicationPolicy
     update?
   end
 
-  def toggle_all?
-    update?
-  end
-
   def assign?
     update?
   end

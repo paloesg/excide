@@ -182,4 +182,16 @@ $(document).on("turbolinks:load", function () {
     placeholder: "Select...",
     allowClear: true,
   });
+
+  $("form").on("click", ".add_task_fields", function () {
+    $(".select2").select2({
+      minimumResultsForSearch: 5,
+      placeholder: "Select...",
+    });
+    $(".select2-allow-clear").select2({
+      minimumResultsForSearch: 5,
+      placeholder: "Select...",
+      allowClear: true,
+    });
+  });
 });

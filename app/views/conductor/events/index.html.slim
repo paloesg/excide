@@ -6,8 +6,7 @@
       = link_to export_conductor_allocations_path(start_date: params[:start_date], end_date: params[:end_date]), target: "_blank", class: 'btn btn-primary float-right mr-1' do
         i.material-icons-outlined get_app
         span.ml-2 Export
-    = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' if @user.has_role? :admin, @company or @user.has_role? :staffer, @company
-    = link_to 'Add Job Nature', new_conductor_event_type_path, role: 'button', class: 'btn btn-primary float-right mr-1'
+      = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' 
     = link_to 'New Task', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1'
 .row.mt-5
   .col-md-12.m-2
@@ -25,6 +24,30 @@
       = select_tag('service_line', options_for_select(@service_lines, selected: params[:service_line]), class: 'selectize-event-type service-line', multiple: true)
     .col-md-1.float-left.px-1
       = button_tag 'Filter', type: 'button', class: 'btn btn-sm btn-primary timesheet-filter-button'
+hr
+.row
+  .col-sm-12
+    h1 Create new task
+.row
+  .col-md-12
+    = form_for @event, url: conductor_events_path do |f|
+      .form-inline
+        - if current_user.has_role? :staffer, @company or current_user.has_role? :admin, @company
+          .form-group.mr-3
+            = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last&.user&.id), {prompt: 'Allocate someone...', class: 'selectize'}
+        .form-group.mr-3
+          = f.date_field :start_time, class: 'form-control', required: true
+        .form-group.mr-3
+          = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, { class: 'selectize', required: true }
+        .form-group.mr-3
+          = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), include_blank: true, prompt: 'Select service line...', required: true, class: 'selectize'
+        .form-group.mr-3 
+          = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }.sort, {selected: @event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', required: true }
+        .form-group.mr-3
+          = f.number_field :number_of_hours, {min: 0, step: 0.1, placeholder: 'No. of hours spent...', class: 'form-control', required: true}
+        .form-group
+          = f.submit 'Save Event', class: 'btn btn-primary'
+hr
 .row
   .col-sm-12
     .table-responsive
@@ -33,12 +56,12 @@
           tr
             th
             th Date
+            th Client
+            th Service Line
             th
               | Activity Task
               a.ml-2 data-container="body" title="Job nature of your task" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
                   i.fa.fa-info-circle
-            th Client
-            th Service Line
             th 
               | Hours
               a.ml-2 data-container="body" title="An estimation of the number of hours you worked" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
@@ -59,11 +82,11 @@
                 td width="15%"
                   = f.date_field :start_time, { class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
                 td width="20%"
-                  = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
-                td width="20%"
                   = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'selectize', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
                   = f.select :tag_list, @service_lines.map { |sl| [sl, sl]}, { selected: event.tags.last, prompt: 'Select service line...' }, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
+                td width="20%"
+                  = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}.sort, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
                 td width="15%"
                   = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control col-sm-12', data: { event_id: event.id }, onchange: "eventsUpdate(this);"}
                 td.p-0 width="5%"
@@ -75,26 +98,3 @@
                 td width="5%"
                   = fa_icon "check", class: 'text-success ajax-icons'
                   = fa_icon "times", class: 'text-danger ajax-icons'
-hr
-.row
-  .col-sm-12
-    h1 Create new task
-.row
-  .col-md-12
-    = form_for @event, url: conductor_events_path do |f|
-      .form-inline
-        - if current_user.has_role? :staffer, @company or current_user.has_role? :admin, @company
-          .form-group.mr-3
-            = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last&.user&.id), {prompt: 'Allocate someone...', class: 'selectize', required: true}
-        .form-group.mr-3
-          = f.date_field :start_time, class: 'form-control', required: true
-        .form-group.mr-3 
-          = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }, {selected: @event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', required: true }
-        .form-group.mr-3
-          = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, { class: 'selectize', required: true }
-        .form-group.mr-3
-          = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), include_blank: true, prompt: 'Select service line...', required: true, class: 'selectize'
-        .form-group.mr-3
-          = f.number_field :number_of_hours, {min: 0, step: 0.1, placeholder: 'No. of hours spent...', class: 'form-control', required: true}
-        .form-group
-          = f.submit 'Save Event', class: 'btn btn-primary'
