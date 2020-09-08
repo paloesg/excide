@@ -26,8 +26,7 @@
               = render_notifications(@target.notifications.unopened_only.where(group_id: nil).order(created_at: :desc))
         //filter only unique group_id, compact to prevent having [nil]
         - templates = @target.notifications.unopened_only.pluck(:group_id).uniq.compact
-        / "::Template.assigned_templates(current_user).pluck(:id) & templates checks" inside the find method is to check for the intersection of the notification's IDs and assigned_templates IDs. This is for the case where a user has existing unopened notifications in a particular template but does not have the role anymore (could be role changed)
-        - ::Template.assigned_templates(current_user).find(::Template.assigned_templates(current_user).pluck(:id) & templates).each do |template|
+        - ::Template.find(templates).each do |template|
           .navi.notification_list.border-bottom.border-secondary
             a.navi-item.sidebar-font aria-expanded="false" data-toggle="collapse" href="#notificationMenu_#{template.id}"
               .navi-link
