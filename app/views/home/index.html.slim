@@ -1,8 +1,8 @@
 .container
-.row.with-bottom-margin
+.row
   .col-lg
     h1.text-center Welcome Back, #{current_user.first_name} #{current_user.last_name}
-.row.justify-content-center.with-bottom-margin
+.row.justify-content-center
   .nav-item.dropdown.border.border-secondary.rounded
     - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
       button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
@@ -15,9 +15,9 @@
     - else
       = link_to(symphony_root_path, class: "btn btn-secondary btn-default") do
         ' #{current_user.company.name}
-.row.justify-content-center
+.row.justify-content-center.h-100
   -@products.each do |product|
-    .col-2.d-flex.justify-content-center
+    .col-2.d-flex.justify-content-center.my-auto
       .card.w-100  
         .card-img-top.d-flex.justify-content-center
           -if product == "Symphony"
@@ -28,7 +28,3 @@
               = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
         .card-body.d-flex.justify-content-center
           .card-title #{product}
-
-.with-bottom-margin {
-  margin-bottom: 15px;
-}
