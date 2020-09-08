@@ -58,6 +58,10 @@ class WorkflowAction < ApplicationRecord
     # Create new reminder based on deadline of action and repeat every 2 days
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
 
+    # Update next_action's current_action to true
+    next_action.current_action = true
+    next_action.save
+    
     if (next_task.role.present? and self.workflow.batch.nil?) or (next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?)
       users = User.with_role(next_task.role.name.to_sym, self.company)
       # create task notification

@@ -143,20 +143,13 @@ class Symphony::WorkflowsController < ApplicationController
     #manually saving updated_at of the batch to current time
     @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
     respond_to do |format|
-      if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id)
+      if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id, current_action: false)
         format.json { render json: @action.completed, status: :ok }
         flash[:notice] = "You have successfully completed all outstanding items for your current task." if @action.all_actions_task_group_completed?
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
-    end
-    # completed action is no longer the current action
-    @action.update(current_action: false)
-    unless @action.workflow.completed?
-      # the next action is now the current action
-      next_action = @action.workflow.workflow_actions.where(completed: false).first
-      next_action.update(current_action: true)
     end
   end
 
