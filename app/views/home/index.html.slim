@@ -1,3 +1,14 @@
-.row.mt-5
-    .col-md-6
-      h4 Product Selection Menu Page
+.row
+    .col-lg
+        h1 class="text-center" Welcome Back, Jackson Wang
+.row
+    -@products.each do |product|
+        - if product == "Symphony"
+            = link_to symphony_root_path do
+                = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
+        - elsif product == "Motif"
+            = link_to motif_root_path do
+                = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Motif"
+
+            
+            
