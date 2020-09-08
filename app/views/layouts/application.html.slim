@@ -76,11 +76,11 @@ html lang="en"
                 = yield
                 = render 'layouts/messages'
       hr
-      = render 'layouts/footer'
+      = render 'layouts/footer' unless current_page?(products_url)
     - else
       .container
         = yield
-        = render 'layouts/messages'
+        = render 'layouts/messages' 
       /! end:: Content
     /! begin:: Footer
     /! end:: Footer
