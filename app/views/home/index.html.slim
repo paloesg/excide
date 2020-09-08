@@ -1,14 +1,16 @@
 .row
     .col-lg
         h1 class="text-center" Welcome Back, Jackson Wang
-.row
+div class="row justify-content-center"
     -@products.each do |product|
-        - if product == "Symphony"
-            = link_to symphony_root_path do
-                = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
-        - elsif product == "Motif"
-            = link_to motif_root_path do
-                = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Motif"
-
-            
-            
+        div class="col-2 d-flex justify-content-center"
+            div class="card" style="width: 12rem;"
+                img class="card-img-top d-flex justify-content-center"
+                    -if product == "Symphony"
+                        = link_to symphony_root_path do
+                            = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
+                    -elsif product == "Motif"
+                        = link_to motif_root_path do
+                            = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
+                div class="card-body d-flex justify-content-center"
+                    h5 class="card-title" #{product}
