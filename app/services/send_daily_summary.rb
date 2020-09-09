@@ -16,7 +16,7 @@ class SendDailySummary
 
   # using app/controllers/symphony/home_controller.rb querying method
   def get_user_notifications
-    @email_summary_notifications = WorkflowAction.includes(:workflow).all_user_actions(@user).where.not(completed: true, deadline: nil).where(current_action: true).order(:company_id, :deadline).includes(:task)
+    @email_summary_notifications = WorkflowAction.includes(:workflow).all_user_actions(@user).where.not(completed: true, deadline: nil, current_action: false).order(:company_id, :deadline).includes(:task)
   end
 
   def send_daily_summary
