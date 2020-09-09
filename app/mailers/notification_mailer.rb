@@ -11,14 +11,22 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: 'Here are your reminders for today')
   end
 
-  def daily_summary(email_summary_notifications, user, companies)
-    @email_summary_notifications = email_summary_notifications
+  def daily_summary(action_details, user, companies)
+    @action_details = action_details
     @user = user
     @companies = companies
+    puts "JSON DATA: #{{
+        firstName: @user.first_name,
+        companies: @companies,
+        actions: @action_details
+      }}"
     # address = Mail::Address.new @user.email
     # address.display_name = @user.first_name
+    # mail(to: address.format, subject: 'Here is your daily email summary')
     mail(to: 'jonathan.lau@paloe.com.sg', from: 'Excide Symphony <admin@excide.co>', subject: 'Here is your daily email summary', body: 'Some body',  template_id: 'd-eb0e5c0edd7342529057a9058214a827', dynamic_template_data: {
-        firstName: @user.first_name
+        firstName: @user.first_name,
+        companies: @companies,
+        actions: @action_details
       }
     )
   end
