@@ -25,12 +25,12 @@
         table.table.table-hover
           tbody
             - @outstanding_actions.each_with_index do |action, index|
-              tr.border-bottom
+              tr.border-bottom.task-row class="trigger-offcanvas-#{action.id}" data-action="#{action.id}"
                 td.border-top-0
                   label.checkbox
                     = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"
                     span
-                td.border-top-0 id="kt_quick_notifications_toggle" style="cursor: pointer"
+                td.border-top-0 style="cursor: pointer"
                   = action.task.instructions
                 td.border-top-0 data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
                   = action.workflow.template.title
