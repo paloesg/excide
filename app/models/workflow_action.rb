@@ -58,10 +58,14 @@ class WorkflowAction < ApplicationRecord
     # Create new reminder based on deadline of action and repeat every 2 days
     create_reminder(next_task, next_action) if (next_task.set_reminder && next_action.deadline.present?)
 
+    # Update next_action's current_action to true
+    next_action.current_action = true
+    next_action.save
+    
     if (next_task.role.present? and self.workflow.batch.nil?) or (next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?)
       users = User.with_role(next_task.role.name.to_sym, self.company)
       # create task notification
-      next_action.notify :users, key: "workflow_action.task_notify", parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
+      next_action.notify :users, key: "workflow_action.task_notify", group: next_action.workflow.template, parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
     end
   end
 
@@ -92,7 +96,7 @@ class WorkflowAction < ApplicationRecord
   def workflow_completed
     if self.workflow.update_column('completed', true)
       # Notify the user that created the workflow that it is completed
-      self.notify :users, key: "workflow_action.workflow_completed", parameters: { workflow_slug: self.workflow.slug }, send_later: false
+      self.notify :users, key: "workflow_action.workflow_completed", group: self.workflow.template, parameters: { workflow_slug: self.workflow.slug }, send_later: false
       batch_completed if workflow.batch.present?
     end
   end
@@ -107,6 +111,19 @@ class WorkflowAction < ApplicationRecord
   # Check if workflow belongs to a batch, get all the actions by task grouping for the batch and check that all actions are completed
   def all_actions_task_group_completed?
     self.workflow.batch ? WorkflowAction.where(workflow: [self.workflow.batch.workflows.pluck(:id)], task_id: self.task.id).pluck(:completed).uniq.exclude?(false) : false
+  end
+
+  def get_overdue_status_colour
+    # same logic as symphony homepage colour (app/views/symphony/home/index.html.slim)
+    if self.deadline.to_date < Date.current
+      return "text-danger"
+    elsif self.deadline.to_date <= Date.tomorrow
+      return "text-warning"
+    elsif self.company.before_deadline_reminder_days.present? && workflow_action.deadline.to_date - workflow_action.company.before_deadline_reminder_days <= Date.current
+      return "text-warning"
+    else
+      return "text-primary"
+    end
   end
 
   private

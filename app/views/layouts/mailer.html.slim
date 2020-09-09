@@ -4,7 +4,6 @@ html[xmlns='http://www.w3.org/1999/xhtml']
     meta http-equiv="Content-Type" content="text/html; charset=utf-8"
     meta name="viewport" content="width=device-width"
 
-    = stylesheet_link_tag "foundation_emails"
   css:
     .header {
       background: #8a8a8a;
@@ -59,10 +58,23 @@ html[xmlns='http://www.w3.org/1999/xhtml']
         color: #fff;
         background-color: #dc3545;
     }
+    .circle-danger:before {
+      color: #F64E60;
+      content: ' \25CF';
+      font-size: 25px;
+    }
+    .circle-warning:before {
+      color: #FFA800;
+      content: ' \25CF';
+      font-size: 25px;
+    }
+    .circle-primary:before {
+      color: #3699FF;
+      content: ' \25CF';
+      font-size: 25px;
+    }
   body
-    table.body data-made-with-foundation=""
+    table.body data-made-with-foundation="" 
       tr
-        td.center align="center" valign="top"
-          center
-            container
-              = yield
+        td valign="top"
+          = yield

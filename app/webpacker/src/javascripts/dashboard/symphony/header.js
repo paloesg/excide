@@ -5,4 +5,7 @@ $(document).on("turbolinks:load", function(){
   else if($('.break-inside-avoid').length > 10){
     $('#company-dropdown').addClass("col2");
   }
+  $("#notificationDropdown").click(function() {
+    $("#notificationCount").hide();
+  });
 });
