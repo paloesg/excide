@@ -1,6 +1,7 @@
 .row.h-100
   .col-lg.align-self-end
     h1.text-center Welcome Back, #{current_user.first_name} #{current_user.last_name}
+/ company selection dropdown
 .row.justify-content-center.h-50
   .nav-item.dropdown.border.border-secondary.rounded.align-self-center
     - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
@@ -14,10 +15,12 @@
     - else
       = link_to(symphony_root_path, class: "btn btn-secondary btn-default") do
         ' #{current_user.company.name}
+/ cards for products
 .row.justify-content-center.h-100
   -@products.each do |product|
     .col-2.d-flex.justify-content-center.align-self-center
       .card.w-100  
+        = link_to motif_root_path
         .card-img-top.d-flex.justify-content-center
           -if product == "Symphony"
             = link_to symphony_root_path do
@@ -27,3 +30,4 @@
               = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
         .card-body.d-flex.justify-content-center
           .card-title #{product}
+
