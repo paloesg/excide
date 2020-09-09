@@ -19,15 +19,18 @@
 .row.justify-content-center.h-100
   -@products.each do |product|
     .col-2.d-flex.justify-content-center.align-self-center
-      .card.w-100  
-        = link_to motif_root_path
-        .card-img-top.d-flex.justify-content-center
-          -if product == "Symphony"
-            = link_to symphony_root_path do
+        .card.w-100  
+          .card-img-top.d-flex.justify-content-center
+            -if product == "Symphony"
               = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
-          -elsif product == "Motif"
-            = link_to motif_root_path do
+            -elsif product == "Motif"
               = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
-        .card-body.d-flex.justify-content-center
-          .card-title #{product}
+          .card-body.d-flex.justify-content-center
+            - if product == "Symphony"
+              a.stretched-link.d-flex.justify-content-center href="symphony"
+            -elsif product == "Motif"
+              a.stretched-link.d-flex.justify-content-center href="motif"
+            h3 #{product}
+
+            
 
