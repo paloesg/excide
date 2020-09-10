@@ -42,14 +42,9 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  # mailcatcher
-  # config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
-  # config.action_mailer.default_url_options = { :host => 'excide.test' }
-
   config.action_mailer.delivery_method = :sendgrid_actionmailer
   config.action_mailer.sendgrid_actionmailer_settings = {
-    api_key: ENV['SENDGRID_API_KEY'],
+    api_key: ENV['SENDGRID_STAGING_API_KEY'],
     raise_delivery_errors: true
   }
 
