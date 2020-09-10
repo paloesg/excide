@@ -1,10 +1,8 @@
-require("jquery")
+require("jquery");
 
-import $ from 'jquery';
+import $ from "jquery";
 window.jQuery = $;
 window.$ = $;
-// Active storage direct upload
-require("@rails/activestorage").start();
 
 window.moment = require("moment");
 window.mixpanel = require("mixpanel-browser");
@@ -12,6 +10,7 @@ require("selectize");
 require("algoliasearch");
 require("tempusdominus-bootstrap-4");
 require("blueimp-file-upload");
+require("select2");
 
 require("./symphony");
 require("./symphony/new_workflow");
@@ -24,7 +23,8 @@ require("./symphony/zoom");
 require("./symphony/invoices/xero");
 require("./symphony/invoices/aws");
 require("./symphony/choice");
-require("./symphony/choose_deadline_types");
+require("./symphony/templates/choose_deadline_types");
+require("./symphony/templates/choose_template_patterns");
 require("./symphony/header");
 
 window.createAllocation = require("./conductor/create_allocations");
@@ -35,18 +35,12 @@ require("./conductor/event_update");
 require("./components/calendar_style");
 
 // Import Uppy drag-and-drop
-require('./components/uppy');
+require("./components/uppy");
 require("./components/direct_upload");
 // require("./components/document_upload");
-require("./components/date_time_picker");
 require("./components/popover_initialize");
 require("./components/selectize_initialize");
 require("./components/document_popover");
 require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");
-
-require("./turbolinks-compatibility");
-
-// Actiontext
-require("trix");
-require("@rails/actiontext");
+require("./components/date_time_picker");

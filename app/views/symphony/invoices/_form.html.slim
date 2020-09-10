@@ -15,14 +15,14 @@
         .row.m-2
           .form-group.col-md-6
             = f.label :xero_contact_id, 'To'
-            = f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'selectize existing-contact-width existing-contact-disable', required: true}
+            = f.collection_select :xero_contact_id, @clients, :contact_id, :name, {include_blank: true}, { class: 'select2 existing-contact-width existing-contact-disable form-control', required: true}
           .col-md-6.mt-6
             = link_to 'Sync Xero Contacts', update_contacts_from_xero_path, method: :post, class: "btn btn-warning mr-2 #{current_user.company.basic? ? 'disabled' : nil}"
-            = link_to 'Add Xero Contact', 'https://go.xero.com/Contacts/Edit.aspx', target: "_blank", class: 'btn btn-primary'          
+            = link_to 'Add Xero Contact', 'https://go.xero.com/Contacts/Edit.aspx', target: "_blank", class: 'btn btn-primary'
         .row.m-2
           .form-group.col-md-6
             = f.label :invoice_date, 'Date'
-            a.pop.ml-2 data-container="body" title='Eg. Enter "3 6 tab" to get 3 June 2020' data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+            a.pop.ml-2 data-container="body" title='Eg. Enter "3 6 tab" to get 3 June 2020' data-html="true" data-placement="top" data-toggle="tooltip" data-trigger="hover"
               i.fa.fa-info-circle
             #datetimepicker.input-group.date.dateinvoice data-target-input="nearest"
               .input-group-append data-target="#datetimepicker" data-toggle="datetimepicker"
@@ -31,18 +31,18 @@
               = f.text_field :invoice_date, class: 'form-control autodate invoicedate dateinvoice', value:"#{@invoice.invoice_date.present? ? @invoice.invoice_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker1', 'data-target': '#datetimepicker1'
           .form-group.col-md-6
             = f.label :due_date, 'Due Date '
-            a.pop.ml-2 data-container="body" title='Type "+30" to add 30 days from invoice date to due date' data-html="true" data-placement="top" data-toggle="kt-tooltip" data-trigger="hover"
+            a.pop.ml-2 data-container="body" title='Type "+30" to add 30 days from invoice date to due date' data-html="true" data-placement="top" data-toggle="tooltip" data-trigger="hover"
               i.fa.fa-info-circle
             #datetimepicker2.input-group.date.dateinvoice data-target-input="nearest"
               .input-group-append data-target="#datetimepicker2" data-toggle="datetimepicker"
                 .input-group-text style="background-color: #fff"
                   i.fa.fa-calendar
               = f.text_field :due_date, class: 'form-control autodate duedate dateinvoice', value:"#{@invoice.due_date.present? ? @invoice.due_date.strftime('%d %b %Y') : ''}", id: 'datetimepicker3', 'data-target': '#datetimepicker3'
-              
+
         .row.m-2
           .form-group.col-md-6
             = f.label :currency, 'Currency'
-            = f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'selectize'
+            = f.select :currency, @currencies.map { |currency| currency.code + ' ' + currency.description }, {selected: @invoice.currency}, class: 'select2 form-control'
 .row
   .col-md-12
     .card.mb-3

@@ -14,7 +14,7 @@
     "blueimp-file-upload": "^10.7.0",
     "bootstrap": "^4.4.1",
     "bootstrap-datetimepicker": "^0.0.7",
-    "cocoon": "github:nathanvda/cocoon#c24ba53",
+    "cocoon": "github:nathanvda/cocoon#6364ce5",
     "flatpickr": "^4.6.3",
     "flickity": "^2.2.1",
     "jquery": "^3.5.1",
@@ -25,6 +25,7 @@
     "mixpanel-browser": "^2.31.0",
     "moment": "^2.24.0",
     "popper.js": "^1.16.0",
+    "select2": "^4.0.13",
     "selectize": "^0.12.6",
     "sticky-js": "^1.2.0",
     "tempusdominus-bootstrap-4": "^5.0.0",
@@ -32,6 +33,6 @@
     "turbolinks": "^5.2.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "^3.9.0"
+    "webpack-dev-server": "3.10.3"
   }
 }

@@ -14,7 +14,7 @@ gem 'slim-rails'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '~> 5.1.0'
+gem 'turbolinks', '~> 5.2.0'
 # Fix issues with jquery caused by turbolinks
 gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -130,6 +130,8 @@ gem 'activity_notification'
 # Integrate Slack API
 gem 'slack-ruby-client'
 
+gem 'ancestry'
+
 # Backend admin
 gem 'administrate', '0.14.0'
 gem 'administrate-field-image'
@@ -181,6 +183,7 @@ group :development do
 
   # Add squasher to collate old migration file
   gem 'squasher', '>= 0.6.0'
+  gem 'foreman'
 end
 
 group :development, :test do

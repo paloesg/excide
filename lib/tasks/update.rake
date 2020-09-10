@@ -106,4 +106,26 @@ namespace :update do
       wf.update(total_time_mins: wf.workflow_actions.sum(:time_spent_mins))
     end
   end
+
+  desc "Update existing notifications with group"
+  task update_existing_notifications_group: :environment do
+    ActivityNotification::Notification.where(notifiable_type: "WorkflowAction").where(group_id: nil).each do |notification|
+      wfa = WorkflowAction.find_by(id: notification.notifiable_id)
+      if wfa.present?
+        notification.group = wfa.workflow.template
+        notification.save
+        puts "Updated group for notification #{notification.id}"
+      else
+        notification.destroy
+        puts "Deleted notification #{notification.id}"
+      end
+    end
+  end
+
+  desc "Update existing templates with on-demand template pattern"
+  task update_existing_template_to_on_demand: :environment do
+    Template.where(template_pattern: nil).each do |t|
+      t.update_columns(template_pattern: "on_demand")
+    end
+  end
 end

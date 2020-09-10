@@ -9,6 +9,15 @@ class NotificationMailer < ApplicationMailer
     mail(to: address.format, subject: 'Here are your reminders for today')
   end
 
+  def daily_summary(email_summary_notifications, user, companies)
+    @email_summary_notifications = email_summary_notifications
+    @user = user
+    @companies = companies
+    address = Mail::Address.new @user.email
+    address.display_name = @user.first_name
+    mail(to: address.format, subject: 'Here is your daily email summary')
+  end
+
   def create_event(event, user)
     event_notification(event, user, 'A new event has been created')
   end
