@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_03_042518) do
+ActiveRecord::Schema.define(version: 2020_09_10_172744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -335,6 +335,18 @@ ActiveRecord::Schema.define(version: 2020_09_03_042518) do
     t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
     t.index ["notifier_type", "notifier_id"], name: "index_notifications_on_notifier_type_and_notifier_id"
     t.index ["target_type", "target_id"], name: "index_notifications_on_target_type_and_target_id"
+  end
+
+  create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "folder_id"
+    t.bigint "role_id"
+    t.boolean "can_write"
+    t.boolean "can_view"
+    t.boolean "can_download"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["folder_id"], name: "index_permissions_on_folder_id"
+    t.index ["role_id"], name: "index_permissions_on_role_id"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -708,6 +720,8 @@ ActiveRecord::Schema.define(version: 2020_09_03_042518) do
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
+  add_foreign_key "permissions", "folders"
+  add_foreign_key "permissions", "roles"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"
