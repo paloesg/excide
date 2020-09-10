@@ -21,19 +21,18 @@ class SendDailySummary
   end
 
   def send_daily_summary
-    @companies = []
     @action_details = []
     @email_summary_notifications.each do |email_summary_notification|
-      @companies << { name: email_summary_notification.company.name, id: email_summary_notification.company.id }
-      @action_details << { deadline: email_summary_notification.deadline.strftime('%F'), task_instruction: email_summary_notification.task.instructions, overdue_status: email_summary_notification.get_overdue_status_colour, company_id: email_summary_notification.company.id, link_address: "#{ENV['ASSET_HOST'] + symphony_workflow_path(email_summary_notification.task.section.template.slug, email_summary_notification.workflow.friendly_id)}" }
+      @action_details << { 
+        deadline: email_summary_notification.deadline.strftime('%F'), 
+        task_instruction: email_summary_notification.task.instructions, 
+        overdue: email_summary_notification.get_overdue_status_colour == "text-danger" ? true : false,
+        not_overdue: email_summary_notification.get_overdue_status_colour == "text-primary" ? true : false, 
+        due_soon: email_summary_notification.get_overdue_status_colour == "text-warning" ? true : false, 
+        company_name: email_summary_notification.company.name, 
+        link_address: "#{ENV['ASSET_HOST'] + symphony_workflow_path(email_summary_notification.task.section.template.slug, email_summary_notification.workflow.friendly_id)}" }.as_json
     end
-    @companies = @companies.uniq
-    # puts "Companies: #{@companies}"
-    # @action_details.each do |action_detail|
-    #   puts "Actions detail: #{action_detail}"
-    # end
-
-    NotificationMailer.daily_summary(@action_details, @user, @companies).deliver_now if @user.settings[0]&.reminder_email == 'true'
+    NotificationMailer.daily_summary(@action_details, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
   end
 end
   

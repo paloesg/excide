@@ -14,9 +14,9 @@ namespace :scheduler do
   # Rake task for the the daily summary email
   task :daily_summary => :environment do
     time = Benchmark.realtime {
-      # User.all.each do |user|
-      SendDailySummary.run(User.find(170))
-      # end
+      User.all.each do |user|
+        SendDailySummary.run(user)
+      end
     }
 
     Snitcher.snitch(ENV['SNITCH_TOKEN'], message: "Finished in #{time.round(2)} seconds.")
