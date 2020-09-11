@@ -20,6 +20,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.account_type = 0
       company.save
       resource.company = company
+      if params[:product].present?
+        resource.company.products = [params[:product]]
+        resource.company.save
+      end
     end
     resource.save
     role = params[:role].present? ? params[:role] : "admin"
