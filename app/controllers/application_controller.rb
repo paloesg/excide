@@ -24,9 +24,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if current_user.company.name.present?
-      if current_user.company.products == nil
-        products_url
-      elsif current_user.company.products.length > 1
+      if current_user.company.products.length > 1
         products_url
       elsif current_user.company.products.length == 1
         if current_user.company.products[0] == 'Symphony'
