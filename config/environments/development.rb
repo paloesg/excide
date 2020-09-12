@@ -48,9 +48,6 @@ Rails.application.configure do
     raise_delivery_errors: true
   }
 
-  #To test email images or app assets in localhost (mailcatcher)
-  config.action_mailer.asset_host = "http://localhost:3000"
-
   config.after_initialize do
     Bullet.enable = true
     Bullet.rails_logger = true
