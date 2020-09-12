@@ -14,7 +14,7 @@ class NotificationMailer < ApplicationMailer
   def daily_summary(action_details, user)
     @action_details = action_details
     @user = user
-    mail(to: @user.email, from: 'Paloe Symphony <admin@excide.co>', subject: 'Here is your daily email summary', body: 'Some body',  template_id: 'd-eb0e5c0edd7342529057a9058214a827', dynamic_template_data: {
+    mail(to: @user.email, from: 'Paloe Symphony <admin@excide.co>', subject: 'Here is your daily email summary', body: 'Some body',  template_id: ENV['SENDGRID_EMAIL_TEMPLATE'], dynamic_template_data: {
         firstName: @user.first_name,
         actions: @action_details,
         task_count: @action_details.count
