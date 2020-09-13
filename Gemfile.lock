@@ -682,7 +682,7 @@ DEPENDENCIES
   omniauth
   omniauth-oauth2
   omniauth-rails_csrf_protection
-  pg (>= 0.18, < 2.0)
+  pg (>= 1.2.3, < 2.0)
   phonelib
   popper_js
   premailer-rails
