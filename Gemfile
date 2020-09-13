@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.6.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0.3.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -18,7 +18,7 @@ gem 'turbolinks', '~> 5.2.0'
 # Fix issues with jquery caused by turbolinks
 gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder', '~> 2.10.0'
 # Use puma web server
 gem 'puma'
 # Set timeout for long running processes
@@ -26,7 +26,7 @@ gem 'rack-timeout'
 # Better Rails logging
 gem 'lograge'
 # The default JavaScript compiler for Rails 6
-gem 'webpacker', '~> 5.0'
+gem 'webpacker', '~> 5.2.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
@@ -71,12 +71,12 @@ gem 'twilio-ruby'
 # Manage ordering for survey objects
 gem 'acts_as_list'
 # For tagging
-gem 'acts-as-taggable-on', '~> 6.0'
+gem 'acts-as-taggable-on', '~> 6.5.0'
 # Use user friendly slugs
-gem 'friendly_id', '~> 5.3.0'
+gem 'friendly_id', '~> 5.4.0'
 # Amazon S3 SDK
-gem 'aws-sdk-s3', '~> 1'
-gem 'aws-sdk-textract', '~> 1'
+gem 'aws-sdk-s3', '~> 1.80.0'
+gem 'aws-sdk-textract', '~> 1.18.0'
 # Sitemap generator
 gem 'sitemap_generator'
 # Uploading of sitemap to AWS
@@ -86,9 +86,9 @@ gem 'meta-tags'
 # Activity feed
 gem 'public_activity'
 # Handle money
-gem 'money-rails', '~>1'
+gem 'money-rails', '~>1.13.0'
 # Ruby asynchronous processing
-gem 'sucker_punch', '~> 2.0'
+gem 'sucker_punch', '~> 2.1.0'
 
 gem 'popper_js'
 # Themify icon set web fonts
@@ -100,7 +100,7 @@ gem 'inky-rb', require: 'inky'
 # Stylesheet inlining for email
 gem 'premailer-rails'
 # Default processer: MiniMagick. Enable variant for image using ActiveStorage
-gem 'image_processing', '~> 1.2'
+gem 'image_processing', '~> 1.11.0'
 
 # Nested form helper
 # gem "cocoon"
@@ -109,7 +109,7 @@ gem 'cocoon'
 # WYSIWYG editor
 gem 'trix'
 # Render calendar
-gem 'simple_calendar', '~> 2.0'
+gem 'simple_calendar', '~> 2.4.0'
 # Algolia search
 gem 'algoliasearch-rails'
 # Selectize autocomplete selection
@@ -182,7 +182,7 @@ group :development do
   gem 'rack-mini-profiler'
 
   # Add squasher to collate old migration file
-  gem 'squasher', '>= 0.6.0'
+  gem 'squasher', '>= 0.6.2'
   gem 'foreman'
 end
 
