@@ -3,7 +3,8 @@ class Motif::DocumentsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @get_documents = Document.where(company: @company) #currently its only what the user uploaded
+    @folders = policy_scope(Folder)
+    @documents = policy_scope(Document)
   end
 
   def new
