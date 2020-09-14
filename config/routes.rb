@@ -176,7 +176,7 @@ Rails.application.routes.draw do
     get 'users/additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
   end
 
-  devise_for :users, controllers: { confirmations: 'confirmations', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
+  devise_for :users, controllers: { confirmations: 'confirmations', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up/:product' }
 
   # Integrated with Devise
   notify_to :users, with_devise: :users
