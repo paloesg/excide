@@ -20,12 +20,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.account_type = 0
       company.save
       resource.company = company
-      if params[:product].present?
-        resource.company.products = [params[:product]]
-        resource.company.save
+      if params[:product].present? 
+        if (params[:product] != "symphony" || params[:product] != "motif")
+          flash[:alert] = "Sorry, the product does not exist."
+        else
+          resource.company.products = [params[:product]]
+          resource.company.save
+          resource.save
+        end
       end
     end
-    resource.save
     role = params[:role].present? ? params[:role] : "admin"
     if resource.company.present?
       resource.add_role role.to_sym, resource.company

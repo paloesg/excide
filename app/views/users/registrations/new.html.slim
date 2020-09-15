@@ -4,7 +4,7 @@
       .row.d-flex.justify-content-center
         .col-sm-8
           h1.header-bold.mb-5.text-center Create Account
-          = form_for(resource, as: resource_name, url: registration_path(resource_name, product: params[:product])) do |f| unless params[:product] == "symphony"
+          = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
             .form-group
               = f.email_field :email, required: true, autofocus: true, placeholder: "Email", class: 'form-control'
             .form-group
