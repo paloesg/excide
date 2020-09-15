@@ -8,8 +8,6 @@ var KTOffcanvas = function (elementId, options) {
 
   // Get element object
   var element = KTUtil.getById(elementId);
-  console.log("ELEMENT", element);
-  console.log("ELEMENTID", elementId);
   var body = KTUtil.getBody();
 
   if (!element) {
@@ -126,7 +124,6 @@ var KTOffcanvas = function (elementId, options) {
 
     toggle: function () {
       Plugin.eventTrigger("toggle");
-
       if (the.state == "shown") {
         Plugin.hide();
       } else {
@@ -140,7 +137,6 @@ var KTOffcanvas = function (elementId, options) {
       }
 
       Plugin.eventTrigger("beforeShow");
-
       Plugin.toggleClass("show");
 
       // Offcanvas panel
