@@ -37,11 +37,11 @@
       tbody
         - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
           tr
-            td width="5%" data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+            td width="5%" style="cursor: pointer"
               = (index+1).to_s + "."
-            td width="55%" data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+            td width="55%" style="cursor: pointer"
               = wfa.task.instructions
-            td.py-2 width="10%" data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+            td.py-2 width="10%" style="cursor: pointer"
               - if wfa.assigned_user.present?
                 .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=wfa.assigned_user.full_name
                   span.initials #{wfa.assigned_user.first_name[0]}#{wfa.assigned_user.last_name[0]}
@@ -49,7 +49,7 @@
                 .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip"  title=(wfa.task.role.name.humanize + " (" + wfa.task.role.users.length.to_s + ")")
                   span.initials
                     i.material-icons.font-size-h5.text-white people
-            td.d-flex data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+            td.d-flex style="cursor: pointer"
               - if !wfa.completed? && wfa.deadline.present?
                 - if wfa.deadline.to_date < Date.today
                   .text-danger = wfa.deadline&.strftime("%d %b")
