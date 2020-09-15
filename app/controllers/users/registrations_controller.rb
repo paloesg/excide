@@ -9,7 +9,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if (params[:product] == "symphony" || params[:product] == "motif")
       super
     else
-      redirect_to user_session_path
+      raise ActionController::RoutingError.new('Not Found')
     end
   end
 
