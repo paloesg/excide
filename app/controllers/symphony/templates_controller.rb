@@ -44,8 +44,11 @@ class Symphony::TemplatesController < ApplicationController
     authorize @template
     @template.company = @company
     if @template.save
-      # Instead of removing section model completely, create a default section that links template with task, but don't show in the UI
-      @section = Section.create(position: 1, template_id: @template.id)
+      # Do not create a new empty section when cloning template
+      unless params[:template][:clone]
+        # Instead of removing section model completely, create a default section that links template with task, but don't show in the UI
+        @section = Section.create(position: 1, template_id: @template.id)
+      end
       redirect_to edit_symphony_template_path(@template, last_action: 'create')
     else
       # Validation error will render the new page due to not being saved. The clone template would return an error because it couldnt find @general_templates and @templates. Hence the variables are inserted here
