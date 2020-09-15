@@ -1,7 +1,9 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .btn-toolbar.float-right.ml-5
-        = link_to 'Upload', new_motif_document_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
+      = link_to 'Upload', new_motif_document_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
+    .btn-toolbar.float-right.ml-5
+      = link_to 'New Folder', new_motif_folder_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
     div.float-right.mx-5.mt-2
       = image_pack_tag 'media/src/images/motif/More.svg'
     div.float-right.mx-5.mt-2
@@ -40,6 +42,33 @@
         th.text-muted Q&A
         th
     tbody
+      - @get_root_folders.each do |f|
+        tr
+          td
+            input# type="checkbox" name=""/
+          td
+            span.mr-5
+              = image_pack_tag "media/src/images/motif/folder.svg"
+            span.ml-5
+              = link_to f.name, motif_root_path
+          td
+            card
+              | tags
+          td
+            = f.updated_at
+          td 
+            span.mr-4
+              = image_pack_tag "media/src/images/motif/Group People.svg"
+            span
+              | 25
+          td 
+            span.mr-4
+              = image_pack_tag "media/src/images/motif/Comment Remark.svg"
+            span
+              | 8
+          td
+            span
+              = image_pack_tag "media/src/images/motif/Download.svg"
       - @get_documents.each do |d|
         tr
           td

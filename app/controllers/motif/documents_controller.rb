@@ -4,6 +4,7 @@ class Motif::DocumentsController < ApplicationController
 
   def index
     @get_documents = Document.where(company: @company) #currently its only what the user uploaded
+    @get_root_folders = Folder.all.where(company: @company, ancestry: nil)
   end
 
   def new
