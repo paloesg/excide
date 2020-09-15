@@ -11,6 +11,17 @@ namespace :scheduler do
     Snitcher.snitch(ENV['SNITCH_TOKEN'], message: "Finished in #{time.round(2)} seconds.")
   end
 
+  # Rake task for the the daily summary email
+  task :daily_summary => :environment do
+    time = Benchmark.realtime {
+      User.all.each do |user|
+        SendDailySummary.run(user)
+      end
+    }
+
+    Snitcher.snitch(ENV['SNITCH_TOKEN'], message: "Finished in #{time.round(2)} seconds.")
+  end
+
   task :generate_next_workflow => :environment do
     Template.today.each do |t|
       # Check if next_workflow_date is after end date of project

@@ -5,7 +5,7 @@ class Symphony::WorkflowsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company_and_roles
-  before_action :set_template, except: [:toggle_all]
+  before_action :set_template
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero]
   before_action :set_attributes_metadata, only: [:update]
@@ -143,28 +143,12 @@ class Symphony::WorkflowsController < ApplicationController
     #manually saving updated_at of the batch to current time
     @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
     respond_to do |format|
-      if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id)
+      if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id, current_action: false)
         format.json { render json: @action.completed, status: :ok }
         flash[:notice] = "You have successfully completed all outstanding items for your current task." if @action.all_actions_task_group_completed?
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def toggle_all
-    @actions = WorkflowAction.where(id: params[:workflow_action_ids])
-    @workflow = @actions.last.workflow
-    authorize @workflow
-    #manually saving updated_at of the batch to current time
-    @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
-    respond_to do |format|
-      if @actions.update_all(completed: true, completed_user_id: current_user.id)
-        format.json { render json: true, status: :ok }
-        format.js   { render js: 'Turbolinks.visit(location.toString());' }
-      else
-        format.json { render json: @actions.errors, status: :unprocessable_entity }
       end
     end
   end

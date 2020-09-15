@@ -5,9 +5,9 @@ ruby '2.6.5'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
-gem 'pg', '>= 0.18', '< 2.0'
+gem 'pg', '>= 1.2.3', '< 2.0'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier', '>= 4.2.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 gem 'slim-rails'
@@ -101,6 +101,9 @@ gem 'inky-rb', require: 'inky'
 gem 'premailer-rails'
 # Default processer: MiniMagick. Enable variant for image using ActiveStorage
 gem 'image_processing', '~> 1.2'
+# Sendgrid web API
+gem 'sendgrid-ruby'
+gem 'sendgrid-actionmailer'
 
 # Nested form helper
 # gem "cocoon"
@@ -129,6 +132,8 @@ gem 'phonelib'
 gem 'activity_notification'
 # Integrate Slack API
 gem 'slack-ruby-client'
+
+gem 'ancestry'
 
 # Backend admin
 gem 'administrate', '0.14.0'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_26_061405) do
+ActiveRecord::Schema.define(version: 2020_09_03_042518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -227,7 +227,9 @@ ActiveRecord::Schema.define(version: 2020_08_26_061405) do
     t.string "aws_textract_job_id"
     t.json "aws_textract_data"
     t.uuid "document_template_id"
+    t.uuid "folder_id"
     t.index ["company_id"], name: "index_documents_on_company_id"
+    t.index ["folder_id"], name: "index_documents_on_folder_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
@@ -265,6 +267,16 @@ ActiveRecord::Schema.define(version: 2020_08_26_061405) do
     t.decimal "number_of_hours"
     t.index ["company_id"], name: "index_events_on_company_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
+  end
+
+  create_table "folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "ancestry"
+    t.bigint "company_id"
+    t.index ["ancestry"], name: "index_folders_on_ancestry"
+    t.index ["company_id"], name: "index_folders_on_company_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -600,6 +612,7 @@ ActiveRecord::Schema.define(version: 2020_08_26_061405) do
     t.text "remarks"
     t.uuid "workflow_id"
     t.integer "time_spent_mins"
+    t.boolean "current_action", default: false
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
     t.index ["company_id"], name: "index_workflow_actions_on_company_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"
@@ -685,11 +698,13 @@ ActiveRecord::Schema.define(version: 2020_08_26_061405) do
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
+  add_foreign_key "documents", "folders"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
   add_foreign_key "events", "companies"
   add_foreign_key "events", "users", column: "staffer_id"
+  add_foreign_key "folders", "companies"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
