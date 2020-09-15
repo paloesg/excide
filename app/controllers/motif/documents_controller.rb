@@ -3,7 +3,7 @@ class Motif::DocumentsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @folders = policy_scope(Folder)
+    @folders = policy_scope(Folder).roots
     @documents = policy_scope(Document)
   end
 
