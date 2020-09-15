@@ -6,7 +6,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    super
+    if (params[:product] == "symphony" || params[:product] == "motif")
+      super
+    else
+      redirect_to user_session_path
+    end
   end
 
   # POST /resource
@@ -21,13 +25,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.save
       resource.company = company
       if params[:product].present? 
-        if (params[:product] != "symphony" || params[:product] != "motif")
-          flash[:alert] = "Sorry, the product does not exist."
-        else
-          resource.company.products = [params[:product]]
-          resource.company.save
-          resource.save
-        end
+        resource.company.products = [params[:product]]
+        resource.company.save
+        resource.save
       end
     end
     role = params[:role].present? ? params[:role] : "admin"
