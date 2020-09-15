@@ -15,7 +15,7 @@ class FolderDashboard < Administrate::BaseDashboard
     name: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    ancestry: Field::String,
+    ancestry: Field::Select.with_options(collection: Folder.all.map{ |folder| [folder.name, folder.id] }.push([nil, nil])),
   }.freeze
 
   # COLLECTION_ATTRIBUTES
