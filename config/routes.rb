@@ -26,7 +26,6 @@ Rails.application.routes.draw do
   delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
   # Product selection menu page path
-
   get '/products', to: 'home#index'
 
   namespace :symphony do
