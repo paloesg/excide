@@ -9,7 +9,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if (params[:product] == "symphony" || params[:product] == "motif")
       super
     else
-      raise ActionController::RoutingError.new('Not Found')
+      raise ActionController::RoutingError.new('Invalid Product Name in URL')
     end
   end
 
