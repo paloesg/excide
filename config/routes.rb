@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: redirect('/symphony')
+  root to: 'home#index'
 
   namespace :admin do
     DashboardManifest::DASHBOARDS.each do |dashboard_resource|
@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
 
   # Product selection menu page path
-  get '/products', to: 'home#index'
+  
 
   namespace :symphony do
     root to: 'home#index'
