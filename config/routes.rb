@@ -124,6 +124,7 @@ Rails.application.routes.draw do
     root to: 'home#index'
 
     resources :documents
+    resources :folders
   end
 
   namespace :conductor do

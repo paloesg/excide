@@ -48,7 +48,7 @@
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"
             span.ml-5
-              = folder.name
+              = link_to folder.name, motif_folder_path(folder.id)
           td
             card
               | tags
