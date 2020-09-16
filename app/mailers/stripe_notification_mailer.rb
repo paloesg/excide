@@ -1,10 +1,19 @@
 class StripeNotificationMailer < ApplicationMailer
   default from: 'Excide Symphony <admin@excide.co>'
 
-  def upcoming_payment_notification(user)
+  def send_stripe_email(user, message)
     @user = user
-    mail(to: @user.email, subject: '[Upcoming billing for Symphony PRO]')
+    mail(to: @user.email, from: 'Paloe Symphony <admin@excide.co>', subject: '[Symphony]Subscription Update', body: 'Some body',  template_id: ENV['SENDGRID_EMAIL_TEMPLATE'], dynamic_template_data: {
+        firstName: @user.first_name,
+        message: message
+      }
+    )
   end
+
+  # def upcoming_payment_notification(user)
+  #   @user = user
+  #   mail(to: @user.email, subject: '[Upcoming billing for Symphony PRO]')
+  # end
 
   def cancel_subscription_notification(user, period_end)
     @user = user
@@ -23,5 +32,10 @@ class StripeNotificationMailer < ApplicationMailer
   def charge_failed(user)
     @user = user
     mail(to: @user.email, subject: '[Payment to subscribe Symphony PRO has failed]')
+  end
+
+  def free_trial_ending_notification(user)
+    @user = user
+    mail(to: @user.email, subject: '[Free trial ending]')
   end
 end

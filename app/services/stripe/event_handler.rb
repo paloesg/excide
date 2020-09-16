@@ -57,7 +57,8 @@ module Stripe
           @current_user.company.stripe_subscription_plan_data['cancel'] = true
           @current_user.company.save
           # Assuming customer_subscription_updated method only runs upon clicking the cancellation button
-          StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
+          message = "You have cancelled your subscription for Symphony Pro. Your pro features will be available till #{Time.at(period_end).strftime("%d-%b-%Y")}."
+          StripeNotificationMailer.send_stripe_email(@current_user, message).deliver_later
         end
         # only update to subscription plan data if it's annual plan
         @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription if event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
@@ -87,6 +88,7 @@ module Stripe
         end
       end
       # Send email to inform user that payment is successful.
+      StripeNotificationMailer.send_stripe_email(@current_user, message)
       StripeNotificationMailer.payment_successful(@current_user, @subscription["current_period_start"], @subscription["current_period_end"], event.data.object["invoice_pdf"]).deliver_later
     end
 

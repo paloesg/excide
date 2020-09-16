@@ -26,9 +26,4 @@ class NotificationMailer < ApplicationMailer
   # Most of the removed mailer methods below were called in event.rb. associate_notification was called in scehduler.rake as a daily reminder to associate.
   # Removed conductor's create_event, edit_event, destroy_event, user_removed_from_event, event_notification and associate_notification methods from the following PR:
   #
-
-  def free_trial_ending_notification(user)
-    @user = user
-    mail(to: @user.email, subject: '[Free trial ending]')
-  end
 end
