@@ -4,7 +4,7 @@ class FoldersController < ApplicationController
   # GET /folders
   # GET /folders.json
   def index
-    @folders = Folder.all
+    @folders = policy_scope(Folder)
   end
 
   # GET /folders/1
@@ -64,7 +64,7 @@ class FoldersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_folder
-      @folder = current_user.company.folders.find(params[:id])
+      @folder = policy_scope(Folder).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
