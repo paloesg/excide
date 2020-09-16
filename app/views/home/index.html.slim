@@ -1,6 +1,6 @@
-.row.h-100
+.row.h-50
   .col-lg.align-self-end
-    h1.text-center Welcome Back, #{current_user.first_name} #{current_user.last_name}
+    h1.text-center Welcome Back, #{current_user.full_name}
 / company selection dropdown
 .row.justify-content-center.h-50
   .nav-item.dropdown.border.border-secondary.rounded.align-self-center
@@ -18,8 +18,9 @@
 / cards for products
 .row.justify-content-center.h-100
   -@products.each do |product|
-    .card.align-self-center.ml-6.mr-6
+    .card.align-self-start.ml-6.mr-6
       .card-body
+        / try to combine the if else statements
         -if product == "Symphony"
           = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
         -elsif product == "Motif"
@@ -32,5 +33,6 @@
             a.stretched-link.d-flex.justify-content-center href="symphony"
           
         -elsif product == "Motif"
-          a.stretched-link.d-flex.justify-content-center href="motif"
+          a.stretched-link.d-flex.justify-content-center href="motif"  
         h3 #{product}
+        / use p tag to add product description #add this streched link into the link to class (similar to line 14)
