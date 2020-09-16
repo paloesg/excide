@@ -57,19 +57,8 @@ class UpdateEventTime
     allocation.availability.update_attributes(available_date: @new_start_time, user_id: @user.id, start_time: @new_start_time, end_time: @new_end_time)
   end
 
-  # Check next time if need to use the notification methods from this PR:
+  # Removed email notification:
+  # notify_associate and remove_association
   # https://github.com/hschin/excide/pull/648 
-  # def notify_associate(allocation)
-  #   NotificationMailer.edit_event(@event, allocation.user).deliver_later
-  #   @associates_updated += 1
-  # end
 
-  # def remove_associate(allocation, old_allocation)
-  #   removed_user = allocation.user
-  #   allocation.update_attributes!(user_id: nil)
-  #   allocation.availability.update_column(:assigned, allocation.availability.allocations.present?)
-  #   allocation.availability.allocations.delete(allocation)
-  #   NotificationMailer.user_removed_from_event(@event, removed_user).deliver_later
-  #   @associates_unassigned += 1
-  # end
 end

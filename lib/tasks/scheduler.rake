@@ -47,13 +47,6 @@ namespace :scheduler do
     end
   end
 
-  task :associate_reminders => :environment do
-    users = User.with_role(:associate, :any)
-    users.each do |user|
-      NotificationMailer.associate_notification(user).deliver_later
-    end
-  end
-
   task :daily_batch_email_summary => :environment do
     Company.all.each do |company|
       if company.batches.present? and company.consultant.present?
