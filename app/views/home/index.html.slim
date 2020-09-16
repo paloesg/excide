@@ -19,7 +19,7 @@
 .row.justify-content-center.h-100
   -@products.each do |product|
     .card.align-self-center.ml-6.mr-6
-      .card-img-top
+      .card-body
         -if product == "Symphony"
           = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
         -elsif product == "Motif"
