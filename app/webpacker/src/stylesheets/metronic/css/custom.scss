@@ -1,9 +1,14 @@
 // -----------------------------------------General font---------------------------------------
 * {
-  font-family: "NunitoSans"
+  font-family: "NunitoSans";
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Futura";
 }
 
@@ -15,12 +20,13 @@ h1, h2, h3, h4, h5, h6 {
 .carousel-indicators,
 .carousel-control-next,
 .carousel-control-prev {
-    filter: invert(100%);
+  filter: invert(100%);
 }
 
 //remove on click highlight of dropdown-item
-.dropdown-item.active, .dropdown-item:active {
-  background-color: #F3F6F9 !important; 
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: #f3f6f9 !important;
 }
 
 // Class to make five column in one row
@@ -88,7 +94,7 @@ h1, h2, h3, h4, h5, h6 {
   text-overflow: ellipsis;
 }
 
-.form-control{
+.form-control {
   height: 37px;
 }
 
@@ -98,7 +104,6 @@ td.day.has-events.fc-day-top.fc-past {
   z-index: 5;
   position: relative;
 }
-
 
 .fc-row .fc-content-skeleton {
   position: initial !important;
@@ -138,7 +143,17 @@ td.day.has-events.fc-day-top.fc-past {
   pointer-events: none;
 }
 
-.select2-container--default .select2-selection--single .select2-selection__rendered {
+// Style for offcanvas
+.offcanvas-on {
+  width: 400px !important;
+}
+
+.offcanvas-top {
+  top: 58px !important;
+}
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
   padding: 0.65rem 2rem 0.65rem 1rem !important;
 }
 
@@ -158,7 +173,10 @@ td.day.has-events.fc-day-top.fc-past {
   content: "" !important;
 }
 
-.select2-allow-clear + .select2-container--default .select2-selection--single .select2-selection__rendered {
+.select2-allow-clear
+  + .select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
   width: 90% !important;
 }
 
@@ -169,6 +187,6 @@ $theme-colors: (
   "success": #6fb497,
   "info": #52747e,
   "warning": #ffc0ad,
-  "danger": #c9485b
+  "danger": #c9485b,
 );
 @import "~bootstrap/scss/bootstrap";

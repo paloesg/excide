@@ -23,15 +23,15 @@ const images = require.context("../src/images", true);
 import "bootstrap/dist/js/bootstrap";
 // Bootstrap tooltip
 $(document).on("turbolinks:load", function () {
-  $('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="tooltip"]').tooltip();
 });
 
 // For bootstrap datetimepicker
 import "tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min";
 // Import font awesome 5
 import "@fortawesome/fontawesome-free/js/all";
-import "../src/javascripts/dashboard/application.js";
 import "../src/javascripts/dashboard/metronic/application.js";
+import "../src/javascripts/dashboard/application.js";
 import "../src/javascripts/dashboard/metronic/fullcalendar.bundle.js";
 
 require("../src/javascripts/google-analytics");
