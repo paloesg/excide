@@ -128,4 +128,15 @@ namespace :update do
       t.update_columns(template_pattern: "on_demand")
     end
   end
+
+  desc "Update existing companies with symphony product"
+  task existing_companies_with_symphony_product: :environment do
+    Company.where(products: nil).each do |c|
+      # Initialize products column as an array
+      c.products = []
+      # Push symphony into existing company's product
+      c.products << "Symphony"
+      c.save
+    end
+  end
 end

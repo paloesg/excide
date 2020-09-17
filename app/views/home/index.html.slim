@@ -1,0 +1,40 @@
+.row.h-50
+  .col-lg.align-self-end
+    h1.text-center Welcome Back, #{current_user.full_name}
+/ company selection dropdown
+.row.justify-content-center.h-50
+  .nav-item.dropdown.border.border-secondary.rounded.align-self-center
+    - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
+      button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+        | #{current_user.company.name}
+        i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
+      #company-dropdown.dropdown-menu aria-labelledby="dropdownMenuButton"
+        - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
+          - if company.name.present?
+            = link_to company.name, change_company_symphony_user_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
+    - else
+      = link_to(symphony_root_path, class: "btn btn-secondary btn-default") do
+        ' #{current_user.company.name}
+/ cards for products
+.row.justify-content-center.h-100
+  -@products.each do |product|
+    .card.align-self-start.ml-6.mr-6
+      .card-body
+        -if product == "Symphony"
+          = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
+          - if current_user.company.session_handle.blank? and current_user.company.connect_xero?
+            a.stretched-link.d-flex.justify-content-center href="connect_to_xero"
+          -else
+            a.stretched-link.d-flex.justify-content-center href="symphony"
+          h3.d-flex.justify-content-center.mt-15 #{product}
+          h7.d-flex.justify-content-center.mt-5.mb-10 Operation Automation
+        -elsif product == "Motif"
+          = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
+          a.stretched-link.d-flex.justify-content-center href="motif"
+          h3.d-flex.justify-content-center.mt-15 #{product}
+          h7.d-flex.justify-content-center.mt-5.mb-10 Franchise Management
+hr.w-75
+.row
+  .col
+    p.d-flex.justify-content-center 
+      = link_to "Click here to add Paloe products", root_path
