@@ -1,5 +1,6 @@
 class SendUserReminders
   include Service
+  include Rails.application.routes.url_helpers
 
   def initialize(user)
     @user = user
@@ -29,7 +30,16 @@ class SendUserReminders
   def send_email_reminders
     email_reminders = @reminders.where(email: true)
     email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
-    NotificationMailer.batch_reminder(email_reminders, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
+    # Initialize an array to push reminders into, and send to sendgrid email template
+    @reminder_details = []
+    email_reminders.each do |reminder|
+      @reminder_details << {
+        title: reminder.title,
+        content: reminder.content,
+        link_address: "#{ENV['ASSET_HOST'] + symphony_workflow_path(reminder.task.section.template.slug, reminder.workflow_action.workflow.friendly_id) }"
+      }.as_json
+    end
+    NotificationMailer.batch_reminder(@reminder_details, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
   end
 
   def send_sms_reminders
