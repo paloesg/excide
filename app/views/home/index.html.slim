@@ -20,19 +20,21 @@
   -@products.each do |product|
     .card.align-self-start.ml-6.mr-6
       .card-body
-        / try to combine the if else statements
         -if product == "Symphony"
           = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
-        -elsif product == "Motif"
-          = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
-      .card-body.d-flex.justify-content-center
-        - if product == "Symphony"
           - if current_user.company.session_handle.blank? and current_user.company.connect_xero?
             a.stretched-link.d-flex.justify-content-center href="connect_to_xero"
           -else
             a.stretched-link.d-flex.justify-content-center href="symphony"
-          
+          h3.d-flex.justify-content-center.mt-15 #{product}
+          h7.d-flex.justify-content-center.mt-5.mb-10 Operation Automation
         -elsif product == "Motif"
-          a.stretched-link.d-flex.justify-content-center href="motif"  
-        h3 #{product}
-        / use p tag to add product description #add this streched link into the link to class (similar to line 14)
+          = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
+          a.stretched-link.d-flex.justify-content-center href="motif"
+          h3.d-flex.justify-content-center.mt-15 #{product}
+          h7.d-flex.justify-content-center.mt-5.mb-10 Franchise Management
+hr.w-75
+.row
+  .col
+    p.d-flex.justify-content-center 
+      = link_to "Click here to add Paloe products", root_path
