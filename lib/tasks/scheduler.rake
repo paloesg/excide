@@ -63,9 +63,9 @@ namespace :scheduler do
     Company.all.each do |company|
       # Check for free trial end date
       if company.trial_end_date.present? and company.trial_end_date < DateTime.current and company.free_trial?
-        # email users if free trial ended
         company.users.each do |user|
-          NotificationMailer.free_trial_ending_notification(user).deliver_later
+          # Email users that their free trial ended
+          StripeNotificationMailer.free_trial_ending_notification(User.find(170), company).deliver_later
         end
         company.trial_ends  #only from free trial to basic
         company.update_attributes(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)

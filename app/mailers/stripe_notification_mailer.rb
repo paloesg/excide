@@ -30,9 +30,10 @@ class StripeNotificationMailer < ApplicationMailer
     )
   end
 
-  def free_trial_ending_notification(user)
+  def free_trial_ending_notification(user, company)
     mail(to: 'jonathan.lau@paloe.com.sg', from: 'Paloe Symphony <admin@excide.co>', subject: '[Symphony]Subscription Update', body: 'Some body',  template_id: "d-a8b2a552f6e74c5d957cebe120a35800", dynamic_template_data: {
         firstName: user.first_name,
+        company_name: company.name
       }
     )
   end

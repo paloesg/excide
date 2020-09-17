@@ -56,7 +56,7 @@ module Stripe
         if event.data.object.cancel_at_period_end
           @current_user.company.stripe_subscription_plan_data['cancel'] = true
           @current_user.company.save
-          StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
+          StripeNotificationMailer.cancel_subscription_notification(@current_user, Time.at(period_end).strftime("%d-%b-%Y")).deliver_later
         end
         # only update to subscription plan data if it's annual plan
         @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription if event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
