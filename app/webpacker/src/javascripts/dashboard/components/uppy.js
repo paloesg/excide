@@ -72,7 +72,7 @@ const multipleUploadTask = (uppy) => {
 // Multiple uploads for Motif through document's INDEX page
 const motifMultipleDocumentsUpload = (uppy) => {
   uppy.on('complete', (result) => {
-    $.post("/motif/documents/index-create", {
+    $.post("/motif/documents", {
       authenticity_token: $.rails.csrfToken(),
       // Number of file uploads that were uploaded successfully
       successful_files: JSON.stringify(result.successful),
@@ -135,6 +135,9 @@ function setupUppy(element){
   }
   else if($('.multipleUploadsTask').length){
     multipleUploadTask(uppy);
+  }
+  else if($('.motifMultipleDocumentsUpload').length){
+    motifMultipleDocumentsUpload(uppy);
   }
 }
 //-----------------------------------Initialize Uppy------------------------------------

@@ -11,14 +11,7 @@ class Motif::DocumentsController < ApplicationController
   def new
   end
 
-  private
-
-  def set_company
-    @user = current_user
-    @company = @user.company
-  end
-
-  def index_create
+  def create
     @files = []
     parsed_files = JSON.parse(params[:successful_files])
     parsed_files.each do |file|
@@ -30,8 +23,15 @@ class Motif::DocumentsController < ApplicationController
       @files.append document
     end
     respond_to do |format|
-      format.html { redirect_to multiple_edit_symphony_documents_path files: @files }
+      format.html { redirect_to motif_documents_path files: @files }
       format.json { render json: @files.to_json }
     end
+  end
+
+  private
+
+  def set_company
+    @user = current_user
+    @company = @user.company
   end
 end
