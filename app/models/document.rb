@@ -13,6 +13,8 @@ class Document < ApplicationRecord
   belongs_to :workflow_action
   belongs_to :folder
 
+  has_many :permissions, as: :permissible, dependent: :destroy
+
   has_one_attached :raw_file
   has_many_attached :converted_images
 
