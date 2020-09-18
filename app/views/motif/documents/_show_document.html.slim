@@ -1,0 +1,24 @@
+.modal.fade aria-hidden="true" id="documentModal#{d.id}" aria-labelledby="documentModal#{d.id}Label" role="dialog" tabindex="-1"
+  .modal-dialog role="document" 
+    .modal-content
+      .modal-header
+        h5.modal-title id="documentModal#{d.id}Label"
+          = d.raw_file.filename
+        button.close aria-label="Close" data-dismiss="modal" type="button" 
+          span aria-hidden="true" &times;
+      .modal-body
+        - if d.converted_images.attached?
+          - url_array = []
+          - d.converted_images.each do |image|
+            - url_array << image
+          - url_array.each do |url|
+            - display_url = url_for(url)
+            img src='#{display_url}' class='figure-img img-fluid' style="width:500px;"
+        - elsif d.raw_file.attached?
+          = image_tag(d.raw_file, class: 'img-fluid')
+        - elsif d.file_url.present? and ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(d.file_url)
+          = image_tag(d.file_url, class: 'img-fluid')
+        - else
+          iframe src="https://docs.google.com/gview?url=https:#{d.file_url}&embedded=true" width="100%" height="1000" style="border: none;"
+      .modal-footer
+        button.btn.btn-secondary data-dismiss="modal" type="button" Close
