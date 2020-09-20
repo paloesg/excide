@@ -2,6 +2,7 @@ class Symphony::HomeController < ApplicationController
   before_action :authenticate_user!, except: [:terms, :privacy]
 
   def index
+    authorize @symphony
     @templates = policy_scope(Template).assigned_templates(current_user)
     @template_pro = @templates.joins(sections: :tasks).where(tasks: {task_type: ["create_invoice_payable", "xero_send_invoice", "create_invoice_receivable", "coding_invoice"]})
 
@@ -13,6 +14,7 @@ class Symphony::HomeController < ApplicationController
   end
 
   def tasks
+    authorize @symphony
     if params[:tasks].blank? || params[:tasks] == "Only incomplete tasks"
       @get_outstanding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true).where(company: current_user.company).includes(:task)
     elsif params[:tasks] == "All tasks"
@@ -34,6 +36,7 @@ class Symphony::HomeController < ApplicationController
   end
 
   def activity_history
+    authorize @symphony
     if params[:created_at].present?
       @get_activities = PublicActivity::Activity.includes(:owner).where.not(recipient_type: "Event").where(owner_id: current_user.id).where('created_at >= ?', Time.current - params[:created_at].to_i.days).order("created_at desc")
     else
@@ -44,6 +47,7 @@ class Symphony::HomeController < ApplicationController
   end
 
   def add_tasks_to_timesheet
+    authorize @symphony
     params[:tasks].each do |task_id|
       @event_type = EventType.find_or_create_by(name: Task.find(task_id.to_i).instructions)
       @event = Event.create(event_type: @event_type, company_id: current_user.company.id, start_time: DateTime.current, end_time: DateTime.current + 1.hour)
