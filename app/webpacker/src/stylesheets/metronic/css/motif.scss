@@ -6,7 +6,7 @@
   margin: 0 8px 8px 0!important;
   font-size: 13px !important;
   transition: 0s;
-  color: #515163 !important;
+  color: #7E8299 !important;
 }
 
 .tags-look .tagify__dropdown__item:hover{
@@ -25,7 +25,6 @@
 
 .motif-tags .tagify__tag, .tagify__input {
   margin: 0 8px 8px 0!important;
-  color: #515163 !important;
 }
 .motif-tags .tagify__tag {
   background: #EEF1FF !important;
@@ -36,4 +35,14 @@
   content: "close" !important;
   font-size: 10px !important;
   font-weight: 900 !important;
+  color: #7E8299 !important;
+}
+
+.badge-motif {
+  border-radius: 4px !important;
+  padding: 4px 8px 2px 8px !important;
+  margin-right: 6px;
+  background: #EEF1FF;
+  font-size: 13px !important;
+  color: #7E8299;
 }

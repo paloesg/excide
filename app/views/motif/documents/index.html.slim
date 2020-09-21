@@ -77,8 +77,9 @@
             span.ml-5
               = d.raw_file.filename
           td
-            card
-              | tags
+            = content_tag :span, d.all_tags_list.first, class: "badge badge-motif" if d.all_tags_list.length > 0
+            - if d.all_tags_list.length > 1
+              | #{d.all_tags_list.length-1}+...
           td
             = d.raw_file.created_at
           td
