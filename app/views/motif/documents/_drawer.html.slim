@@ -14,10 +14,10 @@
     .row.mb-4
       .col
         | File Size
-        p = d.created_at
+        p 578 KB
       .col
         | Shared with
-        p = d.created_at
+        p 20 franchisees, 5 others
     .mb-2 Tags
     input.motif-tags id="tag_#{d.id}" autofocus="" name="input-custom-dropdown-#{index}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ")
       
