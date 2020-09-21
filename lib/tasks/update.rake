@@ -134,8 +134,8 @@ namespace :update do
     Company.where(products: nil).each do |c|
       # Initialize products column as an array
       c.products = []
-      # Push symphony into existing company's product
-      c.products << "Symphony"
+      # Push symphony into existing company's product column
+      c.products << "symphony"
       c.save
     end
   end

@@ -34,6 +34,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     before_deadline_reminder_days: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    products: Field::JSONB,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -77,7 +78,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     :expires_at,
     :account_type,
     :stripe_subscription_plan_data,
-    :before_deadline_reminder_days
+    :before_deadline_reminder_days,
+    :products
   ]
 
   # Overwrite this method to customize how profiles are displayed

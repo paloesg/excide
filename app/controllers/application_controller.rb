@@ -24,16 +24,16 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if current_user.company.name.present?
-      if current_user.company.products.length > 1
+      if current_user.company.products.length >= 2
         root_path
       elsif current_user.company.products.length == 1
-        if current_user.company.products[0] == 'Symphony'
+        if current_user.company.products[0] == 'symphony'
           if current_user.company.session_handle.blank? and current_user.company.connect_xero?
             connect_to_xero_path
           else
             symphony_root_path
           end
-        elsif current_user.company.products[0] == 'Motif'
+        elsif current_user.company.products[0] == 'motif'
           motif_root_path
         end
       end
