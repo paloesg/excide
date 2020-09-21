@@ -1,0 +1,39 @@
+.tags-look .tagify__dropdown__item {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 2px 8px 0 8px !important;
+  background: #F5F6F9 !important;
+  margin: 0 8px 8px 0!important;
+  font-size: 13px !important;
+  transition: 0s;
+  color: #515163 !important;
+}
+
+.tags-look .tagify__dropdown__item:hover{
+  background: #EEF1FF !important;
+}
+
+.tagify__dropdown {
+  z-index: 1000000 !important;
+  padding: 10px !important;
+}
+
+.motif-tags {
+  border: none !important;
+  padding: 0 !important;
+}
+
+.motif-tags .tagify__tag, .tagify__input {
+  margin: 0 8px 8px 0!important;
+  color: #515163 !important;
+}
+.motif-tags .tagify__tag {
+  background: #EEF1FF !important;
+}
+
+.motif-tags .tagify__tag__removeBtn:after {
+  font-family: 'Material Icons Outlined' !important;
+  content: "close" !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+}
