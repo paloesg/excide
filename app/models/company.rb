@@ -63,6 +63,8 @@ class Company < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :mailbox_token, uniqueness: true
 
+  acts_as_tagger
+
   # Get all other companies that user has roles for excpet the current company that user belongs to
   def self.assigned_companies(user)
     user.roles.includes(:resource).map(&:resource).compact.uniq.reject{ |c| c == user.company }
