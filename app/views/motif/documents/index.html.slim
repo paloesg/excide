@@ -95,12 +95,12 @@
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"
             span.ml-5
-              = d.raw_file.filename
+              = d.raw_file.attached? ? d.raw_file.filename : d.filename
           td
             card
               | tags
           td
-            = d.raw_file.created_at
+            = d.raw_file.attached? ? d.raw_file.created_at : d.created_at
           td 
             span.mr-4
               = image_pack_tag "media/src/images/motif/Group People.svg"
