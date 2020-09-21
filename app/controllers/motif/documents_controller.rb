@@ -5,7 +5,6 @@ class Motif::DocumentsController < ApplicationController
   def index
     @get_documents = Document.where(company: @company) #currently its only what the user uploaded
     @get_root_folders = Folder.where(company: @company, ancestry: nil)
-    @templates = policy_scope(Template).assigned_templates(current_user)
   end
 
   def new
