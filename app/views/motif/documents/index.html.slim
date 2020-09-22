@@ -1,7 +1,21 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .btn-toolbar.float-right.ml-5
-        = link_to 'Upload', new_motif_document_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
+      = link_to 'New Folder', new_motif_folder_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
+    button.btn.btn-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white add
+      | Upload Multiple
+    #newMotifDocUploads.modal.fade aria-hidden="true" aria-labelledby="newMotifDocumentUploads" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#newMotifDocumentUploads.modal-title Upload Multiple Documents
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true"  &times;
+          .modal-body
+            .row.mt-3
+              .col-md-12
+                .dashboard-body.motifMultipleDocumentsUpload#Dashboard
     div.float-right.mx-5.mt-2
       = image_pack_tag 'media/src/images/motif/More.svg'
     div.float-right.mx-5.mt-2
@@ -40,6 +54,33 @@
         th.text-muted Q&A
         th
     tbody
+      - @get_root_folders.each do |f|
+        tr
+          td
+            input# type="checkbox" name=""/
+          td
+            span.mr-5
+              = image_pack_tag "media/src/images/motif/folder.svg"
+            span.ml-5
+              = f.name
+          td
+            card
+              | tags
+          td
+            = f.updated_at
+          td 
+            span.mr-4
+              = image_pack_tag "media/src/images/motif/Group People.svg"
+            span
+              | 25
+          td 
+            span.mr-4
+              = image_pack_tag "media/src/images/motif/Comment Remark.svg"
+            span
+              | 8
+          td
+            span
+              = image_pack_tag "media/src/images/motif/Download.svg"
       - @get_documents.each do |d|
         tr
           td
@@ -48,12 +89,12 @@
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"
             span.ml-5
-              = d.raw_file.filename
+              = d.raw_file.attached? ? d.raw_file.filename : d.filename
           td
             card
               | tags
           td
-            = d.raw_file.created_at
+            = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
           td 
             span.mr-4
               = image_pack_tag "media/src/images/motif/Group People.svg"
