@@ -2,14 +2,14 @@
   .col-sm-12
     .btn-toolbar.float-right.ml-5
       = link_to 'New Folder', new_motif_folder_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
-    button.btn.btn-primary.float-right.ml-5 data-target="#newInvoiceBatch" data-toggle="modal" type="button"
+    button.btn.btn-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white add
       | Upload Multiple
-    #newInvoiceBatch.modal.fade aria-hidden="true" aria-labelledby="newInvoiceBatchTitle" role="dialog" tabindex="-1"
+    #newMotifDocUploads.modal.fade aria-hidden="true" aria-labelledby="newMotifDocumentUploads" role="dialog" tabindex="-1"
       .modal-dialog role="document"
         .modal-content
           .modal-header
-            h5#newInvoiceBatchTitle.modal-title Upload Multiple Documents
+            h5#newMotifDocumentUploads.modal-title Upload Multiple Documents
             button.close aria-label="Close" data-dismiss="modal" type="button"
               span aria-hidden="true"  &times;
           .modal-body
@@ -94,7 +94,7 @@
             card
               | tags
           td
-            = d.raw_file.attached? ? d.raw_file.created_at : d.created_at
+            = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
           td 
             span.mr-4
               = image_pack_tag "media/src/images/motif/Group People.svg"
