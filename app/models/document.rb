@@ -42,7 +42,7 @@ class Document < ApplicationRecord
   end
 
   # Attach the blob from direct upload to activestorage and convert all PDF to images
-  def attach_and_convert_document(response_key)
+  def attach_and_convert_document(response_key, product)
     if response_key.present?
       # Attach the blob to the document using the response key given back by active storage through uppy.js file
       ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.find_by(key: response_key).id)
@@ -50,8 +50,11 @@ class Document < ApplicationRecord
       # For cases without response key like document NEW page and workflow "upload file" task
       ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.last.id)
     end
-    # Perform convert job asynchronously to run conversion service
-    ConvertPdfToImagesJob.perform_later(self)
+    # Only convert to images if document is uploaded from symphony
+    if product == "symphony"
+      # Perform convert job asynchronously to run conversion service
+      ConvertPdfToImagesJob.perform_later(self)
+    end
   end
 
   private

@@ -18,7 +18,7 @@ class Motif::DocumentsController < ApplicationController
       document = @generate_document.document
       authorize document
       # attach and convert method with the response key to create blob
-      document.attach_and_convert_document(file['response']['key'])
+      document.attach_and_convert_document(file['response']['key'], "motif")
       @files.append document
     end
     respond_to do |format|
