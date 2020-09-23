@@ -19,7 +19,7 @@ $(document).on("turbolinks:load", function () {
   $(".drawer-row").click(function () {
     offcanvasObject.show();
   });
-  var tagifyInstances = [];
+  let tagifyInstances = [];
   $(".motif-tags").each(function () {
     let input = $(this).attr("id")
       // init Tagify script on the above inputs
