@@ -3,7 +3,7 @@ class Motif::DocumentsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @get_documents = Document.where(company: @company) #currently its only what the user uploaded
+    @get_documents = Document.where(company: @company).order(created_at: :desc) #currently its only what the user uploaded
     @get_root_folders = Folder.where(company: @company, ancestry: nil)
   end
 
