@@ -1,33 +1,33 @@
-class SymphonyPolicy < ApplicationPolicy
-  def show?
-    user.company.products.include? 'Symphony'
+class SymphonyPolicy < Struct.new(:user, :symphony)
+  def index?
+    user.company.products.include? 'symphony'
   end
 
   def new?
-    show?
+    index?
   end
 
   def create?
-    show?
+    index?
   end
 
   def edit?
-    show?
+    index?
   end
 
   def update?
-    show?
+    index?
   end
 
   def tasks?
-    show?
+    index?
   end
 
   def activity_history?
-    show?
+    index?
   end
 
   def add_tasks_to_timesheet?
-    show?
+    index?
   end
 end
