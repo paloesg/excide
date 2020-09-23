@@ -19,28 +19,35 @@ $(document).on("turbolinks:load", function () {
   $(".drawer-row").click(function () {
     offcanvasObject.show();
   });
+  var tagifyInstances = [];
   $(".motif-tags").each(function () {
     let input = $(this).attr("id")
       // init Tagify script on the above inputs
-    new Tagify(document.getElementById(input), {
-      dropdown : {
-        classname     : "tags-look",
-        enabled       : 0
-      },
-      callbacks: {
-        "change": (e) => onTagsChange(e, input.split('_')[1])
-      }
-    });
+    tagifyInstances.push(
+      new Tagify(document.getElementById(input), {
+        dropdown : {
+          classname     : "tags-look",
+          enabled       : 0
+        },
+        callbacks: {
+          "change": (e) => onTagsChange(e, input.split('_')[1])
+        }
+      })
+    );
     // listen to "change" events on the "original" input/textarea element
   });
   // This example uses async/await but you can use Promises, of course, if you prefer.
   async function onTagsChange(e, id){
-    //console.log(e);
     // "imaginary" async function "saveToServer" should get the field's name & value
     $.ajax({
       type: "PATCH",
       url: "/motif/documents/" + id + "/update_tags",
-      data: {values: e.detail.tagify.value, id: id}
+      data: {values: e.detail.tagify.value, id: id},
+      dataType: "JSON"
+    }).done(function(data){
+      $.each(tagifyInstances, function() {
+        $(this)[0].settings.whitelist = data;
+      });
     });
   }
 });

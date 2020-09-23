@@ -15,6 +15,9 @@ class Motif::DocumentsController < ApplicationController
     @tags = []
     params[:values].each{|key, tag| @tags << tag[:value]} unless params[:values].blank?
     @company.tag(@document, with: @tags, on: :tags)
+    respond_to do |format|
+      format.json { render json: @company.owned_tags.pluck(:name), status: :ok }
+    end
   end
 
   private
