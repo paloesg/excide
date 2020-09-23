@@ -46,3 +46,7 @@
   font-size: 13px !important;
   color: #7E8299;
 }
+
+.tagify__input::before {
+  position: absolute !important;
+}
