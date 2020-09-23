@@ -1,6 +1,7 @@
 class Motif::DocumentsController < ApplicationController
   before_action :set_company
   before_action :authenticate_user!
+  before_action :require_motif
 
   def index
     @get_documents = Document.where(company: @company) #currently its only what the user uploaded
@@ -28,6 +29,11 @@ class Motif::DocumentsController < ApplicationController
   end
 
   private
+
+  # checks if the user's company has Motif. Links to motif_policy.rb
+  def require_motif
+    authorize :motif, :index?
+  end
 
   def set_company
     @user = current_user
