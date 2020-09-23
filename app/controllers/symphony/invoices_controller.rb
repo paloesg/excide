@@ -12,6 +12,7 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_show_invoice_navigation, only: [:show, :next_show_invoice, :prev_show_invoice]
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
+  before_action :require_symphony
 
   after_action :verify_authorized, only: [:new, :create, :edit, :update, :show, :destroy, :reject]
   after_action :verify_policy_scoped, only: :index
@@ -212,6 +213,12 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
+
   def set_invoice
     @invoice = Invoice.find(params[:id])
   end

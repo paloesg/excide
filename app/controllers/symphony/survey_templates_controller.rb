@@ -1,6 +1,7 @@
 class Symphony::SurveyTemplatesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_survey_template, except: [:index, :new, :create]
+  before_action :require_symphony
 
   def index
     @survey_templates = SurveyTemplate.where(company_id: current_user.company)
@@ -55,6 +56,12 @@ class Symphony::SurveyTemplatesController < ApplicationController
 
 
   private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_survey_template
     @survey_template = SurveyTemplate.find_by(slug: params[:survey_template_slug])

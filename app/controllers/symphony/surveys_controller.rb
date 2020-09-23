@@ -1,6 +1,7 @@
 class Symphony::SurveysController < ApplicationController
   before_action :authenticate_user!
   before_action :set_survey, only: :show
+  before_action :require_symphony
 
   def new
     @survey = Survey.new
@@ -31,6 +32,11 @@ class Symphony::SurveysController < ApplicationController
   end
 
   private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
 
   def set_survey
     @survey = Survey.includes(segments: [:responses]).find(params[:id])

@@ -1,6 +1,7 @@
 class Symphony::RolesController < ApplicationController
   before_action :set_company, :set_company_users
   before_action :set_role, only: [:edit, :update, :destroy]
+  before_action :require_symphony
 
   def index
     @roles = Role.where(resource_id: @company.id, resource_type: "Company")
@@ -40,6 +41,11 @@ class Symphony::RolesController < ApplicationController
   end
 
   private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
 
   def update_users_role
     users = User.where(id: params[:role][:user_ids])

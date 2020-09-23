@@ -5,6 +5,7 @@ class Symphony::DocumentsController < ApplicationController
   before_action :set_company_workflows, only: [:new, :edit]
   before_action :set_document, only: [:show, :edit, :update, :destroy]
   before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
+  before_action :require_symphony
 
   after_action :verify_authorized, except: [:index, :search]
   after_action :verify_policy_scoped, only: :index
@@ -127,6 +128,11 @@ class Symphony::DocumentsController < ApplicationController
   end
 
   private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
 
   def set_company
     @user = current_user

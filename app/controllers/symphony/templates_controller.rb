@@ -3,6 +3,7 @@ class Symphony::TemplatesController < ApplicationController
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
   before_action :find_roles, :find_users, only: [:new, :edit, :update]
+  before_action :require_symphony
 
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
@@ -111,6 +112,12 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
+
   def set_template
     @template = Template.includes(sections: [tasks: [:role, :user, :document_template]]).find(params[:template_slug])
   end

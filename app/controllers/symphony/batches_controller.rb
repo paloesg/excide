@@ -2,6 +2,7 @@ class Symphony::BatchesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_batch, only: [:show, :destroy]
   before_action :set_s3_direct_post, only: [:show, :new]
+  before_action :require_symphony
 
   after_action :verify_authorized, except: [:index, :create, :create_batches_through_email]
   after_action :verify_policy_scoped, only: :index
@@ -69,6 +70,11 @@ class Symphony::BatchesController < ApplicationController
   end
 
   private
+  
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
 
   def batch_params
     params.permit(:company_id, :template_id)

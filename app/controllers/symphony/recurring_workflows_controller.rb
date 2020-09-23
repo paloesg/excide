@@ -3,6 +3,7 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   before_action :set_company
   before_action :set_template
   before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring, :show, :trigger_workflow]
+  before_action :require_symphony
 
   def index
     @recurring_workflows = policy_scope(RecurringWorkflow)
@@ -71,6 +72,11 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   end
 
   private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
 
   def set_template
     @template = policy_scope(Template).find_by(slug: params[:recurring_workflow_name])

@@ -3,6 +3,7 @@ class Symphony::UsersController < ApplicationController
   before_action :set_company
   before_action :set_company_roles, only: [:new, :create, :edit]
   before_action :set_user, except: [:index, :new, :create, :edit_additional_information]
+  before_action :require_symphony
 
   def index
     @users = User.joins(:roles).where(:roles => {resource_id: @company.id}).order(:id).uniq
@@ -101,6 +102,11 @@ class Symphony::UsersController < ApplicationController
   end
 
   private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
 
   def set_company
     @company = current_user.company

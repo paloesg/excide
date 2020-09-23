@@ -1,4 +1,6 @@
 class Symphony::CheckoutController < ApplicationController
+  before_action :require_symphony
+
   after_action :verify_authorized
   def create
     authorize :checkout, :create?
@@ -47,5 +49,12 @@ class Symphony::CheckoutController < ApplicationController
     else
       redirect_to symphony_root_path, alert: 'Cancellation of subscription failed. Please try again later or contact support.'
     end
+  end
+
+  private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
   end
 end

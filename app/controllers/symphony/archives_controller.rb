@@ -1,6 +1,7 @@
 class Symphony::ArchivesController < ApplicationController
   before_action :set_company
   before_action :authenticate_user!
+  before_action :require_symphony
 
   def index
     @templates = Template.assigned_templates(current_user)
@@ -37,6 +38,11 @@ class Symphony::ArchivesController < ApplicationController
   end
 
   private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
 
   def set_company
     @user = current_user

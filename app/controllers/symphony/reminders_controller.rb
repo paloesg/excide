@@ -1,5 +1,6 @@
 class Symphony::RemindersController < ApplicationController
   before_action :set_reminder, only: [:edit, :update, :cancel]
+  before_action :require_symphony
 
   def index
     @user = current_user
@@ -54,6 +55,11 @@ class Symphony::RemindersController < ApplicationController
   end
 
   private
+
+  # checks if the user's company has Symphony. Links to symphony_policy.rb
+  def require_symphony
+    authorize :symphony, :index?
+  end
 
   def set_reminder
     @reminder = Reminder.find(params[:id])
