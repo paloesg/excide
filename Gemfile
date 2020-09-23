@@ -101,6 +101,8 @@ gem 'inky-rb', require: 'inky'
 gem 'premailer-rails'
 # Default processer: MiniMagick. Enable variant for image using ActiveStorage
 gem 'image_processing', '~> 1.11.0'
+# Office previewer
+gem "activestorage-office-previewer"
 # Sendgrid web API
 gem 'sendgrid-ruby'
 gem 'sendgrid-actionmailer'
