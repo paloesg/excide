@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
     policy_name = exception.policy.class.to_s.underscore
 
     flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-    redirect_to symphony_root_path
+    redirect_to root_path
   end
 
   def xero_login
