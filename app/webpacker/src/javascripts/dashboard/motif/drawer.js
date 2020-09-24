@@ -29,6 +29,9 @@ $(document).on("turbolinks:load", function () {
           classname     : "tags-look",
           enabled       : 0
         },
+        autoComplete: {
+          rightKey: true
+        },
         callbacks: {
           "change": (e) => onTagsChange(e, input.split('_')[1])
         }
