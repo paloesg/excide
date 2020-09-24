@@ -42,7 +42,7 @@
         div.col-8
   hr
   div.ml-5.mb-4 Folder path
-  table.table.draggable-zone.ml-4
+  table.table.ml-4
     thead
       tr
         th
@@ -53,7 +53,7 @@
         th.text-muted ACCESS
         th.text-muted Q&A
         th
-    tbody
+    tbody.draggable-zone
       - @get_root_folders.each do |f|
         tr.draggable
           td
