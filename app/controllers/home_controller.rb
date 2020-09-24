@@ -11,15 +11,17 @@ class HomeController < ApplicationController
   # changes user's company
   def change_company
     if current_user.update(user_params)
-      # user redirected to product selection page if the company has multiple products
+      # user's company has multiple products
       if current_user.company.products.length > 1
-        redirect_to root_path, notice: 'Company changed to ' + current_user.company.name + '.'
-      # user is redirected to the sole product if the company has only 1 product
+        # redirect to same page, if cannot they are redirected instead to the product selection page
+        redirect_back fallback_location: root_path, notice: 'Company changed to ' + current_user.company.name + '.'
+      # user's company only has 1 product
       elsif current_user.company.products.length == 1
+        # redirect to same page, if cannot they are redirected instead to the sole product's page
         if current_user.company.products[0] == "symphony"
-          redirect_to symphony_root_path, notice: 'Company changed to ' + current_user.company.name + '.'
+          redirect_back fallback_location: symphony_root_path, notice: 'Company changed to ' + current_user.company.name + '.'
         elsif current_user.company.products[0] == "motif"
-          redirect_to motif_root_path, notice: 'Company changed to ' + current_user.company.name + '.'
+          redirect_back fallback_location: motif_root_path, notice: 'Company changed to ' + current_user.company.name + '.'
         end
       end
     else
