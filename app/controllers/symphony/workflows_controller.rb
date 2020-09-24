@@ -341,7 +341,7 @@ class Symphony::WorkflowsController < ApplicationController
   end
 
   def set_workflow
-    @workflow = policy_scope(Workflow).find_by(slug: params[:workflow_id])
+    @workflow = policy_scope(Workflow).find(params[:workflow_id])
     @documents = @company.documents.order(created_at: :desc)
     @document_templates = DocumentTemplate.where(template: @workflow.template)
   end
