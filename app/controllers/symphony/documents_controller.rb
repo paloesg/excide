@@ -41,7 +41,7 @@ class Symphony::DocumentsController < ApplicationController
         document = @generate_document.document
         authorize document
         # attach and convert method
-        document.attach_and_convert_document(params[:response_key], "symphony")
+        document.attach_and_convert_document(params[:response_key])
         # Generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'.
         # @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
         
@@ -87,7 +87,7 @@ class Symphony::DocumentsController < ApplicationController
       document = @generate_document.document
       authorize document
       # attach and convert method with the response key to create blob
-      document.attach_and_convert_document(file['response']['key'], "symphony")
+      document.attach_and_convert_document(file['response']['key'])
       @files.append document
     end
     respond_to do |format|
