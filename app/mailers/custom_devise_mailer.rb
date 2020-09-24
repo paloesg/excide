@@ -14,7 +14,8 @@ class CustomDeviseMailer < Devise::Mailer
             }
           ],
           "dynamic_template_data": {
-            "firstName": "'+record.email+'"
+            "firstName": "'+record.email+'",
+            "confirmationToken": "'+token+'"
           }
         }
       ],
@@ -22,6 +23,62 @@ class CustomDeviseMailer < Devise::Mailer
         "email": "Excide <info@excide.co>"
       },
       "template_id": "d-908be3573b0a4ea2a20a9b50a01b5b42"
+    }')
+
+    sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+    response = sg.client.mail._("send").post(request_body: data)
+    puts response.status_code
+    puts response.body
+    puts response.headers
+  end
+  
+  def unlock_instructions(record, token, opts={})
+    data = JSON.parse('{
+      "personalizations": [
+        {
+          "to": [
+            {
+              "email": "'+record.email+'"
+            }
+          ],
+          "dynamic_template_data": {
+            "firstName": "'+record.email+'",
+            "unlockToken": "'+token+'"
+          }
+        }
+      ],
+      "from": {
+        "email": "Excide <info@excide.co>"
+      },
+      "template_id": "d-ba990131f20f4ad4b4eda3eb9d804d1f"
+    }')
+
+    sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+    response = sg.client.mail._("send").post(request_body: data)
+    puts response.status_code
+    puts response.body
+    puts response.headers
+  end
+
+  def reset_password_instructions(record, token, opts={})
+    data = JSON.parse('{
+      "personalizations": [
+        {
+          "to": [
+            {
+              "email": "'+record.email+'"
+            }
+          ],
+          "dynamic_template_data": {
+            "firstName": "'+record.email+'",
+            "resetToken": "'+token+'"
+          }
+        }
+      ],
+      "from": {
+        "email": "Excide <info@excide.co>"
+      },
+      "template_id": "d-7ffeac72f25e454dbf2bc76e4b3c3314"
     }')
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
