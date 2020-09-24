@@ -48,6 +48,22 @@ $(document).on("turbolinks:load", function () {
       $.each(tagifyInstances, function() {
         $(this)[0].settings.whitelist = data;
       });
+      const numOfTags = e.detail.tagify.value.length;
+      if (numOfTags == 0) {
+        $("#tags_count_" + id).children().eq(0).addClass("d-none");
+      }
+      else {
+        if (numOfTags < 2) {
+          $("#tags_count_" + id).children().eq(1).addClass("d-none")
+          $("#tags_count_" + id).children().eq(0).removeClass("d-none");
+        }
+        else {
+          console.log($("#tags_count_" + id).children().eq(1))
+          $("#tags_count_" + id).children()[1].innerHTML = (numOfTags-1) + "+..."
+          $("#tags_count_" + id).children().eq(1).removeClass("d-none");
+        }
+        $("#tags_count_" + id).children()[0].innerHTML = e.detail.tagify.value[0].value;
+      }
     });
   }
 });

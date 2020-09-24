@@ -70,16 +70,16 @@
       - @documents.each_with_index do |d, index|
         tr.drawer-row id="drawer_toggle_#{index}" data-drawer=index
           td
-            input# type="checkbox" name=""/
+            input# type="checkbox" name=""/ 
           td
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"
             span.ml-5
               = d.raw_file.filename
-          td
-            = content_tag :span, d.all_tags_list.first, class: "badge badge-motif" if d.all_tags_list.length > 0
-            - if d.all_tags_list.length > 1
-              | #{d.all_tags_list.length-1}+...
+          td id="tags_count_#{d.id}"
+            = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
+            span class=(d.all_tags_list.length > 1 ? "" : "d-none")
+              = (d.all_tags_list.length-1).to_s + "+..."
           td
             = d.raw_file.created_at
           td
