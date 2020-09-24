@@ -4,11 +4,4 @@ class Motif::HomeController < ApplicationController
 
   def index
   end
-
-  private
-
-  # checks if the user's company has Motif. Links to motif_policy.rb
-  def require_motif
-    authorize :motif, :index?
-  end
 end

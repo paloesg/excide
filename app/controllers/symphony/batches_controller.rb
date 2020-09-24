@@ -70,11 +70,6 @@ class Symphony::BatchesController < ApplicationController
   end
 
   private
-  
-  # checks if the user's company has Symphony. Links to symphony_policy.rb
-  def require_symphony
-    authorize :symphony, :index?
-  end
 
   def batch_params
     params.permit(:company_id, :template_id)

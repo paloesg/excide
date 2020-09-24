@@ -42,11 +42,6 @@ class Symphony::RolesController < ApplicationController
 
   private
 
-  # checks if the user's company has Symphony. Links to symphony_policy.rb
-  def require_symphony
-    authorize :symphony, :index?
-  end
-
   def update_users_role
     users = User.where(id: params[:role][:user_ids])
     @role.users.each do |user|

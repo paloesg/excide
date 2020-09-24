@@ -83,4 +83,14 @@ class ApplicationController < ActionController::Base
     Rails.logger.error("Xero error: Rate limited exceeded")
     redirect_to symphony_root_path, alert: message
   end
+
+  # checks if the user's company has Symphony. Links to application_policy.rb
+  def require_symphony
+    authorize current_user, :hasSymphony?
+  end
+
+  # checks if the user's company has Motif. Links to application_policy.rb
+  def require_motif
+    authorize current_user, :hasMotif?
+  end
 end

@@ -30,11 +30,6 @@ class Motif::DocumentsController < ApplicationController
 
   private
 
-  # checks if the user's company has Motif. Links to motif_policy.rb
-  def require_motif
-    authorize :motif, :index?
-  end
-
   def set_company
     @user = current_user
     @company = @user.company

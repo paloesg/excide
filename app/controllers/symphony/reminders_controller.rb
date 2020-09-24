@@ -56,11 +56,6 @@ class Symphony::RemindersController < ApplicationController
 
   private
 
-  # checks if the user's company has Symphony. Links to symphony_policy.rb
-  def require_symphony
-    authorize :symphony, :index?
-  end
-
   def set_reminder
     @reminder = Reminder.find(params[:id])
   end

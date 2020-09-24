@@ -33,11 +33,6 @@ class Symphony::SurveysController < ApplicationController
 
   private
 
-  # checks if the user's company has Symphony. Links to symphony_policy.rb
-  def require_symphony
-    authorize :symphony, :index?
-  end
-
   def set_survey
     @survey = Survey.includes(segments: [:responses]).find(params[:id])
   end

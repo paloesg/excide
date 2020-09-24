@@ -95,11 +95,6 @@ class Symphony::UsersController < ApplicationController
 
   private
 
-  # checks if the user's company has Symphony. Links to symphony_policy.rb
-  def require_symphony
-    authorize :symphony, :index?
-  end
-
   def set_company
     @company = current_user.company
   end

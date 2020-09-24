@@ -73,11 +73,6 @@ class Symphony::RecurringWorkflowsController < ApplicationController
 
   private
 
-  # checks if the user's company has Symphony. Links to symphony_policy.rb
-  def require_symphony
-    authorize :symphony, :index?
-  end
-
   def set_template
     @template = policy_scope(Template).find_by(slug: params[:recurring_workflow_name])
   end

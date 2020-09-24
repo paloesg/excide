@@ -35,6 +35,14 @@ class ApplicationPolicy
     false
   end
 
+  def hasSymphony?
+    user.company.products.include? 'symphony'
+  end
+
+  def hasMotif?
+    user.company.products.include? 'motif'
+  end
+
   def scope
     Pundit.policy_scope!(user, record.class)
   end

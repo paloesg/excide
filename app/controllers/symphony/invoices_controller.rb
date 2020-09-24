@@ -214,11 +214,6 @@ class Symphony::InvoicesController < ApplicationController
 
   private
 
-  # checks if the user's company has Symphony. Links to symphony_policy.rb
-  def require_symphony
-    authorize :symphony, :index?
-  end
-
   def set_invoice
     @invoice = Invoice.find(params[:id])
   end

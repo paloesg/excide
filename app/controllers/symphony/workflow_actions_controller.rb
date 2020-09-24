@@ -15,11 +15,6 @@ class Symphony::WorkflowActionsController < ApplicationController
 
   private
 
-  # checks if the user's company has Symphony. Links to symphony_policy.rb
-  def require_symphony
-    authorize :symphony, :index?
-  end
-
   def set_workflow_action
     @workflow_action = WorkflowAction.find(params[:id])
   end

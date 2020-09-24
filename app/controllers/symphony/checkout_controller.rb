@@ -50,11 +50,4 @@ class Symphony::CheckoutController < ApplicationController
       redirect_to symphony_root_path, alert: 'Cancellation of subscription failed. Please try again later or contact support.'
     end
   end
-
-  private
-
-  # checks if the user's company has Symphony. Links to symphony_policy.rb
-  def require_symphony
-    authorize :symphony, :index?
-  end
 end

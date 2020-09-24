@@ -113,11 +113,6 @@ class Symphony::TemplatesController < ApplicationController
 
   private
 
-  # checks if the user's company has Symphony. Links to symphony_policy.rb
-  def require_symphony
-    authorize :symphony, :index?
-  end
-
   def set_template
     @template = Template.includes(sections: [tasks: [:role, :user, :document_template]]).find(params[:template_slug])
   end
