@@ -11,7 +11,17 @@ class HomeController < ApplicationController
   # changes user's company
   def change_company
     if current_user.update(user_params)
-      redirect_to root_path, notice: 'Company changed to ' + current_user.company.name + '.'
+      # user redirected to product selection page if the company has multiple products
+      if current_user.company.products.length > 1
+        redirect_to root_path, notice: 'Company changed to ' + current_user.company.name + '.'
+      # user is redirected to the sole product if the company has only 1 product
+      elsif current_user.company.products.length == 1
+        if current_user.company.products[0] == "symphony"
+          redirect_to symphony_root_path, notice: 'Company changed to ' + current_user.company.name + '.'
+        elsif current_user.company.products[0] == "motif"
+          redirect_to motif_root_path, notice: 'Company changed to ' + current_user.company.name + '.'
+        end
+      end
     else
       redirect_to root_path, error: 'Sorry, there was an error when trying to switch company.'
     end
