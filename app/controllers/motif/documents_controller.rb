@@ -1,6 +1,9 @@
 class Motif::DocumentsController < ApplicationController
-  before_action :set_company
   before_action :authenticate_user!
+  before_action :set_company
+
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
 
   def index
     @folders = policy_scope(Folder).roots
