@@ -1,7 +1,4 @@
 class Event < ApplicationRecord
-  after_create :create_event_notification
-  after_destroy :destroy_event_notification
-
   belongs_to :staffer, class_name: 'User'
   belongs_to :company
   belongs_to :client
@@ -35,10 +32,6 @@ class Event < ApplicationRecord
     client&.name + " " + event_type&.name
   end
 
-  def update_event_notification
-    NotificationMailer.edit_event(self, self.staffer).deliver_later if self.staffer.present?
-  end
-
   def project_consultants
     user_id = self.allocations.where(allocation_type: 'consultant').pluck('user_id')
     User.where(id: user_id)
@@ -51,15 +44,5 @@ class Event < ApplicationRecord
 
   def get_allocated_user
     self.allocations.where.not(user_id: nil)
-  end
-
-  private
-
-  def create_event_notification
-    NotificationMailer.create_event(self, self.staffer).deliver_later if self.staffer.present?
-  end
-
-  def destroy_event_notification
-    NotificationMailer.destroy_event(self, self.staffer).deliver if self.staffer.present?
   end
 end

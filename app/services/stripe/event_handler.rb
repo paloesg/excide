@@ -56,8 +56,7 @@ module Stripe
         if event.data.object.cancel_at_period_end
           @current_user.company.stripe_subscription_plan_data['cancel'] = true
           @current_user.company.save
-          # Assuming customer_subscription_updated method only runs upon clicking the cancellation button
-          StripeNotificationMailer.cancel_subscription_notification(@current_user, period_end).deliver_later
+          StripeNotificationMailer.cancel_subscription_notification(@current_user, Time.at(period_end).strftime("%d-%b-%Y")).deliver_later
         end
         # only update to subscription plan data if it's annual plan
         @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription if event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
@@ -87,7 +86,7 @@ module Stripe
         end
       end
       # Send email to inform user that payment is successful.
-      StripeNotificationMailer.payment_successful(@current_user, @subscription["current_period_start"], @subscription["current_period_end"], event.data.object["invoice_pdf"]).deliver_later
+      StripeNotificationMailer.payment_successful(@current_user, Time.at(@subscription["current_period_start"]).strftime("%d-%b-%Y"), Time.at(@subscription["current_period_end"]).strftime("%d-%b-%Y"), event.data.object["invoice_pdf"]).deliver_later
     end
 
     def handle_charge_failed(event)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_10_172744) do
+ActiveRecord::Schema.define(version: 2020_09_11_065902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -196,6 +196,7 @@ ActiveRecord::Schema.define(version: 2020_09_10_172744) do
     t.json "slack_access_response"
     t.string "mailbox_token"
     t.integer "before_deadline_reminder_days"
+    t.json "products", default: []
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"

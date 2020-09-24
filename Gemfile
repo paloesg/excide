@@ -75,8 +75,8 @@ gem 'acts-as-taggable-on', '~> 6.5.0'
 # Use user friendly slugs
 gem 'friendly_id', '~> 5.4.0'
 # Amazon S3 SDK
-gem 'aws-sdk-s3', '~> 1.80.0'
-gem 'aws-sdk-textract', '~> 1.18.0'
+gem 'aws-sdk-s3', '~> 1.81.0'
+gem 'aws-sdk-textract', '~> 1.19.0'
 # Sitemap generator
 gem 'sitemap_generator'
 # Uploading of sitemap to AWS

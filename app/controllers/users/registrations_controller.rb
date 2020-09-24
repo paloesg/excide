@@ -6,7 +6,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    super
+    if (params[:product] == "symphony" || params[:product] == "motif")
+      super
+    else
+      raise ActionController::RoutingError.new('Invalid Product Name in URL')
+    end
   end
 
   # POST /resource
@@ -20,8 +24,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.account_type = 0
       company.save
       resource.company = company
+      if params[:product].present? 
+        resource.company.products = [params[:product]]
+        resource.company.save
+        resource.save
+      end
     end
-    resource.save
     role = params[:role].present? ? params[:role] : "admin"
     if resource.company.present?
       resource.add_role role.to_sym, resource.company
