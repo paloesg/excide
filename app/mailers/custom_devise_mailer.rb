@@ -5,7 +5,29 @@ class CustomDeviseMailer < Devise::Mailer
   default from: 'Excide <info@excide.co>'
 
   def confirmation_instructions(record, token, opts={})
-    opts[:subject] = 'Please activate your Excide Symphony account'
-    super
+    data = JSON.parse('{
+      "personalizations": [
+        {
+          "to": [
+            {
+              "email": "'+record.email+'"
+            }
+          ],
+          "dynamic_template_data": {
+            "firstName": "'+record.email+'"
+          }
+        }
+      ],
+      "from": {
+        "email": "Excide <info@excide.co>"
+      },
+      "template_id": "d-908be3573b0a4ea2a20a9b50a01b5b42"
+    }')
+
+    sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+    response = sg.client.mail._("send").post(request_body: data)
+    puts response.status_code
+    puts response.body
+    puts response.headers
   end
 end
