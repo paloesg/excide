@@ -42,7 +42,7 @@
         div.col-8
   hr
   div.ml-5.mb-4 Folder path
-  table.table.ml-4
+  table.table.draggable-zone.ml-4
     thead
       tr
         th
@@ -55,7 +55,7 @@
         th
     tbody
       - @get_root_folders.each do |f|
-        tr
+        tr.draggable
           td
             input# type="checkbox" name=""/
           td
@@ -82,10 +82,10 @@
             span
               = image_pack_tag "media/src/images/motif/Download.svg"
       - @get_documents.each do |d|
-        tr
+        tr.draggable
           td
             input# type="checkbox" name=""/
-          td
+          td.draggable-handle
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"
             span.ml-5
