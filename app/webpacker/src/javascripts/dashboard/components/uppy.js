@@ -33,7 +33,7 @@ const batchUploads = (uppy) => {
   });
 };
 
-// Multiple uploads through document's INDEX page
+// Multiple uploads for Symphony through document's INDEX page
 const multipleDocumentsUpload = (uppy) => {
   uppy.on('complete', (result) => {
     $.post("/symphony/documents/index-create", {
@@ -65,6 +65,18 @@ const multipleUploadTask = (uppy) => {
       };
       // Wait for 3 seconds before posting to document. On development, the file post too fast, that the batchId could not get captured
       let result = setTimeout(uploadDocuments(data_input), 3000);
+    });
+  });
+};
+
+// Multiple uploads for Motif through document's INDEX page
+const motifMultipleDocumentsUpload = (uppy) => {
+  uppy.on('complete', (result) => {
+    $.post("/motif/documents", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+      document_type: 'motif-documents-multiple-uploads',
     });
   });
 };
@@ -123,6 +135,9 @@ function setupUppy(element){
   }
   else if($('.multipleUploadsTask').length){
     multipleUploadTask(uppy);
+  }
+  else if($('.motifMultipleDocumentsUpload').length){
+    motifMultipleDocumentsUpload(uppy);
   }
 }
 //-----------------------------------Initialize Uppy------------------------------------
