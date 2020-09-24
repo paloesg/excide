@@ -49,7 +49,6 @@ class FolderDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
   company
   documents
-  permissions
   name
   ancestry
   ].freeze

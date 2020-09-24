@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_11_065902) do
+ActiveRecord::Schema.define(version: 2020_09_17_065347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -339,14 +339,15 @@ ActiveRecord::Schema.define(version: 2020_09_11_065902) do
   end
 
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "folder_id"
     t.bigint "role_id"
     t.boolean "can_write"
     t.boolean "can_view"
     t.boolean "can_download"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["folder_id"], name: "index_permissions_on_folder_id"
+    t.string "permissible_type"
+    t.uuid "permissible_id"
+    t.index ["permissible_type", "permissible_id"], name: "index_permissions_on_permissible_type_and_permissible_id"
     t.index ["role_id"], name: "index_permissions_on_role_id"
   end
 
@@ -721,7 +722,6 @@ ActiveRecord::Schema.define(version: 2020_09_11_065902) do
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
-  add_foreign_key "permissions", "folders"
   add_foreign_key "permissions", "roles"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
