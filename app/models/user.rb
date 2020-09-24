@@ -10,10 +10,11 @@ class User < ApplicationRecord
 
   has_one :address, as: :addressable, dependent: :destroy
 
+  has_many :permissions, through: :roles
   has_many :reminders, dependent: :destroy
   has_many :clients
   has_many :documents
-  has_many :recurring_workflows
+  has_many :recurring_workflows, dependent: :destroy
   has_many :invoices
   has_many :batches
 
