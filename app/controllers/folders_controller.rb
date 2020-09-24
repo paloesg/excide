@@ -1,5 +1,9 @@
 class FoldersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_folder, only: [:show, :edit, :update, :destroy]
+
+  after_action :verify_authorized, except: :index
+  after_action :verity_policy_scoped, only: :index
 
   # GET /folders
   # GET /folders.json
