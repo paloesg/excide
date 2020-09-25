@@ -9,13 +9,20 @@ $(document).on("turbolinks:load", function() {
     draggable: '.draggable',
     handle: '.draggable .draggable-handle',
   });
-  draggable.on('drag:start', (res) => console.log('drag:start', res));
   draggable.on('drag:over:container', (res) => console.log('drag:container', res.data.sensorEvent.target));
-  draggable.on('drag:out', (res) => {
-    console.log('targeted_tr', res.sensorEvent.target.closest("tr"));
-    console.log('dragged_element', res.data.originalSource.id);
-    let targeted_tr = res.sensorEvent.target.closest("tr");
-    let dragged_element_id = res.data.originalSource.id;
-    // $(dragged_element_id).hide();
-  });
+  draggable.on('drag:stop', (res) => console.log('drag:stop', res));
+
+  // draggable.on('drag:out', (res) => {
+  //   console.log('targeted_tr', res.sensorEvent.target.closest("tr"));
+  //   console.log('dragged_element', res.data.originalSource.id);
+  //   let targeted_tr = res.sensorEvent.target.closest("tr");
+  //   let dragged_element_id = res.data.originalSource.id;
+  //   $.ajax({
+  //     type: "get",
+  //     url: "/motif/hello_world",
+  //     dataType: "json",
+  //   }).done(function(data) {
+  //     console.log("DONED!", data);
+  //   });
+  // });
 });

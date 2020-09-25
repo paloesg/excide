@@ -124,6 +124,7 @@ Rails.application.routes.draw do
     root to: 'home#index'
 
     resources :documents
+    get 'hello_world', to: 'documents#hello', as: :hello
     resources :folders
   end
 

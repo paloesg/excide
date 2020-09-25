@@ -3,5 +3,6 @@ class Folder < ApplicationRecord
 
   belongs_to :company
 
-  has_many :documents
+  has_many :documents, dependent: :destroy
+  has_many :permissions, as: :permissible, dependent: :destroy
 end
