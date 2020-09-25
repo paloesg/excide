@@ -26,10 +26,7 @@ class CustomDeviseMailer < Devise::Mailer
     }')
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
-    response = sg.client.mail._("send").post(request_body: data)
-    puts response.status_code
-    puts response.body
-    puts response.headers
+    sg.client.mail._("send").post(request_body: data)
   end
   
   def unlock_instructions(record, token, opts={})
@@ -54,10 +51,7 @@ class CustomDeviseMailer < Devise::Mailer
     }')
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
-    response = sg.client.mail._("send").post(request_body: data)
-    puts response.status_code
-    puts response.body
-    puts response.headers
+    sg.client.mail._("send").post(request_body: data)
   end
 
   def reset_password_instructions(record, token, opts={})
@@ -82,9 +76,6 @@ class CustomDeviseMailer < Devise::Mailer
     }')
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
-    response = sg.client.mail._("send").post(request_body: data)
-    puts response.status_code
-    puts response.body
-    puts response.headers
+    sg.client.mail._("send").post(request_body: data)
   end
 end
