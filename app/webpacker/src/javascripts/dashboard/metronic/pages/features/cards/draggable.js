@@ -1,5 +1,4 @@
 "use strict";
-import Sortable from '@shopify/draggable/lib/sortable';
 var KTCardDraggable = function() {
 
     return {

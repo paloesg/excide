@@ -55,7 +55,7 @@
         th
     tbody.draggable-zone
       - @get_root_folders.each do |f|
-        tr.draggable
+        tr.folders
           td
             input# type="checkbox" name=""/
           td
@@ -82,7 +82,7 @@
             span
               = image_pack_tag "media/src/images/motif/Download.svg"
       - @get_documents.each do |d|
-        tr.draggable
+        tr.draggable id="document_#{d.id}"
           td
             input# type="checkbox" name=""/
           td.draggable-handle
