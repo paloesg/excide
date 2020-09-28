@@ -77,7 +77,8 @@ class Symphony::TemplatesController < ApplicationController
           @template.set_next_workflow_date(@workflow)
           redirect_to symphony_workflows_path(workflow_name: @template.slug)
         else
-          @template.update_workflows
+          # update deadlines of wf and wfa
+          @template.update_deadlines
           flash[:notice] = 'Template has been saved.'
           redirect_to edit_symphony_template_path(@template)
         end
