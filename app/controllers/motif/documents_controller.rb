@@ -32,6 +32,7 @@ class Motif::DocumentsController < ApplicationController
 
   def update_tags
     @document = @company.documents.find(params[:id])
+    authorize @document
     @tags = []
     params[:values].each{|key, tag| @tags << tag[:value]} unless params[:values].blank?
     @company.tag(@document, with: @tags, on: :tags)

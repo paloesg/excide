@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include Pundit
   include PublicActivity::StoreController
 
-  rescue_from Pundit::NotAuthorizedError, Pundit::AuthorizationNotPerformedError, with: :user_not_authorized
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   #TokenInvalid in case user is still using public app for xero. It will redirect them to xero authorization page
   rescue_from Xeroizer::OAuth::TokenInvalid, Xeroizer::OAuth::TokenExpired, with: :xero_login
   #If record is not found on xero, it will return flash message as string
