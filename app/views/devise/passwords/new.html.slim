@@ -1,16 +1,14 @@
-.row.justify-content-center
-  .col-4.text-center
-    .kt-portlet
-      .kt-portlet__head
-        .kt-portlet__head-label
-          .kt-portlet__head-title
-            | Account recovery
-      .kt-portlet__body
-        = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
-          = devise_error_messages!
-          .form-group
-            = f.email_field :email, autofocus: true, placeholder: "Email", class: 'form-control'
-          h6 A link will be emailed to this address which will let you reset your password.
-          br
-          .form-group
-            = f.submit "Send reset email", class: "btn btn-primary"
+.d-flex.align-items-center.container.h-100
+  .row.w-100
+    .col-sm-6.mt-5
+      .row.d-flex.justify-content-center
+        .col-sm-9
+          h1.header-bold.mb-5.text-center Account recovery
+          = form_for(resource, as: resource_name, url: password_path(resource_name)) do |f|
+            .form-group
+              = f.email_field :email, required: true, autofocus: true, placeholder: "Email", class: 'form-control'
+            span.font-weight-normal A link will be emailed to this address which will let you reset your password.
+            .form-group.mt-5
+              = f.submit "Send reset email", class: "btn btn-primary text-nunito col-sm-12"
+    .col-sm-6
+      = image_pack_tag 'media/src/images/symphony/login.png', alt: "login-page", class: 'img-fluid float-right'
