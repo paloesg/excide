@@ -26,7 +26,11 @@ class CustomDeviseMailer < Devise::Mailer
     }')
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
-    sg.client.mail._("send").post(request_body: data)
+    begin
+      sg.client.mail._("send").post(request_body: data)
+    rescue Exception => e
+      puts e.message
+    end
   end
   
   def unlock_instructions(record, token, opts={})
