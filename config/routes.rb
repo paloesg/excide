@@ -123,8 +123,9 @@ Rails.application.routes.draw do
   namespace :motif do
     root to: 'home#index'
 
-    resources :documents
-    get 'hello_world', to: 'documents#hello', as: :hello
+    resources :documents do
+      patch '/drag_documents_to_folder', to:'documents#drag_documents_to_folder'
+    end
     resources :folders
   end
 

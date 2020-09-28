@@ -9,8 +9,37 @@ $(document).on("turbolinks:load", function() {
     draggable: '.draggable',
     handle: '.draggable .draggable-handle',
   });
-  draggable.on('drag:over:container', (res) => console.log('drag:container', res.data.sensorEvent.target));
-  draggable.on('drag:stop', (res) => console.log('drag:stop', res));
+  // Define a variable to store the lastest element that user dragged a file over
+  let source;
+  draggable.on("drag:over", (e) => {
+    // Store the element that a file was dragged into
+    source = e;
+  });
+
+  draggable.on("drag:stop", (e) => {
+    // On release, send an AJAX reqeust to store file into folder
+    console.log("source 2", source);
+    console.log("source 2", source.data);
+    console.log("target closest TR", source.data.over.closest('tr'));
+    let tableRow = source.data.over.closest('tr')
+    $.ajax({
+      type: "PATCH",
+      url: "/motif/documents/" + source.data.originalSource.id + "/drag_documents_to_folder",
+      data: {
+        document_id: source.data.originalSource.id, 
+        folder_id: tableRow.id
+      },
+      dataType: "JSON"
+    }).done(function(data){
+      console.log("WHAT IS DATA: ", data);
+    });
+    // execute your drop action: e.originalSource on lastOver
+    source = undefined;
+    console.log("2nd new source", source)
+  });
+
+  // draggable.on('drag:over:container', (res) => console.log('drag:container', res.data.sensorEvent.target));
+  // draggable.on('drag:stop', (res) => console.log('drag:stop', res));
 
   // draggable.on('drag:out', (res) => {
   //   console.log('targeted_tr', res.sensorEvent.target.closest("tr"));

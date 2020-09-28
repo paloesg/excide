@@ -30,10 +30,12 @@ class Motif::DocumentsController < ApplicationController
     end
   end
 
-  def hello
-    puts "HELLO WORLD!"
+  def drag_documents_to_folder
+    @document = @company.documents.find(params[:document_id])
+    @folder = @company.folders.find(params[:folder_id])
+    @folder.documents << @document
     respond_to do |format|
-      format.json { render json: { hello: 'hello world!' } }
+      format.json { render json: "all good?", status: :ok }
     end
   end
 
