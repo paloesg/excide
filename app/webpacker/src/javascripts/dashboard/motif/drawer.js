@@ -1,6 +1,7 @@
 import Tagify from '@yaireo/tagify';
 $(document).on("turbolinks:load", function () {
   const Offcanvas = require("../metronic/components/offcanvas.js");
+  const quickPanel = require("../metronic/layout/extended/quick-panel.js")
   $(".drawer-row").each(function () {
     let dataAttribute = $(this).data("drawer");
     const offcanvasObject = new Offcanvas(

@@ -8,28 +8,31 @@
   .offcanvas-header.offcanvas-header-navs.d-flex.align-items-center.justify-content-between.mb-6
     ul.nav.nav-bold.nav-tabs.nav-tabs-line.nav-tabs-line-3x.nav-tabs-primary.flex-grow-1.px-10 role="tablist"
       li.nav-item
-        a.nav-link data-toggle="tab" href="#" Information
+        a.nav-link data-toggle="tab" href="#information" Information
       li.nav-item
-        a.nav-link data-toggle="tab" href="#" Access
+        a.nav-link data-toggle="tab" href="#access" Access
       li.nav-item
-        a.nav-link data-toggle="tab" href="#" History
+        a.nav-link data-toggle="tab" href="#history" History
   .offcanvas-content
     .tab-content
-      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps id="information" role="tabpanel"
+      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.active.show.px-5 id="information" role="tabpanel"
         .row.mb-4
           .col
-            | Uploaded on
-            p = d.created_at
+            | Last upload
+            p = d.created_at.strftime("%d %b %Y at %I:%M%p")
           .col
             | Uploaded by
-            p = d.company.name
+            p = d.user.full_name
         .row.mb-4
           .col
             | File Size
-            p 578 KB
+            p = number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
           .col
             | Shared with
             p 20 franchisees, 5 others
         .mb-2 Tags
         input.motif-tags id="tag_#{d.id}" name="input-custom-dropdown-#{index}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ")
-      
+      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="access" role="tabpanel"
+        h2 notification
+      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history" role="tabpanel"
+        h3 settings
