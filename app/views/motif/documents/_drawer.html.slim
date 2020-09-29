@@ -1,23 +1,35 @@
 .offcanvas.offcanvas-right.offcanvas-top.p-5 id="drawer_#{index}"
-  .offcanvas-header.d-flex.align-items-center.justify-content-between.mb-6
-    h3 = d.raw_file.filename
-    a id="drawer_close" href="#" 
-      i.material-icons-outlined close
+  .row
+    .col-md-11
+      h5.d-inline = d.raw_file.filename
+    .col-md-1
+      a.d-inline id="drawer_close" href="#" 
+        i.material-icons-outlined close
+  .offcanvas-header.offcanvas-header-navs.d-flex.align-items-center.justify-content-between.mb-6
+    ul.nav.nav-bold.nav-tabs.nav-tabs-line.nav-tabs-line-3x.nav-tabs-primary.flex-grow-1.px-10 role="tablist"
+      li.nav-item
+        a.nav-link data-toggle="tab" href="#" Information
+      li.nav-item
+        a.nav-link data-toggle="tab" href="#" Access
+      li.nav-item
+        a.nav-link data-toggle="tab" href="#" History
   .offcanvas-content
-    .row.mb-4
-      .col
-        | Uploaded on
-        p = d.created_at
-      .col
-        | Uploaded by
-        p = d.company.name
-    .row.mb-4
-      .col
-        | File Size
-        p 578 KB
-      .col
-        | Shared with
-        p 20 franchisees, 5 others
-    .mb-2 Tags
-    input.motif-tags id="tag_#{d.id}" name="input-custom-dropdown-#{index}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ")
+    .tab-content
+      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps id="information" role="tabpanel"
+        .row.mb-4
+          .col
+            | Uploaded on
+            p = d.created_at
+          .col
+            | Uploaded by
+            p = d.company.name
+        .row.mb-4
+          .col
+            | File Size
+            p 578 KB
+          .col
+            | Shared with
+            p 20 franchisees, 5 others
+        .mb-2 Tags
+        input.motif-tags id="tag_#{d.id}" name="input-custom-dropdown-#{index}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ")
       
