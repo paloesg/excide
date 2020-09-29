@@ -8,7 +8,7 @@ $(document).on("turbolinks:load", function () {
       {
         baseClass: "offcanvas",
         overlay: true,
-        closeBy: "drawer_close",
+        closeBy: "drawer_close_" + dataAttribute,
         toggleBy: {
           target: "drawer_toggle_" + dataAttribute,
           state: "mobile-toggle-active",
