@@ -88,9 +88,9 @@ class ApplicationController < ActionController::Base
 
   # checks if the controller's namespace is in Symphony or Motif, then check if the user has access to the product. Links to application_policy.rb
   def authenticate_product
-    if self.class.parent == Symphony
+    if controller_path.split('/').first == 'symphony'
       authorize current_user, :has_symphony?
-    elsif self.class.parent == Motif
+    elsif controller_path.split('/').first == 'motif'
       authorize current_user, :has_motif?
     end
   end
