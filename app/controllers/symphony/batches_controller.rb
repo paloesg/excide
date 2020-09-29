@@ -2,7 +2,6 @@ class Symphony::BatchesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_batch, only: [:show, :destroy]
   before_action :set_s3_direct_post, only: [:show, :new]
-  before_action :require_symphony
 
   after_action :verify_authorized, except: [:index, :create, :create_batches_through_email]
   after_action :verify_policy_scoped, only: :index

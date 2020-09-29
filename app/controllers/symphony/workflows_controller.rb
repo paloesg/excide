@@ -10,7 +10,6 @@ class Symphony::WorkflowsController < ApplicationController
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero]
   before_action :set_attributes_metadata, only: [:update]
   before_action :set_twilio_account, only:[:send_reminder]
-  before_action :require_symphony
 
   after_action :verify_authorized, except: [:index, :send_reminder, :stop_reminder]
   after_action :verify_policy_scoped, only: :index

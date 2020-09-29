@@ -1,6 +1,5 @@
 class Symphony::HomeController < ApplicationController
   before_action :authenticate_user!, except: [:terms, :privacy]
-  before_action :require_symphony
 
   def index
     @templates = policy_scope(Template).assigned_templates(current_user)

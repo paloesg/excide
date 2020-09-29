@@ -1,6 +1,5 @@
 class Symphony::RemindersController < ApplicationController
   before_action :set_reminder, only: [:edit, :update, :cancel]
-  before_action :require_symphony
 
   def index
     @user = current_user

@@ -1,5 +1,4 @@
 class Symphony::XeroLineItemsController < ApplicationController
-  before_action :require_symphony
 
   def show
     @company = current_user.company

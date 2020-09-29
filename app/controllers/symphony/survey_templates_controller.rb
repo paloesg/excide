@@ -1,7 +1,6 @@
 class Symphony::SurveyTemplatesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_survey_template, except: [:index, :new, :create]
-  before_action :require_symphony
 
   def index
     @survey_templates = SurveyTemplate.where(company_id: current_user.company)

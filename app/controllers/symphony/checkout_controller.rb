@@ -1,5 +1,4 @@
 class Symphony::CheckoutController < ApplicationController
-  before_action :require_symphony
 
   after_action :verify_authorized
   def create

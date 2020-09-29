@@ -12,7 +12,6 @@ class Symphony::InvoicesController < ApplicationController
   before_action :set_show_invoice_navigation, only: [:show, :next_show_invoice, :prev_show_invoice]
   before_action :set_last_workflow_action, only: :show
   before_action :get_xero_details
-  before_action :require_symphony
 
   after_action :verify_authorized, only: [:new, :create, :edit, :update, :show, :destroy, :reject]
   after_action :verify_policy_scoped, only: :index

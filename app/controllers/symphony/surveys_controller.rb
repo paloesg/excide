@@ -1,7 +1,6 @@
 class Symphony::SurveysController < ApplicationController
   before_action :authenticate_user!
   before_action :set_survey, only: :show
-  before_action :require_symphony
 
   def new
     @survey = Survey.new

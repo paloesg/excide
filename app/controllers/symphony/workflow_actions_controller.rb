@@ -1,7 +1,6 @@
 class Symphony::WorkflowActionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_workflow_action
-  before_action :require_symphony
 
   def update
     respond_to do |format|

@@ -3,7 +3,6 @@ class Symphony::RecurringWorkflowsController < ApplicationController
   before_action :set_company
   before_action :set_template
   before_action :get_recurring_workflow, only: [:edit, :update, :stop_recurring, :show, :trigger_workflow]
-  before_action :require_symphony
 
   def index
     @recurring_workflows = policy_scope(RecurringWorkflow)

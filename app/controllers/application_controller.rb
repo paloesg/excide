@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   rescue_from OAuth::Unauthorized, with: :xero_unauthorized
   rescue_from Xeroizer::OAuth::RateLimitExceeded, with: :xero_rate_limit_exceeded
 
+  before_action :authenticate_product
+
   after_action :store_location
 
   def store_location
@@ -84,13 +86,12 @@ class ApplicationController < ActionController::Base
     redirect_to symphony_root_path, alert: message
   end
 
-  # checks if the user's company has Symphony. Links to application_policy.rb
-  def require_symphony
-    authorize current_user, :has_symphony?
-  end
-
-  # checks if the user's company has Motif. Links to application_policy.rb
-  def require_motif
-    authorize current_user, :has_motif?
+  # checks if the controller's namespace is in Symphony or Motif, then check if the user has access to the product. Links to application_policy.rb
+  def authenticate_product
+    if self.class.parent == Symphony
+      authorize current_user, :has_symphony?
+    elsif self.class.parent == Motif
+      authorize current_user, :has_motif?
+    end
   end
 end

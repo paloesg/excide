@@ -3,7 +3,6 @@ class Symphony::UsersController < ApplicationController
   before_action :set_company
   before_action :set_company_roles, only: [:new, :create, :edit]
   before_action :set_user, except: [:index, :new, :create, :edit_additional_information]
-  before_action :require_symphony
 
   def index
     @users = User.joins(:roles).where(:roles => {resource_id: @company.id}).order(:id).uniq

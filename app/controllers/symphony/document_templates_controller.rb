@@ -4,7 +4,6 @@ class Symphony::DocumentTemplatesController < ApplicationController
   before_action :set_document_template, only: [:show, :edit, :update, :destroy]
   before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
   before_action :set_templates, only: [:new, :edit, :create, :update]
-  before_action :require_symphony
 
   # GET /document_templates
   # GET /document_templates.json

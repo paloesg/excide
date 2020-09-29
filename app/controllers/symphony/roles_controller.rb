@@ -1,7 +1,6 @@
 class Symphony::RolesController < ApplicationController
   before_action :set_company, :set_company_users
   before_action :set_role, only: [:edit, :update, :destroy]
-  before_action :require_symphony
 
   def index
     @roles = Role.where(resource_id: @company.id, resource_type: "Company")

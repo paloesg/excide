@@ -1,7 +1,6 @@
 class Symphony::ArchivesController < ApplicationController
   before_action :set_company
   before_action :authenticate_user!
-  before_action :require_symphony
 
   def index
     @templates = Template.assigned_templates(current_user)

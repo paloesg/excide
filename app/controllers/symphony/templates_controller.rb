@@ -3,7 +3,6 @@ class Symphony::TemplatesController < ApplicationController
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
   before_action :find_roles, :find_users, only: [:new, :edit, :update]
-  before_action :require_symphony
 
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
