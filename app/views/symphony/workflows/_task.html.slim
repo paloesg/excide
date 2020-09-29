@@ -11,7 +11,7 @@
           .d-flex.align-items-center
             i.material-icons-outlined.font-size-h6 check
             = link_to "Mark as Complete", task_toggle_symphony_workflow_path(workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), data: {remote: true, method: "POST"}, class: "text-dark"
-      a id="task_close" href="#" 
+      a id="task_close_#{action.id}" href="#" 
         i.material-icons-outlined close
     .offcanvas-content.pr-5
       h3.mb-6 Step #{action.task.position}: #{action.task.instructions}
