@@ -86,11 +86,11 @@ class ApplicationController < ActionController::Base
 
   # checks if the user's company has Symphony. Links to application_policy.rb
   def require_symphony
-    authorize current_user, :hasSymphony?
+    authorize current_user, :has_symphony?
   end
 
   # checks if the user's company has Motif. Links to application_policy.rb
   def require_motif
-    authorize current_user, :hasMotif?
+    authorize current_user, :has_motif?
   end
 end

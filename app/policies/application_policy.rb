@@ -35,11 +35,11 @@ class ApplicationPolicy
     false
   end
 
-  def hasSymphony?
+  def has_symphony?
     user.company.products.include? 'symphony'
   end
 
-  def hasMotif?
+  def has_motif?
     user.company.products.include? 'motif'
   end
 
