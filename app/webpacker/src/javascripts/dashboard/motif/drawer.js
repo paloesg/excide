@@ -67,4 +67,8 @@ $(document).on("turbolinks:load", function () {
       }
     });
   }
+  // AJAX request to create permission
+  $(".permission-document-access").change(function (e) {
+    console.log("WHAT IS USER_ID: ",$(this).data("user-id"));
+  });
 });

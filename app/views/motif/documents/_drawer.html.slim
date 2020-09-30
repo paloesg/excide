@@ -58,6 +58,6 @@
               .row
                 span Franchisee
             .col-md-5.pl-0
-              = select_tag 'permissions', options_for_select(["Can download", "can_download"], ["View only", "can_view"]), include_blank: true, required: true, class: 'form-control permission-document-access col-md-12'
+              = select_tag 'permissions', options_for_select(["Can download", "View only"]), include_blank: true, required: true, data: {user_id: user.id},  class: 'form-control permission-document-access col-md-12'
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{d.id}" role="tabpanel"
         h3 History
