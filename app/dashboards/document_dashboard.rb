@@ -10,6 +10,7 @@ class DocumentDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::String,
     company: Field::BelongsTo,
+    permissions: Field::HasMany,
     workflow: Field::BelongsTo,
     document_template: Field::BelongsTo,
     user: Field::BelongsTo,
@@ -30,6 +31,7 @@ class DocumentDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :raw_file,
     :company,
+    :permissions,
     :user,
     :workflow,
     :id,
@@ -40,6 +42,7 @@ class DocumentDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = [
     :raw_file,
     :company,
+    :permissions,
     :user,
     :workflow,
     :document_template,
