@@ -41,7 +41,24 @@
             .col-md-2
               = fa_icon "check", class: 'text-success ajax-icons'
               = fa_icon "times", class: 'text-danger ajax-icons'
-      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="access_#{d.id}" role="tabpanel"
-        h2 notification
+      .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{d.id}" role="tabpanel"
+        div.form-row.align-items-center.border-bottom
+          span.mr-3
+            = image_pack_tag "media/src/images/motif/Search.svg"
+          input.form-control.border-0.col type="search" placeholder="Search..."
+          div.col-8
+        - @company.users.each do |user|
+          .row.my-5
+            .col-md-2
+              .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=user.full_name
+                span.initials
+                  = "#{user.first_name[0]}#{user&.last_name[0]}"
+            .col-md-5
+              .row
+                = user.full_name
+              .row
+                span Franchisee
+            .col-md-5.pl-0
+              = select_tag 'permissions', options_for_select(["Can download", 'Read only']), include_blank: true, required: true, class: 'form-control col-md-12'
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{d.id}" role="tabpanel"
         h3 settings
