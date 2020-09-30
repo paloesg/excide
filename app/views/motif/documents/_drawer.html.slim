@@ -8,14 +8,14 @@
   .offcanvas-header.offcanvas-header-navs.d-flex.align-items-center.justify-content-between.mb-6
     ul.nav.nav-bold.nav-tabs.nav-tabs-line.nav-tabs-line-3x.nav-tabs-primary.flex-grow-1.px-10 role="tablist"
       li.nav-item
-        a.nav-link data-toggle="tab" href="#information" Information
+        a.nav-link data-toggle="tab" href="#information_#{d.id}" Information
       li.nav-item
-        a.nav-link data-toggle="tab" href="#access" Access
+        a.nav-link data-toggle="tab" href="#access_#{d.id}" Access
       li.nav-item
-        a.nav-link data-toggle="tab" href="#history" History
+        a.nav-link data-toggle="tab" href="#history_#{d.id}" History
   .offcanvas-content
     .tab-content
-      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.active.show.px-5 id="information" role="tabpanel"
+      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.active.show.px-5 id="information_#{d.id}" role="tabpanel"
         .row.mb-4
           .col
             | Last upload
@@ -32,7 +32,7 @@
             p 20 franchisees, 5 others
         .mb-2 Tags
         input.motif-tags.mb-4 id="tag_#{d.id}" name="input-custom-dropdown-#{index}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ")
-        // Form for remarks document
+        / Form for remarks document
         = form_for(d, url: motif_documents_path(id: d.id, format: 'json'), method: :patch, remote: true) do |f|
           .row
             .col-md-10
@@ -41,7 +41,7 @@
             .col-md-2
               = fa_icon "check", class: 'text-success ajax-icons'
               = fa_icon "times", class: 'text-danger ajax-icons'
-      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="access" role="tabpanel"
+      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="access_#{d.id}" role="tabpanel"
         h2 notification
-      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history" role="tabpanel"
+      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{d.id}" role="tabpanel"
         h3 settings
