@@ -5,7 +5,7 @@
     .col-md-1
       a.d-inline id="drawer_close" href="#" 
         i.material-icons-outlined close
-  .offcanvas-header.offcanvas-header-navs.d-flex.align-items-center.justify-content-between.mb-6
+  .offcanvas-header.offcanvas-header-navs.d-flex.align-items-center.justify-content-between
     ul.nav.nav-bold.nav-tabs.nav-tabs-line.nav-tabs-line-3x.nav-tabs-primary.flex-grow-1.px-10 role="tablist"
       li.nav-item
         a.nav-link data-toggle="tab" href="#information_#{d.id}" Information
@@ -18,29 +18,28 @@
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.active.show.px-5 id="information_#{d.id}" role="tabpanel"
         .row.mb-4
           .col
-            | Last upload
+            span.text-muted Last upload
             p = d.created_at.strftime("%d %b %Y at %I:%M%p")
           .col
-            | Uploaded by
+            span.text-muted Uploaded by
             p = d.user.full_name
         .row.mb-4
           .col
-            | File Size
+            span.text-muted File Size
             p = number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
           .col
-            | Shared with
+            span.text-muted Shared with
             p 20 franchisees, 5 others
-        .mb-2 Tags
-        input.motif-tags.mb-4 id="tag_#{d.id}" name="input-custom-dropdown-#{index}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ")
+        span.text-muted Tags
+        input.motif-tags.my-3 id="tag_#{d.id}" name="input-custom-dropdown-#{index}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ")
         / Form for remarks document
         = form_for(d, url: motif_documents_path(id: d.id, format: 'json'), method: :patch, remote: true) do |f|
-          .row
-            .col-md-10
-              = f.label :remarks, "Remarks"
-              = f.text_field :remarks, { class: 'form-control', data: { document_id: d.id }, onchange: "remarks(this);"}
-            .col-md-2
-              = fa_icon "check", class: 'text-success ajax-icons'
-              = fa_icon "times", class: 'text-danger ajax-icons'
+          .col-md-12.p-0
+            = f.label :remarks, "Remarks", class: 'text-muted'
+            = f.text_field :remarks, { class: 'form-control', data: { document_id: d.id }, onchange: "remarks(this);"}
+          .col-md-2
+            = fa_icon "check", class: 'text-success ajax-icons'
+            = fa_icon "times", class: 'text-danger ajax-icons'
       .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{d.id}" role="tabpanel"
         div.form-row.align-items-center.border-bottom
           span.mr-3
@@ -59,6 +58,6 @@
               .row
                 span Franchisee
             .col-md-5.pl-0
-              = select_tag 'permissions', options_for_select(["Can download", 'Read only']), include_blank: true, required: true, class: 'form-control col-md-12'
+              = select_tag 'permissions', options_for_select(["Can download", "can_download"], ["View only", "can_view"]), include_blank: true, required: true, class: 'form-control permission-document-access col-md-12'
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{d.id}" role="tabpanel"
-        h3 settings
+        h3 History
