@@ -1,6 +1,7 @@
 class Motif::DocumentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
+  before_action :set_document, only: [:update_tags, :update]
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -31,7 +32,6 @@ class Motif::DocumentsController < ApplicationController
   end
 
   def update_tags
-    @document = @company.documents.find(params[:id])
     authorize @document
     @tags = []
     params[:values].each{|key, tag| @tags << tag[:value]} unless params[:values].blank?
@@ -40,8 +40,21 @@ class Motif::DocumentsController < ApplicationController
       format.json { render json: @company.owned_tags.pluck(:name), status: :ok }
     end
   end
+
+  def update
+    respond_to do |format|
+      if @document.update(remarks: params[:document][:remarks])
+        format.json { render json: @workflow_action, status: :ok }
+      else
+        format.json { render json: @action.errors, status: :unprocessable_entity }
+      end
+    end
+  end
   
   private
+  def set_document
+    @document = @company.documents.find(params[:id])
+  end
 
   def set_company
     @user = current_user
