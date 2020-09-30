@@ -67,8 +67,31 @@ $(document).on("turbolinks:load", function () {
       }
     });
   }
-  // AJAX request to create permission
-  $(".permission-document-access").change(function (e) {
+  // AJAX request to create or update permission
+  $(".permission-document-access").on('focusin', function(){
+    // Save the previous value into a data attribute called prev
+    console.log("Saving value " + $(this).val());
+    $(this).data('prev', $(this).val());
+  }).on('change', function (e) {
+    console.log("WHAT IS THIS: ", $(this).val());
     console.log("WHAT IS USER_ID: ",$(this).data("user-id"));
+    // Get the prev attribute value
+    let prev = $(this).data('prev');
+    console.log("Previous value: ", prev);
+    // If prev val is "", then it should create a permission -> ajax call to create method.
+    // Else if prev value has value, it should update the existing value
+    if (prev == "") {
+      $.post("/motif/permissions", {
+        authenticity_token: $.rails.csrfToken(),
+        permission: $(this).val(),
+        document_id: $(this).data("document-id"),
+        user_id: $(this).data("user-id")
+      }).done(function(){
+        console.log("DONE!")
+      })
+    }
+    else {
+      console.log("Update statement");   
+    }    
   });
 });

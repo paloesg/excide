@@ -46,7 +46,7 @@
             = image_pack_tag "media/src/images/motif/Search.svg"
           input.form-control.border-0.col type="search" placeholder="Search..."
           div.col-8
-        - @company.users.each do |user|
+        - @company.users.with_role(:franchisee, @company) do |user|
           .row.my-5
             .col-md-2
               .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=user.full_name
@@ -58,6 +58,6 @@
               .row
                 span Franchisee
             .col-md-5.pl-0
-              = select_tag 'permissions', options_for_select(["Can download", "View only"]), include_blank: true, required: true, data: {user_id: user.id},  class: 'form-control permission-document-access col-md-12'
+              = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { user_id: user.id, document_id: d.id},  class: 'form-control permission-document-access col-md-12'
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{d.id}" role="tabpanel"
         h3 History
