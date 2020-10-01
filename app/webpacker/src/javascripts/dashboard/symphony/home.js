@@ -3,13 +3,13 @@ $(document).on("turbolinks:load", function () {
   $(".task-row").each(function () {
     let dataAttribute = $(this).data("action");
     const offcanvasObject = new Offcanvas(
-      "kt_quick_notifications_" + dataAttribute,
+      "task_" + dataAttribute,
       {
         baseClass: "offcanvas",
         overlay: true,
-        closeBy: "kt_quick_notifications_close",
+        closeBy: "task_close_" + dataAttribute,
         toggleBy: {
-          target: "kt_quick_notifications_toggle_" + dataAttribute,
+          target: "task_toggle_" + dataAttribute,
           state: "mobile-toggle-active",
         },
       }
