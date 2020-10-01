@@ -70,7 +70,7 @@ html lang="en"
                 - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)) || current_page?(conductor_events_path))
                   = render 'layouts/sidebar_settings'
                 / for motif pages, render a different sidebar
-                - elsif controller_path.split('/').first == 'motif'
+                - elsif controller.class.parents.include?(Motif)
                   = render 'layouts/motif_sidebar'
                 - else
                   = render 'layouts/sidebar'
