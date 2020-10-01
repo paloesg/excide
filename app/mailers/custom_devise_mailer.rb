@@ -2,7 +2,6 @@ class CustomDeviseMailer < Devise::Mailer
   helper :application # gives access to all helpers defined within `application_helper`.
   include Devise::Controllers::UrlHelpers # Optional. eg. `confirmation_url`
   default template_path: 'devise/mailer' # to make sure that your mailer uses the devise views
-  default from: 'Excide <info@excide.co>'
 
   def confirmation_instructions(record, token, opts={})
     data = JSON.parse('{
@@ -20,7 +19,7 @@ class CustomDeviseMailer < Devise::Mailer
         }
       ],
       "from": {
-        "email": "Excide <info@excide.co>"
+        "email": "Paloe Symphony <admin@excide.co>"
       },
       "template_id": "d-908be3573b0a4ea2a20a9b50a01b5b42"
     }')
@@ -49,7 +48,7 @@ class CustomDeviseMailer < Devise::Mailer
         }
       ],
       "from": {
-        "email": "Excide <info@excide.co>"
+        "email": "Paloe Symphony <admin@excide.co>"
       },
       "template_id": "d-ba990131f20f4ad4b4eda3eb9d804d1f"
     }')
@@ -74,7 +73,7 @@ class CustomDeviseMailer < Devise::Mailer
         }
       ],
       "from": {
-        "email": "Excide <info@excide.co>"
+        "email": "Paloe Symphony <admin@excide.co>"
       },
       "template_id": "d-7ffeac72f25e454dbf2bc76e4b3c3314"
     }')

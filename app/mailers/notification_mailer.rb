@@ -4,7 +4,7 @@ class NotificationMailer < ApplicationMailer
   include SendGrid
   
   def batch_reminder(reminders, user)
-    mail(to: 'jonathan.lau@paloe.com.sg', from: 'Paloe Symphony <admin@excide.co>', subject: 'Here is your daily email summary', body: 'Some body',  template_id: "d-480a0e7ed8c349c0a6c46f0fdc2454f1", dynamic_template_data: {
+    mail(to: user.email, from: 'Paloe Symphony <admin@excide.co>', subject: 'Here is your daily email summary', body: 'Some body',  template_id: "d-480a0e7ed8c349c0a6c46f0fdc2454f1", dynamic_template_data: {
         firstName: user.first_name,
         reminders: reminders,
         reminder_count: reminders.count
