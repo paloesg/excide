@@ -1,4 +1,4 @@
-.offcanvas.offcanvas-right.offcanvas-top.p-5 id="drawer_#{index}"
+.offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto id="drawer_#{index}"
   .row
     .col-md-11
       h5.d-inline = d.raw_file.filename
@@ -36,29 +36,33 @@
         = form_for(d, url: motif_documents_path(id: d.id, format: 'json'), method: :patch, remote: true) do |f|
           .col-md-12.p-0
             = f.label :remarks, "Remarks", class: 'text-muted'
-            = f.text_field :remarks, { class: 'form-control remark-borde p-0', data: { document_id: d.id }, onchange: "remarks(this);"}
+            = f.text_field :remarks, { class: 'form-control remark-border p-0', data: { document_id: d.id }, onchange: "remarks(this);"}
           .col-md-2
             = fa_icon "check", class: 'text-success ajax-icons'
             = fa_icon "times", class: 'text-danger ajax-icons'
       .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{d.id}" role="tabpanel"
         div.form-row.align-items-center.border-bottom
-          span.mr-3
-            = image_pack_tag "media/src/images/motif/Search.svg"
-          input.form-control.border-0.col type="search" placeholder="Search..."
-          div.col-8
-        - @company.users.each do |user|
+          .col-md-1
+            span.mr-3
+              = image_pack_tag "media/src/images/motif/Search.svg"
+          .col-md-9
+            input.form-control.border-0.col type="search" placeholder="Search..."
+            / span.float-right +          
+        - @company.roles.each do |role|
           .row.my-5
             .col-md-2
-              .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=user.full_name
-                span.initials
-                  = "#{user.first_name[0]}#{user&.last_name[0]}"
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mt-2'
             .col-md-5
-              .row
-                = user.full_name
-              .row
-                span Franchisee
+              = role.name.humanize
             .col-md-5.pl-0
-              = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { user_id: user.id, document_id: d.id},  class: 'form-control permission-document-access col-md-12'
+              = select_tag 'permissions', options_for_select(["Can download", "Read only"], selected: (role.permissions.present? and role.permissions[0].can_download?) ? "Can download" : "Read only"), include_blank: true, required: true, data: { role_id: role.id, document_id: d.id},  class: 'form-control permission-document-access col-md-12'
+            / .col-md-5
+            /   .row
+            /     = user.full_name
+            /   .row
+            /     span Franchisee
+            / .col-md-5.pl-0
+            /   = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { user_id: user.id, document_id: d.id},  class: 'form-control permission-document-access col-md-12'
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{d.id}" role="tabpanel"
         .row
           .col-md-12
