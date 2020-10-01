@@ -7,7 +7,7 @@ class Motif::DocumentsController < ApplicationController
 
   def index
     @folders = policy_scope(Folder).roots
-    @documents = policy_scope(Document)
+    @documents = policy_scope(Document).where(folder_id: nil)
   end
 
   def new
@@ -30,12 +30,17 @@ class Motif::DocumentsController < ApplicationController
     end
   end
 
-  def drag_documents_to_folder
+  def update
     @document = @company.documents.find(params[:document_id])
+    authorize @document
     @folder = @company.folders.find(params[:folder_id])
-    @folder.documents << @document
     respond_to do |format|
-      format.json { render json: "all good?", status: :ok }
+      if @document.update(folder_id: @folder.id)
+        format.json { render json: { link_to: motif_documents_path, status: "ok" } }
+      else
+        format.html { redirect_to motif_documents_path }
+        format.json { render json: @document.errors, status: :unprocessable_entity }
+      end
     end
   end
 

@@ -14,6 +14,8 @@ $(document).on("turbolinks:load", function() {
   draggable.on("drag:over", (e) => {
     // Store the element that a file was dragged into
     source = e;
+    console.log("what is source: ", $("#" + source.data.over.closest('tr').id));
+    // $("#" + source.data.over.closest('tr').id).css({ "border": "4px dashed blue" })
   });
 
   draggable.on("drag:stop", (e) => {
@@ -24,14 +26,16 @@ $(document).on("turbolinks:load", function() {
     let tableRow = source.data.over.closest('tr')
     $.ajax({
       type: "PATCH",
-      url: "/motif/documents/" + source.data.originalSource.id + "/drag_documents_to_folder",
+      url: "/motif/documents/" + source.data.originalSource.id,
       data: {
         document_id: source.data.originalSource.id, 
         folder_id: tableRow.id
       },
       dataType: "JSON"
-    }).done(function(data){
-      console.log("WHAT IS DATA: ", data);
+    }).done((result) => {
+      console.log("WHAT IS result: ", result);
+      const linkTo = result["link_to"];
+      Turbolinks.visit(linkTo);
     });
     // execute your drop action: e.originalSource on lastOver
     source = undefined;
