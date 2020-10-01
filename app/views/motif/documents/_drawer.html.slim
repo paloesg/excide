@@ -36,7 +36,7 @@
         = form_for(d, url: motif_documents_path(id: d.id, format: 'json'), method: :patch, remote: true) do |f|
           .col-md-12.p-0
             = f.label :remarks, "Remarks", class: 'text-muted'
-            = f.text_field :remarks, { class: 'form-control', data: { document_id: d.id }, onchange: "remarks(this);"}
+            = f.text_field :remarks, { class: 'form-control remark-borde p-0', data: { document_id: d.id }, onchange: "remarks(this);"}
           .col-md-2
             = fa_icon "check", class: 'text-success ajax-icons'
             = fa_icon "times", class: 'text-danger ajax-icons'
