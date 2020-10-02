@@ -1,6 +1,6 @@
 class FoldersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_folder, only: [:show, :edit, :update, :destroy]
+  before_action :set_folder, only: [:show, :edit, :update, :destroy, :update_tags]
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -62,6 +62,16 @@ class FoldersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to folders_url, notice: 'Folder was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def update_tags
+    authorize @folder
+    @tags = []
+    params[:values].each{|key, tag| @tags << tag[:value]} unless params[:values].blank?
+    current_user.company.tag(@folder, with: @tags, on: :tags)
+    respond_to do |format|
+      format.json { render json: current_user.company.owned_tags.pluck(:name), status: :ok }
     end
   end
 
