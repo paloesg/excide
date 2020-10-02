@@ -31,7 +31,7 @@
             span.text-muted Shared with
             p 20 franchisees, 5 others
         span.text-muted Tags
-        input.motif-tags.my-3 id="tag_#{d.id}" name="input-custom-dropdown-#{index}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
+        input.motif-tags.my-3 id="tag_#{d.id}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
         / Form for remarks document
         = form_for(d, url: motif_documents_path(id: d.id, format: 'json'), method: :patch, remote: true) do |f|
           .col-md-12.p-0
