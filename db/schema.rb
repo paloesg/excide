@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_17_065347) do
+ActiveRecord::Schema.define(version: 2020_10_01_232633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -276,6 +276,7 @@ ActiveRecord::Schema.define(version: 2020_09_17_065347) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "ancestry"
     t.bigint "company_id"
+    t.text "remarks"
     t.index ["ancestry"], name: "index_folders_on_ancestry"
     t.index ["company_id"], name: "index_folders_on_company_id"
   end
