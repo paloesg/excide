@@ -4,7 +4,7 @@ window.remarks = function(formElement) {
   let tableRow = formJquery.parent().parent();
   $.ajax({
     type: "PATCH",
-    url: "/motif/documents/" + formJquery.data("document-id"),
+    url: formJquery.data("path") + formJquery.data("document-id"),
     data: formJquery,
     dataType: "JSON"
   }).done(function(data){

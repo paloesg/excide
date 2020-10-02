@@ -3,6 +3,10 @@ class FolderPolicy < ApplicationPolicy
     can_view?
   end
 
+  def update?
+    can_write? or user.has_role?(:admin, record.company)
+  end
+
   def update_tags?
     user.company == record.company
   end

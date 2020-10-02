@@ -44,13 +44,12 @@ class FoldersController < ApplicationController
   # PATCH/PUT /folders/1
   # PATCH/PUT /folders/1.json
   def update
+    authorize @folder
     respond_to do |format|
-      if @folder.update(folder_params)
-        format.html { redirect_to @folder, notice: 'Folder was successfully updated.' }
-        format.json { render :show, status: :ok, location: @folder }
+      if @folder.update(remarks: params[:folder][:remarks])
+        format.json { render json: @folder, status: :ok }
       else
-        format.html { render :edit }
-        format.json { render json: @folder.errors, status: :unprocessable_entity }
+        format.json { render json: @action.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -83,6 +82,6 @@ class FoldersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def folder_params
-      params.require(:folder).permit(:name)
+      params.require(:folder).permit(:name, :remarks)
     end
 end
