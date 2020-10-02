@@ -53,8 +53,8 @@
         th.text-muted ACCESS
         th
     tbody
-      - @folders.each do |folder|
-        tr
+      - @folders.each_with_index do |folder, index|
+        tr.drawer-row id="drawer_toggle_#{folder.id}" data-drawer=folder.id
           td
             input# type="checkbox" name=""/
           td
@@ -62,9 +62,10 @@
               = image_pack_tag "media/src/images/motif/folder.svg"
             span.ml-5
               = link_to folder.name, motif_folder_path(folder.id)
-          td
-            card
-              | tags
+          td id="tags_count_#{folder.id}"
+            = content_tag :span, folder.all_tags_list.first, class: ["badge badge-motif", folder.all_tags_list.length > 0 ? "" : "d-none"]
+            span class=(folder.all_tags_list.length > 1 ? "" : "d-none")
+              = (folder.all_tags_list.length-1).to_s + "+..."
           td
             = folder.updated_at
           td
@@ -80,8 +81,9 @@
                 .dropdown-item = link_to "Download", root_path
                 .dropdown-item = link_to "Delete", root_path
                 .dropdown-item = link_to "Manage Version", root_path
+        = render "drawer", d: folder, index: index, name: folder.name, file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
       - @documents.each_with_index do |d, index|
-        tr.drawer-row id="drawer_toggle_#{index}" data-drawer=index
+        tr.drawer-row id="drawer_toggle_#{d.id}" data-drawer=d.id
           td
             input# type="checkbox" name=""/ 
           td
@@ -110,4 +112,4 @@
                 .dropdown-item = link_to "Manage Version", root_path
             / span
             /   = image_pack_tag "media/src/images/motif/Download.svg"
-        = render "drawer", d: d, index: index
+        = render "drawer", d: d, index: index, name: d.raw_file.filename, path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?

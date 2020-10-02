@@ -23,6 +23,7 @@ $(document).on("turbolinks:load", function () {
   let tagifyInstances = []; //for the each loop below
   $(".motif-tags").each(function () {
     let input = $(this).attr("id")
+    let path = $(this).data("path")
     tagifyInstances.push(
       new Tagify(document.getElementById(input), {
         dropdown: {
@@ -33,15 +34,15 @@ $(document).on("turbolinks:load", function () {
           rightKey: true
         },
         callbacks: {
-          "change": (e) => onTagsChange(e, input.split('_')[1])
+          "change": (e) => onTagsChange(e, input.split('_')[1], path)
         }
       })
     );
   });
-  async function onTagsChange(e, id){
+  async function onTagsChange(e, id, path){
     $.ajax({
       type: "PATCH",
-      url: "/motif/documents/" + id + "/update_tags",
+      url: path + id + "/update_tags",
       data: {values: e.detail.tagify.value, id: id},
       dataType: "JSON"
     }).done(function(data){
