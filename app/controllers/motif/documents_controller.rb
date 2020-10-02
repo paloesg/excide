@@ -9,9 +9,18 @@ class Motif::DocumentsController < ApplicationController
   def index
     @folders = policy_scope(Folder).roots
     @documents = policy_scope(Document)
+    @document = Document.new
+    unless params[:tags].blank?
+      if params[:tags] == 'All tags'
+        @documents = policy_scope(Document)
+      else
+        @documents = @documents.select {|document| document.all_tags_list.first == params[:tags]}
+      end
+    end
   end
 
   def new
+    @document = Document.new
   end
 
   def create
