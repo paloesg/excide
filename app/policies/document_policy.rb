@@ -19,6 +19,10 @@ class DocumentPolicy < ApplicationPolicy
     user == record.user or user.has_role?(:admin, record.company)
   end
 
+  def update_tags?
+    user.company == record.company
+  end
+
   def edit?
     update?
   end
