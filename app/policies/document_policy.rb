@@ -19,6 +19,10 @@ class DocumentPolicy < ApplicationPolicy
     user == record.user or user.has_role?(:admin, record.company)
   end
 
+  def update_tags?
+    user.company == record.company
+  end
+
   def edit?
     update?
   end
@@ -37,8 +41,8 @@ class DocumentPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      # Scope documents by workflows where user has a role in and documents without a workflow.
-      scope.where(company: user.company, workflow: user.relevant_workflow_ids + [nil])
+      # Scope documents by workflows where user has a role in and documents without a workflow and those that have an ActiveStorage attachment.
+      scope.where(company: user.company, workflow: user.relevant_workflow_ids + [nil]).joins(:raw_file_attachment)
     end
   end
 end

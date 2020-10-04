@@ -25,7 +25,7 @@
         table.table.table-hover
           tbody
             - @outstanding_actions.each_with_index do |action, index|
-              tr.border-bottom.task-row id="kt_quick_notifications_toggle_#{action.id}" data-action="#{action.id}"
+              tr.border-bottom.task-row id="task_toggle_#{action.id}" data-action="#{action.id}"
                 td.border-top-0
                   label.checkbox
                     = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"

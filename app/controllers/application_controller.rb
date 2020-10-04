@@ -5,11 +5,11 @@ class ApplicationController < ActionController::Base
   include Pundit
   include PublicActivity::StoreController
 
-  rescue_from Pundit::NotAuthorizedError, Pundit::AuthorizationNotPerformedError, with: :user_not_authorized
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   #TokenInvalid in case user is still using public app for xero. It will redirect them to xero authorization page
   rescue_from Xeroizer::OAuth::TokenInvalid, Xeroizer::OAuth::TokenExpired, with: :xero_login
   #If record is not found on xero, it will return flash message as string
-  rescue_from Xeroizer::RecordInvalid, URI::InvalidURIError, ArgumentError, with: :xero_error
+  rescue_from Xeroizer::RecordInvalid, URI::InvalidURIError, with: :xero_error
   #Error occurs for eg, the tax rate doesn't match with account code. Xero returns an exception in XML, hence the need to parse it truncate it in the xero_error_api_exception method
   rescue_from Xeroizer::ApiException, with: :xero_error_api_exception
   rescue_from OAuth::Unauthorized, with: :xero_unauthorized
@@ -48,7 +48,8 @@ class ApplicationController < ActionController::Base
     policy_name = exception.policy.class.to_s.underscore
 
     flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-    redirect_to symphony_root_path
+
+    redirect_back(fallback_location: root_path)
   end
 
   def xero_login

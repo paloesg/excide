@@ -1,10 +1,13 @@
 class Motif::DocumentsController < ApplicationController
-  before_action :set_company
   before_action :authenticate_user!
+  before_action :set_company
+
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
 
   def index
-    @get_documents = Document.where(company: @company).order(created_at: :desc) #currently its only what the user uploaded
-    @get_root_folders = Folder.where(company: @company, ancestry: nil)
+    @folders = policy_scope(Folder).roots
+    @documents = policy_scope(Document).order(created_at: :desc)
   end
 
   def new
@@ -27,6 +30,17 @@ class Motif::DocumentsController < ApplicationController
     end
   end
 
+  def update_tags
+    @document = @company.documents.find(params[:id])
+    authorize @document
+    @tags = []
+    params[:values].each{|key, tag| @tags << tag[:value]} unless params[:values].blank?
+    @company.tag(@document, with: @tags, on: :tags)
+    respond_to do |format|
+      format.json { render json: @company.owned_tags.pluck(:name), status: :ok }
+    end
+  end
+  
   private
 
   def set_company

@@ -36,7 +36,7 @@
           th colspan="5" = @workflow.name
       tbody
         - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
-          tr.task-row id="kt_quick_notifications_toggle_#{wfa.id}" data-action="#{wfa.id}"
+          tr.task-row id="task_toggle_#{wfa.id}" data-action="#{wfa.id}"
             td width="5%" style="cursor: pointer"
               = (index+1).to_s + "."
             td width="55%" style="cursor: pointer"

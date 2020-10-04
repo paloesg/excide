@@ -25,9 +25,9 @@
       | Store, share and manage your important documents and access control
       br
       | for different franchises. Drag and drop your files to upload.
-- if @get_documents.blank?
+- if @folders.empty? && @documents.empty?
   .row.justify-content-center.ml-3
-    = render "empty_documents"
+    = render "layouts/empty_documents"
 - else
   .row.ml-4.align-items-center
     .col
@@ -54,7 +54,7 @@
         th.text-muted Q&A
         th
     tbody
-      - @get_root_folders.each do |f|
+      - @folders.each do |folder|
         tr
           td
             input# type="checkbox" name=""/
@@ -62,18 +62,18 @@
             span.mr-5
               = image_pack_tag "media/src/images/motif/folder.svg"
             span.ml-5
-              = f.name
+              = link_to folder.name, motif_folder_path(folder.id)
           td
             card
               | tags
           td
-            = f.updated_at
-          td 
+            = folder.updated_at
+          td
             span.mr-4
               = image_pack_tag "media/src/images/motif/Group People.svg"
             span
               | 25
-          td 
+          td
             span.mr-4
               = image_pack_tag "media/src/images/motif/Comment Remark.svg"
             span
@@ -81,26 +81,27 @@
           td
             span
               = image_pack_tag "media/src/images/motif/Download.svg"
-      - @get_documents.each do |d|
-        tr
+      - @documents.each_with_index do |d, index|
+        tr.drawer-row id="drawer_toggle_#{index}" data-drawer=index
           td
-            input# type="checkbox" name=""/
+            input# type="checkbox" name=""/ 
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"
             span.ml-5
-              = d.raw_file.attached? ? d.raw_file.filename : d.filename
-          td
-            card
-              | tags
+              = d.raw_file.filename
+          td id="tags_count_#{d.id}"
+            = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
+            span class=(d.all_tags_list.length > 1 ? "" : "d-none")
+              = (d.all_tags_list.length-1).to_s + "+..."
           td
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
-          td 
+          td
             span.mr-4
               = image_pack_tag "media/src/images/motif/Group People.svg"
             span
               | 25
-          td 
+          td
             span.mr-4
               = image_pack_tag "media/src/images/motif/Comment Remark.svg"
             span
@@ -110,3 +111,4 @@
               = link_to d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url do
                 = image_pack_tag "media/src/images/motif/Download.svg"
           = render 'show_document', d: d
+        = render "drawer", d: d, index: index
