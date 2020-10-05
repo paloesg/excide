@@ -18,9 +18,6 @@ $(document).on("turbolinks:load", function () {
       }
     );
   });
-  $(".drawer-row").click(function () {
-    offcanvasObject.show();
-  });
   let tagifyInstances = []; //for the each loop below
   $(".motif-tags").each(function () {
     let input = $(this).attr("id")
