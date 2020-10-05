@@ -25,16 +25,16 @@
         table.table.table-hover
           tbody
             - @outstanding_actions.each_with_index do |action, index|
-              tr.border-bottom.task-row id="task_toggle_#{action.id}" data-action="#{action.id}"
+              tr.border-bottom.task-row data-action="#{action.id}"
                 td.border-top-0
                   label.checkbox
                     = check_box_tag 'completed', action.id, action.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: action.workflow.template.slug, workflow_id: action.workflow.id, task_id: action.task.id), method: "POST"}, onclick: "this.checked=true;"
                     span
-                td.border-top-0 style="cursor: pointer"
+                td.border-top-0 id="task_toggle_#{action.id}_0"
                   = action.task.instructions
-                td.border-top-0 data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+                td.border-top-0 id="task_toggle_#{action.id}_1"
                   = action.workflow.template.title
-                td.border-top-0 data-toggle="modal" data-target="#taskModal#{index}" style="cursor: pointer"
+                td.border-top-0 id="task_toggle_#{action.id}_2"
                   - if action.deadline.to_date < Date.today
                     i.fa.fa-xs.fa-circle.text-danger.mr-3
                     = (Date.today - action.deadline.to_date).to_i.to_s + "d overdue"
