@@ -66,11 +66,11 @@
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{d.id}" role="tabpanel"
         .row
           .col-md-12
-            / - @activities.each do |activity|
-            /   .row
-            /     .col-md-1
-            /       .d-flex.align-items-center.mb-10
-            /         = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
-            /     .col-md-11
-            /       .d-flex.flex-column.font-weight-bold
-            /       = render_activities activity
+            - @activities.each do |activity|
+              .row
+                .col-md-1
+                  .d-flex.align-items-center.mb-10
+                    = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
+                .col-md-11
+                  .d-flex.flex-column.font-weight-bold
+                  = render_activities activity
