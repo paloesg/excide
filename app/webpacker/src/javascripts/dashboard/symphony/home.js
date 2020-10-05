@@ -9,13 +9,12 @@ $(document).on("turbolinks:load", function () {
         overlay: true,
         closeBy: "task_close_" + dataAttribute,
         toggleBy: {
-          target: "task_toggle_" + dataAttribute,
-          state: "mobile-toggle-active",
-        },
+          0: "task_toggle_" + dataAttribute + "_0",
+          1: "task_toggle_" + dataAttribute + "_1",
+          2: "task_toggle_" + dataAttribute + "_2",
+          3: "task_toggle_" + dataAttribute + "_3"
+        }
       }
     );
-  });
-  $(".task-row").click(function () {
-    offcanvasObject.show();
   });
 });
