@@ -8,7 +8,7 @@ class FolderPolicy < ApplicationPolicy
   end
 
   def update_tags?
-    user.company == record.company
+    update?
   end
 
   class Scope < Scope
