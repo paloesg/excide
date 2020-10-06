@@ -28,30 +28,26 @@ shared_service = User.create(email: 'shared_service@gobbler.com', password: 'pas
 shared_service.add_role :shared_service, gobbler
 
 # Create template
-template_1 = Template.create(title: 'Template 1', company: gobbler)
+template_1 = Template.create(title: 'Template 1', company: gobbler, template_pattern: 0)
 
-sections = [['Section 1', 'Finance', 1, template_1], ['Section 2', 'Paper Work', 2, template_1], ['Section 3', 'Project Work', 3, template_1]]
-
-sections.each do |u_name, d_name, pos, template|
-  Section.create(section_name: u_name, position: pos, template: template)
-end
+section = Section.create(section_name: "paloe", position: 1, template: template_1)
 
 task_list = [
   ['Calculate the amount of expenditure', 1, 6, false, 1, 1, Section.find(1)],
   ['Calculate the payroll of employees', 2, 4, false, 1, 1, Section.find(1)],
-  ['File all the papers since 1989', 3, 1, true, 2, 2, Section.find(2)],
-  ['Shredding the papers', 4, 1, true, 2, 2, Section.find(2)],
-  ['Do powerpoint slides for presentation', 4, 12, false, 3, 3, Section.find(3)],
-  ['Communicate with project group friend for some correction', 5, 1, false, 3, 3, Section.find(3)],
+  ['File all the papers since 1989', 3, 1, true, 2, 2, Section.find(1)],
+  ['Shredding the papers', 4, 1, true, 2, 2, Section.find(1)],
+  ['Do powerpoint slides for presentation', 4, 12, false, 3, 3, Section.find(1)],
+  ['Communicate with project group friend for some correction', 5, 1, false, 3, 3, Section.find(1)],
   ['Check the balance sheet of the accountants', 6, 7, false, 1, 0, Section.find(1)],
   ['Get approval signature from the finance manager', 7, 1, true, 1, 2, Section.find(1)],
   ['Upload accounting data into company"s excel sheet', 8, 5, false, 1, 6, Section.find(1)],
-  ['Get the supervisor of the finance department to sign important documents', 9, 2, false, 1, 2, Section.find(2)],
-  ['Enter the data from the papers onto the excel sheet', 10, 3, true, 2, 6, Section.find(3)],
-  ['Allocate project work to team members', 11, 1, false, 3, 0, Section.find(3)],
-  ['Upload the main HTML document needed for the project', 12, 6, true, 3, 1, Section.find(2)],
-  ['Upload profile pictures of the team members', 13, 10, false, 3, 5, Section.find(3)],
-  ['Fold paper planes with the excess paper', 14, 4, false, 2, 0, Section.find(2)]
+  ['Get the supervisor of the finance department to sign important documents', 9, 2, false, 1, 2, Section.find(1)],
+  ['Enter the data from the papers onto the excel sheet', 10, 3, true, 2, 6, Section.find(1)],
+  ['Allocate project work to team members', 11, 1, false, 3, 0, Section.find(1)],
+  ['Upload the main HTML document needed for the project', 12, 6, true, 3, 1, Section.find(1)],
+  ['Upload profile pictures of the team members', 13, 10, false, 3, 5, Section.find(1)],
+  ['Fold paper planes with the excess paper', 14, 4, false, 2, 0, Section.find(1)]
   ]
 
 task_list.each do |instruct, pos, completion, remind, role, task, sect|
