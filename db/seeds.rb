@@ -60,16 +60,6 @@ workflow_1 = Workflow.create(user_id: admin.id, company_id: gobbler.id, template
 # Create document template
 document_template_1 = DocumentTemplate.create(title: 'Doc template 1', description: 'Describe the template of the first document', file_url: 'http://www.doc_sksij.com', template_id: 2, user_id: 1, template: template_1)
 
-documents = [
-  ['June Balance Sheet', 'Balance sheet in the month of June', 1, 'wjjkskkdkl', 3, 1, 'doc_june', 1, Workflow.find(1), document_template_1],
-  ['July Balance sheet', 'Balance sheet in the month of July', 1, 'hasilwoqp', 3, 1, 'doc_july', 5, Workflow.find(2), document_template_1],
-  ['Aug Balance sheet', 'Balance sheet in the month of Aug', 1, 'bewormknjvjp', 3, 1,'doc_aug', 5, Workflow.find(3), document_template_1]
-]
-
-documents.each do |file_name, remarks, comp_id, f_url, workflowid, doc_templateid, identifier, user_id, workflow, doc_template|
-  Document.create(filename: file_name, remarks: remarks, company_id: comp_id, file_url:f_url, workflow_id: workflowid, document_template_id: doc_templateid, identifier:identifier, user_id: user_id, workflow: workflow, document_template: doc_template )
-end
-
 # Create clients
 client_list = [
   ['Harry Lee', 'HL', 1, 1],
