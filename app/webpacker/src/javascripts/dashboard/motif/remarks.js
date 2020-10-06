@@ -9,11 +9,11 @@ window.remarks = function(formElement) {
     dataType: "JSON"
   }).done(function(data){
     $(tableRow.find(".fa-check")).show().fadeTo(500, 200, function () {
-        $(tableRow.find(".fa-check")).fadeTo(200, 0);
-      });
+      $(tableRow.find(".fa-check")).fadeTo(200, 0);
+    });
   }).fail(function (data) {
-      $(tableRow.find(".fa-times")).show().fadeTo(500, 200, function () {
-        $(tableRow.find(".fa-times")).fadeTo(200, 0);
-      });
+    $(tableRow.find(".fa-times")).show().fadeTo(500, 200, function () {
+      $(tableRow.find(".fa-times")).fadeTo(200, 0);
+    });
   });
 };

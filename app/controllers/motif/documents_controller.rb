@@ -3,12 +3,12 @@ class Motif::DocumentsController < ApplicationController
   before_action :set_company
   before_action :set_document, only: [:update_tags, :update]
 
-  after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
   def index
     @folders = policy_scope(Folder).roots
     @documents = policy_scope(Document)
+    @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 
   def new
@@ -44,9 +44,9 @@ class Motif::DocumentsController < ApplicationController
   def update
     respond_to do |format|
       if @document.update(remarks: params[:document][:remarks])
-        format.json { render json: @workflow_action, status: :ok }
+        format.json { render json: @document, status: :ok }
       else
-        format.json { render json: @action.errors, status: :unprocessable_entity }
+        format.json { render json: @document.errors, status: :unprocessable_entity }
       end
     end
   end
