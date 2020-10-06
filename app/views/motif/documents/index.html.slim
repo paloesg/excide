@@ -105,8 +105,8 @@
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
               .dropdown-menu.dropdown-menu-right
-                .dropdown-item = link_to "Download", root_path
-                .dropdown-item = link_to "Delete", root_path
+                .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
+                .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete
                 .dropdown-item = link_to "Manage Version", root_path
             / span
             /   = image_pack_tag "media/src/images/motif/Download.svg"
