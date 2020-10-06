@@ -41,7 +41,7 @@
             = fa_icon "check", class: 'text-success ajax-icons'
             = fa_icon "times", class: 'text-danger ajax-icons'
       .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{d.id}" role="tabpanel"
-        div.form-row.align-items-center.border-bottom
+        .form-row.align-items-center.border-bottom
           .col-md-1
             span.mr-3
               = image_pack_tag "media/src/images/motif/Search.svg"
@@ -50,21 +50,23 @@
             / span.float-right +          
         - @company.roles.each do |role|
           .row.my-5
-            .col-md-2
+            .col-md-1
               = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mt-2'
-            .col-md-5
+            .col-md-4.ml-2.mt-2
               = role.name.humanize
             .col-md-5.pl-0
-              = select_tag 'permissions', options_for_select(["Can download", "Read only"], selected: (role.permissions.present? and role.permissions[0].can_download?) ? "Can download" : "Read only"), include_blank: true, required: true, data: { role_id: role.id, document_id: d.id},  class: 'form-control permission-document-access col-md-12'
-            / .col-md-5
-            /   .row
-            /     = user.full_name
-            /   .row
-            /     span Franchisee
-            / .col-md-5.pl-0
-            /   = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { user_id: user.id, document_id: d.id},  class: 'form-control permission-document-access col-md-12'
+              - permission = role.permissions.find_by(permissible_id: d.id)
+              - if permission.present?
+                / Can assume that role only has 1 permission?
+                = select_tag 'permissions', options_for_select(["Can download", "Read only"], selected: (permission.can_download? ? "Can download" : "Read only")), include_blank: true, required: true, data: { role_id: role.id, document_id: d.id, permission_id: permission.id },  class: 'form-control permission-document-access col-md-12'
+              - else
+                .float-right.mt-3.add-access id="add-access-#{role.id}"
+                  = link_to '+ Add access', '#', class: 'text-primary', remote: true 
+                = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { role_id: role.id, document_id: d.id}, class: 'form-control permission-document-access d-none col-md-12', id: "add-document-access-#{role.id}"
+            .col-md-1.p-0.mt-2.d-none.saved-message
+              span.text-muted Saved!
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{d.id}" role="tabpanel"
-        .row
+        .row.my-5
           .col-md-12
             - @activities.each do |activity|
               .row

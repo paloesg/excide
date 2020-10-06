@@ -70,28 +70,44 @@ $(document).on("turbolinks:load", function () {
   // AJAX request to create or update permission
   $(".permission-document-access").on('focusin', function(){
     // Save the previous value into a data attribute called prev
-    console.log("Saving value " + $(this).val());
     $(this).data('prev', $(this).val());
   }).on('change', function (e) {
-    console.log("WHAT IS THIS: ", $(this).val());
-    console.log("WHAT IS USER_ID: ",$(this).data("user-id"));
     // Get the prev attribute value
     let prev = $(this).data('prev');
-    console.log("Previous value: ", prev);
+    // Get the message "saved!" to load it when AJAX request is done successfully
+    let savedMessage = $(this).parent().next();
     // If prev val is "", then it should create a permission -> ajax call to create method.
-    // Else if prev value has value, it should update the existing value
     if (prev == "") {
+      // post request to create permission for that role
       $.post("/motif/permissions", {
         authenticity_token: $.rails.csrfToken(),
+        // Permission is the value of the dropdown ('View only' or 'Download only')
         permission: $(this).val(),
         document_id: $(this).data("document-id"),
-        user_id: $(this).data("user-id")
-      }).done(function(){
-        console.log("DONE!")
+        role_id: $(this).data("role-id")
+      }).done(function(result){
+        savedMessage.removeClass("d-none")
       })
     }
     else {
-      console.log("Update statement");   
+      // Else if prev value has value, it should update the existing value
+      $.ajax({
+        type: "PATCH",
+        url: "/motif/permissions/" + $(this).data("permission-id"),
+        data: {
+          permission: $(this).val(),
+          document_id: $(this).data("document-id"),
+          role_id: $(this).data("role-id")
+        },
+        dataType: "JSON"
+      }).done(function(result){
+        savedMessage.removeClass("d-none")
+      });
     }    
   });
+  // When clicked on add-access, it will show the dropdown box 
+  $(".add-access").click(function (){
+    $("#add-access-" + $(this).next().data("role-id")).addClass('d-none');
+    $("#add-document-access-" + $(this).next().data("role-id")).removeClass('d-none');
+  })
 });
