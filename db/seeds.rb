@@ -1,7 +1,7 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
-gobbler = Company.create(name: 'Gobbler')
+gobbler = Company.create(name: 'Gobbler', connect_xero: false, products: ['symphony'])
 global_admin = User.create(email: 'hschin@gmail.com', password: 'password', first_name: 'Admin', last_name: 'Global', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
 global_admin.add_role :superadmin
 admin = User.create(email: 'admin@gobbler.com', password: 'password', first_name: 'Admin', last_name: 'Gobbler', contact_number: '12341234', company: gobbler, confirmed_at: Time.now)
