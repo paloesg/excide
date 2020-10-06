@@ -22,7 +22,7 @@ class SlackService
       attachments: [
         {
           title: 'Enquiry Details',
-          title_link: 'https://' + ENV['HOST_DOMAIN'] + '/admin/enquiries/' + enquiry.id.to_s,
+          title_link: 'https://' + ENV['HEROKU_APP_NAME'] + '/admin/enquiries/' + enquiry.id.to_s,
           fallback: 'There is a new enquiry with ID ' + enquiry.id.to_s,
           pretext: 'Yay! There is a new enquiry from the website.',
           color: GOOD,
@@ -90,7 +90,7 @@ class SlackService
             },
             {
               title: 'Link',
-              value: 'https://' + ENV['HOST_DOMAIN'] + '/symphony/documents/' + document.id.to_s,
+              value: 'https://' + ENV['HEROKU_APP_NAME'] + '/symphony/documents/' + document.id.to_s,
             }
           ]
         }
@@ -105,7 +105,7 @@ class SlackService
       attachments: [
         {
           title: 'Automated Enquiry Response',
-          title_link: 'https://' + ENV['HOST_DOMAIN'] + '/admin/enquiries/' + enquiry.id.to_s,
+          title_link: 'https://' + ENV['HEROKU_APP_NAME'] + '/admin/enquiries/' + enquiry.id.to_s,
           fallback: 'An automated email has been sent to enquiry with ID ' + enquiry.id.to_s,
           pretext: 'An automated email response has been sent to this enquiry.',
           color: GOOD,
@@ -143,7 +143,7 @@ class SlackService
       attachments: [
         {
           title: 'Reminder',
-          title_link: 'https://' + ENV['HOST_DOMAIN'] + '/admin/reminders/' + reminder.id.to_s,
+          title_link: 'https://' + ENV['HEROKU_APP_NAME'] + '/admin/reminders/' + reminder.id.to_s,
           fallback: 'Reminder ID ' + reminder.id.to_s,
           pretext: 'Please send a reminder to the following client.',
           color: WARNING,
