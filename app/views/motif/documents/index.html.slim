@@ -53,8 +53,8 @@
         th.text-muted ACCESS
         th
     tbody
-      - @folders.each do |folder|
-        tr
+      - @folders.each_with_index do |folder, index|
+        tr.drawer-row data-drawer=folder.id
           td
             input# type="checkbox" name=""/
           td
@@ -62,12 +62,14 @@
               = image_pack_tag "media/src/images/motif/folder.svg"
             span.ml-5
               = link_to folder.name, motif_folder_path(folder.id)
-          td
-            card
-              | tags
-          td
-            = folder.updated_at
-          td
+          td id="drawer_toggle_#{folder.id}_0"
+            div id="tags_count_#{folder.id}"
+              = content_tag :span, folder.all_tags_list.first, class: ["badge badge-motif", folder.all_tags_list.length > 0 ? "" : "d-none"]
+              span class=(folder.all_tags_list.length > 1 ? "" : "d-none")
+                = (folder.all_tags_list.length-1).to_s + "+..."
+          td id="drawer_toggle_#{folder.id}_1"
+            = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
+          td id="drawer_toggle_#{folder.id}_2"
             span.mr-4
               = image_pack_tag "media/src/images/motif/Group People.svg"
             span
@@ -80,22 +82,24 @@
                 .dropdown-item = link_to "Download", root_path
                 .dropdown-item = link_to "Delete", root_path
                 .dropdown-item = link_to "Manage Version", root_path
+        = render "drawer", d: folder, name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
       - @documents.each_with_index do |d, index|
-        tr.drawer-row id="drawer_toggle_#{index}" data-drawer=index
+        tr.drawer-row data-drawer=d.id
           td
-            input# type="checkbox" name=""/ 
+            input# type="checkbox" name=""/
           td
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"
             span.ml-5
               = d.raw_file.filename
-          td id="tags_count_#{d.id}"
-            = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
-            span class=(d.all_tags_list.length > 1 ? "" : "d-none")
-              = (d.all_tags_list.length-1).to_s + "+..."
-          td
+          td id="drawer_toggle_#{d.id}_0"
+            div id="tags_count_#{d.id}"
+              = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
+              span class=(d.all_tags_list.length > 1 ? "" : "d-none")
+                = (d.all_tags_list.length-1).to_s + "+..."
+          td id="drawer_toggle_#{d.id}_1"
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
-          td
+          td id="drawer_toggle_#{d.id}_2"
             span.mr-4
               = image_pack_tag "media/src/images/motif/Group People.svg"
             span
@@ -110,4 +114,4 @@
                 .dropdown-item = link_to "Manage Version", root_path
             / span
             /   = image_pack_tag "media/src/images/motif/Download.svg"
-        = render "drawer", d: d, index: index
+        = render "drawer", d: d, name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?

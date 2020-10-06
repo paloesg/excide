@@ -11,18 +11,17 @@ $(document).on("turbolinks:load", function () {
         overlay: true,
         closeBy: "drawer_close_" + dataAttribute,
         toggleBy: {
-          target: "drawer_toggle_" + dataAttribute,
-          state: "mobile-toggle-active",
+          0: "drawer_toggle_" + dataAttribute + "_0",
+          1: "drawer_toggle_" + dataAttribute + "_1",
+          2: "drawer_toggle_" + dataAttribute + "_2"
         },
       }
     );
   });
-  $(".drawer-row").click(function () {
-    offcanvasObject.show();
-  });
   let tagifyInstances = []; //for the each loop below
   $(".motif-tags").each(function () {
     let input = $(this).attr("id")
+    let path = $(this).data("path")
     tagifyInstances.push(
       new Tagify(document.getElementById(input), {
         dropdown: {
@@ -33,15 +32,15 @@ $(document).on("turbolinks:load", function () {
           rightKey: true
         },
         callbacks: {
-          "change": (e) => onTagsChange(e, input.split('_')[1])
+          "change": (e) => onTagsChange(e, input.split('_')[1], path)
         }
       })
     );
   });
-  async function onTagsChange(e, id){
+  async function onTagsChange(e, id, path){
     $.ajax({
       type: "PATCH",
-      url: "/motif/documents/" + id + "/update_tags",
+      url: path + id + "/update_tags",
       data: {values: e.detail.tagify.value, id: id},
       dataType: "JSON"
     }).done(function(data){

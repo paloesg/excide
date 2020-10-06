@@ -1,7 +1,7 @@
-.offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto id="drawer_#{index}"
+.offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto id="drawer_#{d.id}"
   .row
     .col-md-11
-      h5.d-inline = d.raw_file.filename
+      h5.d-inline = name
     .col-md-1
       a.d-inline id="drawer_close" href="#" 
         i.material-icons-outlined close
@@ -28,17 +28,17 @@
         .row.mb-4
           .col
             span.text-muted File Size
-            p = number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
+            p = byte_size
           .col
             span.text-muted Shared with
             p 20 franchisees, 5 others
         span.text-muted Tags
-        input.motif-tags.my-3 id="tag_#{d.id}" name="input-custom-dropdown-#{index}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ")
+        input.motif-tags.my-3 id="tag_#{d.id}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
         / Form for remarks document
-        = form_for(d, url: motif_documents_path(id: d.id, format: 'json'), method: :patch, remote: true) do |f|
+        = form_for(d, url: url, method: :patch, remote: true) do |f|
           .col-md-12.p-0
             = f.label :remarks, "Remarks", class: 'text-muted'
-            = f.text_field :remarks, { class: 'form-control remark-border p-0', data: { document_id: d.id }, onchange: "remarks(this);"}
+            = f.text_field :remarks, { class: 'form-control remark-border p-0', data: { document_id: d.id, path: path }, onchange: "remarks(this);"}
           .col-md-2
             = fa_icon "check", class: 'text-success ajax-icons'
             = fa_icon "times", class: 'text-danger ajax-icons'

@@ -43,6 +43,7 @@ class Motif::DocumentsController < ApplicationController
   end
 
   def update
+    authorize @document
     respond_to do |format|
       if @document.update(remarks: params[:document][:remarks])
         format.json { render json: @document, status: :ok }
