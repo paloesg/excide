@@ -23,11 +23,11 @@ class Allocation < ApplicationRecord
             rowcount += 1,
             allocation.user&.full_name,
             allocation.allocation_date.strftime('%v'),
+            allocation.event.client&.name,
+            allocation.event.event_type.name,
             # Find hours charged
             allocation.event.number_of_hours,
-            allocation.event.event_type.name,
-            allocation.event.client&.name,
-            allocation.event.tag_list.present? ? allocation.event.tag_list.last : 'Nil',
+            allocation.event.tag_list.present? ? allocation.event.tag_list.last : 'Nil',    
           ]
           csv << row
         end
