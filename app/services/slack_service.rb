@@ -252,20 +252,6 @@ class SlackService
     self
   end
 
-  def user_signup(user)
-    params = {
-      attachments: [
-        {
-          title: 'A new user has signed up!',
-          fallback: 'A new user has signed up!',
-          color: GOOD
-        }
-      ]
-    }
-    @params = generate_payload(params)
-    self
-  end
-
   def company_signup(user, company)
     params = {
       attachments: [

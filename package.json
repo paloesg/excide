@@ -11,6 +11,7 @@
     "@shopify/draggable": "^1.0.0-beta.8",
     "@uppy/core": "^1.13.2",
     "@uppy/dashboard": "^1.12.6",
+    "@yaireo/tagify": "^3.18.1",
     "algoliasearch": "^3.35.1",
     "blueimp-file-upload": "^10.31.0",
     "bootstrap": "^4.5.2",
