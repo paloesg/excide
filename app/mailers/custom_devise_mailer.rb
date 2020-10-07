@@ -21,7 +21,7 @@ class CustomDeviseMailer < Devise::Mailer
       "from": {
         "email": "Paloe Symphony <admin@excide.co>"
       },
-      "template_id": "d-908be3573b0a4ea2a20a9b50a01b5b42"
+      "template_id": "'+ENV['SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']+'"
     }')
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
@@ -50,7 +50,7 @@ class CustomDeviseMailer < Devise::Mailer
       "from": {
         "email": "Paloe Symphony <admin@excide.co>"
       },
-      "template_id": "d-ba990131f20f4ad4b4eda3eb9d804d1f"
+      "template_id": "'+ENV['SENDGRID_UNLOCK_ACCOUNT_EMAIL_TEMPLATE']+'"
     }')
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
@@ -75,7 +75,7 @@ class CustomDeviseMailer < Devise::Mailer
       "from": {
         "email": "Paloe Symphony <admin@excide.co>"
       },
-      "template_id": "d-7ffeac72f25e454dbf2bc76e4b3c3314"
+      "template_id": "'+ENV['SENDGRID_RESET_PASSWORD_EMAIL_TEMPLATE']+'"
     }')
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
