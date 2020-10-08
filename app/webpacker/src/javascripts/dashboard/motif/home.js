@@ -9,6 +9,7 @@ $(document).on("turbolinks:load", function () {
             $(".checkSingle").each(function() {
                 this.checked=true;
             });
+            showChecked();
         } else {
             $("#select-options").hide();
             $("#filter-search").show();
@@ -36,8 +37,22 @@ $(document).on("turbolinks:load", function () {
         }
         else {
             $("#checkedAll").prop("checked", false);
-            $("#select-options").hide();
-            $("#filter-search").show();
+            if(document.querySelectorAll('input[name=documentCheck]:checked').length == 0){
+                $("#select-options").hide();
+                $("#filter-search").show();
+            }
         }
+    });
+
+    function showChecked(){
+        document.getElementById('selectedNumber').innerHTML = getCheckBoxCount() + " selected";
+    }
+
+    function getCheckBoxCount() {
+        return document.querySelectorAll('input[name=documentCheck]:checked').length;
+    }
+
+    document.querySelectorAll("input[name=documentCheck]").forEach(i=>{
+        i.onclick = () => showChecked();
     });
 })
