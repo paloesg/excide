@@ -7,7 +7,7 @@ class Motif::DocumentsController < ApplicationController
 
   def index
     @folders = policy_scope(Folder).roots
-    @documents = policy_scope(Document)
+    @documents = policy_scope(Document).order(created_at: :desc)
   end
 
   def new
