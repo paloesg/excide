@@ -25,6 +25,7 @@ class CustomDeviseMailer < Devise::Mailer
     }
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+    # Capture the error so that it will pass circle ci test without needing to stub mailer delivery for rspec
     begin
       sg.client.mail._("send").post(request_body: data)
     rescue Exception => e
@@ -54,6 +55,7 @@ class CustomDeviseMailer < Devise::Mailer
     }
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+    # Capture the error so that it will pass circle ci test without needing to stub mailer delivery for rspec
     begin
       sg.client.mail._("send").post(request_body: data)
     rescue Exception => e
@@ -83,6 +85,7 @@ class CustomDeviseMailer < Devise::Mailer
     }
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+    # Capture the error so that it will pass circle ci test without needing to stub mailer delivery for rspec
     begin
       sg.client.mail._("send").post(request_body: data)
     rescue Exception => e
