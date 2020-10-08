@@ -44,6 +44,15 @@ $(document).on("turbolinks:load", function () {
         }
     });
 
+    $("#clearSelect").click(function () {
+        $("#select-options").hide();
+        $("#filter-search").show();
+        $(".checkSingle").each(function() {
+            this.checked=false;
+        });
+        $('#checkedAll').prop('checked', false);
+    })
+
     function showChecked(){
         document.getElementById('selectedNumber').innerHTML = getCheckBoxCount() + " selected";
     }
