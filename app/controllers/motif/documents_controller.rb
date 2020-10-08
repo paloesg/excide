@@ -7,6 +7,7 @@ class Motif::DocumentsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    @folder = Folder.new
     @folders = policy_scope(Folder).roots
     @roles = @company.roles.includes(:permissions)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)

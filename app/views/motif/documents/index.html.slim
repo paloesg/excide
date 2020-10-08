@@ -1,7 +1,21 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    .btn-toolbar.float-right.ml-5
-      = link_to 'New Folder', new_motif_folder_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
+    button.btn.btn-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Create Folder
+    #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newMotifFolderUpload" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#newMotifFolderUpload.modal-title Create new folder
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true"  &times;
+          .modal-body
+            .row.mt-3
+              .col-md-12
+                = form_for(@folder, url: motif_folders_path, html: { method: :post }) do |f|
+                  .form-group
+                    = f.text_field :name, placeholder: 'New folder', class: 'form-control'
+                  = f.submit "Save", class: 'btn btn-sm btn-primary'
+      / = link_to 'New Folder', new_motif_folder_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
     button.btn.btn-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white add
       | Upload Multiple

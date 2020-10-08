@@ -29,10 +29,15 @@ class FoldersController < ApplicationController
   # POST /folders.json
   def create
     @folder = Folder.new(folder_params)
-
+    authorize @folder
+    current_user.roles.each do |role|
+      @permission = Permission.create(permissible: @folder, role: role, can_write: true, can_download: true, can_view: true)
+    end
+    @folder.company = current_user.company
+    @folder.user = current_user
     respond_to do |format|
       if @folder.save
-        format.html { redirect_to @folder, notice: 'Folder was successfully created.' }
+        format.html { redirect_to motif_documents_path, notice: 'Folder was successfully created.' }
         format.json { render :show, status: :created, location: @folder }
       else
         format.html { render :new }

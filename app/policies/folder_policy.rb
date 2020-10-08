@@ -1,4 +1,8 @@
 class FolderPolicy < ApplicationPolicy
+  def create?
+    user.present?
+  end
+
   def show?
     can_view?
   end
