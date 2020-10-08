@@ -1,0 +1,2 @@
+module Motif::PermissionsHelper
+end
