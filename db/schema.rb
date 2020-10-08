@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_03_042518) do
+ActiveRecord::Schema.define(version: 2020_10_02_061049) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -196,6 +196,7 @@ ActiveRecord::Schema.define(version: 2020_09_03_042518) do
     t.json "slack_access_response"
     t.string "mailbox_token"
     t.integer "before_deadline_reminder_days"
+    t.json "products", default: []
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -275,8 +276,11 @@ ActiveRecord::Schema.define(version: 2020_09_03_042518) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "ancestry"
     t.bigint "company_id"
+    t.text "remarks"
+    t.bigint "user_id"
     t.index ["ancestry"], name: "index_folders_on_ancestry"
     t.index ["company_id"], name: "index_folders_on_company_id"
+    t.index ["user_id"], name: "index_folders_on_user_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -335,6 +339,19 @@ ActiveRecord::Schema.define(version: 2020_09_03_042518) do
     t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
     t.index ["notifier_type", "notifier_id"], name: "index_notifications_on_notifier_type_and_notifier_id"
     t.index ["target_type", "target_id"], name: "index_notifications_on_target_type_and_target_id"
+  end
+
+  create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "role_id"
+    t.boolean "can_write"
+    t.boolean "can_view"
+    t.boolean "can_download"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "permissible_type"
+    t.uuid "permissible_id"
+    t.index ["permissible_type", "permissible_id"], name: "index_permissions_on_permissible_type_and_permissible_id"
+    t.index ["role_id"], name: "index_permissions_on_role_id"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -705,9 +722,11 @@ ActiveRecord::Schema.define(version: 2020_09_03_042518) do
   add_foreign_key "events", "companies"
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
+  add_foreign_key "folders", "users"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
+  add_foreign_key "permissions", "roles"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"

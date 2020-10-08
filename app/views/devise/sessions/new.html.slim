@@ -18,7 +18,7 @@
                     span
             .form-group
               = f.submit "Log in", class: "btn btn-primary text-nunito col-sm-12"
-          .text-center
-            = link_to 'Create Account', new_user_registration_path, class: 'text-primary font-weight-bold'
+            .text-center
+              = link_to 'Forget your password?', new_password_path(resource_name), class: 'text-primary font-weight-bold'
     .col-sm-6
       = image_pack_tag 'media/src/images/symphony/login.png', alt: "login-page", class: 'img-fluid float-right'

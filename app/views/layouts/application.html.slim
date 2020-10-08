@@ -44,7 +44,7 @@ html lang="en"
     - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys'))
       = render 'layouts/conductor_header'
     - else
-      = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path) || controller_name == 'invoices')
+      = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path) || controller_name == 'invoices' || current_page?(root_path))
     /! end:: Header
 
     /! begin:: Content
@@ -59,8 +59,8 @@ html lang="en"
       - else
         .container-fluid
           .row
-            - if (controller_name == 'invoices' || current_page?(additional_information_path))
-              / no sidebar for invoices page and conductor
+            - if (controller_name == 'invoices' || current_page?(additional_information_path) || current_page?(root_path))
+              / no sidebar for invoices page, conductor, additional information page, and products selection menu page
               .col-sm-12.mt-5.mx-4.px-5
                 = yield
                 = render 'layouts/messages'
@@ -69,17 +69,20 @@ html lang="en"
                 / for settings page, render a different sidebar
                 - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)) || current_page?(conductor_events_path))
                   = render 'layouts/sidebar_settings'
+                / for motif pages, render a different sidebar
+                - elsif controller.class.parents.include?(Motif)
+                  = render 'layouts/motif_sidebar'
                 - else
                   = render 'layouts/sidebar'
               .col-sm-10.mt-5
                 = yield
                 = render 'layouts/messages'
       hr
-      = render 'layouts/footer'
+      = render 'layouts/footer' unless current_page?(root_path)
     - else
       .container
         = yield
-        = render 'layouts/messages'
+        = render 'layouts/messages' 
       /! end:: Content
     /! begin:: Footer
     /! end:: Footer

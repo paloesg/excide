@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: redirect('/symphony')
+  root to: 'home#index'
 
   namespace :admin do
     DashboardManifest::DASHBOARDS.each do |dashboard_resource|
@@ -122,8 +122,13 @@ Rails.application.routes.draw do
 
   namespace :motif do
     root to: 'home#index'
-
-    resources :documents
+    resources :documents do
+      patch '/update_tags', to:'documents#update_tags'
+    end
+    resources :folders do
+      patch '/update_tags', to:'folders#update_tags'
+    end
+    resources :permissions
   end
 
   namespace :conductor do
@@ -172,7 +177,7 @@ Rails.application.routes.draw do
     get 'users/additional_information', to: 'users/registrations#additional_information', as: 'additional_information'
   end
 
-  devise_for :users, controllers: { confirmations: 'confirmations', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up' }
+  devise_for :users, controllers: { confirmations: 'confirmations', registrations: 'users/registrations', sessions: 'users/sessions' }, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'sign_up/:product' }
 
   # Integrated with Devise
   notify_to :users, with_devise: :users
