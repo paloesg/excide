@@ -1,4 +1,4 @@
-.offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto id="drawer_#{d.id}"
+.offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto id="drawer_#{permissible.id}"
   .row
     .col-md-11
       h5.d-inline = name
@@ -8,23 +8,23 @@
   .offcanvas-header.offcanvas-header-navs.d-flex.align-items-center.justify-content-between
     ul.nav.nav-bold.nav-tabs.nav-tabs-line.nav-tabs-line-3x.nav-tabs-primary.flex-grow-1.px-10 role="tablist"
       li.nav-item.px-4
-        a.nav-link data-toggle="tab" href="#information_#{d.id}" Information
+        a.nav-link data-toggle="tab" href="#information_#{permissible.id}" Information
       / Only admin of company have access tab
       - if current_user.has_role?(:admin, @company)
         li.nav-item.px-4
-          a.nav-link data-toggle="tab" href="#access_#{d.id}" Access
+          a.nav-link data-toggle="tab" href="#access_#{permissible.id}" Access
       li.nav-item.px-4
-        a.nav-link data-toggle="tab" href="#history_#{d.id}" History
+        a.nav-link data-toggle="tab" href="#history_#{permissible.id}" History
   .offcanvas-content
     .tab-content
-      .tab-pane.fade.pt-3.mr-n5.scroll.ps.active.show.px-5.mt-5 id="information_#{d.id}" role="tabpanel"
+      .tab-pane.fade.pt-3.mr-n5.scroll.ps.active.show.px-5.mt-5 id="information_#{permissible.id}" role="tabpanel"
         .row.mb-4
           .col
             span.text-muted Last upload
-            p = d.created_at.strftime("%d %b %Y at %I:%M%p")
+            p = permissible.created_at.strftime("%d %b %Y at %I:%M%p")
           .col
             span.text-muted Uploaded by
-            p = d.user.full_name
+            / p = permissible.user.full_name
         .row.mb-4
           .col
             span.text-muted File Size
@@ -33,18 +33,18 @@
             span.text-muted Shared with
             p 20 franchisees, 5 others
         span.text-muted Tags
-        input.motif-tags.my-3 id="tag_#{d.id}" placeholder=" + Add tag" value=d.all_tags_list data-tag=d.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
+        input.motif-tags.my-3 id="tag_#{permissible.id}" placeholder=" + Add tag" value=permissible.all_tags_list data-tag=permissible.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
         / Form for remarks document
-        = form_for(d, url: url, method: :patch, remote: true) do |f|
+        = form_for(permissible, url: url, method: :patch, remote: true) do |f|
           .col-md-12.p-0
             = f.label :remarks, "Remarks", class: 'text-muted'
-            = f.text_field :remarks, { class: 'form-control remark-border p-0', data: { document_id: d.id, path: path }, onchange: "remarks(this);"}
+            = f.text_field :remarks, { class: 'form-control remark-border p-0', data: { document_id: permissible.id, path: path }, onchange: "remarks(this);"}
           .col-md-2
             = fa_icon "check", class: 'text-success ajax-icons'
             = fa_icon "times", class: 'text-danger ajax-icons'
       / Only admin of company have access tab
       - if current_user.has_role?(:admin, @company)
-        .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{d.id}" role="tabpanel"
+        .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{permissible.id}" role="tabpanel"
           .form-row.align-items-center.border-bottom
             .col-md-1
               span.mr-3
@@ -58,17 +58,17 @@
               .col-md-4.ml-2.mt-2
                 = role.name.humanize
               .col-md-5.pl-0
-                - permission = role.permissions.find_by(permissible_id: d.id)
+                - permission = role.permissions.find_by(permissible_id: permissible.id)
                 - if permission.present?
                   / Can assume that role only has 1 permission?
-                  = select_tag 'permissions', options_for_select(["Can download", "Read only"], selected: (permission.can_download? ? "Can download" : "Read only")), include_blank: true, required: true, data: { role_id: role.id, document_id: d.id, permission_id: permission.id },  class: 'form-control permission-document-access col-md-12'
+                  = select_tag 'permissions', options_for_select(["Can download", "Read only"], selected: (permission.can_download? ? "Can download" : "Read only")), include_blank: true, required: true, data: { role_id: role.id, document_id: permissible.id, permission_id: permission.id },  class: 'form-control permission-document-access col-md-12'
                 - else
                   .float-right.mt-3.add-access id="add-access-#{role.id}"
                     = link_to '+ Add access', '#', class: 'text-primary', remote: true 
-                  = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { role_id: role.id, document_id: d.id}, class: 'form-control permission-document-access d-none col-md-12', id: "add-document-access-#{role.id}"
+                  = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { role_id: role.id, document_id: permissible.id}, class: 'form-control permission-document-access d-none col-md-12', id: "add-document-access-#{role.id}"
               .col-md-1.p-0.mt-2.d-none.saved-message
                 span.text-muted Saved!
-      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{d.id}" role="tabpanel"
+      .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{permissible.id}" role="tabpanel"
         .row.my-5
           .col-md-12
             - @activities.each do |activity|
