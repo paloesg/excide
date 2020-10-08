@@ -4,25 +4,25 @@ class CustomDeviseMailer < Devise::Mailer
   default template_path: 'devise/mailer' # to make sure that your mailer uses the devise views
 
   def confirmation_instructions(record, token, opts={})
-    data = JSON.parse('{
-      "personalizations": [
+    data = {
+      personalizations: [
         {
-          "to": [
+          to: [
             {
-              "email": "'+record.email+'"
+              email: record.email
             }
           ],
-          "dynamic_template_data": {
-            "firstName": "'+record.email+'",
-            "confirmationToken": "'+token+'"
+          dynamic_template_data: {
+            firstName: record.email,
+            confirmationToken: token
           }
         }
       ],
-      "from": {
-        "email": "Paloe Symphony <admin@excide.co>"
+      from: {
+        email: "Paloe Symphony <admin@excide.co>"
       },
-      "template_id": "'+ENV['SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']+'"
-    }')
+      template_id: ENV['SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']
+    }
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
     begin
@@ -33,25 +33,25 @@ class CustomDeviseMailer < Devise::Mailer
   end
   
   def unlock_instructions(record, token, opts={})
-    data = JSON.parse('{
-      "personalizations": [
+    data = {
+      personalizations: [
         {
-          "to": [
+          to: [
             {
-              "email": "'+record.email+'"
+              email: record.email
             }
           ],
-          "dynamic_template_data": {
-            "firstName": "'+record.email+'",
-            "unlockToken": "'+token+'"
+          dynamic_template_data: {
+            firstName: record.email,
+            confirmationToken: token
           }
         }
       ],
-      "from": {
-        "email": "Paloe Symphony <admin@excide.co>"
+      from: {
+        email: "Paloe Symphony <admin@excide.co>"
       },
-      "template_id": "'+ENV['SENDGRID_UNLOCK_ACCOUNT_EMAIL_TEMPLATE']+'"
-    }')
+      template_id: ENV['SENDGRID_UNLOCK_ACCOUNT_EMAIL_TEMPLATE']
+    }
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
     begin
@@ -62,25 +62,25 @@ class CustomDeviseMailer < Devise::Mailer
   end
 
   def reset_password_instructions(record, token, opts={})
-    data = JSON.parse('{
-      "personalizations": [
+    data = {
+      personalizations: [
         {
-          "to": [
+          to: [
             {
-              "email": "'+record.email+'"
+              email: record.email
             }
           ],
-          "dynamic_template_data": {
-            "firstName": "'+record.email+'",
-            "resetToken": "'+token+'"
+          dynamic_template_data: {
+            firstName: record.email,
+            confirmationToken: token
           }
         }
       ],
-      "from": {
-        "email": "Paloe Symphony <admin@excide.co>"
+      from: {
+        email: "Paloe Symphony <admin@excide.co>"
       },
-      "template_id": "'+ENV['SENDGRID_RESET_PASSWORD_EMAIL_TEMPLATE']+'"
-    }')
+      template_id: ENV['SENDGRID_RESET_PASSWORD_EMAIL_TEMPLATE']
+    }
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
     begin
