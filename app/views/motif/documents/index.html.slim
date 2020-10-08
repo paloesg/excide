@@ -82,7 +82,7 @@
                 .dropdown-item = link_to "Download", root_path
                 .dropdown-item = link_to "Delete", root_path
                 .dropdown-item = link_to "Manage Version", root_path
-        = render "drawer", permissible: folder, name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
+        = render "drawer", permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
       - @documents.each_with_index do |d, index|
         tr.drawer-row data-drawer=d.id
           td
@@ -112,4 +112,4 @@
                 .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
                 .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete
                 .dropdown-item = link_to "Manage Version", root_path
-        = render "drawer", permissible: d, name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
+        = render "drawer", permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?

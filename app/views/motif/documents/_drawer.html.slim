@@ -60,12 +60,12 @@
               .col-md-5.pl-0
                 - permission = role.permissions.find_by(permissible_id: permissible.id)
                 - if permission.present?
-                  / Can assume that role only has 1 permission?
-                  = select_tag 'permissions', options_for_select(["Can download", "Read only"], selected: (permission.can_download? ? "Can download" : "Read only")), include_blank: true, required: true, data: { role_id: role.id, document_id: permissible.id, permission_id: permission.id },  class: 'form-control permission-document-access col-md-12'
+                  / Permissible type passed in from rendering the partial, which will determine if permissible is folder or document
+                  = select_tag 'permissions', options_for_select(["Can download", "Read only"], selected: (permission.can_download? ? "Can download" : "Read only")), include_blank: true, required: true, data: { role_id: role.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control permission-document-access col-md-12'
                 - else
-                  .float-right.mt-3.add-access id="add-access-#{role.id}"
+                  .float-right.mt-3.add-access id="add-access-link-#{role.id}-#{permissible.id}"
                     = link_to '+ Add access', '#', class: 'text-primary', remote: true 
-                  = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { role_id: role.id, document_id: permissible.id}, class: 'form-control permission-document-access d-none col-md-12', id: "add-document-access-#{role.id}"
+                  = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { role_id: role.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control permission-document-access d-none col-md-12', id: "add-access-#{role.id}-#{permissible.id}"
               .col-md-1.p-0.mt-2.d-none.saved-message
                 span.text-muted Saved!
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{permissible.id}" role="tabpanel"
