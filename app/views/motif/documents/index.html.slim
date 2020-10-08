@@ -30,17 +30,29 @@
   .row.justify-content-center.ml-3
     = render "layouts/empty_documents"
 - else
-  .row.ml-4.align-items-center
+  .row.ml-4.align-items-center#filter-search
     .col
-      span.mr-3
-        = image_pack_tag "media/src/images/motif/Filter Funnel.svg"
-      | Filters
+      div#filter style="cursor: pointer;"
+        span.mr-3
+          = image_pack_tag "media/src/images/motif/Filter Funnel.svg"
+        | Filters
     .col-sm-11.text-muted
       div.form-row.align-items-center
         span.mr-3
           = image_pack_tag "media/src/images/motif/Search.svg"
         input.form-control.border-0.col type="search" placeholder="Search..."
         div.col-8
+  .row.ml-4.my-5.align-items-center#select-options
+    .col.md-9
+      span.mr-5
+      | #{params[:selectedDocs]} selected
+    .col.md-3.text-right
+      span.mr-5
+      | Delete
+      span.mr-5
+      | Group into folder
+      span.mr-5
+      | X
   hr.mb-0
   table.table.ml-4
     thead
@@ -56,7 +68,7 @@
       - @folders.each_with_index do |folder, index|
         tr.drawer-row data-drawer=folder.id
           td
-            input.checkSingle type="checkbox" name=""/
+            input.checkSingle type="checkbox" name="selectedDocs[]"/
           td
             span.mr-5
               = image_pack_tag "media/src/images/motif/folder.svg"
