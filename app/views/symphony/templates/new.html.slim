@@ -57,6 +57,28 @@
                 = f.label :workflow_type, "Routine Type:"
                 = f.select :workflow_type, ::Template.workflow_types.map{|k, v| [k.humanize, k]}, {}, {class: "select2 task-items-dropdown-width", id: "clone_template_workflow_type"}
               .form-group
+                = f.label :template_pattern, "This routine repeats:"
+                = f.select :template_pattern, ::Template.template_patterns.map{|k, v| [k.humanize, k]}, {}, {class: "select2 select2-clone-pattern task-items-dropdown-width", id: "clone_template_routine", required: true}
+              .clone-date-range.d-none
+                .form-group
+                  = f.label :start_date, "Start routine:"
+                  = f.date_field :start_date, required: true, class: 'form-control'
+                .form-group
+                  = f.label :end_date, "End routine:"
+                  = f.date_field :end_date, required: true, class: 'form-control'
+              .form-group
+                = f.label :deadline_type, "Deadline Type:"
+                = f.select :deadline_type, ::Template.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, { class: "clone-deadlines-type select2 task-items-dropdown-width select2-allow-clear", id: "clone_deadline_type" }
+              .form-group
+                .clone-xth-day.d-none
+                  = f.label :deadline_day, "Set a deadline (the date of the month that you want to set the deadline): "
+                  span.text-danger.d-none.deadline-warning 
+                    br Note: The due date for each cycle will be set to the last day of the month if the month does not consist of the dates 29, 30 or 31.
+                  = f.number_field :deadline_day, min: 0, max: 31, class: "form-control"
+                .clone-days-to-complete.d-none
+                  = f.label :deadline_day, "Set a deadline (number of days to complete): "
+                  = f.number_field :deadline_day, class: "form-control"
+              .form-group
                 = f.submit "Create Routine", class: 'btn btn-primary pull-left mb-3'
 
 - if @templates.length < 1

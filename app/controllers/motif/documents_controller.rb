@@ -9,8 +9,8 @@ class Motif::DocumentsController < ApplicationController
   def index
     @folders = policy_scope(Folder).roots
     @roles = @company.roles
-    @documents = policy_scope(Document)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
+    @documents = policy_scope(Document).order(created_at: :desc)
   end
 
   def new

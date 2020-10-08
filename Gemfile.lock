@@ -79,6 +79,8 @@ GEM
       activejob (= 6.0.3.1)
       activerecord (= 6.0.3.1)
       marcel (~> 0.3.1)
+    activestorage-office-previewer (0.1.2)
+      activestorage (>= 6.0.0)
     activesupport (6.0.3.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
@@ -635,6 +637,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
+  activestorage-office-previewer
   activity_notification
   acts-as-taggable-on (~> 6.5.0)
   acts_as_list
