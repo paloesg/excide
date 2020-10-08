@@ -58,7 +58,6 @@ $(document).on("turbolinks:load", function () {
           $("#tags_count_" + id).children().eq(0).removeClass("d-none");
         }
         else {
-          console.log($("#tags_count_" + id).children().eq(1))
           $("#tags_count_" + id).children()[1].innerHTML = (numOfTags-1) + "+..."
           $("#tags_count_" + id).children().eq(1).removeClass("d-none");
         }
@@ -82,8 +81,10 @@ $(document).on("turbolinks:load", function () {
         authenticity_token: $.rails.csrfToken(),
         // Permission is the value of the dropdown ('View only' or 'Download only')
         permission: $(this).val(),
-        document_id: $(this).data("document-id"),
-        role_id: $(this).data("role-id")
+        role_id: $(this).data("role-id"),
+        // Permissible type determines if its getting from folder or document
+        permissible_type: $(this).data("permissible-type"),
+        permissible_id: $(this).data("permissible-id")
       }).done(function(result){
         savedMessage.removeClass("d-none")
       })
@@ -95,7 +96,9 @@ $(document).on("turbolinks:load", function () {
         url: "/motif/permissions/" + $(this).data("permission-id"),
         data: {
           permission: $(this).val(),
-          document_id: $(this).data("document-id"),
+          // Permissible type determines if its getting from folder or document
+          permissible_type: $(this).data("permissible-type"),
+          permissible_id: $(this).data("permissible-id"),
           role_id: $(this).data("role-id")
         },
         dataType: "JSON"
@@ -106,7 +109,8 @@ $(document).on("turbolinks:load", function () {
   });
   // When clicked on add-access, it will show the dropdown box 
   $(".add-access").click(function (){
-    $("#add-access-" + $(this).next().data("role-id")).addClass('d-none');
-    $("#add-document-access-" + $(this).next().data("role-id")).removeClass('d-none');
+    // Make ID unique with role id and permissible id
+    $("#add-access-link-" + $(this).next().data("role-id") + "-" + $(this).next().data("permissible-id")).addClass('d-none');
+    $("#add-access-" + $(this).next().data("role-id") + "-" + $(this).next().data("permissible-id")).removeClass('d-none');
   })
 });
