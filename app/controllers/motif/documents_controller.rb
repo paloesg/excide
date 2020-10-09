@@ -33,20 +33,6 @@ class Motif::DocumentsController < ApplicationController
     end
   end
 
-  def update
-    @document = @company.documents.find(params[:document_id])
-    authorize @document
-    @folder = @company.folders.find(params[:folder_id])
-    respond_to do |format|
-      if @document.update(folder_id: @folder.id)
-        format.json { render json: { link_to: motif_documents_path, status: "ok" } }
-      else
-        format.html { redirect_to motif_documents_path }
-        format.json { render json: @document.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   def update_tags
     authorize @document
     @tags = []
@@ -59,10 +45,12 @@ class Motif::DocumentsController < ApplicationController
 
   def update
     authorize @document
+    @folder = @company.folders.find(params[:folder_id]) if params[:folder_id].present?
     respond_to do |format|
-      if @document.update(remarks: params[:document][:remarks])
-        format.json { render json: @document, status: :ok }
+      if (params[:folder_id].present? ? @document.update(folder_id: @folder.id) : @document.update(remarks: params[:document][:remarks]))
+        format.json { render json: { link_to: motif_documents_path, status: "ok" } }
       else
+        format.html { redirect_to motif_documents_path }
         format.json { render json: @document.errors, status: :unprocessable_entity }
       end
     end
