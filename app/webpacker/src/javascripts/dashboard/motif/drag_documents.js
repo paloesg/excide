@@ -13,7 +13,6 @@ $(document).on("turbolinks:load", function() {
   draggable.on("drag:over", (e) => {
     // Store the element that a file was dragged into
     source = e;
-    // $("#" + source.data.over.closest('tr').id).css({ "border": "4px dashed blue" })
   });
 
   draggable.on("drag:stop", (e) => {
