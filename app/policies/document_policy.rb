@@ -16,11 +16,11 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def update?
-    user == record.user or user.has_role?(:admin, record.company)
+    can_write? or user.has_role?(:admin, record.company)
   end
 
   def update_tags?
-    user.company == record.company
+    update?
   end
 
   def edit?

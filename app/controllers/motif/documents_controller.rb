@@ -1,13 +1,16 @@
 class Motif::DocumentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
+  before_action :set_document, only: [:update_tags, :update, :destroy]
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
   def index
     @folders = policy_scope(Folder).roots
-    @documents = policy_scope(Document).where(folder_id: nil)
+    @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc)
+    @roles = @company.roles.includes(:permissions)
+    @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 
   def new
@@ -45,7 +48,6 @@ class Motif::DocumentsController < ApplicationController
   end
 
   def update_tags
-    @document = @company.documents.find(params[:id])
     authorize @document
     @tags = []
     params[:values].each{|key, tag| @tags << tag[:value]} unless params[:values].blank?
@@ -54,7 +56,33 @@ class Motif::DocumentsController < ApplicationController
       format.json { render json: @company.owned_tags.pluck(:name), status: :ok }
     end
   end
+
+  def update
+    authorize @document
+    respond_to do |format|
+      if @document.update(remarks: params[:document][:remarks])
+        format.json { render json: @document, status: :ok }
+      else
+        format.json { render json: @document.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy
+    authorize @document
+    if @document.destroy
+      respond_to do |format|
+        format.html { redirect_to motif_documents_path }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
+      flash[:notice] = 'Document was successfully deleted.'
+    end
+  end
+  
   private
+  def set_document
+    @document = @company.documents.find(params[:id])
+  end
 
   def set_company
     @user = current_user

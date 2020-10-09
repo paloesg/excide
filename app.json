@@ -1,0 +1,6 @@
+{
+  "name":"Symphony Review App",
+  "scripts": {
+    "postdeploy": "bundle exec rake db:schema:load db:seed"
+  }
+}
