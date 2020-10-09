@@ -55,11 +55,10 @@
         th
     tbody.draggable-zone
       - @folders.each_with_index do |folder, index|
-        tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
-          td.draggable-handle
-            i.material-icons-outlined drag_indicator
+        tr.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
           td
-            input# type="checkbox" name=""/
+          td
+            input.mt-2 type="checkbox" name=""/
           td
             span.mr-5
               = image_pack_tag "media/src/images/motif/folder.svg"
@@ -91,7 +90,7 @@
           td.draggable-handle
             i.material-icons-outlined drag_indicator
           td
-            input# type="checkbox" name=""/ 
+            input.mt-2 type="checkbox" name=""/ 
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"
@@ -117,5 +116,5 @@
                 .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
                 .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete
                 .dropdown-item = link_to "Manage Version", root_path
-          = render 'show_document', d: d
-        = render "drawer", permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
+          = render 'motif/shared/show_document', d: d
+        = render 'motif/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
