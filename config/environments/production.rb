@@ -67,7 +67,9 @@ Rails.application.configure do
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # TOP_LEVEL_DOMAIN is the ending of the url. Eg, '.com', '.herokuapp.com' etc
-  config.action_controller.asset_host = "https://" + ENV['HEROKU_APP_NAME'] + ENV['TOP_LEVEL_DOMAIN']
+  # This is so that Heroku review apps will get the assets properly
+  # ENV['HOSTNAME'] will identify the 'www' for production. For review apps and staging, we can keep it empty first
+  config.action_controller.asset_host = "https://#{ENV['HOSTNAME']}" + ENV['HEROKU_APP_NAME'] + ENV['TOP_LEVEL_DOMAIN']
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
