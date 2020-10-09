@@ -55,7 +55,7 @@
         th
     tbody.draggable-zone
       - @folders.each_with_index do |folder, index|
-        tr.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
+        tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
           td
           td
             input.mt-2 type="checkbox" name=""/
@@ -84,7 +84,7 @@
                 .dropdown-item = link_to "Download", root_path
                 .dropdown-item = link_to "Delete", root_path
                 .dropdown-item = link_to "Manage Version", root_path
-        = render "drawer", permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
+        = render 'motif/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
       - @documents.each_with_index do |d, index|
         tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
           td.draggable-handle
