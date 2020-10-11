@@ -67,7 +67,7 @@
       - @folders.each_with_index do |folder, index|
         tr.drawer-row data-drawer=folder.id
           td
-            input.checkSingle type="checkbox" name="documentCheck"/
+            input.checkSingle type="checkbox"
           td
             span.mr-5
               = image_pack_tag "media/src/images/motif/folder.svg"
@@ -97,7 +97,7 @@
       - @documents.each_with_index do |d, index|
         tr.drawer-row data-drawer=d.id
           td
-            input.checkSingle type="checkbox" name="documentCheck"/
+            input.checkSingle type="checkbox"
           td
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"

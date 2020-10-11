@@ -2,66 +2,39 @@ $(document).on("turbolinks:load", function () {
     $("#select-options").hide();
 
     $("#checkedAll").change(function() {
-        if (this.checked) {
-            $("#filter-search").hide();
-            $("#select-options").show();
-            
-            $(".checkSingle").each(function() {
-                this.checked=true;
-            });
-            showChecked();
+        if ($(this).is(":checked")) {
+            $(".checkSingle").prop("checked", true).change();
         } else {
-            $("#select-options").hide();
-            $("#filter-search").show();
-            
-            $(".checkSingle").each(function() {
-                this.checked=false;
-            });
+            $(".checkSingle").prop("checked", false).change();
         }
     });
 
-    $(".checkSingle").click(function () {
+    $(".checkSingle").change(function () {
         if ($(this).is(":checked")) {
             $("#filter-search").hide();
             $("#select-options").show();
 
-            var isAllChecked = 0;
-            $(".checkSingle").each(function() {
-                if (!this.checked)
-                    isAllChecked = 1;
-            });
-
-            if (isAllChecked == 0) {
+            if ($(".checkSingle:not(:checked").length == 0) { //if all is checked
                 $("#checkedAll").prop("checked", true);
-            }     
+            }
+
         }
         else {
             $("#checkedAll").prop("checked", false);
-            if(document.querySelectorAll('input[name=documentCheck]:checked').length == 0){
+            if($(".checkSingle:checked").length == 0) { //if all is unchecked
                 $("#select-options").hide();
                 $("#filter-search").show();
             }
         }
+        showChecked();
     });
 
     $("#clearSelect").click(function () {
-        $("#select-options").hide();
-        $("#filter-search").show();
-        $(".checkSingle").each(function() {
-            this.checked=false;
-        });
-        $('#checkedAll').prop('checked', false);
+        $("#checkedAll").prop("checked", false).change();
     })
 
     function showChecked(){
-        document.getElementById('selectedNumber').innerHTML = getCheckBoxCount() + " selected";
+        count = $(".checkSingle:checked").length
+        $("#selectedNumber")[0].innerHTML = count + " selected";
     }
-
-    function getCheckBoxCount() {
-        return document.querySelectorAll('input[name=documentCheck]:checked').length;
-    }
-
-    document.querySelectorAll("input[name=documentCheck]").forEach(i=>{
-        i.onclick = () => showChecked();
-    });
 })
