@@ -14,7 +14,7 @@ $(document).on("turbolinks:load", function () {
             $("#filter-search").hide();
             $("#select-options").show();
 
-            if ($(".checkSingle:not(:checked").length == 0) { //if all is checked
+            if ($(".checkSingle:not(:checked)").length == 0) { //if all is checked
                 $("#checkedAll").prop("checked", true);
             }
 
