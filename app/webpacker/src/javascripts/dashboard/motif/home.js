@@ -36,5 +36,6 @@ $(document).on("turbolinks:load", function () {
     function showChecked(){
         count = $(".checkSingle:checked").length
         $("#selectedNumber")[0].innerHTML = count + " selected";
+        $("#deleteCount")[0].innerHTML = "Delete these " + count + " items?";
     }
 })

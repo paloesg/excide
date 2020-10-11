@@ -46,10 +46,28 @@
     .col-md-9
       span.mr-5#selectedNumber
     .col-md-3.d-flex.justify-content-between
-      span style="cursor: pointer;"
-        | Delete
-      span style="cursor: pointer;"
-        | Group into folder
+      span
+        i.material-icons-outlined delete
+        a data-toggle="modal" data-target="#groupDelete" data-backdrop="false" Delete
+        #groupDelete.modal.fade aria-hidden="true" aria-labelledby="groupDelete" role="dialog" tabindex="-1"
+          .modal-dialog.modal-dialog-centered.modal-sm role="document"
+            .modal-content
+              .modal-body.shadow-lg
+                #deleteCount.mb-4
+                span.float-right
+                  a.btn.btn-link-primary.mr-3 data-dismiss="modal" Cancel
+                  = link_to "Delete", root_path, class: "btn btn-primary"
+      span
+        i.material-icons-outlined folder_open
+        a data-toggle="modal" data-target="#groupFolder" data-backdrop="false" Group into folder
+        #groupFolder.modal.fade aria-hidden="true" aria-labelledby="groupFolder" role="dialog" tabindex="-1"
+          .modal-dialog.modal-dialog-centered.modal-sm role="document"
+            .modal-content
+              .modal-body.shadow-lg
+                .mb-4 Create new folder
+                span.float-right
+                  a.btn.btn-link-primary.mr-3 data-dismiss="modal" Cancel
+                  = link_to "Save", root_path, class: "btn btn-primary"
       span.mr-4#clearSelect style="cursor: pointer;"
         | X
   hr.mb-0
