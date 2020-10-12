@@ -212,6 +212,7 @@ class Symphony::InvoicesController < ApplicationController
   end
 
   private
+
   def set_invoice
     @invoice = Invoice.find(params[:id])
   end
