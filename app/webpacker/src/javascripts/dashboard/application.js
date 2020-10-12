@@ -35,6 +35,9 @@ require("./conductor/go_to_allocation");
 require("./conductor/event_update");
 require("./components/calendar_style");
 
+require("./motif/drawer")
+require("./motif/remarks")
+
 // Import Uppy drag-and-drop
 require("./components/uppy");
 require("./components/direct_upload");

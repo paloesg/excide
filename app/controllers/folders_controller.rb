@@ -1,9 +1,9 @@
 class FoldersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_folder, only: [:show, :edit, :update, :destroy]
+  before_action :set_folder, only: [:show, :edit, :update, :destroy, :update_tags]
 
   after_action :verify_authorized, except: :index
-  after_action :verity_policy_scoped, only: :index
+  after_action :verify_policy_scoped, only: :index
 
   # GET /folders
   # GET /folders.json
@@ -44,13 +44,12 @@ class FoldersController < ApplicationController
   # PATCH/PUT /folders/1
   # PATCH/PUT /folders/1.json
   def update
+    authorize @folder
     respond_to do |format|
-      if @folder.update(folder_params)
-        format.html { redirect_to @folder, notice: 'Folder was successfully updated.' }
-        format.json { render :show, status: :ok, location: @folder }
+      if @folder.update(remarks: params[:folder][:remarks])
+        format.json { render json: @folder, status: :ok }
       else
-        format.html { render :edit }
-        format.json { render json: @folder.errors, status: :unprocessable_entity }
+        format.json { render json: @action.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -65,6 +64,16 @@ class FoldersController < ApplicationController
     end
   end
 
+  def update_tags
+    authorize @folder
+    @tags = []
+    params[:values].each{|key, tag| @tags << tag[:value]} unless params[:values].blank?
+    current_user.company.tag(@folder, with: @tags, on: :tags)
+    respond_to do |format|
+      format.json { render json: current_user.company.owned_tags.pluck(:name), status: :ok }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_folder
@@ -73,6 +82,6 @@ class FoldersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def folder_params
-      params.require(:folder).permit(:name)
+      params.require(:folder).permit(:name, :remarks)
     end
 end

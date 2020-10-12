@@ -32,7 +32,9 @@ class SendDailySummary
         company_name: email_summary_notification.company.name, 
         link_address: "#{ENV['ASSET_HOST'] + symphony_workflow_path(email_summary_notification.task.section.template.slug, email_summary_notification.workflow.friendly_id)}" }.as_json
     end
-    NotificationMailer.daily_summary(@action_details, @user).deliver_now if @user.settings[0]&.reminder_email == 'true'
+    # Add link to email template for user to change notification settings
+    link = "#{ENV['ASSET_HOST'] + notification_settings_symphony_user_path(@user)}"
+    NotificationMailer.daily_summary(@action_details, @user, link).deliver_now if @user.settings[0]&.reminder_email == 'true'
   end
 end
   

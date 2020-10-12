@@ -1,0 +1,55 @@
+.tags-look .tagify__dropdown__item {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 0px 6px !important;
+  background: #F5F6F9 !important;
+  margin: 0 8px 8px 0!important;
+  color: #7E8299 !important;
+}
+
+.tags-look .tagify__dropdown__item:hover{
+  background: #EEF1FF !important;
+}
+
+.tagify__dropdown {
+  z-index: 1000000 !important;
+  padding: 10px !important;
+}
+
+.motif-tags {
+  border: none !important;
+  padding: 0 !important;
+}
+
+.motif-tags .tagify__tag, .tagify__input {
+  margin: 0 8px 8px 0!important;
+}
+.motif-tags .tagify__tag {
+  background: #EEF1FF !important;
+  padding: 0 2px 0 0 !important;
+}
+
+.motif-tags .tagify__tag__removeBtn:after {
+  font-family: 'Material Icons Outlined' !important;
+  content: "close" !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  color: #7E8299 !important;
+}
+
+.motif-tags .tagify__tag__removeBtn {
+  margin: 0;
+}
+
+.badge-motif {
+  border-radius: 4px !important;
+  padding: 3px 6px !important;
+  margin-right: 6px;
+  background: #EEF1FF;
+  font-size: 12px !important;
+  color: #7E8299;
+}
+
+.tagify__input::before {
+  position: absolute !important;
+}

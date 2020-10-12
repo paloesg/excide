@@ -122,9 +122,13 @@ Rails.application.routes.draw do
 
   namespace :motif do
     root to: 'home#index'
-
-    resources :documents
-    resources :folders
+    resources :documents do
+      patch '/update_tags', to:'documents#update_tags'
+    end
+    resources :folders do
+      patch '/update_tags', to:'folders#update_tags'
+    end
+    resources :permissions
   end
 
   namespace :conductor do
