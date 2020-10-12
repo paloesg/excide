@@ -28,7 +28,7 @@ class RepliesMailbox < ApplicationMailbox
   def company_mailbox_token
     # Find the recipient which email matches the regexp
     recipient = mail.recipients.find{|r| MATCHER.match?(r)}
-    # Recipient returns output like this: ["sendfile-<MAILBOX_TOKEN>@upload.#{ENV['HOST_DOMAIN']}"]
+    # Recipient returns output like this: ["sendfile-<MAILBOX_TOKEN>@upload.#{ENV['EMAIL_UPLOAD_DOMAIN']}"]
     # Returns the first enclosed capture (which is the mailbox token) in the regexp
     recipient[MATCHER, 1]
   end

@@ -307,7 +307,7 @@ class Symphony::WorkflowsController < ApplicationController
   def send_email_to_xero
     authorize @workflow
     @workflow.documents.each do |workflow_docs|
-        WorkflowMailer.send_invoice_email(@workflow, workflow_docs).deliver_later
+      WorkflowMailer.send_invoice_email(@workflow, workflow_docs).deliver_later
     end
     flash[:notice] = "#{@workflow.documents.count} email/s have been generated for Xero. Please check Xero in a few minutes."
     redirect_to symphony_workflow_path(@template.slug, @workflow.id)

@@ -66,7 +66,8 @@ Rails.application.configure do
   config.active_storage.service = :amazon
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = ENV['ASSET_HOST']
+  # TOP_LEVEL_DOMAIN is the ending of the url. Eg, '.com', '.herokuapp.com' etc
+  config.action_controller.asset_host = "https://" + ENV['HEROKU_APP_NAME'] + ENV['TOP_LEVEL_DOMAIN']
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
