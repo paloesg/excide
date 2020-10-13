@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_13_074346) do
+ActiveRecord::Schema.define(version: 2020_10_13_074934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -200,6 +200,19 @@ ActiveRecord::Schema.define(version: 2020_10_13_074346) do
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
+  end
+
+  create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "phone"
+    t.string "email"
+    t.string "company_name"
+    t.bigint "company_id"
+    t.bigint "created_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_contacts_on_company_id"
+    t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end
 
   create_table "document_templates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -721,6 +734,8 @@ ActiveRecord::Schema.define(version: 2020_10_13_074346) do
   add_foreign_key "companies", "users", column: "associate_id"
   add_foreign_key "companies", "users", column: "consultant_id"
   add_foreign_key "companies", "users", column: "shared_service_id"
+  add_foreign_key "contacts", "companies"
+  add_foreign_key "contacts", "users", column: "created_by_id"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
