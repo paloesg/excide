@@ -6,7 +6,14 @@ class Motif::CompaniesController < CompaniesController
   end
 
   def create
-    
+    @company = Company.new(company_params)
+    authorize @company
+    @company.connect_xero = false
+    if @company.save!
+      set_company_roles
+      current_user.update(company: @company)
+      redirect_to motif_root_path
+    end
   end
 
 end

@@ -1,0 +1,35 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    .btn-toolbar.float-right.ml-5
+      = link_to 'Preview', '#', role: 'button', class: 'btn btn-white border border-secondary text-primary mr-3 px-5'
+      = f.submit 'Save and submit', class: 'btn btn-primary mr-3 px-5'
+    h3 Company Profile
+.row.mb-3.mt-5.ml-3
+  .col-sm-4
+    .form-group
+      = f.label :name, 'Company Name', class: 'text-muted'
+      = f.text_field :name, class: 'form-control'
+.row.mb-3.mt-5.ml-3
+  .col-sm-4
+    .form-group
+      = f.label :company_logo, 'Company logo', class: 'text-muted'
+      = f.file_field :company_logo, class: 'form-control'
+  .col-sm-4
+    .form-group
+      = f.label :profile_logo, 'Profile logo', class: 'text-muted'
+      = f.file_field :profile_logo, class: 'form-control'
+  .col-sm-4
+    .form-group
+      = f.label :banner_image, 'Banner image', class: 'text-muted'
+      = f.file_field :banner_image, class: 'form-control'
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    .form-group
+      = f.label :website_url, 'Company Website Url', class: 'text-muted'
+      = f.text_field :website_url, class: 'form-control'
+hr
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    .form-group
+      = f.label :company_bio, 'Company Bio', class: 'text-muted'
+      = f.rich_text_area :company_bio, class: 'form-control'

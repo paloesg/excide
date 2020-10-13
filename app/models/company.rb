@@ -26,6 +26,12 @@ class Company < ApplicationRecord
   has_one :address, as: :addressable, dependent: :destroy
   has_many :roles, as: :resource, dependent: :destroy
 
+  has_one_attached :company_logo
+  has_one_attached :profile_logo
+  has_one_attached :banner_image
+
+  has_rich_text :company_bio
+
   belongs_to :consultant, class_name: 'User'
   belongs_to :associate, class_name: 'User'
   belongs_to :shared_service, class_name: 'User'
