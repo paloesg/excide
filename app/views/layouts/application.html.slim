@@ -43,6 +43,8 @@ html lang="en"
     /! begin:: Header
     - if (controller.class.parents.include?(Conductor) || controller_name == ('clients' || 'dashboards' || 'surveys'))
       = render 'layouts/conductor_header'
+    - elsif controller.class.parents.include?(Motif)
+      = render 'layouts/motif_header'
     - else
       = render 'layouts/header' unless (current_user.nil? || current_page?(additional_information_path) || controller_name == 'invoices' || current_page?(root_path))
     /! end:: Header
@@ -66,11 +68,8 @@ html lang="en"
                 = render 'layouts/messages'
             - else
               .col-sm-2.bg-white.border-right
-                / for settings page, render a different sidebar
-                - if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)) || current_page?(conductor_events_path))
-                  = render 'layouts/sidebar_settings'
                 / for motif pages, render a different sidebar
-                - elsif controller.class.parents.include?(Motif)
+                - if controller.class.parents.include?(Motif)
                   = render 'layouts/motif_sidebar'
                 - else
                   = render 'layouts/sidebar'
