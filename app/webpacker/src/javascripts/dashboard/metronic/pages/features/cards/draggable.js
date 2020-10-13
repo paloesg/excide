@@ -1,5 +1,4 @@
 "use strict";
-
 var KTCardDraggable = function() {
 
     return {
@@ -11,7 +10,7 @@ var KTCardDraggable = function() {
                 return false;
             }
 
-            var swappable = new Sortable.default(containers, {
+            var swappable = new Sortable(containers, {
                 draggable: '.draggable',
                 handle: '.draggable .draggable-handle',
                 mirror: {
