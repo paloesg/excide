@@ -18,11 +18,19 @@ class CompaniesController < ApplicationController
   def create
     @company = Company.new(company_params)
     authorize @company
-
+    # Save the new company's product(s)
+    @company.products = params[:products]
     if @company.save
       set_company_roles
       current_user.update(company: @company)
-      redirect_to symphony_root_path
+      # Redirect based on the products that was added to the company
+      if @company.products.length >= 2
+        redirect_to root_path
+      elsif @company.products[0] == "symphony"
+        redirect_to symphony_root_path
+      else
+        redirect_to motif_root_path
+      end
     end
   end
 
