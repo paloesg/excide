@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   post '/update_line_items_from_xero', to: 'xero_sessions#update_line_items_from_xero', as: :update_line_items_from_xero
   post '/update_tracking_categories_from_xero', to: 'xero_sessions#update_tracking_categories_from_xero', as: :update_tracking_categories_from_xero
   delete '/disconnect_from_xero', to: 'xero_sessions#disconnect_from_xero', as: :disconnect_from_xero
+  patch '/change_company', to: 'home#change_company', as: :change_company
 
   namespace :symphony do
     root to: 'home#index'
@@ -54,7 +55,6 @@ Rails.application.routes.draw do
     end
     resources :users do
       member do
-        patch '/change_company', to: 'users#change_company', as: :change_company
         get '/notification_settings', to: 'users#notification_settings', as: :notification_settings
         patch '/update_notification', to: 'users#update_notification', as: :update_notification
       end
@@ -122,9 +122,13 @@ Rails.application.routes.draw do
 
   namespace :motif do
     root to: 'home#index'
-
-    resources :documents
-    resources :folders
+    resources :documents do
+      patch '/update_tags', to:'documents#update_tags'
+    end
+    resources :folders do
+      patch '/update_tags', to:'folders#update_tags'
+    end
+    resources :permissions
   end
 
   namespace :conductor do

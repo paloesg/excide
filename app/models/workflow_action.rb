@@ -119,7 +119,7 @@ class WorkflowAction < ApplicationRecord
       return "text-danger"
     elsif self.deadline.to_date <= Date.tomorrow
       return "text-warning"
-    elsif self.company.before_deadline_reminder_days.present? && workflow_action.deadline.to_date - workflow_action.company.before_deadline_reminder_days <= Date.current
+    elsif self.company.before_deadline_reminder_days.present? && self.deadline.to_date - self.company.before_deadline_reminder_days <= Date.current
       return "text-warning"
     else
       return "text-primary"

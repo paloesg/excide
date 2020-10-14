@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include Pundit
   include PublicActivity::StoreController
 
-  rescue_from Pundit::NotAuthorizedError, Pundit::AuthorizationNotPerformedError, with: :user_not_authorized
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   #TokenInvalid in case user is still using public app for xero. It will redirect them to xero authorization page
   rescue_from Xeroizer::OAuth::TokenInvalid, Xeroizer::OAuth::TokenExpired, with: :xero_login
   #If record is not found on xero, it will return flash message as string
@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   rescue_from OAuth::Unauthorized, with: :xero_unauthorized
   rescue_from Xeroizer::OAuth::RateLimitExceeded, with: :xero_rate_limit_exceeded
 
+  before_action :authenticate_product
+
   after_action :store_location
 
   def store_location
@@ -23,22 +25,18 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.company.name.present?
-      if current_user.company.products.length >= 2
-        root_path
-      elsif current_user.company.products.length == 1
-        if current_user.company.products[0] == 'symphony'
-          if current_user.company.session_handle.blank? and current_user.company.connect_xero?
-            connect_to_xero_path
-          else
-            symphony_root_path
-          end
-        elsif current_user.company.products[0] == 'motif'
-          motif_root_path
+    if current_user.company.products.length >= 2
+      root_path
+    elsif current_user.company.products.length == 1
+      if current_user.company.products[0] == 'symphony'
+        if current_user.company.session_handle.blank? and current_user.company.connect_xero?
+          connect_to_xero_path
+        else
+          symphony_root_path
         end
+      elsif current_user.company.products[0] == 'motif'
+        motif_root_path
       end
-    else
-      additional_information_path
     end
   end
 
@@ -48,7 +46,6 @@ class ApplicationController < ActionController::Base
     policy_name = exception.policy.class.to_s.underscore
 
     flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-
     redirect_back(fallback_location: root_path)
   end
 
@@ -83,5 +80,14 @@ class ApplicationController < ActionController::Base
     message = 'You have exceeded the number of times you can access Xero in 1 minute. Please wait a few minutes and try again.'
     Rails.logger.error("Xero error: Rate limited exceeded")
     redirect_to symphony_root_path, alert: message
+  end
+
+  # checks if the controller's namespace is in Symphony or Motif, then check if the user has access to the product. Links to application_policy.rb
+  def authenticate_product
+    if controller_path.split('/').first == 'symphony'
+      authorize current_user, :has_symphony?
+    elsif controller_path.split('/').first == 'motif'
+      authorize current_user, :has_motif?
+    end
   end
 end

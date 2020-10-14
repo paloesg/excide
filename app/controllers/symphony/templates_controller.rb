@@ -31,13 +31,21 @@ class Symphony::TemplatesController < ApplicationController
             task.role = role
           end
           if task.user
-            user = User.find_by(name: task.user.name, company: @company.id)
-            user = User.create(name: task.user.name, company: @company.id) if user.blank?
+            user = User.find_by(first_name: task.user.first_name, company: @company.id)
+            user = User.create(first_name: task.user.first_name, company: @company.id) if user.blank?
             task.user = user
           end
         end
       end
       @template.title = template_params[:title]
+      @template.workflow_type = template_params[:workflow_type]
+      @template.deadline_day = template_params[:deadline_day]
+      @template.deadline_type = template_params[:deadline_type]
+      @template.template_pattern = template_params[:template_pattern]
+      @template.start_date = template_params[:start_date]
+      @template.end_date = template_params[:end_date]
+      @template.freq_value = template_params[:freq_value]
+      @template.freq_unit = template_params[:freq_unit]
     else
       @template = Template.new(template_params)
     end
@@ -113,6 +121,7 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   private
+
   def set_template
     @template = Template.includes(sections: [tasks: [:role, :user, :document_template]]).find(params[:template_slug])
   end
