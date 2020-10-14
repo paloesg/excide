@@ -119,6 +119,7 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   private
+
   def set_template
     @template = Template.includes(sections: [tasks: [:role, :user, :document_template]]).find(params[:template_slug])
   end

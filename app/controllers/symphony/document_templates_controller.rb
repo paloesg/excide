@@ -67,25 +67,25 @@ class Symphony::DocumentTemplatesController < ApplicationController
 
   private
 
-    def set_company
-      @user = current_user
-      @company = @user.company
-    end
-    # Use callbacks to share common setup or constraints between actions.
-    def set_document_template
-      @document_template = DocumentTemplate.find(params[:id])
-    end
+  def set_company
+    @user = current_user
+    @company = @user.company
+  end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_document_template
+    @document_template = DocumentTemplate.find(params[:id])
+  end
 
-    def set_templates
-      @templates = @company.templates
-    end
+  def set_templates
+    @templates = @company.templates
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def document_template_params
-      params.require(:document_template).permit(:title, :description, :file_url, :template_id, :task_id, :user_id, :file)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def document_template_params
+    params.require(:document_template).permit(:title, :description, :file_url, :template_id, :task_id, :user_id, :file)
+  end
 
-    def set_s3_direct_post
-      @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
-    end
+  def set_s3_direct_post
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "#{@company.slug}/uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
+  end
 end
