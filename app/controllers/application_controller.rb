@@ -75,13 +75,10 @@ class ApplicationController < ActionController::Base
     redirect_to symphony_root_path, alert: message
   end
 
-  # checks if the controller's namespace is in Symphony or Motif, then check if the user has access to the product. Links to application_policy.rb
+  # Checks the controller namespace then check if the user has access to the product based on application policy
   def authenticate_product
-    if controller_path.split('/').first == 'symphony'
-      authorize current_user, :has_symphony?
-    elsif controller_path.split('/').first == 'motif'
-      authorize current_user, :has_motif?
-    end
+    product = controller_path.split('/').first
+    authorize current_user, ("has_" + product + "?").to_sym unless product == 'home'
   end
 
   def set_company
