@@ -1,81 +1,58 @@
-/ for settings page, render a different sidebar
-- if current_page?(new_motif_company_path) || current_page?(motif_users_path)
-  .sidebar-sticky
-    ul.nav.flex-column
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to root_path, class: 'col-sm-12 d-flex align-items-center' do
-          .ml-2.sidebar-font My Account
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to new_motif_company_path, class: 'col-sm-12 d-flex align-items-center' do
-          .ml-2.sidebar-font Company Profile
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_users_path, class: 'col-sm-12 d-flex align-items-center' do
-          .ml-2.sidebar-font Teammates
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to symphony_roles_path, class: 'col-sm-12 d-flex align-items-center' do
-          .ml-2.sidebar-font Onboarding Setup
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to integration_company_path, class: 'col-sm-12 d-flex align-items-center' do
-          .ml-2.sidebar-font Report Sync-up
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to notification_settings_symphony_user_path(current_user), class: 'col-sm-12 d-flex align-items-center' do
-          .ml-2.sidebar-font Q&A Setup
-- else
-  .sidebar-sticky
-    ul.nav.flex-column
-      div.d-flex.justify-content-between.align-items-center
-        h3.ml-8.mt-4 Hello, #{current_user.first_name}!
-        a.mt-4
-          i.material-icons-outlined menu_open
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined home
-          .ml-2.sidebar-font Home
-    hr
-    ul.nav.flex-column
-      li
-        .ml-8.sidebar-subheader-font COMMUNICATION
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined group_add
-          .ml-2.sidebar-font Franchise Applicants
-    hr
-    ul.nav.flex-column
-      li
-        .ml-8.sidebar-subheader-font FRANCHISE MANAGEMENT
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined group
-          .ml-2.sidebar-font Franchisee List
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined track_changes
-          .ml-2.sidebar-font Onboarding Progress
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined timeline
-          .ml-2.sidebar-font Compliance Tracking
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined insert_chart_outlined
-          .ml-2.sidebar-font Profitability Analysis
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined text_snippet
-          .ml-2.sidebar-font Reports
-    hr
-    ul.nav.flex-column
-      li
-        .ml-8.sidebar-subheader-font LIBRARY
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_documents_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined folder_open
-          .ml-2.sidebar-font Dataroom
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined school
-          .ml-2.sidebar-font Learning Resources
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined question_answer
-          .ml-2.sidebar-font Q&A
+.sidebar-sticky
+  ul.nav.flex-column
+    div.d-flex.justify-content-between.align-items-center
+      h5.ml-8.mt-4 Hello, #{current_user.first_name}!
+      a.mt-4
+        i.material-icons-outlined menu_open
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined home
+        .ml-2.sidebar-font Home
+  hr
+  ul.nav.flex-column
+    li
+      .ml-8.sidebar-subheader-font COMMUNICATION
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined group_add
+        .ml-2.sidebar-font Franchise Applicants
+  hr
+  ul.nav.flex-column
+    li
+      .ml-8.sidebar-subheader-font FRANCHISE MANAGEMENT
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined group
+        .ml-2.sidebar-font Franchisee List
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined track_changes
+        .ml-2.sidebar-font Onboarding Progress
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined timeline
+        .ml-2.sidebar-font Compliance Tracking
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined insert_chart_outlined
+        .ml-2.sidebar-font Profitability Analysis
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined text_snippet
+        .ml-2.sidebar-font Reports
+  hr
+  ul.nav.flex-column
+    li
+      .ml-8.sidebar-subheader-font LIBRARY
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_documents_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined folder_open
+        .ml-2.sidebar-font Dataroom
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined school
+        .ml-2.sidebar-font Learning Resources
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined question_answer
+        .ml-2.sidebar-font Q&A

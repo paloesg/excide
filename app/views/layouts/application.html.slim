@@ -58,6 +58,26 @@ html lang="en"
               = render 'layouts/sidebar'
             .col-sm-10.mt-5
               = yield
+        hr
+        = render 'layouts/footer' unless current_page?(root_path)
+      / Layout for motif
+      - elsif controller.class.parents.include?(Motif)
+        - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_users_path)
+          .motif-wrapper
+            / for motif pages, render a different sidebar
+            .motif-contents
+              .row.mt-5
+                .col-sm-2.bg-white.border-right.sidebar-border-radius
+                  = render 'layouts/motif_settings_sidebar'
+                .col-sm-10.bg-white.content-border-radius
+                  = yield
+        - else
+          .container-fluid
+            .row
+              .col-sm-2.bg-white.border-right
+                = render 'layouts/motif_sidebar'
+              .col-sm-10.mt-5
+                = yield
       - else
         .container-fluid
           .row
@@ -68,16 +88,12 @@ html lang="en"
                 = render 'layouts/messages'
             - else
               .col-sm-2.bg-white.border-right
-                / for motif pages, render a different sidebar
-                - if controller.class.parents.include?(Motif)
-                  = render 'layouts/motif_sidebar'
-                - else
-                  = render 'layouts/sidebar'
+                = render 'layouts/sidebar'
               .col-sm-10.mt-5
                 = yield
                 = render 'layouts/messages'
-      hr
-      = render 'layouts/footer' unless current_page?(root_path)
+        hr
+        = render 'layouts/footer' unless current_page?(root_path)
     - else
       .container
         = yield
