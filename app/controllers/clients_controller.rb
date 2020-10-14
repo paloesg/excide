@@ -28,7 +28,7 @@ class ClientsController < ApplicationController
       contact_id = @xero.create_contact(client_params)
       @client.xero_contact_id = contact_id
     end
-    
+
     respond_to do |format|
       if @client.save
         format.html { redirect_to conductor_clients_path, notice: 'Client successfully created!' }
@@ -87,10 +87,6 @@ class ClientsController < ApplicationController
 
   def set_client
     @client = Client.find_by(id: params[:id], company: @company)
-  end
-
-  def set_company
-    @company = current_user.company
   end
 
   def client_params

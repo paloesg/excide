@@ -83,4 +83,9 @@ class ApplicationController < ActionController::Base
       authorize current_user, :has_motif?
     end
   end
+
+  def set_company
+    @user = current_user
+    @company = current_user.company
+  end
 end
