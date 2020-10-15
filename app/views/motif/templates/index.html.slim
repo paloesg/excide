@@ -1,0 +1,18 @@
+.container.my-4
+  .row.mb-4
+    .col-md-8
+      h1 Onboarding Templates
+    .col-md-4.text-right
+      = link_to "+ New Template", new_motif_template_path, class: 'btn btn-primary mr-1'
+  - @templates.each do |template|
+    .row.mb-4
+      .col-md-12
+        .card
+          .card-body
+            h3.card-title
+              = template.title
+            .card-text
+              = template.workflows.count
+          .float-right
+                = link_to "Edit", edit_motif_template_path(template_slug: template.slug), class: 'btn btn-sm btn-success mr-1' if policy(template).edit?
+                = link_to "Delete", motif_template_path(template_slug: template.slug), data: { confirm: 'This will delete all related workflows and batches as well. Are you sure?' }, method: :delete, role: 'button', class: 'btn btn-danger btn-sm' if policy(template).destroy?

@@ -1,0 +1,27 @@
+.row.mb-3
+  .col
+    div.row.mt-4
+      = link_to "< Back", motif_templates_path, class: 'h4 ml-4 mt-2 col-md-1 text-dark'
+      input.form-control.col type="search" placeholder="Template Name"
+      .col
+      .btn-toolbar.float-right.mr-4
+        = link_to 'Save Template', new_motif_template_path, role: 'button', class: 'btn btn-primary'
+br
+.row
+  .col-xl-12
+    .table-responsive
+      table.table.table-hover
+        thead.text-muted
+          tr.d-flex
+            th.col-1
+            th.col-5 Tasks
+            th.col-2 Due Date
+            th.col-2 Uploaded Files
+            th.col-2 Comments
+        tbody
+          - @template.tasks.sort_by{|t| [t.section.position, t.position]}.each_with_index do |t, index|
+            tr
+              td = t.title
+              td = t.deadline
+              td = t.files
+              td
