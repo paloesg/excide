@@ -129,6 +129,7 @@ Rails.application.routes.draw do
       patch '/update_tags', to:'folders#update_tags'
     end
     resources :permissions
+    resources :companies
   end
 
   namespace :conductor do
