@@ -1,0 +1,63 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    button.btn.btn-white.border.border-secondary.text-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-primary add
+      | New
+    #newMotifDocUploads.modal.fade aria-hidden="true" aria-labelledby="newMotifDocumentUploads" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#newMotifDocumentUploads.modal-title Add new outlet
+          .modal-body
+            = form_for(@outlet, url: motif_outlets_path, html: { method: :post }) do |f|
+              .row.mt-3
+                .col-md-12
+                  .form-group
+                    = f.text_field :name, placeholder: 'Outlet name', class: 'form-control'
+                  .form-group
+                    = f.text_field :city, placeholder: 'City', class: 'form-control'
+                  .form-group
+                    = f.text_field :country, placeholder: 'Country', class: 'form-control'
+                  .form-group
+                    = select_tag('company_id', options_from_collection_for_select(@companies, "id", "name"), include_blank: true, class: "select2", style: 'width: 100%')
+              .row
+                .col-md-12
+                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+    .float-right.my-2
+      i.px-5.material-icons-outlined more_vert
+    h3 Franchisees
+    p.mt-5.text-muted
+      | Store and manage information about your franchisees and locations in 
+      br
+      | Franchisees.
+.row.ml-4.align-items-center
+  .col
+    span.mr-3
+      = image_pack_tag "media/src/images/motif/Filter Funnel.svg"
+    | Filters
+  .col-sm-11.text-muted
+    div.form-row.align-items-center
+      span.mr-3
+        = image_pack_tag "media/src/images/motif/Search.svg"
+      input.form-control.border-0.col type="search" placeholder="Search..."
+      div.col-8
+hr.mb-0
+table.table.ml-4
+  thead
+    tr
+      th
+        input# type="checkbox" name=""/
+      th.text-muted Location Name
+      th.text-muted City
+      th.text-muted Country
+      th.text-muted Franchisee Profile
+      th
+  tbody
+    - @outlets.each do |outlet|
+      tr
+        td
+          input.mt-2 type="checkbox" name=""/
+        td = outlet.name
+        td = outlet.city
+        td = outlet.country
+        td = outlet.company.name
