@@ -1,64 +1,27 @@
 class Motif::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_company_roles, only: [:new, :create, :edit]
+  before_action :set_company_roles
   before_action :set_user, except: [:index, :new, :create]
 
   def index
     @users = User.joins(:roles).where(:roles => {resource_id: @company.id}).order(:id).uniq
   end
 
-  # def show
-  # end
-
-  # def new
-  #   @user = User.new
-  # end
-
-  # def create
-  #   @user = User.find_or_initialize_by(email: user_params[:email])
-  #   if @user.first_name.nil?
-  #     @user.update(user_params)
-  #     message = 'User successfully created!'
-  #   else
-  #     updated_roles = Role.where(id: params[:user][:role_ids])
-  #     @user.roles << updated_roles
-  #     message = 'User successfully added!'
-  #   end
-  #   @user.company = @company
-  #   if @user.save
-  #     redirect_to symphony_users_path, notice: message
-  #   else
-  #     render :new
-  #   end
-  # end
-
-  # def edit
-  #   @user = User.find(params[:id])
-  # end
-
-  # def update
-  #   # Get all the updated roles by finding the role instance
-  #   updated_roles = Role.where(id: params[:user][:role_ids])
-  #   # Remove all the roles in that company and then add in the new
-  #   @user.roles.where(resource_id: current_user.company.id).each do |role|
-  #     @user.remove_role(role.name, current_user.company)
-  #   end
-  #   # Append update roles to user's roles
-  #   @user.roles << updated_roles
-  #   if @user.update(first_name: params[:user][:first_name], last_name: params[:user][:last_name], email: params[:user][:email], contact_number: params[:user][:contact_number])
-  #     redirect_to symphony_users_path, notice: 'User successfully updated!'
-  #   else
-  #     render :edit
-  #   end
-  # end
-
-  # def destroy
-  #   @user.destroy
-  #   redirect_to symphony_users_path, notice: 'User was successfully deleted.'
-  # end
-
-  
+  def update
+    # AJAX request to update user type from motif teammates
+    @user = @company.users.find(params[:user_id])
+    @role = @company.roles.find(params[:role_id])
+    respond_to do |format|
+      # # check if update comes from drag and drop or from remarks. If folder_id is not present, then update remarks
+      # if @user.update
+      #   format.json { render json: { link_to: motif_documents_path, status: "ok" } }
+      # else
+      #   format.html { redirect_to motif_documents_path }
+      #   format.json { render json: @document.errors, status: :unprocessable_entity }
+      # end
+    end
+  end
 
   private
 
