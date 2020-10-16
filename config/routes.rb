@@ -130,8 +130,11 @@ Rails.application.routes.draw do
     end
     resources :permissions
     resources :companies
+<<<<<<< HEAD
     resources :users, only: [:index, :create]
     post '/add-roles', to: 'users#add_role', as: :add_role
+=======
+>>>>>>> develop
   end
 
   namespace :conductor do
