@@ -44,7 +44,7 @@ class CustomDeviseMailer < Devise::Mailer
           ],
           dynamic_template_data: {
             firstName: record.email,
-            confirmationToken: token
+            unlockToken: token
           }
         }
       ],
@@ -74,7 +74,7 @@ class CustomDeviseMailer < Devise::Mailer
           ],
           dynamic_template_data: {
             firstName: record.email,
-            confirmationToken: token
+            resetToken: token
           }
         }
       ],
