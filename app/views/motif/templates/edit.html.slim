@@ -1,0 +1,10 @@
+= form_for(@template, url: motif_template_path(template_slug: @template.slug, last_action: params[:last_action])) do |f|
+  .row.m-4
+    .col
+      h1 Edit #{@template.title}
+    .col
+      = f.submit 'Save Template', class: 'btn btn-primary float-right'    
+  .row.m-4
+    .col-xl-12
+        - if @template.sections.present?
+          = render 'form', f: f

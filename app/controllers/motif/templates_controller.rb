@@ -16,6 +16,7 @@ class Motif::TemplatesController < ApplicationController
     @template = Template.new
     authorize @template
     @general_templates = Template.where(company: nil)
+    @template.company = @company
     @templates = policy_scope(Template).assigned_templates(current_user)
   end
 
@@ -24,7 +25,8 @@ class Motif::TemplatesController < ApplicationController
     authorize @template
     @template.company = @company
     if @template.save
-      redirect_to edit_motif_template_path(@template, last_action: 'create')
+      @section = Section.create(position: 1, template_id: @template.id)
+      redirect_to motif_templates_path
     else
       @general_templates = Template.where(company: nil)
       @templates = policy_scope(Template).assigned_templates(current_user)
@@ -42,18 +44,8 @@ class Motif::TemplatesController < ApplicationController
     authorize @template
     if params[:template].present?
       if @template.update(template_params)
-        if params[:last_action].present?
-          # params[:last_action] checks that last action comes from template create method, then set recurring attributes to template and create the first workflow
-          @workflow = Workflow.create(user: current_user, company: current_user.company, template: @template, created_at: @template.start_date)
-          # Set initial recurring attributes
-          @template.set_recurring_attributes
-          # Set the 1st next_workflow_date after workflow is created
-          @template.set_next_workflow_date(@workflow)
-          redirect_to motif_workflows_path(workflow_name: @template.slug)
-        else
-          flash[:notice] = 'Template has been saved.'
-          redirect_to edit_motif_template_path(@template)
-        end
+        flash[:notice] = 'Template has been saved.'
+        redirect_to motif_templates_path
       else
         flash[:alert] = @template.errors.full_messages.join
         render :edit

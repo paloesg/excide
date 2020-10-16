@@ -131,6 +131,7 @@ Rails.application.routes.draw do
     resources :permissions
     resources :companies
     resources :templates, param: :template_slug
+    delete '/templates/:template_slug/destroy_section', to: 'templates#destroy_section', as: :destroy_section
   end
 
   namespace :conductor do

@@ -1,0 +1,16 @@
+.table-responsive
+  table.table
+    thead
+      tr
+        th style="width: 10%" No.
+        th style="width: 20%" Task Type
+        th style="width: 29%" Instruction
+        th style="width: 15%" Assigned Role
+        th style="width: 15%" Assigned User
+        th
+        th style="width: 1%"
+    tbody.section-count class=("task-in-section-#{f.object.id}")
+      = f.fields_for :tasks do |task|
+        = render partial: 'task_fields', locals: { f: task, g: f.object}
+.form-group.col-sm-2.align-self-end
+  = link_to_add_tasks('Add task', f, :tasks, g: f.object)
