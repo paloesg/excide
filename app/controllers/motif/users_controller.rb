@@ -5,7 +5,25 @@ class Motif::UsersController < ApplicationController
   before_action :set_user, except: [:index, :new, :create]
 
   def index
-    @users = User.joins(:roles).where(:roles => {resource_id: @company.id}).order(:id).uniq
+    @users = User.where(company: @company).order(:id).uniq
+    @user = User.new
+  end
+
+  def create
+    @user = User.find_or_initialize_by(email: params[:user][:email])
+    if @user.new_record?
+      @user.first_name = params[:user][:first_name]
+      @user.last_name = params[:user][:last_name]
+    end
+    @user.company = @company
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to motif_users_path, notice: 'Teammate was successfully added.' }
+      else
+        format.html { redirect_to motif_users_path }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # In motif, it is called user_type. The assumption is that for each user, there is only 1 user type

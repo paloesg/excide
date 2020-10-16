@@ -1,9 +1,26 @@
-.row.mb-3
+.row.mb-3.mt-5.ml-3
   .col
     h1 Teammates
-    = link_to new_symphony_user_path, role: 'button', class: 'btn btn-outline-secondary float-right' do
-      i.material-icons.text-primary add
+    button.btn.btn-white.border.border-secondary.text-primary.float-right.ml-5 data-target="#newTeammates" data-toggle="modal" type="button"
       | Add people
+    #newTeammates.modal.fade aria-hidden="true" aria-labelledby="addNewTeammates" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#addNewTeammates.modal-title Add new teammates
+          .modal-body
+            = form_for(@user, url: motif_users_path, html: { method: :post }) do |f|
+              .row.mt-3
+                .col-md-12
+                  .form-group
+                    = f.text_field :email, placeholder: 'Email', class: 'form-control'
+                  .form-group
+                    = f.text_field :first_name, placeholder: 'First Name', class: 'form-control'
+                  .form-group
+                    = f.text_field :last_name, placeholder: 'Last Name', class: 'form-control'
+              .row
+                .col-md-12
+                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
 .row
   .col-12
     .table-responsive
