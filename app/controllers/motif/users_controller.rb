@@ -8,18 +8,20 @@ class Motif::UsersController < ApplicationController
     @users = User.joins(:roles).where(:roles => {resource_id: @company.id}).order(:id).uniq
   end
 
-  def update
+  # In motif, it is called user_type. The assumption is that for each user, there is only 1 user type
+  def add_role
     # AJAX request to update user type from motif teammates
     @user = @company.users.find(params[:user_id])
     @role = @company.roles.find(params[:role_id])
+    # Save role into user
+    @user.roles << @role
     respond_to do |format|
-      # # check if update comes from drag and drop or from remarks. If folder_id is not present, then update remarks
-      # if @user.update
-      #   format.json { render json: { link_to: motif_documents_path, status: "ok" } }
-      # else
-      #   format.html { redirect_to motif_documents_path }
-      #   format.json { render json: @document.errors, status: :unprocessable_entity }
-      # end
+      if @user.save
+        format.json { render json: { link_to: motif_users_path, status: "ok" } }
+      else
+        format.html { redirect_to motif_users_path }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
     end
   end
 
