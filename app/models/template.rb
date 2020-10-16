@@ -25,6 +25,8 @@ class Template < ApplicationRecord
   validates :title, :slug, presence: true
 
   before_save :data_names_to_json
+  # Scope templates that have no batches. Only those that have no batches will be displayed in symphony sidebar
+  scope :has_no_batches, -> { includes(:batches).where(batches: { id: nil }) }
 
   def get_roles
     self.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
