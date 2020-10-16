@@ -1,15 +1,19 @@
 class Motif::OutletsController < ApplicationController
+  before_action :set_company
   def index
-    @outlets = Outlet.where(company: @company)
+    @outlets = Outlet.includes(:company).where(companies: { franchise_id: @company.id })
     @outlet = Outlet.new
     @companies = Company.all
   end
 
   def create
     @outlet = Outlet.new(outlet_params)
+    # Setting the outlet to the franchisee
     @outlet.company = Company.find_by(id: params[:company_id])
+    # Setting the franchisee to the franchise company
+    @outlet.company.franchise_id = @company.id
     respond_to do |format|
-      if @outlet.save
+      if @outlet.save and @outlet.company.save
         format.html { redirect_to motif_outlets_path, notice: 'Outlet was successfully created.' }
         format.json { render :show, status: :created, location: @outlet }
       else

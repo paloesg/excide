@@ -27,6 +27,9 @@ class Company < ApplicationRecord
   has_one :address, as: :addressable, dependent: :destroy
   has_many :roles, as: :resource, dependent: :destroy
 
+  has_many :franchisees, class_name: 'Company', foreign_key: "franchise_id"
+  belongs_to :franchise, class_name: 'Company'
+
   belongs_to :consultant, class_name: 'User'
   belongs_to :associate, class_name: 'User'
   belongs_to :shared_service, class_name: 'User'
