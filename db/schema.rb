@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_16_090244) do
+ActiveRecord::Schema.define(version: 2020_10_18_161301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -197,7 +197,9 @@ ActiveRecord::Schema.define(version: 2020_10_16_090244) do
     t.string "mailbox_token"
     t.integer "before_deadline_reminder_days"
     t.json "products", default: []
+    t.string "website_url"
     t.bigint "franchise_id"
+    t.json "franchisee_details"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["franchise_id"], name: "index_companies_on_franchise_id"
