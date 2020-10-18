@@ -1,5 +1,12 @@
 class Motif::CompaniesController < ApplicationController
   before_action :set_company
+  # Index method is to list all the franchisees
+  def index
+    @outlets = Outlet.includes(:company).where(companies: { franchise_id: @company.id })
+    @outlet = Outlet.new
+    @franchisees = @company.franchisees
+    @companies = Company.all
+  end
 
   def edit
   end
