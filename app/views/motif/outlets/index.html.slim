@@ -7,19 +7,19 @@
       .modal-dialog role="document"
         .modal-content
           .modal-header
-            h5#newMotifDocumentUploads.modal-title Add new outlet
+            h5#newMotifDocumentUploads.modal-title New Franchisee Outlet
           .modal-body
             = form_for(@outlet, url: motif_outlets_path, html: { method: :post }) do |f|
               .row.mt-3
                 .col-md-12
                   .form-group
-                    = f.text_field :name, placeholder: 'Outlet name', class: 'form-control'
+                    = f.text_field :name, placeholder: 'Create Outlet Name', class: 'form-control'
                   .form-group
-                    = f.text_field :city, placeholder: 'City', class: 'form-control'
+                    = f.text_field :city, placeholder: 'Choose City', class: 'form-control'
                   .form-group
-                    = f.text_field :country, placeholder: 'Country', class: 'form-control'
+                    = f.text_field :country, placeholder: 'Choose Country', class: 'form-control'
                   .form-group
-                    = select_tag('company_id', options_from_collection_for_select(@companies, "id", "name"), include_blank: true, class: "select2", style: 'width: 100%')
+                    = select_tag('company_id', options_from_collection_for_select(@companies, "id", "name"), include_blank: true, prompt: 'Type Franchisee email', class: "select2", style: 'width: 100%')
               .row
                 .col-md-12
                   = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
@@ -40,24 +40,9 @@
       span.mr-3
         = image_pack_tag "media/src/images/motif/Search.svg"
       input.form-control.border-0.col type="search" placeholder="Search..."
-      div.col-8
+      = select_tag 'view', options_for_select([["List View", "list"], ["Card View", "card"]]), include_blank: true, prompt: 'List view', required: true, class: 'select2 outlet-view-option', style: "width: 20%;"
 hr.mb-0
-table.table.ml-4
-  thead
-    tr
-      th
-        input# type="checkbox" name=""/
-      th.text-muted Location Name
-      th.text-muted City
-      th.text-muted Country
-      th.text-muted Franchisee Profile
-      th
-  tbody
-    - @outlets.each do |outlet|
-      tr
-        td
-          input.mt-2 type="checkbox" name=""/
-        td = outlet.name
-        td = outlet.city
-        td = outlet.country
-        td = outlet.company.name
+- if params[:view] == 'card'
+  = render 'card_view'
+- else
+  = render 'list_view'

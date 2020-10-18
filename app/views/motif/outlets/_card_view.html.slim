@@ -1,0 +1,16 @@
+.row.mt-5
+  - @franchisees.each do |franchisee|
+    .col-sm-4.mt-3
+      .card.h-100.card-custom.card-stretch.gutter-b.card-view-franchisees
+        .card-body
+          .row
+            .col-sm-12.mt-3
+              h3 = franchisee.name
+          .row.mt-5
+            .col-sm-2.mr-0
+              / insert company profile picture next time
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2 mr-2'
+            .col-sm-10
+              p.text-muted #{franchisee.outlets.count} outlets
+              p.text-muted email@address.com
+              p.text-muted #{franchisee.contact_details || 90000001}

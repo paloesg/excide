@@ -3,6 +3,7 @@ class Motif::OutletsController < ApplicationController
   def index
     @outlets = Outlet.includes(:company).where(companies: { franchise_id: @company.id })
     @outlet = Outlet.new
+    @franchisees = @company.franchisees
     @companies = Company.all
   end
 
