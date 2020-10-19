@@ -197,7 +197,6 @@ ActiveRecord::Schema.define(version: 2020_10_18_161301) do
     t.string "mailbox_token"
     t.integer "before_deadline_reminder_days"
     t.json "products", default: []
-    t.string "website_url"
     t.bigint "franchise_id"
     t.json "franchisee_details"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
