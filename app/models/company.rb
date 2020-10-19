@@ -19,6 +19,7 @@ class Company < ApplicationRecord
   has_many :reminders, dependent: :destroy
   has_many :batches, dependent: :destroy
   has_many :invoices, dependent: :destroy
+  has_many :outlets, dependent: :destroy
   has_many :xero_contacts, dependent: :destroy
   has_many :xero_line_items, dependent: :destroy
   has_many :xero_tracking_categories, dependent: :destroy

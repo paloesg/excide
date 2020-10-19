@@ -39,9 +39,6 @@
           .col-md-12.p-0
             = f.label :remarks, "Remarks", class: 'text-muted'
             = f.text_field :remarks, { class: 'form-control remark-border p-0', data: { document_id: permissible.id, path: path }, onchange: "remarks(this);"}
-          .col-md-2
-            = fa_icon "check", class: 'text-success ajax-icons'
-            = fa_icon "times", class: 'text-danger ajax-icons'
       / Only admin of company have access tab
       - if current_user.has_role?(:admin, @company)
         .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{permissible.id}" role="tabpanel"
