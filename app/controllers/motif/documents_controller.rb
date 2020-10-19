@@ -9,9 +9,9 @@ class Motif::DocumentsController < ApplicationController
   def index
     @folder = Folder.new
     @folders = policy_scope(Folder).roots
+    @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc)
     @roles = @company.roles.includes(:permissions)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
-    @documents = policy_scope(Document).order(created_at: :desc)
   end
 
   def new
@@ -46,10 +46,13 @@ class Motif::DocumentsController < ApplicationController
 
   def update
     authorize @document
+    @folder = @company.folders.find(params[:folder_id]) if params[:folder_id].present?
     respond_to do |format|
-      if @document.update(remarks: params[:document][:remarks])
-        format.json { render json: @document, status: :ok }
+      # check if update comes from drag and drop or from remarks. If folder_id is not present, then update remarks
+      if (params[:folder_id].present? ? @document.update(folder_id: @folder.id) : @document.update(remarks: params[:document][:remarks]))
+        format.json { render json: { link_to: motif_documents_path, status: "ok" } }
       else
+        format.html { redirect_to motif_documents_path }
         format.json { render json: @document.errors, status: :unprocessable_entity }
       end
     end

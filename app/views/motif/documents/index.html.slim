@@ -21,7 +21,7 @@
     div.float-right.mx-5.mt-2
       a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
         = image_pack_tag 'media/src/images/motif/Info Tooltip.svg'
-    h3 DOCUMENT REPOSITORY
+    h3 DATAROOM
     p.mt-5.text-muted
       | Store, share and manage your important documents and access control
       br
@@ -84,17 +84,19 @@
     thead
       tr
         th
+        th
           input#checkedAll type="checkbox" name=""/
         th.text-muted NAME
         th.text-muted TAGS
         th.text-muted DATE MODIFIED
         th.text-muted ACCESS
         th
-    tbody
+    tbody.draggable-zone
       - @folders.each_with_index do |folder, index|
-        tr.drawer-row data-drawer=folder.id
+        tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
           td
-            input.checkSingle type="checkbox"
+          td
+            input.checkSingle.mt-2 type="checkbox"
           td
             span.mr-5
               = image_pack_tag "media/src/images/motif/folder.svg"
@@ -120,11 +122,13 @@
                 .dropdown-item = link_to "Download", root_path
                 .dropdown-item = link_to "Delete", root_path
                 .dropdown-item = link_to "Manage Version", root_path
-        = render "drawer", permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
+        = render 'motif/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
       - @documents.each_with_index do |d, index|
-        tr.drawer-row data-drawer=d.id
+        tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
+          td.draggable-handle
+            i.material-icons-outlined drag_indicator
           td
-            input.checkSingle type="checkbox"
+            input.checkSingle.mt-2 type="checkbox"
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"
@@ -150,5 +154,5 @@
                 .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
                 .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete
                 .dropdown-item = link_to "Manage Version", root_path
-          = render 'show_document', d: d
-        = render "drawer", permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
+          = render 'motif/shared/show_document', d: d
+        = render 'motif/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
