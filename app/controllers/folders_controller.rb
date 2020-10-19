@@ -29,7 +29,7 @@ class FoldersController < ApplicationController
   # POST /folders.json
   def create
     @folder = Folder.new(folder_params)
-
+    puts "permissible array #{params[:folder]}"
     respond_to do |format|
       if @folder.save
         format.html { redirect_to @folder, notice: 'Folder was successfully created.' }

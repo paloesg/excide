@@ -59,15 +59,24 @@
                   = link_to "Delete", root_path, class: "btn btn-primary"
       span
         i.material-icons-outlined folder_open
-        a data-toggle="modal" data-target="#groupFolder" data-backdrop="false" Group into folder
-        #groupFolder.modal.fade aria-hidden="true" aria-labelledby="groupFolder" role="dialog" tabindex="-1"
-          .modal-dialog.modal-dialog-centered.modal-sm role="document"
+        a.group-folder data-toggle="modal" data-target="#checkedFolderUpload" Create Folder
+        #checkedFolderUpload.modal.fade aria-hidden="true" aria-labelledby="selectCheckedFolderUpload" role="dialog" tabindex="-1"
+          .modal-dialog role="document"
             .modal-content
-              .modal-body.shadow-lg
-                .mb-4 Create new folder
-                span.float-right
-                  a.btn.btn-link-primary.mr-3 data-dismiss="modal" Cancel
-                  = link_to "Save", root_path, class: "btn btn-primary"
+              .modal-header
+                h5#selectCheckedFolderUpload.modal-title Create new folder
+                button.close aria-label="Close" data-dismiss="modal" type="button"
+                  span aria-hidden="true"  &times;
+              .modal-body
+                = form_for(@folder, url: motif_folders_path, html: { method: :post }) do |f|
+                  .row.mt-3
+                    .col-md-12
+                      .form-group
+                        = f.text_field :name, placeholder: 'New folder', class: 'form-control'
+                  .row.hidden-forms
+                  .row
+                    .col-md-12
+                      = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
       span.mr-4#clearSelect style="cursor: pointer;"
         | X
   hr.mb-0
