@@ -94,10 +94,6 @@ class Symphony::UsersController < ApplicationController
 
   private
 
-  def set_company
-    @company = current_user.company
-  end
-
   def set_user
     @user = User.find_by(id: params[:id])
   end

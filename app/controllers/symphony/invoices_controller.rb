@@ -253,10 +253,6 @@ class Symphony::InvoicesController < ApplicationController
     @current_position = @workflows.pluck('id').index(@workflow.id)+1
   end
 
-  def set_company
-    @company = current_user.company
-  end
-
   def set_documents
     @documents = @workflow.documents.where(workflow_id: @workflow.id).order(created_at: :desc)
     unless @documents.empty?

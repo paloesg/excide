@@ -94,10 +94,6 @@ class Conductor::AvailabilitiesController < ApplicationController
     @availability = Availability.find(params[:id])
   end
 
-  def set_company
-    @company = current_user.company
-  end
-
   def set_associate
     @users = User.with_role(:associate, @company).uniq
   end

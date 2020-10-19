@@ -26,6 +26,7 @@ class Company < ApplicationRecord
   has_many :survey_templates, dependent: :destroy
   has_one :address, as: :addressable, dependent: :destroy
   has_many :roles, as: :resource, dependent: :destroy
+  has_many :contacts, dependent: :destroy
 
   belongs_to :consultant, class_name: 'User'
   belongs_to :associate, class_name: 'User'

@@ -132,6 +132,10 @@ Rails.application.routes.draw do
     resources :companies
   end
 
+  namespace :overture do
+    root to: 'contacts#index'
+  end
+
   namespace :conductor do
     resources :event_types
     resources :users do
