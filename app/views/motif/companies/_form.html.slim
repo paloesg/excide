@@ -8,21 +8,21 @@
   .col-sm-3
     .circular--portrait
       = @company.company_logo.attached? ? (image_tag(@company.company_logo, class: 'profile-pic')): (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'profile-pic')
-    / .form-group
-    /   = f.label :company_logo, 'Company logo', class: 'text-muted'
-    /   = f.file_field :company_logo, class: 'form-control'
+    .form-group
+      = f.label :company_logo, 'Company logo', class: 'text-muted'
+      = f.file_field :company_logo, class: 'form-control'
   .col-sm-3
     .circular--portrait
-      = @company.company_logo.attached? ? (image_tag(@company.company_logo, class: 'profile-pic')): (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'profile-pic')
-    / .form-group
-    /   = f.label :profile_logo, 'Profile logo', class: 'text-muted'
-    /   = f.file_field :profile_logo, class: 'form-control'
+      = @company.profile_logo.attached? ? (image_tag(@company.profile_logo, class: 'profile-pic')): (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'profile-pic')
+    .form-group
+      = f.label :profile_logo, 'Profile logo', class: 'text-muted'
+      = f.file_field :profile_logo, class: 'form-control'
   .col-sm-3
     .circular--portrait
-      = @company.company_logo.attached? ? (image_tag(@company.company_logo, class: 'profile-pic')): (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'profile-pic')
-    / .form-group
-    /   = f.label :banner_image, 'Banner image', class: 'text-muted'
-    /   = f.file_field :banner_image, class: 'form-control'
+      = @company.banner_image.attached? ? (image_tag(@company.banner_image, class: 'profile-pic')): (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'profile-pic')
+    .form-group
+      = f.label :banner_image, 'Banner image', class: 'text-muted'
+      = f.file_field :banner_image, class: 'form-control'
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .form-group
