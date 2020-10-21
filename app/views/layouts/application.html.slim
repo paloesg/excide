@@ -58,7 +58,7 @@ html lang="en"
       / Layout for motif
       - elsif controller.class.parents.include?(Motif)
         - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || current_page?(new_motif_template_path) || current_page?(edit_motif_template_path(current_user.company))
-          .motif-wrapper
+          .motif-wrapper.overflow-auto
             / for motif pages, render a different sidebar
             .motif-contents
               / If no content, the styling will still be full height
