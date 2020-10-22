@@ -1,6 +1,11 @@
 class Motif::OutletsController < ApplicationController
   before_action :set_company
 
+  def index
+    @outlets = Outlet.includes(:company).where(companies: { franchise_id: @company.id })
+    @outlet = Outlet.new
+  end
+
   def create
     @outlet = Outlet.new(outlet_params)
     # Setting the outlet to the franchisee
