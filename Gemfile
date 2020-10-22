@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-ruby '2.7.1'
+ruby '2.7.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3.0'
+gem 'rails', '~> 6.0.3.4'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 1.2.3', '< 2.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -26,7 +26,7 @@ gem 'rack-timeout'
 # Better Rails logging
 gem 'lograge'
 # The default JavaScript compiler for Rails 6
-gem 'webpacker', '~> 5.2.0'
+gem 'webpacker', '~> 5.2.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
