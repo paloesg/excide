@@ -35,6 +35,9 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .form-group
+      = f.label :name, 'Company Name', class: 'text-muted'
+      = f.text_field :name, class: 'form-control'
+    .form-group
       = f.label :website_url, 'Company Website Url', class: 'text-muted'
       = f.text_field :website_url, class: 'form-control'
 hr
