@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_15_085206) do
+ActiveRecord::Schema.define(version: 2020_10_21_125439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -246,17 +246,6 @@ ActiveRecord::Schema.define(version: 2020_10_15_085206) do
     t.index ["folder_id"], name: "index_documents_on_folder_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
-  end
-
-  create_table "enquiries", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "contact"
-    t.string "email"
-    t.text "comments"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "source"
-    t.boolean "responded", default: false
   end
 
   create_table "event_types", id: :serial, force: :cascade do |t|
