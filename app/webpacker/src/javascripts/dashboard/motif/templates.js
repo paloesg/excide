@@ -10,5 +10,6 @@ $(document).on("turbolinks:load", function () {
     $(insertedItem).find("td.drawer-toggle").attr('id', 'drawer_toggle_' + $(insertedItem).data("drawer") +'_0');
     console.log("What is jquery data attr: ", $(insertedItem).data("drawer"));
     console.log("WHat is hello world: ", $(".hello-world"))
+    $("#tasksOffcanvas").append("<div class='offcanvas offcanvas-right offcanvas-top p-5 overflow-auto' id='drawer_" + e.timeStamp + "'><div class='row'><div class='col-md-11'><h5 class='d-inline'>Hello world</h5></div><div class='col-md-1'><a class='d-inline' href='#' id='drawer_close_" + e.timeStamp + "'><i class='material-icons-outlined'>close</i></a></div></div></div>");
   });
 });
