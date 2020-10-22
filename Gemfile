@@ -66,17 +66,12 @@ gem 'rack-attack'
 
 # State machine gem
 gem 'aasm'
-# SMS integration with Twilio
-gem 'twilio-ruby'
 # Manage ordering for survey objects
 gem 'acts_as_list'
 # For tagging
 gem 'acts-as-taggable-on', '~> 6.5.0'
 # Use user friendly slugs
 gem 'friendly_id', '5.3.0'
-# Amazon S3 SDK
-gem 'aws-sdk-s3', '~> 1.81.0'
-gem 'aws-sdk-textract', '~> 1.19.0'
 # Set meta tags
 gem 'meta-tags'
 # Activity feed
@@ -91,28 +86,20 @@ gem 'popper_js'
 gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-rails.git'
 # Font Awesome Rails
 gem 'font_awesome5_rails'
-# Use inky for email templating
-gem 'inky-rb', require: 'inky'
-# Stylesheet inlining for email
-gem 'premailer-rails'
 # Default processer: MiniMagick. Enable variant for image using ActiveStorage
 gem 'image_processing', '~> 1.11.0'
 # Office previewer
 gem "activestorage-office-previewer"
-# Sendgrid web API
-gem 'sendgrid-ruby'
-gem 'sendgrid-actionmailer'
 
 # Nested form helper
-# gem "cocoon"
 # cocoon have a problem, so need use git first, solved in https://stackoverflow.com/questions/13190683/no-new-object-passed-to-cocoon-callback
 gem 'cocoon'
 # WYSIWYG editor
 gem 'trix'
 # Render calendar
 gem 'simple_calendar', '~> 2.4.0'
-# Algolia search
-gem 'algoliasearch-rails'
+# Create tree structure
+gem 'ancestry'
 # Selectize autocomplete selection
 gem 'selectize-rails'
 # Get mime type from filename
@@ -128,12 +115,51 @@ gem 'countries', require: 'countries/global'
 gem 'phonelib'
 # In-app notification feature
 gem 'activity_notification'
+
+#################################################
+#                                               #
+#             Emailer Gems                      #
+#                                               #
+#################################################
+
+# Sendgrid web API
+gem 'sendgrid-ruby'
+gem 'sendgrid-actionmailer'
+# Use inky for email templating
+gem 'inky-rb', require: 'inky'
+# Stylesheet inlining for email
+gem 'premailer-rails'
+
+#################################################
+#                                               #
+#             External Integrations             #
+#                                               #
+#################################################
+
 # Integrate Slack API
 gem 'slack-ruby-client'
+# Algolia search
+gem 'algoliasearch-rails'
+# Amazon S3 SDK
+gem 'aws-sdk-s3', '~> 1.81.0'
+gem 'aws-sdk-textract', '~> 1.19.0'
+# SMS integration with Twilio
+gem 'twilio-ruby'
+# Analytics
+gem 'mixpanel-ruby'
+# Performance reporting
+gem 'skylight'
+gem 'scout_apm'
+# Error monitoring
+gem 'rollbar'
+gem 'oj'
+gem 'snitcher'
 
-gem 'ancestry'
-
-# Backend admin
+#################################################
+#                                               #
+#             Backend Admin                     #
+#                                               #
+#################################################
 gem 'administrate', '0.14.0'
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many'
@@ -145,18 +171,6 @@ gem 'deep_cloneable', '~> 3.0.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
-
-# Analytics
-gem 'mixpanel-ruby'
-
-# Error monitoring
-gem 'rollbar'
-gem 'oj'
-gem 'snitcher'
-
-# Performance reporting
-gem 'skylight'
-gem 'scout_apm'
 
 group :development do
   gem 'rails_real_favicon'
