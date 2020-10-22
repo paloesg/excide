@@ -1,6 +1,3 @@
 {
   "name":"Symphony Review App",
-  "scripts": {
-    "postdeploy": "bundle exec rails db:seed DISABLE_DATABASE_ENVIRONMENT_CHECK=1"
-  }
 }
