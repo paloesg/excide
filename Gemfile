@@ -75,10 +75,6 @@ gem 'friendly_id', '5.3.0'
 # Amazon S3 SDK
 gem 'aws-sdk-s3', '~> 1.81.0'
 gem 'aws-sdk-textract', '~> 1.19.0'
-# Sitemap generator
-gem 'sitemap_generator'
-# Uploading of sitemap to AWS
-gem 'fog-aws'
 # Set meta tags
 gem 'meta-tags'
 # Activity feed
