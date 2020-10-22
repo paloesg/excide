@@ -28,9 +28,9 @@ require("./symphony/templates/choose_template_patterns");
 require("./symphony/header");
 require("./symphony/home");
 
+require("./motif/drawer")
 require("./motif/drag_documents");
 require("./motif/templates");
-require("./motif/drawer")
 require("./motif/remarks")
 
 window.createAllocation = require("./conductor/create_allocations");
