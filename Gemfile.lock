@@ -204,9 +204,6 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.4.4)
-    docusign_rest (0.4.4)
-      json
-      multipart-post (>= 1.2)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
@@ -660,7 +657,6 @@ DEPENDENCIES
   deep_cloneable (~> 3.0.0)
   derailed_benchmarks
   devise
-  docusign_rest
   dotenv-rails
   factory_bot_rails
   faker!

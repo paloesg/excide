@@ -64,8 +64,6 @@ gem 'rack-attack'
 
 # State machine gem
 gem 'aasm'
-# Docusign gem for e-signature
-gem 'docusign_rest'
 # SMS integration with Twilio
 gem 'twilio-ruby'
 # Manage ordering for survey objects
