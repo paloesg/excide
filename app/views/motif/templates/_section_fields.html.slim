@@ -1,4 +1,4 @@
 = f.fields_for :tasks do |task|
-  = render 'task_fields', f: task
+  = render 'task_fields', f: task 
 .links
 = link_to_add_association '+', f, :tasks,:"data-association-insertion-node" => "tbody#tasks",:"data-association-insertion-method" => "append",  class: 'btn btn-sm btn-primary float-right'

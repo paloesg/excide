@@ -1,11 +1,11 @@
-tr.nested-fields
+tr.nested-fields.drawer-row 
   td 
     i.material-icons-outlined drag_indicator
   td 
     input.mt-2 type="checkbox" name=""/
   td = f.text_field :instructions, {required: true, class: "form-control"}
   td = f.number_field :deadline_day, class: "form-control"
-  td
+  td.drawer-toggle
     i.material-icons-outlined.mr-4 insert_drive_file
     | 5
   td
@@ -13,8 +13,8 @@ tr.nested-fields
     | 2
   td
     i.material-icons-outlined more_horiz
-
   = link_to_remove_association "remove task", f
+= render 'motif/templates/drawer'
 / tr
 /   td.task-fields = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
 /   td.task-fields = f.select :task_type, options_for_select(Task.task_types.map{|k, v| ((k == "create_invoice_payable" || k == "xero_send_invoice" || k ==  "create_invoice_receivable" || k == "coding_invoice") && current_user.company.basic?) ? ["[PRO] " + k.humanize, k] : [k.humanize, k]}, selected: f.object.task_type, disabled: current_user.company.basic? ? ["create_invoice_payable", "xero_send_invoice", "create_invoice_receivable", "coding_invoice"] : []), {}, { required: true, class: "select2 form-control"}
