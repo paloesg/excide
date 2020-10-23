@@ -58,14 +58,6 @@ class Symphony::UsersController < ApplicationController
     redirect_to symphony_users_path, notice: 'User was successfully deleted.'
   end
 
-  def change_company
-    if @user.update(user_params)
-      redirect_to symphony_root_path, notice: 'Company changed to ' + @user.company.name + '.'
-    else
-      redirect_to symphony_root_path, error: 'Sorry, there was an error when trying to switch company.'
-    end
-  end
-
   def notification_settings
   end
 
@@ -101,10 +93,6 @@ class Symphony::UsersController < ApplicationController
   end
 
   private
-
-  def set_company
-    @company = current_user.company
-  end
 
   def set_user
     @user = User.find_by(id: params[:id])

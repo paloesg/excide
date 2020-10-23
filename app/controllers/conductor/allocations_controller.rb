@@ -131,10 +131,6 @@ class Conductor::AllocationsController < ApplicationController
     @allocations = Allocation.where(allocation_date: @date_from..@date_to).joins(:event).where(events: { company_id: @company.id } ).order(allocation_date: :desc, start_time: :asc, id: :asc)
   end
 
-  def set_company
-    @company = current_user.company
-  end
-
   def set_associate
     @users = User.with_role(:associate, @company).uniq
   end

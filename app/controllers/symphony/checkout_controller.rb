@@ -1,4 +1,5 @@
 class Symphony::CheckoutController < ApplicationController
+
   after_action :verify_authorized
   def create
     authorize :checkout, :create?

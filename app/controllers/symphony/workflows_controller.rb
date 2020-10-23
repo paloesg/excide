@@ -4,7 +4,8 @@ class Symphony::WorkflowsController < ApplicationController
   rescue_from Xeroizer::InvoiceNotFoundError, with: :xero_error_invoice_not_found
 
   before_action :authenticate_user!
-  before_action :set_company_and_roles
+  before_action :set_company
+  before_action :set_roles
   before_action :set_template
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero]
@@ -334,9 +335,7 @@ class Symphony::WorkflowsController < ApplicationController
     @current_task = @workflow.current_task
   end
 
-  def set_company_and_roles
-    @user = current_user
-    @company = @user.company
+  def set_roles
     @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
   end
 

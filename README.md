@@ -3,7 +3,7 @@
 [![CircleCI](https://circleci.com/gh/hschin/excide.svg?style=svg&circle-token=f0bf150e8df63ae18c3f38683f3202a2e59fe5bb)](https://circleci.com/gh/hschin/excide)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/78b3a488b7c14a949e56b45e1505b241)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=hschin/excide&utm_campaign=Badge_Grade)
 
-The Excide web platform hosts the main website of Excide and several backend processes such as enquiries, reminders and surveys.
+The Excide web platform hosts the main products for Paloe: Symphony, Motif, Overture and Conductor.
 
 ## System Dependencies
 

@@ -1,6 +1,7 @@
 class Conductor::EventsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_company_and_clients
+  before_action :set_company
+  before_action :set_clients
   before_action :set_staffers, only: [:new, :edit]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
   before_action :get_users_and_service_lines, only: [:index, :new, :edit, :create, :update]
@@ -19,7 +20,7 @@ class Conductor::EventsController < ApplicationController
     @events = @events.allocation(params[:allocation_users]) unless params[:allocation_users].blank?
     @events = @events.client(params[:project_clients]) unless params[:project_clients].blank?
     @events = Event.tagged_with(params[:service_line]) unless params[:service_line].blank?
-    
+
     # Only show their own timesheet events unless they are admin or staffer, as the 2 can see all events
     @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) unless @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
 
@@ -62,7 +63,7 @@ class Conductor::EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         # Allocate yourself to the timesheet allocation
-        @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, params[:user].present? ? User.find(params[:user]) : current_user).run 
+        @timesheet_allocation = GenerateTimesheetAllocationService.new(@event, params[:user].present? ? User.find(params[:user]) : current_user).run
         if @timesheet_allocation.success?
           format.html { redirect_to conductor_events_path, notice: 'Event created successfully.'}
           format.json { render :show, status: :created, location: @event }
@@ -139,9 +140,7 @@ class Conductor::EventsController < ApplicationController
     @event = current_user.company.events.find(params[:id])
   end
 
-  def set_company_and_clients
-    @user = current_user
-    @company = @user.company
+  def set_clients
     @clients = Client.where(company_id: @company.id).sort_by(&:name)
   end
 

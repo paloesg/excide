@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   rescue_from OAuth::Unauthorized, with: :xero_unauthorized
   rescue_from Xeroizer::OAuth::RateLimitExceeded, with: :xero_rate_limit_exceeded
 
+  before_action :authenticate_product
+
   after_action :store_location
 
   def store_location
@@ -23,22 +25,11 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.company.name.present?
-      if current_user.company.products.length >= 2
-        root_path
-      elsif current_user.company.products.length == 1
-        if current_user.company.products[0] == 'symphony'
-          if current_user.company.session_handle.blank? and current_user.company.connect_xero?
-            connect_to_xero_path
-          else
-            symphony_root_path
-          end
-        elsif current_user.company.products[0] == 'motif'
-          motif_root_path
-        end
-      end
+    if current_user.company.products.count == 1
+      # Path after sign in is the product's root path
+      '/' + current_user.company.products.first
     else
-      additional_information_path
+      root_path
     end
   end
 
@@ -48,7 +39,6 @@ class ApplicationController < ActionController::Base
     policy_name = exception.policy.class.to_s.underscore
 
     flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-
     redirect_back(fallback_location: root_path)
   end
 
@@ -83,5 +73,16 @@ class ApplicationController < ActionController::Base
     message = 'You have exceeded the number of times you can access Xero in 1 minute. Please wait a few minutes and try again.'
     Rails.logger.error("Xero error: Rate limited exceeded")
     redirect_to symphony_root_path, alert: message
+  end
+
+  # Checks the controller parent and check if the user has access to the product based on application policy unless parent is users (login) or object (not namespaced)
+  def authenticate_product
+    product = self.class.parent.to_s.downcase
+    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || "object"
+  end
+
+  def set_company
+    @user = current_user
+    @company = current_user.company
   end
 end
