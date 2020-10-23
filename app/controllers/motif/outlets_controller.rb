@@ -1,5 +1,6 @@
 class Motif::OutletsController < ApplicationController
   before_action :set_company
+  before_action :set_franchisee
 
   def index
     @outlets = Outlet.includes(:company).where(companies: { franchise_id: @company.id })
@@ -23,9 +24,22 @@ class Motif::OutletsController < ApplicationController
     end
   end
 
+  def edit
+    
+  end
+
+  def update
+    
+  end
+
   private
   def set_company
     @company = current_user.company
+  end
+
+  def set_franchisee
+    @franchisee = Company.find(params[:company_franchisee_id])
+    @outlet = Outlet.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.

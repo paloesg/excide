@@ -19,9 +19,13 @@ class Motif::CompaniesController < ApplicationController
     end
   end
 
+  def show
+    
+  end
+
   private
   def set_company
-    @company = current_user.company
+    @company = params[:franchisee_id].present? ? Company.find(params[:franchisee_id]) : current_user.company
   end
 
   def company_params
