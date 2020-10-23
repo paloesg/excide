@@ -1,22 +1,38 @@
-.sidebar-sticky
-  ul.nav.flex-column
-    li.nav-item.py-1.m-4
-      h3 Settings
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to root_path, class: 'col-sm-12 d-flex align-items-center' do
-        .ml-2.sidebar-font My Account
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to edit_motif_company_path(current_user.company), class: 'col-sm-12 d-flex align-items-center' do
-        .ml-2.sidebar-font Company Profile
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-        .ml-2.sidebar-font Teammates
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to symphony_roles_path, class: 'col-sm-12 d-flex align-items-center' do
-        .ml-2.sidebar-font Onboarding Setup
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to integration_company_path, class: 'col-sm-12 d-flex align-items-center' do
-        .ml-2.sidebar-font Report Sync-up
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to notification_settings_symphony_user_path(current_user), class: 'col-sm-12 d-flex align-items-center' do
-        .ml-2.sidebar-font Q&A Setup
+- if params[:franchisee_id].present?
+  .sidebar-sticky
+    ul.nav.flex-column
+      - @company = Company.find(params[:franchisee_id])
+      li.nav-item.hover-blue.py-1.m-4
+        .row
+          .col-md-4
+            = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2 mr-2'
+          .col-md-8
+            h4 = @company.name
+            p Corporate Franchisee
+      - @company.outlets.each do |outlet|
+        li.nav-item.hover-blue.py-1.m-4
+          = link_to outlet.name, edit_motif_company_outlet_path(company_franchisee_id: outlet.company.id, id: outlet.id), class: 'p-2 text-dark'
+
+- else
+  .sidebar-sticky
+    ul.nav.flex-column
+      li.nav-item.py-1.m-4
+        h3 Settings
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to root_path, class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font My Account
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to edit_motif_company_path(current_user.company), class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font Company Profile
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font Teammates
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to symphony_roles_path, class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font Onboarding Setup
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to integration_company_path, class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font Report Sync-up
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to notification_settings_symphony_user_path(current_user), class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font Q&A Setup
