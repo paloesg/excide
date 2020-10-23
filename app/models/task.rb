@@ -18,8 +18,8 @@ class Task < ApplicationRecord
 
   acts_as_list scope: :section
 
-  validates :instructions, :position, :task_type, presence: true
-  validate :check_user_and_role_fields
+  # validates :instructions, :position, :task_type, presence: true
+  # validate :check_user_and_role_fields
 
   def get_workflow_action(company_id, workflow_id = nil)
     workflow_id = workflow_id.present? ? Workflow.find(workflow_id).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id

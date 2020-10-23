@@ -24,8 +24,7 @@ class Motif::TemplatesController < ApplicationController
     @template = Template.new(template_params)
     authorize @template
     @template.company = @company
-    if @template.save
-      @section = Section.create(position: 1, template_id: @template.id)
+    if @template.save!
       redirect_to motif_templates_path
     else
       @general_templates = Template.where(company: nil)

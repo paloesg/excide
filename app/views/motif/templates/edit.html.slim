@@ -1,10 +1,26 @@
 = form_for(@template, url: motif_template_path(template_slug: @template.slug, last_action: params[:last_action])) do |f|
   .row.m-4
     .col
-      h1 Edit #{@template.title}
-    .col
-      = f.submit 'Save Template', class: 'btn btn-primary float-right'    
-  .row.m-4
-    .col-xl-12
-        - if @template.sections.present?
-          = render 'form', f: f
+      h1 Edit #{@template.title} 
+  br
+  .row
+    .col-md-12
+      .table-responsive
+        table.table.table-hover
+          thead.text-muted
+            tr
+              th
+              th
+              th Tasks
+              th Due Date
+              th Uploaded Files
+              th Comments
+              th
+          tbody#tasks
+            = f.fields_for :sections do |section|
+              = render 'section_fields', f: section
+            #tasksOffcanvas
+  / .row
+  /   .col-md-12
+  /     = f.fields_for :sections, Section.new do |section|
+  /       = render 'section_fields', f: section
