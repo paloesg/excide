@@ -129,6 +129,12 @@ Rails.application.routes.draw do
       patch '/update_tags', to:'folders#update_tags'
     end
     resources :permissions
+    # For franchisee routes
+    resources :companies, param: :franchisee_id do
+      # Franchisee's outlets page
+      resources :outlets
+    end
+    # For company profile page
     resources :companies
     resources :outlets
   end
