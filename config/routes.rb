@@ -130,6 +130,7 @@ Rails.application.routes.draw do
     end
     resources :permissions
     resources :companies
+    resources :templates, param: :template_slug
   end
 
   namespace :overture do
