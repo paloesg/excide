@@ -1,7 +1,14 @@
 .offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto
-  .row
-    / .col-md-11 = f.text_field :instructions, {required: true, class: "form-control"}
-    / .col-md-11 = f.number_field :deadline_day, class: "form-control"
-    .col-md-1
-      a.d-inline id="drawer_close" href="#" 
-        i.material-icons-outlined close
+  = f.fields_for :tasks do |task|
+    .row
+      .col-md-11
+        = task.text_field :instructions, { placeholder: "Task Here", class: "form-control" }
+      .col-md-1
+        a.d-inline id="drawer_close" href="#" 
+          i.material-icons-outlined close
+    .row.mt-5
+      .col-md-12
+        h5 Description
+        = text_area_tag 'Description', nil, rows: 5, class: "form-control"
+    = task.submit 'Save Changes', class: "btn btn-primary"
+      
