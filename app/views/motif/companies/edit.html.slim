@@ -11,6 +11,59 @@
         .float-right.my-2
           i.px-5.material-icons-outlined more_vert
         h3 Franchisee Profile
+    .row.my-5.ml-3
+      .col-sm-10
+        .circular--portrait
+          = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'profile-pic'
+    .row.my-5.ml-3
+      .col-sm-5
+        = f.text_field :name, placeholder: 'Company Name', class: 'form-control'
+      .col-sm-5
+        = f.text_field :website_url, placeholder: 'Company Website', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-5
+        = text_field_tag :name, nil, placeholder: 'Company Name', class: 'form-control'
+      .col-sm-5
+        = f.text_field :website_url, placeholder: 'Company Website', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-5
+        = number_field_tag :annual_turnover_rate, nil, placeholder: 'Annual Turnover Rate', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-10
+        = text_field_tag :address, nil, placeholder: 'Address', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-10
+        = text_area_tag :description, nil, cols: "30", rows: "5", placeholder: 'Tell us more about the company', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-5
+        = text_field_tag :contact_first_name, nil, placeholder: 'Contact Person First Name', class: 'form-control'
+      .col-sm-5
+        = text_field_tag :contact_last_name, nil, placeholder: 'Contact Person Last Name', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-5
+        = text_field_tag :position, nil, placeholder: 'Position', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-5
+        = text_field_tag :contact_mobile, nil, placeholder: 'Contact Person Mobile', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-5
+        = text_field_tag :contact_email, nil, placeholder: 'Email Address', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-5
+        = text_field_tag :capital, nil, placeholder: 'Capital Available For Investment', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-5
+        = text_field_tag :contact_first_name, nil, placeholder: 'Contact Person First Name', class: 'form-control'
+      .col-sm-5
+        = text_field_tag :contact_last_name, nil, placeholder: 'Contact Person Last Name', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-10
+        = text_area_tag :your_franchise_experience, nil, cols: "30", rows: "5", placeholder: 'Tell us more about your franchise experience', class: 'form-control'
+    .row.my-5.ml-3
+      .col-sm-10
+        = text_area_tag :other_experience, nil, cols: "30", rows: "5", placeholder: 'Tell us more about other experience', class: 'form-control'
+      
+
     / .row.mb-3.mt-5.ml-3
     /   .col-sm-3
     /     .circular--portrait

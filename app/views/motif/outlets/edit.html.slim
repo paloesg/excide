@@ -1,0 +1,35 @@
+= form_for @outlet, url: motif_company_outlet_path(@company) do |f|
+  .row.my-5.ml-3
+    .col-sm-12
+      .btn-toolbar.float-right.ml-5
+        = f.submit 'Save Changes', class: 'btn btn-white border border-secondary text-primary mr-3 px-5'
+      .float-right.my-2
+        i.px-5.material-icons-outlined more_vert
+      h3 = @outlet.name
+  hr
+  .row.my-5
+    .col-sm-12
+      h5 Photo Gallery
+  hr
+  .row.my-5
+    .col-sm-12
+      h5 Information
+  .form-group.col-sm-6
+    = f.text_field :name, placeholder: 'Location Name', class: 'form-control'
+  .form-group.col-sm-12
+    = text_field_tag 'Location Address', nil, placeholder: 'Location address', class: 'form-control'
+  .form-group.col-sm-12
+    .row
+      .col-sm-6
+        = f.text_field :city, placeholder: 'City', class: 'form-control'
+      .col-sm-6
+        = f.text_field :country, placeholder: 'Country', class: 'form-control'
+  .form-group.col-sm-6
+    = text_field_tag 'Telephone', nil, placeholder: 'Telephone', class: 'form-control'
+  hr
+    .row.my-5
+      .col-sm-12
+        h5 Documents
+
+
+= render ('motif/templates'), locals: { f: ... }

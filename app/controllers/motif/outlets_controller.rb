@@ -1,10 +1,14 @@
 class Motif::OutletsController < ApplicationController
   before_action :set_company
-  before_action :set_franchisee
+  before_action :set_franchisee, except: :index
 
   def index
     @outlets = Outlet.includes(:company).where(companies: { franchise_id: @company.id })
     @outlet = Outlet.new
+  end
+
+  def new
+    
   end
 
   def create
@@ -38,7 +42,7 @@ class Motif::OutletsController < ApplicationController
   end
 
   def set_franchisee
-    @franchisee = Company.find(params[:company_franchisee_id])
+    @franchisee = Company.find(params[:franchisee_id])
     @outlet = Outlet.find(params[:id])
   end
 

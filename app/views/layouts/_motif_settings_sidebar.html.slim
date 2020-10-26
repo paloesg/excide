@@ -1,4 +1,4 @@
-- if params[:franchisee_id].present? || params[:company_franchisee_id].present?
+- if current_page?(edit_motif_company_path(current_user.company)) || params[:franchisee_id].present?
   .sidebar-sticky
     ul.nav.flex-column
       - @company = params[:franchisee_id].present? ? Company.find(params[:franchisee_id]) : Company.find(params[:company_franchisee_id])
@@ -13,7 +13,6 @@
       - @company.outlets.each do |outlet|
         li.nav-item.hover-blue.py-1.m-4
           = link_to outlet.name, edit_motif_company_outlet_path(company_franchisee_id: outlet.company.id, id: outlet.id), class: 'p-2 text-dark'
-
 - else
   .sidebar-sticky
     ul.nav.flex-column

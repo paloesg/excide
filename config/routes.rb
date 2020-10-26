@@ -135,7 +135,7 @@ Rails.application.routes.draw do
       resources :outlets
     end
     # For company profile page
-    resources :companies
+    get '/company-profile/:id/edit', to: 'companies#edit_franchise', as: :edit_franchise
     resources :outlets
   end
 

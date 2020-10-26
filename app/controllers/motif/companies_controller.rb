@@ -11,16 +11,15 @@ class Motif::CompaniesController < ApplicationController
   def edit
   end
 
+  def edit_franchise
+  end
+
   def update
     if @company.update(company_params)
       redirect_to edit_motif_company_path(@company), notice: 'Company was successfully updated.'
     else
       render :edit
     end
-  end
-
-  def show
-    
   end
 
   private
