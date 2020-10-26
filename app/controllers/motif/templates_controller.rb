@@ -15,9 +15,8 @@ class Motif::TemplatesController < ApplicationController
   def new
     @template = Template.new
     authorize @template
-    @general_templates = Template.where(company: nil)
-    @template.company = @company
-    @templates = policy_scope(Template).assigned_templates(current_user)
+    section = @template.sections.build
+    section.tasks.build
   end
 
   def create
@@ -27,8 +26,6 @@ class Motif::TemplatesController < ApplicationController
     if @template.save!
       redirect_to motif_templates_path
     else
-      @general_templates = Template.where(company: nil)
-      @templates = policy_scope(Template).assigned_templates(current_user)
       flash[:alert] = @template.errors.full_messages.join
       render :new
     end

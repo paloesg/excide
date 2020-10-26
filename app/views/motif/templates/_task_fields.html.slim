@@ -3,65 +3,15 @@ tr.nested-fields.task-drawer-row
     i.material-icons-outlined drag_indicator
   td 
     input.mt-2 type="checkbox" name=""/
-  td = f.text_field :instructions, {required: true, class: "form-control"}
-  td = f.number_field :deadline_day, class: "form-control"
-  td.drawer-toggle
-    i.material-icons-outlined.mr-4 insert_drive_file
-    | 5
+  td.drawer-toggle Click to add task details
   td
-    i.material-icons-outlined.mr-4 comment
-    | 2
-  td
-    i.material-icons-outlined more_horiz
-  td
-    = link_to_remove_association "remove task", f
-/ tr
-/   td.task-fields = f.number_field :position, {min: 1, step: 1, required: true, class: "form-control"}
-/   td.task-fields = f.select :task_type, options_for_select(Task.task_types.map{|k, v| ((k == "create_invoice_payable" || k == "xero_send_invoice" || k ==  "create_invoice_receivable" || k == "coding_invoice") && current_user.company.basic?) ? ["[PRO] " + k.humanize, k] : [k.humanize, k]}, selected: f.object.task_type, disabled: current_user.company.basic? ? ["create_invoice_payable", "xero_send_invoice", "create_invoice_receivable", "coding_invoice"] : []), {}, { required: true, class: "select2 form-control"}
-
-/   td.task-fields = f.text_area :instructions, {required: true, class: "form-control"}
-/   td.task-fields = f.select :role_id, options_for_select(@roles.collect{|role| [role.name.humanize, role.id]}, selected: f.object.role&.id), {include_blank: true} , {class: "select2 select2-allow-clear form-control", data: {placeholder:"Either..."}}
-/   td.task-fields = f.select :user_id, options_for_select(@users.collect{|user| [user.first_name, user.id]}, selected: f.object.user&.id), {include_blank: true} , {class: "select2 select2-allow-clear form-control", data: {placeholder:"Or..."}}
-
-/   td.task-fields
-/     p
-/       a data-toggle="collapse" href="#task-index-#{f.index}-section-#{g.id}" aria-expanded="false" class="collapsed"
-/         = fa_icon 'chevron-down', aria: {hidden: true}
-/   td.task-fields
-/     = f.hidden_field :_destroy
-/     = link_to 'X', '#', class: 'btn btn-sm btn-danger remove_tasks mr-4'
-/ tr
-/   td.table-active.p-0.border-top-0 colspan="6"
-/     div id="task-index-#{f.index}-section-#{g.id}" class="collapse"
-/       .form-inline.col-sm-12.p-0.mb-2
-/         .form-group.col-sm-5.d-block
-/           = f.label :deadline_type, 'Deadline Type', class: 'float-left my-2'
-/           = f.select :deadline_type, ::Task.deadline_types.map{|k, v| [k.humanize, k]}, {include_blank: true}, {class: "task-deadlines-type select2 select2-allow-clear mb-2", style:'width: 100%'}
-/         .form-group.col-sm-5
-/           = f.label :deadline_day, "Day of deadline", class: 'my-2'
-/           span.text-danger.d-none.task-deadline-warning 
-/             br Note: The due date for each cycle will be set to the last day of the month if the month does not consist of the dates 29, 30 or 31.
-/           = f.number_field :deadline_day, class: "form-control col-sm-12"
-/         .form-group.col-sm-2.mt-2
-/           = f.label :set_reminder
-/           = f.check_box :set_reminder, {class: "form-control ml-4"}
-/       .form-group.col-sm-12.pt-2
-/         = f.label :child_workflow_template, 'Template'
-/         = f.select :child_workflow_template_id, options_for_select(@templates.present? ? @templates.map{|t| [t.title, t.id]} : "", selected: f.object.child_workflow_template&.id), {include_blank: true},  {class: "select2 select2-allow-clear mb-2", style:'width: 100%'}
-/       .form-group.col-sm-12.pt-2
-/         = f.label :document_template_id, 'Document Template'
-/         = f.select :document_template_id, options_for_select(DocumentTemplate.all.collect{|doc_tem| [doc_tem.title, doc_tem.id]}, selected: f.object.document_template&.id), {include_blank: true}, {class: "select2 select2-allow-clear mb-2", style:'width: 100%'}
-/       .form-group.col-sm-12
-/         = f.label :survey_template_id, 'Survey Template'
-/         = f.select :survey_template_id, options_for_select(SurveyTemplate.all.collect{|sur_tem| [sur_tem.title, sur_tem.id]}, selected: f.object.survey_template&.id), {include_blank: true}, {class: "select2 select2-allow-clear mb-2", style:'width: 100%'}
-/       .form-inline.col-sm-12.p-0.mb-2
-/         .form-group.col-sm-6
-/           = f.label :link_url
-/           = f.text_field :link_url, {class: "form-control col-sm-12 mt-2"}
-/         .form-group.col-sm-6
-/           = f.label :image_url
-/           = f.text_field :image_url, {class: "form-control col-sm-12 mt-2"}
-/       .form-inline.col-sm-12.p-0.mb-2
-/         .form-group.col-sm-6
-/           = f.label :important
-/           = f.check_box :important, {class: "form-control ml-2"}
+    / = link_to_remove_association "remove task", f
+  / td.drawer-toggle
+  /   i.material-icons-outlined.mr-4 insert_drive_file
+  /   | 5
+  / td
+  /   i.material-icons-outlined.mr-4 comment
+  /   | 2
+  / td
+  /   i.material-icons-outlined more_horiz
+  

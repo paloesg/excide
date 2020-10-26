@@ -18,13 +18,11 @@
             tr
               th
               th
-              th Tasks
-              th Due Date
-              th Uploaded Files
-              th Comments
+              th
+              th
           tbody#tasks
             #tasksOffcanvas
   .row
     .col-md-12
-      = f.fields_for :sections, Section.new do |section|
+      = f.fields_for :sections do |section|
         = render 'section_fields', f: section

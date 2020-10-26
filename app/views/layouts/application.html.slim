@@ -57,7 +57,7 @@ html lang="en"
         = render 'layouts/footer' unless current_page?(root_path)
       / Layout for motif
       - elsif controller.class.parents.include?(Motif)
-        - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || current_page?(new_motif_template_path) || current_page?(edit_motif_template_path)
+        - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || current_page?(new_motif_template_path) || current_page?(edit_motif_template_path(current_user.company))
           .motif-wrapper.overflow-auto
             / for motif pages, render a different sidebar
             .motif-contents
