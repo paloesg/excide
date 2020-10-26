@@ -4,12 +4,12 @@
       = link_to 'New Folder', new_motif_folder_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
     button.btn.btn-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white add
-      | Upload Multiple
+      | Upload Documents
     #newMotifDocUploads.modal.fade aria-hidden="true" aria-labelledby="newMotifDocumentUploads" role="dialog" tabindex="-1"
       .modal-dialog role="document"
         .modal-content
           .modal-header
-            h5#newMotifDocumentUploads.modal-title Upload Multiple Documents
+            h5#newMotifDocumentUploads.modal-title Upload Documents
             button.close aria-label="Close" data-dismiss="modal" type="button"
               span aria-hidden="true"  &times;
           .modal-body
@@ -28,7 +28,12 @@
       | for different franchises. Drag and drop your files to upload.
 - if @folders.empty? && @documents.empty?
   .row.justify-content-center.ml-3
-    = render "layouts/empty_documents"
+    .col-md-3.text-center.p-4
+      = image_pack_tag 'media/src/images/symphony/add-documents@2x.png'
+      h2.mt-5 Clean and fresh
+      p.mt-4 Let's add some documents to this page! Click on the upload button below to do so.
+      button.btn.btn-primary.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
+        | + Upload Documents
 - else
   .row.ml-4.align-items-center
     .col
@@ -90,7 +95,7 @@
           td.draggable-handle
             i.material-icons-outlined drag_indicator
           td
-            input.mt-2 type="checkbox" name=""/ 
+            input.mt-2 type="checkbox" name=""/
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"
