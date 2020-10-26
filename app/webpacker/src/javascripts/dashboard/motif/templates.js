@@ -51,4 +51,10 @@ $(document).on("turbolinks:load", function () {
       console.log("WHAT is dataAttribute? ", dataAttribute);
     });
   }
+
+  $("#motif_new_template").submit(function(){
+    console.log("SUBMITTED!");
+    // Remove appended task_drawer_base so that we wont have 2 offcanvas with form
+    $("#task_drawer_base").empty();
+  });
 });

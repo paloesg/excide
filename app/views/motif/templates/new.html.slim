@@ -1,4 +1,4 @@
-= form_for(@template, url: motif_templates_path(@template)) do |f|
+= form_for(@template, url: motif_templates_path(@template), html: { id: "motif_new_template" }) do |f|
   .row.my-3
     .col.md-1.mt-3
       = link_to "< Back", motif_templates_path, class: 'h5 pr-0 text-dark'
