@@ -30,24 +30,62 @@
   .row.justify-content-center.ml-3
     = render "layouts/empty_documents"
 - else
-  .row.ml-4.align-items-center
+  .row.ml-4.align-items-center#filter-search
     .col
-      span.mr-3
-        = image_pack_tag "media/src/images/motif/Filter Funnel.svg"
-      | Filters
+      div#filter style="cursor: pointer;"
+        span.mr-3
+          = image_pack_tag "media/src/images/motif/Filter Funnel.svg"
+        | Filters
     .col-sm-11.text-muted
       div.form-row.align-items-center
         span.mr-3
           = image_pack_tag "media/src/images/motif/Search.svg"
         input.form-control.border-0.col type="search" placeholder="Search..."
         div.col-8
+  .row.ml-4.my-5.align-items-center#select-options
+    .col-md-9
+      span.mr-5#selectedNumber
+    .col-md-3.d-flex.justify-content-between
+      span
+        i.material-icons-outlined delete
+        a data-toggle="modal" data-target="#groupDelete" data-backdrop="false" Delete
+        #groupDelete.modal.fade aria-hidden="true" aria-labelledby="groupDelete" role="dialog" tabindex="-1"
+          .modal-dialog.modal-dialog-centered.modal-sm role="document"
+            .modal-content
+              .modal-body.shadow-lg
+                #deleteCount.mb-4
+                span.float-right
+                  a.btn.btn-link-primary.mr-3 data-dismiss="modal" Cancel
+                  = link_to "Delete", root_path, class: "btn btn-primary"
+      span
+        i.material-icons-outlined folder_open
+        a.group-folder data-toggle="modal" data-target="#checkedFolderUpload" Create Folder
+        #checkedFolderUpload.modal.fade aria-hidden="true" aria-labelledby="selectCheckedFolderUpload" role="dialog" tabindex="-1"
+          .modal-dialog role="document"
+            .modal-content
+              .modal-header
+                h5#selectCheckedFolderUpload.modal-title Create new folder
+                button.close aria-label="Close" data-dismiss="modal" type="button"
+                  span aria-hidden="true"  &times;
+              .modal-body
+                = form_for(@folder, url: motif_folders_path, html: { method: :post }) do |f|
+                  .row.mt-3
+                    .col-md-12
+                      .form-group
+                        = f.text_field :name, placeholder: 'New folder', class: 'form-control'
+                  .row.hidden-forms
+                  .row
+                    .col-md-12
+                      = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+      span.mr-4#clearSelect style="cursor: pointer;"
+        | X
   hr.mb-0
   table.table.ml-4
     thead
       tr
         th
         th
-          input# type="checkbox" name=""/
+          input#checkedAll type="checkbox" name=""/
         th.text-muted NAME
         th.text-muted TAGS
         th.text-muted DATE MODIFIED
@@ -58,7 +96,7 @@
         tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
           td
           td
-            input.mt-2 type="checkbox" name=""/
+            input.checkSingle.mt-2 type="checkbox"
           td
             span.mr-5
               = image_pack_tag "media/src/images/motif/folder.svg"
@@ -90,7 +128,7 @@
           td.draggable-handle
             i.material-icons-outlined drag_indicator
           td
-            input.mt-2 type="checkbox" name=""/ 
+            input.checkSingle.mt-2 type="checkbox"
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
             span.mr-5
               = image_pack_tag "media/src/images/motif/jpg.svg"

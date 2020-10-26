@@ -7,6 +7,7 @@ class Motif::DocumentsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    @folder = Folder.new
     @folders = policy_scope(Folder).roots
     @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc)
     @roles = @company.roles.includes(:permissions)
