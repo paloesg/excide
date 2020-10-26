@@ -11,8 +11,13 @@ $(document).on("turbolinks:load", function () {
     console.log("What is jquery data attr: ", $(insertedItem).data("drawer"));
     // Select the task drawer base and attached a unique id to it
     $("#task_drawer_base > div").attr("id", "drawer_task_" + e.timeStamp);
+    console.log("task drawer base: ", $("#task_drawer_base > div"))
     // Append the html of the task drawer to the tasksOffcanvas div
     $("#tasksOffcanvas").append($("#task_drawer_base").html());
+    // Remove appended task_drawer_base so that we wont have 2 offcanvas with form
+    $("#task_drawer_base").empty();
+    console.log("appended!")
+
   });
 
   $('#tasks').on('cocoon:after-insert', function(e, insertedItem, originalEvent) {
