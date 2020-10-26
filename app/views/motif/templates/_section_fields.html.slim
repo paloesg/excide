@@ -1,0 +1,15 @@
+.table-responsive
+  table.table
+    thead
+      tr
+        th style="width: 5%"
+        th style="width: 5%"
+        th style="width: 60%" Tasks
+        th style="width: 15%" Due Date
+        th style="width: 15%" Uploaded Files
+    tbody.motif-tasks
+      #tasksOffcanvas
+.d-none#task_drawer_base
+  = render 'drawer', f: f
+= link_to_add_steps 'Add Task', f, :tasks
+

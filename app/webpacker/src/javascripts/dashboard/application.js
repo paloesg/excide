@@ -37,6 +37,7 @@ require("./conductor/go_to_allocation");
 require("./conductor/event_update");
 require("./components/calendar_style");
 
+require("./motif/templates")
 require("./motif/drawer")
 require("./motif/remarks")
 

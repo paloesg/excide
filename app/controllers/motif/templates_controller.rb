@@ -12,7 +12,22 @@ class Motif::TemplatesController < ApplicationController
   end
 
   def new
-    
+    @template = Template.new
+    authorize @template
+    section = @template.sections.build
+    section.tasks.build
+  end
+
+  def create
+    @template = Template.new(template_params)
+    authorize @template
+    @template.company = @company
+    if @template.save!
+      redirect_to motif_templates_path
+    else
+      flash[:alert] = @template.errors.full_messages.join
+      render :new
+    end
   end
 
   def destroy

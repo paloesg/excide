@@ -61,11 +61,17 @@ html lang="en"
           .motif-wrapper.overflow-auto
             / for motif pages, render a different sidebar
             .motif-contents
-              .row.mt-5
-                .col-sm-2.bg-white.border-right.sidebar-border-radius
-                  = render 'layouts/motif_settings_sidebar'
-                .col-sm-10.bg-white.content-border-radius
-                  = yield
+              / If no content, the styling will still be full height
+              .row.mt-5.h-100
+                / For motif template page, there is no sidebar in the form view
+                - if current_page?(new_motif_template_path)
+                  .col-sm-12.bg-white.content-border-radius
+                    .p-4 = yield
+                - else
+                  .col-sm-2.bg-white.border-right.sidebar-border-radius
+                    = render 'layouts/motif_settings_sidebar' 
+                  .col-sm-10.bg-white.content-border-radius
+                    .p-4 = yield
         - else
           .container-fluid
             .row
