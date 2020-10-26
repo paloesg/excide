@@ -1,4 +1,30 @@
 class Motif::TemplatesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_company
+  before_action :set_template, except: [:index, :new, :create]
+
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: :index
+
+  def index
+    authorize Template
+    @templates = policy_scope(Template)
+  end
+
+  def new
+    
+  end
+
+  def destroy
+    authorize @template
+    if @template.destroy
+      respond_to do |format|
+        format.html { redirect_to motif_templates_path }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
+      flash[:notice] = 'Routine was successfully deleted.'
+    end
+  end
 
   private
   def set_template
