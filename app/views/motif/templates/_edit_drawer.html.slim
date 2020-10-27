@@ -1,5 +1,5 @@
-.offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto
-  = f.fields_for :tasks do |f|
+= f.fields_for :tasks do |f|
+  .offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto id="drawer_task_#{f.object.id}"
     .row
       .col-md-11
         .form-group

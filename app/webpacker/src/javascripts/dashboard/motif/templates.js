@@ -1,4 +1,27 @@
 $(document).on("turbolinks:load", function () {
+  let initializeDrawer = () => {
+    const Offcanvas = require("../metronic/components/offcanvas.js");
+    // Initialize the drawer row
+    $(".task-drawer-row").each(function () {
+      let dataAttribute = $(this).data("drawer");
+      const offcanvasObject = new Offcanvas(
+        "drawer_task_" + dataAttribute,
+        {
+          baseClass: "offcanvas",
+          overlay: true,
+          closeBy: "drawer_close_" + dataAttribute,
+          toggleBy: {
+            target: "drawer_toggle_" + dataAttribute
+          },
+        }
+      );
+      console.log("WHAT is offcanvas? ", offcanvasObject);
+      console.log("WHAT is dataAttribute? ", dataAttribute);
+    });
+  }
+
+  initializeDrawer();
+
   $("[data-form-prepend]").click(function(e) {
     let obj = $($(this).attr("data-form-prepend"));
     let standardizedCurrentTime = new Date().getTime();
@@ -31,29 +54,12 @@ $(document).on("turbolinks:load", function () {
     return false;
   });
 
-  let initializeDrawer = () => {
-    const Offcanvas = require("../metronic/components/offcanvas.js");
-    // Initialize the drawer row
-    $(".task-drawer-row").each(function () {
-      let dataAttribute = $(this).data("drawer");
-      const offcanvasObject = new Offcanvas(
-        "drawer_task_" + dataAttribute,
-        {
-          baseClass: "offcanvas",
-          overlay: true,
-          closeBy: "drawer_close_" + dataAttribute,
-          toggleBy: {
-            target: "drawer_toggle_" + dataAttribute
-          },
-        }
-      );
-      console.log("WHAT is offcanvas? ", offcanvasObject);
-      console.log("WHAT is dataAttribute? ", dataAttribute);
-    });
-  }
-
   $("#motif_new_template").submit(function(){
-    console.log("SUBMITTED!");
+    // Remove appended task_drawer_base so that we wont have 2 offcanvas with form
+    $("#task_drawer_base").empty();
+  });
+
+  $("#motif_edit_template").submit(function(){
     // Remove appended task_drawer_base so that we wont have 2 offcanvas with form
     $("#task_drawer_base").empty();
   });

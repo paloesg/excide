@@ -15,7 +15,6 @@ class Motif::TemplatesController < ApplicationController
     @template = Template.new
     authorize @template
     section = @template.sections.build
-    section.tasks.build
   end
 
   def create
@@ -27,6 +26,19 @@ class Motif::TemplatesController < ApplicationController
     else
       flash[:alert] = @template.errors.full_messages.join
       render :new
+    end
+  end
+
+  def edit
+    authorize @template
+  end
+
+  def update
+    authorize @template
+    if @template.update(template_params)
+      redirect_to motif_templates_path, notice: "Great job!"
+    else
+      redirect_to motif_root_path, alert: "BOO"
     end
   end
 

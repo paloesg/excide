@@ -9,7 +9,12 @@
         th style="width: 15%" Uploaded Files
     tbody.motif-tasks
       #tasksOffcanvas
+      = f.fields_for :tasks do |task|
+        = render 'task_fields', f: task
+/ Only render edit drawer is section ID is present. This is to check if form comes from edit templates or new templates
+- if f.object.id.present?
+  = render 'edit_drawer', f: f
 .d-none#task_drawer_base
-  = render 'drawer', f: f
+  = render 'new_drawer', f: f
 = link_to_add_steps 'Add Task', f, :tasks
 
