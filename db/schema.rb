@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "city"
     t.string "country"
     t.string "state"
-    t.uuid "addressable_id"
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
   create_table "allocations", id: :serial, force: :cascade do |t|
@@ -116,6 +116,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
 
   create_table "batches", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.bigint "template_id"
+    t.bigint "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
@@ -124,7 +125,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.integer "task_progress"
     t.integer "status"
     t.json "failed_blob", default: {"blobs"=>[]}
-    t.uuid "company_id"
+    t.index ["company_id"], name: "index_batches_on_company_id"
     t.index ["template_id"], name: "index_batches_on_template_id"
     t.index ["user_id"], name: "index_batches_on_user_id"
   end
@@ -146,15 +147,16 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "name"
     t.string "identifier"
     t.integer "user_id"
+    t.integer "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "xero_contact_id"
     t.string "xero_email"
-    t.uuid "company_id"
     t.index ["user_id"], name: "index_clients_on_user_id"
+    t.index ["company_id"], name: "index_clients_on_company_id"
   end
 
-  create_table "companies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "companies", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "industry"
     t.integer "company_type"
@@ -194,12 +196,8 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "mailbox_token"
     t.integer "before_deadline_reminder_days"
     t.json "products", default: []
-    t.string "website_url"
-    t.json "franchisee_details"
-    t.uuid "franchise_id"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
-    t.index ["franchise_id"], name: "index_companies_on_franchise_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
   end
 
@@ -209,9 +207,9 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "email"
     t.string "company_name"
     t.bigint "created_by_id"
+    t.integer "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "company_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end
 
@@ -263,10 +261,11 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "location"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "company_id"
     t.integer "staffer_id"
     t.uuid "client_id"
     t.decimal "number_of_hours"
-    t.uuid "company_id"
+    t.index ["company_id"], name: "index_events_on_company_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
 
@@ -277,8 +276,9 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "ancestry"
     t.text "remarks"
     t.bigint "user_id"
-    t.uuid "company_id"
+    t.bigint "company_id"
     t.index ["ancestry"], name: "index_folders_on_ancestry"
+    t.index ["company_id"], name: "index_folders_on_company_id"
     t.index ["user_id"], name: "index_folders_on_user_id"
   end
 
@@ -311,10 +311,11 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.integer "status"
     t.decimal "total"
     t.bigint "user_id"
+    t.bigint "company_id"
     t.uuid "workflow_id"
     t.string "remarks"
-    t.uuid "company_id"
     t.index ["user_id"], name: "index_invoices_on_user_id"
+    t.index ["company_id"], name: "index_invoices_on_company_id"
   end
 
   create_table "notes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -349,15 +350,6 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.index ["target_type", "target_id"], name: "index_notifications_on_target_type_and_target_id"
   end
 
-  create_table "outlets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "city"
-    t.string "country"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.uuid "company_id"
-    t.string "name"
-  end
-
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "role_id"
     t.boolean "can_write"
@@ -387,11 +379,12 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.integer "freq_value"
     t.integer "freq_unit"
     t.bigint "template_id"
+    t.bigint "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "next_workflow_date"
     t.bigint "user_id"
-    t.uuid "company_id"
+    t.index ["company_id"], name: "index_recurring_workflows_on_company_id"
     t.index ["template_id"], name: "index_recurring_workflows_on_template_id"
     t.index ["user_id"], name: "index_recurring_workflows_on_user_id"
   end
@@ -405,6 +398,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.integer "company_id"
     t.string "title"
     t.text "content"
     t.integer "task_id"
@@ -412,7 +406,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.boolean "email"
     t.boolean "sms"
     t.boolean "slack"
-    t.uuid "company_id"
+    t.index ["company_id"], name: "index_reminders_on_company_id"
     t.index ["task_id"], name: "index_reminders_on_task_id"
     t.index ["user_id"], name: "index_reminders_on_user_id"
     t.index ["workflow_action_id"], name: "index_reminders_on_workflow_action_id"
@@ -434,9 +428,9 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
   create_table "roles", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "resource_type"
+    t.integer "resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.uuid "resource_id"
     t.index ["name"], name: "index_roles_on_name"
   end
 
@@ -446,6 +440,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.integer "template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["template_id"], name: "index_sections_on_template_id"
   end
 
@@ -495,18 +490,21 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "survey_type"
-    t.uuid "company_id"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_survey_templates_on_company_id"
   end
 
   create_table "surveys", id: :serial, force: :cascade do |t|
     t.string "title"
     t.text "remarks"
     t.integer "user_id"
+    t.integer "company_id"
     t.integer "survey_template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "workflow_id"
     t.uuid "company_id"
+    t.index ["company_id"], name: "index_surveys_on_company_id"
     t.index ["survey_template_id"], name: "index_surveys_on_survey_template_id"
     t.index ["user_id"], name: "index_surveys_on_user_id"
     t.index ["workflow_id"], name: "index_surveys_on_workflow_id"
@@ -576,7 +574,8 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.date "next_workflow_date"
     t.date "start_date"
     t.date "end_date"
-    t.uuid "company_id"
+    t.integer "company_id"
+    t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
 
@@ -614,7 +613,8 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.json "settings", default: [{"reminder_sms"=>"", "reminder_email"=>"true", "reminder_slack"=>"", "task_sms"=>"", "task_email"=>"true", "task_slack"=>"", "batch_sms"=>"", "batch_email"=>"true", "batch_slack"=>""}]
     t.string "stripe_customer_id"
     t.string "stripe_card_token"
-    t.uuid "company_id"
+    t.integer "company_id"
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["provider"], name: "index_users_on_provider"
@@ -637,18 +637,20 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.integer "approved_by"
     t.integer "assigned_user_id"
     t.integer "completed_user_id"
+    t.integer "company_id"
     t.text "remarks"
     t.uuid "workflow_id"
     t.integer "time_spent_mins"
     t.boolean "current_action", default: false
-    t.uuid "company_id"
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
+    t.index ["company_id"], name: "index_workflow_actions_on_company_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"
     t.index ["task_id"], name: "index_workflow_actions_on_task_id"
   end
 
   create_table "workflows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "user_id"
+    t.integer "company_id"
     t.integer "template_id"
     t.boolean "completed", default: false
     t.datetime "created_at", null: false
@@ -665,8 +667,8 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.bigint "workflow_action_id"
     t.string "slug"
     t.integer "total_time_mins", default: 0
-    t.uuid "company_id"
     t.index ["batch_id"], name: "index_workflows_on_batch_id"
+    t.index ["company_id"], name: "index_workflows_on_company_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
     t.index ["slug"], name: "index_workflows_on_slug", unique: true
     t.index ["template_id"], name: "index_workflows_on_template_id"
@@ -678,9 +680,10 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
   create_table "xero_contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "contact_id"
+    t.bigint "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "company_id"
+    t.index ["company_id"], name: "index_xero_contacts_on_company_id"
   end
 
   create_table "xero_line_items", force: :cascade do |t|
@@ -692,7 +695,8 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "tax"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "company_id"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_xero_line_items_on_company_id"    
   end
 
   create_table "xero_tracking_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -702,7 +706,8 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.json "options"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "company_id"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_xero_tracking_categories_on_company_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -736,7 +741,6 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "notes", "users"
-  add_foreign_key "outlets", "companies"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
   add_foreign_key "questions", "survey_sections"
