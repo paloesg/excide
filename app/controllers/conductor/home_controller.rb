@@ -1,6 +1,7 @@
 class Conductor::HomeController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_company_and_roles
+  before_action :set_company
+  before_action :set_roles
 
   def show
     date_from = params[:start_date] ? params[:start_date].to_date.beginning_of_month : Date.current.beginning_of_month
@@ -45,9 +46,7 @@ class Conductor::HomeController < ApplicationController
 
   private
 
-  def set_company_and_roles
-    @user = current_user
-    @company = @user.company
+  def set_roles
     @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
   end
 end
