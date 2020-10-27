@@ -11,7 +11,7 @@
       h6.ml-4 Description
       .col-md-12
         .form-group
-          = text_area_tag 'Description', nil, rows: 5, placeholder: 'Write description', class: "form-control"
+          = f.text_area :description, rows: '5', placeholder: 'Write description', class: 'form-control'
     .row.mt-5
       h6.ml-4 Due Date
       .col-md-12
@@ -41,4 +41,4 @@
           = f.text_field :link_url, placeholder: 'www.link.com', class: "form-control"
     .row.mt-5
       .col-md-12
-        = f.submit 'Save Changes', class: "btn btn-primary float-right"
+        / = f.submit 'Save Changes', class: "btn btn-primary float-right"
