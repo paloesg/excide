@@ -98,7 +98,8 @@
             input.mt-2 type="checkbox" name=""/
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
             span.mr-5
-              = image_pack_tag "media/src/images/motif/jpg.svg"
+              / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
+              = image_pack_tag "media/src/images/motif/#{File.extname(d.raw_file.filename.to_s).split('.')[1].first(3)}.svg"
             span.ml-5
               = d.raw_file.filename
           td id="drawer_toggle_#{d.id}_0"
