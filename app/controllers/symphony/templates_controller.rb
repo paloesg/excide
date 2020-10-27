@@ -119,12 +119,9 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   private
+
   def set_template
     @template = Template.includes(sections: [tasks: [:role, :user, :document_template]]).find(params[:template_slug])
-  end
-
-  def set_company
-    @company = current_user.company
   end
 
   def find_roles

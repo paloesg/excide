@@ -3,7 +3,7 @@
     i.material-icons-outlined.icon-size.dropdown-pointer notifications
     - if @target.has_unopened_notifications?(parameters)
       span#notificationCount.badge.badge-danger.rounded-circle.notification-count.mb-3.p-1
-        = @target.unopened_notification_count(parameters)
+        = @target.notifications.unopened_only.where('created_at > ?', 1.month.ago).count
   .dropdown-menu.notification-content-width.dropdown-menu-right.p-0.m-0
     form
       /! begin: Head
@@ -33,10 +33,10 @@
                 .symbol.mx-3.pr-5
                   i.flaticon2-checking.icon-2x.text-primary
                   span.badge.badge-danger.rounded-circle.mb-3.p-1.ml-n4
-                    = @target.notifications.unopened_only.where(group_id: template.id).count
+                    = @target.notifications.unopened_only.where('created_at > ?', 1.month.ago).where(group_id: template.id).count
                 .navi-text.font-size-h6
                   = template.title
                 i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
             .collapse id="notificationMenu_#{template.id}"
               // yield views with keys as filename in views and notifier name as folder
-              = render_notifications(@target.notifications.unopened_only.where(group_id: template.id).order(created_at: :desc))
+              = render_notifications(@target.notifications.unopened_only.where('created_at > ?', 1.month.ago).where(group_id: template.id).order(created_at: :desc))

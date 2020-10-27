@@ -35,6 +35,22 @@ class ApplicationPolicy
     false
   end
 
+  def has_symphony?
+    user.company.products.include? 'symphony'
+  end
+
+  def has_motif?
+    user.company.products.include? 'motif'
+  end
+
+  def has_overture?
+    user.company.products.include? 'overture'
+  end
+
+  def has_conductor?
+    user.company.products.include? 'conductor'
+  end
+
   def scope
     Pundit.policy_scope!(user, record.class)
   end
