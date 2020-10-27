@@ -26,12 +26,14 @@
           tr
             th.pl-0.h6 Attachments
             th.h6.text-muted Uploaded on
-            th.h6 Attach files
+            th = link_to 'Attach files', '#', class: 'text-primary'
         tbody
           tr
             td File Name
             td Yesterday, 30 Dec 2020
-            td something
+            td 
+              i.material-icons-outlined.mr-5 download
+              i.material-icons-outlined delete_outline
     .row.mt-5
       h6.ml-4 Links
       .col-md-12
