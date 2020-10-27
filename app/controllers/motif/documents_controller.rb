@@ -10,7 +10,7 @@ class Motif::DocumentsController < ApplicationController
     @folder = Folder.new
     @folders = policy_scope(Folder).roots
     @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc)
-    @roles = @company.roles.includes(:permissions)
+    @users = @company.users.includes(:permissions)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 
@@ -24,10 +24,8 @@ class Motif::DocumentsController < ApplicationController
       # attach and convert method with the response key to create blob
       document.attach_and_convert_document(file['response']['key'])
       @files.append document
-      # create permission on creation of document for all the user's roles in that company
-      @user.roles.where(resource_id: @company.id).each do |role|
-        Permission.create(role: role, can_write: true, can_download: true, can_view: true, permissible: document)
-      end
+      # create permission on creation of document for the user that uploaded it
+      Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     end
     respond_to do |format|
       format.html { redirect_to motif_documents_path files: @files }
@@ -71,6 +69,10 @@ class Motif::DocumentsController < ApplicationController
   end
 
   private
+  def set_company
+    @user = current_user
+    @company = @user.company
+  end
 
   def set_document
     @document = @company.documents.find(params[:id])

@@ -48,21 +48,21 @@
                 = image_pack_tag "media/src/images/motif/Search.svg"
             .col-md-9
               input.form-control.border-0.col type="search" placeholder="Search..."
-          - @roles.each do |role|
+          - @users.each do |user|
             .row.my-5
               .col-md-1
                 = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mt-2'
               .col-md-4.ml-2.mt-2
-                = role.name.humanize
+                = user.full_name.humanize
               .col-md-5.pl-0
-                - permission = role.permissions.find_by(permissible_id: permissible.id)
+                - permission = user.permissions.find_by(permissible_id: permissible.id)
                 - if permission.present?
                   / Permissible type passed in from rendering the partial, which will determine if permissible is folder or document
-                  = select_tag 'permissions', options_for_select(["Can download", "Read only"], selected: (permission.can_download? ? "Can download" : "Read only")), include_blank: true, required: true, data: { role_id: role.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control permission-document-access col-md-12'
+                  = select_tag 'permissions', options_for_select(["Can download", "Read only"], selected: (permission.can_download? ? "Can download" : "Read only")), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control permission-document-access col-md-12'
                 - else
-                  .float-right.mt-3.add-access id="add-access-link-#{role.id}-#{permissible.id}"
+                  .float-right.mt-3.add-access id="add-access-link-#{user.id}-#{permissible.id}"
                     = link_to '+ Add access', '#', class: 'text-primary', remote: true 
-                  = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { role_id: role.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control permission-document-access d-none col-md-12', id: "add-access-#{role.id}-#{permissible.id}"
+                  = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control permission-document-access d-none col-md-12', id: "add-access-#{user.id}-#{permissible.id}"
               .col-md-1.p-0.mt-2.d-none.saved-message
                 span.text-muted Saved!
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{permissible.id}" role="tabpanel"
