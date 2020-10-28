@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_21_125439) do
+ActiveRecord::Schema.define(version: 2020_10_28_090606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -374,6 +374,11 @@ ActiveRecord::Schema.define(version: 2020_10_21_125439) do
     t.uuid "permissible_id"
     t.index ["permissible_type", "permissible_id"], name: "index_permissions_on_permissible_type_and_permissible_id"
     t.index ["role_id"], name: "index_permissions_on_role_id"
+  end
+
+  create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "url"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
