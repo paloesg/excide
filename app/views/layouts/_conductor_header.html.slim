@@ -51,23 +51,3 @@
             li
               = link_to destroy_user_session_path, {method: :delete, class: 'dropdown-item'} do
                 span Log Out
-  .header-navs.header-navs-left.flex-column-fluid.p-3#kt_header_navs
-    .tab-content
-      .tab-pane.show.active#kt_header_tab_1
-        .header-menu.header-menu-mobile.header-menu-layout-default#kt_header_menu
-          ul.menu-nav
-            li.menu-item aria-haspopup="true" 
-              = link_to 'Calendar', conductor_root_path, class: "dropdown-item"
-            li.menu-item aria-haspopup="true" 
-              = link_to 'Events', conductor_events_path, class: "dropdown-item"
-            - if current_user.has_role?(:admin, @company) or current_user.has_role?(:staffer, @company)
-              li.menu-item.dropdown
-                a#staffDropdown.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-                  | Staff
-                .dropdown-menu aria-labelledby="staffDropdown" 
-                  = link_to conductor_availabilities_path, class: 'dropdown-item' do
-                      span Staff Availability
-                  = link_to conductor_allocations_path, class: 'dropdown-item' do
-                      span Allocate Availability
-                  = link_to conductor_users_path, class: 'dropdown-item' do
-                      span Manage Availability
