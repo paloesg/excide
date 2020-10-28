@@ -135,7 +135,7 @@ Rails.application.routes.draw do
   end
 
   namespace :overture do
-    root to: 'contacts#index'
+    root to: 'profiles#index'
   end
 
   namespace :conductor do
