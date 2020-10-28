@@ -13,14 +13,11 @@ class Motif::DocumentsController < ApplicationController
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 
-  def new
-  end
-
   def create
     @files = []
     parsed_files = JSON.parse(params[:successful_files])
     parsed_files.each do |file|
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run 
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run
       document = @generate_document.document
       authorize document
       # attach and convert method with the response key to create blob
@@ -67,14 +64,10 @@ class Motif::DocumentsController < ApplicationController
       flash[:notice] = 'Document was successfully deleted.'
     end
   end
-  
+
   private
+
   def set_document
     @document = @company.documents.find(params[:id])
-  end
-
-  def set_company
-    @user = current_user
-    @company = @user.company
   end
 end

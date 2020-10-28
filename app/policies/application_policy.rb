@@ -43,6 +43,14 @@ class ApplicationPolicy
     user.company.products.include? 'motif'
   end
 
+  def has_overture?
+    user.company.products.include? 'overture'
+  end
+
+  def has_conductor?
+    user.company.products.include? 'conductor'
+  end
+
   def scope
     Pundit.policy_scope!(user, record.class)
   end

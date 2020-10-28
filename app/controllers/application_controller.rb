@@ -25,18 +25,11 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.company.products.length >= 2
+    if current_user.company.products.count == 1
+      # Path after sign in is the product's root path
+      '/' + current_user.company.products.first
+    else
       root_path
-    elsif current_user.company.products.length == 1
-      if current_user.company.products[0] == 'symphony'
-        if current_user.company.session_handle.blank? and current_user.company.connect_xero?
-          connect_to_xero_path
-        else
-          symphony_root_path
-        end
-      elsif current_user.company.products[0] == 'motif'
-        motif_root_path
-      end
     end
   end
 
@@ -82,12 +75,14 @@ class ApplicationController < ActionController::Base
     redirect_to symphony_root_path, alert: message
   end
 
-  # checks if the controller's namespace is in Symphony or Motif, then check if the user has access to the product. Links to application_policy.rb
+  # Checks the controller parent and check if the user has access to the product based on application policy unless parent is users (login) or object (not namespaced)
   def authenticate_product
-    if controller_path.split('/').first == 'symphony'
-      authorize current_user, :has_symphony?
-    elsif controller_path.split('/').first == 'motif'
-      authorize current_user, :has_motif?
-    end
+    product = self.class.parent.to_s.downcase
+    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || "object"
+  end
+
+  def set_company
+    @user = current_user
+    @company = current_user.company
   end
 end

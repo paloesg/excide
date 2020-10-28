@@ -134,6 +134,10 @@ Rails.application.routes.draw do
     post '/add-roles', to: 'users#add_role', as: :add_role
   end
 
+  namespace :overture do
+    root to: 'contacts#index'
+  end
+
   namespace :conductor do
     resources :event_types
     resources :users do

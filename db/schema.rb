@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2020_10_15_085206) do
+ActiveRecord::Schema.define(version: 2020_10_21_125439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -204,6 +203,19 @@ ActiveRecord::Schema.define(version: 2020_10_15_085206) do
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
   end
 
+  create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "phone"
+    t.string "email"
+    t.string "company_name"
+    t.bigint "company_id"
+    t.bigint "created_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_contacts_on_company_id"
+    t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
+  end
+
   create_table "document_templates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -235,17 +247,6 @@ ActiveRecord::Schema.define(version: 2020_10_15_085206) do
     t.index ["folder_id"], name: "index_documents_on_folder_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
-  end
-
-  create_table "enquiries", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "contact"
-    t.string "email"
-    t.text "comments"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "source"
-    t.boolean "responded", default: false
   end
 
   create_table "event_types", id: :serial, force: :cascade do |t|
@@ -319,6 +320,16 @@ ActiveRecord::Schema.define(version: 2020_10_15_085206) do
     t.string "remarks"
     t.index ["company_id"], name: "index_invoices_on_company_id"
     t.index ["user_id"], name: "index_invoices_on_user_id"
+  end
+
+  create_table "notes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "notable_type"
+    t.uuid "notable_id"
+    t.text "content"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -722,6 +733,8 @@ ActiveRecord::Schema.define(version: 2020_10_15_085206) do
   add_foreign_key "companies", "users", column: "associate_id"
   add_foreign_key "companies", "users", column: "consultant_id"
   add_foreign_key "companies", "users", column: "shared_service_id"
+  add_foreign_key "contacts", "companies"
+  add_foreign_key "contacts", "users", column: "created_by_id"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
@@ -737,6 +750,7 @@ ActiveRecord::Schema.define(version: 2020_10_15_085206) do
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
+  add_foreign_key "notes", "users"
   add_foreign_key "outlets", "companies"
   add_foreign_key "permissions", "roles"
   add_foreign_key "questions", "survey_sections"

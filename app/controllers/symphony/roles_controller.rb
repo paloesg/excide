@@ -55,11 +55,6 @@ class Symphony::RolesController < ApplicationController
     @role = @company.roles.find(params[:id])
   end
 
-  def set_company
-    @user = current_user
-    @company = @user.company
-  end
-
   def set_company_users
     @company_users = User.where(company_id: @company.id)
   end

@@ -3,7 +3,11 @@ require 'rails_helper'
 RSpec.describe "Events", type: :request do
   describe "GET /conductor/events" do
     before :each do
-      user = FactoryBot.create(:user)
+      company = FactoryBot.create(:company)
+      company.products << 'conductor'
+      company.save
+
+      user = FactoryBot.create(:user, company: company)
       user.confirmed_at = Time.now
       user.save
       login_as user

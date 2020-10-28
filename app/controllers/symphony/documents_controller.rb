@@ -45,13 +45,13 @@ class Symphony::DocumentsController < ApplicationController
         document.attach_and_convert_document(params[:response_key])
         # Generate textract ID if the workflow contains the task 'create_invoice payable' or 'create_invoice_receivable'.
         # @generate_textract = GenerateTextract.new(document.id).run_generate if document.workflow&.workflow_actions&.any?{|wfa| wfa.task.task_type == 'create_invoice_payable' or wfa.task.task_type == 'create_invoice_receivable'}
-        
+
         # Upload single file task in workflow and batch!
         if params[:upload_type] == "file-upload-task"
           workflow_action = WorkflowAction.find(params[:workflow_action])
           if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
             # If batch is present, redirect to batch page, else go to workflow page
-            @batch.present? ? format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id)} : format.html{ redirect_to symphony_workflow_path(workflow_action.workflow.template.slug, workflow_action.workflow.id) } 
+            @batch.present? ? format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id)} : format.html{ redirect_to symphony_workflow_path(workflow_action.workflow.template.slug, workflow_action.workflow.id) }
             flash[:notice] = "#{workflow_action.task.instructions} done!"
           else
             format.json { render json: workflow_action.errors, status: :unprocessable_entity }
@@ -84,7 +84,7 @@ class Symphony::DocumentsController < ApplicationController
     @files = []
     parsed_files = JSON.parse(params[:successful_files])
     parsed_files.each do |file|
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run 
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run
       document = @generate_document.document
       authorize document
       # attach and convert method with the response key to create blob
@@ -128,11 +128,6 @@ class Symphony::DocumentsController < ApplicationController
   end
 
   private
-
-  def set_company
-    @user = current_user
-    @company = @user.company
-  end
 
   def set_templates
     @document_templates = DocumentTemplate.joins(template: :company).where(templates: {company_id: @company.id}).order(id: :asc)

@@ -64,11 +64,6 @@ class CompaniesController < ApplicationController
 
   private
 
-  def set_company
-    @user = current_user
-    @company = @user.company
-  end
-
   def set_company_roles
     # Set company admin role only if old roles is not defined i.e. creating new company
     current_user.add_role(:admin, @company) unless defined?(@old_roles)
