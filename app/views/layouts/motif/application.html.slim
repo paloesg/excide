@@ -29,36 +29,26 @@ html lang="en"
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
     // For uppy use with active storage
     = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
-  
+
   body
-    / Checked if user_signed_in
-    - if user_signed_in?
-      = render 'layouts/motif/motif_header' 
-      - if current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users'
-        .motif-wrapper
-          .motif-contents
-            .row.mt-5
-              .col-sm-2.bg-white.border-right.sidebar-border-radius
-                = render 'layouts/motif/motif_settings_sidebar'
-              .col-sm-10.bg-white.content-border-radius
-                = yield
-                = render 'layouts/messages'
-      - else
-        .container-fluid
-          .row
-            .col-sm-2.bg-white.border-right
-              = render 'layouts/motif/motif_sidebar'
-            .col-sm-10.mt-5
+    = render 'layouts/motif/motif_header'
+    - if current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users'
+      .motif-wrapper
+        .motif-contents
+          .row.mt-5
+            .col-sm-2.bg-white.border-right.sidebar-border-radius
+              = render 'layouts/motif/motif_settings_sidebar'
+            .col-sm-10.bg-white.content-border-radius
               = yield
               = render 'layouts/messages'
     - else
-      .container
-        = yield
-        = render 'layouts/messages'
-    /! begin::Scrolltop
-    .scrolltop
-      i.fa.fa-arrow-up
-    /! end::Scrolltop
+      .container-fluid
+        .row
+          .col-sm-2.bg-white.border-right
+            = render 'layouts/motif/motif_sidebar'
+          .col-sm-10.mt-5
+            = yield
+            = render 'layouts/messages'
     /! Start of paloe Zendesk Widget script
     script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66"
     /! End of paloe Zendesk Widget script

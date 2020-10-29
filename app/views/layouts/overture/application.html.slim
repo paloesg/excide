@@ -29,23 +29,13 @@ html lang="en"
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
     // For uppy use with active storage
     = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
-  
+
   body
-    / Checked if user_signed_in
-    - if user_signed_in?
-      / render overture header
-      .container-fluid
-        .row
-          / render content and sidebar
-      = render 'layouts/footer' unless current_page?(root_path)
-    - else
-      .container
-        = yield
-        = render 'layouts/messages'
-    /! begin::Scrolltop
-    .scrolltop
-      i.fa.fa-arrow-up
-    /! end::Scrolltop
+    / render overture header
+    .container-fluid
+      .row
+        / render content and sidebar
+    = render 'layouts/footer' unless current_page?(root_path)
     /! Start of paloe Zendesk Widget script
     script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66"
     /! End of paloe Zendesk Widget script
