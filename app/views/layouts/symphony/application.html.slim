@@ -33,15 +33,15 @@ html lang="en"
   body
     / Checked if user_signed_in
     - if user_signed_in?
-      = render 'layouts/header' unless (controller_name == 'invoices' || current_page?(additional_information_path) || current_page?(root_path))
       .container-fluid
         .row
           - if (controller_name == 'invoices' || current_page?(additional_information_path) || current_page?(root_path))
-            / no sidebar for invoices page, conductor, additional information page, and products selection menu page
+            / no header and sidebar for invoices page, conductor, additional information page, and products selection menu page
             .col-sm-12.mt-5.mx-4.px-5
               = yield
               = render 'layouts/messages'
           - else
+            = render 'layouts/header'
             .col-sm-2.bg-white.border-right
               = render 'layouts/symphony/sidebar'
             .col-sm-10.mt-5
