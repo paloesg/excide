@@ -1,23 +1,3 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any styles
- * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
- * file per style scope.
- *
- *= require trix
- *= require_self
- *= require dropzone
- *= require font-awesome
- *= require selectize
- *= require selectize.default
- */
-
 @charset "utf-8";
 @import "administrate/reset/normalize";
 
@@ -47,3 +27,44 @@
 @import "administrate/administrate-field-jsonb/jsoneditor.min";
 @import "administrate/administrate-field-jsonb/accordion";
 @import "administrate/administrate-field-jsonb/editor";
+
+@import "trix/dist/trix";
+@import "selectize";
+
+// We need to override trix.css’s image gallery styles to accommodate the
+// <action-text-attachment> element we wrap around attachments. Otherwise,
+// images in galleries will be squished by the max-width: 33%; rule.
+.trix-content {
+  .attachment-gallery {
+    > action-text-attachment,
+    > .attachment {
+      flex: 1 0 33%;
+      padding: 0 0.5em;
+      max-width: 33%;
+    }
+
+    &.attachment-gallery--2,
+    &.attachment-gallery--4 {
+      > action-text-attachment,
+      > .attachment {
+        flex-basis: 50%;
+        max-width: 50%;
+      }
+    }
+  }
+
+  action-text-attachment {
+    .attachment {
+      padding: 0 !important;
+      max-width: 100% !important;
+    }
+  }
+}
+
+.field-unit--rich-text-area-field {
+  .field-unit__field {
+    width: 80%;
+  }
+}
+
+@import "flatpickr/dist/flatpickr.min";
