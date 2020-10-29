@@ -54,7 +54,7 @@
         a.dropdown-toggle.sidebar-font.col-sm-6 aria-expanded="false" data-toggle="collapse" href="#routineMenu"  ROUTINES
         = link_to symphony_templates_path, class: 'float-right' do
           i.material-icons-outlined add
-        ul#routineMenu.collapse.list-unstyled
+        ul#routineMenu.collapse.list-unstyled.show
           / Calling template model scope to display templates with NO batches
           - ::Template.assigned_templates(current_user).has_no_batches.each do |template|
             li.hover-blue.py-1.m-4
@@ -63,7 +63,7 @@
     ul.nav.flex-column
       li.active.m-4
         a.dropdown-toggle.sidebar-font.col-sm-6 aria-expanded="false" data-toggle="collapse" href="#toolsMenu" TOOLS
-        ul#toolsMenu.collapse.list-unstyled
+        ul#toolsMenu.collapse.list-unstyled.show
           li.hover-blue.py-1.m-4
             = link_to '#', class: 'col-sm-12 d-flex align-items-center' do
               i.material-icons-outlined people
