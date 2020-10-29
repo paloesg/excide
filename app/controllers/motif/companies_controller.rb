@@ -2,7 +2,6 @@ class Motif::CompaniesController < ApplicationController
   layout 'motif/application'
   
   before_action :set_company
-
   def edit
   end
 
