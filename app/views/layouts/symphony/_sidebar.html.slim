@@ -1,5 +1,5 @@
 / for settings page, render a different sidebar
-- if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)) || current_page?(conductor_events_path))
+- if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)))
   .sidebar-sticky
     ul.nav.flex-column
       strong.col-sm-6.mt-4 SETTINGS

@@ -1,4 +1,6 @@
 class Conductor::EventsController < ApplicationController
+  layout 'conductor/application'
+  
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_clients
