@@ -34,7 +34,7 @@ html lang="en"
     / Checked if user_signed_in
     - if user_signed_in?
       = render 'layouts/motif/motif_header' 
-      - if current_page?(edit_motif_company_path(current_user.company))
+      - if current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users'
         .motif-wrapper
           .motif-contents
             .row.mt-5
