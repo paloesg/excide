@@ -1,4 +1,6 @@
 class Symphony::WorkflowActionsController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :authenticate_user!
   before_action :set_workflow_action
 

@@ -1,4 +1,6 @@
 class Symphony::HomeController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :authenticate_user!, except: [:terms, :privacy]
 
   def index

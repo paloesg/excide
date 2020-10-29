@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  layout 'symphony/application'
+  
   # controller for the menu page for users with multiple products
   def index
     if current_user.present?

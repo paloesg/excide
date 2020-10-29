@@ -1,4 +1,6 @@
 class Symphony::WorkflowsController < ApplicationController
+  layout 'symphony/application'
+  
   include Adapter
 
   rescue_from Xeroizer::InvoiceNotFoundError, with: :xero_error_invoice_not_found

@@ -1,4 +1,5 @@
 class CompaniesController < ApplicationController
+  layout 'symphony/application'
   before_action :authenticate_user!
   before_action :set_company, only: [:show, :edit, :update, :billing, :integration]
 
