@@ -1,4 +1,6 @@
 class Motif::DocumentsController < ApplicationController
+  layout 'motif/application'
+  
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_document, only: [:update_tags, :update, :destroy]
