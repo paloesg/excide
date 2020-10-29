@@ -1,0 +1,62 @@
+doctype html
+html lang="en"
+  head
+    base href="../../"
+    meta charset="utf-8"
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"
+    meta name="turbolinks-cache-control" content="no-cache"
+    link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet"
+    link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"
+    script async=true src="https://www.googletagmanager.com/gtag/js?id=UA-93342323-1"
+    javascript:
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-93342323-1');
+      document.addEventListener('turbolinks:load', event => {
+        if (typeof gtag === 'function') {
+          gtag('config', 'UA-93342323-1', {
+            'page_location': event.data.url
+          });
+        }
+      });
+    script src="https://js.stripe.com/v3/"
+    = render 'application/favicon'
+    = display_meta_tags site: "Virtual CFO | Excide"
+    = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = csrf_meta_tags
+    = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
+    // For uppy use with active storage
+    = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
+  
+  body
+    / Checked if user_signed_in
+    - if user_signed_in?
+      = render 'layouts/header' unless (controller_name == 'invoices' || current_page?(additional_information_path) || current_page?(root_path))
+      .container-fluid
+        .row
+          - if (controller_name == 'invoices' || current_page?(additional_information_path) || current_page?(root_path))
+            / no sidebar for invoices page, conductor, additional information page, and products selection menu page
+            .col-sm-12.mt-5.mx-4.px-5
+              = yield
+              = render 'layouts/messages'
+          - else
+            .col-sm-2.bg-white.border-right
+              = render 'layouts/symphony/sidebar'
+            .col-sm-10.mt-5
+              = yield
+              = render 'layouts/messages'
+      = render 'layouts/footer' unless current_page?(root_path)
+    - else
+      .container
+        = yield
+        = render 'layouts/messages' 
+    /! begin::Scrolltop
+    .scrolltop
+      i.fa.fa-arrow-up
+    /! end::Scrolltop
+    /! Start of paloe Zendesk Widget script
+    script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66"
+    /! End of paloe Zendesk Widget script
+
