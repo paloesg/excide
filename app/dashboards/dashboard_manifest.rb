@@ -21,6 +21,7 @@ class DashboardManifest
     :folders,
     :documents,
     :document_templates,
+    :profiles,
     :clients,
     :events,
     :event_types,

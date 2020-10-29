@@ -1,6 +1,6 @@
-require "administrate/field/text"
+require "administrate/field/base"
 
-class RichTextAreaField < Administrate::Field::Text
+class RichTextAreaField < Administrate::Field::Base
   def to_s
     data
   end
