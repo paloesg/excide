@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_30_071152) do
+ActiveRecord::Schema.define(version: 2020_10_30_075444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -367,7 +367,8 @@ ActiveRecord::Schema.define(version: 2020_10_30_071152) do
     t.string "country"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "company_id"
+    t.uuid "franchisee_id"
+    t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
 
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -746,7 +747,7 @@ ActiveRecord::Schema.define(version: 2020_10_30_071152) do
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "notes", "users"
-  add_foreign_key "outlets", "companies"
+  add_foreign_key "outlets", "franchisees"
   add_foreign_key "permissions", "roles"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
