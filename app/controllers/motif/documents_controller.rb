@@ -11,6 +11,17 @@ class Motif::DocumentsController < ApplicationController
     @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc)
     @roles = @company.roles.includes(:permissions)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
+    unless params[:tags].blank?
+      if params[:tags] == 'All tags'
+        @documents = policy_scope(Document)
+      else
+        @documents = @documents.select {|document| document.all_tags_list.first == params[:tags]}
+      end
+    end
+  end
+
+  def new
+    @document = Document.new
   end
 
   def create
