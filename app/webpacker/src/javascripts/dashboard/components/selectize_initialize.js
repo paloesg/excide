@@ -46,9 +46,15 @@ $(document).on("turbolinks:load", function () {
   });
 
   $(".documents-filter-button").click(function (e) {
-    var tags_select2 = $("select.select2-document-tags").select2();
-    var access_select2 = $("select.select2-document-access").select2();
-    var qna_select2 = $("select.select2-document-qna").select2();
+    var tags_select2 = $("select.select2-document-tags").select2({
+      width: 'auto'
+    });
+    var access_select2 = $("select.select2-document-access").select2({
+      width: 'auto'
+    });
+    var qna_select2 = $("select.select2-document-qna").select2({
+      width: 'auto'
+    });
 
     var tagsData = tags_select2[0].value;
     var accessData = access_select2[0].value;

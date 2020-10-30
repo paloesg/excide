@@ -57,7 +57,7 @@
         = select_tag('qna', options_for_select(["All Q&A Status", "Read", "Unread"], selected: params[:qna], include_blank: true), class: 'select2 select2-document-qna form-control')
       span.mr-3
         = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
-      span.align-items-center.ml-5#clear-filter style="color: #4A5CD4; cursor: pointer;"
+      span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
         | Clear
   hr
   div.ml-5.mb-4 Folder path
