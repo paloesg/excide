@@ -1,3 +1,3 @@
 class Outlet < ApplicationRecord
-  belongs_to :company
+  belongs_to :franchisee
 end
