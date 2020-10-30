@@ -15,7 +15,22 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def update
-    
+    @franchisee.contact_person_details = {
+      first_name: params[:contact_first_name],
+      last_name: params[:contact_last_name],
+      position: params[:position],
+      contact_mobile: params[:contact_mobile],
+      email: params[:contact_email],
+      capital_available_for_investment: params[:capital],
+      your_franchise_experience: params[:your_franchise_experience],
+      other_experience: params[:other_experience],
+    }
+
+    if @franchisee.update(franchisee_params)
+      redirect_to edit_motif_franchisee_path(@franchisee), notice: 'Successfully updated franchisee profile'
+    else
+      redirect_to motif_root_path, alert: 'Updating franchisee profile has failed. Please contact admin for advise.'
+    end
   end
 
   private
@@ -29,7 +44,7 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def franchisee_params
-    params.require(:franchisee).permit(:name, :website_url, :established_date, :telephone, :annual_turnover_rate, :currency, :address, :description, :contact_person_details)
+    params.require(:franchisee).permit(:name, :website_url, :established_date, :telephone, :annual_turnover_rate, :currency, :address, :description, :contact_person_details, :profile_picture)
   end
   
 end
