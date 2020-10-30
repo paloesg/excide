@@ -1,4 +1,5 @@
 class Symphony::XeroLineItemsController < ApplicationController
+
   def show
     @company = current_user.company
     @item = params[:item_code]

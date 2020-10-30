@@ -28,6 +28,8 @@ require("./symphony/templates/choose_template_patterns");
 require("./symphony/header");
 require("./symphony/home");
 
+require("./motif/drag_documents");
+
 window.createAllocation = require("./conductor/create_allocations");
 window.addAvailability = require("./conductor/add_availabilities");
 require("./conductor/home");
@@ -38,6 +40,7 @@ require("./components/calendar_style");
 require("./motif/drawer")
 require("./motif/remarks")
 require("./motif/home")
+require("./motif/settings")
 
 // Import Uppy drag-and-drop
 require("./components/uppy");

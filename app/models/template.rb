@@ -25,6 +25,8 @@ class Template < ApplicationRecord
   validates :title, :slug, presence: true
 
   before_save :data_names_to_json
+  # Scope templates that have no batches. Only those that have no batches will be displayed in symphony sidebar
+  scope :has_no_batches, -> { includes(:batches).where(batches: { id: nil }) }
 
   def get_roles
     self.sections.map{|section| section.tasks.map(&:role)}.flatten.compact.uniq
@@ -145,6 +147,13 @@ class Template < ApplicationRecord
 
   def self.today
     Template.where(next_workflow_date: Date.current.beginning_of_day..Date.current.end_of_day)
+  end
+
+  # updates existing, incomplete workflows and workflow actions' deadlines when the template deadline is updated.
+  def update_deadlines
+    self.workflows.where(completed: false).each do |wf|
+      wf.update_deadlines
+    end
   end
 
   def update_workflow_actions

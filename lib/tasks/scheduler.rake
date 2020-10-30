@@ -33,20 +33,6 @@ namespace :scheduler do
     end
   end
 
-  task :enquiry_emails => :environment do
-    enquiries = Enquiry.yesterday.where(responded: false)
-    enquiries.each do |enquiry|
-      # If enquiry came in from vfo or about page without contact info, they are interested in the financial model template
-      if enquiry.contact.nil? && (enquiry.source == "vfo" || enquiry.source == "about")
-        EnquiryMailer.template_enquiry(enquiry).deliver_later
-      else
-        EnquiryMailer.general_enquiry(enquiry).deliver_later
-      end
-      enquiry.update_attributes(responded: true)
-      SlackService.new.auto_response(enquiry).deliver
-    end
-  end
-
   task :update_symphony_trial_status => :environment do
     Company.all.each do |company|
       # Check for free trial end date

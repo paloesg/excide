@@ -87,3 +87,14 @@
         .form-group
           = f.label :designated_working_time
           = f.text_field :designated_working_time, class: 'form-control'
+    .card.card-custom.mt-4
+      .card-header
+        .card-title
+          | Add products
+      .card-body
+        .form-group
+          = check_box_tag 'products[]', 'symphony', false, class: 'mr-3'
+          = label_tag 'Symphony', 'Symphony', class: 'form-check-label'
+        .form-group
+          = check_box_tag 'products[]', 'motif', false, class: 'mr-3'
+          = label_tag 'Motif', 'Motif', class: 'form-check-label'

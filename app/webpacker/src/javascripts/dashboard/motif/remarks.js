@@ -4,16 +4,20 @@ window.remarks = function(formElement) {
   let tableRow = formJquery.parent().parent();
   $.ajax({
     type: "PATCH",
-    url: "/motif/documents/" + formJquery.data("document-id"),
+    url: formJquery.data("path") + formJquery.data("document-id"),
     data: formJquery,
     dataType: "JSON"
   }).done(function(data){
-    $(tableRow.find(".fa-check")).show().fadeTo(500, 200, function () {
-        $(tableRow.find(".fa-check")).fadeTo(200, 0);
-      });
-  }).fail(function (data) {
-      $(tableRow.find(".fa-times")).show().fadeTo(500, 200, function () {
-        $(tableRow.find(".fa-times")).fadeTo(200, 0);
-      });
-  });
+    // If success request, it will change the underline of the form to green color for a short while before changing back to normal line
+    formJquery.css({ "border-bottom": "1px solid #B8CD59"})
+    setTimeout(function(){
+      formJquery.css({ "border-bottom": "1px solid #B5B5C3"})
+    }, 3000);
+  }).fail(function(data) {
+    // If fail, it will be red
+    formJquery.css({ "border-bottom": "1px solid red"})
+    setTimeout(function(){
+      formJquery.css({ "border-bottom": "1px solid #B5B5C3"})
+    }, 3000);
+  })
 };

@@ -18,11 +18,19 @@ class CompaniesController < ApplicationController
   def create
     @company = Company.new(company_params)
     authorize @company
-
+    # Save the new company's product(s)
+    @company.products = params[:products]
     if @company.save
       set_company_roles
       current_user.update(company: @company)
-      redirect_to symphony_root_path
+      # Redirect based on the products that was added to the company
+      if @company.products.length >= 2
+        redirect_to root_path
+      elsif @company.products[0] == "symphony"
+        redirect_to symphony_root_path
+      else
+        redirect_to motif_root_path
+      end
     end
   end
 
@@ -56,11 +64,6 @@ class CompaniesController < ApplicationController
 
   private
 
-  def set_company
-    @user = current_user
-    @company = @user.company
-  end
-
   def set_company_roles
     # Set company admin role only if old roles is not defined i.e. creating new company
     current_user.add_role(:admin, @company) unless defined?(@old_roles)
@@ -77,7 +80,7 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:id, :name, :uen, :contact_details, :financial_year_end, :gst_quarter, :agm_date, :ar_date, :eci_date, :form_cs_date, :project_start_date, :consultant_id, :associate_id, :shared_service_id, :designated_working_time, :xero_email, :connect_xero, :account_type, :stripe_subscription_plan_data, :trial_end_date, :slack_access_response, :before_deadline_reminder_days, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state]
+    params.require(:company).permit(:id, :name, :uen, :contact_details, :financial_year_end, :gst_quarter, :agm_date, :ar_date, :eci_date, :form_cs_date, :project_start_date, :consultant_id, :associate_id, :shared_service_id, :designated_working_time, :xero_email, :connect_xero, :account_type, :stripe_subscription_plan_data, :trial_end_date, :slack_access_response, :before_deadline_reminder_days, :website_url, :company_logo, :profile_logo, :banner_image, :company_bio, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state]
     )
   end
 

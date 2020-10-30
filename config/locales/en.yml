@@ -20,7 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
- pundit:
+  pundit:
     default: 'You are not authorized to perform this action.'
     document_policy:
       update?: 'You are not authorized to edit this document!'
@@ -38,4 +38,3 @@ en:
       show?: 'You are not authorized to view companies!'
       new?: 'You are not authorized to create company!'
       edit?: 'You are not authorized to edit company!'
-

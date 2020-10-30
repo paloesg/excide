@@ -4,7 +4,8 @@ class Symphony::WorkflowsController < ApplicationController
   rescue_from Xeroizer::InvoiceNotFoundError, with: :xero_error_invoice_not_found
 
   before_action :authenticate_user!
-  before_action :set_company_and_roles
+  before_action :set_company
+  before_action :set_roles
   before_action :set_template
   before_action :set_clients, only: [:new, :create, :edit, :update]
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :assign, :archive, :reset, :data_entry, :xero_create_invoice, :send_email_to_xero]
@@ -307,7 +308,7 @@ class Symphony::WorkflowsController < ApplicationController
   def send_email_to_xero
     authorize @workflow
     @workflow.documents.each do |workflow_docs|
-        WorkflowMailer.send_invoice_email(@workflow, workflow_docs).deliver_later
+      WorkflowMailer.send_invoice_email(@workflow, workflow_docs).deliver_later
     end
     flash[:notice] = "#{@workflow.documents.count} email/s have been generated for Xero. Please check Xero in a few minutes."
     redirect_to symphony_workflow_path(@template.slug, @workflow.id)
@@ -334,9 +335,7 @@ class Symphony::WorkflowsController < ApplicationController
     @current_task = @workflow.current_task
   end
 
-  def set_company_and_roles
-    @user = current_user
-    @company = @user.company
+  def set_roles
     @roles = @user.roles.where(resource_id: @company.id, resource_type: "Company")
   end
 
