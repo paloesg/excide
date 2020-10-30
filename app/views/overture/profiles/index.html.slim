@@ -15,46 +15,49 @@
   .col-sm-11
     i.material-icons-outlined search
 hr
-/ - @profiles.each do |profile|
-.row.mb-3.mt-5.ml-3
-  .col-md-10
-    .card.w-100
-      .row
-        .col.bg-light
-          .img-square-wrapper.m-5
-            img src="http://via.placeholder.com/120"
-            h2.badge.badge-pill.badge-secondary.mt-5
-              | Status
-        .col-md-10
-          .card-body
-            .row
-              .col
-                h6.mb-4.text-muted CATEGORY
-                h2.card-title Startup Company Name
-                p.card-text Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium beatae at aliquam, quas esse ipsum! Eos, adipisci. Nihil reiciendis, ex eius repellendus dolor reprehenderit tenetur officiis quas fuga, qui illum.
-                .mt-5
-                  .btn.btn-white.border.border-secondary.mr-3
-                    i.material-icons-outlined.p-0 bookmark_border
-                  .btn.btn-white.border.border-secondary.text-primary.mr-3 View
-                  .btn.btn-primary.mr-3 State Interest
-              .col-md-5
-                //loop and display
-                / dl.dl-horizontal
-                /   .row
-                /     dt.col.text-muted Funding Round
-                /     dd.col Angel/Pre-seed
-                /   .row
-                /     dt.col.text-muted Total Amount Raising
-                /     dd.col SGD 300,000
-                /   .row
-                /     dt.col.text-muted Instrument Type
-                /     dd.col SAFE
-                /   .row
-                /     dt.col.text-muted Valuation Cap
-                /     dd.col SGD 3,000,000
-                /   .row
-                /     dt.col.text-muted Discount Rate
-                /     dd.col 20%
-                /   .row
-                /     dt.col.text-muted Min. Cheque Size
-                /     dd.col SGD 25,000
+- @profiles.each do |profile|
+  .row.mb-3.mt-5.ml-3
+    .col-md-10
+      .card.w-100
+        .row
+          .col.bg-light
+            .img-square-wrapper.m-5
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "120x120", class: "rounded"
+              h2.badge.badge-pill.badge-secondary.mt-5
+                | Status
+          .col-md-10
+            .card-body
+              .row
+                .col
+                  h6.mb-4.text-muted CATEGORY
+                  h2
+                    = profile.name
+                  p.card-text
+                    = profile.url
+                  p.card-text Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium beatae at aliquam, quas esse ipsum! Eos, adipisci. Nihil reiciendis, ex eius repellendus dolor reprehenderit tenetur officiis quas fuga, qui illum.
+                  .mt-5
+                    = link_to overture_root_path, class: "btn btn-white border border-secondary mr-3"
+                      i.material-icons-outlined.p-0 bookmark_border
+                    = link_to "View", overture_profile_path(profile.id), class: "btn btn-white border border-secondary text-primary mr-3"
+                    = link_to "State Interest", overture_root_path, class: "btn btn-primary mr-3"
+                .col-md-5
+                  //loop and display
+                  / dl.dl-horizontal
+                  /   .row
+                  /     dt.col.text-muted Funding Round
+                  /     dd.col Angel/Pre-seed
+                  /   .row
+                  /     dt.col.text-muted Total Amount Raising
+                  /     dd.col SGD 300,000
+                  /   .row
+                  /     dt.col.text-muted Instrument Type
+                  /     dd.col SAFE
+                  /   .row
+                  /     dt.col.text-muted Valuation Cap
+                  /     dd.col SGD 3,000,000
+                  /   .row
+                  /     dt.col.text-muted Discount Rate
+                  /     dd.col 20%
+                  /   .row
+                  /     dt.col.text-muted Min. Cheque Size
+                  /     dd.col SGD 25,000
