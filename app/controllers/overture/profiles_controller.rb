@@ -6,5 +6,6 @@ class Overture::ProfilesController < ApplicationController
   end
 
   def show
+    @profile = Profile.find(params[:id])
   end
 end

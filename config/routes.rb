@@ -136,6 +136,7 @@ Rails.application.routes.draw do
 
   namespace :overture do
     root to: 'profiles#index'
+    resources :profiles
   end
 
   namespace :conductor do
