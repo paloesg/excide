@@ -129,7 +129,11 @@ Rails.application.routes.draw do
       patch '/update_tags', to:'folders#update_tags'
     end
     resources :permissions
-    resources :companies
+    resources :companies do
+      resources :franchisees do
+        resources :outlets
+      end
+    end
     resources :users, only: [:index, :create]
     post '/add-roles', to: 'users#add_role', as: :add_role
   end

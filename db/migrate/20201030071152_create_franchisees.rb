@@ -2,7 +2,7 @@ class CreateFranchisees < ActiveRecord::Migration[6.0]
   def change
     create_table :franchisees, id: :uuid do |t|
       t.string :name
-      t.string :website
+      t.string :website_url
       t.date :established_date
       t.string :telephone
       t.decimal :annual_turnover_rate
