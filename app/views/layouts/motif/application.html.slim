@@ -22,7 +22,7 @@ html lang="en"
       });
     script src="https://js.stripe.com/v3/"
     = render 'application/favicon'
-    = display_meta_tags site: "Paloe"
+    = display_meta_tags site: "Virtual CFO | Excide"
     = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
@@ -31,9 +31,25 @@ html lang="en"
     = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
 
   body
-    .container
-      = yield
-      = render 'layouts/messages'
+    = render 'layouts/motif/motif_header'
+    - if current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users'
+      .motif-wrapper
+        .motif-contents
+          .row.mt-5
+            .col-sm-2.bg-white.border-right.sidebar-border-radius
+              = render 'layouts/motif/motif_settings_sidebar'
+            .col-sm-10.bg-white.content-border-radius
+              = yield
+              = render 'layouts/messages'
+    - else
+      .container-fluid
+        .row
+          .col-sm-2.bg-white.border-right
+            = render 'layouts/motif/motif_sidebar'
+          .col-sm-10.mt-5
+            = yield
+            = render 'layouts/messages'
     /! Start of paloe Zendesk Widget script
     script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66"
     /! End of paloe Zendesk Widget script
+

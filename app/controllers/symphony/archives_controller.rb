@@ -1,4 +1,6 @@
 class Symphony::ArchivesController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :set_company
   before_action :authenticate_user!
 

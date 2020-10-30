@@ -1,4 +1,6 @@
 class Conductor::ClientsController < ClientsController
+  layout 'conductor/application'
+  
   def index
     @clients = Client.where(company: @company).order(:id)
   end

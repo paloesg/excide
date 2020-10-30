@@ -1,4 +1,6 @@
 class Symphony::SurveysController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :authenticate_user!
   before_action :set_survey, only: :show
 
