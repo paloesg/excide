@@ -128,8 +128,10 @@ Rails.application.routes.draw do
     end
     resources :permissions
     resources :companies
-    resources :franchisees
-    resources :outlets
+    resources :franchisees do
+      resources :outlets, except: :create
+    end
+    resources :outlets, only: :create
     resources :users, only: [:index, :create]
     post '/add-roles', to: 'users#add_role', as: :add_role
   end
