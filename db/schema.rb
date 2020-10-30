@@ -367,13 +367,9 @@ ActiveRecord::Schema.define(version: 2020_10_30_082914) do
     t.string "country"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-<<<<<<< HEAD
     t.uuid "franchisee_id"
     t.string "name"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
-=======
-    t.uuid "company_id"
->>>>>>> develop
   end
 
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
