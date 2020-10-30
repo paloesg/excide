@@ -13,9 +13,6 @@ class Motif::DocumentsController < ApplicationController
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 
-  def new
-  end
-
   def create
     @files = []
     parsed_files = JSON.parse(params[:successful_files])

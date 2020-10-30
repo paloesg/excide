@@ -42,6 +42,18 @@ class Workflow < ApplicationRecord
     set_deadline(self.template, self, self.template.start_date.present? ? self.template.start_date : Date.current)
   end
 
+  # updates workflow and workflow actions' deadline based on its date of creation.
+  def update_deadlines
+    # update workflow deadlines
+    set_deadline(self.template, self, self.created_at.to_date)
+    # update workflow actions deadlines
+    self.template.tasks.each do |task|
+      task.workflow_actions.where(completed: false).each do |wfa|
+        set_deadline(task, wfa, wfa.created_at.to_date)
+      end
+    end
+  end
+
   def build_workflowable(params)
     self.workflowable = workflowable_type.constantize.new(params)
   end

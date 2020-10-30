@@ -75,10 +75,10 @@ class ApplicationController < ActionController::Base
     redirect_to symphony_root_path, alert: message
   end
 
-  # Checks the controller namespace then check if the user has access to the product based on application policy
+  # Checks the controller parent and check if the user has access to the product based on application policy unless parent is users (login) or object (not namespaced)
   def authenticate_product
-    product = controller_path.split('/').first
-    authorize current_user, ("has_" + product + "?").to_sym unless product == 'home'
+    product = self.class.parent.to_s.downcase
+    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || "object"
   end
 
   def set_company

@@ -149,6 +149,13 @@ class Template < ApplicationRecord
     Template.where(next_workflow_date: Date.current.beginning_of_day..Date.current.end_of_day)
   end
 
+  # updates existing, incomplete workflows and workflow actions' deadlines when the template deadline is updated.
+  def update_deadlines
+    self.workflows.where(completed: false).each do |wf|
+      wf.update_deadlines
+    end
+  end
+
   def update_workflow_actions
     self.tasks.each do |task|
       # If there's assigned_user, it will store the ID, else it will be nil
