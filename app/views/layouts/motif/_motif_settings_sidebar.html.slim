@@ -6,12 +6,19 @@
           .col-md-4
             = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2 mr-2'
           .col-md-8
-      /       = link_to edit_motif_company_path(franchisee_id: @company.id) do
-      /         h4.text-dark = @company.name
-      /         p.text-dark Corporate Franchisee
-      / - @company.outlets.each do |outlet|
-      /   li.nav-item.hover-blue.py-1.m-4
-      /     = link_to outlet.name, edit_motif_company_outlet_path(company_franchisee_id: outlet.company.id, id: outlet.id), class: 'p-2 text-dark'
+            = link_to edit_motif_franchisee_path(@franchisee) do
+              h4.text-dark = @franchisee.name
+              p.text-dark Corporate Franchisee
+      li.nav-item.py-1.m-4
+        .row
+          .col-md-4
+            .p-2.text-dark Location
+          .col-md-8
+            = link_to motif_root_path do
+              i.material-icons.float-right.text-dark add
+      - @franchisee.outlets.each do |outlet|
+        li.nav-item.hover-blue.py-1.m-4
+          = link_to outlet.name, edit_motif_outlet_path(outlet), class: 'p-2 text-dark'
 - else
   .sidebar-sticky
     ul.nav.flex-column
