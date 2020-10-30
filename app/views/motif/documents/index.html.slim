@@ -17,10 +17,10 @@
               .col-md-12
                 .dashboard-body.motifMultipleDocumentsUpload#Dashboard
     div.float-right.mx-5.mt-2
-      = image_pack_tag 'media/src/images/motif/More.svg'
+      i.material-icons-outlined more_horiz
     div.float-right.mx-5.mt-2
       a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-        = image_pack_tag 'media/src/images/motif/Info Tooltip.svg'
+        i.material-icons-outlined info
     h3 DATAROOM
     p.mt-5.text-muted
       | Store, share and manage your important documents and access control
@@ -39,12 +39,12 @@
     .col
       div#filter style="cursor: pointer;"
         span.mr-3
-          = image_pack_tag "media/src/images/motif/Filter Funnel.svg"
+          i.material-icons-outlined filter_list
         | Filters
     .col-sm-11.text-muted
       div.form-row.align-items-center
         span.mr-3
-          = image_pack_tag "media/src/images/motif/Search.svg"
+          i.material-icons-outlined search
         input.form-control.border-0.col type="search" placeholder="Search..."
         div.col-8
   .row.ml-4.my-5.align-items-center#filter-options
@@ -80,7 +80,7 @@
             input.mt-2 type="checkbox" name=""/
           td
             span.mr-5
-              = image_pack_tag "media/src/images/motif/folder.svg"
+              i.material-icons-outlined.align-middle folder_open
             span.ml-5
               = link_to folder.name, motif_folder_path(folder.id)
           td id="drawer_toggle_#{folder.id}_0"
@@ -92,8 +92,8 @@
             = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{folder.id}_2"
             span.mr-4
-              = image_pack_tag "media/src/images/motif/Group People.svg"
-            span
+              i.material-icons.text-dark.align-middle group
+            span.align-middle
               | 25
           td
             .dropdown
@@ -112,7 +112,8 @@
             input.mt-2 type="checkbox" name=""/
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
             span.mr-5
-              = image_pack_tag "media/src/images/motif/jpg.svg"
+              / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
+              = image_pack_tag "media/src/images/motif/#{File.extname(d.raw_file.filename.to_s).split('.')[1].first(3)}.svg"
             span.ml-5
               = d.raw_file.filename
           td id="drawer_toggle_#{d.id}_0"
@@ -124,9 +125,8 @@
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{d.id}_2"
             span.mr-4
-              = image_pack_tag "media/src/images/motif/Group People.svg"
-            span
-              | 25
+              i.material-icons.text-dark.align-middle group
+            span.align-middle 25
           td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
