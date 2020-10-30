@@ -50,24 +50,24 @@
         = f.text_area :description, cols: "30", rows: "5", placeholder: 'Tell us more about the company', class: 'form-control'
     .row.my-10.ml-3
       .col-sm-5
-        = text_field_tag :contact_first_name, @franchisee.contact_person_details['first_name'], placeholder: 'Contact Person First Name', class: 'form-control'
+        = text_field_tag :contact_first_name, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['first_name'] : nil, placeholder: 'Contact Person First Name', class: 'form-control'
       .col-sm-5
-        = text_field_tag :contact_last_name, @franchisee.contact_person_details['last_name'], placeholder: 'Contact Person Last Name', class: 'form-control'
+        = text_field_tag :contact_last_name, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['last_name'] : nil, placeholder: 'Contact Person Last Name', class: 'form-control'
     .row.my-10.ml-3
       .col-sm-5
-        = text_field_tag :position, @franchisee.contact_person_details['position'], placeholder: 'Position', class: 'form-control'
+        = text_field_tag :position, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['position'] : nil, placeholder: 'Position', class: 'form-control'
     .row.my-10.ml-3
       .col-sm-5
-        = text_field_tag :contact_mobile, @franchisee.contact_person_details['contact_mobile'], placeholder: 'Contact Person Mobile', class: 'form-control'
+        = text_field_tag :contact_mobile, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['contact_mobile'] : nil, placeholder: 'Contact Person Mobile', class: 'form-control'
     .row.my-10.ml-3
       .col-sm-5
-        = text_field_tag :contact_email, @franchisee.contact_person_details['email'], placeholder: 'Email Address', class: 'form-control'
+        = text_field_tag :contact_email, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['email'] : nil, placeholder: 'Email Address', class: 'form-control'
     .row.my-10.ml-3
       .col-sm-5
-        = text_field_tag :capital, @franchisee.contact_person_details['capital_available_for_investment'], placeholder: 'Capital Available For Investment', class: 'form-control'
+        = text_field_tag :capital, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['capital_available_for_investment'] : nil, placeholder: 'Capital Available For Investment', class: 'form-control'
     .row.my-10.ml-3
       .col-sm-10
-        = text_area_tag :your_franchise_experience, @franchisee.contact_person_details['your_franchise_experience'], cols: "30", rows: "5", placeholder: 'Tell us more about your franchise experience', class: 'form-control'
+        = text_area_tag :your_franchise_experience, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['your_franchise_experience'] : nil, cols: "30", rows: "5", placeholder: 'Tell us more about your franchise experience', class: 'form-control'
     .row.my-10.ml-3
       .col-sm-10
-        = text_area_tag :other_experience, @franchisee.contact_person_details['other_experience'], cols: "30", rows: "5", placeholder: 'Tell us more about other experience', class: 'form-control'
+        = text_area_tag :other_experience, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['other_experience'] : nil, cols: "30", rows: "5", placeholder: 'Tell us more about other experience', class: 'form-control'

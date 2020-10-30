@@ -1,4 +1,4 @@
-- if controller_name == 'franchisees'
+- if controller_name == 'franchisees' || controller_name == 'outlets'
   .sidebar-sticky
     ul.nav.flex-column
       li.nav-item.hover-blue.py-1.m-4
@@ -18,7 +18,7 @@
               i.material-icons.float-right.text-dark add
       - @franchisee.outlets.each do |outlet|
         li.nav-item.hover-blue.py-1.m-4
-          = link_to outlet.name, edit_motif_outlet_path(outlet), class: 'p-2 text-dark'
+          = link_to outlet.name, edit_motif_franchisee_outlet_path(franchisee_id: @franchisee.id, id: outlet.id), class: 'p-2 text-dark'
 - else
   .sidebar-sticky
     ul.nav.flex-column

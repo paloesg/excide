@@ -32,7 +32,7 @@ html lang="en"
 
   body
     = render 'layouts/motif/motif_header'
-    - if current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users' || controller_name == 'franchisees'
+    - if !(current_page?(motif_franchisees_path)) && (current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users' || controller_name == 'franchisees' || controller_name == 'outlets')
       .motif-wrapper
         .motif-contents
           .row.mt-5
