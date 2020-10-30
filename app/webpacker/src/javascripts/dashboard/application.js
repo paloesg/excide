@@ -39,6 +39,7 @@ require("./components/calendar_style");
 
 require("./motif/drawer")
 require("./motif/remarks")
+require("./motif/home")
 require("./motif/settings")
 
 // Import Uppy drag-and-drop

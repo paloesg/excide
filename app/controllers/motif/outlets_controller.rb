@@ -1,4 +1,5 @@
 class Motif::OutletsController < ApplicationController
+  layout 'motif/application'
 
   def create
     if params[:franchisee_name].present?

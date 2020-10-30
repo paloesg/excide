@@ -22,7 +22,7 @@ html lang="en"
       });
     script src="https://js.stripe.com/v3/"
     = render 'application/favicon'
-    = display_meta_tags site: "Paloe"
+    = display_meta_tags site: "Virtual CFO | Excide"
     = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
@@ -31,9 +31,22 @@ html lang="en"
     = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
 
   body
-    .container
-      = yield
-      = render 'layouts/messages'
+    .container-fluid
+      .row
+        - if (controller_name == 'invoices' || current_page?(additional_information_path) || current_page?(root_path))
+          / no header and sidebar for invoices page, conductor, additional information page, and products selection menu page
+          .col-sm-12.mt-5.mx-4.px-5
+            = yield
+            = render 'layouts/messages'
+        - else
+          = render 'layouts/header'
+          .col-sm-2.bg-white.border-right
+            = render 'layouts/symphony/sidebar'
+          .col-sm-10.mt-5
+            = yield
+            = render 'layouts/messages'
+    = render 'layouts/footer' unless current_page?(root_path)
     /! Start of paloe Zendesk Widget script
     script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66"
     /! End of paloe Zendesk Widget script
+

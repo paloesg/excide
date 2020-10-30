@@ -25,4 +25,16 @@ $(document).on("turbolinks:load", function () {
       }, 3000);
     })
   })
+
+  $('#file-input-company-logo').change(function(){
+    $('.file-label-company-logo').text(this.value.split('\\')[2]);
+  });
+
+  $('#file-input-profile-logo').change(function(){
+    $('.file-label-profile-logo').text(this.value.split('\\')[2]);
+  });
+
+  $('#file-input-banner-image').change(function(){
+    $('.file-label-banner-image').text(this.value.split('\\')[2]);
+  });
 });
