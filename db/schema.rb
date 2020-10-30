@@ -195,11 +195,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
     t.integer "before_deadline_reminder_days"
     t.json "products", default: []
     t.string "website_url"
-    t.json "franchisee_details"
-    t.uuid "franchise_id"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
-    t.index ["franchise_id"], name: "index_companies_on_franchise_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
   end
 
@@ -355,7 +352,6 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "company_id"
-    t.string "name"
   end
 
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -367,10 +363,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "permissible_type"
     t.uuid "permissible_id"
-    t.bigint "user_id"
     t.index ["permissible_type", "permissible_id"], name: "index_permissions_on_permissible_type_and_permissible_id"
     t.index ["role_id"], name: "index_permissions_on_role_id"
-    t.index ["user_id"], name: "index_permissions_on_user_id"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -553,7 +547,6 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
     t.uuid "document_template_id"
     t.bigint "user_id"
     t.integer "deadline_type"
-    t.text "description"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
@@ -739,7 +732,6 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
   add_foreign_key "notes", "users"
   add_foreign_key "outlets", "companies"
   add_foreign_key "permissions", "roles"
-  add_foreign_key "permissions", "users"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"
