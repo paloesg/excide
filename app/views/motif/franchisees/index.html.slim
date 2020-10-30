@@ -1,0 +1,50 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    button.btn.btn-white.border.border-secondary.text-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-primary add
+      | New
+    #newMotifDocUploads.modal.fade aria-hidden="true" aria-labelledby="newMotifDocumentUploads" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#newMotifDocumentUploads.modal-title New Franchisee Outlet
+          .modal-body
+            = form_for(@outlet, url: motif_outlets_path, html: { method: :post }) do |f|
+              .row.mt-3
+                .col-md-12
+                  .form-group
+                    = f.text_field :name, placeholder: 'Create Outlet Name', class: 'form-control'
+                  .form-group
+                    = f.text_field :city, placeholder: 'Choose City', class: 'form-control'
+                  .form-group
+                    = f.text_field :country, placeholder: 'Choose Country', class: 'form-control'
+                  .form-group
+                    = text_field_tag :franchisee_name, nil, placeholder: 'Add a new franchisee', class: 'form-control'
+                  .form-group
+                    = select_tag('franchisee_id', options_from_collection_for_select(@franchisees, "id", "name"), include_blank: true, prompt: 'Find franchisee', class: "select2", style: 'width: 100%')
+              .row
+                .col-md-12
+                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+    .float-right.my-2
+      i.px-5.material-icons-outlined more_vert
+    h3 Franchisees
+    p.mt-5.text-muted
+      | Store and manage information about your franchisees and locations in 
+      br
+      | Franchisees.
+.row.ml-4.align-items-center
+  .col
+    span.mr-3
+      = image_pack_tag "media/src/images/motif/Filter Funnel.svg"
+    | Filters
+  .col-sm-11.text-muted
+    div.form-row.align-items-center
+      span.mr-3
+        = image_pack_tag "media/src/images/motif/Search.svg"
+      input.form-control.border-0.col type="search" placeholder="Search..."
+      = select_tag 'view', options_for_select([["List View", "list"], ["Card View", "card"]]), include_blank: true, prompt: 'List view', required: true, class: 'select2 outlet-view-option', style: "width: 20%;"
+hr.mb-0
+- if params[:view] == 'card'
+  = render 'card_view'
+- else
+  = render 'list_view'
