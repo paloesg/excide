@@ -1,0 +1,26 @@
+/ / ! begin:: Brand
+.navbar.navbar-expand-lg.navbar-light.fixed-top.bg-white.border.w-100 style="height: 60px; box-shadow: 0px 3px 6px #00000029;"
+  .navbar-brand.ml-5
+    = link_to symphony_root_path do
+      = image_pack_tag 'media/src/images/overture/overture-logo.svg', alt: "Logo"
+  button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button"
+    span.navbar-toggler-icon
+  #navbarSupportedContent.collapse.navbar-collapse
+    ul.navbar-nav.ml-auto.mr-5
+      /! begin: User bar
+      li.nav-link.mr-5
+        = link_to do
+          i.material-icons-outlined notifications
+      li.nav-link.mr-5
+        = link_to do
+          i.material-icons-outlined settings
+      li.nav-link.mr-5
+        = link_to do
+          i.material-icons-outlined apps
+      .dropdown.ml-3
+        a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+          = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
+        .dropdown-menu.dropdown-menu-right aria-labelledby="userDropdownMenu"
+          li
+            = link_to destroy_user_session_path, {method: :delete, class: 'dropdown-item'} do
+              span Log Out
