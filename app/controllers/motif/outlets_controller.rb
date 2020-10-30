@@ -3,7 +3,7 @@ class Motif::OutletsController < ApplicationController
 
   def create
     if params[:franchisee_name].present?
-      @franchisee = Franchisee.create(name: params[:franchisee_name])
+      @franchisee = Franchisee.create(name: params[:franchisee_name], company: current_user.company)
     end
     @outlet = Outlet.new(outlet_params)
     @outlet.franchisee = @franchisee
