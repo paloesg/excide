@@ -47,5 +47,24 @@
     = text_field_tag 'Telephone', nil, placeholder: 'Telephone', class: 'form-control'
   hr
     .row.my-10.ml-1
-      .col-sm-12
+      .col-sm-3
         h5 Documents
+      .col-sm-9
+        = link_to 'Upload files', '#', class: 'text-primary float-right mr-3'
+    table.table.ml-4
+      thead
+        tr
+          th File names
+          th Uploaded on
+          th
+      tbody
+        tr
+          td
+            = image_pack_tag "media/src/images/motif/pdf.svg", class: 'mr-2'
+            | Signed Contract Agreement.pdf
+          td
+            | Yesterday, 30 Dec 2020
+          td.text-center
+            i.material-icons-outlined.mx-5 get_app
+            i.material-icons-outlined.mx-5 delete
+            i.material-icons-outlined.mx-5 more_horiz
