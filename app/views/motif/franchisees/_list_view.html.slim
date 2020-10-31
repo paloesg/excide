@@ -18,7 +18,7 @@ table.table.ml-4
         td = outlet.country
         td
           = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2 mr-2' 
-          = link_to outlet.franchisee.name, edit_motif_franchisee_path(outlet.franchisee)
+          = link_to outlet.franchisee.name, edit_motif_franchisee_path(outlet.franchisee), target: "_blank"
         td
           .dropdown
             a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
