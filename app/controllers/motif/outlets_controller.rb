@@ -1,6 +1,6 @@
 class Motif::OutletsController < ApplicationController
   layout 'motif/application'
-  before_action :set_franchisee_and_outlet, except: :create
+  before_action :set_franchisee_and_outlet, except: [:create, :outlets_photos_upload]
 
   def create
     if params[:franchisee_name].present?
@@ -24,17 +24,6 @@ class Motif::OutletsController < ApplicationController
   end
 
   def update
-    @franchisee.contact_person_details = {
-      first_name: params[:contact_first_name],
-      last_name: params[:contact_last_name],
-      position: params[:position],
-      contact_mobile: params[:contact_mobile],
-      email: params[:contact_email],
-      capital_available_for_investment: params[:capital],
-      your_franchise_experience: params[:your_franchise_experience],
-      other_experience: params[:other_experience],
-    }
-
     if @franchisee.update(franchisee_params)
       redirect_to edit_motif_franchisee_path(@franchisee), notice: 'Successfully updated franchisee profile'
     else
@@ -42,14 +31,25 @@ class Motif::OutletsController < ApplicationController
     end
   end
 
-  private
+  def outlets_photos_upload
+    @outlet = Outlet.find_by(id: params[:outlet_id])
+    parsed_files = JSON.parse(params[:successful_files])
+    parsed_files.each do |file|
+      ActiveStorage::Attachment.create(name: 'photos', record_type: 'Outlet', record_id: @outlet.id, blob_id: ActiveStorage::Blob.find_by(key: file['response']['key']).id)
+    end
+    respond_to do |format|
+      format.html { redirect_to edit_motif_franchisee_outlet_path(franchisee_id: @outlet.franchisee.id, id: @outlet.id), notice: "Photos successfully uploaded!" }
+      format.json { render json: @files.to_json }
+    end
+  end
 
+  private
   def set_franchisee_and_outlet
     @franchisee = Franchisee.find(params[:franchisee_id])
     @outlet = Outlet.find(params[:id])
   end
   # Only allow a list of trusted parameters through.
   def outlet_params
-    params.require(:outlet).permit(:name, :city, :country)
+    params.require(:outlet).permit(:name, :city, :country, photos: [])
   end
 end

@@ -1,0 +1,51 @@
+= form_for @outlet, url: motif_franchisee_outlet_path(@franchisee, @outlet) do |f|
+  .row.my-5.ml-1
+    .col-sm-12
+      .btn-toolbar.float-right.ml-5
+        = f.submit 'Save Changes', class: 'btn btn-white border border-secondary text-primary mr-3 px-5'
+      .float-right.my-2
+        i.px-5.material-icons-outlined more_vert
+      h3.mt-3 = @outlet.name
+  hr
+  .row.my-10.ml-1
+    .col-sm-3
+      h5 Photo Gallery
+    .col-sm-9
+      a href="#" data-target="#outletPhotoUploads" data-toggle="modal" type="button" class="float-right text-primary mr-3" Add photos
+      #outletPhotoUploads.modal.fade aria-hidden="true" aria-labelledby="newOutletPhotos" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5#newOutletPhotos.modal-title Upload Photos
+              button.close aria-label="Close" data-dismiss="modal" type="button"
+                span aria-hidden="true"  &times;
+            .modal-body
+              .row.mt-3
+                .col-md-12
+                  .dashboard-body.motifOutletPhotosUpload#Dashboard
+                  = hidden_field_tag 'outlet_id', @outlet.id
+  .row.my-10.ml-1
+    - @outlet.photos.each do |photo|
+      .col-sm-3
+        .circular--portrait
+          = image_tag(photo, class: 'profile-pic')
+  hr
+  .row.my-10.ml-1
+    .col-sm-12
+      h5 Information
+  .form-group.col-sm-6
+    = f.text_field :name, placeholder: 'Location Name', class: 'form-control'
+  .form-group.col-sm-12
+    = text_field_tag 'Location Address', nil, placeholder: 'Location address', class: 'form-control'
+  .form-group.col-sm-12
+    .row
+      .col-sm-6
+        = f.text_field :city, placeholder: 'City', class: 'form-control'
+      .col-sm-6
+        = f.text_field :country, placeholder: 'Country', class: 'form-control'
+  .form-group.col-sm-6
+    = text_field_tag 'Telephone', nil, placeholder: 'Telephone', class: 'form-control'
+  hr
+    .row.my-10.ml-1
+      .col-sm-12
+        h5 Documents
