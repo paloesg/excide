@@ -1,4 +1,5 @@
 class Symphony::XeroLineItemsController < ApplicationController
+  layout 'symphony/application'
 
   def show
     @company = current_user.company

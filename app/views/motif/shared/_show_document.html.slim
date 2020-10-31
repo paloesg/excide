@@ -15,7 +15,7 @@
           - elsif ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(d.raw_file.filename.to_s)
             = image_tag(d.raw_file, class: 'img-fluid pointer-event-none')
           - else
-            = image_tag d.raw_file.preview(resize_to_limit: [700, 700]), class: 'pointer-event-none'
+            = image_tag d.raw_file.preview(resize_to_limit: [700, 700]), class: 'pointer-event-none' if d.raw_file.previewable?
         / For older documents before using active storage
         - elsif d.file_url.present? and ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(d.file_url)
           = image_tag(d.file_url, class: 'img-fluid')

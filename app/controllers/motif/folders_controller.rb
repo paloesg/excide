@@ -1,4 +1,6 @@
 class Motif::FoldersController < FoldersController
+  layout 'motif/application'
+  
   def show
     authorize @folder
     @company = current_user.company

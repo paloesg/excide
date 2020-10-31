@@ -31,8 +31,6 @@ Rails.application.routes.draw do
 
     get '/search', to: 'home#search'
     get '/xero_line_items', to: 'xero_line_items#show'
-    get '/tasks', to: 'home#tasks'
-    get '/activity-history', to: 'home#activity_history'
     post '/add_tasks_to_timesheet', to: 'home#add_tasks_to_timesheet'
 
     resources :survey_templates, param: :survey_template_slug, except: [:destroy]
@@ -131,6 +129,8 @@ Rails.application.routes.draw do
     resources :permissions
     resources :companies
     resources :templates, param: :template_slug
+    resources :users, only: [:index, :create]
+    post '/add-roles', to: 'users#add_role', as: :add_role
   end
 
   namespace :overture do
