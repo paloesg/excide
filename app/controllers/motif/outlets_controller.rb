@@ -3,11 +3,16 @@ class Motif::OutletsController < ApplicationController
   before_action :set_franchisee_and_outlet, except: [:create, :outlets_photos_upload]
 
   def create
+    @outlet = Outlet.new(outlet_params)
+    # Condition when franchisee is not in database, then we need to create a record
     if params[:franchisee_name].present?
       @franchisee = Franchisee.create(name: params[:franchisee_name], company: current_user.company)
+      @franchisee.company = current_user.company
+      @outlet.franchisee = @franchisee
+    else
+      # Else, just find franchisee from the ID returns by selection dropdown
+      @outlet.franchisee = Franchisee.find_by(id: params[:franchisee_id])
     end
-    @outlet = Outlet.new(outlet_params)
-    @outlet.franchisee = @franchisee
     respond_to do |format|
       if @outlet.save
         format.html { redirect_to motif_franchisees_path, notice: 'Outlet was successfully created.' }
