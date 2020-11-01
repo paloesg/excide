@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_30_082914) do
+ActiveRecord::Schema.define(version: 2020_11_01_144938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -369,6 +369,10 @@ ActiveRecord::Schema.define(version: 2020_10_30_082914) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "franchisee_id"
     t.string "name"
+    t.uuid "document_id"
+    t.string "telephone"
+    t.string "address"
+    t.index ["document_id"], name: "index_outlets_on_document_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
 
@@ -565,6 +569,7 @@ ActiveRecord::Schema.define(version: 2020_10_30_082914) do
     t.uuid "document_template_id"
     t.bigint "user_id"
     t.integer "deadline_type"
+    t.text "description"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
@@ -748,6 +753,7 @@ ActiveRecord::Schema.define(version: 2020_10_30_082914) do
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "notes", "users"
+  add_foreign_key "outlets", "documents"
   add_foreign_key "outlets", "franchisees"
   add_foreign_key "permissions", "roles"
   add_foreign_key "questions", "survey_sections"

@@ -29,8 +29,8 @@ class Motif::OutletsController < ApplicationController
   end
 
   def update
-    if @franchisee.update(franchisee_params)
-      redirect_to edit_motif_franchisee_path(@franchisee), notice: 'Successfully updated franchisee profile'
+    if @outlet.update(outlet_params)
+      redirect_to edit_motif_franchisee_outlet_path(@franchisee, @outlet), notice: 'Successfully updated franchisee profile'
     else
       redirect_to motif_root_path, alert: 'Updating franchisee profile has failed. Please contact admin for advise.'
     end
@@ -55,6 +55,6 @@ class Motif::OutletsController < ApplicationController
   end
   # Only allow a list of trusted parameters through.
   def outlet_params
-    params.require(:outlet).permit(:name, :city, :country, photos: [])
+    params.require(:outlet).permit(:name, :city, :country, :telephone, :address, photos: [])
   end
 end

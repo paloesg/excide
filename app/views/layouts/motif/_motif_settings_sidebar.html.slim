@@ -16,7 +16,7 @@
           .col-md-8
             = link_to motif_root_path do
               i.material-icons.float-right.text-dark add
-      - @franchisee.outlets.each do |outlet|
+      - @franchisee.outlets.order('name ASC').each do |outlet|
         li.nav-item.hover-blue.py-1.m-4
           = link_to outlet.name, edit_motif_franchisee_outlet_path(franchisee_id: @franchisee.id, id: outlet.id), class: 'p-2 text-dark'
 - else

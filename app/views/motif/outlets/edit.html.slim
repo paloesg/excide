@@ -36,7 +36,7 @@
   .form-group.col-sm-6
     = f.text_field :name, placeholder: 'Location Name', class: 'form-control'
   .form-group.col-sm-12
-    = text_field_tag 'Location Address', nil, placeholder: 'Location address', class: 'form-control'
+    = f.text_field :address, placeholder: 'Location address', class: 'form-control'
   .form-group.col-sm-12
     .row
       .col-sm-6
@@ -44,7 +44,7 @@
       .col-sm-6
         = f.text_field :country, placeholder: 'Country', class: 'form-control'
   .form-group.col-sm-6
-    = text_field_tag 'Telephone', nil, placeholder: 'Telephone', class: 'form-control'
+    = f.text_field :telephone, placeholder: 'Telephone', class: 'form-control'
   hr
     .row.my-10.ml-1
       .col-sm-3
