@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_01_144938) do
+ActiveRecord::Schema.define(version: 2020_11_01_151651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -239,7 +239,9 @@ ActiveRecord::Schema.define(version: 2020_11_01_144938) do
     t.uuid "document_template_id"
     t.uuid "folder_id"
     t.uuid "company_id"
+    t.uuid "outlet_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
+    t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
@@ -369,10 +371,8 @@ ActiveRecord::Schema.define(version: 2020_11_01_144938) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "franchisee_id"
     t.string "name"
-    t.uuid "document_id"
     t.string "telephone"
     t.string "address"
-    t.index ["document_id"], name: "index_outlets_on_document_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
 
@@ -742,6 +742,7 @@ ActiveRecord::Schema.define(version: 2020_11_01_144938) do
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "folders"
+  add_foreign_key "documents", "outlets"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
@@ -753,7 +754,6 @@ ActiveRecord::Schema.define(version: 2020_11_01_144938) do
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "notes", "users"
-  add_foreign_key "outlets", "documents"
   add_foreign_key "outlets", "franchisees"
   add_foreign_key "permissions", "roles"
   add_foreign_key "questions", "survey_sections"
