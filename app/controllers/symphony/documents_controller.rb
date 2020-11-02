@@ -1,4 +1,6 @@
 class Symphony::DocumentsController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_templates, only: [:new, :edit, :multiple_edit]

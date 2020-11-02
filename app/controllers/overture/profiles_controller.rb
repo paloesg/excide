@@ -1,4 +1,6 @@
 class Overture::ProfilesController < ApplicationController
+  layout 'overture/application'
+
   before_action :authenticate_user!
 
   def index

@@ -7,31 +7,34 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-3
     .circular--portrait
-      = @company.company_logo.attached? ? (image_tag(@company.company_logo, class: 'profile-pic')): (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'profile-pic')
+      = @company.company_logo.attached? ? (image_tag(@company.company_logo, class: 'profile-pic')): (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'profile-pic')
     .form-group.text-center.mt-3
       .image-upload
         label for="file-input-company-logo"
           i.material-icons-outlined.grey-icon-background add_a_photo
         = f.file_field :company_logo, id: "file-input-company-logo"
       span.text-dark Company Logo
+      .file-label-company-logo
   .col-sm-3
     .circular--portrait
-      = @company.profile_logo.attached? ? (image_tag(@company.profile_logo, class: 'profile-pic')): (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'profile-pic')
+      = @company.profile_logo.attached? ? (image_tag(@company.profile_logo, class: 'profile-pic')): (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'profile-pic')
     .form-group.text-center.mt-3
       .image-upload
         label for="file-input-profile-logo"
           i.material-icons-outlined.grey-icon-background add_a_photo
         = f.file_field :profile_logo, id: "file-input-profile-logo"
       span.text-dark Profile Logo
+      .file-label-profile-logo
   .col-sm-3
     .circular--portrait
-      = @company.banner_image.attached? ? (image_tag(@company.banner_image, class: 'profile-pic')): (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'profile-pic')
+      = @company.banner_image.attached? ? (image_tag(@company.banner_image, class: 'profile-pic')): (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'profile-pic')
     .form-group.text-center.mt-3
       .image-upload
         label for="file-input-banner-image"
           i.material-icons-outlined.grey-icon-background add_a_photo
         = f.file_field :banner_image, id: "file-input-banner-image"
       span.text-dark Banner Image
+      .file-label-banner-image
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .form-group

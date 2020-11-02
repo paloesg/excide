@@ -45,6 +45,34 @@ $(document).on("turbolinks:load", function () {
     );
   });
 
+  $(".documents-filter-button").click(function (e) {
+    var tags_select2 = $("select.select2-document-tags").select2({
+      width: 'auto'
+    });
+    var access_select2 = $("select.select2-document-access").select2({
+      width: 'auto'
+    });
+    var qna_select2 = $("select.select2-document-qna").select2({
+      width: 'auto'
+    });
+
+    var tagsData = tags_select2[0].value;
+    var accessData = access_select2[0].value;
+    var qnaData = qna_select2[0].value;
+
+    Turbolinks.visit(
+      "//" +
+        location.host +
+        location.pathname +
+        "?tags=" +
+        tagsData +
+        "&access=" +
+        accessData +
+        "&qna=" +
+        qnaData
+    );
+  });
+
   $(".activity-history-filter-button").click(function (e) {
     var created_at_select2 = $("select.select2-created-at").select2();
     var createdAtData = created_at_select2[0].value;
