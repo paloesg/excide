@@ -134,7 +134,9 @@ Rails.application.routes.draw do
 
   namespace :overture do
     root to: 'profiles#index'
-    resources :profiles
+    resources :profiles do
+      get '/state-interest', to: 'profiles#state_interest', as: :state_interest
+    end
   end
 
   namespace :conductor do
