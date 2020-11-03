@@ -21,6 +21,16 @@ class NotificationMailer < ApplicationMailer
       }
     )
   end
+
+  def overture_notification(user, profile)
+    mail(to: user.email, from: 'Paloe Overture <admin@excide.co>', subject: 'TO SAM!', body: 'Some body',  template_id: ENV['SENDGRID_OVERTURE_STATED_INTEREST'], dynamic_template_data: {
+        fullName: user.full_name,
+        email: user.email,
+        profileName: profile.name,
+        url: profile.url, 
+      }
+    )
+  end
   
   # Conductor's email notification methods!
   # Most of the removed mailer methods below were called in event.rb. associate_notification was called in scehduler.rake as a daily reminder to associate.

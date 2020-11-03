@@ -33,9 +33,9 @@ html lang="en"
   body
     = render 'layouts/motif/motif_header'
     - if current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users'
-      .motif-wrapper
-        .motif-contents
-          .row.mt-5
+      .new-tab-wrapper.overflow-auto
+        .new-tab-contents
+          .row.mt-5.h-100
             .col-sm-2.bg-white.border-right.sidebar-border-radius
               = render 'layouts/motif/motif_settings_sidebar'
             .col-sm-10.bg-white.content-border-radius

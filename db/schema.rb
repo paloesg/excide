@@ -367,6 +367,11 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
     t.index ["role_id"], name: "index_permissions_on_role_id"
   end
 
+  create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+  end
+
   create_table "questions", id: :serial, force: :cascade do |t|
     t.text "content"
     t.integer "question_type"
