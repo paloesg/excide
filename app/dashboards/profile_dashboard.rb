@@ -11,7 +11,7 @@ class ProfileDashboard < Administrate::BaseDashboard
     id: Field::String.with_options(searchable: false),
     name: Field::String,
     url: Field::String,
-    rich_text_company_information: Field::RichTextAreaField,
+    company_information: Field::RichTextAreaField,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -31,7 +31,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   id
   name
   url
-  rich_text_company_information
+  company_information
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -40,7 +40,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
   name
   url
-  rich_text_company_information
+  company_information
   ].freeze
 
   # COLLECTION_FILTERS
