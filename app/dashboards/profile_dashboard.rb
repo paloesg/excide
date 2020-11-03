@@ -12,6 +12,7 @@ class ProfileDashboard < Administrate::BaseDashboard
     name: Field::String,
     url: Field::String,
     company_information: Field::RichTextAreaField,
+    profile_logo: Field::ActiveStorage,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -23,6 +24,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   id
   name
   url
+  profile_logo
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -32,6 +34,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   name
   url
   company_information
+  profile_logo
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -41,6 +44,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   name
   url
   company_information
+  profile_logo
   ].freeze
 
   # COLLECTION_FILTERS

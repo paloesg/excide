@@ -1,6 +1,6 @@
 .mb-3.mt-5.mx-10
   .d-flex
-    = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', size: "100x100", class: "rounded"
+    = image_tag @profile.profile_logo, size: "100x100", class: "rounded"
     .mt-4.ml-5
       h3 = @profile.name
       = @profile.url
