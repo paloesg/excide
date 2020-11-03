@@ -30,30 +30,10 @@ hr
                     = profile.name
                   p.card-text
                     = profile.url
-                  p.card-text Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium beatae at aliquam, quas esse ipsum! Eos, adipisci. Nihil reiciendis, ex eius repellendus dolor reprehenderit tenetur officiis quas fuga, qui illum.
+                  p.card-text
+                    #truncate-company-information = profile.company_information.body.to_s
                   .mt-5
                     = link_to overture_root_path, class: "btn btn-white border border-secondary mr-3"
                       i.material-icons-outlined.p-0 bookmark_border
                     = link_to "View", overture_profile_path(profile.id), class: "btn btn-white border border-secondary text-primary mr-3"
-                    = link_to "State Interest", overture_root_path, class: "btn btn-primary mr-3"
-                .col-md-5
-                  //loop and display
-                  / dl.dl-horizontal
-                  /   .row
-                  /     dt.col.text-muted Funding Round
-                  /     dd.col Angel/Pre-seed
-                  /   .row
-                  /     dt.col.text-muted Total Amount Raising
-                  /     dd.col SGD 300,000
-                  /   .row
-                  /     dt.col.text-muted Instrument Type
-                  /     dd.col SAFE
-                  /   .row
-                  /     dt.col.text-muted Valuation Cap
-                  /     dd.col SGD 3,000,000
-                  /   .row
-                  /     dt.col.text-muted Discount Rate
-                  /     dd.col 20%
-                  /   .row
-                  /     dt.col.text-muted Min. Cheque Size
-                  /     dd.col SGD 25,000
+                    = link_to "State Interest", overture_profile_state_interest_path(profile.id), class: "btn btn-primary mr-3"

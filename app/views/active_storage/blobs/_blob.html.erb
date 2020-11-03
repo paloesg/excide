@@ -1,4 +1,4 @@
-<% if current_page?(controller: "profiles", action: "show") %>
+<% if current_page?(controller: "profiles", action: "index") or current_page?(controller: "profiles", action: "show") %>
   <div>
     <%= blob.filename %>
     <%= link_to rails_blob_path(blob, disposition: "attachment") do %>
