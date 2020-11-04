@@ -25,12 +25,11 @@ class CompaniesController < ApplicationController
       set_company_roles
       current_user.update(company: @company)
       # Redirect based on the products that was added to the company
-      if @company.products.length >= 2
+      if @company.products.length > 1
         redirect_to root_path
-      elsif @company.products[0] == "symphony"
-        redirect_to symphony_root_path
       else
-        redirect_to motif_root_path
+        # redirect to the root path of a single product
+        redirect_to "/#{@company.products[0]}"
       end
     end
   end
