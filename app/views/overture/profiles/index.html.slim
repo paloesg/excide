@@ -37,3 +37,5 @@ hr
                       i.material-icons-outlined.p-0 bookmark_border
                     = link_to "View", overture_profile_path(profile.id), class: "btn btn-white border border-secondary text-primary mr-3"
                     = link_to "State Interest", overture_profile_state_interest_path(profile.id), class: "btn btn-primary mr-3"
+.mt-6
+  = paginate @profiles, views_prefix: 'dashboard'
