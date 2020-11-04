@@ -3,7 +3,7 @@
     = image_tag @profile.profile_logo, size: "100x100", class: "rounded"
     .mt-4.ml-5
       h3 = @profile.name
-      = @profile.url
+      = link_to nil, @profile.url, class: "text-dark"
     .ml-auto.mt-4
       .btn.btn-icon.btn-sm.btn-outline-secondary.mr-2
         = link_to root_path do

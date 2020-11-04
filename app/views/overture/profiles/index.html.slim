@@ -29,8 +29,6 @@ hr
                   h2
                     = profile.name
                   p.card-text
-                    = profile.url
-                  p.card-text
                     #truncate-company-information = profile.company_information.body.to_s
                   .mt-5
                     = link_to overture_root_path, class: "btn btn-white border border-secondary mr-3"
