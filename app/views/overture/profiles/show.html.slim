@@ -8,6 +8,6 @@
       .btn.btn-icon.btn-sm.btn-outline-secondary.mr-2
         = link_to root_path do
           i.material-icons.align-middle bookmark_border
-      = link_to "State Interest", root_path, class: "btn btn-sm btn-primary bold"
+      = link_to "State Interest", overture_profile_state_interest_path(@profile.id), class: "btn btn-sm btn-primary mr-3"
   .mt-10
     = @profile.company_information.body.to_rendered_html_with_layout()
