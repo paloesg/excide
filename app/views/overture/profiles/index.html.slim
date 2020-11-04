@@ -20,7 +20,7 @@ hr
         .row
           .col.bg-light
             .img-square-wrapper.m-5
-              = image_tag profile.profile_logo, size: "120x120", class: "rounded"
+              = profile.profile_logo.attached? ? (image_tag profile.profile_logo, size: "120x120", class: "rounded") : (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', size: "120x120" , class: 'rounded')
           .col-md-10
             .card-body
               .row
@@ -29,11 +29,11 @@ hr
                   h2
                     = profile.name
                   p.card-text
-                    = profile.url
-                  p.card-text
                     #truncate-company-information = profile.company_information.body.to_s
                   .mt-5
                     = link_to overture_root_path, class: "btn btn-white border border-secondary mr-3"
                       i.material-icons-outlined.p-0 bookmark_border
-                    = link_to "View", overture_profile_path(profile.id), class: "btn btn-white border border-secondary text-primary mr-3"
+                    = link_to "View", overture_profile_path(profile.id), target: :_blank, class: "btn btn-white border border-secondary text-primary mr-3"
                     = link_to "State Interest", overture_profile_state_interest_path(profile.id), class: "btn btn-primary mr-3"
+.mt-6
+  = paginate @profiles, views_prefix: 'dashboard'
