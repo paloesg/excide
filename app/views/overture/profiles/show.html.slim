@@ -1,7 +1,8 @@
 .my-15.mx-20
   .d-flex
-    = image_tag @profile.profile_logo, size: "100x100", class: "rounded"
-    .mt-4.ml-5
+    .profile-image-wrapper
+      = image_tag @profile.profile_logo, class: "w-100 my-auto rounded"
+    .mt-6.ml-5
       h3 = @profile.name
       = link_to nil, @profile.url, target: :_blank,  class: "text-dark"
     .ml-auto.mt-4
