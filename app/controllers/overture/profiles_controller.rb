@@ -5,6 +5,7 @@ class Overture::ProfilesController < ApplicationController
 
   def index
     @profiles = Profile.all
+    @profiles = Kaminari.paginate_array(@profiles).page(params[:page]).per(5)
   end
 
   def show
