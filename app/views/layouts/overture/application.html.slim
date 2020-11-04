@@ -32,22 +32,22 @@ html lang="en"
 
   body
     = render 'layouts/overture/overture_header'
-    - if controller_name == "profiles" and action_name == "show"
-      .new-tab-wrapper.overflow-auto
-        .new-tab-contents
-          .row.mt-5.h-100
-            .col-sm-12.bg-white.content-border-radius
-              = yield
-              = render 'layouts/messages'
-    - else
-      .container-fluid
+    .container-fluid
+      - if controller_name == "profiles" and action_name == "show"
+        .new-tab-wrapper.overflow-auto
+          .new-tab-contents
+            .row.h-100
+              .col-sm-12.bg-white.content-border-radius
+                = yield
+                = render 'layouts/messages'
+      - else
         .row
           .col-sm-2.bg-white
             = render 'layouts/overture/overture_sidebar'
           .col-sm-10.mt-5
             = yield
             = render 'layouts/messages'
-        / render content and sidebar
+      / render content and sidebar
     = render 'layouts/footer' unless current_page?(root_path)
     /! Start of paloe Zendesk Widget script
     script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66"
