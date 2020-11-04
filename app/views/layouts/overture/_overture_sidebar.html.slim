@@ -1,18 +1,18 @@
-.sidebar-sticky.mt-3
+.sidebar-sticky.pt-5
   ul.nav.flex-column
     div.d-flex.justify-content-between.align-items-center
       h2.ml-8.mt-4 Hello, #{current_user.first_name}!
-      a.mt-4
-        i.material-icons-outlined menu_open
+      / a.mt-4
+      /   i.material-icons-outlined menu_open
     li.nav-item.hover-blue.py-1.m-4
       = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined.mr-5 search
         .ml-5.sidebar-font Startup List
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined.mr-5 favorite_border
-        .ml-5.sidebar-font Stated Interest
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined.mr-5 online_prediction
-        .ml-5.sidebar-font Upcoming Features
+    / li.nav-item.hover-blue.py-1.m-4
+    /   = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
+    /     i.material-icons-outlined.mr-5 favorite_border
+    /     .ml-5.sidebar-font Stated Interest
+    / li.nav-item.hover-blue.py-1.m-4
+    /   = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
+    /     i.material-icons-outlined.mr-5 online_prediction
+    /     .ml-5.sidebar-font Upcoming Features
