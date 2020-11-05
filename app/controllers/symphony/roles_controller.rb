@@ -1,4 +1,6 @@
 class Symphony::RolesController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :set_company, :set_company_users
   before_action :set_role, only: [:edit, :update, :destroy]
 
@@ -53,11 +55,6 @@ class Symphony::RolesController < ApplicationController
 
   def set_role
     @role = @company.roles.find(params[:id])
-  end
-
-  def set_company
-    @user = current_user
-    @company = @user.company
   end
 
   def set_company_users

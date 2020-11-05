@@ -1,4 +1,6 @@
 class Symphony::UsersController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles, only: [:new, :create, :edit]
@@ -93,10 +95,6 @@ class Symphony::UsersController < ApplicationController
   end
 
   private
-
-  def set_company
-    @company = current_user.company
-  end
 
   def set_user
     @user = User.find_by(id: params[:id])

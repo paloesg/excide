@@ -4,12 +4,12 @@
       = link_to 'New Folder', new_motif_folder_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
     button.btn.btn-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white add
-      | Upload Multiple
+      | Upload Documents
     #newMotifDocUploads.modal.fade aria-hidden="true" aria-labelledby="newMotifDocumentUploads" role="dialog" tabindex="-1"
       .modal-dialog role="document"
         .modal-content
           .modal-header
-            h5#newMotifDocumentUploads.modal-title Upload Multiple Documents
+            h5#newMotifDocumentUploads.modal-title Upload Documents
             button.close aria-label="Close" data-dismiss="modal" type="button"
               span aria-hidden="true"  &times;
           .modal-body
@@ -17,95 +17,123 @@
               .col-md-12
                 .dashboard-body.motifMultipleDocumentsUpload#Dashboard
     div.float-right.mx-5.mt-2
-      = image_pack_tag 'media/src/images/motif/More.svg'
+      i.material-icons-outlined more_horiz
     div.float-right.mx-5.mt-2
-      = image_pack_tag 'media/src/images/motif/Info Tooltip.svg'
-    h3 DOCUMENT REPOSITORY
+      a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+        i.material-icons-outlined info
+    h3 DATAROOM
     p.mt-5.text-muted
       | Store, share and manage your important documents and access control
       br
       | for different franchises. Drag and drop your files to upload.
-- if @get_documents.blank?
+- if @folders.empty? && @documents.empty?
   .row.justify-content-center.ml-3
-    = render "empty_documents"
+    .col-md-3.text-center.p-4
+      = image_pack_tag 'media/src/images/symphony/add-documents@2x.png'
+      h2.mt-5 Clean and fresh
+      p.mt-4 Let's add some documents to this page! Click on the upload button below to do so.
+      button.btn.btn-primary.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
+        | + Upload Documents
 - else
-  .row.ml-4.align-items-center
+  .row.ml-4.align-items-center#filter-search
     .col
-      span.mr-3
-        = image_pack_tag "media/src/images/motif/Filter Funnel.svg"
-      | Filters
+      div#filter style="cursor: pointer;"
+        span.mr-3
+          i.material-icons-outlined filter_list
+        | Filters
     .col-sm-11.text-muted
       div.form-row.align-items-center
         span.mr-3
-          = image_pack_tag "media/src/images/motif/Search.svg"
+          i.material-icons-outlined search
         input.form-control.border-0.col type="search" placeholder="Search..."
         div.col-8
+  .row.ml-4.my-5.align-items-center#filter-options
+    .col.md-12
+      span.mr-3
+        = select_tag('tags', options_for_select(["All tags"].concat(@company.owned_tags.pluck(:name)), selected: params[:tags], include_blank: true), class: 'select2 select2-document-tags form-control')
+      span.mr-3
+        = select_tag('access', options_for_select(["All access"].concat(@company.users.pluck(:first_name)), selected: params[:access], include_blank: true), class: 'select2 select2-document-access form-control')
+      span.mr-3
+        = select_tag('qna', options_for_select(["All Q&A Status", "Read", "Unread"], selected: params[:qna], include_blank: true), class: 'select2 select2-document-qna form-control')
+      span.mr-3
+        = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
+      span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
+        | Clear
   hr
   div.ml-5.mb-4 Folder path
   table.table.ml-4
     thead
       tr
         th
+        th
           input# type="checkbox" name=""/
         th.text-muted NAME
         th.text-muted TAGS
         th.text-muted DATE MODIFIED
         th.text-muted ACCESS
-        th.text-muted Q&A
         th
-    tbody
-      - @get_root_folders.each do |f|
-        tr
+    tbody.draggable-zone
+      - @folders.each_with_index do |folder, index|
+        tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
           td
-            input# type="checkbox" name=""/
+          td
+            input.mt-2 type="checkbox" name=""/
           td
             span.mr-5
-              = image_pack_tag "media/src/images/motif/folder.svg"
+              i.material-icons-outlined.align-middle folder_open
             span.ml-5
-              = f.name
-          td
-            card
-              | tags
-          td
-            = f.updated_at
-          td 
+              = link_to folder.name, motif_folder_path(folder.id)
+          td id="drawer_toggle_#{folder.id}_0"
+            div id="tags_count_#{folder.id}"
+              = content_tag :span, folder.all_tags_list.first, class: ["badge badge-motif", folder.all_tags_list.length > 0 ? "" : "d-none"]
+              span class=(folder.all_tags_list.length > 1 ? "" : "d-none")
+                = (folder.all_tags_list.length-1).to_s + "+..."
+          td id="drawer_toggle_#{folder.id}_1"
+            = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
+          td id="drawer_toggle_#{folder.id}_2"
             span.mr-4
-              = image_pack_tag "media/src/images/motif/Group People.svg"
-            span
+              i.material-icons.text-dark.align-middle group
+            span.align-middle
               | 25
-          td 
-            span.mr-4
-              = image_pack_tag "media/src/images/motif/Comment Remark.svg"
-            span
-              | 8
           td
-            span
-              = image_pack_tag "media/src/images/motif/Download.svg"
-      - @get_documents.each do |d|
-        tr
+            .dropdown
+              a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                i.fa.fa-ellipsis-h.text-secondary.mb-4
+              .dropdown-menu.dropdown-menu-right
+                .dropdown-item = link_to "Download", root_path
+                .dropdown-item = link_to "Delete", root_path
+                .dropdown-item = link_to "Manage Version", root_path
+        = render 'motif/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
+      - @documents.each_with_index do |d, index|
+        tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
+          td.draggable-handle
+            i.material-icons-outlined drag_indicator
           td
-            input# type="checkbox" name=""/
-          td
+            input.mt-2 type="checkbox" name=""/
+          td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
             span.mr-5
-              = image_pack_tag "media/src/images/motif/jpg.svg"
+              / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
+              = image_pack_tag "media/src/images/motif/#{File.extname(d.raw_file.filename.to_s).split('.')[1].first(3)}.svg"
             span.ml-5
-              = d.raw_file.attached? ? d.raw_file.filename : d.filename
-          td
-            card
-              | tags
-          td
+              = d.raw_file.filename
+          td id="drawer_toggle_#{d.id}_0"
+            div id="tags_count_#{d.id}"
+              = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
+              span class=(d.all_tags_list.length > 1 ? "" : "d-none")
+                = (d.all_tags_list.length-1).to_s + "+..."
+          td id="drawer_toggle_#{d.id}_1"
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
-          td 
+          td id="drawer_toggle_#{d.id}_2"
             span.mr-4
-              = image_pack_tag "media/src/images/motif/Group People.svg"
-            span
-              | 25
-          td 
-            span.mr-4
-              = image_pack_tag "media/src/images/motif/Comment Remark.svg"
-            span
-              | 8
+              i.material-icons.text-dark.align-middle group
+            span.align-middle 25
           td
-            span
-              = image_pack_tag "media/src/images/motif/Download.svg"
-  
+            .dropdown
+              a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                i.fa.fa-ellipsis-h.text-secondary.mb-4
+              .dropdown-menu.dropdown-menu-right
+                .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
+                .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete
+                .dropdown-item = link_to "Manage Version", root_path
+          = render 'motif/shared/show_document', d: d
+        = render 'motif/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?

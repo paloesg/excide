@@ -1,8 +1,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-
-
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
+  layout 'symphony/application', only: :edit
 
   # GET /resource/sign_up
   def new
@@ -24,7 +23,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       company.account_type = 0
       company.save
       resource.company = company
-      if params[:product].present? 
+      if params[:product].present?
         resource.company.products = [params[:product]]
         resource.company.save
         resource.save
@@ -41,7 +40,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
         sign_up(resource_name, resource)
-        SlackService.new.user_signup(resource).deliver
         respond_with resource, location: after_sign_up_path_for(resource)
       else
         set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?

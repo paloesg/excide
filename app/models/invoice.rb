@@ -1,7 +1,7 @@
 class Invoice < ApplicationRecord
   include AASM
 
-  belongs_to :workflow, dependent: :destroy
+  belongs_to :workflow
   belongs_to :user
   belongs_to :company
 

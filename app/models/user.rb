@@ -10,12 +10,14 @@ class User < ApplicationRecord
 
   has_one :address, as: :addressable, dependent: :destroy
 
+  has_many :permissions, through: :roles
   has_many :reminders, dependent: :destroy
   has_many :clients
   has_many :documents
-  has_many :recurring_workflows
+  has_many :recurring_workflows, dependent: :destroy
   has_many :invoices
   has_many :batches
+  has_many :folders
 
   has_many :assigned_tasks, class_name: 'WorkflowAction', foreign_key: 'assigned_user_id'
   has_many :completed_tasks, class_name: 'WorkflowAction', foreign_key: 'completed_user_id'

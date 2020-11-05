@@ -12,13 +12,16 @@ class DashboardManifest
   DASHBOARDS = [
     :workflows,
     :recurring_workflows,
-    :batches,
     :templates,
+    :batches,
+    :invoices,
     :sections,
     :tasks,
     :workflow_actions,
+    :folders,
     :documents,
     :document_templates,
+    :profiles,
     :clients,
     :events,
     :event_types,
@@ -29,8 +32,7 @@ class DashboardManifest
     :addresses,
     :users,
     :roles,
-    :enquiries,
-    :invoices,
+    :permissions,
   ]
 
   # `ROOT_DASHBOARD`

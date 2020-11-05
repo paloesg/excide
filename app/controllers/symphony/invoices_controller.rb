@@ -1,4 +1,6 @@
 class Symphony::InvoicesController < ApplicationController
+  layout 'symphony/application'
+
   include Adapter
   include Symphony::InvoicesHelper
   require "mini_magick"
@@ -251,10 +253,6 @@ class Symphony::InvoicesController < ApplicationController
     @remaining_invoices = [@total_task - @total_completed_task - 1, 0].max
 
     @current_position = @workflows.pluck('id').index(@workflow.id)+1
-  end
-
-  def set_company
-    @company = current_user.company
   end
 
   def set_documents

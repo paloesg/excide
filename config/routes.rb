@@ -31,8 +31,6 @@ Rails.application.routes.draw do
 
     get '/search', to: 'home#search'
     get '/xero_line_items', to: 'xero_line_items#show'
-    get '/tasks', to: 'home#tasks'
-    get '/activity-history', to: 'home#activity_history'
     post '/add_tasks_to_timesheet', to: 'home#add_tasks_to_timesheet'
 
     resources :survey_templates, param: :survey_template_slug, except: [:destroy]
@@ -122,9 +120,23 @@ Rails.application.routes.draw do
 
   namespace :motif do
     root to: 'home#index'
+    resources :documents do
+      patch '/update_tags', to:'documents#update_tags'
+    end
+    resources :folders do
+      patch '/update_tags', to:'folders#update_tags'
+    end
+    resources :permissions
+    resources :companies
+    resources :users, only: [:index, :create]
+    post '/add-roles', to: 'users#add_role', as: :add_role
+  end
 
-    resources :documents
-    resources :folders
+  namespace :overture do
+    root to: 'profiles#index'
+    resources :profiles do
+      get '/state-interest', to: 'profiles#state_interest', as: :state_interest
+    end
   end
 
   namespace :conductor do

@@ -1,5 +1,5 @@
 / / ! begin:: Brand
-.navbar.navbar-expand-lg.navbar-light.fixed-top.bg-white.border.border-bottom.w-100
+.navbar.navbar-expand-lg.navbar-light.fixed-top.bg-white.border.border-bottom.w-100 style="height: 60px; box-shadow: 0px 3px 6px #00000029;"
   .navbar-brand
     = link_to symphony_root_path do
       = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo"
@@ -36,10 +36,6 @@
         = link_to 'https://paloe.zendesk.com/hc/en-us', target: '_blank', class: 'btn btn-white mr-2 border border-secondary' do
           i.material-icons-outlined.text-primary book
           span.ml-2 Guides
-      li.nav-item
-        /! begin: Notification bar
-        / uses view notifications/default/workflow_action/:key.html.slim
-        = render_notifications_of current_user, fallback: :default, index_content: :with_attributes, with_group_members: true
       /! begin: Admin bar
       li.nav-link
         = link_to edit_user_registration_path do
@@ -59,8 +55,6 @@
                 = link_to motif_root_path, class: 'dropdown-item' do
                   = image_pack_tag 'media/src/images/motif/motif-logo-no-text.svg', class: 'icon-size dropdown-pointer mt-2'
                   h6.align-self-end.pl-2 Motif
-
-
       .dropdown.ml-3
         a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
           = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'

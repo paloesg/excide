@@ -1,4 +1,6 @@
 class Symphony::TemplatesController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
@@ -31,13 +33,21 @@ class Symphony::TemplatesController < ApplicationController
             task.role = role
           end
           if task.user
-            user = User.find_by(name: task.user.name, company: @company.id)
-            user = User.create(name: task.user.name, company: @company.id) if user.blank?
+            user = User.find_by(first_name: task.user.first_name, company: @company.id)
+            user = User.create(first_name: task.user.first_name, company: @company.id) if user.blank?
             task.user = user
           end
         end
       end
       @template.title = template_params[:title]
+      @template.workflow_type = template_params[:workflow_type]
+      @template.deadline_day = template_params[:deadline_day]
+      @template.deadline_type = template_params[:deadline_type]
+      @template.template_pattern = template_params[:template_pattern]
+      @template.start_date = template_params[:start_date]
+      @template.end_date = template_params[:end_date]
+      @template.freq_value = template_params[:freq_value]
+      @template.freq_unit = template_params[:freq_unit]
     else
       @template = Template.new(template_params)
     end
@@ -77,6 +87,8 @@ class Symphony::TemplatesController < ApplicationController
           @template.set_next_workflow_date(@workflow)
           redirect_to symphony_workflows_path(workflow_name: @template.slug)
         else
+          # update deadlines of wf and wfa
+          @template.update_deadlines
           flash[:notice] = 'Template has been saved.'
           redirect_to edit_symphony_template_path(@template)
         end
@@ -114,10 +126,6 @@ class Symphony::TemplatesController < ApplicationController
 
   def set_template
     @template = Template.includes(sections: [tasks: [:role, :user, :document_template]]).find(params[:template_slug])
-  end
-
-  def set_company
-    @company = current_user.company
   end
 
   def find_roles

@@ -20,26 +20,20 @@
     - else
       = link_to(symphony_root_path, class: "btn btn-secondary btn-default") do
         ' #{current_user.company.name}
-/ cards for products
+/ Cards for products
 .row.justify-content-center.h-100
-  -@products.each do |product|
-    .card.align-self-start.ml-6.mr-6
-      .card-body
-        -if product == "symphony"
+  - @products.each do |product|
+    - if product == "symphony"
+      .card.align-self-start.ml-6.mr-6
+        .card-body
           = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
-          - if current_user.company.session_handle.blank? and current_user.company.connect_xero?
-            a.stretched-link.d-flex.justify-content-center href="connect_to_xero"
-          -else
-            a.stretched-link.d-flex.justify-content-center href="symphony"
+          a.stretched-link.d-flex.justify-content-center href="symphony"
           h3.d-flex.justify-content-center.mt-15 Symphony
           h7.d-flex.justify-content-center.mt-5.mb-10 Operation Automation
-        -elsif product == "motif"
+    - elsif product == "motif"
+      .card.align-self-start.ml-6.mr-6
+        .card-body
           = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
           a.stretched-link.d-flex.justify-content-center href="motif"
           h3.d-flex.justify-content-center.mt-15 Motif
           h7.d-flex.justify-content-center.mt-5.mb-10 Franchise Management
-hr.w-75
-.row
-  .col
-    p.d-flex.justify-content-center 
-      = link_to "Click here to add Paloe products", root_path

@@ -1,4 +1,6 @@
 class Symphony::RecurringWorkflowsController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template
@@ -82,9 +84,5 @@ class Symphony::RecurringWorkflowsController < ApplicationController
 
   def recurring_workflow_params
     params.require(:recurring_workflow).permit(:freq_value, :freq_unit, :template_id, :company_id, :user_id, :next_workflow_date)
-  end
-
-  def set_company
-    @company = current_user.company
   end
 end

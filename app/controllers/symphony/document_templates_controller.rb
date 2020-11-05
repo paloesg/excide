@@ -1,4 +1,6 @@
 class Symphony::DocumentTemplatesController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_document_template, only: [:show, :edit, :update, :destroy]
@@ -67,10 +69,6 @@ class Symphony::DocumentTemplatesController < ApplicationController
 
   private
 
-  def set_company
-    @user = current_user
-    @company = @user.company
-  end
   # Use callbacks to share common setup or constraints between actions.
   def set_document_template
     @document_template = DocumentTemplate.find(params[:id])

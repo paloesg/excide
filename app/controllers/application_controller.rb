@@ -5,11 +5,11 @@ class ApplicationController < ActionController::Base
   include Pundit
   include PublicActivity::StoreController
 
-  rescue_from Pundit::NotAuthorizedError, Pundit::AuthorizationNotPerformedError, with: :user_not_authorized
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   #TokenInvalid in case user is still using public app for xero. It will redirect them to xero authorization page
   rescue_from Xeroizer::OAuth::TokenInvalid, Xeroizer::OAuth::TokenExpired, with: :xero_login
   #If record is not found on xero, it will return flash message as string
-  rescue_from Xeroizer::RecordInvalid, URI::InvalidURIError, ArgumentError, with: :xero_error
+  rescue_from Xeroizer::RecordInvalid, URI::InvalidURIError, with: :xero_error
   #Error occurs for eg, the tax rate doesn't match with account code. Xero returns an exception in XML, hence the need to parse it truncate it in the xero_error_api_exception method
   rescue_from Xeroizer::ApiException, with: :xero_error_api_exception
   rescue_from OAuth::Unauthorized, with: :xero_unauthorized
@@ -25,22 +25,13 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.company.name.present?
-      if current_user.company.products.length >= 2
-        root_path
-      elsif current_user.company.products.length == 1
-        if current_user.company.products[0] == 'symphony'
-          if current_user.company.session_handle.blank? and current_user.company.connect_xero?
-            connect_to_xero_path
-          else
-            symphony_root_path
-          end
-        elsif current_user.company.products[0] == 'motif'
-          motif_root_path
-        end
-      end
+    if current_user.company.products.count == 1
+      # Path after sign in is the product's root path
+      '/' + current_user.company.products.first
+    elsif current_user.has_role?(:investor, current_user.company)
+      overture_root_path
     else
-      additional_information_path
+      root_path
     end
   end
 
@@ -86,12 +77,14 @@ class ApplicationController < ActionController::Base
     redirect_to symphony_root_path, alert: message
   end
 
-  # checks if the controller's namespace is in Symphony or Motif, then check if the user has access to the product. Links to application_policy.rb
+  # Checks the controller parent and check if the user has access to the product based on application policy unless parent is users (login) or object (not namespaced)
   def authenticate_product
-    if controller_path.split('/').first == 'symphony'
-      authorize current_user, :has_symphony?
-    elsif controller_path.split('/').first == 'motif'
-      authorize current_user, :has_motif?
-    end
+    product = self.class.parent.to_s.downcase
+    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || "object"
+  end
+
+  def set_company
+    @user = current_user
+    @company = current_user.company
   end
 end

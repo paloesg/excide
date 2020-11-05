@@ -1,4 +1,6 @@
 class Symphony::RemindersController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :set_reminder, only: [:edit, :update, :cancel]
 
   def index

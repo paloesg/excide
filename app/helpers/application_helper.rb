@@ -1,12 +1,4 @@
 module ApplicationHelper
-  def get_general_templates
-    Template.where(company_id: nil)
-  end
-
-  def get_cs_requests
-    SurveyTemplate.corp_sec_request
-  end
-
   def sortable(column, title=nil)
     arrow = params[:direction] == "asc" ? "fa fa-caret-down" : "fa fa-caret-up"
     css_class = column == params[:sort] ? "current #{arrow}" : nil
