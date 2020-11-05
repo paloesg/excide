@@ -1,76 +1,77 @@
 = form_for @franchisee, url: motif_franchisee_path(@franchisee) do |f|
-    .row.my-5.ml-3
-      .col-sm-12
-        .btn-toolbar.float-right.ml-5
-          = f.submit 'Save Changes', class: 'btn btn-white border border-secondary text-primary mr-3 px-5'
-        .float-right.my-2
-          i.px-5.material-icons-outlined get_app
-        .float-right.my-2
-          i.px-5.material-icons-outlined share
-        .float-right.my-2
-          i.px-5.material-icons-outlined more_vert
-        h3 Franchisee Profile
-    .row.my-5.ml-3
-      .col-sm-3
-        .circular--portrait
-          = @franchisee.profile_picture.attached? ? (image_tag(@franchisee.profile_picture, class: 'profile-pic')): (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'profile-pic')
-        .form-group.text-center.mt-3
-          .image-upload
-            label for="file-input-franchisee-profile"
-              i.material-icons-outlined.grey-icon-background add_a_photo
-            = f.file_field :profile_picture, id: "file-input-franchisee-profile"
-          span.text-dark Profile picture
-          .file-label-franchisee-profile
+  .row.my-5.ml-3
+    .col-sm-12
+      .btn-toolbar.float-right.ml-5
+        = f.submit 'Save Changes', class: 'btn btn-white border border-secondary text-primary mr-3 px-5'
+      .float-right.my-2
+        i.px-5.material-icons-outlined get_app
+      .float-right.my-2
+        i.px-5.material-icons-outlined share
+      .float-right.my-2
+        i.px-5.material-icons-outlined more_vert
+      h3 Franchisee Profile
+  .row.my-5.ml-3
+    .col-sm-3
+      .circular--portrait
+        = @franchisee.profile_picture.attached? ? (image_tag(@franchisee.profile_picture, class: 'profile-pic')): (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'profile-pic')
+      .form-group.text-center.mt-3
+        .image-upload
+          label for="file-input-franchisee-profile"
+            i.material-icons-outlined.grey-icon-background add_a_photo
+          = f.file_field :profile_picture, id: "file-input-franchisee-profile"
+        span.text-dark Profile picture
+        .file-label-franchisee-profile
+  .row.my-10.ml-3
+    .col-sm-5
+      = f.text_field :name, placeholder: 'Company Name', class: 'form-control'
+    .col-sm-5
+      = f.text_field :website_url, placeholder: 'Company Website', class: 'form-control'
+  .row.my-10.ml-3
+    .col-sm-5
+      = f.date_field :established_date, placeholder: 'Date Established', class: 'form-control'
+    .col-sm-5
+      = f.text_field :contact, placeholder: 'Telephone', class: 'form-control'
+  .row.my-10.ml-3
+    .col-sm-5
+      = f.number_field :annual_turnover_rate, {min: 0, step: 0.01, class: 'form-control', placeholder: 'Annual Turnover Rate', class: 'form-control' }
+    .col-sm-5
+      .btn-group.btn-group-toggle data-toggle="buttons" 
+        label.btn.btn-white.text-primary
+          = f.radio_button :currency, 0, checked: true
+          | SGD
+        label.btn.btn-white.text-primary
+          = f.radio_button :currency, 1
+          | USD
+  .row.my-10.ml-3
+    = f.fields_for :address do |a|
+      .col-sm-5
+        = a.text_field :line_1, placeholder: 'Address', class: 'form-control'
+      .col-sm-5
+        = a.number_field :postal_code, placeholder: 'Postal code', class: 'form-control'
+  .row.my-10.ml-3
+    .col-sm-10
+      = f.text_area :description, cols: "30", rows: "5", placeholder: 'Tell us more about the company', class: 'form-control'
+  = f.fields_for :user do |ff|
     .row.my-10.ml-3
       .col-sm-5
-        = f.text_field :name, placeholder: 'Company Name', class: 'form-control'
+        = ff.text_field :first_name, placeholder: 'Contact Person First Name', class: 'form-control'
       .col-sm-5
-        = f.text_field :website_url, placeholder: 'Company Website', class: 'form-control'
+        = ff.text_field :last_name, placeholder: 'Contact Person Last Name', class: 'form-control'
     .row.my-10.ml-3
       .col-sm-5
-        = f.date_field :established_date, placeholder: 'Date Established', class: 'form-control'
-      .col-sm-5
-        = f.text_field :contact, placeholder: 'Telephone', class: 'form-control'
+        = ff.text_field :contact_number, placeholder: 'Contact Person Mobile', class: 'form-control'
     .row.my-10.ml-3
       .col-sm-5
-        = f.number_field :annual_turnover_rate, {min: 0, step: 0.01, class: 'form-control', placeholder: 'Annual Turnover Rate', class: 'form-control' }
-      .col-sm-5
-        .btn-group.btn-group-toggle data-toggle="buttons" 
-          label.btn.btn-white.text-primary
-            = f.radio_button :currency, 0, checked: true
-            | SGD
-          label.btn.btn-white.text-primary
-            = f.radio_button :currency, 1
-            | USD
-    .row.my-10.ml-3
-      = f.fields_for :address do |a|
-        .col-sm-5
-          = a.text_field :line_1, placeholder: 'Address', class: 'form-control'
-        .col-sm-5
-          = a.number_field :postal_code, placeholder: 'Postal code', class: 'form-control'
-    .row.my-10.ml-3
-      .col-sm-10
-        = f.text_area :description, cols: "30", rows: "5", placeholder: 'Tell us more about the company', class: 'form-control'
-    .row.my-10.ml-3
-      .col-sm-5
-        = text_field_tag :contact_first_name, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['first_name'] : nil, placeholder: 'Contact Person First Name', class: 'form-control'
-      .col-sm-5
-        = text_field_tag :contact_last_name, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['last_name'] : nil, placeholder: 'Contact Person Last Name', class: 'form-control'
-    .row.my-10.ml-3
-      .col-sm-5
-        = text_field_tag :position, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['position'] : nil, placeholder: 'Position', class: 'form-control'
-    .row.my-10.ml-3
-      .col-sm-5
-        = text_field_tag :contact_mobile, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['contact_mobile'] : nil, placeholder: 'Contact Person Mobile', class: 'form-control'
-    .row.my-10.ml-3
-      .col-sm-5
-        = text_field_tag :contact_email, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['email'] : nil, placeholder: 'Email Address', class: 'form-control'
-    .row.my-10.ml-3
-      .col-sm-5
-        = text_field_tag :capital, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['capital_available_for_investment'] : nil, placeholder: 'Capital Available For Investment', class: 'form-control'
-    .row.my-10.ml-3
-      .col-sm-10
-        = text_area_tag :your_franchise_experience, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['your_franchise_experience'] : nil, cols: "30", rows: "5", placeholder: 'Tell us more about your franchise experience', class: 'form-control'
-    .row.my-10.ml-3
-      .col-sm-10
-        = text_area_tag :other_experience, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['other_experience'] : nil, cols: "30", rows: "5", placeholder: 'Tell us more about other experience', class: 'form-control'
+        = ff.text_field :email, placeholder: 'Email Address', class: 'form-control'
+  .row.my-10.ml-3
+    .col-sm-5
+      = text_field_tag :position, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['position'] : nil, placeholder: 'Position', class: 'form-control'
+  .row.my-10.ml-3
+    .col-sm-5
+      = text_field_tag :capital, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['capital_available_for_investment'] : nil, placeholder: 'Capital Available For Investment', class: 'form-control'
+  .row.my-10.ml-3
+    .col-sm-10
+      = text_area_tag :your_franchise_experience, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['your_franchise_experience'] : nil, cols: "30", rows: "5", placeholder: 'Tell us more about your franchise experience', class: 'form-control'
+  .row.my-10.ml-3
+    .col-sm-10
+      = text_area_tag :other_experience, @franchisee.contact_person_details.present? ? @franchisee.contact_person_details['other_experience'] : nil, cols: "30", rows: "5", placeholder: 'Tell us more about other experience', class: 'form-control'

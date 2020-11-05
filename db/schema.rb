@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_05_091307) do
+ActiveRecord::Schema.define(version: 2020_11_05_102446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -635,8 +635,10 @@ ActiveRecord::Schema.define(version: 2020_11_05_091307) do
     t.string "stripe_customer_id"
     t.string "stripe_card_token"
     t.uuid "company_id"
+    t.uuid "franchisee_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["franchisee_id"], name: "index_users_on_franchisee_id"
     t.index ["provider"], name: "index_users_on_provider"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid"], name: "index_users_on_uid"
@@ -788,6 +790,7 @@ ActiveRecord::Schema.define(version: 2020_11_05_091307) do
   add_foreign_key "tasks", "users"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
+  add_foreign_key "users", "franchisees"
   add_foreign_key "workflow_actions", "companies"
   add_foreign_key "workflow_actions", "tasks"
   add_foreign_key "workflow_actions", "users", column: "assigned_user_id"

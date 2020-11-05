@@ -19,7 +19,7 @@
                   .form-group
                     = f.text_field :country, placeholder: 'Choose Country', class: 'form-control'
                   .form-group
-                    = text_field_tag :franchisee_name, nil, placeholder: 'Add a new franchisee', class: 'form-control'
+                    = email_field_tag :franchisee_email, nil, placeholder: 'Add a new franchisee by email', class: 'form-control'
                   .form-group
                     = select_tag('franchisee_id', options_from_collection_for_select(@franchisees, "id", "name"), include_blank: true, prompt: 'Find franchisee', class: "select2", style: 'width: 100%')
               .row

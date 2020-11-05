@@ -5,9 +5,10 @@ class Motif::OutletsController < ApplicationController
   def create
     @outlet = Outlet.new(outlet_params)
     # Condition when franchisee is not in database, then we need to create a record
-    if params[:franchisee_name].present?
-      @franchisee = Franchisee.create(name: params[:franchisee_name], company: current_user.company)
-      @franchisee.company = current_user.company
+    if params[:franchisee_email].present?
+      @franchisee = Franchisee.create(company: current_user.company)
+      # Create user if not in motif
+      @user = User.create_or_find_by(email: params[:franchisee_email], company: current_user.company, franchisee: @franchisee)
       @outlet.franchisee = @franchisee
     else
       # Else, just find franchisee from the ID returns by selection dropdown
