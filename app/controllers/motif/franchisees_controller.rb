@@ -11,7 +11,7 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def edit
-    
+    build_addresses
   end
 
   def update
@@ -44,7 +44,12 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def franchisee_params
-    params.require(:franchisee).permit(:name, :website_url, :established_date, :telephone, :annual_turnover_rate, :currency, :address, :description, :contact_person_details, :profile_picture)
+    params.require(:franchisee).permit(:name, :website_url, :established_date, :annual_turnover_rate, :currency, :address, :description, :contact_person_details, :profile_picture, :contact,  address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
   end
   
+  def build_addresses
+    if @franchisee.address.blank?
+      @franchisee.address = @franchisee.build_address
+    end
+  end
 end

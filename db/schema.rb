@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_01_151651) do
+ActiveRecord::Schema.define(version: 2020_11_05_091307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -285,10 +285,9 @@ ActiveRecord::Schema.define(version: 2020_11_01_151651) do
     t.string "name"
     t.string "website_url"
     t.date "established_date"
-    t.string "telephone"
+    t.string "contact"
     t.decimal "annual_turnover_rate"
     t.integer "currency"
-    t.string "address"
     t.text "description"
     t.json "contact_person_details"
     t.uuid "company_id"
@@ -371,8 +370,7 @@ ActiveRecord::Schema.define(version: 2020_11_01_151651) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "franchisee_id"
     t.string "name"
-    t.string "telephone"
-    t.string "address"
+    t.string "contact"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
 
@@ -387,6 +385,11 @@ ActiveRecord::Schema.define(version: 2020_11_01_151651) do
     t.uuid "permissible_id"
     t.index ["permissible_type", "permissible_id"], name: "index_permissions_on_permissible_type_and_permissible_id"
     t.index ["role_id"], name: "index_permissions_on_role_id"
+  end
+
+  create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "url"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
