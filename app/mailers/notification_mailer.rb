@@ -26,6 +26,7 @@ class NotificationMailer < ApplicationMailer
     mail(to: "enquiry@paloe.com.sg", from: 'Paloe Overture <admin@excide.co>', subject: 'TO SAM!', body: 'Some body',  template_id: ENV['SENDGRID_OVERTURE_STATED_INTEREST'], dynamic_template_data: {
         fullName: user.full_name,
         email: user.email,
+        contactNumber: user.contact_number,
         profileName: profile.name,
         url: profile.url, 
       }
