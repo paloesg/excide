@@ -16,8 +16,6 @@ class Motif::FranchiseesController < ApplicationController
 
   def update
     @franchisee.contact_person_details = {
-      first_name: params[:contact_first_name],
-      last_name: params[:contact_last_name],
       position: params[:position],
       contact_mobile: params[:contact_mobile],
       email: params[:contact_email],
@@ -44,7 +42,7 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def franchisee_params
-    params.require(:franchisee).permit(:name, :website_url, :established_date, :annual_turnover_rate, :currency, :address, :description, :contact_person_details, :profile_picture, :contact,  address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:franchisee).permit(:name, :website_url, :established_date, :annual_turnover_rate, :currency, :address, :description, :contact_person_details, :profile_picture, :contact,  address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state])
   end
   
   def build_addresses
