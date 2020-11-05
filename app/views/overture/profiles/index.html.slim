@@ -19,8 +19,8 @@ hr
       .card.w-100
         .row
           .col.bg-light
-            .img-square-wrapper.m-5
-              = profile.profile_logo.attached? ? (image_tag profile.profile_logo, size: "120x120", class: "rounded") : (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', size: "120x120" , class: 'rounded')
+            .profile-index-image-wrapper
+              = profile.profile_logo.attached? ? (image_tag profile.profile_logo, class: "w-100 my-auto rounded") : (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'w-100')
           .col-md-10
             .card-body
               .row
