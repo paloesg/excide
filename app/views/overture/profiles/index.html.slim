@@ -1,0 +1,39 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    h3 Startup List
+    p.mt-5
+      | Add and edit the startup list. What you see here are published for Investor users
+      br
+      | to browse and see.
+.row.ml-3.mt-5.align-items-center
+  .col
+    i.material-icons-outlined filter_list
+  .col
+    i.material-icons swap_vert
+  .col-sm-11
+    i.material-icons-outlined search
+hr
+- @profiles.each do |profile|
+  .row.mb-3.mt-5.ml-3
+    .col-md-10
+      .card.w-100
+        .row
+          .col.bg-light
+            .profile-index-image-wrapper
+              = profile.profile_logo.attached? ? (image_tag profile.profile_logo, class: "w-100 my-auto rounded") : (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'w-100')
+          .col-md-10
+            .card-body
+              .row
+                .col
+                  h6.mb-4.text-muted.text-uppercase = profile.category_list.first
+                  h2
+                    = profile.name
+                  p.card-text
+                    #truncate-company-information = profile.company_information.body.to_s
+                  .mt-5
+                    = link_to overture_root_path, class: "btn btn-white border border-secondary mr-3"
+                      i.material-icons-outlined.p-0 bookmark_border
+                    = link_to "View", overture_profile_path(profile.id), target: :_blank, class: "btn btn-white border border-secondary text-primary mr-3"
+                    = link_to "State Interest", overture_profile_state_interest_path(profile.id), class: "btn btn-primary mr-3"
+.mt-6
+  = paginate @profiles, views_prefix: 'dashboard'
