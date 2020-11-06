@@ -32,7 +32,7 @@ html lang="en"
 
   body
     = render 'layouts/motif/motif_header'
-    - if current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users'
+    - if current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users' || controller_name == 'templates'
       .new-tab-wrapper.overflow-auto
         .new-tab-contents
           .row.mt-5.h-100
