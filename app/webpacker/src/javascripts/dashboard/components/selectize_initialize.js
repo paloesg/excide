@@ -23,6 +23,7 @@ $(document).on("turbolinks:load", function () {
     );
   });
 
+  // For outlet view in motif
   $(".outlet-view-option").on("select2:select", function (e) {
     var data = e.params.data;
     Turbolinks.visit(

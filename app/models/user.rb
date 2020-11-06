@@ -7,6 +7,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :company
+  belongs_to :franchisee
 
   has_one :address, as: :addressable, dependent: :destroy
 

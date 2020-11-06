@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_29_090008) do
+ActiveRecord::Schema.define(version: 2020_11_05_102446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -239,7 +239,9 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
     t.uuid "document_template_id"
     t.uuid "folder_id"
     t.uuid "company_id"
+    t.uuid "outlet_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
+    t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
@@ -277,6 +279,21 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
     t.uuid "company_id"
     t.index ["ancestry"], name: "index_folders_on_ancestry"
     t.index ["user_id"], name: "index_folders_on_user_id"
+  end
+
+  create_table "franchisees", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "website_url"
+    t.date "established_date"
+    t.string "contact"
+    t.decimal "annual_turnover_rate"
+    t.integer "currency"
+    t.text "description"
+    t.json "contact_person_details"
+    t.uuid "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_franchisees_on_company_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -351,7 +368,10 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
     t.string "country"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "company_id"
+    t.uuid "franchisee_id"
+    t.string "name"
+    t.string "contact"
+    t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
 
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -615,8 +635,10 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
     t.string "stripe_customer_id"
     t.string "stripe_card_token"
     t.uuid "company_id"
+    t.uuid "franchisee_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["franchisee_id"], name: "index_users_on_franchisee_id"
     t.index ["provider"], name: "index_users_on_provider"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid"], name: "index_users_on_uid"
@@ -725,6 +747,7 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "folders"
+  add_foreign_key "documents", "outlets"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
@@ -736,7 +759,7 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "notes", "users"
-  add_foreign_key "outlets", "companies"
+  add_foreign_key "outlets", "franchisees"
   add_foreign_key "permissions", "roles"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
@@ -767,6 +790,7 @@ ActiveRecord::Schema.define(version: 2020_10_29_090008) do
   add_foreign_key "tasks", "users"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
+  add_foreign_key "users", "franchisees"
   add_foreign_key "workflow_actions", "companies"
   add_foreign_key "workflow_actions", "tasks"
   add_foreign_key "workflow_actions", "users", column: "assigned_user_id"

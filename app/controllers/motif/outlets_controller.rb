@@ -2,10 +2,11 @@ class Motif::OutletsController < ApplicationController
   layout 'motif/application'
   
   before_action :set_company
-  before_action :set_franchisee, except: :index
+  before_action :set_outlet, except: [:index, :create, :outlets_photos_upload]
+  before_action :set_franchisee, except: [:index, :create, :outlets_photos_upload]
 
   def index
-    @outlets = Outlet.all
+    @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company.id })
     @outlet = Outlet.new
   end
 
@@ -15,13 +16,19 @@ class Motif::OutletsController < ApplicationController
 
   def create
     @outlet = Outlet.new(outlet_params)
-    # Setting the outlet to the franchisee
-    @outlet.company = Company.find_by(id: params[:company_id])
-    # Setting the franchisee to the franchise company
-    @outlet.company.franchise_id = @company.id
+    # Condition when franchisee is not in database, then we need to create a record
+    if params[:franchisee_email].present?
+      @franchisee = Franchisee.create(company: current_user.company)
+      # Create user if not in motif
+      @user = User.create_or_find_by(email: params[:franchisee_email], company: current_user.company, franchisee: @franchisee)
+      @outlet.franchisee = @franchisee
+    else
+      # Else, just find franchisee from the ID returns by selection dropdown
+      @outlet.franchisee = Franchisee.find_by(id: params[:franchisee_id])
+    end
     respond_to do |format|
-      if @outlet.save and @outlet.company.save
-        format.html { redirect_to motif_companies_path, notice: 'Outlet was successfully created.' }
+      if @outlet.save
+        format.html { redirect_to motif_franchisees_path, notice: 'Outlet was successfully created.' }
         format.json { render :show, status: :created, location: @outlet }
       else
         format.html { render :new }
@@ -31,11 +38,27 @@ class Motif::OutletsController < ApplicationController
   end
 
   def edit
-
+    build_addresses
   end
 
   def update
+    if @outlet.update(outlet_params)
+      redirect_to edit_motif_franchisee_outlet_path(@franchisee, @outlet), notice: 'Successfully updated franchisee profile'
+    else
+      redirect_to motif_root_path, alert: 'Updating franchisee profile has failed. Please contact admin for advise.'
+    end
+  end
 
+  def outlets_photos_upload
+    @outlet = Outlet.find_by(id: params[:outlet_id])
+    parsed_files = JSON.parse(params[:successful_files])
+    parsed_files.each do |file|
+      ActiveStorage::Attachment.create(name: 'photos', record_type: 'Outlet', record_id: @outlet.id, blob_id: ActiveStorage::Blob.find_by(key: file['response']['key']).id)
+    end
+    respond_to do |format|
+      format.html { redirect_to edit_motif_franchisee_outlet_path(franchisee_id: @outlet.franchisee.id, id: @outlet.id), notice: "Photos successfully uploaded!" }
+      format.json { render json: @files.to_json }
+    end
   end
 
   private
@@ -43,13 +66,21 @@ class Motif::OutletsController < ApplicationController
     @company = current_user.company
   end
 
-  def set_franchisee
-    @franchisee = Company.find(params[:franchisee_id])
+  def set_outlet
     @outlet = Outlet.find(params[:id])
   end
 
+  def set_franchisee
+    @franchisee = Franchisee.find(params[:franchisee_id])
+  end
   # Only allow a list of trusted parameters through.
   def outlet_params
-    params.require(:outlet).permit(:name, :city, :country)
-  end 
+    params.require(:outlet).permit(:name, :city, :country, :contact, :address, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state], photos: [])
+  end
+
+  def build_addresses
+    if @outlet.address.blank?
+      @outlet.address = @outlet.build_address
+    end
+  end
 end
