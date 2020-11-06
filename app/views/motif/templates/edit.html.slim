@@ -2,11 +2,10 @@
   .row.my-3
     .col-md-10
       .form-group.col-md-12.pl-0
-        = f.text_field :title, placeholder: "Template's name", required: true, class: "form-control"
+        = f.text_field :title, placeholder: "Template's name", class: "form-control"
     .col-md-2
       .form-group
         = f.submit "Save", class: 'btn btn-primary float-right'
-        = link_to 'Delete', motif_templates_path, class: 'text-primary float-right mr-5 mt-3'
   .row
     .col-md-12
       = f.fields_for :sections do |section|

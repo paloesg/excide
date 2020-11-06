@@ -6,7 +6,6 @@
     .col-md-2
       .form-group
         = f.submit "Save", class: 'btn btn-primary float-right'
-        = link_to 'Delete', motif_templates_path, class: 'text-primary float-right mr-5 mt-3'
   .row
     .col-md-12
       = f.fields_for :sections do |section|
