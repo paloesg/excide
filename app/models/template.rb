@@ -22,7 +22,7 @@ class Template < ApplicationRecord
 
   enum business_model: [:ecommerce, :marketplace, :media, :mobile, :saas, :others]
 
-  validates :title, :slug, presence: true
+  validates :slug, presence: true
 
   before_save :data_names_to_json
   # Scope templates that have no batches. Only those that have no batches will be displayed in symphony sidebar

@@ -130,6 +130,7 @@ Rails.application.routes.draw do
     resources :companies
     resources :templates, param: :template_slug
     resources :users, only: [:index, :create]
+    resources :outlets
     post '/add-roles', to: 'users#add_role', as: :add_role
   end
 
