@@ -17,6 +17,7 @@
       .col-md-12
         .form-inline
           .form-group
+            = f.hidden_field :deadline_type, value: "days_to_complete"
             = f.number_field :deadline_day, class: "form-control col-md-2"
             span.ml-5 Days to complete since onboarding starts.
     / Table for file attachment
