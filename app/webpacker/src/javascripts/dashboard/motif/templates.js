@@ -15,8 +15,6 @@ $(document).on("turbolinks:load", function () {
           },
         }
       );
-      console.log("WHAT is offcanvas? ", offcanvasObject);
-      console.log("WHAT is dataAttribute? ", dataAttribute);
     });
   }
 
