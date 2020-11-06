@@ -23,8 +23,8 @@ class Motif::TemplatesController < ApplicationController
     @template = Template.new(template_params)
     authorize @template
     @template.company = @company
-    if @template.save!
-      redirect_to motif_templates_path
+    if @template.save
+      redirect_to edit_motif_template_path(@template), notice: "Template has been successfully saved!"
     else
       flash[:alert] = @template.errors.full_messages.join
       render :new
@@ -38,9 +38,10 @@ class Motif::TemplatesController < ApplicationController
   def update
     authorize @template
     if @template.update(template_params)
-      redirect_to motif_templates_path, notice: "Great job!"
+      redirect_to edit_motif_template_path(@template), notice: "Template has been successfully updated!"
     else
-      redirect_to motif_root_path, alert: "BOO"
+      flash[:alert] = @template.errors.full_messages.join
+      render :new
     end
   end
 

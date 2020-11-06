@@ -36,7 +36,7 @@ html lang="en"
       .new-tab-wrapper.overflow-auto
         .new-tab-contents
           .row.mt-5.h-100
-            - if current_page?(motif_templates_path)
+            - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || controller_name == 'users' 
               .col-sm-2.bg-white.border-right.sidebar-border-radius
                 = render 'layouts/motif/motif_settings_sidebar'
               .col-sm-10.bg-white.content-border-radius.p-5
