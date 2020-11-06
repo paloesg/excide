@@ -36,11 +36,16 @@ html lang="en"
       .new-tab-wrapper.overflow-auto
         .new-tab-contents
           .row.mt-5.h-100
-            .col-sm-2.bg-white.border-right.sidebar-border-radius
-              = render 'layouts/motif/motif_settings_sidebar'
-            .col-sm-10.bg-white.content-border-radius
-              = yield
-              = render 'layouts/messages'
+            - if current_page?(motif_templates_path)
+              .col-sm-2.bg-white.border-right.sidebar-border-radius
+                = render 'layouts/motif/motif_settings_sidebar'
+              .col-sm-10.bg-white.content-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
+            - else
+              .col-sm-12.bg-white.content-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
     - else
       .container-fluid
         .row

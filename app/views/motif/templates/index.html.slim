@@ -3,7 +3,7 @@
     .col-md-8
       h1 Onboarding Templates
     .col-md-4.text-right
-      = link_to "+ New Template", new_motif_template_path, class: 'btn btn-outline-secondary text-primary mr-1'
+      = link_to "+ New Template", new_motif_template_path, target: "_blank", class: 'btn btn-outline-secondary text-primary mr-1'
   - @templates.each do |template|
     .row.mb-4
       .col-md-12
@@ -19,6 +19,6 @@
                   a href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                     i.material-icons-outlined more_vert
                   .dropdown-menu.dropdown-menu-right
-                    .dropdown-item = link_to "Edit template", edit_motif_template_path(template_slug: template.slug)
+                    .dropdown-item = link_to "Edit template", edit_motif_template_path(template_slug: template.slug), target: "_blank"
             .card-text.text-muted
               | Created by Jonathan Lau. Also used for Company 1...
