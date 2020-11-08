@@ -129,7 +129,9 @@ Rails.application.routes.draw do
     resources :permissions
     resources :companies
     resources :templates, param: :template_slug
-    resources :workflows, except: :show
+    resources :workflows, except: :show do
+      post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
+    end
     resources :franchisees do
       resources :outlets, except: :create
     end

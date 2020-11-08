@@ -52,7 +52,7 @@ hr.mb-0
               = link_to wf.outlet.name, motif_outlet_workflow_path(outlet_id: wf.outlet.id, id: wf.id), target: "_blank", class: 'h4 text-dark'
           .row.mt-5
             .col-sm-12
-              p.text-muted Location address #{wf.outlet.city}
+              p.text-muted Location address: #{wf.outlet.address.line_1} #{wf.outlet.address.postal_code}
           .row.mt-5
             .col-sm-12.mr-0
               .progress
