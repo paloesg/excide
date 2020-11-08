@@ -129,14 +129,15 @@ Rails.application.routes.draw do
     resources :permissions
     resources :companies
     resources :templates, param: :template_slug
+    resources :workflows, except: :show
     resources :franchisees do
       resources :outlets, except: :create
     end
-    resources :outlets, only: :create do
+    resources :outlets do
       post '/photos_upload', to: 'outlets#outlets_photos_upload', as: :photos_upload
+      resources :workflows, only: :show
     end
     resources :users, only: [:index, :create]
-    resources :outlets
     post '/add-roles', to: 'users#add_role', as: :add_role
   end
 
