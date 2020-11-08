@@ -1,0 +1,64 @@
+.row.m-3
+  .col-md-6
+    h1 = @workflow.outlet.name
+    p #{@workflow.outlet.address.line_1} #{@workflow.outlet.address.postal_code}
+  .col-md-6
+    .float-right.mx-5.mt-3
+      = link_to 'Activity History', '#', class: 'text-primary font-weight-boldest'
+    .float-right.mx-5.mt-2
+      i.material-icons-outlined more_vert
+.row.m-3
+  .col-md-12
+    .progress
+      .progress-bar.progress-bar-striped.bg-primary aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" role="progressbar" style=("width: 75%")
+.row.m-3
+  .col-md-12
+    span.font-weight-boldest 30%
+.row.m-3
+  .col-md-12
+    .table-responsive
+      table.table
+        thead
+          tr
+            th Tasks
+            th Due Date
+            th 
+            th 
+            th 
+        tbody
+          - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
+            tr.task-row data-action="#{wfa.id}"
+              td width="50%" id="task_toggle_#{wfa.id}_0"
+                = wfa.task.instructions
+              td.d-flex id="task_toggle_#{wfa.id}_1"
+                - if !wfa.completed? && wfa.deadline.present?
+                  - if wfa.deadline.to_date < Date.today
+                    .text-danger = wfa.deadline&.strftime("%d %b")
+                    i.material-icons-outlined.font-size-h6.ml-1.text-danger calendar_today
+                    - color = "text-danger"
+                  - elsif (wfa.deadline.to_date <= Date.tomorrow || (wfa.company.before_deadline_reminder_days.present? && wfa.deadline.to_date - wfa.company.before_deadline_reminder_days <= Date.today))
+                    .text-warning = wfa.deadline&.strftime("%d %b")
+                    i.material-icons-outlined.font-size-h6.ml-1.text-warning calendar_today
+                    - color = "text-warning"
+                  - else
+                    .text-primary = wfa.deadline&.strftime("%d %b")
+                    i.material-icons-outlined.font-size-h6.ml-1.text-primary calendar_today
+                    - color = "text-primary"
+                - elsif wfa.deadline.present?
+                  .text-muted = wfa.deadline&.strftime("%d %b")
+                  i.material-icons-outlined.font-size-h6.ml-1.text-muted calendar_today
+                  - color = "text-muted"
+              td width="10%" id="task_toggle_#{wfa.id}_2"
+                span.mr-4
+                  i.material-icons-outlined.mr-1.text-secondary.align-middle insert_drive_file
+                span.align-middle
+                  | 25
+              td width="10%" id="task_toggle_#{wfa.id}_3"
+                span.mr-4
+                  i.material-icons-outlined.mr-1.text-secondary.align-middle link
+                span.align-middle
+                  | 25
+              td width="5%"
+                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: wfa.completed, class: 'mt-1'
+            = render "task", template: @template, wf: @workflow, wfa: wfa, index: index, color: color, task: @current_task
+    
