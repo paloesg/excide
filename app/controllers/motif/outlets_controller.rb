@@ -2,13 +2,8 @@ class Motif::OutletsController < ApplicationController
   layout 'motif/application'
   
   before_action :set_company
-  before_action :set_outlet, except: [:index, :create, :outlets_photos_upload]
-  before_action :set_franchisee, except: [:index, :create, :outlets_photos_upload]
-
-  def index
-    @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company.id })
-    @outlet = Outlet.new
-  end
+  before_action :set_outlet, except: [:create, :outlets_photos_upload, :add_new_onboarding]
+  before_action :set_franchisee, except: [:create, :outlets_photos_upload, :add_new_onboarding]
 
   def new
 
