@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   belongs_to :company
   belongs_to :franchisee
+  belongs_to :outlet
 
   has_one :address, as: :addressable, dependent: :destroy
 
