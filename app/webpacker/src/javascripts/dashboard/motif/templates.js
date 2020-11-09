@@ -45,7 +45,7 @@ $(document).on("turbolinks:load", function () {
       $(this).attr("name", function() {
         return $(this)
           .attr("name")
-          .replace("[tasks_attributes][0]", "[tasks_attributes][" + standardizedCurrentTime + "]");
+          .replace("[tasks_attributes][", "[tasks_attributes][" + standardizedCurrentTime);
       });
     });
     initializeDrawer();

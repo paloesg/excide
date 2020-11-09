@@ -3,7 +3,7 @@
     .row
       .col-md-11
         .form-group
-          = f.text_field :instructions, { placeholder: "Task Here", class: "form-control" }
+          = f.text_field :instructions, { placeholder: "Task Here", required: true, class: "form-control" }
       .col-md-1
         a.d-inline id="drawer_close" href="#" 
           i.material-icons-outlined close
@@ -18,7 +18,7 @@
         .form-inline
           .form-group
             = f.hidden_field :deadline_type, value: "days_to_complete"
-            = f.number_field :deadline_day, class: "form-control col-md-2"
+            = f.number_field :deadline_day, required: true, class: "form-control col-md-2"
             span.ml-5 Days to complete since onboarding starts.
     / Table for file attachment
     .table-responsive.mt-5
