@@ -3,9 +3,6 @@
     .col-md-10
       .form-group.col-md-12
         = f.text_field :title, placeholder: "Template's name", required: true, class: "form-control"
-    .col-md-2
-      .form-group
-        = f.submit "Save", class: 'btn btn-primary float-right'
   .row
     .col-md-12
       = f.fields_for :sections do |section|
