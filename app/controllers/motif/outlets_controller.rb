@@ -15,7 +15,8 @@ class Motif::OutletsController < ApplicationController
     if params[:franchisee_email].present?
       @franchisee = Franchisee.create(company: current_user.company)
       # Create user if not in motif
-      @user = User.create_or_find_by(email: params[:franchisee_email], company: current_user.company, franchisee: @franchisee)
+      @user = User.create(email: params[:franchisee_email], company: current_user.company, franchisee: @franchisee)
+      @user.add_role(:franchisee, @user.company)
       @outlet.franchisee = @franchisee
     else
       # Else, just find franchisee from the ID returns by selection dropdown
