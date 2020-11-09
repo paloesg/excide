@@ -16,10 +16,16 @@
       = link_to motif_franchisees_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined people
         .ml-2.sidebar-font Franchisee
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_workflows_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined track_changes
-        .ml-2.sidebar-font Onboarding
+    - if current_user.has_role?(:franchisee, current_user.company)
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_workflows_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined assignment
+          .ml-2.sidebar-font Onboarding
+    - else
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_workflows_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined track_changes
+          .ml-2.sidebar-font Onboarding Monitoring
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_documents_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined insert_chart

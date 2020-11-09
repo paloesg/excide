@@ -1,7 +1,7 @@
 .row.m-3
   .col-md-6
     h1 = @workflow.outlet.name
-    p #{@workflow.outlet.address.line_1} #{@workflow.outlet.address.postal_code}
+    p #{@workflow.outlet.address&.line_1} #{@workflow.outlet.address&.postal_code}
   .col-md-6
     .float-right.mx-5.mt-3
       = link_to 'Activity History', '#', class: 'text-primary font-weight-boldest'

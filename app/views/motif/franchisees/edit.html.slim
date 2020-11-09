@@ -28,6 +28,7 @@
       = f.text_field :website_url, placeholder: 'Company Website', class: 'form-control'
   .row.my-10.ml-3
     .col-sm-5
+      = f.label :established_date, "Date Established"
       = f.date_field :established_date, placeholder: 'Date Established', class: 'form-control'
     .col-sm-5
       = f.text_field :contact, placeholder: 'Telephone', class: 'form-control'
