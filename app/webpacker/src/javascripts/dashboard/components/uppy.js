@@ -94,6 +94,20 @@ const motifOutletPhotosUpload = (uppy) => {
   });
 };
 
+// Motif task's photo attachment
+const motifTaskPhotosUpload = (uppy) => {
+  uppy.on('complete', (result) => {
+    console.log("What is result: ", result)
+    let task_id = $("#task_id").val()
+    console.log("What is task id: ", task_id)
+    $.post("/motif/templates/" + task_id + "/photos_upload", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+    });
+  });
+};
+
 //-----------------------------------Setup Uppy-----------------------------------------
 function setupUppy(element){
   let form = element.closest('form');
@@ -155,6 +169,9 @@ function setupUppy(element){
   }
   else if($('.motifOutletPhotosUpload').length){
     motifOutletPhotosUpload(uppy);
+  }
+  else if($('.motifTaskPhotosUpload').length){
+    motifTaskPhotosUpload(uppy);
   }
 }
 //-----------------------------------Initialize Uppy------------------------------------
