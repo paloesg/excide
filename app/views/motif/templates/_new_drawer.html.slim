@@ -44,5 +44,4 @@
         = f.hidden_field :deadline_type, value: "days_to_complete"
         = f.hidden_field :task_type, value: "instructions"
         = f.hidden_field :role_id, value: @role.id if @role.present?
-        
         = f.submit 'Save Changes', class: "btn btn-primary float-right"
