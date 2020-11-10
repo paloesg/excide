@@ -69,6 +69,9 @@ h1.header-bold {
   height: calc(100vh - 60px);
 }
 
+.sidebar-sticky-settings {
+  top: 0;
+}
 // Sidebar-items hover effect
 .hover-blue:hover {
   background-color: #eef1ff;

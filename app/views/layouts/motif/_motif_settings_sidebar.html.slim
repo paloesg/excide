@@ -1,5 +1,5 @@
 - if controller_name == 'franchisees' || controller_name == 'outlets'
-  .sidebar-sticky
+  .sidebar-sticky.sidebar-sticky-settings
     ul.nav.flex-column
       li.nav-item.hover-blue.py-1.m-4
         .row
@@ -20,7 +20,7 @@
         li.nav-item.hover-blue.py-1.m-4
           = link_to outlet.name, edit_motif_franchisee_outlet_path(franchisee_id: @franchisee.id, id: outlet.id), class: 'p-2 text-dark'
 - else
-  .sidebar-sticky
+  .sidebar-sticky.sidebar-sticky-settings
     ul.nav.flex-column
       li.nav-item.py-1.m-4
         h3 Settings
