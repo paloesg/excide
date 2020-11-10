@@ -9,7 +9,8 @@
       .float-right.mx-3.mt-2
         i.material-icons-outlined comment
       .float-right.mx-3.mt-2
-        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: wfa.completed, class: 'border mt-1'
+        / Disable checkbox if current user is franchisor
+        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisor, @user.company)), class: 'border mt-1'
   .row.my-5
     .col-md-12
       h6 Description
