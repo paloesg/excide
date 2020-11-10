@@ -1,12 +1,12 @@
 class Motif::FranchiseesController < ApplicationController
   layout 'motif/application'
   
-  before_action :set_company, except: :index
+  before_action :set_company
   before_action :set_franchisee, except: :index
 
   def index
-    @franchisees = Franchisee.all
-    @outlets = Outlet.all
+    @franchisees = Franchisee.includes(:company).where(company_id: @company)
+    @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company })
     @outlet = Outlet.new
   end
 

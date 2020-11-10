@@ -6,6 +6,7 @@ class Template < ApplicationRecord
   enum deadline_type: { xth_day_of_the_month: 0, days_to_complete: 1 }
   enum template_pattern: { on_demand: 0, daily: 1, weekly: 2, monthly: 3, quarterly: 4, annually: 5 }
   enum freq_unit: {days: 0, weeks: 1, months: 2, years: 3}
+  enum template_type: {onboarding: 0, site_audit: 1, royalty_collection: 2}
 
   has_many :sections, -> { order(position: :asc) }, dependent: :destroy
   has_many :tasks, through: :sections, dependent: :destroy

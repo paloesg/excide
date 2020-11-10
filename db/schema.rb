@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_09_083451) do
+ActiveRecord::Schema.define(version: 2020_11_10_085625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -597,6 +597,7 @@ ActiveRecord::Schema.define(version: 2020_11_09_083451) do
     t.date "start_date"
     t.date "end_date"
     t.uuid "company_id"
+    t.integer "template_type"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
 
