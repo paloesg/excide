@@ -17,6 +17,8 @@ class Motif::TemplatesController < ApplicationController
     @template = Template.new
     authorize @template
     section = @template.sections.build
+    # Pass in role in NEW and EDIT template form to pass validation
+    @role = Role.find_by(name: "franchisee_owner", resource: current_user.company)
   end
 
   def create
@@ -33,6 +35,8 @@ class Motif::TemplatesController < ApplicationController
 
   def edit
     authorize @template
+    # Pass in role in NEW and EDIT template form to pass validation
+    @role = Role.find_by(name: "franchisee_owner", resource: current_user.company)
   end
 
   def update
@@ -41,7 +45,7 @@ class Motif::TemplatesController < ApplicationController
       redirect_to edit_motif_template_path(@template), notice: "Template has been successfully updated!"
     else
       flash[:alert] = @template.errors.full_messages.join
-      render :new
+      render :edit
     end
   end
 
