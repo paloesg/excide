@@ -1,0 +1,11 @@
+ = form_for current_user.outlet, url: motif_outlet_path(current_user.outlet) do |f|
+  .row.mb-3.mt-5.ml-3
+    .col-sm-12
+      .btn-toolbar.float-right.ml-5
+        = f.submit 'Save', class: 'btn btn-primary mr-3 px-5'
+      h3 Data Studio Link
+  .row.mb-3.mt-5.ml-3
+    .col-sm-12
+      .form-group
+        = f.label :report_url, 'Link URL', class: 'text-muted'
+        = f.text_field :report_url, class: 'form-control'

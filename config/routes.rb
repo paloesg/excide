@@ -142,6 +142,8 @@ Rails.application.routes.draw do
     end
     resources :users, only: [:index, :create]
     post '/add-roles', to: 'users#add_role', as: :add_role
+    get '/financial-performance', to: 'home#financial_performance'
+    get '/edit-report', to: 'home#edit_report'
   end
 
   namespace :overture do

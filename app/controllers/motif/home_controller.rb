@@ -15,6 +15,10 @@ class Motif::HomeController < ApplicationController
     end
   end
 
+  def financial_performance
+    @url = current_user.outlet.report_url
+  end
+
   private
 
   def user_params
