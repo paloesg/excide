@@ -2,13 +2,13 @@
   table.table
     thead
       tr
-        th style="width: 5%"
-        th style="width: 5%"
-        th style="width: 60%" 
-          span.mr-5.my-0 Tasks
+        th.pb-2 style="width: 5%"
           = link_to_add_steps '+', f, :tasks, nil, class: 'text-muted add-template'
-        th style="width: 15%" Uploaded Files
-        th style="width: 15%" Comments
+        th style="width: 70%" 
+          span.mr-5.my-0 Tasks
+        th style="width: 15%" Days to complete
+        th style="width: 5%"
+        th style="width: 5%" 
     tbody.motif-tasks
       #tasksOffcanvas
       = f.fields_for :tasks do |task|
