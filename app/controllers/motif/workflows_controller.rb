@@ -6,7 +6,8 @@ class Motif::WorkflowsController < ApplicationController
   def index
     # Select templates related to that franchise company only
     @templates = Template.includes(:company).where(company_id: @company.id)
-    @workflows = Workflow.includes(:template).where(templates: { company_id: @company.id })
+    # If current user is a franchisee, it can only see it's own workflow
+    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.outlet.workflows : Workflow.includes(:template).where(templates: { company_id: @company.id })
     @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company.id })
     @workflow = Workflow.new
   end
