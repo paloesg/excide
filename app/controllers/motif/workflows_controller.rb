@@ -12,7 +12,6 @@ class Motif::WorkflowsController < ApplicationController
   end
 
   def show
-    @current_task = @workflow.current_task
   end
 
   def create

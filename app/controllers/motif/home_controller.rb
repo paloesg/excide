@@ -4,6 +4,7 @@ class Motif::HomeController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    
   end
 
   # Change user's outlet for franchisee with multiple outlets

@@ -143,7 +143,7 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :create]
     post '/add-roles', to: 'users#add_role', as: :add_role
   end
-
+  
   namespace :overture do
     root to: 'profiles#index'
     resources :profiles do
