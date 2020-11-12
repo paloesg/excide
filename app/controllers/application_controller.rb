@@ -28,6 +28,8 @@ class ApplicationController < ActionController::Base
     if current_user.company.products.count == 1
       # Path after sign in is the product's root path
       '/' + current_user.company.products.first
+    elsif current_user.has_role?(:investor, current_user.company)
+      overture_root_path
     else
       root_path
     end

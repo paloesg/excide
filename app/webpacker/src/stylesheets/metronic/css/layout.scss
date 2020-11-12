@@ -64,9 +64,9 @@ h1.header-bold {
   position: sticky;
   overflow-y: auto;
   overflow-x: hidden;
-  top: 48px;
+  top: 60px;
   bottom: 0;
-  height: calc(100vh - 48px);
+  height: calc(100vh - 60px);
 }
 
 // Sidebar-items hover effect
@@ -89,6 +89,7 @@ h1.header-bold {
   line-height: normal;
   letter-spacing: 0.1px;
   color: black;
+  font-family: "NunitoSans-bold" !important;
 }
 
 .sidebar-subheader-font {
@@ -114,4 +115,16 @@ h1.header-bold {
 // dropdown
 .dropdown-menu-right {
   left: auto !important;
+}
+
+// background design for new tab windows
+.new-tab-wrapper {
+  background-color: #F5F6F9;
+  margin: 0;
+  padding: 4% 10%;
+  height: 100%
+}
+
+.new-tab-contents {
+  height: 100%
 }

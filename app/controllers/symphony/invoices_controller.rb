@@ -1,4 +1,6 @@
 class Symphony::InvoicesController < ApplicationController
+  layout 'symphony/application'
+
   include Adapter
   include Symphony::InvoicesHelper
   require "mini_magick"

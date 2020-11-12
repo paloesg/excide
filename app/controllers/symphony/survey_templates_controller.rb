@@ -1,4 +1,6 @@
 class Symphony::SurveyTemplatesController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :authenticate_user!
   before_action :set_survey_template, except: [:index, :new, :create]
 

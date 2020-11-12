@@ -1,4 +1,6 @@
 class Symphony::RolesController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :set_company, :set_company_users
   before_action :set_role, only: [:edit, :update, :destroy]
 

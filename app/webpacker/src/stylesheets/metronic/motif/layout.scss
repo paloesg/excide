@@ -1,17 +1,8 @@
-.motif-contents {
-  margin: 3% 0 0 0;
-  padding: 0 10%;
-}
-
-.motif-wrapper {
-  background-color: #F5F6F9;
-}
-
 .sidebar-border-radius {
   // radius from (top left, top right, bottom right, bottom left)
   border-radius: 15px 0 0 0;
 }
 
 .content-border-radius {
-  border-radius: 0 15px 0 0;
+  border-radius: 15px 15px 0 0;
 }
