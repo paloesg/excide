@@ -7,6 +7,7 @@ class Motif::UsersController < ApplicationController
   before_action :set_user, except: [:index, :new, :create]
 
   def index
+    @roles = @company_roles.where(name: ["franchisor", "franchisee_owner", "member"])
     @users = User.where(company: @company).order(:id).uniq
     @user = User.new
   end
@@ -33,7 +34,9 @@ class Motif::UsersController < ApplicationController
     # AJAX request to update user type from motif teammates
     @user = @company.users.find(params[:user_id])
     @role = @company.roles.find(params[:role_id])
-    # Save role into user
+    # Delete old role
+    @user.motif_roles(@company).destroy
+    # Save new role into user
     @user.roles << @role
     respond_to do |format|
       if @user.save
