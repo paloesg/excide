@@ -49,35 +49,50 @@
         .card
           .card-body
             h5.card-title Onboarding
-            .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FDF0F0;"
-              h1.card-text style="font-size: 48px" 1
-              p.card-text.ml-4 Outlet with overdue task
-            .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FEF4ED;"
-              h1.card-text style="font-size: 48px" 1
-              p.card-text.ml-4 Task waiting approval
-            .bg-light.d-flex.px-4.py-2.align-items-center.rounded.mb-5
-              h1.card-text style="font-size: 48px" 3
-              p.card-text.ml-4 Total ongoing onboarding
+            -if false
+              .d-flex.px-4.py-2.align-items-center.rounded style="background: #F8FAEF;"
+                = image_pack_tag 'media/src/images/overture/overture-done.svg'
+                p.card-text.ml-4 All outlets have completed onboarding
+            -else
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FDF0F0;"
+                h1.card-text style="font-size: 48px" 1
+                p.card-text.ml-4 Outlet with overdue task
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FEF4ED;"
+                h1.card-text style="font-size: 48px" 1
+                p.card-text.ml-4 Task waiting approval
+              .bg-light.d-flex.px-4.py-2.align-items-center.rounded.mb-5
+                h1.card-text style="font-size: 48px" 3
+                p.card-text.ml-4 Total ongoing onboarding
       .col-sm-4
         .card
           .card-body
             h5.card-title Side Audit
-            .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FDF0F0;"
-              h1.card-text style="font-size: 48px" 1
-              p.card-text.ml-4 Outlet with overdue task
-            .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FEF4ED;"
-              h1.card-text style="font-size: 48px" 2
-              p.card-text.ml-4 Outlet waiting approval
-            .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #F8FAEF;"
-              h1.card-text style="font-size: 48px" 0
-              p.card-text.ml-4 Complete Site Audit
+            -if false
+              .d-flex.px-4.py-2.align-items-center.rounded style="background: #F8FAEF;"
+                = image_pack_tag 'media/src/images/overture/overture-done.svg'
+                p.card-text.ml-4 All outlets have completed 2020 Site Audit
+            -else
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FDF0F0;"
+                h1.card-text style="font-size: 48px" 1
+                p.card-text.ml-4 Outlet with overdue task
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FEF4ED;"
+                h1.card-text style="font-size: 48px" 2
+                p.card-text.ml-4 Outlet waiting approval
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #F8FAEF;"
+                h1.card-text style="font-size: 48px" 0
+                p.card-text.ml-4 Complete Site Audit
       .col-sm-4
         .card
           .card-body
             h5.card-title Royalty
-            .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FDF0F0;"
-              h1.card-text style="font-size: 48px" 2
-              p.card-text.ml-4 Outlets pending
-            .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #F8FAEF;"
-              h1.card-text style="font-size: 48px" 1
-              p.card-text.ml-4 Outlets collected
+            -if false
+              .d-flex.px-4.py-2.align-items-center.rounded style="background: #F8FAEF;"
+                = image_pack_tag 'media/src/images/overture/overture-done.svg'
+                p.card-text.ml-4 All outlets have paid royalty
+            -else
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FDF0F0;"
+                h1.card-text style="font-size: 48px" 2
+                p.card-text.ml-4 Outlets pending
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #F8FAEF;"
+                h1.card-text style="font-size: 48px" 1
+                p.card-text.ml-4 Outlets collected
