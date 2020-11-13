@@ -4,7 +4,8 @@ class Motif::HomeController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    
+    @franchisees = Franchisee.includes(:company).where(company_id: @company)
+    @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company })
   end
 
   # Change user's outlet for franchisee with multiple outlets
