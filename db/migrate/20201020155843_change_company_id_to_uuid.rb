@@ -1,5 +1,7 @@
 class ChangeCompanyIdToUuid < ActiveRecord::Migration[6.0]
   def up
+    PublicActivity.enabled = false
+
     # remove the old foreign_key
     remove_foreign_key :batches, :companies
     remove_foreign_key :clients, :companies
@@ -227,8 +229,10 @@ class ChangeCompanyIdToUuid < ActiveRecord::Migration[6.0]
     add_foreign_key :xero_tracking_categories, :companies
     add_foreign_key :xero_contacts, :companies
     add_foreign_key :xero_line_items, :companies
+
+    PublicActivity.enabled = true
   end
-  
+
   def down
     raise ActiveRecord::IrreversibleMigration
   end
