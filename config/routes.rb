@@ -141,6 +141,7 @@ Rails.application.routes.draw do
       resources :workflows, only: :show
     end
     resources :users, only: [:index, :create]
+    resources :notes
     post '/add-roles', to: 'users#add_role', as: :add_role
   end
   
