@@ -55,13 +55,16 @@
       .col-sm-3
         h5 Documents
       .col-sm-9
-        = link_to 'Upload files', '#', class: 'text-primary float-right mr-3'
+        = f.file_field_tag :documents "file"
     table.table.ml-4
       thead
         tr
           th File names
           th Uploaded on
           th
+        - @outlet.documents.each do |document|
+          tr 
+            th document.filename
       tbody
         tr
           td

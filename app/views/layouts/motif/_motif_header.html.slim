@@ -1,5 +1,6 @@
 / / ! begin:: Brand
 .navbar.navbar-expand-lg.navbar-light.fixed-top.bg-white.w-100.border.border-bottom style="height: 60px; box-shadow: 0px 3px 6px #00000029;"
+  = image_tag(current_user.company.company_logo, class: 'motif-company-logo') if current_user.company.company_logo.attached?
   button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button"
     span.navbar-toggler-icon 
   #navbarSupportedContent.collapse.navbar-collapse
@@ -21,14 +22,18 @@
               - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
                 - if company.name.present?
                   = link_to company.name, change_company_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
-        - else
+        / If current_user have multiple outlets
+        - elsif current_user.franchisee.outlets.length > 1
           button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
-            | #{current_user.franchisee.name}
+            | #{current_user.outlet.name}
             i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
           #company-dropdown.dropdown-menu aria-labelledby="dropdownMenuButton"
-            - current_user.franchisee.outlets.order('name ASC').each do |outlet|
+            - current_user.franchisee.outlets.order('name ASC').reject{ |o| o == current_user.outlet }.each do |outlet|
               - if outlet.name.present?
-                .dropdown-item.break-inside-avoid = outlet.name
+                = link_to outlet.name, motif_change_outlet_path(current_user, user: {outlet_id: outlet.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
+        - else
+          = link_to(motif_root_path, class: "btn btn-secondary btn-default") do
+            ' #{current_user.outlet.name}
     ul.navbar-nav.ml-auto
       /! begin: Admin bar
       li.nav-link

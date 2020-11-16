@@ -94,6 +94,20 @@ const motifOutletPhotosUpload = (uppy) => {
   });
 };
 
+// Motif outlet's document upload
+const motifOutletDocumentsUpload = (uppy) => {
+  uppy.on('complete', (result) => {
+    console.log("What is result: ", result)
+    let outlet_id = $("#outlet_id").val()
+    console.log("What is outlet id: ", outlet_id)
+    $.post("/motif/outlets/" + outlet_id + "/documents_upload", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+    });
+  });
+};
+
 // Motif task's photo attachment
 const motifTaskPhotosUpload = (uppy) => {
   uppy.on('complete', (result) => {
@@ -169,6 +183,9 @@ function setupUppy(element){
   }
   else if($('.motifOutletPhotosUpload').length){
     motifOutletPhotosUpload(uppy);
+  } 
+  else if($('.motifOutletDocumentsUpload').length){
+    motifOutletDocumentsUpload(uppy);
   }
   else if($('.motifTaskPhotosUpload').length){
     motifTaskPhotosUpload(uppy);

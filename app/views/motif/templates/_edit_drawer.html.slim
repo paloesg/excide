@@ -3,7 +3,7 @@
     .row
       .col-md-11
         .form-group
-          = f.text_field :instructions, { placeholder: "Task Here", required: true, class: "form-control" }
+          = f.text_field :instructions, { placeholder: "Task Here", class: "form-control" }
       .col-md-1
         a.d-inline id="drawer_close" href="#" 
           i.material-icons-outlined close
@@ -18,7 +18,7 @@
         .form-inline
           .form-group
             = f.hidden_field :deadline_type, value: "days_to_complete"
-            = f.number_field :deadline_day, required: true, class: "form-control col-md-2"
+            = f.number_field :deadline_day, class: "form-control col-md-2"
             span.ml-5 Days to complete since onboarding starts.
     / Table for file attachment
     .table-responsive.mt-5
@@ -28,20 +28,21 @@
             th.pl-0.h6 Attachments
             th.h6.text-muted Uploaded on
             th.h6 Attach files
-            .col-sm-9
-              a href="#" data-target="#taskPhotoUploads" data-toggle="modal" type="button" class="float-right text-primary mr-3" Add photos
-              #taskPhotoUploads.modal.fade aria-hidden="true" aria-labelledby="newTaskPhotos" role="dialog" tabindex="-1"
-                .modal-dialog role="document"
-                  .modal-content
-                    .modal-header
-                      h5#newTaskPhotos.modal-title Upload Photos
-                      button.close aria-label="Close" data-dismiss="modal" type="button"
-                        span aria-hidden="true"  &times;
-                    .modal-body
-                      .row.mt-3
-                        .col-md-12
-                          .dashboard-body.motifTaskPhotosUpload#Dashboard
-                          = hidden_field_tag 'task_id', @task.id
+            input type="file" id="taskPhotoUpload" name="taskPhotoUpload"
+            / .col-sm-9
+            /   a href="#" data-target="#taskPhotoUploads" data-toggle="modal" type="button" class="float-right text-primary mr-3 offcanvas-close" Add photos
+            /   #taskPhotoUploads.modal.fade aria-hidden="true" aria-labelledby="newTaskPhotos" role="dialog" tabindex="-1"
+            /     .modal-dialog role="document"
+            /       .modal-content
+            /         .modal-header
+            /           h5#newTaskPhotos.modal-title Upload Photos
+            /           button.close aria-label="Close" data-dismiss="modal" type="button"
+            /             span aria-hidden="true"  &times;
+            /         .modal-body
+            /           .row.mt-3
+            /             .col-md-12
+            /               .dashboard-body.motifTaskPhotosUpload#Dashboard
+            /               //= hidden_field_tag 'task_id', @task.id
         tbody
           tr
             td File Name
@@ -54,4 +55,7 @@
           = f.text_field :link_url, placeholder: 'www.link.com', class: "form-control"
     .row.mt-5
       .col-md-12
+        = f.hidden_field :deadline_type, value: "days_to_complete"
+        = f.hidden_field :task_type, value: "instructions"
+        = f.hidden_field :role_id, value: @role.id if @role.present?
         = f.submit 'Save Changes', class: "btn btn-primary float-right"

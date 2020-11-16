@@ -15,8 +15,8 @@ class Motif::OutletsController < ApplicationController
     if params[:franchisee_email].present?
       @franchisee = Franchisee.create(company: current_user.company)
       # Create user if not in motif
-      @user = User.create(email: params[:franchisee_email], company: current_user.company, franchisee: @franchisee)
-      @user.add_role(:franchisee, @user.company)
+      @user = User.create(email: params[:franchisee_email], company: current_user.company, franchisee: @franchisee, outlet: @outlet)
+      @user.add_role(:franchisee_owner, @user.company)
       @outlet.franchisee = @franchisee
     else
       # Else, just find franchisee from the ID returns by selection dropdown
@@ -53,6 +53,24 @@ class Motif::OutletsController < ApplicationController
     end
     respond_to do |format|
       format.html { redirect_to edit_motif_franchisee_outlet_path(franchisee_id: @outlet.franchisee.id, id: @outlet.id), notice: "Photos successfully uploaded!" }
+      format.json { render json: @files.to_json }
+    end
+  end
+
+  def outlets_documents_upload
+    @files = []
+    @outlet = Outlet.find_by(id: params[:outlet_id])
+    parsed_files = JSON.parse(params[:successful_files])
+    parsed_files.each do |file|
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run_without_associations
+      document = @generate_document.document
+      authorize document
+      # attach and convert method with the response key to create blob
+      document.attach_and_convert_document(file['response']['key'])
+      @files.append document
+    end
+    respond_to do |format|
+      format.html { edirect_to edit_motif_franchisee_outlet_path(franchisee_id: @outlet.franchisee.id, id: @outlet.id), notice: "Documents successfully uploaded!" }
       format.json { render json: @files.to_json }
     end
   end

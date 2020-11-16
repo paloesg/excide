@@ -10,13 +10,16 @@ class Motif::TemplatesController < ApplicationController
 
   def index
     authorize Template
-    @templates = policy_scope(Template)
+    # If template_type is nil, it means it is from Symphony
+    @templates = policy_scope(Template).where.not(template_type: nil)
   end
 
   def new
     @template = Template.new
     authorize @template
     section = @template.sections.build
+    # Pass in role in NEW and EDIT template form to pass validation
+    @role = Role.find_by(name: "franchisee_owner", resource: current_user.company)
   end
 
   def create
@@ -33,6 +36,8 @@ class Motif::TemplatesController < ApplicationController
 
   def edit
     authorize @template
+    # Pass in role in NEW and EDIT template form to pass validation
+    @role = Role.find_by(name: "franchisee_owner", resource: current_user.company)
   end
 
   def update
@@ -41,7 +46,7 @@ class Motif::TemplatesController < ApplicationController
       redirect_to edit_motif_template_path(@template), notice: "Template has been successfully updated!"
     else
       flash[:alert] = @template.errors.full_messages.join
-      render :new
+      render :edit
     end
   end
 
@@ -66,6 +71,6 @@ class Motif::TemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:template).permit(:title, :company_id, :workflow_type, :deadline_day, :deadline_type, :template_pattern, :start_date, :end_date, :freq_value, :freq_unit, :next_workflow_date, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :user_id, :document_template_id, :survey_template_id, :deadline_day, :deadline_type, :set_reminder, :important, :link_url, :image_url, :description, :_destroy] ])
+    params.require(:template).permit(:title, :company_id, :workflow_type, :template_type, :deadline_day, :deadline_type, :template_pattern, :start_date, :end_date, :freq_value, :freq_unit, :next_workflow_date, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :user_id, :document_template_id, :survey_template_id, :deadline_day, :deadline_type, :set_reminder, :important, :link_url, :image_url, :description, :_destroy] ])
   end
 end

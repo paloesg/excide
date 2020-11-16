@@ -1,11 +1,11 @@
 = form_for(@template, url: motif_templates_path(@template), html: { id: "motif_new_template" }) do |f|
   .row.my-3
-    .col-md-10
+    .col-md-6
       .form-group.col-md-12
         = f.text_field :title, placeholder: "Template's name", required: true, class: "form-control"
-    .col-md-2
-      .form-group
-        = f.submit "Save", class: 'btn btn-primary float-right'
+    .col-md-3
+      .form-group.col-md-12
+        = f.select :template_type, ::Template.template_types.map{|k, v| [k.humanize, k]}, {include_blank: true }, { class: "select2 form-control"}
   .row
     .col-md-12
       = f.fields_for :sections do |section|
