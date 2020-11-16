@@ -65,7 +65,7 @@ class WorkflowAction < ApplicationRecord
     if (next_task.role.present? and self.workflow.batch.nil?) or (next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?)
       users = User.with_role(next_task.role.name.to_sym, self.company)
       # create task notification
-      next_action.notify :users, key: "workflow_action.task_notify", group: next_action.workflow.template, parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
+      # next_action.notify :users, key: "workflow_action.task_notify", group: next_action.workflow.template, parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
     end
   end
 
@@ -96,7 +96,7 @@ class WorkflowAction < ApplicationRecord
   def workflow_completed
     if self.workflow.update_column('completed', true)
       # Notify the user that created the workflow that it is completed
-      self.notify :users, key: "workflow_action.workflow_completed", group: self.workflow.template, parameters: { workflow_slug: self.workflow.slug }, send_later: false
+      # self.notify :users, key: "workflow_action.workflow_completed", group: self.workflow.template, parameters: { workflow_slug: self.workflow.slug }, send_later: false
       batch_completed if workflow.batch.present?
     end
   end

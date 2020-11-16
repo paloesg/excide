@@ -170,7 +170,7 @@ class Workflow < ApplicationRecord
     else
       # Trigger email for unordered tasks notification
       unordered_tasks_trigger_email
-      self.current_task.get_workflow_action(self.company_id, self.id).notify :users, key: 'workflow_action.unordered_workflow_notify', group: self.template, parameters: { printable_notifiable_name: "#{self.current_task.instructions}", workflow_action_id: self.current_task.get_workflow_action(self.company_id, self.id).id }, send_later: false
+      # self.current_task.get_workflow_action(self.company_id, self.id).notify :users, key: 'workflow_action.unordered_workflow_notify', group: self.template, parameters: { printable_notifiable_name: "#{self.current_task.instructions}", workflow_action_id: self.current_task.get_workflow_action(self.company_id, self.id).id }, send_later: false
     end
   end
 

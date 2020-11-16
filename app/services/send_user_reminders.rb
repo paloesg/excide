@@ -29,7 +29,7 @@ class SendUserReminders
 
   def send_email_reminders
     email_reminders = @reminders.where(email: true)
-    email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
+    # email_reminders[0]&.notify :users, key: "reminder.send_reminder", parameters: { reminders: email_reminders }, send_later: false
     # Initialize an array to push reminders into, and send to sendgrid email template
     @reminder_details = []
     email_reminders.each do |reminder|
