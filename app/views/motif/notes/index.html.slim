@@ -8,9 +8,26 @@
     span.ml-4.align-middle
       i.material-icons-outlined search
 hr
+- if @notes.empty?
+  .empty-note
+    = render 'empty_notes'
+- else
+  - @notes.each do |note|
+    .row.m-2.p-5
+      .col-md-1
+        = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'comment-user-icon mb-3'
+      .col-md-11
+        .row
+          span.h2.font-weight-boldest.mr-4 = note.user.full_name
+          span.text-muted.mt-2 = note.created_at.strftime("%d %b %Y")
+        .row.mt-5
+          p.comment-font-size = note.content
 #comments
-.row.m-3
-  .col-md-12
-    = form_for @note, url: motif_outlet_notes_path(@outlet.id), remote: true do |f|
-      = f.text_field :content, class: "form-control"
-      = f.submit 
+= form_for @note, url: motif_outlet_notes_path(@outlet.id), remote: true do |f|
+  .row.m-3
+    .col-md-12
+      .form-inline
+        = f.text_field :content, class: "form-control col-md-10 mr-5"
+        = button_tag(type: "submit", class: "btn btn-secondary col-md-1") do
+          span
+            i.material-icons-outlined send

@@ -10,12 +10,13 @@
   table.table.ml-4
     thead
       tr
-        th.text-muted Outlet Name
-        th.text-muted Latest Conversation
-        th.text-muted Received On
+        th.text-muted style="width: 30%" Outlet Name
+        th.text-muted style="width: 50%" Latest Conversation
+        th.text-muted style="width: 30%" Received On
     tbody
       - @outlets.each do |outlet|
         tr
-          td = link_to outlet.name, motif_outlet_notes_path(outlet_id: outlet.id), class: 'text-dark'
-          td = outlet.notes.last || 'No Conversation'
-          td = outlet.notes.last&.created_at
+          td.comment-font-size = link_to outlet.name, motif_outlet_notes_path(outlet_id: outlet.id), class: 'text-dark'
+          / Find the latest note content and created_at
+          td.comment-font-size = outlet.notes.order('created_at DESC').first&.content || 'No Conversation'
+          td.comment-font-size = outlet.notes.order('created_at DESC').first&.created_at&.strftime("%d %b %Y")

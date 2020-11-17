@@ -8,6 +8,7 @@ class Motif::NotesController < ApplicationController
   end
 
   def index
+    @notes = Note.includes(:notable).where(notable_id: @outlet.id)
     @note = Note.new
   end
 
@@ -16,7 +17,7 @@ class Motif::NotesController < ApplicationController
     @note.user = current_user
     @note.notable = @outlet
     if @note.save
-      ActionCable.server.broadcast("note_channel", content: @note.content, user_name: current_user.full_name, created_at: @note.created_at.strftime("%d %b %Y"))
+      ActionCable.server.broadcast("note_channel", content: @note.content, user_name: @note.user.full_name, created_at: @note.created_at.strftime("%d %b %Y"))
     end
   end
 
