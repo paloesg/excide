@@ -5,4 +5,12 @@
     li.nav-item.hover-blue.py-1.m-4
       = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined.mr-5 search
+        .ml-5.sidebar-font All Profiles
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to overture_root_path(list: "Startup"), class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined.mr-5 store
         .ml-5.sidebar-font Startup List
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to overture_root_path(list: "SME"), class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined.mr-5 corporate_fare
+        .ml-5.sidebar-font SME List
