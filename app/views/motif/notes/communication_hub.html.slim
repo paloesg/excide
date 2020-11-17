@@ -1,0 +1,21 @@
+.row.m-3
+  .col-md-6
+    span.h1.font-weight-boldest
+      | Communication Hub
+    span.ml-4.align-middle
+      i.material-icons-outlined search
+- if @outlets.empty?
+  = render 'empty_notes'
+- else
+  table.table.ml-4
+    thead
+      tr
+        th.text-muted Outlet Name
+        th.text-muted Latest Conversation
+        th.text-muted Received On
+    tbody
+      - @outlets.each do |outlet|
+        tr
+          td = link_to outlet.name, motif_outlet_notes_path(outlet_id: outlet.id), class: 'text-dark'
+          td = outlet.notes.last || 'No Conversation'
+          td = outlet.notes.last&.created_at
