@@ -4,7 +4,18 @@
       | Communication Hub
     span.ml-4.align-middle
       i.material-icons-outlined search
-- if @notes.empty?
+- if @outlets.empty?
   = render 'empty_notes'
 - else
-  h1 Hellow
+  table.table.ml-4
+    thead
+      tr
+        th.text-muted Outlet Name
+        th.text-muted Latest Conversation
+        th.text-muted Received On
+    tbody
+      - @outlets.each do |outlet|
+        tr
+          td = outlet.name
+          td = outlet.notes.last || 'No Conversation'
+          td = outlet.notes.last&.created_at
