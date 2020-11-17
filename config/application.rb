@@ -8,6 +8,7 @@ require "action_mailer/railtie"
 require "active_job/railtie"
 require 'action_mailbox/engine'
 require "action_text/engine"
+require "action_cable"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
