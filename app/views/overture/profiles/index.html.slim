@@ -3,9 +3,7 @@
     h3
       = params[:list] ? (params[:list] + " List") : "All Profiles"
     p.mt-5
-      | Add and edit the startup list. What you see here are published for Investor users
-      br
-      | to browse and see.
+      | You can browse all the profiles in this list and view more details. Click on 'State Interest' to request for more information and we will follow up shortly.
 / .row.ml-3.mt-5.align-items-center
 /   .col
 /     i.material-icons-outlined filter_list
@@ -26,7 +24,7 @@ hr
             .card-body
               .row
                 .col
-                  h6.mb-4.text-muted.text-uppercase = profile.category_list.first
+                  h6.mb-4.text-muted.text-uppercase = profile.category_list
                   h2
                     = profile.name
                   p.card-text
