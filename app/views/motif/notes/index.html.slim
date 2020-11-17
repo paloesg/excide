@@ -23,7 +23,8 @@ hr
         .row.mt-5
           p.comment-font-size = note.content
 #comments
-= form_for @note, url: motif_outlet_notes_path(@outlet.id), remote: true do |f|
+/ params[:wfa_id] comes from note inside workflow action
+= form_for @note, url: motif_outlet_notes_path(@outlet.id, wfa_id: params[:wfa_id]), remote: true do |f|
   .row.m-3
     .col-md-12
       .form-inline
