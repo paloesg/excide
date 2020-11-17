@@ -20,6 +20,9 @@ hr
         .row
           span.h2.font-weight-boldest.mr-4 = note.user.full_name
           span.text-muted.mt-2 = note.created_at.strftime("%d %b %Y")
+        - if note.workflow_action.present?
+          .row.mt-5
+            = link_to "#{note.workflow_action.workflow.template.title} - #{note.workflow_action.task.instructions}", motif_outlet_workflow_path(outlet_id: note.notable.id, id: note.workflow_action.workflow.id), target: "_blank", class: "comment-font-size"
         .row.mt-5
           p.comment-font-size = note.content
 #comments
