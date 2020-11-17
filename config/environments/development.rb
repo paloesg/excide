@@ -53,6 +53,10 @@ Rails.application.configure do
     Bullet.rails_logger = true
   end
 
+  # Allow request origins from these specific origins
+  # config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
+  config.action_cable.allowed_request_origins = ['http://localhost:3000']
+
   # config.hosts << "excide.test"
   config.hosts = nil
 end
