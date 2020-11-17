@@ -4,7 +4,13 @@ class Overture::ProfilesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @profiles = Profile.all
+    if params[:list] == "Startup"
+      @profiles = Profile.tagged_with("Startup")
+    elsif params[:list] == "SME"
+      @profiles = Profile.tagged_with("SME")
+    else
+      @profiles = Profile.all
+    end
     @profiles = Kaminari.paginate_array(@profiles).page(params[:page]).per(5)
   end
 
