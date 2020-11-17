@@ -7,3 +7,10 @@
     span.h1.font-weight-boldest.ml-4 = @outlet.name
     span.ml-4.align-middle
       i.material-icons-outlined search
+hr
+#comments
+.row.m-3
+  .col-md-12
+    = form_for @note, url: motif_outlet_notes_path(@outlet.id), remote: true do |f|
+      = f.text_field :content, class: "form-control"
+      = f.submit 
