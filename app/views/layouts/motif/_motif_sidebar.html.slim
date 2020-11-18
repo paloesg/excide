@@ -6,25 +6,31 @@
         i.material-icons-outlined menu_open
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined home
-        .ml-2.sidebar-font Home
+        i.material-icons-outlined dashboard
+        .ml-2.sidebar-font Dashboard
+    - unless current_user.has_role?(:franchisee_owner, current_user.company)
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_franchisees_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined store_mall_directory
+          .ml-2.sidebar-font Franchisee Outlets
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_workflows_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined assignment
+        .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Onboarding" : "Onboarding Management"
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined person_add
-        .ml-2.sidebar-font Applicants
+        i.material-icons-outlined fact_check
+        .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Site Audit" : "Site Audit Management"
     li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_franchisees_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined people
-        .ml-2.sidebar-font Franchisee
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_outlets_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined track_changes
-        .ml-2.sidebar-font Onboarding
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined timeline
+        .ml-2.sidebar-font Financial Performance
+    - unless current_user.has_role?(:franchisee_owner, current_user.company)
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_documents_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined attach_money
+          .ml-2.sidebar-font Royalty Collection
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_documents_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined insert_chart
+        i.material-icons-outlined folder
         .ml-2.sidebar-font Dataroom
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined question_answer
-        .ml-2.sidebar-font Q&A

@@ -39,7 +39,6 @@ $(document).on("turbolinks:load", function () {
     $("#task_drawer_base > div").attr("id", "drawer_task_" + standardizedCurrentTime);
     // Append the html of the task drawer to the tasksOffcanvas div
     $("#tasksOffcanvas").append($("#task_drawer_base").html());
-    console.log("WHta is input,", $("#tasksOffcanvas").find("input, select, textarea"))
     // Replace all the form input name with the standardized current time
     $("#tasksOffcanvas").find("input, select, textarea").each(function() {
       $(this).attr("name", function() {
