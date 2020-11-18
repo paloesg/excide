@@ -139,8 +139,10 @@ Rails.application.routes.draw do
     resources :outlets do
       post '/photos_upload', to: 'outlets#outlets_photos_upload', as: :photos_upload
       resources :workflows, only: :show
+      resources :notes
     end
     resources :users, only: [:index, :create]
+    get '/communication_hub', to: 'notes#communication_hub', as: :communication_hub
     post '/add-roles', to: 'users#add_role', as: :add_role
   end
   
