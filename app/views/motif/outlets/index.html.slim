@@ -1,0 +1,26 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    = link_to '+ Add New Onboarding', new_motif_outlet_path, target: "_blank", role: 'button', class: 'btn btn-white text-primary mr-3 px-5 border border-secondary float-right'
+    .float-right.my-2
+      i.px-5.material-icons-outlined more_vert
+    h3 Onboarding
+    p.mt-5.text-muted
+      | Standardise, track and manage how your franchisees start their operations in
+      br
+      | Onboarding.
+.row.ml-4.align-items-center
+  .col
+    span.mr-3
+      i.material-icons-outlined filter_list
+    | Filters
+  .col-sm-11.text-muted
+    div.form-row.align-items-center
+      span.mr-3
+        i.material-icons-outlined search
+      input.form-control.border-0.col type="search" placeholder="Search..."
+      = select_tag 'view', options_for_select([["List View", "list"], ["Card View", "card"]]), include_blank: true, prompt: 'List view', required: true, class: 'select2 outlet-view-option', style: "width: 20%;"
+hr.mb-0
+- if params[:view] == 'card'
+  = render 'card_view'
+- else
+  = render 'list_view'

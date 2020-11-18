@@ -1,0 +1,12 @@
+tr.task-drawer-row id="#{f.object.id}" data-drawer=f.object.id
+  td style="width: 5%"
+    i.material-icons-outlined drag_indicator
+  td style="width: 5%"
+    input.mt-2 type="checkbox" name=""/
+  td.drawer-toggle id="drawer_toggle_#{f.object.id}" style="width: 60%" = f.object.instructions.present? ? f.object.instructions : "Click to add task details"
+  td style="width: 15%"
+    i.material-icons-outlined.align-middle.mr-2 insert_drive_file
+    span 1
+  td style="width: 15%"
+    i.material-icons-outlined.align-middle.mr-2 comment
+    span 3

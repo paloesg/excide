@@ -32,15 +32,21 @@ html lang="en"
 
   body
     = render 'layouts/motif/motif_header'
-    - if current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users'
+    / If it's not franchisee index page AND is any of the pages
+    - if !(current_page?(motif_franchisees_path)) && (current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users' || controller_name == 'franchisees' || controller_name == 'templates')
       .new-tab-wrapper.overflow-auto
         .new-tab-contents
           .row.mt-5.h-100
-            .col-sm-2.bg-white.border-right.sidebar-border-radius
-              = render 'layouts/motif/motif_settings_sidebar'
-            .col-sm-10.bg-white.content-border-radius
-              = yield
-              = render 'layouts/messages'
+            - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || controller_name == 'users' || controller_name == 'franchisees' || controller_name == 'outlets'
+              .col-sm-2.bg-white.border-right.sidebar-border-radius
+                = render 'layouts/motif/motif_settings_sidebar'
+              .col-sm-10.bg-white.content-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
+            - else
+              .col-sm-12.bg-white.content-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
     - else
       .container-fluid
         .row
