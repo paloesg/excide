@@ -35,10 +35,15 @@
           = link_to(motif_root_path, class: "btn btn-secondary btn-default") do
             ' #{current_user.outlet.name}
     ul.navbar-nav.ml-auto
-      /! begin: Admin bar
-      li.nav-link.mx-3
-        = link_to motif_communication_hub_path, target: "_blank" do
-          i.material-icons-outlined comment
+      / Franchisee cannot access communication hub path. Only their individual outlet
+      - if current_user.has_role?(:franchisee_owner, current_user.company)
+        li.nav-link.mx-3
+          = link_to motif_outlet_notes_path(current_user.outlet), target: "_blank" do
+            i.material-icons-outlined comment
+      - else
+        li.nav-link.mx-3
+          = link_to motif_communication_hub_path, target: "_blank" do
+            i.material-icons-outlined comment
       li.nav-link.mx-3
         = link_to edit_motif_company_path(current_user.company), target: "_blank" do
           i.material-icons-outlined settings
