@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_26_162546) do
+ActiveRecord::Schema.define(version: 2020_11_17_144134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "name", null: false
     t.text "body"
     t.string "record_type", null: false
-    t.bigint "record_id", null: false
+    t.string "record_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
@@ -195,11 +195,8 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.integer "before_deadline_reminder_days"
     t.json "products", default: []
     t.string "website_url"
-    t.json "franchisee_details"
-    t.uuid "franchise_id"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
-    t.index ["franchise_id"], name: "index_companies_on_franchise_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
   end
 
@@ -242,7 +239,9 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.uuid "document_template_id"
     t.uuid "folder_id"
     t.uuid "company_id"
+    t.uuid "outlet_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
+    t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
@@ -280,6 +279,21 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.uuid "company_id"
     t.index ["ancestry"], name: "index_folders_on_ancestry"
     t.index ["user_id"], name: "index_folders_on_user_id"
+  end
+
+  create_table "franchisees", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "website_url"
+    t.date "established_date"
+    t.string "contact"
+    t.decimal "annual_turnover_rate"
+    t.integer "currency"
+    t.text "description"
+    t.json "contact_person_details"
+    t.uuid "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_franchisees_on_company_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -324,7 +338,9 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "workflow_action_id"
     t.index ["user_id"], name: "index_notes_on_user_id"
+    t.index ["workflow_action_id"], name: "index_notes_on_workflow_action_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -354,8 +370,12 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "country"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "company_id"
+    t.uuid "franchisee_id"
     t.string "name"
+    t.string "contact"
+    t.uuid "company_id"
+    t.index ["company_id"], name: "index_outlets_on_company_id"
+    t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
 
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -371,6 +391,11 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.index ["permissible_type", "permissible_id"], name: "index_permissions_on_permissible_type_and_permissible_id"
     t.index ["role_id"], name: "index_permissions_on_role_id"
     t.index ["user_id"], name: "index_permissions_on_user_id"
+  end
+
+  create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "url"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -553,6 +578,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.uuid "document_template_id"
     t.bigint "user_id"
     t.integer "deadline_type"
+    t.text "description"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
@@ -577,6 +603,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.date "start_date"
     t.date "end_date"
     t.uuid "company_id"
+    t.integer "template_type"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
 
@@ -615,8 +642,12 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "stripe_customer_id"
     t.string "stripe_card_token"
     t.uuid "company_id"
+    t.uuid "franchisee_id"
+    t.uuid "outlet_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["franchisee_id"], name: "index_users_on_franchisee_id"
+    t.index ["outlet_id"], name: "index_users_on_outlet_id"
     t.index ["provider"], name: "index_users_on_provider"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid"], name: "index_users_on_uid"
@@ -666,7 +697,9 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
     t.string "slug"
     t.integer "total_time_mins", default: 0
     t.uuid "company_id"
+    t.uuid "outlet_id"
     t.index ["batch_id"], name: "index_workflows_on_batch_id"
+    t.index ["outlet_id"], name: "index_workflows_on_outlet_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
     t.index ["slug"], name: "index_workflows_on_slug", unique: true
     t.index ["template_id"], name: "index_workflows_on_template_id"
@@ -725,6 +758,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "folders"
+  add_foreign_key "documents", "outlets"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
@@ -736,7 +770,9 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "notes", "users"
+  add_foreign_key "notes", "workflow_actions"
   add_foreign_key "outlets", "companies"
+  add_foreign_key "outlets", "franchisees"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
   add_foreign_key "questions", "survey_sections"
@@ -768,6 +804,8 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
   add_foreign_key "tasks", "users"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
+  add_foreign_key "users", "franchisees"
+  add_foreign_key "users", "outlets"
   add_foreign_key "workflow_actions", "companies"
   add_foreign_key "workflow_actions", "tasks"
   add_foreign_key "workflow_actions", "users", column: "assigned_user_id"
@@ -775,6 +813,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_162546) do
   add_foreign_key "workflow_actions", "workflows"
   add_foreign_key "workflows", "batches"
   add_foreign_key "workflows", "companies"
+  add_foreign_key "workflows", "outlets"
   add_foreign_key "workflows", "recurring_workflows"
   add_foreign_key "workflows", "templates"
   add_foreign_key "workflows", "users"

@@ -1,0 +1,27 @@
+.offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto 
+  = f.fields_for :tasks, Task.new do |f|
+    .row
+      .col-md-11
+        .form-group
+          = f.text_field :instructions, { placeholder: "Task Here", class: "form-control" }
+      .col-md-1
+        a.d-inline id="drawer_close" href="#" 
+          i.material-icons-outlined close
+    .row.mt-5
+      h6.ml-4 Description
+      .col-md-12
+        .form-group
+          = f.text_area :description, rows: '5', placeholder: 'Write description', class: 'form-control'
+    .row.mt-5
+      h6.ml-4 Due Date
+      .col-md-12
+        .form-inline
+          .form-group
+            = f.number_field :deadline_day, class: "form-control col-md-2"
+            span.ml-5 Days to complete since onboarding starts.
+    .row.mt-5
+      .col-md-12
+        = f.hidden_field :deadline_type, value: "days_to_complete"
+        = f.hidden_field :task_type, value: "instructions"
+        = f.hidden_field :role_id, value: @role.id if @role.present?
+        = f.submit 'Save Changes', class: "btn btn-primary float-right"

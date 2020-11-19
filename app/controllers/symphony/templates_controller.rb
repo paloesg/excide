@@ -1,4 +1,6 @@
 class Symphony::TemplatesController < ApplicationController
+  layout 'symphony/application'
+  
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_template, except: [:index, :new, :create, :clone]
@@ -85,6 +87,8 @@ class Symphony::TemplatesController < ApplicationController
           @template.set_next_workflow_date(@workflow)
           redirect_to symphony_workflows_path(workflow_name: @template.slug)
         else
+          # update deadlines of wf and wfa
+          @template.update_deadlines
           flash[:notice] = 'Template has been saved.'
           redirect_to edit_symphony_template_path(@template)
         end
@@ -133,6 +137,6 @@ class Symphony::TemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:template).permit(:title, :company_id, :workflow_type, :deadline_day, :deadline_type, :template_pattern, :start_date, :end_date, :freq_value, :freq_unit, :next_workflow_date, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :user_id, :document_template_id, :survey_template_id, :deadline_day, :deadline_type, :set_reminder, :important, :link_url, :image_url, :_destroy] ])
+    params.require(:template).permit(:title, :company_id, :workflow_type, :deadline_day, :deadline_type, :template_pattern, :start_date, :end_date, :freq_value, :freq_unit, :next_workflow_date, sections_attributes: [:id, :section_name, :position, tasks_attributes: [:id, :child_workflow_template_id, :position, :task_type, :instructions, :role_id, :user_id, :document_template_id, :survey_template_id, :deadline_day, :deadline_type, :set_reminder, :important, :link_url, :image_url, :description, :_destroy] ])
   end
 end

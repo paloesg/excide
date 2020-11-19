@@ -1,4 +1,6 @@
 class Motif::PermissionsController < ApplicationController
+  layout 'motif/application'
+  
   def create
     # Depending on permissible_type, get the instance of the respective permissible (document or folder)
     @permissible = params[:permissible_type] == "folder" ? Folder.find(params[:permissible_id]) : Document.find(params[:permissible_id])

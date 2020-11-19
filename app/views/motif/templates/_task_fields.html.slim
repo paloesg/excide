@@ -1,0 +1,10 @@
+tr.task-drawer-row id="#{f.object.id}" data-drawer=f.object.id
+  td style="width: 5%"
+    i.material-icons-outlined drag_indicator
+  td style="width: 70%" = f.object.instructions.present? ? f.object.instructions : "Click to add task details"
+  td style="width: 15%" = f.object.deadline_day.present? ? f.object.deadline_day : "Click to add deadline"
+  td.drawer-toggle id="drawer_toggle_#{f.object.id}" style="width: 5%"
+    i.material-icons-outlined.align-middle.mr-2 create
+  td style="width: 5%"
+    / = link_to '#', class: 'remove_tasks mr-4' do
+    /   i.material-icons-outlined.align-middle.mr-2 delete_outline

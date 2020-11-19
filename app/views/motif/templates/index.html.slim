@@ -1,0 +1,24 @@
+.container.my-4
+  .row.mb-4
+    .col-md-8
+      h1 Onboarding Templates
+    .col-md-4.text-right
+      = link_to "+ New Template", new_motif_template_path, target: "_blank", class: 'btn btn-outline-secondary text-primary mr-1'
+  - @templates.each do |template|
+    .row.mb-4
+      .col-md-12
+        .card
+          .card-body
+            div.d-flex.justify-content-between
+              h3.card-title
+                = template.title
+              .col-md-1.d-flex.justify-content-center
+                = link_to motif_template_path(template_slug: template.slug), data: { confirm: 'This will delete all related tasks as well. Are you sure?' }, method: :delete, class: 'mr-5' do
+                  i.material-icons-outlined delete_outline
+                .dropdown
+                  a href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                    i.material-icons-outlined more_vert
+                  .dropdown-menu.dropdown-menu-right
+                    .dropdown-item = link_to "Edit template", edit_motif_template_path(template_slug: template.slug), target: "_blank"
+            .card-text.text-muted
+              | Created by Jonathan Lau. Also used for Company 1...

@@ -1,0 +1,50 @@
+.offcanvas.offcanvas-right.offcanvas-top.p-10 id="task_#{wfa.id}"
+  .row.mb-5
+    .col-md-6
+      h5.mr-3.mt-2 = task.instructions
+    .col-md-6
+      .float-right.ml-3.mt-2
+        a.d-inline id="drawer_close" href="#" 
+          i.material-icons-outlined close
+      .float-right.mx-3.mt-2
+        = link_to motif_outlet_notes_path(outlet_id: wf.outlet.id, wfa_id: wfa.id), target: "_blank" do
+          i.material-icons-outlined comment
+      .float-right.mx-3.mt-2
+        / Disable checkbox if current user is franchisor
+        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisor, @user.company)), class: 'border mt-1'
+  .row.my-5
+    .col-md-12
+      h6 Description
+      p = task.description
+  .row.my-5
+    .col-md-12
+      h6 Due Date
+      .d-flex.mt-3
+        - if !wfa.completed? && wfa.deadline.present?
+          - if wfa.deadline.to_date < Date.today
+            .text-danger = wfa.deadline&.strftime("%d %b")
+            i.material-icons-outlined.font-size-h6.ml-1.text-danger calendar_today
+            - color = "text-danger"
+          - elsif (wfa.deadline.to_date <= Date.tomorrow || (wfa.company.before_deadline_reminder_days.present? && wfa.deadline.to_date - wfa.company.before_deadline_reminder_days <= Date.today))
+            .text-warning = wfa.deadline&.strftime("%d %b")
+            i.material-icons-outlined.font-size-h6.ml-1.text-warning calendar_today
+            - color = "text-warning"
+          - else
+            .text-primary = wfa.deadline&.strftime("%d %b")
+            i.material-icons-outlined.font-size-h6.ml-1.text-primary calendar_today
+            - color = "text-primary"
+        - elsif wfa.deadline.present?
+          .text-muted = wfa.deadline&.strftime("%d %b")
+          i.material-icons-outlined.font-size-h6.ml-1.text-muted calendar_today
+          - color = "text-muted"
+      hr
+  .row.my-5
+    .col-md-12
+      h6 Links
+      p.mt-3 = task.link_url
+      hr
+  .row.my-5
+    .col-md-12
+      h6 Files
+      = image_pack_tag "media/src/images/motif/pdf.svg", class: 'mr-2'
+      | Filename

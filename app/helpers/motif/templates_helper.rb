@@ -1,0 +1,2 @@
+module Motif::TemplatesHelper
+end

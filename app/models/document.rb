@@ -7,11 +7,12 @@ class Document < ApplicationRecord
           }
 
   belongs_to :company
-  belongs_to :workflow
   belongs_to :document_template
-  belongs_to :user
-  belongs_to :workflow_action
   belongs_to :folder
+  belongs_to :outlet
+  belongs_to :user
+  belongs_to :workflow
+  belongs_to :workflow_action
 
   has_many :permissions, as: :permissible, dependent: :destroy
 

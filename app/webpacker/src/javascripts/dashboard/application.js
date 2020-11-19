@@ -38,7 +38,11 @@ require("./conductor/event_update");
 require("./components/calendar_style");
 
 require("./motif/drawer")
+require("./motif/home")
 require("./motif/remarks")
+require("./motif/settings")
+require("./motif/templates")
+require("./motif/workflows")
 
 // Import Uppy drag-and-drop
 require("./components/uppy");

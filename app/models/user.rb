@@ -7,6 +7,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :company
+  belongs_to :franchisee
+  belongs_to :outlet
 
   has_one :address, as: :addressable, dependent: :destroy
 
@@ -41,7 +43,7 @@ class User < ApplicationRecord
   # with parameters as value or custom methods defined in your model as lambda or symbol.
   # This is an example without any options (default configuration) as the target.
 
-  acts_as_target
+  # acts_as_target
 
   def add_role_consultant(assign)
     if assign
@@ -194,5 +196,16 @@ class User < ApplicationRecord
 
   def check_overlapping_allocation(allocation)
     self.get_availability(allocation).allocations.where(allocation_date: allocation.allocation_date).where("allocations.start_time < ?", allocation.end_time).where("allocations.end_time > ?", allocation.start_time).present?
+  end
+
+  ###########################
+  #                         #
+  #    Motif methods    #
+  #                         #
+  ###########################
+
+  def get_onboarding_workflow_id
+    # Assuming each outlet only have 1 onboarding workflow
+    self.outlet.workflows.includes(:template).where(templates: { template_type: "onboarding" })[0].id
   end
 end

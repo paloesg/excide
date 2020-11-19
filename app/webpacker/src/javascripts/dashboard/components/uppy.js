@@ -80,6 +80,20 @@ const motifMultipleDocumentsUpload = (uppy) => {
     });
   });
 };
+// Motif outlet's photo gallery
+const motifOutletPhotosUpload = (uppy) => {
+  uppy.on('complete', (result) => {
+    console.log("What is result: ", result)
+    let outlet_id = $("#outlet_id").val()
+    console.log("What is outlet id: ", outlet_id)
+    $.post("/motif/outlets/" + outlet_id + "/photos_upload", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+    });
+  });
+};
+
 //-----------------------------------Setup Uppy-----------------------------------------
 function setupUppy(element){
   let form = element.closest('form');
@@ -138,6 +152,9 @@ function setupUppy(element){
   }
   else if($('.motifMultipleDocumentsUpload').length){
     motifMultipleDocumentsUpload(uppy);
+  }
+  else if($('.motifOutletPhotosUpload').length){
+    motifOutletPhotosUpload(uppy);
   }
 }
 //-----------------------------------Initialize Uppy------------------------------------

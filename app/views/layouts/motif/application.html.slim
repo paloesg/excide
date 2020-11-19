@@ -1,0 +1,62 @@
+doctype html
+html lang="en"
+  head
+    base href="../../"
+    meta charset="utf-8"
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"
+    meta name="turbolinks-cache-control" content="no-cache"
+    link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet"
+    link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"
+    script async=true src="https://www.googletagmanager.com/gtag/js?id=UA-93342323-1"
+    javascript:
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-93342323-1');
+      document.addEventListener('turbolinks:load', event => {
+        if (typeof gtag === 'function') {
+          gtag('config', 'UA-93342323-1', {
+            'page_location': event.data.url
+          });
+        }
+      });
+    script src="https://js.stripe.com/v3/"
+    = render 'application/favicon'
+    = display_meta_tags site: "Virtual CFO | Excide"
+    = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = csrf_meta_tags
+    = action_cable_meta_tag
+    = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
+    // For uppy use with active storage
+    = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
+
+  body
+    = render 'layouts/motif/motif_header'
+    / If it's not franchisee index page AND is any of the pages
+    - if !(current_page?(motif_franchisees_path)) && (current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users' || controller_name == 'franchisees' || controller_name == 'templates' || (controller_name == 'outlets' && action_name == 'edit') || (controller_name == 'workflows' && action_name == 'show') || controller_name == 'notes')
+      .new-tab-wrapper.overflow-auto
+        .new-tab-contents
+          .row.mt-5.h-100
+            - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || controller_name == 'users' || controller_name == 'franchisees' || controller_name == 'outlets'
+              .col-sm-2.bg-white.border-right.sidebar-border-radius
+                = render 'layouts/motif/motif_settings_sidebar'
+              .col-sm-10.bg-white.content-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
+            - else
+              .col-sm-12.bg-white.content-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
+    - else
+      .container-fluid
+        .row
+          .col-sm-2.bg-white.border-right
+            = render 'layouts/motif/motif_sidebar'
+          .col-sm-10.mt-5
+            = yield
+            = render 'layouts/messages'
+    /! Start of paloe Zendesk Widget script
+    script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66"
+    /! End of paloe Zendesk Widget script
+

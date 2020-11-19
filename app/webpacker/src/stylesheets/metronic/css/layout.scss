@@ -64,11 +64,14 @@ h1.header-bold {
   position: sticky;
   overflow-y: auto;
   overflow-x: hidden;
-  top: 48px;
+  top: 60px;
   bottom: 0;
-  height: calc(100vh - 48px);
+  height: calc(100vh - 60px);
 }
 
+.sidebar-sticky-settings {
+  top: 0;
+}
 // Sidebar-items hover effect
 .hover-blue:hover {
   background-color: #eef1ff;
@@ -78,9 +81,14 @@ h1.header-bold {
 // User icon on navbar
 .icon-size {
   vertical-align: middle;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.navbar-icon {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
 }
 
 .sidebar-font {
@@ -89,6 +97,7 @@ h1.header-bold {
   line-height: normal;
   letter-spacing: 0.1px;
   color: black;
+  font-family: "NunitoSans-bold" !important;
 }
 
 .sidebar-subheader-font {
@@ -105,6 +114,12 @@ h1.header-bold {
   background-color: #eef1ff !important;
 }
 
+// Make the entire card a hyperlink and inherit color style
+a.custom-card,
+a.custom-card:hover {
+  color: inherit;
+}
+
 // Image size
 .img-icon-size {
   width: 10%;
@@ -115,3 +130,16 @@ h1.header-bold {
 .dropdown-menu-right {
   left: auto !important;
 }
+
+// background design for new tab windows
+.new-tab-wrapper {
+  background-color: #F5F6F9;
+  margin: 0;
+  padding: 4% 10%;
+  height: 100%
+}
+
+.new-tab-contents {
+  height: 100%
+}
+

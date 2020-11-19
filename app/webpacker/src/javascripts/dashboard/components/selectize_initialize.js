@@ -23,6 +23,14 @@ $(document).on("turbolinks:load", function () {
     );
   });
 
+  // For outlet view in motif
+  $(".outlet-view-option").on("select2:select", function (e) {
+    var data = e.params.data;
+    Turbolinks.visit(
+      "//" + location.host + location.pathname + "?view=" + data.id
+    );
+  });
+
   $(".tasks-filter-button").click(function (e) {
     var tasks_select2 = $("select.select2-tasks").select2();
     var created_at_select2 = $("select.select2-created-at").select2();
@@ -42,6 +50,34 @@ $(document).on("turbolinks:load", function () {
         createdAtData +
         "&types=" +
         typesData
+    );
+  });
+
+  $(".documents-filter-button").click(function (e) {
+    var tags_select2 = $("select.select2-document-tags").select2({
+      width: 'auto'
+    });
+    var access_select2 = $("select.select2-document-access").select2({
+      width: 'auto'
+    });
+    var qna_select2 = $("select.select2-document-qna").select2({
+      width: 'auto'
+    });
+
+    var tagsData = tags_select2[0].value;
+    var accessData = access_select2[0].value;
+    var qnaData = qna_select2[0].value;
+
+    Turbolinks.visit(
+      "//" +
+        location.host +
+        location.pathname +
+        "?tags=" +
+        tagsData +
+        "&access=" +
+        accessData +
+        "&qna=" +
+        qnaData
     );
   });
 

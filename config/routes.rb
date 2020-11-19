@@ -31,8 +31,6 @@ Rails.application.routes.draw do
 
     get '/search', to: 'home#search'
     get '/xero_line_items', to: 'xero_line_items#show'
-    get '/tasks', to: 'home#tasks'
-    get '/activity-history', to: 'home#activity_history'
     post '/add_tasks_to_timesheet', to: 'home#add_tasks_to_timesheet'
 
     resources :survey_templates, param: :survey_template_slug, except: [:destroy]
@@ -122,6 +120,7 @@ Rails.application.routes.draw do
 
   namespace :motif do
     root to: 'home#index'
+    patch '/change_outlet', to: 'home#change_outlet', as: :change_outlet
     resources :documents do
       patch '/update_tags', to:'documents#update_tags'
     end
@@ -130,10 +129,28 @@ Rails.application.routes.draw do
     end
     resources :permissions
     resources :companies
+    resources :templates, param: :template_slug
+    resources :workflows, except: :show do
+      post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
+    end
+    resources :franchisees do
+      resources :outlets, except: :create
+    end
+    resources :outlets do
+      post '/photos_upload', to: 'outlets#outlets_photos_upload', as: :photos_upload
+      resources :workflows, only: :show
+      resources :notes
+    end
+    resources :users, only: [:index, :create]
+    get '/communication_hub', to: 'notes#communication_hub', as: :communication_hub
+    post '/add-roles', to: 'users#add_role', as: :add_role
   end
-
+  
   namespace :overture do
-    root to: 'contacts#index'
+    root to: 'profiles#index'
+    resources :profiles do
+      get '/state-interest', to: 'profiles#state_interest', as: :state_interest
+    end
   end
 
   namespace :conductor do

@@ -1,0 +1,73 @@
+/ for settings page, render a different sidebar
+- if (controller_name == 'companies' || current_page?(edit_user_registration_path) || current_page?(symphony_users_path) || current_page?(symphony_roles_path) || current_page?(notification_settings_symphony_user_path(current_user)))
+  .sidebar-sticky
+    ul.nav.flex-column
+      strong.col-sm-6.mt-4 SETTINGS
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to edit_user_registration_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined account_circle
+          .ml-2.sidebar-font Account
+      - if current_user.has_role? :superadmin or current_user.has_role?(:admin, current_user.company)
+        li.nav-item.hover-blue.py-1.m-4
+          = link_to edit_company_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined dashboard
+            .ml-2.sidebar-font Workspace
+        li.nav-item.hover-blue.py-1.m-4
+          = link_to symphony_users_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined group
+            .ml-2.sidebar-font Teammates
+        li.nav-item.hover-blue.py-1.m-4
+          = link_to symphony_roles_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined group_work
+            .ml-2.sidebar-font Groups
+        li.nav-item.hover-blue.py-1.m-4
+          = link_to integration_company_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined apps
+            .ml-2.sidebar-font Connect to Apps
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to notification_settings_symphony_user_path(current_user), class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined notifications
+          .ml-2.sidebar-font Notification
+      - if current_user.has_role? :superadmin or current_user.has_role?(:admin, current_user.company)
+        li.nav-item.hover-blue.py-1.m-4
+          = link_to billing_company_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined attach_money
+            .ml-2.sidebar-font Billing
+- else
+  .sidebar-sticky
+    ul.nav.flex-column
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to symphony_root_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined home
+          .ml-2.sidebar-font Home
+    ul.nav.flex-column
+      li.active.m-4
+        .sidebar-font
+          | ROUTINES
+          = link_to symphony_templates_path, class: 'float-right' do
+            i.material-icons-outlined.small add
+        ul.list-unstyled
+          / Calling template model scope to display templates with NO batches
+          - ::Template.assigned_templates(current_user).has_no_batches.each do |template|
+            li.hover-blue.p-2.pl-4.m-4
+              = link_to template.title, symphony_workflows_path(template.slug), class: 'sidebar-font text-dark'
+    ul.nav.flex-column
+      li.active.m-4
+        .sidebar-font TOOLS
+        ul.list-unstyled
+          li.hover-blue.py-1.m-4
+            = link_to symphony_batches_index_path, class: 'col-sm-12 d-flex align-items-center' do
+              i.material-icons-outlined collections_bookmark
+              .ml-2.sidebar-font Bulk Invoices Tool
+          li.hover-blue.py-1.m-4
+            = link_to conductor_events_path, class: 'col-sm-12 d-flex align-items-center' do
+              i.material-icons-outlined table_chart
+              .ml-2.sidebar-font Timesheet
+          li.hover-blue.py-1.m-4
+            = link_to symphony_survey_templates_path, class: 'col-sm-12 d-flex align-items-center' do
+              i.material-icons-outlined format_list_bulleted
+              .ml-2.sidebar-font Forms & Surveys
+          li.hover-blue.py-1.m-4
+            = link_to symphony_documents_path, class: 'col-sm-12 d-flex align-items-center' do
+              i.material-icons-outlined insert_drive_file
+              .ml-2.sidebar-font Documents Repository
