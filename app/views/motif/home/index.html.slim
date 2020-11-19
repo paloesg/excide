@@ -5,7 +5,7 @@
   - if false
     .row.justify-content-center.ml-3
       .col-md-3.text-center.p-4
-        = image_pack_tag 'media/src/images/overture/overture-empty.svg'
+        = image_pack_tag 'media/src/images/motif/motif-empty.svg'
         h2.mt-5 Nothing to manage
         p.mt-4 Looks like you have not added any franchisee outlets to manage
         button.btn.btn-primary.ml-5 type="button"
@@ -17,7 +17,7 @@
           .card-body
             h5.card-title My Franchisees
             .bg-light.d-flex.px-4.py-2.align-items-center.rounded
-              h1.card-text style="font-size: 48px"
+              h1.card-text.number-display
                 = @outlets.length
               p.card-text.ml-4 Total Outlets
       .col-sm-4
@@ -25,19 +25,8 @@
           .card-body
             h5.card-title Messages
             .bg-light.d-flex.p-5.align-items-center.rounded
-              svg#Group_2496 data-name=("Group 2496") height="40" viewbox=("0 0 40 40") width="40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-                defs
-                  clippath#clip-path
-                    rect#Rectangle_214 data-name=("Rectangle 214") fill="#fff" height="40" stroke="#707070" stroke-width="1" width="40" /
-                g#Mask_Group_5 clip-path="url(#clip-path)" data-name=("Mask Group 5") 
-                  g#message transform=("translate(0 6.299)") 
-                    path#Path_359 d="M38.819,27.4H1.181A1.181,1.181,0,0,1,0,26.22V1.181A1.181,1.181,0,0,1,1.181,0H38.819A1.181,1.181,0,0,1,40,1.181V26.22A1.181,1.181,0,0,1,38.819,27.4Zm0,0" data-name=("Path 359") fill="#929ff2" transform=("translate(0 0)") /
-                    path#Path_360 d="M38.819,0H20V27.4H38.819A1.181,1.181,0,0,0,40,26.22V1.181A1.181,1.181,0,0,0,38.819,0Zm0,0" data-name=("Path 360") fill="rgba(23,23,46,0.8)" transform=("translate(0 0)") /
-                    path#Path_361 d="M38.819,27.4H1.181a1.181,1.181,0,0,1-.8-2.052L14.1,12.786a1.181,1.181,0,0,1,.8-.31H25.1a1.18,1.18,0,0,1,.8.31L39.617,25.349a1.181,1.181,0,0,1-.8,2.052Zm0,0" data-name=("Path 361") fill="#475ad4" transform=("translate(0 0)") /
-                    path#Path_362 d="M39.617,25.349,25.9,12.786a1.18,1.18,0,0,0-.8-.31H20V27.4H38.819a1.181,1.181,0,0,0,.8-2.052Zm0,0" data-name=("Path 362") fill="#394593" transform=("translate(0 0)") /
-                    path#Path_363 d="M20,19.492a1.178,1.178,0,0,1-.795-.308L.386,2.054A1.181,1.181,0,0,1,1.181,0H38.819a1.181,1.181,0,0,1,.795,2.054L20.795,19.185A1.178,1.178,0,0,1,20,19.492Zm0,0" data-name=("Path 363") fill="#ccd2f7" transform=("translate(0 0)") /
-                    path#Path_364 d="M38.819,0H20V19.492a1.178,1.178,0,0,0,.795-.308L39.614,2.054A1.181,1.181,0,0,0,38.819,0Zm0,0" data-name=("Path 364") fill="#a6b1f8" transform=("translate(0 0)") /
-                p.card-text.ml-4 You have 5 unread messages
+              = image_pack_tag 'media/src/images/motif/motif-message.svg'
+              p.card-text.ml-4 You have 5 unread messages
       .col-sm-4
         .card
           .card-body
@@ -51,49 +40,49 @@
           .card-body
             h5.card-title Onboarding
             -if false
-              .d-flex.px-4.py-2.align-items-center.rounded style="background: #F8FAEF;"
-                = image_pack_tag 'media/src/images/overture/overture-done.svg'
+              .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
+                = image_pack_tag 'media/src/images/motif/motif-done.svg'
                 p.card-text.ml-4 All outlets have completed onboarding
             -else
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FDF0F0;"
-                h1.card-text style="font-size: 48px" 1
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
+                h1.card-text.number-display 1
                 p.card-text.ml-4 Outlet with overdue task
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FEF4ED;"
-                h1.card-text style="font-size: 48px" 1
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
+                h1.card-text.number-display 1
                 p.card-text.ml-4 Task waiting approval
               .bg-light.d-flex.px-4.py-2.align-items-center.rounded.mb-5
-                h1.card-text style="font-size: 48px" 3
+                h1.card-text.number-display 3
                 p.card-text.ml-4 Total ongoing onboarding
       .col-sm-4
         .card
           .card-body
             h5.card-title Side Audit
             -if false
-              .d-flex.px-4.py-2.align-items-center.rounded style="background: #F8FAEF;"
-                = image_pack_tag 'media/src/images/overture/overture-done.svg'
+              .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
+                = image_pack_tag 'media/src/images/motif/motif-done.svg'
                 p.card-text.ml-4 All outlets have completed 2020 Site Audit
             -else
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FDF0F0;"
-                h1.card-text style="font-size: 48px" 1
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
+                h1.card-text.number-display 1
                 p.card-text.ml-4 Outlet with overdue task
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FEF4ED;"
-                h1.card-text style="font-size: 48px" 2
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
+                h1.card-text.number-display 2
                 p.card-text.ml-4 Outlet waiting approval
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #F8FAEF;"
-                h1.card-text style="font-size: 48px" 0
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
+                h1.card-text.number-display 0
                 p.card-text.ml-4 Complete Site Audit
       .col-sm-4
         .card
           .card-body
             h5.card-title Royalty
             -if false
-              .d-flex.px-4.py-2.align-items-center.rounded style="background: #F8FAEF;"
-                = image_pack_tag 'media/src/images/overture/overture-done.svg'
+              .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
+                = image_pack_tag 'media/src/images/motif/motif-done.svg'
                 p.card-text.ml-4 All outlets have paid royalty
             -else
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #FDF0F0;"
-                h1.card-text style="font-size: 48px" 2
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
+                h1.card-text.number-display 2
                 p.card-text.ml-4 Outlets pending
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5 style="background: #F8FAEF;"
-                h1.card-text style="font-size: 48px" 1
+              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
+                h1.card-text.number-display 1
                 p.card-text.ml-4 Outlets collected
