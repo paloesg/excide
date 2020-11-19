@@ -70,8 +70,20 @@ $(document).on("turbolinks:load", function () {
     let drawerToDelete = $("#tasksOffcanvas").find("#" + drawerRowId)
     // Remove nested form
     $(this).closest("tr").remove();
-    // Remove drawer that links to the nested form
-    drawerToDelete.remove()
+    // For NEW template form
+    if(drawerToDelete.length){
+      // Remove drawer that links to the nested form
+      drawerToDelete.remove()
+    } // For EDIT template form 
+    else {
+      // Delete nested attributes by setting value to 1 for both drawer and nested form
+      $(this).closest("tr").find(".destroy").val("1");
+      $("#" + drawerRowId).find(".destroy").val("1")
+      // Hide both the drawer and the nested form
+      $("#" + drawerRowId).hide();
+      $(this).closest("tr").hide();
+    }
+    
     return event.preventDefault();
   });
 });
