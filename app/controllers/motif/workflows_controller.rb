@@ -4,10 +4,10 @@ class Motif::WorkflowsController < ApplicationController
   before_action :set_workflow, only: [:show, :update]
 
   def index
-    # Select templates related to that franchise company only
-    @templates = Template.includes(:company).where(company_id: @company.id)
+    # Select templates in that company and with the right template_type. params[:template_type] is passed through url params in the sidebar
+    @templates = Template.includes(:company).where(company_id: @company.id, template_type: params[:template_type])
     # If current user is a franchisee, it can only see it's own workflow
-    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.outlet.workflows : Workflow.includes(:template).where(templates: { company_id: @company.id })
+    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.outlet.workflows.includes(:template).where(templates: {template_type: params[:template_type]}) : Workflow.includes(:template).where(templates: { company_id: @company.id, template_type: params[:template_type] })
     @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company.id })
     @workflow = Workflow.new
   end
