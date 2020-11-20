@@ -1,4 +1,4 @@
- = form_for current_user.outlet, url: motif_outlet_path(current_user.outlet) do |f|
+ = form_for @source, url: @source.instance_of?(Company) ? motif_company_path(@source) : motif_outlet_path(@source) do |f|
   .row.mb-3.mt-5.ml-3
     .col-sm-12
       .btn-toolbar.float-right.ml-5
