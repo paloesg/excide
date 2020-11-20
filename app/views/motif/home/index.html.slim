@@ -1,88 +1,94 @@
-.m-5.h-100
-  h1.mb-5 Franchisor Account
-  p What are you planning to do today?
-  br
-  - if false
-    .row.justify-content-center.ml-3
-      .col-md-3.text-center.p-4
-        = image_pack_tag 'media/src/images/motif/motif-empty.svg'
-        h2.mt-5 Nothing to manage
-        p.mt-4 Looks like you have not added any franchisee outlets to manage
-        button.btn.btn-primary.ml-5 type="button"
-          | Go to Franchisee Outlet
-  - else
-    .row.mt-5
-      .col-sm-4
-        .card
-          .card-body
-            h5.card-title My Franchisees
-            .bg-light.d-flex.px-4.py-2.align-items-center.rounded
-              h1.card-text.number-display
-                = @outlets.length
-              p.card-text.ml-4 Total Outlets
-      .col-sm-4
-        .card
-          .card-body
-            h5.card-title Messages
-            .bg-light.d-flex.p-5.align-items-center.rounded
-              = image_pack_tag 'media/src/images/motif/motif-message.svg'
-              p.card-text.ml-4 You have 5 unread messages
-      .col-sm-4
-        .card
-          .card-body
-            h5.card-title Announcements
-            .bg-light.d-flex.p-5.align-items-center.rounded
-              p.card-text Some announcements
-            
-    .row.mt-5
-      .col-sm-4
-        .card
-          .card-body
-            h5.card-title Onboarding
-            -if false
-              .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
-                = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                p.card-text.ml-4 All outlets have completed onboarding
-            -else
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
-                h1.card-text.number-display 1
-                p.card-text.ml-4 Outlet with overdue task
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
-                h1.card-text.number-display 1
-                p.card-text.ml-4 Task waiting approval
-              .bg-light.d-flex.px-4.py-2.align-items-center.rounded.mb-5
-                h1.card-text.number-display 3
-                p.card-text.ml-4 Total ongoing onboarding
-      .col-sm-4
-        .card
-          .card-body
-            h5.card-title Side Audit
-            -if false
-              .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
-                = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                p.card-text.ml-4 All outlets have completed 2020 Site Audit
-            -else
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
-                h1.card-text.number-display 1
-                p.card-text.ml-4 Outlet with overdue task
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
-                h1.card-text.number-display 2
-                p.card-text.ml-4 Outlet waiting approval
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
-                h1.card-text.number-display 0
-                p.card-text.ml-4 Complete Site Audit
-      .col-sm-4
-        .card
-          .card-body
-            h5.card-title Royalty
-            -if false
-              .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
-                = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                p.card-text.ml-4 All outlets have paid royalty
-            -else
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
-                h1.card-text.number-display 2
-                p.card-text.ml-4 Outlets pending
-              .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
-                h1.card-text.number-display 1
-                p.card-text.ml-4 Outlets collected
+- unless current_user.has_role?(:franchisee_owner, current_user.company)
+  .m-5.h-100
+    h1.mb-5 Franchisor Account
+    p What are you planning to do today?
+    br
+    - if false
+      .row.justify-content-center.ml-3
+        .col-md-3.text-center.p-4
+          = image_pack_tag 'media/src/images/motif/motif-empty.svg'
+          h2.mt-5 Nothing to manage
+          p.mt-4 Looks like you have not added any franchisee outlets to manage
+          button.btn.btn-primary.ml-5 type="button"
+            | Go to Franchisee Outlet
+    - else
+      .row.mt-5
+        .col-sm-4
+          .card
+            .card-body
+              h5.card-title My Franchisees
+              .bg-light.d-flex.px-4.py-2.align-items-center.rounded
+                h1.card-text.number-display
+                  = @outlets.length
+                p.card-text.ml-4 Total Outlets
+        .col-sm-4
+          .card
+            .card-body
+              h5.card-title Messages
+              .bg-light.d-flex.p-5.align-items-center.rounded
+                = image_pack_tag 'media/src/images/motif/motif-message.svg'
+                p.card-text.ml-4 You have 5 unread messages
+        .col-sm-4
+          .card
+            .card-body
+              h5.card-title Announcements
+              .bg-light.d-flex.p-5.align-items-center.rounded
+                p.card-text Some announcements
+              
+      .row.mt-5
+        .col-sm-4
+          .card
+            .card-body
+              h5.card-title Onboarding
+              -if false
+                .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
+                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                  p.card-text.ml-4 All outlets have completed onboarding
+              -else
+                .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
+                  h1.card-text.number-display 1
+                  p.card-text.ml-4 Outlet with overdue task
+                .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
+                  h1.card-text.number-display 1
+                  p.card-text.ml-4 Task waiting approval
+                .bg-light.d-flex.px-4.py-2.align-items-center.rounded.mb-5
+                  h1.card-text.number-display 3
+                  p.card-text.ml-4 Total ongoing onboarding
+        .col-sm-4
+          .card
+            .card-body
+              h5.card-title Side Audit
+              -if false
+                .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
+                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                  p.card-text.ml-4 All outlets have completed 2020 Site Audit
+              -else
+                .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
+                  h1.card-text.number-display 1
+                  p.card-text.ml-4 Outlet with overdue task
+                .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
+                  h1.card-text.number-display 2
+                  p.card-text.ml-4 Outlet waiting approval
+                .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
+                  h1.card-text.number-display 0
+                  p.card-text.ml-4 Complete Site Audit
+        .col-sm-4
+          .card
+            .card-body
+              h5.card-title Royalty
+              -if false
+                .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
+                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                  p.card-text.ml-4 All outlets have paid royalty
+              -else
+                .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
+                  h1.card-text.number-display 2
+                  p.card-text.ml-4 Outlets pending
+                .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
+                  h1.card-text.number-display 1
+                  p.card-text.ml-4 Outlets collected
+- else
+  .m-5.h-100
+    h1.mb-5 #{current_user.outlet.name}
+    p What are you planning to do today?
+    br
