@@ -40,7 +40,7 @@
           .card
             .card-body
               h5.card-title Onboarding
-              -if false
+              -if @workflows.all? { |wf| wf.completed == true }
                 .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
                   = image_pack_tag 'media/src/images/motif/motif-done.svg'
                   p.card-text.ml-4 All outlets have completed onboarding
@@ -52,7 +52,8 @@
                   h1.card-text.number-display 1
                   p.card-text.ml-4 Task waiting approval
                 .bg-light.d-flex.px-4.py-2.align-items-center.rounded.mb-5
-                  h1.card-text.number-display 3
+                  h1.card-text.number-display 
+                    = @workflows.length
                   p.card-text.ml-4 Total ongoing onboarding
         .col-sm-4
           .card
