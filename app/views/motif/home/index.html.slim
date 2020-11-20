@@ -3,7 +3,7 @@
     h1.mb-5 Franchisor Account
     p What are you planning to do today?
     br
-    - if false
+    - if @outlets.length == 0
       .row.justify-content-center.ml-3
         .col-md-3.text-center.p-4
           = image_pack_tag 'media/src/images/motif/motif-empty.svg'
@@ -92,3 +92,57 @@
     h1.mb-5 #{current_user.outlet.name}
     p What are you planning to do today?
     br
+    - if false
+      .row.justify-content-center.ml-3
+        .col-md-3.text-center.p-4
+          = image_pack_tag 'media/src/images/motif/motif-empty.svg'
+          h2.mt-5 Looks like you don't have anything to do.
+          p.mt-4 Maybe, you may want to ask your Franchisor about your tasks.
+          button.btn.btn-primary.ml-5 type="button"
+            | Talk to Franchisor
+    - else
+      .row.mt-5
+        .col-sm-5
+          .card
+            .card-body
+              h5.card-title.mb-5 Onboarding
+              -if true
+                .progress style=("height: 8px;")
+                  .progress-bar.bg-success.progress-bar-small aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 100%")
+                h5.my-3 100%
+                .d-flex.px-4.py-3.align-items-center.rounded.success-card-motif
+                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                  p.card-text.ml-4 Good job, your onboarding is complete!
+              -else
+                .progress style=("height: 8px;")
+                  .progress-bar.bg-warning.progress-bar-small aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 25%")
+                h5.my-3 25%
+                .d-flex.px-4.py-3.align-items-center.rounded.warning-card-motif
+                  = image_pack_tag 'media/src/images/motif/motif-warning.svg'
+                  p.card-text.ml-4 Onboarding not done!
+        .col-sm-5
+          .card
+            .card-body
+              h5.card-title.mb-5 Side Audit
+              -if false
+                .progress style=("height: 8px;")
+                  .progress-bar.bg-success.progress-bar-small aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 100%")
+                h5.my-3 100%
+                .d-flex.px-4.py-3.align-items-center.rounded.success-card-motif
+                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                  p.card-text.ml-4 Good job, your site audit is complete!
+              -else
+                .progress style=("height: 8px;")
+                  .progress-bar.bg-warning.progress-bar-small aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 25%")
+                h5.my-3 25%
+                .d-flex.px-4.py-3.align-items-center.rounded.warning-card-motif
+                  = image_pack_tag 'media/src/images/motif/motif-warning.svg'
+                  p.card-text.ml-4 Due 20 Oct 2020: "Do this stuff by then"
+      .row.mt-5
+        .col-sm-5
+          .card
+            .card-body
+              h5.card-title.mb-5 Messages
+              .bg-light.d-flex.p-5.align-items-center.rounded
+                = image_pack_tag 'media/src/images/motif/motif-message.svg'
+                p.card-text.ml-4 You have 5 unread messages
