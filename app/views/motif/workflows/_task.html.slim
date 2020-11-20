@@ -1,4 +1,4 @@
-.offcanvas.offcanvas-right.offcanvas-top.p-10 id="task_#{wfa.id}"
+.offcanvas.offcanvas-right.offcanvas-top.p-10.overflow-auto id="task_#{wfa.id}"
   .row.mb-5
     .col-md-6
       h5.mr-3.mt-2 = task.instructions
@@ -41,7 +41,14 @@
   .row.my-5
     .col-md-12
       h6 Links
-      p.mt-3 = task.link_url
+      - if wfa.links.present?
+        - wfa.links["links"].each do |link|
+          p.mt-3 
+            = link_to link, "https://#{link}", target: "_blank", class: "text-primary"
+      = form_tag motif_workflow_path(id: wf.id, workflow_action_id: wfa.id), method: :patch do
+        - 3.times do
+          = text_field_tag "links[]", nil , placeholder: "Enter your link here...", class: "form-control mb-2"
+        = submit_tag "Submit", class: "btn btn-sm btn-primary"
       hr
   .row.my-5
     .col-md-12

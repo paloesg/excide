@@ -1,7 +1,7 @@
 class Motif::WorkflowsController < ApplicationController
   layout 'motif/application'
   before_action :set_company
-  before_action :set_workflow, only: [:show]
+  before_action :set_workflow, only: [:show, :update]
 
   def index
     # Select templates related to that franchise company only
@@ -31,6 +31,23 @@ class Motif::WorkflowsController < ApplicationController
   end
 
   def edit
+  end
+
+  def update
+    @wfa = @workflow.workflow_actions.find(params[:workflow_action_id])
+    @wfa.links = { links: [] }
+    params[:links].each do |link|
+      @wfa.links["links"] << link
+    end
+    respond_to do |format|
+      if @wfa.save
+        format.html { redirect_to motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id) , notice: 'Workflow was successfully created.' }
+        format.json { render :show, status: :created, location: @wfa }
+      else
+        format.html { render :new }
+        format.json { render json: @workflow.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def toggle
