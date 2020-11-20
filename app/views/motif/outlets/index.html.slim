@@ -1,0 +1,56 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    button.btn.btn-primary.text-white.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white add
+      | Register New Outlet
+    / #newMotifDocUploads.modal.fade aria-hidden="true" aria-labelledby="newMotifDocumentUploads" role="dialog" tabindex="-1"
+    /   .modal-dialog role="document"
+    /     .modal-content
+    /       .modal-header
+    /         h5#newMotifDocumentUploads.modal-title New Franchisee Outlet
+    /       .modal-body
+    /         = form_for(@outlet, url: motif_outlets_path, html: { method: :post }) do |f|
+    /           .row.mt-3
+    /             .col-md-12
+    /               .form-group
+    /                 = f.text_field :name, placeholder: 'Create Outlet Name', class: 'form-control'
+    /               .form-group
+    /                 = f.text_field :city, placeholder: 'Choose City', class: 'form-control'
+    /               .form-group
+    /                 = f.text_field :country, placeholder: 'Choose Country', class: 'form-control'
+    /               .form-group
+    /                 = email_field_tag :franchisee_email, nil, placeholder: 'Add a new franchisee by email', class: 'form-control'
+    /               .form-group
+    /                 = select_tag('franchisee_id', options_from_collection_for_select(@franchisees, "id", "name"), include_blank: true, prompt: 'Find franchisee', class: "select2", style: 'width: 100%')
+              .row
+                .col-md-12
+                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+    .float-right.my-2
+      i.px-5.material-icons-outlined more_vert
+    h3 Franchisee Outlets
+    p.mt-5.text-muted
+      | Store and manage information about your franchisees and locations in 
+      br
+      | Franchisees.
+.row.ml-4.align-items-center
+  .col
+    span.mr-3
+      i.material-icons-outlined filter_list
+    | Filters
+hr.mb-0
+.row.mt-5
+  - @outlets.each do |outlet|
+    .col-sm-4.mt-5
+      a href="#{motif_outlet_path(id: outlet.id)}" target="_blank" class="custom-card"
+        .card.h-100.card-custom.card-stretch.gutter-b.card-view-outlet
+          = image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "card-img-top p-3"
+          .card-body.pb-0
+            .row
+              h3 = outlet.name
+            .row.mt-5
+              = outlet.address&.line_1.present? ? "outlet.address.line_1" : "No Address"
+            .row.mt-2
+              = pluralize(outlet.users.length, "user")
+            .row.mt-2 Expires on 2 Nov 2035
+
+
