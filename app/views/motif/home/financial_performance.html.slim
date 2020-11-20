@@ -1,7 +1,7 @@
 .row.mb-3.mt-5.ml-3
     .col-sm-12
       .float-right
-        = link_to 'Setting', motif_edit_report_path, class: 'text-primary font-weight-bolder mr-3 px-5'
+        = link_to 'Setting', motif_edit_report_path, target: :_blank, class: 'text-primary font-weight-bolder mr-3 px-5'
       h3.mb-5 Financial Performance
       - if current_user.outlet.nil?
         = form_tag(motif_financial_performance_path, method: :get, enforce_utf8: false) do
@@ -13,4 +13,4 @@
     = image_pack_tag 'media/src/images/motif/chart-empty.svg'
     h2.mt-5 No charts to show.
     p.mt-4 Looks like you have not set up this page. 
-    = link_to "Go to Setting", motif_edit_report_path, role: "button", class: "btn btn-primary font-weight-bolder mr-3 px-5 mt-4"
+    = link_to "Go to Setting", motif_edit_report_path, target: :_blank, role: "button", class: "btn btn-primary font-weight-bolder mr-3 px-5 mt-4"
