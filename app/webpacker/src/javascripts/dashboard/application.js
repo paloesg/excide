@@ -37,11 +37,11 @@ require("./conductor/go_to_allocation");
 require("./conductor/event_update");
 require("./components/calendar_style");
 
-require("./motif/templates")
 require("./motif/drawer")
-require("./motif/remarks")
 require("./motif/home")
+require("./motif/remarks")
 require("./motif/settings")
+require("./motif/templates")
 require("./motif/workflows")
 
 // Import Uppy drag-and-drop

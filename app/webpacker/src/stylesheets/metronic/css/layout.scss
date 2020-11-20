@@ -81,9 +81,14 @@ h1.header-bold {
 // User icon on navbar
 .icon-size {
   vertical-align: middle;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.navbar-icon {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
 }
 
 .sidebar-font {
