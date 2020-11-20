@@ -6,11 +6,11 @@ class Motif::HomeController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @franchisees = Franchisee.includes(:company).where(company_id: @company)
-    @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company })
-    @workflows = Workflow.includes(:franchisee).where(franchisees: { company_id: @company })
+    @franchisees = Franchisee.includes(:company).where(company_id: @company.id)
+    @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company.id })
+    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.outlet.workflows : Workflow.includes(:company).where(company_id: @company.id)
   end
-
+  
   # Change user's outlet for franchisee with multiple outlets
   def change_outlet
     if current_user.update(user_params)
