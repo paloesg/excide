@@ -3,7 +3,7 @@ class Motif::OutletsController < ApplicationController
   
   before_action :set_company
   before_action :set_outlet, except: [:create, :outlets_photos_upload, :add_new_onboarding, :index]
-  before_action :set_franchisee, except: [:create, :outlets_photos_upload, :add_new_onboarding, :index]
+  # before_action :set_franchisee, except: [:create, :outlets_photos_upload, :add_new_onboarding, :index]
 
   def index
     @outlets = Outlet.includes(:company).where(company_id: @company)
@@ -49,6 +49,10 @@ class Motif::OutletsController < ApplicationController
     end
   end
 
+  def show
+    
+  end
+
   def outlets_photos_upload
     @outlet = Outlet.find_by(id: params[:outlet_id])
     parsed_files = JSON.parse(params[:successful_files])
@@ -70,12 +74,12 @@ class Motif::OutletsController < ApplicationController
     @outlet = Outlet.find(params[:id])
   end
 
-  def set_franchisee
-    @franchisee = Franchisee.find(params[:franchisee_id])
-  end
+  # def set_franchisee
+  #   @franchisee = Franchisee.find(params[:franchisee_id])
+  # end
   # Only allow a list of trusted parameters through.
   def outlet_params
-    params.require(:outlet).permit(:name, :city, :country, :contact, :address, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state], photos: [])
+    params.require(:outlet).permit(:name, :city, :country, :contact, :address, :commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state], photos: [])
   end
 
   def build_addresses

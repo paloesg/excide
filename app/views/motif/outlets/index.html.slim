@@ -41,14 +41,14 @@ hr.mb-0
 .row.mt-5
   - @outlets.each do |outlet|
     .col-sm-4.mt-5
-      a href="#{motif_outlet_path(id: outlet.id)}" target="_blank" class="custom-card"
+      a href="#{edit_motif_outlet_path(id: outlet.id)}" target="_blank" class="custom-card"
         .card.h-100.card-custom.card-stretch.gutter-b.card-view-outlet
           = image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "card-img-top p-3"
           .card-body.pb-0
             .row
               h3 = outlet.name
             .row.mt-5
-              = outlet.address&.line_1.present? ? "outlet.address.line_1" : "No Address"
+              = outlet.address&.line_1.present? ? "#{outlet.address.line_1}" : "No Address"
             .row.mt-2
               = pluralize(outlet.users.length, "user")
             .row.mt-2 Expires on 2 Nov 2035

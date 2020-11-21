@@ -1,0 +1,14 @@
+.sidebar-sticky
+  ul.nav.flex-column
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to edit_motif_outlet_path(@outlet), class: 'col-sm-12 d-flex align-items-center' do
+        .ml-2.sidebar-font Information
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_workflows_path(template_type: "onboarding"), class: 'col-sm-12 d-flex align-items-center' do
+        .ml-2.sidebar-font Members
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_workflows_path(template_type: "site_audit"), class: 'col-sm-12 d-flex align-items-center' do
+        .ml-2.sidebar-font Assigned tasks
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        .ml-2.sidebar-font Files
