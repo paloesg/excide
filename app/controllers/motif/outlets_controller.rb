@@ -44,7 +44,7 @@ class Motif::OutletsController < ApplicationController
 
   def update
     if @outlet.update(outlet_params)
-      redirect_to edit_motif_franchisee_outlet_path(@franchisee, @outlet), notice: 'Successfully updated franchisee profile'
+      redirect_to edit_motif_outlet_path(@outlet), notice: 'Successfully updated franchisee profile'
     else
       redirect_to motif_root_path, alert: 'Updating franchisee profile has failed. Please contact admin for advise.'
     end
