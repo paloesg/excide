@@ -2,7 +2,8 @@ class Motif::OutletsController < ApplicationController
   layout 'motif/application'
   
   before_action :set_company
-  before_action :set_outlet, except: [:create, :outlets_photos_upload, :add_new_onboarding, :index]
+  before_action :set_company_roles
+  before_action :set_outlet, only: [:new, :edit, :update, :show]
   # before_action :set_franchisee, except: [:create, :outlets_photos_upload, :add_new_onboarding, :index]
 
   def index
@@ -65,6 +66,11 @@ class Motif::OutletsController < ApplicationController
     end
   end
 
+  def members
+    @outlet = @company.outlets.find(params[:outlet_id])
+    @users = @outlet.users
+  end
+
   private
   def set_company
     @company = current_user.company
@@ -86,5 +92,9 @@ class Motif::OutletsController < ApplicationController
     if @outlet.address.blank?
       @outlet.address = @outlet.build_address
     end
+  end
+
+  def set_company_roles
+    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
   end
 end
