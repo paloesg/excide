@@ -50,9 +50,9 @@
                   td = select_tag "role", options_for_select(@company_roles.collect{ |r| [r.name, r.id] }, selected: @roles), include_blank: true, required: true, class: 'select2 motif-select-user-types', id: "#{u.id}",style: 'width: 100%'
                   td
                     .dropdown
-                    a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-                      i.fa.fa-ellipsis-h.text-secondary.mb-4
-                    .dropdown-menu.dropdown-menu-right
-                      .dropdown-item = link_to "Download", root_path
-                      .dropdown-item = link_to "Delete", root_path
-                      .dropdown-item = link_to "Manage Version", root_path
+                      a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                        i.fa.fa-ellipsis-h.text-secondary.mb-4
+                      .dropdown-menu.dropdown-menu-right
+                        .dropdown-item = link_to "Download", root_path
+                        .dropdown-item = link_to "Delete", root_path
+                        .dropdown-item = link_to "Manage Version", root_path

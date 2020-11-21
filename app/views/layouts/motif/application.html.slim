@@ -34,11 +34,11 @@ html lang="en"
   body
     = render 'layouts/motif/motif_header'
     / If it's not franchisee index page AND is any of the pages
-    - if !(current_page?(motif_franchisees_path)) && (current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users' || controller_name == 'franchisees' || controller_name == 'templates' || (controller_name == 'outlets' && action_name == 'edit') || (controller_name == 'workflows' && action_name == 'show') || controller_name == 'notes') || (controller_name == 'outlets' && action_name == 'members')
+    - if !(current_page?(motif_franchisees_path)) && (current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users' || controller_name == 'franchisees' || controller_name == 'templates' || (controller_name == 'outlets' && action_name == 'edit') || (controller_name == 'workflows' && action_name == 'show') || controller_name == 'notes') || (controller_name == 'outlets' && action_name == 'members') || (controller_name == 'outlets' && action_name == 'assigned_tasks')
       .new-tab-wrapper.overflow-auto
         .new-tab-contents
           .row.mt-5.h-100
-            - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || controller_name == 'users' || controller_name == 'franchisees' || ( (!(controller_name == 'outlets' && action_name == 'edit')) && (!(controller_name == 'outlets' && action_name == 'members'))  && controller_name == 'outlets')
+            - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || controller_name == 'users' || controller_name == 'franchisees' || ( (!(controller_name == 'outlets' && action_name == 'edit')) && (!(controller_name == 'outlets' && action_name == 'assigned_tasks')) && (!(controller_name == 'outlets' && action_name == 'members'))  && controller_name == 'outlets')
               .col-sm-2.bg-white.border-right.sidebar-border-radius
                 = render 'layouts/motif/motif_settings_sidebar'
               .col-sm-10.bg-white.content-border-radius.p-5

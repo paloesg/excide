@@ -71,6 +71,11 @@ class Motif::OutletsController < ApplicationController
     @users = @outlet.users
   end
 
+  def assigned_tasks
+    @outlet = @company.outlets.find(params[:outlet_id])
+    @workflows = @outlet.workflows
+  end
+
   private
   def set_company
     @company = current_user.company
