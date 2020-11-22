@@ -675,7 +675,6 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
     t.integer "time_spent_mins"
     t.boolean "current_action", default: false
     t.uuid "company_id"
-    t.json "links", default: {}
     t.index ["assigned_user_id"], name: "index_workflow_actions_on_assigned_user_id"
     t.index ["completed_user_id"], name: "index_workflow_actions_on_completed_user_id"
     t.index ["task_id"], name: "index_workflow_actions_on_task_id"
