@@ -1,30 +1,25 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    button.btn.btn-primary.text-white.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
+    button.btn.btn-primary.text-white.float-right.ml-5 data-target="#newMotifOutlet" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white add
       | Register New Outlet
-    / #newMotifDocUploads.modal.fade aria-hidden="true" aria-labelledby="newMotifDocumentUploads" role="dialog" tabindex="-1"
-    /   .modal-dialog role="document"
-    /     .modal-content
-    /       .modal-header
-    /         h5#newMotifDocumentUploads.modal-title New Franchisee Outlet
-    /       .modal-body
-    /         = form_for(@outlet, url: motif_outlets_path, html: { method: :post }) do |f|
-    /           .row.mt-3
-    /             .col-md-12
-    /               .form-group
-    /                 = f.text_field :name, placeholder: 'Create Outlet Name', class: 'form-control'
-    /               .form-group
-    /                 = f.text_field :city, placeholder: 'Choose City', class: 'form-control'
-    /               .form-group
-    /                 = f.text_field :country, placeholder: 'Choose Country', class: 'form-control'
-    /               .form-group
-    /                 = email_field_tag :franchisee_email, nil, placeholder: 'Add a new franchisee by email', class: 'form-control'
-    /               .form-group
-    /                 = select_tag('franchisee_id', options_from_collection_for_select(@franchisees, "id", "name"), include_blank: true, prompt: 'Find franchisee', class: "select2", style: 'width: 100%')
+    #newMotifOutlet.modal.fade aria-hidden="true" aria-labelledby="openMotifOutlet" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#openMotifOutlet.modal-title Register New Outlet
+          .modal-body
+            = form_for(@outlet, url: motif_outlets_path, html: { method: :post }) do |f|
+              .row.mt-3
+                .col-md-12
+                  .form-group
+                    = f.text_field :name, placeholder: 'Create Outlet Name', class: 'form-control'
+                  .form-group
+                    = email_field_tag :user_email, nil, placeholder: 'Add a user to this outlet by email', class: 'form-control'
               .row
                 .col-md-12
-                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
+                  button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close
     .float-right.my-2
       i.px-5.material-icons-outlined more_vert
     h3 Franchisee Outlets
@@ -43,7 +38,7 @@ hr.mb-0
     .col-sm-4.mt-5
       a href="#{edit_motif_outlet_path(id: outlet.id)}" target="_blank" class="custom-card"
         .card.h-100.card-custom.card-stretch.gutter-b.card-view-outlet
-          = image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "card-img-top p-3"
+          = outlet.header_image.attached? ? (image_tag(outlet.header_image, class: 'card-img-top p-3')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "card-img-top p-3")
           .card-body.pb-0
             .row
               h3 = outlet.name

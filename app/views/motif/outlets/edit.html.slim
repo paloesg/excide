@@ -16,34 +16,39 @@
     .col-sm-10.my-7
       h3.mb-10 Information
       .form-group
-        = f.label :name, "Outlet name"
+        = f.label :name, "Outlet name", class: "label-bold"
         = f.text_field :name, placeholder: "Outlet name", class: 'form-control col-sm-5'
       .form-group
         = f.fields_for :address do |a|
-          = a.label :line_1, "Location address"
+          = a.label :line_1, "Location address", class: "label-bold"
           .form-inline
             = a.text_field :line_1, placeholder: 'Location address', class: 'form-control col-sm-8 mr-2'
             = a.text_field :postal_code, placeholder: 'Postal code', class: 'form-control col-sm-2'
       .form-group.mt-7
-        = f.label :country, class: "col-sm-5 pl-0"
-        = f.label :city, class: "col-sm-5 pl-2"
+        = f.label :country, class: "col-sm-5 pl-0", class: "label-bold"
+        = f.label :city, class: "col-sm-5 pl-2", class: "label-bold"
         .form-inline
           = f.text_field :country, placeholder: 'Country', class: 'form-control col-sm-5 mr-2'
           = f.text_field :city, placeholder: 'City', class: 'form-control col-sm-5'
       .form-group
-        = f.label :contact, "Telephone"
+        = f.label :contact, "Telephone", class: "label-bold"
         = f.text_field :contact, placeholder: 'Telephone', class: 'form-control col-sm-5'
       .form-group
-        = f.label :commencement_date, class: "col-sm-5 pl-0"
-        = f.label :expiry_date, class: "col-sm-5 pl-2"
+        = f.label :commencement_date, class: "col-sm-5 pl-0 label-bold"
+        = f.label :expiry_date, class: "col-sm-5 pl-2 label-bold"
         .form-inline
           = f.date_field :commencement_date, class: 'form-control col-sm-5 mr-2'
           = f.date_field :expiry_date, class: 'form-control col-sm-5'
       .form-group
-        = f.label :renewal_period_freq_unit, "Franchise renewal notice period", class: "col-sm-5 pl-0"
+        = f.label :renewal_period_freq_unit, "Franchise renewal notice period", class: "label-bold col-sm-5 pl-0"
         .form-inline
           = f.number_field :renewal_period_freq_value, placeholder: "Value", class: 'form-control col-sm-2 mr-2'
           = f.select :renewal_period_freq_unit, Outlet.renewal_period_freq_units.map { |key, value| [key.titleize, key] }, {selected: @outlet.renewal_period_freq_unit}, class: 'form-control col-sm-2'
+      = f.label :header_image, class: "label-bold"
+      .form-group
+        .form-inline
+          = f.file_field :header_image
+          = image_tag(@outlet.header_image, class: 'outlet-header-preview')
 
 
   / .row.my-10.ml-1

@@ -8,6 +8,7 @@ class Motif::OutletsController < ApplicationController
 
   def index
     @outlets = Outlet.includes(:company).where(company_id: @company)
+    @outlet = Outlet.new
   end
 
   def new
@@ -17,19 +18,20 @@ class Motif::OutletsController < ApplicationController
   def create
     @outlet = Outlet.new(outlet_params)
     # Condition when franchisee is not in database, then we need to create a record
-    if params[:franchisee_email].present?
-      @franchisee = Franchisee.create(company: current_user.company)
-      # Create user if not in motif
-      @user = User.create(email: params[:franchisee_email], company: current_user.company, franchisee: @franchisee, outlet: @outlet)
+    if params[:user_email].present?
+      # Create user if user's email is not in motif
+      @user = User.find_or_create_by(email: params[:user_email], company: @company)
+      # Add role franchisee_owner to this new user
       @user.add_role(:franchisee_owner, @user.company)
-      @outlet.franchisee = @franchisee
-    else
-      # Else, just find franchisee from the ID returns by selection dropdown
-      @outlet.franchisee = Franchisee.find_by(id: params[:franchisee_id])
+      # Link outlet to company
+      @outlet.company = @company
     end
     respond_to do |format|
       if @outlet.save
-        format.html { redirect_to motif_franchisees_path, notice: 'Outlet was successfully created.' }
+        # Save outlet to user
+        @user.outlet = @outlet
+        @user.save
+        format.html { redirect_to motif_outlets_path, notice: 'Outlet was successfully created.' }
         format.json { render :show, status: :created, location: @outlet }
       else
         format.html { render :new }
@@ -90,7 +92,7 @@ class Motif::OutletsController < ApplicationController
   # end
   # Only allow a list of trusted parameters through.
   def outlet_params
-    params.require(:outlet).permit(:name, :city, :country, :contact, :address, :commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state], photos: [])
+    params.require(:outlet).permit(:name, :city, :country, :contact, :address, :commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :header_image, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state])
   end
 
   def build_addresses

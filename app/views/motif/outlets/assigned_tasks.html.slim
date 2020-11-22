@@ -18,7 +18,7 @@
           table.table
             thead
               tr
-                th Activity
+                / th Activity
                 th Tasks Template
                 th Start
                 th
@@ -26,7 +26,7 @@
             tbody
               - @workflows.each do |wf|
                 tr.border-bottom
-                  td.border-top-0 = wf.id
+                  / td.border-top-0 = wf.id
                   td = wf.template.title
                   td = wf.created_at.strftime("%d %b %Y")
                   td
