@@ -41,14 +41,6 @@
   .row.my-5
     .col-md-12
       h6 Links
-      - if wfa.links.present?
-        - wfa.links["links"].each do |link|
-          p.mt-3 
-            = link_to link, "https://#{link}", target: "_blank", class: "text-primary"
-      = form_tag motif_workflow_path(id: wf.id, workflow_action_id: wfa.id), method: :patch do
-        - 3.times do
-          = text_field_tag "links[]", nil , placeholder: "Enter your link here...", class: "form-control mb-2"
-        = submit_tag "Submit", class: "btn btn-sm btn-primary"
       hr
   .row.my-5
     .col-md-12

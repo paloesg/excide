@@ -37,10 +37,6 @@ class Motif::WorkflowsController < ApplicationController
 
   def update
     @wfa = @workflow.workflow_actions.find(params[:workflow_action_id])
-    @wfa.links = { links: [] }
-    params[:links].each do |link|
-      @wfa.links["links"] << link
-    end
     respond_to do |format|
       if @wfa.save
         format.html { redirect_to motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id) , notice: 'Workflow was successfully created.' }
