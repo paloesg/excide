@@ -28,7 +28,7 @@
             th.pl-0.h6 Attachments
             th.h6.text-muted Uploaded on
             th.h6 
-              = link_to "Attach Files", new_motif_document_path
+              = link_to "Add Files", new_motif_document_path(:workflow_action_id => f.object.id)
         tbody
           - @documents.where(workflow_action_id: f.object.id).each do |d|
             tr
@@ -38,6 +38,9 @@
               / Uploaded date
               td 
                 = d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p")
+              td 
+                i.material-icons-outlined.mr-5 download
+                i.material-icons-outlined delete_outline
     .row.mt-5
       h6.ml-4 Links
       .col-md-12

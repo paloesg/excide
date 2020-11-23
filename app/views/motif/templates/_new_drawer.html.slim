@@ -19,21 +19,6 @@
           .form-group
             = f.number_field :deadline_day, class: "form-control col-md-2"
             span.ml-5 Days to complete since onboarding starts.
-    / Table for file attachment
-    .table-responsive.mt-5
-      table.table
-        thead
-          tr
-            th.pl-0.h6 Attachments
-            th.h6.text-muted Uploaded on
-            th = link_to 'Attach files', '#', class: 'text-primary'
-        tbody
-          tr
-            td File Name
-            td Yesterday, 30 Dec 2020
-            td 
-              i.material-icons-outlined.mr-5 download
-              i.material-icons-outlined delete_outline
     .row.mt-5
       h6.ml-4 Links
       .col-md-12
