@@ -11,27 +11,36 @@
   .col-sm-2.bg-white.sidebar-border-radius
     = render "outlet_sidebar"
   .col-sm-10.my-7
-    h3.mb-10 Members
-    / button.btn.btn-white.border.border-secondary.text-primary.float-right.ml-5 data-target="#newTeammates" data-toggle="modal" type="button"
-    /   | New Member
-    / #newTeammates.modal.fade aria-hidden="true" aria-labelledby="addNewTeammates" role="dialog" tabindex="-1"
-    /   .modal-dialog role="document"
-    /     .modal-content
-    /       .modal-header
-    /         h5#addNewTeammates.modal-title Add new teammates
-    /       .modal-body
-    /         = form_for(@user, url: motif_users_path, html: { method: :post }) do |f|
-    /           .row.mt-3
-    /             .col-md-12
-    /               .form-group
-    /                 = f.text_field :email, placeholder: 'Email', class: 'form-control'
-    /               .form-group
-    /                 = f.text_field :first_name, placeholder: 'First Name', class: 'form-control'
-    /               .form-group
-    /                 = f.text_field :last_name, placeholder: 'Last Name', class: 'form-control'
-    /           .row
-    /             .col-md-12
-    /               = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+    .row
+      .col-sm-2
+        h3.mb-10 Members
+      .col-sm-10
+        button.btn.btn-white.border.border-secondary.text-primary.float-right.ml-5 data-target="#newOutletTeammates" data-toggle="modal" type="button"
+          | New Member
+        #newOutletTeammates.modal.fade aria-hidden="true" aria-labelledby="addNewOutletTeammates" role="dialog" tabindex="-1"
+          .modal-dialog role="document"
+            .modal-content
+              .modal-header
+                h5#addNewOutletTeammates.modal-title Add Members
+              .modal-body
+                = form_for(@user, url: motif_users_path, html: { method: :post }) do |f|
+                  .row.mt-3
+                    .col-md-12
+                      h6 Invite New Member
+                      .form-group
+                        = f.text_field :email, placeholder: 'Email', class: 'form-control'
+                      .form-group
+                        = f.text_field :first_name, placeholder: 'First Name', class: 'form-control'
+                      .form-group
+                        = f.text_field :last_name, placeholder: 'Last Name', class: 'form-control'
+                      h6 Choose Existing Member
+                      .form-group
+                        = select_tag('user_id', options_from_collection_for_select(@existing_users, "id", "email"), include_blank: true, prompt: 'Find existing user', class: "select2", style: 'width: 100%')
+                      .form-group
+                        = hidden_field_tag 'outlet_id', @outlet.id
+                  .row
+                    .col-md-12
+                      = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
     .row
       .col-12
         .table-responsive

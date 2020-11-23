@@ -71,6 +71,8 @@ class Motif::OutletsController < ApplicationController
   def members
     @outlet = @company.outlets.find(params[:outlet_id])
     @users = @outlet.users
+    @existing_users = @company.users.includes(:outlet).where.not(outlet_id: @outlet.id)
+    @user = User.new
   end
 
   def assigned_tasks
