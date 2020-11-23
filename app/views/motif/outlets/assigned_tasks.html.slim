@@ -1,6 +1,6 @@
-/ .row
-/   .col-sm-12
-/     = image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-header-image"
+.row
+  .col-sm-12
+    = @outlet.header_image.attached? ? (image_tag @outlet.header_image, class: "outlet-header-image") : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-header-image")
 .row.my-5.ml-1
   .col-sm-12
     .float-right.my-2

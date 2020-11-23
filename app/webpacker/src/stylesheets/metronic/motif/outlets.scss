@@ -1,9 +1,16 @@
 .outlet-header-image {
   width: 100%;
-  max-height: auto;
+  height: 10vw;
+  object-fit: cover;
+  border-radius: 20px;
 }
 
 .outlet-header-preview {
   width: 10%;
   border-radius: 20px;
+}
+
+.card-img-top {
+  height: 12vw;
+  object-fit: cover;
 }
