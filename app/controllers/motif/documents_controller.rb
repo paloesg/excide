@@ -23,22 +23,47 @@ class Motif::DocumentsController < ApplicationController
   end
 
   def new
+    @workflow_action = @company.workflow_actions.find(params[:workflow_action]) if params[:workflow_action].present?
+    @workflow_action_id = params[:workflow_action_id]
     @document = Document.new
+    authorize @document
   end
 
   def create
-    @files = []
-    parsed_files = JSON.parse(params[:successful_files])
-    parsed_files.each do |file|
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run
-      document = @generate_document.document
-      authorize document
-      # attach and convert method with the response key to create blob
-      document.attach_and_convert_document(file['response']['key'])
-      @files.append document
+
+    # multiple file upload from uppy
+    if params[:successful_files].present?
+      @files = []
+      parsed_files = JSON.parse(params[:successful_files])
+      parsed_files.each do |file|
+        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run
+        document = @generate_document.document
+        authorize document
+        # attach and convert method with the response key to create blob
+        document.attach_and_convert_document(file['response']['key'])
+        @files.append document
+      end
+
+    # single file upload
+    else 
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run_without_associations
+      if @generate_document.success?
+        document = @generate_document.document
+        document.update_attributes(workflow_action_id: params[:workflow_action_id])
+        authorize document
+        # attach and convert method
+        document.attach_and_convert_document(params[:response_key])
+      end
     end
     respond_to do |format|
-      format.html { redirect_to motif_documents_path files: @files }
+      #format.html { redirect_to motif_documents_path files: @files } #add conditional redirection 
+      workflow_action = WorkflowAction.find(params[:workflow_action_id])
+      @template = workflow_action.workflow.template
+      format.html { 
+        params[:workflow_action_id].present? ? (redirect_to edit_motif_template_path(@template), notice: "Member has been added into this outlet")
+          : (redirect_to motif_documents_path, notice: "File was successfully uploaded.")
+      }
+
       format.json { render json: @files.to_json }
     end
   end

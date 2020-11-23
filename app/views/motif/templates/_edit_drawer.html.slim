@@ -27,22 +27,8 @@
           tr
             th.pl-0.h6 Attachments
             th.h6.text-muted Uploaded on
-            th.h6 Attach files
-            input type="file" id="taskPhotoUpload" name="taskPhotoUpload"
-            / .col-sm-9
-            /   a href="#" data-target="#taskPhotoUploads" data-toggle="modal" type="button" class="float-right text-primary mr-3 offcanvas-close" Add photos
-            /   #taskPhotoUploads.modal.fade aria-hidden="true" aria-labelledby="newTaskPhotos" role="dialog" tabindex="-1"
-            /     .modal-dialog role="document"
-            /       .modal-content
-            /         .modal-header
-            /           h5#newTaskPhotos.modal-title Upload Photos
-            /           button.close aria-label="Close" data-dismiss="modal" type="button"
-            /             span aria-hidden="true"  &times;
-            /         .modal-body
-            /           .row.mt-3
-            /             .col-md-12
-            /               .dashboard-body.motifTaskPhotosUpload#Dashboard
-            /               //= hidden_field_tag 'task_id', @task.id
+            th.h6 
+              = link_to "Attach Files", new_motif_document_path
         tbody
           tr
             td File Name
