@@ -38,6 +38,7 @@ class Motif::TemplatesController < ApplicationController
     authorize @template
     # Pass in role in NEW and EDIT template form to pass validation
     @role = Role.find_by(name: "franchisee_owner", resource: current_user.company)
+    @documents = policy_scope(Document).order(created_at: :desc)
   end
 
   def update
