@@ -2,7 +2,7 @@
   .col-sm-12
     = link_to new_motif_outlet_path, target: "_blank", role: 'button', class: 'btn btn-primary text-white mr-3 px-5 border border-secondary float-right font-weight-boldest', "data-toggle": "modal", 'data-target': '#newMotifWorkflows' do
       i.material-icons-outlined add
-      | Onboard New Outlet
+      = @template_type.humanize
     #newMotifWorkflows.modal.fade aria-hidden="true" aria-labelledby="newMotifCreateWorkflows" role="dialog" tabindex="-1"
       .modal-dialog role="document"
         .modal-content
@@ -25,7 +25,7 @@
                   = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
     .float-right.my-2
       i.px-5.material-icons-outlined more_vert
-    h3 Onboarding
+    h3 = @template_type.humanize
     p.mt-5.text-muted
       | Standardise, track and manage how your franchisees start their operations in
       br

@@ -207,9 +207,4 @@ class User < ApplicationRecord
   #    Motif methods    #
   #                         #
   ###########################
-
-  def get_onboarding_workflow_id
-    # Assuming each outlet only have 1 onboarding workflow
-    self.outlet.workflows.includes(:template).where(templates: { template_type: "onboarding" })[0].id
-  end
 end
