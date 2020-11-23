@@ -1,4 +1,4 @@
-.offcanvas.offcanvas-right.offcanvas-top.p-10 id="task_#{wfa.id}"
+.offcanvas.offcanvas-right.offcanvas-top.p-10.overflow-auto id="task_#{wfa.id}"
   .row.mb-5
     .col-md-6
       h5.mr-3.mt-2 = task.instructions
@@ -7,7 +7,8 @@
         a.d-inline id="drawer_close" href="#" 
           i.material-icons-outlined close
       .float-right.mx-3.mt-2
-        i.material-icons-outlined comment
+        = link_to motif_outlet_notes_path(outlet_id: wf.outlet.id, wfa_id: wfa.id), target: "_blank" do
+          i.material-icons-outlined comment
       .float-right.mx-3.mt-2
         / Disable checkbox if current user is franchisor
         = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisor, @user.company)), class: 'border mt-1'
@@ -40,7 +41,6 @@
   .row.my-5
     .col-md-12
       h6 Links
-      p.mt-3 = task.link_url
       hr
   .row.my-5
     .col-md-12

@@ -40,7 +40,7 @@ class Workflow < ApplicationRecord
   end
 
   def set_workflow_deadline
-    set_deadline(self.template, self, self.template.start_date.present? ? self.template.start_date : Date.current)
+    set_deadline(self.template, self, self.created_at.to_date)
   end
 
   # updates workflow and workflow actions' deadline based on its date of creation.
@@ -161,7 +161,7 @@ class Workflow < ApplicationRecord
       s.tasks.each do |t|
         # workflow actions of an unordered routine can be done in any order, so they are all current actions
         wfa = WorkflowAction.create!(task: t, completed: false, company: self.company, workflow: self, assigned_user_id: t.user_id.present? ? t.user_id : nil, current_action: self.template.unordered? ? true : false)
-        set_deadline(t, wfa, self.template.start_date.present? ? self.template.start_date : Date.current)
+        set_deadline(t, wfa, wfa.created_at.to_date)
       end
       # Automatically set first task as completed if workflow is part of a batch and first task is a file upload task
       s.tasks.first.get_workflow_action(self.company_id, self.id).update(completed: true) if (s.position == 1 && s.tasks.first.task_type == "upload_file" && self.batch.present?)
@@ -171,7 +171,7 @@ class Workflow < ApplicationRecord
     else
       # Trigger email for unordered tasks notification
       unordered_tasks_trigger_email
-      self.current_task.get_workflow_action(self.company_id, self.id).notify :users, key: 'workflow_action.unordered_workflow_notify', group: self.template, parameters: { printable_notifiable_name: "#{self.current_task.instructions}", workflow_action_id: self.current_task.get_workflow_action(self.company_id, self.id).id }, send_later: false
+      # self.current_task.get_workflow_action(self.company_id, self.id).notify :users, key: 'workflow_action.unordered_workflow_notify', group: self.template, parameters: { printable_notifiable_name: "#{self.current_task.instructions}", workflow_action_id: self.current_task.get_workflow_action(self.company_id, self.id).id }, send_later: false
     end
   end
 

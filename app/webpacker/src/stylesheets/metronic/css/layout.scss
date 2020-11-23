@@ -81,9 +81,14 @@ h1.header-bold {
 // User icon on navbar
 .icon-size {
   vertical-align: middle;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.navbar-icon {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
 }
 
 .sidebar-font {
@@ -109,6 +114,12 @@ h1.header-bold {
   background-color: #eef1ff !important;
 }
 
+// Make the entire card a hyperlink and inherit color style
+a.custom-card,
+a.custom-card:hover {
+  color: inherit;
+}
+
 // Image size
 .img-icon-size {
   width: 10%;
@@ -131,3 +142,4 @@ h1.header-bold {
 .new-tab-contents {
   height: 100%
 }
+

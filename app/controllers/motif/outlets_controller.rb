@@ -3,7 +3,7 @@ class Motif::OutletsController < ApplicationController
   
   before_action :set_company
   before_action :set_outlet, except: [:create, :outlets_photos_upload, :add_new_onboarding]
-  before_action :set_franchisee, except: [:create, :outlets_photos_upload, :add_new_onboarding]
+  before_action :set_franchisee, except: [:create, :outlets_photos_upload, :add_new_onboarding, :update]
 
   def new
 
@@ -39,7 +39,12 @@ class Motif::OutletsController < ApplicationController
 
   def update
     if @outlet.update(outlet_params)
-      redirect_to edit_motif_franchisee_outlet_path(@franchisee, @outlet), notice: 'Successfully updated franchisee profile'
+      if outlet_params[:report_url].present?
+        redirect_to motif_edit_report_path, notice: 'Successfully updated report link.'
+      else
+        @franchisee = Franchisee.find(params[:franchisee_id])
+        redirect_to edit_motif_franchisee_outlet_path(@franchisee, @outlet), notice: 'Successfully updated franchisee profile'
+      end
     else
       redirect_to motif_root_path, alert: 'Updating franchisee profile has failed. Please contact admin for advise.'
     end
@@ -89,7 +94,7 @@ class Motif::OutletsController < ApplicationController
   end
   # Only allow a list of trusted parameters through.
   def outlet_params
-    params.require(:outlet).permit(:name, :city, :country, :contact, :address, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state], photos: [])
+    params.require(:outlet).permit(:name, :city, :country, :contact, :report_url, :address, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state], photos: [])
   end
 
   def build_addresses

@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_10_085625) do
+
+ActiveRecord::Schema.define(version: 2020_11_17_144134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -198,6 +199,7 @@ ActiveRecord::Schema.define(version: 2020_11_10_085625) do
     t.integer "before_deadline_reminder_days"
     t.json "products", default: []
     t.string "website_url"
+    t.string "report_url"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -341,7 +343,9 @@ ActiveRecord::Schema.define(version: 2020_11_10_085625) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "workflow_action_id"
     t.index ["user_id"], name: "index_notes_on_user_id"
+    t.index ["workflow_action_id"], name: "index_notes_on_workflow_action_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -374,6 +378,9 @@ ActiveRecord::Schema.define(version: 2020_11_10_085625) do
     t.uuid "franchisee_id"
     t.string "name"
     t.string "contact"
+    t.string "report_url"
+    t.uuid "company_id"
+    t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
 
@@ -769,6 +776,8 @@ ActiveRecord::Schema.define(version: 2020_11_10_085625) do
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "notes", "users"
+  add_foreign_key "notes", "workflow_actions"
+  add_foreign_key "outlets", "companies"
   add_foreign_key "outlets", "franchisees"
   add_foreign_key "permissions", "roles"
   add_foreign_key "questions", "survey_sections"

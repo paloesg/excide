@@ -79,6 +79,10 @@ class Company < ApplicationRecord
     user.roles.includes(:resource).map(&:resource).compact.uniq.reject{ |c| c == user.company }
   end
 
+  def get_notes
+    self.outlets.map{ |outlet| outlet.notes }.flatten.compact.uniq
+  end
+
   private
 
   def generate_mailbox_token
