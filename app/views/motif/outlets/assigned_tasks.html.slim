@@ -37,6 +37,4 @@
                       a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                         i.fa.fa-ellipsis-h.text-secondary.mb-4
                       .dropdown-menu.dropdown-menu-right
-                        .dropdown-item = link_to "Download", root_path
-                        .dropdown-item = link_to "Delete", root_path
-                        .dropdown-item = link_to "Manage Version", root_path
+                        .dropdown-item = link_to "Delete", motif_workflow_path(id: wf.id), method: :delete, data: {confirm: "Are you sure you want to delete task?"}
