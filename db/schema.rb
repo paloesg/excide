@@ -195,6 +195,7 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
     t.integer "before_deadline_reminder_days"
     t.json "products", default: []
     t.string "website_url"
+    t.string "report_url"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -373,6 +374,7 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
     t.uuid "franchisee_id"
     t.string "name"
     t.string "contact"
+    t.string "report_url"
     t.uuid "company_id"
     t.date "commencement_date"
     t.date "expiry_date"

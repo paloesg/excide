@@ -118,6 +118,10 @@ class User < ApplicationRecord
     self.roles.pluck(:name).include? role.name
   end
 
+  def motif_roles(company)
+    self.roles.find_by(resource_id: company.id, resource_type: "Company", name: ["franchisor", "franchisee_owner", "member"])
+  end
+
   # In administrate, the json is updated to string in the database. This code is to check that if setting is a string, it will parse it to a JSON.
   def settings=(value)
     self[:settings] = value.is_a?(String) ? JSON.parse(value) : value

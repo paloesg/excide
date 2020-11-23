@@ -30,7 +30,9 @@ $(document).on("turbolinks:load", function () {
     // Set current time as data attribute drawer to activate the drawer
     obj.data("drawer", standardizedCurrentTime);
     // Find the nearest td descendant and add drawer toggle ID to it based on the current time 
-    obj.find("td.drawer-toggle").attr('id', 'drawer_toggle_' + standardizedCurrentTime);
+    obj.find("td.drawer-toggle").each(function(index){
+      $( this ).attr('id', 'drawer_toggle_' + standardizedCurrentTime + '_' + index);
+    })
     obj.find("input, select, textarea").each(function() {
       $(this).attr("name", function() {
         return $(this)
