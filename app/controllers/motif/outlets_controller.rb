@@ -2,8 +2,13 @@ class Motif::OutletsController < ApplicationController
   layout 'motif/application'
   
   before_action :set_company
-  before_action :set_outlet, except: [:create, :outlets_photos_upload, :add_new_onboarding]
-  before_action :set_franchisee, except: [:create, :outlets_photos_upload, :add_new_onboarding, :update]
+  before_action :set_company_roles
+  before_action :set_outlet, only: [:new, :edit, :update, :show]
+
+  def index
+    @outlets = Outlet.includes(:company).where(company_id: @company)
+    @outlet = Outlet.new
+  end
 
   def new
 
@@ -12,19 +17,20 @@ class Motif::OutletsController < ApplicationController
   def create
     @outlet = Outlet.new(outlet_params)
     # Condition when franchisee is not in database, then we need to create a record
-    if params[:franchisee_email].present?
-      @franchisee = Franchisee.create(company: current_user.company)
-      # Create user if not in motif
-      @user = User.create(email: params[:franchisee_email], company: current_user.company, franchisee: @franchisee, outlet: @outlet)
+    if params[:user_email].present?
+      # Create user if user's email is not in motif
+      @user = User.find_or_create_by(email: params[:user_email], company: @company)
+      # Add role franchisee_owner to this new user
       @user.add_role(:franchisee_owner, @user.company)
-      @outlet.franchisee = @franchisee
-    else
-      # Else, just find franchisee from the ID returns by selection dropdown
-      @outlet.franchisee = Franchisee.find_by(id: params[:franchisee_id])
+      # Link outlet to company
+      @outlet.company = @company
     end
     respond_to do |format|
       if @outlet.save
-        format.html { redirect_to motif_franchisees_path, notice: 'Outlet was successfully created.' }
+        # Save outlet to user
+        @user.outlet = @outlet
+        @user.save
+        format.html { redirect_to motif_outlets_path, notice: 'Outlet was successfully created.' }
         format.json { render :show, status: :created, location: @outlet }
       else
         format.html { render :new }
@@ -42,12 +48,15 @@ class Motif::OutletsController < ApplicationController
       if outlet_params[:report_url].present?
         redirect_to motif_edit_report_path, notice: 'Successfully updated report link.'
       else
-        @franchisee = Franchisee.find(params[:franchisee_id])
-        redirect_to edit_motif_franchisee_outlet_path(@franchisee, @outlet), notice: 'Successfully updated franchisee profile'
+        redirect_to edit_motif_outlet_path(@outlet), notice: 'Successfully updated franchisee profile'
       end
     else
       redirect_to motif_root_path, alert: 'Updating franchisee profile has failed. Please contact admin for advise.'
     end
+  end
+
+  def show
+    
   end
 
   def outlets_photos_upload
@@ -62,6 +71,18 @@ class Motif::OutletsController < ApplicationController
     end
   end
 
+  def members
+    @outlet = @company.outlets.find(params[:outlet_id])
+    @users = @outlet.users
+    @existing_users = @company.users.includes(:outlet).where.not(outlet_id: @outlet.id)
+    @user = User.new
+  end
+
+  def assigned_tasks
+    @outlet = @company.outlets.find(params[:outlet_id])
+    @workflows = @outlet.workflows
+  end
+
   private
   def set_company
     @company = current_user.company
@@ -71,17 +92,18 @@ class Motif::OutletsController < ApplicationController
     @outlet = Outlet.find(params[:id])
   end
 
-  def set_franchisee
-    @franchisee = Franchisee.find(params[:franchisee_id])
-  end
   # Only allow a list of trusted parameters through.
   def outlet_params
-    params.require(:outlet).permit(:name, :city, :country, :contact, :report_url, :address, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state], photos: [])
+    params.require(:outlet).permit(:name, :city, :country, :contact, :address, :commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :report_url, :header_image, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state])
   end
 
   def build_addresses
     if @outlet.address.blank?
       @outlet.address = @outlet.build_address
     end
+  end
+
+  def set_company_roles
+    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
   end
 end

@@ -1,7 +1,7 @@
 class Motif::WorkflowsController < ApplicationController
   layout 'motif/application'
   before_action :set_company
-  before_action :set_workflow, only: [:show, :update]
+  before_action :set_workflow, only: [:show, :update, :destroy]
 
   def index
     # For INDEX workflow page
@@ -60,6 +60,16 @@ class Motif::WorkflowsController < ApplicationController
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    if @workflow.destroy
+      respond_to do |format|
+        format.html { redirect_to motif_outlet_assigned_tasks_path(outlet_id: @workflow.outlet.id) }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
+      flash[:notice] = 'Routine was successfully deleted.'
     end
   end
 

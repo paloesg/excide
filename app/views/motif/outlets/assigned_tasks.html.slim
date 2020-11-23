@@ -1,0 +1,40 @@
+.row
+  .col-sm-12
+    = @outlet.header_image.attached? ? (image_tag @outlet.header_image, class: "outlet-header-image") : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-header-image")
+.row.my-5.ml-1
+  .col-sm-12
+    .float-right.my-2
+      i.px-5.material-icons-outlined more_vert
+    h3.mt-3 = @outlet.name
+    p = @outlet.address&.line_1.present? ? "#{@outlet.address.line_1}" : "No Address"
+.row
+  .col-sm-2.bg-white.sidebar-border-radius
+    = render "outlet_sidebar"
+  .col-sm-10.my-7
+    h3.mb-10 Assigned Tasks
+    .row
+      .col-12
+        .table-responsive
+          table.table
+            thead
+              tr
+                / th Activity
+                th Tasks Template
+                th Start
+                th
+                th
+            tbody
+              - @workflows.each do |wf|
+                tr.border-bottom
+                  / td.border-top-0 = wf.id
+                  td = wf.template.title
+                  td = wf.created_at.strftime("%d %b %Y")
+                  td
+                    = link_to motif_templates_path, target: "_blank" do
+                      i.px-5.material-icons-outlined.text-primary launch
+                  td
+                    .dropdown
+                      a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                        i.fa.fa-ellipsis-h.text-secondary.mb-4
+                      .dropdown-menu.dropdown-menu-right
+                        .dropdown-item = link_to "Delete", motif_workflow_path(id: wf.id), method: :delete, data: {confirm: "Are you sure you want to delete task?"}

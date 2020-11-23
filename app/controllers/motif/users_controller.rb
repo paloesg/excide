@@ -13,15 +13,28 @@ class Motif::UsersController < ApplicationController
   end
 
   def create
-    @user = User.find_or_initialize_by(email: params[:user][:email])
-    if @user.new_record?
-      @user.first_name = params[:user][:first_name]
-      @user.last_name = params[:user][:last_name]
+    # Adding members in individual outlet
+    if params[:outlet_id].present?
+      @outlet = @company.outlets.find(params[:outlet_id])
+      # Choosing existing user
+      if params[:user_id].present?
+        @user = @company.users.find(params[:user_id])
+      else
+        # Create new user
+        @user = User.create(email: params[:user][:email], first_name: params[:user][:first_name], last_name: params[:user][:last_name], company: @company)
+      end
+      @user.outlet = @outlet
+    else
+      @user = User.find_or_initialize_by(email: params[:user][:email])
+      if @user.new_record?
+        @user.first_name = params[:user][:first_name]
+        @user.last_name = params[:user][:last_name]
+        @user.company = @company
+      end
     end
-    @user.company = @company
     respond_to do |format|
       if @user.save
-        format.html { redirect_to motif_users_path, notice: 'Teammate was successfully added.' }
+        format.html { params[:outlet_id].present? ? (redirect_to motif_outlet_members_path(@outlet), notice: "Member has been added into this outlet") : (redirect_to motif_users_path, notice: 'Teammate was successfully added.')}
       else
         format.html { redirect_to motif_users_path }
         format.json { render json: @user.errors, status: :unprocessable_entity }
