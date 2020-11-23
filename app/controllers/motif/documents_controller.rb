@@ -56,14 +56,12 @@ class Motif::DocumentsController < ApplicationController
       end
     end
     respond_to do |format|
-      #format.html { redirect_to motif_documents_path files: @files } #add conditional redirection 
       workflow_action = WorkflowAction.find(params[:workflow_action_id])
       @template = workflow_action.workflow.template
       format.html { 
         params[:workflow_action_id].present? ? (redirect_to edit_motif_template_path(@template), notice: "Member has been added into this outlet")
           : (redirect_to motif_documents_path, notice: "File was successfully uploaded.")
       }
-
       format.json { render json: @files.to_json }
     end
   end
