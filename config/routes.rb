@@ -144,6 +144,8 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :create]
     get '/communication_hub', to: 'notes#communication_hub', as: :communication_hub
     post '/add-roles', to: 'users#add_role', as: :add_role
+    get '/financial-performance', to: 'home#financial_performance'
+    get '/edit-report', to: 'home#edit_report'
   end
   
   namespace :overture do
