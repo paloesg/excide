@@ -13,24 +13,14 @@
         = link_to motif_franchisees_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined store_mall_directory
           .ml-2.sidebar-font Franchisee Outlets
-    - if current_user.has_role?(:franchisee_owner, current_user.company)
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_outlet_workflow_path(outlet_id: current_user.outlet.id, id: current_user.get_onboarding_workflow_id), target: "_blank", class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined assignment
-          .ml-2.sidebar-font Onboarding
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined fact_check
-          .ml-2.sidebar-font Site Audit
-    - else
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_workflows_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined assignment
-          .ml-2.sidebar-font  Onboarding Management
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined fact_check
-          .ml-2.sidebar-font Site Audit Management
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_workflows_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined assignment
+        .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Onboarding" : "Onboarding Management"
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined fact_check
+        .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Site Audit" : "Site Audit Management"
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_financial_performance_path, class: 'col-sm-12 d-flex align-items-center'  do
         i.material-icons-outlined timeline

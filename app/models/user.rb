@@ -43,7 +43,7 @@ class User < ApplicationRecord
   # with parameters as value or custom methods defined in your model as lambda or symbol.
   # This is an example without any options (default configuration) as the target.
 
-  acts_as_target
+  # acts_as_target
 
   def add_role_consultant(assign)
     if assign
@@ -116,6 +116,10 @@ class User < ApplicationRecord
 
   def include_role?(role)
     self.roles.pluck(:name).include? role.name
+  end
+
+  def motif_roles(company)
+    self.roles.find_by(resource_id: company.id, resource_type: "Company", name: ["franchisor", "franchisee_owner", "member"])
   end
 
   # In administrate, the json is updated to string in the database. This code is to check that if setting is a string, it will parse it to a JSON.

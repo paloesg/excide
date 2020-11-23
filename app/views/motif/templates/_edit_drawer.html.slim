@@ -17,27 +17,8 @@
       .col-md-12
         .form-inline
           .form-group
-            = f.hidden_field :deadline_type, value: "days_to_complete"
             = f.number_field :deadline_day, class: "form-control col-md-2"
             span.ml-5 Days to complete since onboarding starts.
-    / Table for file attachment
-    .table-responsive.mt-5
-      table.table
-        thead
-          tr
-            th.pl-0.h6 Attachments
-            th.h6.text-muted Uploaded on
-            th.h6 Attach files
-        tbody
-          tr
-            td File Name
-            td Yesterday, 30 Dec 2020
-            td something
-    .row.mt-5
-      h6.ml-4 Links
-      .col-md-12
-        .form-group
-          = f.text_field :link_url, placeholder: 'www.link.com', class: "form-control"
     .row.mt-5
       .col-md-12
         = f.hidden_field :deadline_type, value: "days_to_complete"

@@ -1,10 +1,15 @@
+.row.my-3
+  .col-md-6
+    h1 Edit Template
 = form_for(@template, url: motif_template_path(@template), html: { id: "motif_edit_template" }) do |f|
   .row.my-3
     .col-md-6
       .form-group.col-md-12
+        = f.label :title, "Template Name"
         = f.text_field :title, placeholder: "Template's name", required: true, class: "form-control"
     .col-md-3
       .form-group.col-md-12
+        = f.label :title, "This template is for activity"
         = f.select :template_type, ::Template.template_types.map{|k, v| [k.humanize, k]}, {include_blank: true }, { class: "select2 form-control"}
   .row
     .col-md-12

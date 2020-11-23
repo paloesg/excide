@@ -26,6 +26,7 @@ html lang="en"
     = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
+    = action_cable_meta_tag
     = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
     // For uppy use with active storage
     = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
@@ -33,7 +34,7 @@ html lang="en"
   body
     = render 'layouts/motif/motif_header'
     / If it's not franchisee index page AND is any of the pages
-    - if !(current_page?(motif_franchisees_path)) && (current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users' || controller_name == 'franchisees' || controller_name == 'templates' || (controller_name == 'outlets' && action_name == 'edit') || (controller_name == 'workflows' && action_name == 'show') || current_page?(motif_edit_report_path))
+    - if !(current_page?(motif_franchisees_path)) && (current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users' || controller_name == 'franchisees' || controller_name == 'templates' || (controller_name == 'outlets' && action_name == 'edit') || (controller_name == 'workflows' && action_name == 'show') || controller_name == 'notes' || current_page?(motif_edit_report_path))
       .new-tab-wrapper.overflow-auto
         .new-tab-contents
           .row.mt-5.h-100
