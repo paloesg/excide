@@ -25,6 +25,8 @@ class Motif::TemplatesController < ApplicationController
   def create
     @template = Template.new(template_params)
     authorize @template
+    # Set template pattern and its respective recurring attributes to template upon creation
+    @template.set_recurring_based_on_template_type
     @template.company = @company
     if @template.save
       redirect_to edit_motif_template_path(@template), notice: "Template has been successfully saved!"
