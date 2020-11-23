@@ -9,6 +9,8 @@ class Motif::HomeController < ApplicationController
     @franchisees = Franchisee.includes(:company).where(company_id: @company.id)
     @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company.id })
     @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.outlet.workflows : Workflow.includes(:company).where(company_id: @company.id)
+    # Find overdue tasks
+    @outstanding_onboarding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true, deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
   end
   
   # Change user's outlet for franchisee with multiple outlets

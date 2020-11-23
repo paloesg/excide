@@ -46,7 +46,7 @@
                   p.card-text.ml-4 All outlets have completed onboarding
               -else
                 .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
-                  h1.card-text.number-display 1
+                  h1.card-text.number-display = @outstanding_onboarding_actions.length
                   p.card-text.ml-4 Outlet with overdue task
                 .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
                   h1.card-text.number-display 1
@@ -76,7 +76,7 @@
         .col-sm-4
           .card
             .card-body
-              h5.card-title Royalty
+              h5.card-title Royalty Collection
               -if false
                 .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
                   = image_pack_tag 'media/src/images/motif/motif-done.svg'
@@ -93,15 +93,7 @@
     h1.mb-5 #{current_user.outlet.name}
     p What are you planning to do today?
     br
-    - if false
-      .row.justify-content-center.ml-3
-        .col-md-3.text-center.p-4
-          = image_pack_tag 'media/src/images/motif/motif-empty.svg'
-          h2.mt-5 Looks like you don't have anything to do.
-          p.mt-4 Maybe, you may want to ask your Franchisor about your tasks.
-          button.btn.btn-primary.ml-5 type="button"
-            | Talk to Franchisor
-    - else
+    - if @workflows.present?
       - @workflows.each do |wf|
         .row.mt-5
           .col-sm-5
@@ -124,7 +116,7 @@
                     p.card-text.ml-4 Onboarding not done!
                 br
                 .d-flex.align-self-center
-                  = link_to "See Onboarding", motif_root_path, class: 'h5 text-primary mt-1'
+                  = link_to "See Onboarding", motif_workflows_path(template_type: "onboarding"), class: 'h5 text-primary mt-1'
                   i.material-icons-outlined.text-primary.ml-1 arrow_forward
           .col-sm-5
             .card
@@ -146,7 +138,7 @@
                     p.card-text.ml-4 Due 20 Oct 2020: "Do this stuff by then"
                 br
                 .d-flex.align-self-center
-                  = link_to "See details", motif_root_path, class: 'h5 text-primary mt-1'
+                  = link_to "See details", motif_workflows_path(template_type: "site_audit"), class: 'h5 text-primary mt-1'
                   i.material-icons-outlined.text-primary.ml-1 arrow_forward
         .row.mt-5
           .col-sm-5
@@ -158,5 +150,15 @@
                   p.card-text.ml-4 You have 5 unread messages
                 br
                 .d-flex.align-self-center
-                  = link_to "Go to Communication Hub", motif_root_path, class: 'h5 text-primary mt-1'
+                  = link_to "Go to Communication Hub", motif_outlet_notes_path(current_user.outlet), target: "_blank", class: 'h5 text-primary mt-1'
                   i.material-icons-outlined.text-primary.ml-1 arrow_forward
+    - else
+      / Empty state
+      .row.justify-content-center.ml-3
+        .col-md-3.text-center.p-4
+          = image_pack_tag 'media/src/images/motif/motif-empty.svg'
+          h2.mt-5 Looks like you don't have anything to do.
+          p.mt-4 Maybe, you may want to ask your Franchisor about your tasks.
+          button.btn.btn-primary.ml-5 type="button"
+            | Talk to Franchisor
+      
