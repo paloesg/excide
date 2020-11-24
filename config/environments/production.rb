@@ -69,7 +69,11 @@ Rails.application.configure do
   # TOP_LEVEL_DOMAIN is the ending of the url. Eg, '.com', '.herokuapp.com' etc
   # This is so that Heroku review apps will get the assets properly
   # ENV['HOSTNAME'] will identify the 'www' for production. For review apps and staging, we can keep it empty first
-  config.action_controller.asset_host = "https://#{ENV['URL_PREFIX']}" + ENV['HEROKU_APP_NAME'] + ENV['TOP_LEVEL_DOMAIN']
+  if ENV['HEROKU_APP_NAME'] == 'excide'
+    config.action_controller.asset_host = "https://app.paloe.com.sg"
+  else
+    config.action_controller.asset_host = "https://" + ENV['HEROKU_APP_NAME'] + ".herokuapp.com"
+  end
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

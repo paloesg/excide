@@ -1,13 +1,15 @@
 class Motif::WorkflowsController < ApplicationController
   layout 'motif/application'
   before_action :set_company
-  before_action :set_workflow, only: [:show]
+  before_action :set_workflow, only: [:show, :update, :destroy]
 
   def index
-    # Select templates related to that franchise company only
-    @templates = Template.includes(:company).where(company_id: @company.id)
+    # For INDEX workflow page
+    @template_type = params[:template_type]
+    # Select templates in that company and with the right template_type. params[:template_type] is passed through url params in the sidebar
+    @templates = Template.includes(:company).where(company_id: @company.id, template_type: @template_type)
     # If current user is a franchisee, it can only see it's own workflow
-    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.outlet.workflows : Workflow.includes(:template).where(templates: { company_id: @company.id })
+    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.outlet.workflows.includes(:template).where(templates: {template_type: @template_type}) : Workflow.includes(:template).where(templates: { company_id: @company.id, template_type: @template_type})
     @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company.id })
     @workflow = Workflow.new
   end
@@ -21,7 +23,7 @@ class Motif::WorkflowsController < ApplicationController
     @workflow.company = @company
     respond_to do |format|
       if @workflow.save
-        format.html { redirect_to motif_workflows_path, notice: 'Workflow was successfully created.' }
+        format.html { redirect_to motif_workflows_path(template_type: @workflow.template.template_type), notice: 'Workflow was successfully created.' }
         format.json { render :show, status: :created, location: @workflow }
       else
         format.html { render :new }
@@ -31,6 +33,19 @@ class Motif::WorkflowsController < ApplicationController
   end
 
   def edit
+  end
+
+  def update
+    @wfa = @workflow.workflow_actions.find(params[:workflow_action_id])
+    respond_to do |format|
+      if @wfa.save
+        format.html { redirect_to motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id) , notice: 'Workflow was successfully created.' }
+        format.json { render :show, status: :created, location: @wfa }
+      else
+        format.html { render :new }
+        format.json { render json: @workflow.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def toggle
@@ -45,6 +60,16 @@ class Motif::WorkflowsController < ApplicationController
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    if @workflow.destroy
+      respond_to do |format|
+        format.html { redirect_to motif_outlet_assigned_tasks_path(outlet_id: @workflow.outlet.id) }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
+      flash[:notice] = 'Routine was successfully deleted.'
     end
   end
 

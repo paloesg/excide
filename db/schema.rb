@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_17_144134) do
+ActiveRecord::Schema.define(version: 2020_11_20_094933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -195,6 +195,7 @@ ActiveRecord::Schema.define(version: 2020_11_17_144134) do
     t.integer "before_deadline_reminder_days"
     t.json "products", default: []
     t.string "website_url"
+    t.string "report_url"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -373,7 +374,12 @@ ActiveRecord::Schema.define(version: 2020_11_17_144134) do
     t.uuid "franchisee_id"
     t.string "name"
     t.string "contact"
+    t.string "report_url"
     t.uuid "company_id"
+    t.date "commencement_date"
+    t.date "expiry_date"
+    t.integer "renewal_period_freq_unit"
+    t.integer "renewal_period_freq_value"
     t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end

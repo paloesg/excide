@@ -213,6 +213,10 @@ $(document).on("turbolinks:load", function () {
     placeholder: "Select...",
   });
 
+  $(".select2-no-placeholder").select2({
+    minimumResultsForSearch: 5,
+  });
+
   $(".select2-allow-clear").select2({
     minimumResultsForSearch: 5,
     placeholder: "Select...",

@@ -118,6 +118,19 @@ class Template < ApplicationRecord
       Template.where(id: template_ids, company: user.company).order(:created_at)
     end
   end
+  
+  # For Motif template type. Set onboarding, site audit and royalty collection template pattern
+  def set_recurring_based_on_template_type
+    case self.template_type
+    when 'onboarding'
+      self.template_pattern = "on_demand"
+    when 'site_audit'
+      self.template_pattern = "annually"
+    else
+      self.template_pattern = "monthly"
+    end
+    self.set_recurring_attributes
+  end
 
   def set_recurring_attributes
     # Set freq unit and freq value based on template_pattern

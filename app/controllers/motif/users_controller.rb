@@ -7,20 +7,34 @@ class Motif::UsersController < ApplicationController
   before_action :set_user, except: [:index, :new, :create]
 
   def index
+    @roles = @company_roles.where(name: ["franchisor", "franchisee_owner", "member"])
     @users = User.where(company: @company).order(:id).uniq
     @user = User.new
   end
 
   def create
-    @user = User.find_or_initialize_by(email: params[:user][:email])
-    if @user.new_record?
-      @user.first_name = params[:user][:first_name]
-      @user.last_name = params[:user][:last_name]
+    # Adding members in individual outlet
+    if params[:outlet_id].present?
+      @outlet = @company.outlets.find(params[:outlet_id])
+      # Choosing existing user
+      if params[:user_id].present?
+        @user = @company.users.find(params[:user_id])
+      else
+        # Create new user
+        @user = User.create(email: params[:user][:email], first_name: params[:user][:first_name], last_name: params[:user][:last_name], company: @company)
+      end
+      @user.outlet = @outlet
+    else
+      @user = User.find_or_initialize_by(email: params[:user][:email])
+      if @user.new_record?
+        @user.first_name = params[:user][:first_name]
+        @user.last_name = params[:user][:last_name]
+        @user.company = @company
+      end
     end
-    @user.company = @company
     respond_to do |format|
       if @user.save
-        format.html { redirect_to motif_users_path, notice: 'Teammate was successfully added.' }
+        format.html { params[:outlet_id].present? ? (redirect_to motif_outlet_members_path(@outlet), notice: "Member has been added into this outlet") : (redirect_to motif_users_path, notice: 'Teammate was successfully added.')}
       else
         format.html { redirect_to motif_users_path }
         format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -33,7 +47,9 @@ class Motif::UsersController < ApplicationController
     # AJAX request to update user type from motif teammates
     @user = @company.users.find(params[:user_id])
     @role = @company.roles.find(params[:role_id])
-    # Save role into user
+    # Delete old role
+    @user.motif_roles(@company).destroy
+    # Save new role into user
     @user.roles << @role
     respond_to do |format|
       if @user.save
