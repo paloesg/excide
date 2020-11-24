@@ -10,7 +10,7 @@
       li.nav-item.px-4
         a.nav-link data-toggle="tab" href="#information_#{permissible.id}" Information
       / Only admin of company have access tab
-      - if current_user.has_role?(:admin, @company)
+      - if current_user.has_role?(:admin, @company) or current_user.has_role?(:franchisor, @company)
         li.nav-item.px-4
           a.nav-link data-toggle="tab" href="#access_#{permissible.id}" Access
       li.nav-item.px-4
@@ -31,7 +31,7 @@
             p = byte_size
           .col
             span.text-muted Shared with
-            p 20 franchisees, 5 others
+            p = pluralize(permissible.permissions.length, 'other')
         span.text-muted Tags
         input.motif-tags.my-3 id="tag_#{permissible.id}" placeholder=" + Add tag" value=permissible.all_tags_list data-tag=permissible.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
         / Form for remarks document
@@ -40,7 +40,7 @@
             = f.label :remarks, "Remarks", class: 'text-muted'
             = f.text_field :remarks, { class: 'form-control remark-border p-0', data: { document_id: permissible.id, path: path }, onchange: "remarks(this);"}
       / Only admin of company have access tab
-      - if current_user.has_role?(:admin, @company)
+      - if current_user.has_role?(:admin, @company) or current_user.has_role?(:franchisor, @company)
         .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{permissible.id}" role="tabpanel"
           .form-row.align-items-center.border-bottom
             .col-md-1
@@ -48,21 +48,21 @@
                 i.material-icons-outlined search
             .col-md-9
               input.form-control.border-0.col type="search" placeholder="Search..."
-          - @roles.each do |role|
+          - @users.each do |user|
             .row.my-5
               .col-md-1
                 = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mt-2'
               .col-md-4.ml-2.mt-2
-                = role.name.humanize
+                = user.full_name.humanize
               .col-md-5.pl-0
-                - permission = role.permissions.find_by(permissible_id: permissible.id)
+                - permission = user.permissions.find_by(permissible_id: permissible.id)
                 - if permission.present?
                   / Permissible type passed in from rendering the partial, which will determine if permissible is folder or document
-                  = select_tag 'permissions', options_for_select(["Can download", "Read only"], selected: (permission.can_download? ? "Can download" : "Read only")), include_blank: true, required: true, data: { role_id: role.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control permission-document-access col-md-12'
+                  = select_tag 'permissions', options_for_select(["Can download", "Can write"], selected: (permission.can_write? ? "Can write" : "Can download")), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control permission-document-access col-md-12'
                 - else
-                  .float-right.mt-3.add-access id="add-access-link-#{role.id}-#{permissible.id}"
+                  .float-right.mt-3.add-access id="add-access-link-#{user.id}-#{permissible.id}"
                     = link_to '+ Add access', '#', class: 'text-primary', remote: true 
-                  = select_tag 'permissions', options_for_select(["Can download", "Read only"]), include_blank: true, required: true, data: { role_id: role.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control permission-document-access d-none col-md-12', id: "add-access-#{role.id}-#{permissible.id}"
+                  = select_tag 'permissions', options_for_select(["Can download", "Can write"]), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control permission-document-access d-none col-md-12', id: "add-access-#{user.id}-#{permissible.id}"
               .col-md-1.p-0.mt-2.d-none.saved-message
                 span.text-muted Saved!
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{permissible.id}" role="tabpanel"

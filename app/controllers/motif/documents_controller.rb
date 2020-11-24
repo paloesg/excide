@@ -9,9 +9,10 @@ class Motif::DocumentsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    @folder = Folder.new
     @folders = policy_scope(Folder).roots
-    @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc)
-    @roles = @company.roles.includes(:permissions)
+    @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc).includes(:permissions)
+    @users = @company.users.includes(:permissions)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     unless params[:tags].blank?
       if params[:tags] == 'All tags'
@@ -30,23 +31,21 @@ class Motif::DocumentsController < ApplicationController
   end
 
   def create
-
     # multiple file upload from uppy
     if params[:successful_files].present?
       @files = []
       parsed_files = JSON.parse(params[:successful_files])
       parsed_files.each do |file|
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run
+        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:folder_id]).run
         document = @generate_document.document
         authorize document
         # attach and convert method with the response key to create blob
         document.attach_and_convert_document(file['response']['key'])
         @files.append document
       end
-
     # single file upload
     else 
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run_without_associations
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, nil).run_without_associations
       if @generate_document.success?
         document = @generate_document.document
         document.update_attributes(workflow_action_id: params[:workflow_action_id])
@@ -55,14 +54,22 @@ class Motif::DocumentsController < ApplicationController
         document.attach_and_convert_document(params[:response_key])
       end
     end
+    # create permission on creation of document for the user that uploaded it
+    Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     respond_to do |format|
       workflow_action = WorkflowAction.find(params[:workflow_action_id])
       @template = workflow_action.workflow.template
-      format.html { 
-        params[:workflow_action_id].present? ? (redirect_to edit_motif_template_path(@template), notice: "Member has been added into this outlet")
-          : (redirect_to motif_documents_path, notice: "File was successfully uploaded.")
-      }
-      format.json { render json: @files.to_json }
+      # Redirect when generated documents from workflow actions
+      if params[:workflow_action_id].present?
+        format.html { 
+          params[:workflow_action_id].present? ? (redirect_to edit_motif_template_path(@template), notice: "Member has been added into this outlet")
+            : (redirect_to motif_documents_path, notice: "File was successfully uploaded.")
+        }
+      # Redirect when generated documents inside folders
+      elsif params[:folder_id].present?
+        format.html { params[:folder_id].present? ? (redirect_to motif_folder_path(id: params[:folder_id])) : (redirect_to motif_documents_path files: @files) }
+        format.json { render json: @files.to_json }
+      end
     end
   end
 
@@ -102,6 +109,10 @@ class Motif::DocumentsController < ApplicationController
   end
 
   private
+  def set_company
+    @user = current_user
+    @company = @user.company
+  end
 
   def set_document
     @document = @company.documents.find(params[:id])

@@ -141,6 +141,8 @@ Rails.application.routes.draw do
       post '/documents_upload', to: 'outlets#outlets_documents_upload', as: :documents_upload
       resources :workflows, only: :show
       resources :notes
+      get "/members", to: 'outlets#members', as: :members
+      get "/assigned_tasks", to: 'outlets#assigned_tasks', as: :assigned_tasks
     end
     resources :users, only: [:index, :create]
     get '/communication_hub', to: 'notes#communication_hub', as: :communication_hub

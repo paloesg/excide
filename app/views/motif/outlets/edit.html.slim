@@ -1,4 +1,7 @@
-= form_for @outlet, url: motif_franchisee_outlet_path(@franchisee, @outlet) do |f|
+.row
+  .col-sm-12
+    = @outlet.header_image.attached? ? (image_tag @outlet.header_image, class: "outlet-header-image") : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-header-image")
+= form_for @outlet, url: motif_outlet_path(@outlet) do |f|
   .row.my-5.ml-1
     .col-sm-12
       .btn-toolbar.float-right.ml-5
@@ -6,73 +9,43 @@
       .float-right.my-2
         i.px-5.material-icons-outlined more_vert
       h3.mt-3 = @outlet.name
-  hr
-  .row.my-10.ml-1
-    .col-sm-3
-      h5 Photo Gallery
-    .col-sm-9
-      a href="#" data-target="#outletPhotoUploads" data-toggle="modal" type="button" class="float-right text-primary mr-3" Add photos
-      #outletPhotoUploads.modal.fade aria-hidden="true" aria-labelledby="newOutletPhotos" role="dialog" tabindex="-1"
-        .modal-dialog role="document"
-          .modal-content
-            .modal-header
-              h5#newOutletPhotos.modal-title Upload Photos
-              button.close aria-label="Close" data-dismiss="modal" type="button"
-                span aria-hidden="true"  &times;
-            .modal-body
-              .row.mt-3
-                .col-md-12
-                  .dashboard-body.motifOutletPhotosUpload#Dashboard
-                  = hidden_field_tag 'outlet_id', @outlet.id
-  .row.my-10.ml-1
-    - @outlet.photos.each do |photo|
-      .col-sm-3
-        .circular--portrait
-          = image_tag(photo, class: 'profile-pic')
-  hr
-  .row.my-10.ml-1
-    .col-sm-12
-      h5 Information
-  .form-group.col-sm-6
-    = f.text_field :name, placeholder: 'Location Name', class: 'form-control'
-  .form-group.col-sm-12
-    = f.fields_for :address do |a|
-      .row
-        .col-sm-6
-          = a.text_field :line_1, placeholder: 'Location address', class: 'form-control'
-        .col-sm-6
-          = a.text_field :postal_code, placeholder: 'Postal code', class: 'form-control'
-  .form-group.col-sm-12
-    .row
-      .col-sm-6
-        = f.text_field :city, placeholder: 'City', class: 'form-control'
-      .col-sm-6
-        = f.text_field :country, placeholder: 'Country', class: 'form-control'
-  .form-group.col-sm-6
-    = f.text_field :contact, placeholder: 'Telephone', class: 'form-control'
-  hr
-    .row.my-10.ml-1
-      .col-sm-3
-        h5 Documents
-      .col-sm-9
-        = f.file_field_tag :documents "file"
-    table.table.ml-4
-      thead
-        tr
-          th File names
-          th Uploaded on
-          th
-        - @outlet.documents.each do |document|
-          tr 
-            th document.filename
-      tbody
-        tr
-          td
-            = image_pack_tag "media/src/images/motif/pdf.svg", class: 'mr-2'
-            | Signed Contract Agreement.pdf
-          td
-            | Yesterday, 30 Dec 2020
-          td.text-center
-            i.material-icons-outlined.mx-5 get_app
-            i.material-icons-outlined.mx-5 delete
-            i.material-icons-outlined.mx-5 more_horiz
+      p = @outlet.address&.line_1.present? ? "#{@outlet.address.line_1}" : "No Address"
+  .row
+    .col-sm-2.bg-white.sidebar-border-radius
+      = render "outlet_sidebar"
+    .col-sm-10.my-7
+      h3.mb-10 Information
+      .form-group
+        = f.label :name, "Outlet name", class: "label-bold"
+        = f.text_field :name, placeholder: "Outlet name", class: 'form-control col-sm-5'
+      .form-group
+        = f.fields_for :address do |a|
+          = a.label :line_1, "Location address", class: "label-bold"
+          .form-inline
+            = a.text_field :line_1, placeholder: 'Location address', class: 'form-control col-sm-8 mr-2'
+            = a.text_field :postal_code, placeholder: 'Postal code', class: 'form-control col-sm-2'
+      .form-group.mt-7
+        = f.label :country, class: "col-sm-5 pl-0", class: "label-bold"
+        = f.label :city, class: "col-sm-5 pl-2", class: "label-bold"
+        .form-inline
+          = f.text_field :country, placeholder: 'Country', class: 'form-control col-sm-5 mr-2'
+          = f.text_field :city, placeholder: 'City', class: 'form-control col-sm-5'
+      .form-group
+        = f.label :contact, "Telephone", class: "label-bold"
+        = f.text_field :contact, placeholder: 'Telephone', class: 'form-control col-sm-5'
+      .form-group
+        = f.label :commencement_date, class: "col-sm-5 pl-0 label-bold"
+        = f.label :expiry_date, class: "col-sm-5 pl-2 label-bold"
+        .form-inline
+          = f.date_field :commencement_date, class: 'form-control col-sm-5 mr-2'
+          = f.date_field :expiry_date, class: 'form-control col-sm-5'
+      .form-group
+        = f.label :renewal_period_freq_unit, "Franchise renewal notice period", class: "label-bold col-sm-5 pl-0"
+        .form-inline
+          = f.number_field :renewal_period_freq_value, placeholder: "Value", class: 'form-control col-sm-2 mr-2'
+          = f.select :renewal_period_freq_unit, Outlet.renewal_period_freq_units.map { |key, value| [key.titleize, key] }, {selected: @outlet.renewal_period_freq_unit}, class: 'form-control col-sm-2'
+      = f.label :header_image, class: "label-bold"
+      .form-group
+        .form-inline
+          = f.file_field :header_image
+          = image_tag(@outlet.header_image, class: 'outlet-header-preview') if @outlet.header_image.attached?

@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   has_one :address, as: :addressable, dependent: :destroy
 
-  has_many :permissions, through: :roles
+  has_many :permissions
   has_many :reminders, dependent: :destroy
   has_many :clients
   has_many :documents
