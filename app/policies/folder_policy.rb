@@ -4,7 +4,7 @@ class FolderPolicy < ApplicationPolicy
   end
 
   def show?
-    can_view?
+    can_write?
   end
 
   def update?
