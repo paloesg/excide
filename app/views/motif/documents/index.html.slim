@@ -148,6 +148,6 @@
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
               .dropdown-menu.dropdown-menu-right
                 .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
-                .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete
+                .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
           = render 'motif/shared/show_document', d: d
         = render 'motif/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?

@@ -36,7 +36,7 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.has_role? :admin, record.company
+    can_write? or user.has_role?(:admin, record.company)
   end
 
   class Scope < Scope
