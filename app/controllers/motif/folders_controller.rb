@@ -1,5 +1,21 @@
 class Motif::FoldersController < FoldersController
   layout 'motif/application'
+
+  def edit
+    authorize @folder
+  end
+
+  def update
+    authorize @folder
+    respond_to do |format|
+      if @folder.update(folder_params)
+        format.html { redirect_to motif_documents_path, notice: "Folder has been updated successfully."}
+        format.json { render json: @folder, status: :ok }
+      else
+        format.json { render json: @action.errors, status: :unprocessable_entity }
+      end
+    end
+  end
   
   def show
     authorize @folder
@@ -10,5 +26,14 @@ class Motif::FoldersController < FoldersController
     @documents = policy_scope(Document).where(folder: @folder)
 
     render "motif/documents/index"
+  end
+
+  def destroy
+    authorize @folder
+    @folder.destroy
+    respond_to do |format|
+      format.html { redirect_to motif_documents_path, notice: 'Folder was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
 end

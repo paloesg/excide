@@ -4,7 +4,7 @@ class FolderPolicy < ApplicationPolicy
   end
 
   def show?
-    can_write?
+    can_view?
   end
 
   def update?
@@ -12,6 +12,14 @@ class FolderPolicy < ApplicationPolicy
   end
 
   def update_tags?
+    update?
+  end
+
+  def edit?
+    update?
+  end
+
+  def destroy?
     update?
   end
 
