@@ -10,7 +10,7 @@
       li.nav-item.px-4
         a.nav-link data-toggle="tab" href="#information_#{permissible.id}" Information
       / Only admin of company have access tab
-      - if current_user.has_role?(:admin, @company)
+      - if current_user.has_role?(:admin, @company) or current_user.has_role?(:franchisor, @company)
         li.nav-item.px-4
           a.nav-link data-toggle="tab" href="#access_#{permissible.id}" Access
       li.nav-item.px-4
@@ -40,7 +40,7 @@
             = f.label :remarks, "Remarks", class: 'text-muted'
             = f.text_field :remarks, { class: 'form-control remark-border p-0', data: { document_id: permissible.id, path: path }, onchange: "remarks(this);"}
       / Only admin of company have access tab
-      - if current_user.has_role?(:admin, @company)
+      - if current_user.has_role?(:admin, @company) or current_user.has_role?(:franchisor, @company)
         .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{permissible.id}" role="tabpanel"
           .form-row.align-items-center.border-bottom
             .col-md-1
