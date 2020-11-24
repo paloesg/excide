@@ -31,7 +31,7 @@ class Motif::DocumentsController < ApplicationController
     @files = []
     parsed_files = JSON.parse(params[:successful_files])
     parsed_files.each do |file|
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:folder_id]).run
       document = @generate_document.document
       authorize document
       # attach and convert method with the response key to create blob
@@ -41,7 +41,7 @@ class Motif::DocumentsController < ApplicationController
       Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     end
     respond_to do |format|
-      format.html { redirect_to motif_documents_path files: @files }
+      format.html { params[:folder_id].present? ? (redirect_to motif_folder_path(id: params[:folder_id])) : (redirect_to motif_documents_path files: @files) }
       format.json { render json: @files.to_json }
     end
   end

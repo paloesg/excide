@@ -374,12 +374,12 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
     t.uuid "franchisee_id"
     t.string "name"
     t.string "contact"
-    t.string "report_url"
     t.uuid "company_id"
     t.date "commencement_date"
     t.date "expiry_date"
     t.integer "renewal_period_freq_unit"
     t.integer "renewal_period_freq_value"
+    t.string "report_url"
     t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end

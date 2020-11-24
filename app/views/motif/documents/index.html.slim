@@ -30,7 +30,8 @@
           .modal-body
             .row.mt-3
               .col-md-12
-                .dashboard-body.motifMultipleDocumentsUpload#Dashboard
+                / params[:id] is folder's ID. It is to account for uploading files inside a folder (folder SHOW page)
+                .dashboard-body.motifMultipleDocumentsUpload#Dashboard data-folder="#{params[:id]}"
     .float-right.mx-5.mt-2
       i.material-icons-outlined more_horiz
     .float-right.mx-5.mt-2
@@ -75,7 +76,6 @@
       span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
         | Clear
   hr
-  div.ml-5.mb-4 Folder path
   table.table.ml-4
     thead
       tr
@@ -128,7 +128,7 @@
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
             span.mr-5
               / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
-              = image_pack_tag "media/src/images/motif/#{File.extname(d.raw_file.filename.to_s).split('.')[1].first(3)}.svg"
+              = image_pack_tag "media/src/images/motif/doc.svg"
             span.ml-5
               = d.raw_file.filename
           td id="drawer_toggle_#{d.id}_0"
