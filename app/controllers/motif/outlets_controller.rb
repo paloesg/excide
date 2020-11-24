@@ -71,7 +71,6 @@ class Motif::OutletsController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
   def outlets_documents_upload
     @files = []
     @outlet = Outlet.find_by(id: params[:outlet_id])
@@ -88,7 +87,8 @@ class Motif::OutletsController < ApplicationController
       format.html { edirect_to edit_motif_franchisee_outlet_path(franchisee_id: @outlet.franchisee.id, id: @outlet.id), notice: "Documents successfully uploaded!" }
       format.json { render json: @files.to_json }
     end
-=======
+  end
+
   def members
     @outlet = @company.outlets.find(params[:outlet_id])
     @users = @outlet.users
@@ -99,7 +99,6 @@ class Motif::OutletsController < ApplicationController
   def assigned_tasks
     @outlet = @company.outlets.find(params[:outlet_id])
     @workflows = @outlet.workflows
->>>>>>> develop
   end
 
   private
