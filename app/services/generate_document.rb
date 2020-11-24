@@ -1,5 +1,5 @@
 class GenerateDocument
-  def initialize(user, company, template_slug_param, workflow_param, action_param, document_type_param, batch_id)
+  def initialize(user, company, template_slug_param, workflow_param, action_param, document_type_param, batch_id, folder_id)
     @user = user
     @company = company
     @template_slug_param = template_slug_param
@@ -8,6 +8,8 @@ class GenerateDocument
     @action_param = action_param # Only document generated through workflow task will have specific action_param (not batches)
     @document_type_param = document_type_param
     @batch_id = batch_id
+    # Folder param is for upload documents within a folder (associate document with folder) in MOTIF
+    @folder_id = folder_id
   end
 
   def run
@@ -32,13 +34,17 @@ class GenerateDocument
   end
 
   def set_document_associations
-    generate_workflow
-    @document.workflow = @workflow
+    if @folder_id.present?
+      @document.folder = Folder.find_by(id: @folder_id)
+    else
+      generate_workflow
+      @document.workflow = @workflow
 
-    if @action_param.present?
-      # Document belongs to a specific task in workflow
-      @workflow_action = @document.company.workflow_actions.find(@action_param)
-      @document.workflow_action = @workflow_action
+      if @action_param.present?
+        # Document belongs to a specific task in workflow
+        @workflow_action = @document.company.workflow_actions.find(@action_param)
+        @document.workflow_action = @workflow_action
+      end
     end
 
     return @document

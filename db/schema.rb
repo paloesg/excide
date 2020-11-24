@@ -374,12 +374,12 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
     t.uuid "franchisee_id"
     t.string "name"
     t.string "contact"
-    t.string "report_url"
     t.uuid "company_id"
     t.date "commencement_date"
     t.date "expiry_date"
     t.integer "renewal_period_freq_unit"
     t.integer "renewal_period_freq_value"
+    t.string "report_url"
     t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
@@ -393,8 +393,10 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "permissible_type"
     t.uuid "permissible_id"
+    t.bigint "user_id"
     t.index ["permissible_type", "permissible_id"], name: "index_permissions_on_permissible_type_and_permissible_id"
     t.index ["role_id"], name: "index_permissions_on_role_id"
+    t.index ["user_id"], name: "index_permissions_on_user_id"
   end
 
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -778,6 +780,7 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
   add_foreign_key "outlets", "companies"
   add_foreign_key "outlets", "franchisees"
   add_foreign_key "permissions", "roles"
+  add_foreign_key "permissions", "users"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"

@@ -9,9 +9,10 @@ class Motif::DocumentsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    @folder = Folder.new
     @folders = policy_scope(Folder).roots
-    @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc)
-    @roles = @company.roles.includes(:permissions)
+    @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc).includes(:permissions)
+    @users = @company.users.includes(:permissions)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     unless params[:tags].blank?
       if params[:tags] == 'All tags'
@@ -30,15 +31,17 @@ class Motif::DocumentsController < ApplicationController
     @files = []
     parsed_files = JSON.parse(params[:successful_files])
     parsed_files.each do |file|
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run
+      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:folder_id]).run
       document = @generate_document.document
       authorize document
       # attach and convert method with the response key to create blob
       document.attach_and_convert_document(file['response']['key'])
       @files.append document
+      # create permission on creation of document for the user that uploaded it
+      Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     end
     respond_to do |format|
-      format.html { redirect_to motif_documents_path files: @files }
+      format.html { params[:folder_id].present? ? (redirect_to motif_folder_path(id: params[:folder_id])) : (redirect_to motif_documents_path files: @files) }
       format.json { render json: @files.to_json }
     end
   end
@@ -79,6 +82,10 @@ class Motif::DocumentsController < ApplicationController
   end
 
   private
+  def set_company
+    @user = current_user
+    @company = @user.company
+  end
 
   def set_document
     @document = @company.documents.find(params[:id])

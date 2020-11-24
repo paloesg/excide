@@ -1,4 +1,8 @@
 class FolderPolicy < ApplicationPolicy
+  def create?
+    user.present?
+  end
+
   def show?
     can_view?
   end
@@ -8,6 +12,14 @@ class FolderPolicy < ApplicationPolicy
   end
 
   def update_tags?
+    update?
+  end
+
+  def edit?
+    update?
+  end
+
+  def destroy?
     update?
   end
 
