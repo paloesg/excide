@@ -4,7 +4,6 @@ class Outlet < ApplicationRecord
 
   has_one :address, as: :addressable, dependent: :destroy
 
-
   has_many :documents, dependent: :destroy
   has_many :users, dependent: :destroy
   has_many :workflows, dependent: :destroy

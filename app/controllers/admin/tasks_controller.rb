@@ -20,19 +20,6 @@ module Admin
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
 
-    def tasks_photos_upload
-      @task = Task.find_by(id: params[:task_id])
-      parsed_files = JSON.parse(params[:successful_files])
-      parsed_files.each do |file|
-        ActiveStorage::Attachment.create(name: 'photos', record_type: 'Task', record_id: @task.id, blob_id: ActiveStorage::Blob.find_by(key: file['response']['key']).id)
-      end
-      respond_to do |format|
-        ## commented out because new tasks dont have anywhere to be redirected to
-        #format.html { redirect_to edit_motif_franchisee_outlet_path(franchisee_id: @outlet.franchisee.id, id: @outlet.id), notice: "Photos successfully uploaded!" }
-        format.json { render json: @files.to_json }
-      end
-    end
-
     private
 
     def set_s3_direct_post

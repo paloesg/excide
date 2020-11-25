@@ -138,7 +138,6 @@ Rails.application.routes.draw do
     end
     resources :outlets do
       post '/photos_upload', to: 'outlets#outlets_photos_upload', as: :photos_upload
-      post '/documents_upload', to: 'outlets#outlets_documents_upload', as: :documents_upload
       resources :workflows, only: :show
       resources :notes
       get "/members", to: 'outlets#members', as: :members

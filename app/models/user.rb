@@ -207,5 +207,4 @@ class User < ApplicationRecord
   #    Motif methods    #
   #                         #
   ###########################
-
 end

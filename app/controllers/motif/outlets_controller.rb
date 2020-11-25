@@ -71,24 +71,6 @@ class Motif::OutletsController < ApplicationController
     end
   end
 
-  def outlets_documents_upload
-    @files = []
-    @outlet = Outlet.find_by(id: params[:outlet_id])
-    parsed_files = JSON.parse(params[:successful_files])
-    parsed_files.each do |file|
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run_without_associations
-      document = @generate_document.document
-      authorize document
-      # attach and convert method with the response key to create blob
-      document.attach_and_convert_document(file['response']['key'])
-      @files.append document
-    end
-    respond_to do |format|
-      format.html { edirect_to edit_motif_franchisee_outlet_path(franchisee_id: @outlet.franchisee.id, id: @outlet.id), notice: "Documents successfully uploaded!" }
-      format.json { render json: @files.to_json }
-    end
-  end
-
   def members
     @outlet = @company.outlets.find(params[:outlet_id])
     @users = @outlet.users
