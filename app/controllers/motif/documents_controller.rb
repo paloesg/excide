@@ -62,8 +62,8 @@ class Motif::DocumentsController < ApplicationController
       # Redirect when generated documents from workflow actions
       if params[:workflow_action_id].present?
         format.html { 
-          params[:workflow_action_id].present? ? (redirect_to edit_motif_template_path(@template), notice: "Member has been added into this outlet")
-            : (redirect_to motif_documents_path, notice: "File was successfully uploaded.")
+          params[:workflow_action_id].present? ? (redirect_to edit_motif_template_path(@template), notice: "File was successfully uploaded")
+            : (redirect_to motif_documents_path, notice: "File was successfully uploaded")
         }
       # Redirect when generated documents inside folders
       elsif params[:folder_id].present?
