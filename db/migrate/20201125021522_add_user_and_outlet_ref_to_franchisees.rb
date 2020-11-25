@@ -7,6 +7,5 @@ class AddUserAndOutletRefToFranchisees < ActiveRecord::Migration[6.0]
     remove_reference :outlets, :franchisee, type: :uuid, foreign_key: true
     # Remove outlet & franchisee reference from user
     remove_reference :users, :franchisee, type: :uuid, foreign_key: true
-    remove_reference :users, :outlet, type: :uuid, foreign_key: true
   end
 end

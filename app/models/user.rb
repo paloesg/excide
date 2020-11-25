@@ -7,6 +7,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :company
+  belongs_to :active_outlet, :class_name => "Outlet", :foreign_key => "outlet_id"
 
   has_one :address, as: :addressable, dependent: :destroy
 
