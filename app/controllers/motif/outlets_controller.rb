@@ -29,6 +29,8 @@ class Motif::OutletsController < ApplicationController
       if @outlet.save
         # Save outlet to user
         @user.outlets << @outlet
+        # Set active outlet to the new saved outlet
+        @user.active_outlet = @outlet
         @user.save
         format.html { redirect_to motif_outlets_path, notice: 'Outlet was successfully created.' }
         format.json { render :show, status: :created, location: @outlet }
