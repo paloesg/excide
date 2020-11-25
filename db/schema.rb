@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_20_094933) do
+ActiveRecord::Schema.define(version: 2020_11_25_021522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -294,7 +294,11 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
     t.uuid "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.uuid "outlet_id"
     t.index ["company_id"], name: "index_franchisees_on_company_id"
+    t.index ["outlet_id"], name: "index_franchisees_on_outlet_id"
+    t.index ["user_id"], name: "index_franchisees_on_user_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -371,7 +375,6 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
     t.string "country"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "franchisee_id"
     t.string "name"
     t.string "contact"
     t.uuid "company_id"
@@ -381,7 +384,6 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
     t.integer "renewal_period_freq_value"
     t.string "report_url"
     t.index ["company_id"], name: "index_outlets_on_company_id"
-    t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
 
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -648,12 +650,8 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
     t.string "stripe_customer_id"
     t.string "stripe_card_token"
     t.uuid "company_id"
-    t.uuid "franchisee_id"
-    t.uuid "outlet_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["franchisee_id"], name: "index_users_on_franchisee_id"
-    t.index ["outlet_id"], name: "index_users_on_outlet_id"
     t.index ["provider"], name: "index_users_on_provider"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid"], name: "index_users_on_uid"
@@ -772,13 +770,14 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
   add_foreign_key "folders", "users"
+  add_foreign_key "franchisees", "outlets"
+  add_foreign_key "franchisees", "users"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "notes", "users"
   add_foreign_key "notes", "workflow_actions"
   add_foreign_key "outlets", "companies"
-  add_foreign_key "outlets", "franchisees"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
   add_foreign_key "questions", "survey_sections"
@@ -810,8 +809,6 @@ ActiveRecord::Schema.define(version: 2020_11_20_094933) do
   add_foreign_key "tasks", "users"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
-  add_foreign_key "users", "franchisees"
-  add_foreign_key "users", "outlets"
   add_foreign_key "workflow_actions", "companies"
   add_foreign_key "workflow_actions", "tasks"
   add_foreign_key "workflow_actions", "users", column: "assigned_user_id"
