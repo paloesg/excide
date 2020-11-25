@@ -55,12 +55,12 @@
     .col
       div#filter style="cursor: pointer;"
         span.mr-3
-          i.material-icons-outlined filter_list
+          i.material-icons-outlined.align-middle filter_list
         | Filters
     .col-sm-11.text-muted
       div.form-row.align-items-center
         span.mr-3
-          i.material-icons-outlined search
+          i.material-icons-outlined.align-middle search
         input.form-control.border-0.col type="search" placeholder="Search..."
         div.col-8
   .row.ml-4.my-5.align-items-center#filter-options
@@ -107,7 +107,7 @@
             = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{folder.id}_2"
             span.mr-4
-              = image_pack_tag "media/src/images/motif/Group People.svg"
+              i.material-icons-outlined.align-middle group
             span
               = folder.permissions.length
           td
@@ -139,7 +139,7 @@
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{d.id}_2"
             span.mr-4
-              = image_pack_tag "media/src/images/motif/Group People.svg"
+              i.material-icons-outlined.align-middle group
             span
               = d.permissions.length
           td
