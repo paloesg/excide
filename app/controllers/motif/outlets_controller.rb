@@ -28,7 +28,7 @@ class Motif::OutletsController < ApplicationController
     respond_to do |format|
       if @outlet.save
         # Save outlet to user
-        @user.outlet = @outlet
+        @user.outlets << @outlet
         @user.save
         format.html { redirect_to motif_outlets_path, notice: 'Outlet was successfully created.' }
         format.json { render :show, status: :created, location: @outlet }
@@ -74,7 +74,8 @@ class Motif::OutletsController < ApplicationController
   def members
     @outlet = @company.outlets.find(params[:outlet_id])
     @users = @outlet.users
-    @existing_users = @company.users.includes(:outlet).where.not(outlet_id: @outlet.id)
+    # Find user that is in the company but not yet added to the outlet
+    @existing_users = @company.users.includes(:outlets).where.not(outlets: { id: @outlet.id })
     @user = User.new
   end
 
@@ -94,7 +95,7 @@ class Motif::OutletsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def outlet_params
-    params.require(:outlet).permit(:name, :city, :country, :contact, :address, :commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :report_url, :header_image, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:outlet).permit(:name, :city, :country, :contact, :address, :commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :report_url, :header_image, user_ids: [], address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state])
   end
 
   def build_addresses
