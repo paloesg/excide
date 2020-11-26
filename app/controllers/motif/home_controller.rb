@@ -8,7 +8,8 @@ class Motif::HomeController < ApplicationController
   def index
     @franchisees = Franchisee.includes(:company).where(company_id: @company.id)
     @outlets = @company.outlets
-    @franchisees_workflows = current_user.active_outlet.workflows
+    # Get franchisees workflows
+    @franchisees_workflows = current_user.active_outlet.workflows if current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)
     # Find workflows that is not completed yet
     @onboarding_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "onboarding"}).where.not(completed: true) : Workflow.includes([:company, :template]).where(company_id: @company.id, templates: {template_type: "onboarding"}).where.not(completed: true)
     @site_audit_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "site_audit"}).where.not(completed: true) : Workflow.includes([:company, :template]).where(company_id: @company.id, templates: {template_type: "site_audit"}).where.not(completed: true)
