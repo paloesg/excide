@@ -50,6 +50,7 @@ hr.mb-0
               = outlet.address&.line_1.present? ? "#{outlet.address.line_1}" : "No Address"
             .row.mt-2
               = pluralize(outlet.users.length, "user")
-            .row.mt-2 Expires on 2 Nov 2035
+            .row.mt-2 
+              = outlet.expiry_date.present? ? "Expires on #{outlet.expiry_date.strftime("%d %b %y")}" : "Add an expiry date"
 
 
