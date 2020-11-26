@@ -7,7 +7,7 @@ class Motif::UsersController < ApplicationController
   before_action :set_user, except: [:index, :new, :create]
 
   def index
-    @roles = @company_roles.where(name: ["franchisor", "franchisee_owner", "member"])
+    @roles = @company_roles
     @users = User.where(company: @company).order(:id).uniq
     @user = User.new
   end
