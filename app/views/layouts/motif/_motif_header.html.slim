@@ -23,22 +23,22 @@
                 - if company.name.present?
                   = link_to company.name, change_company_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
         / If current_user have multiple outlets
-        - elsif current_user.franchisee.outlets.length > 1
+        - elsif current_user.outlets.length > 1
           button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
-            | #{current_user.outlet.name}
+            | #{current_user.active_outlet.name}
             i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
           #company-dropdown.dropdown-menu aria-labelledby="dropdownMenuButton"
-            - current_user.franchisee.outlets.order('name ASC').reject{ |o| o == current_user.outlet }.each do |outlet|
+            - current_user.outlets.order('name ASC').reject{ |o| o == current_user.active_outlet }.each do |outlet|
               - if outlet.name.present?
                 = link_to outlet.name, motif_change_outlet_path(current_user, user: {outlet_id: outlet.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
         - else
           = link_to(motif_root_path, class: "btn btn-secondary btn-default") do
-            ' #{current_user.outlet.name}
+            ' #{current_user.active_outlet.name}
     ul.navbar-nav.ml-auto
       / Franchisee cannot access communication hub path. Only their individual outlet
       - if current_user.has_role?(:franchisee_owner, current_user.company)
         li.nav-link.mx-3
-          = link_to motif_outlet_notes_path(current_user.outlet), target: "_blank" do
+          = link_to motif_outlet_notes_path(current_user.active_outlet), target: "_blank" do
             i.material-icons-outlined comment
       - else
         li.nav-link.mx-3

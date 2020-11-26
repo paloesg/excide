@@ -7,19 +7,21 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :company
-  belongs_to :franchisee
-  belongs_to :outlet
+  belongs_to :active_outlet, :class_name => "Outlet", :foreign_key => "outlet_id"
 
   has_one :address, as: :addressable, dependent: :destroy
 
-  has_many :permissions
-  has_many :reminders, dependent: :destroy
+  has_many :batches
   has_many :clients
   has_many :documents
-  has_many :recurring_workflows, dependent: :destroy
-  has_many :invoices
-  has_many :batches
   has_many :folders
+  has_many :franchisees
+  has_many :outlets, through: :franchisees
+  has_many :invoices
+  has_many :permissions
+  has_many :reminders, dependent: :destroy
+  has_many :recurring_workflows, dependent: :destroy
+  
 
   has_many :assigned_tasks, class_name: 'WorkflowAction', foreign_key: 'assigned_user_id'
   has_many :completed_tasks, class_name: 'WorkflowAction', foreign_key: 'completed_user_id'
