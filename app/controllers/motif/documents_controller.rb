@@ -24,8 +24,10 @@ class Motif::DocumentsController < ApplicationController
   end
 
   def new
+    @folders = policy_scope(Folder).roots
     @workflow_action = @company.workflow_actions.find(params[:workflow_action]) if params[:workflow_action].present?
     @workflow_action_id = params[:workflow_action_id]
+    @folder_id = params[:folder_id]
     @document = Document.new
     authorize @document
   end
@@ -44,11 +46,18 @@ class Motif::DocumentsController < ApplicationController
         @files.append document
       end
     # single file upload
-    else 
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, nil).run_without_associations
+    else
+      if params[:document][:folder_id].present?
+        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:document][:folder_id]).run_without_associations
+      else
+        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, nil).run_without_associations
+      end
       if @generate_document.success?
         document = @generate_document.document
         document.update_attributes(workflow_action_id: params[:workflow_action_id])
+        if params[:document][:folder_id].present?
+          document.update_attributes(folder_id: params[:document][:folder_id])
+        end
         authorize document
         # attach and convert method
         document.attach_and_convert_document(params[:response_key])
