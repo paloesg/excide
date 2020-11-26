@@ -24,13 +24,13 @@ class Motif::HomeController < ApplicationController
 
   def financial_performance
     @company = current_user.company
-    @outlets = @company.franchisees.map{|f| f.outlets}.flatten
+    @outlets = @company.outlets
     #check if user has outlet, else find the outlet from the params, else display company
-    @outlet = current_user.outlet ? current_user.outlet : (params[:outlet].present? ? Outlet.find(params[:outlet]) : @company)
+    @outlet = current_user.active_outlet ? current_user.active_outlet : (params[:outlet].present? ? Outlet.find(params[:outlet]) : @company)
   end
 
   def edit_report
-    @source = current_user.outlet ? current_user.outlet : current_user.company
+    @source = current_user.active_outlet ? current_user.active_outlet : current_user.company
   end
 
   private

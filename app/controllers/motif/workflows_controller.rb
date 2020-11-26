@@ -1,7 +1,7 @@
 class Motif::WorkflowsController < ApplicationController
   layout 'motif/application'
   before_action :set_company
-  before_action :set_workflow, only: [:show, :update]
+  before_action :set_workflow, only: [:show, :update, :destroy]
 
   def index
     # For INDEX workflow page
@@ -9,8 +9,8 @@ class Motif::WorkflowsController < ApplicationController
     # Select templates in that company and with the right template_type. params[:template_type] is passed through url params in the sidebar
     @templates = Template.includes(:company).where(company_id: @company.id, template_type: @template_type)
     # If current user is a franchisee, it can only see it's own workflow
-    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.outlet.workflows.includes(:template).where(templates: {template_type: @template_type}) : Workflow.includes(:template).where(templates: { company_id: @company.id, template_type: @template_type})
-    @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company.id })
+    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: @template_type}) : Workflow.includes(:template).where(templates: { company_id: @company.id, template_type: @template_type})
+    @outlets = Outlet.includes(:company).where(companies: { id: @company.id })
     @workflow = Workflow.new
   end
 
@@ -60,6 +60,16 @@ class Motif::WorkflowsController < ApplicationController
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    if @workflow.destroy
+      respond_to do |format|
+        format.html { redirect_to motif_outlet_assigned_tasks_path(outlet_id: @workflow.outlet.id) }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
+      flash[:notice] = 'Routine was successfully deleted.'
     end
   end
 

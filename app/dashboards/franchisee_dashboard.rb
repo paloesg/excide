@@ -9,11 +9,8 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     address: Field::HasOne,
-    user: Field::HasOne,
-    outlets: Field::HasMany,
-    company: Field::BelongsTo,
-    profile_picture_attachment: Field::HasOne,
-    profile_picture_blob: Field::HasOne,
+    user: Field::BelongsTo,
+    outlet: Field::BelongsTo,
     id: Field::String.with_options(searchable: false),
     name: Field::String,
     website_url: Field::String,
@@ -35,8 +32,7 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
   address
   user
-  outlets
-  company
+  outlet
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -44,10 +40,7 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
   address
   user
-  outlets
-  company
-  profile_picture_attachment
-  profile_picture_blob
+  outlet
   id
   name
   website_url
@@ -67,10 +60,7 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
   address
   user
-  outlets
-  company
-  profile_picture_attachment
-  profile_picture_blob
+  outlet
   name
   website_url
   established_date

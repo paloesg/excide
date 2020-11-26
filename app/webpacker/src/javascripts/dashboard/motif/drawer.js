@@ -80,7 +80,7 @@ $(document).on("turbolinks:load", function () {
         authenticity_token: $.rails.csrfToken(),
         // Permission is the value of the dropdown ('View only' or 'Download only')
         permission: $(this).val(),
-        role_id: $(this).data("role-id"),
+        user_id: $(this).data("user-id"),
         // Permissible type determines if its getting from folder or document
         permissible_type: $(this).data("permissible-type"),
         permissible_id: $(this).data("permissible-id")
@@ -98,7 +98,7 @@ $(document).on("turbolinks:load", function () {
           // Permissible type determines if its getting from folder or document
           permissible_type: $(this).data("permissible-type"),
           permissible_id: $(this).data("permissible-id"),
-          role_id: $(this).data("role-id")
+          user_id: $(this).data("user-id")
         },
         dataType: "JSON"
       }).done(function(result){
@@ -109,7 +109,7 @@ $(document).on("turbolinks:load", function () {
   // When clicked on add-access, it will show the dropdown box 
   $(".add-access").click(function (){
     // Make ID unique with role id and permissible id
-    $("#add-access-link-" + $(this).next().data("role-id") + "-" + $(this).next().data("permissible-id")).addClass('d-none');
-    $("#add-access-" + $(this).next().data("role-id") + "-" + $(this).next().data("permissible-id")).removeClass('d-none');
+    $("#add-access-link-" + $(this).next().data("user-id") + "-" + $(this).next().data("permissible-id")).addClass('d-none');
+    $("#add-access-" + $(this).next().data("user-id") + "-" + $(this).next().data("permissible-id")).removeClass('d-none');
   })
 });
