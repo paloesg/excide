@@ -8,6 +8,7 @@ class Motif::OutletsController < ApplicationController
   def index
     @outlets = Outlet.includes(:company).where(company_id: @company)
     @outlet = Outlet.new
+    @existing_users = @company.users
   end
 
   def new
@@ -20,11 +21,13 @@ class Motif::OutletsController < ApplicationController
     if params[:user_email].present?
       # Create user if user's email is not in motif
       @user = User.find_or_create_by(email: params[:user_email], company: @company)
-      # Add role franchisee_owner to this new user
-      @user.add_role(:franchisee_owner, @user.company)
-      # Link outlet to company
-      @outlet.company = @company
+    else
+      @user = User.find(params[:user_id])
     end
+    # Add role franchisee_owner to this new user
+    @user.add_role(:franchisee_owner, @user.company)
+    # Link outlet to company
+    @outlet.company = @company
     respond_to do |format|
       if @outlet.save
         # Save outlet to user
@@ -78,6 +81,8 @@ class Motif::OutletsController < ApplicationController
     @users = @outlet.users
     # Find user that is in the company but not yet added to the outlet
     @existing_users = @company.users.includes(:outlets).where.not(outlets: { id: @outlet.id })
+    # All the roles in that company
+    @roles = Role.where(resource_id: @company.id, resource_type: "Company")
     @user = User.new
   end
 

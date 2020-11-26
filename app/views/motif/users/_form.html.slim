@@ -1,0 +1,37 @@
+- if @user.errors.any?
+  .alert.alert-danger role='alert'
+    strong = "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+    ul
+      - @user.errors.full_messages.each do |message|
+        li = message
+.row
+  .col
+    .card
+      .card-header.p-7
+        h3.card-title.mb-0 User Details
+      .card_body.p-7
+        .form-group
+          = f.label :first_name
+          = f.text_field :first_name, class: 'form-control'
+        .form-group
+          = f.label :last_name
+          = f.text_field :last_name, class: 'form-control'
+        .form-group
+          = f.label :email
+          = f.text_field :email, class: 'form-control'
+        .form-group
+          = f.label :contact_number
+          = f.text_field :contact_number, class: 'form-control'
+  .col
+    .card
+      .card-header.p-7
+        h3.card-title.mb-0 Change Password
+      .card-body
+        .form-group
+          em Leave blank if you don't want to change your password.
+        .form-group
+          = f.label :password, "New Password"
+          = f.password_field :password, autocomplete: "off", class: 'form-control'
+        .form-group
+          = f.label :password_confirmation
+          = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'

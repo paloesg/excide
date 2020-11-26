@@ -68,6 +68,13 @@ class CompaniesController < ApplicationController
   def set_company_roles
     # Set company admin role only if old roles is not defined i.e. creating new company
     current_user.add_role(:admin, @company) unless defined?(@old_roles)
+    # If company's product includes Motif, add motif roles to company
+    if @company.products.include? "motif"
+      @motif_default_roles = ['franchisor', 'franchise_manager', 'franchisee_owner', 'franchisee_member']
+      @motif_default_roles.each do |role_name|
+        Role.create(name: role_name, resource: @company)
+      end
+    end
 
     @company.consultant.add_role(:consultant, @company) if @company.consultant.present?
     @company.associate.add_role(:associate, @company) if @company.associate.present?
