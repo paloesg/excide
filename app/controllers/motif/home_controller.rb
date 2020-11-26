@@ -7,10 +7,18 @@ class Motif::HomeController < ApplicationController
 
   def index
     @franchisees = Franchisee.includes(:company).where(company_id: @company.id)
-    @outlets = Outlet.includes(:franchisee).where(franchisees: { company_id: @company.id })
-    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.outlet.workflows : Workflow.includes(:company).where(company_id: @company.id)
-    # Find overdue tasks
-    @outstanding_onboarding_actions = WorkflowAction.includes(:workflow).all_user_actions(current_user).where.not(completed: true, deadline: nil).where(company: current_user.company).order(:deadline).includes(:task)
+    @outlets = @company.outlets
+    @franchisees_workflows = current_user.active_outlet.workflows
+    # Find workflows that is not completed yet
+    @onboarding_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "onboarding"}).where.not(completed: true) : Workflow.includes([:company, :template]).where(company_id: @company.id, templates: {template_type: "onboarding"}).where.not(completed: true)
+    @site_audit_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "site_audit"}).where.not(completed: true) : Workflow.includes([:company, :template]).where(company_id: @company.id, templates: {template_type: "site_audit"}).where.not(completed: true)
+    @royalty_collection_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "royalty_collection"}).where.not(completed: true) : Workflow.includes([:company, :template]).where(company_id: @company.id, templates: {template_type: "royalty_collection"}).where.not(completed: true)
+    # Find overdue onboarding workflow actions
+    @outstanding_onboarding_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "onboarding"}}).where.not(completed: true).order(:deadline).includes(:task)
+    @outstanding_site_audit_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "site_audit"}}).where.not(completed: true).order(:deadline).includes(:task)
+    @outstanding_royalty_collection_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "royalty_collection"}}).where.not(completed: true).order(:deadline).includes(:task)
+    # Find total messages (notes)
+    @notes = @company.outlets.map{ |o| o.notes}.flatten
   end
   
   # Change user's outlet for franchisee with multiple outlets
