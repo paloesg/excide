@@ -24,6 +24,8 @@ class Motif::UsersController < ApplicationController
         @user = User.create(email: params[:user][:email], first_name: params[:user][:first_name], last_name: params[:user][:last_name], company: @company)
       end
       @user.outlets << @outlet
+      # Set active_outlet for new user
+      @user.active_outlet = @outlet
     else
       @user = User.find_or_initialize_by(email: params[:user][:email])
       if @user.new_record?
