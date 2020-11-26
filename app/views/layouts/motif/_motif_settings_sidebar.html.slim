@@ -25,7 +25,7 @@
       li.nav-item.py-1.m-4
         h3 Settings
       li.nav-item.hover-blue.py-1.m-4
-        = link_to root_path, class: 'col-sm-12 d-flex align-items-center' do
+        = link_to edit_motif_user_path(current_user), class: 'col-sm-12 d-flex align-items-center' do
           .ml-2.sidebar-font My Account
       li.nav-item.hover-blue.py-1.m-4
         = link_to edit_motif_company_path(current_user.company), class: 'col-sm-12 d-flex align-items-center' do
