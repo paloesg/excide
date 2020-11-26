@@ -49,8 +49,8 @@ class Motif::UsersController < ApplicationController
     # AJAX request to update user type from motif teammates
     @user = @company.users.find(params[:user_id])
     @role = @company.roles.find(params[:role_id])
-    # Delete old role
-    @user.motif_roles(@company).destroy
+    # Delete old role if there is old roles
+    @user.motif_roles(@company).destroy if  @user.motif_roles(@company).present?
     # Save new role into user
     @user.roles << @role
     respond_to do |format|

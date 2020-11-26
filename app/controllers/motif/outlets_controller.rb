@@ -78,6 +78,8 @@ class Motif::OutletsController < ApplicationController
     @users = @outlet.users
     # Find user that is in the company but not yet added to the outlet
     @existing_users = @company.users.includes(:outlets).where.not(outlets: { id: @outlet.id })
+    # All the roles in that company
+    @roles = Role.where(resource_id: @company.id, resource_type: "Company")
     @user = User.new
   end
 
