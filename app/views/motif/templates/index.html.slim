@@ -20,5 +20,4 @@
                     i.material-icons-outlined more_vert
                   .dropdown-menu.dropdown-menu-right
                     .dropdown-item = link_to "Edit template", edit_motif_template_path(template_slug: template.slug), target: "_blank"
-            .card-text.text-muted
-              | Created by Jonathan Lau. Also used for Company 1...
+            .card-text.text-muted = "Last modified at #{template.updated_at.strftime("%b %d %H:%M")}."

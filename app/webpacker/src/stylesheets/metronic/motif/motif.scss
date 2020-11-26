@@ -53,3 +53,27 @@
 .tagify__input::before {
   position: absolute !important;
 }
+
+.danger-card-motif {
+  background: #FDF0F0
+}
+
+.warning-card-motif {  
+  background: #FEF4ED;  
+}
+
+.success-card-motif {
+  background: #F8FAEF;
+}
+
+.number-display {
+  font-size: 48px;
+}
+
+.progress-bar-success {
+  background-color: #B8CD59 !important;
+}
+
+.progress-bar-warning {
+  background-color: #F69348 !important;
+}

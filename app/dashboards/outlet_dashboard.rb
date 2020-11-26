@@ -8,7 +8,7 @@ class OutletDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    franchisee: Field::BelongsTo,
+    franchisees: Field::HasMany,
     company: Field::BelongsTo,
     address: Field::HasOne,
     documents: Field::HasMany,
@@ -27,7 +27,7 @@ class OutletDashboard < Administrate::BaseDashboard
     renewal_period_freq_unit: Field::Number,
     renewal_period_freq_value: Field::Number,
     report_url: Field::String,
-    photos: Field::ActiveStorage
+    header_image: Field::ActiveStorage
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -38,16 +38,17 @@ class OutletDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
   name
   company
-  address
   commencement_date
   expiry_date
   report_url
+  users
+  notes
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  franchisee
+  franchisees
   company
   address
   documents
@@ -66,16 +67,15 @@ class OutletDashboard < Administrate::BaseDashboard
   renewal_period_freq_unit
   renewal_period_freq_value
   report_url
-  photos
+  header_image
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  franchisee
+  franchisees
   company
-  address
   documents
   users
   workflows
@@ -89,6 +89,8 @@ class OutletDashboard < Administrate::BaseDashboard
   renewal_period_freq_unit
   renewal_period_freq_value
   report_url
+  header_image
+  address
   ].freeze
 
   # COLLECTION_FILTERS
@@ -107,6 +109,6 @@ class OutletDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(outlet)
-    "Outlet ##{outlet.id}"
+    "[#{outlet.company.name}] #{outlet.name}"
   end
 end
