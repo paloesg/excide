@@ -59,6 +59,6 @@
                 span.align-middle
                   | 25
               td width="5%"
-                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: wfa.completed, class: "mt-1 action_checkbox"
+                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisor, @user.company)), class: "mt-1 action_checkbox"
             = render "task", template: @template, wf: @workflow, wfa: wfa, index: index, color: color, task: wfa.task
     
