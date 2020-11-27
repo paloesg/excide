@@ -177,7 +177,7 @@ class Workflow < ApplicationRecord
 
   # Set deadline based on settings of template and task (model), while target_model are workflows and workflow actions
   def set_deadline(model, target_model, current_date)
-    if model.deadline_type.present?
+    if model.deadline_type.present? and model.deadline_day.present?
       case model.deadline_type
       when "xth_day_of_the_month"
         # Check if day exists in that month (for eg, June only have 30 days), so if it is 31st, we bring it forward to the next month.

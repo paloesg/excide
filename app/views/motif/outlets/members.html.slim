@@ -56,7 +56,7 @@
                 tr.border-bottom
                   td.border-top-0 = u.full_name
                   td = u.email
-                  td = select_tag "role", options_for_select(@company_roles.collect{ |r| [r.name, r.id] }, selected: @roles), include_blank: true, required: true, class: 'select2 motif-select-user-types', id: "#{u.id}",style: 'width: 100%'
+                  td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.motif_roles(@company).id if u.motif_roles(@company).present?)), include_blank: true, required: true, class: 'select2 motif-select-user-types', id: "#{u.id}",style: 'width: 100%'
                   td
                     .dropdown
                       a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"

@@ -143,7 +143,7 @@ Rails.application.routes.draw do
       get "/members", to: 'outlets#members', as: :members
       get "/assigned_tasks", to: 'outlets#assigned_tasks', as: :assigned_tasks
     end
-    resources :users, only: [:index, :create]
+    resources :users
     get '/communication_hub', to: 'notes#communication_hub', as: :communication_hub
     post '/add-roles', to: 'users#add_role', as: :add_role
     get '/financial-performance', to: 'home#financial_performance'
