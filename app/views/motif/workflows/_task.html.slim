@@ -43,7 +43,19 @@
       h6 Links
       hr
   .row.my-5
-    .col-md-12
-      h6 Files
-      = image_pack_tag "media/src/images/motif/pdf.svg", class: 'mr-2'
-      | Filename
+    .col-md-5
+      h6 Attachments
+    .col-md-5
+      h6 Uploaded On
+    .col-md-2
+      h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id)
+
+  - @documents.where(workflow_action_id: wfa.id).each do |d|
+    .row.my-5
+      / File Name
+      .col-md-5
+        = d.raw_file.filename 
+      / Uploaded date
+      .col-md-5
+        = d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p")
+

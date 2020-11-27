@@ -23,6 +23,16 @@ class GenerateDocument
     end
   end
 
+  def run_without_associations
+    begin
+      create_document
+      @document.save!
+      OpenStruct.new(success?: true, document: @document)
+    rescue => e
+      OpenStruct.new(success?: false, document: @document, message: e.message)
+    end
+  end
+
   private
 
   def create_document
