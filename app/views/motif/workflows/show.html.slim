@@ -48,16 +48,10 @@
                   .text-muted = wfa.deadline&.strftime("%d %b")
                   i.material-icons-outlined.font-size-h6.ml-1.text-muted calendar_today
                   - color = "text-muted"
-              td width="10%" id="task_toggle_#{wfa.id}_2"
+              td width="20%" id="task_toggle_#{wfa.id}_2"
                 span.mr-4
                   i.material-icons-outlined.mr-1.text-secondary.align-middle insert_drive_file
-                span.align-middle
-                  | 25
-              td width="10%" id="task_toggle_#{wfa.id}_3"
-                span.mr-4
-                  i.material-icons-outlined.mr-1.text-secondary.align-middle link
-                span.align-middle
-                  | 25
+                span.align-middle = wfa.documents.length
               td width="5%"
                 = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisor, @user.company)), class: "mt-1 action_checkbox"
             = render "task", template: @template, wf: @workflow, wfa: wfa, index: index, color: color, task: wfa.task

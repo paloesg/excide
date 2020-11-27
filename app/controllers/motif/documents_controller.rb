@@ -67,11 +67,12 @@ class Motif::DocumentsController < ApplicationController
     Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     respond_to do |format|
       workflow_action = WorkflowAction.find(params[:workflow_action_id])
+      @workflow = workflow_action.workflow
       @template = workflow_action.workflow.template
       # Redirect when generated documents from workflow actions
       if params[:workflow_action_id].present?
         format.html { 
-          params[:workflow_action_id].present? ? (redirect_to edit_motif_template_path(@template), notice: "File was successfully uploaded")
+          params[:workflow_action_id].present? ? (redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet.id, id: @workflow.id), notice: "File was successfully uploaded")
             : (redirect_to motif_documents_path, notice: "File was successfully uploaded")
         }
       # Redirect when generated documents inside folders

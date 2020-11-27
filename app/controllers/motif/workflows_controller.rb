@@ -15,6 +15,7 @@ class Motif::WorkflowsController < ApplicationController
   end
 
   def show
+    @documents = policy_scope(Document).order(created_at: :desc)
   end
 
   def create

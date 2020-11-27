@@ -20,28 +20,6 @@
             .form-group
               = f.number_field :deadline_day, class: "form-control col-md-2"
               span.ml-5 Days to complete since onboarding starts.
-      / Table for file attachment
-      .table-responsive.mt-5
-        table.table
-          thead
-            tr
-              th.pl-0.h6 Attachments
-              th.h6.text-muted Uploaded on
-              th.h6 
-                = link_to "Upload", new_motif_document_path(:workflow_action_id => f.object.id)
-          tbody
-            - @documents.where(workflow_action_id: f.object.id).each do |d|
-              tr
-                / File Name
-                td
-                  = d.raw_file.filename 
-                / Uploaded date
-                td 
-                  = d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p")
-                td 
-                  i.material-icons-outlined.mr-5 download
-                td
-                  i.material-icons-outlined delete_outline
       .row.mt-5
         .col-md-12
           = f.hidden_field :deadline_type, value: "days_to_complete"
