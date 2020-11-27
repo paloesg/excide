@@ -23,7 +23,7 @@
 - unless params[:camera] == "true"
 .form-group.row
   .col-3.col-form-label.text-lg-right = f.label "Folder"
-  .col-6.align-self-center = f.collection_select :folder_id, Folder.all.order(:name), :id, :name, include_blank: true
+  .col-6.align-self-center = f.collection_select :folder_id, @folders, :id, :name, { include_blank: true }, { class: "form-control"}
 .form-group.row
   .col-3.col-form-label.text-lg-right = f.label :remarks
   .col-6 = f.text_area :remarks, rows: '3', class: 'form-control'
