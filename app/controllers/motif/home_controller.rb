@@ -2,7 +2,6 @@ class Motif::HomeController < ApplicationController
   layout 'motif/application'
   
   before_action :set_company
-  before_action :set_franchisee, except: :index
   before_action :authenticate_user!
 
   def index
@@ -46,10 +45,6 @@ class Motif::HomeController < ApplicationController
 
   def set_company
     @company = current_user.company
-  end
-
-  def set_franchisee
-    @franchisee = Franchisee.find(params[:id])
   end
 
   def franchisee_params
