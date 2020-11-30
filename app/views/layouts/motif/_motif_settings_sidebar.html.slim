@@ -11,9 +11,10 @@
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_users_path, class: 'col-sm-12 d-flex align-items-center' do
         .ml-2.sidebar-font Members
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_templates_path, class: 'col-sm-12 d-flex align-items-center' do
-        .ml-2.sidebar-font Tasks Templates
+    - unless current_user.has_role?(:franchisee_owner, current_user.company)
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_templates_path, class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font Tasks Templates
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_edit_report_path, class: 'col-sm-12 d-flex align-items-center' do
         .ml-2.sidebar-font Data Studio Link
