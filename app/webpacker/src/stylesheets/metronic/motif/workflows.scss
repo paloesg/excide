@@ -7,3 +7,7 @@
 .orange-bell-notification {
   color: #ff9b21;
 }
+
+.action_checkbox:not([disabled]) {
+  cursor:pointer;
+}
