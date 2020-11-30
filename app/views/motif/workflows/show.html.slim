@@ -23,12 +23,12 @@
             th Tasks
             th Due Date
             th 
-            th 
-            th 
+            th
+            th
         tbody
           - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
             tr.task-row data-action="#{wfa.id}"
-              td width="50%" id="task_toggle_#{wfa.id}_0"
+              td width="60%" id="task_toggle_#{wfa.id}_0"
                 = wfa.task.instructions
               td.d-flex id="task_toggle_#{wfa.id}_1"
                 - if !wfa.completed? && wfa.deadline.present?
@@ -48,11 +48,16 @@
                   .text-muted = wfa.deadline&.strftime("%d %b")
                   i.material-icons-outlined.font-size-h6.ml-1.text-muted calendar_today
                   - color = "text-muted"
-              td width="20%" id="task_toggle_#{wfa.id}_2"
+              td.text-center width="10%" id="task_toggle_#{wfa.id}_2"
                 span.mr-4
                   i.material-icons-outlined.mr-1.text-secondary.align-middle insert_drive_file
                 span.align-middle = wfa.documents.length
-              td width="5%"
+              td.text-center
+                span.mr-4
+                  / Only show the bell on current action
+                  - if wfa.current_action?
+                    i.material-icons-outlined.mr-1.orange-bell-notification notifications_active 
+              td.text-center width="5%"
                 = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisor, @user.company)), class: "mt-1 action_checkbox"
             = render "task", template: @template, wf: @workflow, wfa: wfa, index: index, color: color, task: wfa.task
     
