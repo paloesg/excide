@@ -49,7 +49,7 @@ hr.mb-0
         .card-body
           .row
             .col-sm-12.mt-3
-              = link_to wf.outlet.name, motif_outlet_workflow_path(outlet_id: wf.outlet.id, id: wf.id), target: "_blank", class: 'h4 font-weight-boldest text-dark'
+              = link_to wf.outlet.name, motif_outlet_workflow_path(outlet_id: wf.outlet.id, id: wf.id), class: 'h4 font-weight-boldest text-dark'
           .row.mt-5
             .col-sm-12
               p.text-muted Location address: #{wf.outlet.address&.line_1} #{wf.outlet.address&.postal_code}
