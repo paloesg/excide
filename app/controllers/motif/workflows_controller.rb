@@ -64,6 +64,21 @@ class Motif::WorkflowsController < ApplicationController
     end
   end
 
+  def notify_franchisor
+    @workflow = Workflow.find(params[:workflow_id])
+    @wfa = WorkflowAction.find_by(id: params[:wfa_id])
+    link_address = "#{ENV['ASSET_HOST'] + motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @workflow.id)}"
+    # find franchisor(s) from that company
+    @franchisors = current_user.company.users.includes(:roles).where(roles: { name: "franchisor" })
+    @franchisors.each do |franchisor|
+      NotificationMailer.motif_notify_franchisor(franchisor, current_user, @wfa, link_address).deliver_later
+    end
+    respond_to do |format|
+      format.html { redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet.id, id: @workflow.id), notice: "You've notified the franchisor. Please wait for the franchisor to reply." }
+      format.js   { render js: 'Turbolinks.visit(location.toString());' }
+    end
+  end
+
   def destroy
     if @workflow.destroy
       respond_to do |format|
