@@ -69,7 +69,7 @@ class Motif::WorkflowsController < ApplicationController
     @wfa = WorkflowAction.find_by(id: params[:wfa_id])
     link_address = "#{ENV['ASSET_HOST'] + motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @workflow.id)}"
     # find franchisor(s) from that company
-    @franchisors = current_user.company.users.includes(:roles).where(roles: { name: "franchisor" })
+    @franchisors = current_user.company.find_franchisors
     @franchisors.each do |franchisor|
       NotificationMailer.motif_notify_franchisor(franchisor, current_user, @wfa, link_address).deliver_later
     end

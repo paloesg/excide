@@ -83,6 +83,10 @@ class Company < ApplicationRecord
     self.outlets.map{ |outlet| outlet.notes }.flatten.compact.uniq
   end
 
+  def find_franchisors
+    self.users.includes(:roles).where(roles: { name: "franchisor" })
+  end
+
   private
 
   def generate_mailbox_token
