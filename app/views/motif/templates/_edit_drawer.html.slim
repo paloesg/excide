@@ -6,7 +6,7 @@
           .form-group
             = f.text_field :instructions, { placeholder: "Task Here", class: "form-control" }
         .col-md-1
-          a.d-inline id="drawer_close" href="#" 
+          a.d-inline id="drawer_close_#{f.object.id}" href="#" 
             i.material-icons-outlined close
       .row.mt-5
         h6.ml-4 Description
