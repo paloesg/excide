@@ -142,6 +142,7 @@ Rails.application.routes.draw do
       resources :notes
       get "/members", to: 'outlets#members', as: :members
       get "/assigned_tasks", to: 'outlets#assigned_tasks', as: :assigned_tasks
+      get "/edit_franchisee_settings", to: 'outlets#edit_franchisee_setting', as: :edit_franchisee_setting
     end
     resources :users
     get '/communication_hub', to: 'notes#communication_hub', as: :communication_hub

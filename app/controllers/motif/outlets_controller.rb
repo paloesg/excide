@@ -48,12 +48,16 @@ class Motif::OutletsController < ApplicationController
     build_addresses
   end
 
+  def edit_franchisee_setting
+    @outlet = Outlet.find(params[:outlet_id])
+  end
+
   def update
     if @outlet.update(outlet_params)
       if outlet_params[:report_url].present?
         redirect_to motif_edit_report_path, notice: 'Successfully updated report link.'
       else
-        redirect_to edit_motif_outlet_path(@outlet), notice: 'Successfully updated franchisee profile'
+        current_user.has_role?(:franchisee_owner, @company) ? (redirect_to motif_outlet_edit_franchisee_setting_path(current_user.active_outlet), notice: "Successfully edited outlet information") : (redirect_to edit_motif_outlet_path(@outlet), notice: 'Successfully updated franchisee profile')
       end
     else
       redirect_to motif_root_path, alert: 'Updating franchisee profile has failed. Please contact admin for advise.'

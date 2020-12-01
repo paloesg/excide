@@ -1,0 +1,32 @@
+= form_for @outlet, url: motif_outlet_path(@outlet) do |f|
+  .row.mb-3.mt-5.ml-3
+    .col-sm-12
+      .btn-toolbar.float-right.ml-5
+        = link_to 'Preview', '#', role: 'button', class: 'btn btn-white border border-secondary text-primary mr-3 px-5'
+        = f.submit 'Save', class: 'btn btn-primary mr-3 px-5'
+      h3 Outlet Information
+  .row.mb-3.mt-5.ml-3
+    .col-sm-12
+      .form-group
+        = f.label :name, 'Outlet Name', class: "label-bold"
+        = f.text_field :name, class: 'form-control'
+      = f.fields_for :address do |a|
+        .form-group
+          = a.label :line_1, "HQ Address", class: "label-bold"
+          = a.text_field :line_1, placeholder: 'Location address', class: 'form-control col-sm-12 mr-2'
+        .form-group
+          = a.label :country, class: "col-sm-5 pl-0 label-bold"
+          = a.label :city, class: "col-sm-5 pl-2 label-bold"
+          .form-inline
+            = a.text_field :country, placeholder: 'Country', class: 'form-control col-sm-5 mr-3'
+            = a.text_field :city, placeholder: 'City', class: 'form-control col-sm-5'
+      .form-group
+        = f.label :contact, "Telephone", class: "label-bold"
+        = f.text_field :contact, class: 'form-control'
+  .row.mb-3.mt-5.ml-3
+    .col-sm-12
+      = f.label :header_image, "Logo", class: "label-bold"
+      .form-group
+        .form-inline
+          = f.file_field :header_image
+          = image_tag(@outlet.header_image, class: 'outlet-header-preview') if @outlet.header_image.attached?
