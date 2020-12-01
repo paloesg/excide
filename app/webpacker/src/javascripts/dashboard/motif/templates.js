@@ -28,7 +28,7 @@ $(document).on("turbolinks:load", function () {
     // Add an ID to the drawer table row that links to the drawer ID (this is so we can remove the drawer when removing the nested form)
     obj.attr('id', "drawer_task_" + standardizedCurrentTime);
     // Set current time as data attribute drawer to activate the drawer
-    obj.data("drawer", standardizedCurrentTime);
+    obj.attr("data-drawer", standardizedCurrentTime);
     // Find the nearest td descendant and add drawer toggle ID to it based on the current time 
     obj.find("td.drawer-toggle").each(function(index){
       $( this ).attr('id', 'drawer_toggle_' + standardizedCurrentTime + '_' + index);
@@ -53,6 +53,8 @@ $(document).on("turbolinks:load", function () {
           .replace("[tasks_attributes][", "[tasks_attributes][" + standardizedCurrentTime);
       });
     });
+    // Add an ID to the close button with the data drawer after initializing the drawer
+    $("#drawer_task_" + standardizedCurrentTime).find("a").attr('id', 'drawer_close_' + standardizedCurrentTime);
     initializeDrawer();
     return false;
   });
