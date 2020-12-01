@@ -24,6 +24,7 @@ class CompaniesController < ApplicationController
     if @company.save
       set_company_roles
       set_default_folders
+      set_default_templates
       current_user.update(company: @company)
       # Redirect based on the products that was added to the company
       if @company.products.length >= 2
@@ -93,6 +94,18 @@ class CompaniesController < ApplicationController
         # Create full access permission for franchisor
         Permission.create(user_id: current_user.id, permissible: folder, can_write: true, can_view: true, can_download: true)
       end
+    end
+  end
+
+  def set_default_templates
+    # Create default folders with permissions when creating a franchise
+    if @company.products.include? "motif"
+      @general_onboarding_template = Template.find_by(title: "Onboarding (General)").deep_clone include: { sections: :tasks }
+      # Change the general template name to prevent crashing with general template
+      @general_onboarding_template.title = "Onboarding - #{@company.name}"
+      # Link the cloned general template with company
+      @general_onboarding_template.company = @company
+      @general_onboarding_template.save
     end
   end
 
