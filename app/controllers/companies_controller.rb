@@ -23,6 +23,7 @@ class CompaniesController < ApplicationController
     @company.products = params[:products]
     if @company.save
       set_company_roles
+      set_default_folders
       current_user.update(company: @company)
       # Redirect based on the products that was added to the company
       if @company.products.length >= 2
@@ -79,6 +80,20 @@ class CompaniesController < ApplicationController
     @company.consultant.add_role(:consultant, @company) if @company.consultant.present?
     @company.associate.add_role(:associate, @company) if @company.associate.present?
     @company.shared_service.add_role(:shared_service, @company) if @company.shared_service.present?
+  end
+
+  def set_default_folders
+    # Create default folders with permissions when creating a franchise
+    if @company.products.include? "motif"
+      motif_default_folder_names = ["Financial", "Legal & Policy", "Social Media/App", "Media Repository (Training Videos & Materials)", "Operational", "Dialogue & Discussions", "Manuals & SOPs"]
+      # Get all the new folder instances
+      motif_default_folders = motif_default_folder_names.map{|name| Folder.create(name: name, company: @company)}
+      # Current user should have access permission to default folders
+      motif_default_folders.each do |folder|
+        # Create full access permission for franchisor
+        Permission.create(user_id: current_user.id, permissible: folder, can_write: true, can_view: true, can_download: true)
+      end
+    end
   end
 
   def remove_company_roles
