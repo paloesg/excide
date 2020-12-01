@@ -98,14 +98,25 @@ class CompaniesController < ApplicationController
   end
 
   def set_default_templates
-    # Create default folders with permissions when creating a franchise
-    if @company.products.include? "motif"
-      @general_onboarding_template = Template.find_by(title: "Onboarding (General)").deep_clone include: { sections: :tasks }
+    general_onboarding_template = Template.find_by(title: "Onboarding (General)", company_id: nil)
+    general_site_audit_template = Template.find_by(title: "Site Audit (General)", company_id: nil)
+    general_royalty_collection_template = Template.find_by(title: "Royalty Collection (General)", company_id: nil)
+    # Create default folders with permissions when creating a franchise and the general templates exist
+    if @company.products.include? "motif" and general_onboarding_template.present? and general_site_audit_template.present? and general_royalty_collection_template.present?
+      @cloned_onboarding_template = general_onboarding_template.deep_clone include: { sections: :tasks }
+      @cloned_site_audit_template = general_site_audit_template.deep_clone include: { sections: :tasks }
+      @cloned_royalty_collection_template = general_royalty_collection_template.deep_clone include: { sections: :tasks }
       # Change the general template name to prevent crashing with general template
-      @general_onboarding_template.title = "Onboarding - #{@company.name}"
+      @cloned_onboarding_template.title = "Onboarding - #{@company.name}"
+      @cloned_site_audit_template.title = "Site Audit - #{@company.name}"
+      @cloned_royalty_collection_template.title = "Royalty Collection - #{@company.name}"
       # Link the cloned general template with company
-      @general_onboarding_template.company = @company
-      @general_onboarding_template.save
+      @cloned_onboarding_template.company = @company
+      @cloned_site_audit_template.company = @company
+      @cloned_royalty_collection_template.company = @company
+      @cloned_onboarding_template.save
+      @cloned_site_audit_template.save
+      @cloned_royalty_collection_template.save
     end
   end
 
