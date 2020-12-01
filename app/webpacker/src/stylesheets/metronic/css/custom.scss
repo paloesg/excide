@@ -180,6 +180,10 @@ td.day.has-events.fc-day-top.fc-past {
   width: 90% !important;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 $theme-colors: (
