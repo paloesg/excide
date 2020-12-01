@@ -4,7 +4,7 @@
       h5.mr-3.mt-2 = task.instructions
     .col-md-6
       .float-right.ml-3.mt-2
-        a.d-inline id="drawer_close" href="#" 
+        a.d-inline id="task_close_#{wfa.id}" href="#" 
           i.material-icons-outlined close
       .float-right.mx-3.mt-2
         = link_to motif_outlet_notes_path(outlet_id: wf.outlet.id, wfa_id: wfa.id), target: "_blank" do
