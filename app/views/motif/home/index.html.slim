@@ -27,7 +27,7 @@
               h5.card-title Messages
               .bg-light.d-flex.p-5.align-items-center.rounded
                 = image_pack_tag 'media/src/images/motif/motif-message.svg'
-                p.card-text.ml-4 = "You have #{@notes.length} unread messages"
+                p.card-text.ml-4 = "You have #{@unread_notes.present? ? @unread_notes.length : "0"} unread messages"
         .col-sm-4
           .card
             .card-body
@@ -145,7 +145,7 @@
               h5.card-title.mb-5 Messages
               .bg-light.d-flex.p-5.align-items-center.rounded
                 = image_pack_tag 'media/src/images/motif/motif-message.svg'
-                p.card-text.ml-4 You have #{current_user.active_outlet.notes.length} unread messages
+                p.card-text.ml-4 You have #{@franchisee_unread_notes.present? ? @franchisee_unread_notes.length : "0"} unread messages
               br
               .d-flex.align-self-center
                 = link_to "Go to Communication Hub", motif_outlet_notes_path(current_user.active_outlet), target: "_blank", class: 'h5 text-primary mt-1'
