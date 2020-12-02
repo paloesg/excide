@@ -8,7 +8,11 @@ class Motif::UsersController < ApplicationController
 
   def index
     @roles = @company_roles
-    @users = User.where(company: @company).order(:id).uniq
+    if params[:outlet_id].present?
+      @users = Outlet.find_by(id: params[:outlet_id]).users
+    else
+      @users = User.where(company: @company).order(:id).uniq
+    end
     @user = User.new
   end
 
