@@ -1,10 +1,10 @@
 class TemplatePolicy < ApplicationPolicy
   def index?
-    user_admin?
+    user_admin_or_franchisor?
   end
 
   def create?
-    user_admin?
+    user_admin_or_franchisor?
   end
 
   def new?
@@ -12,7 +12,7 @@ class TemplatePolicy < ApplicationPolicy
   end
 
   def update?
-    user_admin?
+    create?
   end
 
   def edit?
@@ -20,11 +20,11 @@ class TemplatePolicy < ApplicationPolicy
   end
 
   def destroy?
-    user_admin?
+    create?
   end
   
   def destroy_section?
-    user_admin?
+    create?
   end
 
   def check_template?
@@ -41,7 +41,7 @@ class TemplatePolicy < ApplicationPolicy
   end
 
   private
-  def user_admin?
-    user.has_role?(:admin, user.company) or user.has_role? :superadmin
+  def user_admin_or_franchisor?
+    user.has_role?(:admin, user.company) or user.has_role? :superadmin or user.has_role?(:franchisor, user.company)
   end
 end

@@ -46,13 +46,16 @@
         li.nav-link.mx-3
           = link_to motif_outlet_notes_path(current_user.active_outlet), target: "_blank" do
             i.material-icons-outlined comment
+        li.nav-link.mx-3
+          = link_to motif_outlet_edit_franchisee_setting_path(current_user.active_outlet), target: "_blank" do
+            i.material-icons-outlined settings
       - else
         li.nav-link.mx-3
           = link_to motif_communication_hub_path, target: "_blank" do
             i.material-icons-outlined comment
-      li.nav-link.mx-3
-        = link_to edit_motif_company_path(current_user.company), target: "_blank" do
-          i.material-icons-outlined settings
+        li.nav-link.mx-3
+          = link_to edit_motif_company_path(current_user.company), target: "_blank" do
+            i.material-icons-outlined settings
       .dropdown.ml-3
         a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
           = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
