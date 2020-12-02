@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_25_021522) do
+ActiveRecord::Schema.define(version: 2020_12_02_015310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -651,6 +651,7 @@ ActiveRecord::Schema.define(version: 2020_11_25_021522) do
     t.string "stripe_card_token"
     t.uuid "company_id"
     t.uuid "outlet_id"
+    t.datetime "last_click_comm_hub"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["outlet_id"], name: "index_users_on_outlet_id"
