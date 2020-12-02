@@ -54,8 +54,8 @@
                 span.align-middle = wfa.documents.length
               td.text-center
                 span.mr-4
-                  / Only show the bell on current action
-                  - if wfa.current_action?
+                  / Only show the bell on when franchisor is notified
+                  - if wfa.notify_status?
                     = link_to motif_workflow_notify_franchisor_path(workflow_id: @workflow.id, wfa_id: wfa.id) do
                       i.material-icons-outlined.mr-1.orange-bell-notification notifications_active
               td.text-center width="5%"

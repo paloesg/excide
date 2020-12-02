@@ -74,8 +74,11 @@ class Motif::WorkflowsController < ApplicationController
       NotificationMailer.motif_notify_franchisor(franchisor, current_user, @wfa, link_address).deliver_later
     end
     respond_to do |format|
-      format.html { redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet.id, id: @workflow.id), notice: "You've notified the franchisor. Please wait for the franchisor to reply." }
-      format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      # Update workflow_actions notify_status to true, indicating franchisor has been notified
+      if @wfa.update(notify_status: true)
+        format.html { redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet.id, id: @workflow.id), notice: "You've notified the franchisor. Please wait for the franchisor to reply." }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
     end
   end
 
