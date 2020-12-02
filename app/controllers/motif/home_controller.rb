@@ -17,8 +17,8 @@ class Motif::HomeController < ApplicationController
     @outstanding_onboarding_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "onboarding"}}).where.not(completed: true).order(:deadline).includes(:task)
     @outstanding_site_audit_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "site_audit"}}).where.not(completed: true).order(:deadline).includes(:task)
     @outstanding_royalty_collection_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "royalty_collection"}}).where.not(completed: true).order(:deadline).includes(:task)
-    # Find total messages (notes)
-    @notes = @company.outlets.map{ |o| o.notes}.flatten
+    # Find total unread messages (notes). Currently, the system stores the user's last_click into comm hub in database. To find unread message, compare the note's created_at date. It should be larger than user's last_click to mimic an unread message.
+    @unread_notes = @company.outlets.map{ |o| o.notes.includes(:notable).where(notable_id: o.id).where('created_at > ?', current_user.last_click_comm_hub)}.flatten
   end
   
   # Change user's outlet for franchisee with multiple outlets
