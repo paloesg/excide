@@ -1,17 +1,21 @@
 .offcanvas.offcanvas-right.offcanvas-top.p-10.overflow-auto id="task_#{wfa.id}"
   .row.mb-5
-    .col-md-6
-      h5.mr-3.mt-2 = task.instructions
-    .col-md-6
-      .float-right.ml-3.mt-2
+    .col-md-12
+      .float-right.mt-2
         a.d-inline id="task_close_#{wfa.id}" href="#" 
           i.material-icons-outlined close
-      .float-right.mx-3.mt-2
+      .float-right.mx-4.mt-2
         = link_to motif_outlet_notes_path(outlet_id: wf.outlet.id, wfa_id: wfa.id), target: "_blank" do
           i.material-icons-outlined comment
-      .float-right.mx-3.mt-2
+      .float-right.border.rounded.p-1
         / Disable checkbox if current user is franchisor
-        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisor, @user.company)), class: 'border mt-1'
+        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisor, @user.company)), class: "m-2 dropdown-pointer"
+      .float-right.mx-4.mt-2
+        = link_to motif_workflow_notify_franchisor_path(workflow_id: wf.id, wfa_id: wfa.id) do
+          i.material-icons-outlined.mr-1 notifications_active
+  .row.my-5
+    .col-md-12
+      h4.mr-3.mt-2 = task.instructions
   .row.my-5
     .col-md-12
       h6 Description
