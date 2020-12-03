@@ -1,17 +1,21 @@
 .offcanvas.offcanvas-right.offcanvas-top.p-10.overflow-auto id="task_#{wfa.id}"
   .row.mb-5
-    .col-md-6
-      h5.mr-3.mt-2 = task.instructions
-    .col-md-6
-      .float-right.ml-3.mt-2
+    .col-md-12
+      .float-right.mt-2
         a.d-inline id="task_close_#{wfa.id}" href="#" 
           i.material-icons-outlined close
-      .float-right.mx-3.mt-2
+      .float-right.mx-4.mt-2
         = link_to motif_outlet_notes_path(outlet_id: wf.outlet.id, wfa_id: wfa.id), target: "_blank" do
           i.material-icons-outlined comment
-      .float-right.mx-3.mt-2
+      .float-right.border.rounded.p-1
         / Disable checkbox if current user is franchisor
-        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisor, @user.company)), class: 'border mt-1'
+        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisee_owner, @user.company)), class: "m-2 #{wfa.completed or @user.has_role?(:franchisee_owner, @user.company) ? "" : "dropdown-pointer"}"
+      .float-right.mx-4.mt-2
+        = link_to motif_workflow_notify_franchisor_path(workflow_id: wf.id, wfa_id: wfa.id) do
+          i.material-icons-outlined.mr-1 class="#{ wfa.notify_status? ? "orange-bell-notification" : ""}" notifications_active
+  .row.my-5
+    .col-md-12
+      h4.mr-3.mt-2 = task.instructions
   .row.my-5
     .col-md-12
       h6 Description
@@ -39,16 +43,12 @@
           - color = "text-muted"
       hr
   .row.my-5
-    .col-md-12
-      h6 Links
-      hr
-  .row.my-5
     .col-md-5
       h6 Attachments
     .col-md-5
       h6 Uploaded On
     .col-md-2
-      h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id)
+      h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id), class: "text-primary"
 
   - @documents.where(workflow_action_id: wfa.id).each do |d|
     .row.my-5
@@ -58,4 +58,7 @@
       / Uploaded date
       .col-md-5
         = d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p")
+      .col-md-2
+        = link_to rails_blob_path(d.raw_file, disposition: "attachment") do
+          i.material-icons-outlined.align-middle.text-primary download
 

@@ -54,7 +54,7 @@ class Motif::WorkflowsController < ApplicationController
     @workflow = Workflow.find(params[:workflow_id])
     authorize @workflow
     respond_to do |format|
-      if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id, current_action: false)
+      if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id, current_action: false, notify_status: false)
         format.json { render json: @action.completed, status: :ok }
         flash[:notice] = "You have successfully completed all outstanding items for your current task." if @action.all_actions_task_group_completed?
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
@@ -74,8 +74,11 @@ class Motif::WorkflowsController < ApplicationController
       NotificationMailer.motif_notify_franchisor(franchisor, current_user, @wfa, link_address).deliver_later
     end
     respond_to do |format|
-      format.html { redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet.id, id: @workflow.id), notice: "You've notified the franchisor. Please wait for the franchisor to reply." }
-      format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      # Update workflow_actions notify_status to true, indicating franchisor has been notified
+      if @wfa.update(notify_status: true)
+        format.html { redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet.id, id: @workflow.id), notice: "You've notified the franchisor. Please wait for the franchisor to reply." }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
     end
   end
 
