@@ -43,16 +43,12 @@
           - color = "text-muted"
       hr
   .row.my-5
-    .col-md-12
-      h6 Links
-      hr
-  .row.my-5
     .col-md-5
       h6 Attachments
     .col-md-5
       h6 Uploaded On
     .col-md-2
-      h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id)
+      h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id), class: "text-primary"
 
   - @documents.where(workflow_action_id: wfa.id).each do |d|
     .row.my-5
@@ -62,4 +58,7 @@
       / Uploaded date
       .col-md-5
         = d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p")
+      .col-md-2
+        = link_to rails_blob_path(d.raw_file, disposition: "attachment") do
+          i.material-icons-outlined.align-middle.text-primary download
 
