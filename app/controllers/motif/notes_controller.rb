@@ -20,7 +20,7 @@ class Motif::NotesController < ApplicationController
     # Save wfa reference to note if the note comes from workflow action
     @note.workflow_action = WorkflowAction.find(params[:wfa_id]) if params[:wfa_id].present?
     if @note.save
-      ActionCable.server.broadcast("note_channel", content: @note.content, user_name: @note.user.full_name, created_at: @note.created_at.strftime("%d %b %Y"), outlet_id: @note.notable.id,  wf_id: @note.workflow_action&.workflow&.id, tem_title: @note.workflow_action&.workflow&.template&.title, task: @note.workflow_action&.task&.instructions)
+      NoteChannel.broadcast_to(@note.notable, content: @note.content, user_name: @note.user.full_name, created_at: @note.created_at.strftime("%d %b %Y"), outlet_id: @note.notable.id,  wf_id: @note.workflow_action&.workflow&.id, tem_title: @note.workflow_action&.workflow&.template&.title, task: @note.workflow_action&.task&.instructions)
     end
   end
 
