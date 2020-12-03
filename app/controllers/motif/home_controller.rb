@@ -17,10 +17,10 @@ class Motif::HomeController < ApplicationController
     @outstanding_onboarding_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "onboarding"}}).where.not(completed: true).order(:deadline).includes(:task)
     @outstanding_site_audit_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "site_audit"}}).where.not(completed: true).order(:deadline).includes(:task)
     @outstanding_royalty_collection_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "royalty_collection"}}).where.not(completed: true).order(:deadline).includes(:task)
-    # Find total unread messages (notes). Currently, the system stores the user's last_click into comm hub in database. To find unread message, compare the note's created_at date. It should be larger than user's last_click to mimic an unread message.
-    @unread_notes = @company.outlets.map{ |o| o.notes.includes(:notable).where(notable_id: o.id).where('created_at > ?', current_user.last_click_comm_hub)}.flatten
+    # The system stores the user's last_click into comm hub in database, compare the note's created_at date with the last_click. It should be larger than user's last_click to mimic an unread message. Reject if note's user is current_user
+    @unread_notes = @company.outlets.map{ |o| o.notes.includes(:notable).where(notable_id: o.id).where('created_at > ?', current_user.last_click_comm_hub).reject{ |note| note.user == current_user }}.flatten
     # Check if active outlet present since franchisor wont have active outlet
-    @franchisee_unread_notes = current_user.active_outlet.notes.where('created_at > ?', current_user.last_click_comm_hub) if current_user.active_outlet.present?
+    @franchisee_unread_notes = current_user.active_outlet.notes.where('created_at > ?', current_user.last_click_comm_hub).reject{ |note| note.user == current_user } if current_user.active_outlet.present?
   end
   
   # Change user's outlet for franchisee with multiple outlets
