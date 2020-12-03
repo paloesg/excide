@@ -43,10 +43,11 @@
               = f.text_field :content, placeholder: "Write your comments...", class: "form-control chat-input", id: "chat-message"
           .row.m-3
             .col-md-10
-              .badge.badge-motif.p-2
-                span.mr-3
-                  i.material-icons-outlined.align-middle assignment
-                span.text-dark = "#{WorkflowAction.find(params[:wfa_id]).task.instructions}" if params[:wfa_id].present?
+              - if params[:wfa_id].present?
+                .badge.badge-motif.p-2
+                  span.mr-3
+                    i.material-icons-outlined.align-middle assignment
+                  span.text-dark = "#{WorkflowAction.find(params[:wfa_id]).task.instructions}"
             .col-md-2
               = button_tag(type: "submit", class: "btn btn-primary chat-input rounded float-right sendButton") do
                 span
