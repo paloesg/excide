@@ -9,7 +9,7 @@ class Motif::NotesController < ApplicationController
   end
 
   def index
-    @notes = Note.includes(:notable).where(notable_id: @outlet.id)
+    @notes = Note.includes(:notable).where(notable_id: @outlet.id).order(created_at: :asc)
     @note = Note.new
   end
 

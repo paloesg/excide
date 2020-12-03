@@ -43,6 +43,7 @@ require("./motif/remarks")
 require("./motif/settings")
 require("./motif/templates")
 require("./motif/workflows")
+require("./motif/note")
 
 // Import Uppy drag-and-drop
 require("./components/uppy");
