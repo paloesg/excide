@@ -59,7 +59,7 @@
         .col-sm-4
           .card
             .card-body
-              h5.card-title Side Audit
+              h5.card-title Site Audit
               -if @site_audit_workflows.empty?
                 .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
                   = image_pack_tag 'media/src/images/motif/motif-done.svg'
@@ -121,7 +121,7 @@
         .col-sm-5
           .card
             .card-body
-              h5.card-title.mb-5 Side Audit
+              h5.card-title.mb-5 Site Audit
               - if @site_audit_workflows.present?
                 .progress style=("height: 5px;")
                   .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@site_audit_workflows.last.progress}%")
