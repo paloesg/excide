@@ -15,7 +15,6 @@ $(document).on('turbolinks:load', function () {
     },
 
     received(data) {
-      console.log("What is data received: ", data)
       // If empty state is present, remove it before appending the comments
       if ($('.empty-note').length) {
         $('.empty-note').empty();
