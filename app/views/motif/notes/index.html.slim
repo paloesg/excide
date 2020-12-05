@@ -9,30 +9,46 @@
       span.ml-4.align-middle
         i.material-icons-outlined search
   hr
-  - if @notes.empty?
-    .empty-note
-      = render 'empty_notes'
-  - else
-    - @notes.each do |note|
-      .row.m-2.p-5
-        .col-md-1
-          = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comment-user-icon mb-3'
-        .col-md-11
-          .row
-            span.h2.font-weight-boldest.mr-4 = note.user.full_name
-            span.text-muted.mt-2 = note.created_at.strftime("%d %b %Y")
-          - if note.workflow_action.present?
+  .chat
+    - if @notes.empty?
+      .empty-note
+        = render 'empty_notes'
+    - else
+      - @notes.each do |note|
+        .row.m-2.p-5
+          .col-md-1
+            = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comment-user-icon mb-3'
+          .col-md-11
+            .row
+              span.h2.font-weight-boldest.mr-4 = note.user.full_name
+              span.text-muted.mt-2 = note.created_at.strftime("%d %b %Y")
             .row.mt-5
-              = link_to "#{note.workflow_action.workflow.template.title} - #{note.workflow_action.task.instructions}", motif_outlet_workflow_path(outlet_id: note.notable.id, id: note.workflow_action.workflow.id), target: "_blank", class: "text-primary comment-font-size"
-          .row.mt-5
-            p.comment-font-size = note.content
-  #comments
+              p.comment-font-size = note.content
+            - if note.workflow_action.present?
+              .row.mt-5
+                .badge.badge-motif.p-2.rounded
+                  span.mr-3
+                    i.material-icons-outlined.align-middle assignment
+                  = link_to "#{note.workflow_action.workflow.template.title} - #{note.workflow_action.task.instructions}", motif_outlet_workflow_path(outlet_id: note.notable.id, id: note.workflow_action.workflow.id), target: "_blank", class: "text-primary tag-font-size"
+            
+    #comments
   / params[:wfa_id] comes from note inside workflow action
-  = form_for @note, url: motif_outlet_notes_path(@outlet.id, wfa_id: params[:wfa_id]), remote: true do |f|
-    .row.m-3
+  hr
+  #chat-bottom-box.rounded
+    .row
       .col-md-12
-        .form-inline
-          = f.text_field :content, class: "form-control col-md-10 mr-5"
-          = button_tag(type: "submit", class: "btn btn-secondary col-md-1") do
-            span
-              i.material-icons-outlined send
+        = form_for @note, url: motif_outlet_notes_path(@outlet.id, wfa_id: params[:wfa_id]), remote: true do |f|
+          .row.m-3
+            .col-md-12
+              = f.text_field :content, placeholder: "Write your comments...", class: "form-control chat-input", id: "chat-message"
+          .row.m-3
+            .col-md-10
+              - if params[:wfa_id].present?
+                .badge.badge-motif.p-2
+                  span.mr-3
+                    i.material-icons-outlined.align-middle assignment
+                  span.text-dark = "#{WorkflowAction.find(params[:wfa_id]).task.instructions}"
+            .col-md-2
+              = button_tag(type: "submit", class: "btn btn-primary chat-input rounded float-right sendButton") do
+                span
+                  i.material-icons-outlined send
