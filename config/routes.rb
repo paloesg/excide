@@ -133,6 +133,7 @@ Rails.application.routes.draw do
     resources :workflows, except: :show do
       post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
       get '/wfa/:wfa_id/notify_franchisor', to: 'workflows#notify_franchisor', as: :notify_franchisor
+      get '/activities', to: 'workflows#activities', as: :activities
     end
     resources :franchisees do
       resources :outlets, except: :create
