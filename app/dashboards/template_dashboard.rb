@@ -25,6 +25,7 @@ class TemplateDashboard < Administrate::BaseDashboard
     next_workflow_date: Field::DateTime,
     start_date: Field::DateTime,
     end_date: Field::DateTime,
+    template_type: EnumField,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -60,7 +61,8 @@ class TemplateDashboard < Administrate::BaseDashboard
     :freq_unit,
     :next_workflow_date,
     :start_date,
-    :end_date
+    :end_date,
+    :template_type
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -77,7 +79,8 @@ class TemplateDashboard < Administrate::BaseDashboard
     :freq_unit,
     :next_workflow_date,
     :start_date,
-    :end_date
+    :end_date,
+    :template_type
   ].freeze
 
   # Overwrite this method to customize how templates are displayed

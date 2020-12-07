@@ -23,6 +23,8 @@ class CompaniesController < ApplicationController
     @company.products = params[:products]
     if @company.save
       set_company_roles
+      set_default_folders
+      set_default_templates
       current_user.update(company: @company)
       # Redirect based on the products that was added to the company
       if @company.products.length >= 2
@@ -79,6 +81,43 @@ class CompaniesController < ApplicationController
     @company.consultant.add_role(:consultant, @company) if @company.consultant.present?
     @company.associate.add_role(:associate, @company) if @company.associate.present?
     @company.shared_service.add_role(:shared_service, @company) if @company.shared_service.present?
+  end
+
+  def set_default_folders
+    # Create default folders with permissions when creating a franchise
+    if @company.products.include? "motif"
+      motif_default_folder_names = ["Financial", "Legal & Policy", "Social Media/App", "Media Repository (Training Videos & Materials)", "Operational", "Dialogue & Discussions", "Manuals & SOPs"]
+      # Get all the new folder instances
+      motif_default_folders = motif_default_folder_names.map{|name| Folder.create(name: name, company: @company)}
+      # Current user should have access permission to default folders
+      motif_default_folders.each do |folder|
+        # Create full access permission for franchisor
+        Permission.create(user_id: current_user.id, permissible: folder, can_write: true, can_view: true, can_download: true)
+      end
+    end
+  end
+
+  def set_default_templates
+    general_onboarding_template = Template.find_by(title: "Onboarding (General)", company_id: nil)
+    general_site_audit_template = Template.find_by(title: "Site Audit (General)", company_id: nil)
+    general_royalty_collection_template = Template.find_by(title: "Royalty Collection (General)", company_id: nil)
+    # Create default folders with permissions when creating a franchise and the general templates exist
+    if @company.products.include? "motif" and general_onboarding_template.present? and general_site_audit_template.present? and general_royalty_collection_template.present?
+      @cloned_onboarding_template = general_onboarding_template.deep_clone include: { sections: :tasks }
+      @cloned_site_audit_template = general_site_audit_template.deep_clone include: { sections: :tasks }
+      @cloned_royalty_collection_template = general_royalty_collection_template.deep_clone include: { sections: :tasks }
+      # Change the general template name to prevent crashing with general template
+      @cloned_onboarding_template.title = "Onboarding - #{@company.name}"
+      @cloned_site_audit_template.title = "Site Audit - #{@company.name}"
+      @cloned_royalty_collection_template.title = "Royalty Collection - #{@company.name}"
+      # Link the cloned general template with company
+      @cloned_onboarding_template.company = @company
+      @cloned_site_audit_template.company = @company
+      @cloned_royalty_collection_template.company = @company
+      @cloned_onboarding_template.save
+      @cloned_site_audit_template.save
+      @cloned_royalty_collection_template.save
+    end
   end
 
   def remove_company_roles
