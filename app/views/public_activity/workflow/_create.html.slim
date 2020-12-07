@@ -3,7 +3,9 @@
     = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comment-user-icon mb-3'
   .col-md-11
     .row
+      span.text-muted = activity.created_at.strftime("%d %b %Y %H:%M")
+    .row.mt-1
       span.h6.font-weight-boldest.mr-4 = activity.owner&.full_name || "No name"
-    .row.mt-2
+    .row.mt-1
       span.text-dark.mt-2
         = "Created checklist."
