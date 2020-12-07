@@ -42,12 +42,12 @@
       / Only admin of company have access tab
       - if current_user.has_role?(:admin, @company) or current_user.has_role?(:franchisor, @company)
         .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{permissible.id}" role="tabpanel"
-          .form-row.align-items-center.border-bottom
-            .col-md-1
-              span.mr-3
-                i.material-icons-outlined search
-            .col-md-9
-              input.form-control.border-0.col type="search" placeholder="Search..."
+          / .form-row.align-items-center.border-bottom
+            / .col-md-1
+            /   span.mr-3
+            /     i.material-icons-outlined search
+            / .col-md-9
+            /   input.form-control.border-0.col type="search" placeholder="Search..."
           - @users.each do |user|
             .row.my-5
               .col-md-1
