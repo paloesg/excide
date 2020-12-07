@@ -66,19 +66,17 @@ class Motif::DocumentsController < ApplicationController
     # create permission on creation of document for the user that uploaded it
     Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     respond_to do |format|
-      workflow_action = WorkflowAction.find(params[:workflow_action_id])
-      @workflow = workflow_action.workflow
-      @template = workflow_action.workflow.template
-      # Redirect when generated documents from workflow actions
-      if params[:workflow_action_id].present?
-        format.html { 
-          params[:workflow_action_id].present? ? (redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet.id, id: @workflow.id), notice: "File was successfully uploaded")
+      if params[:folder_id].present?
+        # Redirect when generated documents inside folders
+        format.html { redirect_to motif_folder_path(id: params[:folder_id]), notice: "File(s) successfully uploaded into folder."  }
+        format.json { render json: @files.to_json }
+      else
+        workflow_action = WorkflowAction.find(params[:workflow_action_id]) if params[:workflow_action_id].present?
+        format.html {
+          # Redirect to workflow page if wfa_id is present. Else go to documents INDEX page
+          params[:workflow_action_id].present? ? (redirect_to motif_outlet_workflow_path(outlet_id: workflow_action.workflow.outlet.id, id: workflow_action.workflow.id), notice: "File was successfully uploaded")
             : (redirect_to motif_documents_path, notice: "File was successfully uploaded")
         }
-      # Redirect when generated documents inside folders
-      elsif params[:folder_id].present?
-        format.html { params[:folder_id].present? ? (redirect_to motif_folder_path(id: params[:folder_id])) : (redirect_to motif_documents_path files: @files) }
-        format.json { render json: @files.to_json }
       end
     end
   end
