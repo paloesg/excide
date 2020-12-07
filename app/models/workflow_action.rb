@@ -5,7 +5,8 @@ class WorkflowAction < ApplicationRecord
           recipient: ->(_controller, model) { model&.workflow },
           params: {
             instructions: ->(_controller, model) { model&.task&.instructions },
-            completed: ->(_controller, model) { model&.completed? }
+            completed: ->(_controller, model) { model&.completed? },
+            notify_franchisor: ->(_controller, model) { model&.notify_status? }
           }
 
   after_save :clear_reminders, if: :ordered_workflow_task_completed?

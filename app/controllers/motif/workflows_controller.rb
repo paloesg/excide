@@ -2,6 +2,7 @@ class Motif::WorkflowsController < ApplicationController
   layout 'motif/application'
   before_action :set_company
   before_action :set_workflow, only: [:show, :update, :destroy]
+  before_action :set_workflow_by_workflow_id, only: [:toggle, :notify_franchisor, :activities]
 
   def index
     # For INDEX workflow page
@@ -51,7 +52,6 @@ class Motif::WorkflowsController < ApplicationController
 
   def toggle
     @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_id])
-    @workflow = Workflow.find(params[:workflow_id])
     authorize @workflow
     respond_to do |format|
       if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id, current_action: false, notify_status: false)
@@ -65,7 +65,6 @@ class Motif::WorkflowsController < ApplicationController
   end
 
   def notify_franchisor
-    @workflow = Workflow.find(params[:workflow_id])
     @wfa = WorkflowAction.find_by(id: params[:wfa_id])
     link_address = "#{ENV['ASSET_HOST'] + motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @workflow.id)}"
     # find franchisor(s) from that company
@@ -92,6 +91,10 @@ class Motif::WorkflowsController < ApplicationController
     end
   end
 
+  def activities
+    @activities = PublicActivity::Activity.includes(:owner, :recipient).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
+  end
+
   private
 
   def set_company
@@ -101,6 +104,11 @@ class Motif::WorkflowsController < ApplicationController
 
   def set_workflow
     @workflow = Workflow.find(params[:id])
+  end
+
+  def set_workflow_by_workflow_id
+    # For nested routes inside workflow
+    @workflow = Workflow.find(params[:workflow_id])
   end
 
   def workflow_params
