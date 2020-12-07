@@ -32,8 +32,8 @@
               .col-md-12
                 / params[:id] is folder's ID. It is to account for uploading files inside a folder (folder SHOW page)
                 .dashboard-body.motifMultipleDocumentsUpload#Dashboard data-folder="#{params[:id]}"
-    .float-right.mx-5.mt-2
-      i.material-icons-outlined more_horiz
+    / .float-right.mx-5.mt-2
+    /   i.material-icons-outlined more_horiz
     .float-right.mx-5.mt-2
       a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
         i.material-icons-outlined info
@@ -57,12 +57,12 @@
         span.mr-3
           i.material-icons-outlined.align-middle filter_list
         | Filters
-    .col-sm-11.text-muted
-      div.form-row.align-items-center
-        span.mr-3
-          i.material-icons-outlined.align-middle search
-        input.form-control.border-0.col type="search" placeholder="Search..."
-        div.col-8
+    / .col-sm-11.text-muted
+    /   div.form-row.align-items-center
+    /     span.mr-3
+    /       i.material-icons-outlined.align-middle search
+    /     input.form-control.border-0.col type="search" placeholder="Search..."
+    /     div.col-8
   .row.ml-4.my-5.align-items-center#filter-options
     .col.md-12
       span.mr-3
