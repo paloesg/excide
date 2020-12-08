@@ -14,6 +14,8 @@ class WorkflowAction < ApplicationRecord
   after_save :update_batch_progress, if: :workflow_has_batch?
   after_update :update_workflow_total_time_mins
 
+  before_destroy :untagged_all_notes
+
   belongs_to :task
   belongs_to :company
   belongs_to :workflow
@@ -212,5 +214,11 @@ class WorkflowAction < ApplicationRecord
     else
       false
     end
+  end
+
+  # Method is to unlink all notes with workflow_actions when workflow is deleted
+  def untagged_all_notes
+    # Loop for all the workflow actions that are going to be deleted
+    Note.includes(:workflow_action).where(workflow_action_id: self.id).update(workflow_action_id: nil)
   end
 end
