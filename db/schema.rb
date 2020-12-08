@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_02_091442) do
+ActiveRecord::Schema.define(version: 2020_12_08_092433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -383,6 +383,8 @@ ActiveRecord::Schema.define(version: 2020_12_02_091442) do
     t.integer "renewal_period_freq_unit"
     t.integer "renewal_period_freq_value"
     t.string "report_url"
+    t.string "franchise_licensee"
+    t.string "registered_address"
     t.index ["company_id"], name: "index_outlets_on_company_id"
   end
 

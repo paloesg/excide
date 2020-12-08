@@ -9,6 +9,8 @@ table.table.ml-4
     - @outlets.each do |outlet|
       tr
         td
-        td = outlet.name
-        td = outlet&.expiry_date || "No expiry date stated"
+          = link_to outlet&.franchise_licensee || "Add license name ", edit_motif_outlet_path(outlet.id), class: "text-primary"
+        td.font-weight-boldest 
+          = link_to outlet.name, edit_motif_outlet_path(outlet.id), class: "text-dark"
+        td = outlet&.expiry_date&.strftime("%d %b %Y") || "No expiry date stated"
         td
