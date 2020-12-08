@@ -1,0 +1,14 @@
+table.table.ml-4
+  thead
+    tr
+      th.text-muted Franchise Licensee
+      th.text-muted Outlet Name
+      th.text-muted Expire on
+      th 
+  tbody
+    - @outlets.each do |outlet|
+      tr
+        td
+        td = outlet.name
+        td = outlet&.expiry_date || "No expiry date stated"
+        td

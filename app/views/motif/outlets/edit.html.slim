@@ -19,6 +19,12 @@
         = f.label :name, "Outlet name", class: "label-bold"
         = f.text_field :name, placeholder: "Outlet name", class: 'form-control col-sm-5'
       .form-group
+        = label_tag "Licensee", "Franchise Licensee", class: "label-bold"
+        = text_field_tag :franchise_licensee, nil, placeholder: "Company", class: 'form-control col-sm-5'
+      .form-group
+        = label_tag "Registered Address", "Registered Address", class: "label-bold"
+        = text_field_tag :registered_address, nil, placeholder: "Registered address", class: 'form-control col-sm-5'
+      .form-group
         = f.fields_for :address do |a|
           = a.label :line_1, "Location address", class: "label-bold"
           .form-inline

@@ -31,26 +31,14 @@
       | Store and manage information about your franchisees and locations in 
       br
       | Franchisees.
-/ .row.ml-4.align-items-center
-/   .col
+.row.align-items-center
+  .col-sm-12.text-muted
+    = select_tag 'view', options_for_select([["Card View", "card"], ["Licensee List", "list"]]), include_blank: true, prompt: 'List view', required: true, class: 'select2 outlet-view-option', style: "width: 20%;"
 /     span.mr-3
 /       i.material-icons-outlined filter_list
 /     | Filters
 hr.mb-0
-.row.mt-5
-  - @outlets.each do |outlet|
-    .col-sm-4.mt-5
-      a href="#{edit_motif_outlet_path(id: outlet.id)}" target="_blank" class="custom-card"
-        .card.h-100.card-custom.card-stretch.gutter-b.card-view-outlet
-          = outlet.header_image.attached? ? (image_tag(outlet.header_image, class: 'card-img-top p-3')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "card-img-top p-3")
-          .card-body.pb-0
-            .row
-              h3 = outlet.name
-            .row.mt-5
-              = outlet.address&.line_1.present? ? "#{outlet.address.line_1}" : "No Address"
-            .row.mt-2
-              = pluralize(outlet.users.length, "user")
-            .row.mt-2 
-              = outlet.expiry_date.present? ? "Expires on #{outlet.expiry_date.strftime("%d %b %y")}" : "Add an expiry date"
-
-
+- if params[:view] == 'list'
+  = render 'licensee_view'
+- else
+  = render 'card_view'
