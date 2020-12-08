@@ -1,6 +1,7 @@
 .row.m-3
   .col-md-6
-    h1 = @workflow.outlet.name
+    h1 
+      = link_to @workflow.outlet.name, motif_outlets_path, class: 'text-dark font-weight-boldest'
     p #{@workflow.outlet.address&.line_1} #{@workflow.outlet.address&.postal_code}
   .col-md-6
     .float-right.mx-5.mt-3
@@ -28,7 +29,7 @@
         tbody
           - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
             tr.task-row data-action="#{wfa.id}"
-              td.pointer width="60%" id="task_toggle_#{wfa.id}_0"
+              td.pointer width="60%" id="task_toggle_#{wfa.id}_0" class="#{'text-muted' if wfa.completed?}"
                 = wfa.task.instructions
               td.d-flex.pointer id="task_toggle_#{wfa.id}_1"
                 - if !wfa.completed? && wfa.deadline.present?
