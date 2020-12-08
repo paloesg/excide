@@ -1,4 +1,4 @@
-table.table.ml-4
+table.table.ml-4.table-hover
   thead
     tr
       th.text-muted Franchise Licensee
@@ -9,7 +9,7 @@ table.table.ml-4
     - @outlets.each do |outlet|
       tr
         td
-          = link_to outlet&.franchise_licensee || "Add license name ", edit_motif_outlet_path(outlet.id), class: "text-primary"
+          = link_to outlet&.franchise_licensee || "Add licensee name ", edit_motif_outlet_path(outlet.id), class: "text-primary"
         td.font-weight-boldest 
           = link_to outlet.name, edit_motif_outlet_path(outlet.id), class: "text-dark"
         td = outlet&.expiry_date&.strftime("%d %b %Y") || "No expiry date stated"
