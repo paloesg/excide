@@ -7,16 +7,17 @@ class Motif::HomeController < ApplicationController
   def index
     @franchisees = Franchisee.includes(:company).where(company_id: @company.id)
     @outlets = @company.outlets
+    @outlets_expiring = @outlets.where('expiry_date < ?', DateTime.current + 1.month)
     # Get franchisees workflows
     @franchisees_workflows = current_user.active_outlet.workflows if current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)
     # Find workflows that is not completed yet
-    @onboarding_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "onboarding"}).where.not(completed: true) : Workflow.includes([:company, :template]).where(company_id: @company.id, templates: {template_type: "onboarding"}).where.not(completed: true)
+    @onboarding_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "onboarding"}).where.not(completed: true) : Workflow.includes([:template]).where(company_id: @company.id, templates: {template_type: "onboarding"}).where.not(completed: true)
     @site_audit_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "site_audit"}).where.not(completed: true) : Workflow.includes([:company, :template]).where(company_id: @company.id, templates: {template_type: "site_audit"}).where.not(completed: true)
     @royalty_collection_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "royalty_collection"}).where.not(completed: true) : Workflow.includes([:company, :template]).where(company_id: @company.id, templates: {template_type: "royalty_collection"}).where.not(completed: true)
     # Find overdue onboarding workflow actions
-    @outstanding_onboarding_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "onboarding"}}).where.not(completed: true).order(:deadline).includes(:task)
-    @outstanding_site_audit_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "site_audit"}}).where.not(completed: true).order(:deadline).includes(:task)
-    @outstanding_royalty_collection_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "royalty_collection"}}).where.not(completed: true).order(:deadline).includes(:task)
+    @outstanding_onboarding_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "onboarding"}}).where.not(completed: true).where('workflow_actions.deadline < ?', DateTime.current).map(&:workflow).map(&:outlet).uniq
+    @outstanding_site_audit_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "site_audit"}}).where.not(completed: true).where('workflow_actions.deadline < ?', DateTime.current).map(&:workflow).map(&:outlet).uniq
+    @completed_royalty_collection = @company.workflows.includes(:template).where(templates: {template_type: "royalty_collection"}).where(completed: true).map(&:outlet).uniq
     # The system stores the user's last_click into comm hub in database, compare the note's created_at date with the last_click. It should be larger than user's last_click to mimic an unread message. Reject if note's user is current_user
     @unread_notes = @company.outlets.map{ |o| o.notes.includes(:notable).where(notable_id: o.id).where('created_at > ?', current_user.last_click_comm_hub).reject{ |note| note.user == current_user }}.flatten
     # Check if active outlet present since franchisor wont have active outlet

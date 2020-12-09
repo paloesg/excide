@@ -17,10 +17,14 @@
           .card
             .card-body
               h5.card-title My Franchisees
-              .bg-light.d-flex.px-4.py-2.align-items-center.rounded
+              .bg-light.d-flex.px-4.py-2.align-items-center.rounded.mb-5
                 h1.card-text.number-display
                   = @outlets.length
                 p.card-text.ml-4 Total Outlets
+              .d-flex.px-4.py-2.align-items-center.rounded.warning-card-motif
+                h1.card-text.number-display
+                  = @outlets_expiring.length
+                p.card-text.ml-4 Outlet expiring soon
         .col-sm-4
           .card
             .card-body
@@ -85,10 +89,10 @@
                   p.card-text.ml-4 No outstanding royalty payment
               -else
                 .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
-                  h1.card-text.number-display = @outstanding_royalty_collection_actions&.length || "0"
+                  h1.card-text.number-display = @royalty_collection_workflows&.length || "0"
                   p.card-text.ml-4 Outlets pending
                 .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
-                  h1.card-text.number-display = @royalty_collection_workflows&.length || "0"
+                  h1.card-text.number-display = @completed_royalty_collection&.length || "0"
                   p.card-text.ml-4 Outlets collected
 - else
   .m-5.h-100
