@@ -1,6 +1,7 @@
 class Motif::FranchiseesController < ApplicationController
   layout 'motif/application'
   
+  before_action :authenticate_user!
   before_action :set_company
   before_action :set_franchisee, except: :index
 

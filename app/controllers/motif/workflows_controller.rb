@@ -1,5 +1,7 @@
 class Motif::WorkflowsController < ApplicationController
   layout 'motif/application'
+  
+  before_action :authenticate_user!
   before_action :set_company
   before_action :set_workflow, only: [:show, :update, :destroy]
 

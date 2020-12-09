@@ -1,6 +1,7 @@
 class Motif::OutletsController < ApplicationController
   layout 'motif/application'
   
+  before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles
   before_action :set_outlet, only: [:new, :edit, :update, :show]
