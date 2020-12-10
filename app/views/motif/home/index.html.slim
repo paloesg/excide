@@ -85,8 +85,8 @@
                     p.card-text.ml-4 Outlet waiting approval. Stay tuned!
                 = link_to motif_workflows_path(template_type: "site_audit") do
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
-                    h1.card-text.number-display = @site_audit_workflows&.length || "0"
-                    p.card-text.ml-4 Total ongoing site audit
+                    h1.card-text.number-display = @completed_site_audit&.length || "0"
+                    p.card-text.ml-4 Complete site audit
         .col-sm-4
           .card
             .card-body

@@ -17,6 +17,7 @@ class Motif::HomeController < ApplicationController
     # Find overdue onboarding workflow actions
     @outstanding_onboarding_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "onboarding"}}).where.not(completed: true).where('workflow_actions.deadline < ?', DateTime.current).map(&:workflow).map(&:outlet).uniq
     @outstanding_site_audit_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "site_audit"}}).where.not(completed: true).where('workflow_actions.deadline < ?', DateTime.current).map(&:workflow).map(&:outlet).uniq
+    @completed_site_audit = @company.workflows.includes(:template).where(templates: {template_type: "site_audit"}).where(completed: true).map(&:outlet).uniq
     @completed_royalty_collection = @company.workflows.includes(:template).where(templates: {template_type: "royalty_collection"}).where(completed: true).map(&:outlet).uniq
     # The system stores the user's last_click into comm hub in database, compare the note's created_at date with the last_click. It should be larger than user's last_click to mimic an unread message. Reject if note's user is current_user
     @unread_notes = @company.outlets.map{ |o| o.notes.includes(:notable).where(notable_id: o.id).where('created_at > ?', current_user.last_click_comm_hub).reject{ |note| note.user == current_user }}.flatten
