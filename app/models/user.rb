@@ -15,8 +15,8 @@ class User < ApplicationRecord
   has_many :clients
   has_many :documents
   has_many :folders
-  has_many :franchisees
-  has_many :outlets, through: :franchisees
+  has_many :outlets_users
+  has_many :outlets, through: :outlets_users
   has_many :invoices
   has_many :permissions
   has_many :reminders, dependent: :destroy

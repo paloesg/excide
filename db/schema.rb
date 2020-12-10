@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_08_092433) do
+ActiveRecord::Schema.define(version: 2020_12_10_070400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -282,25 +282,6 @@ ActiveRecord::Schema.define(version: 2020_12_08_092433) do
     t.index ["user_id"], name: "index_folders_on_user_id"
   end
 
-  create_table "franchisees", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "website_url"
-    t.date "established_date"
-    t.string "contact"
-    t.decimal "annual_turnover_rate"
-    t.integer "currency"
-    t.text "description"
-    t.json "contact_person_details"
-    t.uuid "company_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_id"
-    t.uuid "outlet_id"
-    t.index ["company_id"], name: "index_franchisees_on_company_id"
-    t.index ["outlet_id"], name: "index_franchisees_on_outlet_id"
-    t.index ["user_id"], name: "index_franchisees_on_user_id"
-  end
-
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -377,15 +358,34 @@ ActiveRecord::Schema.define(version: 2020_12_08_092433) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.string "contact"
+    t.string "report_url"
     t.uuid "company_id"
     t.date "commencement_date"
     t.date "expiry_date"
     t.integer "renewal_period_freq_unit"
     t.integer "renewal_period_freq_value"
-    t.string "report_url"
     t.string "franchise_licensee"
     t.string "registered_address"
     t.index ["company_id"], name: "index_outlets_on_company_id"
+  end
+
+  create_table "outlets_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "website_url"
+    t.date "established_date"
+    t.string "contact"
+    t.decimal "annual_turnover_rate"
+    t.integer "currency"
+    t.text "description"
+    t.json "contact_person_details"
+    t.uuid "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.uuid "outlet_id"
+    t.index ["company_id"], name: "index_outlets_users_on_company_id"
+    t.index ["outlet_id"], name: "index_outlets_users_on_outlet_id"
+    t.index ["user_id"], name: "index_outlets_users_on_user_id"
   end
 
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -776,14 +776,14 @@ ActiveRecord::Schema.define(version: 2020_12_08_092433) do
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
   add_foreign_key "folders", "users"
-  add_foreign_key "franchisees", "outlets"
-  add_foreign_key "franchisees", "users"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
   add_foreign_key "notes", "users"
   add_foreign_key "notes", "workflow_actions"
   add_foreign_key "outlets", "companies"
+  add_foreign_key "outlets_users", "outlets"
+  add_foreign_key "outlets_users", "users"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
   add_foreign_key "questions", "survey_sections"

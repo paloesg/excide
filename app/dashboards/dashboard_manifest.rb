@@ -20,7 +20,6 @@ class DashboardManifest
     :document_templates,
     :events,
     :event_types,
-    :franchisees,
     :folders,
     :invoices,
     :notes,
