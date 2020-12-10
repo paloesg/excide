@@ -47,6 +47,9 @@ class Motif::DocumentsController < ApplicationController
       end
     # single file upload
     else
+      workflow_action = WorkflowAction.find(params[:workflow_action_id])
+      @workflow = workflow_action.workflow
+      @template = workflow_action.workflow.template
       if params[:document][:folder_id].present?
         @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:document][:folder_id]).run_without_associations
       else
@@ -54,18 +57,17 @@ class Motif::DocumentsController < ApplicationController
       end
       if @generate_document.success?
         document = @generate_document.document
-        document.update_attributes(workflow_action_id: params[:workflow_action_id], folder_id: params[:document][:folder_id])
         authorize document
+        document.update_attributes(workflow_action_id: params[:workflow_action_id], folder_id: params[:document][:folder_id])
         # attach and convert method
         document.attach_and_convert_document(params[:response_key])
+        # Create custom activity when upload document in motif
+        document.create_activity key: 'workflow.motif_document_uploads', owner: @user, recipient: @workflow, params: { instructions: workflow_action.task.instructions  }
       end
     end
     # create permission on creation of document for the user that uploaded it
     Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     respond_to do |format|
-      workflow_action = WorkflowAction.find(params[:workflow_action_id])
-      @workflow = workflow_action.workflow
-      @template = workflow_action.workflow.template
       # Redirect when generated documents from workflow actions
       if params[:workflow_action_id].present?
         format.html { 
