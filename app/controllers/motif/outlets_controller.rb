@@ -107,7 +107,7 @@ class Motif::OutletsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def outlet_params
-    params.require(:outlet).permit(:name, :city, :country, :contact, :address, :commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :report_url, :franchise_licensee, :registered_address, :header_image, user_ids: [], address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:outlet).permit(:name, :city, :country, :contact, :address, :report_url, :header_image, user_ids: [], address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state])
   end
 
   def build_addresses

@@ -1,11 +1,9 @@
-class Franchisee < ApplicationRecord
-  has_one :address, as: :addressable, dependent: :destroy
-  
+class Franchisee < ApplicationRecord  
   belongs_to :company
   belongs_to :user
-  belongs_to :outlet
+  has_many :outlets, dependent: :destroy
 
-  has_one_attached :profile_picture
-  accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
-  accepts_nested_attributes_for :user, :reject_if => :all_blank, :allow_destroy => true
+  # accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
+  # accepts_nested_attributes_for :user, :reject_if => :all_blank, :allow_destroy => true
+  enum renewal_period_freq_unit: {days: 0, weeks: 1, months: 2, years: 3}
 end
