@@ -8,8 +8,8 @@
             .row
               h3 = outlet.name
             .row.mt-5
-              = outlet&.franchise_licensee || "Add licensee name "
+              = outlet&.franchisee&.franchise_licensee || "Add licensee name "
             .row.mt-2
               = pluralize(outlet.users.length, "user")
             .row.mt-2 
-              = outlet.expiry_date.present? ? "Expires on #{outlet.expiry_date.strftime("%d %b %y")}" : "Add an expiry date"
+              = outlet&.franchisee&.expiry_date.present? ? "Expires on #{outlet.franchisee.expiry_date.strftime("%d %b %y")}" : "Add an expiry date"

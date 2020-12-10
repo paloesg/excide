@@ -19,12 +19,6 @@
         = f.label :name, "Outlet name", class: "label-bold"
         = f.text_field :name, placeholder: "Outlet name", class: 'form-control col-sm-5'
       .form-group
-        = f.label :franchise_licensee, "Franchise Licensee", class: "label-bold"
-        = f.text_field :franchise_licensee, placeholder: "Company", class: 'form-control col-sm-5'
-      .form-group
-        = f.label :registered_address, "Registered Address", class: "label-bold"
-        = f.text_field :registered_address, placeholder: "Registered address", class: 'form-control col-sm-10'
-      .form-group
         = f.fields_for :address do |a|
           = a.label :line_1, "Location address", class: "label-bold"
           .form-inline
@@ -39,17 +33,24 @@
       .form-group
         = f.label :contact, "Telephone", class: "label-bold"
         = f.text_field :contact, placeholder: 'Telephone', class: 'form-control col-sm-5'
-      .form-group
-        = f.label :commencement_date, class: "col-sm-5 pl-0 label-bold"
-        = f.label :expiry_date, class: "col-sm-5 pl-2 label-bold"
-        .form-inline
-          = f.date_field :commencement_date, class: 'form-control col-sm-5 mr-2'
-          = f.date_field :expiry_date, class: 'form-control col-sm-5'
-      .form-group
-        = f.label :renewal_period_freq_unit, "Franchise renewal notice period", class: "label-bold col-sm-5 pl-0"
-        .form-inline
-          = f.number_field :renewal_period_freq_value, placeholder: "Value", class: 'form-control col-sm-2 mr-2'
-          = f.select :renewal_period_freq_unit, Outlet.renewal_period_freq_units.map { |key, value| [key.titleize, key] }, {selected: @outlet.renewal_period_freq_unit}, class: 'form-control col-sm-2'
+      = f.fields_for :franchisee do |ff|
+        .form-group
+          = ff.label :franchise_licensee, "Franchise Licensee", class: "label-bold"
+          = ff.text_field :franchise_licensee, placeholder: "Company", class: 'form-control col-sm-5'
+        .form-group
+          = ff.label :registered_address, "Registered Address", class: "label-bold"
+          = ff.text_field :registered_address, placeholder: "Registered address", class: 'form-control col-sm-10'
+        .form-group
+          = ff.label :commencement_date, class: "col-sm-5 pl-0 label-bold"
+          = ff.label :expiry_date, class: "col-sm-5 pl-2 label-bold"
+          .form-inline
+            = ff.date_field :commencement_date, class: 'form-control col-sm-5 mr-2'
+            = ff.date_field :expiry_date, class: 'form-control col-sm-5'
+        .form-group
+          = ff.label :renewal_period_freq_unit, "Franchise renewal notice period", class: "label-bold col-sm-5 pl-0"
+          .form-inline
+            = ff.number_field :renewal_period_freq_value, placeholder: "Value", class: 'form-control col-sm-2 mr-2'
+            = ff.select :renewal_period_freq_unit, Franchisee.renewal_period_freq_units.map { |key, value| [key.titleize, key] },  {selected: @outlet.franchisee.renewal_period_freq_unit}, class: 'form-control col-sm-2'
       = f.label :header_image, class: "label-bold"
       .form-group
         .form-inline
