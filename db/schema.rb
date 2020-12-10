@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_10_070400) do
+ActiveRecord::Schema.define(version: 2020_12_10_084741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -282,6 +282,15 @@ ActiveRecord::Schema.define(version: 2020_12_10_070400) do
     t.index ["user_id"], name: "index_folders_on_user_id"
   end
 
+  create_table "franchisees", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "franchise_licensee"
+    t.string "registered_address"
+    t.date "commencement_date"
+    t.date "expiry_date"
+    t.integer "renewal_period_freq_unit"
+    t.integer "renewal_period_freq_value"
+  end
+
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -358,14 +367,8 @@ ActiveRecord::Schema.define(version: 2020_12_10_070400) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.string "contact"
-    t.string "report_url"
     t.uuid "company_id"
-    t.date "commencement_date"
-    t.date "expiry_date"
-    t.integer "renewal_period_freq_unit"
-    t.integer "renewal_period_freq_value"
-    t.string "franchise_licensee"
-    t.string "registered_address"
+    t.string "report_url"
     t.index ["company_id"], name: "index_outlets_on_company_id"
   end
 
