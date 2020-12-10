@@ -135,7 +135,6 @@ Rails.application.routes.draw do
       get '/wfa/:wfa_id/notify_franchisor', to: 'workflows#notify_franchisor', as: :notify_franchisor
     end
     resources :outlets do
-      post '/photos_upload', to: 'outlets#outlets_photos_upload', as: :photos_upload
       resources :workflows, only: :show
       resources :notes
       get "/members", to: 'outlets#members', as: :members

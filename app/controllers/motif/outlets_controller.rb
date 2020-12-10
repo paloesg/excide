@@ -69,18 +69,6 @@ class Motif::OutletsController < ApplicationController
     
   end
 
-  def outlets_photos_upload
-    @outlet = Outlet.find_by(id: params[:outlet_id])
-    parsed_files = JSON.parse(params[:successful_files])
-    parsed_files.each do |file|
-      ActiveStorage::Attachment.create(name: 'photos', record_type: 'Outlet', record_id: @outlet.id, blob_id: ActiveStorage::Blob.find_by(key: file['response']['key']).id)
-    end
-    respond_to do |format|
-      format.html { redirect_to edit_motif_franchisee_outlet_path(franchisee_id: @outlet.franchisee.id, id: @outlet.id), notice: "Photos successfully uploaded!" }
-      format.json { render json: @files.to_json }
-    end
-  end
-
   def members
     @outlet = @company.outlets.find(params[:outlet_id])
     @users = @outlet.users
