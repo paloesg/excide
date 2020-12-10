@@ -54,10 +54,7 @@ class Motif::DocumentsController < ApplicationController
       end
       if @generate_document.success?
         document = @generate_document.document
-        document.update_attributes(workflow_action_id: params[:workflow_action_id])
-        if params[:document][:folder_id].present?
-          document.update_attributes(folder_id: params[:document][:folder_id])
-        end
+        document.update_attributes(workflow_action_id: params[:workflow_action_id], folder_id: params[:document][:folder_id])
         authorize document
         # attach and convert method
         document.attach_and_convert_document(params[:response_key])
