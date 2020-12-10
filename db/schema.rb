@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_10_123112) do
+ActiveRecord::Schema.define(version: 2020_12_10_130027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -289,6 +289,8 @@ ActiveRecord::Schema.define(version: 2020_12_10_123112) do
     t.date "expiry_date"
     t.integer "renewal_period_freq_unit"
     t.integer "renewal_period_freq_value"
+    t.uuid "company_id"
+    t.index ["company_id"], name: "index_franchisees_on_company_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -781,6 +783,7 @@ ActiveRecord::Schema.define(version: 2020_12_10_123112) do
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
   add_foreign_key "folders", "users"
+  add_foreign_key "franchisees", "companies"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
