@@ -9,11 +9,11 @@ class Motif::HomeController < ApplicationController
     @outlets = @company.outlets
     @outlets_expiring = @outlets.where('expiry_date < ?', DateTime.current + 1.month)
     # Get franchisees workflows
-    @franchisees_workflows = current_user.active_outlet.workflows if current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)
+    @workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows : Workflow.all
     # Find workflows that is not completed yet
-    @onboarding_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "onboarding"}).where.not(completed: true) : Workflow.includes([:template]).where(company_id: @company.id, templates: {template_type: "onboarding"}).where.not(completed: true)
-    @site_audit_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "site_audit"}).where.not(completed: true) : Workflow.includes([:company, :template]).where(company_id: @company.id, templates: {template_type: "site_audit"}).where.not(completed: true)
-    @royalty_collection_workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: "royalty_collection"}).where.not(completed: true) : Workflow.includes([:company, :template]).where(company_id: @company.id, templates: {template_type: "royalty_collection"}).where.not(completed: true)
+    @onboarding_workflows = @workflows.includes(:template).where(company_id: @company.id, templates: {template_type: "onboarding"}).where.not(completed: true)
+    @site_audit_workflows = @workflows.includes(:template).where(company_id: @company.id, templates: {template_type: "site_audit"}).where.not(completed: true)
+    @royalty_collection_workflows = @workflows.includes(:template).where(company_id: @company.id, templates: {template_type: "royalty_collection"}).where.not(completed: true)
     # Find overdue onboarding workflow actions
     @outstanding_onboarding_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "onboarding"}}).where.not(completed: true).where('workflow_actions.deadline < ?', DateTime.current).map(&:workflow).map(&:outlet).uniq
     @outstanding_site_audit_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "site_audit"}}).where.not(completed: true).where('workflow_actions.deadline < ?', DateTime.current).map(&:workflow).map(&:outlet).uniq
