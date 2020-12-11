@@ -112,7 +112,7 @@
     / Check if franchisee has any workflows
     - if @workflows.present?
       .row.mt-5
-        .col-sm-5
+        .col-sm-4
           .card
             .card-body
               h5.card-title.mb-5 Onboarding
@@ -126,14 +126,14 @@
                   p.card-text.ml-4 = @onboarding_workflows.last.progress == 100 ? "Good job, your onboarding is complete!" : "#{@onboarding_workflows.last.progress.to_s}%"
               -else
                 p No onboarding checklist yet!
-                .d-flex.px-4.py-3.align-items-center.rounded.warning-card-motif
+                .d-flex.px-4.py-3.mt-10.align-items-center.rounded.warning-card-motif
                   = image_pack_tag 'media/src/images/motif/motif-warning.svg'
                   p.card-text.ml-4 No onboarding checklist yet
               br
               .d-flex.align-self-center
-                = link_to "See Onboarding", motif_workflows_path(template_type: "onboarding"), class: 'h5 text-primary mt-1'
-                i.material-icons-outlined.text-primary.ml-1 arrow_forward
-        .col-sm-5
+                = link_to "See Onboarding", motif_workflows_path(template_type: "onboarding"), class: 'text-primary font-weight-bolder mt-1'
+                i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto  arrow_forward
+        .col-sm-4
           .card
             .card-body
               h5.card-title.mb-5 Site Audit
@@ -146,13 +146,33 @@
                   p.card-text.ml-4 = @site_audit_workflows.last.progress == 100 ? "Good job, your site audit is complete!" : "#{@site_audit_workflows.last.progress.to_s}%"
               - else
                 p No site audit checklist yet!
-                .d-flex.px-4.py-3.align-items-center.rounded.warning-card-motif
+                .d-flex.px-4.py-3.mt-10.align-items-center.rounded.warning-card-motif
                   = image_pack_tag 'media/src/images/motif/motif-warning.svg'
-                  p.card-text.ml-4 Due 20 Oct 2020: "Do this stuff by then"
+                  p.card-text.ml-4 No site audit checklist yet
               br
               .d-flex.align-self-center
-                = link_to "See details", motif_workflows_path(template_type: "site_audit"), class: 'h5 text-primary mt-1'
-                i.material-icons-outlined.text-primary.ml-1 arrow_forward
+                = link_to "See details", motif_workflows_path(template_type: "site_audit"), class: 'text-primary font-weight-bolder mt-1'
+                i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto  arrow_forward
+        .col-sm-4
+          .card
+            .card-body
+              h5.card-title.mb-5 Royalty Collection
+              - if @royalty_collection_workflows.present?
+                .progress style=("height: 5px;")
+                  .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@site_audit_workflows.last.progress}%")
+                h5.mt-3.mb-5 #{@site_audit_workflows.last.progress.to_s}%
+                .d-flex.px-4.py-3.align-items-center.rounded.success-card-motif
+                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                  p.card-text.ml-4 = @site_audit_workflows.last.progress == 100 ? "Good job, your site audit is complete!" : "#{@site_audit_workflows.last.progress.to_s}%"
+              - else
+                p No royalty collection yet!
+                .d-flex.px-4.py-3.mt-10.align-items-center.rounded.warning-card-motif
+                  = image_pack_tag 'media/src/images/motif/motif-warning.svg'
+                  p.card-text.ml-4 No royalty collection yet
+              br
+              .d-flex.align-self-center
+                = link_to "See details", motif_workflows_path(template_type: "site_audit"), class: 'text-primary font-weight-bolder mt-1'
+                i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto  arrow_forward
       .row.mt-5
         .col-sm-5
           .card
@@ -163,8 +183,8 @@
                 p.card-text.ml-4 You have #{@franchisee_unread_notes.present? ? @franchisee_unread_notes.length : "0"} unread messages
               br
               .d-flex.align-self-center
-                = link_to "Go to Communication Hub", motif_outlet_notes_path(current_user.active_outlet), target: "_blank", class: 'h5 text-primary mt-1'
-                i.material-icons-outlined.text-primary.ml-1 arrow_forward
+                = link_to "Go to Communication Hub", motif_outlet_notes_path(current_user.active_outlet), target: "_blank", class: 'text-primary font-weight-bolder mt-1'
+                i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto arrow_forward
     - else
       / Empty state
       .row.justify-content-center.ml-3
