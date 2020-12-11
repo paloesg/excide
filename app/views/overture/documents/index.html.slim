@@ -1,0 +1,164 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    / Don't allow create folder button to be shown if within a folder
+    - unless controller_name == 'folders'
+      button.btn.btn-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Create Folder
+      #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newOvertureFolderUpload" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5#newOvertureFolderUpload.modal-title Create new folder
+              button.close aria-label="Close" data-dismiss="modal" type="button"
+                span aria-hidden="true"  &times;
+            .modal-body
+              = form_for(@folder, url: overture_folders_path, html: { method: :post }) do |f|
+                .row.mt-3
+                  .col-md-12
+                    .form-group
+                      = f.text_field :name, placeholder: 'New folder', class: 'form-control'
+                .row
+                  .col-md-12
+                    = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+    button.btn.btn-primary.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white add
+      | Upload Documents
+    #newOvertureDocUploads.modal.fade aria-hidden="true" aria-labelledby="newOvertureDocumentUploads" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#newOvertureDocumentUploads.modal-title Upload Documents
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true"  &times;
+          .modal-body
+            .row.mt-3
+              .col-md-12
+                / params[:id] is folder's ID. It is to account for uploading files inside a folder (folder SHOW page)
+                .dashboard-body.overtureMultipleDocumentsUpload#Dashboard data-folder="#{params[:id]}"
+    / .float-right.mx-5.mt-2
+    /   i.material-icons-outlined more_horiz
+    .float-right.mx-5.mt-2
+      a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+        i.material-icons-outlined info
+    h3 Document Repository
+    p.mt-5.text-muted
+      | Store, share and manage your important documents and access control
+      br
+      | for different franchises. Drag and drop your files to upload.
+- if @folders.empty? && @documents.empty?
+  .row.justify-content-center.ml-3
+    .col-md-3.text-center.p-4
+      = image_pack_tag 'media/src/images/symphony/add-documents@2x.png'
+      h2.mt-5 Clean and fresh
+      p.mt-4 Let's add some documents to this page! Click on the upload button below to do so.
+      button.btn.btn-primary.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button"
+        | + Upload Documents
+- else
+  .row.ml-4.align-items-center#filter-search
+    .col
+      div#filter style="cursor: pointer;"
+        span.mr-3
+          i.material-icons-outlined.align-middle filter_list
+        | Filters
+    / .col-sm-11.text-muted
+    /   div.form-row.align-items-center
+    /     span.mr-3
+    /       i.material-icons-outlined.align-middle search
+    /     input.form-control.border-0.col type="search" placeholder="Search..."
+    /     div.col-8
+  .row.ml-4.my-5.align-items-center#filter-options
+    .col.md-12
+      span.mr-3
+        = select_tag('tags', options_for_select(["All tags"].concat(@company.owned_tags.pluck(:name)), selected: params[:tags], include_blank: true), class: 'select2 select2-document-tags form-control')
+      span.mr-3
+        = select_tag('access', options_for_select(["All access"].concat(@company.users.pluck(:first_name)), selected: params[:access], include_blank: true), class: 'select2 select2-document-access form-control')
+      span.mr-3
+        = select_tag('qna', options_for_select(["All Q&A Status", "Read", "Unread"], selected: params[:qna], include_blank: true), class: 'select2 select2-document-qna form-control')
+      span.mr-3
+        = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
+      span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
+        | Clear
+  - if controller_name == "folders"
+    hr.mb-2
+    .row.ml-4
+      .col
+        ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
+          li.breadcrumb-item
+            = link_to "Repository", overture_documents_path, class: "text-dark"
+          li.breadcrumb-item
+            = @folder.name
+  hr.mt-2
+  table.table.ml-4
+    thead
+      tr
+        th
+        th
+          input# type="checkbox" name=""/
+        th.text-muted NAME
+        th.text-muted TAGS
+        th.text-muted DATE MODIFIED
+        th.text-muted ACCESS
+        th
+    tbody.draggable-zone
+      - @folders.each_with_index do |folder, index|
+        tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
+          td
+          td
+            input.mt-2 type="checkbox" name=""/
+          td
+            span.mr-5
+              i.material-icons-outlined.align-middle folder_open
+            span.ml-5
+              = link_to folder.name, overture_folder_path(folder.id)
+          td id="drawer_toggle_#{folder.id}_0"
+            div id="tags_count_#{folder.id}"
+              = content_tag :span, folder.all_tags_list.first, class: ["badge badge-overture", folder.all_tags_list.length > 0 ? "" : "d-none"]
+              span class=(folder.all_tags_list.length > 1 ? "" : "d-none")
+                = (folder.all_tags_list.length-1).to_s + "+..."
+          td id="drawer_toggle_#{folder.id}_1"
+            = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
+          td id="drawer_toggle_#{folder.id}_2"
+            span.mr-4
+              i.material-icons-outlined.align-middle group
+            span
+              = folder.permissions.length
+          td
+            .dropdown
+              a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                i.fa.fa-ellipsis-h.text-secondary.mb-4
+              .dropdown-menu.dropdown-menu-right
+                .dropdown-item = link_to "Folder setting", edit_overture_folder_path(folder)
+                .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
+        = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
+      - @documents.each_with_index do |d, index|
+        tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
+          td.draggable-handle
+            i.material-icons-outlined drag_indicator
+          td
+            input.mt-2 type="checkbox" name=""/
+          td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
+            span.mr-5
+              / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
+              = image_pack_tag "media/src/images/overture/doc.svg"
+            span.ml-5
+              = d.raw_file.filename
+          td id="drawer_toggle_#{d.id}_0"
+            div id="tags_count_#{d.id}"
+              = content_tag :span, d.all_tags_list.first, class: ["badge badge-overture", d.all_tags_list.length > 0 ? "" : "d-none"]
+              span class=(d.all_tags_list.length > 1 ? "" : "d-none")
+                = (d.all_tags_list.length-1).to_s + "+..."
+          td id="drawer_toggle_#{d.id}_1"
+            = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
+          td id="drawer_toggle_#{d.id}_2"
+            span.mr-4
+              i.material-icons-outlined.align-middle group
+            span
+              = d.permissions.length
+          td
+            .dropdown
+              a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                i.fa.fa-ellipsis-h.text-secondary.mb-4
+              .dropdown-menu.dropdown-menu-right
+                .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
+                .dropdown-item = link_to "Delete", overture_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
+          = render 'overture/shared/show_document', d: d
+        = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
