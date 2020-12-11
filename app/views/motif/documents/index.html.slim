@@ -141,14 +141,14 @@
               = image_pack_tag "media/src/images/motif/doc.svg"
             span.ml-5
               = d.raw_file.filename
-          td id="drawer_toggle_#{d.id}_0"
+          td id="drawer_toggle_#{d.id}_0" class="document-open-drawer"
             div id="tags_count_#{d.id}"
               = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
               span class=(d.all_tags_list.length > 1 ? "" : "d-none")
                 = (d.all_tags_list.length-1).to_s + "+..."
-          td id="drawer_toggle_#{d.id}_1"
+          td id="drawer_toggle_#{d.id}_1" class="document-open-drawer"
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
-          td id="drawer_toggle_#{d.id}_2"
+          td id="drawer_toggle_#{d.id}_2" class="document-open-drawer"
             span.mr-4
               i.material-icons-outlined.align-middle group
             span
