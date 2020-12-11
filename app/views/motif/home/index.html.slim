@@ -159,11 +159,11 @@
               h5.card-title.mb-5 Royalty Collection
               - if @royalty_collection_workflows.present?
                 .progress style=("height: 5px;")
-                  .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@site_audit_workflows.last.progress}%")
-                h5.mt-3.mb-5 #{@site_audit_workflows.last.progress.to_s}%
+                  .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@royalty_collection_workflows.last.progress}%")
+                h5.mt-3.mb-5 #{@royalty_collection_workflows.last.progress.to_s}%
                 .d-flex.px-4.py-3.align-items-center.rounded.success-card-motif
                   = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                  p.card-text.ml-4 = @site_audit_workflows.last.progress == 100 ? "Good job, your site audit is complete!" : "#{@site_audit_workflows.last.progress.to_s}%"
+                  p.card-text.ml-4 = @royalty_collection_workflows.last.progress == 100 ? "Good job, your site audit is complete!" : "#{@royalty_collection_workflows.last.progress.to_s}%"
               - else
                 p No royalty collection yet!
                 .d-flex.px-4.py-3.mt-10.align-items-center.rounded.warning-card-motif
