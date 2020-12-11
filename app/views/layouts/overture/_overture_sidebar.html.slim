@@ -4,13 +4,36 @@
       h2.ml-8.mt-4 Hello, #{current_user.first_name}!
     li.nav-item.hover-blue.py-1.m-4
       = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined.mr-5 search
-        .ml-5.sidebar-font All Profiles
+        i.material-icons-outlined dashboard
+        .ml-2.sidebar-font Dashboard
     li.nav-item.hover-blue.py-1.m-4
-      = link_to overture_root_path(list: "Startup"), class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined.mr-5 store
-        .ml-5.sidebar-font Startup List
+      = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined search
+        .ml-2.sidebar-font = current_user.has_role?(:investor, current_user.company) ? "Search Startup" : "Search Investor"
+    - unless current_user.has_role?(:investor, current_user.company)
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined view_agenda
+          .ml-2.sidebar-font Fundraising Board
     li.nav-item.hover-blue.py-1.m-4
-      = link_to overture_root_path(list: "SME"), class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined.mr-5 corporate_fare
-        .ml-5.sidebar-font SME List
+      = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined supervised_user_circle
+        .ml-2.sidebar-font = current_user.has_role?(:investor, current_user.company) ? "Signed Startups" : "Signed Investor"
+    - unless current_user.has_role?(:investor, current_user.company)
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center'  do
+          i.material-icons-outlined table_chart
+          .ml-2.sidebar-font Capitalization Table
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center'  do
+        i.material-icons-outlined timeline
+        .ml-2.sidebar-font Performance Report
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to overture_documents_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined folder
+        .ml-2.sidebar-font Dataroom
+    - unless current_user.has_role?(:investor, current_user.company)
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined book
+          .ml-2.sidebar-font = current_user.has_role?(:investor, current_user.company) ? "Resource Portal" : "Resource Portal"
