@@ -109,14 +109,14 @@
               i.material-icons-outlined.align-middle folder_open
             span.ml-5
               = link_to folder.name, motif_folder_path(folder.id)
-          td id="drawer_toggle_#{folder.id}_0"
+          td id="drawer_toggle_#{folder.id}_0" class="document-open-drawer"
             div id="tags_count_#{folder.id}"
               = content_tag :span, folder.all_tags_list.first, class: ["badge badge-motif", folder.all_tags_list.length > 0 ? "" : "d-none"]
               span class=(folder.all_tags_list.length > 1 ? "" : "d-none")
                 = (folder.all_tags_list.length-1).to_s + "+..."
-          td id="drawer_toggle_#{folder.id}_1"
+          td id="drawer_toggle_#{folder.id}_1" class="document-open-drawer"
             = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
-          td id="drawer_toggle_#{folder.id}_2"
+          td id="drawer_toggle_#{folder.id}_2" class="document-open-drawer"
             span.mr-4
               i.material-icons-outlined.align-middle group
             span
