@@ -55,6 +55,7 @@ class Motif::OutletsController < ApplicationController
 
   def edit
     build_addresses
+    build_franchisee
   end
 
   def edit_franchisee_setting
