@@ -8,7 +8,7 @@
             .row
               h3 = outlet.name
             .row.mt-5
-              = outlet&.franchisee&.franchise_licensee || "Add licensee name "
+              = outlet&.franchisee&.franchise_licensee || "Add franchisee name "
             .row.mt-2
               = pluralize(outlet.users.length, "user")
             .row.mt-2 

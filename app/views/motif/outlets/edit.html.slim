@@ -35,7 +35,7 @@
         = f.text_field :contact, placeholder: 'Telephone', class: 'form-control col-sm-5'
       = f.fields_for :franchisee do |ff|
         .form-group
-          = ff.label :franchise_licensee, "Franchise Licensee", class: "label-bold"
+          = ff.label :franchise_licensee, "Franchisee Entity", class: "label-bold"
           = ff.text_field :franchise_licensee, placeholder: "Company", class: 'form-control col-sm-5'
         .form-group
           = ff.label :registered_address, "Registered Address", class: "label-bold"
@@ -51,6 +51,8 @@
           .form-inline
             = ff.number_field :renewal_period_freq_value, placeholder: "Value", class: 'form-control col-sm-2 mr-2'
             = ff.select :renewal_period_freq_unit, Franchisee.renewal_period_freq_units.map { |key, value| [key.titleize, key] },  {selected: @outlet.franchisee.renewal_period_freq_unit}, class: 'form-control col-sm-2'
+        .form-group
+          = ff.hidden_field :company_id, value: @company.id
       = f.label :header_image, class: "label-bold"
       .form-group
         .form-inline
