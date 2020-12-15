@@ -7,7 +7,7 @@ class Motif::OutletsController < ApplicationController
   before_action :set_outlet, only: [:new, :edit, :update, :show]
 
   def index
-    @outlets = Outlet.includes(:company).where(company_id: @company)
+    @outlets = Outlet.includes(:company).where(company_id: @company).order("created_at asc")
     @outlet = Outlet.new
     build_franchisee
     @existing_users = @company.users

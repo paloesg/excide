@@ -9,7 +9,7 @@ class Motif::WorkflowsController < ApplicationController
     # For INDEX workflow page
     @template_type = params[:template_type]
     # Select templates in that company and with the right template_type. params[:template_type] is passed through url params in the sidebar
-    @templates = Template.includes(:company).where(company_id: @company.id, template_type: @template_type)
+    @templates = Template.includes(:company, :workflows).where(company_id: @company.id, template_type: @template_type).where(workflows: {id: nil})
     # If current user is a franchisee, it can only see it's own workflow
     @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: @template_type}) : Workflow.includes(:template).where(templates: { company_id: @company.id, template_type: @template_type})
     @outlets = Outlet.includes(:company).where(companies: { id: @company.id })
