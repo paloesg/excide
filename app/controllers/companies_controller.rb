@@ -105,6 +105,8 @@ class CompaniesController < ApplicationController
         cloned_template = template.deep_clone include: { sections: :tasks }
         cloned_template.title = "#{template.title} - #{@company.name}"
         cloned_template.company = @company
+        # Set template_pattern based on motif template_type, which will then set recurring attributes
+        cloned_template.set_recurring_based_on_template_type
         cloned_template.save
       end
     end
