@@ -32,6 +32,7 @@ class FoldersController < ApplicationController
     authorize @folder
     # Create permission for the user that uploaded the folder
     @permission = Permission.create(permissible: @folder, user: current_user, can_write: true, can_download: true, can_view: true)
+    # Create permission for franchisors
     @franchisors = User.with_role(:franchisor, current_user.company)
     @franchisors.each do |franchisor|
       Permission.create(permissible: @folder, user: franchisor, can_write: true, can_download: true, can_view: true) unless current_user == franchisor
