@@ -11,13 +11,14 @@ class Motif::WorkflowsController < ApplicationController
     # Select templates in that company and with the right template_type. params[:template_type] is passed through url params in the sidebar
     @templates = Template.includes(:company, :workflows).where(company_id: @company.id, template_type: @template_type).where(workflows: {id: nil})
     # If current user is a franchisee, it can only see it's own workflow
-    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: @template_type}) : Workflow.includes(:template).where(templates: { company_id: @company.id, template_type: @template_type})
+    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: @template_type}) : Workflow.includes(:template).where(templates: { company_id: @company.id, template_type: @template_type}).uniq(&:outlet_id)
     @outlets = Outlet.includes(:company).where(companies: { id: @company.id })
     @workflow = Workflow.new
   end
 
   def show
     @documents = policy_scope(Document).order(created_at: :desc)
+    @workflow_years = @workflow.template.workflows.map{|k,v| [k.created_at.year, k.id] }.uniq 
   end
 
   def create
