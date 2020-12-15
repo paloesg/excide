@@ -55,4 +55,13 @@ namespace :scheduler do
       GenerateRecurringWorkflow.new(recurring_workflow).run
     end
   end
+
+  task :renew_outlet_notice => :environment do
+    Franchisee.all.each do |f|
+      # get franchisor from franchisee's company & then send email notification for renewal notice, eg if expiry date is 14 dec and renewal notice is 2 days, it should send out an email on 12 dec
+      f.company.users.with_role(:franchisor, f.company).each do |user|
+        NotificationMailer.motif_renewal_notice_outlet(f, user).deliver_now
+      end
+    end
+  end
 end

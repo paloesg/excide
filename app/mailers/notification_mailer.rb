@@ -44,6 +44,16 @@ class NotificationMailer < ApplicationMailer
       }
     )
   end
+
+  def motif_renewal_notice_outlet(franchisee, user)
+    mail(to: user.email, from: 'Paloe ADA <admin@excide.co>', subject: '', body: 'Some body',  template_id: ENV['ADA_SENDGRID_FRANCHISEE_RENEWAL_NOTICE'], dynamic_template_data: {
+        franchisee_name: franchisee.franchise_licensee,
+        franchisee_expiry_date: franchisee.expiry_date,
+        user_fullname: user.full_name,
+        user_email: user.email,
+      }
+    )
+  end
   
   # Conductor's email notification methods!
   # Most of the removed mailer methods below were called in event.rb. associate_notification was called in scehduler.rake as a daily reminder to associate.
