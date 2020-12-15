@@ -26,6 +26,8 @@ class Motif::WorkflowsController < ApplicationController
     @workflow.company = @company
     respond_to do |format|
       if @workflow.save
+        # Set next workflow date for site audit and royalty collection templates
+        @workflow.template.set_next_workflow_date(@workflow)
         format.html { redirect_to motif_workflows_path(template_type: @workflow.template.template_type), notice: 'Workflow was successfully created.' }
         format.json { render :show, status: :created, location: @workflow }
       else
