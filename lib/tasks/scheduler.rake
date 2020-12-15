@@ -24,11 +24,19 @@ namespace :scheduler do
 
   task :generate_next_workflow => :environment do
     Template.today.each do |t|
-      # Check if next_workflow_date is after end date of project
-      if t.next_workflow_date < t.end_date
-        # Since user is the same for all workflows, we can do workflows[0].user
-        workflow = Workflow.create(user: t.workflows[0].user, company: t.company, template: t)
+      # Check if template is Motif or Symphony
+      if t.template_type.present?
+        # For Motif, assume outlet is the same in that template's workflows        
+        workflow = Workflow.create(user: t.workflows[0].user, company: t.company, template: t, outlet: t.workflows[0].outlet)
         t.set_next_workflow_date(workflow)
+      # For Symphony, compare with the end_date
+      else
+        # Check if next_workflow_date is after end date of project
+        if t.next_workflow_date < t.end_date
+          # Since user is the same for all workflows, we can do workflows[0].user
+          workflow = Workflow.create(user: t.workflows[0].user, company: t.company, template: t)
+          t.set_next_workflow_date(workflow)
+        end
       end
     end
   end
