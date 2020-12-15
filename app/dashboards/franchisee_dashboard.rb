@@ -9,14 +9,13 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     company: Field::BelongsTo,
-    user: Field::BelongsTo,
-    outlet: Field::HasMany,
+    outlets: Field::HasMany,
     id: Field::String.with_options(searchable: false),
     franchise_licensee: Field::String,
     registered_address: Field::String,
     commencement_date: Field::Date,
     expiry_date: Field::Date,
-    renewal_period_freq_unit: Field::Number,
+    renewal_period_freq_unit: EnumField,
     renewal_period_freq_value: Field::Number,
   }.freeze
 
@@ -26,19 +25,17 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  company
-  user
-  outlet
   id
+  franchise_licensee
+  registered_address
+  company
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  company
-  user
-  outlet
   id
+  company
   franchise_licensee
   registered_address
   commencement_date
@@ -52,14 +49,13 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
   company
-  user
-  outlet
   franchise_licensee
   registered_address
   commencement_date
   expiry_date
   renewal_period_freq_unit
   renewal_period_freq_value
+  outlets
   ].freeze
 
   # COLLECTION_FILTERS
@@ -77,7 +73,7 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how franchisees are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(franchisee)
-  #   "Franchisee ##{franchisee.id}"
-  # end
+  def display_resource(franchisee)
+    "#{franchisee.franchise_licensee} - #{franchisee.company.name}"
+  end
 end
