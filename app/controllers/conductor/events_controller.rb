@@ -12,8 +12,8 @@ class Conductor::EventsController < ApplicationController
   # GET /conductor/events
   # GET /conductor/events.json
   def index
-    date_from = params[:start_date].present? ? params[:start_date].to_date : Date.current.beginning_of_month
-    date_to = params[:end_date].present? ? params[:end_date].to_date : Date.current.end_of_month
+    date_from = params[:start_date].present? ? params[:start_date].to_time.utc : DateTime.current.beginning_of_month.utc
+    date_to = params[:end_date].present? ? params[:end_date].to_time.utc : DateTime.current.end_of_month.utc
 
     #filter event using scope setup in model
     @events = Event.includes(:address, :client, :staffer, :event_type, [allocations: :user]).company(@company.id)
