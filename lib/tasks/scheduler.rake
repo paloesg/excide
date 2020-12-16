@@ -60,7 +60,7 @@ namespace :scheduler do
     Franchisee.all.each do |f|
       # get franchisor from franchisee's company & then send email notification for renewal notice, eg if expiry date is 14 dec and renewal notice is 2 days, it should send out an email on 12 dec
       f.company.users.with_role(:franchisor, f.company).each do |user|
-        NotificationMailer.motif_renewal_notice_outlet(f, user).deliver_now
+        NotificationMailer.motif_renewal_notice_outlet(f, user).deliver_now if Date.today == (f.expiry_date - f.renewal_period_freq_value.send(f.renewal_period_freq_unit)) 
       end
     end
   end
