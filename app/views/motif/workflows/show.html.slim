@@ -31,7 +31,7 @@
             tr.task-row data-action="#{wfa.id}"
               td.pointer width="60%" id="task_toggle_#{wfa.id}_0" class="#{'text-muted' if wfa.completed?}"
                 = wfa.task.instructions
-              td.d-flex.pointer id="task_toggle_#{wfa.id}_1"
+              td.pointer id="task_toggle_#{wfa.id}_1"
                 - if !wfa.completed? && wfa.deadline.present?
                   - if wfa.deadline.to_date < Date.today
                     .text-danger = wfa.deadline&.strftime("%d %b")
