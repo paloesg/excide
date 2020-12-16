@@ -1,22 +1,24 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    button.btn.btn-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Create Folder
-    #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newMotifFolderUpload" role="dialog" tabindex="-1"
-      .modal-dialog role="document"
-        .modal-content
-          .modal-header
-            h5#newMotifFolderUpload.modal-title Create new folder
-            button.close aria-label="Close" data-dismiss="modal" type="button"
-              span aria-hidden="true"  &times;
-          .modal-body
-            = form_for(@folder, url: motif_folders_path, html: { method: :post }) do |f|
-              .row.mt-3
-                .col-md-12
-                  .form-group
-                    = f.text_field :name, placeholder: 'New folder', class: 'form-control'
-              .row
-                .col-md-12
-                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+    / Don't allow create folder button to be shown if within a folder
+    - unless controller_name == 'folders'
+      button.btn.btn-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Create Folder
+      #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newMotifFolderUpload" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5#newMotifFolderUpload.modal-title Create new folder
+              button.close aria-label="Close" data-dismiss="modal" type="button"
+                span aria-hidden="true"  &times;
+            .modal-body
+              = form_for(@folder, url: motif_folders_path, html: { method: :post }) do |f|
+                .row.mt-3
+                  .col-md-12
+                    .form-group
+                      = f.text_field :name, placeholder: 'New folder', class: 'form-control'
+                .row
+                  .col-md-12
+                    = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
     button.btn.btn-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white add
       | Upload Documents
@@ -75,7 +77,16 @@
         = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
       span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
         | Clear
-  hr
+  - if controller_name == "folders"
+    hr.mb-2
+    .row.ml-4
+      .col
+        ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
+          li.breadcrumb-item
+            = link_to "Repository", motif_documents_path, class: "text-dark"
+          li.breadcrumb-item
+            = @folder.name
+  hr.mt-2
   table.table.ml-4
     thead
       tr

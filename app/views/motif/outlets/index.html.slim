@@ -14,13 +14,37 @@
                 .col-md-12
                   .form-group
                     = f.text_field :name, placeholder: 'Create Outlet Name', class: 'form-control'
+                  hr
                   h6 Add New Member
                   .form-group
                     = email_field_tag :user_email, nil, placeholder: 'Add a user to this outlet by email', class: 'form-control'
                   h6 Choose Existing Member
                   .form-group
-                    = select_tag('user_id', options_from_collection_for_select(@existing_users, "id", "email"), include_blank: true, prompt: 'Find existing user', class: "select2", style: 'width: 100%')
-              .row
+                    = select_tag('user_id', options_from_collection_for_select(@existing_users, "id", "email"), include_blank: true, class: "form-control", style: 'width: 100%')
+                  hr
+                  = f.fields_for :franchisee do |ff|
+                    h6 Choose Existing Franchisee
+                    .form-group
+                      = select_tag('franchisee_id', options_from_collection_for_select(@existing_franchisees, "id", "franchise_licensee"), include_blank: true, class: "form-control", style: 'width: 100%')
+                    h6 Add new franchisee (Skip this portion if you've chose existing franchisee)
+                    .form-group
+                      = ff.label :franchise_licensee, "Name of licensee"
+                      = ff.text_field :franchise_licensee, class: "form-control"
+                    .form-group
+                      = ff.label :registered_address, "Registered Address"
+                      = ff.text_field :registered_address, class: "form-control"
+                    .form-group
+                      = ff.label :commencement_date, "Date of commencement"
+                      = ff.date_field :commencement_date, class: 'form-control'
+                    .form-group
+                      = ff.label :expiry_date, "Expiry Date"
+                      = ff.date_field :expiry_date, class: "form-control"
+                    .form-inline
+                      = ff.number_field :renewal_period_freq_value, placeholder: "Franchise renewal notice period", class: 'form-control mr-5 col-sm-6'
+                      = ff.select :renewal_period_freq_unit, Franchisee.renewal_period_freq_units.map { |key, value| [key.titleize, key] }, {include_blank: "Unit"}, class: 'form-control col-sm-4'
+                    .form-group
+                      = ff.hidden_field :company_id, value: @company.id
+              .row.mt-3
                 .col-md-12
                   = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
                   button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close
@@ -31,26 +55,14 @@
       | Store and manage information about your franchisees and locations in 
       br
       | Franchisees.
-/ .row.ml-4.align-items-center
-/   .col
+.row.align-items-center
+  .col-sm-12.text-muted
+    = select_tag 'view', options_for_select([["Card View", "card"], ["Licensee List", "list"]]), include_blank: true, prompt: 'List view', required: true, class: 'select2 outlet-view-option', style: "width: 20%;"
 /     span.mr-3
 /       i.material-icons-outlined filter_list
 /     | Filters
 hr.mb-0
-.row.mt-5
-  - @outlets.each do |outlet|
-    .col-sm-4.mt-5
-      a href="#{edit_motif_outlet_path(id: outlet.id)}" target="_blank" class="custom-card"
-        .card.h-100.card-custom.card-stretch.gutter-b.card-view-outlet
-          = outlet.header_image.attached? ? (image_tag(outlet.header_image, class: 'card-img-top p-3')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "card-img-top p-3")
-          .card-body.pb-0
-            .row
-              h3 = outlet.name
-            .row.mt-5
-              = outlet.address&.line_1.present? ? "#{outlet.address.line_1}" : "No Address"
-            .row.mt-2
-              = pluralize(outlet.users.length, "user")
-            .row.mt-2 
-              = outlet.expiry_date.present? ? "Expires on #{outlet.expiry_date.strftime("%d %b %y")}" : "Add an expiry date"
-
-
+- if params[:view] == 'list'
+  = render 'licensee_view'
+- else
+  = render 'card_view'

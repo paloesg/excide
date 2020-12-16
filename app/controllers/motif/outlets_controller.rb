@@ -1,6 +1,7 @@
 class Motif::OutletsController < ApplicationController
   layout 'motif/application'
   
+  before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles
   before_action :set_outlet, only: [:new, :edit, :update, :show]
@@ -8,7 +9,9 @@ class Motif::OutletsController < ApplicationController
   def index
     @outlets = Outlet.includes(:company).where(company_id: @company)
     @outlet = Outlet.new
+    build_franchisee
     @existing_users = @company.users
+    @existing_franchisees = @company.franchisees
   end
 
   def new
@@ -24,9 +27,15 @@ class Motif::OutletsController < ApplicationController
     else
       @user = User.find(params[:user_id])
     end
+    # Add existing franchisee to outlet
+    if params[:franchisee_id].present?
+      @franchisee = Franchisee.find(params[:franchisee_id])
+      # Link franchisee to outlet
+      @outlet.franchisee = @franchisee
+    end
     # Add role franchisee_owner to this new user
     @user.add_role(:franchisee_owner, @user.company)
-    # Link outlet to company
+    # Link company to outlet
     @outlet.company = @company
     respond_to do |format|
       if @outlet.save
@@ -46,6 +55,7 @@ class Motif::OutletsController < ApplicationController
 
   def edit
     build_addresses
+    build_franchisee
   end
 
   def edit_franchisee_setting
@@ -66,18 +76,6 @@ class Motif::OutletsController < ApplicationController
 
   def show
     
-  end
-
-  def outlets_photos_upload
-    @outlet = Outlet.find_by(id: params[:outlet_id])
-    parsed_files = JSON.parse(params[:successful_files])
-    parsed_files.each do |file|
-      ActiveStorage::Attachment.create(name: 'photos', record_type: 'Outlet', record_id: @outlet.id, blob_id: ActiveStorage::Blob.find_by(key: file['response']['key']).id)
-    end
-    respond_to do |format|
-      format.html { redirect_to edit_motif_franchisee_outlet_path(franchisee_id: @outlet.franchisee.id, id: @outlet.id), notice: "Photos successfully uploaded!" }
-      format.json { render json: @files.to_json }
-    end
   end
 
   def members
@@ -106,7 +104,13 @@ class Motif::OutletsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def outlet_params
-    params.require(:outlet).permit(:name, :city, :country, :contact, :address, :commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :report_url, :header_image, user_ids: [], address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:outlet).permit(:name, :city, :country, :contact, :address, :report_url, :header_image, franchisee_attributes: [:id, :company_id, :franchise_licensee, :registered_address, :commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value], user_ids: [], address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state])
+  end
+
+  def build_franchisee
+    if @outlet.franchisee.blank?
+      @outlet.franchisee = @outlet.build_franchisee
+    end
   end
 
   def build_addresses

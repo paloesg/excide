@@ -1,11 +1,10 @@
 class Motif::HomeController < ApplicationController
   layout 'motif/application'
   
-  before_action :set_company
   before_action :authenticate_user!
+  before_action :set_company
 
   def index
-    @franchisees = Franchisee.includes(:company).where(company_id: @company.id)
     @outlets = @company.outlets
     @outlets_expiring = @outlets.where('expiry_date < ?', DateTime.current + 1.month)
     # Get franchisees workflows
