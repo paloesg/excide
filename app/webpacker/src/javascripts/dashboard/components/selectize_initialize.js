@@ -175,17 +175,6 @@ $(document).on("turbolinks:load", function () {
     );
   });
 
-  $(".select2").select2({
-    minimumResultsForSearch: 5,
-    placeholder: "Select...",
-  });
-
-  $(".select2-allow-clear").select2({
-    minimumResultsForSearch: 5,
-    placeholder: "Select...",
-    allowClear: true,
-  });
-
   $(".timesheet-filter-button").click(function () {
     let startDate = $("#startDate").val();
     let endDate = $("#endDate").val();
