@@ -3,4 +3,4 @@
 / - elsif @template.daily? or @template.weekly?
 /   = select_tag('month', options_for_select(@month_years_to_filter, selected: params[:month_year]), prompt: 'Choose a month...', class: 'select2-month-year select2 mr-2')
 - if template.site_audit?
-  = select_tag('year', options_for_select(@workflow_years, selected: @workflow.created_at.year), class: 'motif-site-audit-filter mr-2')
+  = select_tag('year', options_for_select(@workflow_years, selected: @workflow.created_at.year), class: 'motif-site-audit-filter select2 mr-2', style: "width: 100%;")
