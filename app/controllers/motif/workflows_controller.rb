@@ -19,7 +19,6 @@ class Motif::WorkflowsController < ApplicationController
 
   def show
     @documents = policy_scope(Document).order(created_at: :desc)
-    @workflow_years = @workflow.template.workflows.map{|k,v| [k.created_at.year, k.id] }.uniq
     # Find the next workflow of the current workflow
     @next_wf = @workflow.template.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).first
     # Find the previous workflow of the current workflow
