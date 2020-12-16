@@ -4,6 +4,7 @@ class Motif::WorkflowsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_workflow, only: [:show, :update, :destroy]
+  before_action :set_workflow_by_id, only: [:next_workflow, :prev_workflow, :toggle, :notify_franchisor]
 
   def index
     # For INDEX workflow page
@@ -18,7 +19,11 @@ class Motif::WorkflowsController < ApplicationController
 
   def show
     @documents = policy_scope(Document).order(created_at: :desc)
-    @workflow_years = @workflow.template.workflows.map{|k,v| [k.created_at.year, k.id] }.uniq 
+    @workflow_years = @workflow.template.workflows.map{|k,v| [k.created_at.year, k.id] }.uniq
+    # Find the next workflow of the current workflow
+    @next_wf = @workflow.template.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).first
+    # Find the previous workflow of the current workflow
+    @prev_wf = @workflow.template.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).first
   end
 
   def create
@@ -56,7 +61,6 @@ class Motif::WorkflowsController < ApplicationController
 
   def toggle
     @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_id])
-    @workflow = Workflow.find(params[:workflow_id])
     authorize @workflow
     respond_to do |format|
       if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id, current_action: false, notify_status: false)
@@ -70,7 +74,6 @@ class Motif::WorkflowsController < ApplicationController
   end
 
   def notify_franchisor
-    @workflow = Workflow.find(params[:workflow_id])
     @wfa = WorkflowAction.find_by(id: params[:wfa_id])
     link_address = "#{ENV['ASSET_HOST'] + motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @workflow.id)}"
     # find franchisor(s) from that company
@@ -97,6 +100,17 @@ class Motif::WorkflowsController < ApplicationController
     end
   end
 
+  def next_workflow
+    next_wf = @workflow.template.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).first
+    # Redirect to next workflow. If next_wf is not present, redirect to current workflow
+    next_wf.present? ? (redirect_to motif_outlet_workflow_path(outlet_id: next_wf.outlet, id: next_wf.id)) : (redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet, id: @workflow.id))
+  end
+
+  def prev_workflow
+    prev_wf = @workflow.template.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).first
+    prev_wf.present? ? (redirect_to motif_outlet_workflow_path(outlet_id: prev_wf.outlet, id: prev_wf.id)) : (redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet, id: @workflow.id))
+  end
+
   private
 
   def set_company
@@ -106,6 +120,10 @@ class Motif::WorkflowsController < ApplicationController
 
   def set_workflow
     @workflow = Workflow.find(params[:id])
+  end
+
+  def set_workflow_by_id
+    @workflow = Workflow.find(params[:workflow_id])
   end
 
   def workflow_params

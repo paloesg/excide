@@ -135,7 +135,10 @@ Rails.application.routes.draw do
       get '/wfa/:wfa_id/notify_franchisor', to: 'workflows#notify_franchisor', as: :notify_franchisor
     end
     resources :outlets do
-      resources :workflows, only: :show
+      resources :workflows, only: :show do
+        post '/next', to:'workflows#next_workflow', as: :next_workflow
+        post '/prev', to:'workflows#prev_workflow', as: :prev_workflow
+      end
       resources :notes
       get "/members", to: 'outlets#members', as: :members
       get "/assigned_tasks", to: 'outlets#assigned_tasks', as: :assigned_tasks
