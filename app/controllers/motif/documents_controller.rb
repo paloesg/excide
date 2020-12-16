@@ -63,8 +63,6 @@ class Motif::DocumentsController < ApplicationController
         document.attach_and_convert_document(params[:response_key])
       end
     end
-    # create permission on creation of document for the user that uploaded it
-    Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     respond_to do |format|
       if params[:folder_id].present?
         # Redirect when generated documents inside folders
