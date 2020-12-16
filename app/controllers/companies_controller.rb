@@ -72,7 +72,7 @@ class CompaniesController < ApplicationController
     current_user.add_role(:admin, @company) unless defined?(@old_roles)
     # If company's product includes Motif, add motif roles to company
     if @company.products.include? "motif"
-      @motif_default_roles = ['franchisor', 'franchise_manager', 'franchisee_owner', 'franchisee_member']
+      @motif_default_roles = ['franchisor', 'franchisee_owner', 'master_franchisee']
       @motif_default_roles.each do |role_name|
         Role.create(name: role_name, resource: @company)
       end
