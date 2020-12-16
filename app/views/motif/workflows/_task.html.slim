@@ -19,7 +19,7 @@
   .row.my-5
     .col-md-12
       h6 Description
-      p = task.description
+      p.mt-3 = task.description || "Add a description"
   .row.my-5
     .col-md-12
       h6 Due Date
@@ -41,24 +41,27 @@
           .text-muted = wfa.deadline&.strftime("%d %b")
           i.material-icons-outlined.font-size-h6.ml-1.text-muted calendar_today
           - color = "text-muted"
+        - else
+          | Add a due date
       hr
   .row.my-5
-    .col-md-5
-      h6 Attachments
-    .col-md-5
-      h6 Uploaded On
+    .col-md-10
+      h6 Files
     .col-md-2
       h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id), class: "text-primary"
 
   - @documents.where(workflow_action_id: wfa.id).each do |d|
     .row.my-5
       / File Name
-      .col-md-5
+      .col-md-10
         = d.raw_file.filename 
-      / Uploaded date
-      .col-md-5
-        = d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p")
       .col-md-2
-        = link_to rails_blob_path(d.raw_file, disposition: "attachment") do
-          i.material-icons-outlined.align-middle.text-primary download
+        .dropdown
+          a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+            i.fa.fa-ellipsis-h.text-secondary.mb-4
+          .dropdown-menu.dropdown-menu-right
+        /     .dropdown-item = link_to "Folder setting", edit_motif_folder_path(folder)
+        /     .dropdown-item = link_to "Delete", motif_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
+        / = link_to rails_blob_path(d.raw_file, disposition: "attachment") do
+        /   i.material-icons-outlined.align-middle.text-primary download
 

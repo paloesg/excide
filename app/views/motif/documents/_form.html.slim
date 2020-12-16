@@ -13,10 +13,7 @@
       - if params[:camera] == "true"
         = f.file_field :raw_file, accept: 'image/*', capture: 'camera', class: 'custom-file-input', id: 'customFile'
       - else
-        .uppy
-          .uppy-wrapper
-            .uppy-Root.uppy-FileInput-container
-              = f.file_field :raw_file, direct_upload: true, class: 'form-control'
+        .dashboard-body.motifDocumentsTaskUpload#Dashboard
   - else
     .col-3.col-form-label.text-lg-right = f.label 'Upload file:'
     .col-6 = f.text_field :raw_file, class: 'file-path form-control', disabled: true

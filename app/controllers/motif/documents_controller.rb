@@ -44,25 +44,29 @@ class Motif::DocumentsController < ApplicationController
         # attach and convert method with the response key to create blob
         document.attach_and_convert_document(file['response']['key'])
         @files.append document
-      end
-    # single file upload
-    else
-      if params[:document][:folder_id].present?
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:document][:folder_id]).run_without_associations
-      else
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, nil).run_without_associations
-      end
-      if @generate_document.success?
-        document = @generate_document.document
-        document.update_attributes(workflow_action_id: params[:workflow_action_id])
-        if params[:document][:folder_id].present?
-          document.update_attributes(folder_id: params[:document][:folder_id])
+        if params[:workflow_action_id].present?
+          document.update_attributes(workflow_action_id: params[:workflow_action_id], folder_id: params[:document][:folder_id])
         end
-        authorize document
-        # attach and convert method
-        document.attach_and_convert_document(params[:response_key])
       end
     end
+    # single file upload
+    # else
+    #   if params[:document][:folder_id].present?
+    #     @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:document][:folder_id]).run_without_associations
+    #   else
+    #     @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, nil).run_without_associations
+    #   end
+    #   if @generate_document.success?
+    #     document = @generate_document.document
+    #     document.update_attributes(workflow_action_id: params[:workflow_action_id])
+    #     if params[:document][:folder_id].present?
+    #       document.update_attributes(folder_id: params[:document][:folder_id])
+    #     end
+    #     authorize document
+    #     # attach and convert method
+    #     document.attach_and_convert_document(params[:response_key])
+    #   end
+    # end
     # create permission on creation of document for the user that uploaded it
     Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     respond_to do |format|
