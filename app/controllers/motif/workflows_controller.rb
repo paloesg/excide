@@ -107,7 +107,7 @@ class Motif::WorkflowsController < ApplicationController
   end
 
   def prev_workflow
-    prev_wf = @workflow.template.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).first
+    prev_wf = @workflow.template.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).last
     prev_wf.present? ? (redirect_to motif_outlet_workflow_path(outlet_id: prev_wf.outlet, id: prev_wf.id)) : (redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet, id: @workflow.id))
   end
 
