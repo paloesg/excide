@@ -8,7 +8,7 @@ class CompanyDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    id: Field::String.with_options(searchable: false),
+    id: Field::String.with_options(searchable: true),
     name: Field::String,
     users: Field::HasMany,
     workflows: Field::HasMany,
@@ -33,6 +33,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     before_deadline_reminder_days: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    ancestry: Field::String,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -47,8 +48,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :workflows,
     :templates,
     :documents,
-    :batches,
-    :invoices,
+    :ancestry,        
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -76,6 +76,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :expires_at,
     :account_type,
     :before_deadline_reminder_days,
+    :ancestry,
   ]
 
   # Overwrite this method to customize how profiles are displayed
