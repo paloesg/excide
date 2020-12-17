@@ -15,25 +15,25 @@
       .row.mt-5
         .col-sm-4
           .card
-            .card-body
-              h5.card-title My Franchisees
-              = link_to motif_outlets_path do
+            = link_to motif_outlets_path do
+              .card-body
+                h5.card-title.text-dark My Franchisees
                 .d-flex.px-4.py-2.align-items-center.rounded.mb-5.primary-card-motif
                   h1.card-text.number-display
                     = @outlets.length
                   p.card-text.ml-4 Total Outlets
-              = link_to motif_outlets_path do
                 .d-flex.px-4.py-2.align-items-center.rounded.warning-card-motif
                   h1.card-text.number-display
                     = @outlets_expiring.length
                   p.card-text.ml-4 Outlet expiring soon
         .col-sm-4
           .card
-            .card-body
-              h5.card-title Messages
-              .d-flex.p-5.align-items-center.rounded.primary-card-motif
-                = image_pack_tag 'media/src/images/motif/motif-message.svg'
-                p.card-text.ml-4 = "You have #{@unread_notes.present? ? @unread_notes.length : "0"} unread messages"
+            = link_to motif_communication_hub_path do
+              .card-body
+                h5.card-title.text-dark Messages
+                .d-flex.p-5.align-items-center.rounded.primary-card-motif
+                  = image_pack_tag 'media/src/images/motif/motif-message.svg'
+                  p.card-text.ml-4 = "You have #{@unread_notes.present? ? @unread_notes.length : "0"} unread messages"
         .col-sm-4
           .card
             .card-body
@@ -45,62 +45,57 @@
       .row.mt-5
         .col-sm-4
           .card
-            .card-body
-              h5.card-title Onboarding
-              / If workflow is empty, it means all workflows has been completed
-              -if @onboarding_workflows.empty?
-                .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
-                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                  p.card-text.ml-4 All outlets have completed onboarding
-              -else
-                = link_to motif_workflows_path(template_type: "onboarding") do
+            = link_to motif_workflows_path(template_type: "onboarding") do
+              .card-body
+                h5.card-title.text-dark Onboarding
+                / If workflow is empty, it means all workflows has been completed
+                -if @onboarding_workflows.empty?
+                  .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
+                    = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                    p.card-text.ml-4 All outlets have completed onboarding
+                -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
                     h1.card-text.number-display = @outstanding_onboarding_actions&.length || "0"
                     p.card-text.ml-4 Outlet with overdue task
-                = link_to motif_workflows_path(template_type: "onboarding") do
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
                     h1.card-text.number-display 1
                     p.card-text.ml-4 Task waiting approval. Stay tuned!
-                = link_to motif_workflows_path(template_type: "onboarding") do
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.primary-card-motif
                     h1.card-text.number-display 
                       = @onboarding_workflows&.length || "0"
                     p.card-text.ml-4 Total ongoing onboarding
         .col-sm-4
           .card
-            .card-body
-              h5.card-title Site Audit
-              -if @site_audit_workflows.empty?
-                .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
-                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                  p.card-text.ml-4 All outlets have completed 2020 Site Audit
-              -else
-                = link_to motif_workflows_path(template_type: "site_audit") do
+            = link_to motif_workflows_path(template_type: "site_audit") do
+              .card-body
+                h5.card-title.text-dark Site Audit
+                -if @site_audit_workflows.empty?
+                  .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
+                    = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                    p.card-text.ml-4 All outlets have completed 2020 Site Audit
+                -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
                     h1.card-text.number-display = @outstanding_site_audit_actions&.length || "0"
                     p.card-text.ml-4 Outlet with overdue task
-                = link_to motif_workflows_path(template_type: "site_audit") do
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
                     h1.card-text.number-display 2
                     p.card-text.ml-4 Outlet waiting approval. Stay tuned!
-                = link_to motif_workflows_path(template_type: "site_audit") do
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
                     h1.card-text.number-display = @completed_site_audit&.length || "0"
                     p.card-text.ml-4 Complete site audit
         .col-sm-4
           .card
-            .card-body
-              h5.card-title Royalty Collection
-              -if @royalty_collection_workflows.empty?
-                .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
-                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                  p.card-text.ml-4 No outstanding royalty payment
-              -else
-                = link_to motif_workflows_path(template_type: "royalty_collection") do
+            = link_to motif_workflows_path(template_type: "royalty_collection") do
+              .card-body
+                h5.card-title.text-dark Royalty Collection
+                -if @royalty_collection_workflows.empty?
+                  .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
+                    = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                    p.card-text.ml-4 No outstanding royalty payment
+                -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
                     h1.card-text.number-display = @royalty_collection_workflows&.length || "0"
                     p.card-text.ml-4 Outlets pending
-                = link_to motif_workflows_path(template_type: "royalty_collection") do
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
                     h1.card-text.number-display = @completed_royalty_collection&.length || "0"
                     p.card-text.ml-4 Outlets collected
