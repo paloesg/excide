@@ -6,7 +6,7 @@ class Motif::HomeController < ApplicationController
 
   def index
     @outlets = @company.outlets
-    @outlets_expiring = @outlets.where('expiry_date < ?', DateTime.current + 1.month)
+    @outlets_expiring = @company.franchisees.where('expiry_date < ?', DateTime.current + 1.month).map(&:outlets).flatten
     # Get franchisees workflows
     @workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows : Workflow.all
     # Find workflows that is not completed yet
