@@ -1,8 +1,25 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
+    button.btn.btn-primary.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white add
+      | Upload
+    #newOvertureDocUploads.modal.fade aria-hidden="true" aria-labelledby="newOvertureDocumentUploads" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#newOvertureDocumentUploads.modal-title Upload Documents
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true"  &times;
+          .modal-body
+            .row.mt-3
+              .col-md-12
+                / params[:id] is folder's ID. It is to account for uploading files inside a folder (folder SHOW page)
+                .dashboard-body.overtureMultipleDocumentsUpload#Dashboard data-folder="#{params[:id]}"
     / Don't allow create folder button to be shown if within a folder
     - unless controller_name == 'folders'
-      button.btn.btn-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Create Folder
+      button.btn.btn-white.border.border-secondary.text-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button"
+        i.material-icons.text-primary.mr-1.mb-1 folder_open
+        | New Folder
       #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newOvertureFolderUpload" role="dialog" tabindex="-1"
         .modal-dialog role="document"
           .modal-content
@@ -19,21 +36,6 @@
                 .row
                   .col-md-12
                     = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
-    button.btn.btn-primary.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button"
-      i.material-icons-outlined.text-white add
-      | Upload Documents
-    #newOvertureDocUploads.modal.fade aria-hidden="true" aria-labelledby="newOvertureDocumentUploads" role="dialog" tabindex="-1"
-      .modal-dialog role="document"
-        .modal-content
-          .modal-header
-            h5#newOvertureDocumentUploads.modal-title Upload Documents
-            button.close aria-label="Close" data-dismiss="modal" type="button"
-              span aria-hidden="true"  &times;
-          .modal-body
-            .row.mt-3
-              .col-md-12
-                / params[:id] is folder's ID. It is to account for uploading files inside a folder (folder SHOW page)
-                .dashboard-body.overtureMultipleDocumentsUpload#Dashboard data-folder="#{params[:id]}"
     / .float-right.mx-5.mt-2
     /   i.material-icons-outlined more_horiz
     h3 Dataroom
@@ -100,12 +102,12 @@
               = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
           td id="drawer_toggle_#{folder.id}_0" User Profiles
           td id="drawer_toggle_#{folder.id}_1"
-            = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
-          td id="drawer_toggle_#{folder.id}_2"
             span.mr-4
               i.material-icons-outlined.align-middle group
             span
               = folder.permissions.length
+          td id="drawer_toggle_#{folder.id}_2"
+            = folder.updated_at.strftime("%d %b %Y (%I:%M%p)")
           td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
@@ -126,12 +128,12 @@
               = d.raw_file.filename
           td id="drawer_toggle_#{d.id}_0" User Profiles
           td id="drawer_toggle_#{d.id}_1"
-            = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
-          td id="drawer_toggle_#{d.id}_2"
             span.mr-4
               i.material-icons-outlined.align-middle group
             span
               = d.permissions.length
+          td id="drawer_toggle_#{d.id}_2"
+            = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y (%I:%M%p)") : d.created_at.strftime("%d %b %Y (%I:%M%p)")
           td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
@@ -139,5 +141,6 @@
               .dropdown-menu.dropdown-menu-right
                 .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
                 .dropdown-item = link_to "Delete", overture_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
+                .dropdown-item = link_to "Share Link", d.file_url
           = render 'overture/shared/show_document', d: d
         = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?

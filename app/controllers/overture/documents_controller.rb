@@ -3,7 +3,7 @@ class Overture::DocumentsController < ApplicationController
   
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_document, only: [:update_tags, :update, :destroy]
+  before_action :set_document, only: [:update, :destroy]
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -14,13 +14,6 @@ class Overture::DocumentsController < ApplicationController
     @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc).includes(:permissions)
     @users = @company.users.includes(:permissions)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
-    unless params[:tags].blank?
-      if params[:tags] == 'All tags'
-        @documents = policy_scope(Document)
-      else
-        @documents = @documents.select {|document| document.all_tags_list.first == params[:tags]}
-      end
-    end
   end
 
   def new
@@ -78,16 +71,6 @@ class Overture::DocumentsController < ApplicationController
             : (redirect_to overture_documents_path, notice: "File was successfully uploaded")
         }
       end
-    end
-  end
-
-  def update_tags
-    authorize @document
-    @tags = []
-    params[:values].each{|key, tag| @tags << tag[:value]} unless params[:values].blank?
-    @company.tag(@document, with: @tags, on: :tags)
-    respond_to do |format|
-      format.json { render json: @company.owned_tags.pluck(:name), status: :ok }
     end
   end
 
