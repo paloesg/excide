@@ -34,11 +34,11 @@ html lang="en"
   body
     = render 'layouts/motif/motif_header'
     / If it's not franchisee index page AND is any of the pages
-    - if (current_page?(edit_motif_company_path(current_user.company)) || (controller_name == "outlets" && action_name == "edit_franchisee_setting") || controller_name == 'users' || controller_name == 'templates' || (controller_name == 'outlets' && action_name == 'edit') || (controller_name == 'workflows' && action_name == 'show') || controller_name == 'notes' || (controller_name == 'outlets' && action_name == 'members') || (controller_name == 'outlets' && action_name == 'assigned_tasks') || current_page?(motif_edit_report_path))
+    - if (current_page?(edit_motif_company_path(current_user.company)) || (controller_name == "outlets" && action_name == "edit_franchisee_setting") || controller_name == 'users' || controller_name == 'templates' || (controller_name == 'outlets' && action_name == 'edit') || (controller_name == 'workflows' && action_name == 'show') || controller_name == 'notes' || (controller_name == 'outlets' && action_name == 'members') || (controller_name == 'outlets' && action_name == 'assigned_tasks') || current_page?(motif_edit_report_path)) || (controller_name == 'franchisees' && action_name == 'show')
       .new-tab-wrapper.overflow-auto.pb-0
         .new-tab-contents
           .row.mt-5.h-100
-            - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || controller_name == 'users' || controller_name == 'franchisees' || (controller_name == "outlets" && action_name == "edit_franchisee_setting") || ( (!(controller_name == 'outlets' && action_name == 'edit')) && (!(controller_name == 'outlets' && action_name == 'assigned_tasks')) && (!(controller_name == 'outlets' && action_name == 'members'))  && controller_name == 'outlets'  || current_page?(motif_edit_report_path) ) 
+            - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || controller_name == 'users' || (controller_name == "outlets" && action_name == "edit_franchisee_setting") || ( (!(controller_name == 'outlets' && action_name == 'edit')) && (!(controller_name == 'outlets' && action_name == 'assigned_tasks')) && (!(controller_name == 'outlets' && action_name == 'members'))  && controller_name == 'outlets'  || current_page?(motif_edit_report_path) ) 
               .col-sm-2.bg-white.border-right.sidebar-border-radius
                 = render 'layouts/motif/motif_settings_sidebar'
               .col-sm-10.bg-white.content-border-radius.p-5

@@ -3,15 +3,23 @@ class Motif::FranchiseesController < ApplicationController
   
   before_action :authenticate_user!
   before_action :set_company
+  before_action :set_franchisee, only: :show
 
   def index
     @franchisees = @company.franchisees
+  end
+
+  def show
   end
 
   private
 
   def set_company
     @company = current_user.company
+  end
+
+  def set_franchisee
+    @franchisee = Franchisee.find(params[:id])
   end
 
   def franchisee_params
