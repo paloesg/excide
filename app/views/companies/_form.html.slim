@@ -98,3 +98,11 @@
         .form-group
           = check_box_tag 'products[]', 'motif', false, class: 'mr-3'
           = label_tag 'Motif', 'Motif', class: 'form-check-label'
+    .card.card-custom.mt-4
+      .card-header
+        .card-title
+          | Add franchisor ID (Only for ADA branch)
+      .card-body
+        .form-group
+          = f.label :ancestry, 'Ancestry'
+          = f.text_field :ancestry, class: "form-control"
