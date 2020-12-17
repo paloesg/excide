@@ -100,15 +100,19 @@
               i.material-icons-outlined.align-middle folder_open
             span.ml-5
               = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
-          td id="drawer_toggle_#{folder.id}_0" User Profiles
+          td id="drawer_toggle_#{folder.id}_0"
+            - @users.each do |user|
+                = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
           td id="drawer_toggle_#{folder.id}_1"
             span.mr-4
               i.material-icons-outlined.align-middle group
-            span
+            span.icon-size.mt-2
               = folder.permissions.length
           td id="drawer_toggle_#{folder.id}_2"
             = folder.updated_at.strftime("%d %b %Y (%I:%M%p)")
-          td
+          td.d-flex
+            = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
+            p.mt-1.mr-5 = folder.user&.full_name
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
@@ -126,7 +130,9 @@
               = image_pack_tag "media/src/images/overture/doc.svg"
             span.ml-5
               = d.raw_file.filename
-          td id="drawer_toggle_#{d.id}_0" User Profiles
+          td id="drawer_toggle_#{d.id}_0"
+            - @users.each do |user|
+                = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
           td id="drawer_toggle_#{d.id}_1"
             span.mr-4
               i.material-icons-outlined.align-middle group
@@ -134,7 +140,9 @@
               = d.permissions.length
           td id="drawer_toggle_#{d.id}_2"
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y (%I:%M%p)") : d.created_at.strftime("%d %b %Y (%I:%M%p)")
-          td
+          td.d-flex
+            = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
+            p.mt-1.mr-5 = d.user&.full_name
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
