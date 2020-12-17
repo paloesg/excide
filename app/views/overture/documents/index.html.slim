@@ -104,10 +104,8 @@
             - @users.each do |user|
                 = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
           td id="drawer_toggle_#{folder.id}_1"
-            span.mr-4
-              i.material-icons-outlined.align-middle group
-            span.icon-size.mt-2
-              = folder.permissions.length
+            - for i in 0..folder.permissions.length
+                = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
           td id="drawer_toggle_#{folder.id}_2"
             = folder.updated_at.strftime("%d %b %Y (%I:%M%p)")
           td.d-flex
@@ -134,10 +132,8 @@
             - @users.each do |user|
                 = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
           td id="drawer_toggle_#{d.id}_1"
-            span.mr-4
-              i.material-icons-outlined.align-middle group
-            span
-              = d.permissions.length
+            - for i in 0..d.permissions.length
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
           td id="drawer_toggle_#{d.id}_2"
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y (%I:%M%p)") : d.created_at.strftime("%d %b %Y (%I:%M%p)")
           td.d-flex
