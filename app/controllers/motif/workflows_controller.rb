@@ -22,7 +22,7 @@ class Motif::WorkflowsController < ApplicationController
     # Find the next workflow of the current workflow
     @next_wf = @workflow.template.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).first
     # Find the previous workflow of the current workflow
-    @prev_wf = @workflow.template.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).first
+    @prev_wf = @workflow.template.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).last
   end
 
   def create
@@ -101,13 +101,13 @@ class Motif::WorkflowsController < ApplicationController
 
   def next_workflow
     next_wf = @workflow.template.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).first
-    # Redirect to next workflow. If next_wf is not present, redirect to current workflow
-    next_wf.present? ? (redirect_to motif_outlet_workflow_path(outlet_id: next_wf.outlet, id: next_wf.id)) : (redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet, id: @workflow.id))
+    # Redirect to next workflow if next_wf is present
+    redirect_to motif_outlet_workflow_path(outlet_id: next_wf.outlet, id: next_wf.id) if next_wf.present?
   end
 
   def prev_workflow
     prev_wf = @workflow.template.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).last
-    prev_wf.present? ? (redirect_to motif_outlet_workflow_path(outlet_id: prev_wf.outlet, id: prev_wf.id)) : (redirect_to motif_outlet_workflow_path(outlet_id: @workflow.outlet, id: @workflow.id))
+    redirect_to motif_outlet_workflow_path(outlet_id: prev_wf.outlet, id: prev_wf.id) if prev_wf.present?
   end
 
   private

@@ -31,14 +31,6 @@ $(document).on("turbolinks:load", function () {
     );
   });
 
-  $(".motif-site-audit-filter").on("select2:select", function (e) {
-    var data = e.params.data;
-    // Redirect to workflow SHOW page in Motif
-    Turbolinks.visit(
-      "//" + location.host + location.pathname.split("workflows/")[0] + "workflows/" + data.id
-    );
-  });
-
   $(".tasks-filter-button").click(function (e) {
     var tasks_select2 = $("select.select2-tasks").select2();
     var created_at_select2 = $("select.select2-created-at").select2();
