@@ -15,8 +15,8 @@ class User < ApplicationRecord
   has_many :clients
   has_many :documents
   has_many :folders
-  has_many :franchisees
-  has_many :outlets, through: :franchisees
+  has_many :outlets_users
+  has_many :outlets, through: :outlets_users
   has_many :invoices
   has_many :permissions
   has_many :reminders, dependent: :destroy
@@ -206,6 +206,6 @@ class User < ApplicationRecord
   #                         #
   ###########################
   def motif_roles(company)
-    self.roles.find_by(resource_id: company.id, resource_type: "Company")
+    self.roles.find_by(resource_id: company.id, resource_type: "Company", name: ["franchisor", "franchisee_owner", "master_franchisee"])
   end
 end

@@ -17,6 +17,7 @@ class GenerateDocument
       create_document
       set_document_associations
       @document.save!
+      add_permissions
       OpenStruct.new(success?: true, document: @document)
     rescue => e
       OpenStruct.new(success?: false, document: @document, message: e.message)
@@ -27,6 +28,7 @@ class GenerateDocument
     begin
       create_document
       @document.save!
+      add_permissions
       OpenStruct.new(success?: true, document: @document)
     rescue => e
       OpenStruct.new(success?: false, document: @document, message: e.message)
@@ -74,5 +76,15 @@ class GenerateDocument
     end
 
     return @workflow
+  end
+
+  def add_permissions
+    # create permission for the user that uploaded it
+    Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: @document)
+    # create permission for franchisors
+    @franchisors = User.with_role(:franchisor, @company)
+    @franchisors.each do |franchisor|
+      Permission.create(user: franchisor, can_write: true, can_download: true, can_view: true, permissible: @document) unless @user == franchisor
+    end
   end
 end

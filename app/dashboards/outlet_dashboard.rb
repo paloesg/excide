@@ -8,7 +8,7 @@ class OutletDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    franchisees: Field::HasMany,
+    franchisee: Field::BelongsTo,
     company: Field::BelongsTo,
     address: Field::HasOne,
     documents: Field::HasMany,
@@ -22,10 +22,6 @@ class OutletDashboard < Administrate::BaseDashboard
     updated_at: Field::DateTime,
     name: Field::String,
     contact: Field::String,
-    commencement_date: Field::Date,
-    expiry_date: Field::Date,
-    renewal_period_freq_unit: Field::Number,
-    renewal_period_freq_value: Field::Number,
     report_url: Field::String,
     header_image: Field::ActiveStorage
   }.freeze
@@ -38,8 +34,6 @@ class OutletDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
   name
   company
-  commencement_date
-  expiry_date
   report_url
   users
   notes
@@ -48,7 +42,7 @@ class OutletDashboard < Administrate::BaseDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  franchisees
+  franchisee
   company
   address
   documents
@@ -62,10 +56,6 @@ class OutletDashboard < Administrate::BaseDashboard
   updated_at
   name
   contact
-  commencement_date
-  expiry_date
-  renewal_period_freq_unit
-  renewal_period_freq_value
   report_url
   header_image
   ].freeze
@@ -74,7 +64,7 @@ class OutletDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  franchisees
+  franchisee
   company
   documents
   users
@@ -84,10 +74,6 @@ class OutletDashboard < Administrate::BaseDashboard
   country
   name
   contact
-  commencement_date
-  expiry_date
-  renewal_period_freq_unit
-  renewal_period_freq_value
   report_url
   header_image
   address

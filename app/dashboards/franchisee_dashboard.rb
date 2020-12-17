@@ -8,20 +8,15 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    address: Field::HasOne,
-    user: Field::BelongsTo,
-    outlet: Field::BelongsTo,
+    company: Field::BelongsTo,
+    outlets: Field::HasMany,
     id: Field::String.with_options(searchable: false),
-    name: Field::String,
-    website_url: Field::String,
-    established_date: Field::Date,
-    contact: Field::String,
-    annual_turnover_rate: Field::String.with_options(searchable: false),
-    currency: Field::Number,
-    description: Field::Text,
-    contact_person_details: Field::String.with_options(searchable: false),
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    franchise_licensee: Field::String,
+    registered_address: Field::String,
+    commencement_date: Field::Date,
+    expiry_date: Field::Date,
+    renewal_period_freq_unit: EnumField,
+    renewal_period_freq_value: Field::Number,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -30,45 +25,37 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  address
-  user
-  outlet
+  id
+  franchise_licensee
+  registered_address
+  company
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  address
-  user
-  outlet
   id
-  name
-  website_url
-  established_date
-  contact
-  annual_turnover_rate
-  currency
-  description
-  contact_person_details
-  created_at
-  updated_at
+  company
+  franchise_licensee
+  registered_address
+  commencement_date
+  expiry_date
+  renewal_period_freq_unit
+  renewal_period_freq_value
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  address
-  user
-  outlet
-  name
-  website_url
-  established_date
-  contact
-  annual_turnover_rate
-  currency
-  description
-  contact_person_details
+  company
+  franchise_licensee
+  registered_address
+  commencement_date
+  expiry_date
+  renewal_period_freq_unit
+  renewal_period_freq_value
+  outlets
   ].freeze
 
   # COLLECTION_FILTERS
@@ -86,7 +73,7 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how franchisees are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(franchisee)
-  #   "Franchisee ##{franchisee.id}"
-  # end
+  def display_resource(franchisee)
+    "#{franchisee.franchise_licensee} - #{franchisee.company.name}"
+  end
 end

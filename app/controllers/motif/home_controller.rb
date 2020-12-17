@@ -5,7 +5,6 @@ class Motif::HomeController < ApplicationController
   before_action :set_company
 
   def index
-    @franchisees = Franchisee.includes(:company).where(company_id: @company.id)
     @outlets = @company.outlets
     # Get franchisees workflows
     @franchisees_workflows = current_user.active_outlet.workflows if current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)
