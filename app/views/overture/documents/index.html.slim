@@ -36,14 +36,11 @@
                 .dashboard-body.overtureMultipleDocumentsUpload#Dashboard data-folder="#{params[:id]}"
     / .float-right.mx-5.mt-2
     /   i.material-icons-outlined more_horiz
-    .float-right.mx-5.mt-2
-      a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-        i.material-icons-outlined info
-    h3 Document Repository
+    h3 Dataroom
     p.mt-5.text-muted
       | Store, share and manage your important documents and access control
       br
-      | for different franchises. Drag and drop your files to upload.
+      | for different users. Drag and drop your files to upload.
 - if @folders.empty? && @documents.empty?
   .row.justify-content-center.ml-3
     .col-md-3.text-center.p-4
@@ -58,17 +55,10 @@
       div#filter style="cursor: pointer;"
         span.mr-3
           i.material-icons-outlined.align-middle filter_list
-        | Filters
-    / .col-sm-11.text-muted
-    /   div.form-row.align-items-center
-    /     span.mr-3
-    /       i.material-icons-outlined.align-middle search
-    /     input.form-control.border-0.col type="search" placeholder="Search..."
-    /     div.col-8
+        span.ml-5.mr-3
+          i.material-icons-outlined.align-middle search
   .row.ml-4.my-5.align-items-center#filter-options
     .col.md-12
-      span.mr-3
-        = select_tag('tags', options_for_select(["All tags"].concat(@company.owned_tags.pluck(:name)), selected: params[:tags], include_blank: true), class: 'select2 select2-document-tags form-control')
       span.mr-3
         = select_tag('access', options_for_select(["All access"].concat(@company.users.pluck(:first_name)), selected: params[:access], include_blank: true), class: 'select2 select2-document-access form-control')
       span.mr-3
@@ -91,29 +81,24 @@
     thead
       tr
         th
-        th
           input# type="checkbox" name=""/
-        th.text-muted NAME
-        th.text-muted TAGS
-        th.text-muted DATE MODIFIED
-        th.text-muted ACCESS
+        th.text-muted Name
+        th.text-muted Read Access
+        th.text-muted Download Access
+        th.text-muted Last Modified
+        th.text-muted Upload By
         th
     tbody.draggable-zone
       - @folders.each_with_index do |folder, index|
         tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
-          td
           td
             input.mt-2 type="checkbox" name=""/
           td
             span.mr-5
               i.material-icons-outlined.align-middle folder_open
             span.ml-5
-              = link_to folder.name, overture_folder_path(folder.id)
-          td id="drawer_toggle_#{folder.id}_0"
-            div id="tags_count_#{folder.id}"
-              = content_tag :span, folder.all_tags_list.first, class: ["badge badge-overture", folder.all_tags_list.length > 0 ? "" : "d-none"]
-              span class=(folder.all_tags_list.length > 1 ? "" : "d-none")
-                = (folder.all_tags_list.length-1).to_s + "+..."
+              = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
+          td id="drawer_toggle_#{folder.id}_0" User Profiles
           td id="drawer_toggle_#{folder.id}_1"
             = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{folder.id}_2"
@@ -131,8 +116,6 @@
         = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
       - @documents.each_with_index do |d, index|
         tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
-          td.draggable-handle
-            i.material-icons-outlined drag_indicator
           td
             input.mt-2 type="checkbox" name=""/
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
@@ -141,11 +124,7 @@
               = image_pack_tag "media/src/images/overture/doc.svg"
             span.ml-5
               = d.raw_file.filename
-          td id="drawer_toggle_#{d.id}_0"
-            div id="tags_count_#{d.id}"
-              = content_tag :span, d.all_tags_list.first, class: ["badge badge-overture", d.all_tags_list.length > 0 ? "" : "d-none"]
-              span class=(d.all_tags_list.length > 1 ? "" : "d-none")
-                = (d.all_tags_list.length-1).to_s + "+..."
+          td id="drawer_toggle_#{d.id}_0" User Profiles
           td id="drawer_toggle_#{d.id}_1"
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{d.id}_2"
