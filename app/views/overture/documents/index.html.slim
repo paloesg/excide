@@ -100,17 +100,28 @@
               i.material-icons-outlined.align-middle folder_open
             span.ml-5
               = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
+          td
+            .dropdown
+              button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
+                span data-toggle="tooltip" data-placement="bottom" title="#{folder.created_at.strftime("%d %b %Y (%I:%M%p)")}"
+                  - @users.each do |user|
+                      = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
+              .dropdown-menu
+                .dropdown-item.select2
+          td
+            .dropdown
+              button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
+                span data-toggle="tooltip" data-placement="bottom" title="#{folder.created_at.strftime("%d %b %Y (%I:%M%p)")}"
+                  - for i in 0..folder.permissions.length
+                    = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
+              .dropdown-menu
+                .dropdown-item.select2
           td id="drawer_toggle_#{folder.id}_0"
-            - @users.each do |user|
-                = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
-          td id="drawer_toggle_#{folder.id}_1"
-            - for i in 0..folder.permissions.length
-                = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
-          td id="drawer_toggle_#{folder.id}_2"
             = folder.updated_at.strftime("%d %b %Y (%I:%M%p)")
           td.d-flex
-            = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
-            p.mt-1.mr-5 = folder.user&.full_name
+            .d-flex id="drawer_toggle_#{folder.id}_1"
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
+              p.mt-1.mr-5 = folder.user&.full_name
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
@@ -128,17 +139,28 @@
               = image_pack_tag "media/src/images/overture/doc.svg"
             span.ml-5
               = d.raw_file.filename
+          td
+            .dropdown
+              button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
+                span data-toggle="tooltip" data-placement="bottom" title="#{d.created_at.strftime("%d %b %Y (%I:%M%p)")}"
+                  - @users.each do |user|
+                      = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
+              .dropdown-menu
+                .dropdown-item.select2
+          td
+            .dropdown
+              button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
+                span data-toggle="tooltip" data-placement="bottom" title="#{d.created_at.strftime("%d %b %Y (%I:%M%p)")}"
+                  - for i in 0..d.permissions.length
+                    = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
+              .dropdown-menu
+                .dropdown-item.select2
           td id="drawer_toggle_#{d.id}_0"
-            - @users.each do |user|
-                = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
-          td id="drawer_toggle_#{d.id}_1"
-            - for i in 0..d.permissions.length
-              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
-          td id="drawer_toggle_#{d.id}_2"
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y (%I:%M%p)") : d.created_at.strftime("%d %b %Y (%I:%M%p)")
           td.d-flex
-            = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
-            p.mt-1.mr-5 = d.user&.full_name
+            .d-flex id="drawer_toggle_#{d.id}_1"
+              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
+              p.mt-1.mr-5 = d.user&.full_name
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
