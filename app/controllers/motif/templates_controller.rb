@@ -11,7 +11,7 @@ class Motif::TemplatesController < ApplicationController
   def index
     authorize Template
     # If template_type is nil, it means it is from Symphony
-    @templates = policy_scope(Template).where.not(template_type: nil)
+    @templates = policy_scope(Template).where.not(template_type: nil).order("created_at asc")
   end
 
   def new

@@ -17,7 +17,8 @@ class Symphony::TemplatesController < ApplicationController
   def new
     @template = Template.new
     authorize @template
-    @general_templates = Template.where(company: nil)
+    # Template type nil restrict Motif general template from appearing in Symphony
+    @general_templates = Template.where(company: nil, template_type: nil)
     @templates = policy_scope(Template).assigned_templates(current_user)
   end
 
