@@ -14,7 +14,7 @@ hr.mb-0
     .col-sm-3
       .font-weight-boldest = link_to franchisee&.franchise_licensee, motif_franchisee_path(franchisee)
     .col-sm-3
-      .label.label-pill.label-inline.text-dark.p-3 class="label-motif-#{franchisee.license_type}" = franchisee.license_type.titleize
+      .label.label-pill.label-inline.text-dark.p-3 class="label-motif-#{franchisee.license_type}" = franchisee&.license_type.titleize
     .col-sm-5
       span.offset-sm-6 = pluralize(franchisee.outlets.length, "outlet")
   hr

@@ -22,6 +22,8 @@ class CompaniesController < ApplicationController
     # Save the new company's product(s)
     @company.products = params[:products]
     if @company.save
+      # If ancestry present, set default record of franchisee
+      set_default_franchisee if params[:company][:ancestry].present?
       set_company_roles
       set_default_folders
       set_default_templates
@@ -110,6 +112,10 @@ class CompaniesController < ApplicationController
         cloned_template.save
       end
     end
+  end
+
+  def set_default_franchisee
+    Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id)
   end
 
   def remove_company_roles
