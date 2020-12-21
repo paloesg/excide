@@ -3,11 +3,23 @@ class Motif::FranchiseesController < ApplicationController
   
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_franchisee, only: :show
+  before_action :set_franchisee, only: [:show, :edit, :update]
 
   def index
     # Only query franchisees which doesnt have company name as franchise licensee
     @franchisees = @company.franchisees
+  end
+
+  def edit
+    
+  end
+
+  def update
+    if @franchisee.update(franchisee_params)
+      redirect_to edit_motif_franchisee_path, notice: "Franchisee profile has been updated."
+    else
+      redirect_to motif_root_path, alert: 'Updating franchisee profile has failed. Please contact admin for advise.'
+    end
   end
 
   def show
