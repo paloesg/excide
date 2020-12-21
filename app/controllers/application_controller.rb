@@ -39,9 +39,16 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized(exception)
     policy_name = exception.policy.class.to_s.underscore
-
     flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-    redirect_back(fallback_location: root_path)
+    # If company only has 1 product, fallback to that product root path
+    if current_user.company.products.length == 1
+      redirect_back(fallback_location: "/#{current_user.company.products[0]}")
+    # Investor will fallback to overture_root_path is product not found
+    elsif current_user.has_role?(:investor, current_user.company)
+      redirect_back(fallback_location: overture_root_path)
+    else
+      redirect_back(fallback_location: root_path)
+    end
   end
 
   def xero_login
@@ -79,8 +86,11 @@ class ApplicationController < ActionController::Base
 
   # Checks the controller parent and check if the user has access to the product based on application policy unless parent is users (login) or object (not namespaced)
   def authenticate_product
-    product = self.class.parent.to_s.downcase
-    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || "object"
+    # Check if user is logged in before authorizing products to prevent authorization outside of current_user
+    if user_signed_in?
+      product = controller_path.split('/').first
+      authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || product == "companies"
+    end
   end
 
   def set_company

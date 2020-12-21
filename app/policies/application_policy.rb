@@ -35,12 +35,17 @@ class ApplicationPolicy
     false
   end
 
+  def has_home?
+    # Check if company has more than 1 product before authorizing them to product page
+    (user.company.products.length > 1) and user_not_investor?
+  end
+
   def has_symphony?
-    user.company.products.include? 'symphony'
+    user.company.products.include? 'symphony' and user_not_investor?
   end
 
   def has_motif?
-    user.company.products.include? 'motif'
+    user.company.products.include? 'motif' and user_not_investor?
   end
 
   def has_overture?
@@ -48,7 +53,7 @@ class ApplicationPolicy
   end
 
   def has_conductor?
-    user.company.products.include? 'conductor'
+    user.company.products.include? 'conductor' and user_not_investor?
   end
 
   def scope
@@ -95,5 +100,11 @@ class ApplicationPolicy
 
       return has_permission
     end
+  end
+
+  private
+  def user_not_investor?
+    # Investor should only be able to login to overture and not other product
+    !user.has_role?(:investor, record.company)
   end
 end
