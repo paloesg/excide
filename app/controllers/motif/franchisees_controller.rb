@@ -6,10 +6,13 @@ class Motif::FranchiseesController < ApplicationController
   before_action :set_franchisee, only: :show
 
   def index
+    # Only query franchisees which doesnt have company name as franchise licensee
     @franchisees = @company.franchisees
   end
 
   def show
+    # To find the sub franchisee, get the children of the company's franchise, and find the company by matching the franchise_licensee with company name
+    @sub_franchisees = @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees
   end
 
   private
