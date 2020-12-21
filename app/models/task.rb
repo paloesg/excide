@@ -10,6 +10,8 @@ class Task < ApplicationRecord
   belongs_to :child_workflow_template, class_name: 'Template'
   belongs_to :template
 
+  belongs_to :folder
+
   has_many :reminders, dependent: :destroy
   has_many :workflow_actions, dependent: :destroy
   has_many :documents

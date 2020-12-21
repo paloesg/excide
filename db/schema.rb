@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_10_130027) do
+ActiveRecord::Schema.define(version: 2020_12_21_132737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -196,6 +196,8 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.json "products", default: []
     t.string "website_url"
     t.string "report_url"
+    t.string "ancestry"
+    t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -290,6 +292,10 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.integer "renewal_period_freq_unit"
     t.integer "renewal_period_freq_value"
     t.uuid "company_id"
+    t.integer "license_type"
+    t.integer "max_outlet"
+    t.integer "min_outlet"
+    t.integer "storage_space"
     t.index ["company_id"], name: "index_franchisees_on_company_id"
   end
 
@@ -596,7 +602,9 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.bigint "user_id"
     t.integer "deadline_type"
     t.text "description"
+    t.uuid "folder_id"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
+    t.index ["folder_id"], name: "index_tasks_on_folder_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
@@ -817,6 +825,7 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
   add_foreign_key "surveys", "workflows"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tasks", "document_templates"
+  add_foreign_key "tasks", "folders"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
   add_foreign_key "tasks", "survey_templates"

@@ -4,6 +4,8 @@ class Folder < ApplicationRecord
   belongs_to :company
   belongs_to :user
 
+  has_many :tasks
+
   has_many :documents, dependent: :destroy
   has_many :permissions, as: :permissible, dependent: :destroy
   acts_as_taggable_on :tags
