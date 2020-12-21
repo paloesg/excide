@@ -1,5 +1,6 @@
 class Motif::WorkflowsController < ApplicationController
   layout 'motif/application'
+  include Motif::WorkflowsHelper
   
   before_action :authenticate_user!
   before_action :set_company
@@ -11,8 +12,8 @@ class Motif::WorkflowsController < ApplicationController
     @template_type = params[:template_type]
     # Select templates in that company and with the right template_type. params[:template_type] is passed through url params in the sidebar
     @templates = Template.includes(:company, :workflows).where(company_id: @company.id, template_type: @template_type).where(workflows: {id: nil})
-    # If current user is a franchisee, it can only see it's own workflow
-    @workflows = current_user.has_role?(:franchisee_owner, current_user.company) ? current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: @template_type}) : Workflow.includes(:template).where(templates: { company_id: @company.id, template_type: @template_type}).uniq(&:outlet_id)
+    # Get workflows based on condition in workflow helper method
+    @workflows = get_workflows(current_user, @template_type)
     @outlets = Outlet.includes(:company).where(companies: { id: @company.id })
     @workflow = Workflow.new
   end
@@ -76,7 +77,7 @@ class Motif::WorkflowsController < ApplicationController
     @wfa = WorkflowAction.find_by(id: params[:wfa_id])
     link_address = "#{ENV['ASSET_HOST'] + motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @workflow.id)}"
     # find franchisor(s) from that company
-    @franchisors = current_user.company.find_franchisors
+    @franchisors = @workflow.company.find_franchisors
     @franchisors.each do |franchisor|
       NotificationMailer.motif_notify_franchisor(franchisor, current_user, @wfa, link_address).deliver_later
     end

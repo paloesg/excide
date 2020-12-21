@@ -24,7 +24,7 @@ class Motif::FranchiseesController < ApplicationController
 
   def show
     # To find the sub franchisee, get the children of the company's franchise, and find the company by matching the franchise_licensee with company name
-    @sub_franchisees = @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees
+    @sub_franchisees = @franchisee.company.children.present? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees : []
   end
 
   def outlets
