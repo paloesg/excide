@@ -36,7 +36,8 @@ class ApplicationPolicy
   end
 
   def has_home?
-    user_not_investor?
+    # Check if company has more than 1 product before authorizing them to product page
+    (user.company.products.length > 1) and user_not_investor?
   end
 
   def has_symphony?
