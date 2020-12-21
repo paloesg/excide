@@ -92,7 +92,7 @@ class ApplicationPolicy
       has_permission = false
 
       # Get the rows in permissions table that correspond to the current document or folder which also includes the roles that current user has.
-      record.permissions.where(role_id: user.roles).each do |permission|
+      record.permissions.where(user_id: user.id).each do |permission|
         has_permission = permission.send("can_#{method}?")
         break if has_permission
       end

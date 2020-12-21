@@ -7,26 +7,27 @@ class Company < ApplicationRecord
   include PublicActivity::Model
   tracked owner: ->(controller, model) { controller && controller.current_user }
 
-  has_many :users, dependent: :destroy
-  has_many :documents, dependent: :destroy
-  has_many :folders, dependent: :destroy
-  has_many :templates, dependent: :destroy
-  has_many :workflows, dependent: :destroy
-  has_many :recurring_workflows, dependent: :destroy
-  has_many :workflow_actions, dependent: :destroy
-  has_many :clients, dependent: :destroy
-  has_many :events, dependent: :destroy
-  has_many :reminders, dependent: :destroy
+  has_one :address, as: :addressable, dependent: :destroy
   has_many :batches, dependent: :destroy
+  has_many :clients, dependent: :destroy
+  has_many :contacts, dependent: :destroy
+  has_many :documents, dependent: :destroy
+  has_many :events, dependent: :destroy
+  has_many :folders, dependent: :destroy
+  has_many :franchisees, dependent: :destroy
   has_many :invoices, dependent: :destroy
   has_many :outlets, dependent: :destroy
+  has_many :recurring_workflows, dependent: :destroy
+  has_many :reminders, dependent: :destroy
+  has_many :roles, as: :resource, dependent: :destroy
+  has_many :survey_templates, dependent: :destroy
+  has_many :templates, dependent: :destroy
+  has_many :users, dependent: :destroy
+  has_many :workflows, dependent: :destroy
+  has_many :workflow_actions, dependent: :destroy
   has_many :xero_contacts, dependent: :destroy
   has_many :xero_line_items, dependent: :destroy
   has_many :xero_tracking_categories, dependent: :destroy
-  has_many :survey_templates, dependent: :destroy
-  has_one :address, as: :addressable, dependent: :destroy
-  has_many :roles, as: :resource, dependent: :destroy
-  has_many :contacts, dependent: :destroy
 
   has_one_attached :company_logo
   has_one_attached :profile_logo
@@ -76,6 +77,14 @@ class Company < ApplicationRecord
   # Get all other companies that user has roles for excpet the current company that user belongs to
   def self.assigned_companies(user)
     user.roles.includes(:resource).map(&:resource).compact.uniq.reject{ |c| c == user.company }
+  end
+
+  def get_notes
+    self.outlets.map{ |outlet| outlet.notes }.flatten.compact.uniq
+  end
+
+  def find_franchisors
+    self.users.includes(:roles).where(roles: { name: "franchisor" })
   end
 
   private

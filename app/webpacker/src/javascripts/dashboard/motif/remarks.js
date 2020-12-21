@@ -1,4 +1,4 @@
-// For dataroom offcanvas
+// For document repository offcanvas
 window.remarks = function(formElement) {
   let formJquery = $(formElement);
   let tableRow = formJquery.parent().parent();

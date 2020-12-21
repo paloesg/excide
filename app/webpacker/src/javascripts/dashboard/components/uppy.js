@@ -77,9 +77,22 @@ const motifMultipleDocumentsUpload = (uppy) => {
       // Number of file uploads that were uploaded successfully
       successful_files: JSON.stringify(result.successful),
       document_type: 'motif-documents-multiple-uploads',
+      folder_id: $(".motifMultipleDocumentsUpload").data("folder"),
     });
   });
 };
+// Motif outlet's photo gallery
+const motifOutletPhotosUpload = (uppy) => {
+  uppy.on('complete', (result) => {
+    let outlet_id = $("#outlet_id").val()
+    $.post("/motif/outlets/" + outlet_id + "/photos_upload", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+    });
+  });
+};
+
 //-----------------------------------Setup Uppy-----------------------------------------
 function setupUppy(element){
   let form = element.closest('form');
@@ -139,6 +152,9 @@ function setupUppy(element){
   else if($('.motifMultipleDocumentsUpload').length){
     motifMultipleDocumentsUpload(uppy);
   }
+  else if($('.motifOutletPhotosUpload').length){
+    motifOutletPhotosUpload(uppy);
+  } 
 }
 //-----------------------------------Initialize Uppy------------------------------------
 document.addEventListener('turbolinks:load', () => {

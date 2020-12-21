@@ -1,0 +1,15 @@
+.row.mt-5
+  - @outlets.each do |outlet|
+    .col-sm-4.mt-5
+      a href="#{edit_motif_outlet_path(id: outlet.id)}" target="_blank" class="custom-card"
+        .card.h-100.card-custom.card-stretch.gutter-b.card-view-outlet
+          = outlet.header_image.attached? ? (image_tag(outlet.header_image, class: 'card-img-top p-3')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "card-img-top p-3")
+          .card-body.pb-0
+            .row
+              h3 = outlet.name
+            .row.mt-5
+              = outlet&.franchisee&.franchise_licensee || "Add franchisee name "
+            .row.mt-2
+              = pluralize(outlet.users.length, "user")
+            .row.mt-2 
+              = outlet&.franchisee&.expiry_date.present? ? "Expires on #{outlet.franchisee.expiry_date.strftime("%d %b %y")}" : "Add an expiry date"

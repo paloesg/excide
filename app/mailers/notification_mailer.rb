@@ -26,8 +26,31 @@ class NotificationMailer < ApplicationMailer
     mail(to: "enquiry@paloe.com.sg", from: 'Paloe Overture <admin@excide.co>', subject: 'TO SAM!', body: 'Some body',  template_id: ENV['SENDGRID_OVERTURE_STATED_INTEREST'], dynamic_template_data: {
         fullName: user.full_name,
         email: user.email,
+        contactNumber: user.contact_number,
         profileName: profile.name,
         url: profile.url, 
+      }
+    )
+  end
+
+  def motif_notify_franchisor(franchisor, user, wfa, link)
+    mail(to: franchisor.email, from: 'Paloe ADA <admin@excide.co>', subject: '', body: 'Some body',  template_id: ENV['ADA_SENDGRID_NOTIFY_FRANCHISOR'], dynamic_template_data: {
+        franchisor_fullname: franchisor.full_name,
+        franchisor_email: franchisor.email,
+        user_fullname: user.full_name,
+        user_email: user.email,
+        link_address: link,
+        wfa_task_instructions: wfa.task.instructions
+      }
+    )
+  end
+
+  def motif_renewal_notice_outlet(franchisee, user)
+    mail(to: user.email, from: 'Paloe ADA <admin@excide.co>', subject: '', body: 'Some body',  template_id: ENV['ADA_SENDGRID_FRANCHISEE_RENEWAL_NOTICE'], dynamic_template_data: {
+        franchisee_name: franchisee.franchise_licensee,
+        franchisee_expiry_date: franchisee.expiry_date,
+        user_fullname: user.full_name,
+        user_email: user.email,
       }
     )
   end

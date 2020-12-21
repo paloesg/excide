@@ -1,0 +1,7 @@
+- if template.site_audit? or template.royalty_collection?
+  = link_to motif_outlet_workflow_prev_workflow_path(outlet_id: @workflow.outlet.id, workflow_id: @workflow.id), method: 'post', role: 'button', class: "#{@prev_wf.nil? ? "disabled" : ""}" do
+    i.material-icons-outlined.align-middle class="#{@prev_wf.nil? ? "text-muted" : ""}"keyboard_arrow_left
+  / If template is site_audit, it is annual checklist, hence filter dates will be by years. Royalty collection will be by months - year (eg Dec -2020)
+  span.font-weight-boldest = template.site_audit? ? @workflow.created_at.year : "#{Date::ABBR_MONTHNAMES[@workflow.created_at.month]} - #{@workflow.created_at.year}"
+  = link_to motif_outlet_workflow_next_workflow_path(outlet_id: @workflow.outlet.id, workflow_id: @workflow.id), method: 'post', role: 'button', class: "#{@next_wf.nil? ? "disabled" : ""}" do
+    i.material-icons-outlined.align-middle class="#{@next_wf.nil? ? "text-muted" : ""}"keyboard_arrow_right

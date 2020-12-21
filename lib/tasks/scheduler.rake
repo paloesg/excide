@@ -24,11 +24,19 @@ namespace :scheduler do
 
   task :generate_next_workflow => :environment do
     Template.today.each do |t|
-      # Check if next_workflow_date is after end date of project
-      if t.next_workflow_date < t.end_date
-        # Since user is the same for all workflows, we can do workflows[0].user
-        workflow = Workflow.create(user: t.workflows[0].user, company: t.company, template: t)
+      # Check if template is Motif or Symphony
+      if t.template_type.present?
+        # For Motif, assume outlet is the same in that template's workflows        
+        workflow = Workflow.create(user: t.workflows[0].user, company: t.company, template: t, outlet: t.workflows[0].outlet)
         t.set_next_workflow_date(workflow)
+      # For Symphony, compare with the end_date
+      else
+        # Check if next_workflow_date is after end date of project
+        if t.next_workflow_date < t.end_date
+          # Since user is the same for all workflows, we can do workflows[0].user
+          workflow = Workflow.create(user: t.workflows[0].user, company: t.company, template: t)
+          t.set_next_workflow_date(workflow)
+        end
       end
     end
   end
@@ -53,6 +61,15 @@ namespace :scheduler do
     @recurring_workflows = RecurringWorkflow.today
     @recurring_workflows.each do |recurring_workflow|
       GenerateRecurringWorkflow.new(recurring_workflow).run
+    end
+  end
+
+  task :renew_outlet_notice => :environment do
+    Franchisee.all.each do |f|
+      # get franchisor from franchisee's company & then send email notification for renewal notice, eg if expiry date is 14 dec and renewal notice is 2 days, it should send out an email on 12 dec
+      f.company.users.with_role(:franchisor, f.company).each do |user|
+        NotificationMailer.motif_renewal_notice_outlet(f, user).deliver_now if Date.today == (f.expiry_date - f.renewal_period_freq_value.send(f.renewal_period_freq_unit)) 
+      end
     end
   end
 end

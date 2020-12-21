@@ -1,13 +1,14 @@
-.mb-3.mt-5.mx-10
+.my-15.mx-20
   .d-flex
-    = image_tag @profile.profile_logo, size: "100x100", class: "rounded"
-    .mt-4.ml-5
+    .profile-image-wrapper
+      = image_tag @profile.profile_logo, class: "w-100 my-auto rounded"
+    .mt-6.ml-5
       h3 = @profile.name
       = link_to nil, @profile.url, target: :_blank,  class: "text-dark"
     .ml-auto.mt-4
-      .btn.btn-icon.btn-outline-secondary.mr-2
-        = link_to root_path do
-          i.material-icons.align-middle bookmark_border
+      / .btn.btn-icon.btn-outline-secondary.mr-2
+      /   = link_to root_path do
+      /     i.material-icons.align-middle bookmark_border
       = link_to "State Interest", overture_profile_state_interest_path(@profile.id), class: "btn btn-primary mr-3"
   .mt-10
     = @profile.company_information.body.to_rendered_html_with_layout()

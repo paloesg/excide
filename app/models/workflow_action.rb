@@ -14,6 +14,8 @@ class WorkflowAction < ApplicationRecord
   after_save :update_batch_progress, if: :workflow_has_batch?
   after_update :update_workflow_total_time_mins
 
+  before_destroy :untagged_all_notes
+
   belongs_to :task
   belongs_to :company
   belongs_to :workflow
@@ -30,14 +32,14 @@ class WorkflowAction < ApplicationRecord
   # acts_as_notifiable configures your model as ActivityNotification::Notifiable
   # with parameters as value or custom methods defined in your model as lambda or symbol.
   # The first argument is the plural symbol name of your target model.
-  acts_as_notifiable :users,
-    # Notification targets as :targets is a necessary option
-    # Set to notify to author and users commented to the article, except comment owner self
-    targets: :custom_notification_targets,
-    # Path to move when the notification is opened by the target user
-    # This is an optional configuration since activity_notification uses polymorphic_path as default
-    notifiable_path: :wf_notifiable_path,
-    dependent_notifications: :delete_all
+  # acts_as_notifiable :users,
+  #   # Notification targets as :targets is a necessary option
+  #   # Set to notify to author and users commented to the article, except comment owner self
+  #   targets: :custom_notification_targets,
+  #   # Path to move when the notification is opened by the target user
+  #   # This is an optional configuration since activity_notification uses polymorphic_path as default
+  #   notifiable_path: :wf_notifiable_path,
+  #   dependent_notifications: :delete_all
 
   def custom_notification_targets(key)
     if key == 'workflow_action.task_notify' or key == 'workflow_action.unordered_workflow_notify'
@@ -61,11 +63,11 @@ class WorkflowAction < ApplicationRecord
     # Update next_action's current_action to true
     next_action.current_action = true
     next_action.save
-    
+
     if (next_task.role.present? and self.workflow.batch.nil?) or (next_task.role.present? and self.workflow.batch.present? and all_actions_task_group_completed?)
       users = User.with_role(next_task.role.name.to_sym, self.company)
       # create task notification
-      next_action.notify :users, key: "workflow_action.task_notify", group: next_action.workflow.template, parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
+      # next_action.notify :users, key: "workflow_action.task_notify", group: next_action.workflow.template, parameters: { printable_notifiable_name: "#{next_task.instructions}", workflow_action_id: next_action.id }, send_later: false
     end
   end
 
@@ -96,7 +98,7 @@ class WorkflowAction < ApplicationRecord
   def workflow_completed
     if self.workflow.update_column('completed', true)
       # Notify the user that created the workflow that it is completed
-      self.notify :users, key: "workflow_action.workflow_completed", group: self.workflow.template, parameters: { workflow_slug: self.workflow.slug }, send_later: false
+      # self.notify :users, key: "workflow_action.workflow_completed", group: self.workflow.template, parameters: { workflow_slug: self.workflow.slug }, send_later: false
       batch_completed if workflow.batch.present?
     end
   end
@@ -212,5 +214,11 @@ class WorkflowAction < ApplicationRecord
     else
       false
     end
+  end
+
+  # Method is to unlink all notes with workflow_actions when workflow is deleted
+  def untagged_all_notes
+    # Loop for all the workflow actions that are going to be deleted
+    Note.includes(:workflow_action).where(workflow_action_id: self.id).update(workflow_action_id: nil)
   end
 end

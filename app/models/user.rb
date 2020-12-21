@@ -7,17 +7,21 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :company
+  belongs_to :active_outlet, :class_name => "Outlet", :foreign_key => "outlet_id"
 
   has_one :address, as: :addressable, dependent: :destroy
 
-  has_many :permissions, through: :roles
-  has_many :reminders, dependent: :destroy
+  has_many :batches
   has_many :clients
   has_many :documents
-  has_many :recurring_workflows, dependent: :destroy
-  has_many :invoices
-  has_many :batches
   has_many :folders
+  has_many :outlets_users
+  has_many :outlets, through: :outlets_users
+  has_many :invoices
+  has_many :permissions
+  has_many :reminders, dependent: :destroy
+  has_many :recurring_workflows, dependent: :destroy
+  
 
   has_many :assigned_tasks, class_name: 'WorkflowAction', foreign_key: 'assigned_user_id'
   has_many :completed_tasks, class_name: 'WorkflowAction', foreign_key: 'completed_user_id'
@@ -41,7 +45,7 @@ class User < ApplicationRecord
   # with parameters as value or custom methods defined in your model as lambda or symbol.
   # This is an example without any options (default configuration) as the target.
 
-  acts_as_target
+  # acts_as_target
 
   def add_role_consultant(assign)
     if assign
@@ -194,5 +198,14 @@ class User < ApplicationRecord
 
   def check_overlapping_allocation(allocation)
     self.get_availability(allocation).allocations.where(allocation_date: allocation.allocation_date).where("allocations.start_time < ?", allocation.end_time).where("allocations.end_time > ?", allocation.start_time).present?
+  end
+
+  ###########################
+  #                         #
+  #    Motif methods        #
+  #                         #
+  ###########################
+  def motif_roles(company)
+    self.roles.find_by(resource_id: company.id, resource_type: "Company", name: ["franchisor", "franchisee_owner", "master_franchisee"])
   end
 end

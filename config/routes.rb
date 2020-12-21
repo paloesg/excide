@@ -120,6 +120,7 @@ Rails.application.routes.draw do
 
   namespace :motif do
     root to: 'home#index'
+    patch '/change_outlet', to: 'home#change_outlet', as: :change_outlet
     resources :documents do
       patch '/update_tags', to:'documents#update_tags'
     end
@@ -128,10 +129,28 @@ Rails.application.routes.draw do
     end
     resources :permissions
     resources :companies
-    resources :users, only: [:index, :create]
+    resources :templates, param: :template_slug
+    resources :workflows, except: :show do
+      post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
+      get '/wfa/:wfa_id/notify_franchisor', to: 'workflows#notify_franchisor', as: :notify_franchisor
+    end
+    resources :outlets do
+      resources :workflows, only: :show do
+        post '/next', to:'workflows#next_workflow', as: :next_workflow
+        post '/prev', to:'workflows#prev_workflow', as: :prev_workflow
+      end
+      resources :notes
+      get "/members", to: 'outlets#members', as: :members
+      get "/assigned_tasks", to: 'outlets#assigned_tasks', as: :assigned_tasks
+      get "/edit_franchisee_settings", to: 'outlets#edit_franchisee_setting', as: :edit_franchisee_setting
+    end
+    resources :users
+    get '/communication_hub', to: 'notes#communication_hub', as: :communication_hub
     post '/add-roles', to: 'users#add_role', as: :add_role
+    get '/financial-performance', to: 'home#financial_performance'
+    get '/edit-report', to: 'home#edit_report'
   end
-
+  
   namespace :overture do
     root to: 'profiles#index'
     resources :profiles do

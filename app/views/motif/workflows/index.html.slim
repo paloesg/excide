@@ -1,0 +1,66 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    - if @user.has_role?(:franchisor, @company) or @user.has_role?(:admin, @company)
+      = link_to new_motif_outlet_path, target: "_blank", role: 'button', class: 'btn btn-primary text-white mr-3 px-5 border border-secondary float-right font-weight-boldest', "data-toggle": "modal", 'data-target': '#newMotifWorkflows' do
+        i.material-icons-outlined add
+        = @template_type.humanize
+      #newMotifWorkflows.modal.fade aria-hidden="true" aria-labelledby="newMotifCreateWorkflows" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5#newMotifCreateWorkflows.modal-title Onboard new outlet
+              button.close aria-label="Close" data-dismiss="modal" type="button"
+                span aria-hidden="true"  &times;
+            .modal-body
+              = form_for(@workflow, url: motif_workflows_path, html: { method: :post }) do |f|
+                .row.mt-3
+                  .col-md-12
+                    .form-group
+                      = f.label :template_id, 'Choose a template'
+                      = f.collection_select :template_id, @templates, :id, :title, {include_blank: true}, {class: 'select2 form-control', style: 'width: 100%'}
+                    .form-group
+                      = f.label :outlet_id, 'Choose an outlet'
+                      = f.collection_select :outlet_id, @outlets, :id, :name, {include_blank: true}, {class: 'select2 form-control', style: 'width: 100%'}
+                .row
+                  .col-md-12
+                    = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+    .float-right.my-2
+      i.px-5.material-icons-outlined more_vert
+    h3 = @template_type.humanize
+    p.mt-5.text-muted
+      | Standardise, track and manage how your franchisees start their operations in
+      br
+      | Onboarding.
+/ .row.ml-4.align-items-center
+/   .col
+/     span.mr-3
+/       i.material-icons-outlined filter_list
+/     | Filters
+/   .col-sm-11.text-muted
+/     div.form-row.align-items-center
+/       span.mr-3
+/         i.material-icons-outlined search
+/       input.form-control.border-0.col type="search" placeholder="Search..."
+hr.mb-0
+.row.mt-5
+  - unless @workflows.present?
+    = render 'motif/shared/motif_empty_state'
+  - else
+    - @workflows.each do |wf|
+      .col-sm-4.mt-3
+        .card.h-100.card-custom.card-stretch.gutter-b.card-view-outlet
+          .card-body
+            .row
+              .col-sm-12.mt-3
+                = link_to wf.outlet.name, motif_outlet_workflow_path(outlet_id: wf.outlet.id, id: wf.id), class: 'h4 font-weight-boldest text-dark'
+            .row.mt-5
+              .col-sm-12
+                p.text-muted Location address: #{wf.outlet.address&.line_1} #{wf.outlet.address&.postal_code}
+            .row.mt-5
+              .col-sm-12.mr-0
+                .progress
+                  .progress-bar.progress-bar-striped.bg-primary aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" role="progressbar" style=("width: #{wf.progress}%")
+            .row
+              .col-md-12
+                span.font-weight-boldest #{wf.progress.to_s}%
+

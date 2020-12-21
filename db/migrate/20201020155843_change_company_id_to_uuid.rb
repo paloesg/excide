@@ -1,5 +1,7 @@
 class ChangeCompanyIdToUuid < ActiveRecord::Migration[6.0]
   def up
+    PublicActivity.enabled = false
+
     # remove the old foreign_key
     remove_foreign_key :batches, :companies
     remove_foreign_key :clients, :companies
@@ -55,40 +57,50 @@ class ChangeCompanyIdToUuid < ActiveRecord::Migration[6.0]
         role.company_uuid = c.uuid
         role.save!
       end
-      Batch.where(company_id: c.id).find_each do |batch|
-        say "Created a batch #{batch.id}"
-        batch.company_uuid = c.uuid
-        batch.save!
+      Batch.where(company_id: c.id).find_in_batches(batch_size: 100) do |batches|
+        batches.each do |batch|
+          say "Created a batch #{batch.id}"
+          batch.company_uuid = c.uuid
+          batch.save!
+        end
       end
-      Client.where(company_id: c.id).find_each do |client|
-        say "Created a client #{client.id}"
-        client.company_uuid = c.uuid
-        client.save!
+      Client.where(company_id: c.id).find_in_batches(batch_size: 100) do |clients|
+        clients.each do |client|
+          say "Created a client #{client.id}"
+          client.company_uuid = c.uuid
+          client.save!
+        end
       end
       Contact.where(company_id: c.id).find_each do |contact|
         say "Created a contact #{contact.id}"
         contact.company_uuid = c.uuid
         contact.save!
       end
-      Document.where(company_id: c.id).find_each do |document|
-        say "Created a doc #{document.id}"
-        document.company_uuid = c.uuid
-        document.save!
+      Document.where(company_id: c.id).find_in_batches(batch_size: 100) do |documents|
+        documents.each do |document|
+          say "Created a doc #{document.id}"
+          document.company_uuid = c.uuid
+          document.save!
+        end
       end
-      Event.where(company_id: c.id).find_each do |event|
-        say "Created an event #{event.id}"
-        event.company_uuid = c.uuid
-        event.save(validate: false)
+      Event.where(company_id: c.id).find_in_batches(batch_size: 100) do |events|
+        events.each do |event|
+          say "Created an event #{event.id}"
+          event.company_uuid = c.uuid
+          event.save(validate: false)
+        end
       end
       Folder.where(company_id: c.id).find_each do |folder|
         say "Created a folder #{folder.id}"
         folder.company_uuid = c.uuid
         folder.save!
       end
-      Invoice.where(company_id: c.id).find_each do |inv|
-        say "Created a invoice #{inv.id}"
-        inv.company_uuid = c.uuid
-        inv.save(validate: false)
+      Invoice.where(company_id: c.id).find_in_batches(batch_size: 100) do |invs|
+        invs.each do |inv|
+          say "Created a invoice #{inv.id}"
+          inv.company_uuid = c.uuid
+          inv.save(validate: false)
+        end
       end
       Outlet.where(company_id: c.id).find_each do |outlet|
         say "Created a outlet #{outlet.id}"
@@ -125,30 +137,40 @@ class ChangeCompanyIdToUuid < ActiveRecord::Migration[6.0]
         user.company_uuid = c.uuid
         user.save!
       end
-      Workflow.where(company_id: c.id).find_each do |wf|
-        say "Created a wf #{wf.id}"
-        wf.company_uuid = c.uuid
-        wf.save!
+      Workflow.where(company_id: c.id).find_in_batches(batch_size: 100) do |wfs|
+        wfs.each do |wf|
+          say "Created a wf #{wf.id}"
+          wf.company_uuid = c.uuid
+          wf.save!
+        end
       end
-      WorkflowAction.where(company_id: c.id).find_each do |wfa|
-        say "Created a wfa #{wfa.id}"
-        wfa.company_uuid = c.uuid
-        wfa.save!
+      WorkflowAction.where(company_id: c.id).find_in_batches(batch_size: 100) do |wfas|
+        wfas.each do |wfa|
+          say "Created a wfa #{wfa.id}"
+          wfa.company_uuid = c.uuid
+          wfa.save!
+        end
       end
-      XeroTrackingCategory.where(company_id: c.id).find_each do |xero_tracking_category|
-        say "Created a xerotc #{xero_tracking_category.id}"
-        xero_tracking_category.company_uuid = c.uuid
-        xero_tracking_category.save!
+      XeroTrackingCategory.where(company_id: c.id).find_in_batches(batch_size: 100) do |xero_tracking_categories|
+        xero_tracking_categories.each do |xero_tracking_category|
+          say "Created a xerotc #{xero_tracking_category.id}"
+          xero_tracking_category.company_uuid = c.uuid
+          xero_tracking_category.save!
+        end
       end
-      XeroContact.where(company_id: c.id).find_each do |xero_contact|
-        say "Created a xerocontacts #{xero_contact.id}"
-        xero_contact.company_uuid = c.uuid
-        xero_contact.save!
+      XeroContact.where(company_id: c.id).find_in_batches(batch_size: 100) do |xero_contacts|
+        xero_contacts.each do |xero_contact|
+          say "Created a xerocontacts #{xero_contact.id}"
+          xero_contact.company_uuid = c.uuid
+          xero_contact.save!
+        end
       end
-      XeroLineItem.where(company_id: c.id).find_each do |xero_line_item|
-        say "Created a xeroline #{xero_line_item.id}"
-        xero_line_item.company_uuid = c.uuid
-        xero_line_item.save!
+      XeroLineItem.where(company_id: c.id).find_in_batches(batch_size: 100) do |xero_line_items|
+        xero_line_items.each do |xero_line_item|
+          say "Created a xeroline #{xero_line_item.id}"
+          xero_line_item.company_uuid = c.uuid
+          xero_line_item.save!
+        end
       end
     end
     # Remove company_id references from related table
@@ -227,8 +249,10 @@ class ChangeCompanyIdToUuid < ActiveRecord::Migration[6.0]
     add_foreign_key :xero_tracking_categories, :companies
     add_foreign_key :xero_contacts, :companies
     add_foreign_key :xero_line_items, :companies
+
+    PublicActivity.enabled = true
   end
-  
+
   def down
     raise ActiveRecord::IrreversibleMigration
   end
