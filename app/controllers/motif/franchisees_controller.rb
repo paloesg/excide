@@ -23,8 +23,8 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def show
-    # To find the sub franchisee, get the children of the company's franchise, and find the company by matching the franchise_licensee with company name
-    @sub_franchisees = @franchisee.company.children.present? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees : []
+    # Check that franchisee's company has children and that it is a master franchisee (as this is the default role when creating one)
+    @sub_franchisees = (@franchisee.company.children.present? and @franchisee.master_franchisee?) ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees : []
   end
 
   def outlets
@@ -34,7 +34,12 @@ class Motif::FranchiseesController < ApplicationController
 
   def users
     @franchisee = @company.franchisees.find_by(id: params[:franchisee_id])
-    @users = @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).users
+    # Check if franchisee's company has children
+    @users = @franchisee.company.children.present? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).users : @franchisee.outlets.map(&:users).flatten
+  end
+
+  def agreements
+    @franchisee = @company.franchisees.find_by(id: params[:franchisee_id])
   end
 
   private

@@ -137,6 +137,7 @@ Rails.application.routes.draw do
     resources :franchisees do
       get 'outlets', to: 'franchisees#outlets', as: :outlets
       get 'users', to: 'franchisees#users', as: :users
+      get 'agreements', to: 'franchisees#agreements', as: :agreements
     end
     resources :outlets do
       resources :workflows, only: :show do
