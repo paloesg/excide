@@ -115,7 +115,8 @@ class CompaniesController < ApplicationController
   end
 
   def set_default_franchisee
-    Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id)
+    # By default, create franchisee record when creating the entity (company) and set franchisee type as master franchisee
+    Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: "master_franchisee")
   end
 
   def remove_company_roles
