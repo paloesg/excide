@@ -1,5 +1,6 @@
 class Motif::OutletsController < ApplicationController
   layout 'motif/application'
+  include Motif::OutletsHelper
   
   before_action :authenticate_user!
   before_action :set_company
@@ -7,7 +8,7 @@ class Motif::OutletsController < ApplicationController
   before_action :set_outlet, only: [:new, :edit, :update, :show]
 
   def index
-    @outlets = Outlet.includes(:company).where(company_id: @company).order("created_at asc")
+    @outlets = get_outlets(@company)
     @outlet = Outlet.new
     build_franchisee
     @existing_users = @company.users

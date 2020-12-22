@@ -7,3 +7,4 @@
           = link_to outlet.name, edit_motif_outlet_path(id: outlet.id), class: "h3 font-weight-boldest text-dark"
           span.h6 = outlet&.franchisee&.franchise_licensee || "Add franchisee name "
           span = outlet.country || "No country"
+          span = (outlet.company == @company) ? "Direct Owned" : "Sub-Franchised"
