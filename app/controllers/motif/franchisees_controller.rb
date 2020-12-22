@@ -32,6 +32,11 @@ class Motif::FranchiseesController < ApplicationController
     @outlets = @franchisee.outlets
   end
 
+  def users
+    @franchisee = @company.franchisees.find_by(id: params[:franchisee_id])
+    @users = @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).users
+  end
+
   private
 
   def set_company
