@@ -11,7 +11,7 @@
     - @sub_franchisees.each do |franchisee|
       .row.mb-3.mt-5.ml-3
         .col-sm-3
-          .font-weight-boldest = link_to franchisee&.franchise_licensee, motif_franchisee_path(franchisee)
+          .font-weight-boldest = franchisee&.franchise_licensee
         .col-sm-3
           .label.label-pill.label-inline.text-dark.p-3 class="label-motif-#{franchisee.license_type}" = franchisee&.license_type.titleize
         .col-sm-5
