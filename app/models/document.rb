@@ -13,6 +13,7 @@ class Document < ApplicationRecord
   belongs_to :user
   belongs_to :workflow
   belongs_to :workflow_action
+  belongs_to :franchisee
 
   has_many :permissions, as: :permissible, dependent: :destroy
 

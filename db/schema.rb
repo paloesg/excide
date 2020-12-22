@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_17_080733) do
+ActiveRecord::Schema.define(version: 2020_12_22_103816) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -243,7 +243,9 @@ ActiveRecord::Schema.define(version: 2020_12_17_080733) do
     t.uuid "folder_id"
     t.uuid "company_id"
     t.uuid "outlet_id"
+    t.uuid "franchisee_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
+    t.index ["franchisee_id"], name: "index_documents_on_franchisee_id"
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
@@ -602,7 +604,9 @@ ActiveRecord::Schema.define(version: 2020_12_17_080733) do
     t.bigint "user_id"
     t.integer "deadline_type"
     t.text "description"
+    t.uuid "folder_id"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
+    t.index ["folder_id"], name: "index_tasks_on_folder_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
@@ -781,6 +785,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_080733) do
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "folders"
+  add_foreign_key "documents", "franchisees"
   add_foreign_key "documents", "outlets"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
@@ -823,6 +828,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_080733) do
   add_foreign_key "surveys", "workflows"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tasks", "document_templates"
+  add_foreign_key "tasks", "folders"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
   add_foreign_key "tasks", "survey_templates"
