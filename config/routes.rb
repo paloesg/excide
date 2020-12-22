@@ -138,6 +138,7 @@ Rails.application.routes.draw do
       get 'outlets', to: 'franchisees#outlets', as: :outlets
       get 'users', to: 'franchisees#users', as: :users
       get 'agreements', to: 'franchisees#agreements', as: :agreements
+      post 'upload_agreements', to: 'franchisees#upload_agreements', as: :upload_agreements
     end
     resources :outlets do
       resources :workflows, only: :show do
