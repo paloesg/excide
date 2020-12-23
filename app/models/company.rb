@@ -75,6 +75,11 @@ class Company < ApplicationRecord
 
   acts_as_tagger
 
+  # Skip validation if ancestry is nil when creating company
+  before_validation do
+    self.ancestry = nil if self.ancestry.blank?
+  end
+
   # Get all other companies that user has roles for excpet the current company that user belongs to
   def self.assigned_companies(user)
     user.roles.includes(:resource).map(&:resource).compact.uniq.reject{ |c| c == user.company }
