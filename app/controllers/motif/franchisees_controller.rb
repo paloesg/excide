@@ -18,13 +18,13 @@ class Motif::FranchiseesController < ApplicationController
     if @franchisee.update(franchisee_params)
       redirect_to edit_motif_franchisee_path, notice: "Franchisee profile has been updated."
     else
-      redirect_to motif_root_path, alert: 'Updating franchisee profile has failed. Please contact admin for advise.'
+      render :edit
     end
   end
 
   def show
     # Check that franchisee's company has children and that it is a master franchisee (as this is the default role when creating one)
-    @sub_franchisees = (@franchisee.company.children.present? and @franchisee.master_franchisee?) ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees : []
+    @sub_franchisees = @franchisee.company.children.present? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees : []
   end
 
   def outlets

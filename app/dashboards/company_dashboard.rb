@@ -8,7 +8,7 @@ class CompanyDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    id: Field::String.with_options(searchable: true),
+    id: Field::String.with_options(searchable: false),
     name: Field::String,
     users: Field::HasMany,
     workflows: Field::HasMany,
