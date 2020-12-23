@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_22_103816) do
+ActiveRecord::Schema.define(version: 2020_12_23_140628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -197,6 +197,8 @@ ActiveRecord::Schema.define(version: 2020_12_22_103816) do
     t.string "website_url"
     t.string "report_url"
     t.string "ancestry"
+    t.integer "storage_limit"
+    t.integer "storage_used"
     t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
@@ -297,7 +299,6 @@ ActiveRecord::Schema.define(version: 2020_12_22_103816) do
     t.integer "license_type"
     t.integer "max_outlet"
     t.integer "min_outlet"
-    t.integer "storage_space"
     t.index ["company_id"], name: "index_franchisees_on_company_id"
   end
 
