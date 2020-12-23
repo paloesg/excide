@@ -99,6 +99,20 @@ class Overture::DocumentsController < ApplicationController
     end
   end
 
+  def toggle
+    @user = User.find(params[:id])
+    @permission = @user.permissions.find_by(permissible_id: params[:permissible_id])
+    if @permission != nil?
+      if params[:permissible_type] == "view"
+        @permission.update(can_view: params[:permission])
+      else
+        @permission.update(can_download: params[:permission])
+      end
+    else
+      set_flash "Error, please try again"
+    end
+  end
+
   private
   def set_company
     @user = current_user

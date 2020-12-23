@@ -153,8 +153,16 @@ Rails.application.routes.draw do
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end
-    resources :documents
-    resources :folders
+    resources :documents do
+      member do
+        post 'toggle'
+      end
+    end
+    resources :folders do
+      member do
+        post 'toggle'
+      end
+    end
   end
 
   namespace :conductor do
