@@ -132,6 +132,7 @@ Rails.application.routes.draw do
     resources :templates, param: :template_slug
     resources :workflows, except: :show do
       post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
+      post '/upload_documents', to: 'workflows#upload_documents', as: :upload_documents
       get '/wfa/:wfa_id/notify_franchisor', to: 'workflows#notify_franchisor', as: :notify_franchisor
     end
     resources :outlets do

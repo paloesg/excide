@@ -3,8 +3,7 @@
     .card
       h1.card-header Upload New Document
       .card-body
-        = form_for(@document, url: motif_documents_path(workflow_action_id: params[:workflow_action_id])) do |f|
-          = hidden_field_tag :upload_type, params[:upload_type] if params[:upload_type].present?
-          = hidden_field_tag "utf8", "√"
-          = render 'form', f: f
+        h3 Drag and drop multiple documents in the box below
+        .dashboard-body.motifWorkflowActionMultipleUploads#Dashboard data-workflow="#{@workflow_action.workflow.id}" data-wfa="#{@workflow_action.id}"
+        
 

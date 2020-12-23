@@ -110,6 +110,29 @@ class Motif::WorkflowsController < ApplicationController
     redirect_to motif_outlet_workflow_path(outlet_id: prev_wf.outlet, id: prev_wf.id) if prev_wf.present?
   end
 
+  def upload_documents
+    @wfa = WorkflowAction.find(params[:wfa_id])
+    if params[:successful_files].present?
+      @files = []
+      parsed_files = JSON.parse(params[:successful_files])
+      parsed_files.each do |file|
+        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, @wfa.task.folder.id).run_without_associations
+        if @generate_document.success?
+          document = @generate_document.document
+          document.update_attributes(workflow_action_id: params[:wfa_id], folder_id: @wfa.task.folder.id)
+          # attach and convert method
+          document.attach_and_convert_document(file['response']['key'])
+          @files.append document
+        end
+      end
+    end
+    respond_to do |format|
+      # Redirect back to workflow page
+      format.html { redirect_to motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id), notice: "File(s) successfully uploaded into folder."  }
+      format.json { render json: @files.to_json }
+    end
+  end
+
   private
 
   def set_company
