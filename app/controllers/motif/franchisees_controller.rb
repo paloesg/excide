@@ -47,10 +47,8 @@ class Motif::FranchiseesController < ApplicationController
     if params[:successful_files].present?
       # Get franchisee
       @franchisee = @company.franchisees.find_by(id: params[:franchisee_id])
-      # Create a folder in doc repo to store all the uploaded files
-      @folder = Folder.find_or_create_by(name: "Agreement documents - #{@franchisee.franchise_licensee}", company: @company)
-      # Give permission access to the person that uploaded the folder
-      Permission.find_or_create_by(user: current_user, can_write: true, can_download: true, can_view: true, permissible: @folder)
+      # Find folder
+      @folder = @company.folders.find_by(name: "Agreement documents - #{@franchisee.franchise_licensee}")
       @files = []
       parsed_files = JSON.parse(params[:successful_files])
       parsed_files.each do |file|

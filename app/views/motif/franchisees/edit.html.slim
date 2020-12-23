@@ -18,7 +18,7 @@
             = f.text_field :registered_address, placeholder: "Registered address", class: 'form-control col-sm-10'
           .form-group
             = f.label :license_type, "License Type", class: "label-bold"
-            = f.select :license_type, Franchisee.license_types.map { |key, value| [key.titleize, key] },  {selected: @franchisee.license_type}, class: 'form-control col-sm-10'
+            = f.select :license_type, Franchisee.license_types.map { |key, value| [key.titleize, key] },  {include_blank: true, selected: @franchisee.license_type}, class: 'form-control col-sm-10'
           .form-group
             = f.label :commencement_date, class: "col-sm-5 pl-0 label-bold"
             = f.label :expiry_date, class: "col-sm-5 pl-2 label-bold"

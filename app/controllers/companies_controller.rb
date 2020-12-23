@@ -116,7 +116,11 @@ class CompaniesController < ApplicationController
 
   def set_default_franchisee
     # By default, create franchisee record when creating the entity (company) and set franchisee type as master franchisee
-    Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: "master_franchisee")
+    @franchisee = Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: "master_franchisee")
+    # Create a folder in doc repo to store all retrospective uploaded files for franchisee
+    @folder = Folder.create(name: "Agreement documents - #{@franchisee.franchise_licensee}", company: @company.parent, franchisee: @franchisee)
+    # Give permission access to the person that created the franchisee
+    Permission.create(user: current_user, can_write: true, can_download: true, can_view: true, permissible: @folder)
   end
 
   def remove_company_roles

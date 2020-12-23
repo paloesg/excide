@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_22_103816) do
+ActiveRecord::Schema.define(version: 2020_12_23_080220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -282,7 +282,9 @@ ActiveRecord::Schema.define(version: 2020_12_22_103816) do
     t.text "remarks"
     t.bigint "user_id"
     t.uuid "company_id"
+    t.uuid "franchisee_id"
     t.index ["ancestry"], name: "index_folders_on_ancestry"
+    t.index ["franchisee_id"], name: "index_folders_on_franchisee_id"
     t.index ["user_id"], name: "index_folders_on_user_id"
   end
 
@@ -793,6 +795,7 @@ ActiveRecord::Schema.define(version: 2020_12_22_103816) do
   add_foreign_key "events", "companies"
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
+  add_foreign_key "folders", "franchisees"
   add_foreign_key "folders", "users"
   add_foreign_key "franchisees", "companies"
   add_foreign_key "invoices", "companies"
