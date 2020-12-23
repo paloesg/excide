@@ -29,6 +29,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     access_key: Field::String,
     access_secret: Field::String,
     expires_at: Field::Number,
+    storage_limit: Field::Number,
+    storage_used: Field::Number,
     account_type: EnumField,
     before_deadline_reminder_days: Field::Number,
     created_at: Field::DateTime,
@@ -77,6 +79,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     :account_type,
     :before_deadline_reminder_days,
     :ancestry,
+    :storage_limit,
+    :storage_used,
   ]
 
   # Overwrite this method to customize how profiles are displayed

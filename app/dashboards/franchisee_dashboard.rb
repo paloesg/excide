@@ -16,7 +16,6 @@ class FranchiseeDashboard < Administrate::BaseDashboard
     license_type: EnumField,
     max_outlet: Field::Number,
     min_outlet: Field::Number,
-    storage_space: Field::Number,
     commencement_date: Field::Date,
     expiry_date: Field::Date,
     renewal_period_freq_unit: EnumField,
@@ -47,7 +46,6 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   license_type
   max_outlet
   min_outlet
-  storage_space
   commencement_date
   expiry_date
   renewal_period_freq_unit
@@ -66,7 +64,6 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   license_type
   max_outlet
   min_outlet
-  storage_space
   commencement_date
   expiry_date
   renewal_period_freq_unit
