@@ -13,7 +13,8 @@ $(document).on("turbolinks:load", function () {
           toggleBy: {
             0: "drawer_toggle_" + dataAttribute + "_0",
             1: "drawer_toggle_" + dataAttribute + "_1",
-            2: "drawer_toggle_" + dataAttribute + "_2"
+            2: "drawer_toggle_" + dataAttribute + "_2",
+            3: "drawer_toggle_" + dataAttribute + "_3"
           },
         }
       );
