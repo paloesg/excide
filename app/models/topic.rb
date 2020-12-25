@@ -1,4 +1,6 @@
 class Topic < ApplicationRecord
+  include AASM
+  
   belongs_to :user
   belongs_to :company
 
