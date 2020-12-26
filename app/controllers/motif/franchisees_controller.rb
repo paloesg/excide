@@ -4,6 +4,7 @@ class Motif::FranchiseesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_franchisee, only: [:show, :edit, :update]
+  before_action :set_franchisee_by_id, only: [:outlets, :users, :agreements, :upload_agreements]
 
   def index
     # Only query franchisees which doesnt have company name as franchise licensee
@@ -28,25 +29,20 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def outlets
-    @franchisee = @company.franchisees.find_by(id: params[:franchisee_id])
     @outlets = @franchisee.outlets
   end
 
   def users
-    @franchisee = @company.franchisees.find_by(id: params[:franchisee_id])
     # Check if franchisee's company has children
     @users = @franchisee.company.children.present? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).users : @franchisee.outlets.map(&:users).flatten
   end
 
   def agreements
-    @franchisee = @company.franchisees.find_by(id: params[:franchisee_id])
     @documents = Document.where(franchisee_id: @franchisee.id)
   end
 
   def upload_agreements
     if params[:successful_files].present?
-      # Get franchisee
-      @franchisee = @company.franchisees.find_by(id: params[:franchisee_id])
       # Create a folder in doc repo to store all the uploaded files
       @folder = Folder.find_or_create_by(name: "Agreement documents - #{@franchisee.franchise_licensee}", company: @company)
       # Give permission access to the person that uploaded the folder
@@ -79,8 +75,13 @@ class Motif::FranchiseesController < ApplicationController
     @franchisee = Franchisee.find(params[:id])
   end
 
+  def set_franchisee_by_id
+    # Get franchisee by franchisee ID
+    @franchisee = @company.franchisees.find_by(id: params[:franchisee_id])
+  end
+
   def franchisee_params
-    params.require(:franchisee).permit(:commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :franchise_licensee, :registered_address, :license_type, :max_outlet, :min_outlet, :storage_space)
+    params.require(:franchisee).permit(:commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :franchise_licensee, :registered_address, :license_type, :max_outlet, :min_outlet)
   end
   
   def build_addresses
