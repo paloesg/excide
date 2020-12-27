@@ -21,7 +21,7 @@
     "flatpickr": "^4.6.6",
     "flickity": "^2.2.1",
     "jquery": "^3.5.1",
-    "jquery-bridget": "^2.0.1",
+    "jquery-bridget": "^3.0.0",
     "jquery-ui": "^1.12.1",
     "jquery.ui.widget": "^1.10.3",
     "jsoneditor": "^8.6.8",
