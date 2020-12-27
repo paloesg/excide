@@ -9,7 +9,7 @@
           i.material-icons-outlined comment
       .float-right.border.rounded.p-1
         / Disable checkbox if current user is franchisor
-        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisee_owner, @user.company)), class: "m-2 #{wfa.completed or @user.has_role?(:franchisee_owner, @user.company) ? "" : "dropdown-pointer"}"
+        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (@user.has_role?(:franchisee_owner, @user.company) or (@company != @workflow.company)), class: "m-2 #{wfa.completed or @user.has_role?(:franchisee_owner, @user.company) ? "" : "dropdown-pointer"}"
       .float-right.mx-4.mt-2
         = link_to motif_workflow_notify_franchisor_path(workflow_id: wf.id, wfa_id: wfa.id) do
           i.material-icons-outlined.mr-1 class="#{ wfa.notify_status? ? "orange-bell-notification" : ""}" notifications_active
