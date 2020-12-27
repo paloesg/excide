@@ -19,7 +19,7 @@
   .row.my-5
     .col-md-12
       h6 Description
-      p = task.description
+      span = task.description.present? ? task.description : "Add a description"
   .row.my-5
     .col-md-12
       h6 Due Date
@@ -41,23 +41,22 @@
           .text-muted = wfa.deadline&.strftime("%d %b")
           i.material-icons-outlined.font-size-h6.ml-1.text-muted calendar_today
           - color = "text-muted"
-      hr
-  .row.my-5
-    .col-md-5
-      h6 Attachments
-    .col-md-5
-      h6 Uploaded On
+        - else
+          span Add a due date
+  .row.mt-5
+    .col-md-10
+      h6 Files
     .col-md-2
       h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id), class: "text-primary"
+  .row.mb-5
+    .col-md-12
+      span.text-info = wfa.task.folder.present? ? "*File will be uploaded to this folder: #{wfa.task.folder.name}" : ""
 
   - @documents.where(workflow_action_id: wfa.id).each do |d|
     .row.my-5
       / File Name
-      .col-md-5
-        = d.raw_file.filename 
-      / Uploaded date
-      .col-md-5
-        = d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p")
+      .col-md-10
+        = d.raw_file.filename
       .col-md-2
         = link_to rails_blob_path(d.raw_file, disposition: "attachment") do
           i.material-icons-outlined.align-middle.text-primary download
