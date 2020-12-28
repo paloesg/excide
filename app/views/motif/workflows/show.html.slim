@@ -60,6 +60,7 @@
                   - if wfa.notify_status?
                     i.material-icons-outlined.mr-1.orange-bell-notification notifications_active
               td.text-center width="5%"
-                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (wfa.completed or @user.has_role?(:franchisee_owner, @user.company) or (@company != @workflow.company)), class: "mt-1 action_checkbox"
+                / 2 conditions for disabled checkboxes: First is unit franchisee condition (checked by role), while the other is master franchisee condition (which the company would not be the same as the franchise company who created the workflow)
+                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (@user.has_role?(:franchisee_owner, @user.company) or (@company != @workflow.company)), class: "mt-1 action_checkbox"
             = render "task", template: @template, wf: @workflow, wfa: wfa, index: index, color: color, task: wfa.task
     
