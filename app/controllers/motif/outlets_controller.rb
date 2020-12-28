@@ -93,6 +93,11 @@ class Motif::OutletsController < ApplicationController
     @workflows = @outlet.workflows
   end
 
+  def email_new_outlet
+    NotificationMailer.motif_new_outlet(current_user).deliver_later
+    redirect_to motif_outlets_path, notice: "Thank you for stating your interest in a new outlet. Kindly wait for further information as we contact you through email."
+  end
+
   private
   def set_company
     @company = current_user.company
