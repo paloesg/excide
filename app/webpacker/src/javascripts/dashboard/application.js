@@ -5,7 +5,6 @@ window.jQuery = $;
 window.$ = $;
 
 window.moment = require("moment");
-window.mixpanel = require("mixpanel-browser");
 require("selectize");
 require("algoliasearch");
 require("tempusdominus-bootstrap-4");
@@ -35,7 +34,7 @@ window.addAvailability = require("./conductor/add_availabilities");
 require("./conductor/home");
 require("./conductor/go_to_allocation");
 require("./conductor/event_update");
-require("./components/calendar_style");
+// require("./components/calendar_style");
 
 require("./motif/drawer")
 require("./motif/home")
