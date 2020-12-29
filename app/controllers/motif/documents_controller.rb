@@ -25,8 +25,7 @@ class Motif::DocumentsController < ApplicationController
 
   def new
     @folders = policy_scope(Folder).roots
-    @workflow_action = @company.workflow_actions.find(params[:workflow_action]) if params[:workflow_action].present?
-    @workflow_action_id = params[:workflow_action_id]
+    @workflow_action = @company.workflow_actions.find(params[:workflow_action_id]) if params[:workflow_action_id].present?
     @folder_id = params[:folder_id]
     @document = Document.new
     authorize @document
