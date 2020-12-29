@@ -1,0 +1,32 @@
+.row
+  .col-sm-3.bg-white.sidebar-border-radius
+    = render "franchisee_sidebar"
+  .col-sm-9
+    = form_for @franchisee, url: motif_franchisee_path(@franchisee) do |f|
+      .row.mb-3.mt-5.ml-3
+        .col-sm-12
+          .btn-toolbar.float-right.ml-5
+            = f.submit 'Save Changes', class: 'btn btn-primary border border-secondary text-white mr-3 px-5'
+          h3.mt-3 Franchisee Profile
+      .row.mb-3.mt-5.ml-3
+        .col-sm-10.my-7
+          .form-group
+            = f.label :franchise_licensee, "Franchisee Entity", class: "label-bold"
+            = f.text_field :franchise_licensee, placeholder: "Company", class: 'form-control col-sm-5'
+          .form-group
+            = f.label :registered_address, "Registered Address", class: "label-bold"
+            = f.text_field :registered_address, placeholder: "Registered address", class: 'form-control col-sm-10'
+          .form-group
+            = f.label :license_type, "License Type", class: "label-bold"
+            = f.select :license_type, Franchisee.license_types.map { |key, value| [key.titleize, key] },  {include_blank: true, selected: @franchisee.license_type}, class: 'form-control col-sm-10'
+          .form-group
+            = f.label :commencement_date, class: "col-sm-5 pl-0 label-bold"
+            = f.label :expiry_date, class: "col-sm-5 pl-2 label-bold"
+            .form-inline
+              = f.date_field :commencement_date, class: 'form-control col-sm-5 mr-2'
+              = f.date_field :expiry_date, class: 'form-control col-sm-5'
+          .form-group
+            = f.label :renewal_period_freq_unit, "Franchise renewal notice period", class: "label-bold col-sm-5 pl-0"
+            .form-inline
+              = f.number_field :renewal_period_freq_value, placeholder: "Value", class: 'form-control col-sm-2 mr-2'
+              = f.select :renewal_period_freq_unit, Franchisee.renewal_period_freq_units.map { |key, value| [key.titleize, key] },  {selected: @franchisee.renewal_period_freq_unit}, class: 'form-control col-sm-2'

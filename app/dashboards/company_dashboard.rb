@@ -29,10 +29,13 @@ class CompanyDashboard < Administrate::BaseDashboard
     access_key: Field::String,
     access_secret: Field::String,
     expires_at: Field::Number,
+    storage_limit: Field::Number,
+    storage_used: Field::Number,
     account_type: EnumField,
     before_deadline_reminder_days: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    ancestry: Field::String,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -47,8 +50,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :workflows,
     :templates,
     :documents,
-    :batches,
-    :invoices,
+    :ancestry,        
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -76,6 +78,9 @@ class CompanyDashboard < Administrate::BaseDashboard
     :expires_at,
     :account_type,
     :before_deadline_reminder_days,
+    :ancestry,
+    :storage_limit,
+    :storage_used,
   ]
 
   # Overwrite this method to customize how profiles are displayed

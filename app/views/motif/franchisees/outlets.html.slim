@@ -1,0 +1,22 @@
+.row
+  .col-sm-3.bg-white.sidebar-border-radius
+    = render "franchisee_sidebar"
+  .col-sm-9
+    .row.mb-3.mt-5
+      .col-sm-12
+        h3 Outlets
+        p.mt-5.text-muted
+          = "Here is where you can see outlets under #{@franchisee.franchise_licensee.titleize}."
+    /     span.mr-3
+    /       i.material-icons-outlined filter_list
+    /     | Filters
+    hr.mb-0
+    .row.mt-5
+      - @outlets.each do |outlet|
+        .col-sm-4.mt-5
+          .d-flex.flex-wrap.align-items-center.py-1
+            = outlet.header_image.attached? ? (image_tag(outlet.header_image, class: 'outlet-image mr-3')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-image mr-3")
+            .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3
+              h6 = outlet.name
+              span = outlet.franchisee.franchise_licensee
+              span = outlet.country || "Add country"

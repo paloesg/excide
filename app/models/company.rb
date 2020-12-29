@@ -1,4 +1,5 @@
 class Company < ApplicationRecord
+  has_ancestry primary_key_format: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
   resourcify
 
   extend FriendlyId
@@ -73,6 +74,11 @@ class Company < ApplicationRecord
   validates :mailbox_token, uniqueness: true
 
   acts_as_tagger
+
+  # Skip validation if ancestry is nil when creating company
+  before_validation do
+    self.ancestry = nil if self.ancestry.blank?
+  end
 
   # Get all other companies that user has roles for excpet the current company that user belongs to
   def self.assigned_companies(user)

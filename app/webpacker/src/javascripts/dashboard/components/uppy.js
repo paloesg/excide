@@ -93,6 +93,17 @@ const motifOutletPhotosUpload = (uppy) => {
   });
 };
 
+// Motif franchisor to upload documents retrospectively
+const motifUploadFranchiseeDocuments = (uppy) => {
+  uppy.on('complete', (result) => {
+    $.post("/motif/franchisees/" + $(".motifUploadFranchiseeDocuments").data("franchisee") + "/upload_agreements", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+    });
+  });
+};
+
 //-----------------------------------Setup Uppy-----------------------------------------
 function setupUppy(element){
   let form = element.closest('form');
@@ -154,7 +165,10 @@ function setupUppy(element){
   }
   else if($('.motifOutletPhotosUpload').length){
     motifOutletPhotosUpload(uppy);
-  } 
+  }
+  else if($('.motifUploadFranchiseeDocuments').length){
+    motifUploadFranchiseeDocuments(uppy);
+  }
 }
 //-----------------------------------Initialize Uppy------------------------------------
 document.addEventListener('turbolinks:load', () => {
