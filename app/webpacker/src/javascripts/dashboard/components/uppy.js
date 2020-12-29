@@ -101,6 +101,9 @@ const motifWorkflowActionMultipleUploads = (uppy) => {
       // Number of file uploads that were uploaded successfully
       successful_files: JSON.stringify(result.successful),
       wfa_id: $(".motifWorkflowActionMultipleUploads").data("wfa"),
+    });
+  });
+};
 
 // Motif franchisor to upload documents retrospectively
 const motifUploadFranchiseeDocuments = (uppy) => {
