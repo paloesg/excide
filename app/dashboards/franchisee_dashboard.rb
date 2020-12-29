@@ -13,6 +13,9 @@ class FranchiseeDashboard < Administrate::BaseDashboard
     id: Field::String.with_options(searchable: false),
     franchise_licensee: Field::String,
     registered_address: Field::String,
+    license_type: EnumField,
+    max_outlet: Field::Number,
+    min_outlet: Field::Number,
     commencement_date: Field::Date,
     expiry_date: Field::Date,
     renewal_period_freq_unit: EnumField,
@@ -29,6 +32,8 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   franchise_licensee
   registered_address
   company
+  license_type
+  expiry_date
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -38,10 +43,14 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   company
   franchise_licensee
   registered_address
+  license_type
+  max_outlet
+  min_outlet
   commencement_date
   expiry_date
   renewal_period_freq_unit
   renewal_period_freq_value
+  outlets
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -49,13 +58,16 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
   company
+  outlets
   franchise_licensee
   registered_address
+  license_type
+  max_outlet
+  min_outlet
   commencement_date
   expiry_date
   renewal_period_freq_unit
   renewal_period_freq_value
-  outlets
   ].freeze
 
   # COLLECTION_FILTERS

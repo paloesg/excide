@@ -47,20 +47,17 @@ hr.mb-0
     = render 'motif/shared/motif_empty_state'
   - else
     - @workflows.each do |wf|
-      .col-sm-4.mt-3
-        .card.h-100.card-custom.card-stretch.gutter-b.card-view-outlet
-          .card-body
-            .row
-              .col-sm-12.mt-3
-                = link_to wf.outlet.name, motif_outlet_workflow_path(outlet_id: wf.outlet.id, id: wf.id), class: 'h4 font-weight-boldest text-dark'
-            .row.mt-5
-              .col-sm-12
-                p.text-muted Location address: #{wf.outlet.address&.line_1} #{wf.outlet.address&.postal_code}
-            .row.mt-5
-              .col-sm-12.mr-0
-                .progress
-                  .progress-bar.progress-bar-striped.bg-primary aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" role="progressbar" style=("width: #{wf.progress}%")
-            .row
-              .col-md-12
-                span.font-weight-boldest #{wf.progress.to_s}%
-
+      .col-sm-12.mt-3
+        .d-flex.flex-wrap.align-items-center.py-1
+          = wf.outlet.header_image.attached? ? (image_tag(wf.outlet.header_image, class: 'outlet-image mr-5')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-image mr-5")
+          .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3
+            span.h3.font-weight-boldest = wf.outlet.name
+            span = "#{wf.outlet&.country} #{wf.outlet&.city}"
+          .col-sm-4
+            .progress
+              .progress-bar.progress-bar-striped.bg-primary aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" role="progressbar" style=("width: #{wf.progress}%")
+          .col-sm-1
+            span.font-weight-boldest #{wf.progress.to_s}%
+          .col-sm-1
+            = link_to motif_outlet_workflow_path(outlet_id: wf.outlet.id, id: wf.id) do
+              i.material-icons-outlined arrow_forward

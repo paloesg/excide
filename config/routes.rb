@@ -135,6 +135,12 @@ Rails.application.routes.draw do
       post '/upload_documents', to: 'workflows#upload_documents', as: :upload_documents
       get '/wfa/:wfa_id/notify_franchisor', to: 'workflows#notify_franchisor', as: :notify_franchisor
     end
+    resources :franchisees do
+      get 'outlets', to: 'franchisees#outlets', as: :outlets
+      get 'users', to: 'franchisees#users', as: :users
+      get 'agreements', to: 'franchisees#agreements', as: :agreements
+      post 'upload_agreements', to: 'franchisees#upload_agreements', as: :upload_agreements
+    end
     resources :outlets do
       resources :workflows, only: :show do
         post '/next', to:'workflows#next_workflow', as: :next_workflow
@@ -150,6 +156,7 @@ Rails.application.routes.draw do
     post '/add-roles', to: 'users#add_role', as: :add_role
     get '/financial-performance', to: 'home#financial_performance'
     get '/edit-report', to: 'home#edit_report'
+    get "/email_new_outlet", to: 'outlets#email_new_outlet', as: :email_new_outlet
   end
   
   namespace :overture do

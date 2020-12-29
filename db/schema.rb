@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_21_132737) do
+ActiveRecord::Schema.define(version: 2020_12_23_140628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -197,6 +197,8 @@ ActiveRecord::Schema.define(version: 2020_12_21_132737) do
     t.string "website_url"
     t.string "report_url"
     t.string "ancestry"
+    t.integer "storage_limit"
+    t.integer "storage_used"
     t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
@@ -243,7 +245,9 @@ ActiveRecord::Schema.define(version: 2020_12_21_132737) do
     t.uuid "folder_id"
     t.uuid "company_id"
     t.uuid "outlet_id"
+    t.uuid "franchisee_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
+    t.index ["franchisee_id"], name: "index_documents_on_franchisee_id"
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
@@ -295,7 +299,6 @@ ActiveRecord::Schema.define(version: 2020_12_21_132737) do
     t.integer "license_type"
     t.integer "max_outlet"
     t.integer "min_outlet"
-    t.integer "storage_space"
     t.index ["company_id"], name: "index_franchisees_on_company_id"
   end
 
@@ -783,6 +786,7 @@ ActiveRecord::Schema.define(version: 2020_12_21_132737) do
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "folders"
+  add_foreign_key "documents", "franchisees"
   add_foreign_key "documents", "outlets"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
