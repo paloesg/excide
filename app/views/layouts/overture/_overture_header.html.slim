@@ -6,7 +6,13 @@
   button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button"
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
-    ul.navbar-nav.ml-auto.mr-5
+    ul.navbar-nav.ml-auto.mr-5.d-flex.align-items-center
+      = link_to overture_root_path do
+        i.material-icons-outlined.mr-5.mt-2 question_answer
+      = link_to overture_root_path do
+        i.material-icons-outlined.mr-5.ml-3.mt-2 notifications
+      = link_to overture_root_path do
+        i.material-icons-outlined.mr-5.ml-3.mt-2 settings
       /! begin: User bar
       .dropdown.ml-3
         a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
