@@ -156,6 +156,9 @@ Rails.application.routes.draw do
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end
+    resources :topics do
+      resources :notes
+    end
   end
 
   namespace :conductor do
