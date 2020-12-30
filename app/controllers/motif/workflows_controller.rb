@@ -117,10 +117,10 @@ class Motif::WorkflowsController < ApplicationController
       @files = []
       parsed_files = JSON.parse(params[:successful_files])
       parsed_files.each do |file|
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, @wfa.task.folder.id).run_without_associations
+        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, @wfa.task.folder&.id).run_without_associations
         if @generate_document.success?
           document = @generate_document.document
-          document.update_attributes(workflow_action_id: params[:wfa_id], folder_id: @wfa.task.folder.id)
+          document.update_attributes(workflow_action_id: params[:wfa_id], folder_id: @wfa.task.folder&.id)
           # attach and convert method
           document.attach_and_convert_document(file['response']['key'])
           @files.append document
