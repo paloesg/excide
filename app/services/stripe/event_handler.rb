@@ -48,9 +48,10 @@ module Stripe
     end
 
     def handle_customer_subscription_updated(event)
-      if event.data.object.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
-        @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-        @subscription = Stripe::Subscription.retrieve(event.data.object.id)
+      @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
+      @subscription = Stripe::Subscription.retrieve(event.data.object.id)
+
+      if @current_user.present? and (event.data.object.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN'])
         period_end = event.data.object.current_period_end
         # Run mailer only when cancel_at_period_end is true
         if event.data.object.cancel_at_period_end
@@ -75,9 +76,10 @@ module Stripe
     def handle_invoice_payment_succeeded(event)
       @subscription = Stripe::Subscription.retrieve(event.data.object.subscription)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      if (@subscription.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or @subscription.plan.id == ENV['STRIPE_ANNUAL_PLAN']) and  @current_user.company.stripe_subscription_plan_data.present?
+
+      if @current_user.present? and (@subscription.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or @subscription.plan.id == ENV['STRIPE_ANNUAL_PLAN']) and  @current_user.company.stripe_subscription_plan_data.present?
         invoice = Stripe::Invoice.retrieve(event.data.object.id)
-        # This codes updates the stripe subscription plan data in DB upon recurring biling from Stripe. The if-condition checks for it being recurring (there should be subscription plan data rather than an empty array). 
+        # This codes updates the stripe subscription plan data in DB upon recurring biling from Stripe. The if-condition checks for it being recurring (there should be subscription plan data rather than an empty array).
         @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription
         # Check for no duplicate invoices in the database, in case webhook send back twice the response
         if @current_user.company.stripe_subscription_plan_data['invoices'].all?{|inv| inv['id'] != invoice.id }
@@ -85,6 +87,7 @@ module Stripe
           @current_user.company.save
         end
       end
+
       # Send email to inform user that payment is successful.
       StripeNotificationMailer.payment_successful(@current_user, Time.at(@subscription["current_period_start"]).strftime("%d-%b-%Y"), Time.at(@subscription["current_period_end"]).strftime("%d-%b-%Y"), event.data.object["invoice_pdf"]).deliver_later
     end
