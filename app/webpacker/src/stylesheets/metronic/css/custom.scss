@@ -180,8 +180,22 @@ td.day.has-events.fc-day-top.fc-past {
   width: 90% !important;
 }
 
-.select2-multiple .select2-container--default {
+.select2-multiple .select2-container--default, .select2-multiple .select2-search__field {
   width: 100% !important;
+}
+
+.select2-multiple .select2-selection__choice {
+  float: none !important;
+}
+
+
+.select2-multiple .select2-selection__choice__remove {
+  border-right: none !important;
+}
+
+.select2-multiple .select2-selection__choice__remove:before {
+  content: "X" !important;
+  font-family: "NunitoSans" !important;
 }
 
 .pointer {
