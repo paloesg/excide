@@ -97,33 +97,6 @@ $(document).on("turbolinks:load", function () {
     });
   }
 
-  $("select.project-clients").selectize({
-    placeholder: "Choose project clients...",
-    plugins: ["remove_button"],
-    allowEmptyOption: true,
-    onFocus: function () {
-      $(".selectize-input input").attr("style", "width: auto;");
-    },
-  });
-
-  $("select.service-line").selectize({
-    placeholder: "Choose service line...",
-    plugins: ["remove_button"],
-    allowEmptyOption: true,
-    onFocus: function () {
-      $(".selectize-input input").attr("style", "width: auto;");
-    },
-  });
-
-  $("select.allocation-users").selectize({
-    placeholder: "Choose user...",
-    plugins: ["remove_button"],
-    allowEmptyOption: true,
-    onFocus: function () {
-      $(".selectize-input input").attr("style", "width: auto;");
-    },
-  });
-
   $("select.event-type").selectize({
     placeholder: "Choose event type",
     plugins: ["remove_button"],
