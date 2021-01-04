@@ -27,7 +27,6 @@ html lang="en"
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
     = action_cable_meta_tag
-    = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
     // For uppy use with active storage
     = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
 

@@ -5,6 +5,9 @@
     span.navbar-toggler-icon 
   #navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav
+      li.nav-item.mr-3
+        = link_to motif_root_path do
+          i.material-icons-outlined.align-middle.mt-3 home
       / Change company dropdown
       li.nav-item.dropdown.border.border-secondary.rounded
         / If user is franchisor, superadmin or admin, show company dropdown

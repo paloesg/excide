@@ -27,12 +27,11 @@ class CompaniesController < ApplicationController
       set_default_templates
       current_user.update(company: @company)
       # Redirect based on the products that was added to the company
-      if @company.products.length >= 2
+      if @company.products.length > 1
         redirect_to root_path
-      elsif @company.products[0] == "symphony"
-        redirect_to symphony_root_path
       else
-        redirect_to motif_root_path
+        # redirect to the root path of a single product
+        redirect_to "/#{@company.products[0]}"
       end
     end
   end
@@ -98,25 +97,17 @@ class CompaniesController < ApplicationController
   end
 
   def set_default_templates
-    general_onboarding_template = Template.find_by(title: "Onboarding (General)", company_id: nil)
-    general_site_audit_template = Template.find_by(title: "Site Audit (General)", company_id: nil)
-    general_royalty_collection_template = Template.find_by(title: "Royalty Collection (General)", company_id: nil)
-    # Create default folders with permissions when creating a franchise and the general templates exist
-    if @company.products.include? "motif" and general_onboarding_template.present? and general_site_audit_template.present? and general_royalty_collection_template.present?
-      @cloned_onboarding_template = general_onboarding_template.deep_clone include: { sections: :tasks }
-      @cloned_site_audit_template = general_site_audit_template.deep_clone include: { sections: :tasks }
-      @cloned_royalty_collection_template = general_royalty_collection_template.deep_clone include: { sections: :tasks }
-      # Change the general template name to prevent crashing with general template
-      @cloned_onboarding_template.title = "Onboarding - #{@company.name}"
-      @cloned_site_audit_template.title = "Site Audit - #{@company.name}"
-      @cloned_royalty_collection_template.title = "Royalty Collection - #{@company.name}"
-      # Link the cloned general template with company
-      @cloned_onboarding_template.company = @company
-      @cloned_site_audit_template.company = @company
-      @cloned_royalty_collection_template.company = @company
-      @cloned_onboarding_template.save
-      @cloned_site_audit_template.save
-      @cloned_royalty_collection_template.save
+    motif_general_templates = Template.where(company_id: nil).where.not(template_type: nil)
+    # Check if company products include Motif and that the motif general templates are present
+    if @company.products.include? "motif" and motif_general_templates.present?
+      motif_general_templates.each do |template|
+        cloned_template = template.deep_clone include: { sections: :tasks }
+        cloned_template.title = "#{template.title} - #{@company.name}"
+        cloned_template.company = @company
+        # Set template_pattern based on motif template_type, which will then set recurring attributes
+        cloned_template.set_recurring_based_on_template_type
+        cloned_template.save
+      end
     end
   end
 

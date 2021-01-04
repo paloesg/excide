@@ -147,8 +147,6 @@ gem 'aws-sdk-s3', '~> 1.81.0'
 gem 'aws-sdk-textract', '~> 1.19.0'
 # SMS integration with Twilio
 gem 'twilio-ruby'
-# Analytics
-gem 'mixpanel-ruby'
 # Performance reporting
 gem 'skylight'
 gem 'scout_apm'

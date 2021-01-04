@@ -39,7 +39,6 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized(exception)
     policy_name = exception.policy.class.to_s.underscore
-
     flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
     redirect_back(fallback_location: root_path)
   end
@@ -80,7 +79,7 @@ class ApplicationController < ActionController::Base
   # Checks the controller parent and check if the user has access to the product based on application policy unless parent is users (login) or object (not namespaced)
   def authenticate_product
     product = self.class.parent.to_s.downcase
-    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || "object"
+    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || product == "object"
   end
 
   def set_company
