@@ -13,10 +13,8 @@
     hr.mb-0
     - @users.each do |user|
       .row.mb-3.mt-5
-        .col-sm-5
+        .col-sm-6
           .font-weight-boldest = user.full_name
-        .col-sm-5
+        .col-sm-6
           = user.email
-        .col-sm-2
-          i.material-icons-outlined more_horiz
       hr

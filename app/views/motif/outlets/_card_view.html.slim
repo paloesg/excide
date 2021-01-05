@@ -1,10 +1,13 @@
 .row.mt-5.ml-5
-  - @outlets.each do |outlet|
-    .col-sm-4.mt-5
-      .d-flex.flex-wrap.align-items-center.py-1
-        = outlet.header_image.attached? ? (image_tag(outlet.header_image, class: 'outlet-image mr-5')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-image mr-5")
-        .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3
-          = link_to outlet.name, edit_motif_outlet_path(id: outlet.id), class: "h3 font-weight-boldest text-dark"
-          span.h6 = outlet&.franchisee&.franchise_licensee || "Add franchisee name "
-          span = outlet.country || "No country"
-          span = (outlet.company == @company) ? "Direct Owned" : "Sub-Franchised"
+  - unless @outlets.present?
+    = render 'outlet_empty_state'
+  - else
+    - @outlets.each do |outlet|
+      .col-sm-4.mt-5
+        .d-flex.flex-wrap.align-items-center.py-1
+          = outlet.header_image.attached? ? (image_tag(outlet.header_image, class: 'outlet-image mr-5')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-image mr-5")
+          .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3
+            = link_to outlet.name, edit_motif_outlet_path(id: outlet.id), class: "h3 font-weight-boldest text-dark"
+            span.h6 = outlet&.franchisee&.franchise_licensee || "Add franchisee name "
+            span = outlet.country || "No country"
+            span = (outlet.company == @company) ? "Direct Owned" : "Sub-Franchised"

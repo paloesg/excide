@@ -24,8 +24,8 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def show
-    # Check that franchisee's company has children and that it is a master franchisee (as this is the default role when creating one)
-    @sub_franchisees = @franchisee.company.children.present? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees : []
+    # Check franchisee license type
+    @sub_franchisees = @franchisee.check_license_type_master_or_area? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees : []
   end
 
   def outlets
@@ -33,8 +33,7 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def users
-    # Check if franchisee's company has children
-    @users = @franchisee.company.children.present? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).users : @franchisee.outlets.map(&:users).flatten
+    @users = @franchisee.check_license_type_master_or_area? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).users : @franchisee.outlets.map(&:users).flatten
   end
 
   def agreements
