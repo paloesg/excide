@@ -1,13 +1,14 @@
 / / ! begin:: Brand
 .navbar.navbar-expand-lg.navbar-light.fixed-top.bg-white.w-100.border.border-bottom style="height: 60px; box-shadow: 0px 3px 6px #00000029;"
-  = image_tag(current_user.company.company_logo, class: 'motif-company-logo') if current_user.company.company_logo.attached?
   button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button"
     span.navbar-toggler-icon 
   #navbarSupportedContent.collapse.navbar-collapse
+    = link_to motif_root_path, class: "navbar-brand" do
+      - if current_user.company.company_logo.attached?
+        = image_tag(current_user.company.company_logo, class: "motif-company-logo")
+      - else
+        i.material-icons-outlined.align-middle.mt-3 home
     ul.navbar-nav
-      li.nav-item.mr-3
-        = link_to motif_root_path do
-          i.material-icons-outlined.align-middle.mt-3 home
       / Change company dropdown
       li.nav-item.dropdown.border.border-secondary.rounded
         / If user is franchisor, superadmin or admin, show company dropdown
