@@ -12,6 +12,8 @@
     /     | Filters
     hr.mb-0
     .row.mt-5
+      - unless @outlets.present?
+        = render 'motif/outlets/outlet_empty_state'
       - @outlets.each do |outlet|
         .col-sm-4.mt-5
           .d-flex.flex-wrap.align-items-center.py-1
