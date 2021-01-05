@@ -4,7 +4,7 @@
     p #{@workflow.outlet.address&.line_1} #{@workflow.outlet.address&.postal_code}
   .col-md-6
     .float-right.mx-5.mt-3
-      = link_to 'Activity History', '#', class: 'text-primary font-weight-boldest'
+      = link_to 'Activity History', motif_workflow_activities_path(@workflow), class: 'text-primary font-weight-boldest'
     .float-right.mx-5.mt-2
       i.material-icons-outlined more_vert
     .float-right.mx-5.mt-2

@@ -1,11 +1,18 @@
-.row
-  .col-sm-8
-    - if activity.parameters[:completed]
-      span
-        = "#{activity.owner&.full_name or 'Symphony'} completed task: #{activity.parameters[:instructions]}."
-    - else
-      span
-        = "#{activity.owner&.full_name or 'Symphony'} updated task: #{activity.parameters[:instructions]}."
-  .col-sm-4
-    span.float-right
-      = activity.created_at.strftime("%d/%m/%Y %R")
+.row.m-2.p-5
+  .col-md-1
+    = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comment-user-icon mb-3'
+  .col-md-11
+    .row
+      span.text-muted = activity.created_at.strftime("%d %b %Y %H:%M")
+    .row.mt-1
+      span.h6.font-weight-boldest.mr-4 = activity.owner&.full_name || "No name"
+    .row.mt-1
+      - if activity.parameters[:completed]
+        span.text-dark.mt-2
+          = "Completed task: #{activity.parameters[:instructions]}."
+      - elsif activity.parameters[:notify_franchisor]
+        span.text-dark.mt-2
+          = "Notified the following task: #{activity.parameters[:instructions]}."
+      - else
+        span.text-dark.mt-2
+          = "Updated task: #{activity.parameters[:instructions]}."

@@ -46,6 +46,9 @@ class Motif::DocumentsController < ApplicationController
       end
     # single file upload
     else
+      workflow_action = WorkflowAction.find(params[:workflow_action_id])
+      @workflow = workflow_action.workflow
+      @template = workflow_action.workflow.template
       if params[:document][:folder_id].present?
         @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:document][:folder_id]).run_without_associations
       else
@@ -53,11 +56,8 @@ class Motif::DocumentsController < ApplicationController
       end
       if @generate_document.success?
         document = @generate_document.document
-        document.update_attributes(workflow_action_id: params[:workflow_action_id])
-        if params[:document][:folder_id].present?
-          document.update_attributes(folder_id: params[:document][:folder_id])
-        end
         authorize document
+        document.update_attributes(workflow_action_id: params[:workflow_action_id], folder_id: params[:document][:folder_id])
         # attach and convert method
         document.attach_and_convert_document(params[:response_key])
       end

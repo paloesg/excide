@@ -5,7 +5,7 @@ class Motif::WorkflowsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_workflow, only: [:show, :update, :destroy]
-  before_action :set_workflow_by_id, only: [:next_workflow, :prev_workflow, :toggle, :notify_franchisor]
+  before_action :set_workflow_by_id, only: [:next_workflow, :prev_workflow, :toggle, :notify_franchisor, :activities]
 
   def index
     # For INDEX workflow page
@@ -123,6 +123,8 @@ class Motif::WorkflowsController < ApplicationController
           document.update_attributes(workflow_action_id: params[:wfa_id], folder_id: @wfa.task.folder&.id)
           # attach and convert method
           document.attach_and_convert_document(file['response']['key'])
+          # Create custom activity when upload document in motif
+          document.create_activity key: 'workflow.motif_document_uploads', owner: @user, recipient: @wfa.workflow, params: { instructions: @wfa.task.instructions  }
           @files.append document
         end
       end
@@ -132,6 +134,10 @@ class Motif::WorkflowsController < ApplicationController
       format.html { redirect_to motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id), notice: "File(s) successfully uploaded into folder."  }
       format.json { render json: @files.to_json }
     end
+  end
+
+  def activities
+    @activities = PublicActivity::Activity.includes(:owner, :recipient).where(recipient_type: "Workflow", recipient_id: @workflow.id).order("created_at desc")
   end
 
   private
@@ -146,6 +152,7 @@ class Motif::WorkflowsController < ApplicationController
   end
 
   def set_workflow_by_id
+    # For nested routes inside workflow
     @workflow = Workflow.find(params[:workflow_id])
   end
 
