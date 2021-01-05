@@ -9,12 +9,15 @@
 /       i.material-icons-outlined filter_list
 /     | Filters
 hr.mb-0
-- @franchisees.each do |franchisee|
-  .row.mb-3.mt-5.ml-3
-    .col-sm-3
-      .font-weight-boldest = link_to franchisee&.franchise_licensee, motif_franchisee_path(franchisee)
-    .col-sm-3
-      .label.label-pill.label-inline.text-dark.p-3 class="label-motif-#{franchisee.license_type}" = franchisee&.license_type&.titleize
-    .col-sm-5
-      span.offset-sm-6 = pluralize(franchisee.outlets.length, "outlet")
-  hr
+- unless @franchisees.present?
+  = render 'franchisees_empty_state'
+- else
+  - @franchisees.each do |franchisee|
+    .row.mb-3.mt-5.ml-3
+      .col-sm-3
+        .font-weight-boldest = link_to franchisee&.franchise_licensee, motif_franchisee_path(franchisee)
+      .col-sm-3
+        .label.label-pill.label-inline.text-dark.p-3 class="label-motif-#{franchisee.license_type}" = franchisee&.license_type&.titleize
+      .col-sm-5
+        span.offset-sm-6 = pluralize(franchisee.outlets.length, "outlet")
+    hr
