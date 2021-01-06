@@ -10,7 +10,7 @@ class Motif::DocumentsController < ApplicationController
 
   def index
     @folder = Folder.new
-    @folders = policy_scope(Folder).roots
+    @folders = policy_scope(Folder).roots.includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
     @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
     @users = @company.users.includes(:permissions)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)

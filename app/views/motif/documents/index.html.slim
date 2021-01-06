@@ -120,7 +120,7 @@
             span.mr-4
               i.material-icons-outlined.align-middle group
             span
-              = folder.permissions.length
+              = get_view_permission_count(folder)
           td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
@@ -152,7 +152,7 @@
             span.mr-4
               i.material-icons-outlined.align-middle group
             span
-              = get_write_permission_count(d)
+              = get_view_permission_count(d)
           td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
