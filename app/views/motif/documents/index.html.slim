@@ -109,6 +109,8 @@
               i.material-icons-outlined.align-middle folder_open
             span.ml-5
               = link_to folder.name, motif_folder_path(folder.id)
+              - unless folder.company == @company
+                .badge.badge-secondary.ml-5 Shared
           td id="drawer_toggle_#{folder.id}_0"
             div id="tags_count_#{folder.id}"
               = content_tag :span, folder.all_tags_list.first, class: ["badge badge-motif", folder.all_tags_list.length > 0 ? "" : "d-none"]
@@ -142,6 +144,8 @@
               = image_pack_tag "media/src/images/motif/doc.svg"
             span.ml-5
               = d.raw_file.filename
+              - unless d.company == @company
+                .badge.badge-secondary.ml-5 Shared 
           td id="drawer_toggle_#{d.id}_0"
             div id="tags_count_#{d.id}"
               = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
