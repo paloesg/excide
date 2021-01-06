@@ -182,6 +182,14 @@ td.day.has-events.fc-day-top.fc-past {
 
 .select2-multiple .select2-container--default, .select2-multiple .select2-search__field {
   width: 100% !important;
+  margin-top: 0px !important;
+  margin-left: 0px !important;
+}
+
+.select2-multiple .select2-search__field {
+  width: 100% !important;
+  margin-top: 4px !important;
+  margin-left: 0px !important;
 }
 
 .select2-multiple .select2-selection__choice {
@@ -197,6 +205,10 @@ td.day.has-events.fc-day-top.fc-past {
   content: "X" !important;
   font-family: "NunitoSans" !important;
   font-size: 9px !important;
+}
+
+.select2-multiple .select2-selection__rendered {
+  margin-bottom: 0px;
 }
 
 .pointer {
