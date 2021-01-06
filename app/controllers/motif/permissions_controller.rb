@@ -19,8 +19,16 @@ class Motif::PermissionsController < ApplicationController
     @permissible = params[:permissible_type] == "folder" ? Folder.find(params[:permissible_id]) : Document.find(params[:permissible_id])    
     @permission = Permission.find(params[:id])
     respond_to do |format|
-      if params[:permission] == "Can write" ? @permission.update(user_id: params[:user_id],  permissible: @permissible, can_write: true, can_download: true, can_view: true) : @permission.update(user_id: params[:user_id], permissible: @permissible, can_write: false, can_view: true, can_download: true)
-        format.json { render json: @permission, status: :ok }
+      if params[:permission]
+        if params[:permission] == "Can write"
+          @permission.update(user_id: params[:user_id],  permissible: @permissible, can_write: true, can_download: true, can_view: true)
+        elsif params[:permission] == "Can download"
+          @permission.update(user_id: params[:user_id], permissible: @permissible, can_write: false, can_view: true, can_download: true)
+        else
+          # Destroy permission if user choose empty option
+          @permission.destroy
+        end
+        format.json { render json: @permission, status: :ok }   
       else
         format.json { render json: @permission.errors, status: :unprocessable_entity }
       end

@@ -152,7 +152,7 @@
             span.mr-4
               i.material-icons-outlined.align-middle group
             span
-              = d.permissions.length
+              = get_write_permission_count(d)
           td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"

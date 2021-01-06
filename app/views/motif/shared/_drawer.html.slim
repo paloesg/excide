@@ -31,7 +31,7 @@
             p = byte_size
           .col
             span.text-muted Shared with
-            p = pluralize(permissible.permissions.length, 'other')
+            p = pluralize(get_write_permission_count(permissible), 'other')
         span.text-muted Tags
         input.motif-tags.my-3 id="tag_#{permissible.id}" placeholder=" + Add tag" value=permissible.all_tags_list data-tag=permissible.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
         / Form for remarks document
