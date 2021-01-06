@@ -8,12 +8,15 @@
         p.mt-5.text-muted
           | Here are the list of sub franchisees.
     hr.mb-0
-    - @sub_franchisees.each do |franchisee|
-      .row.mb-3.mt-5.ml-3
-        .col-sm-3
-          .font-weight-boldest = franchisee&.franchise_licensee
-        .col-sm-3
-          .label.label-pill.label-inline.text-dark.p-3 class="label-motif-#{franchisee.license_type}" = franchisee&.license_type.titleize
-        .col-sm-5
-          span.offset-sm-6 = pluralize(franchisee.outlets.length, "outlet")
-      hr
+    - unless @sub_franchisees.present?
+      = render 'franchisees_empty_state'
+    - else
+      - @sub_franchisees.each do |franchisee|
+        .row.mb-3.mt-5.ml-3
+          .col-sm-3
+            .font-weight-boldest = franchisee&.franchise_licensee
+          .col-sm-3
+            .label.label-pill.label-inline.text-dark.p-3 class="label-motif-#{franchisee.license_type}" = franchisee&.license_type.titleize
+          .col-sm-5
+            span.offset-sm-6 = pluralize(franchisee.outlets.length, "outlet")
+        hr
