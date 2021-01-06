@@ -43,7 +43,7 @@ class Motif::FranchiseesController < ApplicationController
   def upload_agreements
     if params[:successful_files].present?
       # Create a folder in doc repo to store all the uploaded files
-      @folder = Folder.find_or_create_by(name: "Agreement documents - #{@franchisee.franchise_licensee}", company: @company)
+      @folder = Folder.find_or_create_by(name: "Agreement documents - #{@franchisee&.franchise_licensee}", company: @company)
       # Give permission access to the person that uploaded the folder
       Permission.find_or_create_by(user: current_user, can_write: true, can_download: true, can_view: true, permissible: @folder)
       @files = []

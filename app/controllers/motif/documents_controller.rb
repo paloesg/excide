@@ -1,18 +1,18 @@
 class Motif::DocumentsController < ApplicationController
   layout 'motif/application'
+  include Motif::UsersHelper
   
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_document, only: [:update_tags, :update, :destroy]
 
   after_action :verify_authorized, except: :index
-  after_action :verify_policy_scoped, only: :index
 
   def index
     @folder = Folder.new
-    @folders = policy_scope(Folder).roots
-    @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc).includes(:permissions)
-    @users = @company.users.includes(:permissions)
+    @folders = Folder.roots.includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
+    @documents = Document.where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
+    @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     unless params[:tags].blank?
       if params[:tags] == 'All tags'

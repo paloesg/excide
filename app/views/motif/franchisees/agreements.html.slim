@@ -9,11 +9,12 @@
           | Upload relevant documents for franchisee to see.
     hr.mb-3
     .dashboard-body.align-item-center.motifUploadFranchiseeDocuments.my-5#Dashboard data-franchisee="#{params[:franchisee_id]}"
-    h6.my-5 Documents Uploaded
-    - @documents.each do |d|
-      .row.mb-3.my-5
-        .col-sm-6
-          .font-weight-boldest = d.raw_file.filename
-        .col-sm-6
-          span = d.created_at.strftime("%d %b %Y at %I:%M%p")
-      hr
+    - if @documents.present?
+      h6.my-5 Documents Uploaded:
+      - @documents.each do |d|
+        .row.mb-3.my-5
+          .col-sm-6
+            .font-weight-boldest = d.raw_file.filename
+          .col-sm-6
+            span = d.created_at.strftime("%d %b %Y at %I:%M%p")
+        hr

@@ -9,8 +9,8 @@
     ul.nav.nav-bold.nav-tabs.nav-tabs-line.nav-tabs-line-3x.nav-tabs-primary.flex-grow-1.px-10 role="tablist"
       li.nav-item.px-4
         a.nav-link data-toggle="tab" href="#information_#{permissible.id}" Information
-      / Only admin of company have access tab
-      - if current_user.has_role?(:admin, @company) or current_user.has_role?(:franchisor, @company)
+      / Only admin & franchisor of the company have access tab. Also permissible should belong to that company
+      - if (current_user.has_role?(:admin, @company) or current_user.has_role?(:franchisor, @company)) and permissible.company == @company
         li.nav-item.px-4
           a.nav-link data-toggle="tab" href="#access_#{permissible.id}" Access
       li.nav-item.px-4
@@ -31,7 +31,7 @@
             p = byte_size
           .col
             span.text-muted Shared with
-            p = pluralize(permissible.permissions.length, 'other')
+            p = pluralize(get_view_permission_count(permissible), 'other')
         span.text-muted Tags
         input.motif-tags.my-3 id="tag_#{permissible.id}" placeholder=" + Add tag" value=permissible.all_tags_list data-tag=permissible.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
         / Form for remarks document
@@ -40,7 +40,7 @@
             = f.label :remarks, "Remarks", class: 'text-muted'
             = f.text_field :remarks, { class: 'form-control remark-border p-0', data: { document_id: permissible.id, path: path }, onchange: "remarks(this);"}
       / Only admin of company have access tab
-      - if current_user.has_role?(:admin, @company) or current_user.has_role?(:franchisor, @company)
+      - if (current_user.has_role?(:admin, @company) or current_user.has_role?(:franchisor, @company))
         .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{permissible.id}" role="tabpanel"
           / .form-row.align-items-center.border-bottom
             / .col-md-1
