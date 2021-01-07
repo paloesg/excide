@@ -2,10 +2,10 @@ class Motif::NotesController < ApplicationController
   layout 'motif/application'
 
   before_action :authenticate_user!
-  before_action :get_outlet, except: :communication_hub
+  before_action :get_outlet, except: :messages
   before_action :update_last_click_into_comm_hub, except: :create
 
-  def communication_hub
+  def messages
     @outlets = current_user.company.outlets
   end
 
