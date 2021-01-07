@@ -153,7 +153,7 @@ Rails.application.routes.draw do
       get "/edit_franchisee_settings", to: 'outlets#edit_franchisee_setting', as: :edit_franchisee_setting
     end
     resources :users
-    get '/communication_hub', to: 'notes#communication_hub', as: :communication_hub
+    get '/messages', to: 'notes#messages', as: :messages
     post '/add-roles', to: 'users#add_role', as: :add_role
     get '/financial-performance', to: 'home#financial_performance'
     get '/edit-report', to: 'home#edit_report'

@@ -1,6 +1,9 @@
 .row.m-3
-  .col-md-12
-    .d-inline-block
+  .col-md-12.d-flex.align-items-center
+    span.mr-5
+      = link_to motif_outlet_workflow_path(outlet_id: @workflow.outlet.id, id: @workflow.id) do
+        i.material-icons-outlined.align-middle keyboard_arrow_left
+    span
       h1 = "#{@workflow.template.template_type.humanize} - Activity History"
 hr
 - @activities.each do |activity|

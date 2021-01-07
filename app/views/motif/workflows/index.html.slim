@@ -47,7 +47,7 @@ hr.mb-0
     = render 'motif/shared/motif_empty_state'
   - else
     - @workflows.each do |wf|
-      .col-sm-12.mt-3
+      .col-sm-12.mt-3.ml-5
         .d-flex.flex-wrap.align-items-center.py-1
           = wf.outlet.header_image.attached? ? (image_tag(wf.outlet.header_image, class: 'outlet-image mr-5')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-image mr-5")
           .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3

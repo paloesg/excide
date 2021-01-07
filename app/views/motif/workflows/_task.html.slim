@@ -49,16 +49,20 @@
       h6 Files
     .col-md-2
       h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id), class: "text-primary"
-  .row.mb-5
-    .col-md-12
-      span.text-info = wfa.task.folder.present? ? "*File will be uploaded to this folder: #{wfa.task.folder.name}" : ""
-
+  - if wfa.task.folder.present?
+    .row
+      .col-md-12
+        span.text-muted = "All files updated here are going to be stored in <#{wfa.task.folder.name}> folder"
+  hr.m-0
   - @documents.where(workflow_action_id: wfa.id).each do |d|
     .row.my-5
       / File Name
       .col-md-10
         = d.raw_file.filename
       .col-md-2
-        = link_to rails_blob_path(d.raw_file, disposition: "attachment") do
-          i.material-icons-outlined.align-middle.text-primary download
-
+        .dropdown
+          a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+            i.fa.fa-ellipsis-h.text-secondary.mb-4
+          .dropdown-menu.dropdown-menu-right
+            .dropdown-item
+              = link_to 'Download', rails_blob_path(d.raw_file, disposition: "attachment")
