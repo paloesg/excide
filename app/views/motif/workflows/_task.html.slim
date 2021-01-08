@@ -48,7 +48,7 @@
     .col-md-10
       h6 Files
     .col-md-2
-      h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id), class: "text-primary"
+      h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id), class: "text-primary" unless wfa.completed 
   - if wfa.task.folder.present?
     .row
       .col-md-12

@@ -1,23 +1,30 @@
 class Motif::HomeController < ApplicationController
   layout 'motif/application'
+  include Motif::WorkflowsHelper
+  include Motif::OutletsHelper
   
   before_action :authenticate_user!
   before_action :set_company
 
   def index
-    @outlets = @company.outlets
-    @outlets_expiring = @company.franchisees.where('expiry_date < ?', DateTime.current + 1.month).map(&:outlets).flatten
-    # Get franchisees workflows
-    @workflows = (current_user.has_role?(:franchisee_owner, @company) or current_user.has_role?(:franchisee_member, @company)) ? current_user.active_outlet.workflows : Workflow.all
+    # Get all outlets (sub franchised or direct owned)
+    @outlets = get_outlets(@company)
+    # Check franchisee expiry date within 1 month of expiry
+    @outlets_expiring = @outlets.filter_map{|o| o.franchisee if o.franchisee.expiry_date < DateTime.current + 1.month}
+    # This variable is only being used by unit franchisee
+    @workflows = current_user.active_outlet.workflows if current_user.active_outlet.present?
     # Find workflows that is not completed yet
-    @onboarding_workflows = @workflows.includes(:template).where(company_id: @company.id, templates: {template_type: "onboarding"}).where.not(completed: true)
-    @site_audit_workflows = @workflows.includes(:template).where(company_id: @company.id, templates: {template_type: "site_audit"}).where.not(completed: true)
-    @royalty_collection_workflows = @workflows.includes(:template).where(company_id: @company.id, templates: {template_type: "royalty_collection"}).where.not(completed: true)
-    # Find overdue onboarding workflow actions
-    @outstanding_onboarding_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "onboarding"}}).where.not(completed: true).where('workflow_actions.deadline < ?', DateTime.current).map(&:workflow).map(&:outlet).uniq
-    @outstanding_site_audit_actions = @company.workflow_actions.includes(workflow: :template).where(workflows: {templates: {template_type: "site_audit"}}).where.not(completed: true).where('workflow_actions.deadline < ?', DateTime.current).map(&:workflow).map(&:outlet).uniq
-    @completed_site_audit = @company.workflows.includes(:template).where(templates: {template_type: "site_audit"}).where(completed: true).map(&:outlet).uniq
-    @completed_royalty_collection = @company.workflows.includes(:template).where(templates: {template_type: "royalty_collection"}).where(completed: true).map(&:outlet).uniq
+    @onboarding_workflows = get_workflows(current_user, "onboarding")
+    @site_audit_workflows = get_workflows(current_user, "site_audit")
+    @royalty_collection_workflows = get_workflows(current_user, "royalty_collection")
+    # Find outlets from workflows that have outstanding wfa
+    @outstanding_onboarding_actions_outlets = @onboarding_workflows.map{|wf| wf.workflow_actions.map{|wfa| wf.outlet if (wfa.deadline.present? and wfa.deadline <= DateTime.current)}}.flatten.compact
+    @outstanding_site_audit_actions_outlets = @site_audit_workflows.map{|wf| wf.workflow_actions.map{|wfa| wf.outlet if (wfa.deadline.present? and wfa.deadline <= DateTime.current)}}.flatten.compact
+    @outstanding_royalty_collection_actions_outlets = @site_audit_workflows.map{|wf| wf.workflow_actions.map{|wfa| wf.outlet if (wfa.deadline.present? and wfa.deadline <= DateTime.current)}}.flatten.compact
+    # Find outlet that is awaiting approval (there's a bell to notify franchisor)
+    @waiting_approval_onboarding_outlets = @onboarding_workflows.map{|wf| wf.workflow_actions.map{|wfa| wf.outlet if wfa.notify_status? }}.flatten.compact
+    @waiting_approval_site_audit_outlets = @site_audit_workflows.map{|wf| wf.workflow_actions.map{|wfa| wf.outlet if wfa.notify_status? }}.flatten.compact
+    @waiting_approval_royalty_collection_outlets = @royalty_collection_workflows.map{|wf| wf.workflow_actions.map{|wfa| wf.outlet if wfa.notify_status? }}.flatten.compact
     # The system stores the user's last_click into comm hub in database, compare the note's created_at date with the last_click. It should be larger than user's last_click to mimic an unread message. Reject if note's user is current_user
     @unread_notes = @company.outlets.map{ |o| o.notes.includes(:notable).where(notable_id: o.id).where('created_at > ?', current_user.last_click_comm_hub).reject{ |note| note.user == current_user }}.flatten
     # Check if active outlet present since franchisor wont have active outlet

@@ -52,18 +52,14 @@
                 -if @onboarding_workflows.empty?
                   .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
                     = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                    p.card-text.ml-4 All outlets have completed onboarding
+                    p.card-text.ml-4 No outstanding onboarding tasks
                 -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
-                    h1.card-text.number-display = @outstanding_onboarding_actions&.length || "0"
+                    h1.card-text.number-display = @outstanding_onboarding_actions_outlets&.length || "0"
                     p.card-text.ml-4 Outlet with overdue task
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
-                    h1.card-text.number-display 1
-                    p.card-text.ml-4 Task waiting approval. Stay tuned!
-                  .d-flex.px-4.py-2.align-items-center.rounded.mb-5.primary-card-motif
-                    h1.card-text.number-display 
-                      = @onboarding_workflows&.length || "0"
-                    p.card-text.ml-4 Total ongoing onboarding
+                    h1.card-text.number-display = @waiting_approval_onboarding_outlets&.length || "0"
+                    p.card-text.ml-4 Outlet waiting approval
         .col-sm-4
           .card
             = link_to motif_workflows_path(template_type: "site_audit") do
@@ -72,17 +68,14 @@
                 -if @site_audit_workflows.empty?
                   .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
                     = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                    p.card-text.ml-4 All outlets have completed 2020 Site Audit
+                    p.card-text.ml-4 No outstanding site audit tasks
                 -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
-                    h1.card-text.number-display = @outstanding_site_audit_actions&.length || "0"
+                    h1.card-text.number-display = @outstanding_site_audit_actions_outlets&.length || "0"
                     p.card-text.ml-4 Outlet with overdue task
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
-                    h1.card-text.number-display 2
-                    p.card-text.ml-4 Outlet waiting approval. Stay tuned!
-                  .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
-                    h1.card-text.number-display = @completed_site_audit&.length || "0"
-                    p.card-text.ml-4 Complete site audit
+                    h1.card-text.number-display = @waiting_approval_site_audit_outlets&.length || "0"
+                    p.card-text.ml-4 Outlet waiting approval
         .col-sm-4
           .card
             = link_to motif_workflows_path(template_type: "royalty_collection") do
@@ -94,11 +87,11 @@
                     p.card-text.ml-4 No outstanding royalty payment
                 -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
-                    h1.card-text.number-display = @royalty_collection_workflows&.length || "0"
-                    p.card-text.ml-4 Outlets pending
+                    h1.card-text.number-display = @outstanding_royalty_collection_actions_outlets&.length || "0"
+                    p.card-text.ml-4 Outlet with overdue task
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
-                    h1.card-text.number-display = @completed_royalty_collection&.length || "0"
-                    p.card-text.ml-4 Outlets collected
+                    h1.card-text.number-display = @waiting_approval_royalty_collection_outlets&.length || "0"
+                    p.card-text.ml-4 Outlet waiting approval
 - else
   .m-5.h-100
     h1.mb-5 #{current_user.active_outlet.name}

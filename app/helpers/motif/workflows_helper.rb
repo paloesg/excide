@@ -1,4 +1,6 @@
 module Motif::WorkflowsHelper
+  # get_workflows method retrieves all workflows (from sub franchised or direct owned outlets) and it is not restricted by company
+  # Get workflows based on template_type for workflow INDEX
   def get_workflows(user, template_type)
     if user.active_outlet.present?
       current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: template_type})
