@@ -1,6 +1,7 @@
 class Motif::DocumentsController < ApplicationController
   layout 'motif/application'
   include Motif::UsersHelper
+  include Motif::FoldersHelper
   
   before_action :authenticate_user!
   before_action :set_company
@@ -10,7 +11,7 @@ class Motif::DocumentsController < ApplicationController
 
   def index
     @folder = Folder.new
-    @folders = Folder.roots.includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
+    @folders = get_folders(@user)
     @documents = Document.where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
     @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)

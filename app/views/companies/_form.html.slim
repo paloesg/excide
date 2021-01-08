@@ -104,8 +104,8 @@
     .card.card-custom.mt-4
       .card-header
         .card-title
-          | Add franchisor ID (Only for ADA branch)
+          | Add franchisor's company (For Creating Master Franchisee's Company)
       .card-body
         .form-group
-          = f.label :ancestry, 'Ancestry'
-          = f.text_field :ancestry, class: "form-control"
+          = f.label :ancestry, "Select franchisor's company"
+          = f.select :ancestry, @motif_companies, { include_blank: true }, class: "form-control"
