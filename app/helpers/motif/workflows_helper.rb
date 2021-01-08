@@ -1,4 +1,5 @@
 module Motif::WorkflowsHelper
+  # Get workflows based on template_type for workflow INDEX
   def get_workflows(user, template_type)
     if user.active_outlet.present?
       current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: template_type})

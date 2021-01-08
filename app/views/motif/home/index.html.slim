@@ -3,7 +3,7 @@
     h1.mb-5 Franchisor Account
     p What are you planning to do today?
     br
-    - if @outlets.length == 0
+    - if @workflows.length == 0
       .row.justify-content-center.ml-3
         .col-md-3.text-center.p-4
           = image_pack_tag 'media/src/images/motif/motif-empty.svg'
@@ -52,7 +52,7 @@
                 -if @onboarding_workflows.empty?
                   .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
                     = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                    p.card-text.ml-4 All outlets have completed onboarding
+                    p.card-text.ml-4 No outstanding onboarding tasks
                 -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
                     h1.card-text.number-display = @outstanding_onboarding_actions&.length || "0"
@@ -72,7 +72,7 @@
                 -if @site_audit_workflows.empty?
                   .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
                     = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                    p.card-text.ml-4 All outlets have completed 2020 Site Audit
+                    p.card-text.ml-4 No outstanding site audit tasks
                 -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
                     h1.card-text.number-display = @outstanding_site_audit_actions&.length || "0"
