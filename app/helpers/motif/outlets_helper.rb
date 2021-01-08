@@ -1,4 +1,5 @@
 module Motif::OutletsHelper
+  # get_outlets method retrieves all outlets (sub franchised or direct owned) and it is not restricted by company
   def get_outlets(company)
     # Outlets that are directly under the entity
     @owned_outlets = Outlet.includes(:company).where(company_id: company).order("created_at asc")
