@@ -3,9 +3,9 @@
     span.mr-5
       = link_to motif_workflows_path(template_type: @workflow.template.template_type) do
         i.material-icons-outlined.align-middle keyboard_arrow_left
-    span
+    span.mr-5
       h1 = link_to @workflow.outlet.name, motif_outlets_path, class: 'text-dark font-weight-boldest'
-    p #{@workflow.outlet.address&.line_1} #{@workflow.outlet.address&.postal_code}
+    span #{@workflow.outlet.address&.line_1} #{@workflow.outlet.address&.postal_code}
   .col-md-6
     .float-right.mx-5.mt-3
       = link_to 'Activity History', motif_workflow_activities_path(@workflow), class: 'text-primary font-weight-boldest'
