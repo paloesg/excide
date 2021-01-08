@@ -40,7 +40,8 @@ html lang="en"
                 = yield
                 = render 'layouts/messages'
       - else
-        - if current_page?(overture_topics_path) || current_page?(overture_topic_notes_path)
+        - if current_page?(overture_topics_path) 
+          / || current_page?(overture_topic_notes_path)
           .new-tab-wrapper.p-5
             .new-tab-contents
               .row.mt-5.h-100
