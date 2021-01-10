@@ -5,15 +5,24 @@
     li.nav-item.hover-blue.py-1.m-4
       = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined.mr-5 search
-        .ml-5.sidebar-font Search Startup
+        .ml-5.sidebar-font = current_user.company.investor? ? "Search Investor" : "Search Startup"
     li.nav-item.hover-blue.py-1.m-4
       = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined.mr-5 dashboard
         .ml-5.sidebar-font Dashboard
     li.nav-item.hover-blue.py-1.m-4
       = link_to overture_root_path(list: "Startup"), class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined.mr-5 store_mall_directory
-        .ml-5.sidebar-font Invested Startups
+        i.material-icons-outlined.mr-5 supervised_user_circle
+        .ml-5.sidebar-font = current_user.company.investor? ? "Invested Startups" : "Signed Investors"
+    - if current_user.company.startup?
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined.mr-5 view_agenda
+          .ml-5.sidebar-font Fundraising Board
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined.mr-5 table_chart
+          .ml-5.sidebar-font Capitalization Table
     li.nav-item.hover-blue.py-1.m-4
       = link_to overture_root_path(list: "SME"), class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined.mr-5 timeline
@@ -22,3 +31,9 @@
       = link_to overture_root_path(list: "SME"), class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined.mr-5 folder
         .ml-5.sidebar-font Dataroom
+    - if current_user.company.startup?
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined.mr-5 book
+          .ml-5.sidebar-font Resource Portal
+      
