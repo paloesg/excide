@@ -48,7 +48,9 @@ class Company < ApplicationRecord
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
 
-  enum company_type: ["Exempt Private Company Limited By Shares", "Private Company Limited By Shares", "Public Company Limited By Guarantee", "Public Company Limited By Shares", "Unlimited Exempt Private Company", "Unlimited Public Company"]
+  # enum company_type: ["Exempt Private Company Limited By Shares", "Private Company Limited By Shares", "Public Company Limited By Guarantee", "Public Company Limited By Shares", "Unlimited Exempt Private Company", "Unlimited Public Company"]
+
+  enum company_type: { investor: 0, startup: 1 }
 
   enum account_type: { free_trial: 0, basic: 1, pro: 2 }
 
