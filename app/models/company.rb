@@ -30,6 +30,12 @@ class Company < ApplicationRecord
   has_many :xero_line_items, dependent: :destroy
   has_many :xero_tracking_categories, dependent: :destroy
 
+  # For overture association
+  has_many :agreements, foreign_key: :investor_id, class_name: "Agreement"
+  has_many :investors, through: :agreements
+  has_many :agreements, foreign_key: :startup_id, class_name: "Agreement"
+  has_many :startups, through: :agreements
+
   has_one_attached :company_logo
   has_one_attached :profile_logo
   has_one_attached :banner_image
