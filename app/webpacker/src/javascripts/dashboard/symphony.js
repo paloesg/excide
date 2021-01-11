@@ -202,6 +202,12 @@ $(document).on("turbolinks:load", function () {
     return event.preventDefault();
   });
 
+  //auto-fills the file field with file name
+  $(".custom-file-input").change(function() {
+    var fileName = $(this).val().split("\\").pop();
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+  });
+
   //if radio button is checked, disable or enable the relevant fields
   $('input:radio[name="radioContact"]').click(function () {
     if ($(this).val() == "existing") {
