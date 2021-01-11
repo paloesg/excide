@@ -35,7 +35,7 @@
         = link_to overture_root_path do
           i.material-icons-outlined.mr-2.mt-2 notifications
       li.nav-link.mx-1
-        = link_to overture_root_path do
+        = link_to edit_overture_company_path(current_user.company) do
           i.material-icons-outlined.mr-2.mt-2 settings
       /! begin: User bar
       .dropdown.ml-3

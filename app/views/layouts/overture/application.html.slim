@@ -31,32 +31,41 @@ html lang="en"
 
   body
     = render 'layouts/overture/overture_header'
-    .container-fluid.p-0
-      - if controller_name == "profiles" and action_name == "show"
-        .new-tab-wrapper.overflow-auto
+    - if (controller_name == "profiles" and action_name == "show") || controller_name == "companies"
+      .new-tab-wrapper.overflow-auto.pb-0
+        .new-tab-contents
+          .row.mt-5.h-100
+            - if controller_name == "companies"
+              .col-sm-2.bg-white.border-right.sidebar-border-radius
+                = render 'layouts/overture/overture_setting_sidebar'
+              .col-sm-10.bg-white.content-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
+            - else
+              .col-sm-12.bg-white.top-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
+            / .col-sm-12.bg-white.content-border-radius
+            /   = yield
+            /   = render 'layouts/messages'
+    - else
+      - if current_page?(overture_topics_path) 
+        / || current_page?(overture_topic_notes_path)
+        .new-tab-wrapper.p-5
           .new-tab-contents
-            .row.h-100
-              .col-sm-12.bg-white.content-border-radius
+            .row.mt-5.h-100
+              .col-sm-2.bg-white.border-right.sidebar-border-radius
+                = render 'layouts/overture/overture_qna_sidebar'
+              .col-sm-10.bg-white.content-border-radius.p-5
                 = yield
                 = render 'layouts/messages'
       - else
-        - if current_page?(overture_topics_path) 
-          / || current_page?(overture_topic_notes_path)
-          .new-tab-wrapper.p-5
-            .new-tab-contents
-              .row.mt-5.h-100
-                .col-sm-2.bg-white.border-right.sidebar-border-radius
-                  = render 'layouts/overture/overture_qna_sidebar'
-                .col-sm-10.bg-white.content-border-radius.p-5
-                  = yield
-                  = render 'layouts/messages'
-        - else
-          .row
-            .col-sm-2.bg-white
-              = render 'layouts/overture/overture_sidebar'
-            .col-sm-10.mt-5
-              = yield
-              = render 'layouts/messages'
+        .row
+          .col-sm-2.bg-white
+            = render 'layouts/overture/overture_sidebar'
+          .col-sm-10.mt-5
+            = yield
+            = render 'layouts/messages'
       / render content and sidebar
     = render 'layouts/footer' unless current_page?(root_path)
     /! Start of paloe Zendesk Widget script

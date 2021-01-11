@@ -4,7 +4,18 @@ class Overture::CompaniesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   
-  
+  def edit
+    build_addresses
+  end
+
+  def update
+    if @company.update(company_params)
+      redirect_to edit_motif_company_path(@company), notice: 'Company was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
 
   private
   def set_company
