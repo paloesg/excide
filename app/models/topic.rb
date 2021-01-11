@@ -9,6 +9,8 @@ class Topic < ApplicationRecord
   enum question_category: { state_interest: 0, due_dilligence: 1, investor_management: 2}
   enum status: { need_answer: 0, need_approval: 1, answered: 2, closed: 3}
 
+  accepts_nested_attributes_for :notes, reject_if: :all_blank, allow_destroy: true
+
   aasm column: :status, enum: true do
     state :need_answer, initial: true
     # Assign startup users to answer investor's question

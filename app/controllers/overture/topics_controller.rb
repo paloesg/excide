@@ -19,6 +19,6 @@ class Overture::TopicsController < ApplicationController
   private
   
   def topic_params
-    params.require(:topic).permit(:subject_name, :status, :question_category, :user, :company)
+    params.require(:topic).permit(:subject_name, :status, :question_category, :user, :company, notes_attributes: [:content, :user_id])
   end
 end

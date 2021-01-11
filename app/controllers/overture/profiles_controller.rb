@@ -16,6 +16,7 @@ class Overture::ProfilesController < ApplicationController
 
   def show
     @profile = Profile.find(params[:id])
+    @topic = Topic.new
   end
 
   def state_interest
