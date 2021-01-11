@@ -117,6 +117,8 @@ gem 'countries', require: 'countries/global'
 gem 'phonelib'
 # In-app notification feature
 gem 'activity_notification'
+# Import excel
+gem "roo", "~> 2.8.0"
 
 #################################################
 #                                               #
