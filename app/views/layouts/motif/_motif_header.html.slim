@@ -1,9 +1,10 @@
 / / ! begin:: Brand
 .navbar.navbar-expand-lg.navbar-light.fixed-top.bg-white.w-100.border.border-bottom style="height: 60px; box-shadow: 0px 3px 6px #00000029;"
   button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button"
-    span.navbar-toggler-icon 
+    .navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
     = link_to motif_root_path, class: "navbar-brand" do
+      = image_pack_tag("media/src/images/motif/ada-logo.png", class: "motif-company-logo mr-5")
       - if current_user.company.company_logo.attached?
         = image_tag(current_user.company.company_logo, class: "motif-company-logo")
       - else
@@ -66,4 +67,4 @@
         .dropdown-menu.dropdown-menu-right aria-labelledby="userDropdownMenu"
           li
             = link_to destroy_user_session_path, {method: :delete, class: 'dropdown-item'} do
-              span Log Out
+              | Log Out

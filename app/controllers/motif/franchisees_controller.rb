@@ -1,6 +1,6 @@
 class Motif::FranchiseesController < ApplicationController
   layout 'motif/application'
-  
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_franchisee, only: [:show, :edit, :update]
@@ -12,7 +12,6 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def edit
-    
   end
 
   def update
@@ -82,7 +81,7 @@ class Motif::FranchiseesController < ApplicationController
   def franchisee_params
     params.require(:franchisee).permit(:commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :franchise_licensee, :registered_address, :license_type, :max_outlet, :min_outlet)
   end
-  
+
   def build_addresses
     if @franchisee.address.blank?
       @franchisee.address = @franchisee.build_address

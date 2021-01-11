@@ -1,5 +1,7 @@
-.row.my-3
-  .col-md-6
+.row.my-5.ml-1
+  .col-md-6.d-flex.align-items-center
+    = link_to motif_templates_path do
+      i.material-icons-outlined keyboard_arrow_left
     h1 Create Template
 = form_for(@template, url: motif_templates_path(@template), html: { id: "motif_new_template" }) do |f|
   .row.my-3
