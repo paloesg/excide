@@ -6,7 +6,25 @@
       = link_to export_conductor_allocations_path(start_date: params[:start_date], end_date: params[:end_date]), target: "_blank", class: 'btn btn-primary float-right mr-1' do
         i.material-icons-outlined get_app
         span.ml-2 Export
-      = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' 
+      = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1'
+    button.btn.btn-primary.float-right.mr-1 data-target="#newEventUploads" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white publish
+      span.ml-2 Upload
+    #newEventUploads.modal.fade aria-hidden="true" aria-labelledby="newEventUploads" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5.modal-title Upload Documents
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true"  &times;
+          .modal-body
+            .row.mt-3
+              .col-md-12
+                = form_tag import_conductor_events_path, multipart: true do
+                  .custom-file
+                    label.custom-file-label  Choose file
+                    = file_field_tag :file, class: "custom-file-input"
+                  = submit_tag "Import", class: "btn btn-primary form-control mt-5"
     = link_to 'New Task', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1'
 .row.mt-5
   .col-md-12.m-2
