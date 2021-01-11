@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_11_093101) do
+ActiveRecord::Schema.define(version: 2021_01_11_100629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -654,7 +654,9 @@ ActiveRecord::Schema.define(version: 2021_01_11_093101) do
     t.uuid "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "startup_id"
     t.index ["company_id"], name: "index_topics_on_company_id"
+    t.index ["startup_id"], name: "index_topics_on_startup_id"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
 
@@ -862,6 +864,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_093101) do
   add_foreign_key "tasks", "users"
   add_foreign_key "templates", "companies"
   add_foreign_key "topics", "companies"
+  add_foreign_key "topics", "companies", column: "startup_id"
   add_foreign_key "topics", "users"
   add_foreign_key "users", "companies"
   add_foreign_key "users", "outlets"

@@ -1,8 +1,9 @@
 class Topic < ApplicationRecord
   include AASM
-  
+
   belongs_to :user
   belongs_to :company
+  belongs_to :startup, class_name: "Company"
 
   has_many :notes, as: :notable, dependent: :destroy
 

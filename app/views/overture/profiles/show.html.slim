@@ -30,6 +30,7 @@
                       = f.text_field :subject_name, class: "form-control"
                     .form-group
                       = f.hidden_field :question_category, value: "state_interest"
+                      = f.hidden_field :startup_id, value: @profile.company.id
                     = f.fields_for :notes, Note.new do |ff|
                       .form-group
                         = ff.label :content, "Message"
