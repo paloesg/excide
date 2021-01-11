@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_10_021817) do
+ActiveRecord::Schema.define(version: 2021_01_11_010106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -431,6 +431,8 @@ ActiveRecord::Schema.define(version: 2021_01_10_021817) do
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "url"
+    t.uuid "company_id"
+    t.index ["company_id"], name: "index_profiles_on_company_id"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -829,6 +831,7 @@ ActiveRecord::Schema.define(version: 2021_01_10_021817) do
   add_foreign_key "outlets_users", "users"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
+  add_foreign_key "profiles", "companies"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"

@@ -8,6 +8,8 @@ class Company < ApplicationRecord
   tracked owner: ->(controller, model) { controller && controller.current_user }
 
   has_one :address, as: :addressable, dependent: :destroy
+  has_one :profile, dependent: :destroy
+
   has_many :batches, dependent: :destroy
   has_many :clients, dependent: :destroy
   has_many :contacts, dependent: :destroy

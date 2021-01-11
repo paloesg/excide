@@ -9,6 +9,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     id: Field::String.with_options(searchable: false),
+    company: Field::BelongsTo,
     name: Field::String,
     url: Field::String,
     company_information: Field::RichTextAreaField,
@@ -24,6 +25,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
   id
   name
+  company
   url
   profile_logo
   ].freeze
@@ -37,6 +39,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   company_information
   profile_logo
   categories
+  company
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -44,6 +47,7 @@ class ProfileDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
   name
+  company
   url
   company_information
   profile_logo
