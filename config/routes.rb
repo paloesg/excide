@@ -160,6 +160,7 @@ Rails.application.routes.draw do
     resources :topics do
       resources :notes
     end
+    resources :users
   end
 
   namespace :conductor do

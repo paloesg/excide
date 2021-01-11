@@ -1,0 +1,44 @@
+.row.mb-3.mt-5.ml-3
+  .col
+    h1 Teammates
+    button.btn.btn-white.border.border-secondary.text-primary.float-right.ml-5 data-target="#newOvertureTeammates" data-toggle="modal" type="button"
+      | Add people
+    #newOvertureTeammates.modal.fade aria-hidden="true" aria-labelledby="addNewOvertureTeammates" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#addNewOvertureTeammates.modal-title Add teammates
+          .modal-body
+            = form_for(@user, url: overture_users_path, html: { method: :post }) do |f|
+              .row.mt-3
+                .col-md-12
+                  .form-group
+                    = f.text_field :email, placeholder: 'Email', class: 'form-control'
+              .row
+                .col-md-12
+                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+.row
+  .col-12
+    .table-responsive
+      table.table
+        thead
+          tr
+            th Name
+            th Email
+            th User type
+            th
+        tbody
+          - @users.each do |u|
+            tr.border-bottom
+              td.border-top-0 = u.full_name
+              td = u.email
+              td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }), class: 'select2 motif-select-user-types', id: "#{u.id}",style: 'width: 100%'
+              / , selected: (u.motif_roles(@company).id if u.motif_roles(@company).present?)), include_blank: true, required: true
+              td
+                .dropdown
+                a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                  i.fa.fa-ellipsis-h.text-secondary.mb-4
+                .dropdown-menu.dropdown-menu-right
+                  .dropdown-item = link_to "Download", root_path
+                  .dropdown-item = link_to "Delete", root_path
+                  .dropdown-item = link_to "Manage Version", root_path

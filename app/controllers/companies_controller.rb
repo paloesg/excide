@@ -75,6 +75,9 @@ class CompaniesController < ApplicationController
       @motif_default_roles.each do |role_name|
         Role.create(name: role_name, resource: @company)
       end
+    elsif @company.products.include? "overture"
+      # For overture, add member and admin role
+      Role.create(name: "member", resource: @company)
     end
 
     @company.consultant.add_role(:consultant, @company) if @company.consultant.present?
