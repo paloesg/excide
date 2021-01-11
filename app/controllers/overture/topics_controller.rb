@@ -13,7 +13,11 @@ class Overture::TopicsController < ApplicationController
     @topic = Topic.new(topic_params)
     @topic.user = current_user
     @topic.company = current_user.company
-    @topic.save
+    if @topic.save
+      redirect_back fallback_location: overture_root_path, notice: 'Successfully open a question.'
+    else
+      render :new
+    end 
   end
 
   private

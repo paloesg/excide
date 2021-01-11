@@ -40,25 +40,18 @@
                   span.mr-3
                     i.material-icons-outlined.align-middle assignment
                   = link_to "#{note.workflow_action.workflow.template.title} - #{note.workflow_action.task.instructions}", overture_topic_workflow_path(topic_id: note.notable.id, id: note.workflow_action.workflow.id), target: "_blank", class: "text-primary tag-font-size"
-            
+
     #comments
-  / params[:wfa_id] comes from note inside workflow action
   hr
   #chat-bottom-box.rounded
     .row
       .col-md-12
-        = form_for @note, url: overture_topic_notes_path(@topic.id, wfa_id: params[:wfa_id]), remote: true do |f|
+        = form_for @note, url: overture_topic_notes_path(@topic.id, wfa_id: params[:wfa_id]) do |f|
           .row.m-3
             .col-md-12
               = f.text_field :content, placeholder: "Write your comments...", class: "form-control chat-input", id: "chat-message"
           .row.m-3
-            .col-md-10
-              - if params[:wfa_id].present?
-                .badge.badge-motif.p-2
-                  span.mr-3
-                    i.material-icons-outlined.align-middle assignment
-                  span.text-dark = "#{WorkflowAction.find(params[:wfa_id]).task.instructions}"
-            .col-md-2
+            .col-md-12
               = button_tag(type: "submit", class: "btn btn-primary chat-input rounded float-right sendButton") do
                 span
                   i.material-icons-outlined send

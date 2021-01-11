@@ -49,9 +49,8 @@ html lang="en"
             /   = yield
             /   = render 'layouts/messages'
     - else
-      - if current_page?(overture_topics_path) 
-        / || current_page?(overture_topic_notes_path)
-        .new-tab-wrapper.p-5
+      - if controller_name == "topics" || controller_name == "notes"
+        .new-tab-wrapper.overflow-auto.pb-0
           .new-tab-contents
             .row.mt-5.h-100
               .col-sm-2.bg-white.border-right.sidebar-border-radius
