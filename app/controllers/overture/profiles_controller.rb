@@ -23,4 +23,9 @@ class Overture::ProfilesController < ApplicationController
     NotificationMailer.overture_notification(current_user, @profile).deliver_later
     redirect_to overture_root_path, notice: "Thank you for stating your interest. Kindly wait for further information as we contact you through email."
   end
+
+  private
+  def profile_params
+    params.require(:profile).permit(:id, :name, :url, :company_id, :profile_logo, :company_information)
+  end
 end
