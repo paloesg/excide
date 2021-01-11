@@ -136,6 +136,11 @@ class Conductor::EventsController < ApplicationController
     end
   end
 
+  def import
+    Event.import(params[:file], current_user)
+    redirect_to conductor_events_url, notice: "Events imported."
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_event
@@ -152,7 +157,7 @@ class Conductor::EventsController < ApplicationController
 
   def get_users_and_service_lines
     # To be tagged using acts_as_taggable_on gem
-    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy'].sort
+    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy', 'Dashboard'].sort
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
     @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
   end

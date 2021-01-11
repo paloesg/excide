@@ -45,4 +45,23 @@ class Event < ApplicationRecord
   def get_allocated_user
     self.allocations.where.not(user_id: nil)
   end
+
+  def self.import(file, user)
+    data = Roo::Spreadsheet.open(file).sheet("Template (2)")
+    header = data.row(1)
+    data.each_with_index do |row, idx|
+      next if idx == 0 # skip header row
+      # create hash from headers and cells
+      event_data = Hash[[header, row].transpose]
+      @event = Event.new
+      @event.company = user.company
+      @event.tag_list.add(event_data["Job Function"])
+      @event.start_time = event_data["Date (DD/MM/YYYY)"]
+      @event.client = Client.find_by(name: event_data["Client"])
+      @event.event_type = EventType.find_by(name: event_data["Job Nature"])
+      @event.number_of_hours = event_data["No. of hours"]
+      @event.save!
+      GenerateTimesheetAllocationService.new(@event, user).run
+    end
+  end
 end
