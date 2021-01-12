@@ -4,6 +4,7 @@ class Topic < ApplicationRecord
   belongs_to :user
   belongs_to :company
   belongs_to :startup, class_name: "Company"
+  belongs_to :assigned_user, class_name: 'User'
 
   has_many :notes, as: :notable, dependent: :destroy
 
@@ -14,8 +15,12 @@ class Topic < ApplicationRecord
 
   aasm column: :status, enum: true do
     state :need_answer, initial: true
+    state :need_approval
+    state :answered
+    state :closed
+
     # Assign startup users to answer investor's question
-    event :assign_user do
+    event :approve_answer do
       transitions from: :need_answer, to: :need_approval
     end
     # Startup admin rejects user's answer to investor's question
