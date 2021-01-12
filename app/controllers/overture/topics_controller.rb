@@ -9,10 +9,12 @@ class Overture::TopicsController < ApplicationController
     # Question category comes from the sidebar
     @topics = get_topics(@company, params[:question_category])
     @topic = Topic.new
+    @topic.notes.new
   end
 
   def create
     @topic = Topic.new(topic_params)
+    @topic.notes.first.user_id = current_user.id
     @topic.user = current_user
     @topic.company = current_user.company
     if @topic.save
@@ -30,6 +32,6 @@ class Overture::TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:subject_name, :status, :question_category, :user, :company, :startup_id, notes_attributes: [:content, :user_id])
+    params.require(:topic).permit(:subject_name, :status, :question_category, :user, :company, :startup_id, notes_attributes: [:content, :user_id, :approved])
   end
 end

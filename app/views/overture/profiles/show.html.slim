@@ -36,7 +36,8 @@
                         = ff.label :content, "Message"
                         = ff.text_field :content, class: "form-control"
                       .form-group
-                        = ff.hidden_field :user_id, value: current_user.id
+                        / By default, investor question is always approved
+                        = ff.hidden_field :approved, value: true
                 .row.mt-3
                   .col-md-12
                     = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
