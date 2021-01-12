@@ -25,21 +25,10 @@
         = render 'empty_notes'
     - else
       - @notes.each do |note|
-        / .notes-wrapper style="background-color: #EEF1FF;"
+        / Investor view for notes
         - if note.user.company.investor?
           .note-wrapper-investor.p-4.col-md-10.mt-3
-            .row.ml-3
-              .col-md-1
-                = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comment-user-icon mb-3'
-              .col-md-11
-                .row.mt-3
-                  .h2.font-weight-boldest.mr-4 = note.user.full_name
-            .row.ml-3
-              .col-md-12
-                p.comment-font-size = note.content
-            .row.ml-3
-              .col-md-12
-                .text-muted.mt-2 = note.created_at.strftime("%d %b %Y")
+            = render 'note_contents', note: note
         - else
           .note-wrapper-startup.p-4.col-md-10.mt-3.float-right
             .row.ml-3
@@ -47,14 +36,40 @@
                 = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comment-user-icon mb-3'
               .col-md-11
                 .row.mt-3
-                  .h2.font-weight-boldest.mr-4 = note.user.full_name
-                  .text-muted.mt-2 = note.created_at.strftime("%d %b %Y")
+                  .h2.font-weight-boldest.ml-4 = note.user.full_name
             .row.ml-3
               .col-md-12
                 p.comment-font-size = note.content
             .row.ml-3
-              .col-md-12
+              .col-md-6
                 .text-muted.mt-2 = note.created_at.strftime("%d %b %Y")
+              - if @user.has_role?(:admin, @company) and @topic.need_approval?
+                  .col-md-6
+                    = link_to "Approve answer", overture_topic_note_path(topic_id: @topic.id, id: note.id, status: "approve"), method: :put, class: "btn btn-primary float-right"
+                    = link_to "Reject", overture_topic_note_path(topic_id: @topic.id, id: note.id, status: "reject"), method: :put, class: "btn btn-outline-primary text-danger float-right mx-3"
+        - if @topic.need_answer? and @company.startup?
+          .note-wrapper-startup.p-4.col-md-10.mt-3.float-right
+            .row.ml-3
+              .col-md-1
+                = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comment-user-icon'
+              - if @topic.assigned_user.present?
+                .col-md-11
+                  .row.mt-4
+                    .col-md-6
+                      p.comment-font-size.ml-4 = "#{@topic.assigned_user.full_name} has not answered to this question."
+              - else
+                .col-md-11
+                  .row.mt-4
+                    .col-md-6
+                      p.comment-font-size.ml-4 No one is assigned to answer this question.
+                    - if @user.has_role?(:admin, @company)
+                      .col-md-6
+                        = form_for @topic, url: overture_topic_path(@topic) do |f|
+                          .form-inline
+                            .form-group
+                              = f.select :assigned_user_id, @users.map{ |u| [u.first_name, u.id] }, { include_blank: "Select an user..." }, {class: 'select2 form-control col-md-12'}
+                            .form-group
+                              = f.submit "Assign Someone", class: "btn btn-primary ml-5"
   hr
   #chat-bottom-box.rounded
     .row
