@@ -1,12 +1,13 @@
 class Overture::TopicsController < ApplicationController
   layout 'overture/application'
+  include Overture::TopicsHelper
 
   before_action :authenticate_user!
   before_action :set_company
 
   def index
-    # Query topics by different col - Investor uses company_id, startup users by startup_id
-    @topics = @company.investor? ? Topic.where(company: current_user.company) : Topic.where(startup_id: current_user.company.id)
+    # Question category comes from the sidebar
+    @topics = get_topics(@company, params[:question_category])
     @topic = Topic.new
   end
 
