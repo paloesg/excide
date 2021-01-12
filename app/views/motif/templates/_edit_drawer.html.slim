@@ -14,12 +14,10 @@
           .form-group
             = f.text_area :description, rows: '5', placeholder: 'Write description', class: 'form-control'
       .row.mt-5
-        h6.ml-4 Due Date
+        h6.ml-4 Days to complete
         .col-md-12
-          .form-inline
-            .form-group
-              = f.number_field :deadline_day, class: "form-control col-md-2"
-              span.ml-5 Days to complete since onboarding starts.
+          .form-group
+            = f.number_field :deadline_day, class: "form-control col-md-2"
       .row.mt-5
         .col-md-12
           = f.hidden_field :deadline_type, value: "days_to_complete"

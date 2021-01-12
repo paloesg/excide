@@ -69,8 +69,9 @@ class Motif::UsersController < ApplicationController
     # AJAX request to update user type from motif teammates
     @user = @company.users.find(params[:user_id])
     @role = @company.roles.find(params[:role_id])
+    @old_role = @user.motif_roles(@company)
     # Delete old role if there is old roles
-    @user.motif_roles(@company).destroy if  @user.motif_roles(@company).present?
+    @user.remove_role(@old_role.name, @company) if @old_role.present?
     # Save new role into user
     @user.roles << @role
     respond_to do |format|
@@ -94,7 +95,7 @@ class Motif::UsersController < ApplicationController
   end
 
   def set_company_roles
-    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
+    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company", name: ["franchisor", "franchisee_owner", "master_franchisee"])
   end
 
   def user_params

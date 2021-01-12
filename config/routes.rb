@@ -132,10 +132,14 @@ Rails.application.routes.draw do
     resources :templates, param: :template_slug
     resources :workflows, except: :show do
       post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
+      post '/upload_documents', to: 'workflows#upload_documents', as: :upload_documents
       get '/wfa/:wfa_id/notify_franchisor', to: 'workflows#notify_franchisor', as: :notify_franchisor
     end
     resources :outlets do
-      resources :workflows, only: :show
+      resources :workflows, only: :show do
+        post '/next', to:'workflows#next_workflow', as: :next_workflow
+        post '/prev', to:'workflows#prev_workflow', as: :prev_workflow
+      end
       resources :notes
       get "/members", to: 'outlets#members', as: :members
       get "/assigned_tasks", to: 'outlets#assigned_tasks', as: :assigned_tasks

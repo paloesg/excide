@@ -7,7 +7,7 @@ class Motif::OutletsController < ApplicationController
   before_action :set_outlet, only: [:new, :edit, :update, :show]
 
   def index
-    @outlets = Outlet.includes(:company).where(company_id: @company)
+    @outlets = Outlet.includes(:company).where(company_id: @company).order("created_at asc")
     @outlet = Outlet.new
     build_franchisee
     @existing_users = @company.users
@@ -84,7 +84,7 @@ class Motif::OutletsController < ApplicationController
     # Find user that is in the company but not yet added to the outlet
     @existing_users = @company.users.includes(:outlets).where.not(outlets: { id: @outlet.id })
     # All the roles in that company
-    @roles = Role.where(resource_id: @company.id, resource_type: "Company")
+    @roles = @company_roles
     @user = User.new
   end
 
@@ -120,6 +120,6 @@ class Motif::OutletsController < ApplicationController
   end
 
   def set_company_roles
-    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
+    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company", name: ["franchisor", "franchisee_owner", "master_franchisee"])
   end
 end

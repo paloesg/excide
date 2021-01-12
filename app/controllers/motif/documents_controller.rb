@@ -25,8 +25,7 @@ class Motif::DocumentsController < ApplicationController
 
   def new
     @folders = policy_scope(Folder).roots
-    @workflow_action = @company.workflow_actions.find(params[:workflow_action]) if params[:workflow_action].present?
-    @workflow_action_id = params[:workflow_action_id]
+    @workflow_action = @company.workflow_actions.find(params[:workflow_action_id]) if params[:workflow_action_id].present?
     @folder_id = params[:folder_id]
     @document = Document.new
     authorize @document
@@ -63,8 +62,6 @@ class Motif::DocumentsController < ApplicationController
         document.attach_and_convert_document(params[:response_key])
       end
     end
-    # create permission on creation of document for the user that uploaded it
-    Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     respond_to do |format|
       if params[:folder_id].present?
         # Redirect when generated documents inside folders

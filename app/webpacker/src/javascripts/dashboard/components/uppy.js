@@ -93,6 +93,19 @@ const motifOutletPhotosUpload = (uppy) => {
   });
 };
 
+// Motif upload through task drawer
+const motifWorkflowActionMultipleUploads = (uppy) => {
+  uppy.on('complete', (result) => {
+    const wf_id = $(".motifWorkflowActionMultipleUploads").data("workflow")
+    $.post("/motif/workflows/" + wf_id + "/upload_documents", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+      wfa_id: $(".motifWorkflowActionMultipleUploads").data("wfa"),
+    });
+  });
+};
+
 //-----------------------------------Setup Uppy-----------------------------------------
 function setupUppy(element){
   let form = element.closest('form');
@@ -154,6 +167,9 @@ function setupUppy(element){
   }
   else if($('.motifOutletPhotosUpload').length){
     motifOutletPhotosUpload(uppy);
+  } 
+  else if($('.motifWorkflowActionMultipleUploads').length){
+    motifWorkflowActionMultipleUploads(uppy);
   } 
 }
 //-----------------------------------Initialize Uppy------------------------------------
