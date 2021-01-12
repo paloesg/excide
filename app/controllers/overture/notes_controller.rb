@@ -56,6 +56,6 @@ class Overture::NotesController < ApplicationController
   end
 
   def note_params
-    params.require(:note).permit(:content, :notable_id, :notable_type, :approved)
+    params.require(:note).permit(:content, :notable_id, :notable_type, :approved, :remark)
   end
 end
