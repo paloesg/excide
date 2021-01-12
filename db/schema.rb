@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_11_100629) do
+ActiveRecord::Schema.define(version: 2021_01_12_033005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -354,6 +354,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_100629) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "workflow_action_id"
+    t.boolean "approved"
     t.index ["user_id"], name: "index_notes_on_user_id"
     t.index ["workflow_action_id"], name: "index_notes_on_workflow_action_id"
   end
