@@ -102,8 +102,6 @@ gem 'trix'
 gem 'simple_calendar', '~> 2.4.0'
 # Create tree structure
 gem 'ancestry'
-# Selectize autocomplete selection
-gem 'selectize-rails'
 # Get mime type from filename
 gem 'mini_mime'
 # Shorten UUID to make it more user friendly

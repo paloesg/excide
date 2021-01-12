@@ -681,7 +681,6 @@ DEPENDENCIES
   rspec_junit_formatter
   rubocop
   scout_apm
-  selectize-rails
   sendgrid-actionmailer
   sendgrid-ruby
   shortuuid
