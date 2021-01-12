@@ -34,9 +34,9 @@ class Company < ApplicationRecord
 
   # For overture association
   has_many :investments, foreign_key: :investor_id, class_name: "Investment"
-  has_many :investors, through: :agreements
+  has_many :investors, through: :investments
   has_many :investments, foreign_key: :startup_id, class_name: "Investment"
-  has_many :startups, through: :agreements
+  has_many :startups, through: :investments
 
   has_one_attached :company_logo
   has_one_attached :profile_logo

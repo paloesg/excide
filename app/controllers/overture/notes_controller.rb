@@ -1,11 +1,13 @@
 class Overture::NotesController < ApplicationController
   layout 'overture/application'
+  include Overture::NotesHelper
 
   before_action :authenticate_user!
+  before_action :set_company
   before_action :get_topic
 
   def index
-    @notes = Note.includes(:notable).where(notable_id: @topic.id).order(created_at: :asc)
+    @notes = get_notes(@company, @topic)
     @note = Note.new
   end
 
@@ -13,8 +15,10 @@ class Overture::NotesController < ApplicationController
     @note = Note.new(note_params)
     @note.user = current_user
     @note.notable = @topic
-    # Save wfa reference to note if the note comes from workflow action
     if @note.save
+      redirect_to overture_topic_notes_path(topic_id: @topic.id), notice: "Answer has been posted. Please wait for answer to be approved."
+    else
+      render :new
     end
   end
 
@@ -23,7 +27,12 @@ class Overture::NotesController < ApplicationController
     @topic = Topic.find(params[:topic_id])
   end
 
+  def set_company
+    @user = current_user
+    @company = @user.company
+  end
+
   def note_params
-    params.require(:note).permit(:content, :notable_id, :notable_type)
+    params.require(:note).permit(:content, :notable_id, :notable_type, :approved)
   end
 end
