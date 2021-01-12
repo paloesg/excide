@@ -4,7 +4,7 @@
     .navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
     = link_to motif_root_path, class: "navbar-brand" do
-      = image_pack_tag("media/src/images/motif/ada-logo.png", class: "motif-company-logo mr-5")
+      = image_pack_tag("media/src/images/motif/ADA-logo.png", class: "motif-company-logo mr-5")
       - if current_user.company.company_logo.attached?
         = image_tag(current_user.company.company_logo, class: "motif-company-logo")
       - else
