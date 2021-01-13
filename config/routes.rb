@@ -162,6 +162,7 @@ Rails.application.routes.draw do
       resources :notes
     end
     resources :users
+    get '/financial-performance', to: 'home#financial_performance'
   end
 
   namespace :conductor do
