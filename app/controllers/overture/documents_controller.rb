@@ -28,8 +28,6 @@ class Overture::DocumentsController < ApplicationController
         # attach and convert method with the response key to create blob
         document.attach_and_convert_document(file['response']['key'])
         @files.append document
-        # create permission on creation of document for the user that uploaded it
-        Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
       end
     end
     respond_to do |format|
