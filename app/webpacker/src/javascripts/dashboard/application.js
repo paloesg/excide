@@ -5,7 +5,6 @@ window.jQuery = $;
 window.$ = $;
 
 window.moment = require("moment");
-require("selectize");
 require("algoliasearch");
 require("tempusdominus-bootstrap-4");
 require("blueimp-file-upload");
@@ -43,12 +42,14 @@ require("./motif/settings")
 require("./motif/templates")
 require("./motif/note")
 
+require("./overture/drawer")
+
 // Import Uppy drag-and-drop
 require("./components/uppy");
 require("./components/direct_upload");
 // require("./components/document_upload");
 require("./components/popover_initialize");
-require("./components/selectize_initialize");
+require("./components/select2_initialize");
 require("./components/document_popover");
 require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");

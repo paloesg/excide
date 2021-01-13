@@ -12,15 +12,16 @@ class Conductor::EventsController < ApplicationController
   # GET /conductor/events
   # GET /conductor/events.json
   def index
-    date_from = params[:start_date].present? ? params[:start_date].to_date : Date.current.beginning_of_month
-    date_to = params[:end_date].present? ? params[:end_date].to_date : Date.current.end_of_month
+    date_from = params[:start_date].present? ? params[:start_date].to_time.utc : DateTime.current.beginning_of_month.utc
+    date_to = params[:end_date].present? ? params[:end_date].to_time.utc : DateTime.current.end_of_month.utc
 
     #filter event using scope setup in model
     @events = Event.includes(:address, :client, :staffer, :event_type, [allocations: :user]).company(@company.id)
     @events = @events.start_time(date_from..date_to)
     @events = @events.event(params[:event_types]) unless params[:event_types].blank?
-    @events = @events.allocation(params[:allocation_users]) unless params[:allocation_users].blank?
-    @events = @events.client(params[:project_clients]) unless params[:project_clients].blank?
+    @events = @events.allocation(params[:allocation_users].split(",")) unless params[:allocation_users].blank?
+    @events = @events.client(params[:project_clients].split(",")) unless params[:project_clients].blank?
+    #using tagged_with means can only search with 1 selected value
     @events = Event.tagged_with(params[:service_line]) unless params[:service_line].blank?
 
     # Only show their own timesheet events unless they are admin or staffer, as the 2 can see all events

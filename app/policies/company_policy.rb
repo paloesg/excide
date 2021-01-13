@@ -1,6 +1,6 @@
 class CompanyPolicy < ApplicationPolicy
   def show?
-    user.has_role?(:superadmin, record) or user.has_role?(:admin, record)
+    user.has_role? :superadmin or user.has_role?(:admin, record)
   end
 
   def new?
