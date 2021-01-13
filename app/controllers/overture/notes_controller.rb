@@ -5,7 +5,7 @@ class Overture::NotesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :get_topic
-  before_action :get_note, only: [:update]
+  before_action :get_note, only: [:update, :destroy]
 
   def index
     @notes = get_notes(@company, @topic)
@@ -41,6 +41,11 @@ class Overture::NotesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @note.destroy
+    redirect_to overture_topic_notes_path(@topic), notice: "Answer successfully deleted"
   end
 
   private

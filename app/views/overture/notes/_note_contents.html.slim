@@ -1,9 +1,14 @@
 .row.ml-3
   .col-md-1
     = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comment-user-icon mb-3'
-  .col-md-11
+  .col-md-10
     .row.mt-3
       .h2.font-weight-boldest.ml-4 = note.user.full_name
+  / Only startup's notes can be deleted
+  - if note.user.company.startup?
+    .col-md-1
+      = link_to overture_topic_note_path(topic_id: note.notable.id, id: note.id), data: { confirm: 'Are you sure you want to delete this answer?' }, method: :delete do
+        i.material-icons-outlined.ml-5 delete_outline
 .row.ml-3
   .col-md-12
     p.comment-font-size = note.content
