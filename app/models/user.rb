@@ -22,10 +22,12 @@ class User < ApplicationRecord
   has_many :reminders, dependent: :destroy
   has_many :recurring_workflows, dependent: :destroy
   has_many :topics, dependent: :destroy
-  
+
 
   has_many :assigned_tasks, class_name: 'WorkflowAction', foreign_key: 'assigned_user_id'
   has_many :completed_tasks, class_name: 'WorkflowAction', foreign_key: 'completed_user_id'
+
+  has_many :assigned_topics, class_name: 'Topic', foreign_key: 'assigned_user_id', dependent: :destroy
 
   has_many :availabilities, dependent: :destroy
   has_many :allocations, dependent: :destroy

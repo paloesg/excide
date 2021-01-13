@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_25_142703) do
+ActiveRecord::Schema.define(version: 2021_01_12_161239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -316,6 +316,13 @@ ActiveRecord::Schema.define(version: 2020_12_25_142703) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "investments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "investor_id"
+    t.uuid "startup_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "invoice_identifier"
     t.date "invoice_date"
@@ -347,6 +354,8 @@ ActiveRecord::Schema.define(version: 2020_12_25_142703) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "workflow_action_id"
+    t.boolean "approved"
+    t.string "remark"
     t.index ["user_id"], name: "index_notes_on_user_id"
     t.index ["workflow_action_id"], name: "index_notes_on_workflow_action_id"
   end
@@ -424,6 +433,8 @@ ActiveRecord::Schema.define(version: 2020_12_25_142703) do
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "url"
+    t.uuid "company_id"
+    t.index ["company_id"], name: "index_profiles_on_company_id"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -645,7 +656,11 @@ ActiveRecord::Schema.define(version: 2020_12_25_142703) do
     t.uuid "company_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "startup_id"
+    t.bigint "assigned_user_id"
+    t.index ["assigned_user_id"], name: "index_topics_on_assigned_user_id"
     t.index ["company_id"], name: "index_topics_on_company_id"
+    t.index ["startup_id"], name: "index_topics_on_startup_id"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
 
@@ -822,6 +837,7 @@ ActiveRecord::Schema.define(version: 2020_12_25_142703) do
   add_foreign_key "outlets_users", "users"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
+  add_foreign_key "profiles", "companies"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"
@@ -852,7 +868,9 @@ ActiveRecord::Schema.define(version: 2020_12_25_142703) do
   add_foreign_key "tasks", "users"
   add_foreign_key "templates", "companies"
   add_foreign_key "topics", "companies"
+  add_foreign_key "topics", "companies", column: "startup_id"
   add_foreign_key "topics", "users"
+  add_foreign_key "topics", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"
   add_foreign_key "users", "outlets"
   add_foreign_key "workflow_actions", "companies"

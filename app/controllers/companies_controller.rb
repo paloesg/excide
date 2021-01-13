@@ -75,6 +75,9 @@ class CompaniesController < ApplicationController
       @motif_default_roles.each do |role_name|
         Role.create(name: role_name, resource: @company)
       end
+    elsif @company.products.include? "overture"
+      # For overture, add member and admin role
+      Role.create(name: "member", resource: @company)
     end
 
     @company.consultant.add_role(:consultant, @company) if @company.consultant.present?
@@ -118,7 +121,7 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:id, :name, :uen, :contact_details, :financial_year_end, :gst_quarter, :agm_date, :ar_date, :eci_date, :form_cs_date, :project_start_date, :consultant_id, :associate_id, :shared_service_id, :designated_working_time, :xero_email, :connect_xero, :account_type, :stripe_subscription_plan_data, :trial_end_date, :slack_access_response, :before_deadline_reminder_days, :website_url, :company_logo, :profile_logo, :banner_image, :company_bio, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state]
+    params.require(:company).permit(:id, :name, :uen, :contact_details, :financial_year_end, :gst_quarter, :agm_date, :ar_date, :eci_date, :form_cs_date, :project_start_date, :consultant_id, :associate_id, :shared_service_id, :designated_working_time, :xero_email, :connect_xero, :account_type, :stripe_subscription_plan_data, :trial_end_date, :slack_access_response, :before_deadline_reminder_days, :website_url, :company_logo, :profile_logo, :banner_image, :company_bio, :company_type, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state]
     )
   end
 

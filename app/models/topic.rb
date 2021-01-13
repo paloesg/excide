@@ -1,16 +1,26 @@
 class Topic < ApplicationRecord
   include AASM
-  
+
   belongs_to :user
   belongs_to :company
+  belongs_to :startup, class_name: "Company"
+  belongs_to :assigned_user, class_name: 'User'
+
+  has_many :notes, as: :notable, dependent: :destroy
 
   enum question_category: { state_interest: 0, due_dilligence: 1, investor_management: 2}
   enum status: { need_answer: 0, need_approval: 1, answered: 2, closed: 3}
 
+  accepts_nested_attributes_for :notes, reject_if: :all_blank, allow_destroy: true
+
   aasm column: :status, enum: true do
     state :need_answer, initial: true
+    state :need_approval
+    state :answered
+    state :closed
+
     # Assign startup users to answer investor's question
-    event :assign_user do
+    event :approve_answer do
       transitions from: :need_answer, to: :need_approval
     end
     # Startup admin rejects user's answer to investor's question
