@@ -28,10 +28,10 @@
         / Investor view for notes
         - if note.user.company.investor?
           .note-wrapper-investor.p-4.col-md-10.mt-3
-            = render 'note_contents', note: note
+            = render 'note_contents', note: note, company: @company
         - else
           .note-wrapper-startup.p-4.col-md-10.mt-3
-            = render 'note_contents', note: note
+            = render 'note_contents', note: note, company: @company
             - if @user.has_role?(:admin, @company) and @topic.need_approval?
               .row.ml-3
                 .col-md-12

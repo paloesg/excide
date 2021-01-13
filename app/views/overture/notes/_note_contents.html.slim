@@ -4,8 +4,8 @@
   .col-md-10
     .row.mt-3
       .h2.font-weight-boldest.ml-4 = note.user.full_name
-  / Only startup's notes can be deleted
-  - if note.user.company.startup?
+  / You can only delete your own notes
+  - if note.user.company == company
     .col-md-1
       = link_to overture_topic_note_path(topic_id: note.notable.id, id: note.id), data: { confirm: 'Are you sure you want to delete this answer?' }, method: :delete do
         i.material-icons-outlined.ml-5 delete_outline
