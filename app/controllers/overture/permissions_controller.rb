@@ -1,5 +1,5 @@
-class Motif::PermissionsController < ApplicationController
-  layout 'motif/application'
+class Overture::PermissionsController < ApplicationController
+  layout 'overture/application'
 
   def create
     # Depending on permissible_type, get the instance of the respective permissible (document or folder)

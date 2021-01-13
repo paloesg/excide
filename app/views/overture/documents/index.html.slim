@@ -88,6 +88,7 @@
         th.text-muted Name
         th.text-muted Read Access
         th.text-muted Download Access
+        th.text-muted Edit Access
         th.text-muted Last Modified
         th.text-muted Upload By
         th
@@ -101,45 +102,51 @@
               i.material-icons-outlined.align-middle folder_open
             span.ml-5
               = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
+          td id="drawer_toggle_#{folder.id}_0" style="cursor: pointer;"
+            = pluralize(folder.permissions.where(can_view: true).length, 'user')
+          td id="drawer_toggle_#{folder.id}_1" style="cursor: pointer;"
+            = pluralize(folder.permissions.where(can_download: true).length, 'user')
+          td id="drawer_toggle_#{folder.id}_2" style="cursor: pointer;"
+            = pluralize(folder.permissions.where(can_write: true).length, 'user')
+          / td
+          /   .dropdown
+          /     button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
+          /       span data-toggle="tooltip" data-placement="bottom" data-html="true" title="#{@users.map(&:first_name).join("<br/>")}"
+          /         - @users.each do |user|
+          /           - permission = user.permissions.find_by(permissible_id: folder.id)
+          /           - if permission.present?
+          /             = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'icon-size'
+          /     ul.dropdown-menu.p-5
+          /       - @users.each do |user|
+          /         - permission = user.permissions.find_by(permissible_id: folder.id)
+          /         - if permission.present?
+          /           .checkbox.mt-2
+          /             label.d-flex.align-items-center
+          /               = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
+          /               = user.first_name
+          /               .ml-5 = check_box_tag "permission", permission.can_view, permission.can_view, data: { user_id: user.id, permissible_id: folder.id, permissible_type: "folder", remote: true, url: url_for(controller: "folders", action: :toggle, id: user.id, permissible_id: folder.id, permissible_type: "view"), method: "POST"}
+          / td
+          /   .dropdown
+          /     button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
+          /       span data-toggle="tooltip" data-placement="bottom" data-html="true" title="#{@users.map(&:first_name).join("<br/>")}"
+          /         - @users.each do |user|
+          /           - permission = user.permissions.find_by(permissible_id: folder.id)
+          /           - if permission.present?
+          /             = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'icon-size'
+          /     ul.dropdown-menu.p-5
+          /       - @users.each do |user|
+          /         - permission = user.permissions.find_by(permissible_id: folder.id)
+          /         - if permission.present?
+          /           .checkbox.mt-2
+          /             label.d-flex.align-items-center
+          /               = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
+          /               = user.first_name
+          /               .ml-5 = check_box_tag "permission", permission.can_download, permission.can_download, data: { user_id: user.id, permissible_id: folder.id, permissible_type: "folder", remote: true, url: url_for(controller: "folders", action: :toggle, id: user.id, permissible_id: folder.id, permissible_type: "download"), method: "POST"}
           td
-            .dropdown
-              button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
-                span data-toggle="tooltip" data-placement="bottom" data-html="true" title="#{@users.map(&:first_name).join("<br/>")}"
-                  - @users.each do |user|
-                    - permission = user.permissions.find_by(permissible_id: folder.id)
-                    - if permission.present?
-                      = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
-              ul.dropdown-menu.p-5
-                - @users.each do |user|
-                  - permission = user.permissions.find_by(permissible_id: folder.id)
-                  - if permission.present?
-                    .checkbox.mt-2
-                      label.d-flex.align-items-center
-                        = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
-                        = user.first_name
-                        .ml-5 = check_box_tag "permission", permission.can_view, permission.can_view, data: { user_id: user.id, permissible_id: folder.id, permissible_type: "folder", remote: true, url: url_for(controller: "folders", action: :toggle, id: user.id, permissible_id: folder.id, permissible_type: "view"), method: "POST"}
-          td
-            .dropdown
-              button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
-                span data-toggle="tooltip" data-placement="bottom" data-html="true" title="#{@users.map(&:first_name).join("<br/>")}"
-                  - @users.each do |user|
-                    - permission = user.permissions.find_by(permissible_id: folder.id)
-                    - if permission.present?
-                      = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
-              ul.dropdown-menu.p-5
-                - @users.each do |user|
-                  - permission = user.permissions.find_by(permissible_id: folder.id)
-                  - if permission.present?
-                    .checkbox.mt-2
-                      label.d-flex.align-items-center
-                        = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
-                        = user.first_name
-                        .ml-5 = check_box_tag "permission", permission.can_download, permission.can_download, data: { user_id: user.id, permissible_id: folder.id, permissible_type: "folder", remote: true, url: url_for(controller: "folders", action: :toggle, id: user.id, permissible_id: folder.id, permissible_type: "download"), method: "POST"}
-          td id="drawer_toggle_#{folder.id}_0"
             = folder.updated_at.strftime("%d %b %Y (%I:%M%p)")
           td.d-flex
-            .d-flex id="drawer_toggle_#{folder.id}_1"
-              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
+            .d-flex
+              = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'icon-size mr-3'
               p.mt-1.mr-5 = folder.user&.full_name
           td
             .dropdown
@@ -159,45 +166,51 @@
               = image_pack_tag "media/src/images/overture/doc.svg"
             span.ml-5
               = d.raw_file.filename
+          td id="drawer_toggle_#{d.id}_0" style="cursor: pointer;"
+            = pluralize(d.permissions.where(can_view: true).length, 'user')
+          td id="drawer_toggle_#{d.id}_1" style="cursor: pointer;"
+            = pluralize(d.permissions.where(can_download: true).length, 'user')
+          td id="drawer_toggle_#{d.id}_2" style="cursor: pointer;"
+            = pluralize(d.permissions.where(can_write: true).length, 'user')
+          / td
+          /   .dropdown
+          /     button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
+          /       span data-toggle="tooltip" data-placement="bottom" data-html="true" title="#{@users.map(&:first_name).join("<br/>")}"
+          /         - @users.each do |user|
+          /           - permission = user.permissions.find_by(permissible_id: d.id)
+          /           - if permission.present?
+          /             = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'icon-size'
+          /     ul.dropdown-menu.p-5
+          /       - @users.each do |user|
+          /         - permission = user.permissions.find_by(permissible_id: d.id)
+          /         - if permission.present?
+          /           .checkbox.mt-2
+          /             label.d-flex.align-items-center
+          /               = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'icon-size mr-3'
+          /               = user.first_name
+          /               .ml-5 = check_box_tag "permission", permission.can_view, permission.can_view, data: { user_id: user.id, permissible_id: d.id, remote: true, url: url_for(controller: "documents", action: :toggle, id: user.id, permissible_id: d.id, permissible_type: "view"), method: "POST"}
+          / td
+          /   .dropdown
+          /     button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
+          /       span data-toggle="tooltip" data-placement="bottom" data-html="true" title="#{@users.map(&:first_name).join("<br/>")}"
+          /         - @users.each do |user|
+          /           - permission = user.permissions.find_by(permissible_id: d.id)
+          /           - if permission.present?
+          /             = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'icon-size'
+          /     ul.dropdown-menu.p-5
+          /       - @users.each do |user|
+          /         - permission = user.permissions.find_by(permissible_id: d.id)
+          /         - if permission.present?
+          /           .checkbox.mt-2
+          /             label.d-flex.align-items-center
+          /               = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'icon-size mr-3'
+          /               = user.first_name
+          /               .ml-5 = check_box_tag "permission", permission.can_download, permission.can_download, data: { user_id: user.id, permissible_id: d.id, remote: true, url: url_for(controller: "documents", action: :toggle, id: user.id, permissible_id: d.id, permissible_type: "download"), method: "POST"}
           td
-            .dropdown
-              button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
-                span data-toggle="tooltip" data-placement="bottom" data-html="true" title="#{@users.map(&:first_name).join("<br/>")}"
-                  - @users.each do |user|
-                    - permission = user.permissions.find_by(permissible_id: d.id)
-                    - if permission.present?
-                      = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
-              ul.dropdown-menu.p-5
-                - @users.each do |user|
-                  - permission = user.permissions.find_by(permissible_id: d.id)
-                  - if permission.present?
-                    .checkbox.mt-2
-                      label.d-flex.align-items-center
-                        = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
-                        = user.first_name
-                        .ml-5 = check_box_tag "permission", permission.can_view, permission.can_view, data: { user_id: user.id, permissible_id: d.id, remote: true, url: url_for(controller: "documents", action: :toggle, id: user.id, permissible_id: d.id, permissible_type: "view"), method: "POST"}
-          td
-            .dropdown
-              button.btn.btn-primary-outline.p-0 data-toggle="dropdown"
-                span data-toggle="tooltip" data-placement="bottom" data-html="true" title="#{@users.map(&:first_name).join("<br/>")}"
-                  - @users.each do |user|
-                    - permission = user.permissions.find_by(permissible_id: d.id)
-                    - if permission.present?
-                      = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size'
-              ul.dropdown-menu.p-5
-                - @users.each do |user|
-                  - permission = user.permissions.find_by(permissible_id: d.id)
-                  - if permission.present?
-                    .checkbox.mt-2
-                      label.d-flex.align-items-center
-                        = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
-                        = user.first_name
-                        .ml-5 = check_box_tag "permission", permission.can_download, permission.can_download, data: { user_id: user.id, permissible_id: d.id, remote: true, url: url_for(controller: "documents", action: :toggle, id: user.id, permissible_id: d.id, permissible_type: "download"), method: "POST"}
-          td id="drawer_toggle_#{d.id}_0"
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y (%I:%M%p)") : d.created_at.strftime("%d %b %Y (%I:%M%p)")
           td.d-flex
-            .d-flex id="drawer_toggle_#{d.id}_1"
-              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
+            .d-flex
+              = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'icon-size mr-3'
               p.mt-1.mr-5 = d.user&.full_name
           td
             .dropdown

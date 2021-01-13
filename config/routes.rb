@@ -155,6 +155,7 @@ Rails.application.routes.draw do
   namespace :overture do
     root to: 'home#index'
     resources :companies
+    resources :permissions
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end
