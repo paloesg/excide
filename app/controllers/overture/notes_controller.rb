@@ -29,12 +29,14 @@ class Overture::NotesController < ApplicationController
   end
 
   def update
+    # Change topic state
     if params[:status] == "approve"
       @topic.approved
     else
       @topic.rejected
     end
-    if @note.update(approved: params[:status] == "approve" ? true : false) and @topic.save
+    remark = params[:note].present? ?  params[:note][:remark] : nil
+    if @note.update(approved: params[:status] == "approve" ? true : false, remark: remark) and @topic.save
       redirect_to overture_topic_notes_path(@topic), notice: "Successfully updated topic."
     else
       render :edit
