@@ -141,6 +141,7 @@
             .d-flex id="drawer_toggle_#{folder.id}_1"
               = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
               p.mt-1.mr-5 = folder.user&.full_name
+          td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
@@ -198,12 +199,12 @@
             .d-flex id="drawer_toggle_#{d.id}_1"
               = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mr-3'
               p.mt-1.mr-5 = d.user&.full_name
+          td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
               .dropdown-menu.dropdown-menu-right
                 .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
                 .dropdown-item = link_to "Delete", overture_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
-                .dropdown-item = link_to "Share Link", d.file_url
           = render 'overture/shared/show_document', d: d
         = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?

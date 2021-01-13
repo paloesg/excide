@@ -1,6 +1,6 @@
 class Overture::DocumentsController < ApplicationController
   layout 'overture/application'
-  
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_document, only: [:update, :destroy]
@@ -16,15 +16,6 @@ class Overture::DocumentsController < ApplicationController
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 
-  def new
-    @folders = policy_scope(Folder).roots
-    @workflow_action = @company.workflow_actions.find(params[:workflow_action]) if params[:workflow_action].present?
-    @workflow_action_id = params[:workflow_action_id]
-    @folder_id = params[:folder_id]
-    @document = Document.new
-    authorize @document
-  end
-
   def create
     # multiple file upload from uppy
     if params[:successful_files].present?
@@ -37,38 +28,18 @@ class Overture::DocumentsController < ApplicationController
         # attach and convert method with the response key to create blob
         document.attach_and_convert_document(file['response']['key'])
         @files.append document
-      end
-    # single file upload
-    else
-      if params[:document][:folder_id].present?
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:document][:folder_id]).run_without_associations
-      else
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, nil).run_without_associations
-      end
-      if @generate_document.success?
-        document = @generate_document.document
-        document.update_attributes(workflow_action_id: params[:workflow_action_id])
-        if params[:document][:folder_id].present?
-          document.update_attributes(folder_id: params[:document][:folder_id])
-        end
-        authorize document
-        # attach and convert method
-        document.attach_and_convert_document(params[:response_key])
+        # create permission on creation of document for the user that uploaded it
+        Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
       end
     end
-    # create permission on creation of document for the user that uploaded it
-    Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: document)
     respond_to do |format|
       if params[:folder_id].present?
         # Redirect when generated documents inside folders
         format.html { redirect_to overture_folder_path(id: params[:folder_id]), notice: "File(s) successfully uploaded into folder."  }
         format.json { render json: @files.to_json }
       else
-        workflow_action = WorkflowAction.find(params[:workflow_action_id]) if params[:workflow_action_id].present?
         format.html {
-          # Redirect to workflow page if wfa_id is present. Else go to documents INDEX page
-          params[:workflow_action_id].present? ? (redirect_to overture_outlet_workflow_path(outlet_id: workflow_action.workflow.outlet.id, id: workflow_action.workflow.id), notice: "File was successfully uploaded")
-            : (redirect_to overture_documents_path, notice: "File was successfully uploaded")
+          redirect_to overture_documents_path, notice: "File was successfully uploaded"
         }
       end
     end
