@@ -1,5 +1,6 @@
 class Overture::DocumentsController < ApplicationController
   layout 'overture/application'
+  include Overture::UsersHelper
 
   before_action :authenticate_user!
   before_action :set_company
@@ -11,7 +12,7 @@ class Overture::DocumentsController < ApplicationController
     @folder = Folder.new
     @folders = Folder.roots.includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
     @documents = Document.where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
-    @users = @company.users.includes(:permissions)
+    @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 

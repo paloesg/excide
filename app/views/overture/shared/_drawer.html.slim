@@ -1,5 +1,5 @@
 .offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto id="drawer_#{permissible.id}"
-  - if current_user.has_role?(:admin, @company)
+  - if current_user.has_role?(:admin, @company) and permissible.company == @company
     .row.mt-5
       .col-md-11
         h2 Give access
