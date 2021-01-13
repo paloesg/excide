@@ -13,7 +13,7 @@
     tbody
       - @topics.each do |topic|
         tr.row.overture-drawer-row data-drawer="#{topic.id}"
-          td.comment-font-size.col-6 = link_to topic.subject_name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
+          td.comment-font-size.col-5 = link_to topic.subject_name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
           td.comment-font-size.col-3 id="drawer_toggle_#{topic.id}_0" = link_to topic.user.company.name, overture_topics_path(topic_id: topic.id), class: 'text-dark'
           - if topic.status == "need_answer"
             td.comment-font-size.col id="drawer_toggle_#{topic.id}_1" = link_to "Need answer", overture_topics_path(topic_id: topic.id), class: 'text-dark badge badge-pill badge-danger', style: 'background: #EB6464';
@@ -24,4 +24,11 @@
           - else
             td.comment-font-size.col id="drawer_toggle_#{topic.id}_1" = link_to "Closed", overture_topics_path(topic_id: topic.id), class: 'text-dark badge badge-pill badge-secondary', style: 'background: #CECECE';
           td.comment-font-size.col id="drawer_toggle_#{topic.id}_2" = link_to topic.created_at.strftime("%d %b %Y"), overture_topics_path(topic_id: topic.id), class: 'text-dark'
+          - if @company.investor?
+            td
+              .dropdown
+                a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                  i.fa.fa-ellipsis-h.text-secondary.mb-4
+                .dropdown-menu.dropdown-menu-right
+                  .dropdown-item = link_to "Close question", overture_topic_path(topic, status: "closed"), method: :put , data: { confirm: 'By closing a question, you will no longer receive any answer. This action cannot be undone. Sure to proceed?' }
         = render 'overture/shared/drawer', topic: topic, name: topic.subject_name

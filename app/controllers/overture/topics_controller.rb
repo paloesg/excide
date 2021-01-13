@@ -26,7 +26,14 @@ class Overture::TopicsController < ApplicationController
   end
 
   def update
-    if @topic.update(topic_params)
+    if params[:status].present?
+      @topic.close_question
+      if @topic.save
+        redirect_to overture_topics_path, notice: "Successfully closed question."
+      else
+        redirect_to overture_root_path, alert: "Error in closing question."
+      end
+    elsif @topic.update(topic_params)
       redirect_to overture_topic_notes_path(@topic), notice: "Successfully updated topic."
     else
       render :edit

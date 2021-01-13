@@ -65,16 +65,17 @@
                           .form-group
                             = f.submit "Assign Someone", class: "btn btn-primary ml-5"
   hr
-  #chat-bottom-box.rounded
-    .row
-      .col-md-12
-        = form_for @note, url: overture_topic_notes_path(@topic.id) do |f|
-          .row.m-3
-            .col-md-12
-              = f.text_field :content, placeholder: "Write your comments...", class: "form-control chat-input", id: "chat-message"
-          .row.m-3
-            .col-md-12
-              = f.hidden_field :approved, value: @company.investor? ? true : false
-              = button_tag(type: "submit", class: "btn btn-primary chat-input rounded float-right sendButton") do
-                span
-                  i.material-icons-outlined send
+  - unless @topic.closed?
+    #chat-bottom-box.rounded
+      .row
+        .col-md-12
+          = form_for @note, url: overture_topic_notes_path(@topic.id) do |f|
+            .row.m-3
+              .col-md-12
+                = f.text_field :content, placeholder: "Write your comments...", class: "form-control chat-input", id: "chat-message"
+            .row.m-3
+              .col-md-12
+                = f.hidden_field :approved, value: @company.investor? ? true : false
+                = button_tag(type: "submit", class: "btn btn-primary chat-input rounded float-right sendButton") do
+                  span
+                    i.material-icons-outlined send
