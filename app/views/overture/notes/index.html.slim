@@ -30,40 +30,40 @@
           .note-wrapper-investor.p-4.col-md-10.mt-3
             = render 'note_contents', note: note
         - else
-          .note-wrapper-startup.p-4.col-md-10.mt-3.float-right
+          .note-wrapper-startup.p-4.col-md-10.mt-3
             = render 'note_contents', note: note
             - if @user.has_role?(:admin, @company) and @topic.need_approval?
               .row.ml-3
-                .col-md-6
+                .col-md-12
                   = link_to "Approve answer", overture_topic_note_path(topic_id: @topic.id, id: note.id, status: "approve"), method: :put, class: "btn btn-primary float-right"
                   = render 'reject_modal', note: note, topic: @topic
             - if note.remark.present?
               .row.ml-3
                 .col-md-12
-                  p.comment-font-size.border.border-danger.rounded.p-2 Rejected reason: #{note.remark}
-        - if @topic.need_answer? and @company.startup? and @notes.length < 2
-          .note-wrapper-startup.p-4.col-md-10.mt-3.float-right
-            .row.ml-3
-              .col-md-1
-                = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comment-user-icon'
-              - if @topic.assigned_user.present?
-                .col-md-11
-                  .row.mt-4
+                  p.comment-font-size.border.border-danger.rounded.p-2 style="background: white;" Rejected reason: #{note.remark}
+      - if @topic.need_answer? and @company.startup?
+        .note-wrapper-startup.p-4.col-md-10.mt-3
+          .row.ml-3
+            .col-md-1
+              = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comment-user-icon'
+            - if @topic.assigned_user.present?
+              .col-md-11
+                .row.mt-4
+                  .col-md-6
+                    p.comment-font-size.ml-4 = "#{@topic.assigned_user.full_name} has not answered to this question."
+            - else
+              .col-md-11
+                .row.mt-4
+                  .col-md-6
+                    p.comment-font-size.ml-4 No one is assigned to answer this question.
+                  - if @user.has_role?(:admin, @company)
                     .col-md-6
-                      p.comment-font-size.ml-4 = "#{@topic.assigned_user.full_name} has not answered to this question."
-              - else
-                .col-md-11
-                  .row.mt-4
-                    .col-md-6
-                      p.comment-font-size.ml-4 No one is assigned to answer this question.
-                    - if @user.has_role?(:admin, @company)
-                      .col-md-6
-                        = form_for @topic, url: overture_topic_path(@topic) do |f|
-                          .form-inline
-                            .form-group
-                              = f.select :assigned_user_id, @users.map{ |u| [u.first_name, u.id] }, { include_blank: "Select an user..." }, {class: 'select2 form-control col-md-12'}
-                            .form-group
-                              = f.submit "Assign Someone", class: "btn btn-primary ml-5"
+                      = form_for @topic, url: overture_topic_path(@topic) do |f|
+                        .form-inline
+                          .form-group
+                            = f.select :assigned_user_id, @users.map{ |u| [u.first_name, u.id] }, { include_blank: "Select an user..." }, {class: 'select2 form-control col-md-12'}
+                          .form-group
+                            = f.submit "Assign Someone", class: "btn btn-primary ml-5"
   hr
   #chat-bottom-box.rounded
     .row
@@ -74,7 +74,7 @@
               = f.text_field :content, placeholder: "Write your comments...", class: "form-control chat-input", id: "chat-message"
           .row.m-3
             .col-md-12
-              = f.hidden_field :approved, value: false
+              = f.hidden_field :approved, value: @company.investor? ? true : false
               = button_tag(type: "submit", class: "btn btn-primary chat-input rounded float-right sendButton") do
                 span
                   i.material-icons-outlined send
