@@ -47,6 +47,7 @@ require("./components/uppy");
 require("./components/direct_upload");
 // require("./components/document_upload");
 require("./components/popover_initialize");
+require("./components/select2_initialize");
 require("./components/document_popover");
 require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");

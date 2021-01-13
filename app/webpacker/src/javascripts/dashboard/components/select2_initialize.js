@@ -81,6 +81,46 @@ $(document).on("turbolinks:load", function () {
     );
   });
 
+  $(".timesheet-filter-button").click(function () {
+    let startDate = $("#startDate").val();
+    let endDate = $("#endDate").val();
+
+    let projectClientSelect2 = $("select.project-clients")[0].selectedOptions
+    let projectClientData = [];
+    for (i = 0; i < projectClientSelect2 .length; i++) {
+      projectClientData.push(projectClientSelect2[i].value);
+    }
+
+    let allocationUserSelect2 = $("select.allocation-users")[0].selectedOptions;
+    let allocationUserData = [];
+    for (i = 0; i < allocationUserSelect2.length; i++) {
+      allocationUserData.push(allocationUserSelect2[i].value);
+    }
+
+    let serviceLineSelect2 = $("select.service-line")[0].selectedOptions;
+    let serviceLineData = [];
+    for (i = 0; i < serviceLineSelect2.length; i++) {
+      serviceLineData.push(serviceLineSelect2[i].value);
+    }
+
+
+    Turbolinks.visit(
+      "//" +
+        location.host +
+        location.pathname +
+        "?start_date=" +
+        startDate +
+        "&end_date=" +
+        endDate +
+        "&project_clients=" +
+        projectClientData +
+        "&allocation_users=" +
+        allocationUserData +
+        "&service_line=" +
+        serviceLineData
+    );
+  });
+
   $(".activity-history-filter-button").click(function (e) {
     var created_at_select2 = $("select.select2-created-at").select2();
     var createdAtData = created_at_select2[0].value;
@@ -140,45 +180,6 @@ $(document).on("turbolinks:load", function () {
     );
   });
 
-  $(".timesheet-filter-button").click(function () {
-    let startDate = $("#startDate").val();
-    let endDate = $("#endDate").val();
-
-    let projectClientSelect2 = $("select.project-clients")[0].selectedOptions
-    let projectClientData = [];
-    for (i = 0; i < projectClientSelect2 .length; i++) {
-      projectClientData.push(projectClientSelect2[i].value);
-    }
-
-    let allocationUserSelect2 = $("select.allocation-users")[0].selectedOptions;
-    let allocationUserData = [];
-    for (i = 0; i < allocationUserSelect2.length; i++) {
-      allocationUserData.push(allocationUserSelect2[i].value);
-    }
-
-    let serviceLineSelect2 = $("select.service-line")[0].selectedOptions;
-    let serviceLineData = [];
-    for (i = 0; i < serviceLineSelect2.length; i++) {
-      serviceLineData.push(serviceLineSelect2[i].value);
-    }
-
-
-    Turbolinks.visit(
-      "//" +
-        location.host +
-        location.pathname +
-        "?start_date=" +
-        startDate +
-        "&end_date=" +
-        endDate +
-        "&project_clients=" +
-        projectClientData +
-        "&allocation_users=" +
-        allocationUserData +
-        "&service_line=" +
-        serviceLineData
-    );
-  });
 
   $(".select2").select2({
     minimumResultsForSearch: 5,
