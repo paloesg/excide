@@ -1,0 +1,29 @@
+a.text-dark.float-right.ml-5 data-target="#overtureStateInterest" data-toggle="modal" type="button"
+  i.material-icons-outlined.text-dark question_answer
+#overtureStateInterest.modal.fade aria-hidden="true" aria-labelledby="stateInterest" role="dialog" tabindex="-1"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        h5#stateInterest.modal-title Send Q&A Ticket
+      .modal-body
+        p Start a communication with the startup you are interested in or would like to ask questions.
+        = form_for(topic, url: overture_topics_path(question_category: "State Interest"), html: { method: :post }) do |f|
+          .row.mt-3
+            .col-md-12
+              .form-group
+                = f.label :subject_name, "Subject (RE)"
+                = f.text_field :subject_name, class: "form-control"
+              .form-group
+                = f.hidden_field :question_category, value: "due_dilligence"
+                = f.hidden_field :startup_id, value: permissible.company.id
+              = f.fields_for :notes, Note.new do |ff|
+                .form-group
+                  = ff.label :content, "Message"
+                  = ff.text_field :content, class: "form-control"
+                .form-group
+                  / By default, investor question is always approved
+                  = ff.hidden_field :approved, value: true
+          .row.mt-3
+            .col-md-12
+              = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
+              button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close

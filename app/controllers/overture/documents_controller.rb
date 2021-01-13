@@ -14,6 +14,7 @@ class Overture::DocumentsController < ApplicationController
     @documents = Document.where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
     @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
+    @topic = Topic.new
   end
 
   def create

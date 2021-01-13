@@ -240,6 +240,7 @@
               span.ml-5 = link_to folder.name, overture_folder_path(folder.id), class: "text-secondary"
             td = folder.company.name
             td
+              = render 'documents_qna_modal', permissible: folder, topic: @topic
             td
         - @documents.each_with_index do |d, index|
           tr
@@ -251,5 +252,5 @@
                  = d.raw_file.filename
             td = d.company.name
             td
+              = render 'documents_qna_modal', permissible: d, topic: @topic
             td
-
