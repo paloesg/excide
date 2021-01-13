@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
   # Checks the controller parent and check if the user has access to the product based on application policy unless parent is users (login) or object (not namespaced)
   def authenticate_product
     product = self.class.parent.to_s.downcase
-    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || product == "object"
+    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || product == "object" || current_user.nil?
   end
 
   def set_company
