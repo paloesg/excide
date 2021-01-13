@@ -150,9 +150,9 @@ Rails.application.routes.draw do
     get '/financial-performance', to: 'home#financial_performance'
     get '/edit-report', to: 'home#edit_report'
   end
-  
+
   namespace :overture do
-    root to: 'profiles#index'
+    root to: 'home#index'
     resources :companies
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest

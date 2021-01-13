@@ -2,15 +2,17 @@ class Overture::ProfilesController < ApplicationController
   layout 'overture/application'
 
   before_action :authenticate_user!
+  before_action :set_company
 
   def index
-    if params[:list] == "Startup"
-      @profiles = Profile.tagged_with("Startup")
-    elsif params[:list] == "SME"
-      @profiles = Profile.tagged_with("SME")
-    else
-      @profiles = Profile.all
-    end
+    # if params[:list] == "Startup"
+    #   @profiles = Profile.tagged_with("Startup")
+    # elsif params[:list] == "SME"
+    #   @profiles = Profile.tagged_with("SME")
+    # else
+    #   @profiles = Profile.all
+    # end
+    @profiles = Profile.includes(:company).where(companies: { company_type: params[:search_type] })
     @profiles = Kaminari.paginate_array(@profiles).page(params[:page]).per(5)
   end
 
@@ -26,6 +28,11 @@ class Overture::ProfilesController < ApplicationController
   end
 
   private
+  def set_company
+    @user = current_user
+    @company = current_user.company
+  end
+
   def profile_params
     params.require(:profile).permit(:id, :name, :url, :company_id, :profile_logo, :company_information)
   end
