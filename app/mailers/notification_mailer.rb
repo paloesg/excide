@@ -65,6 +65,16 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
+  def motif_new_master_franchisee(user)
+    #to email will be changed with afc's support email
+    mail(to: 'support@paloe.com.sg', from: 'Asiawide Digital Advantage (ADA) <admin@excide.co>', subject: 'New Outlet', body: 'New Master Franchisee', template_id: ENV['ADA_SENDGRID_MOTIF_NEW_OUTLET'], dynamic_template_data: {
+        fullName: user.full_name,
+        company: user.company.name,
+        email: user.email
+      }
+    )
+  end
+
   # Conductor's email notification methods!
   # Most of the removed mailer methods below were called in event.rb. associate_notification was called in scehduler.rake as a daily reminder to associate.
   # Removed conductor's create_event, edit_event, destroy_event, user_removed_from_event, event_notification and associate_notification methods from the following PR:
