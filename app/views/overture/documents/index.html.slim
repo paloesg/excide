@@ -244,15 +244,16 @@
             td
         - @documents.each_with_index do |d, index|
           tr
-            td
+            td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
               span.mr-5
                 / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
                 = image_pack_tag "media/src/images/overture/doc.svg"
               span.ml-5
-                 = d.raw_file.filename
+                = d.raw_file.filename
             td = d.company.name
             td
               = render 'overture/documents/documents_qna_modal', permissible: d, topic: @topic
             td
               = link_to rails_blob_path(d.raw_file, disposition: "attachment") do
                 i.material-icons-outlined.align-middle.text-primary download
+            = render 'overture/shared/show_document', d: d
