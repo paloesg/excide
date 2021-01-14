@@ -1,10 +1,10 @@
 class Overture::UsersController < ApplicationController
   layout 'overture/application'
-  
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles
-  # before_action :set_user, except: [:index, :new, :create]
+  before_action :set_user, except: [:index, :new, :create]
 
   def index
     @roles = @company_roles
@@ -19,6 +19,22 @@ class Overture::UsersController < ApplicationController
       redirect_to overture_users_path, notice: 'User successfully created!'
     else
       render :new
+    end
+  end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
+    if @user.update(user_params)
+      redirect_to edit_overture_user_path(@user), notice: 'User successfully updated!'
+    else
+      render :edit
     end
   end
 
@@ -54,22 +70,6 @@ class Overture::UsersController < ApplicationController
   #   end
   # end
 
-  # def edit
-  #   @user = User.find(params[:id])
-  # end
-
-  # def update
-  #   if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
-  #     params[:user].delete(:password)
-  #     params[:user].delete(:password_confirmation)
-  #   end
-  #   if @user.update(user_params)
-  #     redirect_to edit_motif_user_path(@user), notice: 'User successfully updated!'
-  #   else
-  #     render :edit
-  #   end
-  # end
-
   # def add_role
   #   # AJAX request to update user type from motif teammates
   #   @user = @company.users.find(params[:user_id])
@@ -95,9 +95,9 @@ class Overture::UsersController < ApplicationController
     @company = current_user.company
   end
 
-  # def set_user
-  #   @user = User.find_by(id: params[:id])
-  # end
+  def set_user
+    @user = User.find_by(id: params[:id])
+  end
 
   def set_company_roles
     @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")

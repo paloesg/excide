@@ -1,0 +1,8 @@
+.row.mb-3
+  .col
+    h1 Edit User
+.row
+  .col-xl-12
+    = form_for(@user, url: overture_user_path) do |f|
+      = render 'form', f: f
+      = f.submit 'Update User', class: 'btn btn-primary mt-4'
