@@ -23,6 +23,11 @@ class Topic < ApplicationRecord
     event :approve_answer do
       transitions from: :need_answer, to: :need_approval
     end
+
+    event :approve_another_answer do
+      transitions from: :answered, to: :need_approval
+    end
+
     # Startup admin rejects user's answer to investor's question
     event :rejected do
       transitions from: :need_approval, to: :need_answer

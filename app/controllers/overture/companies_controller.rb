@@ -4,6 +4,11 @@ class Overture::CompaniesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
 
+  def index
+    # Get invested startup companies if company is the investor, vice versa
+    @companies = @company.investor? ? @company.startups : @company.investors
+  end
+
   def edit
     build_profiles
   end

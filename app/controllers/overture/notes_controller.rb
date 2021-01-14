@@ -18,8 +18,13 @@ class Overture::NotesController < ApplicationController
   def create
     @note = Note.new(note_params)
     @note.user = current_user
-    # Change topic status to approve answer if company is a startup
-    @topic.approve_answer if current_user.company.startup?
+    if current_user.company.startup? and @topic.answered?
+      # Change status to need_approval if startup user post again
+      @topic.approve_another_answer
+    elsif current_user.company.startup? and !@topic.answered?
+      # Change topic status to approve answer if company is a startup and topic is not answered
+      @topic.approve_answer
+    end
     @note.notable = @topic
     if @note.save and @topic.save
       redirect_to overture_topic_notes_path(topic_id: @topic.id), notice: "Answer has been posted. Please wait for answer to be approved."

@@ -106,6 +106,19 @@ const motifWorkflowActionMultipleUploads = (uppy) => {
   });
 };
 
+// Multiple uploads for Overture through document's INDEX page
+const overtureMultipleDocumentsUpload = (uppy) => {
+  uppy.on('complete', (result) => {
+    $.post("/overture/documents", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+      document_type: 'overture-documents-multiple-uploads',
+      folder_id: $(".overtureMultipleDocumentsUpload").data("folder"),
+    });
+  });
+};
+
 //-----------------------------------Setup Uppy-----------------------------------------
 function setupUppy(element){
   let form = element.closest('form');
@@ -167,10 +180,13 @@ function setupUppy(element){
   }
   else if($('.motifOutletPhotosUpload').length){
     motifOutletPhotosUpload(uppy);
-  } 
+  }
   else if($('.motifWorkflowActionMultipleUploads').length){
     motifWorkflowActionMultipleUploads(uppy);
-  } 
+  }
+  else if ($(".overtureMultipleDocumentsUpload").length) {
+      overtureMultipleDocumentsUpload(uppy);
+  }
 }
 //-----------------------------------Initialize Uppy------------------------------------
 document.addEventListener('turbolinks:load', () => {

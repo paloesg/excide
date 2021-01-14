@@ -155,8 +155,20 @@ Rails.application.routes.draw do
   namespace :overture do
     root to: 'home#index'
     resources :companies
+    resources :investments
+    resources :permissions
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
+    end
+    resources :documents do
+      member do
+        post 'toggle'
+      end
+    end
+    resources :folders do
+      member do
+        post 'toggle'
+      end
     end
     resources :topics do
       resources :notes

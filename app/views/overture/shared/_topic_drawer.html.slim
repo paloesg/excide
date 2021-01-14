@@ -1,0 +1,39 @@
+.offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto id="drawer_#{topic.id}"
+  .row
+    .col-md-11.mb-5
+      h5.d-inline Filter
+    .col-md-1
+      a.d-inline id="drawer_close_#{topic.id}" href="#"
+        i.material-icons-outlined close
+  .offcanvas-header.offcanvas-header-navs.d-flex.align-items-center.justify-content-between
+    p.font-weight-bold Status
+    a href="#" Select all
+  .offcanvas-content
+    .row.ml-1.mb-3
+      input#needAnswer.mr-5 name="needAnswer" type="checkbox" /
+      label for="needAnswer" Need answer
+    .row.ml-1.mb-3
+      input#needApproval.mr-5 name="needApproval" type="checkbox" /
+      label for="needApproval" Need approval
+    .row.ml-1.mb-3
+      input#answered.mr-5 name="answered" type="checkbox" /
+      label for="answered" Answered
+    .row.ml-1.mb-3
+      input#closed.mr-5 name="closed" type="checkbox" /
+      label for="closed" Closed
+  .offcanvas-header.offcanvas-header-navs
+    p.font-weight-bold Assignee
+  .offcanvas-content
+    .row.ml-1.mb-3
+      input.mr-5.form-control type="text" placeholder="Search teammate" /
+    .row.ml-1.mb-3.mt-5
+      input#noAssignee.mr-5 name="noAssignee" type="checkbox" /
+      label for="noAssignee" Question with no assignee
+  .offcanvas-header.offcanvas-header-navs
+    p.font-weight-bold Question from
+  .offcanvas-content
+    .row.ml-1.mb-3
+      input.mr-5.form-control type="text" placeholder="Search teammate" /
+  .float-right.d-flex.align-items-center
+    a.text-primary.mr-5 Clear
+    button.btn.btn-primary Apply
