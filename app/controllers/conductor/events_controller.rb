@@ -6,7 +6,7 @@ class Conductor::EventsController < ApplicationController
   before_action :set_clients
   before_action :set_staffers, only: [:new, :edit]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
-  before_action :get_users_and_service_lines, only: [:index, :new, :edit, :create, :update]
+  before_action :get_users_projects_and_service_lines, only: [:index, :new, :edit, :create, :update]
 
 
   # GET /conductor/events
@@ -62,6 +62,7 @@ class Conductor::EventsController < ApplicationController
     @event.end_time = @event.start_time + 1.hour
     @event.company = @company
     @event.tag_list.add(params[:service_line]) if params[:service_line].present?
+    @event.project_list.add(params[:project]) if params[:project].present?
     respond_to do |format|
       if @event.save
         # Allocate yourself to the timesheet allocation
@@ -155,15 +156,16 @@ class Conductor::EventsController < ApplicationController
     @staffers = User.where(company: @company).with_role :staffer, @company
   end
 
-  def get_users_and_service_lines
+  def get_users_projects_and_service_lines
     # To be tagged using acts_as_taggable_on gem
     @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy', 'Dashboard'].sort
+    @projects = ['AFC ADA', 'AFC EDM', 'AFC Website'].sort
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
     @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :tag_list, :number_of_hours, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :tag_list, :project_list, :number_of_hours, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
   end
 end
