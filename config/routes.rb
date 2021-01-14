@@ -153,7 +153,7 @@ Rails.application.routes.draw do
   end
 
   namespace :overture do
-    root to: 'home#index'
+    root to: 'documents#index'
     resources :companies
     resources :investments
     resources :permissions
