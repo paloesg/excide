@@ -81,10 +81,5 @@ class GenerateDocument
   def add_permissions
     # create permission for the user that uploaded it
     Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: @document)
-    # create permission for franchisors
-    @franchisors = User.with_role(:franchisor, @company)
-    @franchisors.each do |franchisor|
-      Permission.create(user: franchisor, can_write: true, can_download: true, can_view: true, permissible: @document) unless @user == franchisor
-    end
   end
 end
