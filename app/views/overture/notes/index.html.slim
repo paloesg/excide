@@ -32,7 +32,7 @@
         - else
           .note-wrapper-startup.p-4.col-md-10.mt-3
             = render 'note_contents', note: note, company: @company
-            - if @user.has_role?(:admin, @company) and @topic.need_approval? and note.remark.nil?
+            - if @user.has_role?(:admin, @company) and @topic.need_approval? and note.remark.nil? and !note.approved?
               .row.ml-3
                 .col-md-12
                   = link_to "Approve answer", overture_topic_note_path(topic_id: @topic.id, id: note.id, status: "approve"), method: :put, class: "btn btn-primary float-right"
