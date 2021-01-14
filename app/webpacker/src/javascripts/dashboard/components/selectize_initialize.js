@@ -97,33 +97,6 @@ $(document).on("turbolinks:load", function () {
     });
   }
 
-  $("select.project-clients").selectize({
-    placeholder: "Choose project clients...",
-    plugins: ["remove_button"],
-    allowEmptyOption: true,
-    onFocus: function () {
-      $(".selectize-input input").attr("style", "width: auto;");
-    },
-  });
-
-  $("select.service-line").selectize({
-    placeholder: "Choose service line...",
-    plugins: ["remove_button"],
-    allowEmptyOption: true,
-    onFocus: function () {
-      $(".selectize-input input").attr("style", "width: auto;");
-    },
-  });
-
-  $("select.allocation-users").selectize({
-    placeholder: "Choose user...",
-    plugins: ["remove_button"],
-    allowEmptyOption: true,
-    onFocus: function () {
-      $(".selectize-input input").attr("style", "width: auto;");
-    },
-  });
-
   $("select.event-type").selectize({
     placeholder: "Choose event type",
     plugins: ["remove_button"],
@@ -171,14 +144,24 @@ $(document).on("turbolinks:load", function () {
     let startDate = $("#startDate").val();
     let endDate = $("#endDate").val();
 
-    let projectClientSelectize = $("select.project-clients").selectize();
-    let projectClientData = projectClientSelectize[0].selectize.getValue();
+    let projectClientSelect2 = $("select.project-clients")[0].selectedOptions
+    let projectClientData = [];
+    for (i = 0; i < projectClientSelect2 .length; i++) {
+      projectClientData.push(projectClientSelect2[i].value);
+    }
 
-    let allocationUserSelectize = $("select.allocation-users").selectize();
-    let allocationUserData = allocationUserSelectize[0].selectize.getValue();
+    let allocationUserSelect2 = $("select.allocation-users")[0].selectedOptions;
+    let allocationUserData = [];
+    for (i = 0; i < allocationUserSelect2.length; i++) {
+      allocationUserData.push(allocationUserSelect2[i].value);
+    }
 
-    let serviceLineSelectize = $("select.service-line").selectize();
-    let serviceLineData = serviceLineSelectize[0].selectize.getValue();
+    let serviceLineSelect2 = $("select.service-line")[0].selectedOptions;
+    let serviceLineData = [];
+    for (i = 0; i < serviceLineSelect2.length; i++) {
+      serviceLineData.push(serviceLineSelect2[i].value);
+    }
+
 
     Turbolinks.visit(
       "//" +

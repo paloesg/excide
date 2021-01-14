@@ -30,16 +30,16 @@
   .col-md-12.m-2
     .col-md-1.float-left.mt-3.px-0
       span FILTER BY
-    .col-md-2.float-left.px-1
-      = select_tag('allocation_user', options_for_select(@users.map {|k,v| [k.full_name, k.id] }, selected: params[:allocation_users]), class: 'selectize-event-type allocation-users', multiple: true)
+    .col-md-2.float-left.px-1.select2-multiple
+      = select_tag('allocation_user', options_for_select(@users.map {|k,v| [k.full_name, k.id] }, selected: (params[:allocation_users].split(",") if params[:allocation_users].present?)), class: 'select2 allocation-users', multiple: true, data: {"placeholder": 'Choose user...'})
     .col-md-2.float-left.px-1
       = text_field_tag :start_date, params[:start_date], {class: 'col-md-12 form-control datepicker', 'data-toggle': 'datetimepicker', id: 'startDate', 'data-target': '#startDate', placeholder: "Start date..."}
     .col-md-2.float-left.px-1
       = text_field_tag :end_date, params[:end_date], {class: 'col-md-12 form-control datepicker', 'data-toggle': 'datetimepicker', id: 'endDate', 'data-target': '#endDate', placeholder: "End date..."}
-    .col-md-2.float-left.px-1
-      = select_tag('project_client', options_for_select(@clients.map {|k,v| [k.name, k.id] }, selected: params[:project_clients]), class: 'selectize-event-type project-clients', multiple: true)
-    .col-md-2.float-left.px-1
-      = select_tag('service_line', options_for_select(@service_lines, selected: params[:service_line]), class: 'selectize-event-type service-line', multiple: true)
+    .col-md-2.float-left.px-1.select2-multiple
+      = select_tag('project_client', options_for_select(@clients.map {|k,v| [k.name, k.id] }, selected: (params[:project_clients].split(",") if params[:project_clients].present?)), class: 'select2 project-clients', multiple: true, data: {"placeholder": 'Choose project client...'})
+    .col-md-2.float-left.px-1.select2-multiple
+      = select_tag('service_line_filter', options_for_select(@service_lines, selected: (params[:service_line].split(",") if params[:service_line].present?)), class: 'select2 service-line', multiple: true, data: {"placeholder": 'Choose service line...'})
     .col-md-1.float-left.px-1
       = button_tag 'Filter', type: 'button', class: 'btn btn-sm btn-primary timesheet-filter-button'
 hr
@@ -47,26 +47,24 @@ hr
   .col-sm-12
     h1 Create new task
 .row
-  .col-md-12
-    = form_for @event, url: conductor_events_path do |f|
-      .form-inline
-        - if current_user.has_role? :staffer, @company or current_user.has_role? :admin, @company
-          .form-group.mr-3
-            = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last&.user&.id), {prompt: 'Allocate someone...', class: 'selectize'}
-        .form-group.mr-3
-          = f.date_field :start_time, class: 'form-control', required: true
-        .form-group.mr-3
-          = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, { class: 'selectize', required: true }
-        .form-group.mr-3
-          = select_tag :project, options_for_select(@projects, selected: @event.project_list), include_blank: true, prompt: 'Select project...', required: true, class: 'selectize'
-        .form-group.mr-3
-          = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), include_blank: true, prompt: 'Select service line...', required: true, class: 'selectize'
-        .form-group.mr-3 
-          = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }.sort, {selected: @event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', required: true }
-        .form-group.mr-3
-          = f.number_field :number_of_hours, {min: 0, step: 0.1, placeholder: 'No. of hours spent...', class: 'form-control', required: true}
-        .form-group
-          = f.submit 'Save Event', class: 'btn btn-primary'
+  = form_for @event, url: conductor_events_path do |f|
+    .form-inline.col-md-12
+      - if current_user.has_role? :staffer, @company or current_user.has_role? :admin, @company
+        .mr-2
+          = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last&.user&.id), {class: 'select2', include_blank: true, data: {"placeholder": 'Allocate someone...'}}
+      .mr-2
+        = f.date_field :start_time, class: 'form-control', required: true
+      .mr-2
+        = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id}, { class: 'select2', required: true, include_blank: true, data: {"placeholder": 'Select client...' }}
+      .mr-2
+        = select_tag :project, options_for_select(@projects, selected: @event.project_list), {include_blank: true, required: true, class: 'select2', data: {"placeholder": 'Select project...' }}
+      .mr-2
+        = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), {include_blank: true, required: true, class: 'select2', data: {"placeholder": 'Select service line...' }}
+      .mr-2
+        = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }.sort, {selected: @event.event_type_id}, { class: 'select2', required: true , include_blank: true, data: {"placeholder": 'Select job nature...' }}
+      .mr-2
+        = f.number_field :number_of_hours, {min: 0, step: 0.1, placeholder: 'No. of hours spent...', class: 'form-control', required: true}
+      = f.submit 'Save Event', class: 'btn btn-primary'
 hr
 .row
   .col-sm-12
@@ -94,7 +92,7 @@ hr
             = form_for event, url: conductor_event_path(event.id), remote: true do |f|
               tr
                 - if event.allocations.present?
-                  td.text-center width="5%"
+                  td.text-center width="3%"
                     .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=(event.allocations[0].user.full_name)
                       span.initials
                         = "#{event.allocations[0].user.first_name[0]}#{event.allocations[0].user&.last_name[0]}"
@@ -102,22 +100,22 @@ hr
                   td
                 td width="10%"
                   = f.date_field :start_time, { class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
-                td width="15%"
-                  = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'selectize', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
-                td width="15%"
-                  = f.select :project_list, @projects.map { |sl| [sl, sl]}, { selected: event.projects.last, prompt: 'Select project...' }, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
+                td width="12%"
+                  = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'select2 form-control', id: 'event_' + event.id + '_client', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
+                td width="12%"
+                  = f.select :project_list, @projects.map { |sl| [sl, sl]}, { selected: event.projects.last, prompt: 'Select project...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_project', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
-                  = f.select :tag_list, @service_lines.map { |sl| [sl, sl]}, { selected: event.tags.last, prompt: 'Select service line...' }, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
+                  = f.select :tag_list, @service_lines.map { |sl| [sl, sl]}, { selected: event.tags.last, prompt: 'Select service line...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_tag_list', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
                 td width="20%"
-                  = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}.sort, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'selectize', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
-                td width="10%"
-                  = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control col-sm-12', data: { event_id: event.id }, onchange: "eventsUpdate(this);"}
+                  = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}.sort, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'select2 form-control', id: 'event_' + event.id + '_event_type', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
+                td width="15%"
+                  = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this);"}
                 td.p-0 width="5%"
                   .dropdown.dropdown-inline.float-right
                     a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                       i.fa.fa-ellipsis-h.text-secondary
                     .dropdown-menu.dropdown-menu-right
                       .dropdown-item = link_to "Delete", conductor_event_path(event), method: :delete, data: {confirm: "Are you sure you want to delete task?"}
-                td width="5%"
+                td width="3%"
                   = fa_icon "check", class: 'text-success ajax-icons'
                   = fa_icon "times", class: 'text-danger ajax-icons'
