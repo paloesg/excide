@@ -63,6 +63,11 @@ class Motif::FranchiseesController < ApplicationController
     end
   end
 
+  def email_new_master_franchisee
+    NotificationMailer.motif_new_master_franchisee(current_user).deliver_later
+    redirect_to motif_franchisees_path, notice: "Thank you for stating your interest in a new Master Franchisee. Kindly wait for further information as we contact you through email."
+  end
+
   private
 
   def set_company
