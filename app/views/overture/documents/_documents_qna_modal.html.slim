@@ -7,7 +7,7 @@ a.text-dark.float-right.ml-5 data-target="#overtureStateInterest" data-toggle="m
         h5#stateInterest.modal-title Send Q&A Ticket
       .modal-body
         p Start a communication with the startup you are interested in or would like to ask questions.
-        = form_for(topic, url: overture_topics_path(question_category: "State Interest"), html: { method: :post }) do |f|
+        = form_for(topic, url: overture_topics_path, html: { method: :post }) do |f|
           .row.mt-3
             .col-md-12
               .form-group

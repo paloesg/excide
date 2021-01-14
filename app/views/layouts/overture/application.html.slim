@@ -31,7 +31,7 @@ html lang="en"
 
   body
     = render 'layouts/overture/overture_header'
-    - if (controller_name == "profiles" and action_name == "show") || controller_name == "companies" and action_name == "edit" || controller_name == "users"
+    - if (controller_name == "profiles" and action_name == "show") || (controller_name == "companies" and action_name == "edit") || controller_name == "users"
       .new-tab-wrapper.overflow-auto.pb-0
         .new-tab-contents
           .row.mt-5.h-100
