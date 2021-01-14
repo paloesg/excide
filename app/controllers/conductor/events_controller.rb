@@ -139,8 +139,14 @@ class Conductor::EventsController < ApplicationController
   end
 
   def import
-    Event.import(params[:file], current_user)
-    redirect_to conductor_events_url, notice: "Events imported."
+    @events = GenerateEventsService.new(params[:file], current_user).run
+    respond_to do |format|
+      if @events.success?
+        format.html { redirect_to conductor_events_path, notice: "Events imported." }
+      else
+        format.html { redirect_to conductor_events_path, alert: "Event was not created due to error: #{@events.message}." }
+      end
+    end
   end
 
   private
