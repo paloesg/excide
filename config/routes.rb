@@ -153,7 +153,7 @@ Rails.application.routes.draw do
   end
 
   namespace :overture do
-    root to: 'home#index'
+    root to: 'documents#index'
     resources :companies
     resources :investments
     resources :permissions
@@ -174,6 +174,7 @@ Rails.application.routes.draw do
       resources :notes
     end
     resources :users
+    get '/financial-performance', to: 'home#financial_performance'
   end
 
   namespace :conductor do

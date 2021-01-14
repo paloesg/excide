@@ -9,11 +9,15 @@
     .form-group
       = f.label :name, 'Company Brand Name', class: "label-bold"
       = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label :report_url, 'Company Financial Report (Google DataStudio)', class: "label-bold"
+      = f.text_field :report_url, class: 'form-control'
     = f.fields_for :profile do |p|
       .form-group
-        = p.label :url, "Website"
+        = p.label :url, "Website URL", class: "label-bold"
         = p.text_field :url, class: "form-control"
       .form-group
+        = p.label :company_information, "Company information", class: "label-bold"
         = p.rich_text_area :company_information, {class: "form-control col-sm-12", required: true, placeholder: "Instructions for users..."}
       .form-group
         .form-inline

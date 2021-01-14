@@ -8,6 +8,10 @@ class Overture::HomeController < ApplicationController
 
   end
 
+  def financial_performance
+
+  end
+
   private
 
   def set_company
