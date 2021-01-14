@@ -253,7 +253,8 @@
             td = d.company.name
             td
               = render 'overture/documents/documents_qna_modal', permissible: d, topic: @topic
-            td
-              = link_to rails_blob_path(d.raw_file, disposition: "attachment") do
-                i.material-icons-outlined.align-middle.text-primary download
+            - if @user.permissions.find_by(permissible_id: d.id).can_download? or @user.permissions.find_by(permissible_id: d.id).can_write?
+              td
+                = link_to rails_blob_path(d.raw_file, disposition: "attachment") do
+                  i.material-icons-outlined.align-middle.text-primary download
             = render 'overture/shared/show_document', d: d

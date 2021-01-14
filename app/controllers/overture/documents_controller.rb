@@ -1,6 +1,7 @@
 class Overture::DocumentsController < ApplicationController
   layout 'overture/application'
   include Overture::UsersHelper
+  include Overture::PermissionsHelper
 
   before_action :authenticate_user!
   before_action :set_company

@@ -20,11 +20,11 @@
             - permission = user.permissions.find_by(permissible_id: permissible.id)
             - if permission.present?
               / Permissible type passed in from rendering the partial, which will determine if permissible is folder or document
-              = select_tag 'permissions', options_for_select(["Download", "Edit"], selected: (permission.can_write? ? "Edit" : "Download")), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control overture-permission-document-access col-md-12'
+              = select_tag 'permissions', options_for_select(["View", "Download", "Edit"], selected: get_current_permissions(permission)), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control overture-permission-document-access col-md-12'
             - else
               .float-right.mt-3.overture-add-access id="overture-add-access-link-#{user.id}-#{permissible.id}"
                 = link_to '+ Add access', '#', class: 'text-primary', remote: true
-              = select_tag 'permissions', options_for_select(["Download", "Edit"]), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control overture-permission-document-access d-none col-md-12', id: "overture-add-access-#{user.id}-#{permissible.id}"
+              = select_tag 'permissions', options_for_select(["View", "Download", "Edit"]), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control overture-permission-document-access d-none col-md-12', id: "overture-add-access-#{user.id}-#{permissible.id}"
           .col-md-1.p-0.mt-2.d-none.saved-message
             span.text-muted Saved!
   - else

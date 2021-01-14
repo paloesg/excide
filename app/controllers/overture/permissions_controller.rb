@@ -4,8 +4,14 @@ class Overture::PermissionsController < ApplicationController
   def create
     # Depending on permissible_type, get the instance of the respective permissible (document or folder)
     @permissible = params[:permissible_type] == "folder" ? Folder.find(params[:permissible_id]) : Document.find(params[:permissible_id])
-    # Check if permission allows user to write or download. can_write => full access, can_download means can download and view
-    @permission = params[:permission] == "Edit" ? Permission.new(user_id: params[:user_id], permissible: @permissible, can_write: true, can_view: true, can_download: true) : Permission.new(user_id: params[:user_id], permissible: @permissible, can_write: false, can_view: true, can_download: true)
+    # Check if permission allows user to view, download or write. can_write => full access, can_download means can download and view, view just mean viewer the document but no download
+    if params[:permission] == "View"
+      @permission = Permission.new(user_id: params[:user_id], permissible: @permissible, can_write: false, can_view: true, can_download: false)
+    elsif params[:permission] == "Download"
+      @permission = Permission.new(user_id: params[:user_id], permissible: @permissible, can_write: false, can_view: true, can_download: true)
+    else
+      @permission = Permission.new(user_id: params[:user_id], permissible: @permissible, can_write: true, can_view: true, can_download: true)
+    end
     respond_to do |format|
       if @permission.save
         format.json { render json: @permission, status: :ok }
@@ -20,7 +26,9 @@ class Overture::PermissionsController < ApplicationController
     @permission = Permission.find(params[:id])
     respond_to do |format|
       if params[:permission]
-        if params[:permission] == "Edit"
+        if params[:permission] == "View"
+          @permission.update(user_id: params[:user_id],  permissible: @permissible, can_write: false, can_download: false, can_view: true)
+        elsif params[:permission] == "Edit"
           @permission.update(user_id: params[:user_id],  permissible: @permissible, can_write: true, can_download: true, can_view: true)
         elsif params[:permission] == "Download"
           @permission.update(user_id: params[:user_id], permissible: @permissible, can_write: false, can_view: true, can_download: true)
