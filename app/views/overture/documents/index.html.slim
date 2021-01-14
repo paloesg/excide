@@ -254,3 +254,5 @@
             td
               = render 'overture/documents/documents_qna_modal', permissible: d, topic: @topic
             td
+              = link_to rails_blob_path(d.raw_file, disposition: "attachment") do
+                i.material-icons-outlined.align-middle.text-primary download
