@@ -2,13 +2,13 @@ class Motif::HomeController < ApplicationController
   layout 'motif/application'
   include Motif::WorkflowsHelper
   include Motif::OutletsHelper
-  
+
   before_action :authenticate_user!
   before_action :set_company
 
   def index
     # Get all outlets (sub franchised or direct owned)
-    @outlets = get_outlets(@company)
+    @outlets = get_outlets_by_type(nil, @company)
     # Check franchisee expiry date within 1 month of expiry
     @outlets_expiring = @outlets.filter_map{|o| o.franchisee if (o.franchisee.expiry_date.present? and o.franchisee.expiry_date < DateTime.current + 1.month)}
     # This variable is only being used by unit franchisee
@@ -30,7 +30,7 @@ class Motif::HomeController < ApplicationController
     # Check if active outlet present since franchisor wont have active outlet
     @franchisee_unread_notes = current_user.active_outlet.notes.where('created_at > ?', current_user.last_click_comm_hub).reject{ |note| note.user == current_user } if current_user.active_outlet.present?
   end
-  
+
   # Change user's outlet for franchisee with multiple outlets
   def change_outlet
     if current_user.update(user_params)
