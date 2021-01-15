@@ -24,16 +24,16 @@
 .row.justify-content-center.h-100
   - @products.each do |product|
     - if product == "symphony"
-      .card.align-self-start.ml-6.mr-6
+      .col-2.card.align-self-start.ml-6.mr-6
         .card-body
           = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Symphony Logo"
           a.stretched-link.d-flex.justify-content-center href="symphony"
           h3.d-flex.justify-content-center.mt-15 Symphony
           h7.d-flex.justify-content-center.mt-5.mb-10 Operation Automation
     - elsif product == "motif"
-      .card.align-self-start.ml-6.mr-6
+      .col-2.card.align-self-start.ml-6.mr-6
         .card-body
-          = image_pack_tag 'media/src/images/motif/ADA-logo.png', alt: "Motif Logo"
+          = image_pack_tag 'media/src/images/motif/ADA-logo.png', alt: "Motif Logo", class: "w-100"
           a.stretched-link.d-flex.justify-content-center href="motif"
           h3.d-flex.justify-content-center.mt-15 ADA
           h7.d-flex.justify-content-center.mt-5.mb-10 Franchise Management
