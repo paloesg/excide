@@ -1,14 +1,15 @@
 class Motif::OutletsController < ApplicationController
   layout 'motif/application'
   include Motif::OutletsHelper
-  
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles
   before_action :set_outlet, only: [:new, :edit, :update, :show]
 
   def index
-    @outlets = get_outlets(@company)
+    # params[:type] is for filtering direct owned and subfranchised
+    @outlets = get_outlets_by_type(params[:type], @company)
     @outlet = Outlet.new
     build_franchisee
     @existing_users = @company.users
@@ -76,7 +77,7 @@ class Motif::OutletsController < ApplicationController
   end
 
   def show
-    
+
   end
 
   def members

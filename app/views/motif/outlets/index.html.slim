@@ -55,11 +55,14 @@
       i.px-5.material-icons-outlined more_vert
     h3 Outlet List
     p.mt-5.text-muted
-      | Store and manage information about your franchisees and locations in 
+      | Store and manage information about your franchisees and locations in
       br
       | Franchisees.
-/     span.mr-3
-/       i.material-icons-outlined filter_list
-/     | Filters
+    / span.mr-3
+    /   i.material-icons-outlined filter_list
+    / | Filters
+    = link_to 'Sub-franchised', motif_outlets_path(type: "subfranchised"), type: 'button', class: 'motif-filter-outlet text-dark mr-2'
+    = link_to 'Direct owned', motif_outlets_path(type: "direct-owned"), type: 'button', class: ' motif-filter-outlet text-dark mr-2'
+    = link_to 'All', motif_outlets_path, type: 'button', class: ' motif-filter-outlet text-dark'
 hr.mb-0
 = render 'card_view'
