@@ -65,7 +65,7 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def motif_new_master_franchisee(user)
+  def motif_new_franchisee(user)
     #to email will be changed with afc's support email
     mail(to: 'support@paloe.com.sg', from: 'Asiawide Digital Advantage (ADA) <admin@excide.co>', subject: 'New Franchisee', body: 'New franchisee', template_id: ENV['ADA_SENDGRID_MOTIF_NEW_FRANCHISEE'], dynamic_template_data: {
         fullName: user.full_name,
