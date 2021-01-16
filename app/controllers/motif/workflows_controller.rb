@@ -1,7 +1,8 @@
 class Motif::WorkflowsController < ApplicationController
   layout 'motif/application'
   include Motif::WorkflowsHelper
-  
+  include Motif::OutletsHelper
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_workflow, only: [:show, :update, :destroy]
@@ -14,7 +15,7 @@ class Motif::WorkflowsController < ApplicationController
     @templates = Template.includes(:company, :workflows).where(company_id: @company.id, template_type: @template_type).where(workflows: {id: nil})
     # Get workflows based on condition in workflow helper method
     @workflows = get_workflows(current_user, @template_type)
-    @outlets = Outlet.includes(:company).where(companies: { id: @company.id })
+    @outlets = get_outlets_by_type(nil, @company)
     @workflow = Workflow.new
   end
 
