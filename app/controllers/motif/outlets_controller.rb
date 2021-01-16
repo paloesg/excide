@@ -34,11 +34,14 @@ class Motif::OutletsController < ApplicationController
       @franchisee = Franchisee.find(params[:franchisee_id])
       # Link franchisee to outlet
       @outlet.franchisee = @franchisee
+      # Link franchisee company to outlet
+      @outlet.company = Company.find_by(name: @franchisee.franchise_licensee)
+    else
+      # Link franchisor company to outlet
+      @outlet.company = @company
     end
     # Add role franchisee_owner to this new user
     @user.add_role(:franchisee_owner, @user.company)
-    # Link company to outlet
-    @outlet.company = @company
     respond_to do |format|
       if @outlet.save
         # Save outlet to user
