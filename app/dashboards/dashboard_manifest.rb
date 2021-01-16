@@ -25,6 +25,7 @@ class DashboardManifest
     :invoices,
     :notes,
     :outlets,
+    :outlets_users,
     :permissions,
     :profiles,
     :recurring_workflows,
