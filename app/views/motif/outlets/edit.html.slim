@@ -32,7 +32,11 @@
           = f.text_field :city, placeholder: 'City', class: 'form-control col-sm-5'
       .form-group
         = f.label :contact, "Telephone", class: "label-bold"
-        = f.text_field :contact, placeholder: 'Telephone', class: 'form-control col-sm-5'
+        .row
+          .col-md-2
+            = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'select2 form-control'
+          .col-md-3
+            = text_field_tag "contact", @contact, placeholder: "Contact Number", class: 'form-control'
       = f.fields_for :franchisee do |ff|
         .form-group
           = ff.label :franchise_licensee, "Franchisee Entity", class: "label-bold"

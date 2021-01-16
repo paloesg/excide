@@ -2,7 +2,7 @@
   .col-sm-12
     h3 Franchisee List
     p.mt-5.text-muted
-      | Store and manage information about your franchisees and locations in 
+      | Store and manage information about your franchisees and locations in
       br
       | Franchisees. Click a row to see their details.
 /     span.mr-3
@@ -15,7 +15,7 @@ hr.mb-0
   - @franchisees.each do |franchisee|
     .row.mb-3.mt-5.ml-3
       .col-sm-3
-        .font-weight-boldest = link_to franchisee&.franchise_licensee, motif_franchisee_path(franchisee)
+        .font-weight-boldest = link_to franchisee&.franchise_licensee, edit_motif_franchisee_path(franchisee)
       .col-sm-3
         .label.label-pill.label-inline.text-dark.p-3 class="label-motif-#{franchisee.license_type}" = franchisee&.license_type&.titleize
       .col-sm-5
