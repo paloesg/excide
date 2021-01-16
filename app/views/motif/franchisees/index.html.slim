@@ -1,6 +1,6 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    = link_to "New Franchisee", motif_email_new_franchisee_path, class: "btn btn-primary float-right" unless current_user.has_role?(:area_franchisee, current_user.company) || current_user.has_role?(:unit_franchisee, current_user.company)
+    = link_to "New Franchisee", motif_email_new_franchisee_path, class: "btn btn-primary float-right" unless (Franchisee.find_by(franchise_licensee: @company.name).area_franchisee? || Franchisee.find_by(franchise_licensee: @company.name).unit_franchisee? if Franchisee.where(franchise_licensee: @company.name).present?)
     h3 Franchisee List
     p.mt-5.text-muted
       | Store and manage information about your franchisees and locations in 
