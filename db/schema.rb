@@ -284,9 +284,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_161239) do
     t.text "remarks"
     t.bigint "user_id"
     t.uuid "company_id"
-    t.uuid "franchisee_id"
     t.index ["ancestry"], name: "index_folders_on_ancestry"
-    t.index ["franchisee_id"], name: "index_folders_on_franchisee_id"
     t.index ["user_id"], name: "index_folders_on_user_id"
   end
 
@@ -823,7 +821,6 @@ ActiveRecord::Schema.define(version: 2021_01_12_161239) do
   add_foreign_key "events", "companies"
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
-  add_foreign_key "folders", "franchisees"
   add_foreign_key "folders", "users"
   add_foreign_key "franchisees", "companies"
   add_foreign_key "invoices", "companies"
