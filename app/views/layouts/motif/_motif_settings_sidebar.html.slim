@@ -18,7 +18,7 @@
           .ml-2.sidebar-font Outlet Information
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_users_path(outlet_id: current_user.active_outlet.id), class: 'col-sm-12 d-flex align-items-center' do
-          .ml-2.sidebar-font Members
+          .ml-2.sidebar-font Users
     - unless current_user.has_role?(:franchisee_owner, current_user.company)
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_templates_path, class: 'col-sm-12 d-flex align-items-center' do

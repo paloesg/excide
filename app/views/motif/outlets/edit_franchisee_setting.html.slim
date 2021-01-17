@@ -22,7 +22,11 @@
             = a.text_field :city, placeholder: 'City', class: 'form-control col-sm-5'
       .form-group
         = f.label :contact, "Telephone", class: "label-bold"
-        = f.text_field :contact, class: 'form-control'
+        .row
+          .col-md-2
+            = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'select2 form-control'
+          .col-md-3
+            = text_field_tag "contact", @contact, placeholder: "Contact Number", class: 'form-control'
   .row.mb-3.mt-5.ml-3
     .col-sm-12
       = f.label :header_image, "Logo", class: "label-bold"
