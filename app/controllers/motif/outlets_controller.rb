@@ -34,8 +34,13 @@ class Motif::OutletsController < ApplicationController
       @franchisee = Franchisee.find(params[:franchisee_id])
       # Link franchisee to outlet
       @outlet.franchisee = @franchisee
-      # Link franchisee company to outlet
-      @outlet.company = Company.find_by(name: @franchisee.franchise_licensee)
+      # Link franchisee company to outlet by finding company of the franchisee name, unless it is an unit franchisee
+      unless @franchisee.unit_franchisee?
+        @outlet.company = Company.find_by(name: @franchisee.franchise_licensee)
+      else
+        # Link franchisor company to outlet
+        @outlet.company = @company
+      end
     else
       # Link franchisor company to outlet
       @outlet.company = @company
@@ -66,6 +71,7 @@ class Motif::OutletsController < ApplicationController
 
   def edit_franchisee_setting
     @outlet = Outlet.find(params[:outlet_id])
+    set_contact
   end
 
   def update

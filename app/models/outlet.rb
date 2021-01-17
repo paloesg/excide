@@ -9,7 +9,7 @@ class Outlet < ApplicationRecord
   has_many :users, through: :outlets_users, dependent: :destroy
   has_many :workflows, dependent: :destroy
   has_many :notes, as: :notable, dependent: :destroy
-  
+
   has_one_attached :header_image
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
   accepts_nested_attributes_for :franchisee, :reject_if => :all_blank, :allow_destroy => true
@@ -26,7 +26,8 @@ class Outlet < ApplicationRecord
       [motif_onboarding_template, motif_site_audit_template, motif_royalty_collection_template].each do |template|
         cloned_template = template.deep_clone include: { sections: :tasks }
         cloned_template.title = "#{template.template_type.titleize} - #{self.name}"
-        cloned_template.company = self.company
+        # Clone template should belong to MF/AF's parent company (which is the franchisor). If it is unit franchisee, then it is just self.company since they do not have a company entity
+        cloned_template.company = self.company.parent.present? ? self.company.parent : self.company
         cloned_template.save
       end
     end
