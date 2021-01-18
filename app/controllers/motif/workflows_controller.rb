@@ -20,7 +20,7 @@ class Motif::WorkflowsController < ApplicationController
   end
 
   def show
-    @documents = policy_scope(Document).order(created_at: :desc)
+    @documents = Document.order(created_at: :desc)
     # Find the next workflow of the current workflow
     @next_wf = @workflow.template.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).first
     # Find the previous workflow of the current workflow
