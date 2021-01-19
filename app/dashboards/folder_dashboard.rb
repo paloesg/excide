@@ -69,6 +69,6 @@ class FolderDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(folder)
-    "#{folder.name}"
+    folder.company.present? ? "[#{folder.company.name}] #{folder.name}" : "[General] #{folder.name}"
   end
 end
