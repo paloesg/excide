@@ -6,7 +6,7 @@
     = link_to motif_root_path, class: "navbar-brand" do
       = image_pack_tag("media/src/images/motif/ADA-logo.png", class: "motif-company-logo mr-5")
       - if current_user.company.company_logo.attached?
-        = image_tag(current_user.company.company_logo, class: "motif-company-logo")
+        = image_tag(current_user.company.company_logo.variant(resize: "200"), height: "45")
       - else
         i.material-icons-outlined.align-middle.mt-3 home
     ul.navbar-nav
