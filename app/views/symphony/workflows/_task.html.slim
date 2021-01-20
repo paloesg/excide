@@ -71,7 +71,7 @@
               .d-flex
                 = link_to symphony_document_path(d), class: "cursor-pointer", data: { confirm: 'Are you sure?' }, method: :delete, remote: true do
                   i.material-icons.font-size-h6.text-dark.mr-3 cancel
-                = link_to (d.raw_file.attached? ? d.raw_file.filename : d.filename), symphony_document_path(d)
+                = link_to (d.raw_file.attached? ? d.raw_file.filename : d.filename), (d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url)
                 br
       - if workflow.invoice.present? && (["create_invoice_payable", "xero_send_invoice", "coding_invoice"].include? action.task.task_type)
         .row.mb-4
