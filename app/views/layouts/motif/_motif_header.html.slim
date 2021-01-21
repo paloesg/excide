@@ -6,7 +6,7 @@
     = link_to motif_root_path, class: "navbar-brand" do
       = image_pack_tag("media/src/images/motif/ADA-logo.png", class: "motif-company-logo mr-5")
       - if current_user.company.company_logo.attached?
-        = image_tag(current_user.company.company_logo, class: "motif-company-logo")
+        = image_tag(current_user.company.company_logo.variant(resize: "200"), height: "45")
       - else
         i.material-icons-outlined.align-middle.mt-3 home
     ul.navbar-nav
@@ -45,6 +45,11 @@
         - else
           = link_to(motif_root_path, class: "btn btn-secondary btn-default") do
             ' #{current_user.active_outlet.name}
+      - if get_franchisee.present?
+        .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-#{get_franchisee.license_type}"
+          = get_franchisee.license_type.titleize + " of " + get_franchisee.company.name
+      - else
+        .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles" Franchisor
     ul.navbar-nav.ml-auto
       / Franchisee cannot access communication hub path. Only their individual outlet
       - if current_user.has_role?(:franchisee_owner, current_user.company)
