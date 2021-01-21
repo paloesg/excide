@@ -6,6 +6,8 @@ class Template < ApplicationRecord
   enum deadline_type: { xth_day_of_the_month: 0, days_to_complete: 1 }
   enum template_pattern: { on_demand: 0, daily: 1, weekly: 2, monthly: 3, quarterly: 4, annually: 5 }
   enum freq_unit: {days: 0, weeks: 1, months: 2, years: 3}
+  # For motif, users can choose the template type to use. This can also be used to distinguish between symphony and motif
+  enum template_type: {onboarding: 0, site_audit: 1, royalty_collection: 2}
 
   has_many :sections, -> { order(position: :asc) }, dependent: :destroy
   has_many :tasks, through: :sections, dependent: :destroy
@@ -22,7 +24,7 @@ class Template < ApplicationRecord
 
   enum business_model: [:ecommerce, :marketplace, :media, :mobile, :saas, :others]
 
-  validates :title, :slug, presence: true
+  validates :slug, presence: true
 
   before_save :data_names_to_json
   # Scope templates that have no batches. Only those that have no batches will be displayed in symphony sidebar
@@ -115,6 +117,19 @@ class Template < ApplicationRecord
       template_ids = Section.where(id: section_ids).pluck(:template_id).uniq
       Template.where(id: template_ids, company: user.company).order(:created_at)
     end
+  end
+  
+  # For Motif template type. Set onboarding, site audit and royalty collection template pattern
+  def set_recurring_based_on_template_type
+    case self.template_type
+    when 'onboarding'
+      self.template_pattern = "on_demand"
+    when 'site_audit'
+      self.template_pattern = "annually"
+    else
+      self.template_pattern = "monthly"
+    end
+    self.set_recurring_attributes
   end
 
   def set_recurring_attributes

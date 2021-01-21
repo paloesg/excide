@@ -26,7 +26,7 @@ hr
                 .col
                   h6.mb-4.text-muted.text-uppercase = profile.category_list
                   h2
-                    = profile.name
+                    = profile.company.name
                   p.card-text
                     #truncate-company-information = profile.company_information.body.to_s
                   .mt-5

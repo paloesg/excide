@@ -1,0 +1,11 @@
+= form_for @folder, url: overture_folder_path(@folder) do |f|
+  .row.mb-3.mt-5.ml-3
+    .col-sm-12
+      .btn-toolbar.float-right.ml-5
+        = f.submit 'Save', class: 'btn btn-primary mr-3 px-5'
+      h2 Folder settings
+  .row.mb-3.mt-5.ml-3
+    .col-sm-6
+      .form-group.mt-3
+        = f.label :name, "Name", class: "label-bold"
+        = f.text_field :name, class: "form-control"

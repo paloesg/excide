@@ -37,4 +37,8 @@ $(document).on("turbolinks:load", function () {
   $('#file-input-banner-image').change(function(){
     $('.file-label-banner-image').text(this.value.split('\\')[2]);
   });
+  // Franchisee profile page
+  $('#file-input-franchisee-profile').change(function(){
+    $('.file-label-franchisee-profile').text(this.value.split('\\')[2]);
+  });  
 });

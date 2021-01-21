@@ -77,9 +77,48 @@ const motifMultipleDocumentsUpload = (uppy) => {
       // Number of file uploads that were uploaded successfully
       successful_files: JSON.stringify(result.successful),
       document_type: 'motif-documents-multiple-uploads',
+      folder_id: $(".motifMultipleDocumentsUpload").data("folder"),
     });
   });
 };
+// Motif outlet's photo gallery
+const motifOutletPhotosUpload = (uppy) => {
+  uppy.on('complete', (result) => {
+    let outlet_id = $("#outlet_id").val()
+    $.post("/motif/outlets/" + outlet_id + "/photos_upload", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+    });
+  });
+};
+
+// Motif upload through task drawer
+const motifWorkflowActionMultipleUploads = (uppy) => {
+  uppy.on('complete', (result) => {
+    const wf_id = $(".motifWorkflowActionMultipleUploads").data("workflow")
+    $.post("/motif/workflows/" + wf_id + "/upload_documents", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+      wfa_id: $(".motifWorkflowActionMultipleUploads").data("wfa"),
+    });
+  });
+};
+
+// Multiple uploads for Overture through document's INDEX page
+const overtureMultipleDocumentsUpload = (uppy) => {
+  uppy.on('complete', (result) => {
+    $.post("/overture/documents", {
+      authenticity_token: $.rails.csrfToken(),
+      // Number of file uploads that were uploaded successfully
+      successful_files: JSON.stringify(result.successful),
+      document_type: 'overture-documents-multiple-uploads',
+      folder_id: $(".overtureMultipleDocumentsUpload").data("folder"),
+    });
+  });
+};
+
 //-----------------------------------Setup Uppy-----------------------------------------
 function setupUppy(element){
   let form = element.closest('form');
@@ -138,6 +177,15 @@ function setupUppy(element){
   }
   else if($('.motifMultipleDocumentsUpload').length){
     motifMultipleDocumentsUpload(uppy);
+  }
+  else if($('.motifOutletPhotosUpload').length){
+    motifOutletPhotosUpload(uppy);
+  }
+  else if($('.motifWorkflowActionMultipleUploads').length){
+    motifWorkflowActionMultipleUploads(uppy);
+  }
+  else if ($(".overtureMultipleDocumentsUpload").length) {
+      overtureMultipleDocumentsUpload(uppy);
   }
 }
 //-----------------------------------Initialize Uppy------------------------------------

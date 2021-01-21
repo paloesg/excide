@@ -20,6 +20,36 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  site_name: 'Paloe'
+  symphony:
+    home:
+      index:
+        title: 'Dashboard - Symphony'
+    workflows:
+      index:
+        title: '%{name} - Symphony'
+      show:
+        title: '%{name}: %{identifier} - Symphony'
+    documents:
+      index:
+        title: 'Document Repository - Symphony'
+    users:
+      index:
+        title: 'Teammates - Symphony'
+    roles:
+      index:
+        title: 'Groups - Symphony'
+  conductor:
+    events:
+      index:
+        title: Timesheet
+  users:
+    registrations:
+      edit:
+        title: 'Edit Account - Symphony'
+  companies:
+    edit:
+      title: 'Update Workspace'
   pundit:
     default: 'You are not authorized to perform this action.'
     document_policy:

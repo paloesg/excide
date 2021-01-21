@@ -5,8 +5,6 @@ window.jQuery = $;
 window.$ = $;
 
 window.moment = require("moment");
-window.mixpanel = require("mixpanel-browser");
-require("selectize");
 require("algoliasearch");
 require("tempusdominus-bootstrap-4");
 require("blueimp-file-upload");
@@ -35,19 +33,23 @@ window.addAvailability = require("./conductor/add_availabilities");
 require("./conductor/home");
 require("./conductor/go_to_allocation");
 require("./conductor/event_update");
-require("./components/calendar_style");
+// require("./components/calendar_style");
 
 require("./motif/drawer")
-require("./motif/remarks")
 require("./motif/home")
+require("./motif/remarks")
 require("./motif/settings")
+require("./motif/templates")
+require("./motif/note")
+
+require("./overture/drawer")
 
 // Import Uppy drag-and-drop
 require("./components/uppy");
 require("./components/direct_upload");
 // require("./components/document_upload");
 require("./components/popover_initialize");
-require("./components/selectize_initialize");
+require("./components/select2_initialize");
 require("./components/document_popover");
 require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");

@@ -34,6 +34,8 @@ class UserDashboard < Administrate::BaseDashboard
     documents: Field::HasMany,
     invoices: Field::HasMany,
     batches: Field::HasMany,
+    outlets: Field::HasMany,
+    active_outlet: Field::BelongsTo.with_options(class_name: 'Outlet')
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -49,6 +51,7 @@ class UserDashboard < Administrate::BaseDashboard
     :contact_number,
     :company,
     :roles,
+    :active_outlet,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -76,6 +79,8 @@ class UserDashboard < Administrate::BaseDashboard
     :batches,
     :assigned_tasks,
     :completed_tasks,
+    :outlets,
+    :active_outlet,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -90,6 +95,7 @@ class UserDashboard < Administrate::BaseDashboard
     :roles,
     :confirmed_at,
     :settings,
+    :outlets,
   ].freeze
 
   # Overwrite this method to customize how users are displayed

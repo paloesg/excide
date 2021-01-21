@@ -10,6 +10,7 @@
 require("@rails/ujs").start();
 require("turbolinks").start();
 require("@rails/activestorage").start();
+require("channels");
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
@@ -32,7 +33,6 @@ import "tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min";
 import "@fortawesome/fontawesome-free/js/all";
 import "../src/javascripts/dashboard/metronic/application.js";
 import "../src/javascripts/dashboard/application.js";
-import "../src/javascripts/dashboard/metronic/fullcalendar.bundle.js";
 
 require("../src/javascripts/google-analytics");
 // Currently no way to implement cocoon in rails 6, so this was an alternative to use cocoon before the creator start changing to use webpack

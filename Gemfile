@@ -74,8 +74,6 @@ gem 'acts-as-taggable-on', '~> 6.5.0'
 gem 'administrate-field-acts_as_taggable'
 # Use user friendly slugs
 gem 'friendly_id', '5.3.0'
-# Set meta tags
-gem 'meta-tags'
 # Activity feed
 gem 'public_activity'
 # Handle money
@@ -102,8 +100,6 @@ gem 'trix'
 gem 'simple_calendar', '~> 2.4.0'
 # Create tree structure
 gem 'ancestry'
-# Selectize autocomplete selection
-gem 'selectize-rails'
 # Get mime type from filename
 gem 'mini_mime'
 # Shorten UUID to make it more user friendly
@@ -147,8 +143,6 @@ gem 'aws-sdk-s3', '~> 1.81.0'
 gem 'aws-sdk-textract', '~> 1.19.0'
 # SMS integration with Twilio
 gem 'twilio-ruby'
-# Analytics
-gem 'mixpanel-ruby'
 # Performance reporting
 gem 'skylight'
 gem 'scout_apm'

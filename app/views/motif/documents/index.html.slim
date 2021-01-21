@@ -1,7 +1,24 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    .btn-toolbar.float-right.ml-5
-      = link_to 'New Folder', new_motif_folder_path, role: 'button', class: 'btn btn-primary mr-3 px-5'
+    / Don't allow create folder button to be shown if within a folder
+    - unless controller_name == 'folders'
+      button.btn.btn-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Create Folder
+      #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newMotifFolderUpload" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5#newMotifFolderUpload.modal-title Create new folder
+              button.close aria-label="Close" data-dismiss="modal" type="button"
+                span aria-hidden="true"  &times;
+            .modal-body
+              = form_for(@folder, url: motif_folders_path, html: { method: :post }) do |f|
+                .row.mt-3
+                  .col-md-12
+                    .form-group
+                      = f.text_field :name, placeholder: 'New folder', class: 'form-control'
+                .row
+                  .col-md-12
+                    = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
     button.btn.btn-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white add
       | Upload Documents
@@ -15,13 +32,14 @@
           .modal-body
             .row.mt-3
               .col-md-12
-                .dashboard-body.motifMultipleDocumentsUpload#Dashboard
-    div.float-right.mx-5.mt-2
-      i.material-icons-outlined more_horiz
-    div.float-right.mx-5.mt-2
+                / params[:id] is folder's ID. It is to account for uploading files inside a folder (folder SHOW page)
+                .dashboard-body.motifMultipleDocumentsUpload#Dashboard data-folder="#{params[:id]}"
+    / .float-right.mx-5.mt-2
+    /   i.material-icons-outlined more_horiz
+    .float-right.mx-5.mt-2
       a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
         i.material-icons-outlined info
-    h3 DATAROOM
+    h3 Document Repository
     p.mt-5.text-muted
       | Store, share and manage your important documents and access control
       br
@@ -39,14 +57,14 @@
     .col
       div#filter style="cursor: pointer;"
         span.mr-3
-          i.material-icons-outlined filter_list
+          i.material-icons-outlined.align-middle filter_list
         | Filters
-    .col-sm-11.text-muted
-      div.form-row.align-items-center
-        span.mr-3
-          i.material-icons-outlined search
-        input.form-control.border-0.col type="search" placeholder="Search..."
-        div.col-8
+    / .col-sm-11.text-muted
+    /   div.form-row.align-items-center
+    /     span.mr-3
+    /       i.material-icons-outlined.align-middle search
+    /     input.form-control.border-0.col type="search" placeholder="Search..."
+    /     div.col-8
   .row.ml-4.my-5.align-items-center#filter-options
     .col.md-12
       span.mr-3
@@ -59,8 +77,16 @@
         = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
       span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
         | Clear
-  hr
-  div.ml-5.mb-4 Folder path
+  - if controller_name == "folders"
+    hr.mb-2
+    .row.ml-4
+      .col
+        ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
+          li.breadcrumb-item
+            = link_to "Repository", motif_documents_path, class: "text-dark"
+          li.breadcrumb-item
+            = @folder.name
+  hr.mt-2
   table.table.ml-4
     thead
       tr
@@ -92,17 +118,16 @@
             = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{folder.id}_2"
             span.mr-4
-              i.material-icons.text-dark.align-middle group
-            span.align-middle
-              | 25
+              i.material-icons-outlined.align-middle group
+            span
+              = folder.permissions.length
           td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
               .dropdown-menu.dropdown-menu-right
-                .dropdown-item = link_to "Download", root_path
-                .dropdown-item = link_to "Delete", root_path
-                .dropdown-item = link_to "Manage Version", root_path
+                .dropdown-item = link_to "Folder setting", edit_motif_folder_path(folder)
+                .dropdown-item = link_to "Delete", motif_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
         = render 'motif/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
       - @documents.each_with_index do |d, index|
         tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
@@ -113,7 +138,7 @@
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
             span.mr-5
               / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
-              = image_pack_tag "media/src/images/motif/#{File.extname(d.raw_file.filename.to_s).split('.')[1].first(3)}.svg"
+              = image_pack_tag "media/src/images/motif/doc.svg"
             span.ml-5
               = d.raw_file.filename
           td id="drawer_toggle_#{d.id}_0"
@@ -125,15 +150,15 @@
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{d.id}_2"
             span.mr-4
-              i.material-icons.text-dark.align-middle group
-            span.align-middle 25
+              i.material-icons-outlined.align-middle group
+            span
+              = d.permissions.length
           td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
               .dropdown-menu.dropdown-menu-right
                 .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
-                .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete
-                .dropdown-item = link_to "Manage Version", root_path
+                .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
           = render 'motif/shared/show_document', d: d
         = render 'motif/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?

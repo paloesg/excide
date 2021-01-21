@@ -22,22 +22,40 @@ html lang="en"
       });
     script src="https://js.stripe.com/v3/"
     = render 'application/favicon'
-    = display_meta_tags site: "Virtual CFO | Excide"
+    title = title
     = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
-    = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
     // For uppy use with active storage
     = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
 
   body
     = render 'layouts/overture/overture_header'
-    .container-fluid
-      - if controller_name == "profiles" and action_name == "show"
-        .new-tab-wrapper.overflow-auto
+    - if (controller_name == "profiles" and action_name == "show") || (controller_name == "companies" and action_name == "edit") || controller_name == "users"
+      .new-tab-wrapper.overflow-auto.pb-0
+        .new-tab-contents
+          .row.mt-5.h-100
+            - if controller_name == "companies" || controller_name == "users"
+              .col-sm-2.bg-white.border-right.sidebar-border-radius
+                = render 'layouts/overture/overture_setting_sidebar'
+              .col-sm-10.bg-white.content-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
+            - else
+              .col-sm-12.bg-white.top-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
+            / .col-sm-12.bg-white.content-border-radius
+            /   = yield
+            /   = render 'layouts/messages'
+    - else
+      - if controller_name == "topics" || controller_name == "notes"
+        .new-tab-wrapper.overflow-auto.pb-0
           .new-tab-contents
-            .row.h-100
-              .col-sm-12.bg-white.content-border-radius
+            .row.mt-5.h-100
+              .col-sm-2.bg-white.border-right.sidebar-border-radius
+                = render 'layouts/overture/overture_qna_sidebar'
+              .col-sm-10.bg-white.content-border-radius.p-5
                 = yield
                 = render 'layouts/messages'
       - else

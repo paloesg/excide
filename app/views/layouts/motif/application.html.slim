@@ -22,25 +22,31 @@ html lang="en"
       });
     script src="https://js.stripe.com/v3/"
     = render 'application/favicon'
-    = display_meta_tags site: "Virtual CFO | Excide"
+    title = title
     = stylesheet_pack_tag 'metronic', media: "all", 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
-    = tag :meta, name: "mixpanel-token", content: ENV['MIXPANEL_TOKEN']
+    = action_cable_meta_tag
     // For uppy use with active storage
     = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
 
   body
     = render 'layouts/motif/motif_header'
-    - if current_page?(edit_motif_company_path(current_user.company)) || controller_name == 'users'
-      .new-tab-wrapper.overflow-auto
+    / If it's not franchisee index page AND is any of the pages
+    - if (current_page?(edit_motif_company_path(current_user.company)) || (controller_name == "outlets" && action_name == "edit_franchisee_setting") || controller_name == 'users' || controller_name == 'franchisees' || controller_name == 'templates' || (controller_name == 'outlets' && action_name == 'edit') || (controller_name == 'workflows' && action_name == 'show') || controller_name == 'notes' || (controller_name == 'outlets' && action_name == 'members') || (controller_name == 'outlets' && action_name == 'assigned_tasks') || current_page?(motif_edit_report_path)) || current_page?(new_motif_document_path)
+      .new-tab-wrapper.overflow-auto.pb-0
         .new-tab-contents
           .row.mt-5.h-100
-            .col-sm-2.bg-white.border-right.sidebar-border-radius
-              = render 'layouts/motif/motif_settings_sidebar'
-            .col-sm-10.bg-white.content-border-radius
-              = yield
-              = render 'layouts/messages'
+            - if current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_templates_path) || controller_name == 'users' || controller_name == 'franchisees' || (controller_name == "outlets" && action_name == "edit_franchisee_setting") || ( (!(controller_name == 'outlets' && action_name == 'edit')) && (!(controller_name == 'outlets' && action_name == 'assigned_tasks')) && (!(controller_name == 'outlets' && action_name == 'members'))  && controller_name == 'outlets'  || current_page?(motif_edit_report_path) )
+              .col-sm-2.bg-white.border-right.sidebar-border-radius
+                = render 'layouts/motif/motif_settings_sidebar'
+              .col-sm-10.bg-white.content-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
+            - else
+              .col-sm-12.bg-white.top-border-radius.p-5
+                = yield
+                = render 'layouts/messages'
     - else
       .container-fluid
         .row

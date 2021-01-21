@@ -9,9 +9,10 @@ class Motif::DocumentsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    @folder = Folder.new
     @folders = policy_scope(Folder).roots
-    @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc)
-    @roles = @company.roles.includes(:permissions)
+    @documents = policy_scope(Document).where(folder_id: nil).order(created_at: :desc).includes(:permissions)
+    @users = @company.users.includes(:permissions)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     unless params[:tags].blank?
       if params[:tags] == 'All tags'
@@ -23,23 +24,57 @@ class Motif::DocumentsController < ApplicationController
   end
 
   def new
+    @folders = policy_scope(Folder).roots
+    @workflow_action = @company.workflow_actions.find(params[:workflow_action_id]) if params[:workflow_action_id].present?
+    @folder_id = params[:folder_id]
     @document = Document.new
+    authorize @document
   end
 
   def create
-    @files = []
-    parsed_files = JSON.parse(params[:successful_files])
-    parsed_files.each do |file|
-      @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil).run
-      document = @generate_document.document
-      authorize document
-      # attach and convert method with the response key to create blob
-      document.attach_and_convert_document(file['response']['key'])
-      @files.append document
+    # multiple file upload from uppy
+    if params[:successful_files].present?
+      @files = []
+      parsed_files = JSON.parse(params[:successful_files])
+      parsed_files.each do |file|
+        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:folder_id]).run
+        document = @generate_document.document
+        authorize document
+        # attach and convert method with the response key to create blob
+        document.attach_and_convert_document(file['response']['key'])
+        @files.append document
+      end
+    # single file upload
+    else
+      if params[:document][:folder_id].present?
+        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:document][:folder_id]).run_without_associations
+      else
+        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, nil).run_without_associations
+      end
+      if @generate_document.success?
+        document = @generate_document.document
+        document.update_attributes(workflow_action_id: params[:workflow_action_id])
+        if params[:document][:folder_id].present?
+          document.update_attributes(folder_id: params[:document][:folder_id])
+        end
+        authorize document
+        # attach and convert method
+        document.attach_and_convert_document(params[:response_key])
+      end
     end
     respond_to do |format|
-      format.html { redirect_to motif_documents_path files: @files }
-      format.json { render json: @files.to_json }
+      if params[:folder_id].present?
+        # Redirect when generated documents inside folders
+        format.html { redirect_to motif_folder_path(id: params[:folder_id]), notice: "File(s) successfully uploaded into folder."  }
+        format.json { render json: @files.to_json }
+      else
+        workflow_action = WorkflowAction.find(params[:workflow_action_id]) if params[:workflow_action_id].present?
+        format.html {
+          # Redirect to workflow page if wfa_id is present. Else go to documents INDEX page
+          params[:workflow_action_id].present? ? (redirect_to motif_outlet_workflow_path(outlet_id: workflow_action.workflow.outlet.id, id: workflow_action.workflow.id), notice: "File was successfully uploaded")
+            : (redirect_to motif_documents_path, notice: "File was successfully uploaded")
+        }
+      end
     end
   end
 
@@ -79,6 +114,10 @@ class Motif::DocumentsController < ApplicationController
   end
 
   private
+  def set_company
+    @user = current_user
+    @company = @user.company
+  end
 
   def set_document
     @document = @company.documents.find(params[:id])
