@@ -160,6 +160,7 @@ Rails.application.routes.draw do
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end
+    resources :contacts
     resources :documents do
       member do
         post 'toggle'
