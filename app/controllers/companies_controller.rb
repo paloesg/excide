@@ -26,6 +26,8 @@ class CompaniesController < ApplicationController
       if @company.products.include? "motif"
         set_default_folders
         set_default_templates
+      elsif @company.products.include? "overture"
+        set_default_contact_statuses
       end
       current_user.update(company: @company)
       # Redirect based on the products that was added to the company
@@ -110,6 +112,15 @@ class CompaniesController < ApplicationController
         # Set template_pattern based on motif template_type, which will then set recurring attributes
         cloned_template.set_recurring_based_on_template_type
         cloned_template.save
+      end
+    end
+  end
+
+  def set_default_contact_statuses
+    if @company.startup?
+      default_statuses = ["Shortlisted", "Contacted", "Pitched", "Due Dilligence", "Partners Meeting", "Investment Committee", "Committed", "Invested", "Said no"]
+      default_statuses.each_with_index do |status, index|
+        ContactStatus.create(name: status, startup_id: @company.id, position: index + 1)
       end
     end
   end
