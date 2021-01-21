@@ -11,6 +11,7 @@
           i.material-icons-outlined supervised_user_circle
           .ml-2.sidebar-font 
             = get_franchisee ? "Sub Franchisee List" : "Franchisee List"
+    - unless current_user.has_role?(:franchisee_owner, current_user.company)
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_outlets_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined store_mall_directory
