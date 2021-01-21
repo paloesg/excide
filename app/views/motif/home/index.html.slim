@@ -1,6 +1,6 @@
 - if current_user.has_role?(:franchisor, current_user.company) or current_user.has_role?(:admin, current_user.company)
   .m-5.h-100
-    h1.mb-5 Franchisor Account
+    h1.mb-5 Hello, #{current_user.first_name}!
     p What are you planning to do today?
     br
     - if @outlets.length == 0
@@ -94,7 +94,7 @@
                     p.card-text.ml-4 Outlet waiting approval
 - else
   .m-5.h-100
-    h1.mb-5 #{current_user.active_outlet.name}
+    h1.mb-5 Hello, #{current_user.first_name}!
     p What are you planning to do today?
     br
     / Check if franchisee has any workflows
