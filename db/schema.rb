@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_21_080034) do
+ActiveRecord::Schema.define(version: 2021_01_21_091758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -210,12 +210,6 @@ ActiveRecord::Schema.define(version: 2021_01_21_080034) do
     t.index ["startup_id"], name: "index_contact_statuses_on_startup_id"
   end
 
-  create_table "contact_statuses_contacts", id: false, force: :cascade do |t|
-    t.bigint "contact_status_id", null: false
-    t.bigint "contact_id", null: false
-    t.index ["contact_status_id", "contact_id"], name: "contact_statuses_and_contacts_index"
-  end
-
   create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "phone"
@@ -225,6 +219,9 @@ ActiveRecord::Schema.define(version: 2021_01_21_080034) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "company_id"
+    t.uuid "contact_statuses_id"
+    t.boolean "public"
+    t.index ["contact_statuses_id"], name: "index_contacts_on_contact_statuses_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end
 
@@ -812,6 +809,7 @@ ActiveRecord::Schema.define(version: 2021_01_21_080034) do
   add_foreign_key "companies", "users", column: "shared_service_id"
   add_foreign_key "contact_statuses", "companies", column: "startup_id"
   add_foreign_key "contacts", "companies"
+  add_foreign_key "contacts", "contact_statuses", column: "contact_statuses_id"
   add_foreign_key "contacts", "users", column: "created_by_id"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
