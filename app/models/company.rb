@@ -8,11 +8,9 @@ class Company < ApplicationRecord
   tracked owner: ->(controller, model) { controller && controller.current_user }
 
   has_one :address, as: :addressable, dependent: :destroy
-  has_one :profile, dependent: :destroy
 
   has_many :batches, dependent: :destroy
   has_many :clients, dependent: :destroy
-  has_many :contacts, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :folders, dependent: :destroy
@@ -33,6 +31,9 @@ class Company < ApplicationRecord
   has_many :xero_tracking_categories, dependent: :destroy
 
   # For overture association
+  has_one :profile, dependent: :destroy
+  has_many :contacts, dependent: :destroy
+  has_many :contact_statuses, foreign_key: :startup_id
   has_many :investor_investments, foreign_key: :startup_id, class_name: "Investment"
   has_many :investors, through: :investor_investments
   has_many :startup_investments, foreign_key: :investor_id, class_name: "Investment"

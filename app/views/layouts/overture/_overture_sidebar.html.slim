@@ -6,10 +6,10 @@
       = link_to overture_profiles_path(search_type: current_user.company.investor? ? "startup" : "investor"), class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined.mr-5 search
         .ml-5.sidebar-font = current_user.company.investor? ? "Search Startup" : "Search Investor"
-    / li.nav-item.hover-blue.py-1.m-4
-    /   = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
-    /     i.material-icons-outlined.mr-5 dashboard
-    /     .ml-5.sidebar-font Dashboard
+    li.nav-item.hover-blue.py-1.m-4
+      = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
+        i.material-icons-outlined.mr-5 dashboard
+        .ml-5.sidebar-font Dashboard
     li.nav-item.hover-blue.py-1.m-4
       = link_to overture_companies_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined.mr-5 supervised_user_circle
