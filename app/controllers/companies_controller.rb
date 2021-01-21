@@ -27,6 +27,7 @@ class CompaniesController < ApplicationController
         set_default_folders
         set_default_templates
       elsif @company.products.include? "overture"
+        set_default_profile_or_contact
         set_default_contact_statuses
       end
       current_user.update(company: @company)
@@ -113,6 +114,16 @@ class CompaniesController < ApplicationController
         cloned_template.set_recurring_based_on_template_type
         cloned_template.save
       end
+    end
+  end
+
+  def set_default_profile_or_contact
+    if @company.investor?
+      # Create a public contact for investor so that it can be searched by startups
+      Contact.create(company_name: @company.name, created_by_id: current_user.id, company_id: @company.id, public: true)
+    else
+      # Create a profile instance for startup
+      Profile.create(company: @company)
     end
   end
 

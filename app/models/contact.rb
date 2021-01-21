@@ -1,7 +1,9 @@
 class Contact < ApplicationRecord
   belongs_to :company
   belongs_to :created_by, class_name: 'User'
+  belongs_to :contact_status
+
+  has_rich_text :company_information
 
   has_many :notes, as: :notable
-  has_and_belongs_to_many :contact_statuses
 end
