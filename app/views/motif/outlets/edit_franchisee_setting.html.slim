@@ -1,8 +1,7 @@
 = form_for @outlet, url: motif_outlet_path(@outlet) do |f|
   .row.mb-3.mt-5.ml-3
     .col-sm-12
-      .btn-toolbar.float-right.ml-5
-        = link_to 'Preview', '#', role: 'button', class: 'btn btn-white border border-secondary text-primary mr-3 px-5'
+      .btn-toolbar.float-right
         = f.submit 'Save', class: 'btn btn-primary mr-3 px-5'
       h3 Outlet Information
   .row.mb-3.mt-5.ml-3
