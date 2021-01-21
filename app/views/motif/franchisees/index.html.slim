@@ -1,7 +1,8 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     = link_to "New Franchisee", motif_email_new_franchisee_path, class: "btn btn-primary float-right" unless (Franchisee.find_by(franchise_licensee: @company.name).area_franchisee? || Franchisee.find_by(franchise_licensee: @company.name).unit_franchisee? if Franchisee.where(franchise_licensee: @company.name).present?)
-    h3 Franchisee List
+    h3 
+      = get_franchisee ? "Sub Franchisee List" : "Franchisee List"
     p.mt-5.text-muted
       | Store and manage information about your franchisees and locations in
       br
