@@ -6,7 +6,7 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .form-group
-      = f.label :name, 'Company Brand Name', class: "label-bold"
+      = f.label :name, (get_franchisee ? "Company Name" : "Company Brand Name"), class: "label-bold"
       = f.text_field :name, class: 'form-control'
     = f.fields_for :address do |a|
       .form-group
