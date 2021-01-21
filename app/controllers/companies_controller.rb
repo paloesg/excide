@@ -23,8 +23,10 @@ class CompaniesController < ApplicationController
     @company.products = params[:products]
     if @company.save
       set_company_roles
-      set_default_folders
-      set_default_templates
+      if @company.products.include? "motif"
+        set_default_folders
+        set_default_templates
+      end
       current_user.update(company: @company)
       # Redirect based on the products that was added to the company
       if @company.products.length > 1
@@ -87,22 +89,20 @@ class CompaniesController < ApplicationController
 
   def set_default_folders
     # Create default folders with permissions when creating a franchise
-    if @company.products.include? "motif"
-      motif_default_folder_names = ["Financial", "Legal & Policy", "Social Media/App", "Media Repository (Training Videos & Materials)", "Operational", "Dialogue & Discussions", "Manuals & SOPs"]
-      # Get all the new folder instances
-      motif_default_folders = motif_default_folder_names.map{|name| Folder.create(name: name, company: @company)}
-      # Current user should have access permission to default folders
-      motif_default_folders.each do |folder|
-        # Create full access permission for franchisor
-        Permission.create(user_id: current_user.id, permissible: folder, can_write: true, can_view: true, can_download: true)
-      end
+    motif_default_folder_names = ["Financial", "Legal & Policy", "Social Media/App", "Media Repository (Training Videos & Materials)", "Operational", "Dialogue & Discussions", "Manuals & SOPs"]
+    # Get all the new folder instances
+    motif_default_folders = motif_default_folder_names.map{|name| Folder.create(name: name, company: @company)}
+    # Current user should have access permission to default folders
+    motif_default_folders.each do |folder|
+      # Create full access permission for franchisor
+      Permission.create(user_id: current_user.id, permissible: folder, can_write: true, can_view: true, can_download: true)
     end
   end
 
   def set_default_templates
     motif_general_templates = Template.where(company_id: nil).where.not(template_type: nil)
     # Check if company products include Motif and that the motif general templates are present
-    if @company.products.include? "motif" and motif_general_templates.present?
+    if motif_general_templates.present?
       motif_general_templates.each do |template|
         cloned_template = template.deep_clone include: { sections: :tasks }
         cloned_template.title = "#{template.title} - #{@company.name}"
