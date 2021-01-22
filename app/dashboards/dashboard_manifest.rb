@@ -16,6 +16,7 @@ class DashboardManifest
     :batches,
     :clients,
     :companies,
+    :contacts,
     :documents,
     :document_templates,
     :events,

@@ -201,13 +201,13 @@ ActiveRecord::Schema.define(version: 2021_01_21_132929) do
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
   end
 
-  create_table "contact_status", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "contact_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "startup_id"
     t.string "name"
     t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["startup_id"], name: "index_contact_status_on_startup_id"
+    t.index ["startup_id"], name: "index_contact_statuses_on_startup_id"
   end
 
   create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -807,9 +807,9 @@ ActiveRecord::Schema.define(version: 2021_01_21_132929) do
   add_foreign_key "companies", "users", column: "associate_id"
   add_foreign_key "companies", "users", column: "consultant_id"
   add_foreign_key "companies", "users", column: "shared_service_id"
-  add_foreign_key "contact_status", "companies", column: "startup_id"
+  add_foreign_key "contact_statuses", "companies", column: "startup_id"
   add_foreign_key "contacts", "companies"
-  add_foreign_key "contacts", "contact_status"
+  add_foreign_key "contacts", "contact_statuses"
   add_foreign_key "contacts", "users", column: "created_by_id"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
