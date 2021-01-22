@@ -1,0 +1,35 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    h3 Search Investors
+    p.mt-5
+      | You can browse all investor's contacts in this list and view more details. Click on 'Add to fundraising board' to add them to your board.
+/ .row.ml-3.mt-5.align-items-center
+/   .col
+/     i.material-icons-outlined filter_list
+/   .col
+/     i.material-icons swap_vert
+/   .col-sm-11
+/     i.material-icons-outlined search
+hr
+- @contacts.each do |contact|
+  .row.mb-3.mt-5.ml-3
+    .col-md-10
+      .card.w-100
+        .row
+          .col.bg-light
+            .profile-index-image-wrapper
+              = contact.investor_company_logo.attached? ? (image_tag contact.investor_company_logo, class: "w-100 my-auto rounded") : (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'w-100')
+          .col-md-10
+            .card-body
+              .row
+                .col
+                  h6.mb-4.text-muted.text-uppercase Investor
+                  h2
+                    = contact.company_name
+                  p.card-text
+                    #truncate-company-information = contact.investor_information.body.to_s
+                  .mt-5
+                    = link_to "Read more", overture_profile_path(profile.id), target: :_blank, class: "btn btn-white border border-secondary text-primary mr-3"
+                    = link_to "State Interest", overture_profile_state_interest_path(profile.id), class: "btn btn-primary mr-3"
+.mt-6
+  = paginate @contacts, views_prefix: 'dashboard'

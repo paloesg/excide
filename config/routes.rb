@@ -153,7 +153,7 @@ Rails.application.routes.draw do
   end
 
   namespace :overture do
-    root to: 'home#index'
+    root to: 'contacts#index'
     resources :companies
     resources :investments
     resources :permissions
@@ -161,6 +161,7 @@ Rails.application.routes.draw do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end
     resources :contacts
+    resources :contact_statuses
     resources :documents do
       member do
         post 'toggle'

@@ -5,14 +5,7 @@ class Overture::ProfilesController < ApplicationController
   before_action :set_company
 
   def index
-    # if params[:list] == "Startup"
-    #   @profiles = Profile.tagged_with("Startup")
-    # elsif params[:list] == "SME"
-    #   @profiles = Profile.tagged_with("SME")
-    # else
-    #   @profiles = Profile.all
-    # end
-    @profiles = Profile.includes(:company).where(companies: { company_type: params[:search_type] })
+    @profiles = Profile.all
     @profiles = Kaminari.paginate_array(@profiles).page(params[:page]).per(5)
   end
 
