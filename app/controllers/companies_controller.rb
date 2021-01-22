@@ -123,7 +123,7 @@ class CompaniesController < ApplicationController
       Contact.create(company_name: @company.name, created_by_id: current_user.id, company_id: @company.id, public: true)
     else
       # Create a profile instance for startup
-      Profile.create(company: @company)
+      Profile.create(company: @company, name: @company.name)
     end
   end
 
