@@ -19,7 +19,7 @@ hr
         .row
           .col.bg-light
             .profile-index-image-wrapper
-              = profile.profile_logo.attached? ? (image_tag profile.profile_logo, class: "w-100 my-auto rounded") : (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'w-100')
+              = profile.profile_logo.attached? ? (image_tag profile.profile_logo, class: "w-100 h-100 rounded") : (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'w-100')
           .col-md-10
             .card-body
               .row
