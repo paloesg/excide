@@ -4,7 +4,8 @@
 # are locale specific, and you may define rules for as many different
 # locales as you wish. All of these examples are active by default:
 ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.uncountable 'contact_status', 'contact_statuses'
+  inflect.plural(/(statu)s$/i, '\1ses')
+  inflect.singular(/(statu)(es)?$/i, '\1')
 end
 
 # These inflection rules are supported but not enabled by default:
