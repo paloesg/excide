@@ -54,3 +54,5 @@ require("./components/document_popover");
 require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");
 require("./components/date_time_picker");
+require("./components/draggable");
+

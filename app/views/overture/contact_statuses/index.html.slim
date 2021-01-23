@@ -4,19 +4,21 @@
     p.mt-5
       | Track your progress with your investors.
 hr
-.row.mt-5.ml-3.flex-row.flex-sm-nowrap
+.row.mt-5.ml-3.flex-row.flex-sm-nowrap.overflow-auto
   - @contact_statuses.each do |cs|
     .col-3
       .row
         .col-sm-6
           .badge.badge-pill.badge-success.text-dark.py-2.px-3 = cs.name.titleize
-      .row.mt-5
-        .card style=("width: 20rem;")
-          .card-body.border.border-light.p-5
-            .d-flex
-              = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'w-25'
-              h5.card-title.text-uppercase.text-truncate.mt-5.ml-5 Card title
-      / .card
+      .row.mt-5.draggable-column
+        ul.draggable style="list-style-type:none;"
+          li.draggable-handle
+            .card style=("width: 20rem;")
+              .card-body.border.border-light.p-5
+                .d-flex
+                  = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: ' rounded-circle w-25'
+                  h5.card-title.text-uppercase.text-truncate.mt-5.ml-5 Card title
+        / .card
       /   .card-body
       /     h6.card-title.text-uppercase.text-truncate.py-2 To Do
       /     .items.border.border-light
