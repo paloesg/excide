@@ -9,6 +9,9 @@
       - else
         p Please add an email through our overture settings.
     .ml-auto.mt-4
+      - if @contact_in_board.present?
+        badge.badge-pill.badge-success.text-dark.py-2.px-3 = @contact_in_board.contact_status.name.titleize
+      - else
         = link_to overture_contacts_path(contact_id: @contact.id), method: :post, class: "btn btn-primary" do
           i.material-icons-outlined.text-white view_agenda
           | Add to Fundraising Board

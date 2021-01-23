@@ -2,7 +2,7 @@ import { Sortable } from '@shopify/draggable';
 
 $(document).on("turbolinks:load", function() {
   console.log("Dragon and dungeon!");
-  let containers = document.querySelectorAll('.draggable-column');
+  let containers = document.querySelectorAll('.draggable-columns');
   console.log("Container", containers);
 
   if (containers.length === 0) {
