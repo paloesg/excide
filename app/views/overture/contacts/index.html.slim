@@ -30,6 +30,6 @@ hr
                     #truncate-company-information = contact.investor_information.body.to_s
                   .mt-5
                     = link_to "Read more", overture_contact_path(contact.id), target: :_blank, class: "btn btn-white border border-secondary text-primary mr-3"
-                    = link_to "Add to fundraising board", "#", class: "btn btn-primary mr-3"
+                    = link_to "Add to fundraising board", overture_contacts_path(contact_id: contact.id), method: :post, class: "btn btn-primary mr-3"
 .mt-6
   = paginate @contacts, views_prefix: 'dashboard'
