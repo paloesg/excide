@@ -10,24 +10,13 @@ hr
       .row
         .col-sm-6
           .badge.badge-pill.badge-success.text-dark.py-2.px-3 = cs.name.titleize
-      .row.mt-5.draggable-columns.border.p-5
-        ul.draggable.p-0 style="list-style-type:none;"
-          li.draggable-handle
-            .card style=("width: 20rem;")
-              .card-body.border.border-light.p-5
-                .d-flex
-                  = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: ' rounded-circle w-25'
-                  h5.card-title.text-uppercase.text-truncate.mt-5.ml-5 Card title
-        = link_to '+ Investor', '#', remote: :true, class: "text-muted add-investor-button"
-        / .card
-      /   .card-body
-      /     h6.card-title.text-uppercase.text-truncate.py-2 To Do
-      /     .items.border.border-light
-      /       #cd1.card.draggable.shadow-sm draggable="true" ondragstart="drag(event)"
-      /         .card-body.p-2
-      /           .card-title
-      /             img.rounded-circle.float-right src="//placehold.it/30" /
-      /             a.lead.font-weight-light href=""  TSK-154
-      /           p
-      /             | This is a description of a item on the board.
-      /           button.btn.btn-primary.btn-sm View
+      .row.my-5.draggable-columns.border.p-5 id="#{cs.id}"
+        - cs.contacts.each do |contact|
+          ul.draggable.p-0 id="#{contact.id}" style="list-style-type:none;"
+            li.draggable-handle
+              .card
+                .card-body.border.border-light.p-5
+                  .d-flex
+                    = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: ' rounded-circle w-25'
+                    h5.card-title.text-uppercase.text-truncate.mt-5.ml-5 = contact.company_name
+      = link_to '+ Investor', '#', remote: :true, class: "text-muted add-investor-button"

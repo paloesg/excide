@@ -3,7 +3,7 @@ class Overture::ContactsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_contact, only: [:show]
+  before_action :set_contact, only: [:show, :update]
   after_action :verify_authorized
 
   def index
@@ -28,9 +28,25 @@ class Overture::ContactsController < ApplicationController
     end
   end
 
+  def update
+    # authorize @document
+    @contact_status = ContactStatus.find_by(id: params[:contact_status_id])
+    respond_to do |format|
+      # check if update comes from drag and drop or from remarks. If folder_id is not present, then update remarks
+      if @contact.update(contact_status: @contact_status)
+        format.json { render json: { link_to: overture_contact_statuses_path, status: "ok" } }
+      else
+        format.html { redirect_to overture_root_path }
+        format.json { render json: @contact.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def show
     authorize @contact
     @topic = Topic.new
+    # Check if contact is in fundraising board (contact status cannot be nil & company is current company)
+    @contact_in_board = Contact.includes(:contact_status).where(contact_statuses: {startup_id: @company.id})
   end
 
   private
