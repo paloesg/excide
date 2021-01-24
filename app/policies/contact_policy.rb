@@ -3,6 +3,14 @@ class ContactPolicy < ApplicationPolicy
     company_startup?
   end
 
+  def create?
+    user.company = record.company
+  end
+
+  def update?
+    show?
+  end
+
   def show?
     company_startup?
   end
