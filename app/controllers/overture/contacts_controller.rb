@@ -13,18 +13,25 @@ class Overture::ContactsController < ApplicationController
   end
 
   def create
-    # This method is called when adding contacts to fundraising board. It will duplicate the listed contact and set to the 1st contact status of the board.
-    @contact = Contact.find(params[:contact_id])
-    @duplicate_contact = @contact.dup
-    # Find the 1st contact status of the board (Shortlisted)
-    @contact_status = @company.contact_statuses.find_by(position: 1)
-    @duplicate_contact.contact_status = @contact_status
-    # Duplicate contact shouldn't be in the public listing
-    @duplicate_contact.searchable = false
-    @duplicate_contact.cloned_by = @company
-    # Attach the investor company logo when duplicating contact
-    @duplicate_contact.investor_company_logo.attach(@contact.investor_company_logo.blob)
-    if @duplicate_contact.save
+    if params[:contact_id].present?
+      # This method is called when adding contacts or adding existing investor to fundraising board. It will duplicate the listed contact and set to the 1st contact status of the board.
+      @contact_to_be_duplicated = Contact.find(params[:contact_id])
+      @contact = @contact_to_be_duplicated.dup
+      # Find the 1st contact status of the board (Shortlisted)
+      @contact_status = @company.contact_statuses.find_by(position: 1)
+      @contact.contact_status = @contact_status
+      # Duplicate contact shouldn't be searchable
+      @contact.searchable = false
+      @contact.cloned_by = @company
+      # Attach the investor company logo when duplicating contact
+      @contact.investor_company_logo.attach(@contact_to_be_duplicated.investor_company_logo.blob) if @contact_to_be_duplicated.investor_company_logo.attached?
+    else
+      # Add new investor's contact
+      @contact = Contact.new(contact_params)
+      @contact.created_by = current_user
+    end
+    # Redirect based on validation of contact
+    if @contact.save
       redirect_to overture_contact_statuses_path, notice: "Investor contact added to fundraising board."
     else
       redirect_to overture_root_path, alert: "Error occurred when adding investor. Add a support ticket or try again in awhile."
