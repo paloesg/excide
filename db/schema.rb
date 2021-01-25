@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_21_132929) do
+ActiveRecord::Schema.define(version: 2021_01_25_015113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -220,7 +220,8 @@ ActiveRecord::Schema.define(version: 2021_01_21_132929) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "company_id"
     t.uuid "contact_status_id"
-    t.boolean "public"
+    t.uuid "cloned_by_id"
+    t.index ["cloned_by_id"], name: "index_contacts_on_cloned_by_id"
     t.index ["contact_status_id"], name: "index_contacts_on_contact_status_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end
@@ -809,6 +810,7 @@ ActiveRecord::Schema.define(version: 2021_01_21_132929) do
   add_foreign_key "companies", "users", column: "shared_service_id"
   add_foreign_key "contact_statuses", "companies", column: "startup_id"
   add_foreign_key "contacts", "companies"
+  add_foreign_key "contacts", "companies", column: "cloned_by_id"
   add_foreign_key "contacts", "contact_statuses"
   add_foreign_key "contacts", "users", column: "created_by_id"
   add_foreign_key "document_templates", "templates"

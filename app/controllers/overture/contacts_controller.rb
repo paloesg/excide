@@ -8,7 +8,7 @@ class Overture::ContactsController < ApplicationController
 
   def index
     # Only get investor's contact if they allow it to be public
-    @contacts = Contact.where(public: true)
+    @contacts = Contact.where(cloned_by: nil)
     @contacts = Kaminari.paginate_array(@contacts).page(params[:page]).per(5)
   end
 
@@ -20,7 +20,7 @@ class Overture::ContactsController < ApplicationController
     @contact_status = @company.contact_statuses.find_by(position: 1)
     @duplicate_contact.contact_status = @contact_status
     # Duplicate contact shouldn't be in the public listing
-    @duplicate_contact.public = false
+    @duplicate_contact.cloned_by = current_user.company
     if @duplicate_contact.save
       redirect_to overture_contact_statuses_path, notice: "Investor contact added to fundraising board."
     else

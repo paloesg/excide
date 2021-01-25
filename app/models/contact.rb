@@ -1,5 +1,7 @@
 class Contact < ApplicationRecord
   belongs_to :company
+  # Duplicate contacts when adding to fundraising board. Cloned_by describes the company that clones the contact
+  belongs_to :cloned_by, class_name: 'Company'
   belongs_to :created_by, class_name: 'User'
   belongs_to :contact_status
 
