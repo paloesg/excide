@@ -1,10 +1,7 @@
 import { Sortable } from '@shopify/draggable';
 
 $(document).on("turbolinks:load", function() {
-  console.log("Dragon and dungeon!");
   let containers = document.querySelectorAll('.draggable-columns');
-  console.log("Container", containers);
-
   if (containers.length === 0) {
       return false;
   }
@@ -28,6 +25,5 @@ $(document).on("turbolinks:load", function() {
         dataType: "JSON"
       });
     }
-    console.log('sortable:stop', e.data.newContainer !== e.data.oldContainer);
   });
 });

@@ -14,9 +14,9 @@ hr
         - cs.contacts.each do |contact|
           ul.draggable.p-0 id="#{contact.id}" style="list-style-type:none;"
             li.draggable-handle
-              .card
+              .card.contact-card-shawdow
                 .card-body.border.border-light.p-5
                   .d-flex
-                    = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: ' rounded-circle w-25'
-                    h5.card-title.text-uppercase.text-truncate.mt-5.ml-5 = contact.company_name
+                    = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: ' rounded-circle w-25 investor-profile-pic'
+                    = link_to contact.company_name, overture_root_path, class: "card-title text-uppercase text-truncate mt-5 ml-5 h5 text-dark font-weight-boldest"
       = link_to '+ Investor', '#', remote: :true, class: "text-muted add-investor-button"
