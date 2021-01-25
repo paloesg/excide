@@ -109,7 +109,12 @@ class CompaniesController < ApplicationController
         cloned_template.company = @company
         # Set template_pattern based on motif template_type, which will then set recurring attributes
         cloned_template.set_recurring_based_on_template_type
-        cloned_template.tasks.each { |task| task.clone_folder(cloned_template.company) }
+        cloned_template.tasks.each do |task|
+          task.clone_folder(@company)
+          role = Role.find_or_create_by(name: task.role.name, resource_id: @company.id, resource_type: "Company")
+          task.role = role
+          task.save
+        end
         cloned_template.save
       end
     end
