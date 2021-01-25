@@ -28,6 +28,8 @@ class Outlet < ApplicationRecord
         cloned_template.title = "#{template.template_type.titleize} - #{self.name}"
         # Clone template should belong to MF/AF's parent company (which is the franchisor). If it is unit franchisee, then it is just self.company since they do not have a company entity
         cloned_template.company = self.company.parent.present? ? self.company.parent : self.company
+        # The code below does not clone folders at the moment because it will find the parent company's folder.
+        cloned_template.tasks.each { |task| task.clone_folder(cloned_template.company) }
         cloned_template.save
       end
     end
