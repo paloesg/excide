@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_25_015113) do
+ActiveRecord::Schema.define(version: 2021_01_25_060927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(version: 2021_01_25_015113) do
     t.uuid "company_id"
     t.uuid "contact_status_id"
     t.uuid "cloned_by_id"
+    t.boolean "searchable"
     t.index ["cloned_by_id"], name: "index_contacts_on_cloned_by_id"
     t.index ["contact_status_id"], name: "index_contacts_on_contact_status_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
