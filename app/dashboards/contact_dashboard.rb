@@ -10,6 +10,7 @@ class ContactDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     company: Field::BelongsTo,
     created_by: Field::BelongsTo.with_options(class_name: "User"),
+    cloned_by: Field::BelongsTo.with_options(class_name: "Company"),
     contact_status: Field::BelongsTo,
     investor_information: RichTextAreaField,
     notes: Field::HasMany,
@@ -22,7 +23,7 @@ class ContactDashboard < Administrate::BaseDashboard
     investor_company_logo: Field::ActiveStorage,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    public: Field::Boolean,
+    searchable: Field::Boolean,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -36,6 +37,7 @@ class ContactDashboard < Administrate::BaseDashboard
   contact_status
   investor_information
   investor_company_logo
+  cloned_by
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -55,7 +57,8 @@ class ContactDashboard < Administrate::BaseDashboard
   investor_company_logo
   created_at
   updated_at
-  public
+  cloned_by
+  searchable
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -72,8 +75,9 @@ class ContactDashboard < Administrate::BaseDashboard
   email
   company_name
   created_by_id
-  public
   investor_company_logo
+  cloned_by
+  searchable
   ].freeze
 
   # COLLECTION_FILTERS
