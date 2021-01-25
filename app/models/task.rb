@@ -49,7 +49,9 @@ class Task < ApplicationRecord
   end
 
   def clone_folder(company)
+    # Check whether general template's task has a general folder association.
     if self.folder.present?
+      # Check for existing folder that was previously cloned so that there are no duplicated folders.
       @folder = Folder.find_or_create_by(name: self.folder.name , company: company)
       self.folder = @folder
       self.save
