@@ -17,6 +17,23 @@ hr
               .card.contact-card-shawdow
                 .card-body.border.border-light.p-5
                   .d-flex
-                    = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: ' rounded-circle w-25 investor-profile-pic'
-                    = link_to contact.company_name, overture_root_path, class: "card-title text-uppercase text-truncate mt-5 ml-5 h5 text-dark font-weight-boldest"
-      = link_to '+ Investor', '#', remote: :true, class: "text-muted add-investor-button"
+                    = contact.investor_company_logo.attached? ? image_tag(contact.investor_company_logo, class: 'rounded-circle w-25 investor-profile-pic') : (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'rounded-circle w-25 investor-profile-pic')
+                    = link_to contact.company.name, overture_root_path, class: "card-title text-uppercase text-truncate mt-5 ml-5 h5 text-dark font-weight-boldest"
+      .dropdown
+        a.text-muted href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" = "+ Investor"
+        .dropdown-menu.dropdown-menu-right
+          a.dropdown-item data-target="#addExistingInvestorToBoard" data-toggle="modal" type="button" Existing Investor
+          .dropdown-item = link_to "Add Manually", root_path
+    #addExistingInvestorToBoard.modal.fade aria-hidden="true" aria-labelledby="addExistingInvestor" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#addExistingInvestor.modal-title Add Existing Investor
+          .modal-body
+            = form_tag overture_contacts_path do |c|
+              .form-group
+                = label_tag 'Add Existing Investor', 'Add Existing Investor'
+                = select_tag :contact_id, options_for_select(@existing_contacts.map {|k,v| [k.company.name, k.id]}, include_blank: true), prompt: 'Select investor contacts...', required: true, id: "#{cs.id}", class: 'form-control'
+              .form-group
+                = submit_tag "Add", class: 'btn btn-primary float-right'
+      / = link_to '+ Investor', '#', remote: :true, class: "text-muted add-investor", id: "add-investor-button-#{cs.id}", data: {contact_status: cs.id}
