@@ -69,7 +69,7 @@ gem 'aasm'
 # Manage ordering for survey objects
 gem 'acts_as_list'
 # For tagging
-gem 'acts-as-taggable-on', '~> 6.5.0'
+gem 'acts-as-taggable-on', '~> 7.0.0'
 # For tagging in administrate
 gem 'administrate-field-acts_as_taggable'
 # Use user friendly slugs
