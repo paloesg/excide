@@ -10,6 +10,7 @@ class Overture::CompaniesController < ApplicationController
   end
 
   def edit
+    @contact = @company.contacts.find_by(searchable: true)
   end
 
   def update
@@ -27,7 +28,7 @@ class Overture::CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:id, :name, :uen, :contact_details, :financial_year_end, :gst_quarter, :agm_date, :ar_date, :eci_date, :form_cs_date, :project_start_date, :consultant_id, :associate_id, :shared_service_id, :designated_working_time, :xero_email, :connect_xero, :account_type, :stripe_subscription_plan_data, :trial_end_date, :slack_access_response, :before_deadline_reminder_days, :website_url, :report_url, :company_logo, :profile_logo, :banner_image, :company_bio, profile_attributes: [:id, :name, :url, :profile_logo, :company_information], contact_attributes: [:id, :name, :phone, :email, :company_name, :created_by_id, :company_id, :contact_statuses_id, :investor_information, :investor_company_logo, :searchable], address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state]
+    params.require(:company).permit(:id, :name, :uen, :contact_details, :financial_year_end, :gst_quarter, :agm_date, :ar_date, :eci_date, :form_cs_date, :project_start_date, :consultant_id, :associate_id, :shared_service_id, :designated_working_time, :xero_email, :connect_xero, :account_type, :stripe_subscription_plan_data, :trial_end_date, :slack_access_response, :before_deadline_reminder_days, :website_url, :report_url, :company_logo, :profile_logo, :banner_image, :company_bio, profile_attributes: [:id, :name, :url, :profile_logo, :company_information], contacts_attributes: [:id, :name, :phone, :email, :company_name, :created_by_id, :company_id, :contact_statuses_id, :investor_information, :investor_company_logo, :searchable], address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state]
     )
   end
 end

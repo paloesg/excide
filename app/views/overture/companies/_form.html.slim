@@ -26,7 +26,7 @@
             = p.file_field :profile_logo
             = image_tag(@company.profile.profile_logo, class: 'outlet-header-preview') if @company.profile.profile_logo.attached?
     - else
-      = f.fields_for :contact do |c|
+      = f.fields_for :contacts, @contact do |c|
         .form-group
           = c.label :phone, "Telephone", class: "label-bold"
           = c.text_field :phone, class: "form-control"
@@ -40,4 +40,4 @@
           .form-inline
             = c.label :investor_company_logo, "Company Logo: ", class: "label-bold mr-5"
             = c.file_field :investor_company_logo
-            = image_tag(@company.contact.investor_company_logo, class: 'outlet-header-preview') if @company.contact.investor_company_logo.attached?
+            = image_tag(@contact.investor_company_logo, class: 'outlet-header-preview') if @contact.investor_company_logo.attached?
