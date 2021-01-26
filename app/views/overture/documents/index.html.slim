@@ -37,10 +37,13 @@
                   .row
                     .col-md-12
                       = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
-    / .float-right.mx-5.mt-2
-    /   i.material-icons-outlined more_horiz
-    = link_to new_conductor_event_path, role: 'button', class: 'btn btn-primary float-right mr-5 p-2' do
-      i.material-icons-outlined.font-size-h2.p-0 add
+    .dropdown
+      a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+        i.material-icons-outlined.font-size-h2.p-0 add
+      .dropdown-menu.dropdown-menu-right
+        / these paths are not working
+        .dropdown-item = link_to "Add new folder", new_overture_folder_path
+        .dropdown-item = link_to "Upload new file", new_overture_document_path
     = link_to new_conductor_event_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5' do
       i.material-icons-outlined.text-primary group
       span.ml-2.text-primary.font-weight-bolder Groups
@@ -121,10 +124,14 @@
                   .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
             - @roles.each do |role|
               td
-                i.material-icons-outlined.font-size-h1.mr-2 visibility
-                /i.material-icons-outlined.font-size-h1.text-muted.mr-2 visibility_off
-                /i.material-icons.font-size-h1 get_app
-                i.material-icons.font-size-h1.text-muted file_download_off
+                a data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+                  i.material-icons-outlined.font-size-h1.mr-2 visibility
+                /a data-container="body" title="Disable download<br/>access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+                  i.material-icons-outlined.font-size-h1.text-muted.mr-2 visibility_off
+                /a data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+                  i.material-icons.font-size-h1 get_app
+                a data-container="body" title="Give view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+                  i.material-icons.font-size-h1.text-muted file_download_off
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
           tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
