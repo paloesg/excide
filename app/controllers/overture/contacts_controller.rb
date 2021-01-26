@@ -1,5 +1,6 @@
 class Overture::ContactsController < ApplicationController
   layout 'overture/application'
+  include Overture::ContactsHelper
 
   before_action :authenticate_user!
   before_action :set_company
@@ -9,6 +10,7 @@ class Overture::ContactsController < ApplicationController
   def index
     # Only get investor's contact if they allow it to be public
     @contacts = Contact.where(searchable: true)
+    @contact_statuses = ContactStatus.where(startup: @company)
     @contacts = Kaminari.paginate_array(@contacts).page(params[:page]).per(5)
   end
 
@@ -49,11 +51,12 @@ class Overture::ContactsController < ApplicationController
   end
 
   def update
-    # authorize @document
     @contact_status = ContactStatus.find_by(id: params[:contact_status_id])
+    # On the search investor page, the AJAX contact is the searchable contact, hence we need to get the cloned contact and update the cloned one instead of the searchable contact.
+    @cloned_contact = get_cloned_contact(@contact) if params[:contact_type].present?
     respond_to do |format|
-      # check if update comes from drag and drop or from remarks. If folder_id is not present, then update remarks
-      if @contact.update(contact_status: @contact_status)
+      # If cloned contact
+      if params[:contact_type].present? ? @cloned_contact.update(contact_status: @contact_status) : @contact.update(contact_status: @contact_status)
         format.json { render json: { link_to: overture_contact_statuses_path, status: "ok" } }
       else
         format.html { redirect_to overture_root_path }

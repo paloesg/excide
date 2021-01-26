@@ -18,7 +18,7 @@ hr
         .row
           .col.bg-light
             .profile-index-image-wrapper
-              = contact.investor_company_logo.attached? ? (image_tag contact.investor_company_logo, class: "w-100 h-100 rounded") : (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'w-100')
+              = contact.investor_company_logo.attached? ? (image_tag url_for(contact.investor_company_logo), class: "w-100 h-100 rounded") : (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'w-100')
           .col-md-10
             .card-body
               .row
@@ -30,6 +30,10 @@ hr
                     #truncate-company-information = contact.investor_information.body.to_s
                   .mt-5
                     = link_to "Read more", overture_contact_path(contact.id), target: :_blank, class: "btn btn-white border border-secondary text-primary mr-3"
-                    = link_to "Add to fundraising board", overture_contacts_path(contact_id: contact.id), method: :post, class: "btn btn-primary mr-3"
+                    / If a contact is already cloned on fundraising board, then show the contact status instead
+                    - if get_cloned_contact(contact).present?
+                      = select_tag('contact_status', options_for_select(@contact_statuses.map {|k,v| [k.name, k.id]}, selected: get_cloned_contact(contact).first.contact_status.id, include_blank: true), id: "#{contact.id}", class: 'select2 select2-change-contact-status form-control col-sm-2')
+                    - else
+                      = link_to "Add to fundraising board", overture_contacts_path(contact_id: contact.id), method: :post, class: "btn btn-primary mr-3"
 .mt-6
   = paginate @contacts, views_prefix: 'dashboard'

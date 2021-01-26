@@ -9,7 +9,7 @@ hr
     .col-3.m-3
       .row
         .col-sm-6
-          .badge.badge-pill.badge-success.text-dark.py-2.px-3 = cs.name.titleize
+          .badge.badge-pill.badge-secondary.text-dark.py-2.px-3 = cs.name.titleize
       .row.my-5.draggable-columns.border.p-5 id="#{cs.id}"
         - cs.contacts.each do |contact|
           ul.draggable.p-0 id="#{contact.id}" style="list-style-type:none;"
@@ -28,7 +28,7 @@ hr
       .modal-dialog role="document"
         .modal-content
           .modal-header
-            h5#addExistingInvestor.modal-title Add Existing Investor
+            h5#addExistingInvestor.modal-title Add Existing Contact To Fundraising Board
           .modal-body
             = form_tag overture_contacts_path do |c|
               .form-group
@@ -40,7 +40,7 @@ hr
       .modal-dialog role="document"
         .modal-content
           .modal-header
-            h5#addNewInvestor.modal-title Add New Investor
+            h5#addNewInvestor.modal-title Add New Contact To Fundraising Board
           .modal-body
             = form_for @contact, url: overture_contacts_path do |c|
               .form-group

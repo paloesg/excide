@@ -1,2 +1,0 @@
-module Overture::ContactStatusesHelper
-end
