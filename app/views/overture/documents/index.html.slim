@@ -82,12 +82,11 @@
     hr.mt-2
 - if @folders.empty? && @documents.empty?
   .row.justify-content-center.ml-3
-    .col-md-3.text-center.p-4
-      = image_pack_tag 'media/src/images/symphony/add-documents@2x.png'
-      h2.mt-5 Clean and fresh
-      p.mt-4 Let's add some documents to this page! Click on the upload button below to do so.
+    .col.text-center.p-10
+      = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
+      p.mt-4 Start sharing important matters to investors and your teammates
       button.btn.btn-primary.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button"
-        | + Upload Documents
+        | Upload
 - else
   .table-responsive
     table.table.ml-4.table-aligned
