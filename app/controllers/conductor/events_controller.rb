@@ -165,8 +165,8 @@ class Conductor::EventsController < ApplicationController
 
   def get_users_projects_and_service_lines
     # To be tagged using acts_as_taggable_on gem
-    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy', 'Dashboard'].sort
-    @projects = ['AFC ADA', 'AFC EDM', 'AFC Website'].sort
+    @service_lines = ActsAsTaggableOn::Tag.for_context(:service_lines).map(&:name).sort
+    @projects = ActsAsTaggableOn::Tag.for_context(:projects).map(&:name).sort
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
     @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
   end
