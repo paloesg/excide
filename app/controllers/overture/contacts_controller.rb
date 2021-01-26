@@ -30,7 +30,6 @@ class Overture::ContactsController < ApplicationController
           end
         end
       end
-      # @contact = @contact_to_be_duplicated.dup
       # Find the 1st contact status of the board (Shortlisted)
       contact_status = @company.contact_statuses.find_by(position: 1)
       @contact.contact_status = contact_status

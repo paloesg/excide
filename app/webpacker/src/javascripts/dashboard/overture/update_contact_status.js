@@ -1,6 +1,5 @@
 $(document).on("turbolinks:load", function () {
   $(".select2-change-contact-status").change(function(){
-    console.log("What is element: ", $("#" + this.id).next(".select2").find(".select2-selection"))
     $.ajax({
       type: "PATCH",
       url: "/overture/contacts/" + this.id,
