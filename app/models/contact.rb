@@ -9,5 +9,5 @@ class Contact < ApplicationRecord
 
   has_one_attached :investor_company_logo
 
-  has_many :notes, as: :notable
+  has_many :notes, as: :notable, dependent: :destroy
 end

@@ -160,7 +160,11 @@ Rails.application.routes.draw do
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end
-    resources :contacts
+    resources :contacts do
+      scope module: 'contacts' do
+        resources :notes
+      end
+    end
     resources :contact_statuses
     resources :documents do
       member do
@@ -173,7 +177,9 @@ Rails.application.routes.draw do
       end
     end
     resources :topics do
-      resources :notes
+      scope module: 'topics' do
+        resources :notes
+      end
     end
     resources :users
     get '/financial-performance', to: 'home#financial_performance'
