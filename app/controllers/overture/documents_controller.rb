@@ -16,6 +16,7 @@ class Overture::DocumentsController < ApplicationController
     @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     @topic = Topic.new
+    @roles = Role.where(resource_id: @company.id, resource_type: "Company").first(3)
   end
 
   def create
