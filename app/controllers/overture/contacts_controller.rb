@@ -53,7 +53,7 @@ class Overture::ContactsController < ApplicationController
   def update
     @contact_status = ContactStatus.find_by(id: params[:contact_status_id])
     # On the search investor page, the AJAX contact is the searchable contact, hence we need to get the cloned contact and update the cloned one instead of the searchable contact.
-    @cloned_contact = get_cloned_contact(@contact) if params[:contact_type].present?
+    @cloned_contact = get_cloned_contact(@contact, current_user) if params[:contact_type].present?
     respond_to do |format|
       # If cloned contact
       if params[:contact_type].present? ? @cloned_contact.update(contact_status: @contact_status) : @contact.update(contact_status: @contact_status)
