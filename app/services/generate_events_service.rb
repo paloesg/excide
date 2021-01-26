@@ -23,7 +23,7 @@ class GenerateEventsService
       event_data = Hash[[header, row].transpose]
       @event = Event.new
       @event.company = @user.company
-      @event.tag_list.add(event_data["Job Function"])
+      @event.service_line_list.add(event_data["Job Function"])
       @event.project_list.add(event_data["Project"])
       @event.start_time = event_data["Date (DD/MM/YYYY)"]
       @event.client = Client.find_by(name: event_data["Client"])

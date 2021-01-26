@@ -27,7 +27,7 @@ class Allocation < ApplicationRecord
             allocation.event.event_type.name,
             # Find hours charged
             allocation.event.number_of_hours,
-            allocation.event.tag_list.present? ? allocation.event.tag_list.last : 'Nil',    
+            allocation.event.service_line_list.present? ? allocation.event.service_line_list.last : 'Nil',    
           ]
           csv << row
         end
