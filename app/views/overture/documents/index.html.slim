@@ -86,63 +86,69 @@
       button.btn.btn-primary.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button"
         | + Upload Documents
 - else
-  table.table.ml-4.table-aligned
-    thead
-      tr
-        th
-          input# type="checkbox" name=""/
-        th.text-muted Name
-        th
-        - @roles.each do |role|
+  .table-responsive
+    table.table.ml-4.table-aligned
+      thead
+        tr
           th
-            = role.name
-    tbody.draggable-zone
-      - @folders.each_with_index do |folder, index|
-        tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
-          td
-            input.mt-2 type="checkbox" name=""/
-          td
-            span.mr-5
-              i.material-icons-outlined.align-middle folder_open
-            span.ml-5
-              = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
-          td
-            .dropdown
-              a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-                i.material-icons-outlined.font-size-h1.text-muted more_horiz
-              .dropdown-menu.dropdown-menu-right
-                .dropdown-item = link_to "Version Control", edit_overture_folder_path(folder)
-                .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{folder.id}_0"
-                .dropdown-item = link_to "Download", edit_overture_folder_path(folder)
-                .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
+            input# type="checkbox" name=""/
+          th.text-muted Name
+          th.text-muted Last Modified
+          th
           - @roles.each do |role|
+            th
+              = role.name
+      tbody.draggable-zone
+        - @folders.each_with_index do |folder, index|
+          tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
             td
-              i.material-icons-outlined.font-size-h1.mr-2 visibility
-              /i.material-icons-outlined.font-size-h1.text-muted.mr-2 visibility_off
-              /i.material-icons.font-size-h1 get_app
-              i.material-icons.font-size-h1.text-muted file_download_off
-        = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
-      - @documents.each_with_index do |d, index|
-        tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
-          td
-            input.mt-2 type="checkbox" name=""/
-          td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
-            span.mr-5
-              / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
-              = image_pack_tag "media/src/images/overture/doc.svg"
-            span.ml-5
-              = d.raw_file.filename
-          td
-            .dropdown
-              a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-                i.material-icons-outlined.font-size-h1.text-muted more_horiz
-              .dropdown-menu.dropdown-menu-right
-                .dropdown-item = link_to "Version Control", overture_document_path(d)
-                .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{d.id}_0"
-                .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
-                .dropdown-item = link_to "Delete", overture_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
-          = render 'overture/shared/show_document', d: d
-        = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
+              input.mt-2 type="checkbox" name=""/
+            td
+              span.mr-5
+                i.material-icons-outlined.align-middle folder_open
+              span.ml-5
+                = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
+            td
+              = folder.updated_at.strftime("%d %b %Y")
+            td
+              .dropdown
+                a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                  i.material-icons-outlined.font-size-h1.text-muted more_horiz
+                .dropdown-menu.dropdown-menu-right
+                  .dropdown-item = link_to "Version Control", edit_overture_folder_path(folder)
+                  .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{folder.id}_0"
+                  .dropdown-item = link_to "Download", edit_overture_folder_path(folder)
+                  .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
+            - @roles.each do |role|
+              td
+                i.material-icons-outlined.font-size-h1.mr-2 visibility
+                /i.material-icons-outlined.font-size-h1.text-muted.mr-2 visibility_off
+                /i.material-icons.font-size-h1 get_app
+                i.material-icons.font-size-h1.text-muted file_download_off
+          = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
+        - @documents.each_with_index do |d, index|
+          tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
+            td
+              input.mt-2 type="checkbox" name=""/
+            td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
+              span.mr-5
+                / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
+                = image_pack_tag "media/src/images/overture/doc.svg"
+              span.ml-5
+                = d.raw_file.filename
+            td
+              = d.updated_at.strftime("%d %b %Y")
+            td
+              .dropdown
+                a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                  i.material-icons-outlined.font-size-h1.text-muted more_horiz
+                .dropdown-menu.dropdown-menu-right
+                  .dropdown-item = link_to "Version Control", overture_document_path(d)
+                  .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{d.id}_0"
+                  .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
+                  .dropdown-item = link_to "Delete", overture_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
+            = render 'overture/shared/show_document', d: d
+          = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
 /.row.mb-3.mt-5.ml-3
   .col-sm-12
     - unless @company.investor?
