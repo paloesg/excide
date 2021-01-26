@@ -68,6 +68,7 @@ class Overture::ContactsController < ApplicationController
   def show
     authorize @contact
     @topic = Topic.new
+    @contact_statuses = ContactStatus.where(startup: @company)
   end
 
   private

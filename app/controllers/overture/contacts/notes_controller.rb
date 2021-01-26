@@ -1,5 +1,6 @@
 class Overture::Contacts::NotesController < Overture::NotesController
   before_action :set_contact
+  before_action :set_contact_statuses, only: [:index, :new]
 
   def index
     @notes = @contact.notes
@@ -21,6 +22,10 @@ class Overture::Contacts::NotesController < Overture::NotesController
   end
 
   private
+  def set_contact_statuses
+    @contact_statuses = ContactStatus.where(startup: @company)
+  end
+
   def set_contact
     @contact = Contact.find(params[:contact_id])
   end
