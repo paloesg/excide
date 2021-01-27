@@ -196,7 +196,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_080503) do
     t.json "products", default: []
     t.string "website_url"
     t.string "report_url"
-    t.string "capitalization_table"
+    t.string "capitalization_table_url"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
