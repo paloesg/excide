@@ -1,9 +1,13 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     - unless @company.investor?
-      button.btn.btn-primary.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button"
-        i.material-icons-outlined.text-white add
-        | Upload
+      .dropdown
+        a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+          i.material-icons-outlined.font-size-h2.p-0 add
+        .dropdown-menu.dropdown-menu-right
+          / these paths are not working
+          a.dropdown-item.text-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folders
+          a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
       #newOvertureDocUploads.modal.fade aria-hidden="true" aria-labelledby="newOvertureDocumentUploads" role="dialog" tabindex="-1"
         .modal-dialog role="document"
           .modal-content
@@ -16,40 +20,29 @@
                 .col-md-12
                   / params[:id] is folder's ID. It is to account for uploading files inside a folder (folder SHOW page)
                   .dashboard-body.overtureMultipleDocumentsUpload#Dashboard data-folder="#{params[:id]}"
-      / Don't allow create folder button to be shown if within a folder
-      - unless controller_name == 'folders'
-        button.btn.btn-white.border.border-secondary.text-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button"
-          i.material-icons.text-primary.mr-1.mb-1 folder_open
-          | New Folder
-        #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newOvertureFolderUpload" role="dialog" tabindex="-1"
-          .modal-dialog role="document"
-            .modal-content
-              .modal-header
-                h5#newOvertureFolderUpload.modal-title Create new folder
-                button.close aria-label="Close" data-dismiss="modal" type="button"
-                  span aria-hidden="true"  &times;
-              .modal-body
-                = form_for(@folder, url: overture_folders_path, html: { method: :post }) do |f|
-                  .row.mt-3
-                    .col-md-12
-                      .form-group
-                        = f.text_field :name, placeholder: 'New folder', class: 'form-control'
-                  .row
-                    .col-md-12
-                      = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
-    .dropdown
-      a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-        i.material-icons-outlined.font-size-h2.p-0 add
-      .dropdown-menu.dropdown-menu-right
-        / these paths are not working
-        .dropdown-item = link_to "Add new folder", new_overture_folder_path
-        .dropdown-item = link_to "Upload new file", new_overture_document_path
-    = link_to new_conductor_event_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5' do
+      #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newOvertureFolderUpload" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5#newOvertureFolderUpload.modal-title Create new folder
+              button.close aria-label="Close" data-dismiss="modal" type="button"
+                span aria-hidden="true"  &times;
+            .modal-body
+              = form_for(@folder, url: overture_folders_path, html: { method: :post }) do |f|
+                .row.mt-3
+                  .col-md-12
+                    .form-group
+                      = f.text_field :name, placeholder: 'New folder', class: 'form-control'
+                .row
+                  .col-md-12
+                    = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+
+    = link_to overture_root_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5' do
       i.material-icons-outlined.text-primary group
       span.ml-2.text-primary.font-weight-bolder Groups
     h3 Dataroom
     p.mt-5
-      | Share view and download access to groups of investors. Click on the icon buttons in the 
+      | Share view and download access to groups of investors. Click on the icon buttons in the
       br
       | group column to turn on/off the access. Click “Groups” to edit your groups of investors.
     .row.ml-4.align-items-center#filter-search
@@ -124,12 +117,12 @@
             - @roles.each do |role|
               td
                 a data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons-outlined.font-size-h1.mr-2 visibility
+                  i.material-icons-outlined.font-size-h1.icon-hover.mr-2 visibility
                 /a data-container="body" title="Disable download<br/>access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
                   i.material-icons-outlined.font-size-h1.text-muted.mr-2 visibility_off
-                /a data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons.font-size-h1 get_app
-                a data-container="body" title="Give view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+                a data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+                  i.material-icons.font-size-h1.icon-hover get_app
+                /a data-container="body" title="Give view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
                   i.material-icons.font-size-h1.text-muted file_download_off
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
@@ -153,6 +146,14 @@
                   .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{d.id}_0"
                   .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
                   .dropdown-item = link_to "Delete", overture_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
+            - @roles.each do |role|
+              td
+                a data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+                  i.material-icons-outlined.font-size-h1.mr-2 visibility
+                /a data-container="body" title="Disable download<br/>access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+                  i.material-icons-outlined.font-size-h1.text-muted.mr-2 visibility_off
+                a data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+                  i.material-icons.font-size-h1 get_app
             = render 'overture/shared/show_document', d: d
           = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
 /.row.mb-3.mt-5.ml-3
