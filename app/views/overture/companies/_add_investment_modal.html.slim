@@ -1,0 +1,21 @@
+#addInvestmentOverture.modal.fade aria-hidden="true" aria-labelledby="addInvestment" role="dialog" tabindex="-1"
+  .modal-dialog role="document"
+    .modal-content
+      - if investor_companies.present?
+        .modal-header
+          h5#addInvestment.modal-title Add Investor
+          button.close aria-label="Close" data-dismiss="modal" type="button"
+            span aria-hidden="true"  &times;
+        .modal-body
+          .row.mt-3
+            .col-md-12
+              = form_tag overture_investments_path, method: :post do
+                - investor_companies.each do |company|
+                  .form-group
+                    = company.contacts[0].investor_company_logo.attached? ? (image_tag url_for(company.contacts[0].investor_company_logo), class: 'rounded-circle investor-profile-pic investor-logo-style mr-5') : (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'rounded-circle investor-profile-pic investor-logo-style mr-5')
+                    = label_tag company.name, company.name, class: 'form-check-label h3'
+                    = check_box_tag 'investors[]', company.id, false, class: 'float-right mt-5'
+                .row.mt-3
+                  .col-md-12
+                    = submit_tag "Submit", class: 'btn btn-primary float-right'
+

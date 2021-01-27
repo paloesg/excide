@@ -1,5 +1,10 @@
 row.mb-3.mt-5.ml-3
   .col-sm-12
+    button.btn.btn-primary.float-right.mr-5 data-target="#addInvestmentOverture" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white add
+      | Investor
+    = render "add_investment_modal", investor_companies: @investor_companies
+
     h3 Signed Investor
     p.mt-5.text-muted
       | Here are the information of your signed investor
@@ -15,12 +20,10 @@ hr.mb-0
   table.table.ml-4
     thead
       tr
-        th.text-muted Name
+        th.text-muted Investors
         th.text-muted Added on
-        th
     tbody
       - @companies.each_with_index do |c, index|
         tr
           td = c.name
           td = c.created_at.strftime("%b %d %H:%M")
-          td
