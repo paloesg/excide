@@ -149,11 +149,11 @@
             - @roles.each do |role|
               td
                 a data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons-outlined.font-size-h1.mr-2 visibility
+                  i.material-icons-outlined.font-size-h1.icon-hover.mr-2 visibility
                 /a data-container="body" title="Disable download<br/>access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
                   i.material-icons-outlined.font-size-h1.text-muted.mr-2 visibility_off
                 a data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons.font-size-h1 get_app
+                  i.material-icons.font-size-h1.icon-hover get_app
             = render 'overture/shared/show_document', d: d
           = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
 /.row.mb-3.mt-5.ml-3
