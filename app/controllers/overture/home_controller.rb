@@ -12,6 +12,10 @@ class Overture::HomeController < ApplicationController
 
   end
 
+  def capitalization_table
+
+  end
+
   private
 
   def set_company
