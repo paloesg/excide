@@ -4,8 +4,6 @@
     ul
       - @workflow.errors.full_messages.each do |message|
         li = message
-= f.hidden_field(:workflowable_type, value: 'Client')
-= hidden_field_tag(:action_id, params[:action_id]) if params[:action_id]
 .row
   .col-md-6.col-sm-12
     .row
@@ -14,57 +12,9 @@
           h5.card-header Workflow Details
           .card-body
             .form-group
-              = f.label :remarks
-              = f.text_area :remarks, class: 'form-control'
-            .form-group
-              = f.label :deadline
-              = f.date_field :deadline, class: 'form-control'
-    .row
-      .col-sm-12
-        .form-group
-          .card
-            h5.card-header Data Attributes
-            .table-responsive
-              table.table
-                thead
-                  tr
-                    th Name
-                    th Value
-                    th
-                tbody.data-attributes
-                  tr
-                  = f.fields_for :data do |d|
-                    = render 'data_fields', f: d
-            .card-body
-              - if @user.has_role? :admin, @company
-                = link_to_add_fields "Add Attribute", f, :data
-  .col-md-6.col-sm-12
-    .row
-      .col-sm-12
-        .accordion#clientAccordion
-          .card
-            .card-header#headingOne
-              h2.mb-0
-                button.btn.text-primary type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" Existing Client
-            .collapse.show#collapseOne aria-labelledby="headingOne" data-parent="#clientAccordion"
-              .card-body
-                .form-group
-                  = f.label :workflowable_id, 'Client Name'
-                  = f.collection_select :workflowable_id, @clients, :id, :name, {include_blank: true}, class: 'select2 form-control'
-          - if @workflow.workflowable.blank?
-            .card
-              .card-header#headingTwo
-                h2.mb-0
-                  button.btn.text-primary.collapsed type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" New Client
-              .collapse#collapseTwo aria-labelledby="headingTwo" data-parent="#clientAccordion"
-                .card-body
-                  .form-group
-                    = f.fields_for :client do |c|
-                      .form-group
-                        = c.label :name, 'Client Name'
-                        = c.text_field :name, class: 'form-control'
+              = f.label :identifier, "Add contract name: "
+              = f.text_field :identifier, class: 'form-control'
 .row
   .col-sm-12
     = f.submit 'Save Workflow', class: 'btn btn-primary'
     '
-    = f.submit 'Save & Assign Tasks', name: 'assign', class: 'btn btn-primary'

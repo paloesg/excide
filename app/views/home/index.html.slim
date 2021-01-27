@@ -33,7 +33,14 @@
     - elsif product == "motif"
       .card.align-self-start.ml-6.mr-6
         .card-body
-          = image_pack_tag 'media/src/images/symphony/symphony-logo.svg', alt: "Logo_Symphony"
+          = image_pack_tag 'media/src/images/motif/motif-logo-no-text.svg', alt: "Logo_Motif"
           a.stretched-link.d-flex.justify-content-center href="motif"
           h3.d-flex.justify-content-center.mt-15 Motif
           h7.d-flex.justify-content-center.mt-5.mb-10 Franchise Management
+    - elsif product == "overture"
+      .card.align-self-start.ml-6.mr-6
+        .card-body
+          = image_pack_tag 'media/src/images/overture/overture.png', alt: "Logo_Overture"
+          a.stretched-link.d-flex.justify-content-center href="overture"
+          h3.d-flex.justify-content-center.mt-15 Overture
+          h7.d-flex.justify-content-center.mt-5.mb-10 Investor Management

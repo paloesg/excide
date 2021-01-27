@@ -1,3 +1,4 @@
+= content_for :title, t(".title", name: @template.title, identifier: @workflow.name)
 .row
   .col-md-10
     h2.mt-3.d-flex.align-items-center
@@ -19,7 +20,7 @@
       thead.thead-light
         tr
           th colspan="5" To Complete
-          th colspan="2" Due
+          th colspan="3" Due
       tbody
         / render different views based on template pattern
         = render "symphony/workflows/workflow_views/#{@template.template_pattern}"
@@ -68,7 +69,8 @@
                 i.material-icons-outlined.font-size-h6.ml-1.text-muted calendar_today
                 - color = "text-muted"
             td width="5%"
-              label.checkbox style=((wfa.completed? || (wfa.task != @current_task && @template.ordered?)) ? "pointer-events: none" : "")
-                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: @template.slug, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: wfa.completed
+              / Pointer event none if it is an ordered template, not current task and not completed. Completed wfa should be able to uncheck.
+              label.checkbox style=((!wfa.completed? && wfa.task != @current_task && @template.ordered?) ? "pointer-events: none" : "")
+                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_name: @template.slug, workflow_id: @workflow.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;"
                 span
           = render "task", template: @template, workflow: @workflow, action: wfa, index: index, color: color, task: @current_task

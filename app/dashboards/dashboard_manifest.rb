@@ -34,6 +34,7 @@ class DashboardManifest
     :sections,
     :tasks,
     :templates,
+    :topics,
     :users,
     :workflows,
     :workflow_actions,

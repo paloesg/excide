@@ -49,6 +49,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :documents,
     :batches,
     :invoices,
+    :company_type
   ]
 
   # SHOW_PAGE_ATTRIBUTES

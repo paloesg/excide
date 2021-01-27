@@ -8,6 +8,8 @@ class Company < ApplicationRecord
   tracked owner: ->(controller, model) { controller && controller.current_user }
 
   has_one :address, as: :addressable, dependent: :destroy
+  has_one :profile, dependent: :destroy
+
   has_many :batches, dependent: :destroy
   has_many :clients, dependent: :destroy
   has_many :contacts, dependent: :destroy
@@ -22,6 +24,7 @@ class Company < ApplicationRecord
   has_many :roles, as: :resource, dependent: :destroy
   has_many :survey_templates, dependent: :destroy
   has_many :templates, dependent: :destroy
+  has_many :topics, dependent: :destroy
   has_many :users, dependent: :destroy
   has_many :workflows, dependent: :destroy
   has_many :workflow_actions, dependent: :destroy
@@ -29,6 +32,12 @@ class Company < ApplicationRecord
   has_many :xero_line_items, dependent: :destroy
   has_many :xero_tracking_categories, dependent: :destroy
   has_many :departments, dependent: :destroy
+
+  # For overture association
+  has_many :investor_investments, foreign_key: :startup_id, class_name: "Investment"
+  has_many :investors, through: :investor_investments
+  has_many :startup_investments, foreign_key: :investor_id, class_name: "Investment"
+  has_many :startups, through: :startup_investments
 
   has_one_attached :company_logo
   has_one_attached :profile_logo
@@ -41,8 +50,11 @@ class Company < ApplicationRecord
   belongs_to :shared_service, class_name: 'User'
 
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
+  accepts_nested_attributes_for :profile, :reject_if => :all_blank, :allow_destroy => true
 
-  enum company_type: ["Exempt Private Company Limited By Shares", "Private Company Limited By Shares", "Public Company Limited By Guarantee", "Public Company Limited By Shares", "Unlimited Exempt Private Company", "Unlimited Public Company"]
+  # enum company_type: ["Exempt Private Company Limited By Shares", "Private Company Limited By Shares", "Public Company Limited By Guarantee", "Public Company Limited By Shares", "Unlimited Exempt Private Company", "Unlimited Public Company"]
+
+  enum company_type: { investor: 0, startup: 1 }
 
   enum account_type: { free_trial: 0, basic: 1, pro: 2 }
 

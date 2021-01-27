@@ -4,9 +4,11 @@
       label.checkbox
         = check_box_tag 'completed', wf.id, wf.completed, disabled: true
         span
-    td width="40%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+    td width="30%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
       = wf.name
-    td width="10%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+    td width="15%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
+      = wf.identifier
+    td width="5%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
       = "(" + (wf.workflow_actions.where(completed: true).count*100/wf.workflow_actions.count).to_s + "%)" if (wf.workflow_actions.present? && !wf.completed?)
     td width="10%" onclick="window.location='#{symphony_workflow_path(workflow_name: @template.slug, workflow_id: wf.id)}'"
       = wf.total_time_mins.to_s + "m" unless wf.total_time_mins == 0
@@ -24,4 +26,5 @@
       a href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
         i.fa.fa-ellipsis-h.text-secondary
       .dropdown-menu
+        .dropdown-item = link_to "Add contract name", edit_symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id)
         .dropdown-item = link_to "Delete", symphony_workflow_path(workflow_name: wf.template.slug, workflow_id: wf.id), data: { confirm: 'This will delete the cycle. Are you sure?'}, method: :delete

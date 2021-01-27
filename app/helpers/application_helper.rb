@@ -1,4 +1,15 @@
 module ApplicationHelper
+  def title
+    if content_for?(:title)
+      # allows the title to be set in the view by using t(".title")
+      content_for :title
+    else
+      # look up translation key based on controller path, action name and .title
+      # this works identical to the built-in lazy lookup
+      t("#{ controller_path.tr('/', '.') }.#{ action_name }.title", default: :site_name)
+    end
+  end
+
   def sortable(column, title=nil)
     arrow = params[:direction] == "asc" ? "fa fa-caret-down" : "fa fa-caret-up"
     css_class = column == params[:sort] ? "current #{arrow}" : nil

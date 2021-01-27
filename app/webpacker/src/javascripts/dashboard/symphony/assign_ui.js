@@ -4,7 +4,7 @@ window.assign = function(form_element) {
   let tableRow = formParent.parent().parent();
   $.ajax({
     type: 'PATCH',
-    url: '/workflow_actions/update/' + formJquery.data('action-id'),
+    url: '/symphony/workflow_actions/update/' + formJquery.data('action-id'),
     data: formJquery,
     dataType: 'JSON'
   }).done(function (data) {

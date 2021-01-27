@@ -1,6 +1,6 @@
-$(document).on("turbolinks:before-render", function () {
-  $("select.selectize")[0].selectize.destroy();
-});
+// $(document).on("turbolinks:before-render", function () {
+//   $("select.selectize")[0].selectize.destroy();
+// });
 $(document).on("turbolinks:load", function () {
   $(".select2-workflow-type").on("select2:select", function (e) {
     var data = e.params.data;
@@ -31,27 +31,27 @@ $(document).on("turbolinks:load", function () {
     );
   });
 
-  $(".tasks-filter-button").click(function (e) {
-    var tasks_select2 = $("select.select2-tasks").select2();
-    var created_at_select2 = $("select.select2-created-at").select2();
-    var types_select2 = $("select.select2-types").select2();
+  // $(".tasks-filter-button").click(function (e) {
+  //   var tasks_select2 = $("select.select2-tasks").select2();
+  //   var created_at_select2 = $("select.select2-created-at").select2();
+  //   var types_select2 = $("select.select2-types").select2();
 
-    var tasksData = tasks_select2[0].value;
-    var createdAtData = created_at_select2[0].value;
-    var typesData = types_select2[0].value;
+  //   var tasksData = tasks_select2[0].value;
+  //   var createdAtData = created_at_select2[0].value;
+  //   var typesData = types_select2[0].value;
 
-    Turbolinks.visit(
-      "//" +
-        location.host +
-        location.pathname +
-        "?tasks=" +
-        tasksData +
-        "&created_at=" +
-        createdAtData +
-        "&types=" +
-        typesData
-    );
-  });
+  //   Turbolinks.visit(
+  //     "//" +
+  //       location.host +
+  //       location.pathname +
+  //       "?tasks=" +
+  //       tasksData +
+  //       "&created_at=" +
+  //       createdAtData +
+  //       "&types=" +
+  //       typesData
+  //   );
+  // });
 
   $(".documents-filter-button").click(function (e) {
     var tags_select2 = $("select.select2-document-tags").select2({
@@ -78,65 +78,6 @@ $(document).on("turbolinks:load", function () {
         accessData +
         "&qna=" +
         qnaData
-    );
-  });
-
-  $(".activity-history-filter-button").click(function (e) {
-    var created_at_select2 = $("select.select2-created-at").select2();
-    var createdAtData = created_at_select2[0].value;
-    Turbolinks.visit(
-      "//" + location.host + location.pathname + "?created_at=" + createdAtData
-    );
-  });
-
-  if ($("#new-event.d-none")[0] == undefined) {
-    $("select.selectize").selectize({
-      onFocus: function () {
-        $(".selectize-input input").attr("style", "width: auto;");
-      },
-    });
-  }
-
-  $("select.event-type").selectize({
-    placeholder: "Choose event type",
-    plugins: ["remove_button"],
-    allowEmptyOption: true,
-    onFocus: function () {
-      $(".selectize-input input").attr("style", "width: auto;");
-    },
-  });
-
-  $("select.role-select-users").selectize({
-    plugins: ["remove_button"],
-    delimiter: " ",
-    persist: false,
-    create(input) {
-      return {
-        value: input,
-        text: input,
-      };
-    },
-  });
-
-  $(".conductor-filter-button").click(function (e) {
-    var allocationUserSelectize = $("select.allocation-users").selectize();
-    var eventTypeSelectize = $("select.event-type").selectize();
-    var projectClientSelectize = $("select.project-clients").selectize();
-
-    var projectClientData = projectClientSelectize[0].selectize.getValue();
-    var allocationUserData = allocationUserSelectize[0].selectize.getValue();
-    var eventTypeData = eventTypeSelectize[0].selectize.getValue();
-
-    Turbolinks.visit(
-      "//" +
-        location.host +
-        location.pathname +
-        "?event_types=" +
-        eventTypeData +
-        "&project_clients=" +
-        projectClientData +
-        "&allocation_users=" +
-        allocationUserData
     );
   });
 
@@ -179,6 +120,66 @@ $(document).on("turbolinks:load", function () {
         serviceLineData
     );
   });
+
+  // $(".activity-history-filter-button").click(function (e) {
+  //   var created_at_select2 = $("select.select2-created-at").select2();
+  //   var createdAtData = created_at_select2[0].value;
+  //   Turbolinks.visit(
+  //     "//" + location.host + location.pathname + "?created_at=" + createdAtData
+  //   );
+  // });
+
+  // if ($("#new-event.d-none")[0] == undefined) {
+  //   $("select.selectize").selectize({
+  //     onFocus: function () {
+  //       $(".selectize-input input").attr("style", "width: auto;");
+  //     },
+  //   });
+  // }
+
+  // $("select.event-type").selectize({
+  //   placeholder: "Choose event type",
+  //   plugins: ["remove_button"],
+  //   allowEmptyOption: true,
+  //   onFocus: function () {
+  //     $(".selectize-input input").attr("style", "width: auto;");
+  //   },
+  // });
+
+  // $("select.role-select-users").selectize({
+  //   plugins: ["remove_button"],
+  //   delimiter: " ",
+  //   persist: false,
+  //   create(input) {
+  //     return {
+  //       value: input,
+  //       text: input,
+  //     };
+  //   },
+  // });
+
+  // $(".conductor-filter-button").click(function (e) {
+  //   var allocationUserSelectize = $("select.allocation-users").selectize();
+  //   var eventTypeSelectize = $("select.event-type").selectize();
+  //   var projectClientSelectize = $("select.project-clients").selectize();
+
+  //   var projectClientData = projectClientSelectize[0].selectize.getValue();
+  //   var allocationUserData = allocationUserSelectize[0].selectize.getValue();
+  //   var eventTypeData = eventTypeSelectize[0].selectize.getValue();
+
+  //   Turbolinks.visit(
+  //     "//" +
+  //       location.host +
+  //       location.pathname +
+  //       "?event_types=" +
+  //       eventTypeData +
+  //       "&project_clients=" +
+  //       projectClientData +
+  //       "&allocation_users=" +
+  //       allocationUserData
+  //   );
+  // });
+
 
   $(".select2").select2({
     minimumResultsForSearch: 5,

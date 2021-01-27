@@ -151,12 +151,30 @@ Rails.application.routes.draw do
     get '/financial-performance', to: 'home#financial_performance'
     get '/edit-report', to: 'home#edit_report'
   end
-  
+
   namespace :overture do
-    root to: 'profiles#index'
+    root to: 'documents#index'
+    resources :companies
+    resources :investments
+    resources :permissions
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end
+    resources :documents do
+      member do
+        post 'toggle'
+      end
+    end
+    resources :folders do
+      member do
+        post 'toggle'
+      end
+    end
+    resources :topics do
+      resources :notes
+    end
+    resources :users
+    get '/financial-performance', to: 'home#financial_performance'
   end
 
   namespace :conductor do
