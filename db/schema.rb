@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_27_054103) do
+ActiveRecord::Schema.define(version: 2021_01_27_072210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -281,6 +281,8 @@ ActiveRecord::Schema.define(version: 2021_01_27_054103) do
     t.uuid "client_id"
     t.decimal "number_of_hours"
     t.uuid "company_id"
+    t.uuid "department_id"
+    t.index ["department_id"], name: "index_events_on_department_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
 
@@ -830,6 +832,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_054103) do
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
   add_foreign_key "events", "companies"
+  add_foreign_key "events", "departments"
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
   add_foreign_key "folders", "users"

@@ -3,6 +3,7 @@ class Event < ApplicationRecord
   belongs_to :company
   belongs_to :client
   belongs_to :event_type, class_name: 'EventType'
+  belongs_to :department
 
   has_one :address, as: :addressable, dependent: :destroy
   has_many :allocations, dependent: :destroy

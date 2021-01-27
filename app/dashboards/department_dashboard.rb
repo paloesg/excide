@@ -12,7 +12,7 @@ class DepartmentDashboard < Administrate::BaseDashboard
     name: Field::String,
     company: Field::BelongsTo,
     users: Field::HasMany,
-    allocations: Field::HasMany,
+    events: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -36,7 +36,7 @@ class DepartmentDashboard < Administrate::BaseDashboard
   name
   company
   users
-  allocations
+  events
   created_at
   updated_at
   ].freeze
@@ -48,7 +48,7 @@ class DepartmentDashboard < Administrate::BaseDashboard
   name
   company
   users
-  allocations
+  events
   ].freeze
 
   # COLLECTION_FILTERS
