@@ -4,7 +4,10 @@ class Overture::ProfilesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
 
+  after_action :verify_authorized
+
   def index
+    authorize Profile
     @profiles = Profile.all
     @profiles = Kaminari.paginate_array(@profiles).page(params[:page]).per(5)
   end

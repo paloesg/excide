@@ -8,6 +8,7 @@ class Overture::ContactsController < ApplicationController
   after_action :verify_authorized
 
   def index
+    authorize Contact
     # Only get investor's contact if they allow it to be public
     @contacts = Contact.where(searchable: true)
     @contact_statuses = ContactStatus.where(startup: @company)
