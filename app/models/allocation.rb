@@ -12,7 +12,7 @@ class Allocation < ApplicationRecord
   validates :event, :allocation_type, :allocation_date, :start_time, :end_time, presence: true
 
   def self.to_csv
-    attributes = ['S. S/N', 'Full Name', 'Department', 'Date', 'Client', 'Service Line', 'Hours Charged', 'Job Nature']
+    attributes = ['S. S/N', 'Full Name', 'Department', 'Date', 'Client', 'Job Function', 'Project', 'Task', 'Hours']
 
     CSV.generate do |csv|
       csv << attributes
@@ -26,10 +26,12 @@ class Allocation < ApplicationRecord
             allocation.user&.department&.name,
             allocation.allocation_date.strftime('%v'),
             allocation.event.client&.name,
+            # Service line is job function
+            allocation.event&.service_line_list&.last,
+            allocation.event&.project_list&.last,
+            # Event type is task
             allocation.event.event_type&.name,
-            # Find hours charged
-            allocation.event.number_of_hours,
-            allocation.event.service_line_list.present? ? allocation.event.service_line_list.last : 'Nil',    
+            allocation.event.number_of_hours,  
           ]
           csv << row
         end
