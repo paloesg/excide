@@ -28,6 +28,7 @@ class Company < ApplicationRecord
   has_many :xero_contacts, dependent: :destroy
   has_many :xero_line_items, dependent: :destroy
   has_many :xero_tracking_categories, dependent: :destroy
+  has_many :departments, dependent: :destroy
 
   has_one_attached :company_logo
   has_one_attached :profile_logo

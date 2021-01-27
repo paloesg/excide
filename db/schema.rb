@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_10_130027) do
+ActiveRecord::Schema.define(version: 2021_01_27_054103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -196,6 +196,10 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.json "products", default: []
     t.string "website_url"
     t.string "report_url"
+    t.string "ancestry"
+    t.integer "storage_limit"
+    t.integer "storage_used"
+    t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -211,6 +215,14 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "company_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
+  end
+
+  create_table "departments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_departments_on_company_id"
   end
 
   create_table "document_templates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -241,7 +253,9 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.uuid "folder_id"
     t.uuid "company_id"
     t.uuid "outlet_id"
+    t.uuid "franchisee_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
+    t.index ["franchisee_id"], name: "index_documents_on_franchisee_id"
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
@@ -290,6 +304,9 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.integer "renewal_period_freq_unit"
     t.integer "renewal_period_freq_value"
     t.uuid "company_id"
+    t.integer "license_type"
+    t.integer "max_outlet"
+    t.integer "min_outlet"
     t.index ["company_id"], name: "index_franchisees_on_company_id"
   end
 
@@ -303,6 +320,13 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
+  create_table "investments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "investor_id"
+    t.uuid "startup_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -336,6 +360,8 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "workflow_action_id"
+    t.boolean "approved"
+    t.string "remark"
     t.index ["user_id"], name: "index_notes_on_user_id"
     t.index ["workflow_action_id"], name: "index_notes_on_workflow_action_id"
   end
@@ -369,8 +395,8 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.string "contact"
-    t.uuid "company_id"
     t.string "report_url"
+    t.uuid "company_id"
     t.uuid "franchisee_id"
     t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
@@ -413,6 +439,8 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "url"
+    t.uuid "company_id"
+    t.index ["company_id"], name: "index_profiles_on_company_id"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -596,7 +624,9 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.bigint "user_id"
     t.integer "deadline_type"
     t.text "description"
+    t.uuid "folder_id"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
+    t.index ["folder_id"], name: "index_tasks_on_folder_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
@@ -622,6 +652,22 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.uuid "company_id"
     t.integer "template_type"
     t.index ["slug"], name: "index_templates_on_slug", unique: true
+  end
+
+  create_table "topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "subject_name"
+    t.integer "status"
+    t.integer "question_category"
+    t.bigint "user_id"
+    t.uuid "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "startup_id"
+    t.bigint "assigned_user_id"
+    t.index ["assigned_user_id"], name: "index_topics_on_assigned_user_id"
+    t.index ["company_id"], name: "index_topics_on_company_id"
+    t.index ["startup_id"], name: "index_topics_on_startup_id"
+    t.index ["user_id"], name: "index_topics_on_user_id"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
@@ -661,7 +707,9 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
     t.uuid "company_id"
     t.uuid "outlet_id"
     t.datetime "last_click_comm_hub"
+    t.uuid "department_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["outlet_id"], name: "index_users_on_outlet_id"
     t.index ["provider"], name: "index_users_on_provider"
@@ -770,11 +818,13 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
   add_foreign_key "companies", "users", column: "shared_service_id"
   add_foreign_key "contacts", "companies"
   add_foreign_key "contacts", "users", column: "created_by_id"
+  add_foreign_key "departments", "companies"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "folders"
+  add_foreign_key "documents", "franchisees"
   add_foreign_key "documents", "outlets"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
@@ -795,6 +845,7 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
   add_foreign_key "outlets_users", "users"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
+  add_foreign_key "profiles", "companies"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"
@@ -817,13 +868,19 @@ ActiveRecord::Schema.define(version: 2020_12_10_130027) do
   add_foreign_key "surveys", "workflows"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tasks", "document_templates"
+  add_foreign_key "tasks", "folders"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
   add_foreign_key "tasks", "survey_templates"
   add_foreign_key "tasks", "templates", column: "child_workflow_template_id"
   add_foreign_key "tasks", "users"
   add_foreign_key "templates", "companies"
+  add_foreign_key "topics", "companies"
+  add_foreign_key "topics", "companies", column: "startup_id"
+  add_foreign_key "topics", "users"
+  add_foreign_key "topics", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"
+  add_foreign_key "users", "departments"
   add_foreign_key "users", "outlets"
   add_foreign_key "workflow_actions", "companies"
   add_foreign_key "workflow_actions", "tasks"
