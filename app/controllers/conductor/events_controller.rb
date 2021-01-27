@@ -26,8 +26,15 @@ class Conductor::EventsController < ApplicationController
     #using tagged_with means can only search with 1 selected value
     @events = Event.tagged_with(params[:service_line]) unless params[:service_line].blank?
 
-    # Only show their own timesheet events unless they are admin or staffer, as the 2 can see all events
-    @events = @events.joins(:allocations).where(allocations: { user_id: @user.id }) unless @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
+    if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
+    @user_event_count = Hash.new
+      User.where(department: @user.department).each do |user|
+        @user_event_count[user.full_name] = @events.joins(:allocations).where(allocations: { user_id: user.id }).map(&:start_time).uniq.count
+      end
+    else
+      # Only show their own timesheet events unless they are admin or staffer, as the 2 can see all events
+      @events = @events.joins(:allocations).where(allocations: { user_id: @user.id })
+    end
 
     # Create new form in index page
     @event = Event.new

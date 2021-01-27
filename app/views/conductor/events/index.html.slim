@@ -2,11 +2,6 @@
   .col-md-6
     h1 Timesheet - #{@user.department&.name}
   .col-md-6
-    - if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
-      = link_to export_conductor_allocations_path(start_date: params[:start_date], end_date: params[:end_date]), target: "_blank", class: 'btn btn-primary float-right mr-1' do
-        i.material-icons-outlined get_app
-        span.ml-2 Export
-      = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1'
     button.btn.btn-primary.float-right.mr-1 data-target="#newEventUploads" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white publish
       span.ml-2 Upload
@@ -26,6 +21,30 @@
                     = file_field_tag :file, class: "custom-file-input"
                   = submit_tag "Import", class: "btn btn-primary form-control mt-5"
     = link_to 'New Task', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1'
+    - if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
+      = link_to export_conductor_allocations_path(start_date: params[:start_date], end_date: params[:end_date]), target: "_blank", class: 'btn btn-primary float-right mr-1' do
+        i.material-icons-outlined get_app
+        span.ml-2 Export
+      = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1'
+      a.float-right.mr-5.mt-2 data-target="#checkUsers" data-toggle="modal" type="button"
+        i.material-icons-outlined groups
+      #checkUsers.modal.fade aria-hidden="true" aria-labelledby="checkUsers" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5.modal-title Timesheet days submitted
+              button.close aria-label="Close" data-dismiss="modal" type="button"
+                span aria-hidden="true"  &times;
+            .modal-body
+              .row.mt-3
+                .col-md-12
+                  table.table
+                    th Name
+                    th No. of days
+                    - @user_event_count.each do |key, value|
+                      tr
+                        td = key.to_s
+                        td = value.to_s
 .row.mt-5
   .col-md-12.m-2
     .col-md-1.float-left.mt-3.px-0
