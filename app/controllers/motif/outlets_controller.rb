@@ -109,7 +109,7 @@ class Motif::OutletsController < ApplicationController
   end
 
   def assigned_tasks
-    @outlet = @company.outlets.find(params[:outlet_id])
+    @outlet = Outlet.find(params[:outlet_id])
     @workflows = @outlet.workflows
   end
 
