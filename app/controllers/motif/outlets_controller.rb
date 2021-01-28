@@ -13,7 +13,8 @@ class Motif::OutletsController < ApplicationController
     @outlet = Outlet.new
     build_franchisee
     @existing_users = @company.users
-    @existing_franchisees = @company.franchisees
+    # Query all franchisees where franchise_licensee is not blank (blank franchisees are created from direct owned outlet)
+    @existing_franchisees = @company.franchisees.where.not(franchise_licensee: "")
   end
 
   def new
