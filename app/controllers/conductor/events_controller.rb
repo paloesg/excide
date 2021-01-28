@@ -29,7 +29,9 @@ class Conductor::EventsController < ApplicationController
     if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
     @user_event_count = Hash.new
       User.where(department: @user.department).each do |user|
-        @user_event_count[user.full_name] = @events.joins(:allocations).where(allocations: { user_id: user.id }).map(&:start_time).uniq.count
+        @user_event_count[user.full_name] = []
+        @user_event_count[user.full_name] << @events.joins(:allocations).where(allocations: { user_id: user.id }).map(&:start_time).uniq.count
+        @user_event_count[user.full_name] << @events.joins(:allocations).where(allocations: { user_id: user.id }).map(&:number_of_hours).sum.to_i
       end
     else
       # Only show their own timesheet events unless they are admin or staffer, as the 2 can see all events

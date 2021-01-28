@@ -30,7 +30,7 @@
         .modal-dialog role="document"
           .modal-content
             .modal-header
-              h5.modal-title Timesheet days submitted
+              h5.modal-title Timesheet submitted
               button.close aria-label="Close" data-dismiss="modal" type="button"
                 span aria-hidden="true"  &times;
             .modal-body
@@ -39,10 +39,12 @@
                   table.table
                     th Name
                     th No. of days
+                    th No. of hours
                     - @user_event_count.each do |key, value|
                       tr
                         td = key.to_s
-                        td = value.to_s
+                        td = value[0].to_s
+                        td = value[1].to_s
 .row.mt-5
   .col-md-12.m-2
     .col-md-1.float-left.mt-3.px-0
