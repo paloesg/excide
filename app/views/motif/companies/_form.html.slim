@@ -2,7 +2,7 @@
   .col-sm-12
     .btn-toolbar.float-right.ml-5
       = f.submit 'Save', class: 'btn btn-primary mr-3 px-5'
-    h3 Brand Information
+    h3 = get_franchisee ? "Company Information" : "Brand Information"
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .form-group
