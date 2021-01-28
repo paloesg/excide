@@ -30,26 +30,14 @@ class Motif::OutletsController < ApplicationController
     else
       @user = User.find(params[:user_id])
     end
-    # Add existing franchisee to outlet
-    if params[:franchisee_id].present?
-      @franchisee = Franchisee.find(params[:franchisee_id])
-      # Link franchisee to outlet
-      @outlet.franchisee = @franchisee
-      # Link franchisee company to outlet by finding company of the franchisee name, unless it is an unit franchisee
-      unless @franchisee.unit_franchisee?
-        @outlet.company = Company.find_by(name: @franchisee.franchise_licensee)
-      else
-        # Link franchisor company to outlet
-        @outlet.company = @company
-      end
-    else
-      # Link franchisor company to outlet
-      @outlet.company = @company
-    end
+    # Link franchisor company to outlet
+    @outlet.company = @company
     # Add role franchisee_owner to this new user
     @user.add_role(:franchisee_owner, @user.company)
     respond_to do |format|
       if @outlet.save
+        # Clone template for outlet when saved. Check if user added unit franchisee or direct outlet. Unit franchisee should clone template to it's company (could be MF) while direct outlet clone straight to parent company if available
+        @outlet.clone_templates_for_outlet(params[:outlet][:franchisee_attributes].present? ? "unit_franchisee" : "direct_owned")
         # Save outlet to user
         @user.outlets << @outlet
         # Set active outlet to the new saved outlet
