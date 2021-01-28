@@ -13,7 +13,7 @@ class CompaniesController < ApplicationController
 
   def new
     @company = Company.new
-    @motif_companies = Company.all.filter_map{ |c| [c.name, c.id] if c.products.include? "motif" }
+    @motif_companies = Company.all.filter_map{ |c| [c.name, c.id] if c.products&.include? "motif" }
     authorize @company
   end
 
