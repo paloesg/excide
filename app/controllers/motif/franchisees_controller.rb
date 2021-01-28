@@ -24,7 +24,7 @@ class Motif::FranchiseesController < ApplicationController
 
   def show
     # Check franchisee license type
-    @sub_franchisees = @franchisee.check_license_type_master_or_area? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees : []
+    @sub_franchisees = @franchisee.check_license_type_master_or_area? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees.where.not(franchise_licensee: "") : []
   end
 
   def outlets
