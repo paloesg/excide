@@ -1,13 +1,50 @@
 .row
   .col-md-6
-    h1 Timesheet
+    h1 Timesheet - #{@user.department&.name}
   .col-md-6
+    button.btn.btn-primary.float-right.mr-1 data-target="#newEventUploads" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white publish
+      span.ml-2 Upload
+    #newEventUploads.modal.fade aria-hidden="true" aria-labelledby="newEventUploads" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5.modal-title Upload Documents
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true"  &times;
+          .modal-body
+            .row.mt-3
+              .col-md-12
+                = form_tag import_conductor_events_path, multipart: true do
+                  .custom-file
+                    label.custom-file-label  Choose file
+                    = file_field_tag :file, class: "custom-file-input"
+                  = submit_tag "Import", class: "btn btn-primary form-control mt-5"
     - if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
-      = link_to export_conductor_allocations_path(start_date: params[:start_date], end_date: params[:end_date]), target: "_blank", class: 'btn btn-primary float-right mr-1' do
+      = link_to export_conductor_allocations_path(start_date: params[:start_date], end_date: params[:end_date]), target: "_blank", class: 'btn btn-warning float-right mr-2' do
         i.material-icons-outlined get_app
-        span.ml-2 Export
-      = link_to 'Job Nature', conductor_event_types_path, role: 'button', class: 'btn btn-success float-right mr-1' 
-    = link_to 'New Task', new_conductor_event_path, role: 'button', class: 'btn btn-warning float-right mr-1'
+        span.ml-2 Download
+      a.float-right.mr-5.mt-2 data-target="#checkUsers" data-toggle="modal" type="button"
+        i.material-icons-outlined groups
+      #checkUsers.modal.fade aria-hidden="true" aria-labelledby="checkUsers" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5.modal-title Timesheet submitted
+              button.close aria-label="Close" data-dismiss="modal" type="button"
+                span aria-hidden="true"  &times;
+            .modal-body
+              .row.mt-3
+                .col-md-12
+                  table.table
+                    th Name
+                    th No. of days
+                    th No. of hours
+                    - @user_event_count.each do |key, value|
+                      tr
+                        td = key.to_s
+                        td = value[0].to_s
+                        td = value[1].to_s
 .row.mt-5
   .col-md-12.m-2
     .col-md-1.float-left.mt-3.px-0
@@ -39,7 +76,9 @@ hr
       .mr-2
         = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id}, { class: 'select2', required: true, include_blank: true, data: {"placeholder": 'Select client...' }}
       .mr-2
-        = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), {include_blank: true, required: true, class: 'select2', data: {"placeholder": 'Select service line...' }}
+        = select_tag :project, options_for_select(@projects, selected: @event.project_list), {include_blank: true, required: true, class: 'select2', data: {"placeholder": 'Select project...' }}
+      .mr-2
+        = select_tag :service_line, options_for_select(@service_lines, selected: @event.service_line_list), {include_blank: true, required: true, class: 'select2', data: {"placeholder": 'Select service line...' }}
       .mr-2
         = f.select :event_type_id, EventType.all.map { |key, value| [key.name, key.id] }.sort, {selected: @event.event_type_id}, { class: 'select2', required: true , include_blank: true, data: {"placeholder": 'Select job nature...' }}
       .mr-2
@@ -55,9 +94,10 @@ hr
             th
             th Date
             th Client
-            th Service Line
+            th Job Function
+            th Project
             th
-              | Activity Task
+              | Task
               a.ml-2 data-container="body" title="Job nature of your task" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
                   i.fa.fa-info-circle
             th 
@@ -71,28 +111,30 @@ hr
             = form_for event, url: conductor_event_path(event.id), remote: true do |f|
               tr
                 - if event.allocations.present?
-                  td.text-center width="5%"
+                  td.text-center width="3%"
                     .avatar-circle data-container="body" data-placement="bottom" data-toggle="tooltip" title=(event.allocations[0].user.full_name)
                       span.initials
                         = "#{event.allocations[0].user.first_name[0]}#{event.allocations[0].user&.last_name[0]}"
                 - else
                   td
-                td width="15%"
+                td width="10%"
                   = f.date_field :start_time, { class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
+                td width="12%"
+                  = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'select2 form-control', id: 'event_' + event.id + '_client', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
-                  = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'select2', id: 'event_' + event.id + '_client', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
+                  = f.select :service_line_list, @service_lines.map { |sl| [sl, sl]}, { selected: event.service_lines.last, prompt: 'Select service line...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_service_line_list', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
+                td width="12%"
+                  = f.select :project_list, @projects.map { |sl| [sl, sl]}, { selected: event.projects.last, prompt: 'Select project...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_project', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
-                  = f.select :tag_list, @service_lines.map { |sl| [sl, sl]}, { selected: event.tags.last, prompt: 'Select service line...' }, { class: 'select2', id: 'event_' + event.id + '_tag_list', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
-                td width="20%"
-                  = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}.sort, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'select2', id: 'event_' + event.id + '_event_type', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
+                  = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}.sort, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'select2 form-control', id: 'event_' + event.id + '_event_type', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
                 td width="15%"
-                  = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control col-sm-12', data: { event_id: event.id }, onchange: "eventsUpdate(this);"}
+                  = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this);"}
                 td.p-0 width="5%"
                   .dropdown.dropdown-inline.float-right
                     a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                       i.fa.fa-ellipsis-h.text-secondary
                     .dropdown-menu.dropdown-menu-right
                       .dropdown-item = link_to "Delete", conductor_event_path(event), method: :delete, data: {confirm: "Are you sure you want to delete task?"}
-                td width="5%"
+                td width="3%"
                   = fa_icon "check", class: 'text-success ajax-icons'
                   = fa_icon "times", class: 'text-danger ajax-icons'

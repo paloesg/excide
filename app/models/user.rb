@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   belongs_to :company
   belongs_to :active_outlet, :class_name => "Outlet", :foreign_key => "outlet_id"
+  belongs_to :department
 
   has_one :address, as: :addressable, dependent: :destroy
 

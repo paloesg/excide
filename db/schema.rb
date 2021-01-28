@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_12_161239) do
+ActiveRecord::Schema.define(version: 2021_01_27_072210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -217,6 +217,14 @@ ActiveRecord::Schema.define(version: 2021_01_12_161239) do
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end
 
+  create_table "departments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_departments_on_company_id"
+  end
+
   create_table "document_templates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -273,6 +281,8 @@ ActiveRecord::Schema.define(version: 2021_01_12_161239) do
     t.uuid "client_id"
     t.decimal "number_of_hours"
     t.uuid "company_id"
+    t.uuid "department_id"
+    t.index ["department_id"], name: "index_events_on_department_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
 
@@ -387,8 +397,8 @@ ActiveRecord::Schema.define(version: 2021_01_12_161239) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.string "contact"
-    t.uuid "company_id"
     t.string "report_url"
+    t.uuid "company_id"
     t.uuid "franchisee_id"
     t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
@@ -699,7 +709,9 @@ ActiveRecord::Schema.define(version: 2021_01_12_161239) do
     t.uuid "company_id"
     t.uuid "outlet_id"
     t.datetime "last_click_comm_hub"
+    t.uuid "department_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["outlet_id"], name: "index_users_on_outlet_id"
     t.index ["provider"], name: "index_users_on_provider"
@@ -808,6 +820,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_161239) do
   add_foreign_key "companies", "users", column: "shared_service_id"
   add_foreign_key "contacts", "companies"
   add_foreign_key "contacts", "users", column: "created_by_id"
+  add_foreign_key "departments", "companies"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
@@ -819,6 +832,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_161239) do
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
   add_foreign_key "events", "companies"
+  add_foreign_key "events", "departments"
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
   add_foreign_key "folders", "users"
@@ -869,6 +883,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_161239) do
   add_foreign_key "topics", "users"
   add_foreign_key "topics", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"
+  add_foreign_key "users", "departments"
   add_foreign_key "users", "outlets"
   add_foreign_key "workflow_actions", "companies"
   add_foreign_key "workflow_actions", "tasks"
