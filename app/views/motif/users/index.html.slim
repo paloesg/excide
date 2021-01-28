@@ -13,11 +13,13 @@
               .row.mt-3
                 .col-md-12
                   .form-group
-                    = f.text_field :email, placeholder: 'Email', class: 'form-control'
+                    = f.text_field :email, required: true, placeholder: 'Email', class: 'form-control'
                   .form-group
-                    = f.text_field :first_name, placeholder: 'First Name', class: 'form-control'
+                    = f.text_field :first_name, required: true, placeholder: 'First Name', class: 'form-control'
                   .form-group
-                    = f.text_field :last_name, placeholder: 'Last Name', class: 'form-control'
+                    = f.text_field :last_name, required: true, placeholder: 'Last Name', class: 'form-control'
+                  .form-group
+                    = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }), prompt: "Choose role", required: true, class: 'select2', style: 'width: 100%'
               .row
                 .col-md-12
                   = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
@@ -36,7 +38,7 @@
             tr.border-bottom
               td.border-top-0 = u.full_name
               td = u.email
-              td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.motif_roles(@company).id if u.motif_roles(@company).present?)), include_blank: true, required: true, class: 'select2 motif-select-user-types', id: "#{u.id}",style: 'width: 100%'
+              td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.motif_roles(@company).id if u.motif_roles(@company).present?)), include_blank: true, disabled: true, class: 'select2 motif-select-user-types', id: "#{u.id}",style: 'width: 100%'
               td
                 .dropdown
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
