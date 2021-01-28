@@ -92,10 +92,10 @@ hr
             th
             th Date
             th Client
+            th Job Function
             th Project
-            th Service Line
             th
-              | Activity Task
+              | Task
               a.ml-2 data-container="body" title="Job nature of your task" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
                   i.fa.fa-info-circle
             th 
@@ -119,10 +119,10 @@ hr
                   = f.date_field :start_time, { class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
                 td width="12%"
                   = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: event.client_id, prompt: 'Select client...'}, { class: 'select2 form-control', id: 'event_' + event.id + '_client', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
-                td width="12%"
-                  = f.select :project_list, @projects.map { |sl| [sl, sl]}, { selected: event.projects.last, prompt: 'Select project...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_project', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
                   = f.select :service_line_list, @service_lines.map { |sl| [sl, sl]}, { selected: event.service_lines.last, prompt: 'Select service line...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_service_line_list', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
+                td width="12%"
+                  = f.select :project_list, @projects.map { |sl| [sl, sl]}, { selected: event.projects.last, prompt: 'Select project...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_project', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
                   = f.select :event_type_id, EventType.all.map {|event_type| [event_type.name, event_type.id]}.sort, {selected: event.event_type_id, prompt: 'Select job nature...'}, { class: 'select2 form-control', id: 'event_' + event.id + '_event_type', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
                 td width="15%"
