@@ -24,7 +24,7 @@ class CompaniesController < ApplicationController
     @company.products = params[:products]
     if @company.save
       # If ancestry present, set default record of franchisee
-      set_default_franchisee if params[:company][:ancestry].present?
+      set_default_franchisee(params[:license_type]) if params[:company][:ancestry].present?
       set_company_roles
       set_default_folders
       set_default_templates
@@ -120,9 +120,9 @@ class CompaniesController < ApplicationController
     end
   end
 
-  def set_default_franchisee
+  def set_default_franchisee(license_type)
     # By default, create franchisee record when creating the entity (company) and set franchisee type as master franchisee
-    Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: "master_franchisee")
+    Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: license_type)
   end
 
   def remove_company_roles

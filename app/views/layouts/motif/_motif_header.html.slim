@@ -48,7 +48,7 @@
       - if get_franchisee.present?
         .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-#{get_franchisee.license_type}"
           = get_franchisee.license_type.titleize + " of " + get_franchisee.company.name
-      - elsif current_user.has_role?(:franchisor, current_user.company)
+      - elsif current_user.has_role?(:franchisor, current_user.company) or current_user.has_role?(:superadmin)
         .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles" Franchisor
       - else
         .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles"
