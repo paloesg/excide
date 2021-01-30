@@ -39,7 +39,7 @@ class Conductor::HomeController < ApplicationController
     @clients = Client.where(company_id: @company.id)
     @staffers = User.where(company: @company).with_role :staffer, @company
 
-    @service_lines = ['NA', 'Virtual Financial Analysis', 'Financial Function Outsourcing', 'Fundraising Advisory', 'Exit Planning', 'Digital Implementation', 'Digital Strategy']
+    @service_lines = ActsAsTaggableOn::Tag.for_context(:service_lines).map(&:name).sort
     # Choose users to allocate to timesheet in events create
     @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq
   end

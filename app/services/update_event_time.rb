@@ -44,9 +44,9 @@ class UpdateEventTime
 
   def update_event_tag
     # Remove all tags
-    @event.tags = []
+    @event.service_lines = []
     # Add new updated tag
-    @event.tag_list.add(@service_line)
+    @event.service_line_list.add(@service_line)
   end
 
   def update_allocation(allocation)

@@ -35,14 +35,15 @@ require("./conductor/go_to_allocation");
 require("./conductor/event_update");
 // require("./components/calendar_style");
 
-require("./motif/drawer")
-require("./motif/home")
-require("./motif/remarks")
-require("./motif/settings")
-require("./motif/templates")
-require("./motif/note")
+require("./motif/drawer");
+require("./motif/home");
+require("./motif/remarks");
+require("./motif/settings");
+require("./motif/templates");
+require("./motif/note");
 
-require("./overture/drawer")
+require("./overture/drawer");
+require("./overture/update_contact_status");
 
 // Import Uppy drag-and-drop
 require("./components/uppy");
@@ -54,3 +55,5 @@ require("./components/document_popover");
 require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");
 require("./components/date_time_picker");
+require("./components/draggable");
+

@@ -153,13 +153,19 @@ Rails.application.routes.draw do
   end
 
   namespace :overture do
-    root to: 'documents#index'
+    root to: 'home#index'
     resources :companies
     resources :investments
     resources :permissions
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end
+    resources :contacts do
+      scope module: 'contacts' do
+        resources :notes
+      end
+    end
+    resources :contact_statuses
     resources :documents do
       member do
         post 'toggle'
@@ -171,10 +177,13 @@ Rails.application.routes.draw do
       end
     end
     resources :topics do
-      resources :notes
+      scope module: 'topics' do
+        resources :notes
+      end
     end
     resources :users
-    get '/financial-performance', to: 'home#financial_performance'
+    get '/financial_performance', to: 'home#financial_performance'
+    get '/capitalization_table', to: 'home#capitalization_table'
   end
 
   namespace :conductor do
@@ -188,6 +197,7 @@ Rails.application.routes.draw do
     resources :events do
       collection do
         get :history, to: 'events#activities', as: :activities
+        post :import, to: 'events#import'
       end
       member do
         get '/create-allocations/:type/:count', to: 'events#create_allocations', as: :create_allocations
