@@ -27,31 +27,16 @@ class Overture::PermissionsController < ApplicationController
   def update
     # Store the condition in a hash, and then update the permission using the hash's results
     access_changes = {}
+    # params comes from access_control.js which indicates which permission icon the user clicked
     if params[:status] == "view"
-      if @permission.can_view?
-        # Disable view access will disable all types of permission
-        access_changes['status'] = { can_view: false, can_download: false, can_write: false }
-      else
-        # Enable view access
-        access_changes['status'] = { can_view: true, can_download: @permission.can_download, can_write: @permission.can_write }
-      end
+      # If permission is currently can_view, disable view access. Vice versa
+      access_changes['status'] = @permission.can_view? ? { can_view: false, can_download: false, can_write: false } : { can_view: true, can_download: @permission.can_download, can_write: @permission.can_write }
     elsif params[:status] == "download"
-      if @permission.can_download?
-        # Will disable download and write access, keeping view access unchanged
-        access_changes['status'] = { can_view: @permission.can_view, can_download: false, can_write: false }
-      else
-        # Enable download access will enable view access
-        access_changes['status'] = { can_view: true, can_download: true, can_write: @permission.can_write}
-      end
-    # Write access
+      # Similarly for download access
+      access_changes['status'] = @permission.can_download? ? { can_view: @permission.can_view, can_download: false, can_write: false } : { can_view: true, can_download: true, can_write: @permission.can_write}
     else
-      if @permission.can_write?
-        # Disable write access
-        access_changes['status'] = { can_view: @permission.can_view, can_download: @permission.can_download, can_write: false }
-      else
-        # Enable write access will enable all access
-        access_changes['status'] = { can_write: true, can_view: true, can_download: true }
-      end
+      # Similar for write access
+      access_changes['status'] = @permission.can_write? ? { can_view: @permission.can_view, can_download: @permission.can_download, can_write: false } : { can_write: true, can_view: true, can_download: true }
     end
     respond_to do |format|
       if @permission.update(can_view: access_changes['status'][:can_view], can_download: access_changes['status'][:can_download], can_write: access_changes['status'][:can_write])
