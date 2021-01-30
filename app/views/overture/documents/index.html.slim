@@ -121,19 +121,20 @@
                   a.permission-icon data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="view"
                     i.material-icons-outlined.font-size-h1.icon-hover.cursor-pointer.mr-2 visibility
                 - else
-                  a.permission-icon data-container="body" title="Disable download<br/>access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission&.id}" data-status="view"
+                  / Pass in role id for creating permission and permissible ID data attr
+                  a.permission-icon id="#{role.id}" data-permissible-id="#{folder.id}" data-permissible-type="folder" data-container="body" title="Disable download<br/>access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission&.id}" data-status="view"
                     i.material-icons-outlined.font-size-h1.text-muted.cursor-pointer.mr-2 visibility_off
                 - if permission&.can_download?
                   a.permission-icon data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="download"
                     i.material-icons.font-size-h1.icon-hover.cursor-pointer.mr-2 get_app
                 - else
-                  a.permission-icon data-container="body" title="Give view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-status="download" data-permission-id="#{permission&.id}"
+                  a.permission-icon id="#{role.id}" data-permissible-id="#{folder.id}" data-permissible-type="folder" data-container="body" title="Give view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-status="download" data-permission-id="#{permission&.id}"
                     i.material-icons.font-size-h1.text-muted.cursor-pointer.mr-2 file_download_off
                 - if permission&.can_write?
                   a.permission-icon data-container="body" title="Disable full access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="write"
                     i.material-icons-outlined.font-size-h1.icon-hover.cursor-pointer edit
                 - else
-                  a.permission-icon data-container="body" title="Give full access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-status="write" data-permission-id="#{permission&.id}"
+                  a.permission-icon id="#{role.id}" data-permissible-id="#{folder.id}" data-permissible-type="folder" data-container="body" title="Give full access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-status="write" data-permission-id="#{permission&.id}"
                     i.material-icons-outlined.font-size-h1.text-muted.cursor-pointer edit_off
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
@@ -159,12 +160,26 @@
                   .dropdown-item = link_to "Delete", overture_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
             - @roles.each do |role|
               td
-                a data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons-outlined.font-size-h1.icon-hover.cursor-pointer.mr-2 visibility
-                /a data-container="body" title="Disable download<br/>access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons-outlined.font-size-h1.text-muted.mr-2 visibility_off
-                a data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons.font-size-h1.icon-hover.cursor-pointer get_app
+                - permission = role.permissions.find_by(permissible: d)
+                - if permission&.can_view?
+                  a.permission-icon data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="view"
+                    i.material-icons-outlined.font-size-h1.icon-hover.cursor-pointer.mr-2 visibility
+                - else
+                  / Pass in role id for creating permission and permissible ID data attr
+                  a.permission-icon id="#{role.id}" data-permissible-id="#{d.id}" data-permissible-type="document" data-container="body" title="Disable download<br/>access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission&.id}" data-status="view"
+                    i.material-icons-outlined.font-size-h1.text-muted.cursor-pointer.mr-2 visibility_off
+                - if permission&.can_download?
+                  a.permission-icon data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="download"
+                    i.material-icons.font-size-h1.icon-hover.cursor-pointer.mr-2 get_app
+                - else
+                  a.permission-icon id="#{role.id}" data-permissible-id="#{d.id}" data-permissible-type="document" data-container="body" title="Give view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-status="download" data-permission-id="#{permission&.id}"
+                    i.material-icons.font-size-h1.text-muted.cursor-pointer.mr-2 file_download_off
+                - if permission&.can_write?
+                  a.permission-icon data-container="body" title="Disable full access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="write"
+                    i.material-icons-outlined.font-size-h1.icon-hover.cursor-pointer edit
+                - else
+                  a.permission-icon id="#{role.id}" data-permissible-id="#{d.id}" data-permissible-type="document" data-container="body" title="Give full access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-status="write" data-permission-id="#{permission&.id}"
+                    i.material-icons-outlined.font-size-h1.text-muted.cursor-pointer edit_off
             = render 'overture/shared/show_document', d: d
           = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
 /.row.mb-3.mt-5.ml-3

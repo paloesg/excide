@@ -16,7 +16,16 @@ $(document).on("turbolinks:load", function () {
       });
     }
     else{
-      console.log("NO permission data")
+      $.post("/overture/permissions", {
+        authenticity_token: $.rails.csrfToken(),
+        role_id: this.id,
+        status: $(this).data("status"),
+        permissible_id: $(this).data("permissible-id"),
+        permissible_type: $(this).data("permissible-type"),
+      }).done(function(result){
+        const linkTo = result["link_to"];
+        Turbolinks.visit(linkTo);
+      });
     }
   })
 });
