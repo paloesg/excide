@@ -182,7 +182,7 @@ Rails.application.routes.draw do
       end
     end
     resources :users
-    get '/financial-performance', to: 'home#financial_performance'
+    get '/financial_performance', to: 'home#financial_performance'
     get '/capitalization_table', to: 'home#capitalization_table'
   end
 
