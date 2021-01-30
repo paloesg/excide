@@ -29,6 +29,7 @@ class Company < ApplicationRecord
   has_many :xero_contacts, dependent: :destroy
   has_many :xero_line_items, dependent: :destroy
   has_many :xero_tracking_categories, dependent: :destroy
+  has_many :departments, dependent: :destroy
 
   # For overture association
   has_one :profile, dependent: :destroy
