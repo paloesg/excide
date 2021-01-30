@@ -414,8 +414,8 @@ ActiveRecord::Schema.define(version: 2021_01_30_012214) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.string "contact"
-    t.uuid "company_id"
     t.string "report_url"
+    t.uuid "company_id"
     t.uuid "franchisee_id"
     t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"

@@ -197,6 +197,7 @@ Rails.application.routes.draw do
     resources :events do
       collection do
         get :history, to: 'events#activities', as: :activities
+        post :import, to: 'events#import'
       end
       member do
         get '/create-allocations/:type/:count', to: 'events#create_allocations', as: :create_allocations
