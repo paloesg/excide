@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_27_072210) do
+ActiveRecord::Schema.define(version: 2021_01_30_012214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -196,6 +196,11 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
     t.json "products", default: []
     t.string "website_url"
     t.string "report_url"
+    t.string "cap_table_url"
+    t.string "ancestry"
+    t.integer "storage_limit"
+    t.integer "storage_used"
+    t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -263,7 +268,9 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
     t.uuid "folder_id"
     t.uuid "company_id"
     t.uuid "outlet_id"
+    t.uuid "franchisee_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
+    t.index ["franchisee_id"], name: "index_documents_on_franchisee_id"
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
@@ -314,6 +321,11 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
     t.integer "renewal_period_freq_unit"
     t.integer "renewal_period_freq_value"
     t.uuid "company_id"
+    t.integer "license_type"
+    t.integer "max_outlet"
+    t.integer "min_outlet"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_franchisees_on_company_id"
   end
 
@@ -631,7 +643,9 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
     t.bigint "user_id"
     t.integer "deadline_type"
     t.text "description"
+    t.uuid "folder_id"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
+    t.index ["folder_id"], name: "index_tasks_on_folder_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
@@ -832,6 +846,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "folders"
+  add_foreign_key "documents", "franchisees"
   add_foreign_key "documents", "outlets"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
@@ -876,6 +891,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
   add_foreign_key "surveys", "workflows"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tasks", "document_templates"
+  add_foreign_key "tasks", "folders"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
   add_foreign_key "tasks", "survey_templates"
