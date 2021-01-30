@@ -8,7 +8,7 @@
     - unless current_user.has_role?(:franchisee_owner, current_user.company)
       li.nav-item.hover-blue.py-1.m-4
         = link_to edit_motif_company_path(current_user.company), class: 'col-sm-12 d-flex align-items-center' do
-          .ml-2.sidebar-font Brand Information
+          .ml-2.sidebar-font = get_franchisee ? "Company Information" : "Brand Information"
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_users_path, class: 'col-sm-12 d-flex align-items-center' do
           .ml-2.sidebar-font Users

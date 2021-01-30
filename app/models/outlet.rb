@@ -14,9 +14,7 @@ class Outlet < ApplicationRecord
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
   accepts_nested_attributes_for :franchisee, :reject_if => :all_blank, :allow_destroy => true
 
-  after_create :clone_templates_for_outlet
-
-  def clone_templates_for_outlet
+  def clone_templates_for_outlet(type)
     # Get the company level's template (in case there are any updates to these templates)
     motif_onboarding_template = Template.find_by(title: "Onboarding - #{self.company.name}")
     motif_site_audit_template = Template.find_by(title: "Site Audit - #{self.company.name}")
@@ -27,7 +25,11 @@ class Outlet < ApplicationRecord
         cloned_template = template.deep_clone include: { sections: :tasks }
         cloned_template.title = "#{template.template_type.titleize} - #{self.name}"
         # Clone template should belong to MF/AF's parent company (which is the franchisor). If it is unit franchisee, then it is just self.company since they do not have a company entity
-        cloned_template.company = self.company.parent.present? ? self.company.parent : self.company
+        if type == "unit_franchisee"
+          cloned_template.company = self.company
+        else
+          cloned_template.company = self.company.parent.present? ? self.company.parent : self.company
+        end
         # The code below does not clone folders at the moment because it will find the parent company's folder.
         cloned_template.tasks.each { |task| task.clone_folder(cloned_template.company) }
         cloned_template.save

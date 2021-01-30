@@ -93,19 +93,16 @@
           | Add products
       .card-body
         .form-group
-          = check_box_tag 'products[]', 'symphony', @company.products.include?("symphony") ? true : false, class: 'mr-3'
-          = label_tag 'Symphony', 'Symphony', class: 'form-check-label'
-        .form-group
           = check_box_tag 'products[]', 'motif', @company.products.include?("motif") ? true : false, class: 'mr-3'
           = label_tag 'Motif', 'Motif', class: 'form-check-label'
-        .form-group
-          = check_box_tag 'products[]', 'overture', @company.products.include?("overture") ? true : false, class: 'mr-3'
-          = label_tag 'Overture', 'Overture', class: 'form-check-label'
     .card.card-custom.mt-4
       .card-header
         .card-title
-          | Add franchisor's company (For Creating Master Franchisee's Company)
+          | Add Franchisee
       .card-body
+        .form-group
+          = label_tag "Choose franchisee type (For Master franchisee, area franchisee and multi-unit franchisee only)"
+          = select_tag('license_type', options_for_select(Franchisee.license_types.map{|k, v| [k, k]}), include_blank: true, class: "form-control")
         .form-group
           = f.label :ancestry, "Select franchisor's company"
           = f.select :ancestry, @motif_companies, { include_blank: true }, class: "form-control"

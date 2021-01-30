@@ -24,10 +24,7 @@
                       = select_tag('user_id', options_from_collection_for_select(@existing_users, "id", "email"), include_blank: true, class: "form-control", style: 'width: 100%')
                     hr
                     = f.fields_for :franchisee do |ff|
-                      h6 Choose Existing Franchisee
-                      .form-group
-                        = select_tag('franchisee_id', options_from_collection_for_select(@existing_franchisees, "id", "franchise_licensee"), include_blank: true, class: "form-control", style: 'width: 100%')
-                      h6 Add new franchisee (Skip this portion if you've chose existing franchisee)
+                      h6 Add Unit Franchisee
                       .form-group
                         = ff.label :franchise_licensee, "Name of licensee"
                         = ff.text_field :franchise_licensee, class: "form-control"
@@ -61,7 +58,7 @@
     / span.mr-3
     /   i.material-icons-outlined filter_list
     / | Filters
-    = link_to 'Sub-franchised', motif_outlets_path(type: "subfranchised"), type: 'button', class: 'motif-filter-outlet text-dark mr-2'
+    = link_to 'Franchised', motif_outlets_path(type: "franchised"), type: 'button', class: 'motif-filter-outlet text-dark mr-2'
     = link_to 'Direct owned', motif_outlets_path(type: "direct-owned"), type: 'button', class: ' motif-filter-outlet text-dark mr-2'
     = link_to 'All', motif_outlets_path, type: 'button', class: ' motif-filter-outlet text-dark'
 hr.mb-0

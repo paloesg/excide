@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_23_140628) do
+ActiveRecord::Schema.define(version: 2021_01_28_052042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -299,6 +299,8 @@ ActiveRecord::Schema.define(version: 2020_12_23_140628) do
     t.integer "license_type"
     t.integer "max_outlet"
     t.integer "min_outlet"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_franchisees_on_company_id"
   end
 

@@ -1,6 +1,8 @@
 class Motif::UsersController < ApplicationController
   layout 'motif/application'
-  
+
+  include Motif::PermissionsHelper
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles
@@ -33,13 +35,18 @@ class Motif::UsersController < ApplicationController
     else
       @user = User.find_or_initialize_by(email: params[:user][:email])
       if @user.new_record?
+        @role = @company.roles.find(params[:role])
         @user.first_name = params[:user][:first_name]
         @user.last_name = params[:user][:last_name]
         @user.company = @company
+        # Set role when creating
+        @user.roles << @role
       end
     end
     respond_to do |format|
       if @user.save
+        # Set permission for company's folders and documents if user is a franchisor of company
+        set_default_permissions(@user) if @user.has_role?(:franchisor, @user.company)
         format.html { params[:outlet_id].present? ? (redirect_to motif_outlet_members_path(@outlet), notice: "Member has been added into this outlet") : (redirect_to motif_users_path, notice: 'Teammate was successfully added.')}
       else
         format.html { redirect_to motif_users_path }

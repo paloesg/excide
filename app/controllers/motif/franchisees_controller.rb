@@ -7,8 +7,8 @@ class Motif::FranchiseesController < ApplicationController
   before_action :set_franchisee_by_id, only: [:outlets, :users, :agreements, :upload_agreements]
 
   def index
-    # Only query franchisees which doesnt have company name as franchise licensee
-    @franchisees = @company.franchisees
+    # Query all franchisees where franchise_licensee is not blank (blank franchisees are created from direct owned outlet)
+    @franchisees = @company.franchisees.where.not(franchise_licensee: "")
   end
 
   def edit
@@ -24,7 +24,7 @@ class Motif::FranchiseesController < ApplicationController
 
   def show
     # Check franchisee license type
-    @sub_franchisees = @franchisee.check_license_type_master_or_area? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees : []
+    @sub_franchisees = @franchisee.check_license_type_master_or_area? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees.where.not(franchise_licensee: "") : []
   end
 
   def outlets
