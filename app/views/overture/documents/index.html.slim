@@ -6,7 +6,7 @@
           i.material-icons-outlined.font-size-h2.p-0 add
         .dropdown-menu.dropdown-menu-right
           / these paths are not working
-          a.dropdown-item.text-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folders
+          a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
           a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
       #newOvertureDocUploads.modal.fade aria-hidden="true" aria-labelledby="newOvertureDocumentUploads" role="dialog" tabindex="-1"
         .modal-dialog role="document"
@@ -81,15 +81,15 @@
       button.btn.btn-primary.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button"
         | Upload
 - else
-  .table-responsive
+  .table-responsive.h-75
     table.table.ml-4.table-aligned
       thead
         tr
-          th
+          th style="width: 5%"
             input# type="checkbox" name=""/
-          th.text-muted Name
-          th.text-muted Last Modified
-          th
+          th.text-muted style="width: 35%" Name
+          th.text-muted style="width: 10%" Last Modified
+          th style="width: 10%"
           - @roles.each do |role|
             th
               = role.name
@@ -116,14 +116,25 @@
                   .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
             - @roles.each do |role|
               td
-                a data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons-outlined.font-size-h1.icon-hover.cursor-pointer.mr-2 visibility
-                /a data-container="body" title="Disable download<br/>access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons-outlined.font-size-h1.text-muted.mr-2 visibility_off
-                a data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons.font-size-h1.icon-hover.cursor-pointer get_app
-                /a data-container="body" title="Give view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-                  i.material-icons.font-size-h1.text-muted file_download_off
+                - permission = role.permissions.find_by(permissible: folder)
+                - if permission&.can_view?
+                  a.permission-icon data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="view"
+                    i.material-icons-outlined.font-size-h1.icon-hover.cursor-pointer.mr-2 visibility
+                - else
+                  a.permission-icon data-container="body" title="Disable download<br/>access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission&.id}" data-status="view"
+                    i.material-icons-outlined.font-size-h1.text-muted.cursor-pointer.mr-2 visibility_off
+                - if permission&.can_download?
+                  a.permission-icon data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="download"
+                    i.material-icons.font-size-h1.icon-hover.cursor-pointer.mr-2 get_app
+                - else
+                  a.permission-icon data-container="body" title="Give view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-status="download" data-permission-id="#{permission&.id}"
+                    i.material-icons.font-size-h1.text-muted.cursor-pointer.mr-2 file_download_off
+                - if permission&.can_write?
+                  a.permission-icon data-container="body" title="Disable full access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="write"
+                    i.material-icons-outlined.font-size-h1.icon-hover.cursor-pointer edit
+                - else
+                  a.permission-icon data-container="body" title="Give full access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-status="write" data-permission-id="#{permission&.id}"
+                    i.material-icons-outlined.font-size-h1.text-muted.cursor-pointer edit_off
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
           tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
