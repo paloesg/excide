@@ -1,0 +1,81 @@
+.row
+  .col-sm-6.d-flex.align-items-center
+    .mr-5
+      = link_to overture_documents_path do
+        i.material-icons-outlined keyboard_arrow_left
+    .mr-5
+      h3 Groups
+  .col-sm-6
+    button.btn.btn-primary.float-right.my-2 data-target="#newGroupModal" data-toggle="modal" type="button"
+      i.material-icons.text-white.mr-2 group_add
+      | Add Group
+.row
+  .col-sm-12
+    p.text-muted
+      | You can only add Investors who are at least have “Due Diligence” status on Fundraising
+      br
+      | Board. Re-ordering the rows below will affect the group columns row on Dataroom page.
+    #newGroupModal.modal.fade aria-hidden="true" aria-labelledby="newGroup" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#newGroup.modal-title Create new group
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true"  &times;
+          .modal-body
+            = form_for(@role, url: overture_roles_path, html: { method: :post }) do |f|
+              .row.mt-3
+                .col-sm-12
+                  .form-group
+                    = f.text_field :name, placeholder: 'New Group', class: 'remark-border form-control'
+                  .form-group
+                    = f.hidden_field :resource_id, value: @company.id
+                    = f.hidden_field :resource_type, value: "Company"
+              .row.mt-3
+                .col-sm-12.select2-multiple
+                  = select_tag('role[user_ids][]', options_for_select(@investor_users.map {|k,v| [(k.full_name + " (" + k.company.name + ") "), k.id]}, include_blank: true), style: "width: 100%;", multiple: true, id: "new_role_users", class: 'select2 form-control col-sm-12', data: {"placeholder": 'Choose user...'})
+              .row.mt-3
+                .col-md-12
+                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+hr.mt-2
+- if @roles.empty?
+  .row.justify-content-center.ml-3
+    .col.text-center.p-10
+      = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
+      p.mt-4 Add groups to share documents with your potential investors.
+- else
+  - @roles.each do |r|
+    .row.mb-3.mt-5.ml-3
+      .col-sm-3
+        .font-weight-boldest = r.name
+      .col-sm-3
+        .font-weight-boldest = pluralize(r.users.length, "people")
+      .col-sm-4
+        .font-weight-boldest = r.users.map(&:full_name).join(", ")
+      .col-sm-1
+        = link_to "#", "data-toggle": "modal", 'data-target': '#editGroupModal' do
+          i.material-icons-outlined.icon-size.text-primary.dropdown-pointer create
+      .col-sm-1
+        = link_to overture_role_path(r), method: :delete, data: { confirm: "Are you sure you want to delete this group?" } do
+          i.material-icons-outlined.icon-size.dropdown-pointer delete
+    hr.mt-5
+    #editGroupModal.modal.fade aria-hidden="true" aria-labelledby="editGroup" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#editGroup.modal-title Edit group
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true"  &times;
+          .modal-body
+            = form_for(r, url: overture_role_path(r), method: :put) do |f|
+              .row.mt-3
+                .col-sm-12
+                  .form-group
+                    = f.text_field :name, placeholder: 'New Group', class: 'remark-border form-control'
+              .row.mt-3
+                .col-sm-12.select2-multiple
+                  = select_tag('role[user_ids][]', options_for_select(@investor_users.map {|k,v| [(k.full_name + " (" + k.company.name + ") "), k.id]}, selected: r.users.map(&:id)), style: "width: 100%;", multiple: true, id: "edit_role_users", class: 'select2 form-control col-sm-12', data: {"placeholder": 'Choose user...'})
+              .row.mt-3
+                .col-md-12
+                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+        / span.offset-sm-6 = pluralize(franchisee.outlets.length, "outlet")
