@@ -1,0 +1,14 @@
+#versionControlModal.modal.fade aria-hidden="true" aria-labelledby="versionControl" role="dialog" tabindex="-1"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        h5#versionControl.modal-title Version Control
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+      .modal-body
+        p To upload a new version of , drag and drop the file here, or browse from your device.
+        = form_for d, url: overture_document_path(d), method: :put do |f|
+          .form-group
+            = f.file_field :versions, multiple: true, class: "form-control"
+          .form-group
+            = f.submit "Save", class: "btn btn-primary float-right"
