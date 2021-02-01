@@ -10,8 +10,6 @@ RSpec.describe Event, type: :model do
     it { should validate_presence_of(:event_type) }
 
     it { should belong_to(:company) }
-    it { should belong_to(:client) }
-    it { should belong_to(:event_type) }
 
     it { should have_one(:address) }
 
