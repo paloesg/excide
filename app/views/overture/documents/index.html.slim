@@ -153,7 +153,7 @@
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                   i.material-icons-outlined.font-size-h1.text-muted more_horiz
                 .dropdown-menu.dropdown-menu-right
-                  .dropdown-item = link_to "Version Control", "#", "data-toggle": "modal", 'data-target': '#versionControlModal'
+                  .dropdown-item = link_to "Version Control", "#", "data-toggle": "modal", 'data-target': "#versionControlModal_#{d.id}"
                   .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{d.id}_0"
                   .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
                   .dropdown-item = link_to "Delete", overture_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
