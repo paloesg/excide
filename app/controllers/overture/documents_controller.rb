@@ -23,13 +23,14 @@ class Overture::DocumentsController < ApplicationController
     # multiple file upload from uppy
     if params[:successful_files].present?
       @files = []
-      parsed_files = JSON.parse(params[:successful_files])
       parsed_files.each do |file|
         @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:folder_id]).run
         document = @generate_document.document
         authorize document
         # attach and convert method with the response key to create blob
         document.attach_and_convert_document(file['response']['key'])
+        # attach the document as the 1st version (for version history)
+        document.versions.attach(file['response']['signed_id'])
         @files.append document
       end
     end
