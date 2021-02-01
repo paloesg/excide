@@ -1,0 +1,21 @@
+.row
+  .col-md-6
+    h1 Edit Tags
+  .col-md-6
+    = link_to "Back", conductor_events_path, class: 'btn btn-primary float-right mr-2'
+hr
+.row
+  .col-md-6
+    h3.mt-5 Clients
+    input.tagify-tags.my-3#clients_tags placeholder=" + Add client" value=@clients
+  .col-md-6
+    h3.mt-8 Projects
+    input.tagify-tags.my-3#projects_tags placeholder=" + Add project" value=@projects
+.row
+  .col-md-6
+    h3.mt-8 Job Functions
+    input.tagify-tags.my-3#service_lines_tags placeholder=" + Add job function" value=@service_lines
+  .col-md-6
+
+    h3.mt-8 Tasks
+    input.tagify-tags.my-3#tasks_tags placeholder=" + Add task" value=@tasks

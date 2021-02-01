@@ -33,6 +33,7 @@ window.addAvailability = require("./conductor/add_availabilities");
 require("./conductor/home");
 require("./conductor/go_to_allocation");
 require("./conductor/event_update");
+require("./conductor/tags");
 // require("./components/calendar_style");
 
 require("./motif/drawer");

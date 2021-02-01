@@ -160,6 +160,13 @@ class Conductor::EventsController < ApplicationController
     end
   end
 
+  def edit_tags
+    @service_lines = ActsAsTaggableOn::Tag.for_context(:service_lines).map(&:name).sort
+    @projects = ActsAsTaggableOn::Tag.for_context(:projects).map(&:name).sort
+    @clients = ActsAsTaggableOn::Tag.for_context(:clients).map(&:name).sort
+    @tasks = ActsAsTaggableOn::Tag.for_context(:tasks).map(&:name).sort
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_event
