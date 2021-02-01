@@ -172,6 +172,7 @@ Rails.application.routes.draw do
         post 'toggle'
       end
     end
+    delete 'delete_version_attachment/:signed_id', to: 'documents#delete_version_attachment', as: :delete_version_attachment
     resources :folders do
       member do
         post 'toggle'

@@ -94,6 +94,13 @@ class Overture::DocumentsController < ApplicationController
     end
   end
 
+  def delete_version_attachment
+    @blob = ActiveStorage::Blob.find_signed(params[:signed_id])
+    @attachment = ActiveStorage::Attachment.find_by(blob_id: @blob.id)
+    @attachment.purge
+    redirect_to overture_documents_path, notice: "Version successfully deleted."
+  end
+
   private
   def set_company
     @user = current_user
