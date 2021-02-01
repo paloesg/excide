@@ -59,8 +59,29 @@ class Overture::PermissionsController < ApplicationController
     end
   end
 
+  def bulk_assign_permissions
+    update_group_permissions(params[:permissions][:role_ids], params[:folder_ids], "Folder") if params[:folder_ids].present?
+    update_group_permissions(params[:permissions][:role_ids], params[:document_ids], "Document") if params[:document_ids].present?
+    respond_to do |format|
+      format.html { redirect_to overture_documents_path }
+      format.json { head :no_content }
+    end
+  end
+
   private
   def set_permission
     @permission = Permission.find(params[:id])
+  end
+
+  def update_group_permissions(role_ids, permissible_ids, permissible_type)
+    permissible_ids.each do |permissible_id|
+      role_ids.each do |role_id|
+        @permission = Permission.find_or_create_by(role_id: role_id, permissible_type: permissible_type, permissible_id: permissible_id)
+        @permission.can_view = true
+        @permission.can_write = true
+        @permission.can_download = true
+        @permission.save
+      end
+    end
   end
 end

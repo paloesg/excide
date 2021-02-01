@@ -8,22 +8,21 @@ $(document).on("turbolinks:load", function () {
         $(".checkSingle").prop("checked", false).change();
     }
   });
-  // $(".group-folder").click(function(){
-  //   console.log(" I AM CLICKED")
-  //   // find the modal body
-  //   let modal = $("#checkedFolderUpload").find(".hidden-forms");
-  //   console.log("WHAT IS MODAL", modal);
-  //   // loop through all the check boxes (class checkbox)
-  //   $(".checkSingle").each(function(index){
-  //     // if they are checked, add permissible id to the modal as a hidden form
-  //     let permissibleId = $(this).closest('tr').data('drawer');
-
-  //     if($(this).is(":checked")){
-  //       // add a hidden input element to modal with article ID as value
-  //       $(modal).append("<input name='permissible_ids[]' value='"+permissibleId+"'  type='hidden' />")
-  //     }
-  //   });
-  // })
+  $(".groupAssignment").click(function(){
+    // find the modal body
+    let modal = $("#groupAssignPermissions").find(".hidden-assign-forms");
+    console.log("What is modal", modal)
+    // loop through all the check boxes (class checkbox)
+    $(".checkSingle").each(function(index){
+      // if they are checked, add permissible id to the modal as a hidden form
+      let permissibleId = $(this).closest('tr').data('drawer');
+      let permissibleType = $(this).closest('tr').data('permissible-type')
+      if($(this).is(":checked")){
+        // add a hidden input element to modal with article ID as value
+        $(modal).append("<input name='" + permissibleType + "_ids[]' value='"+permissibleId+"'  type='hidden' />")
+      }
+    });
+  })
 
   $(".groupDelete").click(function(){
     // find the modal body
