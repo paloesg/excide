@@ -5,7 +5,7 @@ class Overture::DocumentsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_document, only: [:update, :destroy]
+  before_action :set_document, only: [:update, :destroy, :change_versions]
 
   after_action :verify_authorized, except: :index
 
@@ -23,6 +23,7 @@ class Overture::DocumentsController < ApplicationController
     # multiple file upload from uppy
     if params[:successful_files].present?
       @files = []
+      parsed_files = JSON.parse(params[:successful_files])
       parsed_files.each do |file|
         @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:folder_id]).run
         document = @generate_document.document
@@ -31,6 +32,9 @@ class Overture::DocumentsController < ApplicationController
         document.attach_and_convert_document(file['response']['key'])
         # attach the document as the 1st version (for version history)
         document.versions.attach(file['response']['signed_id'])
+        # Make the attachment the current (first) version
+        document.versions.attachments.first.current_version = true
+        document.versions.attachments.first.save
         @files.append document
       end
     end
@@ -56,6 +60,13 @@ class Overture::DocumentsController < ApplicationController
     elsif params[:document][:versions].present?
       # Attach versions to the documents
       @document.versions.attach(params[:document][:versions])
+      # Make the latest attachment the current version and remove prev attachment as the current version
+      old_attachment = @document.versions.attachments.find_by(current_version: true)
+      old_attachment.current_version = false
+      new_attachment = @document.versions.attachments.order('created_at DESC').first
+      new_attachment.current_version = true
+      old_attachment.save
+      new_attachment.save
     end
     respond_to do |format|
       # check if update comes from drag and drop or from remarks. If folder_id is not present, then update remarks
@@ -99,6 +110,19 @@ class Overture::DocumentsController < ApplicationController
     @attachment = ActiveStorage::Attachment.find_by(blob_id: @blob.id)
     @attachment.purge
     redirect_to overture_documents_path, notice: "Version successfully deleted."
+  end
+
+  def change_versions
+    # Change version of documents from Version History button
+    old_attachment = @document.versions.attachments.find_by(current_version: true)
+    old_attachment.current_version = false
+    new_attachment = ActiveStorage::Attachment.find_by(id: params[:attachment_id])
+    new_attachment.current_version = true
+    if old_attachment.save and new_attachment.save
+      redirect_to overture_documents_path, notice: "Version changed!"
+    else
+      redirect_to overture_root_path, alert: "There was an error when changing version of document. Please contact support."
+    end
   end
 
   private
