@@ -185,7 +185,7 @@ function setupUppy(element){
     motifWorkflowActionMultipleUploads(uppy);
   }
   else if ($(".overtureMultipleDocumentsUpload").length) {
-      overtureMultipleDocumentsUpload(uppy);
+    overtureMultipleDocumentsUpload(uppy);
   }
 }
 //-----------------------------------Initialize Uppy------------------------------------

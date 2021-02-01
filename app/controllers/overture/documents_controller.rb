@@ -48,12 +48,20 @@ class Overture::DocumentsController < ApplicationController
   end
 
   def update
+    # puts "Update action: #{params[:document][:versions]}"
     authorize @document
-    @folder = @company.folders.find(params[:folder_id]) if params[:folder_id].present?
+    if params[:folder_id].present?
+      @folder = @company.folders.find(params[:folder_id])
+    # this is for version history update of overture documents
+    elsif params[:document][:versions].present?
+      # Attach versions to the documents
+      @document.versions.attach(params[:document][:versions])
+    end
     respond_to do |format|
       # check if update comes from drag and drop or from remarks. If folder_id is not present, then update remarks
       if (params[:folder_id].present? ? @document.update(folder_id: @folder.id) : @document.update(remarks: params[:document][:remarks]))
         format.json { render json: { link_to: overture_documents_path, status: "ok" } }
+        format.html { redirect_to overture_documents_path }
       else
         format.html { redirect_to overture_documents_path }
         format.json { render json: @document.errors, status: :unprocessable_entity }
@@ -94,5 +102,10 @@ class Overture::DocumentsController < ApplicationController
 
   def set_document
     @document = @company.documents.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def document_params
+    params.require(:document).permit(:filename, :remarks, :company_id, :date_signed, :date_uploaded, :file_url, :workflow_id, :document_template_id, :tag_list, :raw_file, converted_images: [], versions: [])
   end
 end
