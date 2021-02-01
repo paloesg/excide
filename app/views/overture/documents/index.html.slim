@@ -44,14 +44,34 @@
       | Share view and download access to groups of investors. Click on the icon buttons in the
       br
       | group column to turn on/off the access. Click “Groups” to edit your groups of investors.
-    .row.ml-4.align-items-center#filter-search
-      .col.d-flex
-        div#filter style="cursor: pointer;"
-          span.mr-3
-            i.material-icons-outlined.align-middle filter_list
-        span.ml-5.mr-3.d-flex
-          i.material-icons-outlined.align-middle.mr-1 search
-          input.form-control.form-control-sm.border-0.align-middle
+    / .row.ml-4.align-items-center#filter-search
+    /   .col.d-flex
+    /     div#filter style="cursor: pointer;"
+    /       span.mr-3
+    /         i.material-icons-outlined.align-middle filter_list
+    /     span.ml-5.mr-3.d-flex
+    /       i.material-icons-outlined.align-middle.mr-1 search
+    /       input.form-control.form-control-sm.border-0.align-middle
+    .row.p-3.align-items-center#select-options style="background: #EEF1FF;"
+      .col-md-9
+        span.mr-5#selectedNumber
+      .col-md-3.d-flex.justify-content-between
+        .col-md-12
+          a.groupDelete.cursor-pointer data-toggle="modal" data-target="#groupDelete"
+            i.material-icons-outlined.float-right delete
+          #groupDelete.modal.fade aria-hidden="true" aria-labelledby="groupDelete" role="dialog" tabindex="-1"
+            .modal-dialog role="document"
+              .modal-content
+                .modal-header
+                  h6 Delete
+                .modal-body
+                  = form_tag overture_delete_multiple_permissible_path, method: :delete do
+                    #deleteCount.mb-4
+                    span.float-right
+                      .row.hidden-forms
+                      .row
+                        .col-md-12
+                          = submit_tag "Save", class: 'btn btn-sm btn-primary float-right'
     .row.ml-4.my-5.align-items-center#filter-options
       .col.md-12
         span.mr-3
@@ -71,7 +91,7 @@
               = link_to "Dataroom", overture_documents_path, class: "text-dark"
             li.breadcrumb-item
               = @folder.name
-    hr.mt-2
+    hr.m-0
 - if @folders.empty? && @documents.empty?
   .row.justify-content-center.ml-3
     .col.text-center.p-10
@@ -84,7 +104,7 @@
     table.table.ml-4.table-aligned
       thead
         tr
-          th style="width: 5%"
+          th#checkedAll style="width: 5%"
             input# type="checkbox" name=""/
           th.text-muted style="width: 35%" Name
           th.text-muted style="width: 10%" Last Modified
@@ -94,9 +114,10 @@
               a title="#{role.users.map(&:full_name).join("<br/>")}" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" = role.name
       tbody.draggable-zone
         - @folders.each_with_index do |folder, index|
-          tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
+          tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id data-permissible-type="folder"
             td
-              input.mt-2 type="checkbox" name=""/
+              = check_box_tag "folders[]", folder.id, false, class: "checkSingle mt-2"
+              / input.checkSingle.mt-2 type="checkbox" name=""/
             td
               span.mr-5
                 i.material-icons-outlined.align-middle folder_open
@@ -137,9 +158,9 @@
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
           = render 'overture/documents/version_control_modal', d: d
-          tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
+          tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}" data-permissible-type="document"
             td
-              input.mt-2 type="checkbox" name=""/
+              = check_box_tag "documents[]", d.id, false, class: "checkSingle mt-2"
             td.cursor-pointer data-toggle="modal" data-target="#documentModal#{d.id}"
               span.mr-5
                 / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
@@ -181,7 +202,6 @@
                     i.material-icons-outlined.font-size-h1.text-muted.cursor-pointer edit_off
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
           = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
-
           / = form_for(@folder, url: overture_folders_path, html: { method: :post }) do |f|
           /   .row.mt-3
           /     .col-md-12

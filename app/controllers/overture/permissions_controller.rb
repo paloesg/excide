@@ -50,6 +50,15 @@ class Overture::PermissionsController < ApplicationController
     end
   end
 
+  def delete_multiple_permissible
+    Folder.destroy(params[:folder_ids]) if params[:folder_ids].present?
+    Document.destroy(params[:document_ids]) if params[:document_ids].present?
+    respond_to do |format|
+      format.html { redirect_to overture_documents_path }
+      format.json { head :no_content }
+    end
+  end
+
   private
   def set_permission
     @permission = Permission.find(params[:id])
