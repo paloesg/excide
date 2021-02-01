@@ -3,10 +3,9 @@ class Conductor::EventsController < ApplicationController
   
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_clients
   before_action :set_staffers, only: [:new, :edit]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
-  before_action :get_users_projects_and_service_lines, only: [:index, :new, :edit, :create, :update]
+  before_action :set_tags, only: [:index, :new, :edit, :create, :update]
 
 
   # GET /conductor/events
@@ -18,13 +17,12 @@ class Conductor::EventsController < ApplicationController
     date_to = params[:end_date].to_time.utc
 
     #filter event using scope setup in model
-    @events = Event.includes(:address, :client, :staffer, :event_type, [allocations: :user]).company(@company.id)
+    @events = Event.includes(:address, :staffer, [allocations: :user]).company(@company.id)
     @events = @events.start_time(date_from..date_to)
-    @events = @events.event(params[:event_types]) unless params[:event_types].blank?
     @events = @events.allocation(params[:allocation_users].split(",")) unless params[:allocation_users].blank?
-    @events = @events.client(params[:project_clients].split(",")) unless params[:project_clients].blank?
     #using tagged_with means can only search with 1 selected value
-    @events = Event.tagged_with(params[:service_line]) unless params[:service_line].blank?
+    @events = @events.tagged_with(params[:service_line], on: :service_lines) unless params[:service_line].blank?
+    @events = @events.tagged_with(params[:project_clients], on: :clients) unless params[:project_clients].blank?
 
     if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
     @user_event_count = Hash.new
@@ -75,6 +73,8 @@ class Conductor::EventsController < ApplicationController
     @event.company = @company
     @event.service_line_list.add(params[:service_line]) if params[:service_line].present?
     @event.project_list.add(params[:project]) if params[:project].present?
+    @event.client_list.add(params[:client]) if params[:client].present?
+    @event.task_list.add(params[:task]) if params[:task].present?
     respond_to do |format|
       if @event.save
         # Allocate yourself to the timesheet allocation
@@ -166,18 +166,16 @@ class Conductor::EventsController < ApplicationController
     @event = current_user.company.events.find(params[:id])
   end
 
-  def set_clients
-    @clients = Client.where(company_id: @company.id).sort_by(&:name)
-  end
-
   def set_staffers
     @staffers = User.where(company: @company).with_role :staffer, @company
   end
 
-  def get_users_projects_and_service_lines
+  def set_tags
     # To be tagged using acts_as_taggable_on gem
     @service_lines = ActsAsTaggableOn::Tag.for_context(:service_lines).map(&:name).sort
     @projects = ActsAsTaggableOn::Tag.for_context(:projects).map(&:name).sort
+    @clients = ActsAsTaggableOn::Tag.for_context(:clients).map(&:name).sort
+    @tasks = ActsAsTaggableOn::Tag.for_context(:tasks).map(&:name).sort
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
     @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
   end

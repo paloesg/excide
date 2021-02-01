@@ -26,8 +26,8 @@ class GenerateEventsService
       @event.service_line_list.add(event_data["Job Function"])
       @event.project_list.add(event_data["Project"])
       @event.start_time = event_data["Date (DD/MM/YYYY)"]
-      @event.client = Client.find_by(name: event_data["Client"])
-      @event.event_type = EventType.find_by(name: event_data["Job Nature"])
+      @event.client_list.add(event_data["Client"])
+      @event.task_list.add(event_data["Job Nature"])
       @event.number_of_hours = event_data["No. of hours"]
       @event.save!
       GenerateTimesheetAllocationService.new(@event, @user).run
