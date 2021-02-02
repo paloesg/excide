@@ -25,6 +25,9 @@ class Overture::FoldersController < FoldersController
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     @documents = Document.where(folder: @folder)
     @topic = Topic.new
+    @permission = Permission.new
+    @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
+    @startups = @company.startups if @company.investor?
 
     render "overture/documents/index"
   end

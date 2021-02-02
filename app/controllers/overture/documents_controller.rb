@@ -10,14 +10,18 @@ class Overture::DocumentsController < ApplicationController
   after_action :verify_authorized, except: :index
 
   def index
-    @folder = Folder.new
-    @folders = Folder.roots.includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
-    @documents = Document.where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
-    @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
-    @topic = Topic.new
+    # For startup documents page from investor POV. Startups will see his own company (current_user company)
+    @permissible_company = params[:company_id].present? ? Company.find_by(id: params[:company_id]) : @company
+    # For investor, they can see documents where they have can_view permissions in their group. Whereas for startup, they can see if they have user permissions
+    @documents = params[:company_id].present? ? Document.where(folder_id: nil, company: @permissible_company).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, role_id: [@permissible_company.roles.map(&:id)]} ) : Document.where(folder_id: nil, company: @permissible_company).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
+    @folders = params[:company_id].present? ? Folder.roots.includes(:permissions).where(company: @permissible_company, permissions: { can_view: true, role_id: [@permissible_company.roles.map(&:id)]}) : Folder.roots.includes(:permissions).where(company: @permissible_company, permissions: { can_view: true, user_id: @user.id })
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
+    @users = get_users(@company)
+    @startups = @company.startups if @company.investor?
+    @folder = Folder.new
     @permission = Permission.new
+    @topic = Topic.new
   end
 
   def create
