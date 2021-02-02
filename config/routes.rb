@@ -157,6 +157,7 @@ Rails.application.routes.draw do
     resources :companies
     resources :investments
     resources :permissions
+    resources :roles
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end

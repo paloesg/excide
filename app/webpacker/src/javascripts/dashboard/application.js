@@ -42,6 +42,7 @@ require("./motif/settings");
 require("./motif/templates");
 require("./motif/note");
 
+require("./overture/access_control");
 require("./overture/drawer");
 require("./overture/update_contact_status");
 
