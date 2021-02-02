@@ -1,0 +1,54 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    h3 Dataroom
+    p.mt-5
+      | These companies have shared with you confidential files for your due diligence before
+      br
+      | investing in them.
+hr.my-3
+- if @startups.empty? && @folders.empty? && @documents.empty?
+  .row.justify-content-center.ml-3
+    .col.text-center.p-10
+      = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
+      p.mt-4 No shared documents.
+- else
+  - if startup_id.present?
+    .table-responsive.h-75
+      table.table.ml-4.table-aligned
+        thead
+          tr
+            th.text-muted style="width: 35%" Item Name
+            th.text-muted style="width: 15%" Shared By
+            th.text-muted style="width: 10%" Last Modified
+            th style="width: 10%"
+        tbody
+          - @folders.each_with_index do |folder, index|
+            tr
+              td = folder.name
+              td 11 items
+              td 12 Jan 2021
+              td
+          - @documents.each_with_index do |d, index|
+            tr
+              td = d.raw_file.filename
+              td 11 items
+              td 10 Jan 2021
+              td
+  - else
+    .table-responsive.h-75
+      table.table.ml-4.table-aligned
+        thead
+          tr
+            th.text-muted style="width: 35%" Company Name
+            th.text-muted style="width: 15%" Shared items
+            th.text-muted style="width: 10%" Last Modified
+            th style="width: 10%"
+        tbody
+          - @startups.each_with_index do |startup, index|
+            tr
+              td = startup.name
+              td 11 items
+              td 10 Jan 2021
+              td
+                = link_to overture_company_documents_path(company_id: startup.id) do
+                  i.material-icons-outlined arrow_forward
