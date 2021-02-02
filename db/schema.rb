@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_30_012214) do
+ActiveRecord::Schema.define(version: 2021_02_01_082256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_012214) do
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.uuid "record_id"
+    t.boolean "current_version", default: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -414,8 +415,8 @@ ActiveRecord::Schema.define(version: 2021_01_30_012214) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.string "contact"
-    t.string "report_url"
     t.uuid "company_id"
+    t.string "report_url"
     t.uuid "franchisee_id"
     t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
