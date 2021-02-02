@@ -1,7 +1,7 @@
 - unless @company.investor?
-  = render "startup_view"
+  = render "overture/documents/startup_view"
 - else
-  = render "investor_view", startups: @startups, startup_id: params[:company_id]
+  = render "overture/documents/investor_view", startups: @startups, startup_id: params[:company_id]
 
 /.row.mb-3.mt-5.ml-3
   .col-sm-12

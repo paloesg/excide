@@ -48,7 +48,7 @@
           | Clear
     - if controller_name == "folders"
       hr.mb-2
-      .row.ml-4
+      .row
         .col
           ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
             li.breadcrumb-item
@@ -98,7 +98,7 @@
                   .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
             - @roles.each do |role|
               td
-                = render "permissions_icons", role: role, permissible: folder, permissible_type: "folder"
+                = render "overture/documents/permissions_icons", role: role, permissible: folder, permissible_type: "folder"
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
           = render 'overture/documents/modals/version_control_modal', d: d
@@ -124,6 +124,6 @@
                   .dropdown-item = link_to "Delete", overture_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
             - @roles.each do |role|
               td
-                = render "permissions_icons", role: role, permissible: d, permissible_type: "document"
+                = render "overture/documents/permissions_icons", role: role, permissible: d, permissible_type: "document"
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
           = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
