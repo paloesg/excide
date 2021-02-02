@@ -48,7 +48,7 @@ hr.my-3
               td.cursor-pointer data-toggle="modal" data-target="#documentModal#{d.id}"
                 i.material-icons-outlined.font-size-h1.text-dark.mr-2 visibility
               td
-                = link_to (d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url) do
+                = link_to (d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true) : d.file_url) do
                   i.material-icons-outlined.font-size-h1.text-dark.mr-2 download
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
   - else
