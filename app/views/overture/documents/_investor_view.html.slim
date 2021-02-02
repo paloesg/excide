@@ -17,23 +17,40 @@ hr.my-3
       table.table.ml-4.table-aligned
         thead
           tr
-            th.text-muted style="width: 35%" Item Name
-            th.text-muted style="width: 15%" Shared By
-            th.text-muted style="width: 10%" Last Modified
-            th style="width: 10%"
+            th.text-muted style="width: 40%" Item Name
+            th.text-muted style="width: 20%" Shared By
+            th.text-muted style="width: 20%" Last Modified
+            th style="width: 5%"
+            th style="width: 5%"
+            th style="width: 5%"
         tbody
           - @folders.each_with_index do |folder, index|
             tr
-              td = folder.name
+              td
+                span.mr-5
+                  i.material-icons-outlined.align-middle folder_open
+                span.ml-5 = folder.name
               td 11 items
               td 12 Jan 2021
               td
+              td
+              td
           - @documents.each_with_index do |d, index|
             tr
-              td = d.raw_file.filename
+              td
+                span.mr-5
+                  / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
+                  = image_pack_tag "media/src/images/overture/doc.svg"
+                span.ml-5 = d.versions.attachments.find_by(current_version: true).filename
               td 11 items
               td 10 Jan 2021
+              td = render 'overture/documents/modals/documents_qna_modal', permissible: d, topic: @topic
+              td.cursor-pointer data-toggle="modal" data-target="#documentModal#{d.id}"
+                i.material-icons-outlined.font-size-h1.text-dark.mr-2 visibility
               td
+                = link_to (d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url) do
+                  i.material-icons-outlined.font-size-h1.text-dark.mr-2 download
+            = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
   - else
     .table-responsive.h-75
       table.table.ml-4.table-aligned
