@@ -23,11 +23,12 @@ class GenerateEventsService
       event_data = Hash[[header, row].transpose]
       @event = Event.new
       @event.company = @user.company
-      @event.service_line_list.add(event_data["Job Function"])
-      @event.project_list.add(event_data["Project"])
+      @department = @user.department
+      @department.tag(@event, with: event_data["Job Function"], on: :service_lines)
+      @department.tag(@event, with: event_data["Project"], on: :projects)
+      @department.tag(@event, with: event_data["Client"], on: :clients)
+      @department.tag(@event, with: event_data["Job Nature"], on: :tasks)
       @event.start_time = event_data["Date (DD/MM/YYYY)"]
-      @event.client_list.add(event_data["Client"])
-      @event.task_list.add(event_data["Job Nature"])
       @event.number_of_hours = event_data["No. of hours"]
       @event.save!
       GenerateTimesheetAllocationService.new(@event, @user).run

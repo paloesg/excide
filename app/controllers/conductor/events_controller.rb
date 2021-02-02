@@ -5,7 +5,7 @@ class Conductor::EventsController < ApplicationController
   before_action :set_company
   before_action :set_staffers, only: [:new, :edit]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
-  before_action :set_tags, only: [:index, :new, :edit, :create, :update]
+  before_action :set_tags, only: [:index, :new, :edit, :create, :update, :edit_tags]
 
 
   # GET /conductor/events
@@ -160,13 +160,6 @@ class Conductor::EventsController < ApplicationController
     end
   end
 
-  def edit_tags
-    @service_lines = ActsAsTaggableOn::Tag.for_context(:service_lines).map(&:name).sort
-    @projects = ActsAsTaggableOn::Tag.for_context(:projects).map(&:name).sort
-    @clients = ActsAsTaggableOn::Tag.for_context(:clients).map(&:name).sort
-    @tasks = ActsAsTaggableOn::Tag.for_context(:tasks).map(&:name).sort
-  end
-
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_event
@@ -179,10 +172,11 @@ class Conductor::EventsController < ApplicationController
 
   def set_tags
     # To be tagged using acts_as_taggable_on gem
-    @service_lines = ActsAsTaggableOn::Tag.for_context(:service_lines).map(&:name).sort
-    @projects = ActsAsTaggableOn::Tag.for_context(:projects).map(&:name).sort
-    @clients = ActsAsTaggableOn::Tag.for_context(:clients).map(&:name).sort
-    @tasks = ActsAsTaggableOn::Tag.for_context(:tasks).map(&:name).sort
+    @department = @user.department
+    @service_lines = @department.owned_taggings.where(context: "service_lines").map(&:tag).uniq.map(&:name).sort
+    @projects = @department.owned_taggings.where(context: "projects").map(&:tag).map(&:name).uniq.sort
+    @clients = @department.owned_taggings.where(context: "clients").map(&:tag).map(&:name).uniq.sort
+    @tasks = @department.owned_taggings.where(context: "tasks").map(&:tag).map(&:name).uniq.sort
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
     @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
   end
