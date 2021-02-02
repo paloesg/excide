@@ -24,6 +24,7 @@
       = link_to export_conductor_allocations_path(start_date: params[:start_date], end_date: params[:end_date]), target: "_blank", class: 'btn btn-warning float-right mr-2' do
         i.material-icons-outlined get_app
         span.ml-2 Download
+      = link_to "Edit Categories", edit_tags_conductor_events_path, class: 'btn btn-secondary float-right mr-2'
       a.float-right.mr-5.mt-2 data-target="#checkUsers" data-toggle="modal" type="button"
         i.material-icons-outlined groups
       #checkUsers.modal.fade aria-hidden="true" aria-labelledby="checkUsers" role="dialog" tabindex="-1"

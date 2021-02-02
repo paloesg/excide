@@ -160,6 +160,54 @@ class Conductor::EventsController < ApplicationController
     end
   end
 
+  def edit_tags
+    @client_tags, @project_tags, @service_line_tags, @task_tags = [], [], [], []
+    @clients.each { |c| @client_tags << {value: c.name, id: c.id}.as_json }
+    @projects.each { |p| @project_tags << {value: p.name, id: p.id}.as_json }
+    @service_lines.each { |sl| @service_line_tags << {value: sl.name, id: sl.id}.as_json }
+    @tasks.each { |t| @task_tags << {value: t.name, id: t.id}.as_json }
+    @client_tags = @client_tags.to_json
+    @project_tags = @project_tags.to_json
+    @service_line_tags = @service_line_tags.to_json
+    @task_tags = @task_tags.to_json
+  end
+
+  def create_tags
+    @tag = ActsAsTaggableOn::Tag.new
+    @tag.name = params[:value]
+    respond_to do |format|
+      if @tag.save
+        puts "saved"
+        format.json { render json: @tag, status: :ok }
+      else
+        format.json { render json: @tag.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update_tags
+    @tag = ActsAsTaggableOn::Tag.find(params[:id])
+    @tag.name = params[:value]
+    respond_to do |format|
+      if @tag.save
+        format.json { render json: @tag, status: :ok }
+      else
+        format.json { render json: @tag.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def delete_tags
+    @tag = ActsAsTaggableOn::Tag.find(params[:id])
+    respond_to do |format|
+      if @tag.destroy
+        format.json { render json: @tag, status: :ok }
+      else
+        format.json { render json: @tag.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_event
@@ -173,10 +221,10 @@ class Conductor::EventsController < ApplicationController
   def set_tags
     # To be tagged using acts_as_taggable_on gem
     @department = @user.department
-    @service_lines = @department.owned_taggings.where(context: "service_lines").map(&:tag).uniq.map(&:name).sort
-    @projects = @department.owned_taggings.where(context: "projects").map(&:tag).map(&:name).uniq.sort
-    @clients = @department.owned_taggings.where(context: "clients").map(&:tag).map(&:name).uniq.sort
-    @tasks = @department.owned_taggings.where(context: "tasks").map(&:tag).map(&:name).uniq.sort
+    @service_lines = @department.owned_taggings.where(context: "service_lines").map(&:tag).uniq
+    @projects = @department.owned_taggings.where(context: "projects").map(&:tag).uniq
+    @clients = @department.owned_taggings.where(context: "clients").map(&:tag).uniq
+    @tasks = @department.owned_taggings.where(context: "tasks").map(&:tag).uniq
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
     @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
   end

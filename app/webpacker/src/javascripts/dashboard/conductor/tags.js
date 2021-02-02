@@ -1,14 +1,91 @@
 import Tagify from '@yaireo/tagify';
 $(document).on("turbolinks:load", function () {
   // The DOM element you wish to replace with Tagify
-  var clients = document.getElementById('clients_tags');
-  var service_lines = document.getElementById('service_lines_tags');
-  var projects = document.getElementById('projects_tags');
-  var tasks = document.getElementById('tasks_tags');
+  let clients = document.getElementById('clients_tags');
+  let service_lines = document.getElementById('service_lines_tags');
+  let projects = document.getElementById('projects_tags');
+  let tasks = document.getElementById('tasks_tags');
 
   // initialize Tagify on the above input node reference
-  new Tagify(clients);
-  new Tagify(service_lines);
-  new Tagify(projects);
-  new Tagify(tasks);
+  new Tagify(clients, {
+    callbacks: {
+      "edit:updated": (e) => updateTags(e.detail.data),
+      "remove": (e) => deleteTags(e.detail.data),
+      "add": (e) => createTags(e.detail.data)
+    }
+  });
+  new Tagify(service_lines, {
+    callbacks: {
+      "edit:updated": (e) => updateTags(e.detail.data),
+      "remove": (e) => deleteTags(e.detail.data),
+      "add": (e) => createTags(e.detail.data)
+    }
+  });
+  new Tagify(projects, {
+    callbacks: {
+      "edit:updated": (e) => updateTags(e.detail.data),
+      "remove": (e) => deleteTags(e.detail.data),
+      "add": (e) => createTags(e.detail.data)
+    }
+  });
+  new Tagify(tasks, {
+    callbacks: {
+      "edit:updated": (e) => updateTags(e.detail.data),
+      "remove": (e) => deleteTags(e.detail.data),
+      "add": (e) => createTags(e.detail.data)
+    }
+  });
+
+  async function createTags(data){
+    let value = data.value;
+    $.ajax({
+      type: "PATCH",
+      url: "conductor/events/create_tags",
+      data: {value: value},
+      dataType: "JSON"
+    }).done(function(data){
+      // If success request, it will change the color of the tag to green color for a short while before changing back to normal color
+      $("tag[value='" + value + "']").css("cssText", "background: #BBEEBB !important");
+      setTimeout(function(){
+      $("tag[value='" + value + "']").css("cssText", "");
+      }, 3000);
+    }).fail(function(data) {
+      // If fail, it will be red
+      $("tag[value='" + value + "']").css("cssText", "background: #FCE5E5 !important");
+      setTimeout(function(){
+      $("tag[value='" + value + "']").css("cssText", "");
+      }, 3000);
+    });
+  }
+
+  async function updateTags(data){
+    let id = data.id
+    $.ajax({
+      type: "PATCH",
+      url: "conductor/events/update_tags",
+      data: {value: data.value, id: id},
+      dataType: "JSON"
+    }).done(function(data){
+      // If success request, it will change the color of the tag to green color for a short while before changing back to normal color
+      $("#" + id).css("cssText", "background: #BBEEBB !important");
+      setTimeout(function(){
+        $("#" + id).css("cssText", "");
+      }, 3000);
+    }).fail(function(data) {
+      // If fail, it will be red
+      $("#" + id).css("cssText", "background: #FCE5E5 !important");
+      setTimeout(function(){
+        $("#" + id).css("cssText", "");
+      }, 3000);
+    });
+  }
+
+  async function deleteTags(data){
+    $.ajax({
+      type: "PATCH",
+      url: "conductor/events/delete_tags",
+      data: {value: data.value, id: data.id},
+      dataType: "JSON"
+    });
+  }
 });
