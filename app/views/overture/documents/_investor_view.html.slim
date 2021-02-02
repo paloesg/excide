@@ -48,26 +48,30 @@
                   i.material-icons-outlined.align-middle folder_open
                 span.ml-5
                   = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
-              td 11 items
+              td = folder.company.name
               td = folder.updated_at.strftime("%d %b %Y")
               td
               td
               td
           - @documents.each_with_index do |d, index|
+            - permission = d.permissions.find_by(role_id: [current_user.roles.map(&:id)])
             tr
               td
                 span.mr-5
                   / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
                   = image_pack_tag "media/src/images/overture/doc.svg"
                 span.ml-5 = d.versions.attachments.find_by(current_version: true).filename
-              td 11 items
+              td = d.company.name
               td = d.updated_at.strftime("%d %b %Y")
               td = render 'overture/documents/modals/documents_qna_modal', permissible: d, topic: @topic
               td.cursor-pointer data-toggle="modal" data-target="#documentModal#{d.id}"
                 i.material-icons-outlined.font-size-h1.text-dark.mr-2 visibility
-              td
-                = link_to (d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true)) : d.file_url) do
-                  i.material-icons-outlined.font-size-h1.text-dark.mr-2 download
+              - if permission.present? and (permission.can_download? or permission.can_write?)
+                td
+                  = link_to (d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true)) : d.file_url) do
+                    i.material-icons-outlined.font-size-h1.text-dark.mr-2 download
+              - else
+                td
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
   - else
     .table-responsive.h-75
