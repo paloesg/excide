@@ -174,6 +174,8 @@ Rails.application.routes.draw do
       end
     end
     delete 'delete_version_attachment/:signed_id', to: 'documents#delete_version_attachment', as: :delete_version_attachment
+    delete 'delete_multiple_permissible', to: 'permissions#delete_multiple_permissible', as: :delete_multiple_permissible
+    post 'bulk_assign_permissions', to: 'permissions#bulk_assign_permissions', as: :bulk_assign_permissions
     resources :folders do
       member do
         post 'toggle'
