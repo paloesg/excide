@@ -9,20 +9,25 @@ class Overture::InvestmentsController < ApplicationController
     # Get invested startup companies if company is the investor, vice versa
     @investments = @company.investor? ? @company.startup_investments : @company.investor_investments
     # For startups. Only can choose investor's company with contact_status Invested. The assumption here is that there is only 1 invested column in the board.
-    @investor_companies = ContactStatus.find_by(name: "Invested", startup_id: @company).contacts.map(&:company) if @company.startup?
+    @investor_companies = Company.where(company_type: "investor") if @company.startup?
   end
 
   def create
-    params[:investors].each do |company_id|
-      @investment = Investment.create(startup_id: @company.id, investor_id: company_id)
+    @investment = Investment.new(startup_id: @company.id, investor_id: params[:investor_id])
+    respond_to do |format|
+      if @investment.save
+        format.html { redirect_to overture_investments_path, notice: 'Successfully signed an investor.' }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      else
+        format.json { render json: @investment.errors, status: :unprocessable_entity }
+      end
     end
-    redirect_to overture_companies_path, notice: "Investor signed."
   end
 
   def destroy
     @investment.destroy
     respond_to do |format|
-      format.html { redirect_to overture_documents_path, notice: 'Folder was successfully destroyed.' }
+      format.html { redirect_to overture_investments_path, notice: 'Folder was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

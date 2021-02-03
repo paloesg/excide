@@ -1,10 +1,18 @@
 row.mb-3.mt-5.ml-3
   .col-sm-12
-    button.btn.btn-primary.float-right.mr-5 data-target="#addInvestmentOverture" data-toggle="modal" type="button"
-      i.material-icons-outlined.text-white add
-      | Investor
-    = render "add_investment_modal", investor_companies: @investor_companies
-
+    - if @company.startup?
+      button.btn.btn-primary.float-right.mr-5 data-target="#addInvestmentOverture" data-toggle="modal" type="button"
+        i.material-icons-outlined.text-white add
+        | Investor
+      = render "add_investment_modal", investor_companies: @investor_companies
+      #sendOvertureInvitation.modal.fade aria-hidden="true" aria-labelledby="sendInvitation" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5#sendInvitation.modal-title Send overture invitation
+              button.close aria-label="Close" data-dismiss="modal" type="button"
+                span aria-hidden="true"  &times;
+            .modal-body
     h3 Signed Investor
     p.mt-5.text-muted
       | Here are the information of your signed investor
@@ -15,7 +23,12 @@ row.mb-3.mt-5.ml-3
 /     | Filters
 hr.mb-0
 - unless @investments.present?
-  = render 'overture/shared/overture_empty_state'
+  .row.justify-content-center.ml-3
+    .col.text-center.p-10
+      = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
+      p.mt-4.text-muted
+        | No signed
+        = @company.investor? ? " startup" : " investor"
 - else
   table.table
     thead
