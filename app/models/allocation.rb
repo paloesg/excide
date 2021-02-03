@@ -25,12 +25,12 @@ class Allocation < ApplicationRecord
             allocation.user&.department&.name,
             allocation.user&.full_name,
             allocation.allocation_date.strftime('%v'),
-            allocation.event.client&.name,
+            allocation.event.all_clients_list&.last,
             # Service line is job function
-            allocation.event&.service_line_list&.last,
-            allocation.event&.project_list&.last,
+            allocation.event&.all_service_lines_list&.last,
+            allocation.event&.all_projects_list&.last,
             # Event type is task
-            allocation.event.event_type&.name,
+            allocation.event.all_tasks_list&.last,
             allocation.event.number_of_hours,  
           ]
           csv << row
