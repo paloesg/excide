@@ -13,10 +13,29 @@ class Overture::UsersController < ApplicationController
   end
 
   def create
-    @user = User.find_or_initialize_by(email: user_params[:email])
-    @user.company = @company
+    if params[:company_name].present?
+      # Added user from Signed investor page
+      @user = User.new(user_params)
+      # Create investor company with product overture
+      @investor_company = Company.create!(name: params[:company_name], company_type: "investor", products: ["overture"])
+      @user.company = @investor_company
+      # Add admin role
+      @user.add_role :admin, @investor_company
+      # Create investment after inviting the user to overture
+      Investment.create(startup_id: @company.id, investor_id: @investor_company.id)
+      # For overture, add member role
+      Role.create(name: "member", resource: @investor_company)
+      # Find contact status invested of the startup company
+      @contact_status = ContactStatus.find_by(startup_id: @company.id, name: "Invested")
+      # Create a private contact
+      Contact.create(company_name: @investor_company.name, created_by_id: @user.id, company_id: @investor_company.id, cloned_by: @company, searchable: false, contact_status: @contact_status)
+    else
+      # Added from teammates page
+      @user = User.find_or_initialize_by(email: user_params[:email])
+      @user.company = @company
+    end
     if @user.save
-      redirect_to overture_users_path, notice: 'User successfully created!'
+      redirect_back fallback_location: overture_root_path, notice: 'User successfully added!'
     else
       render :new
     end

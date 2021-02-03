@@ -1,0 +1,18 @@
+#addInvestmentOverture.modal.fade aria-hidden="true" aria-labelledby="addInvestment" role="dialog" tabindex="-1"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        h5#addInvestment.modal-title Add a signed investor
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+      .modal-body
+        .row.mt-3
+          .col-md-12
+            = form_tag overture_investments_path, method: :post do
+              .form-group
+                = select_tag :investor_id, options_for_select(@investor_companies.map {|k,v| [k.name, k.id]}, include_blank: true), prompt: 'Select investor contacts...', required: true, id: "investor_id", class: 'form-control'
+              .row.mt-3
+                .col-md-6
+                  a.align-middle.text-primary data-target="#sendOvertureInvitation" data-toggle="modal" type="button" Can't find your investors?
+                .col-md-6
+                  = submit_tag "Add", class: 'btn btn-primary float-right'

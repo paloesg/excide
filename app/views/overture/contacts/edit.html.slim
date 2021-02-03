@@ -1,0 +1,15 @@
+= render 'contact_contents', contact: @contact
+.row
+  .col-sm-3.bg-white.sidebar-border-radius
+    = render 'contact_sidebar'
+  .col-sm-9
+    .mt-10
+      = form_for @contact, url: overture_contact_path(@contact) do |f|
+        .row.mb-3.mt-5.ml-3
+          .col-sm-12
+            = f.submit 'Save & Published Changes', class: 'btn btn-primary float-right'
+        .row.mb-3.mt-5.ml-3
+          .col-sm-12
+            .form-group
+              = f.label :investor_information, "Company information", class: "label-bold"
+              = f.rich_text_area :investor_information, {class: "form-control col-sm-12", required: true, placeholder: "Instructions for users..."}
