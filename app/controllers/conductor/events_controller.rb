@@ -196,18 +196,7 @@ class Conductor::EventsController < ApplicationController
       end
     end
   end
-
-  def delete_tags
-    @tag = ActsAsTaggableOn::Tag.find(params[:id])
-    respond_to do |format|
-      if @tag.destroy
-        format.json { render json: @tag, status: :ok }
-      else
-        format.json { render json: @tag.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
+  
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_event

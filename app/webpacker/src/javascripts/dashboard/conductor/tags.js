@@ -10,28 +10,24 @@ $(document).on("turbolinks:load", function () {
   new Tagify(clients, {
     callbacks: {
       "edit:updated": (e) => updateTags(e.detail.data),
-      "remove": (e) => deleteTags(e.detail.data),
       "add": (e) => createTags(e.detail.data)
     }
   });
   new Tagify(service_lines, {
     callbacks: {
       "edit:updated": (e) => updateTags(e.detail.data),
-      "remove": (e) => deleteTags(e.detail.data),
       "add": (e) => createTags(e.detail.data)
     }
   });
   new Tagify(projects, {
     callbacks: {
       "edit:updated": (e) => updateTags(e.detail.data),
-      "remove": (e) => deleteTags(e.detail.data),
       "add": (e) => createTags(e.detail.data)
     }
   });
   new Tagify(tasks, {
     callbacks: {
       "edit:updated": (e) => updateTags(e.detail.data),
-      "remove": (e) => deleteTags(e.detail.data),
       "add": (e) => createTags(e.detail.data)
     }
   });
@@ -77,15 +73,6 @@ $(document).on("turbolinks:load", function () {
       setTimeout(function(){
         $("#" + id).css("cssText", "");
       }, 3000);
-    });
-  }
-
-  async function deleteTags(data){
-    $.ajax({
-      type: "PATCH",
-      url: "conductor/events/delete_tags",
-      data: {value: data.value, id: data.id},
-      dataType: "JSON"
     });
   }
 });
