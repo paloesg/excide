@@ -66,25 +66,26 @@ hr
 .row
   .col-sm-12
     h1 Create new task
-.row
-  = form_for @event, url: conductor_events_path do |f|
+= form_for @event, url: conductor_events_path do |f|
+  .row.mx-2
     .form-inline.col-md-12
       - if current_user.has_role? :staffer, @company or current_user.has_role? :admin, @company
-        .mr-2
-          = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last&.user&.id), {class: 'select2', include_blank: true, data: {"placeholder": 'Allocate someone...'}}
-      .mr-2
-        = f.date_field :start_time, class: 'form-control', required: true
-      .mr-2
-        = select_tag :client, options_for_select(@clients, selected: @event.client_list), {include_blank: true, required: true, class: 'select2', data: {"placeholder": 'Select client...' }}
-      .mr-2
-        = select_tag :project, options_for_select(@projects, selected: @event.project_list), {include_blank: true, required: true, class: 'select2', data: {"placeholder": 'Select project...' }}
-      .mr-2
-        = select_tag :service_line, options_for_select(@service_lines, selected: @event.service_line_list), {include_blank: true, required: true, class: 'select2', data: {"placeholder": 'Select service line...' }}
-      .mr-2
-        = select_tag :task, options_for_select(@tasks, selected: @event.task_list), {include_blank: true, required: true, class: 'select2', data: {"placeholder": 'Select task...' }}
-      .mr-2
-        = f.number_field :number_of_hours, {min: 0, step: 0.1, placeholder: 'No. of hours spent...', class: 'form-control', required: true}
-      = f.submit 'Save Event', class: 'btn btn-primary'
+        .col.pl-0.pr-2
+          = select_tag :user, options_from_collection_for_select(@users, "id", "full_name", @event.allocations.last&.user&.id), {class: 'select2 select2-width', include_blank: true, data: {"placeholder": 'Allocate someone...'}}
+      .col.pl-0.pr-2
+        = f.date_field :start_time, class: 'form-control w-100', required: true
+      .col.pl-0.pr-2
+        = select_tag :client, options_for_select(@clients, selected: @event.client_list), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select client...' }}
+      .col.pl-0.pr-2
+        = select_tag :project, options_for_select(@projects, selected: @event.project_list), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select project...' }}
+      .col.pl-0.pr-2
+        = select_tag :service_line, options_for_select(@service_lines, selected: @event.service_line_list), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select service line...' }}
+      .col.pl-0.pr-2
+        = select_tag :task, options_for_select(@tasks, selected: @event.task_list), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select task...' }}
+      .col-1.pl-0.pr-2
+        = f.number_field :number_of_hours, {min: 0, step: 0.1, placeholder: 'Hours...', class: 'form-control w-100', required: true}
+      .pl-0.pr-2
+        = f.submit 'Save', class: 'btn btn-primary'
 hr
 .row
   .col-sm-12
