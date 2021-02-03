@@ -24,7 +24,7 @@ class Allocation < ApplicationRecord
             rowcount += 1,
             allocation.user&.department&.name,
             allocation.user&.full_name,
-            allocation.allocation_date.strftime('%v'),
+            allocation.event&.start_time.strftime('%v'),
             allocation.event.all_clients_list&.last,
             # Service line is job function
             allocation.event&.all_service_lines_list&.last,
