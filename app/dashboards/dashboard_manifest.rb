@@ -25,6 +25,7 @@ class DashboardManifest
     :event_types,
     :folders,
     :franchisees,
+    :investments,
     :invoices,
     :notes,
     :outlets,

@@ -10,6 +10,7 @@ class Overture::InvestmentsController < ApplicationController
     @investments = @company.investor? ? @company.startup_investments : @company.investor_investments
     # For startups. Only can choose investor's company with contact_status Invested. The assumption here is that there is only 1 invested column in the board.
     @investor_companies = Company.where(company_type: "investor") if @company.startup?
+    @user = User.new
   end
 
   def create
