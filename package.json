@@ -20,7 +20,7 @@
     "jquery": "^3.5.1",
     "jquery-ui": "^1.12.1",
     "jquery.ui.widget": "^1.10.3",
-    "jsoneditor": "^8.6.8",
+    "jsoneditor": "^9.1.9",
     "moment": "^2.28.0",
     "popper.js": "^1.16.1",
     "select2": "^4.0.13",

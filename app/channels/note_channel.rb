@@ -1,13 +1,12 @@
 class NoteChannel < ApplicationCable::Channel
   def subscribed
-    stream_for outlet
+    if params[:outlet_id].present?
+      outlet = Outlet.find(params[:outlet_id])
+      stream_for outlet
+    end
   end
 
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
-  end
-
-  def outlet
-    Outlet.find(params[:outlet_id])
   end
 end

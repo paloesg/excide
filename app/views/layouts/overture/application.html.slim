@@ -59,12 +59,13 @@ html lang="en"
                 = yield
                 = render 'layouts/messages'
       - else
-        .row
-          .col-sm-2.bg-white
-            = render 'layouts/overture/overture_sidebar'
-          .col-sm-10.mt-5
-            = yield
-            = render 'layouts/messages'
+        .container-fluid
+          .row
+            .col-sm-2.bg-white
+              = render 'layouts/overture/overture_sidebar'
+            .col-sm-10.mt-5
+              = yield
+              = render 'layouts/messages'
       / render content and sidebar
     = render 'layouts/footer' unless current_page?(root_path)
     /! Start of paloe Zendesk Widget script

@@ -11,7 +11,7 @@
       = f.select :client_id, @clients.map { |client| [client.name, client.id] }, {selected: @event.client_id, prompt: 'Select client...'}, {class: 'selectize', required: true}
     .form-group
       = label_tag 'Service Line', 'Service Line'
-      = select_tag :service_line, options_for_select(@service_lines, selected: @event.tag_list), include_blank: true, prompt: 'Select service line...', required: true, class: 'selectize'
+      = select_tag :service_line, options_for_select(@service_lines, selected: @event.service_line_list), include_blank: true, prompt: 'Select service line...', required: true, class: 'selectize'
     .form-group
       = f.label :number_of_hours, 'Number of hours'
       = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control', required: true}

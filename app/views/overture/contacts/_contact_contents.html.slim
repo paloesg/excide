@@ -14,6 +14,3 @@
         = select_tag('contact_status', options_for_select(@contact_statuses.map {|k,v| [k.name, k.id]}, selected: get_cloned_contact(contact, current_user).first.contact_status.id, include_blank: true), id: "#{contact.id}", class: 'select2 select2-change-contact-status form-control col-sm-12')
       - else
         = link_to "Add to fundraising board", overture_contacts_path(contact_id: contact.id), method: :post, class: "btn btn-primary mr-3"
-      / = link_to overture_contacts_path(contact_id: contact.id), method: :post, class: "btn btn-primary" do
-      /     i.material-icons-outlined.text-white view_agenda
-      /     | Add to Fundraising Board

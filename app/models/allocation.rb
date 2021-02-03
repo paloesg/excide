@@ -12,22 +12,26 @@ class Allocation < ApplicationRecord
   validates :event, :allocation_type, :allocation_date, :start_time, :end_time, presence: true
 
   def self.to_csv
-    attributes = ['S. S/N', 'Full Name', 'Date', 'Client', 'Service Line', 'Hours Charged', 'Job Nature']
+    attributes = ['S. S/N', 'Department', 'Name', 'Date', 'Client', 'Job Function', 'Project', 'Task', 'Hours']
 
     CSV.generate do |csv|
       csv << attributes
       rowcount = 0
+      # if self is an array (a month's events), all.each loops through the array
       all.each do |allocation|
         if allocation.user.present?
           row = [
             rowcount += 1,
+            allocation.user&.department&.name,
             allocation.user&.full_name,
             allocation.allocation_date.strftime('%v'),
             allocation.event.client&.name,
-            allocation.event.event_type.name,
-            # Find hours charged
-            allocation.event.number_of_hours,
-            allocation.event.tag_list.present? ? allocation.event.tag_list.last : 'Nil',    
+            # Service line is job function
+            allocation.event&.service_line_list&.last,
+            allocation.event&.project_list&.last,
+            # Event type is task
+            allocation.event.event_type&.name,
+            allocation.event.number_of_hours,  
           ]
           csv << row
         end
