@@ -6,9 +6,9 @@ module Motif::WorkflowsHelper
       current_user.active_outlet.workflows.includes(:template).where(templates: {template_type: template_type})
     else
       # For direct owned outlet's workflows
-      owned_outlet_workflows = user.company.workflows
+      owned_outlet_workflows = user.company.workflows.includes(:template).where(templates: {template_type: template_type})
       # For getting franchised outlet's workflows
-      franchised_outlet_workflows = user.company.parent.present? ? user.company.parent.workflows.includes(:outlet).where(outlets: { company_id: user.company.id }) : []
+      franchised_outlet_workflows = user.company.parent.present? ? user.company.parent.workflows.includes(:outlet, :template).where(templates: {template_type: template_type}, outlets: { company_id: user.company.id }) : []
       # Combine all the workflows, regardless of blank and present
       @workflows = owned_outlet_workflows + franchised_outlet_workflows
       return @workflows
