@@ -1,0 +1,37 @@
+row.mb-3.mt-5.ml-3
+  .col-sm-12
+    button.btn.btn-primary.float-right.mr-5 data-target="#addInvestmentOverture" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white add
+      | Investor
+    = render "add_investment_modal", investor_companies: @investor_companies
+
+    h3 Signed Investor
+    p.mt-5.text-muted
+      | Here are the information of your signed investor
+      br
+      | Click a row to see their details.
+/     span.mr-3
+/       i.material-icons-outlined filter_list
+/     | Filters
+hr.mb-0
+- unless @investments.present?
+  = render 'overture/shared/overture_empty_state'
+- else
+  table.table
+    thead
+      tr
+        th.text-muted style="width: 50%" Company
+        th.text-muted style="width: 30%" Added on
+        th style="width: 5%"
+        th style="width: 5%"
+    tbody
+      - @investments.each_with_index do |i, index|
+        tr
+          td.font-weight-boldest = @company.investor? ? i.startup.name : i.investor.name
+          td
+            = i.created_at.strftime("%b %d %Y")
+          td
+            i.material-icons-outlined launch
+          td
+            = link_to overture_investment_path(i), method: :delete, data: {confirm: "Are you sure you want to delete investor?"} do
+              i.material-icons-outlined delete

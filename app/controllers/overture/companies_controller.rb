@@ -4,13 +4,6 @@ class Overture::CompaniesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
 
-  def index
-    # Get invested startup companies if company is the investor, vice versa
-    @companies = @company.investor? ? @company.startups : @company.investors
-    # For startups. Only can choose investor's company with contact_status Invested. The assumption here is that there is only 1 invested column in the board.
-    @investor_companies = ContactStatus.find_by(name: "Invested", startup_id: @company).contacts.map(&:company)
-  end
-
   def edit
     @contact = @company.contacts.find_by(searchable: true)
   end
