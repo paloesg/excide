@@ -9,7 +9,7 @@ class Overture::InvestmentsController < ApplicationController
     # Get invested startup companies if company is the investor, vice versa
     @investments = @company.investor? ? @company.startup_investments : @company.investor_investments
     # For startups. Only can choose investor's company with contact_status Invested. The assumption here is that there is only 1 invested column in the board.
-    @investor_companies = Company.where(company_type: "investor") if @company.startup?
+    @investor_companies = Company.includes(:contacts).where(company_type: "investor", contacts: {cloned_by: @company}) if @company.startup?
     @user = User.new
   end
 
