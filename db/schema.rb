@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_25_060927) do
+ActiveRecord::Schema.define(version: 2021_02_01_082256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.uuid "record_id"
+    t.boolean "current_version", default: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -196,6 +197,11 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
     t.json "products", default: []
     t.string "website_url"
     t.string "report_url"
+    t.string "cap_table_url"
+    t.string "ancestry"
+    t.integer "storage_limit"
+    t.integer "storage_used"
+    t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
@@ -227,6 +233,14 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end
 
+  create_table "departments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_departments_on_company_id"
+  end
+
   create_table "document_templates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -255,7 +269,9 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
     t.uuid "folder_id"
     t.uuid "company_id"
     t.uuid "outlet_id"
+    t.uuid "franchisee_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
+    t.index ["franchisee_id"], name: "index_documents_on_franchisee_id"
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
@@ -281,6 +297,8 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
     t.uuid "client_id"
     t.decimal "number_of_hours"
     t.uuid "company_id"
+    t.uuid "department_id"
+    t.index ["department_id"], name: "index_events_on_department_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
 
@@ -304,6 +322,11 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
     t.integer "renewal_period_freq_unit"
     t.integer "renewal_period_freq_value"
     t.uuid "company_id"
+    t.integer "license_type"
+    t.integer "max_outlet"
+    t.integer "min_outlet"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_franchisees_on_company_id"
   end
 
@@ -621,7 +644,9 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
     t.bigint "user_id"
     t.integer "deadline_type"
     t.text "description"
+    t.uuid "folder_id"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
+    t.index ["folder_id"], name: "index_tasks_on_folder_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
     t.index ["section_id"], name: "index_tasks_on_section_id"
     t.index ["survey_template_id"], name: "index_tasks_on_survey_template_id"
@@ -702,7 +727,9 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
     t.uuid "company_id"
     t.uuid "outlet_id"
     t.datetime "last_click_comm_hub"
+    t.uuid "department_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["outlet_id"], name: "index_users_on_outlet_id"
     t.index ["provider"], name: "index_users_on_provider"
@@ -814,16 +841,19 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
   add_foreign_key "contacts", "companies", column: "cloned_by_id"
   add_foreign_key "contacts", "contact_statuses"
   add_foreign_key "contacts", "users", column: "created_by_id"
+  add_foreign_key "departments", "companies"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
   add_foreign_key "documents", "document_templates"
   add_foreign_key "documents", "folders"
+  add_foreign_key "documents", "franchisees"
   add_foreign_key "documents", "outlets"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
   add_foreign_key "events", "companies"
+  add_foreign_key "events", "departments"
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
   add_foreign_key "folders", "users"
@@ -862,6 +892,7 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
   add_foreign_key "surveys", "workflows"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tasks", "document_templates"
+  add_foreign_key "tasks", "folders"
   add_foreign_key "tasks", "roles"
   add_foreign_key "tasks", "sections"
   add_foreign_key "tasks", "survey_templates"
@@ -873,6 +904,7 @@ ActiveRecord::Schema.define(version: 2021_01_25_060927) do
   add_foreign_key "topics", "users"
   add_foreign_key "topics", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"
+  add_foreign_key "users", "departments"
   add_foreign_key "users", "outlets"
   add_foreign_key "workflow_actions", "companies"
   add_foreign_key "workflow_actions", "tasks"

@@ -3,6 +3,7 @@ class Event < ApplicationRecord
   belongs_to :company
   belongs_to :client
   belongs_to :event_type, class_name: 'EventType'
+  belongs_to :department
 
   has_one :address, as: :addressable, dependent: :destroy
   has_many :allocations, dependent: :destroy
@@ -11,7 +12,7 @@ class Event < ApplicationRecord
   validates :company, :event_type, :start_time, presence: true
 
   # Tagging documents to indicate where document is created from
-  acts_as_taggable_on :tags
+  acts_as_taggable_on :service_lines, :projects
 
   include PublicActivity::Model
   tracked owner: ->(controller, _model) { controller && controller.current_user },

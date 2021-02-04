@@ -42,7 +42,10 @@ require("./motif/settings");
 require("./motif/templates");
 require("./motif/note");
 
+require("./overture/access_control");
+require("./overture/bulk_assignment");
 require("./overture/drawer");
+require("./overture/open_another_modal");
 require("./overture/update_contact_status");
 
 // Import Uppy drag-and-drop
