@@ -30,8 +30,9 @@ class FoldersController < ApplicationController
   def create
     @folder = Folder.new(folder_params)
     authorize @folder
-    # Create permission for the user that uploaded the folder
-    @permission = Permission.create(permissible: @folder, user: current_user, can_write: true, can_download: true, can_view: true)
+    @admin_role = Role.find_by(resource: current_user.company, name: "admin")
+    # Create permission for all admin users
+    @permission = Permission.create(permissible: @folder, role: @admin_role, can_write: true, can_download: true, can_view: true)
     @folder.company = current_user.company
     @folder.user = current_user
     respond_to do |format|

@@ -32,6 +32,8 @@ class Overture::UsersController < ApplicationController
     else
       # Added from teammates page
       @user = User.find_or_initialize_by(email: user_params[:email])
+      # Add admin roles
+      @user.add_role :admin, @company
       @user.company = @company
     end
     if @user.save
@@ -54,6 +56,14 @@ class Overture::UsersController < ApplicationController
       redirect_to edit_overture_user_path(@user), notice: 'User successfully updated!'
     else
       render :edit
+    end
+  end
+
+  def destroy
+    @user.destroy
+    respond_to do |format|
+      format.html { redirect_to overture_users_path, notice: 'User was successfully deleted.' }
+      format.json { head :no_content }
     end
   end
 
