@@ -1,51 +1,43 @@
 .banner-image
   .row.h-100.align-items-center
     .col-sm-12.text-left.ml-5
-      h1.text-dark.font-weight-boldest Hello, #{current_user.full_name}
+      h1.text-dark.font-weight-boldest Welcome, #{current_user.full_name}
       p.text-dark.lead A great startup comes with great responsibility
 .row.mt-5
-  .col-sm-7
-    .card.card-custom.gutter-b
-      .card-header
-        .card-title
-          h1.card-label
-            | Basic Card
-      .card-body
-        .row
-          .col-sm-12
-            p Hello World
-        hr
-        .row
-          .col-sm-12
-            p This is the dashboard
-        hr
-        .row
-          .col-sm-12
-            p This is where the annoucements will appear
-        hr
-        .row
-          .col-sm-12
-            p Stay tuned for future features.
-  .col-sm-5
+  .col-sm-10
     .row
-      .col-sm-12
+      .col-sm-5
         .card.card-custom.gutter-b
           .card-header
             .card-title
               h1.card-label QnA
           .card-body
             .row
+              .col-sm-2
+                h3.font-weight-boldest = @need_answer.length
               .col-sm-6
-                h3.font-weight-boldest 5
+                .text-dark.badge.badge-pill style="background: #eb7c7c;" Need Answer
+            .row
+              .col-sm-2
+                h3.font-weight-boldest = @need_approval.length
               .col-sm-6
-                .text-dark.badge.badge-pill.badge-danger  Need Answer
-    .row
-      .col-sm-12
-        .card.card-custom.gutter-b
-          .card-header
-            .card-title
-              h1.card-label Activity History
-          .card-body
-            p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ornare ligula id odio porttitor laoreet. Morbi ac metus erat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi finibus mattis felis sed suscipit. Ut et mattis est. Donec ac venenatis metus. Vestibulum scelerisque libero est, vel iaculis nibh auctor id. Nullam tincidunt sodales libero vel semper.
-            p Nam porta, turpis in viverra fringilla, lectus augue semper tellus, quis tempor massa ante eget purus. Quisque vehicula massa odio, nec congue lorem aliquet eget. Curabitur libero dolor, rutrum ut nunc et, venenatis suscipit justo. Suspendisse nec orci ac massa suscipit pretium sit amet nec nisi. Phasellus mollis id arcu id egestas. Duis sit amet eros nunc. Curabitur eget tempus nisi. Duis dolor quam, aliquet vitae consectetur eu, interdum ut lectus. Nullam purus diam, lacinia sed efficitur ut, placerat pharetra tortor. Mauris consequat turpis vel risus molestie rutrum. Donec ultricies pretium est vitae pretium. Etiam hendrerit, urna sit amet consectetur sollicitudin, quam nisl posuere libero, id dapibus velit massa non tortor. Donec aliquet, dui eget ornare varius, ligula urna semper ante, sed tempus libero metus id metus.
+                .text-dark.badge.badge-pill style="background: #DCCD1E;" Need Approval
+            .row
+              .col-sm-2
+                h3.font-weight-boldest = @answered.length
+              .col-sm-6
+                .text-dark.badge.badge-pill style="background: #B8CD59;"  Answered
+            .row
+              .col-sm-2
+                h3.font-weight-boldest = @closed.length
+              .col-sm-6
+                .text-dark.badge.badge-pill style="background: #CECECE;" Closed Question
+      / .col-sm-7
+      /   .card.card-custom.gutter-b
+      /     .card-header
+      /       .card-title
+      /         h1.card-label Activity History
+      /     .card-body
+      /       p Jonathan uploaded file
+      /       p Jon Invest posted a question
 
