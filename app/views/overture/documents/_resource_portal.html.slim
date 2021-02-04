@@ -1,14 +1,16 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    .dropdown
-      a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-        i.material-icons-outlined.font-size-h2.p-0 add
-      .dropdown-menu.dropdown-menu-right
-        / these paths are not working
-        a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
-        a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
-    = render "overture/documents/modals/upload_documents_modal"
-    = render "overture/documents/modals/new_folder_modal", folder: @new_folder, parent_folder: @folder
+    / Only superadmin can upload files in resource portal
+    - if current_user.has_role?(:superadmin)
+      .dropdown
+        a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+          i.material-icons-outlined.font-size-h2.p-0 add
+        .dropdown-menu.dropdown-menu-right
+          / these paths are not working
+          a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
+          a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
+      = render "overture/documents/modals/upload_documents_modal"
+      = render "overture/documents/modals/new_folder_modal", folder: @new_folder, parent_folder: @folder
     h3 Resource Portal
     p.mt-5
       | Here are some resources to help you in managing your investors.
@@ -35,9 +37,6 @@
           th.text-muted style="width: 35%" Name
           th.text-muted style="width: 10%" Last Modified
           th style="width: 10%"
-          - @roles.each do |role|
-            th
-              a title="#{role.users.map(&:full_name).join("<br/>")}" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" = role.name
       tbody.draggable-zone
         - @folders.each_with_index do |folder, index|
           tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id data-permissible-type="folder"
@@ -58,9 +57,6 @@
                   .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{folder.id}_0"
                   .dropdown-item = link_to "Download", edit_overture_folder_path(folder)
                   .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
-            - @roles.each do |role|
-              td
-                = render "overture/documents/permissions_icons", role: role, permissible: folder, permissible_type: "folder"
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
           = render 'overture/documents/modals/version_control_modal', d: d
