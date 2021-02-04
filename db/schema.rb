@@ -131,20 +131,11 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.integer "type"
+    t.integer "category_type"
     t.uuid "department_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["department_id"], name: "index_categories_on_department_id"
-  end
-
-  create_table "categories_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "categories_id"
-    t.uuid "events_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["categories_id"], name: "index_categories_events_on_categories_id"
-    t.index ["events_id"], name: "index_categories_events_on_events_id"
   end
 
   create_table "choices", id: :serial, force: :cascade do |t|
@@ -292,6 +283,15 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
+  end
+
+  create_table "event_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "categories_id"
+    t.uuid "events_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["categories_id"], name: "index_event_categories_on_categories_id"
+    t.index ["events_id"], name: "index_event_categories_on_events_id"
   end
 
   create_table "event_types", id: :serial, force: :cascade do |t|
@@ -847,8 +847,6 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
   add_foreign_key "batches", "templates"
   add_foreign_key "batches", "users"
   add_foreign_key "categories", "departments"
-  add_foreign_key "categories_events", "categories", column: "categories_id"
-  add_foreign_key "categories_events", "events", column: "events_id"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
   add_foreign_key "companies", "users", column: "associate_id"
@@ -870,6 +868,8 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
+  add_foreign_key "event_categories", "categories", column: "categories_id"
+  add_foreign_key "event_categories", "events", column: "events_id"
   add_foreign_key "events", "companies"
   add_foreign_key "events", "departments"
   add_foreign_key "events", "users", column: "staffer_id"

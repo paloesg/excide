@@ -7,7 +7,8 @@ class Event < ApplicationRecord
 
   has_one :address, as: :addressable, dependent: :destroy
   has_many :allocations, dependent: :destroy
-  has_many :categories, through: :categories_events
+  has_many :event_categories, class_name: 'EventCategory'
+  has_many :categories, through: :event_categories
 
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
   validates :company, :start_time, presence: true
