@@ -18,7 +18,7 @@ hr
                 .card-body.border.border-light.p-5
                   .d-flex
                     = contact.investor_company_logo.attached? ? (image_tag url_for(contact.investor_company_logo), class: 'rounded-circle w-25 investor-profile-pic') : (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'rounded-circle w-25 investor-profile-pic')
-                    = link_to (contact.company.present? ? contact.company.name : contact.company_name), overture_contact_path(contact.id), class: "card-title text-uppercase text-truncate mt-5 ml-5 h5 text-dark font-weight-boldest"
+                    = link_to (contact.company.present? ? truncate(contact.company.name, length: 15) : truncate(contact.company_name, length: 15)), overture_contact_path(contact.id), class: "card-title text-uppercase text-truncate mt-5 ml-5 h5 text-dark font-weight-boldest"
       .dropdown
         a.text-muted href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" = "+ Investor"
         .dropdown-menu.dropdown-menu-right
