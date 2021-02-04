@@ -36,8 +36,8 @@ class Motif::OutletsController < ApplicationController
     @user.add_role(:franchisee_owner, @user.company)
     respond_to do |format|
       if @outlet.save
-        # Clone template for outlet when saved. Check if user added unit franchisee or direct outlet. Unit franchisee should clone template to it's company (could be MF) while direct outlet clone straight to parent company if available
-        @outlet.clone_templates_for_outlet(params[:outlet][:franchisee_attributes].present? ? "unit_franchisee" : "direct_owned")
+        # Clone template for outlet when saved. Check if user added unit franchisee or direct outlet. Unit franchisee should clone template to it's company (could be MF) while direct outlet clone straight to parent company if available. Check if franchisee form's franchise licensee is present.
+        @outlet.clone_templates_for_outlet(params[:outlet][:franchisee_attributes][:franchise_licensee].present? ? "unit_franchisee" : "direct_owned")
         # Save outlet to user
         @user.outlets << @outlet
         # Set active outlet to the new saved outlet
