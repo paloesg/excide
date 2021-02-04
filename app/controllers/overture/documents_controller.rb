@@ -15,10 +15,11 @@ class Overture::DocumentsController < ApplicationController
     @permissible_company = params[:company_id].present? ? Company.find_by(id: params[:company_id]) : @company
     # For investor, they can see documents where they have can_view permissions in their group. Whereas for startup, they can see if they have user permissions
     @documents = params[:company_id].present? ? Document.where(folder_id: nil, company: @permissible_company).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, role_id: [@permissible_company.roles.map(&:id)]} ) : Document.where(folder_id: nil, company: @permissible_company).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
-    @folders = params[:company_id].present? ? Folder.roots.includes(:permissions).where(company: @permissible_company, permissions: { can_view: true, role_id: [@permissible_company.roles.map(&:id)]}) : Folder.roots.includes(:permissions).where(company: @permissible_company, permissions: { can_view: true, user_id: @user.id })
+    @folders = params[:company_id].present? ? Folder.roots.includes(:permissions).where(company: @permissible_company, permissions: { can_view: true, role_id: [@permissible_company.roles.map(&:id)]}) : Folder.roots.includes(:permissions).where(company: @permissible_company, permissions: { can_view: true, user_id: @user.id }).where.not(name: "Resource Portal")
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
     @users = get_users(@company)
-    @startups = @company.startups if @company.investor?
+    # Show shared files for investor without being signed for their due diligence
+    @startups = @user.roles.map(&:permissions).flatten.map(&:permissible).map(&:company).uniq if @company.investor?
     @folder = Folder.new
     @permission = Permission.new
     @topic = Topic.new
