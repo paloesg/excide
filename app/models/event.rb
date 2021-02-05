@@ -13,9 +13,6 @@ class Event < ApplicationRecord
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
   validates :company, :start_time, presence: true
 
-  # Tagging documents to indicate where document is created from
-  acts_as_taggable_on :service_lines, :projects, :clients, :tasks
-
   include PublicActivity::Model
   tracked owner: ->(controller, _model) { controller && controller.current_user },
           recipient: ->(_controller, model) { model },
@@ -32,7 +29,7 @@ class Event < ApplicationRecord
   scope :start_time, ->(time){where(start_time: time) if time.present?}
 
   def name
-    self.client_list + " " + self.task_list
+    self.categories.find_by(category_type: "client").name + " " + self.categories.find_by(category_type: "task").name
   end
 
   def project_consultants
