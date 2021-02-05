@@ -14,6 +14,7 @@ class DashboardManifest
     :allocations,
     :availabilities,
     :batches,
+    :categories,
     :clients,
     :companies,
     :contacts,

@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class DepartmentDashboard < Administrate::BaseDashboard
+class CategoryDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,11 +8,12 @@ class DepartmentDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    department: Field::BelongsTo,
+    event_categories: Field::HasMany,
+    events: Field::HasMany,
     id: Field::String.with_options(searchable: false),
     name: Field::String,
-    company: Field::BelongsTo,
-    users: Field::HasMany,
-    events: Field::HasMany,
+    category_type: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -25,8 +26,8 @@ class DepartmentDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
   id
   name
-  company
-  users
+  category_type
+  department
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -34,9 +35,8 @@ class DepartmentDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
   id
   name
-  company
-  users
-  events
+  category_type
+  department
   created_at
   updated_at
   ].freeze
@@ -46,9 +46,8 @@ class DepartmentDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
   name
-  company
-  users
-  events
+  category_type
+  department
   ].freeze
 
   # COLLECTION_FILTERS
@@ -63,10 +62,10 @@ class DepartmentDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how departments are displayed
+  # Overwrite this method to customize how categories are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(department)
-    "#{department.name}"
-  end
+  # def display_resource(category)
+  #   "Category ##{category.id}"
+  # end
 end
