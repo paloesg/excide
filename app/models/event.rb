@@ -7,7 +7,7 @@ class Event < ApplicationRecord
 
   has_one :address, as: :addressable, dependent: :destroy
   has_many :allocations, dependent: :destroy
-  has_many :event_categories, class_name: 'EventCategory'
+  has_many :event_categories, class_name: 'EventCategory', dependent: :destroy
   has_many :categories, through: :event_categories
 
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
@@ -29,7 +29,7 @@ class Event < ApplicationRecord
   scope :start_time, ->(time){where(start_time: time) if time.present?}
 
   def name
-    self.categories.find_by(category_type: "client").name + " " + self.categories.find_by(category_type: "task").name
+    self.categories.find_by(category_type: "task")&.name
   end
 
   def project_consultants
