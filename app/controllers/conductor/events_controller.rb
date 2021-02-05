@@ -107,8 +107,6 @@ class Conductor::EventsController < ApplicationController
   def update
     respond_to do |format|
       if event_params[:client_category] || event_params[:service_line_category] || event_params[:project_category] || event_params[:task_category]
-        puts "HELLO"
-        puts event_params
         if update_categories(@event, event_params)
           flash[:notice] = 'Event was successfully updated.'
           format.json { render json: @event, status: :ok }
