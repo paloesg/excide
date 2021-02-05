@@ -3,10 +3,9 @@ class Conductor::EventsController < ApplicationController
   
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_clients
   before_action :set_staffers, only: [:new, :edit]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
-  before_action :get_users_projects_and_service_lines, only: [:index, :new, :edit, :create, :update]
+  before_action :set_tags, only: [:index, :new, :edit, :create, :update, :edit_tags, :create_tags]
 
 
   # GET /conductor/events
@@ -18,13 +17,17 @@ class Conductor::EventsController < ApplicationController
     date_to = params[:end_date].to_time.utc
 
     #filter event using scope setup in model
-    @events = Event.includes(:address, :client, :staffer, :event_type, [allocations: :user]).company(@company.id)
+    @events = Event.includes(:address, :staffer, [allocations: :user]).company(@company.id)
     @events = @events.start_time(date_from..date_to)
-    @events = @events.event(params[:event_types]) unless params[:event_types].blank?
     @events = @events.allocation(params[:allocation_users].split(",")) unless params[:allocation_users].blank?
-    @events = @events.client(params[:project_clients].split(",")) unless params[:project_clients].blank?
     #using tagged_with means can only search with 1 selected value
-    @events = Event.tagged_with(params[:service_line]) unless params[:service_line].blank?
+    @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:service_line] }) unless params[:service_line].blank?
+    @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:project_clients] }) unless params[:project_clients].blank?
+
+    @clients += @general_clients
+    @service_lines += @general_service_lines
+    @projects += @general_projects
+    @tasks += @general_tasks
 
     if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
     @user_event_count = Hash.new
@@ -73,8 +76,11 @@ class Conductor::EventsController < ApplicationController
     # Placeholder for event's end time as there is no end time in the form
     @event.end_time = @event.start_time + 1.hour
     @event.company = @company
-    @event.service_line_list.add(params[:service_line]) if params[:service_line].present?
-    @event.project_list.add(params[:project]) if params[:project].present?
+    @client = Category.find(params[:client]) if params[:client].present?
+    @service_line = Category.find(params[:service_line]) if params[:service_line].present?
+    @project = Category.find(params[:project]) if params[:project].present?
+    @task = Category.find(params[:task]) if params[:task].present?
+    @event.categories << @client << @service_line << @project << @task
     respond_to do |format|
       if @event.save
         # Allocate yourself to the timesheet allocation
@@ -101,7 +107,12 @@ class Conductor::EventsController < ApplicationController
   # PATCH/PUT /conductor/events/1.json
   def update
     respond_to do |format|
-      if @event.update(event_params)
+      if event_params[:client_category] || event_params[:service_line_category] || event_params[:project_category] || event_params[:task_category]
+        if update_categories(@event, event_params)
+          flash[:notice] = 'Event was successfully updated.'
+          format.json { render json: @event, status: :ok }
+        end
+      elsif @event.update(event_params)
         flash[:notice] = 'Event was successfully updated.'
         format.json { render json: @event, status: :ok }
       else
@@ -160,30 +171,85 @@ class Conductor::EventsController < ApplicationController
     end
   end
 
+  def edit_tags
+    @client_tags, @project_tags, @service_line_tags, @task_tags = [], [], [], []
+    @clients.each { |c| @client_tags << {value: c.name, id: c.id}.as_json }
+    @projects.each { |p| @project_tags << {value: p.name, id: p.id}.as_json }
+    @service_lines.each { |sl| @service_line_tags << {value: sl.name, id: sl.id}.as_json }
+    @tasks.each { |t| @task_tags << {value: t.name, id: t.id}.as_json }
+    @client_tags = @client_tags.to_json
+    @project_tags = @project_tags.to_json
+    @service_line_tags = @service_line_tags.to_json
+    @task_tags = @task_tags.to_json
+  end
+
+  def create_tags
+    @category = Category.new(name: params[:value], category_type: params[:type], department: @department)
+    respond_to do |format|
+      if @category.save
+        format.json { render json: @category, status: :ok }
+      else
+        format.json { render json: @category.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update_tags
+    @category = Category.find(params[:id])
+    @category.name = params[:value]
+    respond_to do |format|
+      if @category.save
+        format.json { render json: @category, status: :ok }
+      else
+        format.json { render json: @category.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update_categories(event, event_params)
+    if event_params[:client_category]
+      event.categories.delete(event.categories.where(category_type: "client"))
+      event.categories << Category.find(event_params[:client_category])
+    elsif event_params[:service_line_category]
+      event.categories.delete(event.categories.where(category_type: "service_line"))
+      event.categories << Category.find(event_params[:service_line_category])
+    elsif event_params[:project_category]
+      event.categories.delete(event.categories.where(category_type: "project"))
+      event.categories << Category.find(event_params[:project_category])
+    elsif event_params[:task_category]
+      event.categories.delete(event.categories.where(category_type: "task"))
+      event.categories << Category.find(event_params[:task_category])
+    end
+    event.save
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_event
     @event = current_user.company.events.find(params[:id])
   end
 
-  def set_clients
-    @clients = Client.where(company_id: @company.id).sort_by(&:name)
-  end
-
   def set_staffers
     @staffers = User.where(company: @company).with_role :staffer, @company
   end
 
-  def get_users_projects_and_service_lines
+  def set_tags
     # To be tagged using acts_as_taggable_on gem
-    @service_lines = ActsAsTaggableOn::Tag.for_context(:service_lines).map(&:name).sort
-    @projects = ActsAsTaggableOn::Tag.for_context(:projects).map(&:name).sort
+    @department = @user.department
+    @service_lines = Category.where(category_type: "service_line", department: @department)
+    @projects = Category.where(category_type: "project", department: @department)
+    @clients = Category.where(category_type: "client", department: @department)
+    @tasks = Category.where(category_type: "task", department: @department)
+    @general_service_lines = Category.where(category_type: "service_line", department: nil)
+    @general_projects = Category.where(category_type: "project", department: nil)
+    @general_clients = Category.where(category_type: "client", department: nil)
+    @general_tasks = Category.where(category_type: "task", department: nil)
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
     @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :service_line_list, :project_list, :number_of_hours, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :client_category, :service_line_category, :project_category, :task_category, :number_of_hours, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
   end
 end

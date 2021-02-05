@@ -215,6 +215,10 @@ td.day.has-events.fc-day-top.fc-past {
   cursor: pointer;
 }
 
+.select2-width + .select2-container--default {
+  width: 100% !important;
+}
+
 .table-aligned > tbody > tr * {
   vertical-align: middle !important;
 }

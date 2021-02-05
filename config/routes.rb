@@ -205,6 +205,9 @@ Rails.application.routes.draw do
       collection do
         get :history, to: 'events#activities', as: :activities
         post :import, to: 'events#import'
+        get :edit_tags, to: 'events#edit_tags'
+        patch :create_tags, to:'events#create_tags'
+        patch :update_tags, to:'events#update_tags'
       end
       member do
         get '/create-allocations/:type/:count', to: 'events#create_allocations', as: :create_allocations
