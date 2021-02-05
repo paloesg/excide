@@ -286,12 +286,12 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
   end
 
   create_table "event_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "categories_id"
-    t.uuid "events_id"
+    t.uuid "category_id"
+    t.uuid "event_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["categories_id"], name: "index_event_categories_on_categories_id"
-    t.index ["events_id"], name: "index_event_categories_on_events_id"
+    t.index ["category_id"], name: "index_event_categories_on_category_id"
+    t.index ["event_id"], name: "index_event_categories_on_event_id"
   end
 
   create_table "event_types", id: :serial, force: :cascade do |t|
@@ -868,8 +868,8 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
-  add_foreign_key "event_categories", "categories", column: "categories_id"
-  add_foreign_key "event_categories", "events", column: "events_id"
+  add_foreign_key "event_categories", "categories"
+  add_foreign_key "event_categories", "events"
   add_foreign_key "events", "companies"
   add_foreign_key "events", "departments"
   add_foreign_key "events", "users", column: "staffer_id"
