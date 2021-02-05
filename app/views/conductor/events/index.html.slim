@@ -109,7 +109,7 @@ hr
             th
             th
         tbody
-          - @events.order(start_time: :desc).each do |event|
+          - @events.each do |event|
             = form_for event, url: conductor_event_path(event.id), remote: true do |f|
               tr
                 - if event.allocations.present?
@@ -140,3 +140,4 @@ hr
                 td width="3%"
                   = fa_icon "check", class: 'text-success ajax-icons'
                   = fa_icon "times", class: 'text-danger ajax-icons'
+    = paginate @events, views_prefix: 'dashboard'

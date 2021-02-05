@@ -1,6 +1,7 @@
 .row
   .col-md-6
-    h1 Edit Categories
+    h1
+      = @user.has_role?(:admin, @company) ? "Edit Categories - General" : "Edit Categories - #{@department}"
   .col-md-6
     = link_to "Back", conductor_events_path, class: 'btn btn-primary float-right mr-2'
 hr

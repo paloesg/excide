@@ -29,7 +29,7 @@ class GenerateEventsService
       @project = Category.create_or_find_by(name: event_data["Project"], category_type: "project", department: @department)
       @task = Category.create_or_find_by(name: event_data["Job Nature"], category_type: "task", department: @department)
       @event.categories << @client << @service_line << @project << @task
-      @event.start_time = event_data["Date (DD/MM/YYYY)"]
+      @event.start_time = event_data["Date (MM/DD/YYYY)"]
       @event.number_of_hours = event_data["No. of hours"]
       @event.save!
       GenerateTimesheetAllocationService.new(@event, @user).run
