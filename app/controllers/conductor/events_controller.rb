@@ -41,6 +41,8 @@ class Conductor::EventsController < ApplicationController
       @events = @events.joins(:allocations).where(allocations: { user_id: @user.id })
     end
 
+    @events = Kaminari.paginate_array(@events.order(start_time: :desc)).page(params[:page]).per(10)
+
     # Create new form in index page
     @event = Event.new
   end
