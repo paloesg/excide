@@ -76,10 +76,11 @@ class Conductor::EventsController < ApplicationController
     # Placeholder for event's end time as there is no end time in the form
     @event.end_time = @event.start_time + 1.hour
     @event.company = @company
-    @event.service_line_list.add(params[:service_line]) if params[:service_line].present?
-    @event.project_list.add(params[:project]) if params[:project].present?
-    @event.client_list.add(params[:client]) if params[:client].present?
-    @event.task_list.add(params[:task]) if params[:task].present?
+    @client = Category.find(params[:client]) if params[:client].present?
+    @service_line = Category.find(params[:service_line]) if params[:service_line].present?
+    @project = Category.find(params[:project]) if params[:project].present?
+    @task = Category.find(params[:task]) if params[:task].present?
+    @event.categories << @client << @service_line << @project << @task
     respond_to do |format|
       if @event.save
         # Allocate yourself to the timesheet allocation
