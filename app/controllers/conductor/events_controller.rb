@@ -172,6 +172,12 @@ class Conductor::EventsController < ApplicationController
   end
 
   def edit_tags
+    if @user.has_role?(:admin, @company)
+      @clients = @general_clients
+      @projects = @general_projects
+      @service_lines = @general_service_lines
+      @tasks = @general_tasks
+    end
     @client_tags, @project_tags, @service_line_tags, @task_tags = [], [], [], []
     @clients.each { |c| @client_tags << {value: c.name, id: c.id}.as_json }
     @projects.each { |p| @project_tags << {value: p.name, id: p.id}.as_json }
@@ -184,7 +190,7 @@ class Conductor::EventsController < ApplicationController
   end
 
   def create_tags
-    @category = Category.new(name: params[:value], category_type: params[:type], department: @department)
+    @category = Category.new(name: params[:value], category_type: params[:type], department: @user.has_role?(:admin, @company) ? nil : @department)
     respond_to do |format|
       if @category.save
         format.json { render json: @category, status: :ok }
