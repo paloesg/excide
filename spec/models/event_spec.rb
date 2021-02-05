@@ -7,7 +7,6 @@ RSpec.describe Event, type: :model do
     it { should allow_value(2.hours.ago).for(:start_time) }
     it { should allow_value(1.hour.ago).for(:end_time) }
     it { should validate_presence_of(:company) }
-    it { should validate_presence_of(:event_type) }
 
     it { should belong_to(:company) }
 
