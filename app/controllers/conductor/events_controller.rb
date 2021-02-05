@@ -21,8 +21,8 @@ class Conductor::EventsController < ApplicationController
     @events = @events.start_time(date_from..date_to)
     @events = @events.allocation(params[:allocation_users].split(",")) unless params[:allocation_users].blank?
     #using tagged_with means can only search with 1 selected value
-    @events = @events.includes(event_categories: :category).where(event_categories: { categories: {name: params[:service_line], category_type: "service_line" } }) unless params[:service_line].blank?
-    @events = @events.includes(event_categories: :category).where(event_categories: { categories: {name: params[:project_clients], category_type: "client" } }) unless params[:project_clients].blank?
+    @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:service_line] }) unless params[:service_line].blank?
+    @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:project_clients] }) unless params[:project_clients].blank?
 
     @clients += @general_clients
     @service_lines += @general_service_lines
