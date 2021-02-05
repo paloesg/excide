@@ -10,34 +10,35 @@ $(document).on("turbolinks:load", function () {
   new Tagify(clients, {
     callbacks: {
       "edit:updated": (e) => updateTags(e.detail.data),
-      "add": (e) => createTags(e.detail.data)
+      "add": (e) => createTags(e.detail.data, e.detail.tagify.DOM.originalInput.id)
     }
   });
   new Tagify(service_lines, {
     callbacks: {
       "edit:updated": (e) => updateTags(e.detail.data),
-      "add": (e) => createTags(e.detail.data)
+      "add": (e) => createTags(e.detail.data, e.detail.tagify.DOM.originalInput.id)
     }
   });
   new Tagify(projects, {
     callbacks: {
       "edit:updated": (e) => updateTags(e.detail.data),
-      "add": (e) => createTags(e.detail.data)
+      "add": (e) => createTags(e.detail.data, e.detail.tagify.DOM.originalInput.id)
     }
   });
   new Tagify(tasks, {
     callbacks: {
       "edit:updated": (e) => updateTags(e.detail.data),
-      "add": (e) => createTags(e.detail.data)
+      "add": (e) => createTags(e.detail.data, e.detail.tagify.DOM.originalInput.id)
     }
   });
 
-  async function createTags(data){
+  async function createTags(data, c_type){
     let value = data.value;
+    let type = c_type.slice(0, -6);
     $.ajax({
       type: "PATCH",
       url: "conductor/events/create_tags",
-      data: {value: value},
+      data: {value: value, type: type},
       dataType: "JSON"
     }).done(function(data){
       // If success request, it will change the color of the tag to green color for a short while before changing back to normal color

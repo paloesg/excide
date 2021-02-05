@@ -5,7 +5,7 @@ class Conductor::EventsController < ApplicationController
   before_action :set_company
   before_action :set_staffers, only: [:new, :edit]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
-  before_action :set_tags, only: [:index, :new, :edit, :create, :update, :edit_tags]
+  before_action :set_tags, only: [:index, :new, :edit, :create, :update, :edit_tags, :create_tags]
 
 
   # GET /conductor/events
@@ -184,26 +184,24 @@ class Conductor::EventsController < ApplicationController
   end
 
   def create_tags
-    @tag = ActsAsTaggableOn::Tag.new
-    @tag.name = params[:value]
+    @category = Category.new(name: params[:value], category_type: params[:type], department: @department)
     respond_to do |format|
-      if @tag.save
-        puts "saved"
-        format.json { render json: @tag, status: :ok }
+      if @category.save
+        format.json { render json: @category, status: :ok }
       else
-        format.json { render json: @tag.errors, status: :unprocessable_entity }
+        format.json { render json: @category.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def update_tags
-    @tag = ActsAsTaggableOn::Tag.find(params[:id])
-    @tag.name = params[:value]
+    @category = Category.find(params[:id])
+    @category.name = params[:value]
     respond_to do |format|
-      if @tag.save
-        format.json { render json: @tag, status: :ok }
+      if @category.save
+        format.json { render json: @category, status: :ok }
       else
-        format.json { render json: @tag.errors, status: :unprocessable_entity }
+        format.json { render json: @category.errors, status: :unprocessable_entity }
       end
     end
   end
