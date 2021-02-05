@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_30_012214) do
+ActiveRecord::Schema.define(version: 2021_02_03_235448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -127,6 +127,15 @@ ActiveRecord::Schema.define(version: 2021_01_30_012214) do
     t.uuid "company_id"
     t.index ["template_id"], name: "index_batches_on_template_id"
     t.index ["user_id"], name: "index_batches_on_user_id"
+  end
+
+  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.integer "category_type"
+    t.uuid "department_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["department_id"], name: "index_categories_on_department_id"
   end
 
   create_table "choices", id: :serial, force: :cascade do |t|
@@ -274,6 +283,15 @@ ActiveRecord::Schema.define(version: 2021_01_30_012214) do
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
+  end
+
+  create_table "event_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "category_id"
+    t.uuid "event_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_event_categories_on_category_id"
+    t.index ["event_id"], name: "index_event_categories_on_event_id"
   end
 
   create_table "event_types", id: :serial, force: :cascade do |t|
@@ -828,6 +846,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_012214) do
   add_foreign_key "batches", "companies"
   add_foreign_key "batches", "templates"
   add_foreign_key "batches", "users"
+  add_foreign_key "categories", "departments"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
   add_foreign_key "companies", "users", column: "associate_id"
@@ -849,6 +868,8 @@ ActiveRecord::Schema.define(version: 2021_01_30_012214) do
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
+  add_foreign_key "event_categories", "categories"
+  add_foreign_key "event_categories", "events"
   add_foreign_key "events", "companies"
   add_foreign_key "events", "departments"
   add_foreign_key "events", "users", column: "staffer_id"

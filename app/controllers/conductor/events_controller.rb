@@ -5,7 +5,7 @@ class Conductor::EventsController < ApplicationController
   before_action :set_company
   before_action :set_staffers, only: [:new, :edit]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :reset, :create_allocations]
-  before_action :set_tags, only: [:index, :new, :edit, :create, :update, :edit_tags]
+  before_action :set_tags, only: [:index, :new, :edit, :create, :update, :edit_tags, :create_tags]
 
 
   # GET /conductor/events
@@ -21,8 +21,13 @@ class Conductor::EventsController < ApplicationController
     @events = @events.start_time(date_from..date_to)
     @events = @events.allocation(params[:allocation_users].split(",")) unless params[:allocation_users].blank?
     #using tagged_with means can only search with 1 selected value
-    @events = @events.tagged_with(params[:service_line], on: :service_lines) unless params[:service_line].blank?
-    @events = @events.tagged_with(params[:project_clients], on: :clients) unless params[:project_clients].blank?
+    @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:service_line] }) unless params[:service_line].blank?
+    @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:project_clients] }) unless params[:project_clients].blank?
+
+    @clients += @general_clients
+    @service_lines += @general_service_lines
+    @projects += @general_projects
+    @tasks += @general_tasks
 
     if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
     @user_event_count = Hash.new
@@ -71,10 +76,11 @@ class Conductor::EventsController < ApplicationController
     # Placeholder for event's end time as there is no end time in the form
     @event.end_time = @event.start_time + 1.hour
     @event.company = @company
-    @event.service_line_list.add(params[:service_line]) if params[:service_line].present?
-    @event.project_list.add(params[:project]) if params[:project].present?
-    @event.client_list.add(params[:client]) if params[:client].present?
-    @event.task_list.add(params[:task]) if params[:task].present?
+    @client = Category.find(params[:client]) if params[:client].present?
+    @service_line = Category.find(params[:service_line]) if params[:service_line].present?
+    @project = Category.find(params[:project]) if params[:project].present?
+    @task = Category.find(params[:task]) if params[:task].present?
+    @event.categories << @client << @service_line << @project << @task
     respond_to do |format|
       if @event.save
         # Allocate yourself to the timesheet allocation
@@ -101,7 +107,12 @@ class Conductor::EventsController < ApplicationController
   # PATCH/PUT /conductor/events/1.json
   def update
     respond_to do |format|
-      if @event.update(event_params)
+      if event_params[:client_category] || event_params[:service_line_category] || event_params[:project_category] || event_params[:task_category]
+        if update_categories(@event, event_params)
+          flash[:notice] = 'Event was successfully updated.'
+          format.json { render json: @event, status: :ok }
+        end
+      elsif @event.update(event_params)
         flash[:notice] = 'Event was successfully updated.'
         format.json { render json: @event, status: :ok }
       else
@@ -173,30 +184,45 @@ class Conductor::EventsController < ApplicationController
   end
 
   def create_tags
-    @tag = ActsAsTaggableOn::Tag.new
-    @tag.name = params[:value]
+    @category = Category.new(name: params[:value], category_type: params[:type], department: @department)
     respond_to do |format|
-      if @tag.save
-        puts "saved"
-        format.json { render json: @tag, status: :ok }
+      if @category.save
+        format.json { render json: @category, status: :ok }
       else
-        format.json { render json: @tag.errors, status: :unprocessable_entity }
+        format.json { render json: @category.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def update_tags
-    @tag = ActsAsTaggableOn::Tag.find(params[:id])
-    @tag.name = params[:value]
+    @category = Category.find(params[:id])
+    @category.name = params[:value]
     respond_to do |format|
-      if @tag.save
-        format.json { render json: @tag, status: :ok }
+      if @category.save
+        format.json { render json: @category, status: :ok }
       else
-        format.json { render json: @tag.errors, status: :unprocessable_entity }
+        format.json { render json: @category.errors, status: :unprocessable_entity }
       end
     end
   end
-  
+
+  def update_categories(event, event_params)
+    if event_params[:client_category]
+      event.categories.delete(event.categories.where(category_type: "client"))
+      event.categories << Category.find(event_params[:client_category])
+    elsif event_params[:service_line_category]
+      event.categories.delete(event.categories.where(category_type: "service_line"))
+      event.categories << Category.find(event_params[:service_line_category])
+    elsif event_params[:project_category]
+      event.categories.delete(event.categories.where(category_type: "project"))
+      event.categories << Category.find(event_params[:project_category])
+    elsif event_params[:task_category]
+      event.categories.delete(event.categories.where(category_type: "task"))
+      event.categories << Category.find(event_params[:task_category])
+    end
+    event.save
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_event
@@ -210,16 +236,20 @@ class Conductor::EventsController < ApplicationController
   def set_tags
     # To be tagged using acts_as_taggable_on gem
     @department = @user.department
-    @service_lines = @department.owned_taggings.where(context: "service_lines").map(&:tag).uniq
-    @projects = @department.owned_taggings.where(context: "projects").map(&:tag).uniq
-    @clients = @department.owned_taggings.where(context: "clients").map(&:tag).uniq
-    @tasks = @department.owned_taggings.where(context: "tasks").map(&:tag).uniq
+    @service_lines = Category.where(category_type: "service_line", department: @department)
+    @projects = Category.where(category_type: "project", department: @department)
+    @clients = Category.where(category_type: "client", department: @department)
+    @tasks = Category.where(category_type: "task", department: @department)
+    @general_service_lines = Category.where(category_type: "service_line", department: nil)
+    @general_projects = Category.where(category_type: "project", department: nil)
+    @general_clients = Category.where(category_type: "client", department: nil)
+    @general_tasks = Category.where(category_type: "task", department: nil)
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
     @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :service_line_list, :project_list, :number_of_hours, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
+    params.require(:event).permit(:event_type_id, :start_time, :end_time, :remarks, :location, :client_id, :staffer_id, :client_category, :service_line_category, :project_category, :task_category, :number_of_hours, address_attributes: [:line_1, :line_2, :postal_code, :city, :country, :state])
   end
 end
