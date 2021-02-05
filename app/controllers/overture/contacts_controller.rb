@@ -4,14 +4,14 @@ class Overture::ContactsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_contact, only: [:show, :update]
+  before_action :set_contact, only: [:edit, :show, :update]
+  before_action :get_contact_statuses, only: [:edit, :show, :index]
   after_action :verify_authorized
 
   def index
     authorize Contact
     # Only get investor's contact if they allow it to be public
     @contacts = Contact.where(searchable: true)
-    @contact_statuses = ContactStatus.where(startup: @company)
     @contacts = Kaminari.paginate_array(@contacts).page(params[:page]).per(5)
   end
 
@@ -50,17 +50,25 @@ class Overture::ContactsController < ApplicationController
     end
   end
 
+  def edit
+
+  end
+
   def update
-    @contact_status = ContactStatus.find_by(id: params[:contact_status_id])
+    @contact_status = ContactStatus.find_by(id: params[:contact_status_id]) if params[:contact_status_id].present?
     # On the search investor page, the AJAX contact is the searchable contact, hence we need to get the cloned contact and update the cloned one instead of the searchable contact.
     @cloned_contact = get_cloned_contact(@contact, current_user) if params[:contact_type].present?
     respond_to do |format|
-      # If cloned contact
-      if params[:contact_type].present? ? @cloned_contact.update(contact_status: @contact_status) : @contact.update(contact_status: @contact_status)
-        format.json { render json: { link_to: overture_contact_statuses_path, status: "ok" } }
-      else
-        format.html { redirect_to overture_root_path }
-        format.json { render json: @contact.errors, status: :unprocessable_entity }
+      if params[:contact_status_id].present?
+        if params[:contact_type].present? ? @cloned_contact.update(contact_status: @contact_status) : @contact.update(contact_status: @contact_status)
+          format.json { render json: { link_to: overture_contact_statuses_path, status: "ok" } }
+        else
+          format.html { redirect_to overture_root_path }
+          format.json { render json: @contact.errors, status: :unprocessable_entity }
+        end
+      # This is to edit your cloned contact from the contact show page
+      elsif @contact.update(contact_params)
+        format.html { redirect_to overture_contact_path(@contact), notice: "Successfully updated information"}
       end
     end
   end
@@ -68,13 +76,16 @@ class Overture::ContactsController < ApplicationController
   def show
     authorize @contact
     @topic = Topic.new
-    @contact_statuses = ContactStatus.where(startup: @company)
   end
 
   private
 
   def contact_params
     params.require(:contact).permit(:name, :phone, :email, :company_name, :created_by_id, :company_id, :contact_status_id, :cloned_by_id, :searchable, :investor_information, :investor_company_logo)
+  end
+
+  def get_contact_statuses
+    @contact_statuses = ContactStatus.where(startup: @company)
   end
 
   def set_contact

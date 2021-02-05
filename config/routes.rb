@@ -154,9 +154,12 @@ Rails.application.routes.draw do
 
   namespace :overture do
     root to: 'home#index'
-    resources :companies
+    resources :companies do
+      resources :documents, only: :index
+    end
     resources :investments
     resources :permissions
+    resources :roles
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end
@@ -169,6 +172,7 @@ Rails.application.routes.draw do
     resources :documents do
       member do
         post 'toggle'
+        post 'change_versions'
       end
     end
     resources :folders do
@@ -184,6 +188,9 @@ Rails.application.routes.draw do
     resources :users
     get '/financial_performance', to: 'home#financial_performance'
     get '/capitalization_table', to: 'home#capitalization_table'
+    delete 'delete_version_attachment/:signed_id', to: 'documents#delete_version_attachment', as: :delete_version_attachment
+    delete 'delete_multiple_permissible', to: 'permissions#delete_multiple_permissible', as: :delete_multiple_permissible
+    post 'bulk_assign_permissions', to: 'permissions#bulk_assign_permissions', as: :bulk_assign_permissions
   end
 
   namespace :conductor do

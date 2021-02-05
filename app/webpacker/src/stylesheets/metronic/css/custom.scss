@@ -219,6 +219,10 @@ td.day.has-events.fc-day-top.fc-past {
   width: 100% !important;
 }
 
+.table-aligned > tbody > tr * {
+  vertical-align: middle !important;
+}
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 $theme-colors: (
