@@ -96,6 +96,7 @@ class UserDashboard < Administrate::BaseDashboard
     :confirmed_at,
     :settings,
     :outlets,
+    :active_outlet,
   ].freeze
 
   # Overwrite this method to customize how users are displayed

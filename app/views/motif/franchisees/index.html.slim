@@ -1,7 +1,7 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     = link_to "New Franchisee", motif_email_new_franchisee_path, class: "btn btn-primary float-right" unless (Franchisee.find_by(franchise_licensee: @company.name).area_franchisee? || Franchisee.find_by(franchise_licensee: @company.name).unit_franchisee? if Franchisee.where(franchise_licensee: @company.name).present?)
-    h3 
+    h3
       = get_franchisee ? "Sub Franchisee List" : "Franchisee List"
     p.mt-5.text-muted
       | Store and manage information about your franchisees and locations in
@@ -21,5 +21,6 @@ hr.mb-0
       .col-sm-3
         .label.label-pill.label-inline.text-dark.p-3 class="label-motif-#{franchisee.license_type}" = franchisee&.license_type&.titleize
       .col-sm-5
-        span.offset-sm-6 = pluralize(franchisee.outlets.length, "outlet")
+        / Check if franchisee is MF, AF or MUF. If not, just find its outlets.length
+        span.offset-sm-6 = pluralize( (franchisee.master_franchisee? or franchisee.area_franchisee? or franchisee.multi_unit_franchisee?) ? franchisee.company.children.find_by(name: franchisee.franchise_licensee).outlets.length : franchisee.outlets.length, "outlet")
     hr

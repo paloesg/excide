@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_28_052042) do
+ActiveRecord::Schema.define(version: 2021_02_07_144502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -672,11 +672,11 @@ ActiveRecord::Schema.define(version: 2021_01_28_052042) do
     t.string "stripe_customer_id"
     t.string "stripe_card_token"
     t.uuid "company_id"
-    t.uuid "outlet_id"
+    t.uuid "active_outlet_id"
     t.datetime "last_click_comm_hub"
+    t.index ["active_outlet_id"], name: "index_users_on_active_outlet_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["outlet_id"], name: "index_users_on_outlet_id"
     t.index ["provider"], name: "index_users_on_provider"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid"], name: "index_users_on_uid"
@@ -839,7 +839,7 @@ ActiveRecord::Schema.define(version: 2021_01_28_052042) do
   add_foreign_key "tasks", "users"
   add_foreign_key "templates", "companies"
   add_foreign_key "users", "companies"
-  add_foreign_key "users", "outlets"
+  add_foreign_key "users", "outlets", column: "active_outlet_id"
   add_foreign_key "workflow_actions", "companies"
   add_foreign_key "workflow_actions", "tasks"
   add_foreign_key "workflow_actions", "users", column: "assigned_user_id"
