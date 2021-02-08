@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_03_235448) do
+ActiveRecord::Schema.define(version: 2021_02_08_080210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -472,6 +472,17 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
     t.index ["user_id"], name: "index_permissions_on_user_id"
   end
 
+  create_table "posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.uuid "company_id"
+    t.bigint "author_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_posts_on_author_id"
+    t.index ["company_id"], name: "index_posts_on_company_id"
+  end
+
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "url"
@@ -888,6 +899,8 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
   add_foreign_key "outlets_users", "users"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
+  add_foreign_key "posts", "companies"
+  add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "profiles", "companies"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
