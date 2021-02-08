@@ -11,11 +11,11 @@ class Overture::DocumentsController < ApplicationController
 
   def index
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
-    # For startup documents page from investor POV. Startups will see his own company (current_user company)
+    # For investor, it find's the company by getting from the url. Startup will get their own company
     @permissible_company = params[:company_id].present? ? Company.find_by(id: params[:company_id]) : @company
-    # For investor, they can see documents where they have can_view permissions in their group. Whereas for startup, they can see if they have user permissions
-    @documents = params[:company_id].present? ? Document.where(folder_id: nil, company: @permissible_company).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, role_id: [@user.roles.map(&:id)]} ) : Document.where(folder_id: nil, company: @permissible_company).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, role_id: @user.roles.map(&:id) })
-    @folders = params[:company_id].present? ? Folder.roots.includes(:permissions).where(company: @permissible_company, permissions: { can_view: true, role_id: [@user.roles.map(&:id)]}) : Folder.roots.includes(:permissions).where(company: @permissible_company, permissions: { can_view: true, role_id: @user.roles.map(&:id) }).where.not(name: "Resource Portal")
+    # For investor, they can see documents where they have can_view (or higher) permissions in their group. Whereas for startup, they can see if they have role permissions
+    @documents = Document.where(folder_id: nil, company: @permissible_company).order(created_at: :desc).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
+    @folders = Folder.roots.includes(:permissions).where(company: @permissible_company, permissions: { can_view: true, role_id: @user.roles.map(&:id)}).where.not(name: "Resource Portal")
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
     @users = get_users(@company)
     # Show shared files for investor without being signed for their due diligence
