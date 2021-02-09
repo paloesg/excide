@@ -1,6 +1,0 @@
-- if @folder.name == "Resource Portal" or @folder.ancestors.include? Folder.find_by(name: "Resource Portal")
-  = render "overture/documents/resource_portal"
-- elsif @company.investor?
-  = render "overture/documents/investor_view", startups: @startups, startup_id: params[:company_id]
-- else
-  = render "overture/documents/startup_view"

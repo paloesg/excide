@@ -71,7 +71,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
     respond_to do |format|
       # check if update comes from drag and drop or from remarks. If folder_id is not present, then update remarks
       if (params[:folder_id].present? ? @document.update(folder_id: @folder.id) : @document.update(remarks: params[:document][:remarks]))
-        format.json { render json: { link_to: overture_documents_path, status: "ok" } }
+        format.json { render json: { link_to: overture_startups_documents_path, status: "ok" } }
         format.html { redirect_to overture_startups_documents_path }
       else
         format.html { redirect_to overture_startups_documents_path }

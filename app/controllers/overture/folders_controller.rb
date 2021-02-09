@@ -9,7 +9,7 @@ class Overture::FoldersController < FoldersController
     authorize @folder
     respond_to do |format|
       if @folder.update(folder_params)
-        format.html { redirect_to overture_documents_path, notice: "Folder has been updated successfully."}
+        format.html { redirect_to overture_startups_documents_path, notice: "Folder has been updated successfully."}
         format.json { render json: @folder, status: :ok }
       else
         format.json { render json: @action.errors, status: :unprocessable_entity }

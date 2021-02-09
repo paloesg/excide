@@ -155,7 +155,7 @@ Rails.application.routes.draw do
   namespace :overture do
     root to: 'home#index'
     resources :companies do
-      resources :documents, only: :index
+      get '/documents', to: 'investors/documents#index', as: :investor_documents
     end
     resources :investments
     resources :permissions
@@ -169,25 +169,19 @@ Rails.application.routes.draw do
       end
     end
     resources :contact_statuses
-    resources :documents do
-      member do
-        post 'toggle'
-        post 'change_versions'
-      end
-    end
+    # resources :documents do
+    #   member do
+    #     post 'toggle'
+    #     post 'change_versions'
+    #   end
+    # end
     namespace :investors do
-      resources :documents do
-        member do
-          post 'toggle'
-          post 'change_versions'
-        end
-      end
+      resources :documents
     end
     namespace :startups do
       delete 'delete_version_attachment/:signed_id', to: 'documents#delete_version_attachment', as: :delete_version_attachment
       resources :documents do
         member do
-          post 'toggle'
           post 'change_versions'
         end
       end

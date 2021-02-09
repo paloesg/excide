@@ -52,7 +52,7 @@
         .col
           ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
             li.breadcrumb-item
-              = link_to "Dataroom", overture_documents_path, class: "text-dark"
+              = link_to "Dataroom", overture_startups_documents_path, class: "text-dark"
             li.breadcrumb-item
               = @folder.name
     hr.m-0
@@ -125,4 +125,4 @@
               td
                 = render "overture/documents/permissions_icons", role: role, permissible: d, permissible_type: "document"
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
-          = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_documents_path(id: d.id, format: 'json'), path: "overture/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
+          = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_startups_documents_path(id: d.id, format: 'json'), path: "overture/startups/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
