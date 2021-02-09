@@ -37,6 +37,9 @@
                       .form-group
                         = ff.label :expiry_date, "Expiry Date"
                         = ff.date_field :expiry_date, class: "form-control"
+                      .form-group
+                        = ff.label :license_type, "Unit or Sub franchisee?"
+                        = ff.select :license_type, ["unit_franchisee", "sub_franchisee"], {include_blank: true}, class: "form-control"
                       .form-inline
                         = ff.number_field :renewal_period_freq_value, placeholder: "Franchise renewal notice period", class: 'form-control mr-5 col-sm-6'
                         = ff.select :renewal_period_freq_unit, Franchisee.renewal_period_freq_units.map { |key, value| [key.titleize, key] }, {include_blank: "Unit"}, class: 'form-control col-sm-4'
