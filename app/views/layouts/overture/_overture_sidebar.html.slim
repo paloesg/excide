@@ -11,33 +11,26 @@
         = link_to overture_contacts_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined.mr-5 search
           .ml-5.sidebar-font Search Investor
+      li.nav-item.hover-blue.py-1.m-4.cursor-pointer
+        = link_to overture_contact_statuses_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined.mr-5 view_agenda
+          .ml-5.sidebar-font Fundraising Board
     - else
       li.nav-item.hover-blue.py-1.m-4.cursor-pointer
         = link_to overture_profiles_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined.mr-5 search
           .ml-5.sidebar-font Search Startup
-    - if current_user.company.startup?
-      li.nav-item.hover-blue.py-1.m-4.cursor-pointer
-        = link_to overture_contact_statuses_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined.mr-5 view_agenda
-          .ml-5.sidebar-font Fundraising Board
     li.nav-item.hover-blue.py-1.m-4.cursor-pointer
-      = link_to overture_documents_path, class: 'col-sm-12 d-flex align-items-center' do
+      = link_to (current_user.company.startup? ? overture_startups_documents_path : overture_investors_documents_path), class: 'col-sm-12 d-flex align-items-center' do
         = image_pack_tag 'media/src/images/overture/dataroom-lock-icon.png', alt: "dataroom-lock-icon", class: 'mr-6'
         .ml-5.sidebar-font Dataroom
-  hr.text-dark
+  hr.m-1.text-dark
   ul.nav.flex-column
     - if current_user.company.startup?
       li.nav-item.hover-blue.py-1.m-4.cursor-pointer
         = link_to overture_investments_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined.mr-5 supervised_user_circle
           .ml-5.sidebar-font Our Investors
-    - else
-      li.nav-item.hover-blue.py-1.m-4.cursor-pointer
-        = link_to overture_investments_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined.mr-5 domain
-          .ml-5.sidebar-font My Startups
-    - if current_user.company.startup?
       li.nav-item.hover-blue.py-1.m-4.cursor-pointer
         = link_to overture_capitalization_table_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined.mr-5 table_chart
@@ -50,7 +43,12 @@
         = link_to overture_documents_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined.mr-5 folder
           .ml-5.sidebar-font Data Repository
-  hr.text-dark
+    - else
+      li.nav-item.hover-blue.py-1.m-4.cursor-pointer
+        = link_to overture_investments_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined.mr-5 domain
+          .ml-5.sidebar-font My Startups
+  hr.m-1.text-dark
   ul.nav.flex-column
     - if current_user.company.startup?
       li.nav-item.hover-blue.py-1.m-4.cursor-pointer
