@@ -8,7 +8,7 @@
         a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
         a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
     = render "overture/documents/modals/upload_documents_modal"
-    = render "overture/documents/modals/new_folder_modal", folder: @folder, parent_folder: nil
+    = render "overture/documents/modals/new_folder_modal", folder: @folder
     = link_to overture_roles_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5' do
       i.material-icons-outlined.text-primary group
       span.ml-2.text-primary.font-weight-bolder Groups
@@ -94,7 +94,6 @@
                   i.material-icons-outlined.font-size-h1.text-muted more_horiz
                 .dropdown-menu.dropdown-menu-right
                   .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{folder.id}_0"
-                  .dropdown-item = link_to "Download", edit_overture_folder_path(folder)
                   .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
             - @roles.each do |role|
               td
@@ -121,7 +120,7 @@
                   .dropdown-item = link_to "Version Control", "#", "data-toggle": "modal", 'data-target': "#versionControlModal_#{d.id}"
                   .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{d.id}_0"
                   .dropdown-item = link_to "Download", d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true), disposition: "attachment") : d.file_url
-                  .dropdown-item = link_to "Delete", overture_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
+                  .dropdown-item = link_to "Delete", overture_startups_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
             - @roles.each do |role|
               td
                 = render "overture/documents/permissions_icons", role: role, permissible: d, permissible_type: "document"

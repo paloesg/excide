@@ -55,7 +55,6 @@
                   i.material-icons-outlined.font-size-h1.text-muted more_horiz
                 .dropdown-menu.dropdown-menu-right
                   .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{folder.id}_0"
-                  .dropdown-item = link_to "Download", edit_overture_folder_path(folder)
                   .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|

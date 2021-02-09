@@ -31,14 +31,18 @@ class Overture::FoldersController < FoldersController
     @permission = Permission.new
     @new_folder = Folder.new
 
-    render "overture/documents/index"
+    if @company.startup?
+      render "overture/startups/documents/index"
+    else
+      render "overture/investors/documents/index"
+    end
   end
 
   def destroy
     authorize @folder
     @folder.destroy
     respond_to do |format|
-      format.html { redirect_to overture_documents_path, notice: 'Folder was successfully destroyed.' }
+      format.html { redirect_to overture_startups_documents_path, notice: 'Folder was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
