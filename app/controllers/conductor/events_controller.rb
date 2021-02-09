@@ -34,7 +34,7 @@ class Conductor::EventsController < ApplicationController
       User.where(department: @user.department).each do |user|
         @user_event_count[user.full_name] = []
         @user_event_count[user.full_name] << @events.joins(:allocations).where(allocations: { user_id: user.id }).map(&:start_time).uniq.count
-        @user_event_count[user.full_name] << @events.joins(:allocations).where(allocations: { user_id: user.id }).map(&:number_of_hours).sum.to_i
+        @user_event_count[user.full_name] << @events.joins(:allocations).where(allocations: { user_id: user.id }).filter_map(&:number_of_hours).sum.to_i
       end
     else
       # Only show their own timesheet events unless they are admin or staffer, as the 2 can see all events
@@ -166,7 +166,7 @@ class Conductor::EventsController < ApplicationController
     @events = GenerateEventsService.new(params[:file], current_user).run
     respond_to do |format|
       if @events.success?
-        format.html { redirect_to conductor_events_path, notice: "Events imported." }
+        format.html { redirect_to conductor_events_path, notice: "Your timesheet is still being processed. Please wait a while and refresh." }
       else
         format.html { redirect_to conductor_events_path, alert: "Event was not created due to error: #{@events.message}." }
       end
