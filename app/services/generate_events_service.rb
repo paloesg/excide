@@ -17,7 +17,7 @@ class GenerateEventsService
   def import_excel
     # Import excel using roo and generates events in the timesheet
     data = Roo::Spreadsheet.open(@file).sheet("Template")
-    data = data.parse(client: "Client", service_line: "Job Function", project: "Project", task: "Job Nature", date: "Date (DD/MM/YYYY)", hours: "No. of hours")
+    data = data.parse(client: "Client", service_line: "Job Function", project: "Project", task: "Task", date: "Date (DD/MM/YYYY)", hours: "No. of hours")
     CreateEventsJob.perform_later(@user, data)
   end
 end
