@@ -157,7 +157,10 @@ Rails.application.routes.draw do
     resources :companies do
       get '/documents', to: 'investors/documents#index', as: :investor_documents
     end
-    resources :investments
+    resources :investments do
+      get '/financial_performance', to: 'investments#financial_performance'
+      get '/capitalization_table', to: 'investments#capitalization_table'
+    end
     resources :permissions
     resources :roles
     resources :profiles do
@@ -169,12 +172,6 @@ Rails.application.routes.draw do
       end
     end
     resources :contact_statuses
-    # resources :documents do
-    #   member do
-    #     post 'toggle'
-    #     post 'change_versions'
-    #   end
-    # end
     namespace :investors do
       resources :documents
     end
