@@ -2,8 +2,9 @@ class Overture::InvestmentsController < ApplicationController
   layout 'overture/application'
 
   before_action :authenticate_user!
-  before_action :set_company
-  before_action :set_investment, only: [:destroy]
+  before_action :set_company, except: [:capitalization_table, :financial_performance]
+  before_action :set_investment, only: [:show, :destroy]
+  before_action :set_investment_by_id, only: [:capitalization_table, :financial_performance]
 
   def index
     # Get invested startup companies if company is the investor, vice versa
@@ -25,12 +26,26 @@ class Overture::InvestmentsController < ApplicationController
     end
   end
 
+  def show
+    @topic = Topic.new
+  end
+
   def destroy
     @investment.destroy
     respond_to do |format|
       format.html { redirect_to overture_investments_path, notice: 'Folder was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def financial_performance
+    @company = @investment.startup
+    @topic = Topic.new
+  end
+
+  def capitalization_table
+    @company = @investment.startup
+    @topic = Topic.new
   end
 
   private
@@ -42,6 +57,10 @@ class Overture::InvestmentsController < ApplicationController
 
   def set_investment
     @investment = Investment.find(params[:id])
+  end
+
+  def set_investment_by_id
+    @investment = Investment.find(params[:investment_id])
   end
 
   def investment_params
