@@ -63,7 +63,10 @@
                 span.ml-5 = d.versions.attachments.find_by(current_version: true).filename
               td = d.company.name
               td = d.updated_at.strftime("%d %b %Y")
-              td = render 'overture/documents/modals/documents_qna_modal', permissible: d, topic: @topic
+              td
+                a.text-dark data-target="#overtureStateInterest" data-toggle="modal" type="button"
+                  i.material-icons-outlined.text-dark question_answer
+                = render 'overture/documents/modals/documents_qna_modal', startup_id: d.company.id, topic: @topic, question_category: "due_dilligence"
               td.cursor-pointer data-toggle="modal" data-target="#documentModal#{d.id}"
                 i.material-icons-outlined.font-size-h1.text-dark.mr-2 visibility
               - if permission.present? and (permission.can_download? or permission.can_write?)

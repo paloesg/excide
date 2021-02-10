@@ -8,13 +8,13 @@
         a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
         a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
     = render "overture/documents/modals/upload_documents_modal"
-    = render "overture/documents/modals/new_folder_modal", folder: @folder, parent_folder: nil
+    = render "overture/documents/modals/new_folder_modal", folder: @folder, parent_folder: @folder
     = link_to overture_roles_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5' do
       i.material-icons-outlined.text-primary group
       span.ml-2.text-primary.font-weight-bolder Groups
-    h3 Dataroom
+    h3 Shared Drive
     p.mt-5
-      | Share view and download access to groups of investors. Click on the icon buttons in the
+      | Share your files with your investor
       br
       | group column to turn on/off the access. Click “Groups” to edit your groups of investors.
     / .row.ml-4.align-items-center#filter-search
