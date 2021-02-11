@@ -167,7 +167,6 @@ Rails.application.routes.draw do
         end
       end
     end
-
     resources :companies do
       get 'investors/documents', to: 'investors/documents#index', as: :investor_documents
       get 'startups/documents', to: 'startups/documents#index', as: :startup_documents

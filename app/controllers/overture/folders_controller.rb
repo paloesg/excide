@@ -30,8 +30,11 @@ class Overture::FoldersController < FoldersController
     @permission = Permission.new
     @new_folder = Folder.new
 
-    @investor = Company.find(params[:investor]) if params[:investor].present?
-    render "overture/startups/documents/index" if @company.startup?
+    if @company.startup?
+      render "overture/startups/documents/index"
+    else
+      render "overture/investors/documents/index"
+    end
   end
 
   def destroy
