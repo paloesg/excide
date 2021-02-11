@@ -6,7 +6,12 @@ class Overture::CompaniesController < ApplicationController
 
   def index
     # Get company of the documents & folders that user have permission in (through their roles)
-    @startups = @user.roles.map(&:permissions).flatten.map(&:permissible).map(&:company).uniq if @company.investor?
+    if @company.investor?
+      @startups = @user.roles.map(&:permissions).flatten.map(&:permissible).map(&:company).uniq
+    else
+      # For startup to share files with their investors (shared drive)
+      @investors = @company.investors
+    end
   end
 
   def edit
