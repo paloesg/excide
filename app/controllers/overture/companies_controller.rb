@@ -4,6 +4,11 @@ class Overture::CompaniesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
 
+  def index
+    # Get company of the documents & folders that user have permission in (through their roles)
+    @startups = @user.roles.map(&:permissions).flatten.map(&:permissible).map(&:company).uniq if @company.investor?
+  end
+
   def edit
     @contact = @company.contacts.find_by(searchable: true)
   end
@@ -19,6 +24,7 @@ class Overture::CompaniesController < ApplicationController
 
   private
   def set_company
+    @user = current_user
     @company = current_user.company
   end
 
