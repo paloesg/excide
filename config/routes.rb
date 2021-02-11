@@ -154,8 +154,23 @@ Rails.application.routes.draw do
 
   namespace :overture do
     root to: 'home#index'
+    # Documents related view of investor
+    namespace :investors do
+      resources :documents
+    end
+    # Documents related view of startups, which includes routes to change attachment's version and delete an attachment's version
+    namespace :startups do
+      delete 'delete_version_attachment/:signed_id', to: 'documents#delete_version_attachment', as: :delete_version_attachment
+      resources :documents do
+        member do
+          post 'change_versions'
+        end
+      end
+    end
+
     resources :companies do
-      get '/documents', to: 'investors/documents#index', as: :investor_documents
+      get 'investors/documents', to: 'investors/documents#index', as: :investor_documents
+      get 'startups/documents', to: 'startups/documents#index', as: :startup_documents
     end
     resources :investments do
       get '/financial_performance', to: 'investments#financial_performance'
@@ -172,17 +187,6 @@ Rails.application.routes.draw do
       end
     end
     resources :contact_statuses
-    namespace :investors do
-      resources :documents
-    end
-    namespace :startups do
-      delete 'delete_version_attachment/:signed_id', to: 'documents#delete_version_attachment', as: :delete_version_attachment
-      resources :documents do
-        member do
-          post 'change_versions'
-        end
-      end
-    end
     resources :folders do
       member do
         post 'toggle'
