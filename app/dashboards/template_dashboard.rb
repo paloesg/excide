@@ -78,8 +78,8 @@ class TemplateDashboard < Administrate::BaseDashboard
     :freq_value,
     :freq_unit,
     :next_workflow_date,
-    :start_date,
-    :end_date,
+    # :start_date,
+    # :end_date,
     :template_type
   ].freeze
 
