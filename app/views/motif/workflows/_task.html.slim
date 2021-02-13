@@ -2,16 +2,18 @@
   .row.mb-5
     .col-md-12
       .float-right.mt-2
-        a.d-inline id="task_close_#{wfa.id}" href="#" 
+        a.d-inline id="task_close_#{wfa.id}" href="#"
           i.material-icons-outlined close
       .float-right.mx-4.mt-2
-        = link_to motif_outlet_notes_path(outlet_id: wf.outlet.id, wfa_id: wfa.id), target: "_blank" do
-          i.material-icons-outlined comment
+        / Don't show for retrospective workflows
+        - if wfa.workflow.outlet.present?
+          = link_to motif_outlet_notes_path(outlet_id: wf.outlet.id, wfa_id: wfa.id), target: "_blank" do
+            i.material-icons-outlined comment
       .float-right.border.rounded.p-1
         / Disable checkbox if current user is franchisor
-        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id), method: "POST"}, onclick: "this.checked=true;", disabled: (@user.has_role?(:franchisee_owner, @user.company) or (@company != @workflow.company)), class: "m-2 #{wfa.completed or @user.has_role?(:franchisee_owner, @user.company) ? "" : "dropdown-pointer"}"
+        = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: wf.id, task_id: wfa.task.id, company_id: @workflow.company.id), method: "POST"}, onclick: "this.checked=true;", disabled: @workflow.outlet.present? ? (@user.has_role?(:franchisee_owner, @user.company) or (@company != @workflow.company)) : false, class: "m-2 #{wfa.completed or @user.has_role?(:franchisee_owner, @user.company) ? "" : "dropdown-pointer"}"
       .float-right.mx-4.mt-2
-        - unless @user.has_role?(:franchisor, wf.company)
+        - unless @user.has_role?(:franchisor, wf.company) and wfa.workflow.outlet.nil?
           = link_to motif_workflow_notify_franchisor_path(workflow_id: wf.id, wfa_id: wfa.id) do
             i.material-icons-outlined.mr-1 class="#{ wfa.notify_status? ? "orange-bell-notification" : ""}" notifications_active
   .row.my-5
@@ -48,7 +50,7 @@
     .col-md-10
       h6 Files
     .col-md-2
-      h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id), class: "text-primary" unless wfa.completed 
+      h6 = link_to "Upload", new_motif_document_path(:workflow_action_id => wfa.id), class: "text-primary" unless wfa.completed
   - if wfa.task.folder.present?
     .row
       .col-md-12
