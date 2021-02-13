@@ -154,6 +154,9 @@ Rails.application.routes.draw do
 
   namespace :overture do
     root to: 'home#index'
+    namespace :startup do
+      resources :posts
+    end
     resources :companies do
       resources :documents, only: :index
     end

@@ -1,0 +1,2 @@
+module Overture::PostsHelper
+end
