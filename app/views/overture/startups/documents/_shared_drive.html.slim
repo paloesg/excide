@@ -1,12 +1,7 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12.d-flex.align-items-center
     .mr-5
-      h3 = link_to "Shared Drive", overture_companies_path, class: "text-dark font-weight-boldest"
-    - if @investor.present?
-      .mr-5
-        i.material-icons-outlined keyboard_arrow_right
-      .mr-5
-        h3 = @investor.name
+      h3.text-dark.font-weight-boldest Shared Files
     .ml-auto
       .dropdown
         a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
