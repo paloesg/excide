@@ -104,5 +104,5 @@
           = label_tag "Choose franchisee type (For Master franchisee, area franchisee and multi-unit franchisee only)"
           = select_tag('license_type', options_for_select(Franchisee.license_types.map{|k, v| [k, k]}), include_blank: true, class: "form-control")
         .form-group
-          = f.label :ancestry, "Select franchisor's company"
-          = f.select :ancestry, @motif_companies, { include_blank: true }, class: "form-control"
+          = f.label :parent_id, "Select franchisor's company"
+          = f.select :parent_id, @motif_companies, { include_blank: true }, class: "form-control"
