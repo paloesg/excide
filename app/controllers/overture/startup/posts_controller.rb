@@ -5,15 +5,10 @@ class Overture::Startup::PostsController < ApplicationController
   before_action :set_company
 
   def index
-    authorize Post
-    @posts = Post.all
+    @posts = policy_scope(Post)
   end
 
   private
-  def set_company
-    @user = current_user
-    @company = current_user.company
-  end
 
   def post_params
     params.require(:post).permit(:id, :title, :content, :company_id, :author_id)
