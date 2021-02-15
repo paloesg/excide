@@ -1,15 +1,8 @@
 row.mb-3.mt-5.ml-3
   .col-sm-12
-    - if @company.startup?
-      button.btn.btn-primary.float-right.mr-5 data-target="#addInvestmentOverture" data-toggle="modal" type="button"
-        i.material-icons-outlined.text-white add
-        | Investor
-      h3 Signed Investor
-      p.mt-5.text-muted
-        | Here are the information of your signed investor. Click on a row to see their details.
-    - else
-      h3 My Startups
-      p.mt-5.text-muted
-        | These are the companies you have invested. They will update their financial
-        br
-        | performance, capitalisation table, and data repository.
+    button.btn.btn-primary.float-right.mr-5 data-target="#addInvestmentOverture" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white add
+      | New Announcement
+    h3 Post an announcement
+    p.mt-5.text-muted
+      | Share important news and announcements with your investors.

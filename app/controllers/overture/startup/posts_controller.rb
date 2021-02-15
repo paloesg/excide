@@ -5,6 +5,8 @@ class Overture::Startup::PostsController < ApplicationController
   before_action :set_company
 
   def index
+    authorize Post
+    @posts = Post.all
   end
 
   private
