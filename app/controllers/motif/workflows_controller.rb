@@ -133,7 +133,7 @@ class Motif::WorkflowsController < ApplicationController
     end
     respond_to do |format|
       # Redirect back to workflow page
-      format.html { redirect_to motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id), notice: "File(s) successfully uploaded into folder."  }
+      format.html { redirect_to @wfa.workflow.outlet.present? ? (motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id)) : (motif_workflow_path(id: @wfa.workflow.id, franchisee_id: @wfa.workflow.franchisee.id)), notice: "File(s) successfully uploaded into folder."}
       format.json { render json: @files.to_json }
     end
   end

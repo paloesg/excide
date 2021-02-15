@@ -126,13 +126,13 @@ class CompaniesController < ApplicationController
 
   def set_default_franchisee(license_type)
     # By default, create franchisee record when creating the entity (company) and set franchisee type as master franchisee
-    Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: license_type)
+    @franchisee = Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: license_type)
   end
 
   def set_default_retrospective_workflow(company)
     # By default, create retrospective workflows for franchisor or MF to upload agreements to
     template = Template.find_by(title: "Retrospective Documents")
-    Workflow.create(user: current_user, company: company, template: template, identifier: "#{company.name} - Retrospective")
+    Workflow.create(user: current_user, company: company, template: template, identifier: "#{company.name} - Retrospective", franchisee: @franchisee)
   end
 
   def remove_company_roles
