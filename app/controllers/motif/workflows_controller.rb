@@ -25,6 +25,7 @@ class Motif::WorkflowsController < ApplicationController
     @next_wf = @workflow.template.workflows.where('created_at > ?', @workflow.created_at).order(created_at: :asc).first
     # Find the previous workflow of the current workflow
     @prev_wf = @workflow.template.workflows.where('created_at < ?', @workflow.created_at).order(created_at: :asc).last
+    @franchisee = Franchisee.find(params[:franchisee_id]) if params[:franchisee_id].present?
   end
 
   def create
@@ -61,7 +62,7 @@ class Motif::WorkflowsController < ApplicationController
   end
 
   def toggle
-    @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_id])
+    @action = Task.find_by_id(params[:task_id]).get_workflow_action(params[:company_id], params[:workflow_id])
     authorize @workflow
     respond_to do |format|
       if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id, current_action: false, notify_status: false)
@@ -132,7 +133,7 @@ class Motif::WorkflowsController < ApplicationController
     end
     respond_to do |format|
       # Redirect back to workflow page
-      format.html { redirect_to motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id), notice: "File(s) successfully uploaded into folder."  }
+      format.html { redirect_to @wfa.workflow.outlet.present? ? (motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id)) : (motif_workflow_path(id: @wfa.workflow.id, franchisee_id: @wfa.workflow.franchisee.id)), notice: "File(s) successfully uploaded into folder."}
       format.json { render json: @files.to_json }
     end
   end

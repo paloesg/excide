@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_07_144502) do
+ActiveRecord::Schema.define(version: 2021_02_15_012937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -728,7 +728,9 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.integer "total_time_mins", default: 0
     t.uuid "company_id"
     t.uuid "outlet_id"
+    t.uuid "franchisee_id"
     t.index ["batch_id"], name: "index_workflows_on_batch_id"
+    t.index ["franchisee_id"], name: "index_workflows_on_franchisee_id"
     t.index ["outlet_id"], name: "index_workflows_on_outlet_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
     t.index ["slug"], name: "index_workflows_on_slug", unique: true
@@ -847,6 +849,7 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
   add_foreign_key "workflow_actions", "workflows"
   add_foreign_key "workflows", "batches"
   add_foreign_key "workflows", "companies"
+  add_foreign_key "workflows", "franchisees"
   add_foreign_key "workflows", "outlets"
   add_foreign_key "workflows", "recurring_workflows"
   add_foreign_key "workflows", "templates"

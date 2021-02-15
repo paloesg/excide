@@ -23,8 +23,12 @@ class CompaniesController < ApplicationController
     # Save the new company's product(s)
     @company.products = params[:products]
     if @company.save
-      # If ancestry present, set default record of franchisee
-      set_default_franchisee(params[:license_type]) if params[:company][:parent_id].present?
+      if params[:company][:parent_id].present?
+        # If ancestry present, set default record of franchisee
+        set_default_franchisee(params[:license_type])
+        # Create retrospective workflow as long as the second layer company (MF, AF) is created
+        set_default_retrospective_workflow(@company)
+      end
       set_company_roles
       set_default_folders
       set_default_templates
@@ -122,7 +126,13 @@ class CompaniesController < ApplicationController
 
   def set_default_franchisee(license_type)
     # By default, create franchisee record when creating the entity (company) and set franchisee type as master franchisee
-    Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: license_type)
+    @franchisee = Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: license_type)
+  end
+
+  def set_default_retrospective_workflow(company)
+    # By default, create retrospective workflows for franchisor or MF to upload agreements to
+    template = Template.find_by(title: "Retrospective Documents")
+    Workflow.create(user: current_user, company: company, template: template, identifier: "#{company.name} - Retrospective", franchisee: @franchisee)
   end
 
   def remove_company_roles

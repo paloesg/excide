@@ -1,6 +1,7 @@
 .row.m-3
   .col-12.d-flex.align-items-center.mb-5
-    = link_to motif_outlet_workflow_path(outlet_id: @workflow_action.workflow.outlet.id, id: @workflow_action.workflow) do
+    / Check if it's task workflows or retrospective workflows, then redirect back to the right path
+    = link_to @workflow_action.workflow.outlet.present? ? (motif_outlet_workflow_path(outlet_id: @workflow_action.workflow.outlet.id, id: @workflow_action.workflow)) : (motif_workflow_path(id: @workflow_action.workflow.id, franchisee_id: @workflow_action.workflow.franchisee.id)) do
       i.material-icons-outlined keyboard_arrow_left
     h1 Upload New Documents
 .row

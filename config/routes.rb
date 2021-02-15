@@ -130,7 +130,7 @@ Rails.application.routes.draw do
     resources :permissions
     resources :companies
     resources :templates, param: :template_slug
-    resources :workflows, except: :show do
+    resources :workflows do
       post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
       post '/upload_documents', to: 'workflows#upload_documents', as: :upload_documents
       get '/wfa/:wfa_id/notify_franchisor', to: 'workflows#notify_franchisor', as: :notify_franchisor
@@ -160,7 +160,7 @@ Rails.application.routes.draw do
     get "/email_new_outlet", to: 'outlets#email_new_outlet', as: :email_new_outlet
     get "/email_new_franchisee", to: 'franchisees#email_new_franchisee', as: :email_new_franchisee
   end
-  
+
   namespace :overture do
     root to: 'profiles#index'
     resources :profiles do
