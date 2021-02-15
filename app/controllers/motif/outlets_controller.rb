@@ -36,8 +36,13 @@ class Motif::OutletsController < ApplicationController
     @user.add_role(:franchisee_owner, @user.company)
     respond_to do |format|
       if @outlet.save
-        # Clone template for outlet when saved. Check if user added unit franchisee or direct outlet. Unit franchisee should clone template to it's company (could be MF) while direct outlet clone straight to parent company if available. Check if franchisee form's franchise licensee is present.
+        # Clone template for outlet when saved. Check if user added unit franchisee or direct outlet by checking the franchise licensee value in the form. Unit franchisee should clone template to it's company (could be MF) while direct outlet clone straight to parent company.
         @outlet.clone_templates_for_outlet(params[:outlet][:franchisee_attributes][:franchise_licensee].present? ? "unit_franchisee" : "direct_owned")
+        if params[:outlet][:franchisee_attributes][:franchise_licensee].present?
+          # By default, create retrospective workflows when creating unit franchisee
+          template = Template.find_by(title: "Retrospective Documents")
+          Workflow.create(user: current_user, company: @company, template: template, identifier: "#{params[:outlet][:franchisee_attributes][:franchise_licensee]} - Retrospective")
+        end
         # Save outlet to user
         @user.outlets << @outlet
         # Set active outlet to the new saved outlet
