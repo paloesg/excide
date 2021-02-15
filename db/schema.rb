@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_07_144502) do
+ActiveRecord::Schema.define(version: 2021_02_15_012937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.uuid "record_id"
+    t.boolean "current_version", default: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -129,6 +130,15 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.index ["user_id"], name: "index_batches_on_user_id"
   end
 
+  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.integer "category_type"
+    t.uuid "department_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["department_id"], name: "index_categories_on_department_id"
+  end
+
   create_table "choices", id: :serial, force: :cascade do |t|
     t.text "content"
     t.integer "position"
@@ -196,6 +206,7 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.json "products", default: []
     t.string "website_url"
     t.string "report_url"
+    t.string "cap_table_url"
     t.string "ancestry"
     t.integer "storage_limit"
     t.integer "storage_used"
@@ -203,6 +214,15 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
+  end
+
+  create_table "contact_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "startup_id"
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["startup_id"], name: "index_contact_statuses_on_startup_id"
   end
 
   create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -214,7 +234,20 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "company_id"
+    t.uuid "contact_status_id"
+    t.uuid "cloned_by_id"
+    t.boolean "searchable"
+    t.index ["cloned_by_id"], name: "index_contacts_on_cloned_by_id"
+    t.index ["contact_status_id"], name: "index_contacts_on_contact_status_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
+  end
+
+  create_table "departments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_departments_on_company_id"
   end
 
   create_table "document_templates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -253,6 +286,15 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
 
+  create_table "event_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "category_id"
+    t.uuid "event_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_event_categories_on_category_id"
+    t.index ["event_id"], name: "index_event_categories_on_event_id"
+  end
+
   create_table "event_types", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -273,6 +315,8 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.uuid "client_id"
     t.decimal "number_of_hours"
     t.uuid "company_id"
+    t.uuid "department_id"
+    t.index ["department_id"], name: "index_events_on_department_id"
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
 
@@ -316,6 +360,13 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "investments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "investor_id"
+    t.uuid "startup_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "invoice_identifier"
     t.date "invoice_date"
@@ -347,6 +398,8 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "workflow_action_id"
+    t.boolean "approved"
+    t.string "remark"
     t.index ["user_id"], name: "index_notes_on_user_id"
     t.index ["workflow_action_id"], name: "index_notes_on_workflow_action_id"
   end
@@ -424,6 +477,8 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "url"
+    t.uuid "company_id"
+    t.index ["company_id"], name: "index_profiles_on_company_id"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -637,6 +692,22 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.index ["slug"], name: "index_templates_on_slug", unique: true
   end
 
+  create_table "topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "subject_name"
+    t.integer "status"
+    t.integer "question_category"
+    t.bigint "user_id"
+    t.uuid "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "startup_id"
+    t.bigint "assigned_user_id"
+    t.index ["assigned_user_id"], name: "index_topics_on_assigned_user_id"
+    t.index ["company_id"], name: "index_topics_on_company_id"
+    t.index ["startup_id"], name: "index_topics_on_startup_id"
+    t.index ["user_id"], name: "index_topics_on_user_id"
+  end
+
   create_table "users", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -674,8 +745,10 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.uuid "company_id"
     t.uuid "active_outlet_id"
     t.datetime "last_click_comm_hub"
+    t.uuid "department_id"
     t.index ["active_outlet_id"], name: "index_users_on_active_outlet_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["provider"], name: "index_users_on_provider"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -728,7 +801,9 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
     t.integer "total_time_mins", default: 0
     t.uuid "company_id"
     t.uuid "outlet_id"
+    t.uuid "franchisee_id"
     t.index ["batch_id"], name: "index_workflows_on_batch_id"
+    t.index ["franchisee_id"], name: "index_workflows_on_franchisee_id"
     t.index ["outlet_id"], name: "index_workflows_on_outlet_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
     t.index ["slug"], name: "index_workflows_on_slug", unique: true
@@ -776,13 +851,18 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
   add_foreign_key "batches", "companies"
   add_foreign_key "batches", "templates"
   add_foreign_key "batches", "users"
+  add_foreign_key "categories", "departments"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
   add_foreign_key "companies", "users", column: "associate_id"
   add_foreign_key "companies", "users", column: "consultant_id"
   add_foreign_key "companies", "users", column: "shared_service_id"
+  add_foreign_key "contact_statuses", "companies", column: "startup_id"
   add_foreign_key "contacts", "companies"
+  add_foreign_key "contacts", "companies", column: "cloned_by_id"
+  add_foreign_key "contacts", "contact_statuses"
   add_foreign_key "contacts", "users", column: "created_by_id"
+  add_foreign_key "departments", "companies"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"
   add_foreign_key "documents", "companies"
@@ -793,7 +873,10 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
+  add_foreign_key "event_categories", "categories"
+  add_foreign_key "event_categories", "events"
   add_foreign_key "events", "companies"
+  add_foreign_key "events", "departments"
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
   add_foreign_key "folders", "users"
@@ -809,6 +892,7 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
   add_foreign_key "outlets_users", "users"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
+  add_foreign_key "profiles", "companies"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"
@@ -838,7 +922,12 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
   add_foreign_key "tasks", "templates", column: "child_workflow_template_id"
   add_foreign_key "tasks", "users"
   add_foreign_key "templates", "companies"
+  add_foreign_key "topics", "companies"
+  add_foreign_key "topics", "companies", column: "startup_id"
+  add_foreign_key "topics", "users"
+  add_foreign_key "topics", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"
+  add_foreign_key "users", "departments"
   add_foreign_key "users", "outlets", column: "active_outlet_id"
   add_foreign_key "workflow_actions", "companies"
   add_foreign_key "workflow_actions", "tasks"
@@ -847,6 +936,7 @@ ActiveRecord::Schema.define(version: 2021_02_07_144502) do
   add_foreign_key "workflow_actions", "workflows"
   add_foreign_key "workflows", "batches"
   add_foreign_key "workflows", "companies"
+  add_foreign_key "workflows", "franchisees"
   add_foreign_key "workflows", "outlets"
   add_foreign_key "workflows", "recurring_workflows"
   add_foreign_key "workflows", "templates"
