@@ -109,7 +109,7 @@ const motifWorkflowActionMultipleUploads = (uppy) => {
 // Multiple uploads for Overture through document's INDEX page
 const overtureMultipleDocumentsUpload = (uppy) => {
   uppy.on('complete', (result) => {
-    $.post("/overture/documents", {
+    $.post("/overture/startups/documents", {
       authenticity_token: $.rails.csrfToken(),
       // Number of file uploads that were uploaded successfully
       successful_files: JSON.stringify(result.successful),

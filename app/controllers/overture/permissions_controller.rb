@@ -20,7 +20,7 @@ class Overture::PermissionsController < ApplicationController
     @permission = Permission.new(role: Role.find(params[:role_id]), permissible: @permissible, can_view: permission_changes['status'][:can_view], can_download: permission_changes['status'][:can_download], can_write: permission_changes['status'][:can_write])
     respond_to do |format|
       if @permission.save
-        format.json { render json: { link_to: overture_documents_path, status: "ok" } }
+        format.json { render json: { link_to: overture_startups_documents_path, status: "ok" } }
       else
         format.json { render json: @permission.errors, status: :unprocessable_entity }
       end
@@ -43,7 +43,7 @@ class Overture::PermissionsController < ApplicationController
     end
     respond_to do |format|
       if @permission.update(can_view: permission_changes['status'][:can_view], can_download: permission_changes['status'][:can_download], can_write: permission_changes['status'][:can_write])
-        format.json { render json: { link_to: overture_documents_path, status: "ok" } }
+        format.json { render json: { link_to: overture_startups_documents_path, status: "ok" } }
       else
         format.json { render json: @permission.errors, status: :unprocessable_entity }
       end
@@ -54,7 +54,7 @@ class Overture::PermissionsController < ApplicationController
     Folder.destroy(params[:folder_ids]) if params[:folder_ids].present?
     Document.destroy(params[:document_ids]) if params[:document_ids].present?
     respond_to do |format|
-      format.html { redirect_to overture_documents_path }
+      format.html { redirect_to overture_startups_documents_path }
       format.json { head :no_content }
     end
   end
@@ -63,7 +63,7 @@ class Overture::PermissionsController < ApplicationController
     update_group_permissions(params[:permissions][:role_ids], params[:folder_ids], "Folder") if params[:folder_ids].present?
     update_group_permissions(params[:permissions][:role_ids], params[:document_ids], "Document") if params[:document_ids].present?
     respond_to do |format|
-      format.html { redirect_to overture_documents_path }
+      format.html { redirect_to overture_startups_documents_path }
       format.json { head :no_content }
     end
   end

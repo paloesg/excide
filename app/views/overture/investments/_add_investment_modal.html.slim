@@ -10,7 +10,7 @@
           .col-md-12
             = form_tag overture_investments_path, method: :post do
               .form-group
-                = select_tag :investor_id, options_for_select(@investor_companies.map {|k,v| [k.name, k.id]}, include_blank: true), prompt: 'Select investor contacts...', required: true, id: "investor_id", class: 'form-control'
+                = select_tag :investor_id, options_for_select(@investor_companies.map {|k,v| [k.name, k.id]}, include_blank: true), prompt: 'Select investor contacts...', required: true, id: "investor_id", style: "width: 100%;", class: 'select2 form-control'
               .row.mt-3
                 .col-md-6
                   a.align-middle.text-primary data-target="#sendOvertureInvitation" data-toggle="modal" type="button" Can't find your investors?
