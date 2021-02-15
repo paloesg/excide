@@ -19,8 +19,10 @@
     hr.mb-0
     - @users.each do |user|
       .row.mb-3.mt-5
-        .col-sm-6
-          .font-weight-boldest = user.full_name
+        .col-sm-4
+          .font-weight-boldest = user.full_name.present? ? user.full_name : "No name added yet."
         .col-sm-6
           = user.email
+        .col-sm-2
+          = user.roles.map(&:name).join(", ")
       hr

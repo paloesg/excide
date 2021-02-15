@@ -41,7 +41,7 @@
               .d-flex.p-5.align-items-center.rounded.primary-card-motif
                 = image_pack_tag 'media/src/images/motif/annoucement.png'
                 p.card-text.ml-4 Annoucement feature coming soon. Stay tuned!
-              
+
       .row.mt-5
         .col-sm-4
           .card
@@ -56,7 +56,7 @@
                 -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
                     h1.card-text.number-display = @outstanding_onboarding_actions_outlets&.length || "0"
-                    p.card-text.ml-4 Outlet with overdue task
+                    p.card-text.ml-4 Tasks Pending Completion
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
                     h1.card-text.number-display = @waiting_approval_onboarding_outlets&.length || "0"
                     p.card-text.ml-4 Outlet waiting approval
@@ -88,7 +88,7 @@
                 -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
                     h1.card-text.number-display = @outstanding_royalty_collection_actions_outlets&.length || "0"
-                    p.card-text.ml-4 Outlet with overdue task
+                    p.card-text.ml-4 Tasks Pending Completion
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
                     h1.card-text.number-display = @waiting_approval_royalty_collection_outlets&.length || "0"
                     p.card-text.ml-4 Outlet waiting approval
@@ -182,4 +182,4 @@
           p.mt-4 Maybe, you may want to ask your Franchisor about your tasks.
           button.btn.btn-primary.ml-5 type="button"
             | Talk to Franchisor
-      
+
