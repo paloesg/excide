@@ -41,7 +41,7 @@ class Motif::OutletsController < ApplicationController
         if params[:outlet][:franchisee_attributes][:franchise_licensee].present?
           # By default, create retrospective workflows when creating unit franchisee
           template = Template.find_by(title: "Retrospective Documents")
-          Workflow.create(user: current_user, company: @company, template: template, identifier: "#{params[:outlet][:franchisee_attributes][:franchise_licensee]} - Retrospective", franchisee: @outlet.franchisee)
+          Workflow.create(user: current_user, company: @company, template: template, identifier: "#{params[:outlet][:franchisee_attributes][:franchise_licensee]} - Agreements", franchisee: @outlet.franchisee)
         end
         # Save outlet to user
         @user.outlets << @outlet
