@@ -98,10 +98,7 @@ hr
             th Client
             th Job Function
             th Project
-            th
-              | Task
-              a.ml-2 data-container="body" title="Job nature of your task" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
-                  i.fa.fa-info-circle
+            th Task
             th 
               | Hours
               a.ml-2 data-container="body" title="An estimation of the number of hours you worked" data-html="true" data-placement="left" data-toggle="tooltip" data-trigger="hover"
@@ -122,13 +119,13 @@ hr
                 td width="10%"
                   = f.date_field :start_time, { class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this)" }
                 td width="12%"
-                  = f.select :client_category, @clients.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "client").id, prompt: 'Select client...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_client', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
+                  = f.select :client_category, @clients.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "client")&.id, prompt: 'Select client...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_client', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
-                  = f.select :service_line_category, @service_lines.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "service_line").id, prompt: 'Select service line...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_service_line_list', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
+                  = f.select :service_line_category, @service_lines.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "service_line")&.id, prompt: 'Select service line...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_service_line_list', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
                 td width="12%"
-                  = f.select :project_category, @projects.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "project").id, prompt: 'Select project...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_project', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
+                  = f.select :project_category, @projects.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "project")&.id, prompt: 'Select project...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_project', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
-                  = f.select :task_category, @tasks.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "task").id, prompt: 'Select task...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_task', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
+                  = f.select :task_category, @tasks.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "task")&.id, prompt: 'Select task...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_task', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="15%"
                   = f.number_field :number_of_hours, {min: 0, step: 0.1, class: 'form-control', data: { event_id: event.id }, onchange: "eventsUpdate(this);"}
                 td.p-0 width="5%"

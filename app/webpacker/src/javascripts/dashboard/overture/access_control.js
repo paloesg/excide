@@ -1,6 +1,5 @@
 $(document).on("turbolinks:load", function () {
   $(".permission-icon").click(function(){
-    console.log("This is clicked.", $(this).data("permission-id"));
     // Check if permission exists, if it does, then update the permission. Else, create the permission.
     if ($(this).data("permission-id")){
       $.ajax({
