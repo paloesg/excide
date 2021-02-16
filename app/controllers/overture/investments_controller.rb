@@ -2,9 +2,8 @@ class Overture::InvestmentsController < ApplicationController
   layout 'overture/application'
 
   before_action :authenticate_user!
-  before_action :set_company, except: [:capitalization_table, :financial_performance]
-  before_action :set_investment, only: [:show, :destroy]
-  before_action :set_investment_by_id, only: [:capitalization_table, :financial_performance]
+  before_action :set_company
+  before_action :set_investment, only: [:destroy]
 
   def index
     # Get investments from either startup or investor
@@ -43,10 +42,6 @@ class Overture::InvestmentsController < ApplicationController
 
   def set_investment
     @investment = Investment.find(params[:id])
-  end
-
-  def set_investment_by_id
-    @investment = Investment.find(params[:investment_id])
   end
 
   def investment_params

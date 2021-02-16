@@ -42,7 +42,7 @@
       li.nav-item.hover-blue.py-1.m-4.cursor-pointer
         = link_to Folder.find_by(company: current_user.company, name: "Shared Drive").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Shared Drive").id) : overture_startups_documents_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined.mr-5 folder
-          .ml-5.sidebar-font Shared Drive
+          .ml-5.sidebar-font Shared Files
     - else
       li.nav-item.hover-blue.py-1.m-4.cursor-pointer
         = link_to overture_investments_path, class: 'col-sm-12 d-flex align-items-center' do
