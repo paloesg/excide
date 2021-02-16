@@ -169,12 +169,10 @@ Rails.application.routes.draw do
     end
     resources :companies do
       get 'investors/documents', to: 'investors/documents#index', as: :investor_documents
-      get 'startups/documents', to: 'startups/documents#index', as: :startup_documents
+      get '/financial_performance', to: 'companies#financial_performance'
+      get '/capitalization_table', to: 'companies#capitalization_table'
     end
-    resources :investments do
-      get '/financial_performance', to: 'investments#financial_performance'
-      get '/capitalization_table', to: 'investments#capitalization_table'
-    end
+    resources :investments
     resources :permissions
     resources :roles
     resources :profiles do

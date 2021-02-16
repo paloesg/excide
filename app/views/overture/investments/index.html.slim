@@ -49,7 +49,7 @@ hr.mb-0
               = @company.investor? ? i.startup.name : i.investor.name
             - if @company.investor?
               span.ml-5
-                = link_to overture_investment_path(id: i.id) do
+                = link_to overture_company_path(id: i.startup.id) do
                   i.material-icons-outlined.align-middle keyboard_arrow_right
           - if @company.investor?
             td

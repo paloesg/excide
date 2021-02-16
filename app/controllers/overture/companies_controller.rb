@@ -2,7 +2,7 @@ class Overture::CompaniesController < ApplicationController
   layout 'overture/application'
 
   before_action :authenticate_user!
-  before_action :set_company
+  before_action :set_company, except: [:show]
 
   def index
     # Get company of the documents & folders that user have permission in (through their roles)
@@ -26,6 +26,19 @@ class Overture::CompaniesController < ApplicationController
     end
   end
 
+  def show
+    @company = Company.find(params[:id])
+  end
+
+  def capitalization_table
+    @startup = Company.find(params[:company_id])
+    @topic = Topic.new
+  end
+
+  def financial_performance
+    @startup = Company.find(params[:company_id])
+    @topic = Topic.new
+  end
 
   private
   def set_company
