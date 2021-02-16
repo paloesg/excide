@@ -79,7 +79,7 @@ gem 'public_activity'
 # Handle money
 gem 'money-rails', '~>1.13.0'
 # Ruby asynchronous processing
-gem 'sucker_punch', '~> 2.1.0'
+gem 'sucker_punch', '~> 3.0.0'
 
 gem 'popper_js'
 # Themify icon set web fonts
