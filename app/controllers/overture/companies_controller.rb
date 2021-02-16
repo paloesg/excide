@@ -3,11 +3,12 @@ class Overture::CompaniesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company, except: [:show]
+  before_action :find_startup_by_id, only: [:capitalization_table, :financial_performance]
 
   def index
     # Get company of the documents & folders that user have permission in (through their roles)
     if @company.investor?
-      @startups = @user.roles.map(&:permissions).flatten.map(&:permissible).map(&:company).uniq
+      @startups = @user.roles.map(&:permissions).flatten.map(&:permissible).compact.map(&:company).uniq
     else
       # For startup to share files with their investors (shared drive)
       @investors = @company.investors
@@ -31,12 +32,10 @@ class Overture::CompaniesController < ApplicationController
   end
 
   def capitalization_table
-    @startup = Company.find(params[:company_id])
     @topic = Topic.new
   end
 
   def financial_performance
-    @startup = Company.find(params[:company_id])
     @topic = Topic.new
   end
 
@@ -44,6 +43,10 @@ class Overture::CompaniesController < ApplicationController
   def set_company
     @user = current_user
     @company = current_user.company
+  end
+
+  def find_startup_by_id
+    @startup = Company.find(params[:company_id])
   end
 
   def company_params
