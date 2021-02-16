@@ -132,7 +132,7 @@ class CompaniesController < ApplicationController
   def set_default_retrospective_workflow(company)
     # By default, create retrospective workflows for franchisor or MF to upload agreements to
     template = Template.find_by(title: "Retrospective Documents")
-    Workflow.create(user: current_user, company: company, template: template, identifier: "#{company.name} - Agreements", franchisee: @franchisee)
+    Workflow.create(user: current_user, company: company, template: template, identifier: "#{@franchisee.franchise_licensee} - Agreements", franchisee: @franchisee)
   end
 
   def remove_company_roles
