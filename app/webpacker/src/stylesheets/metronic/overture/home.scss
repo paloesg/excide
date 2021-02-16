@@ -1,8 +1,6 @@
 .banner-image {
-  height: 25%;
-  background-image: url("../src/images/overture/banner-image.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 80%;
+  height: 200px;
+  background:
+    linear-gradient(to right, white, transparent),
+    url("../src/images/overture/banner-image.png") 100%;
 }
