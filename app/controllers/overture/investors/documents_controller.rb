@@ -17,6 +17,15 @@ class Overture::Investors::DocumentsController < Overture::DocumentsController
     @topic = Topic.new
   end
 
+  def shared_files
+    @startup = Company.find(params[:company_id])
+    @shared_folder = Folder.find_by(name: "Shared Drive", company: @startup)
+    @folders = @shared_folder.children.includes(:permissions).where(company: @startup, permissions: { can_view: true, role_id: @user.roles.map(&:id)}).where.not(name: ["Resource Portal", "Shared Drive"])
+    # Show startup company's documents to investors if they have permission access
+    @documents = @shared_folder.documents.where(company: @startup).order(created_at: :desc).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
+    @topic = Topic.new
+  end
+
   private
 
   def set_document

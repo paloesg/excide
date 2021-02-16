@@ -169,6 +169,7 @@ Rails.application.routes.draw do
     end
     resources :companies do
       get 'investors/documents', to: 'investors/documents#index', as: :investor_documents
+      get '/shared_files', to: 'investors/documents#shared_files', as: :shared_files
       get '/financial_performance', to: 'companies#financial_performance'
       get '/capitalization_table', to: 'companies#capitalization_table'
     end
