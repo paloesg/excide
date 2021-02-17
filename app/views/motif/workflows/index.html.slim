@@ -47,16 +47,16 @@ hr.mb-0
     = render 'motif/shared/motif_empty_state'
   - else
     - @workflows.each do |wf|
-      .col-sm-12.mt-3.ml-5
+      .col-sm-11.mt-3.ml-5
         .d-flex.flex-wrap.align-items-center.py-1
           = wf.outlet.header_image.attached? ? (image_tag(wf.outlet.header_image, class: 'outlet-image mr-5')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-image mr-5")
           .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3
             span.h3.font-weight-boldest = wf.outlet.name
             span = "#{wf.outlet&.country} #{wf.outlet&.city}"
             - if wf.outlet.company == @company
-              .badge.label-motif-roles.col-sm-6 Direct Owned
+              .badge.label-motif-roles.col-sm-8 Direct Owned
             - else
-              .badge.badge-success.text-dark.font-weight-boldest.col-sm-6 Franchised
+              .badge.badge-success.text-dark.font-weight-boldest.col-sm-8 Franchised
           .col-sm-4
             .progress
               .progress-bar.progress-bar-striped.bg-primary aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" role="progressbar" style=("width: #{wf.progress}%")
