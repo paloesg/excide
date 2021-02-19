@@ -1,8 +1,15 @@
 row.mb-3.mt-5.ml-3
   .col-sm-12
-    button.btn.btn-primary.float-right.mr-5 data-target="#addInvestmentOverture" data-toggle="modal" type="button"
+    button.btn.btn-primary.float-right.mr-5 data-target="#newAnnouncement" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white add
       | New Announcement
+    = render "new"
     h3 Post an announcement
     p.mt-5.text-muted
       | Share important news and announcements with your investors.
+    table.table.ml-4
+      tbody
+        - @posts.each do |post|
+          tr.row
+            td.comment-font-size.col-5.text-dark = post.title
+            td.comment-font-size.col-3.text-dark = post.company.name
