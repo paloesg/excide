@@ -23,14 +23,14 @@ class CompaniesController < ApplicationController
     # Save the new company's product(s)
     @company.products = params[:products]
     if @company.save
+      set_company_roles
+      set_default_folders
       if params[:company][:parent_id].present?
         # If ancestry present, set default record of franchisee
         set_default_franchisee(params[:license_type])
         # Create retrospective workflow as long as the second layer company (MF, AF) is created
-        set_default_retrospective_workflow(@company)
+        set_default_retrospective_workflow
       end
-      set_company_roles
-      set_default_folders
       set_default_templates
       current_user.update(company: @company)
       # Redirect based on the products that was added to the company
@@ -113,6 +113,7 @@ class CompaniesController < ApplicationController
         cloned_template.company = @company
         # Set template_pattern based on motif template_type, which will then set recurring attributes
         cloned_template.set_recurring_based_on_template_type
+        # Clone general folder and add it to the template's tasks
         cloned_template.tasks.each do |task|
           task.clone_folder(@company)
           role = Role.find_or_create_by(name: task.role.name, resource_id: @company.id, resource_type: "Company")
@@ -129,10 +130,24 @@ class CompaniesController < ApplicationController
     @franchisee = Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: license_type)
   end
 
-  def set_default_retrospective_workflow(company)
-    # By default, create retrospective workflows for franchisor or MF to upload agreements to
-    template = Template.find_by(title: "Retrospective Documents")
-    Workflow.create(user: current_user, company: company, template: template, identifier: "#{@franchisee.franchise_licensee} - Agreements", franchisee: @franchisee)
+  def set_default_retrospective_workflow
+    retrospective_template = Template.where(title: "Retrospective Documents", company_id: nil)
+    if retrospective_template.present?
+      # By default, create retrospective workflows for franchisor or MF to upload agreements to
+      cloned_template = retrospective_template.first.deep_clone include: { sections: :tasks }
+      cloned_template.title = "#{cloned_template.title} - #{@company.name}"
+      cloned_template.company = @company
+      cloned_template.save
+      # Clone general folder and add it to the template's tasks
+      cloned_template.tasks.each do |task|
+        task.clone_folder(@company)
+        role = Role.find_or_create_by(name: task.role.name, resource_id: @company.id, resource_type: "Company")
+        task.role = role
+        task.save
+      end
+    end
+      # Workflow.create(user: current_user, company: @company, template: cloned_template, identifier: "#{@franchisee.franchise_licensee} - Agreements", franchisee: @franchisee)
+    # end
   end
 
   def remove_company_roles
