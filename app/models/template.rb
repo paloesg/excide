@@ -118,7 +118,7 @@ class Template < ApplicationRecord
       Template.where(id: template_ids, company: user.company).order(:created_at)
     end
   end
-  
+
   # For Motif template type. Set onboarding, site audit and royalty collection template pattern
   def set_recurring_based_on_template_type
     case self.template_type
@@ -174,7 +174,7 @@ class Template < ApplicationRecord
   def update_workflow_actions
     self.tasks.each do |task|
       # If there's assigned_user, it will store the ID, else it will be nil
-      task.workflow_actions.map { |wfa| 
+      task.workflow_actions.map { |wfa|
         wfa.assigned_user_id = task.user_id
         wfa.save
       }
@@ -206,8 +206,24 @@ class Template < ApplicationRecord
       # Filtering by months
       @month_years_to_filter = (self.start_date..self.end_date).to_a.map { |d| "#{d.month}-#{d.year}" }.uniq if self.start_date.present?
     end
-    
+
     @year = year_params.present? ? year_params.to_i : Date.current.year
     return @workflows, @years_to_filter, @month_years_to_filter, @year
+  end
+
+  def clone_folder_through_template_tasks(company)
+    self.tasks.each do |task|
+      # Check whether general template's task has a general folder association.
+      if task.folder.present?
+        # Check for existing folder that was previously cloned so that there are no duplicated folders. Also, if company is a MF or AF, then it should preset the folders to the parent folder
+        @folder = Folder.find_or_create_by(name: task.folder.name , company: company.parent.present? ? company.parent : company)
+        task.folder = @folder
+        task.save
+      end
+      # task.clone_folder(@company)
+      role = Role.find_or_create_by(name: task.role.name, resource_id: company.id, resource_type: "Company")
+      task.role = role
+      task.save
+    end
   end
 end
