@@ -3,7 +3,7 @@
     .col-md-11
       h5.d-inline = name
     .col-md-1
-      a.d-inline id="drawer_close_#{permissible.id}" href="#" 
+      a.d-inline id="drawer_close_#{permissible.id}" href="#"
         i.material-icons-outlined close
   .offcanvas-header.offcanvas-header-navs.d-flex.align-items-center.justify-content-between
     ul.nav.nav-bold.nav-tabs.nav-tabs-line.nav-tabs-line-3x.nav-tabs-primary.flex-grow-1.px-10 role="tablist"
@@ -53,7 +53,9 @@
               .col-md-1
                 = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mt-2'
               .col-md-4.ml-2.mt-2
-                = user.full_name.humanize
+                span.font-weight-boldest = user.full_name.humanize
+                br
+                span.font-italic = user.company&.name
               .col-md-5.pl-0
                 - permission = user.permissions.find_by(permissible_id: permissible.id)
                 - if permission.present?
@@ -61,7 +63,7 @@
                   = select_tag 'permissions', options_for_select(["Can download", "Can write"], selected: (permission.can_write? ? "Can write" : "Can download")), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control permission-document-access col-md-12'
                 - else
                   .float-right.mt-3.add-access id="add-access-link-#{user.id}-#{permissible.id}"
-                    = link_to '+ Add access', '#', class: 'text-primary', remote: true 
+                    = link_to '+ Add access', '#', class: 'text-primary', remote: true
                   = select_tag 'permissions', options_for_select(["Can download", "Can write"]), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control permission-document-access d-none col-md-12', id: "add-access-#{user.id}-#{permissible.id}"
               .col-md-1.p-0.mt-2.d-none.saved-message
                 span.text-muted Saved!
