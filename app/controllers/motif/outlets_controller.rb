@@ -40,8 +40,17 @@ class Motif::OutletsController < ApplicationController
         @outlet.clone_templates_for_outlet(params[:outlet][:franchisee_attributes][:franchise_licensee].present? ? "unit_franchisee" : "direct_owned")
         if params[:outlet][:franchisee_attributes][:franchise_licensee].present?
           # By default, create retrospective workflows when creating unit franchisee
-          template = Template.find_by(title: "Retrospective Documents")
-          Workflow.create(user: current_user, company: @company, template: template, identifier: "#{params[:outlet][:franchisee_attributes][:franchise_licensee]} - Agreements", franchisee: @outlet.franchisee)
+          retrospective_template = Template.where(title: "Retrospective Documents", company_id: nil)
+          if retrospective_template.present?
+            # By default, create retrospective workflows for franchisor or MF to upload agreements to
+            cloned_template = retrospective_template.first.deep_clone include: { sections: :tasks }
+            cloned_template.title = "#{cloned_template.title} - #{params[:outlet][:franchisee_attributes][:franchise_licensee]}"
+            cloned_template.company = @company
+            cloned_template.save
+            # Clone general folder and add it to the template's tasks
+            cloned_template.clone_folder_through_template_tasks(@company, "unit_franchisee")
+            Workflow.create(user: current_user, company: @company, template: cloned_template, identifier: "#{params[:outlet][:franchisee_attributes][:franchise_licensee]} - Agreements", franchisee: @outlet.franchisee)
+          end
         end
         # Save outlet to user
         @user.outlets << @outlet
