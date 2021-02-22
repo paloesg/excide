@@ -211,12 +211,18 @@ class Template < ApplicationRecord
     return @workflows, @years_to_filter, @month_years_to_filter, @year
   end
 
-  def clone_folder_through_template_tasks(company)
+  def clone_folder_through_template_tasks(company, franchisee_type)
     self.tasks.each do |task|
       # Check whether general template's task has a general folder association.
       if task.folder.present?
-        # Check for existing folder that was previously cloned so that there are no duplicated folders. Also, if company is a MF or AF, then it should preset the folders to the parent folder
-        @folder = Folder.find_or_create_by(name: task.folder.name , company: company.parent.present? ? company.parent : company)
+        if franchisee_type.present?
+          # For unit franchisee & sub-franchisee, do not check for company parent. Just set current company folder
+          @folder = Folder.find_or_create_by(name: task.folder.name , company: company)
+        else
+          # For franchisor, MF and AF
+          # Check for existing folder that was previously cloned so that there are no duplicated folders. Also, if company is a MF or AF, then it should preset the folders to the parent folder
+          @folder = Folder.find_or_create_by(name: task.folder.name , company: company.parent.present? ? company.parent : company)
+        end
         task.folder = @folder
         task.save
       end

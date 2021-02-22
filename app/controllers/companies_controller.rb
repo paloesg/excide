@@ -114,7 +114,7 @@ class CompaniesController < ApplicationController
         # Set template_pattern based on motif template_type, which will then set recurring attributes
         cloned_template.set_recurring_based_on_template_type
         # Clone general folder and add it to the template's tasks
-        cloned_template.clone_folder_through_template_tasks(@company)
+        cloned_template.clone_folder_through_template_tasks(@company, nil)
         cloned_template.save
       end
     end
@@ -134,7 +134,7 @@ class CompaniesController < ApplicationController
       cloned_template.company = @company
       cloned_template.save
       # Clone general folder and add it to the template's tasks
-      cloned_template.clone_folder_through_template_tasks(@company)
+      cloned_template.clone_folder_through_template_tasks(@company, nil)
       Workflow.create(user: current_user, company: @company, template: cloned_template, identifier: "#{@franchisee.franchise_licensee} - Agreements", franchisee: @franchisee)
     end
   end
