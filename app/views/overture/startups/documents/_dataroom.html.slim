@@ -96,6 +96,8 @@
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                   i.material-icons-outlined.font-size-h1.text-muted more_horiz
                 .dropdown-menu.dropdown-menu-right
+                  - if @user.has_role?(:admin, @company)
+                    .dropdown-item = link_to "Folder Setting", edit_overture_folder_path(folder)
                   .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{folder.id}_0"
                   .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
             - @roles.each do |role|
