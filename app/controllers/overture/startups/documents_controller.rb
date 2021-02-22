@@ -18,26 +18,12 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
   end
 
   def create
+    admin_role = Role.find_by(resource: current_user.company, name: "admin")
     # multiple file upload from uppy
     if params[:successful_files].present?
-      @files = []
       parsed_files = JSON.parse(params[:successful_files])
-      parsed_files.each do |file|
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:folder_id]).run
-        document = @generate_document.document
-        authorize document
-        # attach and convert method with the response key to create blob
-        document.attach_and_convert_document(file['response']['key'])
-        # attach the document as the 1st version (for version history)
-        document.versions.attach(file['response']['signed_id'])
-        # Make the attachment the current (first) version
-        document.versions.attachments.first.current_version = true
-        document.versions.attachments.first.save
-        @files.append document
-        @admin_role = Role.find_by(resource: current_user.company, name: "admin")
-        # Create document permissions for all admin users
-        Permission.create(role: @admin_role, can_write: true, can_download: true, can_view: true, permissible: document)
-      end
+      # Upload multiple files and set versions & permissions for the upload
+      MultipleUploadsJob.perform_later(@user, parsed_files, admin_role, params[:document_type], params[:folder_id])
     end
     respond_to do |format|
       if params[:folder_id].present?
