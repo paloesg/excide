@@ -22,6 +22,8 @@ class HomeController < ApplicationController
           redirect_back fallback_location: symphony_root_path, notice: 'Company changed to ' + current_user.company.name + '.'
         elsif current_user.company.products[0] == "motif"
           redirect_back fallback_location: motif_root_path, notice: 'Company changed to ' + current_user.company.name + '.'
+        else
+          redirect_back fallback_location: overture_root_path, notice: 'Company changed to ' + current_user.company.name + '.'
         end
       end
     else

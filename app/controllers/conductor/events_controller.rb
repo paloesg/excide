@@ -253,7 +253,7 @@ class Conductor::EventsController < ApplicationController
     @general_clients = Category.where(category_type: "client", department: nil)
     @general_tasks = Category.where(category_type: "task", department: nil)
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
-    @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
+    @users = User.where(department: @department)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

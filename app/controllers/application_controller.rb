@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
   def authenticate_product
     # split "::" to account for another namespace within the product namespace
     product = self.class.parent.to_s.downcase.split("::")[0]
-    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || product == "object"
+    authorize current_user, ("has_" + product + "?").to_sym unless product == "users" || product == "object" || current_user.nil?
   end
 
   def set_company
