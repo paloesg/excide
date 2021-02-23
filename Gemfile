@@ -106,7 +106,7 @@ gem 'mini_mime'
 gem 'shortuuid'
 
 # Calculate business days
-gem 'business_time'
+gem 'business_time', git: 'https://github.com/beanieboi/business_time'
 # Used for area code
 gem 'countries', require: 'countries/global'
 # CHecks phone number validity
