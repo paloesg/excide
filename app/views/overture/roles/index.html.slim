@@ -49,9 +49,9 @@ hr.mt-2
       .col-sm-3
         .font-weight-boldest = r.name
       .col-sm-3
-        .font-weight-boldest = pluralize(r.users.length, "people")
+        = pluralize(r.users.length, "people")
       .col-sm-4
-        .font-weight-boldest = r.users.map(&:full_name).join(", ")
+        = r.users.map(&:full_name).join(", ")
       .col-sm-1
         = link_to "#", "data-toggle": "modal", 'data-target': "#editGroupModal_#{r.id}" do
           i.material-icons-outlined.icon-size.text-primary.dropdown-pointer create

@@ -70,28 +70,28 @@
   .table-responsive.h-75
     table.table.ml-4.table-aligned
       thead
-        tr
-          th style="width: 5%"
+        tr.d-flex
+          th.col-1
             input#checkedAll type="checkbox" name=""/
-          th.text-muted style="width: 35%" Name
-          th.text-muted style="width: 10%" Last Modified
-          th style="width: 10%"
+          th.text-muted.col-4 Name
+          th.text-muted.col-3 Last Modified
+          th.col-1
           - @roles.each do |role|
-            th
+            th.col-2
               a title="#{role.users.map(&:full_name).join("<br/>")}" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" = role.name
       tbody.draggable-zone
         - @folders.each_with_index do |folder, index|
-          tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id data-permissible-type="folder"
-            td
+          tr.draggable.folders.drawer-row.d-flex id="#{folder.id}" data-drawer=folder.id data-permissible-type="folder"
+            td.col-1
               = check_box_tag "folders[]", folder.id, false, class: "checkSingle mt-2"
-            td
+            td.col-4
               span.mr-5
                 i.material-icons-outlined.align-middle folder_open
               span.ml-5
                 = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
-            td
+            td.col-3
               = folder.updated_at.strftime("%d %b %Y")
-            td
+            td.col-1
               .dropdown
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                   i.material-icons-outlined.font-size-h1.text-muted more_horiz
@@ -101,23 +101,23 @@
                   .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{folder.id}_0"
                   .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
             - @roles.each do |role|
-              td
+              td.col-2
                 = render "overture/documents/permissions_icons", role: role, permissible: folder, permissible_type: "folder"
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
           = render 'overture/documents/modals/version_control_modal', d: d
-          tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}" data-permissible-type="document"
-            td
+          tr.drawer-row.draggable.d-flex id="#{d.id}" data-drawer="#{d.id}" data-permissible-type="document"
+            td.col-1
               = check_box_tag "documents[]", d.id, false, class: "checkSingle mt-2"
-            td.cursor-pointer data-toggle="modal" data-target="#documentModal#{d.id}"
+            td.cursor-pointer.col-4 data-toggle="modal" data-target="#documentModal#{d.id}"
               span.mr-5
                 / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
                 = image_pack_tag "media/src/images/overture/doc.svg"
               span.ml-5
                 = d.versions.attachments.find_by(current_version: true).filename
-            td
+            td.col-3
               = d.updated_at.strftime("%d %b %Y")
-            td
+            td.col-1
               .dropdown
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                   i.material-icons-outlined.font-size-h1.text-muted more_horiz
@@ -127,7 +127,7 @@
                   .dropdown-item = link_to "Download", d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true), disposition: "attachment") : d.file_url
                   .dropdown-item = link_to "Delete", overture_startups_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
             - @roles.each do |role|
-              td
+              td.col-2
                 = render "overture/documents/permissions_icons", role: role, permissible: d, permissible_type: "document"
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
           = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_startups_documents_path(id: d.id, format: 'json'), path: "overture/startups/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
