@@ -33,11 +33,11 @@
         span.mr-5#selectedNumber
       .col-md-3.d-flex.justify-content-between
         .col-md-12
-          a.groupDelete.cursor-pointer data-toggle="modal" data-target="#groupDelete"
-            i.material-icons-outlined.float-right delete
+          a.groupDelete data-toggle="modal" data-target="#groupDelete"
+            i.material-icons-outlined.cursor-pointer.float-right delete
           = render "overture/documents/modals/bulk_delete_modal"
           a.groupAssignment.cursor-pointer data-toggle="modal" data-target="#groupAssignPermissions"
-            i.material-icons-outlined.float-right.mr-5 group_add
+            i.material-icons-outlined.cursor-pointer.float-right.mr-5 group_add
           = render "overture/documents/modals/bulk_assignment_permissions_modal"
     .row.ml-4.my-5.align-items-center#filter-options
       .col.md-12
@@ -71,8 +71,8 @@
     table.table.ml-4.table-aligned
       thead
         tr
-          th#checkedAll style="width: 5%"
-            input# type="checkbox" name=""/
+          th style="width: 5%"
+            input#checkedAll type="checkbox" name=""/
           th.text-muted style="width: 35%" Name
           th.text-muted style="width: 10%" Last Modified
           th style="width: 10%"
