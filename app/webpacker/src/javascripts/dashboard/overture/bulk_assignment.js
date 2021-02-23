@@ -1,17 +1,18 @@
 $(document).on("turbolinks:load", function () {
   $("#select-options").hide();
 
-  $("#checkedAll").change(function() {
+  $("#checkedAll").click(function() {
     if ($(this).is(":checked")) {
-        $(".checkSingle").prop("checked", true).change();
+        $(".checkSingle").prop("checked", true);
     } else {
-        $(".checkSingle").prop("checked", false).change();
+        $(".checkSingle").prop("checked", false);
     }
+    showAssignmentTopBar($(this));
   });
+
   $(".groupAssignment").click(function(){
     // find the modal body
     let modal = $("#groupAssignPermissions").find(".hidden-assign-forms");
-    console.log("What is modal", modal)
     // loop through all the check boxes (class checkbox)
     $(".checkSingle").each(function(index){
       // if they are checked, add permissible id to the modal as a hidden form
