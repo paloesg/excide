@@ -158,7 +158,7 @@ Rails.application.routes.draw do
     get '/financial-performance', to: 'home#financial_performance'
     get '/edit-report', to: 'home#edit_report'
     get "/email_new_outlet", to: 'outlets#email_new_outlet', as: :email_new_outlet
-    get "/email_new_franchisee", to: 'franchisees#email_new_franchisee', as: :email_new_franchisee
+    post "/email_new_franchisee", to: 'franchisees#email_new_franchisee', as: :email_new_franchisee
   end
 
   namespace :overture do

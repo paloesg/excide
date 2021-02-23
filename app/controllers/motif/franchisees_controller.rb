@@ -64,8 +64,14 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def email_new_franchisee
-    NotificationMailer.motif_new_franchisee(current_user).deliver_later
-    redirect_to motif_franchisees_path, notice: "Thank you for stating your interest in a new franchisee. Kindly wait for further information as we contact you through email."
+    franchisee_details = {
+      full_name: params[:full_name],
+      email: params[:email],
+      unit_name: params[:unit_name],
+      license_type: params[:license_type]
+    }
+    NotificationMailer.motif_new_franchisee(current_user, franchisee_details).deliver_later
+    redirect_to motif_franchisees_path, notice: "You are registering a new Franchisee Entity. Please wait for further instructions which shall be communicated to you by email within 1 working day."
   end
 
   private
