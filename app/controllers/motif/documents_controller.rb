@@ -26,7 +26,7 @@ class Motif::DocumentsController < ApplicationController
 
   def new
     @folders = policy_scope(Folder).roots
-    company_scope = @company.has_parent? ? [@company, @company.parent] : [@company, @company.children].flatten.compact
+    company_scope = @company.has_parent? ? [@company, @company.parent, @company.children].flatten.compact : [@company, @company.children].flatten.compact
     @workflow_action = WorkflowAction.where(company_id: company_scope).find(params[:workflow_action_id])
     @folder_id = params[:folder_id]
     @document = Document.new
