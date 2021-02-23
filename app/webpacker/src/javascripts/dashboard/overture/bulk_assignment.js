@@ -41,7 +41,12 @@ $(document).on("turbolinks:load", function () {
   })
 
   $(".checkSingle").change(function () {
-    if ($(this).is(":checked")) {
+    showAssignmentTopBar($(this));
+  });
+
+  // Show addignment topbar when clicking on a single checkbox or the select all checkbox
+  function showAssignmentTopBar(thisObj){
+    if (thisObj.is(":checked")) {
       $("#filter-search").hide();
       $("#select-options").show();
 
@@ -57,12 +62,9 @@ $(document).on("turbolinks:load", function () {
       }
     }
     showNumberOfCheckedBox();
-  });
+  }
 
-  $("#clearSelect").click(function () {
-    $("#checkedAll").prop("checked", false).change();
-  })
-
+  // Show length of checked checkboxes
   function showNumberOfCheckedBox(){
     count = $(".checkSingle:checked").length
     $("#selectedNumber")[0].innerHTML = count + " item(s) selected";
