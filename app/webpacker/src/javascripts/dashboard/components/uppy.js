@@ -134,7 +134,7 @@ function setupUppy(element){
     restrictions: {
       // 10MB max size
       maxFileSize: 10 * 1024 * 1024,
-      maxNumberOfFiles: 50,
+      maxNumberOfFiles: 100,
       minNumberOfFiles: null,
       // Only allow images or PDF
       allowedFileTypes: ['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', 'text/csv']

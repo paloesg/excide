@@ -33,7 +33,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
         format.json { render json: @files.to_json }
       else
         format.html {
-          redirect_to overture_startups_documents_path, notice: "File was successfully uploaded"
+          redirect_to overture_startups_documents_path, notice: "Your files are being processed. Please refresh the page to view the uploaded files."
         }
       end
     end
