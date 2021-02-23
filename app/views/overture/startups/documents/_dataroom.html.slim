@@ -74,7 +74,7 @@
           th.col-1
             input#checkedAll type="checkbox" name=""/
           th.text-muted.col-4 Name
-          th.text-muted.col-3 Last Modified
+          th.text-muted.col-2 Last Modified
           th.col-1
           - @roles.each do |role|
             th.col-2
@@ -89,7 +89,7 @@
                 i.material-icons-outlined.align-middle folder_open
               span.ml-5
                 = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
-            td.col-3
+            td.col-2
               = folder.updated_at.strftime("%d %b %Y")
             td.col-1
               .dropdown
@@ -115,7 +115,7 @@
                 = image_pack_tag "media/src/images/overture/doc.svg"
               span.ml-5
                 = d.versions.attachments.find_by(current_version: true).filename
-            td.col-3
+            td.col-2
               = d.updated_at.strftime("%d %b %Y")
             td.col-1
               .dropdown
