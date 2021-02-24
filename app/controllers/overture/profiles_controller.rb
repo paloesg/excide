@@ -8,12 +8,13 @@ class Overture::ProfilesController < ApplicationController
 
   def index
     authorize Profile
-    @profiles = Profile.all
+    @profiles = policy_scope(Profile)
     @profiles = Kaminari.paginate_array(@profiles).page(params[:page]).per(5)
   end
 
   def show
     @profile = Profile.find(params[:id])
+    authorize @profile
     @topic = Topic.new
   end
 
