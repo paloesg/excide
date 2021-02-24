@@ -1,5 +1,6 @@
 class Franchisee < ApplicationRecord
-  belongs_to :company
+  belongs_to :parent_company, :class_name => "Company", :foreign_key => "company_id"
+  belongs_to :franchisee_company, :class_name => "Company", :foreign_key => "franchisee_company_id"
   has_many :outlets, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :workflows, dependent: :destroy

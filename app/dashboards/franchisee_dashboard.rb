@@ -20,6 +20,7 @@ class FranchiseeDashboard < Administrate::BaseDashboard
     expiry_date: Field::Date,
     renewal_period_freq_unit: EnumField,
     renewal_period_freq_value: Field::Number,
+    franchisee_company: Field::BelongsTo.with_options(class_name: 'Company')
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -30,8 +31,8 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
   id
   franchise_licensee
-  registered_address
   company
+  franchisee_company
   license_type
   expiry_date
   ].freeze
@@ -41,6 +42,7 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
   id
   company
+  franchisee_company
   franchise_licensee
   registered_address
   license_type
@@ -58,6 +60,7 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
   company
+  franchisee_company
   outlets
   franchise_licensee
   registered_address

@@ -9,7 +9,7 @@ module Motif::FranchiseesHelper
         nil
       end
     else
-      Franchisee.find_by(franchise_licensee: current_user.company.name)
+      Franchisee.find_by(franchisee_company: current_user.company)
     end
   end
 end

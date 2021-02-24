@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_15_012937) do
+ActiveRecord::Schema.define(version: 2021_02_24_060409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -301,7 +301,9 @@ ActiveRecord::Schema.define(version: 2021_02_15_012937) do
     t.integer "min_outlet"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "franchisee_company_id"
     t.index ["company_id"], name: "index_franchisees_on_company_id"
+    t.index ["franchisee_company_id"], name: "index_franchisees_on_franchisee_company_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -800,6 +802,7 @@ ActiveRecord::Schema.define(version: 2021_02_15_012937) do
   add_foreign_key "folders", "companies"
   add_foreign_key "folders", "users"
   add_foreign_key "franchisees", "companies"
+  add_foreign_key "franchisees", "companies", column: "franchisee_company_id"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
