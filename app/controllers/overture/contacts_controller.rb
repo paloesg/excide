@@ -23,16 +23,15 @@ class Overture::ContactsController < ApplicationController
       # Deep clone active storage attachment and action text rich text through model method
       @contact = contact_to_be_duplicated.clone_contact
       # Find the 1st contact status of the board (Shortlisted)
-      contact_status = @company.contact_statuses.find_by(position: 1)
-      @contact.contact_status = contact_status
+      @contact.contact_status = @company.contact_statuses.first
       # Duplicate contact shouldn't be searchable
-      @contact.searchable = false
       @contact.cloned_by = @company
     else
       # Add new investor's contact
       @contact = Contact.new(contact_params)
       @contact.created_by = current_user
     end
+    @contact.searchable = false
     # Redirect based on validation of contact
     if @contact.save
       redirect_to overture_contact_statuses_path, notice: "Investor contact added to fundraising board."

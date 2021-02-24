@@ -50,7 +50,6 @@ hr
                 = c.label :company_name, "Company Name"
                 = c.text_field :company_name, class: "form-control"
               .form-group
-                = c.hidden_field :searchable, value: false
                 = c.hidden_field :contact_status_id, value: cs.id
               .form-group
                 = c.submit "Add", class: 'btn btn-primary float-right'
