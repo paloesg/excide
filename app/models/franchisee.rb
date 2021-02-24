@@ -10,6 +10,6 @@ class Franchisee < ApplicationRecord
 
   def check_license_type_master_or_area_or_multi_unit?
     # Check if franchise company has any children (franchisee entity) & check if franchisee is master or area franchisee (to prevent errors if it's unit franchisee)
-    self.company.children.present? and (self.master_franchisee? or self.area_franchisee? or self.multi_unit_franchisee?)
+    self.parent_company.children.present? and (self.master_franchisee? or self.area_franchisee? or self.multi_unit_franchisee?)
   end
 end
