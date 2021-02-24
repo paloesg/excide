@@ -89,6 +89,6 @@ class FranchiseeDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(franchisee)
-    "#{franchisee.franchise_licensee} - #{franchisee.company.name}"
+    "#{franchisee.franchise_licensee} - #{franchisee.parent_company.name}"
   end
 end
