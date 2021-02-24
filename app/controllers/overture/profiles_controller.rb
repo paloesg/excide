@@ -17,12 +17,6 @@ class Overture::ProfilesController < ApplicationController
     @topic = Topic.new
   end
 
-  def state_interest
-    @profile = Profile.find(params[:profile_id])
-    NotificationMailer.overture_notification(current_user, @profile).deliver_later
-    redirect_to overture_root_path, notice: "Thank you for stating your interest. Kindly wait for further information as we contact you through email."
-  end
-
   private
   def set_company
     @user = current_user
