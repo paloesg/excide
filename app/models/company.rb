@@ -15,7 +15,7 @@ class Company < ApplicationRecord
   has_many :documents, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :folders, dependent: :destroy
-  has_many :franchisees, dependent: :destroy
+  has_many :franchisees, class_name: 'Franchisee', foreign_key: 'parent_company_id', dependent: :destroy
   has_many :invoices, dependent: :destroy
   has_many :outlets, dependent: :destroy
   has_many :recurring_workflows, dependent: :destroy
@@ -29,6 +29,7 @@ class Company < ApplicationRecord
   has_many :xero_contacts, dependent: :destroy
   has_many :xero_line_items, dependent: :destroy
   has_many :xero_tracking_categories, dependent: :destroy
+
 
   has_one_attached :company_logo
   has_one_attached :profile_logo
