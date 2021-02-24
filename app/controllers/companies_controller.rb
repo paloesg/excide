@@ -122,7 +122,7 @@ class CompaniesController < ApplicationController
 
   def set_default_franchisee(license_type)
     # By default, create franchisee record when creating the entity (company) and set franchisee type as master franchisee
-    @franchisee = Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: license_type)
+    @franchisee = Franchisee.create(franchise_licensee: @company.name, company_id: @company.parent.id, license_type: license_type, franchisee_company: @company)
   end
 
   def set_default_retrospective_workflow
