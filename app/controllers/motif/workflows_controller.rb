@@ -118,7 +118,7 @@ class Motif::WorkflowsController < ApplicationController
     @wfa = WorkflowAction.find(params[:wfa_id])
     if params[:successful_files].present?
       parsed_files = JSON.parse(params[:successful_files])
-      MultipleUploadsJob.perform_later(@user, parsed_files, params[:document_type], @wfa)
+      MultipleUploadsJob.perform_later(@user, parsed_files, params[:document_type], @wfa, nil)
     end
     respond_to do |format|
       # Redirect back to workflow page
