@@ -13,6 +13,7 @@ class Motif::DocumentsController < ApplicationController
     @folder = Folder.new
     @folders = get_folders(@user)
     @documents = Document.where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
+    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
     @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     unless params[:tags].blank?
