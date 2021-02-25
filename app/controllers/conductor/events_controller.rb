@@ -19,6 +19,7 @@ class Conductor::EventsController < ApplicationController
     #filter event using scope setup in model
     @events = Event.includes(:address, :staffer, [allocations: :user]).company(@company.id)
     @events = @events.start_time(date_from..date_to)
+    @events = @events.department(@department) unless @user.has_role?(:admin, @company)
     @events = @events.allocation(params[:allocation_users].split(",")) unless params[:allocation_users].blank?
     #using tagged_with means can only search with 1 selected value
     @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:service_line] }) unless params[:service_line].blank?
@@ -31,7 +32,8 @@ class Conductor::EventsController < ApplicationController
 
     if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
     @user_event_count = Hash.new
-      User.where(department: @user.department).each do |user|
+    @user_list = @user.has_role?(:admin, @company) ? User.where(company: @company): User.where(department: @department)
+      @user_list.each do |user|
         @user_event_count[user.full_name] = []
         @user_event_count[user.full_name] << @events.joins(:allocations).where(allocations: { user_id: user.id }).map(&:start_time).uniq.count
         @user_event_count[user.full_name] << @events.joins(:allocations).where(allocations: { user_id: user.id }).filter_map(&:number_of_hours).sum.to_i
