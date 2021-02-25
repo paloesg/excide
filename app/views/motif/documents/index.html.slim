@@ -130,7 +130,7 @@
               .dropdown-menu.dropdown-menu-right
                 .dropdown-item = link_to "Folder setting", edit_motif_folder_path(folder)
                 - if folder.company == @company
-                  .dropdown-item = link_to "Delete", motif_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"} 
+                  .dropdown-item = link_to "Delete", motif_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
         = render 'motif/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
       - @documents.each_with_index do |d, index|
         tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
@@ -145,7 +145,7 @@
             span.ml-5
               = d.raw_file.filename
               - unless d.company == @company
-                .badge.badge-secondary.ml-5 Shared 
+                .badge.badge-secondary.ml-5 Shared
           td id="drawer_toggle_#{d.id}_0"
             div id="tags_count_#{d.id}"
               = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
@@ -166,6 +166,7 @@
                 .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
                 / Restrict deleting if the document is not yours
                 - if d.company == @company
-                  .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"} 
+                  .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
           = render 'motif/shared/show_document', d: d
         = render 'motif/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
+  = paginate @documents, views_prefix: 'dashboard'

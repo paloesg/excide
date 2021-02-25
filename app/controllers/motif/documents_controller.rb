@@ -13,6 +13,7 @@ class Motif::DocumentsController < ApplicationController
     @folder = Folder.new
     @folders = get_folders(@user)
     @documents = Document.where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
+    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
     @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     unless params[:tags].blank?
@@ -38,14 +39,7 @@ class Motif::DocumentsController < ApplicationController
     if params[:successful_files].present?
       @files = []
       parsed_files = JSON.parse(params[:successful_files])
-      parsed_files.each do |file|
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:folder_id]).run
-        document = @generate_document.document
-        authorize document
-        # attach and convert method with the response key to create blob
-        document.attach_and_convert_document(file['response']['key'])
-        @files.append document
-      end
+      MultipleUploadsJob.perform_later(@user, parsed_files, params[:document_type], nil, params[:folder_id])
     # single file upload
     else
       workflow_action = WorkflowAction.find(params[:workflow_action_id])
@@ -67,7 +61,7 @@ class Motif::DocumentsController < ApplicationController
     respond_to do |format|
       if params[:folder_id].present?
         # Redirect when generated documents inside folders
-        format.html { redirect_to motif_folder_path(id: params[:folder_id]), notice: "File(s) successfully uploaded into folder."  }
+        format.html { redirect_to motif_folder_path(id: params[:folder_id]), notice: "Your files are being processed. Please refresh the page to view the uploaded files."  }
         format.json { render json: @files.to_json }
       else
         workflow_action = WorkflowAction.find(params[:workflow_action_id]) if params[:workflow_action_id].present?
