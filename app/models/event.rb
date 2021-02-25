@@ -27,6 +27,7 @@ class Event < ApplicationRecord
   scope :allocation, ->(allocations){ joins(:allocations).where(allocations: { user_id: allocations }) if allocations.present? }
   scope :company, ->(company_id){where(company_id: company_id) if company_id.present?}
   scope :start_time, ->(time){where(start_time: time) if time.present?}
+  scope :department, ->(department) { joins(allocations: :user).where(allocations: { users: { department_id: department }}) if department.present? }
 
   def name
     self.categories.find_by(category_type: "task")&.name
