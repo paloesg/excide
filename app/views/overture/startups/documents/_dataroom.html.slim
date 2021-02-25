@@ -53,11 +53,12 @@
       hr.mb-2
       .row
         .col
-          ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
+          ul.breadcrumb.breadcrumb-transparent.font-weight-bold.p-0.my-2.font-size-sm
             li.breadcrumb-item
               = link_to "Dataroom", overture_startups_documents_path, class: "text-dark"
-            li.breadcrumb-item
-              = @folder.name
+            - @breadcrumb_folder_arrangement.each do |folder|
+              li.breadcrumb-item
+                = link_to folder.name, overture_folder_path(folder)
     hr.m-0
 - if @folders.empty? && @documents.empty?
   .row.justify-content-center.ml-3
