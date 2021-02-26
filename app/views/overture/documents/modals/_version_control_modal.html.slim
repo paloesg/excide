@@ -3,14 +3,15 @@
     .modal-content
       .modal-body
         h5.mb-5#versionControl.modal-title Version Control
-        p To upload a new version of , drag and drop the file here, or browse from your device.
+        p To upload a new version, simply drag and drop the file here, or browse from your device.
         = form_for d, url: overture_startups_document_path(d), method: :put do |f|
           .row
             .col-sm-12
-              .input-group.mb-3
-                .custom-file
-                  = f.file_field :versions, multiple: true, class: "custom-file-input"
-                  label.custom-file-label Choose file
+              .form-group
+                .input-group.mb-3
+                  .custom-file
+                    = f.file_field :versions, multiple: true, class: "custom-file-input"
+                    label.custom-file-label Choose file
           .row
             .col-sm-12
               h6.mb-5.modal-title Older versions

@@ -10,6 +10,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
   def index
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     @documents = Document.where(folder_id: nil, company: @company).order(created_at: :desc).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
+    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
     @folders = Folder.roots.includes(:permissions).where(company: @company, permissions: { can_view: true, role_id: @user.roles.map(&:id)}).where.not(name: ["Resource Portal", "Shared Drive"])
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
     @users = get_users(@company)
@@ -20,24 +21,9 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
   def create
     # multiple file upload from uppy
     if params[:successful_files].present?
-      @files = []
       parsed_files = JSON.parse(params[:successful_files])
-      parsed_files.each do |file|
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, params[:folder_id]).run
-        document = @generate_document.document
-        authorize document
-        # attach and convert method with the response key to create blob
-        document.attach_and_convert_document(file['response']['key'])
-        # attach the document as the 1st version (for version history)
-        document.versions.attach(file['response']['signed_id'])
-        # Make the attachment the current (first) version
-        document.versions.attachments.first.current_version = true
-        document.versions.attachments.first.save
-        @files.append document
-        @admin_role = Role.find_by(resource: current_user.company, name: "admin")
-        # Create document permissions for all admin users
-        Permission.create(role: @admin_role, can_write: true, can_download: true, can_view: true, permissible: document)
-      end
+      # Upload multiple files and set versions & permissions for the upload
+      MultipleUploadsJob.perform_later(@user, parsed_files, params[:document_type], params[:folder_id])
     end
     respond_to do |format|
       if params[:folder_id].present?
@@ -46,7 +32,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
         format.json { render json: @files.to_json }
       else
         format.html {
-          redirect_to overture_startups_documents_path, notice: "File was successfully uploaded"
+          redirect_to overture_startups_documents_path, notice: "Your files are being processed. Please refresh the page to view the uploaded files."
         }
       end
     end

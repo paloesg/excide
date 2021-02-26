@@ -7,7 +7,7 @@ class Overture::RolesController < ApplicationController
 
   def index
     # Find all company's groups (except for admin and member)
-    @roles = @company.roles.where.not(name: ["admin", "member"])
+    @roles = @company.roles.where.not(name: ["admin", "member"]).order(created_at: :desc)
     @role = Role.new
   end
 

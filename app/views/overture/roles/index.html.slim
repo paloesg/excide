@@ -27,7 +27,7 @@
               .row.mt-3
                 .col-sm-12
                   .form-group
-                    = f.text_field :name, placeholder: 'New Group', class: 'remark-border form-control'
+                    = f.text_field :name, placeholder: 'New Group', required: true, class: 'form-control'
                   .form-group
                     = f.hidden_field :resource_id, value: @company.id
                     = f.hidden_field :resource_type, value: "Company"
@@ -49,17 +49,17 @@ hr.mt-2
       .col-sm-3
         .font-weight-boldest = r.name
       .col-sm-3
-        .font-weight-boldest = pluralize(r.users.length, "people")
+        = pluralize(r.users.length, "people")
       .col-sm-4
-        .font-weight-boldest = r.users.map(&:full_name).join(", ")
+        = r.users.map(&:full_name).join(", ")
       .col-sm-1
-        = link_to "#", "data-toggle": "modal", 'data-target': '#editGroupModal' do
+        = link_to "#", "data-toggle": "modal", 'data-target': "#editGroupModal_#{r.id}" do
           i.material-icons-outlined.icon-size.text-primary.dropdown-pointer create
       .col-sm-1
         = link_to overture_role_path(r), method: :delete, data: { confirm: "Are you sure you want to delete this group?" } do
           i.material-icons-outlined.icon-size.dropdown-pointer delete
     hr.mt-5
-    #editGroupModal.modal.fade aria-hidden="true" aria-labelledby="editGroup" role="dialog" tabindex="-1"
+    .modal.fade id="editGroupModal_#{r.id}" aria-hidden="true" aria-labelledby="editGroup" role="dialog" tabindex="-1"
       .modal-dialog role="document"
         .modal-content
           .modal-header
@@ -71,10 +71,10 @@ hr.mt-2
               .row.mt-3
                 .col-sm-12
                   .form-group
-                    = f.text_field :name, placeholder: 'New Group', class: 'remark-border form-control'
+                    = f.text_field :name, placeholder: 'New Group', required: true, class: 'form-control'
               .row.mt-3
                 .col-sm-12.select2-multiple
-                  = select_tag('role[user_ids][]', options_for_select(@investor_users.map {|k,v| [(k.full_name + " (" + k.company.name + ") "), k.id]}, selected: r.users.map(&:id)), style: "width: 100%;", multiple: true, id: "edit_role_users", class: 'select2 form-control col-sm-12', data: {"placeholder": 'Choose user...'})
+                  = select_tag('role[user_ids][]', options_for_select(@investor_users.map {|k,v| [(k.full_name + " (" + k.company.name + ") "), k.id]}, selected: r.users.map(&:id)), style: "width: 100%;", multiple: true, id: "edit_role_users_#{r.id}", class: 'select2 form-control col-sm-12', data: {"placeholder": 'Choose user...'})
               .row.mt-3
                 .col-md-12
                   = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
