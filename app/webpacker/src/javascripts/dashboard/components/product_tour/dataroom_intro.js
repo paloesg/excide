@@ -26,7 +26,10 @@ $(document).on("turbolinks:load", function () {
         element: document.querySelector('.dataroom-tour-4'),
         intro: 'You can create and edit the groups by clicking this button.',
         position: 'left'
-      }]
+      }],
+      showProgress: true,
+      showBullets: false,
+      disableInteraction: true
     }).start();
   })
 });
