@@ -1,8 +1,10 @@
 class MultipleUploadsJob < ApplicationJob
+  # This background job is for multiple file uploads, used in dataroom only at the moment
   include SuckerPunch::Job
   queue_as :default
 
-  def perform(user, uploaded_files, admin_role, document_type, folder_id)
+  def perform(user, uploaded_files, document_type, folder_id)
+    admin_role = Role.find_by(resource: user.company, name: "admin")
     uploaded_files.each do |file|
       @generate_document = GenerateDocument.new(user, user.company, nil, nil, nil, document_type, nil, folder_id).run
       document = @generate_document.document

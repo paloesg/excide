@@ -19,12 +19,11 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
   end
 
   def create
-    admin_role = Role.find_by(resource: current_user.company, name: "admin")
     # multiple file upload from uppy
     if params[:successful_files].present?
       parsed_files = JSON.parse(params[:successful_files])
       # Upload multiple files and set versions & permissions for the upload
-      MultipleUploadsJob.perform_later(@user, parsed_files, admin_role, params[:document_type], params[:folder_id])
+      MultipleUploadsJob.perform_later(@user, parsed_files, params[:document_type], params[:folder_id])
     end
     respond_to do |format|
       if params[:folder_id].present?
