@@ -14,8 +14,8 @@
     tbody
       - @topics.each do |topic|
         tr.row.overture-drawer-row data-drawer="#{topic.id}"
-          td.comment-font-size.col-5 = link_to topic.subject_name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
-          td.comment-font-size.col-3 = link_to topic.user.company.name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
+          td.comment-font-size.col-4 = link_to topic.subject_name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
+          td.comment-font-size.col-2 = link_to topic.user.company.name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
           - if topic.status == "need_answer"
             td.comment-font-size.col = link_to "Need answer", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill badge-danger', style: 'background: #EB6464';
           - elsif topic.status == "need_approval"
@@ -24,9 +24,9 @@
             td.comment-font-size.col = link_to "Answered", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill badge-success', style: 'background: #B8CD59';
           - else
             td.comment-font-size.col = link_to "Closed", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill badge-secondary', style: 'background: #CECECE';
-          td.comment-font-size.col = link_to topic.created_at.strftime("%d %b %Y"), overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
+          td.comment-font-size.col-3 = link_to topic.created_at.strftime("%d %b %Y %l:%M%p"), overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
           - if @company.investor?
-            td
+            td.col-1
               .dropdown
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                   i.fa.fa-ellipsis-h.text-secondary.mb-4
