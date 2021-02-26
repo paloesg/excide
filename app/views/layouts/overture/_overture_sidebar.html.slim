@@ -23,7 +23,7 @@
     li.nav-item.hover-blue.py-1.m-4.cursor-pointer
       = link_to (current_user.company.startup? ? overture_startups_documents_path : overture_companies_path), class: 'col-sm-12 d-flex align-items-center' do
         = image_pack_tag 'media/src/images/overture/dataroom-lock-icon.png', alt: "dataroom-lock-icon", class: 'mr-6'
-        .ml-5.sidebar-font Dataroom
+        .ml-5.sidebar-font.dataroom-tour-1 Dataroom
   hr.m-1.text-dark
   ul.nav.flex-column
     - if current_user.company.startup?
