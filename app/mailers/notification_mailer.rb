@@ -22,17 +22,6 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def overture_notification(user, profile)
-    mail(to: "support@paloe.com.sg", from: 'Paloe Overture <support@paloe.com.sg>', subject: 'TO SAM!', body: 'Some body',  template_id: ENV['SENDGRID_OVERTURE_STATED_INTEREST'], dynamic_template_data: {
-        fullName: user.full_name,
-        email: user.email,
-        contactNumber: user.contact_number,
-        profileName: profile.name,
-        url: profile.url,
-      }
-    )
-  end
-
   def motif_notify_franchisor(franchisor, user, wfa, link)
     mail(to: franchisor.email, from: 'Paloe ADA <support@paloe.com.sg>', subject: '', body: 'Some body',  template_id: ENV['ADA_SENDGRID_NOTIFY_FRANCHISOR'], dynamic_template_data: {
         franchisor_fullname: franchisor.full_name,

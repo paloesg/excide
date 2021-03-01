@@ -1,0 +1,20 @@
+.my-15.mx-20
+  .d-flex
+    .profile-image-wrapper
+      = contact.investor_company_logo.attached? ? (image_tag contact.investor_company_logo, class: "w-100 my-auto rounded") : (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'w-100 my-auto rounded')
+    .mt-6.ml-5
+      h3 = contact&.company&.name
+      p = contact.email.present? ? contact.email : "Please add an email through our overture settings."
+    .ml-auto.mt-4
+      .d-flex.align-items-center
+        / If a contact is already cloned on fundraising board, then show the contact status instead
+        - if get_cloned_contact(contact, current_user).present?
+          - unless contact.searchable?
+            .dropdown
+              a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                i.material-icons-outlined.align-middle.mr-2 more_horiz
+              .dropdown-menu.dropdown-menu-right
+                .dropdown-item = link_to "Edit information", edit_overture_contact_path(contact)
+          = select_tag('contact_status', options_for_select(@contact_statuses.map {|k,v| [k.name, k.id]}, selected: get_cloned_contact(contact, current_user).first.contact_status.id, include_blank: true), id: "#{contact.id}", class: 'select2 select2-change-contact-status form-control col-sm-12')
+        - else
+          = link_to "Add to fundraising board", overture_contacts_path(contact_id: contact.id), method: :post, class: "btn btn-primary mr-3"

@@ -109,7 +109,7 @@ const motifWorkflowActionMultipleUploads = (uppy) => {
 // Multiple uploads for Overture through document's INDEX page
 const overtureMultipleDocumentsUpload = (uppy) => {
   uppy.on('complete', (result) => {
-    $.post("/overture/documents", {
+    $.post("/overture/startups/documents", {
       authenticity_token: $.rails.csrfToken(),
       // Number of file uploads that were uploaded successfully
       successful_files: JSON.stringify(result.successful),
@@ -132,9 +132,9 @@ function setupUppy(element){
     // In case of typos
     logger: Uppy.debugLogger,
     restrictions: {
-      // 5MB max size
-      maxFileSize: 5 * 1024 * 1024,
-      maxNumberOfFiles: 50,
+      // 10MB max size
+      maxFileSize: 10 * 1024 * 1024,
+      maxNumberOfFiles: 100,
       minNumberOfFiles: null,
       // Only allow images or PDF
       allowedFileTypes: ['image/*', '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', 'text/csv']
@@ -185,7 +185,7 @@ function setupUppy(element){
     motifWorkflowActionMultipleUploads(uppy);
   }
   else if ($(".overtureMultipleDocumentsUpload").length) {
-      overtureMultipleDocumentsUpload(uppy);
+    overtureMultipleDocumentsUpload(uppy);
   }
 }
 //-----------------------------------Initialize Uppy------------------------------------

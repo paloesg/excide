@@ -1,0 +1,28 @@
+#sendOvertureInvitation.modal.fade aria-hidden="true" aria-labelledby="sendInvitation" role="dialog" tabindex="-1"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        h5#sendInvitation.modal-title Send overture invitation
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+      .modal-body
+        p The investor you are looking for is not yet on Overture. Invite him to be on Overture and have more seamless experience.
+        = form_for(@user, url: overture_users_path, html: { method: :post }) do |f|
+          .row.mt-3
+            .col-md-6
+              .form-group
+                = f.text_field :first_name, placeholder: 'First Name', class: 'form-control remark-border'
+            .col-md-6
+              .form-group
+                = f.text_field :last_name, placeholder: 'Last Name', class: 'form-control remark-border'
+          .row.mt-3
+            .col-md-12
+              .form-group
+                = text_field_tag :company_name, nil, placeholder: "Company Name (if applicable)", class: 'form-control remark-border'
+          .row.mt-3
+            .col-md-12
+              .form-group
+                = f.text_field :email, placeholder: 'Email address', class: 'form-control remark-border'
+          .row
+            .col-md-12
+              = f.submit "Save", class: 'btn btn-sm btn-primary float-right'

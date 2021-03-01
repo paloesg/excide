@@ -30,7 +30,7 @@
   - else
     .row
       .col-md-11
-        h5.d-inline Activity History
+        h5.d-inline Activity History of #{permissible_type == "folder" ? permissible.name : permissible.filename}
       .col-md-1
         a.d-inline id="drawer_close_#{permissible.id}" href="#"
           i.material-icons-outlined close

@@ -14,6 +14,7 @@ class EventDashboard < Administrate::BaseDashboard
     event_type: Field::BelongsTo,
     address: Field::HasOne,
     allocations: Field::HasMany,
+    categories: Field::HasMany,
     id: Field::String,
     start_time: Field::DateTime,
     end_time: Field::DateTime,
@@ -31,8 +32,7 @@ class EventDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = [
     :staffer,
     :company,
-    :client,
-    :event_type,
+    :categories,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -41,9 +41,7 @@ class EventDashboard < Administrate::BaseDashboard
     :id,
     :staffer,
     :company,
-    :client,
-    :event_type,
-    :address,
+    :categories,
     :allocations,
     :start_time,
     :end_time,
@@ -59,9 +57,7 @@ class EventDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = [
     :staffer,
     :company,
-    :client,
-    :event_type,
-    :address,
+    :categories,
     :allocations,
     :start_time,
     :end_time,
