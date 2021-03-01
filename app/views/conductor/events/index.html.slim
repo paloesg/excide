@@ -77,9 +77,9 @@ hr
       .col.pl-0.pr-2
         = select_tag :client, options_for_select(@clients.map {|k,v| [k.name, k.id]}, selected: @event.categories.where(category_type: "client").name), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select client...' }}
       .col.pl-0.pr-2
-        = select_tag :project, options_for_select(@projects.map {|k,v| [k.name, k.id]}, selected: @event.categories.where(category_type: "project").name), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select project...' }}
-      .col.pl-0.pr-2
         = select_tag :service_line, options_for_select(@service_lines.map {|k,v| [k.name, k.id]}, selected: @event.categories.where(category_type: "service_line").name), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select job function...' }}
+      .col.pl-0.pr-2
+        = select_tag :project, options_for_select(@projects.map {|k,v| [k.name, k.id]}, selected: @event.categories.where(category_type: "project").name), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select project...' }}
       .col.pl-0.pr-2
         = select_tag :task, options_for_select(@tasks.map {|k,v| [k.name, k.id]}, selected: @event.categories.where(category_type: "task").name), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select task...' }}
       .col-1.pl-0.pr-2
