@@ -3,7 +3,7 @@
     .profile-image-wrapper
       = contact.investor_company_logo.attached? ? (image_tag contact.investor_company_logo, class: "w-100 my-auto rounded") : (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'w-100 my-auto rounded')
     .mt-6.ml-5
-      h3 = contact.company.name
+      h3 = contact&.company&.name
       p = contact.email.present? ? contact.email : "Please add an email through our overture settings."
     .ml-auto.mt-4
       .d-flex.align-items-center

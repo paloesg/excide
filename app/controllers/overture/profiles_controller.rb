@@ -8,19 +8,14 @@ class Overture::ProfilesController < ApplicationController
 
   def index
     authorize Profile
-    @profiles = Profile.all
+    @profiles = policy_scope(Profile)
     @profiles = Kaminari.paginate_array(@profiles).page(params[:page]).per(5)
   end
 
   def show
     @profile = Profile.find(params[:id])
+    authorize @profile
     @topic = Topic.new
-  end
-
-  def state_interest
-    @profile = Profile.find(params[:profile_id])
-    NotificationMailer.overture_notification(current_user, @profile).deliver_later
-    redirect_to overture_root_path, notice: "Thank you for stating your interest. Kindly wait for further information as we contact you through email."
   end
 
   private

@@ -11,37 +11,27 @@ class Overture::ContactsController < ApplicationController
   def index
     authorize Contact
     # Only get investor's contact if they allow it to be public
-    @contacts = Contact.where(searchable: true)
+    @contacts = policy_scope(Contact)
     @contacts = Kaminari.paginate_array(@contacts).page(params[:page]).per(5)
   end
 
+  # This is for creating a private contact through fundraising board or adding to board
   def create
     if params[:contact_id].present?
-      # This method is called when adding contacts or adding existing investor to fundraising board. It will clone the contact and set to the 1st contact status of the board.
+      # It will clone the contact and set to the 1st contact status of the board
       contact_to_be_duplicated = Contact.find(params[:contact_id])
-      # Deep clone active storage attachment and action text rich text
-      @contact = contact_to_be_duplicated.deep_clone include: [:rich_text_investor_information] do |original, kopy|
-        if kopy.is_a?(Contact) && original.investor_company_logo.attached?
-          original.investor_company_logo.open do |tempfile|
-            kopy.investor_company_logo.attach({
-              io: File.open(tempfile.path),
-              filename: original.investor_company_logo.blob.filename,
-              content_type: original.investor_company_logo.blob.content_type
-            })
-          end
-        end
-      end
+      # Deep clone active storage attachment and action text rich text through model method
+      @contact = contact_to_be_duplicated.clone_contact
       # Find the 1st contact status of the board (Shortlisted)
-      contact_status = @company.contact_statuses.find_by(position: 1)
-      @contact.contact_status = contact_status
+      @contact.contact_status = @company.contact_statuses.first
       # Duplicate contact shouldn't be searchable
-      @contact.searchable = false
       @contact.cloned_by = @company
     else
       # Add new investor's contact
       @contact = Contact.new(contact_params)
       @contact.created_by = current_user
     end
+    @contact.searchable = false
     # Redirect based on validation of contact
     if @contact.save
       redirect_to overture_contact_statuses_path, notice: "Investor contact added to fundraising board."
