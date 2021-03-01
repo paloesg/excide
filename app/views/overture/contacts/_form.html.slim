@@ -1,0 +1,15 @@
+= f.fields_for :contacts, @contact do |c|
+  .form-group
+    = c.label :phone, "Telephone", class: "label-bold"
+    = c.text_field :phone, class: "form-control"
+  .form-group
+    = c.label :investor_information, "Company information", class: "label-bold"
+    = c.rich_text_area :investor_information, {class: "form-control col-sm-12", required: true, placeholder: "Instructions for users..."}
+  .form-group
+    = c.label :email, "Email", class: "label-bold"
+    = c.text_field :email, class: "form-control"
+  .form-group
+    .form-inline
+      = c.label :investor_company_logo, "Company Logo: ", class: "label-bold mr-5"
+      = c.file_field :investor_company_logo
+      = image_tag(@contact.investor_company_logo, class: 'outlet-header-preview') if @contact&.investor_company_logo&.attached?

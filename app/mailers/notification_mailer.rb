@@ -27,7 +27,6 @@ class NotificationMailer < ApplicationMailer
   #   Motif Email Methods   #
   #                         #
   ###########################
-
   def motif_notify_franchisor(franchisor, user, wfa, link)
     mail(to: franchisor.email, from: 'Paloe ADA <support@paloe.com.sg>', subject: '', body: 'Some body',  template_id: ENV['ADA_SENDGRID_NOTIFY_FRANCHISOR'], dynamic_template_data: {
         franchisor_fullname: franchisor.full_name,
