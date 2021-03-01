@@ -74,6 +74,15 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
+  def need_approval_notification(user, topic, note)
+    mail(to: user.email, from: 'Paloe Overture <support@paloe.com.sg>', subject: 'TO SAM!', body: 'Some body',  template_id: ENV['OVERTURE_NEED_APPROVAL'], dynamic_template_data: {
+        subject_topic: topic.subject_name,
+        note_content: note.content,
+        user_that_answered: note.user.full_name
+      }
+    )
+  end
+
   # Conductor's email notification methods!
   # Most of the removed mailer methods below were called in event.rb. associate_notification was called in scehduler.rake as a daily reminder to associate.
   # Removed conductor's create_event, edit_event, destroy_event, user_removed_from_event, event_notification and associate_notification methods from the following PR:
