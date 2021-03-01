@@ -57,9 +57,9 @@
     .col-md-2.float-left.px-1
       = text_field_tag :end_date, params[:end_date], {class: 'col-md-12 form-control datepicker', 'data-toggle': 'datetimepicker', id: 'endDate', 'data-target': '#endDate', placeholder: "End date..."}
     .col-md-2.float-left.px-1.select2-multiple
-      = select_tag('project_client', options_for_select(@clients.map {|k,v| [k.name, k.id]}, selected: (params[:project_clients].split(",") if params[:project_clients].present?)), class: 'select2 project-clients', multiple: true, data: {"placeholder": 'Choose project client...'})
+      = select_tag('project_client', options_for_select(@clients.map {|k,v| [k.name, k.id]}, selected: (params[:project_clients].split(",") if params[:project_clients].present?)), class: 'select2 project-clients', multiple: true, data: {"placeholder": 'Choose client...'})
     .col-md-2.float-left.px-1.select2-multiple
-      = select_tag('service_line_filter', options_for_select(@service_lines.map {|k,v| [k.name, k.id]}, selected: (params[:service_line].split(",") if params[:service_line].present?)), class: 'select2 service-line', multiple: true, data: {"placeholder": 'Choose service line...'})
+      = select_tag('service_line_filter', options_for_select(@service_lines.map {|k,v| [k.name, k.id]}, selected: (params[:service_line].split(",") if params[:service_line].present?)), class: 'select2 service-line', multiple: true, data: {"placeholder": 'Choose job function...'})
     .col-md-1.float-left.px-1
       = button_tag 'Filter', type: 'button', class: 'btn btn-sm btn-primary timesheet-filter-button'
 hr
@@ -79,7 +79,7 @@ hr
       .col.pl-0.pr-2
         = select_tag :project, options_for_select(@projects.map {|k,v| [k.name, k.id]}, selected: @event.categories.where(category_type: "project").name), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select project...' }}
       .col.pl-0.pr-2
-        = select_tag :service_line, options_for_select(@service_lines.map {|k,v| [k.name, k.id]}, selected: @event.categories.where(category_type: "service_line").name), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select service line...' }}
+        = select_tag :service_line, options_for_select(@service_lines.map {|k,v| [k.name, k.id]}, selected: @event.categories.where(category_type: "service_line").name), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select job function...' }}
       .col.pl-0.pr-2
         = select_tag :task, options_for_select(@tasks.map {|k,v| [k.name, k.id]}, selected: @event.categories.where(category_type: "task").name), {include_blank: true, required: true, class: 'select2 select2-width', data: {"placeholder": 'Select task...' }}
       .col-1.pl-0.pr-2
@@ -121,7 +121,7 @@ hr
                 td width="12%"
                   = f.select :client_category, @clients.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "client")&.id, prompt: 'Select client...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_client', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
-                  = f.select :service_line_category, @service_lines.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "service_line")&.id, prompt: 'Select service line...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_service_line_list', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
+                  = f.select :service_line_category, @service_lines.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "service_line")&.id, prompt: 'Select job function...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_service_line_list', data: { event_id: event.id }, onchange: "eventsUpdate(this);" }
                 td width="12%"
                   = f.select :project_category, @projects.map { |k,v| [k.name, k.id] }, { selected: event.categories.find_by(category_type: "project")&.id, prompt: 'Select project...' }, { class: 'select2 form-control', id: 'event_' + event.id + '_project', data: { event_id: event.id}, onchange: "eventsUpdate(this);" }
                 td width="20%"
