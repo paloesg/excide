@@ -24,11 +24,11 @@ class Conductor::EventsController < ApplicationController
     #using tagged_with means can only search with 1 selected value
     @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:service_line] }) unless params[:service_line].blank?
     @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:project_clients] }) unless params[:project_clients].blank?
-
-    @clients += @general_clients
-    @service_lines += @general_service_lines
-    @projects += @general_projects
-    @tasks += @general_tasks
+    #combine department and general categories, then sort alphabetically
+    @clients = (@clients + @general_clients).sort_by(&:name)
+    @service_lines = (@service_lines + @general_service_lines).sort_by(&:name)
+    @projects = (@projects + @general_projects).sort_by(&:name)
+    @tasks = (@tasks + @general_tasks).sort_by(&:name)
 
     if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
     @user_event_count = Hash.new
@@ -183,10 +183,10 @@ class Conductor::EventsController < ApplicationController
       @tasks = @general_tasks
     end
     @client_tags, @project_tags, @service_line_tags, @task_tags = [], [], [], []
-    @clients.each { |c| @client_tags << {value: c.name, id: c.id}.as_json }
-    @projects.each { |p| @project_tags << {value: p.name, id: p.id}.as_json }
-    @service_lines.each { |sl| @service_line_tags << {value: sl.name, id: sl.id}.as_json }
-    @tasks.each { |t| @task_tags << {value: t.name, id: t.id}.as_json }
+    @clients.sort_by(&:name).each { |c| @client_tags << {value: c.name, id: c.id}.as_json }
+    @projects.sort_by(&:name).each { |p| @project_tags << {value: p.name, id: p.id}.as_json }
+    @service_lines.sort_by(&:name).each { |sl| @service_line_tags << {value: sl.name, id: sl.id}.as_json }
+    @tasks.sort_by(&:name).each { |t| @task_tags << {value: t.name, id: t.id}.as_json }
     @client_tags = @client_tags.to_json
     @project_tags = @project_tags.to_json
     @service_line_tags = @service_line_tags.to_json
@@ -255,7 +255,7 @@ class Conductor::EventsController < ApplicationController
     @general_clients = Category.where(category_type: "client", department: nil)
     @general_tasks = Category.where(category_type: "task", department: nil)
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
-    @users = User.where(department: @department)
+    @users = User.where(department: @department).order(:first_name)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
