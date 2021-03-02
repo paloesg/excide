@@ -12,35 +12,46 @@
       / .btn.btn-icon.btn-outline-secondary.mr-2
       /   = link_to root_path do
       /     i.material-icons.align-middle bookmark_border
-      button.btn.btn-primary.text-white.float-right.ml-5 data-target="#overtureStateInterest" data-toggle="modal" type="button"
-        i.material-icons-outlined.text-white question_answer
-        | State Interest
-      #overtureStateInterest.modal.fade aria-hidden="true" aria-labelledby="stateInterest" role="dialog" tabindex="-1"
-        .modal-dialog role="document"
-          .modal-content
-            .modal-header
-              h5#stateInterest.modal-title Send Q&A Ticket
-            .modal-body
-              p Start a communication with the startup you are interested in or would like to ask questions.
-              = form_for(@topic, url: overture_topics_path(question_category: "State Interest"), html: { method: :post }) do |f|
-                .row.mt-3
-                  .col-md-12
-                    .form-group
-                      = f.label :subject_name, "Subject (RE)"
-                      = f.text_field :subject_name, class: "form-control"
-                    .form-group
-                      = f.hidden_field :question_category, value: "state_interest"
-                      = f.hidden_field :startup_id, value: @profile.company.id
-                    = f.fields_for :notes, Note.new do |ff|
+      / = link_to overture_profile_state_interest_path(@profile.id), class: "btn btn-primary mr-3" do
+      /   i.material-icons-outlined.align-middle question_answer
+      /   span State Interest
+      - if @company.investor?
+        button.btn.btn-primary.text-white.float-right.ml-5 data-target="#overtureStateInterest" data-toggle="modal" type="button"
+          i.material-icons-outlined.text-white question_answer
+          | State Interest
+        #overtureStateInterest.modal.fade aria-hidden="true" aria-labelledby="stateInterest" role="dialog" tabindex="-1"
+          .modal-dialog role="document"
+            .modal-content
+              .modal-header
+                h5#stateInterest.modal-title Send Q&A Ticket
+              .modal-body
+                p Start a communication with the startup you are interested in or would like to ask questions.
+                = form_for(@topic, url: overture_topics_path(question_category: "State Interest"), html: { method: :post }) do |f|
+                  .row.mt-3
+                    .col-md-12
                       .form-group
-                        = ff.label :content, "Message"
-                        = ff.text_field :content, class: "form-control"
+                        = f.label :subject_name, "Subject (RE)"
+                        = f.text_field :subject_name, class: "form-control"
                       .form-group
-                        / By default, investor question is always approved
-                        = ff.hidden_field :approved, value: true
-                .row.mt-3
-                  .col-md-12
-                    = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
-                    button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close
+                        = f.hidden_field :question_category, value: "state_interest"
+                        = f.hidden_field :startup_id, value: @profile.company.id
+                      = f.fields_for :notes, Note.new do |ff|
+                        .form-group
+                          = ff.label :content, "Message"
+                          = ff.text_field :content, class: "form-control"
+                        .form-group
+                          / By default, investor question is always approved
+                          = ff.hidden_field :approved, value: true
+                  .row.mt-3
+                    .col-md-12
+                      = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
+                      button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close
+      - else
+        - if @company.investors.include? @profile.company
+          = link_to 'Signed Investor', overture_investments_path, class: "btn btn-primary"
+        - else
+          = link_to overture_investments_path(profile: @profile.id), class: 'btn btn-primary', method: :post do
+            i.material-icons-outlined view_agenda
+            span.ml-2 Add as Signed Investor
   .mt-10
     = @profile.company_information.body.to_rendered_html_with_layout() if @profile.company_information.present?

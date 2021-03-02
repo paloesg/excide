@@ -18,7 +18,6 @@ class Document < ApplicationRecord
 
   has_one_attached :raw_file
   has_many_attached :converted_images
-  has_many_attached :versions
 
   before_validation :set_filename
   after_destroy :delete_file_on_s3

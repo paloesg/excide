@@ -4,21 +4,12 @@ class Overture::HomeController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
 
-  after_action :verify_authorized, only: :capitalization_table
-
   def index
-    @need_answer = Topic.where(company: @company, status: "need_answer")
-    @need_approval = Topic.where(company: @company, status: "need_approval")
-    @answered = Topic.where(company: @company, status: "answered")
-    @closed = Topic.where(company: @company, status: "closed")
+
   end
 
   def financial_performance
 
-  end
-
-  def capitalization_table
-    authorize :home, :capitalization_table?
   end
 
   private

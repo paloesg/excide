@@ -9,7 +9,7 @@
     ul.navbar-nav
       / Change company dropdown
       li.nav-item.dropdown.border.border-secondary.rounded
-        - if current_user.has_role? :superadmin
+        - if Company.assigned_companies(current_user).present? or current_user.has_role? :superadmin
           button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
             | #{current_user.company.name}
             i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
@@ -31,9 +31,9 @@
       li.nav-link.mx-1
         = link_to overture_topics_path do
           i.material-icons-outlined.mr-2.mt-2 question_answer
-      / li.nav-link.mx-1
-      /   = link_to overture_root_path do
-      /     i.material-icons-outlined.mr-2.mt-2 notifications
+      li.nav-link.mx-1
+        = link_to overture_root_path do
+          i.material-icons-outlined.mr-2.mt-2 notifications
       li.nav-link.mx-1
         = link_to edit_overture_company_path(current_user.company) do
           i.material-icons-outlined.mr-2.mt-2 settings

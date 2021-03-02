@@ -24,13 +24,13 @@ class Allocation < ApplicationRecord
             rowcount += 1,
             allocation.user&.department&.name,
             allocation.user&.full_name,
-            allocation.event&.start_time.strftime('%v'),
-            allocation.event&.categories.find_by(category_type: "client")&.name,
+            allocation.allocation_date.strftime('%v'),
+            allocation.event.client&.name,
             # Service line is job function
-            allocation.event&.categories.find_by(category_type: "service_line")&.name,
-            allocation.event&.categories.find_by(category_type: "project")&.name,
+            allocation.event&.service_line_list&.last,
+            allocation.event&.project_list&.last,
             # Event type is task
-            allocation.event&.categories.find_by(category_type: "task")&.name,
+            allocation.event.event_type&.name,
             allocation.event.number_of_hours,  
           ]
           csv << row

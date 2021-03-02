@@ -1,10 +1,11 @@
 module Overture::TopicsHelper
   def get_topics(company, question_category)
     if question_category.present?
-      # Filter by question categories
-      policy_scope(Topic).where(question_category: question_category)
+      # Query topics based on whether a user is investor or startup user
+      company.investor? ? Topic.where(company: company, question_category: question_category) : Topic.where(startup_id: company.id, question_category: question_category)
     else
-      policy_scope(Topic)
+      # Query topics by different col - Investor uses company_id, startup users by startup_id
+      company.investor? ? Topic.where(company: company) : Topic.where(startup_id: company.id)
     end
   end
 end

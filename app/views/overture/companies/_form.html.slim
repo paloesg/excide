@@ -1,18 +1,34 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .btn-toolbar.float-right.ml-5
-      = f.submit 'Save & Publish', class: 'btn btn-primary mr-3 px-5'
+      = f.submit 'Save & Published Changes', class: 'btn btn-primary mr-3 px-5'
     h3 Brand Information
     p Information in this page is displayed to Startup Users when they are searching for investors on Overture. Any changes will be reflected as well. Check again before publishing.
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .form-group
-      = f.label :name, 'Company Name', class: "label-bold"
+      = f.label :name, 'Company Brand Name', class: "label-bold"
       = f.text_field :name, class: 'form-control'
     .form-group
       = f.label :report_url, 'Company Financial Report (Google DataStudio)', class: "label-bold"
       = f.text_field :report_url, class: 'form-control'
-    - if @company.startup?
-      = render "overture/profiles/form", f: f
-    - else
-      = render "overture/contacts/form", f: f
+    = f.fields_for :profile do |p|
+      .form-group
+        = p.label :url, "Website URL", class: "label-bold"
+        = p.text_field :url, class: "form-control"
+      .form-group
+        = p.label :company_information, "Company information", class: "label-bold"
+        = p.rich_text_area :company_information, {class: "form-control col-sm-12", required: true, placeholder: "Instructions for users..."}
+      .form-group
+        .form-inline
+          = p.label :profile_logo, "Profile Logo: ", class: "label-bold mr-5"
+          = p.file_field :profile_logo
+          = image_tag(@company.profile.profile_logo, class: 'outlet-header-preview') if @company.profile.profile_logo.attached?
+
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    = f.label :company_logo, "Logo", class: "label-bold"
+    .form-group
+      .form-inline
+        = f.file_field :company_logo
+        = image_tag(@company.company_logo, class: 'outlet-header-preview') if @company.company_logo.attached?

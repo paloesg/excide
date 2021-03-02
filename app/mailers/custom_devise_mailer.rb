@@ -6,26 +6,52 @@ class CustomDeviseMailer < Devise::Mailer
   def confirmation_instructions(record, token, opts={})
     # If user is an investor, then pass in product overture
     check_user_has_role_investor = record.has_role?(:investor, record.company)
-    data = {
-      personalizations: [
-        {
-          to: [
-            {
-              email: record.email
+    # Send different confirmation email template for motif and paloe's product
+    if record.company.products.include? "motif"
+      puts "Inside motif product confirmation email"
+      data = {
+        personalizations: [
+          {
+            to: [
+              {
+                email: record.email
+              }
+            ],
+            dynamic_template_data: {
+              firstName: record.email,
+              confirmationToken: token,
+              product: "ADA System"
             }
-          ],
-          dynamic_template_data: {
-            firstName: record.email,
-            confirmationToken: token,
-            product: check_user_has_role_investor ? "overture" : "symphony"
           }
-        }
-      ],
-      from: {
-        email: "Paloe <admin@excide.co>"
-      },
-      template_id: ENV['SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']
-    }
+        ],
+        from: {
+          email: "Paloe ADA <admin@excide.co>"
+        },
+        template_id: ENV['ADA_SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']
+      }
+    # For Paloe's products: symphony and overture
+    else
+      data = {
+        personalizations: [
+          {
+            to: [
+              {
+                email: record.email
+              }
+            ],
+            dynamic_template_data: {
+              firstName: record.email,
+              confirmationToken: token,
+              product: check_user_has_role_investor ? "overture" : "symphony"
+            }
+          }
+        ],
+        from: {
+          email: "Paloe Symphony <admin@excide.co>"
+        },
+        template_id: ENV['SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']
+      }
+    end
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
     # Capture the error so that it will pass circle ci test without needing to stub mailer delivery for rspec
@@ -52,7 +78,7 @@ class CustomDeviseMailer < Devise::Mailer
         }
       ],
       from: {
-        email: "Paloe <admin@excide.co>"
+        email: "Paloe Symphony <admin@excide.co>"
       },
       template_id: ENV['SENDGRID_UNLOCK_ACCOUNT_EMAIL_TEMPLATE']
     }
@@ -82,7 +108,7 @@ class CustomDeviseMailer < Devise::Mailer
         }
       ],
       from: {
-        email: "Paloe <admin@excide.co>"
+        email: "Paloe Symphony <admin@excide.co>"
       },
       template_id: ENV['SENDGRID_RESET_PASSWORD_EMAIL_TEMPLATE']
     }
