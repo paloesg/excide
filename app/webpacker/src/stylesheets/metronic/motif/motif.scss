@@ -16,20 +16,20 @@
   padding: 10px !important;
 }
 
-.tagify-tags {
+.motif-tags {
   border: none !important;
   padding: 0 !important;
 }
 
-.tagify-tags .tagify__tag, .tagify__input {
+.motif-tags .tagify__tag, .tagify__input {
   margin: 0 8px 8px 0!important;
 }
-.tagify-tags .tagify__tag {
+.motif-tags .tagify__tag {
   background: #EEF1FF !important;
   padding: 0 2px 0 0 !important;
 }
 
-.tagify-tags .tagify__tag__removeBtn:after {
+.motif-tags .tagify__tag__removeBtn:after {
   font-family: 'Material Icons Outlined' !important;
   content: "close" !important;
   font-size: 10px !important;
@@ -37,7 +37,7 @@
   color: #7E8299 !important;
 }
 
-.tagify-tags .tagify__tag__removeBtn {
+.motif-tags .tagify__tag__removeBtn {
   margin: 0;
 }
 

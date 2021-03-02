@@ -153,53 +153,28 @@ Rails.application.routes.draw do
   end
 
   namespace :overture do
-    root to: 'home#index'
-    # Documents related view of investor
-    namespace :investors do
-      resources :documents
-    end
-    # Documents related view of startups, which includes routes to change attachment's version and delete an attachment's version
-    namespace :startups do
-      delete 'delete_version_attachment/:signed_id', to: 'documents#delete_version_attachment', as: :delete_version_attachment
-      resources :documents do
-        member do
-          post 'change_versions'
-        end
-      end
-    end
-    resources :companies do
-      get 'investors/documents', to: 'investors/documents#index', as: :investor_documents
-      get '/shared_files', to: 'investors/documents#shared_files', as: :shared_files
-      get '/financial_performance', to: 'companies#financial_performance'
-      get '/capitalization_table', to: 'companies#capitalization_table'
-    end
+    root to: 'documents#index'
+    resources :companies
     resources :investments
     resources :permissions
-    resources :roles
     resources :profiles do
       get '/state-interest', to: 'profiles#state_interest', as: :state_interest
     end
-    resources :contacts do
-      scope module: 'contacts' do
-        resources :notes
+    resources :documents do
+      member do
+        post 'toggle'
       end
     end
-    resources :contact_statuses
     resources :folders do
       member do
         post 'toggle'
       end
     end
     resources :topics do
-      scope module: 'topics' do
-        resources :notes
-      end
+      resources :notes
     end
     resources :users
-    get '/financial_performance', to: 'home#financial_performance'
-    get '/capitalization_table', to: 'home#capitalization_table'
-    delete 'delete_multiple_permissible', to: 'permissions#delete_multiple_permissible', as: :delete_multiple_permissible
-    post 'bulk_assign_permissions', to: 'permissions#bulk_assign_permissions', as: :bulk_assign_permissions
+    get '/financial-performance', to: 'home#financial_performance'
   end
 
   namespace :conductor do
@@ -214,9 +189,6 @@ Rails.application.routes.draw do
       collection do
         get :history, to: 'events#activities', as: :activities
         post :import, to: 'events#import'
-        get :edit_tags, to: 'events#edit_tags'
-        patch :create_tags, to:'events#create_tags'
-        patch :update_tags, to:'events#update_tags'
       end
       member do
         get '/create-allocations/:type/:count', to: 'events#create_allocations', as: :create_allocations

@@ -7,11 +7,12 @@ class Event < ApplicationRecord
 
   has_one :address, as: :addressable, dependent: :destroy
   has_many :allocations, dependent: :destroy
-  has_many :event_categories, class_name: 'EventCategory', dependent: :destroy
-  has_many :categories, through: :event_categories
 
   accepts_nested_attributes_for :address, reject_if: :all_blank, allow_destroy: true
-  validates :company, :start_time, presence: true
+  validates :company, :event_type, :start_time, presence: true
+
+  # Tagging documents to indicate where document is created from
+  acts_as_taggable_on :service_lines, :projects
 
   include PublicActivity::Model
   tracked owner: ->(controller, _model) { controller && controller.current_user },
@@ -27,10 +28,9 @@ class Event < ApplicationRecord
   scope :allocation, ->(allocations){ joins(:allocations).where(allocations: { user_id: allocations }) if allocations.present? }
   scope :company, ->(company_id){where(company_id: company_id) if company_id.present?}
   scope :start_time, ->(time){where(start_time: time) if time.present?}
-  scope :department, ->(department) { joins(allocations: :user).where(allocations: { users: { department_id: department }}) if department.present? }
 
   def name
-    self.categories.find_by(category_type: "task")&.name
+    client&.name + " " + event_type&.name
   end
 
   def project_consultants

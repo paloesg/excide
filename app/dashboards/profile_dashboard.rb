@@ -12,7 +12,7 @@ class ProfileDashboard < Administrate::BaseDashboard
     company: Field::BelongsTo,
     name: Field::String,
     url: Field::String,
-    company_information: RichTextAreaField,
+    company_information: Field::RichTextAreaField,
     profile_logo: Field::ActiveStorage,
     categories: Field::ActsAsTaggable,
   }.freeze

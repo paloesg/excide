@@ -33,7 +33,7 @@
             span.text-muted Shared with
             p = pluralize(permissible.permissions.length, 'other')
         span.text-muted Tags
-        input.tagify-tags.motif-tags.my-3 id="tag_#{permissible.id}" placeholder=" + Add tag" value=permissible.all_tags_list data-tag=permissible.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
+        input.motif-tags.my-3 id="tag_#{permissible.id}" placeholder=" + Add tag" value=permissible.all_tags_list data-tag=permissible.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
         / Form for remarks document
         = form_for(permissible, url: url, method: :patch, remote: true) do |f|
           .col-md-12.p-0

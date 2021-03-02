@@ -1,23 +1,23 @@
 .modal.fade aria-hidden="true" id="documentModal#{d.id}" aria-labelledby="documentModal#{d.id}Label" role="dialog" tabindex="-1"
-  .modal-dialog.modal-dialog-centered.modal-lg role="document"
+  .modal-dialog.modal-dialog-centered.modal-lg role="document" 
     .modal-content
       .modal-header
         h5.modal-title id="documentModal#{d.id}Label"
-          = d.versions.attached? ? current_version_document.filename : d.filename
-        button.close aria-label="Close" data-dismiss="modal" type="button"
+          = d.raw_file.attached? ? d.raw_file.filename : d.filename
+        button.close aria-label="Close" data-dismiss="modal" type="button" 
           span aria-hidden="true" &times;
       .modal-body
-        - if d.versions.attached?
+        - if d.raw_file.attached?
           / If PDF, then view document in iframe
-          - if current_version_document.content_type == "application/pdf"
-            iframe src="#{url_for(current_version_document)}#toolbar=0" width="100%" height="1000" style="border: none;" class="pointer-event-none"
+          - if d.raw_file.content_type == "application/pdf"
+            iframe src="#{url_for(d.raw_file)}#toolbar=0" width="100%" height="1000" style="border: none;" class="pointer-event-none"
           / Images will be viewed using active storage preview
           - elsif ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(d.raw_file.filename.to_s)
-            = image_tag(current_version_document, class: 'img-fluid pointer-event-none')
+            = image_tag(d.raw_file, class: 'img-fluid pointer-event-none')
           - else
-            = image_tag current_version_document.preview(resize_to_limit: [700, 700]), class: 'pointer-event-none' if current_version_document.previewable?
+            = image_tag d.raw_file.preview(resize_to_limit: [700, 700]), class: 'pointer-event-none' if d.raw_file.previewable?
         / For older documents before using active storage
         - elsif d.file_url.present? and ['.jpg', '.jpeg', '.png', '.gif'].include? File.extname(d.file_url)
           = image_tag(d.file_url, class: 'img-fluid')
-      .modal-footer
+      .modal-footer 
         button.btn.btn-secondary data-dismiss="modal" type="button" Close
