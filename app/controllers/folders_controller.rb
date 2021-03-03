@@ -30,13 +30,14 @@ class FoldersController < ApplicationController
   def create
     @folder = Folder.new(folder_params)
     authorize @folder
-    # Create permission for the user that uploaded the folder
-    @permission = Permission.create(permissible: @folder, user: current_user, can_write: true, can_download: true, can_view: true)
+    @admin_role = Role.find_by(resource: current_user.company, name: "admin")
+    # Create permission for all admin users
+    @permission = Permission.create(permissible: @folder, role: @admin_role, can_write: true, can_download: true, can_view: true)
     @folder.company = current_user.company
     @folder.user = current_user
     respond_to do |format|
       if @folder.save
-        format.html { redirect_to motif_documents_path, notice: 'Folder was successfully created.' }
+        format.html { redirect_back fallback_location: root_path, notice: 'Folder was successfully created.' }
         format.json { render :show, status: :created, location: @folder }
       else
         format.html { render :new }
@@ -86,6 +87,6 @@ class FoldersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def folder_params
-      params.require(:folder).permit(:name, :remarks)
+      params.require(:folder).permit(:name, :remarks, :parent_id)
     end
 end

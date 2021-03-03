@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_27_072210) do
+ActiveRecord::Schema.define(version: 2021_02_03_235448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.uuid "record_id"
+    t.boolean "current_version", default: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -129,6 +130,15 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
     t.index ["user_id"], name: "index_batches_on_user_id"
   end
 
+  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.integer "category_type"
+    t.uuid "department_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["department_id"], name: "index_categories_on_department_id"
+  end
+
   create_table "choices", id: :serial, force: :cascade do |t|
     t.text "content"
     t.integer "position"
@@ -199,10 +209,20 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
     t.string "ancestry"
     t.integer "storage_limit"
     t.integer "storage_used"
+    t.string "cap_table_url"
     t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
+  end
+
+  create_table "contact_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "startup_id"
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["startup_id"], name: "index_contact_statuses_on_startup_id"
   end
 
   create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -214,6 +234,11 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "company_id"
+    t.uuid "contact_status_id"
+    t.uuid "cloned_by_id"
+    t.boolean "searchable"
+    t.index ["cloned_by_id"], name: "index_contacts_on_cloned_by_id"
+    t.index ["contact_status_id"], name: "index_contacts_on_contact_status_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end
 
@@ -259,6 +284,15 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
+  end
+
+  create_table "event_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "category_id"
+    t.uuid "event_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_event_categories_on_category_id"
+    t.index ["event_id"], name: "index_event_categories_on_event_id"
   end
 
   create_table "event_types", id: :serial, force: :cascade do |t|
@@ -397,8 +431,8 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.string "contact"
-    t.string "report_url"
     t.uuid "company_id"
+    t.string "report_url"
     t.uuid "franchisee_id"
     t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
@@ -813,12 +847,16 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
   add_foreign_key "batches", "companies"
   add_foreign_key "batches", "templates"
   add_foreign_key "batches", "users"
+  add_foreign_key "categories", "departments"
   add_foreign_key "clients", "companies"
   add_foreign_key "clients", "users"
   add_foreign_key "companies", "users", column: "associate_id"
   add_foreign_key "companies", "users", column: "consultant_id"
   add_foreign_key "companies", "users", column: "shared_service_id"
+  add_foreign_key "contact_statuses", "companies", column: "startup_id"
   add_foreign_key "contacts", "companies"
+  add_foreign_key "contacts", "companies", column: "cloned_by_id"
+  add_foreign_key "contacts", "contact_statuses"
   add_foreign_key "contacts", "users", column: "created_by_id"
   add_foreign_key "departments", "companies"
   add_foreign_key "document_templates", "templates"
@@ -831,6 +869,8 @@ ActiveRecord::Schema.define(version: 2021_01_27_072210) do
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
+  add_foreign_key "event_categories", "categories"
+  add_foreign_key "event_categories", "events"
   add_foreign_key "events", "companies"
   add_foreign_key "events", "departments"
   add_foreign_key "events", "users", column: "staffer_id"

@@ -1,26 +1,41 @@
-row.mb-3.mt-5.ml-3
+.row.mb-3.mt-5.ml-3
+  .col-sm-12.d-flex.align-items-center
+    .mr-5
+      h3 = link_to "Dataroom", overture_companies_path, class: "text-dark font-weight-boldest"
+.row.mb-3.ml-3
   .col-sm-12
-    h3 Signed Investor
-    p.mt-5.text-muted
-      | Here are the information of your signed investor
+    p.mt-5
+      | These companies have shared with you confidential files for your due diligence before
       br
-      | Click a row to see their details.
-/     span.mr-3
-/       i.material-icons-outlined filter_list
-/     | Filters
-hr.mb-0
-- unless @companies.present?
-  = render 'overture/shared/overture_empty_state'
+      | investing in them.
+    - if controller_name == "folders"
+      hr.mb-2
+      .row
+        .col
+          ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
+            li.breadcrumb-item
+              = link_to "Dataroom", :back, class: "text-dark"
+            li.breadcrumb-item
+              = @folder.name
+    hr.m-0
+- if @startups.empty?
+  .row.justify-content-center.ml-3.mt-20
+    .col.text-center.p-10
+      = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
+      p.mt-4 No shared documents.
 - else
-  table.table.ml-4
-    thead
-      tr
-        th.text-muted Name
-        th.text-muted Added on
-        th
-    tbody
-      - @companies.each_with_index do |c, index|
+  .table-responsive.h-75
+    table.table.ml-4.table-aligned
+      thead
         tr
-          td = c.name
-          td = c.created_at.strftime("%b %d %H:%M")
-          td
+          th.text-muted style="width: 35%" Company Name
+          th.text-muted style="width: 15%" Shared items
+          th style="width: 10%"
+      tbody
+        - @startups.each_with_index do |startup, index|
+          tr
+            td.font-weight-boldest = startup.name
+            td = pluralize(get_shared_item_length(startup, @user), "item")
+            td
+              = link_to overture_company_investor_documents_path(company_id: startup.id) do
+                i.material-icons-outlined arrow_forward
