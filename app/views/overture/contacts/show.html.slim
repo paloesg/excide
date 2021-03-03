@@ -1,0 +1,12 @@
+= render 'contact_contents', contact: @contact
+.row
+  - if @contact.cloned_by_id.present?
+    .col-sm-3.bg-white.sidebar-border-radius
+      = render 'contact_sidebar'
+    .col-sm-9
+      .mt-10
+        = @contact.investor_information.present? ? @contact.investor_information.body.to_rendered_html_with_layout() : "No information displayed!"
+  - else
+    .col-sm-12.my-15.mx-20
+      .mt-10
+        = @contact.investor_information.present? ? @contact.investor_information.body.to_rendered_html_with_layout() : "No information displayed!"

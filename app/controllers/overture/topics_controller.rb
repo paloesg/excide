@@ -6,6 +6,8 @@ class Overture::TopicsController < ApplicationController
   before_action :set_company
   before_action :set_topic, only: [:update]
 
+  after_action :verify_authorized, except: :index
+
   def index
     # Question category comes from the sidebar
     @topics = get_topics(@company, params[:question_category])
@@ -15,6 +17,7 @@ class Overture::TopicsController < ApplicationController
 
   def create
     @topic = Topic.new(topic_params)
+    authorize @topic
     @topic.notes.first.user_id = current_user.id
     @topic.user = current_user
     @topic.company = current_user.company
@@ -26,6 +29,7 @@ class Overture::TopicsController < ApplicationController
   end
 
   def update
+    authorize @topic
     if params[:status].present?
       @topic.close_question
       if @topic.save

@@ -92,6 +92,10 @@ class ApplicationPolicy
         has_permission = permission.send("can_#{method}?")
         break if has_permission
       end
+      record.permissions.where(role_id: [user.roles.map(&:id)]).each do |permission|
+        has_permission = permission.send("can_#{method}?")
+        break if has_permission
+      end
 
       return has_permission
     end

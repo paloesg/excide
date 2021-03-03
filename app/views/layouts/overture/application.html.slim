@@ -31,11 +31,11 @@ html lang="en"
 
   body
     = render 'layouts/overture/overture_header'
-    - if (controller_name == "profiles" and action_name == "show") || (controller_name == "companies" and action_name == "edit") || controller_name == "users"
+    - if (controller_name == "profiles" and action_name == "show") || (controller_name == "contacts" and action_name == "show") || (controller_name == "contacts" and action_name == "edit") || controller_name == "users" || controller.class.parent.to_s == "Overture::Contacts" || (controller_name == "companies" unless action_name == "index")
       .new-tab-wrapper.overflow-auto.pb-0
         .new-tab-contents
           .row.mt-5.h-100
-            - if controller_name == "companies" || controller_name == "users"
+            - if (controller_name == "companies" and action_name == "edit") || controller_name == "users" || (controller_name == "companies" and action_name == "edit")
               .col-sm-2.bg-white.border-right.sidebar-border-radius
                 = render 'layouts/overture/overture_setting_sidebar'
               .col-sm-10.bg-white.content-border-radius.p-5
@@ -45,9 +45,6 @@ html lang="en"
               .col-sm-12.bg-white.top-border-radius.p-5
                 = yield
                 = render 'layouts/messages'
-            / .col-sm-12.bg-white.content-border-radius
-            /   = yield
-            /   = render 'layouts/messages'
     - else
       - if controller_name == "topics" || controller_name == "notes"
         .new-tab-wrapper.overflow-auto.pb-0
@@ -59,12 +56,13 @@ html lang="en"
                 = yield
                 = render 'layouts/messages'
       - else
-        .row
-          .col-sm-2.bg-white
-            = render 'layouts/overture/overture_sidebar'
-          .col-sm-10.mt-5
-            = yield
-            = render 'layouts/messages'
+        .container-fluid
+          .row
+            .col-sm-2.bg-white
+              = render 'layouts/overture/overture_sidebar'
+            .col-sm-10.mt-5
+              = yield
+              = render 'layouts/messages'
       / render content and sidebar
     = render 'layouts/footer' unless current_page?(root_path)
     /! Start of paloe Zendesk Widget script
