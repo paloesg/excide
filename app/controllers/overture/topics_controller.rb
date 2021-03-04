@@ -29,6 +29,7 @@ class Overture::TopicsController < ApplicationController
   end
 
   def update
+    # For investor to close question
     authorize @topic
     if params[:status].present?
       @topic.close_question
@@ -37,8 +38,11 @@ class Overture::TopicsController < ApplicationController
       else
         redirect_to overture_root_path, alert: "Error in closing question."
       end
+    # For startup admin to assign user to question
     elsif @topic.update(topic_params)
-      redirect_to overture_topic_notes_path(@topic), notice: "Successfully updated topic."
+      assigned_user = @company.users.find_by(id: @topic.assigned_user_id)
+      NotificationMailer.assign_to_question_notification(assigned_user, @topic).deliver_later
+      redirect_to overture_topic_notes_path(@topic), notice: "Successfully assigned user. Please wait for user to answer the question."
     else
       render :edit
     end

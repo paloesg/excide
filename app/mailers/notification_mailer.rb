@@ -22,6 +22,11 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
+  ###########################
+  #                         #
+  #   Motif Email Methods   #
+  #                         #
+  ###########################
   def motif_notify_franchisor(franchisor, user, wfa, link)
     mail(to: franchisor.email, from: 'Paloe ADA <support@paloe.com.sg>', subject: '', body: 'Some body',  template_id: ENV['ADA_SENDGRID_NOTIFY_FRANCHISOR'], dynamic_template_data: {
         franchisor_fullname: franchisor.full_name,
@@ -40,6 +45,39 @@ class NotificationMailer < ApplicationMailer
         franchisee_expiry_date: franchisee.expiry_date,
         user_fullname: user.full_name,
         user_email: user.email,
+      }
+    )
+  end
+
+  ###########################
+  #                         #
+  #  Overture Email Methods #
+  #                         #
+  ###########################
+
+  def overture_notification(user, profile)
+    mail(to: "support@paloe.com.sg", from: 'Paloe Overture <support@paloe.com.sg>', subject: 'TO SAM!', body: 'Some body',  template_id: ENV['SENDGRID_OVERTURE_STATED_INTEREST'], dynamic_template_data: {
+        fullName: user.full_name,
+        email: user.email,
+        contactNumber: user.contact_number,
+        profileName: profile.name,
+        url: profile.url,
+      }
+    )
+  end
+
+  def assign_to_question_notification(user, topic)
+    mail(to: user.email, from: 'Paloe Overture <support@paloe.com.sg>', subject: 'TO SAM!', body: 'Some body',  template_id: ENV['OVERTURE_ASSIGN_QUESTION'], dynamic_template_data: {
+        subject_topic: topic.subject_name,
+      }
+    )
+  end
+
+  def need_approval_notification(user, topic, note)
+    mail(to: user.email, from: 'Paloe Overture <support@paloe.com.sg>', subject: 'TO SAM!', body: 'Some body',  template_id: ENV['OVERTURE_NEED_APPROVAL'], dynamic_template_data: {
+        subject_topic: topic.subject_name,
+        note_content: note.content,
+        user_that_answered: note.user.full_name
       }
     )
   end

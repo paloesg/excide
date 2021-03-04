@@ -99,24 +99,24 @@ class Overture::UsersController < ApplicationController
   #   end
   # end
 
-  # def add_role
-  #   # AJAX request to update user type from motif teammates
-  #   @user = @company.users.find(params[:user_id])
-  #   @role = @company.roles.find(params[:role_id])
-  #   @old_role = @user.motif_roles(@company)
-  #   # Delete old role if there is old roles
-  #   @user.remove_role(@old_role.name, @company) if @old_role.present?
-  #   # Save new role into user
-  #   @user.roles << @role
-  #   respond_to do |format|
-  #     if @user.save
-  #       format.json { render json: { link_to: motif_users_path, status: "ok" } }
-  #     else
-  #       format.html { redirect_to motif_users_path }
-  #       format.json { render json: @user.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
+  def add_role
+    # AJAX request to update user type from motif teammates
+    @user = @company.users.find(params[:user_id])
+    @role = @company.roles.find(params[:role_id])
+    @old_role = @user.overture_roles(@company)
+    # Delete old role if there is old roles
+    @user.remove_role(@old_role.name, @company) if @old_role.present?
+    # Save new role into user
+    @user.roles << @role
+    respond_to do |format|
+      if @user.save
+        format.json { render json: { link_to: overture_users_path, status: "ok" } }
+      else
+        format.html { redirect_to overture_users_path }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   private
 
@@ -129,7 +129,7 @@ class Overture::UsersController < ApplicationController
   end
 
   def set_company_roles
-    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company")
+    @company_roles = Role.where(resource_id: @company.id, resource_type: "Company", name: ["admin", "member"])
   end
 
   def user_params
