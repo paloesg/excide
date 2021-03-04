@@ -6,10 +6,16 @@
     = link_to '+', new_overture_contact_note_path(@contact), class: "h1 text-primary float-right"
     h3 Notes
     hr
-    - @notes.each do |note|
-      .row.mt-5
-        .col-sm-9
-          = note.content
-        .col-sm-3
-          = note.updated_at.strftime("%d %b %Y at %I:%M%p")
-      hr
+    - if @notes.empty?
+      .row.justify-content-center.ml-3
+        .col.text-center.p-10
+          = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
+          p.mt-4 Start taking notes regarding your potential investors.
+    - else
+      - @notes.each do |note|
+        .row.mt-5
+          .col-sm-9
+            = note.content
+          .col-sm-3
+            = note.updated_at.strftime("%d %b %Y at %I:%M%p")
+        hr
