@@ -1000,7 +1000,7 @@
     namespace-emitter "^2.0.1"
     preact "8.2.9"
 
-"@uppy/dashboard@^1.16.1":
+"@uppy/dashboard@^1.17.0":
   version "1.17.0"
   resolved "https://registry.yarnpkg.com/@uppy/dashboard/-/dashboard-1.17.0.tgz#781e59f3305dc02e4aa5c4ab9b93ece10b3691bb"
   integrity sha512-Xvz6bPPmubexIrPX+j14hOT3ndGeed4VABle/Myjtyb+qTiWzdtp5j4XpPByB4QWl1/nVv9+wtrpnSoR9I9RrQ==
@@ -1232,7 +1232,7 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@yaireo/tagify@^3.22.3":
+"@yaireo/tagify@^3.23.0":
   version "3.23.0"
   resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-3.23.0.tgz#ea74e971d520af3db9ecbd404d075fbe31fcf183"
   integrity sha512-zSfCnHHniMP9OsucYGqQISOntCHo4VOtjOsI6SSlq+4SbWrB58BxG9KCjqv7iWKVV2WLtgYOGtzfJF3T+AWndA==
@@ -4371,7 +4371,7 @@ jquery.ui.widget@^1.10.3:
   resolved "https://registry.yarnpkg.com/jquery.ui.widget/-/jquery.ui.widget-1.10.3.tgz#2ceecfc64995412643eeb9508d2197ea93c02fb3"
   integrity sha1-LO7PxkmVQSZD7rlQjSGX6pPAL7M=
 
-jquery@^3.5.1:
+jquery@^3.5.1, jquery@^3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.0.tgz#c72a09f15c1bdce142f49dbf1170bdf8adac2470"
   integrity sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==
@@ -4458,7 +4458,7 @@ json5@^2.1.2:
   dependencies:
     minimist "^1.2.5"
 
-jsoneditor@^9.1.10:
+jsoneditor@^9.2.0:
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/jsoneditor/-/jsoneditor-9.2.0.tgz#cb11cf5cb80ce686f5275e50f79785c2430f0de9"
   integrity sha512-n8ceD09+L9U9lwP3poW6NAEmm2Z02rxhq4HRB6pC+id1N2LpyMhYFxIDlEisdVMr7Rd0HF33YiIbUPjBw9O7JA==

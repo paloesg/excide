@@ -77,7 +77,7 @@ gem 'friendly_id', '5.4.2'
 # Activity feed
 gem 'public_activity'
 # Handle money
-gem 'money-rails', '~>1.13.0'
+gem 'money-rails', '~>1.14.0'
 # Ruby asynchronous processing
 gem 'sucker_punch', '~> 3.0.0'
 
@@ -141,7 +141,7 @@ gem 'slack-ruby-client'
 # Algolia search
 gem 'algoliasearch-rails'
 # Amazon S3 SDK
-gem 'aws-sdk-s3', '~> 1.88.0'
+gem 'aws-sdk-s3', '~> 1.89.0'
 gem 'aws-sdk-textract', '~> 1.23.0'
 # SMS integration with Twilio
 gem 'twilio-ruby'
@@ -158,14 +158,14 @@ gem 'snitcher'
 #             Backend Admin                     #
 #                                               #
 #################################################
-gem 'administrate', '0.14.0'
+gem 'administrate', '0.15.0'
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many'
 gem 'administrate-field-jsonb'
 gem 'administrate-field-active_storage'
 
 # Deep cloning for cloning of template with associated sections
-gem 'deep_cloneable', '~> 3.0.0'
+gem 'deep_cloneable', '~> 3.1.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
