@@ -13,13 +13,13 @@ $(document).on("turbolinks:load", function () {
   $(".groupAssignment").click(function(){
     // find the modal body
     let modal = $("#groupAssignPermissions").find(".hidden-assign-forms");
-    appendHiddenFieldForm();
+    appendHiddenFieldForm(modal);
   })
 
   $(".groupDelete").click(function(){
     // find the modal body
     let modal = $("#groupDelete").find(".hidden-forms");
-    appendHiddenFieldForm();
+    appendHiddenFieldForm(modal);
   })
 
   $(".checkSingle").change(function () {
@@ -54,7 +54,7 @@ $(document).on("turbolinks:load", function () {
   }
 
   // Append hidden field on bulk delete and bulk assignment
-  function appendHiddenFieldForm(){
+  function appendHiddenFieldForm(modal){
     // loop through all the check boxes (class checkbox)
     $(".checkSingle").each(function(index){
       // if they are checked, add permissible id to the modal as a hidden form
