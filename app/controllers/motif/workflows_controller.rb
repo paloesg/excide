@@ -1,6 +1,6 @@
 class Motif::WorkflowsController < ApplicationController
   layout 'motif/application'
-  
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_workflow, only: [:show, :update, :destroy]
@@ -62,7 +62,7 @@ class Motif::WorkflowsController < ApplicationController
     @action = Task.find_by_id(params[:task_id]).get_workflow_action(@company.id, params[:workflow_id])
     authorize @workflow
     respond_to do |format|
-      if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id, current_action: false, notify_status: false)
+      if @action.update(completed: !@action.completed, completed_user_id: current_user.id, current_action: false, notify_status: false)
         format.json { render json: @action.completed, status: :ok }
         flash[:notice] = "You have successfully completed all outstanding items for your current task." if @action.all_actions_task_group_completed?
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
@@ -119,7 +119,7 @@ class Motif::WorkflowsController < ApplicationController
         @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, nil).run_without_associations
         if @generate_document.success?
           document = @generate_document.document
-          document.update_attributes(workflow_action_id: params[:wfa_id])
+          document.update(workflow_action_id: params[:wfa_id])
           # attach and convert method
           document.attach_and_convert_document(file['response']['key'])
           @files.append document

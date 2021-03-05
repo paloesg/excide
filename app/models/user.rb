@@ -85,7 +85,7 @@ class User < ApplicationRecord
     p = {}
     p[:password] = params[:password]
     p[:password_confirmation] = params[:password_confirmation]
-    update_attributes(p)
+    update(p)
   end
 
   # new function to return whether a password has been set

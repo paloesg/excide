@@ -39,7 +39,7 @@ class UpdateEventTime
   end
 
   def update_event
-    @event.update_attributes!(start_time: @new_start_time, end_time: @new_end_time)
+    @event.update!(start_time: @new_start_time, end_time: @new_end_time)
   end
 
   def update_event_tag
@@ -50,15 +50,15 @@ class UpdateEventTime
   end
 
   def update_allocation(allocation)
-    allocation.update_attributes(allocation_date: @new_start_time, start_time: @new_start_time, end_time: @new_end_time, user_id: @user.id)
+    allocation.update(allocation_date: @new_start_time, start_time: @new_start_time, end_time: @new_end_time, user_id: @user.id)
   end
 
   def update_availability(allocation)
-    allocation.availability.update_attributes(available_date: @new_start_time, user_id: @user.id, start_time: @new_start_time, end_time: @new_end_time)
+    allocation.availability.update(available_date: @new_start_time, user_id: @user.id, start_time: @new_start_time, end_time: @new_end_time)
   end
 
   # Removed email notification:
   # notify_associate and remove_association
-  # https://github.com/hschin/excide/pull/648 
+  # https://github.com/hschin/excide/pull/648
 
 end
