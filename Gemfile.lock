@@ -589,7 +589,7 @@ GEM
     stripe_event (2.3.1)
       activesupport (>= 3.1)
       stripe (>= 2.8, < 6)
-    sucker_punch (2.1.2)
+    sucker_punch (3.0.0)
       concurrent-ruby (~> 1.0)
     swagger-blocks (3.0.0)
     temple (0.8.2)
@@ -722,7 +722,7 @@ DEPENDENCIES
   squasher (>= 0.6.2)
   stripe
   stripe_event
-  sucker_punch (~> 2.1.0)
+  sucker_punch (~> 3.0.0)
   themify-icons-rails!
   trix
   turbolinks (~> 5.2.0)
