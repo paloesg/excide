@@ -4,7 +4,7 @@
     p.mt-5
       | Track your progress with your investors.
 hr
-.row.mt-5.ml-3.flex-row.flex-sm-nowrap.overflow-auto
+.row.mt-5.flex-row.flex-sm-nowrap.overflow-auto
   - @contact_statuses.each do |cs|
     .col-3.m-3
       .row
@@ -14,11 +14,11 @@ hr
         - cs.contacts.each do |contact|
           ul.draggable.p-0 id="#{contact.id}" style="list-style-type:none;"
             li.draggable-handle
-              .card.contact-card-shawdow
-                .card-body.border.border-light.p-5
+              .card
+                .card-body.border.border-light.p-3
                   .d-flex
                     = contact.investor_company_logo.attached? ? (image_tag url_for(contact.investor_company_logo), class: 'rounded-circle w-25 investor-profile-pic p-1') : (image_pack_tag 'media/src/images/overture/dataroom-empty.png', class: 'rounded-circle w-25 investor-profile-pic p-1')
-                    = link_to (contact.company.present? ? truncate(contact.company.name, length: 15) : truncate(contact.company_name, length: 15)), overture_contact_path(contact.id), class: "card-title text-uppercase text-truncate mt-10 ml-10 h5 text-dark font-weight-boldest"
+                    = link_to (contact.company.present? ? truncate(contact.company.name, length: 15) : truncate(contact.company_name, length: 15)), overture_contact_path(contact.id), class: "card-title text-uppercase text-truncate mt-10 ml-10 h5 text-dark font-weight-boldest clickable-contact"
       .dropdown
         a.text-muted href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" = "+ Investor"
         .dropdown-menu.dropdown-menu-right
