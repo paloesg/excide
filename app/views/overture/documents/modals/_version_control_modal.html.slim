@@ -29,8 +29,11 @@
                   .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3
                     = check_box_tag 'attachment_id', attachment.id, attachment.current_version, data: {remote: true, url: change_versions_overture_startups_document_path(id: d.id), method: "POST" }, onclick: "this.checked=true;", disabled: attachment.current_version, class: "mt-1 action_checkbox"
                   .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3
-                    = link_to overture_startups_delete_version_attachment_path(signed_id: attachment.blob.signed_id), method: :delete, data: { confirm: 'Current version is about to be permanently deleted. Delete forever?' } do
-                      i.material-icons-outlined.align-middle.text-primary highlight_off
+                    - if attachment.current_version
+                      i.material-icons-outlined.align-middle.text-muted highlight_off
+                    - else
+                      = link_to overture_startups_delete_version_attachment_path(signed_id: attachment.blob.signed_id), method: :delete, data: { confirm: 'Current version is about to be permanently deleted. Delete forever?' } do
+                        i.material-icons-outlined.align-middle.text-primary highlight_off
           .form-group
             = f.submit "Save", class: "btn btn-primary float-right"
 
