@@ -1,6 +1,6 @@
 class TopicPolicy < ApplicationPolicy
   def create?
-    update?
+    user.company.investor?
   end
 
   def update?
