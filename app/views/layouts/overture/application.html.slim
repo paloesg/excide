@@ -31,7 +31,7 @@ html lang="en"
 
   body
     = render 'layouts/overture/overture_header'
-    - if (controller_name == "profiles" and action_name == "show") || (controller_name == "contacts" and action_name == "show") || (controller_name == "contacts" and action_name == "edit") || controller_name == "users" || controller.class.parent.to_s == "Overture::Contacts" || (controller_name == "companies" unless action_name == "index")
+    - if (controller_name == "profiles" and action_name == "show") || (controller_name == "contacts" and action_name == "show") || (controller_name == "contacts" and action_name == "edit") || controller_name == "users" || controller.class.module_parent.to_s == "Overture::Contacts" || (controller_name == "companies" unless action_name == "index")
       .new-tab-wrapper.overflow-auto.pb-0
         .new-tab-contents
           .row.mt-5.h-100

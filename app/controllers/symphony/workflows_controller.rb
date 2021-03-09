@@ -85,7 +85,7 @@ class Symphony::WorkflowsController < ApplicationController
         log_workflow_activity
         if params[:enter_data_type] && params[:enter_data_type] == 'batch_enter_data'
           workflow_action = WorkflowAction.find(params[:workflow_action])
-          if workflow_action.update_attributes(completed: !workflow_action.completed, completed_user_id: current_user.id)
+          if workflow_action.update(completed: !workflow_action.completed, completed_user_id: current_user.id)
             redirect_to symphony_batch_path(batch_template_name: @workflow.batch.template.slug, id: @workflow.batch.id), notice: "#{@action.task.instructions} done!"
           end
         elsif params[:assign]
@@ -121,7 +121,7 @@ class Symphony::WorkflowsController < ApplicationController
 
     workflow_action = WorkflowAction.find(params[:action_id])
     respond_to do |format|
-      if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
+      if workflow_action.update(completed: true, completed_user_id: current_user.id)
         if @workflow.batch
           # Display different flash message when all actions task group is completed
           if workflow_action.all_actions_task_group_completed?
@@ -146,7 +146,7 @@ class Symphony::WorkflowsController < ApplicationController
     #manually saving updated_at of the batch to current time
     @workflow.batch.update(updated_at: Time.current) if @workflow.batch.present?
     respond_to do |format|
-      if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id, current_action: false)
+      if @action.update(completed: !@action.completed, completed_user_id: current_user.id, current_action: false)
         format.json { render json: @action.completed, status: :ok }
         flash[:notice] = "You have successfully completed all outstanding items for your current task." if @action.all_actions_task_group_completed?
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
@@ -202,7 +202,7 @@ class Symphony::WorkflowsController < ApplicationController
 
   def stop_reminder
     action = Task.find(params[:task_id])
-    action.reminders.each { |reminder| reminder.update_attributes(next_reminder: nil) }
+    action.reminders.each { |reminder| reminder.update(next_reminder: nil) }
     respond_to do |format|
       format.json { render json: "Reminder stopped", status: :ok }
       format.js   { render js: 'Turbolinks.visit(location.toString());' }
@@ -257,7 +257,7 @@ class Symphony::WorkflowsController < ApplicationController
     respond_to do |format|
       if @workflow.invoice.errors.empty?
         workflow_action = @workflow.workflow_actions.find(params[:workflow_action_id])
-        workflow_action.update_attributes(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
+        workflow_action.update(completed: true, completed_user_id: current_user.id) if params[:workflow_action_id].present?
 
         if xero_invoice.errors.any?
           flash[:alert] = "Xero invoice was not sent to Xero!"

@@ -23,6 +23,11 @@ class Overture::Topics::NotesController < Overture::NotesController
     end
     @note.notable = @topic
     if @note.save and @topic.save
+      # Send need approval notification to all admin of the company
+      current_user.company.users.with_role(:admin, current_user.company).each do |user|
+        # Only send email notification if user with member role answer the question (Don't send email if admin answers)
+        NotificationMailer.need_approval_notification(user, @topic, @note).deliver_later if current_user.has_role?(:member, current_user.company)
+      end
       redirect_to overture_topic_notes_path(topic_id: @topic.id), notice: "Answer has been posted. Please wait for answer to be approved."
     else
       render :new

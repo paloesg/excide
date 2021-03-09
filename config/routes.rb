@@ -196,6 +196,7 @@ Rails.application.routes.draw do
       end
     end
     resources :users
+    post '/add-roles', to: 'users#add_role', as: :add_role
     get '/financial_performance', to: 'home#financial_performance'
     get '/capitalization_table', to: 'home#capitalization_table'
     delete 'delete_multiple_permissible', to: 'permissions#delete_multiple_permissible', as: :delete_multiple_permissible

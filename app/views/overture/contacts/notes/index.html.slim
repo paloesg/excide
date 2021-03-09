@@ -6,10 +6,21 @@
     = link_to '+', new_overture_contact_note_path(@contact), class: "h1 text-primary float-right"
     h3 Notes
     hr
-    - @notes.each do |note|
-      .row.mt-5
-        .col-sm-9
-          = note.content
-        .col-sm-3
-          = note.updated_at.strftime("%d %b %Y at %I:%M%p")
-      hr
+    - if @notes.empty?
+      .row.justify-content-center.ml-3
+        .col.text-center.p-10
+          = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
+          p.mt-4 Start taking notes regarding your potential investors.
+    - else
+      - @notes.each do |note|
+        .row.mt-5
+          .col-sm-8
+            .truncate-company-information = note.description.body.to_s
+          .col-sm-2
+            = note.updated_at.strftime("%d %b %Y at %I:%M%p")
+          .col-sm-2
+            a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+              i.material-icons-outlined.font-size-h1.text-muted more_horiz
+            .dropdown-menu.dropdown-menu-right
+              .dropdown-item = link_to "Edit note", edit_overture_contact_note_path(contact_id: note.notable.id, id: note.id)
+        hr

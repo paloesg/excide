@@ -1,6 +1,6 @@
 class Symphony::UsersController < ApplicationController
   layout 'symphony/application'
-  
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_company_roles, only: [:new, :create, :edit]
@@ -131,7 +131,7 @@ class Symphony::UsersController < ApplicationController
 
     user = User.find(user_id)
     # update account stripe in user
-    user.update_attributes(stripe_card_token: card_token, stripe_customer_id: customer.id)
+    user.update(stripe_card_token: card_token, stripe_customer_id: customer.id)
     # upgrade company to pro immediately
     user.company.upgrade
     user.save

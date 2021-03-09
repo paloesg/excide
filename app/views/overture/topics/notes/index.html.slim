@@ -32,6 +32,7 @@
         - else
           .note-wrapper-startup.p-4.col-md-10.mt-3
             = render 'note_contents', note: note, company: @company
+            / Check if user is admin, topic needs approval and note is not rejected (remark.nil?)
             - if @user.has_role?(:admin, @company) and @topic.need_approval? and note.remark.nil? and !note.approved?
               .row.ml-3
                 .col-md-12
