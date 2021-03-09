@@ -15,7 +15,7 @@ class Motif::WorkflowsController < ApplicationController
     @templates = Template.includes(:company, :workflows).where(company_id: @company.id, template_type: @template_type).where(workflows: {id: nil})
     # Get workflows based on condition in workflow helper method
     @workflows = get_workflows(current_user, @template_type)
-    @outlets = get_outlets_by_type(nil, @company)
+    @outlets = get_outlets_that_has_no_workflows(@template_type, @company)
     @workflow = Workflow.new
   end
 
