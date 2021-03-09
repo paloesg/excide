@@ -87,8 +87,4 @@ class ApplicationController < ActionController::Base
     @user = current_user
     @company = current_user.company
   end
-
-  def titleize_keep_uppercase(string)
-    string.gsub(/\b('?[a-z])/) { $1.capitalize }
-  end
 end
