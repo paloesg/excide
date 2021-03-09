@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_24_144012) do
+ActiveRecord::Schema.define(version: 2021_03_09_083242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -302,6 +302,7 @@ ActiveRecord::Schema.define(version: 2021_02_24_144012) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "franchisee_company_id"
+    t.string "report_url"
     t.index ["franchisee_company_id"], name: "index_franchisees_on_franchisee_company_id"
     t.index ["parent_company_id"], name: "index_franchisees_on_parent_company_id"
   end
