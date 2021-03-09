@@ -194,7 +194,7 @@ class Conductor::EventsController < ApplicationController
   end
 
   def create_tags
-    @category = Category.new(name: params[:value], category_type: params[:type], department: @user.has_role?(:admin, @company) ? nil : @department)
+    @category = Category.new(name: titleize_keep_uppercase(params[:value]), category_type: params[:type], department: @user.has_role?(:admin, @company) ? nil : @department)
     respond_to do |format|
       if @category.save
         format.json { render json: @category, status: :ok }
@@ -206,7 +206,7 @@ class Conductor::EventsController < ApplicationController
 
   def update_tags
     @category = Category.find(params[:id])
-    @category.name = params[:value]
+    @category.name = titleize_keep_uppercase(params[:value])
     respond_to do |format|
       if @category.save
         format.json { render json: @category, status: :ok }
