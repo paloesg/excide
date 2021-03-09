@@ -71,7 +71,8 @@ class Motif::FranchiseesController < ApplicationController
   private
 
   def set_company
-    @company = current_user.company
+    @user = current_user
+    @company = @user.company
   end
 
   def set_franchisee
@@ -84,7 +85,7 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def franchisee_params
-    params.require(:franchisee).permit(:commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :franchise_licensee, :registered_address, :license_type, :max_outlet, :min_outlet)
+    params.require(:franchisee).permit(:commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :franchise_licensee, :registered_address, :license_type, :max_outlet, :min_outlet, :report_url)
   end
 
   def build_addresses
