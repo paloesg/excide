@@ -28,7 +28,7 @@ hr
       .col-sm-3
         = link_to topic.created_at.strftime("%d %b %Y %l:%M%p"), overture_topic_notes_path(topic_id: topic.id), class: 'text-dark comment-font-size'
       .col-sm-1
-        - if @company.investor?
+        - unless @company.startup? or topic.closed?
           .dropdown
             a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
               i.fa.fa-ellipsis-h.text-secondary.mb-4
