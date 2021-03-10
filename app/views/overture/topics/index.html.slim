@@ -18,14 +18,7 @@ hr
       .col-sm-2
         = link_to topic.user.company.name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark comment-font-size'
       .col-sm-2
-        - if topic.status == "need_answer"
-          = link_to "Need Answer", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill need-answer-text'
-        - elsif topic.status == "need_approval"
-          = link_to "Need Approval", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill need-approval-text'
-        - elsif topic.status == "answered"
-          = link_to "Answered", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill answered-text'
-        - else
-          = link_to "Closed", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill closed-text'
+        = link_to get_badge_text(topic), overture_topic_notes_path(topic_id: topic.id), class: "text-dark badge badge-pill #{get_badge_class(topic)}"
       .col-sm-3
         = link_to topic.created_at.strftime("%d %b %Y %l:%M%p"), overture_topic_notes_path(topic_id: topic.id), class: 'text-dark comment-font-size'
       .col-sm-1

@@ -14,14 +14,14 @@ class Overture::Topics::NotesController < Overture::NotesController
   def create
     @note = Note.new(note_params)
     @note.user = current_user
-    @topic.transition(current_user.company)
+    @topic.transition(@company)
     @note.notable = @topic
     if @note.save
       # Create activity history for QnA answers
-      @note.create_activity key: 'note.qna_replies', owner: current_user, recipient: current_user.company,  params:{ topic_subject: @topic.subject_name, note_content: @note.content }
+      @note.create_activity key: 'note.qna_replies', owner: current_user, recipient: @company,  params:{ topic_subject: @topic.subject_name, note_content: @note.content }
       # Only send email notification to all admins of the company if user with member role answer the question (Don't send email if admin answers)
-      if current_user.has_role?(:member, current_user.company)
-        current_user.company.users.with_role(:admin, current_user.company).each do |user|
+      if current_user.has_role?(:member, @company)
+        current_user.company.users.with_role(:admin, @company).each do |user|
           NotificationMailer.need_approval_notification(user, @topic, @note).deliver_later
         end
       end
