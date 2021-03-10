@@ -3,8 +3,8 @@
     .col-sm-12.text-left.ml-5
       h1.text-dark.font-weight-boldest Welcome, #{current_user.full_name}
       p.text-dark.lead It always seems impossible until it’s done. - Nelson Mandela
-.row.mt-5
-  .col-sm-4.ml-5.qna-wrapper.px-5.py-3
+.row.mt-5.d-block
+  .col-sm-4.ml-5.qna-wrapper.px-5.py-3.float-left
     .row.mt-5
       .col-sm-12
         h3 Q&A
@@ -28,17 +28,14 @@
         h1.font-weight-boldest = @closed.length
       .col-sm-5.mt-1
         .font-weight-boldest.badge.badge-pill.closed-text.float-right.p-3 Closed Question
-  .col-sm-7.ml-5.qna-wrapper
+  .col-sm-7.ml-5.qna-wrapper.float-left
     .row.mt-5
       .col-sm-12
         h3 Activity History
     - if @activities.present?
       - @activities.each do |activity|
         .row
-          .col-md-1
-            .d-flex.align-items-center.mb-10
-              = image_pack_tag 'media/src/images/overture/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
-          .col-md-11
+          .col-md-12
             .d-flex.flex-column.mt-3
               = render_activities activity
     - else
