@@ -14,15 +14,9 @@ class Overture::Topics::NotesController < Overture::NotesController
   def create
     @note = Note.new(note_params)
     @note.user = current_user
-    if current_user.company.startup? and @topic.answered?
-      # Change status to need_approval if startup user post again
-      @topic.approve_another_answer
-    elsif current_user.company.startup? and !@topic.answered?
-      # Change topic status to approve answer if company is a startup and topic is not answered
-      @topic.approve_answer
-    end
+    @topic.transition(current_user.company)
     @note.notable = @topic
-    if @note.save and @topic.save
+    if @note.save
       # Create activity history for QnA answers
       @note.create_activity key: 'note.qna_replies', owner: current_user, recipient: current_user.company,  params:{ topic_subject: @topic.subject_name, note_content: @note.content }
       # Only send email notification to all admins of the company if user with member role answer the question (Don't send email if admin answers)

@@ -41,4 +41,19 @@ class Topic < ApplicationRecord
       transitions from: [:need_answer, :need_approval, :answered], to: :closed
     end
   end
+
+  # This method handles all the transitions of a topic based on the conditions
+  def transition(company)
+    if company.startup?
+      case self.status
+      when "need_answer"
+        # Change topic status to approve answer if company is a startup and topic is not answered
+        self.approve_answer
+      when "answered"
+        # Change status to need_approval if startup user post again
+        self.approve_another_answer
+      end
+    end
+    self.save
+  end
 end
