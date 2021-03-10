@@ -11,6 +11,7 @@ class Overture::HomeController < ApplicationController
     @need_approval = Topic.where(company: @company, status: "need_approval")
     @answered = Topic.where(company: @company, status: "answered")
     @closed = Topic.where(company: @company, status: "closed")
+    @activities = nil
   end
 
   def financial_performance
