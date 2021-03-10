@@ -36,3 +36,7 @@
             .form-inline
               = f.number_field :renewal_period_freq_value, placeholder: "Value", class: 'form-control col-sm-2 mr-2'
               = f.select :renewal_period_freq_unit, Franchisee.renewal_period_freq_units.map { |key, value| [key.titleize, key] },  {selected: @franchisee.renewal_period_freq_unit}, class: 'form-control col-sm-2'
+          - if @user.has_role? :superadmin
+            .form-group
+              = f.label :report_url, "Data Studio Report", class: "label-bold"
+              = f.text_field :report_url, placeholder: "Report Url", class: "form-control col-sm-10"
