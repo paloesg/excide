@@ -2,42 +2,45 @@
   .row.h-100.align-items-center
     .col-sm-12.text-left.ml-5
       h1.text-dark.font-weight-boldest Welcome, #{current_user.full_name}
-      p.text-dark.lead A great startup comes with great responsibility
-.row.mt-5
-  .col-sm-10
-    .row
-      .col-sm-5
-        .card.card-custom.gutter-b
-          .card-header
-            .card-title
-              h1.card-label QnA
-          .card-body
-            .row
-              .col-sm-2
-                h3.font-weight-boldest = @need_answer.length
-              .col-sm-6
-                .text-dark.badge.badge-pill style="background: #eb7c7c;" Need Answer
-            .row
-              .col-sm-2
-                h3.font-weight-boldest = @need_approval.length
-              .col-sm-6
-                .text-dark.badge.badge-pill style="background: #DCCD1E;" Need Approval
-            .row
-              .col-sm-2
-                h3.font-weight-boldest = @answered.length
-              .col-sm-6
-                .text-dark.badge.badge-pill style="background: #B8CD59;"  Answered
-            .row
-              .col-sm-2
-                h3.font-weight-boldest = @closed.length
-              .col-sm-6
-                .text-dark.badge.badge-pill style="background: #CECECE;" Closed Question
-      / .col-sm-7
-      /   .card.card-custom.gutter-b
-      /     .card-header
-      /       .card-title
-      /         h1.card-label Activity History
-      /     .card-body
-      /       p Jonathan uploaded file
-      /       p Jon Invest posted a question
-
+      p.text-dark.lead It always seems impossible until it’s done. - Nelson Mandela
+.row.mt-5.d-block
+  .col-sm-4.ml-5.qna-wrapper.px-5.py-3.float-left
+    .row.mt-5
+      .col-sm-12
+        h3 Q&A
+    .row.mt-5.need-answer-wrapper.mx-0.py-2
+      .col-sm-7
+        h1.font-weight-boldest = @need_answer.length
+      .col-sm-5.mt-1
+        .font-weight-boldest.badge.badge-pill.need-answer-text.float-right.p-3 Need Answer
+    .row.mt-5.need-approval-wrapper.mx-0.py-2
+      .col-sm-7
+        h1.font-weight-boldest = @need_approval.length
+      .col-sm-5.mt-1
+        .font-weight-boldest.badge.badge-pill.need-approval-text.float-right.p-3 Need Approval
+    .row.mt-5.answered-wrapper.mx-0.py-2
+      .col-sm-7
+        h1.font-weight-boldest = @answered.length
+      .col-sm-5.mt-1
+        .font-weight-boldest.badge.badge-pill.answered-text.float-right.p-3 Answered
+    .row.mt-5.closed-wrapper.mx-0.py-2
+      .col-sm-7
+        h1.font-weight-boldest = @closed.length
+      .col-sm-5.mt-1
+        .font-weight-boldest.badge.badge-pill.closed-text.float-right.p-3 Closed Question
+  .col-sm-7.ml-5.qna-wrapper.float-left
+    .row.mt-5
+      .col-sm-12
+        h3 Activity History
+    - if @activities.present?
+      - @activities.each do |activity|
+        .row
+          .col-md-12
+            .d-flex.flex-column.mt-3
+              = render_activities activity
+    - else
+      .row.justify-content-center.ml-3
+        .col.text-center.p-10
+          = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
+          h3 No activity yet
+          p.mt-4 This section will be populated as you do more things on Overture.

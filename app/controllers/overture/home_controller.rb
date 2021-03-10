@@ -11,6 +11,7 @@ class Overture::HomeController < ApplicationController
     @need_approval = Topic.where(company: @company, status: "need_approval")
     @answered = Topic.where(company: @company, status: "answered")
     @closed = Topic.where(company: @company, status: "closed")
+    @activities = PublicActivity::Activity.includes(:owner, :recipient).order("created_at desc").where(trackable_type: "Note").where(recipient_type: "Company", recipient_id: @company.id)
   end
 
   def financial_performance
