@@ -1,4 +1,4 @@
-class Overture::Startup::PostsController < ApplicationController
+class Overture::Startups::PostsController < ApplicationController
   layout 'overture/application'
 
   before_action :authenticate_user!
@@ -6,6 +6,7 @@ class Overture::Startup::PostsController < ApplicationController
 
   def index
     @posts = policy_scope(Post)
+    @post = Post.new
   end
 
   private
