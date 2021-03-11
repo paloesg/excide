@@ -139,7 +139,7 @@
                   td.col-2
                     = render "overture/documents/permissions_icons", role: role, permissible: d, permissible_type: "document"
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
-            td.w-0
+            td
               = render 'overture/documents/modals/version_control_modal', d: d
           = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_startups_documents_path(id: d.id, format: 'json'), path: "overture/startups/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
   = paginate @documents, views_prefix: 'dashboard'
