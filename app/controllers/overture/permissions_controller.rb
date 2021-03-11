@@ -20,7 +20,7 @@ class Overture::PermissionsController < ApplicationController
     @permission = Permission.new(role: Role.find(params[:role_id]), permissible: @permissible, can_view: permission_changes['status'][:can_view], can_download: permission_changes['status'][:can_download], can_write: permission_changes['status'][:can_write])
     respond_to do |format|
       if @permission.save
-        format.json { render json: { link_to: overture_startups_documents_path, status: "ok" } }
+        format.json { render json: { link_to: session[:previous_url], status: "ok" } }
       else
         format.json { render json: @permission.errors, status: :unprocessable_entity }
       end
@@ -43,7 +43,7 @@ class Overture::PermissionsController < ApplicationController
     end
     respond_to do |format|
       if @permission.update(can_view: permission_changes['status'][:can_view], can_download: permission_changes['status'][:can_download], can_write: permission_changes['status'][:can_write])
-        format.json { render json: { link_to: overture_startups_documents_path, status: "ok" } }
+        format.json { render json: { link_to: session[:previous_url], status: "ok" } }
       else
         format.json { render json: @permission.errors, status: :unprocessable_entity }
       end

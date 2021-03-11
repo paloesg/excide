@@ -106,7 +106,7 @@ class Conductor::AllocationsController < ApplicationController
     @action = Allocation.find(params[:id])
 
     respond_to do |format|
-      if @action.update_attributes(last_minute: !@action.last_minute)
+      if @action.update(last_minute: !@action.last_minute)
         format.json { render json: @action.last_minute, status: :ok }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else

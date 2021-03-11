@@ -18,7 +18,7 @@ class ContactPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       # Scope contacts from the user's company
-      scope.where(company: user.company)
+      scope.where(searchable: true)
     end
   end
 

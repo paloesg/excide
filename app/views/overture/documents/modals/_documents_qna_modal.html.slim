@@ -1,5 +1,3 @@
-a.text-dark data-target="#overtureStateInterest" data-toggle="modal" type="button"
-  i.material-icons-outlined.text-dark question_answer
 #overtureStateInterest.modal.fade aria-hidden="true" aria-labelledby="stateInterest" role="dialog" tabindex="-1"
   .modal-dialog role="document"
     .modal-content
@@ -14,8 +12,8 @@ a.text-dark data-target="#overtureStateInterest" data-toggle="modal" type="butto
                 = f.label :subject_name, "Subject (RE)"
                 = f.text_field :subject_name, class: "form-control"
               .form-group
-                = f.hidden_field :question_category, value: "due_dilligence"
-                = f.hidden_field :startup_id, value: permissible.company.id
+                = f.hidden_field :question_category, value: question_category
+                = f.hidden_field :startup_id, value: startup_id
               = f.fields_for :notes, Note.new do |ff|
                 .form-group
                   = ff.label :content, "Message"

@@ -103,4 +103,8 @@ module ApplicationHelper
 
     content_tag(:a, name, html_options, &block)
   end
+
+  def titleize_keep_uppercase(string)
+    string.gsub(/\b('?[a-z])/) { $1.capitalize }
+  end
 end

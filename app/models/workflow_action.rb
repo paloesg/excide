@@ -142,7 +142,7 @@ class WorkflowAction < ApplicationRecord
   def clear_reminders
     if self.completed
       # Find associated reminders and remove next reminder date
-      self.reminders.each { |reminder| reminder.update_attributes(next_reminder: nil) } unless self.reminders.empty?
+      self.reminders.each { |reminder| reminder.update(next_reminder: nil) } unless self.reminders.empty?
     end
   end
 

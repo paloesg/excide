@@ -2,7 +2,13 @@ class Overture::CompaniesController < ApplicationController
   layout 'overture/application'
 
   before_action :authenticate_user!
-  before_action :set_company
+  before_action :set_company, except: [:show]
+  before_action :find_startup_by_id, only: [:capitalization_table, :financial_performance]
+
+  def index
+    # Get company of the documents & folders that user have permission in (through their roles)
+    @startups = @user.roles.map(&:permissions).flatten.map(&:permissible).compact.map(&:company).uniq
+  end
 
   def edit
     @contact = @company.contacts.find_by(searchable: true)
@@ -16,10 +22,26 @@ class Overture::CompaniesController < ApplicationController
     end
   end
 
+  def show
+    @company = Company.find(params[:id])
+  end
+
+  def capitalization_table
+    @topic = Topic.new
+  end
+
+  def financial_performance
+    @topic = Topic.new
+  end
 
   private
   def set_company
+    @user = current_user
     @company = current_user.company
+  end
+
+  def find_startup_by_id
+    @startup = Company.find(params[:company_id])
   end
 
   def company_params

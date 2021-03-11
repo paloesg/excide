@@ -1,6 +1,6 @@
 class Symphony::SurveysController < ApplicationController
   layout 'symphony/application'
-  
+
   before_action :authenticate_user!
   before_action :set_survey, only: :show
 
@@ -21,7 +21,7 @@ class Symphony::SurveysController < ApplicationController
     if @survey.save!
       # If batch exists, then it should update completed to true upon returning to the batch SHOW page
       if @survey.workflow.batch.present?
-        @survey.workflow.workflow_actions.find(params[:action_id]).update_attributes(completed: true)
+        @survey.workflow.workflow_actions.find(params[:action_id]).update(completed: true)
         redirect_to symphony_batch_path(@survey.workflow.template.slug, @survey.workflow.batch.id )
       else
         redirect_to symphony_workflow_path(@survey.workflow.template.slug, @survey.workflow.id), notice: 'Survey successfully created'

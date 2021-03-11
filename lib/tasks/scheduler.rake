@@ -26,7 +26,7 @@ namespace :scheduler do
     Template.today.each do |t|
       # Check if template is Motif or Symphony
       if t.template_type.present?
-        # For Motif, assume outlet is the same in that template's workflows        
+        # For Motif, assume outlet is the same in that template's workflows
         workflow = Workflow.create(user: t.workflows[0].user, company: t.company, template: t, outlet: t.workflows[0].outlet)
         t.set_next_workflow_date(workflow)
       # For Symphony, compare with the end_date
@@ -50,7 +50,7 @@ namespace :scheduler do
           StripeNotificationMailer.free_trial_ending_notification(User.find(170), company).deliver_later
         end
         company.trial_ends  #only from free trial to basic
-        company.update_attributes(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)
+        company.update(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)
         company.save
       end
     end
@@ -68,7 +68,7 @@ namespace :scheduler do
     Franchisee.all.each do |f|
       # get franchisor from franchisee's company & then send email notification for renewal notice, eg if expiry date is 14 dec and renewal notice is 2 days, it should send out an email on 12 dec
       f.company.users.with_role(:franchisor, f.company).each do |user|
-        NotificationMailer.motif_renewal_notice_outlet(f, user).deliver_now if Date.today == (f.expiry_date - f.renewal_period_freq_value.send(f.renewal_period_freq_unit)) 
+        NotificationMailer.motif_renewal_notice_outlet(f, user).deliver_now if Date.today == (f.expiry_date - f.renewal_period_freq_value.send(f.renewal_period_freq_unit))
       end
     end
   end

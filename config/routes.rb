@@ -154,11 +154,25 @@ Rails.application.routes.draw do
 
   namespace :overture do
     root to: 'home#index'
-    namespace :startup do
+    # Documents related view of investor
+    namespace :investors do
+      resources :documents
+    end
+    # Documents related view of startups, which includes routes to change attachment's version and delete an attachment's version
+    namespace :startups do
+      delete 'delete_version_attachment/:signed_id', to: 'documents#delete_version_attachment', as: :delete_version_attachment
+      resources :documents do
+        member do
+          post 'change_versions'
+        end
+      end
       resources :posts
     end
     resources :companies do
-      get '/documents', to: 'investors/documents#index', as: :investor_documents
+      get 'investors/documents', to: 'investors/documents#index', as: :investor_documents
+      get '/shared_files', to: 'investors/documents#shared_files', as: :shared_files
+      get '/financial_performance', to: 'companies#financial_performance'
+      get '/capitalization_table', to: 'companies#capitalization_table'
     end
     resources :investments
     resources :permissions
@@ -172,23 +186,6 @@ Rails.application.routes.draw do
       end
     end
     resources :contact_statuses
-    # resources :documents do
-    #   member do
-    #     post 'toggle'
-    #     post 'change_versions'
-    #   end
-    # end
-    namespace :investors do
-      resources :documents
-    end
-    namespace :startups do
-      delete 'delete_version_attachment/:signed_id', to: 'documents#delete_version_attachment', as: :delete_version_attachment
-      resources :documents do
-        member do
-          post 'change_versions'
-        end
-      end
-    end
     resources :folders do
       member do
         post 'toggle'
@@ -200,6 +197,7 @@ Rails.application.routes.draw do
       end
     end
     resources :users
+    post '/add-roles', to: 'users#add_role', as: :add_role
     get '/financial_performance', to: 'home#financial_performance'
     get '/capitalization_table', to: 'home#capitalization_table'
     delete 'delete_multiple_permissible', to: 'permissions#delete_multiple_permissible', as: :delete_multiple_permissible

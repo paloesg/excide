@@ -66,6 +66,6 @@ class CategoryDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(category)
-  "[#{category.department.name}] #{category.category_type} - #{category.name}"
+  "[#{category.department.present? ? category.department.name : "General"}] #{category.category_type} - #{category.name}"
   end
 end

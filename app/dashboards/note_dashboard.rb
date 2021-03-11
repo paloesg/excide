@@ -15,6 +15,7 @@ class NoteDashboard < Administrate::BaseDashboard
     content: Field::Text,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    description: RichTextAreaField,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -27,6 +28,7 @@ class NoteDashboard < Administrate::BaseDashboard
   content
   user
   workflow_action
+  description
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -36,7 +38,7 @@ class NoteDashboard < Administrate::BaseDashboard
   user
   workflow_action
   id
-  content
+  description
   created_at
   updated_at
   ].freeze
@@ -49,6 +51,7 @@ class NoteDashboard < Administrate::BaseDashboard
   user
   workflow_action
   content
+  description
   ].freeze
 
   # COLLECTION_FILTERS

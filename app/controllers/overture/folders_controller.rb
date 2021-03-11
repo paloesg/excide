@@ -1,6 +1,8 @@
 class Overture::FoldersController < FoldersController
   layout 'overture/application'
 
+  before_action :set_company
+
   def edit
     authorize @folder
   end
@@ -19,30 +21,26 @@ class Overture::FoldersController < FoldersController
 
   def show
     authorize @folder
-    @company = current_user.company
     @users = @company.users.includes(:permissions)
-    @folders = policy_scope(Folder).children_of(@folder)
+    @folders = Folder.children_of(@folder)
+    # Query for breadcrumb folder arrangement
+    @breadcrumb_folder_arrangement = @folder.root.subtree.order(:created_at).where("created_at <= ?", @folder.created_at)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     @documents = Document.where(folder: @folder)
+    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
-    @startups = @company.startups if @company.investor?
-
     @topic = Topic.new
     @permission = Permission.new
     @new_folder = Folder.new
 
-    if @company.startup?
-      render "overture/startups/documents/index"
-    else
-      render "overture/investors/documents/index"
-    end
+    @company.startup? ? (render "overture/startups/documents/index") : (render "overture/investors/documents/index")
   end
 
   def destroy
     authorize @folder
     @folder.destroy
     respond_to do |format|
-      format.html { redirect_to overture_startups_documents_path, notice: 'Folder was successfully destroyed.' }
+      format.html { redirect_back fallback_location: overture_root_path, notice: 'Folder was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -59,5 +57,11 @@ class Overture::FoldersController < FoldersController
     else
       set_flash "Error, please try again"
     end
+  end
+
+  private
+  def set_company
+    @user = current_user
+    @company = @user.company
   end
 end

@@ -20,7 +20,7 @@ row.mb-3.mt-5.ml-3
 /     | Filters
 hr.mb-0
 - unless @investments.present?
-  .row.justify-content-center.ml-3
+  .row.justify-content-center.ml-3.mt-20
     .col.text-center.p-10
       = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
       p.mt-4.text-muted
@@ -30,17 +30,35 @@ hr.mb-0
   table.table
     thead
       tr
-        th.text-muted style="width: 50%" Company
-        th.text-muted style="width: 30%" Added on
-        th style="width: 5%"
-        th style="width: 5%"
+        th.text-muted style="width: 40%" Company
+        - if @company.investor?
+          th.text-muted style="width: 20%" Capitalisation Table
+          th.text-muted style="width: 20%" Performance Report
+          th.text-muted style="width: 20%" Data Repository
+        - else
+          th.text-muted style="width: 30%" Added on
+          th style="width: 5%"
+          th style="width: 5%"
     tbody
       - @investments.each_with_index do |i, index|
         tr
-          td.font-weight-boldest = @company.investor? ? i.startup.name : i.investor.name
-          td
-            = i.created_at.strftime("%b %d %Y")
+          td.font-weight-boldest
+            span.mr-5
+              = @company.investor? ? i.startup.name : i.investor.name
+            - if @company.investor?
+              span.ml-5
+                = link_to overture_company_path(id: i.startup.id) do
+                  i.material-icons-outlined.align-middle keyboard_arrow_right
+          - if @company.investor?
+            td
+              = i.created_at.strftime("%b %d %Y")
+            td
+              = i.created_at.strftime("%b %d %Y")
+            td
+              = i.created_at.strftime("%b %d %Y")
           - if @company.startup?
+            td
+              = i.created_at.strftime("%b %d %Y")
             td
               = link_to overture_contact_path(id: i.investor.contacts.find_by(cloned_by: @company).id) do
                 i.material-icons-outlined launch

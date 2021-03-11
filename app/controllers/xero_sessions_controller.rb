@@ -50,7 +50,7 @@ class XeroSessionsController < ApplicationController
 
   def disconnect_from_xero
     authorize :xero_session, :disconnect_from_xero?
-    current_user.company.update_attributes(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)
+    current_user.company.update(expires_at: nil, access_key: nil, access_secret: nil, session_handle: nil, xero_organisation_name: nil)
 
     redirect_to edit_company_path, notice: "You have been disconnected from Xero."
   end

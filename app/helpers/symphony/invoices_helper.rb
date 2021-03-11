@@ -35,7 +35,7 @@ module Symphony::InvoicesHelper
   # Update action to true if it is completed for batches
   def update_workflow_action_completed(workflow_action_id, current_user)
     workflow_action = WorkflowAction.find(workflow_action_id)
-    workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
+    workflow_action.update(completed: true, completed_user_id: current_user.id)
   end
 
   # Navigate to next invoice or previous invoice depending on which workflow and action are passed in

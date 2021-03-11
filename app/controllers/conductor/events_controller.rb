@@ -19,19 +19,21 @@ class Conductor::EventsController < ApplicationController
     #filter event using scope setup in model
     @events = Event.includes(:address, :staffer, [allocations: :user]).company(@company.id)
     @events = @events.start_time(date_from..date_to)
+    @events = @events.department(@department) unless @user.has_role?(:admin, @company)
     @events = @events.allocation(params[:allocation_users].split(",")) unless params[:allocation_users].blank?
     #using tagged_with means can only search with 1 selected value
     @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:service_line] }) unless params[:service_line].blank?
     @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:project_clients] }) unless params[:project_clients].blank?
-
-    @clients += @general_clients
-    @service_lines += @general_service_lines
-    @projects += @general_projects
-    @tasks += @general_tasks
+    #combine department and general categories, then sort alphabetically
+    @clients = (@clients + @general_clients).sort_by(&:name)
+    @service_lines = (@service_lines + @general_service_lines).sort_by(&:name)
+    @projects = (@projects + @general_projects).sort_by(&:name)
+    @tasks = (@tasks + @general_tasks).sort_by(&:name)
 
     if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
     @user_event_count = Hash.new
-      User.where(department: @user.department).each do |user|
+    @user_list = @user.has_role?(:admin, @company) ? User.where(company: @company): User.where(department: @department)
+      @user_list.each do |user|
         @user_event_count[user.full_name] = []
         @user_event_count[user.full_name] << @events.joins(:allocations).where(allocations: { user_id: user.id }).map(&:start_time).uniq.count
         @user_event_count[user.full_name] << @events.joins(:allocations).where(allocations: { user_id: user.id }).filter_map(&:number_of_hours).sum.to_i
@@ -181,10 +183,10 @@ class Conductor::EventsController < ApplicationController
       @tasks = @general_tasks
     end
     @client_tags, @project_tags, @service_line_tags, @task_tags = [], [], [], []
-    @clients.each { |c| @client_tags << {value: c.name, id: c.id}.as_json }
-    @projects.each { |p| @project_tags << {value: p.name, id: p.id}.as_json }
-    @service_lines.each { |sl| @service_line_tags << {value: sl.name, id: sl.id}.as_json }
-    @tasks.each { |t| @task_tags << {value: t.name, id: t.id}.as_json }
+    @clients.sort_by(&:name).each { |c| @client_tags << {value: c.name, id: c.id}.as_json }
+    @projects.sort_by(&:name).each { |p| @project_tags << {value: p.name, id: p.id}.as_json }
+    @service_lines.sort_by(&:name).each { |sl| @service_line_tags << {value: sl.name, id: sl.id}.as_json }
+    @tasks.sort_by(&:name).each { |t| @task_tags << {value: t.name, id: t.id}.as_json }
     @client_tags = @client_tags.to_json
     @project_tags = @project_tags.to_json
     @service_line_tags = @service_line_tags.to_json
@@ -192,7 +194,7 @@ class Conductor::EventsController < ApplicationController
   end
 
   def create_tags
-    @category = Category.new(name: params[:value], category_type: params[:type], department: @user.has_role?(:admin, @company) ? nil : @department)
+    @category = Category.new(name: helpers.titleize_keep_uppercase(params[:value]), category_type: params[:type], department: @user.has_role?(:admin, @company) ? nil : @department)
     respond_to do |format|
       if @category.save
         format.json { render json: @category, status: :ok }
@@ -204,7 +206,7 @@ class Conductor::EventsController < ApplicationController
 
   def update_tags
     @category = Category.find(params[:id])
-    @category.name = params[:value]
+    @category.name = helpers.titleize_keep_uppercase(params[:value])
     respond_to do |format|
       if @category.save
         format.json { render json: @category, status: :ok }
@@ -253,7 +255,7 @@ class Conductor::EventsController < ApplicationController
     @general_clients = Category.where(category_type: "client", department: nil)
     @general_tasks = Category.where(category_type: "task", department: nil)
     # Get users who have roles consultant, associate and staffer so that staffer can allocate these users
-    @users = User.joins(:roles).where({roles: {name: ["consultant", "associate", "staffer"], resource_id: @company.id}}).uniq.sort_by(&:first_name)
+    @users = User.where(department: @department).order(:first_name)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
