@@ -42,7 +42,7 @@ class Conductor::EventsController < ApplicationController
       # Only show their own timesheet events unless they are admin or staffer, as the 2 can see all events
       @events = @events.joins(:allocations).where(allocations: { user_id: @user.id })
     end
-
+    @events_all = @events.to_a
     @events = Kaminari.paginate_array(@events.order(start_time: :desc)).page(params[:page]).per(10)
 
     # Create new form in index page
