@@ -23,7 +23,7 @@ class Conductor::EventsController < ApplicationController
     @events = @events.allocation(params[:allocation_users].split(",")) unless params[:allocation_users].blank?
     #using tagged_with means can only search with 1 selected value
     @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:service_line] }) unless params[:service_line].blank?
-    @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:project_clients] }) unless params[:project_clients].blank?
+    @events = Event.where(id: @events.map(&:id)).includes(:event_categories).where(event_categories: { category_id: params[:project_clients] }) unless params[:project_clients].blank?
     #combine department and general categories, then sort alphabetically
     @clients = (@clients + @general_clients).sort_by(&:name)
     @service_lines = (@service_lines + @general_service_lines).sort_by(&:name)
