@@ -1,15 +1,26 @@
 row.mb-3.mt-5.ml-3
   .col-sm-12
     button.btn.btn-primary.float-right.mr-5 data-target="#newAnnouncement" data-toggle="modal" type="button"
-      i.material-icons-outlined.text-white add
+      i.material-icons-outlined.text-white create
       | New Announcement
     = render "new"
-    h3 Post an announcement
-    p.mt-5.text-muted
+    h3 Share announcement
+    p.my-5.text-muted
       | Share important news and announcements with your investors.
-    table.table.ml-4
-      tbody
-        - @posts.each do |post|
-          tr.row
-            td.comment-font-size.col-5.text-dark = post.title
-            td.comment-font-size.col-3.text-dark = post.company.name
+    - @posts.each do |post|
+      .col-sm-12.mr-8.mb-6.qna-wrapper.px-5.py-3.float-left
+        .mt-5.d-flex
+          = image_pack_tag 'media/src/images/overture/user-avatar-placeholder.jpg', class: 'icon-size mr-6'
+          .flex-grow-1
+            h4 = post.company.name
+            h5 = post.title
+            .d-flex.align-items-center.mt-4
+              = image_pack_tag 'media/src/images/overture/user-avatar-placeholder.jpg', class: 'icon-size'
+              small.mx-3 = post.author.full_name
+              small = post.created_at.strftime("%d %b %Y")
+            .comment-font-size.text-dark.mt-4 = post.content
+          .div
+            i.material-icons-outlined create
+            i.material-icons-outlined.mt-4 open_in_new
+            i.material-icons-outlined.mt-4 delete
+
