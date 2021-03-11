@@ -126,6 +126,8 @@ class Conductor::AllocationsController < ApplicationController
   end
 
   def set_month_allocations
+    @date_from = params[:start_date] ? params[:start_date].to_date : Date.current.beginning_of_month
+    @date_to = params[:end_date] ? params[:end_date].to_date : Date.current.end_of_month
     @allocations = Allocation.where(event: params[:events]).order(allocation_date: :desc, start_time: :asc, id: :asc)
   end
 
