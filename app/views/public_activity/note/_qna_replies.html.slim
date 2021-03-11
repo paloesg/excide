@@ -1,0 +1,8 @@
+.row.my-2
+  .col-md-1
+    = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'user-avatar-activity mt-2'
+  .col-sm-11
+    .row
+      .activity-description = "#{activity.owner&.full_name or 'Unknown'} replied #{activity.parameters[:topic_subject]}."
+    .row
+      = "#{activity.created_at.strftime("%d %b %Y")}"

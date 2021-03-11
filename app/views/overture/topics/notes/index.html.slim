@@ -6,16 +6,15 @@
           = link_to overture_topics_path do
             i.material-icons-outlined arrow_back
         span.h1.font-weight-boldest.ml-4 = @topic.subject_name
-      div.d-flex.align-items-center
-        - if @topic.need_answer?
-          .text-dark.badge.badge-pill.badge-need-answer Need answer
-        - elsif @topic.need_approval?
-          .text-dark.badge.badge-pill.badge-need-approval Need approval
-        - elsif @topic.answered?
-          .text-dark.badge.badge-pill.badge-answered Answered
+      .d-flex.align-items-center
+        - if @company.startup?
+          .badge.badge-pill.p-3 class="#{get_badge_class(@topic)}" = get_badge_text(@topic)
         - else
-          .text-dark.badge.badge-pill.badge-closed Closed
-        i.material-icons-outlined.ml-5 restore
+          - unless @topic.closed?
+            .badge.badge-pill.investor-ongoing-question.p-3 Ongoing
+          - else
+            .badge.badge-pill.investor-closed-question.p-3 Closed
+        / i.material-icons-outlined.ml-5 restore
   /     span.ml-4.align-middle
   /       i.material-icons-outlined search
   hr
