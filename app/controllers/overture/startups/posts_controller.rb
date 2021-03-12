@@ -29,6 +29,17 @@ class Overture::Startups::PostsController < ApplicationController
     end
   end
 
+  def destroy
+    @post = Post.find(params[:id])
+    respond_to do |format|
+      if @post.destroy
+        format.html { redirect_to overture_startups_posts_path, notice: 'Announcement was successfully deleted.' }
+      else
+        format.html { redirect_to overture_startups_posts_path, alert: 'Announcement was not deleted.' }
+      end
+    end
+  end
+
   private
 
   def post_params
