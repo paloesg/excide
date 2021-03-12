@@ -1,9 +1,9 @@
 row.mb-3.mt-5.ml-3
   .col-sm-12
-    button.btn.btn-primary.float-right.mr-5 data-target="#newAnnouncement" data-toggle="modal" type="button"
+    button.btn.btn-primary.float-right.mr-5 data-target="#annoucement_new" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white create
       | New Announcement
-    = render "new"
+    = render "new", post: @post
     h3 Share announcement
     p.my-5.text-muted
       | Share important news and announcements with your investors.
@@ -20,7 +20,8 @@ row.mb-3.mt-5.ml-3
               small = post.created_at.strftime("%d %b %Y")
             .comment-font-size.text-dark.mt-4 = post.content
           .div
-            i.material-icons-outlined create
+            i.material-icons-outlined data-target="#annoucement_#{post.id}" data-toggle="modal" type="button" create
             i.material-icons-outlined.mt-4 open_in_new
             i.material-icons-outlined.mt-4 delete
+      = render "edit", post: post
 
