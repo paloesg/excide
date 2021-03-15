@@ -6,10 +6,10 @@
 hr
 .row.mt-5.flex-row.flex-sm-nowrap.overflow-auto
   - @contact_statuses.each do |cs|
-    .col-3.m-3
-      .row
-        .col-sm-6
-          .badge.badge-pill.badge-secondary.font-weight-boldest.py-2.px-3.mr-3 = cs.name.titleize
+    .col-3.m-3.kanban-height
+      .d-flex
+        .col-sm-10
+          .badge.badge-pill.font-weight-boldest.py-2.px-3.mr-3 style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
           = cs.contacts.length
       .row.my-5.draggable-columns.p-5 id="#{cs.id}"
         - cs.contacts.each do |contact|
