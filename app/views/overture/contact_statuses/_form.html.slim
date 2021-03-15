@@ -3,10 +3,10 @@
     .col-sm-12
       .form-group
         = f.label :name, "Edit Status", class: "text-dark"
-        = f.text_field :name, class: 'form-control', data: { cs_id: cs.id }, onchange: "contactStatusUpdate(this);"
+        = f.text_field :name, class: 'form-control', id: "status-name", data: { cs_id: cs.id }, onchange: "contactStatusUpdate(this);"
       .form-group
         = f.label :colour, "Colours", class: "text-dark"
-        = f.color_field :colour, class: 'w-75', data: { cs_id: cs.id }, onchange: "contactStatusUpdate(this);"
+        = f.color_field :colour, class: 'w-75', id: "color", data: { cs_id: cs.id }, onchange: "contactStatusUpdate(this);"
       hr
   .row
     .col-sm-12

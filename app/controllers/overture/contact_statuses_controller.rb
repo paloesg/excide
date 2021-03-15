@@ -2,7 +2,7 @@ class Overture::ContactStatusesController < ContactStatusesController
   layout 'overture/application'
 
   before_action :set_company
-  before_action :set_contact_status, only: [:update]
+  before_action :set_contact_status, only: [:update, :destroy]
   after_action :verify_authorized
 
   def index
@@ -21,6 +21,10 @@ class Overture::ContactStatusesController < ContactStatusesController
         format.json { render json: @contact_status.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def destroy
+
   end
 
   private
