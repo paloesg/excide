@@ -9,16 +9,16 @@ hr
     .col-3.m-3
       .row
         .col-sm-6
-          .badge.badge-pill.badge-secondary.text-dark.py-2.px-3 = cs.name.titleize
+          .badge.badge-pill.badge-secondary.font-weight-boldest.py-2.px-3.mr-3 = cs.name.titleize
+          = cs.contacts.length
       .row.my-5.draggable-columns.p-5 id="#{cs.id}"
         - cs.contacts.each do |contact|
           ul.draggable.p-0 id="#{contact.id}" style="list-style-type:none;"
             li.draggable-handle
               .card
-                .card-body.border.border-light.p-3
-                  .d-flex
-                    = contact.investor_company_logo.attached? ? (image_tag url_for(contact.investor_company_logo), class: 'rounded-circle w-25 investor-profile-pic p-1') : (image_pack_tag 'media/src/images/overture/dataroom-empty.png', class: 'rounded-circle w-25 investor-profile-pic p-1')
-                    = link_to (contact.company.present? ? truncate(contact.company.name, length: 15) : truncate(contact.company_name, length: 15)), overture_contact_path(contact.id), class: "card-title text-uppercase text-truncate mt-10 ml-10 h5 text-dark font-weight-boldest clickable-contact"
+                .card-body.border.contact-card-shawdow.p-0
+                  = contact.investor_company_logo.attached? ? (image_tag url_for(contact.investor_company_logo), class: 'rounded-circle investor-profile-pic w-25 h-25 p-1 m-5') : (image_pack_tag 'media/src/images/overture/dataroom-empty.png', class: 'rounded-circle investor-profile-pic w-25 h-25 p-1 m-5')
+                  = link_to (contact.company.present? ? truncate(contact.company.name, length: 15) : truncate(contact.company_name, length: 15)), overture_contact_path(contact.id), class: "card-title  text-truncate mt-12 h5 text-dark font-weight-boldest clickable-contact"
       .dropdown
         a.text-muted href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" = "+ Investor"
         .dropdown-menu.dropdown-menu-right
