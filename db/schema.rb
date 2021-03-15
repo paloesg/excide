@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_05_024013) do
+ActiveRecord::Schema.define(version: 2021_03_15_045026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(version: 2021_03_05_024013) do
     t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "colour"
     t.index ["startup_id"], name: "index_contact_statuses_on_startup_id"
   end
 
