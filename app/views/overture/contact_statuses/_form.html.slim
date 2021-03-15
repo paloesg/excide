@@ -1,0 +1,15 @@
+.contact-status-container.p-5
+  .row
+    .col-sm-12
+      .form-group
+        = f.label :name, "Edit Status", class: "text-dark"
+        = f.text_field :name, class: 'form-control', data: { cs_id: cs.id }, onchange: "contactStatusUpdate(this);"
+      .form-group
+        = f.label :colour, "Colours", class: "text-dark"
+        = f.color_field :colour, class: 'w-75', data: { cs_id: cs.id }, onchange: "contactStatusUpdate(this);"
+      hr
+  .row
+    .col-sm-12
+      = link_to overture_contact_status_path(cs), method: :delete do
+        i.material-icons-outlined.mt-2 delete_outline
+        span.text-dark Delete Status

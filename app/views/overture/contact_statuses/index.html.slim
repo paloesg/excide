@@ -11,6 +11,13 @@ hr
         .col-sm-10
           .badge.badge-pill.font-weight-boldest.py-2.px-3.mr-3 style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
           = cs.contacts.length
+        .col-sm-2
+          .dropdown
+            a.btn.btn-icon.btn-link href="#" id="dropdownMenuLink" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+              i.material-icons-outlined.align-middle.mr-2 more_horiz
+            .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="dropdownMenuLink"
+              = form_for cs, url: overture_contact_status_path(cs) do |f|
+                = render 'form', f: f, cs: cs
       .row.my-5.draggable-columns.p-5 id="#{cs.id}"
         - cs.contacts.each do |contact|
           ul.draggable.p-0 id="#{contact.id}" style="list-style-type:none;"
@@ -20,7 +27,7 @@ hr
                   = contact.investor_company_logo.attached? ? (image_tag url_for(contact.investor_company_logo), class: 'rounded-circle investor-profile-pic w-25 h-25 p-1 m-5') : (image_pack_tag 'media/src/images/overture/dataroom-empty.png', class: 'rounded-circle investor-profile-pic w-25 h-25 p-1 m-5')
                   = link_to (contact.company.present? ? truncate(contact.company.name, length: 15) : truncate(contact.company_name, length: 15)), overture_contact_path(contact.id), class: "card-title  text-truncate mt-12 h5 text-dark font-weight-boldest clickable-contact"
       .dropdown
-        a.text-muted href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" = "+ Investor"
+        a.text-muted.h5 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" = "+ Investor"
         .dropdown-menu.dropdown-menu-right
           a.dropdown-item data-target="#addExistingInvestorToBoard" data-toggle="modal" type="button" Existing Investor
           a.dropdown-item data-target="#addNewInvestorToBoard" data-toggle="modal" type="button" Add manually

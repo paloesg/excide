@@ -3,6 +3,6 @@ class ContactStatusesController < ApplicationController
 
   private
   def contact_status_params
-    params.require(:contact_status).permit(:name, :position, :startup_id)
+    params.require(:contact_status).permit(:name, :position, :startup_id, :colour)
   end
 end
