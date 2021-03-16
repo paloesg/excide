@@ -102,6 +102,11 @@ class Company < ApplicationRecord
     self.users.includes(:roles).where(roles: { name: "franchisor" })
   end
 
+  # To change the settings of overture feature, we need to parse it in JSON for the admin page as the gem doesn't provide it for now
+  def settings=(value)
+    self[:settings] = value.is_a?(String) ? JSON.parse(value) : value
+  end
+
   private
 
   def generate_mailbox_token
