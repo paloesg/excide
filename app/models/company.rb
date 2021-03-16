@@ -107,6 +107,11 @@ class Company < ApplicationRecord
     self[:settings] = value.is_a?(String) ? JSON.parse(value) : value
   end
 
+  # To add or remove products in the admin page, we need to parse the product value for the admin page as the gem doesn't provide it for now
+  def products=(value)
+    self[:products] = value.is_a?(String) ? JSON.parse(value) : value
+  end
+
   private
 
   def generate_mailbox_token
