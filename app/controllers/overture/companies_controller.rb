@@ -5,6 +5,8 @@ class Overture::CompaniesController < ApplicationController
   before_action :set_company, except: [:show]
   before_action :find_startup_by_id, only: [:capitalization_table, :financial_performance]
 
+  after_action :verify_authorized, only: :billing
+
   def index
     # Get company of the documents & folders that user have permission in (through their roles)
     @startups = @user.roles.map(&:permissions).flatten.map(&:permissible).compact.map(&:company).uniq
@@ -32,6 +34,10 @@ class Overture::CompaniesController < ApplicationController
 
   def financial_performance
     @topic = Topic.new
+  end
+
+  def billing
+    authorize @company
   end
 
   private

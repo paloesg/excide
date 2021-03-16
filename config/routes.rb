@@ -201,6 +201,7 @@ Rails.application.routes.draw do
     get '/capitalization_table', to: 'home#capitalization_table'
     delete 'delete_multiple_permissible', to: 'permissions#delete_multiple_permissible', as: :delete_multiple_permissible
     post 'bulk_assign_permissions', to: 'permissions#bulk_assign_permissions', as: :bulk_assign_permissions
+    get '/billing', to: 'companies#billing', as: :billing
   end
 
   namespace :conductor do
