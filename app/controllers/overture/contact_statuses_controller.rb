@@ -24,7 +24,13 @@ class Overture::ContactStatusesController < ContactStatusesController
   end
 
   def destroy
-
+    if @contact_status.destroy
+      respond_to do |format|
+        format.html { redirect_to overture_contact_statuses_path }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
+      flash[:notice] = 'Column was successfully deleted.'
+    end
   end
 
   private

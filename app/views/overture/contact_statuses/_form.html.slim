@@ -1,15 +1,14 @@
-.contact-status-container.p-5
-  .row
+.contact-status-container
+  .row.p-5
     .col-sm-12
       .form-group
-        = f.label :name, "Edit Status", class: "text-dark"
+        = f.label :name, "Edit Status", class: "edit-status-word-style"
         = f.text_field :name, class: 'form-control', id: "status-name", data: { cs_id: cs.id }, onchange: "contactStatusUpdate(this);"
       .form-group
-        = f.label :colour, "Colours", class: "text-dark"
+        = f.label :colour, "Colours", class: "edit-status-word-style"
         = f.color_field :colour, class: 'w-75', id: "color", data: { cs_id: cs.id }, onchange: "contactStatusUpdate(this);"
-      hr
-  .row
-    .col-sm-12
-      = link_to overture_contact_status_path(cs), method: :delete do
-        i.material-icons-outlined.mt-2 delete_outline
-        span.text-dark Delete Status
+  hr.m-0
+  .row.p-5
+    = link_to overture_contact_status_path(cs), method: :delete, data: { confirm: 'Are you sure you want to delete this column?' }, class: "col-sm-12 d-flex align-items-center" do
+      i.material-icons-outlined delete_outline
+      .ml-2.delete-status-word-style Delete Status
