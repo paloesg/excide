@@ -24,15 +24,15 @@ class Motif::FranchiseesController < ApplicationController
 
   def show
     # Check franchisee license type
-    @sub_franchisees = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).franchisees.where.not(franchise_licensee: "") : []
+    @sub_franchisees = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.franchisee_company.franchisees.where.not(franchise_licensee: "") : []
   end
 
   def outlets
-    @outlets = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).outlets : []
+    @outlets = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.franchisee_company.franchisees.map(&:outlets).flatten : []
   end
 
   def users
-    @users = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.company.children.find_by(name: @franchisee.franchise_licensee).users : @franchisee.outlets.map(&:users).flatten
+    @users = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.franchisee_company.users : @franchisee.outlets.map(&:users).flatten
   end
 
   def agreements
@@ -77,7 +77,8 @@ class Motif::FranchiseesController < ApplicationController
   private
 
   def set_company
-    @company = current_user.company
+    @user = current_user
+    @company = @user.company
   end
 
   def set_franchisee
@@ -90,7 +91,7 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def franchisee_params
-    params.require(:franchisee).permit(:commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :franchise_licensee, :registered_address, :license_type, :max_outlet, :min_outlet)
+    params.require(:franchisee).permit(:commencement_date, :expiry_date, :renewal_period_freq_unit, :renewal_period_freq_value, :franchise_licensee, :registered_address, :license_type, :max_outlet, :min_outlet, :report_url)
   end
 
   def build_addresses

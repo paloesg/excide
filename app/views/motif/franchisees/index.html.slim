@@ -45,5 +45,5 @@ hr.mb-0
         .label.label-pill.label-inline.text-dark.p-3 class="label-motif-#{franchisee.license_type}" = franchisee&.license_type&.titleize
       .col-sm-5
         / Check if franchisee is MF, AF or MUF. If not, just find its outlets.length
-        span.offset-sm-6 = pluralize( (franchisee.master_franchisee? or franchisee.area_franchisee? or franchisee.multi_unit_franchisee?) ? franchisee.company.children.find_by(name: franchisee.franchise_licensee).outlets.length : franchisee.outlets.length, "outlet")
+        span.offset-sm-6 = pluralize( (franchisee.master_franchisee? or franchisee.area_franchisee? or franchisee.multi_unit_franchisee?) ? franchisee.franchisee_company.outlets.length : franchisee.outlets.length, "outlet")
     hr

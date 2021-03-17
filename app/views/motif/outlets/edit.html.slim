@@ -5,7 +5,7 @@
   .row.my-5.ml-1
     .col-sm-12
       .btn-toolbar.float-right.ml-5
-        = f.submit 'Save Changes', class: 'btn btn-white border border-secondary text-primary mr-3 px-5'
+        = f.submit 'Save Changes', class: 'btn btn-primary mr-3 px-5'
       .float-right.my-2
         i.px-5.material-icons-outlined more_vert
       h3.mt-3 = @outlet.name
@@ -58,7 +58,7 @@
               = ff.number_field :renewal_period_freq_value, placeholder: "Value", class: 'form-control col-sm-2 mr-2'
               = ff.select :renewal_period_freq_unit, Franchisee.renewal_period_freq_units.map { |key, value| [key.titleize, key] },  {selected: @outlet.franchisee.renewal_period_freq_unit}, class: 'form-control col-sm-2'
           .form-group
-            = ff.hidden_field :company_id, value: @company.id
+            = ff.hidden_field :parent_company_id, value: @company.id
       = f.label :header_image, class: "label-bold"
       .form-group
         .form-inline

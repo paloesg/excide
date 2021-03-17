@@ -44,7 +44,7 @@
                         = ff.number_field :renewal_period_freq_value, placeholder: "Franchise renewal notice period", class: 'form-control mr-5 col-sm-6'
                         = ff.select :renewal_period_freq_unit, Franchisee.renewal_period_freq_units.map { |key, value| [key.titleize, key] }, {include_blank: "Unit"}, class: 'form-control col-sm-4'
                       .form-group
-                        = ff.hidden_field :company_id, value: @company.id
+                        = ff.hidden_field :parent_company_id, value: @company.id
                 .row.mt-3
                   .col-md-12
                     = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'

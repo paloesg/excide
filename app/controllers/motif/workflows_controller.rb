@@ -15,7 +15,7 @@ class Motif::WorkflowsController < ApplicationController
     @templates = Template.includes(:company, :workflows).where(company_id: @company.id, template_type: @template_type).where(workflows: {id: nil})
     # Get workflows based on condition in workflow helper method
     @workflows = get_workflows(current_user, @template_type)
-    @outlets = get_outlets_by_type(nil, @company)
+    @outlets = get_outlets_that_has_no_workflows(@template_type, @company)
     @workflow = Workflow.new
   end
 
@@ -113,28 +113,16 @@ class Motif::WorkflowsController < ApplicationController
     redirect_to motif_outlet_workflow_path(outlet_id: prev_wf.outlet, id: prev_wf.id) if prev_wf.present?
   end
 
+  # This method is when user upload multiple documents through the workflows drawer
   def upload_documents
     @wfa = WorkflowAction.find(params[:wfa_id])
     if params[:successful_files].present?
-      @files = []
       parsed_files = JSON.parse(params[:successful_files])
-      parsed_files.each do |file|
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, @wfa.task.folder&.id).run_without_associations
-        if @generate_document.success?
-          document = @generate_document.document
-          document.update_attributes(workflow_action_id: params[:wfa_id], folder_id: @wfa.task.folder&.id)
-          # attach and convert method
-          document.attach_and_convert_document(file['response']['key'])
-          # Create custom activity when upload document in motif
-          document.create_activity key: 'workflow.motif_document_uploads', owner: @user, recipient: @wfa.workflow, params: { instructions: @wfa.task.instructions  }
-          @files.append document
-        end
-      end
+      MultipleUploadsJob.perform_later(@user, parsed_files, params[:document_type], @wfa, nil)
     end
     respond_to do |format|
       # Redirect back to workflow page
-      format.html { redirect_to @wfa.workflow.outlet.present? ? (motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id)) : (motif_workflow_path(id: @wfa.workflow.id, franchisee_id: @wfa.workflow.franchisee.id)), notice: "File(s) successfully uploaded into folder."}
-      format.json { render json: @files.to_json }
+      format.html { redirect_to @wfa.workflow.outlet.present? ? (motif_outlet_workflow_path(outlet_id: @wfa.workflow.outlet.id, id: @wfa.workflow.id)) : (motif_workflow_path(id: @wfa.workflow.id, franchisee_id: @wfa.workflow.franchisee.id)), notice: "Your files are being processed. Please refresh the page to view the uploaded files."}
     end
   end
 

@@ -53,7 +53,7 @@ hr.mb-0
           .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3
             span.h3.font-weight-boldest = wf.outlet.name
             span = "#{wf.outlet&.country} #{wf.outlet&.city}"
-            - if wf.outlet.company == @company
+            - if wf.outlet.company == @company and !(wf.outlet.franchisee.unit_franchisee? or wf.outlet.franchisee.sub_franchisee?)
               .badge.label-motif-roles.col-sm-8 Direct Owned
             - else
               .badge.badge-success.text-dark.font-weight-boldest.col-sm-8 Franchised
