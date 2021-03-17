@@ -3,9 +3,10 @@ class Overture::Investors::DocumentsController < Overture::DocumentsController
   include Overture::UsersHelper
   include Overture::PermissionsHelper
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized
 
   def index
+    authorize([:overture, :investors, Document])
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     # params[:company_id] came from investor's dataroom to indicate startup company that is interested in the investor
     @interested_startup_company = params[:company_id].present? ? Company.find_by(id: params[:company_id]) : @company
