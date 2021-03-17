@@ -36,7 +36,6 @@ Rails.application.routes.draw do
     resources :survey_templates, param: :survey_template_slug, except: [:destroy]
     delete '/survey_templates/:survey_template_slug/destroy_survey_section', to: 'survey_templates#destroy_survey_section', as: :destroy_survey_section
 
-    # get '/plan', to: 'companies#plan'
     scope '/checkout' do
       post 'create', to: 'checkout#create', as: :checkout_create
       get 'cancel', to: 'checkout#cancel', as: :checkout_cancel
@@ -195,6 +194,13 @@ Rails.application.routes.draw do
         resources :notes
       end
     end
+    # Stripe checkout for Overture
+    scope '/checkout' do
+      post 'create', to: 'checkout#create', as: :checkout_create
+      get 'cancel', to: 'checkout#cancel', as: :checkout_cancel
+      get 'success', to: 'checkout#success', as: :checkout_success
+    end
+
     resources :users
     post '/add-roles', to: 'users#add_role', as: :add_role
     get '/financial_performance', to: 'home#financial_performance'

@@ -1,7 +1,7 @@
 # Stripe module
 module Stripe
  # stripe main class EventHandler
-  class EventHandler
+  class SymphonyEventHandler
     def call(event)
       method = 'handle_' + event.type.tr('.', '_')
       send method, event
