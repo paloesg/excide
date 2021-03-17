@@ -1,32 +1,43 @@
-.row.mb-3
-  .col
-    h1 Billing
-- if action_name == 'billing'
-  .row
-    .col-xl-12
-      h3 Subscription
-      .form-group
-        h5.mb-2 #{@company.account_type.capitalize.humanize} Plan
-        / if cancel is true, it will inform the user when is their pro features going to stop
-        - if @company.stripe_subscription_plan_data.present? and @company.stripe_subscription_plan_data['cancel'] == true
-          | You have cancelled your subscription. Your PRO features will not be accessible after the following date below:
-          h5.mt-2 = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y")
-        - else
-          / check for company's account_type/plans
-          - if @company.free_trial?
-            p You are currently on Symphony's free trial, which gives you access to all Pro features.
-            p
-              | Trial ends on:
-              = @company.trial_end_date&.strftime("%d-%b-%Y")
-            .form-group
-              = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary'
-          - elsif @company.basic?
-            p Upgrade to Symphony Pro for more advanced features!
-            .form-group
-              = link_to 'Upgrade to Pro', symphony_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: 'btn btn-primary mt-2'
-          - else
-            p
-              | Next renewal date:
-              = Time.at(@company.stripe_subscription_plan_data["subscription"]["current_period_end"]).strftime("%d-%b-%Y") if @company.stripe_subscription_plan_data.present?
-            .form-group
-              = link_to 'Cancel your subscription', symphony_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: 'text-danger'
+.row.mb-3.mt-5.ml-3
+  .col-sm-12.d-flex
+    i.material-icons.mr-3 card_membership
+    h3 Subscription Plan
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    table.table.table-padding
+      thead
+        tr
+          th
+          th Package 1
+          th Enterprise Package
+      tbody
+        tr
+          td.description-col-font Price / month
+          td
+            h1.font-weight-boldest $49.00
+            button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Current Plan
+            p Popular among early stage startups
+          td
+            h1.font-weight-boldest Contact us
+            = link_to 'Upgrade', '#', class: "btn btn-primary my-5"
+            p Popular among Series A startups
+        tr
+          td.description-col-font Team
+          td Just you
+          td Unlimited
+        tr
+          td.description-col-font Admin User
+          td Just you
+          td Unlimited
+        tr
+          td.description-col-font Q&A
+          td
+          td
+        tr
+          td.description-col-font Resource Portal
+          td
+          td
+        tr
+          td.description-col-font Search Investors
+          td Limited info
+          td Unlimited
