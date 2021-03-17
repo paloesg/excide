@@ -19,7 +19,7 @@
             p Popular among early stage startups
           td
             h1.font-weight-boldest Contact us
-            = link_to 'Upgrade', '#', class: "btn btn-primary my-5"
+            = link_to 'Upgrade', overture_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: "btn btn-primary my-5"
             p Popular among Series A startups
         tr
           td.description-col-font Team
