@@ -5,9 +5,10 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
 
   before_action :set_document, only: [:update, :destroy, :change_versions]
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized
 
   def index
+    authorize([:overture, :startups, Document])
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     @documents = Document.where(folder_id: nil, company: @company).order(created_at: :desc).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
     @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
