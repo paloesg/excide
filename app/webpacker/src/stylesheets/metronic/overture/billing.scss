@@ -8,3 +8,8 @@
   font-size: 14px;
   font-weight: 600;
 }
+
+.tick:after {
+  content: "\2713";
+  font-size: 14px;
+}
