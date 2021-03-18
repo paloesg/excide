@@ -1,5 +1,10 @@
 class HomePolicy < Struct.new(:user, :home)
+  # Restrict investor to access these pages
   def capitalization_table?
+    company_startup?
+  end
+
+  def financial_performance?
     company_startup?
   end
 

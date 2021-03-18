@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_05_024013) do
+ActiveRecord::Schema.define(version: 2021_03_17_065512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(version: 2021_03_05_024013) do
     t.integer "storage_limit"
     t.integer "storage_used"
     t.string "cap_table_url"
+    t.json "settings", default: [{"search_feature"=>"true", "kanban_board"=>"true", "dataroom"=>"true", "our_investor_or_startup"=>"true", "cap_table"=>"true", "performance_report"=>"true", "shared_file"=>"true", "resource_portal"=>"true"}]
     t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
@@ -718,8 +719,10 @@ ActiveRecord::Schema.define(version: 2021_03_05_024013) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "startup_id"
     t.bigint "assigned_user_id"
+    t.uuid "document_id"
     t.index ["assigned_user_id"], name: "index_topics_on_assigned_user_id"
     t.index ["company_id"], name: "index_topics_on_company_id"
+    t.index ["document_id"], name: "index_topics_on_document_id"
     t.index ["startup_id"], name: "index_topics_on_startup_id"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
@@ -941,6 +944,7 @@ ActiveRecord::Schema.define(version: 2021_03_05_024013) do
   add_foreign_key "templates", "companies"
   add_foreign_key "topics", "companies"
   add_foreign_key "topics", "companies", column: "startup_id"
+  add_foreign_key "topics", "documents"
   add_foreign_key "topics", "users"
   add_foreign_key "topics", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"

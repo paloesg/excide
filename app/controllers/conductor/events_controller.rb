@@ -23,7 +23,7 @@ class Conductor::EventsController < ApplicationController
     @events = @events.allocation(params[:allocation_users].split(",")) unless params[:allocation_users].blank?
     #using tagged_with means can only search with 1 selected value
     @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:service_line] }) unless params[:service_line].blank?
-    @events = @events.includes(:event_categories).where(event_categories: { category_id: params[:project_clients] }) unless params[:project_clients].blank?
+    @events = Event.where(id: @events.map(&:id)).includes(:event_categories).where(event_categories: { category_id: params[:project_clients] }) unless params[:project_clients].blank?
     #combine department and general categories, then sort alphabetically
     @clients = (@clients + @general_clients).sort_by(&:name)
     @service_lines = (@service_lines + @general_service_lines).sort_by(&:name)
@@ -42,7 +42,7 @@ class Conductor::EventsController < ApplicationController
       # Only show their own timesheet events unless they are admin or staffer, as the 2 can see all events
       @events = @events.joins(:allocations).where(allocations: { user_id: @user.id })
     end
-
+    @events_all = @events.to_a
     @events = Kaminari.paginate_array(@events.order(start_time: :desc)).page(params[:page]).per(10)
 
     # Create new form in index page
