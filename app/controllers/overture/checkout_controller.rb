@@ -30,10 +30,10 @@ class Overture::CheckoutController < ApplicationController
     authorize :checkout, :success?
     if params[:session_id]
       flash[:notice] = "Your account has been successfully upgraded to PRO."
-      redirect_to edit_company_path
+      redirect_to overture_subscription_plan_path
     else
       flash[:danger] = "Upgrading to PRO account has failed. Please contact the admin for more information."
-      redirect_to symphony_root_path
+      redirect_to overture_root_path
     end
   end
 
