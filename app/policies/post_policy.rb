@@ -28,7 +28,7 @@ class PostPolicy < ApplicationPolicy
       if user.company.startup?
         scope.where(company: user.company)
       elsif user.company.investor?
-        scope.where(company: user.company.investor_investments)
+        scope.where(company: user.company.startups)
       end
     end
   end
