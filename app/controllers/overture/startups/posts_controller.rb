@@ -30,9 +30,9 @@ class Overture::Startups::PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to overture_startups_posts_path, notice: 'Announcement was successfully updated.' }
+        format.html { redirect_back fallback_location: overture_startups_posts_path, notice: 'Announcement was successfully updated.' }
       else
-        format.html { redirect_to overture_startups_posts_path, alert: 'Announcement was not updated.' }
+        format.html { redirect_back fallback_location: overture_startups_posts_path, alert: 'Announcement was not updated.' }
       end
     end
   end
