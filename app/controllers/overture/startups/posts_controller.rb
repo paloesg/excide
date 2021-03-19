@@ -4,7 +4,11 @@ class Overture::Startups::PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
 
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: :index
+
   def index
+    authorize Post
     @posts = policy_scope(Post)
     @post = Post.new
   end

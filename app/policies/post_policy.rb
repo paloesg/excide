@@ -1,4 +1,8 @@
 class PostPolicy < ApplicationPolicy
+  def index?
+    user.company.startup?
+  end
+
   def create?
     user.company.startup?
   end
