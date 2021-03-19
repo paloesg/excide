@@ -3,6 +3,7 @@ class Overture::Startups::PostsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
+  before_action :set_post, except: [:index, :create]
 
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
@@ -22,8 +23,11 @@ class Overture::Startups::PostsController < ApplicationController
     end
   end
 
+  def show
+    @topic = Topic.new
+  end
+
   def update
-    @post = Post.find(params[:id])
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to overture_startups_posts_path, notice: 'Announcement was successfully updated.' }
@@ -34,7 +38,6 @@ class Overture::Startups::PostsController < ApplicationController
   end
 
   def destroy
-    @post = Post.find(params[:id])
     respond_to do |format|
       if @post.destroy
         format.html { redirect_to overture_startups_posts_path, notice: 'Announcement was successfully deleted.' }
@@ -45,6 +48,14 @@ class Overture::Startups::PostsController < ApplicationController
   end
 
   private
+  def set_company
+    @user = current_user
+    @company = current_user.company
+  end
+
+  def set_post
+    @post = Post.find(params[:id])
+  end
 
   def post_params
     params.require(:post).permit(:id, :title, :content, :company_id, :author_id)
