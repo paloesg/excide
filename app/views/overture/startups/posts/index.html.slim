@@ -19,7 +19,11 @@ row.mb-3.mt-5.ml-3
               = image_pack_tag 'media/src/images/overture/user-avatar-placeholder.jpg', class: 'icon-size'
               small.mx-3 = post.author.full_name
               small = post.created_at.strftime("%d %b %Y")
-            .comment-font-size.text-dark.mt-4 = post.content
+            - if post.content.length > 500
+              .comment-font-size.text-dark.mt-4 = post.content.truncate(500)
+              = link_to "read more", overture_startups_post_path(post), class: "comment-font-size"
+            - else
+              .comment-font-size.text-dark.mt-4 = post.content
           .icon-bar
             i.material-icons-outlined data-target="#annoucement_#{post.id}" data-toggle="modal" type="button" create
             = link_to overture_startups_post_path(post.id) do
