@@ -132,8 +132,8 @@ function setupUppy(element){
     // In case of typos
     logger: Uppy.debugLogger,
     restrictions: {
-      // 10MB max size
-      maxFileSize: 10 * 1024 * 1024,
+      // 20MB max size
+      maxFileSize: 20 * 1024 * 1024,
       maxNumberOfFiles: 100,
       minNumberOfFiles: null,
       // Only allow images or PDF
