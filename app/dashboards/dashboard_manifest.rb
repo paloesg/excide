@@ -29,6 +29,7 @@ class DashboardManifest
     :investments,
     :invoices,
     :notes,
+    :posts,
     :outlets,
     :permissions,
     :profiles,

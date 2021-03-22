@@ -166,6 +166,7 @@ Rails.application.routes.draw do
           post 'change_versions'
         end
       end
+      resources :posts
     end
     resources :companies do
       get 'investors/documents', to: 'investors/documents#index', as: :investor_documents
