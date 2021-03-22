@@ -30,6 +30,7 @@ html lang="en"
     = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
 
   body
+    = render 'layouts/paloe_header'
     .container
       = yield
       = render 'layouts/messages'

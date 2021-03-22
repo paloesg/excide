@@ -5,7 +5,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    if (params[:product] == "symphony" || params[:product] == "motif")
+    if (params[:product] == "symphony" || params[:product] == "motif" || params[:product] == "overture")
       super
     else
       raise ActionController::RoutingError.new('Invalid Product Name in URL')
