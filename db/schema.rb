@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_21_012536) do
+ActiveRecord::Schema.define(version: 2021_03_22_094951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -217,7 +217,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_012536) do
     t.integer "storage_limit"
     t.integer "storage_used"
     t.string "cap_table_url"
-    t.json "settings", default: [{"search_feature"=>"true", "kanban_board"=>"true", "dataroom"=>"true", "our_investor_or_startup"=>"true", "cap_table"=>"true", "performance_report"=>"true", "shared_file"=>"true", "resource_portal"=>"true"}]
+    t.json "settings", default: [{"search_feature"=>"true", "kanban_board"=>"true", "dataroom"=>"true", "our_investor_or_startup"=>"true", "cap_table"=>"true", "performance_report"=>"true", "shared_file"=>"true", "resource_portal"=>"true", "announcement"=>"true"}]
     t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_012536) do
     t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "colour"
     t.index ["startup_id"], name: "index_contact_statuses_on_startup_id"
   end
 
@@ -349,11 +350,16 @@ ActiveRecord::Schema.define(version: 2021_03_21_012536) do
     t.date "expiry_date"
     t.integer "renewal_period_freq_unit"
     t.integer "renewal_period_freq_value"
-    t.uuid "company_id"
+    t.uuid "parent_company_id"
     t.integer "license_type"
     t.integer "max_outlet"
     t.integer "min_outlet"
-    t.index ["company_id"], name: "index_franchisees_on_company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "franchisee_company_id"
+    t.string "report_url"
+    t.index ["franchisee_company_id"], name: "index_franchisees_on_franchisee_company_id"
+    t.index ["parent_company_id"], name: "index_franchisees_on_parent_company_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -764,13 +770,13 @@ ActiveRecord::Schema.define(version: 2021_03_21_012536) do
     t.string "stripe_customer_id"
     t.string "stripe_card_token"
     t.uuid "company_id"
-    t.uuid "outlet_id"
+    t.uuid "active_outlet_id"
     t.datetime "last_click_comm_hub"
     t.uuid "department_id"
+    t.index ["active_outlet_id"], name: "index_users_on_active_outlet_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["outlet_id"], name: "index_users_on_outlet_id"
     t.index ["provider"], name: "index_users_on_provider"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid"], name: "index_users_on_uid"
@@ -822,7 +828,9 @@ ActiveRecord::Schema.define(version: 2021_03_21_012536) do
     t.integer "total_time_mins", default: 0
     t.uuid "company_id"
     t.uuid "outlet_id"
+    t.uuid "franchisee_id"
     t.index ["batch_id"], name: "index_workflows_on_batch_id"
+    t.index ["franchisee_id"], name: "index_workflows_on_franchisee_id"
     t.index ["outlet_id"], name: "index_workflows_on_outlet_id"
     t.index ["recurring_workflow_id"], name: "index_workflows_on_recurring_workflow_id"
     t.index ["slug"], name: "index_workflows_on_slug", unique: true
@@ -901,7 +909,8 @@ ActiveRecord::Schema.define(version: 2021_03_21_012536) do
   add_foreign_key "events", "users", column: "staffer_id"
   add_foreign_key "folders", "companies"
   add_foreign_key "folders", "users"
-  add_foreign_key "franchisees", "companies"
+  add_foreign_key "franchisees", "companies", column: "franchisee_company_id"
+  add_foreign_key "franchisees", "companies", column: "parent_company_id"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "users"
   add_foreign_key "invoices", "workflows"
@@ -952,7 +961,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_012536) do
   add_foreign_key "topics", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"
   add_foreign_key "users", "departments"
-  add_foreign_key "users", "outlets"
+  add_foreign_key "users", "outlets", column: "active_outlet_id"
   add_foreign_key "workflow_actions", "companies"
   add_foreign_key "workflow_actions", "tasks"
   add_foreign_key "workflow_actions", "users", column: "assigned_user_id"
@@ -960,6 +969,7 @@ ActiveRecord::Schema.define(version: 2021_03_21_012536) do
   add_foreign_key "workflow_actions", "workflows"
   add_foreign_key "workflows", "batches"
   add_foreign_key "workflows", "companies"
+  add_foreign_key "workflows", "franchisees"
   add_foreign_key "workflows", "outlets"
   add_foreign_key "workflows", "recurring_workflows"
   add_foreign_key "workflows", "templates"
