@@ -1,10 +1,11 @@
 class Topic < ApplicationRecord
   include AASM
 
-  belongs_to :user
-  belongs_to :company
-  belongs_to :startup, class_name: "Company"
   belongs_to :assigned_user, class_name: 'User'
+  belongs_to :company
+  belongs_to :document
+  belongs_to :startup, class_name: "Company"
+  belongs_to :user
 
   has_many :notes, as: :notable, dependent: :destroy
 
