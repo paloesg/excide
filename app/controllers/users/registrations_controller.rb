@@ -6,7 +6,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     if (params[:product] == "symphony" || params[:product] == "motif" || params[:product] == "overture")
-      super
+      @user = User.new
+      @user.build_company
     else
       raise ActionController::RoutingError.new('Invalid Product Name in URL')
     end
@@ -15,26 +16,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     build_resource(sign_up_params)
-    if params[:company].present?
-      resource.company = Company.friendly.find(params[:company])
-    else
-      company = Company.new(name: resource.email + "'s company")
-      # Set company to basic plan for now
-      company.account_type = 0
-      company.save
-      resource.company = company
-      if params[:product].present?
-        resource.company.products = [params[:product]]
-        resource.company.save
-        resource.save
-      end
-    end
-    role = params[:role].present? ? params[:role] : "admin"
-    if resource.company.present?
-      resource.add_role role.to_sym, resource.company
-    else
-      resource.add_role role.to_sym
-    end
+    company = resource.company
+    # Set company to basic plan for now
+    company.account_type = 0
+    company.products = ["overture"]
+    company.save
+    resource.save
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
@@ -131,6 +118,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # super(resource)
     # symphony_root_path
   # end
+
+  def sign_up_params
+    params.require(:user).permit(:first_name, :last_name, :contact_number, :company_id, :email, :password, :password_confirmation, :current_password, :stripe_card_token, :stripe_customer_id, company_attributes:[:id, :name, :website_url])
+  end
 
   def build_addresses
     @company = current_user.company
