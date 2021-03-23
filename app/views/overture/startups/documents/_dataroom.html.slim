@@ -119,7 +119,7 @@
                 / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
                 = image_pack_tag "media/src/images/overture/doc.svg"
               span.ml-5
-                = d.versions.attachments.find_by(current_version: true).filename
+                = d.versions.attachments.find_by(current_version: true)&.filename
             td.col-2
               = d.updated_at.strftime("%d %b %Y")
             td.col-1
