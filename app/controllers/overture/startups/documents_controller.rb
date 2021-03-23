@@ -58,10 +58,10 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
     respond_to do |format|
       # check if update comes from drag and drop or from remarks. If folder_id is not present, then update remarks
       if (params[:folder_id].present? ? @document.update(folder_id: @folder.id) : @document.update(remarks: params[:document][:remarks]))
+        format.html { redirect_back fallback_location: overture_startups_documents_path }
         format.json { render json: { link_to: overture_startups_documents_path, status: "ok" } }
-        format.html { redirect_to overture_startups_documents_path }
       else
-        format.html { redirect_to overture_startups_documents_path }
+        format.html { redirect_back fallback_location: overture_startups_documents_path }
         format.json { render json: @document.errors, status: :unprocessable_entity }
       end
     end
@@ -71,7 +71,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
     authorize @document
     if @document.destroy
       respond_to do |format|
-        format.html { redirect_to overture_startups_documents_path }
+        format.html { redirect_back fallback_location: overture_startups_documents_path }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       end
       flash[:notice] = 'Document was successfully deleted.'
@@ -82,7 +82,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
     @blob = ActiveStorage::Blob.find_signed(params[:signed_id])
     @attachment = ActiveStorage::Attachment.find_by(blob_id: @blob.id)
     @attachment.purge
-    redirect_to overture_startups_documents_path, notice: "Version successfully deleted."
+    redirect_back fallback_location: overture_startups_documents_path, notice: "Version successfully deleted."
   end
 
   def change_versions
@@ -92,9 +92,9 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
     new_attachment = ActiveStorage::Attachment.find_by(id: params[:attachment_id])
     new_attachment.current_version = true
     if old_attachment.save and new_attachment.save
-      redirect_to overture_startups_documents_path, notice: "Version changed!"
+      redirect_back fallback_location: overture_startups_documents_path, notice: "Version changed!"
     else
-      redirect_to overture_startups_documents_path, alert: "There was an error when changing version of document. Please contact support."
+      redirect_back fallback_location: overture_startups_documents_path, alert: "There was an error when changing version of document. Please contact support."
     end
   end
 
