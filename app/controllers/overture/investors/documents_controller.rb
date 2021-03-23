@@ -12,6 +12,7 @@ class Overture::Investors::DocumentsController < Overture::DocumentsController
     @interested_startup_company = params[:company_id].present? ? Company.find_by(id: params[:company_id]) : @company
     # Show startup company's documents to investors if they have permission access
     @documents = Document.where(folder_id: nil, company: @interested_startup_company).order(created_at: :desc).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
+    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
     @folders = Folder.roots.includes(:permissions).where(company: @interested_startup_company, permissions: { can_view: true, role_id: @user.roles.map(&:id)}).where.not(name: ["Resource Portal", "Shared Drive"])
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
     @users = get_users(@company)

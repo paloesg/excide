@@ -75,3 +75,4 @@
             - else
               td
           = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
+  = paginate @documents, views_prefix: 'dashboard'
