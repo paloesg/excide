@@ -17,13 +17,9 @@ class Overture::PermissionsController < ApplicationController
     end
     # Depending on permissible_type, get the instance of the respective permissible (document or folder)
     @permissible = params[:permissible_type] == "folder" ? Folder.find(params[:permissible_id]) : Document.find(params[:permissible_id])
-    @permission = Permission.new(role: Role.find(params[:role_id]), permissible: @permissible, can_view: permission_changes['status'][:can_view], can_download: permission_changes['status'][:can_download], can_write: permission_changes['status'][:can_write])
+    PermissionsJob.perform_later(Role.find(params[:role_id]), @permissible, permission_changes['status'][:can_view], permission_changes['status'][:can_download], permission_changes['status'][:can_write])
     respond_to do |format|
-      if @permission.save
         format.json { render json: { link_to: session[:previous_url], status: "ok" } }
-      else
-        format.json { render json: @permission.errors, status: :unprocessable_entity }
-      end
     end
   end
 
