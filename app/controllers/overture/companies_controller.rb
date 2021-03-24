@@ -43,7 +43,7 @@ class Overture::CompaniesController < ApplicationController
   end
 
   def billing_and_invoice
-
+    authorize @company
   end
 
   private

@@ -35,7 +35,7 @@ html lang="en"
       .new-tab-wrapper.overflow-auto.pb-0
         .new-tab-contents
           .row.mt-5.h-100
-            - if (controller_name == "companies" and action_name == "edit") || controller_name == "users" || (controller_name == "companies" and action_name == "edit") || (controller_name == "companies" and action_name == "subscription_plan")
+            - if (controller_name == "companies" and action_name == "edit") || controller_name == "users" || (controller_name == "companies" and action_name == "edit") || (controller_name == "companies" and action_name == "subscription_plan") || (controller_name == "companies" and action_name == "billing_and_invoice")
               .col-sm-2.bg-white.border-right.sidebar-border-radius
                 = render 'layouts/overture/overture_setting_sidebar'
               .col-sm-10.bg-white.content-border-radius.p-5

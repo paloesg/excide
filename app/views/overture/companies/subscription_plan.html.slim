@@ -12,19 +12,25 @@
           th.w-25 Package 2
           th.w-25 Enterprise Package
       tbody
-        tr
+        tr.background-gradient
           td.description-col-font Price / month
           td
             h1.font-weight-boldest Free
-            button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Downgrade
+            - if @company.free_trial?
+              button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Current Plan
+            - else
+              button.btn.btn-primary.my-5 Downgrade
             p.text-muted Recommended for trial
           td
             h1.font-weight-boldest $49.00
-            button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Current Plan
+            - if @company.pro?
+              button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Current Plan
+            - else
+              = link_to 'Upgrade', overture_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: "btn btn-primary my-5"
             p Popular among early stage startups
           td
-            h1.font-weight-boldest Contact us
-            = link_to 'Upgrade', overture_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: "btn btn-primary my-5"
+            h1.font-weight-boldest Custom
+            = link_to 'Contact Us', '#', class: "btn btn-primary my-5"
             p Popular among Series A startups
         tr
           td.description-col-font Team
