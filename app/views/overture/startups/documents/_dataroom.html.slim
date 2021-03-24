@@ -50,10 +50,9 @@
         span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
           | Clear
     - if controller_name == "folders"
-      hr.mb-2
-      .row
+      .row.mt-2
         .col
-          ul.breadcrumb.breadcrumb-transparent.font-weight-bold.p-0.my-2.font-size-sm
+          ul.breadcrumb.breadcrumb-transparent.font-weight-bold.p-0.font-size-sm
             li.breadcrumb-item
               = link_to "Dataroom", overture_startups_documents_path, class: "text-dark"
             - @breadcrumb_folder_arrangement.each do |folder|
