@@ -10,11 +10,13 @@ class Document < ApplicationRecord
   belongs_to :document_template
   belongs_to :folder
   belongs_to :outlet
+  belongs_to :post
   belongs_to :user
   belongs_to :workflow
   belongs_to :workflow_action
 
   has_many :permissions, as: :permissible, dependent: :destroy
+  has_many :topics, dependent: :destroy
 
   has_one_attached :raw_file
   has_many_attached :converted_images

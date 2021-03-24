@@ -1,0 +1,8 @@
+ .row.justify-content-center.mt-40
+  .col.text-center.p-10
+    = image_pack_tag 'media/src/images/overture/post_empty_state.png', size: "100"
+    h3.my-5 Sharing is caring
+    - empty_state_message = "Let them know how your startup is doing. <br/> Small actions of care is much more valuable <br/> than you think."
+    p.mt-4.comment-font-size #{{empty_state_message}}
+    button.btn.btn-outline-secondary.text-primary.font-weight-boldest data-target="#annoucement_new" data-toggle="modal" type="button"
+      | Make the first announcement
