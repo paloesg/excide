@@ -16,12 +16,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     build_resource(sign_up_params)
-    company = resource.company
+    @company = resource.company
     # Set company to basic plan for now
-    company.account_type = 0
-    company.products = ["overture"]
-    company.save
-    resource.save
+    @company.account_type = 0
+    if params[:product].present?
+      @company.products = [params[:product]]
+      @company.save
+      if params[:product] == "overture"
+        @company.company_type = "startup"
+        # For overture, add member and admin role
+        Role.create(name: "member", resource: @company)
+        set_default_profile_or_contact
+        set_default_contact_statuses
+      end
+      resource.save
+    end
+    # end
+    # Add default roles to company
+    role = params[:role].present? ? params[:role] : "admin"
+    resource.company.present? ? resource.add_role(role.to_sym, resource.company) : resource.add_role(role.to_sym)
+
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
@@ -141,6 +155,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @country = @user.company.address.country + " (+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
     else
       @country = nil;
+    end
+  end
+
+  # Default values for overture company creation
+  def set_default_profile_or_contact
+    if @company.investor?
+      # Create a public contact for investor so that it can be searched by startups
+      Contact.create(company_name: @company.name, created_by_id: @user.id, company_id: @company.id, searchable: true)
+    else
+      # Create a profile instance for startup
+      Profile.create(company: @company, name: @company.name)
+    end
+  end
+
+  def set_default_contact_statuses
+    if @company.startup?
+      default_statuses = ["Shortlisted", "Contacted", "Pitched", "Due Dilligence", "Partners Meeting", "Investment Committee", "Committed", "Invested", "Said no"]
+      default_statuses.each_with_index do |status, index|
+        ContactStatus.create(name: status, startup_id: @company.id, position: index + 1)
+      end
     end
   end
 end
