@@ -16,10 +16,10 @@
           td.description-col-font Price / month
           td
             h1.font-weight-boldest Free
-            - if @company.free_trial?
+            - if @company.free_trial? or @company.basic?
               button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Current Plan
             - else
-              button.btn.btn-primary.my-5 Downgrade
+              = link_to "Downgrade", overture_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: "btn btn-primary my-5"
             p.text-muted Recommended for trial
           td
             h1.font-weight-boldest $49.00
