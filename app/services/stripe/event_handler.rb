@@ -1,6 +1,6 @@
 # Stripe module
 module Stripe
- # stripe main class EventHandler
+ # This event handler handles webhook data from Stripe based on the processes. Works for both Symphony and Overture product. Do note that Stripe recommends using their price API instead of plan API at the moment, so will be good to handle all Symphony plan into price in the future. For now, since Symphony isn't used, Symphony plan will be removed.
   class EventHandler
     def call(event)
       method = 'handle_' + event.type.tr('.', '_')
@@ -29,12 +29,6 @@ module Stripe
       @current_user.company.save
     end
 
-    # def handle_invoice_upcoming(event)
-    #   @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-    #   # Notify user when payment is upcoming for the next month
-    #   StripeNotificationMailer.upcoming_payment_notification(@current_user).deliver_later
-    # end
-
     def handle_customer_subscription_created(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       if @current_user.company.stripe_subscription_plan_data.empty?
@@ -50,8 +44,7 @@ module Stripe
     def handle_customer_subscription_updated(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
       @subscription = Stripe::Subscription.retrieve(event.data.object.id)
-
-      if @current_user.present? and (event.data.object.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN'])
+      if @current_user.present? and event.data.object.plan.id == ENV['OVERTURE_STRIPE_PRICE']
         period_end = event.data.object.current_period_end
         # Run mailer only when cancel_at_period_end is true
         if event.data.object.cancel_at_period_end
@@ -60,13 +53,13 @@ module Stripe
           StripeNotificationMailer.cancel_subscription_notification(@current_user, Time.at(period_end).strftime("%d-%b-%Y")).deliver_later
         end
         # only update to subscription plan data if it's annual plan
-        @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription if event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
+        # @current_user.company.stripe_subscription_plan_data['subscription'] = @subscription if event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
         @current_user.company.save
       end
     end
 
     def handle_customer_subscription_deleted(event)
-      if event.data.object.plan.id == ENV['STRIPE_MONTHLY_PLAN'] or event.data.object.plan.id == ENV['STRIPE_ANNUAL_PLAN']
+      if event.data.object.plan.id == ENV['OVERTURE_STRIPE_PRICE']
         @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
         # Downgrade service runs when stripe deleted subscription
         DowngradeSubscriptionService.new(@current_user.company).run

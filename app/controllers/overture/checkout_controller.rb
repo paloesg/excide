@@ -46,9 +46,9 @@ class Overture::CheckoutController < ApplicationController
         cancel_at_period_end: true,
       }
     )
-      redirect_to symphony_root_path, notice: 'You have cancelled your subscription successfully. You will still have the PRO features until the end of your subscription date. Re-subscribe to PRO for more Symphony advanced features.'
+      redirect_to overture_subscription_plan_path, notice: 'You have cancelled your subscription successfully. You will still have the paid features until the end of your subscription date. Re-subscribe to paid plan for more Overture advanced features.'
     else
-      redirect_to symphony_root_path, alert: 'Cancellation of subscription failed. Please try again later or contact support.'
+      redirect_to overture_subscription_plan_path, alert: 'Cancellation of subscription failed. Please try again later or contact support.'
     end
   end
 end
