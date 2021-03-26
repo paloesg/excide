@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-ruby '2.7.2'
+ruby '3.0.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3.4'
+gem 'rails', '~> 6.1.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 1.2.3', '< 2.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -18,7 +18,7 @@ gem 'turbolinks', '~> 5.2.0'
 # Fix issues with jquery caused by turbolinks
 gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.10.0'
+gem 'jbuilder', '~> 2.11.0'
 # Use puma web server
 gem 'puma'
 # Set timeout for long running processes
@@ -30,7 +30,7 @@ gem 'webpacker', '~> 5.2.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 # Lock sprockets version because new version of sprockets require manifest file
-gem 'sprockets', '~>3.0'
+gem 'sprockets', '~>3.7.0'
 
 #################################################
 #                                               #
@@ -69,11 +69,11 @@ gem 'aasm'
 # Manage ordering for survey objects
 gem 'acts_as_list'
 # For tagging
-gem 'acts-as-taggable-on', '~> 6.5.0'
+gem 'acts-as-taggable-on', '~> 7.0.0'
 # For tagging in administrate
 gem 'administrate-field-acts_as_taggable'
 # Use user friendly slugs
-gem 'friendly_id', '5.3.0'
+gem 'friendly_id', '5.4.2'
 # Activity feed
 gem 'public_activity'
 # Handle money
@@ -87,7 +87,7 @@ gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-r
 # Font Awesome Rails
 gem 'font_awesome5_rails'
 # Default processer: MiniMagick. Enable variant for image using ActiveStorage
-gem 'image_processing', '~> 1.11.0'
+gem 'image_processing', '~> 1.12.0'
 # Office previewer
 gem "activestorage-office-previewer"
 
@@ -141,8 +141,8 @@ gem 'slack-ruby-client'
 # Algolia search
 gem 'algoliasearch-rails'
 # Amazon S3 SDK
-gem 'aws-sdk-s3', '~> 1.81.0'
-gem 'aws-sdk-textract', '~> 1.19.0'
+gem 'aws-sdk-s3', '~> 1.88.0'
+gem 'aws-sdk-textract', '~> 1.23.0'
 # SMS integration with Twilio
 gem 'twilio-ruby'
 # Analytics
