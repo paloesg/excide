@@ -3,7 +3,7 @@ jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     parallelism: 1
     docker: # run the steps with Docker
-      - image: circleci/ruby:2.7.2-node-browsers # ...with this image as the primary container; this is where all `steps` will run
+      - image: cimg/ruby:3.0.0-node # ...with this image as the primary container; this is where all `steps` will run
         environment: # environment variables for primary container
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
@@ -12,7 +12,7 @@ jobs: # a collection of steps
           PGUSER: excide
           RAILS_ENV: test
           NODE_ENV: test
-      - image: circleci/postgres:9.5-alpine # database image
+      - image: circleci/postgres:13.1 # database image
         environment: # environment variables for database
           POSTGRES_USER: excide
           POSTGRES_DB: excide_test
