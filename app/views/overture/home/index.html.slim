@@ -47,19 +47,22 @@
             h3 No activity yet
             p.mt-4 This section will be populated as you do more things on Overture.
 - else
-  row.mb-3.mt-5.ml-3
+  .row.mb-3.mt-5.ml-3
     .col-sm-12
-      - @posts.each do |post|
-        .col-sm-12.mr-8.mb-6.qna-wrapper.px-5.py-5.float-left
-          .mt-5.d-flex
-            = image_pack_tag 'media/src/images/overture/overture-icon.png', class: "p-3 announcement-icon-size mr-6"
-            .flex-grow-1
-              h4 = post.company.name
-              .d-flex.align-items-center.mt-4
-                = image_pack_tag 'media/src/images/overture/user-avatar-placeholder.jpg', class: 'icon-size'
-                small.mx-3 = post.author.full_name
-                small = post.created_at.strftime("%d %b %Y")
-              .comment-font-size.text-dark.mt-4 = post.content
-            .icon-bar
-              = link_to overture_startups_post_path(post.id) do
-                i.material-icons-outlined.mt-4 open_in_new
+      - if @posts.nil?
+        = render "overture/startups/posts/post_empty_state"
+      - else
+        - @posts.each do |post|
+          .col-sm-12.mr-8.mb-6.qna-wrapper.px-5.py-5.float-left
+            .mt-5.d-flex
+              = image_pack_tag 'media/src/images/overture/overture-icon.png', class: "p-3 announcement-icon-size mr-6"
+              .flex-grow-1
+                h4 = post.company.name
+                .d-flex.align-items-center.mt-4
+                  = image_pack_tag 'media/src/images/overture/user-avatar-placeholder.jpg', class: 'icon-size'
+                  small.mx-3 = post.author.full_name
+                  small = post.created_at.strftime("%d %b %Y")
+                .comment-font-size.text-dark.mt-4 = post.content
+              .icon-bar
+                = link_to overture_startups_post_path(post.id) do
+                  i.material-icons-outlined.mt-4 open_in_new

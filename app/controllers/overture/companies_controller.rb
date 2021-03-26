@@ -5,7 +5,7 @@ class Overture::CompaniesController < ApplicationController
   before_action :set_company, except: [:show]
   before_action :find_startup_by_id, only: [:capitalization_table, :financial_performance]
 
-  after_action :verify_authorized, only: :index
+  after_action :verify_authorized, only: [:subscription_plan, :index]
 
   def index
     # Only investor can access companies INDEX page
@@ -36,6 +36,14 @@ class Overture::CompaniesController < ApplicationController
 
   def financial_performance
     @topic = Topic.new
+  end
+
+  def subscription_plan
+    authorize @company
+  end
+
+  def billing_and_invoice
+    authorize @company
   end
 
   private
