@@ -116,7 +116,13 @@ class Motif::OutletsController < ApplicationController
   end
 
   def email_new_outlet
-    NotificationMailer.motif_new_outlet(current_user).deliver_later
+    outlet_details = {
+      full_name: params[:full_name],
+      email: params[:email],
+      unit_name: params[:unit_name],
+      request_approved: params[:request_approved],
+    }
+    NotificationMailer.motif_new_outlet(current_user, outlet_details).deliver_later
     redirect_to motif_outlets_path, notice: "You are registering a new Outlet Entity. Please wait for further instructions which shall be communicated to you by email within 1 working day."
   end
 
