@@ -170,6 +170,9 @@ gem 'deep_cloneable', '~> 3.1.0'
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
 
+# Ruby garbage collector tuning
+gem 'tunemygc'
+
 group :development do
   gem 'rails_real_favicon'
   gem 'rubocop', require: false
