@@ -55,19 +55,23 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def motif_new_outlet(user)
+  def motif_new_outlet(user, outlet_details)
     #to email will be changed with afc's support email
-    mail(to: ['support@paloe.com.sg', 'clarence@asiawidefranchise.com.sg'], from: 'Asiawide ADA <support@paloe.com.sg>', subject: 'New Outlet', body: 'New outlet', template_id: ENV['ADA_SENDGRID_MOTIF_NEW_OUTLET'], dynamic_template_data: {
+    mail(to: ['jonathan.lau@paloe.com.sg', 'kristian.hadinata@paloe.com.sg', 'clarence@asiawidefranchise.com.sg'], from: 'Asiawide ADA <support@ada.com.sg>', subject: 'New Outlet', body: 'New outlet', template_id: ENV['ADA_SENDGRID_MOTIF_NEW_OUTLET'], dynamic_template_data: {
         fullName: user.full_name,
         company: user.company.name,
-        email: user.email
+        email: user.email,
+        outletUserName: outlet_details[:full_name],
+        outletUserEmail: outlet_details[:email],
+        outletName: outlet_details[:unit_name],
+        request_approved: outlet_details[:request_approved].present? ? "Yes" : "No"
       }
     )
   end
 
   def motif_new_franchisee(user, franchisee_details)
     #to email will be changed with afc's support email
-    mail(to: ['jonathan.lau@paloe.com.sg', 'clarence@asiawidefranchise.com.sg'], from: 'Asiawide Digital Advantage (ADA) <admin@excide.co>', subject: 'New Franchisee', body: 'New franchisee', template_id: ENV['ADA_SENDGRID_MOTIF_NEW_FRANCHISEE'], dynamic_template_data: {
+    mail(to: ['jonathan.lau@paloe.com.sg', 'clarence@asiawidefranchise.com.sg', 'kristian.hadinata@paloe.com.sg'], from: 'Asiawide Digital Advantage (ADA) <support@ada.com.sg>', subject: 'New Franchisee', body: 'New franchisee', template_id: ENV['ADA_SENDGRID_MOTIF_NEW_FRANCHISEE'], dynamic_template_data: {
         fullName: user.full_name,
         company: user.company.name,
         email: user.email,

@@ -157,7 +157,7 @@ Rails.application.routes.draw do
     post '/add-roles', to: 'users#add_role', as: :add_role
     get '/financial-performance', to: 'home#financial_performance'
     get '/edit-report', to: 'home#edit_report'
-    get "/email_new_outlet", to: 'outlets#email_new_outlet', as: :email_new_outlet
+    post "/email_new_outlet", to: 'outlets#email_new_outlet', as: :email_new_outlet
     post "/email_new_franchisee", to: 'franchisees#email_new_franchisee', as: :email_new_franchisee
   end
 

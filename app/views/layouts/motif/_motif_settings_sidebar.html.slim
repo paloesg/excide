@@ -15,7 +15,7 @@
     - else
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_outlet_edit_franchisee_setting_path(current_user.active_outlet), class: 'col-sm-12 d-flex align-items-center' do
-          .ml-2.sidebar-font Outlet Information
+          .ml-2.sidebar-font = get_franchisee.present? ? "Company Information" : "Outlet Information"
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_users_path(outlet_id: current_user.active_outlet.id), class: 'col-sm-12 d-flex align-items-center' do
           .ml-2.sidebar-font Users

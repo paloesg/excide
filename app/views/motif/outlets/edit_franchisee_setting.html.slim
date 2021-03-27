@@ -3,9 +3,14 @@
     .col-sm-12
       .btn-toolbar.float-right
         = f.submit 'Save', class: 'btn btn-primary mr-3 px-5'
-      h3 Outlet Information
+      h3 = get_franchisee.present? ? "Company Information" : "Outlet Information"
   .row.mb-3.mt-5.ml-3
     .col-sm-12
+      - if get_franchisee.present?
+        = f.fields_for :franchisee do |ff|
+          .form-group
+            = ff.label :franchise_licensee, 'Company Name', class: "label-bold"
+            = ff.text_field :franchise_licensee, class: 'form-control'
       .form-group
         = f.label :name, 'Outlet Name', class: "label-bold"
         = f.text_field :name, class: 'form-control'

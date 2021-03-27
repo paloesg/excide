@@ -50,7 +50,32 @@
                     = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
                     button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close
     - else
-      = link_to "Register New Outlet", motif_email_new_outlet_path, class: "btn btn-primary float-right"
+      button.btn.btn-primary.text-white.float-right.ml-5 data-target="#newOutletDetails" data-toggle="modal" type="button"
+        i.material-icons-outlined.text-white add
+        | Register New Outlet
+      #newOutletDetails.modal.fade aria-hidden="true" aria-labelledby="openNewOutletForm" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5#openNewOutletForm.modal-title Request for new outlet
+            .modal-body
+              = form_tag motif_email_new_outlet_path do |f|
+                .row.mt-3
+                  .col-md-12
+                    .form-group
+                      = text_field_tag :unit_name, nil, { required: true, placeholder: "Outlet Name", class: 'form-control' }
+                    .form-group
+                      = text_field_tag :full_name, nil, { required: true, placeholder: "Enter person in charge's full name ", class: 'form-control' }
+                    .form-group
+                      = text_field_tag :email, nil, { required: true, placeholder: "Enter person in charge's email ", class: 'form-control' }
+                    .form-check
+                      = check_box_tag :request_approved, nil, false, class: 'form-check-input'
+                      = label_tag :request_approved, "Request approved by franchisor", class: "ml-2 mt-1"
+                .row.mt-3
+                  .col-md-12
+                    = submit_tag "Save", class: 'btn btn-sm btn-primary float-right ml-3'
+                    button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close
+      / = link_to "Register New Outlet", motif_email_new_outlet_path, class: "btn btn-primary float-right"
     .float-right.my-2
       i.px-5.material-icons-outlined more_vert
     h3 Outlet List

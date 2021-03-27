@@ -5,6 +5,7 @@
           = link_to 'Setting', motif_edit_report_path, target: :_blank, class: 'text-primary font-weight-bolder mr-3 px-5'
       h3.mb-5 Financial Performance
       - if current_user.active_outlet.nil?
+        = label_tag "financial_dashboard", "View as...", class: 'h8'
         = form_tag(motif_financial_performance_path, method: :get, enforce_utf8: false) do
           = select_tag("franchisee", options_for_select(@franchisees.collect{|f| [f.franchise_licensee, f.id]}.unshift([@company.name, ""]), selected: params[:franchisee]), onchange: "this.form.submit();", class: "w-25 select2-no-placeholder")
 - if @source.report_url.present?

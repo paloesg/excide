@@ -2,7 +2,7 @@
   .col-sm-12
     button.btn.btn-primary.text-white.float-right.ml-5 data-target="#newFranchisee" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white add
-      | New Franchisee
+      | Register New Franchisee
     #newFranchisee.modal.fade aria-hidden="true" aria-labelledby="openMotifFranchisee" role="dialog" tabindex="-1"
       .modal-dialog role="document"
         .modal-content
@@ -13,13 +13,13 @@
               .row.mt-3
                 .col-md-12
                   .form-group
+                    = text_field_tag :unit_name, nil, { required: true, placeholder: "Enter franchisee entity", class: 'form-control' }
+                  .form-group
                     = text_field_tag :full_name, nil, { required: true, placeholder: "Enter person in charge's full name ", class: 'form-control' }
                   .form-group
                     = text_field_tag :email, nil, { required: true, placeholder: "Enter person in charge's email ", class: 'form-control' }
                   .form-group
-                    = text_field_tag :unit_name, nil, { required: true, placeholder: "Enter unit's name", class: 'form-control' }
-                  .form-group
-                    = select_tag('license_type', options_for_select(Franchisee.license_types.map{|k, v| [k, k]}), include_blank: "Choose franchisee type", required: true, class: "form-control")
+                    = select_tag('license_type', options_for_select(Franchisee.license_types.map{|k, v| [k.humanize, k]}), include_blank: "Choose franchisee type", required: true, class: "form-control")
               .row.mt-3
                 .col-md-12
                   = submit_tag "Save", class: 'btn btn-sm btn-primary float-right ml-3'
