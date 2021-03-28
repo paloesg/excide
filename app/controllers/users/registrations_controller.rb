@@ -16,7 +16,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     build_resource(sign_up_params)
-    @company = resource.company
+    # Set company to resource.company if sign up is from overture, else create a temporary company
+    @company = resource.company ? resource.company : Company.new(name: resource.email + "'s company")
     # Set company to basic plan for now
     @company.account_type = 0
     if params[:product].present?
@@ -28,6 +29,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         Role.create(name: "member", resource: @company)
         set_default_profile_or_contact
         set_default_contact_statuses
+      else
+        resource.company = @company
       end
       resource.save
     end
