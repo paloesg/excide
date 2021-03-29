@@ -1,6 +1,6 @@
 .row
   .col-sm-12
-    h1.text-center.font-weight-boldest style="font-size: 60px;" Overture Signup
+    h1.text-center.font-weight-boldest style="font-size: 60px;" #{params[:product].titleize} Signup
     h3.text-center style="font-size: 24px;" Don't worry about payment details for now
 .d-flex.align-items-center
   .sign-up-wrapper.p-10.mx-auto.mt-10
@@ -17,13 +17,14 @@
               .form-group
                 = f.label :last_name, "Last Name", class: "font-weight-bolder"
                 = f.text_field :last_name, required: true, autofocus: true, placeholder: "Musk", class: 'form-control'
-              = f.fields_for :company do |c|
-                .form-group
-                  = c.label :name, "Startup Name", class: "font-weight-bolder"
-                  = c.text_field :name, required: true, autofocus: true, placeholder: "SpaceY Co.", class: 'form-control'
-                .form-group
-                  = c.label :website_url, "Startup Website", class: "font-weight-bolder"
-                  = c.text_field :website_url, required: true, autofocus: true, placeholder: "SpaceY Co.", class: 'form-control'
+              - if params[:product] == "overture"
+                = f.fields_for :company do |c|
+                  .form-group
+                    = c.label :name, "Startup Name", class: "font-weight-bolder"
+                    = c.text_field :name, required: true, autofocus: true, placeholder: "SpaceY Co.", class: 'form-control'
+                  .form-group
+                    = c.label :website_url, "Startup Website", class: "font-weight-bolder"
+                    = c.text_field :website_url, required: true, autofocus: true, placeholder: "SpaceY Co.", class: 'form-control'
               .form-group
                 = f.label :email, "Work Email", class: "font-weight-bolder"
                 = f.email_field :email, required: true, placeholder: "Work Email", class: 'form-control'
@@ -40,7 +41,7 @@
                 = hidden_field_tag :product, params[:product]
               span
                 | By signing up, you agree to the
-                = link_to "terms and conditions", terms_path, class: "font-weight-normal"
+                = link_to " terms and conditions", terms_path, class: "font-weight-normal"
                 | .
               .form-group.mt-3
                 = f.submit "Create Account", class: "btn btn-primary text-nunito col-sm-12"

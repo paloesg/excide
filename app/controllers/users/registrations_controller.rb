@@ -16,7 +16,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     build_resource(sign_up_params)
-    @company = resource.company
+    # Set company to resource.company if sign up is from overture, else create a temporary company
+    @company = resource.company ? resource.company : Company.new(name: resource.email + "'s company")
     # Set company to basic plan for now
     @company.account_type = 0
     if params[:product].present?
@@ -28,6 +29,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         Role.create(name: "member", resource: @company)
         set_default_profile_or_contact
         set_default_contact_statuses
+      else
+        resource.company = @company
       end
       resource.save
     end
@@ -41,7 +44,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
         sign_up(resource_name, resource)
-        respond_with resource, location: after_sign_up_path_for(resource)
+        respond_with resource, location: params[:product] == "overture" ? overture_root_path : after_sign_up_path_for(resource)
       else
         set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!

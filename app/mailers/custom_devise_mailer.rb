@@ -4,8 +4,8 @@ class CustomDeviseMailer < Devise::Mailer
   default template_path: 'devise/mailer' # to make sure that your mailer uses the devise views
 
   def confirmation_instructions(record, token, opts={})
-    # If user is an investor, then pass in product overture
-    check_user_has_role_investor = record.has_role?(:investor, record.company)
+    # check whether company has overture
+    check_product_overture = record.company.products.include? "overture"
     data = {
       personalizations: [
         {
@@ -17,7 +17,7 @@ class CustomDeviseMailer < Devise::Mailer
           dynamic_template_data: {
             firstName: record.email,
             confirmationToken: token,
-            product: check_user_has_role_investor ? "overture" : "symphony"
+            product: check_product_overture ? "Overture" : "Symphony"
           }
         }
       ],
