@@ -65,7 +65,7 @@ class Motif::WorkflowsController < ApplicationController
     @action = Task.find_by_id(params[:task_id]).get_workflow_action(params[:company_id], params[:workflow_id])
     authorize @workflow
     respond_to do |format|
-      if @action.update_attributes(completed: !@action.completed, completed_user_id: current_user.id, current_action: false, notify_status: false)
+      if @action.update(completed: !@action.completed, completed_user_id: current_user.id, current_action: false, notify_status: false)
         format.json { render json: @action.completed, status: :ok }
         flash[:notice] = "You have successfully completed all outstanding items for your current task." if @action.all_actions_task_group_completed?
         format.js   { render js: 'Turbolinks.visit(location.toString());' }

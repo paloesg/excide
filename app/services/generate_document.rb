@@ -43,20 +43,18 @@ class GenerateDocument
     @document.company = @company
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if @document_type_param == 'invoice'
+    # Put documents into folder when generating documents
+    @document.folder = Folder.find_by(id: @folder_id) if @folder_id.present?
   end
 
   def set_document_associations
-    if @folder_id.present?
-      @document.folder = Folder.find_by(id: @folder_id)
-    else
-      generate_workflow
-      @document.workflow = @workflow
+    generate_workflow
+    @document.workflow = @workflow
 
-      if @action_param.present?
-        # Document belongs to a specific task in workflow
-        @workflow_action = @document.company.workflow_actions.find(@action_param)
-        @document.workflow_action = @workflow_action
-      end
+    if @action_param.present?
+      # Document belongs to a specific task in workflow
+      @workflow_action = @document.company.workflow_actions.find(@action_param)
+      @document.workflow_action = @workflow_action
     end
 
     return @document

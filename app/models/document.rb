@@ -21,7 +21,7 @@ class Document < ApplicationRecord
   has_many_attached :converted_images
 
   before_validation :set_filename
-  after_destroy :delete_file_on_s3
+  before_destroy :delete_file_on_s3
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
 
