@@ -156,6 +156,7 @@ Rails.application.routes.draw do
     get '/messages', to: 'notes#messages', as: :messages
     post '/add-roles', to: 'users#add_role', as: :add_role
     get '/financial-performance', to: 'home#financial_performance'
+    get '/usage', to: 'home#usage'
     get '/edit-report', to: 'home#edit_report'
     post "/email_new_outlet", to: 'outlets#email_new_outlet', as: :email_new_outlet
     post "/email_new_franchisee", to: 'franchisees#email_new_franchisee', as: :email_new_franchisee

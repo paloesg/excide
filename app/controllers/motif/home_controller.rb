@@ -50,6 +50,10 @@ class Motif::HomeController < ApplicationController
     @source = current_user.active_outlet ? current_user.active_outlet : current_user.company
   end
 
+  def usage
+
+  end
+
   private
 
   def set_company
