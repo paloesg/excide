@@ -21,20 +21,38 @@
           i.material-icons-outlined.align-middle.mb-1.mr-3 groups
           | Users
         p.card-text Your current usage of users per outlet is
+        h6.mt-5 Outlet Name
         .progress
-          .progress-bar.bg-danger aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 25%")
-        p.text-primary.mt-5.font-weight-boldest 2 GB of 10 GB
-        p ="*Your maximum storage allowed for uploaded files is 10 GB."
+          .progress-bar.bg-motif-red aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 100%")
+        p.text-primary.mt-3.font-weight-boldest 2 / 2 Users
+        h6.mt-5 Outlet Name
+        .progress
+          .progress-bar.bg-warning aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 50%")
+        p.text-primary.mt-3.font-weight-boldest 1 / 2 Users
+        h6.mt-5 Outlet Name
+        .progress
+          .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 25%")
+        p.text-primary.mt-3.font-weight-boldest 1 / 3 Users
   .col-sm-4
     .card
       .card-body
         h5.card-title
           i.material-icons-outlined.align-middle.mb-1.mr-3 card_membership
           | Top Up
-        p.card-text Your current usage of Storage Capacity is
-        .progress
-          .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 25%")
-        p.text-primary.mt-5.font-weight-boldest 2 GB of 10 GB
-        p ="*Your maximum storage allowed for uploaded files is 10 GB."
+        h1 $100.00
+        p.mb-1.card-text Per outlet per month
+        .mb-1.text-muted Inclusive 2 users and 2GB storage
+        .row.mt-5
+          .col-sm-12
+            h3 + $10.00
+            p.mb-1.card-text Per 1 additional user per month
+        .row.mt-5
+          .col-sm-12
+            h3 + $5.00
+            p.mb-1.card-text Per additional 1GB storage per month
+        .row.mt-5
+          .col-sm-12
+            = link_to "Top Up", '#', class: "btn btn-danger bg-motif-red font-weight-boldest"
+            = link_to "Change subscription", "#", class: "btn btn-outline-danger float-right font-weight-boldest text-motif-red"
 
 
