@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   rescue_from Xeroizer::OAuth::RateLimitExceeded, with: :xero_rate_limit_exceeded
 
   before_action :authenticate_product
+  before_action :check_storage_limit_not_exceeded
 
   after_action :store_location
 
@@ -32,6 +33,15 @@ class ApplicationController < ActionController::Base
       overture_root_path
     else
       root_path
+    end
+  end
+
+  # This method checks for that company's storage limit is not exceeded. If it is, lock the company
+  def check_storage_limit_not_exceeded
+    # Only check if company is not locked.
+    unless current_user.company.locked?
+      current_user.company.locked = true if current_user.company.storage_used > current_user.company.storage_limit
+      current_user.company.save
     end
   end
 
