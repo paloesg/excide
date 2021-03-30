@@ -49,13 +49,20 @@ class Document < ApplicationRecord
   def attach_and_convert_document(response_key)
     if response_key.present?
       # Attach the blob to the document using the response key given back by active storage through uppy.js file
-      ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.find_by(key: response_key).id)
+      attachment = ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.find_by(key: response_key).id)
     else
       # For cases without response key like document NEW page and workflow "upload file" task
-      ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.last.id)
+      attachment = ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.last.id)
     end
+    add_to_storage_size(attachment.byte_size)
     # Perform convert job asynchronously to run conversion service
     ConvertPdfToImagesJob.perform_later(self)
+  end
+
+  # This method is to add uploaded document to storage size
+  def add_to_storage_size(byte_size)
+    self.company.storage_used = self.company.storage_used.present? ? (self.company.storage_used + byte_size) : byte_size
+    self.company.save
   end
 
   private
