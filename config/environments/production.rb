@@ -71,6 +71,8 @@ Rails.application.configure do
   # ENV['HOSTNAME'] will identify the 'www' for production. For review apps and staging, we can keep it empty first
   if ENV['HEROKU_APP_NAME'] == 'excide'
     config.action_controller.asset_host = "https://app.paloe.com.sg"
+  elsif ENV['HEROKU_APP_NAME'] == 'asiawide'
+    config.action_controller.asset_host = "https://app.asiawidedigital.com"
   else
     config.action_controller.asset_host = "https://" + ENV['HEROKU_APP_NAME'] + ".herokuapp.com"
   end
