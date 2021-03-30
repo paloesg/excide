@@ -17,7 +17,7 @@ class Overture::PermissionsController < ApplicationController
     end
     # Depending on permissible_type, get the instance of the respective permissible (document or folder)
     @permissible = params[:permissible_type] == "folder" ? Folder.find(params[:permissible_id]) : Document.find(params[:permissible_id])
-    PermissionsJob.perform_later(Role.find(params[:role_id]), @permissible, permission_changes['status'][:can_view], permission_changes['status'][:can_download], permission_changes['status'][:can_write])
+    CreatePermissionsJob.perform_later(Role.find(params[:role_id]), @permissible, permission_changes['status'][:can_view], permission_changes['status'][:can_download], permission_changes['status'][:can_write])
     respond_to do |format|
         format.json { render json: { link_to: session[:previous_url], status: "ok" } }
     end
@@ -37,6 +37,7 @@ class Overture::PermissionsController < ApplicationController
       # Similar for write access
       permission_changes['status'] = @permission.can_write? ? { can_view: @permission.can_view, can_download: @permission.can_download, can_write: false } : { can_write: true, can_view: true, can_download: true }
     end
+    UpdatePermissionsJob.perform_later(Role.find(params[:role_id]), @permission, permission_changes['status'][:can_view], permission_changes['status'][:can_download], permission_changes['status'][:can_write])
     respond_to do |format|
       if @permission.update(can_view: permission_changes['status'][:can_view], can_download: permission_changes['status'][:can_download], can_write: permission_changes['status'][:can_write])
         format.json { render json: { link_to: session[:previous_url], status: "ok" } }
