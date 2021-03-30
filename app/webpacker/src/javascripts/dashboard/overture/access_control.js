@@ -6,7 +6,8 @@ $(document).on("turbolinks:load", function () {
         type: "PATCH",
         url: "/overture/permissions/" + $(this).data("permission-id"),
         data: {
-          status: $(this).data("status")
+          status: $(this).data("status"),
+          role_id: this.id,
         },
         dataType: "JSON"
       }).done(function(result) {
