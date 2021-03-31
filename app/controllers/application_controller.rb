@@ -16,9 +16,9 @@ class ApplicationController < ActionController::Base
   rescue_from Xeroizer::OAuth::RateLimitExceeded, with: :xero_rate_limit_exceeded
 
   before_action :authenticate_product
-  before_action :check_storage_limit_not_exceeded
 
   after_action :store_location
+  after_action :check_storage_limit_not_exceeded
 
   def store_location
     # store last url as long as it isn't a /users path
