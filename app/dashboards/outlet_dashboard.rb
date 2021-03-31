@@ -23,7 +23,8 @@ class OutletDashboard < Administrate::BaseDashboard
     name: Field::String,
     contact: Field::String,
     report_url: Field::String,
-    header_image: Field::ActiveStorage
+    header_image: Field::ActiveStorage,
+    user_limit: Field::Number
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -58,6 +59,7 @@ class OutletDashboard < Administrate::BaseDashboard
   contact
   report_url
   header_image
+  user_limit
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -77,6 +79,7 @@ class OutletDashboard < Administrate::BaseDashboard
   report_url
   header_image
   address
+  user_limit
   ].freeze
 
   # COLLECTION_FILTERS
