@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_30_084358) do
+ActiveRecord::Schema.define(version: 2021_03_31_073318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -394,6 +394,7 @@ ActiveRecord::Schema.define(version: 2021_03_30_084358) do
     t.uuid "company_id"
     t.string "report_url"
     t.uuid "franchisee_id"
+    t.integer "user_limit"
     t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
