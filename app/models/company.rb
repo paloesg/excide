@@ -94,6 +94,22 @@ class Company < ApplicationRecord
     self.users.includes(:roles).where(roles: { name: "franchisor" })
   end
 
+  # For ADA usage
+  def storage_progress
+    (self.storage_used / self.storage_limit.to_f) * 100
+  end
+  # Set color of progress bar, yellow when 70%-90% used, red 90-100%. Percentage can be adjusted
+  def progress_bar_color
+    case (self.storage_used / self.storage_limit.to_f) * 100
+    when 70..90
+      "bg-warning"
+    when 90..100
+      "bg-motif-red"
+    else
+      return
+    end
+  end
+
   private
 
   def generate_mailbox_token

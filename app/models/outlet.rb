@@ -36,4 +36,18 @@ class Outlet < ApplicationRecord
       end
     end
   end
+
+  # For ADA user limit progress
+  def user_limit_progress
+    (self.users.length / self.user_limit.to_f) * 100
+  end
+  # Set color of progress bar, red when user hits the limit
+  def user_limit_progress_bar_color
+    case self.user_limit.to_f - self.users.length
+    when 0
+      "bg-motif-red"
+    else
+      return
+    end
+  end
 end

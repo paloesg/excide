@@ -36,6 +36,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     ancestry: Field::String,
+    locked: Field::Boolean,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -50,7 +51,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     :workflows,
     :templates,
     :documents,
-    :ancestry,        
+    :ancestry,
+    :locked,
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -81,6 +83,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :ancestry,
     :storage_limit,
     :storage_used,
+    :locked,
   ]
 
   # Overwrite this method to customize how profiles are displayed

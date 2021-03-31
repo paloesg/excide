@@ -21,6 +21,7 @@ class Document < ApplicationRecord
   has_many_attached :converted_images
 
   before_validation :set_filename
+  before_destroy :reduce_storage_size
   before_destroy :delete_file_on_s3
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
@@ -49,13 +50,21 @@ class Document < ApplicationRecord
   def attach_and_convert_document(response_key)
     if response_key.present?
       # Attach the blob to the document using the response key given back by active storage through uppy.js file
-      ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.find_by(key: response_key).id)
+      attachment = ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.find_by(key: response_key).id)
     else
       # For cases without response key like document NEW page and workflow "upload file" task
-      ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.last.id)
+      attachment = ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.last.id)
     end
+    add_to_storage_size(attachment.byte_size)
     # Perform convert job asynchronously to run conversion service
     ConvertPdfToImagesJob.perform_later(self)
+  end
+
+  # This method is to add uploaded document to storage size
+  def add_to_storage_size(byte_size)
+    # Existing companies have nil as storage_used default value, hence must check if its nil.
+    self.company.storage_used = self.company.storage_used.present? ? (self.company.storage_used + byte_size) : byte_size
+    self.company.save
   end
 
   private
@@ -80,5 +89,10 @@ class Document < ApplicationRecord
     # File uploaded by active storage
     self.raw_file.purge_later if self.raw_file.present?
     self.converted_images.purge_later if self.converted_images.present?
+  end
+
+  def reduce_storage_size
+    self.company.storage_used -= self.raw_file.byte_size
+    self.company.save
   end
 end

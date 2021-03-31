@@ -50,6 +50,11 @@ class Motif::HomeController < ApplicationController
     @source = current_user.active_outlet ? current_user.active_outlet : current_user.company
   end
 
+  def usage
+    # Get all outlets (sub franchised or direct owned)
+    @outlets = get_outlets_by_type(nil, @company)
+  end
+
   private
 
   def set_company
