@@ -94,6 +94,10 @@ class Company < ApplicationRecord
     self.users.includes(:roles).where(roles: { name: "franchisor" })
   end
 
+  def storage_progress
+    (self.storage_used / self.storage_limit.to_f) * 100
+  end
+
   private
 
   def generate_mailbox_token

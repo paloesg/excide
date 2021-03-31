@@ -1,8 +1,8 @@
-.row.mb-3.mt-5.ml-3
+.row.mb-3.mt-5
   .col-sm-12.d-flex
     i.material-icons.mr-3 card_membership
     h3 Usage & Top Up
-.row.mb-3.mt-10.ml-3
+.row.mb-3.mt-10
   .col-sm-4
     .card
       .card-body
@@ -11,8 +11,8 @@
           | Files Storage
         p.card-text Your current usage of Storage Capacity is
         .progress
-          .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 25%")
-        p.text-primary.mt-5.font-weight-boldest 2 GB of 10 GB
+          .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@company.storage_progress}%")
+        p.text-primary.mt-5.font-weight-boldest = "#{number_to_human_size(@company.storage_used)} / #{number_to_human_size(@company.storage_limit)}"
         p ="*Your maximum storage allowed for uploaded files is 10 GB."
   .col-sm-4
     .card
