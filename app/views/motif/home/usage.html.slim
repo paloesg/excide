@@ -11,7 +11,7 @@
           | Files Storage
         p.card-text Your current usage of Storage Capacity is
         .progress
-          .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@company.storage_progress}%")
+          .progress-bar class="#{@company.progress_bar_color}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@company.storage_progress}%")
         p.text-primary.mt-5.font-weight-boldest = "#{number_to_human_size(@company.storage_used)} / #{number_to_human_size(@company.storage_limit)}"
         p ="*Your maximum storage allowed for uploaded files is 10 GB."
   .col-sm-4
@@ -21,18 +21,18 @@
           i.material-icons-outlined.align-middle.mb-1.mr-3 groups
           | Users
         p.card-text Your current usage of users per outlet is
-        h6.mt-5 Outlet Name
-        .progress
-          .progress-bar.bg-motif-red aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 100%")
-        p.text-primary.mt-3.font-weight-boldest 2 / 2 Users
-        h6.mt-5 Outlet Name
-        .progress
-          .progress-bar.bg-warning aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 50%")
-        p.text-primary.mt-3.font-weight-boldest 1 / 2 Users
-        h6.mt-5 Outlet Name
-        .progress
-          .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 25%")
-        p.text-primary.mt-3.font-weight-boldest 1 / 3 Users
+        - if @outlets.empty?
+          p No outlet yet.
+        - else
+          - @outlets.each do |outlet|
+            h6.mt-5 = outlet.name
+            - if outlet.company == @company and !(outlet.franchisee.unit_franchisee? or outlet.franchisee.sub_franchisee?)
+              p Direct Owned
+            - else
+              p Franchised
+            .progress
+              .progress-bar class="#{outlet.user_limit_progress_bar_color}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{outlet.user_limit_progress}%")
+            p.text-primary.mt-3.font-weight-boldest = "#{outlet.users.length} / #{outlet.user_limit} Users"
   .col-sm-4
     .card
       .card-body
