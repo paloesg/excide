@@ -394,7 +394,7 @@ ActiveRecord::Schema.define(version: 2021_03_31_073318) do
     t.uuid "company_id"
     t.string "report_url"
     t.uuid "franchisee_id"
-    t.integer "user_limit"
+    t.integer "user_limit", default: 2
     t.index ["company_id"], name: "index_outlets_on_company_id"
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
