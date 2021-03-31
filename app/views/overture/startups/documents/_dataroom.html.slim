@@ -50,10 +50,9 @@
         span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
           | Clear
     - if controller_name == "folders"
-      hr.mb-2
-      .row
+      .row.mt-2
         .col
-          ul.breadcrumb.breadcrumb-transparent.font-weight-bold.p-0.my-2.font-size-sm
+          ul.breadcrumb.breadcrumb-transparent.font-weight-bold.p-0.font-size-sm
             li.breadcrumb-item
               = link_to "Dataroom", overture_startups_documents_path, class: "text-dark"
             - @breadcrumb_folder_arrangement.each do |folder|
@@ -72,10 +71,10 @@
     table.table.ml-4.table-aligned
       thead
         tr.d-flex
-          th.col-1
-            input#checkedAll type="checkbox" name=""/
+          th style="width: 10%"
+            input.checkboxSize#checkedAll type="checkbox" name=""/
           th.text-muted.col-4 Name
-          th.text-muted.col-2 Last Modified
+          th.text-muted.col-1 Last Modified
           / hide modifying documents and permissions if user has role member
           th.col-1
           - if current_user.has_role?(:admin, current_user.company)
@@ -85,15 +84,15 @@
       tbody.draggable-zone
         - @folders.each_with_index do |folder, index|
           tr.draggable.folders.drawer-row.d-flex id="#{folder.id}" data-drawer=folder.id data-permissible-type="folder"
-            td.col-1
-              = check_box_tag "folders[]", folder.id, false, class: "checkSingle mt-2"
+            td style="width: 10%"
+              = check_box_tag "folders[]", folder.id, false, class: "checkSingle checkboxSize mt-2"
             td.col-4
               span.mr-5
-                i.material-icons-outlined.align-middle folder_open
+                i.material-icons-outlined.align-middle.mt-1 folder_open
               span.ml-5
-                = link_to folder.name, overture_folder_path(folder.id), class:"text-secondary"
-            td.col-2
-              = folder.updated_at.strftime("%d %b %Y")
+                = link_to folder.name, overture_folder_path(folder.id), class: "text-secondary"
+            td.col-1
+              .mt-2 = folder.updated_at.strftime("%d %b %Y")
             td.col-1
               .dropdown
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
@@ -112,16 +111,16 @@
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
           tr.drawer-row.draggable.d-flex id="#{d.id}" data-drawer="#{d.id}" data-permissible-type="document"
-            td.col-1
-              = check_box_tag "documents[]", d.id, false, class: "checkSingle mt-2"
+            td style="width: 10%"
+              = check_box_tag "documents[]", d.id, false, class: "checkSingle checkboxSize mt-2"
             td.cursor-pointer.col-4 data-toggle="modal" data-target="#documentModal#{d.id}"
               span.mr-5
                 / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
-                = image_pack_tag "media/src/images/overture/doc.svg"
+                = image_pack_tag "media/src/images/overture/doc.svg", class: "mt-1"
               span.ml-5
                 = d.versions.attachments.find_by(current_version: true)&.filename
-            td.col-2
-              = d.updated_at.strftime("%d %b %Y")
+            td.col-1
+              .mt-2 = d.updated_at.strftime("%d %b %Y")
             td.col-1
               .dropdown
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
