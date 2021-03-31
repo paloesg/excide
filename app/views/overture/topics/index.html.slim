@@ -1,4 +1,4 @@
-.row.m-1
+.row.p-3
   .col-md-11
     .d-flex
       h3 All Questions
@@ -7,29 +7,32 @@
       / i.material-icons-outlined search
   / .col-md-1.text-right
   /   i.material-icons-outlined restore
+hr
 - if @topics.empty?
   = render 'empty_topics'
 - else
-  table.table.ml-4
-    tbody
-      - @topics.each do |topic|
-        tr.row.overture-drawer-row data-drawer="#{topic.id}"
-          td.comment-font-size.col-5 = link_to topic.subject_name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
-          td.comment-font-size.col-3 = link_to topic.user.company.name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
-          - if topic.status == "need_answer"
-            td.comment-font-size.col = link_to "Need answer", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill badge-danger', style: 'background: #EB6464';
-          - elsif topic.status == "need_approval"
-            td.comment-font-size.col  = link_to "Need approval", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill badge-warning', style: 'background: #DCCD1E';
-          - elsif topic.status == "answered"
-            td.comment-font-size.col = link_to "Answered", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill badge-success', style: 'background: #B8CD59';
+  - @topics.each do |topic|
+    .row.overture-drawer-row.p-3 data-drawer="#{topic.id}"
+      .col-sm-4
+        = link_to topic.subject_name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark font-weight-boldest comment-font-size'
+      .col-sm-2
+        = link_to topic.user.company.name, overture_topic_notes_path(topic_id: topic.id), class: 'text-dark comment-font-size'
+      .col-sm-2
+        - if @company.startup?
+          = link_to get_badge_text(topic), overture_topic_notes_path(topic_id: topic.id), class: "text-dark badge badge-pill #{get_badge_class(topic)}"
+        - else
+          - unless topic.closed?
+            = link_to "Ongoing", overture_topic_notes_path(topic_id: topic.id), class: "text-dark badge badge-pill investor-ongoing-question p-3"
           - else
-            td.comment-font-size.col = link_to "Closed", overture_topic_notes_path(topic_id: topic.id), class: 'text-dark badge badge-pill badge-secondary', style: 'background: #CECECE';
-          td.comment-font-size.col = link_to topic.created_at.strftime("%d %b %Y"), overture_topic_notes_path(topic_id: topic.id), class: 'text-dark'
-          - if @company.investor?
-            td
-              .dropdown
-                a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-                  i.fa.fa-ellipsis-h.text-secondary.mb-4
-                .dropdown-menu.dropdown-menu-right
-                  .dropdown-item = link_to "Close question", overture_topic_path(topic, status: "closed"), method: :put , data: { confirm: 'By closing a question, you will no longer receive any answer. This action cannot be undone. Sure to proceed?' }
+            = link_to "Closed", overture_topic_notes_path(topic_id: topic.id), class: "text-dark badge badge-pill investor-closed-question p-3"
+      .col-sm-3
+        = link_to topic.created_at.strftime("%d %b %Y %l:%M%p"), overture_topic_notes_path(topic_id: topic.id), class: 'text-dark comment-font-size'
+      .col-sm-1
+        - unless @company.startup? or topic.closed?
+          .dropdown
+            a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+              i.fa.fa-ellipsis-h.text-secondary.mb-4
+            .dropdown-menu.dropdown-menu-right
+              .dropdown-item = link_to "Close question", overture_topic_path(topic, status: "closed"), method: :put , data: { confirm: 'By closing a question, you will no longer receive any answer. This action cannot be undone. Sure to proceed?' }
+    hr
         / = render 'overture/shared/topic_drawer', topic: topic, name: topic.subject_name

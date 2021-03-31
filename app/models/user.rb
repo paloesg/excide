@@ -85,7 +85,7 @@ class User < ApplicationRecord
     p = {}
     p[:password] = params[:password]
     p[:password_confirmation] = params[:password_confirmation]
-    update_attributes(p)
+    update(p)
   end
 
   # new function to return whether a password has been set
@@ -211,5 +211,14 @@ class User < ApplicationRecord
   ###########################
   def motif_roles(company)
     self.roles.find_by(resource_id: company.id, resource_type: "Company", name: ["franchisor", "franchisee_owner", "master_franchisee"])
+  end
+
+   ###########################
+  #                         #
+  #    Overture methods        #
+  #                         #
+  ###########################
+  def overture_roles(company)
+    self.roles.find_by(resource_id: company.id, resource_type: "Company", name: ["admin", "member"])
   end
 end

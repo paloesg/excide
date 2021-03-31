@@ -9,9 +9,20 @@
     .col-md-1
       = link_to overture_topic_note_path(topic_id: note.notable.id, id: note.id), data: { confirm: 'Are you sure you want to delete this answer?' }, method: :delete do
         i.material-icons-outlined.ml-5 delete_outline
+/ Check if the company that posted the note is an investor and check that there's a document tagged to the topic
+- if note.user.company.investor? and note.notable.document.present?
+  .row.ml-3
+    .col-md-6.ml-3.mb-3.p-3.dataroom-reference-container
+      p.comment-font-size Asked from Dataroom
+      span.mr-3.d-flex
+        h5.font-weight-boldest.mr-5 = note.notable.document.raw_file.filename
+        / Startup shouldn't be able to open this page
+        - unless current_user.company.startup?
+          = link_to overture_company_investor_documents_path(company_id: note.notable.document.company.id) do
+            i.material-icons-outlined.align-middle.text-primary launch
 .row.ml-3
   .col-md-12
     p.comment-font-size = note.content
 .row.ml-3
   .col-md-6
-    .text-muted.mt-2 = note.created_at.strftime("%d %b %Y")
+    .text-muted.mt-2 = note.created_at.strftime("%d %b %Y %l:%M%p")

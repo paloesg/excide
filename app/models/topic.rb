@@ -1,10 +1,11 @@
 class Topic < ApplicationRecord
   include AASM
 
-  belongs_to :user
-  belongs_to :company
-  belongs_to :startup, class_name: "Company"
   belongs_to :assigned_user, class_name: 'User'
+  belongs_to :company
+  belongs_to :document
+  belongs_to :startup, class_name: "Company"
+  belongs_to :user
 
   has_many :notes, as: :notable, dependent: :destroy
 
@@ -36,9 +37,30 @@ class Topic < ApplicationRecord
     event :approved do
       transitions from: :need_approval, to: :answered
     end
+    # If investor ask another question
+    event :new_question_note do
+      transitions from: :answered, to: :need_answer
+    end
     # Investor can close the question at any time
     event :close_question do
       transitions from: [:need_answer, :need_approval, :answered], to: :closed
     end
+  end
+
+  # This method handles all the transitions of a topic based on the conditions
+  def transition(company)
+    if company.startup?
+      case self.status
+      when "need_answer"
+        # Change topic status to approve answer if company is a startup and topic is not answered
+        self.approve_answer
+      when "answered"
+        # Change status to need_approval if startup user post again
+        self.approve_another_answer
+      end
+    else
+      self.new_question_note
+    end
+    self.save
   end
 end

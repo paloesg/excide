@@ -1,14 +1,15 @@
 .my-15.mx-20
   .d-flex
     .profile-image-wrapper
-      = contact.investor_company_logo.attached? ? (image_tag contact.investor_company_logo, class: "w-100 my-auto rounded") : (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'w-100 my-auto rounded')
+      = contact.investor_company_logo.attached? ? (image_tag contact.investor_company_logo, class: "w-100 my-auto rounded") : (image_pack_tag 'media/src/images/overture/dataroom-empty.png', class: 'w-100 my-auto rounded')
     .mt-6.ml-5
-      h3 = contact.company.name
+      h3 = contact&.company&.name || contact.company_name
       p = contact.email.present? ? contact.email : "Please add an email through our overture settings."
     .ml-auto.mt-4
       .d-flex.align-items-center
+        / Called from contact helper method
         / If a contact is already cloned on fundraising board, then show the contact status instead
-        - if get_cloned_contact(contact, current_user).present?
+        - if get_cloned_contact(contact, current_user).present? or contact.company.nil?
           - unless contact.searchable?
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"

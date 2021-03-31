@@ -10,18 +10,20 @@ class Document < ApplicationRecord
   belongs_to :document_template
   belongs_to :folder
   belongs_to :outlet
+  belongs_to :post
   belongs_to :user
   belongs_to :workflow
   belongs_to :workflow_action
 
   has_many :permissions, as: :permissible, dependent: :destroy
+  has_many :topics, dependent: :destroy
 
   has_one_attached :raw_file
   has_many_attached :converted_images
   has_many_attached :versions
 
   before_validation :set_filename
-  after_destroy :delete_file_on_s3
+  before_destroy :delete_file_on_s3
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
 

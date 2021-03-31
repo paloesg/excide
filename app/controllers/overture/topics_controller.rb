@@ -6,6 +6,8 @@ class Overture::TopicsController < ApplicationController
   before_action :set_company
   before_action :set_topic, only: [:update]
 
+  after_action :verify_authorized, except: :index
+
   def index
     # Question category comes from the sidebar
     @topics = get_topics(@company, params[:question_category])
@@ -15,9 +17,12 @@ class Overture::TopicsController < ApplicationController
 
   def create
     @topic = Topic.new(topic_params)
+    authorize @topic
     @topic.notes.first.user_id = current_user.id
     @topic.user = current_user
     @topic.company = current_user.company
+    # Save document reference if topic is opened through Q&A modal form
+    @topic.document = Document.find(params[:document]) if params[:document].present?
     if @topic.save
       redirect_back fallback_location: overture_root_path, notice: 'Successfully open a question.'
     else
@@ -26,6 +31,8 @@ class Overture::TopicsController < ApplicationController
   end
 
   def update
+    # For investor to close question
+    authorize @topic
     if params[:status].present?
       @topic.close_question
       if @topic.save
@@ -33,8 +40,11 @@ class Overture::TopicsController < ApplicationController
       else
         redirect_to overture_root_path, alert: "Error in closing question."
       end
+    # For startup admin to assign user to question
     elsif @topic.update(topic_params)
-      redirect_to overture_topic_notes_path(@topic), notice: "Successfully updated topic."
+      assigned_user = @company.users.find_by(id: @topic.assigned_user_id)
+      NotificationMailer.assign_to_question_notification(assigned_user, @topic).deliver_later
+      redirect_to overture_topic_notes_path(@topic), notice: "Successfully assigned user. Please wait for user to answer the question."
     else
       render :edit
     end
@@ -52,6 +62,6 @@ class Overture::TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:subject_name, :status, :question_category, :user, :company, :startup_id, :assigned_user_id, notes_attributes: [:content, :user_id, :approved])
+    params.require(:topic).permit(:subject_name, :status, :question_category, :user, :company, :startup_id, :assigned_user_id, :document_id, notes_attributes: [:content, :user_id, :approved])
   end
 end

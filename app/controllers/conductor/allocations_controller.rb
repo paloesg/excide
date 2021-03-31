@@ -106,7 +106,7 @@ class Conductor::AllocationsController < ApplicationController
     @action = Allocation.find(params[:id])
 
     respond_to do |format|
-      if @action.update_attributes(last_minute: !@action.last_minute)
+      if @action.update(last_minute: !@action.last_minute)
         format.json { render json: @action.last_minute, status: :ok }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
       else
@@ -128,7 +128,7 @@ class Conductor::AllocationsController < ApplicationController
   def set_month_allocations
     @date_from = params[:start_date] ? params[:start_date].to_date : Date.current.beginning_of_month
     @date_to = params[:end_date] ? params[:end_date].to_date : Date.current.end_of_month
-    @allocations = Allocation.where(allocation_date: @date_from..@date_to).joins(:event).where(events: { company_id: @company.id } ).order(allocation_date: :desc, start_time: :asc, id: :asc)
+    @allocations = Allocation.where(event: params[:events]).order(allocation_date: :desc, start_time: :asc, id: :asc)
   end
 
   def set_associate

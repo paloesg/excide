@@ -1,47 +1,18 @@
 .offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto id="drawer_#{permissible.id}"
-  - if current_user.has_role?(:admin, @company) and permissible.company == @company
-    .row.mt-5
-      .col-md-11
-        h4 Give view, download and edit access
-      .col-md-1
-        a.d-inline id="drawer_close_#{permissible.id}" href="#"
-          i.material-icons-outlined close
-    .row.mt-5
+  .row
+    .col-md-11
+      h5.d-inline Activity History of #{permissible_type == "folder" ? permissible.name : permissible.filename}
+    .col-md-1
+      a.d-inline id="drawer_close_#{permissible.id}" href="#"
+        i.material-icons-outlined close
+  .offcanvas-content
+    .row.my-5
       .col-md-12
-        h5.d-inline = name
-    .offcanvas-content
-      - @users.each do |user|
-        .row.my-5
-          .col-md-1
-            = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mt-2'
-          .col-md-4.ml-2.mt-2
-            = user.full_name.humanize
-          .col-md-5.pl-0
-            - permission = user.permissions.find_by(permissible_id: permissible.id)
-            - if permission.present?
-              / Permissible type passed in from rendering the partial, which will determine if permissible is folder or document
-              = select_tag 'permissions', options_for_select(["View", "Download", "Edit"], selected: get_current_permissions(permission)), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control overture-permission-document-access col-md-12'
-            - else
-              .float-right.mt-3.overture-add-access id="overture-add-access-link-#{user.id}-#{permissible.id}"
-                = link_to '+ Add access', '#', class: 'text-primary', remote: true
-              = select_tag 'permissions', options_for_select(["View", "Download", "Edit"]), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control overture-permission-document-access d-none col-md-12', id: "overture-add-access-#{user.id}-#{permissible.id}"
-          .col-md-1.p-0.mt-2.d-none.saved-message
-            span.text-muted Saved!
-  - else
-    .row
-      .col-md-11
-        h5.d-inline Activity History of #{permissible_type == "folder" ? permissible.name : permissible.filename}
-      .col-md-1
-        a.d-inline id="drawer_close_#{permissible.id}" href="#"
-          i.material-icons-outlined close
-    .offcanvas-content
-      .row.my-5
-        .col-md-12
-          - @activities.each do |activity|
-            .row
-              .col-md-1
-                .d-flex.align-items-center.mb-10
-                  = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
-              .col-md-11
-                .d-flex.flex-column.font-weight-bold
-                = render_activities activity
+        - @activities.each do |activity|
+          .row
+            .col-md-1
+              .d-flex.align-items-center.mb-10
+                = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
+            .col-md-11
+              .d-flex.flex-column.font-weight-bold
+              = render_activities activity

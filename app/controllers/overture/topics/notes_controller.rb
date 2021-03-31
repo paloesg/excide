@@ -14,15 +14,17 @@ class Overture::Topics::NotesController < Overture::NotesController
   def create
     @note = Note.new(note_params)
     @note.user = current_user
-    if current_user.company.startup? and @topic.answered?
-      # Change status to need_approval if startup user post again
-      @topic.approve_another_answer
-    elsif current_user.company.startup? and !@topic.answered?
-      # Change topic status to approve answer if company is a startup and topic is not answered
-      @topic.approve_answer
-    end
+    @topic.transition(@company)
     @note.notable = @topic
-    if @note.save and @topic.save
+    if @note.save
+      # Create activity history for QnA answers
+      @note.create_activity key: 'note.qna_replies', owner: current_user, recipient: @company,  params:{ topic_subject: @topic.subject_name, note_content: @note.content }
+      # Only send email notification to all admins of the company if user with member role answer the question (Don't send email if admin answers)
+      if current_user.has_role?(:member, @company)
+        current_user.company.users.with_role(:admin, @company).each do |user|
+          NotificationMailer.need_approval_notification(user, @topic, @note).deliver_later
+        end
+      end
       redirect_to overture_topic_notes_path(topic_id: @topic.id), notice: "Answer has been posted. Please wait for answer to be approved."
     else
       render :new

@@ -31,6 +31,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     expires_at: Field::Number,
     account_type: EnumField,
     before_deadline_reminder_days: Field::Number,
+    settings: Field::JSONB,
+    products: Field::JSONB,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }
@@ -47,8 +49,7 @@ class CompanyDashboard < Administrate::BaseDashboard
     :workflows,
     :templates,
     :documents,
-    :batches,
-    :invoices,
+    :products,
     :company_type
   ]
 
@@ -77,6 +78,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     :expires_at,
     :account_type,
     :before_deadline_reminder_days,
+    :settings,
+    :products
   ]
 
   # Overwrite this method to customize how profiles are displayed

@@ -1,19 +1,19 @@
 - permission = role.permissions.find_by(permissible: permissible)
 - if permission&.can_view?
-  a.permission-icon data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="view"
+  a.permission-icon id="#{role.id}" data-container="body" title="Disable view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="view"
     i.material-icons-outlined.font-size-h1.icon-hover.cursor-pointer.mr-2 visibility
 - else
   / Pass in role id for creating permission and permissible ID data attr
   a.permission-icon id="#{role.id}" data-permissible-id="#{permissible.id}" data-permissible-type="#{permissible_type}" data-container="body" title="Give view access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission&.id}" data-status="view"
     i.material-icons-outlined.font-size-h1.text-muted.cursor-pointer.mr-2 visibility_off
 - if permission&.can_download?
-  a.permission-icon data-container="body" title="Disable download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="download"
+  a.permission-icon id="#{role.id}" data-container="body" title="Disable download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="download"
     i.material-icons.font-size-h1.icon-hover.cursor-pointer.mr-2 get_app
 - else
   a.permission-icon id="#{role.id}" data-permissible-id="#{permissible.id}" data-permissible-type="#{permissible_type}" data-container="body" title="Give view &<br/>download access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-status="download" data-permission-id="#{permission&.id}"
     i.material-icons.font-size-h1.text-muted.cursor-pointer.mr-2 file_download_off
 - if permission&.can_write?
-  a.permission-icon data-container="body" title="Disable full access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="write"
+  a.permission-icon id="#{role.id}" data-container="body" title="Disable full access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-permission-id="#{permission.id}" data-status="write"
     i.material-icons-outlined.font-size-h1.icon-hover.cursor-pointer edit
 - else
   a.permission-icon id="#{role.id}" data-permissible-id="#{permissible.id}" data-permissible-type="#{permissible_type}" data-container="body" title="Give full access" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-status="write" data-permission-id="#{permission&.id}"

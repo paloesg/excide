@@ -1,6 +1,6 @@
 class Symphony::DocumentsController < ApplicationController
   layout 'symphony/application'
-  
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_templates, only: [:new, :edit, :multiple_edit]
@@ -51,7 +51,7 @@ class Symphony::DocumentsController < ApplicationController
         # Upload single file task in workflow and batch!
         if params[:upload_type] == "file-upload-task"
           workflow_action = WorkflowAction.find(params[:workflow_action])
-          if workflow_action.update_attributes(completed: true, completed_user_id: current_user.id)
+          if workflow_action.update(completed: true, completed_user_id: current_user.id)
             # If batch is present, redirect to batch page, else go to workflow page
             @batch.present? ? format.html {redirect_to symphony_batch_path(batch_template_name: @batch.template.slug, id: @batch.id)} : format.html{ redirect_to symphony_workflow_path(workflow_action.workflow.template.slug, workflow_action.workflow.id) }
             flash[:notice] = "#{workflow_action.task.instructions} done!"

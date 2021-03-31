@@ -17,13 +17,9 @@ class Overture::PermissionsController < ApplicationController
     end
     # Depending on permissible_type, get the instance of the respective permissible (document or folder)
     @permissible = params[:permissible_type] == "folder" ? Folder.find(params[:permissible_id]) : Document.find(params[:permissible_id])
-    @permission = Permission.new(role: Role.find(params[:role_id]), permissible: @permissible, can_view: permission_changes['status'][:can_view], can_download: permission_changes['status'][:can_download], can_write: permission_changes['status'][:can_write])
+    CreatePermissionsJob.perform_later(Role.find(params[:role_id]), @permissible, permission_changes['status'][:can_view], permission_changes['status'][:can_download], permission_changes['status'][:can_write])
     respond_to do |format|
-      if @permission.save
         format.json { render json: { link_to: session[:previous_url], status: "ok" } }
-      else
-        format.json { render json: @permission.errors, status: :unprocessable_entity }
-      end
     end
   end
 
@@ -41,6 +37,7 @@ class Overture::PermissionsController < ApplicationController
       # Similar for write access
       permission_changes['status'] = @permission.can_write? ? { can_view: @permission.can_view, can_download: @permission.can_download, can_write: false } : { can_write: true, can_view: true, can_download: true }
     end
+    UpdatePermissionsJob.perform_later(Role.find(params[:role_id]), @permission, permission_changes['status'][:can_view], permission_changes['status'][:can_download], permission_changes['status'][:can_write])
     respond_to do |format|
       if @permission.update(can_view: permission_changes['status'][:can_view], can_download: permission_changes['status'][:can_download], can_write: permission_changes['status'][:can_write])
         format.json { render json: { link_to: session[:previous_url], status: "ok" } }
@@ -54,7 +51,7 @@ class Overture::PermissionsController < ApplicationController
     Folder.destroy(params[:folder_ids]) if params[:folder_ids].present?
     Document.destroy(params[:document_ids]) if params[:document_ids].present?
     respond_to do |format|
-      format.html { redirect_to overture_startups_documents_path }
+      format.html { redirect_back fallback_location: overture_startups_documents_path }
       format.json { head :no_content }
     end
   end
@@ -63,7 +60,7 @@ class Overture::PermissionsController < ApplicationController
     update_group_permissions(params[:permissions][:role_ids], params[:folder_ids], "Folder") if params[:folder_ids].present?
     update_group_permissions(params[:permissions][:role_ids], params[:document_ids], "Document") if params[:document_ids].present?
     respond_to do |format|
-      format.html { redirect_to overture_startups_documents_path }
+      format.html { redirect_back fallback_location: overture_startups_documents_path }
       format.json { head :no_content }
     end
   end

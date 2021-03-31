@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_03_235448) do
+ActiveRecord::Schema.define(version: 2021_03_22_094951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -56,7 +56,14 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "activities", id: :serial, force: :cascade do |t|
@@ -210,6 +217,7 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
     t.integer "storage_limit"
     t.integer "storage_used"
     t.string "cap_table_url"
+    t.json "settings", default: [{"search_feature"=>"true", "kanban_board"=>"true", "dataroom"=>"true", "our_investor_or_startup"=>"true", "cap_table"=>"true", "performance_report"=>"true", "shared_file"=>"true", "resource_portal"=>"true", "announcement"=>"true"}]
     t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
@@ -279,9 +287,11 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
     t.uuid "company_id"
     t.uuid "outlet_id"
     t.uuid "franchisee_id"
+    t.uuid "post_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
     t.index ["franchisee_id"], name: "index_documents_on_franchisee_id"
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
+    t.index ["post_id"], name: "index_documents_on_post_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
@@ -470,6 +480,17 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
     t.index ["permissible_type", "permissible_id"], name: "index_permissions_on_permissible_type_and_permissible_id"
     t.index ["role_id"], name: "index_permissions_on_role_id"
     t.index ["user_id"], name: "index_permissions_on_user_id"
+  end
+
+  create_table "posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.uuid "company_id"
+    t.bigint "author_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_posts_on_author_id"
+    t.index ["company_id"], name: "index_posts_on_company_id"
   end
 
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -700,8 +721,10 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "startup_id"
     t.bigint "assigned_user_id"
+    t.uuid "document_id"
     t.index ["assigned_user_id"], name: "index_topics_on_assigned_user_id"
     t.index ["company_id"], name: "index_topics_on_company_id"
+    t.index ["document_id"], name: "index_topics_on_document_id"
     t.index ["startup_id"], name: "index_topics_on_startup_id"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
@@ -840,6 +863,7 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "allocations", "availabilities"
   add_foreign_key "allocations", "events"
   add_foreign_key "allocations", "users"
@@ -866,6 +890,7 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
   add_foreign_key "documents", "folders"
   add_foreign_key "documents", "franchisees"
   add_foreign_key "documents", "outlets"
+  add_foreign_key "documents", "posts"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
@@ -888,6 +913,8 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
   add_foreign_key "outlets_users", "users"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
+  add_foreign_key "posts", "companies"
+  add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "profiles", "companies"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
@@ -920,6 +947,7 @@ ActiveRecord::Schema.define(version: 2021_02_03_235448) do
   add_foreign_key "templates", "companies"
   add_foreign_key "topics", "companies"
   add_foreign_key "topics", "companies", column: "startup_id"
+  add_foreign_key "topics", "documents"
   add_foreign_key "topics", "users"
   add_foreign_key "topics", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"

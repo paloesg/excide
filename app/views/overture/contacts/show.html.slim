@@ -1,6 +1,7 @@
 = render 'contact_contents', contact: @contact
 .row
-  - if @contact.cloned_by_id.present?
+  / Only show contact sidebar if contact is cloned into fundraising board or contact is created in fundraising board (not link to any company in overture yet)
+  - if @contact.cloned_by_id.present? or @contact.company.nil?
     .col-sm-3.bg-white.sidebar-border-radius
       = render 'contact_sidebar'
     .col-sm-9

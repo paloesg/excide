@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-ruby '2.7.2'
+ruby '3.0.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3.4'
+gem 'rails', '~> 6.1.3.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 1.2.3', '< 2.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -18,7 +18,7 @@ gem 'turbolinks', '~> 5.2.0'
 # Fix issues with jquery caused by turbolinks
 gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.10.0'
+gem 'jbuilder', '~> 2.11.0'
 # Use puma web server
 gem 'puma'
 # Set timeout for long running processes
@@ -30,7 +30,7 @@ gem 'webpacker', '~> 5.2.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 # Lock sprockets version because new version of sprockets require manifest file
-gem 'sprockets', '~>3.0'
+gem 'sprockets', '~>3.7.0'
 
 #################################################
 #                                               #
@@ -73,13 +73,13 @@ gem 'acts-as-taggable-on', '~> 7.0.0'
 # For tagging in administrate
 gem 'administrate-field-acts_as_taggable'
 # Use user friendly slugs
-gem 'friendly_id', '5.3.0'
+gem 'friendly_id', '5.4.2'
 # Activity feed
 gem 'public_activity'
 # Handle money
-gem 'money-rails', '~>1.13.0'
+gem 'money-rails', '~>1.14.0'
 # Ruby asynchronous processing
-gem 'sucker_punch', '~> 2.1.0'
+gem 'sucker_punch', '~> 3.0.0'
 
 gem 'popper_js'
 # Themify icon set web fonts
@@ -87,7 +87,7 @@ gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-r
 # Font Awesome Rails
 gem 'font_awesome5_rails'
 # Default processer: MiniMagick. Enable variant for image using ActiveStorage
-gem 'image_processing', '~> 1.11.0'
+gem 'image_processing', '~> 1.12.0'
 # Office previewer
 gem "activestorage-office-previewer"
 
@@ -106,7 +106,7 @@ gem 'mini_mime'
 gem 'shortuuid'
 
 # Calculate business days
-gem 'business_time'
+gem 'business_time', git: 'https://github.com/beanieboi/business_time'
 # Used for area code
 gem 'countries', require: 'countries/global'
 # CHecks phone number validity
@@ -141,8 +141,8 @@ gem 'slack-ruby-client'
 # Algolia search
 gem 'algoliasearch-rails'
 # Amazon S3 SDK
-gem 'aws-sdk-s3', '~> 1.81.0'
-gem 'aws-sdk-textract', '~> 1.19.0'
+gem 'aws-sdk-s3', '~> 1.93.0'
+gem 'aws-sdk-textract', '~> 1.24.0'
 # SMS integration with Twilio
 gem 'twilio-ruby'
 # Performance reporting
@@ -158,14 +158,14 @@ gem 'snitcher'
 #             Backend Admin                     #
 #                                               #
 #################################################
-gem 'administrate', '0.14.0'
+gem 'administrate', '0.15.0'
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many'
 gem 'administrate-field-jsonb'
 gem 'administrate-field-active_storage'
 
 # Deep cloning for cloning of template with associated sections
-gem 'deep_cloneable', '~> 3.0.0'
+gem 'deep_cloneable', '~> 3.1.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production

@@ -1,6 +1,6 @@
 class Motif::DocumentsController < ApplicationController
   layout 'motif/application'
-  
+
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_document, only: [:update_tags, :update, :destroy]
@@ -53,9 +53,9 @@ class Motif::DocumentsController < ApplicationController
       end
       if @generate_document.success?
         document = @generate_document.document
-        document.update_attributes(workflow_action_id: params[:workflow_action_id])
+        document.update(workflow_action_id: params[:workflow_action_id])
         if params[:document][:folder_id].present?
-          document.update_attributes(folder_id: params[:document][:folder_id])
+          document.update(folder_id: params[:document][:folder_id])
         end
         authorize document
         # attach and convert method

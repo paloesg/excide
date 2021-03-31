@@ -65,7 +65,7 @@
             td
               a.text-dark data-target="#overtureStateInterest" data-toggle="modal" type="button"
                 i.material-icons-outlined.text-dark question_answer
-              = render 'overture/documents/modals/documents_qna_modal', startup_id: d.company.id, topic: @topic, question_category: "due_dilligence"
+              = render 'overture/documents/modals/documents_qna_modal', startup_id: d.company.id, topic: @topic, question_category: "due_dilligence", document_id: d.id
             td.cursor-pointer data-toggle="modal" data-target="#documentModal#{d.id}"
               i.material-icons-outlined.font-size-h1.text-dark.mr-2 visibility
             - if permission.present? and (permission.can_download? or permission.can_write?)
@@ -75,3 +75,4 @@
             - else
               td
           = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
+  = paginate @documents, views_prefix: 'dashboard'
