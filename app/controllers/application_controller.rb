@@ -38,10 +38,12 @@ class ApplicationController < ActionController::Base
 
   # This method checks for that company's storage limit is not exceeded. If it is, lock the company
   def check_storage_limit_not_exceeded
-    # Only check if company is not locked.
-    unless current_user.company.locked?
-      current_user.company.locked = true if current_user.company.storage_used > current_user.company.storage_limit
-      current_user.company.save
+    if user_signed_in?
+      # Only check if company is not locked.
+      unless current_user.company.locked?
+        current_user.company.locked = true if current_user.company.storage_used > current_user.company.storage_limit
+        current_user.company.save
+      end
     end
   end
 
