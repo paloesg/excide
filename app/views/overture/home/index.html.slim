@@ -6,10 +6,18 @@
         h1.text-dark.font-weight-boldest Welcome to Overture
         p Let’s fundraise and manage relationship successfully
         ul.pl-5
-          li See what’s going on in Q&A with investors. Answer and approve responds accordingly.
-          li Stay updated with investors’ activity related to your startup
+          li
+            | See what’s going on in
+            b = " Q&A with investors"
+            | . Answer and approve responds accordingly.
+          li
+            | Stay updated with
+            b = " investors’ activity "
+            | related to your startup.
     .image-container.col-sm-6
-      = image_pack_tag 'media/src/images/overture/dashboard-onboarding.png', alt: "dashboard-onboarding", class: 'img-fluid'
+      = image_pack_tag 'media/src/images/overture/dashboard-onboarding.png', alt: "dashboard-onboarding", class: 'img-fluid float-right'
+      button.close.button-top-right type="submit"
+        i.material-icons close
 .banner-image.mt-3
   .row.h-100.align-items-center
     .col-sm-12.text-left.ml-5
