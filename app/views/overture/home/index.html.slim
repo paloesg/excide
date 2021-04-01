@@ -1,4 +1,16 @@
-.banner-image
+.card.home-banner
+  .row
+    .col-sm-6
+      .card-body
+        p.text-muted.text-uppercase Dashboard
+        h1.text-dark.font-weight-boldest Welcome to Overture
+        p Let’s fundraise and manage relationship successfully
+        ul.pl-5
+          li See what’s going on in Q&A with investors. Answer and approve responds accordingly.
+          li Stay updated with investors’ activity related to your startup
+    .image-container.col-sm-6
+      = image_pack_tag 'media/src/images/overture/dashboard-onboarding.png', alt: "dashboard-onboarding", class: 'img-fluid'
+.banner-image.mt-3
   .row.h-100.align-items-center
     .col-sm-12.text-left.ml-5
       h1.text-dark.font-weight-boldest Welcome, #{current_user.full_name}
