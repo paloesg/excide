@@ -36,6 +36,11 @@
           = link_to overture_investments_path, class: 'col-sm-12 d-flex align-items-center' do
             i.material-icons-outlined.mr-5 supervised_user_circle
             .ml-5.sidebar-font Our Investors
+      - if current_user.company.settings[0]["announcement"] == "true"
+        li.nav-item.hover-blue.py-1.m-4.cursor-pointer
+          = link_to overture_startups_posts_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined.mr-5 volume_up
+            .ml-5.sidebar-font Announcements
       - if current_user.company.settings[0]["cap_table"] == "true"
         li.nav-item.hover-blue.py-1.m-4.cursor-pointer
           = link_to overture_capitalization_table_path, class: 'col-sm-12 d-flex align-items-center' do
