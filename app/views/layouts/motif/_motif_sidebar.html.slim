@@ -11,7 +11,7 @@
           i.material-icons-outlined supervised_user_circle
           .ml-2.sidebar-font
             = get_franchisee ? "Sub Franchisee List" : "Franchisee List"
-    - unless current_user.has_role?(:franchisee_owner, current_user.company)
+    - unless check_unit_franchisee_or_franchisee_owner?
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_outlets_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined store_mall_directory
@@ -19,15 +19,15 @@
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_workflows_path(template_type: "onboarding"), class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined assignment
-        .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Onboarding" : "Onboarding Management"
+        .ml-2.sidebar-font = check_unit_franchisee_or_franchisee_owner? ? "Onboarding" : "Onboarding Management"
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_workflows_path(template_type: "site_audit"), class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined fact_check
-        .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Site Audit" : "Site Audit Management"
+        .ml-2.sidebar-font = check_unit_franchisee_or_franchisee_owner? ? "Site Audit" : "Site Audit Management"
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_workflows_path(template_type: "royalty_collection"), class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined attach_money
-        .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Royalty Collection" : "Royalty Collection Management"
+        .ml-2.sidebar-font = check_unit_franchisee_or_franchisee_owner? ? "Royalty Collection" : "Royalty Collection Management"
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_financial_performance_path, class: 'col-sm-12 d-flex align-items-center'  do
         i.material-icons-outlined timeline
