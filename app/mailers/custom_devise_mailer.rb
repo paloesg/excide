@@ -47,7 +47,7 @@ class CustomDeviseMailer < Devise::Mailer
           }
         ],
         from: {
-          email: "Paloe Symphony <admin@excide.co>"
+          email: "support@asiawidedigital.com"
         },
         template_id: ENV['SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']
       }
@@ -61,7 +61,7 @@ class CustomDeviseMailer < Devise::Mailer
       puts e.message
     end
   end
-  
+
   def unlock_instructions(record, token, opts={})
     data = {
       personalizations: [
