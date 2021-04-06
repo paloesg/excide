@@ -25,7 +25,7 @@ class CustomDeviseMailer < Devise::Mailer
           }
         ],
         from: {
-          email: "Paloe ADA <admin@excide.co>"
+          email: "support@asiawidedigital.com"
         },
         template_id: ENV['ADA_SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']
       }
@@ -47,7 +47,7 @@ class CustomDeviseMailer < Devise::Mailer
           }
         ],
         from: {
-          email: "support@asiawidedigital.com"
+          email: "Paloe ADA <admin@excide.co>"
         },
         template_id: ENV['SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']
       }
