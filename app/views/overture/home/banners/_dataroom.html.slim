@@ -1,0 +1,24 @@
+.card.dataroom-banner
+  .row
+    .col-sm-6
+      .card-body.pt-5
+        p.text-muted.text-uppercase.m-0 DATAROOM
+        h1.text-dark.font-weight-boldest.mt-5 Secured sharing for due diligence
+        p.mb-2 Increase the favourability of your startup by helping the investors do due-diligence
+        ul.pl-5
+          li
+            b = "Upload "
+            | the files and folders requested by the potential investors
+          li
+            | Group your investors for faster access sharing in
+            b = ' "Groups"'
+          li
+            | Give different types of access to different groups:
+            b = " Read-only / Download / Full"
+        = link_to '#', remote: true, class: "dataroom-tour-start" do
+          i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
+          span.h5.font-weight-boldest.text-primary.ml-1 Take a tour
+    .image-container.col-sm-6
+      = image_pack_tag 'media/src/images/overture/dataroom-onboarding.png', alt: "dataroom-onboarding", class: 'img-fluid float-right image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close

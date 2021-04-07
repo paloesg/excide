@@ -1,8 +1,9 @@
+= render 'overture/home/banners/dataroom'
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .dropdown
-      a.btn.btn-primary.float-right.mr-5.p-2.dataroom-tour-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-        i.material-icons-outlined.font-size-h2.p-0 add
+      a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+        i.material-icons-outlined.font-size-h2.p-0.dataroom-tour-1 add
       .dropdown-menu.dropdown-menu-right
         a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
         a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
@@ -15,8 +16,6 @@
     = link_to overture_roles_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5 dataroom-tour-4' do
       i.material-icons-outlined.text-primary group
       span.ml-2.text-primary.font-weight-bolder Groups
-    button.btn.btn-primary.float-right.dataroom-tour-start.mr-5 href="#" Run
-    h3.dataroom-tour-1 data-title="Hello" data-intro='Hello step one!' Dataroom
     p.mt-5
       | Share view and download access to groups of investors. Click on the icon buttons in the
       br
@@ -80,7 +79,7 @@
           th.col-1
           - if current_user.has_role?(:admin, current_user.company)
             - @roles.each do |role|
-              th.col-2
+              th.col-2.dataroom-tour-3
                 a title="#{role.users.map(&:full_name).join("<br/>")}" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" = role.name
       tbody.draggable-zone
         - @folders.each_with_index do |folder, index|
@@ -107,7 +106,7 @@
                     .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{folder.id}_0"
               - if current_user.has_role?(:admin, current_user.company)
                 - @roles.each do |role|
-                  td.col-2
+                  td.col-2.dataroom-tour-2
                     = render "overture/documents/permissions_icons", role: role, permissible: folder, permissible_type: "folder"
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
@@ -136,7 +135,7 @@
                     .dropdown-item = link_to "Download", d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true), disposition: "attachment") : d.file_url
               - if current_user.has_role?(:admin, current_user.company)
                 - @roles.each do |role|
-                  td.col-2.dataroom-tour-3
+                  td.col-2
                     = render "overture/documents/permissions_icons", role: role, permissible: d, permissible_type: "document"
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
             td
