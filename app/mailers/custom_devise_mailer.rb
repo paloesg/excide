@@ -25,7 +25,7 @@ class CustomDeviseMailer < Devise::Mailer
           }
         ],
         from: {
-          email: "support@asiawidedigital.com"
+          email: "Asiawide Digital Support <support@asiawidedigital.com>"
         },
         template_id: ENV['ADA_SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']
       }
