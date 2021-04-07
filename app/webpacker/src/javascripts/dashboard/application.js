@@ -64,5 +64,6 @@ require("./components/date_time_picker");
 require("./components/draggable");
 // Product tour using Intro.js
 require("./components/product_tour/dataroom_intro");
+require("./components/product_tour/dashboard_intro");
 
 
