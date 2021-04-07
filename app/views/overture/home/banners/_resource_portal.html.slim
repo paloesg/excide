@@ -1,0 +1,14 @@
+.card.resource-portal-banner
+  .row
+    .col-sm-6
+      .card-body.pt-5
+        p.text-muted.text-uppercase.m-0 RESOURCE PORTAL
+        h3.text-dark.font-weight-boldest Guides to bring you to a greater height
+        p.mb-2 We want the best for you. From fundraising to investor management, learn what you need for your startup success in Resource Portal.
+        = link_to '#', remote: true, class: "dashboard-tour-start" do
+          i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
+          span.h5.font-weight-boldest.text-primary.ml-1 Take a tour
+    .image-container.col-sm-6
+      = image_pack_tag 'media/src/images/overture/resource-portal-onboarding.png', alt: "resource-portal-onboarding", class: 'img-fluid float-right resource-portal-image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close
