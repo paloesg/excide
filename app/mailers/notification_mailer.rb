@@ -57,7 +57,7 @@ class NotificationMailer < ApplicationMailer
 
   def motif_new_outlet(user, outlet_details)
     #to email will be changed with afc's support email
-    mail(to: ['jonathan.lau@paloe.com.sg', 'kristian.hadinata@paloe.com.sg', 'hansheng@paloe.com.sg'], from: 'Asiawide Digital Support <support@asiawidedigital.com>', subject: 'New Outlet', body: 'New outlet', template_id: ENV['ADA_SENDGRID_MOTIF_NEW_OUTLET'], dynamic_template_data: {
+    mail(to: ['jonathan.lau@paloe.com.sg', 'kristian.hadinata@paloe.com.sg', 'hansheng@paloe.com.sg', "support@asiawidedigital.com"], from: 'Asiawide Digital Support <support@asiawidedigital.com>', subject: 'New Outlet', body: 'New outlet', template_id: ENV['ADA_SENDGRID_MOTIF_NEW_OUTLET'], dynamic_template_data: {
         fullName: user.full_name,
         company: user.company.name,
         email: user.email,
@@ -71,7 +71,7 @@ class NotificationMailer < ApplicationMailer
 
   def motif_new_franchisee(user, franchisee_details)
     #to email will be changed with afc's support email
-    mail(to: ['jonathan.lau@paloe.com.sg', 'kristian.hadinata@paloe.com.sg', 'hansheng@paloe.com.sg'], from: 'Asiawide Digital Support <support@asiawidedigital.com>', subject: 'New Franchisee', body: 'New franchisee', template_id: ENV['ADA_SENDGRID_MOTIF_NEW_FRANCHISEE'], dynamic_template_data: {
+    mail(to: ['jonathan.lau@paloe.com.sg', 'kristian.hadinata@paloe.com.sg', 'hansheng@paloe.com.sg', "support@asiawidedigital.com"], from: 'Asiawide Digital Support <support@asiawidedigital.com>', subject: 'New Franchisee', body: 'New franchisee', template_id: ENV['ADA_SENDGRID_MOTIF_NEW_FRANCHISEE'], dynamic_template_data: {
         fullName: user.full_name,
         company: user.company.name,
         email: user.email,
