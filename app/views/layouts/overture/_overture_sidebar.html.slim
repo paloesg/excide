@@ -8,7 +8,7 @@
         .ml-5.sidebar-font Dashboard
     - if current_user.company.startup?
       - if current_user.company.settings[0]["search_feature"] == "true"
-        li.nav-item.hover-blue.py-1.m-4.cursor-pointer
+        li.nav-item.hover-blue.py-1.m-4.cursor-pointer.fundraising-tour-1
           = link_to overture_contacts_path, class: 'col-sm-12 d-flex align-items-center' do
             i.material-icons-outlined.mr-5 search
             .ml-5.sidebar-font Search Investor

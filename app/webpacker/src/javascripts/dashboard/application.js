@@ -65,5 +65,6 @@ require("./components/draggable");
 // Product tour using Intro.js
 require("./components/product_tour/dataroom_intro");
 require("./components/product_tour/dashboard_intro");
+require("./components/product_tour/fundraising_board_intro");
 
 
