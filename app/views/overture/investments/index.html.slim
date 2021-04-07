@@ -1,6 +1,7 @@
-row.mb-3.mt-5.ml-3
-  .col-sm-12
-    - if @company.startup?
+- if @company.startup?
+  = render 'overture/home/banners/our_investors'
+  .row.mb-3.mt-5.ml-3
+    .col-sm-12
       button.btn.btn-primary.float-right.mr-5 data-target="#addInvestmentOverture" data-toggle="modal" type="button"
         i.material-icons-outlined.text-white add
         | Investor
@@ -9,7 +10,9 @@ row.mb-3.mt-5.ml-3
       h3 Signed Investor
       p.mt-5.text-muted
         | Here are the information of your signed investor. Click on a row to see their details.
-    - else
+- else
+  .row.mb-3.mt-5.ml-3
+    .col-sm-12
       h3 My Startups
       p.mt-5.text-muted
         | These are the companies you have invested. They will update their financial
