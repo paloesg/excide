@@ -66,5 +66,6 @@ require("./components/draggable");
 require("./components/product_tour/dataroom_intro");
 require("./components/product_tour/dashboard_intro");
 require("./components/product_tour/fundraising_board_intro");
+require("./components/product_tour/announcement_intro");
 
 

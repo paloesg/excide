@@ -1,6 +1,7 @@
+= render 'overture/home/banners/announcement'
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    button.btn.btn-primary.float-right.mr-5 data-target="#annoucement_new" data-toggle="modal" type="button"
+    button.btn.btn-primary.float-right.mr-5.announcement-tour-1 data-target="#annoucement_new" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white create
       | New Announcement
     = render "new", post: @post
@@ -11,7 +12,7 @@
       = render "post_empty_state"
     - else
       - @posts.each do |post|
-        .col-sm-12.mr-8.mb-6.qna-wrapper.px-5.py-5.float-left
+        .col-sm-12.mr-8.mb-6.qna-wrapper.px-5.py-5.float-left.announcement-tour-2
           .mt-5.d-flex
             = image_pack_tag 'media/src/images/overture/overture-icon.png', class: "p-3 announcement-icon-size mr-6"
             / , class: 'announcement-icon-size border p-1 mr-6'
