@@ -1,6 +1,6 @@
 .card.qna-banner class="#{first_time_login? ? '' : 'd-none'}"
   .row
-    .col-sm-6
+    .col-sm-7
       .card-body.pt-5
         p.text-muted.text-uppercase.m-0 Q&A
         h3.text-dark.font-weight-boldest Communicate excellently every single time
@@ -23,7 +23,7 @@
         = link_to '#', remote: true, class: "dashboard-tour-start" do
           i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
           span.h5.font-weight-boldest.text-primary.ml-1 Take a tour
-    .image-container.col-sm-6
+    .image-container.col-sm-5
       = image_pack_tag 'media/src/images/overture/qna-onboarding.png', alt: "qna-onboarding", class: 'img-fluid float-right image-height'
       button.close.button-top-right type="submit"
         i.material-icons close
