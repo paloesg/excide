@@ -1,4 +1,11 @@
 = render 'overture/home/banners/startups/dashboard'
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark dashboard
+    .header-font.text-dark Dashboard
+  .col-sm-8
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
 / Startups see Q&A and activity history, while investors see announcement from startups
 - if @company.startup?
   .row.mt-5.d-block
