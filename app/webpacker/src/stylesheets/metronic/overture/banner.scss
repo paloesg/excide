@@ -52,8 +52,20 @@
   height: 250px;
 }
 
+.cap-table-investors-banner {
+  background: linear-gradient(to right, white, rgb(255, 250, 237));
+  background-attachment: fixed;
+  height: 180px;
+}
+
 .shared-files-banner {
   background: linear-gradient(to right, white, rgb(237, 237, 255));
+  background-attachment: fixed;
+  height: 180px;
+}
+
+.startups-list-banner {
+  background: linear-gradient(to right, white, rgb(237, 245, 255));
   background-attachment: fixed;
   height: 180px;
 }

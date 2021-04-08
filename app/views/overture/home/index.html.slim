@@ -1,4 +1,7 @@
-= render 'overture/home/banners/startups/dashboard'
+- if @company.startup?
+  = render 'overture/home/banners/startups/dashboard'
+- else
+  = render 'overture/home/banners/investors/dashboard'
 .row.my-5
   .col-sm-4.d-flex.align-items-center
     i.material-icons-outlined.mr-5.text-dark dashboard

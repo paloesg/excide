@@ -8,7 +8,10 @@
   / .col-md-1.text-right
   /   i.material-icons-outlined restore
 hr
-= render 'overture/home/banners/startups/qna'
+- if @company.startup?
+  = render 'overture/home/banners/startups/qna'
+- else
+  = render 'overture/home/banners/investors/qna'
 - if @topics.empty?
   = render 'empty_topics'
 - else

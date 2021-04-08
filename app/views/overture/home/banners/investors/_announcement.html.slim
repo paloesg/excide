@@ -1,0 +1,14 @@
+.card.announcement-banner class="#{first_time_login? ? '' : 'd-none'}"
+  .row
+    .col-sm-6
+      .card-body.pt-5
+        p.text-muted.text-uppercase.m-0 ANNOUNCEMENT
+        h1.text-dark.font-weight-boldest.mt-5 News shared by those you invest in
+        p.mb-2 Announcements made by the companies in your Startups List are displayed in this page. Do you have questions regarding their announcement? Send them your question.
+        = link_to '#', remote: true, class: "announcement-tour-start" do
+          i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
+          span.h5.font-weight-boldest.text-primary.ml-1 Take a tour
+    .image-container.col-sm-6
+      = image_pack_tag 'media/src/images/overture/announcement-onboarding.png', alt: "announcement-onboarding", class: 'img-fluid float-right smaller-image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close

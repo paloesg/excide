@@ -1,0 +1,14 @@
+.card.cap-table-investors-banner class="#{first_time_login? ? '' : 'd-none'}"
+  .row
+    .col-sm-7
+      .card-body.pt-5
+        p.text-muted.text-uppercase.m-0 = type
+        h1.text-dark.font-weight-boldest.mt-5 All #{type.downcase}s in one place
+        p.mb-2 Your invested startups upload and update their #{type.downcase}s on Overture for you to see. Do you have questions regarding their #{type.downcase}s? Send them your question.
+        = link_to '#', remote: true, class: "dashboard-tour-start" do
+          i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
+          span.h5.font-weight-boldest.text-primary.ml-1 Watch video
+    .image-container.col-sm-5
+      = image_pack_tag type == "CAPITALIZATION TABLE" ? 'media/src/images/overture/cap-table-investor-onboarding.png' : 'media/src/images/overture/fin-perf-onboarding.png', alt: type == "CAPITALIZATION TABLE" ? "cap-table-onboarding" : "fin-perf-onboarding", class: 'img-fluid float-right smaller-image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close
