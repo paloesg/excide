@@ -20,13 +20,13 @@
   .col-sm-12
     p.mt-5
       | Share documents with your investor.
-    - if (controller_name == "folders" and @folder.name != "Shared Drive")
+    - if (controller_name == "folders" and @folder.name != "Shared Files")
       hr.mb-2
       .row
         .col
           ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
             li.breadcrumb-item
-              = link_to "Shared Drive", :back, class: "text-dark"
+              = link_to "Shared Files", :back, class: "text-dark"
             li.breadcrumb-item
               = @folder.name
     hr.m-0
