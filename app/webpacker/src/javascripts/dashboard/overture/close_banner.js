@@ -1,5 +1,6 @@
-$(document).ready(function(){
+$(document).on("turbolinks:load", function () {
+  // Hide the onboarding banner when clicked close button
   $(".button-top-right").click(function(){
-    $(".home-banner").hide();
+    $(this).closest(".card").hide();
   });
 });

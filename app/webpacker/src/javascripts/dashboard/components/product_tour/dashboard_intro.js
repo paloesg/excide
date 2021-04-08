@@ -1,6 +1,5 @@
 import introJs from 'intro.js/intro.js';
 $(document).on("turbolinks:load", function () {
-  console.log("Dashboard tour 1: ", document.querySelector('.dashboard-tour-1'))
   $(".dashboard-tour-start").click(function(e){
     introJs().setOptions({
       steps: [{
