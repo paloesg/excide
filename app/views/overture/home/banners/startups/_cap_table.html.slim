@@ -4,10 +4,11 @@
       .card-body.pt-5
         p.text-muted.text-uppercase.m-0 = type
         h1.text-dark.font-weight-boldest.mt-5 Sync everything in one link
-        p.mb-2 Syncing your capitalisation table should be, and will be easy. This is how to do it:
+        p.mb-2 Syncing your #{type.downcase} should be, and will be easy. This is how to do it:
         ul.pl-5
           li
-            | Create your capitalisation table online in
+            | Create your
+            = " #{type.downcase} online in"
             b = " Google Data Studio or Sheet"
           li
             | Copy and paste the link in “
