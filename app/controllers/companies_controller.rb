@@ -25,6 +25,7 @@ class CompaniesController < ApplicationController
     if @company.save
       set_company_roles
       set_default_folders
+      set_default_contact_statuses
       if params[:company][:parent_id].present?
         # If ancestry present, set default record of franchisee
         set_default_franchisee(params[:license_type])
@@ -136,6 +137,13 @@ class CompaniesController < ApplicationController
       # Clone general folder and add it to the template's tasks
       cloned_template.clone_folder_through_template_tasks(@company, nil)
       Workflow.create(user: current_user, company: @company, template: cloned_template, identifier: "#{@franchisee.franchise_licensee} - Agreements", franchisee: @franchisee)
+    end
+  end
+
+  def set_default_contact_statuses
+    default_statuses = ["No Status", "Contacted", "In Discussion", "Due Dilligence", "Said Yes", "Said No"]
+    default_statuses.each_with_index do |status, index|
+      ContactStatus.create(name: status, company: @company, position: index + 1)
     end
   end
 
