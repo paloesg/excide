@@ -11,3 +11,11 @@ hr
         .col-sm-6
           .badge.badge-pill.badge-secondary.text-dark.py-2.px-3 = cs.name.titleize
       .row.my-5.draggable-columns.border.p-5 id="#{cs.id}"
+        - cs.contacts.each do |contact|
+          ul.draggable.p-0 id="#{contact.id}" style="list-style-type:none;"
+            li.draggable-handle
+              .card.contact-card-shawdow
+                .card-body.border.border-light.p-5
+                  .d-flex
+                    = contact.investor_company_logo.attached? ? (image_tag url_for(contact.investor_company_logo), class: 'rounded-circle w-25 investor-profile-pic') : (image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'rounded-circle w-25 investor-profile-pic')
+                    = link_to (contact.company.present? ? contact.company.name : contact.company_name), overture_contact_path(contact.id), class: "card-title text-uppercase text-truncate mt-5 ml-5 h5 text-dark font-weight-boldest"
