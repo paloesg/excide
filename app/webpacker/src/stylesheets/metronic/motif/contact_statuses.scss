@@ -1,12 +1,9 @@
-.contact-card-shawdow {
+.contact-card-shadow {
   border-radius: 8px;
   box-shadow: 0 0 3px rgba(23, 23, 46, 0.2);
   cursor: all-scroll;
 }
 
-.investor-profile-pic {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16);
-}
 // Height of kanban board
 .kanban-height {
   height: 500px;
@@ -28,4 +25,8 @@
   color: rgba(23, 23, 46, 0.6) !important;
   font-size: 14px;
   font-weight: 700;
+}
+
+.fixed-draggable-width {
+  width: 300px;
 }
