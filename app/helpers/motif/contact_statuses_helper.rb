@@ -1,0 +1,2 @@
+module Motif::ContactStatusesHelper
+end
