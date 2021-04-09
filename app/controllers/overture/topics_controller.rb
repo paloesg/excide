@@ -21,6 +21,8 @@ class Overture::TopicsController < ApplicationController
     @topic.notes.first.user_id = current_user.id
     @topic.user = current_user
     @topic.company = current_user.company
+    # Save document reference if topic is opened through Q&A modal form
+    @topic.document = Document.find(params[:document]) if params[:document].present?
     if @topic.save
       redirect_back fallback_location: overture_root_path, notice: 'Successfully open a question.'
     else
@@ -60,6 +62,6 @@ class Overture::TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:subject_name, :status, :question_category, :user, :company, :startup_id, :assigned_user_id, notes_attributes: [:content, :user_id, :approved])
+    params.require(:topic).permit(:subject_name, :status, :question_category, :user, :company, :startup_id, :assigned_user_id, :document_id, notes_attributes: [:content, :user_id, :approved])
   end
 end

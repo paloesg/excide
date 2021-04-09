@@ -34,5 +34,5 @@ hr
               i.fa.fa-ellipsis-h.text-secondary.mb-4
             .dropdown-menu.dropdown-menu-right
               .dropdown-item = link_to "Close question", overture_topic_path(topic, status: "closed"), method: :put , data: { confirm: 'By closing a question, you will no longer receive any answer. This action cannot be undone. Sure to proceed?' }
-  hr
+    hr
         / = render 'overture/shared/topic_drawer', topic: topic, name: topic.subject_name

@@ -19,7 +19,11 @@ class CompanyPolicy < ApplicationPolicy
     show?
   end
 
-  def billing?
+  def subscription_plan?
+    show?
+  end
+
+  def billing_and_invoice?
     show?
   end
 

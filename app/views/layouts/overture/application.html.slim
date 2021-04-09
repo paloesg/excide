@@ -35,7 +35,7 @@ html lang="en"
       .new-tab-wrapper.overflow-auto.pb-0
         .new-tab-contents
           .row.mt-5.h-100
-            - if (controller_name == "companies" and action_name == "edit") || controller_name == "users" || (controller_name == "companies" and action_name == "edit")
+            - if (controller_name == "companies" and action_name == "edit") || controller_name == "users" || (controller_name == "companies" and action_name == "edit") || (controller_name == "companies" and action_name == "subscription_plan") || (controller_name == "companies" and action_name == "billing_and_invoice")
               .col-sm-2.bg-white.border-right.sidebar-border-radius
                 = render 'layouts/overture/overture_setting_sidebar'
               .col-sm-10.bg-white.content-border-radius.p-5
@@ -55,6 +55,12 @@ html lang="en"
               .col-sm-10.bg-white.content-border-radius.p-5
                 = yield
                 = render 'layouts/messages'
+      - elsif (controller_name == "posts" and action_name == "show")
+        .container-fluid
+          .row
+            .col-sm-12.mt-5.p-0
+              = yield
+              = render 'layouts/messages'
       - else
         .container-fluid
           .row
@@ -64,7 +70,7 @@ html lang="en"
               = yield
               = render 'layouts/messages'
       / render content and sidebar
-    = render 'layouts/footer' unless current_page?(root_path)
+    = render 'layouts/footer' unless current_page?(root_path) or (controller_name == "posts" and action_name == "show")
     /! Start of paloe Zendesk Widget script
     script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66"
     /! End of paloe Zendesk Widget script

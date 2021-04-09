@@ -15,3 +15,10 @@
     li.nav-item.hover-blue.py-1.m-4
       = link_to edit_overture_user_path(current_user), class: 'col-sm-12 d-flex align-items-center' do
         .ml-2.sidebar-font Account and Password
+    - if current_user.has_role?(:admin, current_user.company)
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to overture_subscription_plan_path, class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font Subscription Plan
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to overture_billing_and_invoice_path, class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font Billing & Invoice

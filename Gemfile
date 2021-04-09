@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '3.0.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.0'
+gem 'rails', '~> 6.1.3.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 1.2.3', '< 2.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -141,8 +141,8 @@ gem 'slack-ruby-client'
 # Algolia search
 gem 'algoliasearch-rails'
 # Amazon S3 SDK
-gem 'aws-sdk-s3', '~> 1.89.0'
-gem 'aws-sdk-textract', '~> 1.23.0'
+gem 'aws-sdk-s3', '~> 1.93.0'
+gem 'aws-sdk-textract', '~> 1.24.0'
 # SMS integration with Twilio
 gem 'twilio-ruby'
 # Performance reporting

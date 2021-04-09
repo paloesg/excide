@@ -1,0 +1,15 @@
+.modal.fade aria-hidden="true" role="dialog" tabindex="-1" id="annoucement_#{announcement}"
+  .modal-dialog role="post"
+    .modal-content
+      .modal-header
+        h5.modal-title Write announcement
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+      .modal-body
+        p Share important news and announcement to your current investors. Attach files, images or videos when necessary.
+        .mt-3
+        .form-group
+          = f.text_area :content, rows: 8, placeholder: 'Type something...', class: 'form-control'
+        .row
+          .col-md-12
+            = f.submit "Publish", class: 'btn btn-sm btn-primary float-right'

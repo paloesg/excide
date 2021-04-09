@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_15_045026) do
+ActiveRecord::Schema.define(version: 2021_03_22_094951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_045026) do
     t.integer "storage_limit"
     t.integer "storage_used"
     t.string "cap_table_url"
+    t.json "settings", default: [{"search_feature"=>"true", "kanban_board"=>"true", "dataroom"=>"true", "our_investor_or_startup"=>"true", "cap_table"=>"true", "performance_report"=>"true", "shared_file"=>"true", "resource_portal"=>"true", "announcement"=>"true"}]
     t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
@@ -287,9 +288,11 @@ ActiveRecord::Schema.define(version: 2021_03_15_045026) do
     t.uuid "company_id"
     t.uuid "outlet_id"
     t.uuid "franchisee_id"
+    t.uuid "post_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
     t.index ["franchisee_id"], name: "index_documents_on_franchisee_id"
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
+    t.index ["post_id"], name: "index_documents_on_post_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
@@ -719,8 +722,10 @@ ActiveRecord::Schema.define(version: 2021_03_15_045026) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "startup_id"
     t.bigint "assigned_user_id"
+    t.uuid "document_id"
     t.index ["assigned_user_id"], name: "index_topics_on_assigned_user_id"
     t.index ["company_id"], name: "index_topics_on_company_id"
+    t.index ["document_id"], name: "index_topics_on_document_id"
     t.index ["startup_id"], name: "index_topics_on_startup_id"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
@@ -886,6 +891,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_045026) do
   add_foreign_key "documents", "folders"
   add_foreign_key "documents", "franchisees"
   add_foreign_key "documents", "outlets"
+  add_foreign_key "documents", "posts"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
@@ -942,6 +948,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_045026) do
   add_foreign_key "templates", "companies"
   add_foreign_key "topics", "companies"
   add_foreign_key "topics", "companies", column: "startup_id"
+  add_foreign_key "topics", "documents"
   add_foreign_key "topics", "users"
   add_foreign_key "topics", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"

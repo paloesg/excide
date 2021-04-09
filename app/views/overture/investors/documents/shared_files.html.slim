@@ -72,7 +72,7 @@
               td
                 a.text-dark data-target="#overtureStateInterest" data-toggle="modal" type="button"
                   i.material-icons-outlined.text-dark question_answer
-                = render 'overture/documents/modals/documents_qna_modal', startup_id: d.company.id, topic: @topic, question_category: "due_dilligence"
+                = render 'overture/documents/modals/documents_qna_modal', startup_id: d.company.id, topic: @topic, question_category: "due_dilligence", document_id: nil
               td.cursor-pointer data-toggle="modal" data-target="#documentModal#{d.id}"
                 i.material-icons-outlined.font-size-h1.text-dark.mr-2 visibility
               - if permission.present? and (permission.can_download? or permission.can_write?)
