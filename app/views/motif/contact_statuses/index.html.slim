@@ -9,13 +9,13 @@ hr
     .col-3.m-2.kanban-height
       .d-flex
         .col-sm-10
-          .badge.badge-pill.font-weight-boldest.mr-3.badge-name.text-dark style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
-          = cs.contacts.length
-          / .dropdown
-          /   a.btn.btn-icon.btn-link.d-flex.py-2.ml-5 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-          /   .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="newContactStatus"
-          /     = form_for cs, url: motif_contact_statuses_path, method: :post do |f|
-          /       = render 'new_form', f: f, cs: cs, contact_statuses: @contact_statuses
+          .dropdown
+            a.btn.btn-icon.btn-link.d-flex.py-2.ml-5 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+              .badge.badge-pill.font-weight-boldest.mr-3.badge-name.text-dark style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
+              .text-dark = cs.contacts.length
+            .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="newContactStatus"
+              = form_for ContactStatus.new, url: motif_contact_statuses_path, method: :post do |f|
+                = render 'new_form', f: f
         .col-sm-2#edit-status-dropdown
           .dropdown
             a.btn.btn-icon.btn-link href="#" id="editContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"

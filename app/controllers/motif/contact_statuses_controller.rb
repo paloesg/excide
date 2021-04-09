@@ -36,6 +36,6 @@ class Motif::ContactStatusesController < ApplicationController
   end
 
   def contact_status_params
-    params.require(:contact_status).permit(:name, :position, :company_id)
+    params.require(:contact_status).permit(:name, :position, :company_id, :colour)
   end
 end
