@@ -29,6 +29,7 @@ require("./symphony/header");
 require("./symphony/home");
 
 require("./motif/drag_documents");
+require("./motif/drag_contacts");
 
 window.createAllocation = require("./conductor/create_allocations");
 window.addAvailability = require("./conductor/add_availabilities");
