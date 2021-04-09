@@ -4,18 +4,18 @@
     p.mt-5.text-muted
       | Manage leads of potential franchisees.
 hr
-.row.mt-5.ml-3.flex-row.flex-sm-nowrap.overflow-auto
+.row.mt-5.flex-row.flex-sm-nowrap.overflow-auto
   - @contact_statuses.each do |cs|
     .col-3.m-2.kanban-height
       .d-flex
         .col-sm-10
-          .dropdown
-            a.btn.btn-icon.btn-link.d-flex.py-2.ml-5 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-              .badge.badge-pill.font-weight-boldest.p-3.mr-3.badge-name style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
-              = cs.contacts.length
-            .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="newContactStatus"
-              = form_for cs, url: motif_contact_statuses_path, method: :post do |f|
-                = render 'new_form', f: f, cs: cs, contact_statuses: @contact_statuses
+          .badge.badge-pill.font-weight-boldest.mr-3.badge-name.text-dark style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
+          = cs.contacts.length
+          / .dropdown
+          /   a.btn.btn-icon.btn-link.d-flex.py-2.ml-5 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+          /   .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="newContactStatus"
+          /     = form_for cs, url: motif_contact_statuses_path, method: :post do |f|
+          /       = render 'new_form', f: f, cs: cs, contact_statuses: @contact_statuses
         .col-sm-2#edit-status-dropdown
           .dropdown
             a.btn.btn-icon.btn-link href="#" id="editContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
@@ -23,14 +23,15 @@ hr
             .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="editContactStatus"
               = form_for cs, url: motif_contact_status_path(cs) do |f|
                 = render 'edit_form', f: f, cs: cs
-      .row.my-5.draggable-columns.border.p-5 id="#{cs.id}"
+      .row.draggable-columns.p-5 id="#{cs.id}"
         - cs.contacts.each do |contact|
           ul.draggable.fixed-draggable-width.p-0 id="#{contact.id}" style="list-style-type:none;"
             li.draggable-handle
-              .card.contact-card-shadow
-                .card-body.border.border-light.p-5
-                  h3 = contact.name
-                  p = contact.email
+              .card
+                .card-body.border.contact-card-shadow.p-2
+                  .mt-3.ml-3
+                    h3 = contact.name
+                    p = contact.email
       a.text-muted.h5 href="#" aria-expanded="false" data-target="#addNewContactToBoard" type="button" aria-haspopup="true" data-toggle="modal" = "+ Contact"
     #addNewContactToBoard.modal.fade aria-hidden="true" aria-labelledby="addNewContact" role="dialog" tabindex="-1"
       .modal-dialog role="document"
