@@ -1,20 +1,24 @@
-= render 'overture/home/banners/startups/resource_portal'
-.row.mb-3.mt-5.ml-3
+.row.mb-3.mt-5
   .col-sm-12
-    / Only superadmin can upload files in resource portal
-    - if current_user.has_role?(:superadmin)
-      .dropdown
-        a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-          i.material-icons-outlined.font-size-h2.p-0 add
-        .dropdown-menu.dropdown-menu-right
-          / these paths are not working
-          a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
-          a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
-      = render "overture/documents/modals/upload_documents_modal"
-      = render "overture/documents/modals/new_folder_modal", folder: @new_folder, parent_folder: @folder
-    h3 Resource Portal
-    p.mt-5
-      | Here are some resources to help you in managing your investors.
+    .row.my-5
+      .col-sm-4.d-flex.align-items-center
+        i.material-icons-outlined.mr-5.text-dark book
+        .header-font.text-dark Resource Portal
+      .col-sm-8.d-flex.justify-content-end
+        button.close.open-banner.text-dark.mr-3 type="submit"
+          i.material-icons-outlined.float-right help_outline
+        / Only superadmin can upload files in resource portal
+        - if current_user.has_role?(:superadmin)
+          .dropdown
+            a.btn.btn-primary.float-right.mr-5.ml-3.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+              i.material-icons-outlined.font-size-h2.p-0 add
+            .dropdown-menu.dropdown-menu-right
+              / these paths are not working
+              a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
+              a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
+          = render "overture/documents/modals/upload_documents_modal"
+          = render "overture/documents/modals/new_folder_modal", folder: @new_folder, parent_folder: @folder
+    = render 'overture/home/banners/startups/resource_portal'
     .row.p-3.align-items-center#select-options style="background: #EEF1FF;"
       .col-md-9
         span.mr-5#selectedNumber

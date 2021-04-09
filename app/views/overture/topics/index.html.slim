@@ -1,13 +1,10 @@
-.row.p-3
-  .col-md-11
-    .d-flex
-      h3 All Questions
-      / i.material-icons-outlined.mr-5 filter_list
-      / i.material-icons-outlined.mr-5 swap_vert
-      / i.material-icons-outlined search
-  / .col-md-1.text-right
-  /   i.material-icons-outlined restore
-hr
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark question_answer
+    .header-font.text-dark Q&A
+  .col-sm-8
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
 - if @company.startup?
   = render 'overture/home/banners/startups/qna'
 - else

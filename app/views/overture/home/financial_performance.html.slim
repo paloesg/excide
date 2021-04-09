@@ -1,12 +1,15 @@
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark timeline
+    .header-font.text-dark Performance Report
+  .col-sm-8.d-flex.justify-content-end
+    = link_to 'Setting', edit_overture_company_path(@company), target: :_blank, class: 'text-primary font-weight-bolder mr-3 px-5 my-auto'
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
 - if @company.startup?
   = render 'overture/home/banners/startups/cap_table', type: "PERFORMANCE REPORT"
 - else
   = render 'overture/home/banners/investors/cap_table', type: "PERFORMANCE REPORT"
-.row.mb-3.mt-5.ml-3
-    .col-sm-12
-      .float-right
-        = link_to 'Setting', edit_overture_company_path(@company), target: :_blank, class: 'text-primary font-weight-bolder mr-3 px-5'
-      h3.mb-5 Financial Performance
 - if @company.report_url.present?
   iframe.pb-3.pr-3.pl-7 width="100%" height="100%" src=@company.report_url frameborder="0" style="border:0" allowfullscreen=""
 - else

@@ -1,21 +1,23 @@
-= render 'overture/home/banners/startups/shared_files'
-.row.mb-3.mt-5.ml-3
-  .col-sm-12.d-flex.align-items-center
-    .mr-5
-      h3.text-dark.font-weight-boldest Shared Files
-    .ml-auto
-      .dropdown
-        a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-          i.material-icons-outlined.font-size-h2.p-0 add
-        .dropdown-menu.dropdown-menu-right
-          / these paths are not working
-          a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
-          a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark folder
+    .header-font.text-dark Shared Files
+  .col-sm-8.d-flex.justify-content-end
+    .dropdown
+      a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+        i.material-icons-outlined.font-size-h2.p-0 add
+      .dropdown-menu.dropdown-menu-right
+        / these paths are not working
+        a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
+        a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
     = render "overture/documents/modals/upload_documents_modal"
     = render "overture/documents/modals/new_folder_modal", folder: @new_folder, parent_folder: @folder
     = link_to overture_roles_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5' do
       i.material-icons-outlined.text-primary group
       span.ml-2.text-primary.font-weight-bolder Groups
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
+= render 'overture/home/banners/startups/shared_files'
 .row.mb-3.ml-3
   .col-sm-12
     p.mt-5

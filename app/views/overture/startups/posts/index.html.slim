@@ -1,16 +1,20 @@
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark campaign
+    .header-font.text-dark Announcement
+  .col-sm-8.d-flex.justify-content-end
+    button.btn.btn-primary.float-right.mr-5.announcement-tour-1 data-target="#annoucement_new" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white create
+      | New Announcement
+    = render "new", post: @post
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
 - if @company.startup?
   = render 'overture/home/banners/startups/announcement'
 - else
   = render 'overture/home/banners/investors/announcement'
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    button.btn.btn-primary.float-right.mr-5.announcement-tour-1 data-target="#annoucement_new" data-toggle="modal" type="button"
-      i.material-icons-outlined.text-white create
-      | New Announcement
-    = render "new", post: @post
-    h3 Share announcement
-    p.my-5
-      | Share important news and announcements with your investors.
     - if @posts.empty?
       = render "post_empty_state"
     - else

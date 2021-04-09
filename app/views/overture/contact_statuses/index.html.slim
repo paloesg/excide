@@ -1,10 +1,11 @@
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark view_agenda
+    .header-font.text-dark Fundraising Board
+  .col-sm-8
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
 = render 'overture/home/banners/startups/fundraising_board'
-.row.mb-3.mt-5.ml-3
-  .col-sm-12
-    h3 Fundraising Board
-    p.mt-5
-      | Track your progress with your investors.
-hr
 .row.mt-5.flex-row.flex-sm-nowrap.overflow-auto
   - @contact_statuses.each do |cs|
     .col-3.m-3

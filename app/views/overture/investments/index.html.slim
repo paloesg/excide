@@ -1,16 +1,24 @@
 - if @company.startup?
-  = render 'overture/home/banners/startups/our_investors'
-  .row.mb-3.mt-5.ml-3
-    .col-sm-12
+  .row.my-5
+    .col-sm-4.d-flex.align-items-center
+      i.material-icons-outlined.mr-5.text-dark supervised_user_circle
+      .header-font.text-dark Investors List
+    .col-sm-8.d-flex.justify-content-end
       button.btn.btn-primary.float-right.mr-5 data-target="#addInvestmentOverture" data-toggle="modal" type="button"
         i.material-icons-outlined.text-white add
         | Investor
       = render "add_investment_modal", investor_companies: @investor_companies
       = render "add_new_overture_user_modal"
-      h3 Signed Investor
-      p.mt-5.text-muted
-        | Here are the information of your signed investor. Click on a row to see their details.
+      button.close.open-banner.text-dark.mr-3 type="submit"
+        i.material-icons-outlined.float-right help_outline
+  = render 'overture/home/banners/startups/our_investors'
 - else
+  .row.my-5
+    .col-sm-4.d-flex.align-items-center
+      i.material-icons-outlined.mr-5.text-dark supervised_user_circle
+      .header-font.text-dark Startups List
+    .col-sm-8
+      button.close.open-banner.text-dark.mr-3 type="submit"
   = render 'overture/home/banners/investors/startups_list'
   .row.mb-3.mt-5.ml-3
     .col-sm-12
