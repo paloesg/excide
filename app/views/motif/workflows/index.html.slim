@@ -8,7 +8,7 @@
         .modal-dialog role="document"
           .modal-content
             .modal-header
-              h5#newMotifCreateWorkflows.modal-title Onboard new outlet
+              h5#newMotifCreateWorkflows.modal-title = params[:template_type].titleize
               button.close aria-label="Close" data-dismiss="modal" type="button"
                 span aria-hidden="true"  &times;
             .modal-body
@@ -17,10 +17,10 @@
                   .col-md-12
                     .form-group
                       = f.label :template_id, 'Choose a template'
-                      = f.collection_select :template_id, @templates, :id, :title, {include_blank: true}, {class: 'select2 form-control', style: 'width: 100%'}
+                      = f.collection_select :template_id, @templates, :id, :title, {include_blank: true}, {class: 'select2 form-control', style: 'width: 100%', required: true}
                     .form-group
                       = f.label :outlet_id, 'Choose an outlet'
-                      = f.collection_select :outlet_id, @outlets, :id, :name, {include_blank: true}, {class: 'select2 form-control', style: 'width: 100%'}
+                      = f.collection_select :outlet_id, @outlets, :id, :name, {include_blank: true}, {class: 'select2 form-control', style: 'width: 100%', required: true}
                 .row
                   .col-md-12
                     = f.submit "Save", class: 'btn btn-sm btn-primary float-right'

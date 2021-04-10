@@ -91,6 +91,11 @@ class Motif::UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user.destroy
+    redirect_to motif_users_path, notice: 'User was successfully deleted.'
+  end
+
   private
 
   def set_company

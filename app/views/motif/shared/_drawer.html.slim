@@ -53,7 +53,7 @@
               .col-md-1
                 = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size mt-2'
               .col-md-4.ml-2.mt-2
-                span.font-weight-boldest = user.full_name.humanize
+                span.font-weight-boldest = user.full_name.titleize
                 br
                 span.font-italic = user.company&.name
               .col-md-5.pl-0

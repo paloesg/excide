@@ -16,9 +16,9 @@ class Outlet < ApplicationRecord
 
   def clone_templates_for_outlet
     # Get the company level's template (in case there are any updates to these templates)
-    motif_onboarding_template = Template.find_by(title: "Onboarding - #{self.company.name}")
-    motif_site_audit_template = Template.find_by(title: "Site Audit - #{self.company.name}")
-    motif_royalty_collection_template = Template.find_by(title: "Royalty Collection - #{self.company.name}")
+    motif_onboarding_template = Template.find_by(title: "[SAMPLE] Onboarding Template - #{self.company.name}")
+    motif_site_audit_template = Template.find_by(title: "[SAMPLE] Site Audit Template - #{self.company.name}")
+    motif_royalty_collection_template = Template.find_by(title: "[SAMPLE] Royalty Collection Template - #{self.company.name}")
     # Check if the templates are all present. If not, don't clone
     if [motif_onboarding_template, motif_site_audit_template, motif_royalty_collection_template].all?(&:present?)
       [motif_onboarding_template, motif_site_audit_template, motif_royalty_collection_template].each do |template|
