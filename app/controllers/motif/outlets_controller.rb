@@ -36,22 +36,8 @@ class Motif::OutletsController < ApplicationController
     @user.add_role(:franchisee_owner, @user.company)
     respond_to do |format|
       if @outlet.save
-        # Clone template for outlet when saved. Check if user added unit franchisee or direct outlet by checking the franchise licensee value in the form. Unit franchisee should clone template to it's company (could be MF) while direct outlet clone straight to parent company.
-        @outlet.clone_templates_for_outlet(params[:outlet][:franchisee_attributes][:franchise_licensee].present? ? "unit_franchisee" : "direct_owned")
-        if params[:outlet][:franchisee_attributes][:franchise_licensee].present?
-          # By default, create retrospective workflows when creating unit franchisee
-          retrospective_template = Template.where(title: "Retrospective Documents", company_id: nil)
-          if retrospective_template.present?
-            # By default, create retrospective workflows for franchisor or MF to upload agreements to
-            cloned_template = retrospective_template.first.deep_clone include: { sections: :tasks }
-            cloned_template.title = "#{cloned_template.title} - #{params[:outlet][:franchisee_attributes][:franchise_licensee]}"
-            cloned_template.company = @company
-            cloned_template.save
-            # Clone general folder and add it to the template's tasks
-            cloned_template.clone_folder_through_template_tasks(@company, "unit_franchisee")
-            Workflow.create(user: current_user, company: @company, template: cloned_template, identifier: "#{params[:outlet][:franchisee_attributes][:franchise_licensee]} - Agreements", franchisee: @outlet.franchisee)
-          end
-        end
+        # Clone template for outlet when saved. Check if user added unit franchisee or direct outlet by checking the franchise licensee value in the form.
+        @outlet.clone_templates_for_outlet
         # Save outlet to user
         @user.outlets << @outlet
         # Set active outlet to the new saved outlet
