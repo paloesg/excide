@@ -53,12 +53,7 @@
                 = link_to folder.name, overture_folder_path(folder)
     hr.m-0
 - if @folders.empty? && @documents.empty?
-  .row.justify-content-center.ml-3
-    .col.text-center.p-10
-      = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
-      p.mt-4 Start sharing important matters to investors and your teammates
-      button.btn.btn-primary.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button"
-        | Upload
+  = render 'overture/home/empty_states/startups/dataroom'
 - else
   .table-responsive.h-75
     table.table.ml-4.table-aligned

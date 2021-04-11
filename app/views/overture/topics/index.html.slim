@@ -10,7 +10,7 @@
 - else
   = render 'overture/home/banners/investors/qna'
 - if @topics.empty?
-  = render 'empty_topics'
+  = render @company.startup? ? 'overture/home/empty_states/startups/qna' : 'overture/home/empty_states/investors/qna'
 - else
   - @topics.each do |topic|
     .row.overture-drawer-row.p-3 data-drawer="#{topic.id}"

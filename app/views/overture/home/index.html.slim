@@ -36,7 +36,7 @@
     .col-sm-7.ml-5.qna-wrapper.px-5.py-3.float-left.dashboard-tour-3
       .row.mt-5
         .col-sm-12
-          h3 Activity History
+          h3 Investors' Activities
       - if @activities.present?
         - @activities.each do |activity|
           .row
@@ -44,11 +44,7 @@
               .d-flex.flex-column.mt-3
                 = render_activities activity
       - else
-        .row.justify-content-center.ml-3
-          .col.text-center.p-10
-            = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
-            h3 No activity yet
-            p.mt-4 This section will be populated as you do more things on Overture.
+        = render 'overture/home/empty_states/startups/dashboard'
 - else
   = render 'overture/home/banners/investors/dashboard'
   .row.mb-3.mt-5.ml-3

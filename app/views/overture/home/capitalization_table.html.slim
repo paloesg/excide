@@ -34,7 +34,7 @@
 - if @company.cap_table_url.present?
   iframe.pb-3.pr-3.pl-7 width="100%" height="100%" src=@company.cap_table_url frameborder="0" style="border:0" allowfullscreen=""
 - else
-  .col-md-3.text-center.mt-10.mx-auto
-    = image_pack_tag 'media/src/images/motif/chart-empty.svg'
-    h2.mt-5 No capitalization table to show.
-    p.mt-4 Click on Edit Link to add your table.
+  - if @company.startup?
+    = render 'overture/home/empty_states/startups/cap_table', type: "capitalization table"
+  - else
+    = render 'overture/home/empty_states/investors/shared_files', type: "upload their capitalization table"

@@ -20,24 +20,9 @@
     .col-sm-8
       button.close.open-banner.text-dark.mr-3 type="submit"
   = render 'overture/home/banners/investors/startups_list'
-  .row.mb-3.mt-5.ml-3
-    .col-sm-12
-      h3 My Startups
-      p.mt-5.text-muted
-        | These are the companies you have invested. They will update their financial
-        br
-        | performance, capitalisation table, and data repository.
-/     span.mr-3
-/       i.material-icons-outlined filter_list
-/     | Filters
 hr.mb-0
 - unless @investments.present?
-  .row.justify-content-center.ml-3.mt-20
-    .col.text-center.p-10
-      = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
-      p.mt-4.text-muted
-        | No signed
-        = @company.investor? ? " startup" : " investor"
+  = render @company.startup? ? 'overture/home/empty_states/startups/investors_list' : 'overture/home/empty_states/investors/startups_list'
 - else
   table.table
     thead

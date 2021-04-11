@@ -16,7 +16,7 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     - if @posts.empty?
-      = render "post_empty_state"
+      = render @company.startup? ? 'overture/home/empty_states/startups/announcement' : 'overture/home/empty_states/investors/announcement'
     - else
       - @posts.each do |post|
         .col-sm-12.mr-8.mb-6.qna-wrapper.px-5.py-5.float-left.announcement-tour-2

@@ -32,3 +32,4 @@
                       = link_to "Add to fundraising board", overture_contacts_path(contact_id: contact.id), method: :post, class: "btn btn-primary mr-3"
 .mt-6
   = paginate @contacts, views_prefix: 'dashboard'
+= render 'overture/home/empty_states/startups/search_investors'
