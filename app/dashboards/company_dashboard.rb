@@ -37,6 +37,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     updated_at: Field::DateTime,
     ancestry: Field::String,
     locked: Field::Boolean,
+    settings: Field::JSONB,
+    products: Field::JSONB,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -84,6 +86,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     :storage_limit,
     :storage_used,
     :locked,
+    :settings,
+    :products,
   ]
 
   # Overwrite this method to customize how profiles are displayed

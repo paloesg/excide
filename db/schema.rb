@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_31_073318) do
+ActiveRecord::Schema.define(version: 2021_04_12_035057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -207,10 +207,21 @@ ActiveRecord::Schema.define(version: 2021_03_31_073318) do
     t.bigint "storage_limit", default: 0
     t.bigint "storage_used", default: 0
     t.boolean "locked", default: false
+    t.json "settings", default: [{"franchisee_list"=>"true", "outlet_list"=>"true", "onboarding_management"=>"true", "site_audit_management"=>"true", "royalty_collection_management"=>"true", "financial_performance"=>"true", "communication_hub"=>"true", "announcement"=>"false", "leads_management"=>"false"}]
     t.index ["ancestry"], name: "index_companies_on_ancestry"
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
+  end
+
+  create_table "contact_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "company_id"
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "colour"
+    t.index ["company_id"], name: "index_contact_statuses_on_company_id"
   end
 
   create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -222,6 +233,8 @@ ActiveRecord::Schema.define(version: 2021_03_31_073318) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "company_id"
+    t.uuid "contact_status_id"
+    t.index ["contact_status_id"], name: "index_contacts_on_contact_status_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end
 
@@ -796,7 +809,9 @@ ActiveRecord::Schema.define(version: 2021_03_31_073318) do
   add_foreign_key "companies", "users", column: "associate_id"
   add_foreign_key "companies", "users", column: "consultant_id"
   add_foreign_key "companies", "users", column: "shared_service_id"
+  add_foreign_key "contact_statuses", "companies"
   add_foreign_key "contacts", "companies"
+  add_foreign_key "contacts", "contact_statuses"
   add_foreign_key "contacts", "users", column: "created_by_id"
   add_foreign_key "document_templates", "templates"
   add_foreign_key "document_templates", "users"

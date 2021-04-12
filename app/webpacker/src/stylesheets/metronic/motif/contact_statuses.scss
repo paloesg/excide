@@ -1,0 +1,37 @@
+.contact-card-shadow {
+  border-radius: 8px;
+  box-shadow: 0 0 3px rgba(23, 23, 46, 0.2);
+  cursor: all-scroll;
+}
+
+// Height of kanban board
+.kanban-height {
+  height: 500px;
+}
+// Container of the dropdown form when editing statuses
+.contact-status-container {
+  width: 191px;
+  border-radius: 8px;
+  box-shadow: 0 0 3px rgba(23, 23, 46, 0.2);
+}
+// For the dropdown to edit statuses
+.edit-status-word-style {
+  color: rgba(23, 23, 46, 0.5) !important;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.delete-status-word-style {
+  color: rgba(23, 23, 46, 0.6) !important;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.fixed-draggable-width {
+  width: 300px;
+}
+
+.badge-name {
+  font-size: 12px !important;
+  font-weight: 700;
+}
