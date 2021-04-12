@@ -28,6 +28,7 @@ class DashboardManifest
     :outlets,
     :outlets_users,
     :permissions,
+    :posts,
     :profiles,
     :recurring_workflows,
     :reminders,
