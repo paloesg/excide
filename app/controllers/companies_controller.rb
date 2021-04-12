@@ -141,9 +141,9 @@ class CompaniesController < ApplicationController
   end
 
   def set_default_contact_statuses
-    default_statuses = ["No Status", "Contacted", "In Discussion", "Due Dilligence", "Said Yes", "Said No"]
+    default_statuses = [["No Status", "#FFFFFF"], ["Contacted", "#c1ebf7"], ["In Discussion", "#ffd3b3"], ["Due Dilligence", "#f7f2b2"], ["Said Yes", "#edfab1"], ["Said No", "#fab1b1"]]
     default_statuses.each_with_index do |status, index|
-      ContactStatus.create(name: status, company: @company, position: index + 1)
+      ContactStatus.create(name: status[0], company: @company, position: index + 1, colour: status[1])
     end
   end
 
