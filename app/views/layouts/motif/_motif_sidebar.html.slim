@@ -15,34 +15,40 @@
           i.material-icons-outlined view_agenda
           .ml-2.sidebar-font Leads Management
     // Only master franchisee, franchisor and superadmin can see the Franchisee List. Name is different for master franchisee
-    - if get_franchisee ? get_franchisee.master_franchisee? : (current_user.has_role?(:franchisor, current_user.company) or current_user.has_role? :superadmin)
+    - if (get_franchisee ? get_franchisee.master_franchisee? : (current_user.has_role?(:franchisor, current_user.company) or current_user.has_role? :superadmin)) and current_user.company.settings[0]["franchisee_list"] == "true"
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_franchisees_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined supervised_user_circle
           .ml-2.sidebar-font
             = get_franchisee ? "Sub Franchisee List" : "Franchisee List"
     - unless current_user.has_role?(:franchisee_owner, current_user.company)
+      - if current_user.company.settings[0]["outlet_list"] == "true"
+        li.nav-item.hover-blue.py-1.m-4
+          = link_to motif_outlets_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined store_mall_directory
+            .ml-2.sidebar-font Outlet List
+    - if current_user.company.settings[0]["onboarding_management"] == "true"
       li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_outlets_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined store_mall_directory
-          .ml-2.sidebar-font Outlet List
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_workflows_path(template_type: "onboarding"), class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined assignment
-        .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Onboarding" : "Onboarding Management"
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_workflows_path(template_type: "site_audit"), class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined fact_check
-        .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Site Audit" : "Site Audit Management"
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_workflows_path(template_type: "royalty_collection"), class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined attach_money
-        .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Royalty Collection" : "Royalty Collection Management"
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_financial_performance_path, class: 'col-sm-12 d-flex align-items-center'  do
-        i.material-icons-outlined timeline
-        .ml-2.sidebar-font Financial Performance
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_documents_path, class: 'col-sm-12 d-flex align-items-center' do
-        i.material-icons-outlined folder
-        .ml-2.sidebar-font Communication Hub
+        = link_to motif_workflows_path(template_type: "onboarding"), class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined assignment
+          .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Onboarding" : "Onboarding Management"
+    - if current_user.company.settings[0]["site_audit_management"] == "true"
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_workflows_path(template_type: "site_audit"), class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined fact_check
+          .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Site Audit" : "Site Audit Management"
+    - if current_user.company.settings[0]["royalty_collection_management"] == "true"
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_workflows_path(template_type: "royalty_collection"), class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined attach_money
+          .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Royalty Collection" : "Royalty Collection Management"
+    - if current_user.company.settings[0]["financial_performance"] == "true"
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_financial_performance_path, class: 'col-sm-12 d-flex align-items-center'  do
+          i.material-icons-outlined timeline
+          .ml-2.sidebar-font Financial Performance
+    - if current_user.company.settings[0]["communication_hub"] == "true"
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_documents_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined folder
+          .ml-2.sidebar-font Communication Hub
