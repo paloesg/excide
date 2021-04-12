@@ -10,7 +10,7 @@ class Motif::HomeController < ApplicationController
     # Get all outlets (sub franchised or direct owned)
     @outlets = get_outlets_by_type(nil, @company)
     # Check franchisee expiry date within 1 month of expiry
-    @outlets_expiring = @outlets.filter_map{|o| o.franchisee if (o.franchisee.expiry_date.present? and o.franchisee.expiry_date < DateTime.current + 1.month)}
+    @outlets_expiring = @outlets.filter_map{|o| o.franchisee if (o&.franchisee&.expiry_date.present? and o&.franchisee&.expiry_date < DateTime.current + 1.month)}
     # This variable is only being used by unit franchisee
     @workflows = current_user.active_outlet.workflows if current_user.active_outlet.present?
     # Find workflows that is not completed yet
