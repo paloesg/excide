@@ -155,6 +155,7 @@ Rails.application.routes.draw do
     resources :contacts
     resources :contact_statuses
     resources :users
+    resources :posts
     get '/messages', to: 'notes#messages', as: :messages
     post '/add-roles', to: 'users#add_role', as: :add_role
     get '/financial-performance', to: 'home#financial_performance'

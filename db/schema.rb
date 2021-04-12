@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_12_035057) do
+ActiveRecord::Schema.define(version: 2021_04_12_081413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -267,9 +267,11 @@ ActiveRecord::Schema.define(version: 2021_04_12_035057) do
     t.uuid "company_id"
     t.uuid "outlet_id"
     t.uuid "franchisee_id"
+    t.uuid "post_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
     t.index ["franchisee_id"], name: "index_documents_on_franchisee_id"
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
+    t.index ["post_id"], name: "index_documents_on_post_id"
     t.index ["user_id"], name: "index_documents_on_user_id"
     t.index ["workflow_action_id"], name: "index_documents_on_workflow_action_id"
   end
@@ -444,6 +446,17 @@ ActiveRecord::Schema.define(version: 2021_04_12_035057) do
     t.index ["permissible_type", "permissible_id"], name: "index_permissions_on_permissible_type_and_permissible_id"
     t.index ["role_id"], name: "index_permissions_on_role_id"
     t.index ["user_id"], name: "index_permissions_on_user_id"
+  end
+
+  create_table "posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.uuid "company_id"
+    t.bigint "author_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_posts_on_author_id"
+    t.index ["company_id"], name: "index_posts_on_company_id"
   end
 
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -820,6 +833,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_035057) do
   add_foreign_key "documents", "folders"
   add_foreign_key "documents", "franchisees"
   add_foreign_key "documents", "outlets"
+  add_foreign_key "documents", "posts"
   add_foreign_key "documents", "users"
   add_foreign_key "documents", "workflow_actions"
   add_foreign_key "documents", "workflows"
@@ -840,6 +854,8 @@ ActiveRecord::Schema.define(version: 2021_04_12_035057) do
   add_foreign_key "outlets_users", "users"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "users"
+  add_foreign_key "posts", "companies"
+  add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "questions", "survey_sections"
   add_foreign_key "recurring_workflows", "companies"
   add_foreign_key "recurring_workflows", "templates"

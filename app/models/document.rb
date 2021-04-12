@@ -11,6 +11,7 @@ class Document < ApplicationRecord
   belongs_to :folder
   belongs_to :outlet
   belongs_to :user
+  belongs_to :post
   belongs_to :workflow
   belongs_to :workflow_action
   belongs_to :franchisee
