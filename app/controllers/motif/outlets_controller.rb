@@ -30,6 +30,8 @@ class Motif::OutletsController < ApplicationController
     else
       @user = User.find(params[:user_id])
     end
+    # Franchisor's direct outlet won't have franchisee present
+    @outlet.franchisee = Franchisee.find_by(franchisee_company: @company).present? ? Franchisee.find_by(franchisee_company: @company) : nil
     # Link franchisor company to outlet
     @outlet.company = @company
     # Add role franchisee_owner to this new user
