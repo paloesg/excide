@@ -21,9 +21,9 @@
             | Prefer to
             b = ' embed a PDF? '
             | Sure, we can do it too.
-        = link_to '#', remote: true, class: "dashboard-tour-start" do
-          i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
-          span.h5.font-weight-boldest.text-primary.ml-1 Take a tour
+        / = link_to '#', remote: true, class: "dashboard-tour-start" do
+        /   i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
+        /   span.h5.font-weight-boldest.text-primary.ml-1 Take a tour
     .image-container.col-sm-6
       = image_pack_tag 'media/src/images/overture/cap-table-onboarding.png', alt: "cap-table-onboarding", class: 'img-fluid float-right image-height'
       button.close.button-top-right type="submit"
