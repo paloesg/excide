@@ -136,7 +136,7 @@ class CompaniesController < ApplicationController
       cloned_template.save
       # Clone general folder and add it to the template's tasks
       cloned_template.clone_folder_through_template_tasks(@company, nil)
-      Workflow.create(user: current_user, company: @company, template: cloned_template, identifier: "#{@franchisee.franchise_licensee} - Agreements", franchisee: @franchisee)
+      Workflow.create(user: current_user, company: @company, template: cloned_template, identifier: "#{@franchisee.franchise_licensee} - Legal & Payment Documentation", franchisee: @franchisee)
     end
   end
 
