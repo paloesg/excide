@@ -107,9 +107,4 @@ module ApplicationHelper
   def titleize_keep_uppercase(string)
     string.gsub(/\b('?[a-z])/) { $1.capitalize }
   end
-
-  def first_time_login?
-    # check if user is 1st time login into Overture. If so, show the onboarding banner
-    current_user.sign_in_count == 1
-  end
 end
