@@ -9,8 +9,7 @@
           = image_pack_tag 'media/src/images/motif/motif-empty.svg'
           h2.mt-5 Nothing to manage
           p.mt-4 Looks like you have not added any franchisee outlets to manage
-          button.btn.btn-primary.ml-5 type="button"
-            | Go to Franchisee Outlet
+          = link_to "Request An Outlet", motif_outlets_path, class: "btn btn-primary"
     - else
       .row.mt-5
         .col-sm-4
