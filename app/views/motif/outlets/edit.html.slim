@@ -37,28 +37,6 @@
             = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'select2 form-control'
           .col-md-3
             = text_field_tag "contact", @contact, placeholder: "Contact Number", class: 'form-control'
-      / For direct owned outlet under franchisor, the system creates a franchisee without record. Need to hide this record
-      - if @outlet.franchisee.franchise_licensee.present?
-        = f.fields_for :franchisee do |ff|
-          .form-group
-            = ff.label :franchise_licensee, "Franchisee Entity", class: "label-bold"
-            = ff.text_field :franchise_licensee, placeholder: "Company", class: 'form-control col-sm-5'
-          .form-group
-            = ff.label :registered_address, "Registered Address", class: "label-bold"
-            = ff.text_field :registered_address, placeholder: "Registered address", class: 'form-control col-sm-10'
-          .form-group
-            = ff.label :commencement_date, class: "col-sm-5 pl-0 label-bold"
-            = ff.label :expiry_date, class: "col-sm-5 pl-2 label-bold"
-            .form-inline
-              = ff.date_field :commencement_date, class: 'form-control col-sm-5 mr-2'
-              = ff.date_field :expiry_date, class: 'form-control col-sm-5'
-          .form-group
-            = ff.label :renewal_period_freq_unit, "Franchise renewal notice period", class: "label-bold col-sm-5 pl-0"
-            .form-inline
-              = ff.number_field :renewal_period_freq_value, placeholder: "Value", class: 'form-control col-sm-2 mr-2'
-              = ff.select :renewal_period_freq_unit, Franchisee.renewal_period_freq_units.map { |key, value| [key.titleize, key] },  {selected: @outlet.franchisee.renewal_period_freq_unit}, class: 'form-control col-sm-2'
-          .form-group
-            = ff.hidden_field :parent_company_id, value: @company.id
       = f.label :header_image, class: "label-bold"
       .form-group
         .form-inline
