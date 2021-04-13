@@ -1,5 +1,5 @@
 .sidebar-sticky.pt-5
-  ul.nav.flex-column
+  ul.nav.flex-column.dashboard-tour-1
     div.d-flex.justify-content-between.align-items-center
       h2.ml-8.mt-4 Hello, #{current_user.first_name}!
     li.nav-item.hover-blue.py-1.m-4.cursor-pointer
@@ -8,7 +8,7 @@
         .ml-5.sidebar-font Dashboard
     - if current_user.company.startup?
       - if current_user.company.settings[0]["search_feature"] == "true"
-        li.nav-item.hover-blue.py-1.m-4.cursor-pointer
+        li.nav-item.hover-blue.py-1.m-4.cursor-pointer.fundraising-tour-1
           = link_to overture_contacts_path, class: 'col-sm-12 d-flex align-items-center' do
             i.material-icons-outlined.mr-5 search
             .ml-5.sidebar-font Search Investor
@@ -35,7 +35,7 @@
         li.nav-item.hover-blue.py-1.m-4.cursor-pointer
           = link_to overture_investments_path, class: 'col-sm-12 d-flex align-items-center' do
             i.material-icons-outlined.mr-5 supervised_user_circle
-            .ml-5.sidebar-font Our Investors
+            .ml-5.sidebar-font Investors List
       - if current_user.company.settings[0]["announcement"] == "true"
         li.nav-item.hover-blue.py-1.m-4.cursor-pointer
           = link_to overture_startups_posts_path, class: 'col-sm-12 d-flex align-items-center' do
@@ -53,7 +53,7 @@
             .ml-5.sidebar-font Performance Report
       - if current_user.company.settings[0]["shared_file"] == "true"
         li.nav-item.hover-blue.py-1.m-4.cursor-pointer
-          = link_to Folder.find_by(company: current_user.company, name: "Shared Drive").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Shared Drive").id) : overture_startups_documents_path, class: 'col-sm-12 d-flex align-items-center' do
+          = link_to Folder.find_by(company: current_user.company, name: "Shared Files").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Shared Files").id) : overture_startups_documents_path, class: 'col-sm-12 d-flex align-items-center' do
             i.material-icons-outlined.mr-5 folder
             .ml-5.sidebar-font Shared Files
     - else
@@ -61,7 +61,7 @@
         li.nav-item.hover-blue.py-1.m-4.cursor-pointer
           = link_to overture_investments_path, class: 'col-sm-12 d-flex align-items-center' do
             i.material-icons-outlined.mr-5 domain
-            .ml-5.sidebar-font My Startups
+            .ml-5.sidebar-font Startups List
   hr.m-1.text-dark
   ul.nav.flex-column
     - if current_user.company.startup?

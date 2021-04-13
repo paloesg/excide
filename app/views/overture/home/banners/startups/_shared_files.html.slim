@@ -1,0 +1,14 @@
+.card.shared-files-banner
+  .row
+    .col-sm-7
+      .card-body.pt-5
+        p.text-muted.text-uppercase.m-0 SHARED FILES
+        h1.text-dark.font-weight-boldest.mt-5 Exclusive sharing with your investors
+        p.mb-2 Only investors in Investors List can have access to Shared Files.
+        / = link_to '#', remote: true do
+        /   i.material-icons-outlined.align-middle.text-primary.mb-2 open_in_new
+        /   span.h5.font-weight-boldest.text-primary.ml-1 What to share with existing investors
+    .image-container.col-sm-5
+      = image_pack_tag 'media/src/images/overture/shared-files-onboarding.png', alt: "shared-files-onboarding", class: 'img-fluid float-right smaller-image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close

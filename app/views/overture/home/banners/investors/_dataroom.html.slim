@@ -1,0 +1,14 @@
+.card.dataroom-banner
+  .row
+    .col-sm-7
+      .card-body.pt-5
+        p.text-muted.text-uppercase.m-0 DATAROOM
+        h1.text-dark.font-weight-boldest.mt-5 Secured sharing for due diligence
+        p.mb-2 Do your due-diligence with ease. The files and folders displayed here are securely shared with you by startups of your interest. All you need to do is to read them and ask questions if needed.
+        = link_to '#', remote: true, class: "dataroom-tour-start" do
+          i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
+          span.h5.font-weight-boldest.text-primary.ml-1 Take a tour
+    .image-container.col-sm-5
+      = image_pack_tag 'media/src/images/overture/dataroom-onboarding.png', alt: "dataroom-onboarding", class: 'img-fluid float-right image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close

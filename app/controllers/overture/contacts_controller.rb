@@ -13,6 +13,7 @@ class Overture::ContactsController < ApplicationController
     # Only get investor's contact if they allow it to be public
     @contacts = policy_scope(Contact)
     @contacts = Kaminari.paginate_array(@contacts).page(params[:page]).per(5)
+    @user = User.new
   end
 
   # This is for creating a private contact through fundraising board or adding to board
@@ -80,9 +81,5 @@ class Overture::ContactsController < ApplicationController
 
   def set_contact
     @contact = Contact.find(params[:id])
-  end
-
-  def set_company
-    @company = current_user.company
   end
 end
