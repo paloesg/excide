@@ -1,0 +1,11 @@
+.contact-status-container
+  .row.p-5
+    .col-sm-12
+      .form-group
+        = f.label :name, "Add new Status", class: "edit-status-word-style"
+        = f.text_field :name, class: 'form-control'
+      .form-group
+        = f.label :colour, "Colours", class: "edit-status-word-style"
+        = f.color_field :colour, class: 'w-75'
+      .form-group
+        = f.submit "Submit", class: "btn btn-sm btn-primary"

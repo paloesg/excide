@@ -29,6 +29,7 @@ require("./symphony/header");
 require("./symphony/home");
 
 require("./motif/drag_documents");
+require("./motif/drag_contacts");
 
 window.createAllocation = require("./conductor/create_allocations");
 window.addAvailability = require("./conductor/add_availabilities");
@@ -43,6 +44,7 @@ require("./motif/remarks")
 require("./motif/settings")
 require("./motif/templates")
 require("./motif/note")
+require("./motif/contact_status_update")
 
 // Import Uppy drag-and-drop
 require("./components/uppy");

@@ -1,0 +1,54 @@
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
+    h3 Leads Management
+    p.mt-5.text-muted
+      | Manage leads of potential franchisees.
+hr
+.row.mt-5.ml-3.flex-row.flex-sm-nowrap.overflow-auto
+  - @contact_statuses.each do |cs|
+    .col-3.m-2.kanban-height
+      .d-flex
+        .col-sm-10
+          .dropdown
+            a.btn.btn-icon.btn-link.d-flex.py-2.ml-5 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+              .badge.badge-pill.font-weight-boldest.mr-3.badge-name.text-dark.px-4.py-2 style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
+              .text-dark = cs.contacts.length
+            .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="newContactStatus"
+              = form_for ContactStatus.new, url: motif_contact_statuses_path, method: :post do |f|
+                = render 'new_form', f: f
+        .col-sm-2#edit-status-dropdown
+          .dropdown
+            a.btn.btn-icon.btn-link href="#" id="editContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+              i.material-icons-outlined.align-middle.mr-2 more_horiz
+            .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="editContactStatus"
+              = form_for cs, url: motif_contact_status_path(cs) do |f|
+                = render 'edit_form', f: f, cs: cs
+      .row.draggable-columns.p-5 id="#{cs.id}"
+        - cs.contacts.each do |contact|
+          ul.draggable.fixed-draggable-width.p-0 id="#{contact.id}" style="list-style-type:none;"
+            li.draggable-handle
+              .card
+                .card-body.border.contact-card-shadow.p-2
+                  .mt-3.ml-3
+                    h3 = contact.name
+                    p = contact.email
+      a.text-muted.h5 href="#" aria-expanded="false" data-target="#addNewContactToBoard" type="button" aria-haspopup="true" data-toggle="modal" = "+ Contact"
+    #addNewContactToBoard.modal.fade aria-hidden="true" aria-labelledby="addNewContact" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-body
+            h3.mt-2.mb-8#addNewContact.modal-title Franchisee Lead
+            = form_for @contact, url: motif_contacts_path do |c|
+              .form-group
+                = c.label :name, "Name", class: "label-bold"
+                = c.text_field :name, placeholder: "Mark Zucchini", class: "form-control"
+              .form-group
+                = c.label :email, "Email", class: "label-bold"
+                = c.email_field :email, placeholder: "marking_zucchini@email.com", class: "form-control"
+              .form-group
+                = c.label :phone, "Phone number", class: "label-bold"
+                = c.text_field :phone, class: "form-control"
+              .form-group
+                = c.hidden_field :contact_statuses_id, value: cs.id
+              .form-group
+                = c.submit "Save", class: 'btn btn-primary float-right'
