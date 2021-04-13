@@ -19,14 +19,15 @@
           .my-2.d-flex
             .flex-grow-1.mx-5
               h4 = post.company.name
-              / h5 = post.title
               .d-flex.align-items-center.mt-4
                 = image_pack_tag 'media/src/images/overture/user-avatar-placeholder.jpg', class: 'icon-size'
                 small.mx-3 = post.author.full_name
                 small = post.created_at.strftime("%d %b %Y")
               .comment-font-size.text-dark.mt-4 = post.content
-            .icon-bar
-              i.material-icons-outlined data-target="#annoucement_#{post.id}" data-toggle="modal" type="button" create
-              = link_to motif_post_path(post.id), method: :delete, data: { confirm: "Are you sure you want to delete this announcement?" } do
-                i.material-icons-outlined.mt-4 delete
+            / Hide editing and deleting if announcement is made by the parent company
+            - if post.company == @company
+              .icon-bar
+                i.material-icons-outlined data-target="#annoucement_#{post.id}" data-toggle="modal" type="button" create
+                = link_to motif_post_path(post.id), method: :delete, data: { confirm: "Are you sure you want to delete this announcement?" } do
+                  i.material-icons-outlined.mt-4 delete
         = render "edit", post: post
