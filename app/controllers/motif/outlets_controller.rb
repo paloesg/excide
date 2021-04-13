@@ -7,6 +7,8 @@ class Motif::OutletsController < ApplicationController
   before_action :set_company_roles
   before_action :set_outlet, only: [:new, :edit, :update, :show]
 
+  after_action :verify_authorized, except: [:index, :members]
+
   def index
     # params[:type] is for filtering direct owned and subfranchised
     @outlets = get_outlets_by_type(params[:type], @company)
@@ -55,6 +57,7 @@ class Motif::OutletsController < ApplicationController
   end
 
   def edit
+    authorize @outlet
     build_addresses
     build_franchisee
     set_contact
@@ -66,6 +69,7 @@ class Motif::OutletsController < ApplicationController
   end
 
   def update
+    authorize @outlet
     # gsub(/\D/, "") keeps only the numbers which is the country code
     @outlet.contact = params[:country_code].gsub(/\D/, "") + params[:contact]
     if Phonelib.parse(@outlet.contact).valid?
@@ -85,11 +89,11 @@ class Motif::OutletsController < ApplicationController
   end
 
   def show
-
+    authorize @outlet
   end
 
   def members
-    @outlet = @company.outlets.find(params[:outlet_id])
+    @outlet = Outlet.find(params[:outlet_id])
     @users = @outlet.users
     # Find user that is in the company but not yet added to the outlet
     @existing_users = @company.users.includes(:outlets).where.not(outlets: { id: @outlet.id })
