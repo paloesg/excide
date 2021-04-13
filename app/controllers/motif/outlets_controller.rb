@@ -101,7 +101,7 @@ class Motif::OutletsController < ApplicationController
   end
 
   def members
-    @outlet = @company.outlets.find(params[:outlet_id])
+    @outlet = Outlet.find(params[:outlet_id])
     @users = @outlet.users
     # Find user that is in the company but not yet added to the outlet
     @existing_users = @company.users.includes(:outlets).where.not(outlets: { id: @outlet.id })
