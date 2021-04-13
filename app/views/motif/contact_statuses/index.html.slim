@@ -32,6 +32,7 @@ hr
                   .mt-3.ml-3
                     h3 = contact.name
                     p = contact.email
+                    p = contact&.phone
       a.text-muted.h5 href="#" aria-expanded="false" data-target="#addNewContactToBoard" type="button" aria-haspopup="true" data-toggle="modal" = "+ Contact"
     #addNewContactToBoard.modal.fade aria-hidden="true" aria-labelledby="addNewContact" role="dialog" tabindex="-1"
       .modal-dialog role="document"
