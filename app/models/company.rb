@@ -18,6 +18,7 @@ class Company < ApplicationRecord
   has_many :franchisees, class_name: 'Franchisee', foreign_key: 'parent_company_id', dependent: :destroy
   has_many :invoices, dependent: :destroy
   has_many :outlets, dependent: :destroy
+  has_many :posts, dependent: :destroy
   has_many :recurring_workflows, dependent: :destroy
   has_many :reminders, dependent: :destroy
   has_many :roles, as: :resource, dependent: :destroy

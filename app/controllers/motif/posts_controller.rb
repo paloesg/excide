@@ -10,7 +10,7 @@ class Motif::PostsController < ApplicationController
 
   def index
     # authorize Post
-    @posts = Post.all
+    @posts = Post.where(company: @company)
     # policy_scope(Post)
     @post = Post.new
   end
