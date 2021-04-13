@@ -22,6 +22,8 @@ class CompaniesController < ApplicationController
     authorize @company
     # Save the new company's product(s)
     @company.products = params[:products]
+    # By default, set company storage limit to 2Gb upon creation
+    @company.storage_limit = 2147483648
     if @company.save
       set_company_roles
       set_default_folders
