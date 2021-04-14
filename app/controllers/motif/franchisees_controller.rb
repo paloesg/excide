@@ -28,7 +28,7 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def outlets
-    @outlets = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.franchisee_company.franchisees.map(&:outlets).flatten : []
+    @outlets = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.franchisee_company.outlets : []
   end
 
   def users
