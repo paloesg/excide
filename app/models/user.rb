@@ -13,9 +13,9 @@ class User < ApplicationRecord
 
   has_many :batches
   has_many :clients
-  has_many :documents
+  has_many :documents, dependent: :destroy
   has_many :folders
-  has_many :outlets_users
+  has_many :outlets_users, dependent: :destroy
   has_many :outlets, through: :outlets_users
   has_many :invoices
   has_many :permissions, dependent: :destroy

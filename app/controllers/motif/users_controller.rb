@@ -93,7 +93,7 @@ class Motif::UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    redirect_to motif_users_path, notice: 'User was successfully deleted.'
+    redirect_back fallback_location: motif_users_path, notice: 'User was successfully deleted.'
   end
 
   private
