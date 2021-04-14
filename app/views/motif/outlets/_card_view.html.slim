@@ -12,7 +12,7 @@
             .h6.mt-2 = outlet&.franchisee&.franchise_licensee.present? ? outlet&.franchisee&.franchise_licensee : outlet.company.name
             = outlet.country || "No country"
             br
-            - if outlet.company == @company and !(outlet.franchisee.unit_franchisee? or outlet.franchisee.sub_franchisee?)
+            - if outlet.company == @company
               .badge.label-motif-roles Direct Owned
             - else
               .badge.badge-success.text-dark.font-weight-boldest Franchised

@@ -12,7 +12,7 @@
         .ml-2.sidebar-font Franchisee Profile
     li.nav-item.hover-blue.py-1.m-4
       = link_to Workflow.find_by(franchisee: @franchisee).present? ? (motif_workflow_path(id: Workflow.find_by(franchisee: @franchisee).id, franchisee_id: @franchisee.id)) : (motif_franchisee_outlets_path(@franchisee)), class: 'col-sm-12 d-flex align-items-center' do
-        .ml-2.sidebar-font Legal and Payment documentation
+        .ml-2.sidebar-font Legal & Payment Documentation
     li.nav-item.hover-blue.py-1.m-4
       = link_to motif_franchisee_users_path(@franchisee), class: 'col-sm-12 d-flex align-items-center' do
         .ml-2.sidebar-font Users

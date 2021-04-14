@@ -28,39 +28,11 @@ class Motif::FranchiseesController < ApplicationController
   end
 
   def outlets
-    @outlets = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.franchisee_company.franchisees.map(&:outlets).flatten : []
+    @outlets = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.franchisee_company.outlets : []
   end
 
   def users
     @users = @franchisee.check_license_type_master_or_area_or_multi_unit? ? @franchisee.franchisee_company.users : @franchisee.outlets.map(&:users).flatten
-  end
-
-  def agreements
-    @documents = Document.where(franchisee_id: @franchisee.id)
-  end
-
-  def upload_agreements
-    if params[:successful_files].present?
-      # Create a folder in doc repo to store all the uploaded files
-      @folder = Folder.find_or_create_by(name: "Agreement documents - #{@franchisee&.franchise_licensee}", company: @company)
-      # Give permission access to the person that uploaded the folder
-      Permission.find_or_create_by(user: current_user, can_write: true, can_download: true, can_view: true, permissible: @folder)
-      @files = []
-      parsed_files = JSON.parse(params[:successful_files])
-      parsed_files.each do |file|
-        @generate_document = GenerateDocument.new(@user, @company, nil, nil, nil, params[:document_type], nil, @folder.id).run
-        document = @generate_document.document
-        document.franchisee = @franchisee
-        document.save
-        # attach and convert method with the response key to create blob
-        document.attach_and_convert_document(file['response']['key'])
-        @files.append document
-      end
-    end
-    respond_to do |format|
-      format.html { redirect_to motif_franchisee_agreements_path(franchisee_id: @franchisee.id), notice: "File(s) successfully uploaded."  }
-      format.json { render json: @files.to_json }
-    end
   end
 
   def email_new_franchisee

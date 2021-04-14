@@ -43,9 +43,9 @@ class Motif::HomeController < ApplicationController
   end
 
   def financial_performance
-    @franchisees = @company.franchisees.where.not(franchise_licensee: "")
+    @franchisees = @company.franchisees
     #check if user has outlet, else find the outlet from the params, else display company
-    @source = current_user&.active_outlet&.franchisee ? current_user.active_outlet.franchisee : (params[:franchisee].present? ? Franchisee.find(params[:franchisee]) : @company)
+    @source = current_user&.active_outlet&.franchisee ? current_user.active_outlet.franchisee : (params[:franchisee].present? ? @company.franchisees.find(params[:franchisee]) : @company)
   end
 
   def edit_report

@@ -12,6 +12,9 @@
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_users_path, class: 'col-sm-12 d-flex align-items-center' do
           .ml-2.sidebar-font Users
+      li.nav-item.hover-blue.py-1.m-4
+        = link_to motif_templates_path, class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font Task Templates
     - else
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_outlet_edit_franchisee_setting_path(current_user.active_outlet), class: 'col-sm-12 d-flex align-items-center' do
@@ -19,13 +22,10 @@
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_users_path(outlet_id: current_user.active_outlet.id), class: 'col-sm-12 d-flex align-items-center' do
           .ml-2.sidebar-font Users
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to motif_usage_path, class: 'col-sm-12 d-flex align-items-center' do
-        .ml-2.sidebar-font Usage & Top Up
-    - unless current_user.has_role?(:franchisee_owner, current_user.company)
+    - unless check_unit_franchisee_or_franchisee_owner?
       li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_templates_path, class: 'col-sm-12 d-flex align-items-center' do
-          .ml-2.sidebar-font Task Templates
+        = link_to motif_usage_path, class: 'col-sm-12 d-flex align-items-center' do
+          .ml-2.sidebar-font Usage & Top Up
     - if current_user.has_role? :superadmin
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_edit_report_path, class: 'col-sm-12 d-flex align-items-center' do

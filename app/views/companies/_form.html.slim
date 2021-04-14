@@ -93,7 +93,7 @@
           | Add products
       .card-body
         .form-group
-          = check_box_tag 'products[]', 'motif', @company.products.include?("motif") ? true : false, class: 'mr-3'
+          = check_box_tag 'products[]', 'motif', @company.products.include?("motif") ? true : false, required: true, class: 'mr-3'
           = label_tag 'Motif', 'Motif', class: 'form-check-label'
     .card.card-custom.mt-4
       .card-header
@@ -102,7 +102,7 @@
       .card-body
         .form-group
           = label_tag "Choose franchisee type (For Master franchisee, area franchisee and multi-unit franchisee only)"
-          = select_tag('license_type', options_for_select(Franchisee.license_types.map{|k, v| [k, k]}), include_blank: true, class: "form-control")
+          = select_tag('license_type', options_for_select(Franchisee.license_types.map{|k, v| [k.humanize, k]}), include_blank: true, class: "form-control")
         .form-group
           = f.label :parent_id, "Select franchisor's company"
           = f.select :parent_id, @motif_companies, { include_blank: true }, class: "form-control"
