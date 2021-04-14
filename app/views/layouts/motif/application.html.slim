@@ -56,6 +56,7 @@ html lang="en"
           .col-sm-10.mt-5
             = yield
             = render 'layouts/messages'
+    = render 'layouts/footer' unless current_page?(root_path)
     /! Start of paloe Zendesk Widget script
     script#ze-snippet src="https://static.zdassets.com/ekr/snippet.js?key=9e256da6-64dd-4eb7-b18c-cdf3dd65fd66"
     /! End of paloe Zendesk Widget script
