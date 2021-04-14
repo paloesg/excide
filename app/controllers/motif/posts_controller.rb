@@ -1,5 +1,6 @@
 class Motif::PostsController < ApplicationController
   layout 'motif/application'
+  include Motif::PostsHelper
 
   before_action :authenticate_user!
   before_action :set_company
@@ -10,7 +11,7 @@ class Motif::PostsController < ApplicationController
 
   def index
     # authorize Post
-    @posts = Post.all
+    @posts = get_posts(@company)
     # policy_scope(Post)
     @post = Post.new
   end

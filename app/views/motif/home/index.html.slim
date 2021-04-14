@@ -36,11 +36,13 @@
         .col-sm-4
           .card
             .card-body
-              h5.card-title Announcements
+              h5.card-title Latest Announcements
               .d-flex.p-5.align-items-center.rounded.primary-card-motif
                 = image_pack_tag 'media/src/images/motif/annoucement.png'
-                p.card-text.ml-4 Annoucement feature coming soon. Stay tuned!
-
+                - if @posts.empty?
+                  p.card-text.ml-4 You have no announcement.
+                - else
+                  p.card-text.ml-4 = "You have made #{pluralize(@posts.length, "announcement")}"
       .row.mt-5
         .col-sm-4
           .card
