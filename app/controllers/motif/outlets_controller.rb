@@ -28,7 +28,7 @@ class Motif::OutletsController < ApplicationController
     # Condition when franchisee is not in database, then we need to create a record
     if params[:user_email].present?
       # Create user if user's email is not in motif
-      @user = User.find_or_create_by(email: params[:user_email], company: @company)
+      @user = User.find_or_create_by(email: params[:user_email], company: @company, first_name: params[:first_name], last_name: params[:last_name])
     else
       @user = User.find(params[:user_id])
     end

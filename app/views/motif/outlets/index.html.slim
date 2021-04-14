@@ -18,7 +18,11 @@
                     hr
                     h6 Add New Member
                     .form-group
-                      = email_field_tag :user_email, nil, placeholder: 'Add a user to this outlet by email', class: 'form-control'
+                      = email_field_tag :user_email, nil, placeholder: "Add user's email...", class: 'form-control'
+                    .form-group
+                      = text_field_tag :first_name, nil, placeholder: "Add user's first name...", class: 'form-control'
+                    .form-group
+                      = text_field_tag :last_name, nil, placeholder: "Add user's last name...", class: 'form-control'
                     h6 Choose Existing Member
                     .form-group
                       = select_tag('user_id', options_from_collection_for_select(@existing_users, "id", "email"), include_blank: true, class: "form-control", style: 'width: 100%')
