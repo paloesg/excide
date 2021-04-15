@@ -21,37 +21,37 @@
     button.close.open-banner.text-dark.mr-3 type="submit"
       i.material-icons-outlined.float-right help_outline
 = render 'overture/home/banners/startups/dataroom'
-    .row.p-3.align-items-center#select-options style="background: #EEF1FF;"
-      .col-md-9
-        span.mr-5#selectedNumber
-      .col-md-3.d-flex.justify-content-between
-        .col-md-12
-          a.groupDelete data-toggle="modal" data-target="#groupDelete"
-            i.material-icons-outlined.cursor-pointer.float-right delete
-          = render "overture/documents/modals/bulk_delete_modal"
-          a.groupAssignment.cursor-pointer data-toggle="modal" data-target="#groupAssignPermissions"
-            i.material-icons-outlined.cursor-pointer.float-right.mr-5 group_add
-          = render "overture/documents/modals/bulk_assignment_permissions_modal"
-    .row.ml-4.my-5.align-items-center#filter-options
-      .col.md-12
-        span.mr-3
-          = select_tag('access', options_for_select(["All access"].concat(@company.users.pluck(:first_name)), selected: params[:access], include_blank: true), class: 'select2 select2-document-access form-control')
-        span.mr-3
-          = select_tag('qna', options_for_select(["All Q&A Status", "Read", "Unread"], selected: params[:qna], include_blank: true), class: 'select2 select2-document-qna form-control')
-        span.mr-3
-          = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
-        span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
-          | Clear
-    - if controller_name == "folders"
-      .row.mt-2
-        .col
-          ul.breadcrumb.breadcrumb-transparent.font-weight-bold.p-0.font-size-sm
-            li.breadcrumb-item
-              = link_to "Dataroom", overture_startups_documents_path, class: "text-dark"
-            - @breadcrumb_folder_arrangement.each do |folder|
-              li.breadcrumb-item
-                = link_to folder.name, overture_folder_path(folder)
-    hr.m-0
+.row.p-3.mx-0.align-items-center#select-options style="background: #EEF1FF;"
+  .col-md-9
+    span.mr-5#selectedNumber
+  .col-md-3.d-flex.justify-content-between
+    .col-md-12
+      a.groupDelete data-toggle="modal" data-target="#groupDelete"
+        i.material-icons-outlined.cursor-pointer.float-right delete
+      = render "overture/documents/modals/bulk_delete_modal"
+      a.groupAssignment.cursor-pointer data-toggle="modal" data-target="#groupAssignPermissions"
+        i.material-icons-outlined.cursor-pointer.float-right.mr-5 group_add
+      = render "overture/documents/modals/bulk_assignment_permissions_modal"
+.row.ml-4.my-5.align-items-center#filter-options
+  .col.md-12
+    span.mr-3
+      = select_tag('access', options_for_select(["All access"].concat(@company.users.pluck(:first_name)), selected: params[:access], include_blank: true), class: 'select2 select2-document-access form-control')
+    span.mr-3
+      = select_tag('qna', options_for_select(["All Q&A Status", "Read", "Unread"], selected: params[:qna], include_blank: true), class: 'select2 select2-document-qna form-control')
+    span.mr-3
+      = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
+    span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
+      | Clear
+- if controller_name == "folders"
+  .row.mt-2
+    .col
+      ul.breadcrumb.breadcrumb-transparent.font-weight-bold.p-0.font-size-sm
+        li.breadcrumb-item
+          = link_to "Dataroom", overture_startups_documents_path, class: "text-dark"
+        - @breadcrumb_folder_arrangement.each do |folder|
+          li.breadcrumb-item
+            = link_to folder.name, overture_folder_path(folder)
+hr.m-0
 - if @folders.empty? && @documents.empty?
   = render 'overture/home/empty_states/startups/dataroom'
 - else
