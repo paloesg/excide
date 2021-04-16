@@ -14,4 +14,15 @@ module Motif::WorkflowsHelper
       return @workflows
     end
   end
+
+  def disable_checklist(workflow, user)
+    # Onboarding, site audit and royalty collection workflows
+    if workflow.outlet.present?
+      user.has_role?(:franchisee_owner, user.company) or user.company != workflow.company
+    # Retrospective workflows
+    else
+      # If user is management level company (like franchisor), then checkbox should be enabled. Otherwise, for the rest of the franchisee, the checkboxes are disabled
+      user.company == workflow.company ? true : false
+    end
+  end
 end

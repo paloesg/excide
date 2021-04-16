@@ -71,8 +71,7 @@
                   - if wfa.notify_status?
                     i.material-icons-outlined.mr-1.orange-bell-notification notifications_active
               td.text-center width="5%"
-                / 2 conditions for disabled checkboxes: First is unit franchisee condition (checked by role), while the other is master franchisee condition (which the company would not be the same as the franchise company who created the workflow)
-                / If retrospective workflow (workflow without outlet), all checkboxes will NOT be disabled
-                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id, company_id: @workflow.company.id), method: "POST"}, onclick: "this.checked=true;", disabled: @workflow.outlet.present? ? (@user.has_role?(:franchisee_owner, @user.company) or (@company != @workflow.company)) : false, class: "mt-1 action_checkbox"
+                / Conditions for disabling checklist is in workflow helper method
+                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id, company_id: @workflow.company.id), method: "POST"}, onclick: "this.checked=true;", disabled: disable_checklist(@workflow, @user), class: "mt-1 action_checkbox"
             = render "task", template: @template, wf: @workflow, wfa: wfa, index: index, color: color, task: wfa.task
 
