@@ -156,6 +156,7 @@ Rails.application.routes.draw do
     resources :contact_statuses
     resources :users
     resources :posts
+    delete 'delete_multiple_permissible', to: 'permissions#delete_multiple_permissible', as: :delete_multiple_permissible
     get '/messages', to: 'notes#messages', as: :messages
     post '/add-roles', to: 'users#add_role', as: :add_role
     get '/financial-performance', to: 'home#financial_performance'
