@@ -1,0 +1,24 @@
+.card.qna-banner
+  .row
+    .col-sm-7
+      .card-body.pt-8
+        p.text-muted.text-uppercase.m-0 Q&A
+        h3.text-dark.font-weight-boldest Communicate only with startups you are interested in
+        p.mb-2 Efficiently find blooming startups with undisturbed privacy is possible
+        ul.pl-5
+          li
+            b = "Initiate questions "
+            | to startups you want to know more. Startups can respond only.
+          li
+            b = "Close questions "
+            | and cease communication you deem as finished.
+          li
+            b = "Ask anytime"
+            | , whether it’s for due diligence or monitoring invested startups.
+        / = link_to '#', remote: true, class: "dashboard-tour-start" do
+        /   i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
+        /   span.h5.font-weight-boldest.text-primary.ml-1 Watch Video
+    .image-container.col-sm-5
+      = image_pack_tag 'media/src/images/overture/qna-onboarding.png', alt: "qna-onboarding", class: 'img-fluid float-right image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close

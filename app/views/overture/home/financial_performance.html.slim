@@ -1,13 +1,19 @@
-.row.mb-3.mt-5.ml-3
-    .col-sm-12
-      .float-right
-        = link_to 'Setting', edit_overture_company_path(@company), target: :_blank, class: 'text-primary font-weight-bolder mr-3 px-5'
-      h3.mb-5 Financial Performance
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark timeline
+    .header-font.text-dark Performance Report
+  .col-sm-8.d-flex.justify-content-end
+    = link_to 'Setting', edit_overture_company_path(@company), target: :_blank, class: 'text-primary font-weight-bolder mr-3 px-5 my-auto'
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
+- if @company.startup?
+  = render 'overture/home/banners/startups/cap_table', type: "PERFORMANCE REPORT"
+- else
+  = render 'overture/home/banners/investors/cap_table', type: "PERFORMANCE REPORT"
 - if @company.report_url.present?
   iframe.pb-3.pr-3.pl-7 width="100%" height="100%" src=@company.report_url frameborder="0" style="border:0" allowfullscreen=""
 - else
-  .col-md-3.text-center.mt-10.mx-auto
-    = image_pack_tag 'media/src/images/motif/chart-empty.svg'
-    h2.mt-5 No charts to show.
-    p.mt-4 Looks like you have not set up this page.
-    = link_to "Go to Setting", edit_overture_company_path(@company), target: :_blank, role: "button", class: "btn btn-primary font-weight-bolder mr-3 px-5 mt-4"
+  - if @company.startup?
+    = render 'overture/home/empty_states/startups/cap_table', type: "performance report"
+  - else
+    = render 'overture/home/empty_states/investors/shared_files', type: "upload their performance report"

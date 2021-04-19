@@ -1,16 +1,12 @@
-.row.mb-3.mt-5.ml-3
-  .col-sm-12
-    h3 Search Investors
-    p.mt-5
-      | You can browse all investor's contacts in this list and view more details. Click on 'Add to fundraising board' to add them to your board.
-/ .row.ml-3.mt-5.align-items-center
-/   .col
-/     i.material-icons-outlined filter_list
-/   .col
-/     i.material-icons swap_vert
-/   .col-sm-11
-/     i.material-icons-outlined search
-hr
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark search
+    .header-font.text-dark Search Investors
+  .col-sm-8
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
+= render 'overture/home/banners/startups/search_investors'
+= render "overture/investments/add_new_overture_user_modal"
 - @contacts.each do |contact|
   .row.mb-3.mt-5.ml-3
     .col-md-10
@@ -37,3 +33,4 @@ hr
                       = link_to "Add to fundraising board", overture_contacts_path(contact_id: contact.id), method: :post, class: "btn btn-primary mr-3"
 .mt-6
   = paginate @contacts, views_prefix: 'dashboard'
+= render 'overture/home/empty_states/startups/search_investors'

@@ -1,9 +1,11 @@
-.row.mb-3.mt-5.ml-3
-  .col-sm-12
-    h3 Fundraising Board
-    p.mt-5
-      | Track your progress with your investors.
-hr
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark view_agenda
+    .header-font.text-dark Fundraising Board
+  .col-sm-8
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
+= render 'overture/home/banners/startups/fundraising_board'
 .row.mt-5.flex-row.flex-sm-nowrap.overflow-auto
   - @contact_statuses.each do |cs|
     .col-3.m-2.kanban-height
@@ -11,7 +13,7 @@ hr
         .col-sm-10
           .dropdown
             a.btn.btn-icon.btn-link.d-flex.py-2.ml-5 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-              .badge.badge-pill.font-weight-boldest.p-3.mr-3.badge-name style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
+              .badge.badge-pill.font-weight-boldest.p-3.mr-3.badge-name.fundraising-tour-3 style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
               = cs.contacts.length
             .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="newContactStatus"
               = form_for cs, url: overture_contact_statuses_path, method: :post do |f|
@@ -66,3 +68,4 @@ hr
               .form-group
                 = c.submit "Add", class: 'btn btn-primary float-right'
       / = link_to '+ Investor', '#', remote: :true, class: "text-muted add-investor", id: "add-investor-button-#{cs.id}", data: {contact_status: cs.id}
+= render 'overture/home/empty_states/startups/fundraising_board'

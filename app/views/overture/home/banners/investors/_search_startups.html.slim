@@ -1,0 +1,24 @@
+.card.search-investors-banner
+  .row
+    .col-sm-6
+      .card-body.pt-5
+        p.text-muted.text-uppercase.m-0 SEARCH STARTUPS
+        h1.text-dark.font-weight-boldest.mt-5 Find budding and blooming potentials
+        p.mb-2 These full-of-potential startups are waiting for you.
+        ul.pl-5
+          li
+            b = "Search "
+            | and
+            b = " filter "
+            | to find profile that suit your investment goal
+          li
+            | "
+            b = "State interest"
+            | " to startup profiles you are interested in to start communication
+        / = link_to '#', remote: true, class: "dashboard-tour-start" do
+        /   i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
+        /   span.h5.font-weight-boldest.text-primary.ml-1 Take a tour
+    .image-container.col-sm-6
+      = image_pack_tag 'media/src/images/overture/search-investors-onboarding.png', alt: "dashboard-onboarding", class: 'img-fluid float-right image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close

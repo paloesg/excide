@@ -1,17 +1,25 @@
-.row.mb-3.mt-5.ml-3
-  .col-sm-12
-    button.btn.btn-primary.float-right.mr-5 data-target="#annoucement_new" data-toggle="modal" type="button"
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark campaign
+    .header-font.text-dark Announcement
+  .col-sm-8.d-flex.justify-content-end
+    button.btn.btn-primary.float-right.mr-5.announcement-tour-1 data-target="#annoucement_new" data-toggle="modal" type="button"
       i.material-icons-outlined.text-white create
       | New Announcement
     = render "new", post: @post
-    h3 Share announcement
-    p.my-5
-      | Share important news and announcements with your investors.
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
+- if @company.startup?
+  = render 'overture/home/banners/startups/announcement'
+- else
+  = render 'overture/home/banners/investors/announcement'
+.row.mb-3.mt-5.ml-3
+  .col-sm-12
     - if @posts.empty?
-      = render "post_empty_state"
+      = render @company.startup? ? 'overture/home/empty_states/startups/announcement' : 'overture/home/empty_states/investors/announcement'
     - else
       - @posts.each do |post|
-        .col-sm-12.mr-8.mb-6.qna-wrapper.px-5.py-5.float-left
+        .col-sm-12.mr-8.mb-6.qna-wrapper.px-5.py-5.float-left.announcement-tour-2
           .mt-5.d-flex
             = image_pack_tag 'media/src/images/overture/overture-icon.png', class: "p-3 announcement-icon-size mr-6"
             / , class: 'announcement-icon-size border p-1 mr-6'

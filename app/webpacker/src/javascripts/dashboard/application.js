@@ -46,6 +46,7 @@ require("./motif/note");
 require("./overture/access_control");
 require("./overture/bulk_assignment");
 require("./overture/contact_status_update");
+require("./overture/close_and_open_banner");
 require("./overture/drawer");
 require("./overture/open_another_modal");
 require("./overture/update_contact_status");
@@ -62,4 +63,10 @@ require("./components/stripe");
 require("./symphony/invoices/invoice_global_functions");
 require("./components/date_time_picker");
 require("./components/draggable");
+// Product tour using Intro.js
+require("./components/product_tour/dataroom_intro");
+require("./components/product_tour/dashboard_intro");
+require("./components/product_tour/fundraising_board_intro");
+require("./components/product_tour/announcement_intro");
+
 

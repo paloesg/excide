@@ -1,31 +1,28 @@
-row.mb-3.mt-5.ml-3
-  .col-sm-12
-    - if @company.startup?
+- if @company.startup?
+  .row.my-5
+    .col-sm-4.d-flex.align-items-center
+      i.material-icons-outlined.mr-5.text-dark supervised_user_circle
+      .header-font.text-dark Investors List
+    .col-sm-8.d-flex.justify-content-end
       button.btn.btn-primary.float-right.mr-5 data-target="#addInvestmentOverture" data-toggle="modal" type="button"
         i.material-icons-outlined.text-white add
         | Investor
       = render "add_investment_modal", investor_companies: @investor_companies
       = render "add_new_overture_user_modal"
-      h3 Signed Investor
-      p.mt-5.text-muted
-        | Here are the information of your signed investor. Click on a row to see their details.
-    - else
-      h3 My Startups
-      p.mt-5.text-muted
-        | These are the companies you have invested. They will update their financial
-        br
-        | performance, capitalisation table, and data repository.
-/     span.mr-3
-/       i.material-icons-outlined filter_list
-/     | Filters
+      button.close.open-banner.text-dark.mr-3 type="submit"
+        i.material-icons-outlined.float-right help_outline
+  = render 'overture/home/banners/startups/our_investors'
+- else
+  .row.my-5
+    .col-sm-4.d-flex.align-items-center
+      i.material-icons-outlined.mr-5.text-dark supervised_user_circle
+      .header-font.text-dark Startups List
+    .col-sm-8
+      button.close.open-banner.text-dark.mr-3 type="submit"
+  = render 'overture/home/banners/investors/startups_list'
 hr.mb-0
 - unless @investments.present?
-  .row.justify-content-center.ml-3.mt-20
-    .col.text-center.p-10
-      = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
-      p.mt-4.text-muted
-        | No signed
-        = @company.investor? ? " startup" : " investor"
+  = render @company.startup? ? 'overture/home/empty_states/startups/investors_list' : 'overture/home/empty_states/investors/startups_list'
 - else
   table.table
     thead

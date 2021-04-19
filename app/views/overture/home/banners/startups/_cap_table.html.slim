@@ -1,0 +1,30 @@
+.card.cap-table-banner
+  .row
+    .col-sm-6
+      .card-body.pt-5
+        p.text-muted.text-uppercase.m-0 = type
+        h1.text-dark.font-weight-boldest.mt-5 Sync everything in one link
+        p.mb-2 Syncing your #{type.downcase} should be, and will be easy. This is how to do it:
+        ul.pl-5
+          li
+            | Create your
+            = " #{type.downcase} online in"
+            b = " Google Data Studio or Sheet"
+          li
+            | Copy and paste the link in “
+            b = 'Edit Link"'
+          li
+            | Whatever changes you made will be
+            b = ' automatically '
+            | reflected here.
+          li
+            | Prefer to
+            b = ' embed a PDF? '
+            | Sure, we can do it too.
+        / = link_to '#', remote: true, class: "dashboard-tour-start" do
+        /   i.material-icons-outlined.align-middle.text-primary.mb-2 play_circle_filled
+        /   span.h5.font-weight-boldest.text-primary.ml-1 Take a tour
+    .image-container.col-sm-6
+      = image_pack_tag 'media/src/images/overture/cap-table-onboarding.png', alt: "cap-table-onboarding", class: 'img-fluid float-right image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close
