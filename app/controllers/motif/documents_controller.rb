@@ -16,6 +16,7 @@ class Motif::DocumentsController < ApplicationController
     @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
     @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'company.slug:' + current_user.company.slug})
     unless params[:tags].blank?
       if params[:tags] == 'All tags'
         @documents = policy_scope(Document)

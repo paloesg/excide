@@ -29,7 +29,7 @@ class Document < ApplicationRecord
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :file_url, :created_at, :updated_at
+    # attribute :file_url, :created_at, :updated_at
     attribute :filename do
       "#{ raw_file.present? ? raw_file&.filename : filename }"
     end
