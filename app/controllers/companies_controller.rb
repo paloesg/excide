@@ -95,7 +95,7 @@ class CompaniesController < ApplicationController
   def set_default_folders
     # Create default folders with permissions when creating a franchise
     if @company.products.include? "motif"
-      motif_default_folder_names = ["Financial", "Legal & Policy", "Social Media/App", "Media Repository (Training Videos & Materials)", "Operational", "Dialogue & Discussions", "Manuals & SOPs"]
+      motif_default_folder_names = ["Financial", "Legal & Policy", "Social Media/App", "Media Repository (Training Videos & Materials)", "Operational", "Dialogue & Discussions", "Manuals & SOPs", "Site Audit", "Royalty Collection"]
       # Get all the new folder instances
       motif_default_folders = motif_default_folder_names.map{|name| Folder.create(name: name, company: @company)}
       # Current user should have access permission to default folders
