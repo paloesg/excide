@@ -14,6 +14,8 @@ class Overture::ContactsController < ApplicationController
     @contacts = policy_scope(Contact)
     @contacts = Kaminari.paginate_array(@contacts).page(params[:page]).per(5)
     @user = User.new
+    # Filter contacts that are searchable true
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'searchable: true'})
   end
 
   # This is for creating a private contact through fundraising board or adding to board

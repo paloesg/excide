@@ -11,6 +11,14 @@ class Contact < ApplicationRecord
 
   has_many :notes, as: :notable, dependent: :destroy
 
+  include AlgoliaSearch
+  algoliasearch do
+    attribute :company_name, :email, :phone, :searchable
+    attribute :company do
+      { name: company&.name, slug: company&.slug }
+    end
+  end
+
   def clone_contact
     self.deep_clone include: [:rich_text_investor_information] do |original, kopy|
       if kopy.is_a?(Contact) && original.investor_company_logo.attached?
