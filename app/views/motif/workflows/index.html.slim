@@ -1,67 +1,65 @@
-.row.mb-3.mt-5.ml-3
-  .col-sm-12
-    - if @user.has_role?(:franchisor, @company) or @user.has_role?(:admin, @company)
-      = link_to new_motif_outlet_path, target: "_blank", role: 'button', class: 'btn btn-primary text-white mr-3 px-5 border border-secondary float-right font-weight-boldest', "data-toggle": "modal", 'data-target': '#newMotifWorkflows' do
-        i.material-icons-outlined add
-        = @template_type.humanize
-      #newMotifWorkflows.modal.fade aria-hidden="true" aria-labelledby="newMotifCreateWorkflows" role="dialog" tabindex="-1"
-        .modal-dialog role="document"
-          .modal-content
-            .modal-header
-              h5#newMotifCreateWorkflows.modal-title = params[:template_type].titleize
-              button.close aria-label="Close" data-dismiss="modal" type="button"
-                span aria-hidden="true"  &times;
-            .modal-body
-              = form_for(@workflow, url: motif_workflows_path, html: { method: :post }) do |f|
-                .row.mt-3
-                  .col-md-12
-                    .form-group
-                      = f.label :template_id, 'Choose a template'
-                      = f.collection_select :template_id, @templates, :id, :title, {include_blank: true}, {class: 'select2 form-control', style: 'width: 100%', required: true}
-                    .form-group
-                      = f.label :outlet_id, 'Choose an outlet'
-                      = f.collection_select :outlet_id, @outlets, :id, :name, {include_blank: true}, {class: 'select2 form-control', style: 'width: 100%', required: true}
-                .row
-                  .col-md-12
-                    = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
-    .float-right.my-2
-      i.px-5.material-icons-outlined more_vert
-    h3 = @template_type.humanize
-    p.mt-5.text-muted
-      | Standardise, track and manage how your franchisees start their operations in
-      br
-      | Onboarding.
-/ .row.ml-4.align-items-center
-/   .col
-/     span.mr-3
-/       i.material-icons-outlined filter_list
-/     | Filters
-/   .col-sm-11.text-muted
-/     div.form-row.align-items-center
-/       span.mr-3
-/         i.material-icons-outlined search
-/       input.form-control.border-0.col type="search" placeholder="Search..."
-hr.mb-0
-.row.mt-5
-  - unless @workflows.present?
-    = render 'motif/shared/motif_empty_state'
-  - else
-    - @workflows.each do |wf|
-      .col-sm-11.mt-3.ml-5
-        .d-flex.flex-wrap.align-items-center.py-1
-          = wf.outlet.header_image.attached? ? (image_tag(wf.outlet.header_image, class: 'outlet-image mr-5')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-image mr-5")
-          .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3
-            span.h3.font-weight-boldest = wf.outlet.name
-            span = "#{wf.outlet&.country} #{wf.outlet&.city}"
-            - if wf.outlet.company == @company
-              .badge.label-motif-roles.col-sm-8 Direct Owned
-            - else
-              .badge.badge-success.text-dark.font-weight-boldest.col-sm-8 Franchised
-          .col-sm-4
-            .progress
-              .progress-bar.progress-bar-striped.bg-primary aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" role="progressbar" style=("width: #{wf.progress}%")
-          .col-sm-1
-            span.font-weight-boldest #{wf.progress.to_s}%
-          .col-sm-1
-            = link_to motif_outlet_workflow_path(outlet_id: wf.outlet.id, id: wf.id) do
-              i.material-icons-outlined arrow_forward
+.m-5
+  .row.my-5
+    .col-sm-4.d-flex.align-items-center
+      - if @template_type == "onboarding"
+        i.material-icons-outlined.mr-5.text-dark luggage
+        .header-font.text-dark Onboarding
+      - elsif @template_type == "site_audit"
+        i.material-icons-outlined.mr-5.text-dark maps_home_work
+        .header-font.text-dark Site Audit
+      - else
+        i.material-icons-outlined.mr-5.text-dark payments
+        .header-font.text-dark Royalty
+    .col-sm-8
+      button.close.open-banner.text-dark.mr-3 type="submit"
+        i.material-icons-outlined.float-right help_outline
+  = render "motif/home/banners/#{@template_type}"
+  .row.mt-5
+    .col-sm-12
+      - if @user.has_role?(:franchisor, @company) or @user.has_role?(:admin, @company)
+        = link_to new_motif_outlet_path, target: "_blank", role: 'button', class: 'btn btn-primary text-white mr-3 px-5 border border-secondary float-right font-weight-boldest', "data-toggle": "modal", 'data-target': '#newMotifWorkflows' do
+          i.material-icons-outlined add
+          = @template_type.humanize
+        #newMotifWorkflows.modal.fade aria-hidden="true" aria-labelledby="newMotifCreateWorkflows" role="dialog" tabindex="-1"
+          .modal-dialog role="document"
+            .modal-content
+              .modal-header
+                h5#newMotifCreateWorkflows.modal-title = params[:template_type].titleize
+                button.close aria-label="Close" data-dismiss="modal" type="button"
+                  span aria-hidden="true"  &times;
+              .modal-body
+                = form_for(@workflow, url: motif_workflows_path, html: { method: :post }) do |f|
+                  .row.mt-3
+                    .col-md-12
+                      .form-group
+                        = f.label :template_id, 'Choose a template'
+                        = f.collection_select :template_id, @templates, :id, :title, {include_blank: true}, {class: 'select2 form-control', style: 'width: 100%', required: true}
+                      .form-group
+                        = f.label :outlet_id, 'Choose an outlet'
+                        = f.collection_select :outlet_id, @outlets, :id, :name, {include_blank: true}, {class: 'select2 form-control', style: 'width: 100%', required: true}
+                  .row
+                    .col-md-12
+                      = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+  .row.mt-5
+    - unless @workflows.present?
+      = render 'motif/shared/motif_empty_state'
+    - else
+      - @workflows.each do |wf|
+        .col-sm-11.mt-3.ml-5
+          .d-flex.flex-wrap.align-items-center.py-1
+            = wf.outlet.header_image.attached? ? (image_tag(wf.outlet.header_image, class: 'outlet-image mr-5')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-image mr-5")
+            .d-flex.flex-column.flex-grow-1.my-lg-0.my-2.pr-3
+              span.h3.font-weight-boldest = wf.outlet.name
+              span = "#{wf.outlet&.country} #{wf.outlet&.city}"
+              - if wf.outlet.company == @company
+                .badge.label-motif-roles.col-sm-8 Direct Owned
+              - else
+                .badge.badge-success.text-dark.font-weight-boldest.col-sm-8 Franchised
+            .col-sm-4
+              .progress
+                .progress-bar.progress-bar-striped.bg-primary aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" role="progressbar" style=("width: #{wf.progress}%")
+            .col-sm-1
+              span.font-weight-boldest #{wf.progress.to_s}%
+            .col-sm-1
+              = link_to motif_outlet_workflow_path(outlet_id: wf.outlet.id, id: wf.id) do
+                i.material-icons-outlined arrow_forward
