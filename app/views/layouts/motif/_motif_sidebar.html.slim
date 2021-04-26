@@ -3,7 +3,7 @@
     li.nav-item.hover-blue.py-1.m-4.mt-11
       = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined dashboard
-        .ml-2.sidebar-font Account
+        .ml-2.sidebar-font Home
     - if current_user.company.settings[0]["announcement"] == "true"
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_posts_path, class: 'col-sm-12 d-flex align-items-center' do
@@ -30,25 +30,25 @@
     - if current_user.company.settings[0]["onboarding_management"] == "true"
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_workflows_path(template_type: "onboarding"), class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined assignment
+          i.material-icons-outlined luggage
           .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Onboarding" : "Onboarding Management"
     - if current_user.company.settings[0]["site_audit_management"] == "true"
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_workflows_path(template_type: "site_audit"), class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined fact_check
+          i.material-icons-outlined maps_home_work
           .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Site Audit" : "Site Audit Management"
     - if current_user.company.settings[0]["royalty_collection_management"] == "true"
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_workflows_path(template_type: "royalty_collection"), class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined attach_money
+          i.material-icons-outlined payments
           .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Royalty Collection" : "Royalty Collection Management"
     - if current_user.company.settings[0]["financial_performance"] == "true"
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_financial_performance_path, class: 'col-sm-12 d-flex align-items-center'  do
-          i.material-icons-outlined timeline
+          i.material-icons-outlined assessment
           .ml-2.sidebar-font Financial Performance
     - if current_user.company.settings[0]["communication_hub"] == "true"
       li.nav-item.hover-blue.py-1.m-4
         = link_to motif_documents_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined folder
+          i.material-icons-outlined folder_open
           .ml-2.sidebar-font Communication Hub
