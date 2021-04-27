@@ -16,7 +16,8 @@
       div.col-8
 #hits
 #pagination
-= render 'overture/home/empty_states/startups/search_investors'
+- if @contacts.empty?
+  = render 'overture/home/empty_states/startups/search_investors'
 
 javascript:
   function loadExtJS(src, callback) {
