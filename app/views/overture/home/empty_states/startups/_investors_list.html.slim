@@ -1,0 +1,6 @@
+.row.justify-content-center.mt-20.ml-3
+  .col-md-4.text-center.p-10
+    = image_pack_tag 'media/src/images/overture/empty-search-investors.png', width: "124"
+    h3.my-5 Can't find the investor you know?
+    p Invite the investor(s) you know to be on Overture. As a reward, we will waive 1-month of your subscription the moment they sign in.
+    = link_to "Send Invite", "#", role: 'button', data: { target: "#sendOvertureInvitation", toggle: "modal" }, class: 'btn btn-outline-secondary text-primary font-weight-bolder'

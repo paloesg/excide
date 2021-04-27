@@ -1,39 +1,90 @@
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark search
+    .header-font.text-dark Search Investors
+  .col-sm-8
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
+= render 'overture/home/banners/startups/search_investors'
+= render "overture/investments/add_new_overture_user_modal"
 .row.mb-3.mt-5.ml-3
-  .col-sm-12
-    h3 Search Investors
-    p.mt-5
-      | You can browse all investor's contacts in this list and view more details. Click on 'Add to fundraising board' to add them to your board.
-/ .row.ml-3.mt-5.align-items-center
-/   .col
-/     i.material-icons-outlined filter_list
-/   .col
-/     i.material-icons swap_vert
-/   .col-sm-11
-/     i.material-icons-outlined search
-hr
-- @contacts.each do |contact|
-  .row.mb-3.mt-5.ml-3
-    .col-md-10
-      .card.w-100
-        .row
-          .col.bg-light
-            .profile-index-image-wrapper
-              = contact.investor_company_logo.attached? ? (image_tag url_for(contact.investor_company_logo), class: "w-100 h-100 rounded") : (image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'w-100')
-          .col-md-10
-            .card-body
-              .row
-                .col
-                  h6.mb-4.text-muted.text-uppercase Investor
-                  h2
-                    = contact.company_name
-                  p.card-text
-                    #truncate-company-information = contact.investor_information.body.to_s
-                  .mt-5
-                    = link_to "Read more", overture_contact_path(contact.id), target: :_blank, class: "btn btn-white border border-secondary text-primary mr-3"
-                    / If a contact is already cloned on fundraising board, then show the contact status instead
-                    - if get_cloned_contact(contact, current_user).present?
-                      = select_tag('contact_status', options_for_select(@contact_statuses.map {|k,v| [k.name, k.id]}, selected: get_cloned_contact(contact, current_user).first.contact_status.id, include_blank: true), id: "#{contact.id}", class: 'select2 select2-change-contact-status form-control col-sm-2')
-                    - else
-                      = link_to "Add to fundraising board", overture_contacts_path(contact_id: contact.id), method: :post, class: "btn btn-primary mr-3"
-.mt-6
-  = paginate @contacts, views_prefix: 'dashboard'
+  .col-sm-11.text-muted
+    div.form-row.align-items-center
+      span.mr-3
+        i.material-icons-outlined.align-middle search
+      input.form-control.border-0.col#search type="search" placeholder="Search investors..."
+      div.col-8
+#hits
+#pagination
+- if @contacts.empty?
+  = render 'overture/home/empty_states/startups/search_investors'
+
+javascript:
+  function loadExtJS(src, callback) {
+    var s = document.createElement('script');
+    s.src = src;
+    document.body.appendChild(s);
+    s.onload = callback
+  }
+
+  loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
+    var hitTemplate = '{{#hits}}<div class="row mb-3 mt-5 ml-3"><div class="col-md-12"><div class="card w-100">' +
+      '<div class="row no-gutters"><div class="col bg-light"><div class="profile-index-image-wrapper">' +
+      '<img class="w-100" src="{{image_src}}"></div></div>' +
+      '<div class="col-md-10"><div class="card-body">' +
+      '<div class="row"><div class="col"><h6 class="mb-4 text-muted text-uppercase">Investor</h6>' +
+      '<h2>{{{_highlightResult.company_name.value}}}</h2>' +
+      '<p class="card-text"></p><div id="truncate-company-information"></div>' +
+      '<p></p><div class="mt-5">' +
+      '<a target="_blank" class="btn btn-white border border-secondary text-primary mr-3" href="/overture/contacts/{{objectID}}">Read more</a>' +
+      '<a class="btn btn-primary mr-3" rel="nofollow" data-method="post" href="/overture/contacts?contact_id={{objectID}}">Add to fundraising board</a>' +
+      '</div></div></div></div></div></div></div></div></div>{{/hits}}';
+
+      var search = instantsearch({
+        appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
+        apiKey: '#{@public_key}',
+        indexName: '#{Contact.index_name}',
+        urlSync: true
+      });
+      search.addWidget(
+        instantsearch.widgets.searchBox({
+          container: '#search',
+          placeholder: 'Search for documents',
+          autofocus: false
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.hits({
+          container: '#hits',
+          transformData: {
+            allItems: function(data) {
+              $(data['hits']).each(function(index) {
+                data['hits'][index].created_at = moment(this.created_at).format("DD/MM/YYYY HH:mm")
+              })
+              return data;
+            }
+          },
+          templates: {
+            empty: '<table class="table"><tr><td>No matching documents found.</td></tr></table>',
+            allItems: hitTemplate
+          },
+          hitsPerPage: 10
+        })
+      );
+      search.addWidget(
+        instantsearch.widgets.pagination({
+          container: '#pagination',
+          cssClasses: {
+            active: 'active',
+          },
+          labels: {
+            first: '<i class="fa fa-angle-left"></i> First',
+            previous: '<i class="fa fa-angle-left"></i> Previous',
+            next: 'Next <i class="fa fa-angle-right"></i>',
+            last: 'Last <i class="fa fa-angle-double-right"></i>',
+          },
+          autoHideContainer: false,
+        })
+      );
+      search.start();
+  })

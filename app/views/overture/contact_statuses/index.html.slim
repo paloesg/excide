@@ -1,15 +1,17 @@
-.row.mb-3.mt-5.ml-3
-  .col-sm-12
-    h3 Fundraising Board
-    p.mt-5
-      | Track your progress with your investors.
-hr
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    i.material-icons-outlined.mr-5.text-dark view_agenda
+    .header-font.text-dark Fundraising Board
+  .col-sm-8
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
+= render 'overture/home/banners/startups/fundraising_board'
 .row.mt-5.flex-row.flex-sm-nowrap.overflow-auto
   - @contact_statuses.each do |cs|
     .col-3.m-3
       .row
         .col-sm-6
-          .badge.badge-pill.badge-secondary.text-dark.py-2.px-3 = cs.name.titleize
+          .badge.badge-pill.badge-secondary.text-dark.py-2.px-3.fundraising-tour-3 = cs.name.titleize
       .row.my-5.draggable-columns.p-5 id="#{cs.id}"
         - cs.contacts.each do |contact|
           ul.draggable.p-0 id="#{contact.id}" style="list-style-type:none;"
@@ -19,7 +21,7 @@ hr
                   .d-flex
                     = contact.investor_company_logo.attached? ? (image_tag url_for(contact.investor_company_logo), class: 'rounded-circle w-25 investor-profile-pic p-1') : (image_pack_tag 'media/src/images/overture/dataroom-empty.png', class: 'rounded-circle w-25 investor-profile-pic p-1')
                     = link_to (contact.company.present? ? truncate(contact.company.name, length: 15) : truncate(contact.company_name, length: 15)), overture_contact_path(contact.id), class: "card-title text-uppercase text-truncate mt-10 ml-10 h5 text-dark font-weight-boldest clickable-contact"
-      .dropdown
+      .dropdown.fundraising-tour-2
         a.text-muted href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" = "+ Investor"
         .dropdown-menu.dropdown-menu-right
           a.dropdown-item data-target="#addExistingInvestorToBoard" data-toggle="modal" type="button" Existing Investor
@@ -54,3 +56,4 @@ hr
               .form-group
                 = c.submit "Add", class: 'btn btn-primary float-right'
       / = link_to '+ Investor', '#', remote: :true, class: "text-muted add-investor", id: "add-investor-button-#{cs.id}", data: {contact_status: cs.id}
+= render 'overture/home/empty_states/startups/fundraising_board'

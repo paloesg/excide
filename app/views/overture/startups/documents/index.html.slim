@@ -1,6 +1,6 @@
 - if @folder.name == "Resource Portal" or @folder.ancestors.include? Folder.find_by(name: "Resource Portal", company: @folder.company)
   = render "overture/startups/documents/resource_portal"
-- elsif @folder.name == "Shared Drive" or @folder.ancestors.include? Folder.find_by(name: "Shared Drive", company: @folder.company)
-  = render "overture/startups/documents/shared_drive"
+- elsif @folder.name == "Shared Files" or @folder.ancestors.include? Folder.find_by(name: "Shared Files", company: @folder.company)
+  = render "overture/startups/documents/shared_files"
 - else
   = render "overture/startups/documents/dataroom"

@@ -1,8 +1,11 @@
-.row.mb-3.mt-5.ml-3
-  .col-sm-12
+.row.my-5
+  .col-sm-4.d-flex.align-items-center
+    = image_pack_tag 'media/src/images/overture/dataroom-lock-icon.png', alt: "dataroom-lock-icon", class: 'mr-5 text-dark'
+    .header-font.text-dark Dataroom
+  .col-sm-8.d-flex.justify-content-end
     .dropdown
       a.btn.btn-primary.float-right.mr-5.p-2 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-        i.material-icons-outlined.font-size-h2.p-0 add
+        i.material-icons-outlined.font-size-h2.p-0.dataroom-tour-1 add
       .dropdown-menu.dropdown-menu-right
         a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
         a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
@@ -12,60 +15,45 @@
       = render "overture/documents/modals/new_folder_modal", folder: @new_folder, parent_folder: @folder
     - else
       = render "overture/documents/modals/new_folder_modal", folder: @folder, parent_folder: nil
-    = link_to overture_roles_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5' do
+    = link_to overture_roles_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5 dataroom-tour-4' do
       i.material-icons-outlined.text-primary group
       span.ml-2.text-primary.font-weight-bolder Groups
-    h3 Dataroom
-    p.mt-5
-      | Share view and download access to groups of investors. Click on the icon buttons in the
-      br
-      | group column to turn on/off the access. Click “Groups” to edit your groups of investors.
-    / .row.ml-4.align-items-center#filter-search
-    /   .col.d-flex
-    /     div#filter style="cursor: pointer;"
-    /       span.mr-3
-    /         i.material-icons-outlined.align-middle filter_list
-    /     span.ml-5.mr-3.d-flex
-    /       i.material-icons-outlined.align-middle.mr-1 search
-    /       input.form-control.form-control-sm.border-0.align-middle
-    .row.p-3.align-items-center#select-options style="background: #EEF1FF;"
-      .col-md-9
-        span.mr-5#selectedNumber
-      .col-md-3.d-flex.justify-content-between
-        .col-md-12
-          a.groupDelete data-toggle="modal" data-target="#groupDelete"
-            i.material-icons-outlined.cursor-pointer.float-right delete
-          = render "overture/documents/modals/bulk_delete_modal"
-          a.groupAssignment.cursor-pointer data-toggle="modal" data-target="#groupAssignPermissions"
-            i.material-icons-outlined.cursor-pointer.float-right.mr-5 group_add
-          = render "overture/documents/modals/bulk_assignment_permissions_modal"
-    .row.ml-4.my-5.align-items-center#filter-options
-      .col.md-12
-        span.mr-3
-          = select_tag('access', options_for_select(["All access"].concat(@company.users.pluck(:first_name)), selected: params[:access], include_blank: true), class: 'select2 select2-document-access form-control')
-        span.mr-3
-          = select_tag('qna', options_for_select(["All Q&A Status", "Read", "Unread"], selected: params[:qna], include_blank: true), class: 'select2 select2-document-qna form-control')
-        span.mr-3
-          = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
-        span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
-          | Clear
-    - if controller_name == "folders"
-      .row.mt-2
-        .col
-          ul.breadcrumb.breadcrumb-transparent.font-weight-bold.p-0.font-size-sm
-            li.breadcrumb-item
-              = link_to "Dataroom", overture_startups_documents_path, class: "text-dark"
-            - @breadcrumb_folder_arrangement.each do |folder|
-              li.breadcrumb-item
-                = link_to folder.name, overture_folder_path(folder)
-    hr.m-0
+    button.close.open-banner.text-dark.mr-3 type="submit"
+      i.material-icons-outlined.float-right help_outline
+= render 'overture/home/banners/startups/dataroom'
+.row.p-3.mx-0.align-items-center#select-options style="background: #EEF1FF;"
+  .col-md-9
+    span.mr-5#selectedNumber
+  .col-md-3.d-flex.justify-content-between
+    .col-md-12
+      a.groupDelete data-toggle="modal" data-target="#groupDelete"
+        i.material-icons-outlined.cursor-pointer.float-right delete
+      = render "overture/documents/modals/bulk_delete_modal"
+      a.groupAssignment.cursor-pointer data-toggle="modal" data-target="#groupAssignPermissions"
+        i.material-icons-outlined.cursor-pointer.float-right.mr-5 group_add
+      = render "overture/documents/modals/bulk_assignment_permissions_modal"
+.row.ml-4.my-5.align-items-center#filter-options
+  .col.md-12
+    span.mr-3
+      = select_tag('access', options_for_select(["All access"].concat(@company.users.pluck(:first_name)), selected: params[:access], include_blank: true), class: 'select2 select2-document-access form-control')
+    span.mr-3
+      = select_tag('qna', options_for_select(["All Q&A Status", "Read", "Unread"], selected: params[:qna], include_blank: true), class: 'select2 select2-document-qna form-control')
+    span.mr-3
+      = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
+    span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
+      | Clear
+- if controller_name == "folders"
+  .row.mt-2
+    .col
+      ul.breadcrumb.breadcrumb-transparent.font-weight-bold.p-0.font-size-sm
+        li.breadcrumb-item
+          = link_to "Dataroom", overture_startups_documents_path, class: "text-dark"
+        - @breadcrumb_folder_arrangement.each do |folder|
+          li.breadcrumb-item
+            = link_to folder.name, overture_folder_path(folder)
+hr.m-0
 - if @folders.empty? && @documents.empty?
-  .row.justify-content-center.ml-3
-    .col.text-center.p-10
-      = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
-      p.mt-4 Start sharing important matters to investors and your teammates
-      button.btn.btn-primary.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button"
-        | Upload
+  = render 'overture/home/empty_states/startups/dataroom'
 - else
   .table-responsive.h-75
     table.table.ml-4.table-aligned
@@ -79,7 +67,7 @@
           th.col-1
           - if current_user.has_role?(:admin, current_user.company)
             - @roles.each do |role|
-              th.col-2
+              th.col-2.dataroom-tour-3
                 a title="#{role.users.map(&:full_name).join("<br/>")}" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" = role.name
       tbody.draggable-zone
         - @folders.each_with_index do |folder, index|
@@ -106,7 +94,7 @@
                     .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{folder.id}_0"
               - if current_user.has_role?(:admin, current_user.company)
                 - @roles.each do |role|
-                  td.col-2
+                  td.col-2.dataroom-tour-2
                     = render "overture/documents/permissions_icons", role: role, permissible: folder, permissible_type: "folder"
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
