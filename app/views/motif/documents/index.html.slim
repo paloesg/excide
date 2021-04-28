@@ -82,7 +82,7 @@
           li.breadcrumb-item
             = @folder.name
   #hits
-  #pagination
+  #pagination.d-none
   / #facets
   /   #document_templates
   table.table.ml-4#nonSearchResult
@@ -247,12 +247,17 @@ javascript:
     // This method checks if the user searched for the documents. If searching, then hide the existing HTML element (#nonSearchResult) and display the search result, vice versa.
     search.helper.on('result', function(res) {
       const nonSearchResult = document.querySelector('#nonSearchResult');
+      const pagination = document.querySelector('#pagination');
       if (res && res.hits && res.query == "") {
         // Show the existing table when query is blank
         nonSearchResult.classList.remove("d-none");
+        // Hide pagination when query is blank
+        pagination.classList.add("d-none");
       } else {
         // Hide existing table when user is searching
         nonSearchResult.classList.add("d-none");
+        // Display pagination only when search results are displayed
+        pagination.classList.remove("d-none");
       }
     });
   })
