@@ -85,7 +85,7 @@
   #pagination
   / #facets
   /   #document_templates
-  table.table.ml-4
+  table.table.ml-4#nonSearchResult
     thead
       tr
         th
@@ -187,12 +187,6 @@ javascript:
         '<td><div class="dropdown"><a aria-expanded="false" aria-haspopup="true" class="btn btn-icon btn-link" data-toggle="dropdown" href="#"></td>' +
         '{{/hits}}</tbody>';
 
-    // const makeHits = instantsearch.connectors.connectHits(function renderHits({hits}) {
-    //   hits.forEach(function(hit) {
-    //     console.log(hit);
-    //   });
-    // });
-
     var search = instantsearch({
       appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
       apiKey: '#{@public_key}',
@@ -205,7 +199,6 @@ javascript:
       }
     });
 
-    console.log("What is search, ", search)
     search.addWidget(
       instantsearch.widgets.searchBox({
         container: '#q',
@@ -213,6 +206,7 @@ javascript:
         autofocus: false
       })
     );
+
     search.addWidget(
       instantsearch.widgets.hits({
         container: '#hits',
@@ -231,6 +225,7 @@ javascript:
         hitsPerPage: 10
       })
     );
+
     search.addWidget(
       instantsearch.widgets.pagination({
         container: '#pagination',
@@ -246,5 +241,18 @@ javascript:
         autoHideContainer: false,
       })
     );
+
     search.start();
+
+    // This method checks if the user searched for the documents. If searching, then hide the existing HTML element (#nonSearchResult) and display the search result, vice versa.
+    search.helper.on('result', function(res) {
+      const nonSearchResult = document.querySelector('#nonSearchResult');
+      if (res && res.hits && res.query == "") {
+        // Show the existing table when query is blank
+        nonSearchResult.classList.remove("d-none");
+      } else {
+        // Hide existing table when user is searching
+        nonSearchResult.classList.add("d-none");
+      }
+    });
   })
