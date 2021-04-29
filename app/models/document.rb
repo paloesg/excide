@@ -42,6 +42,12 @@ class Document < ApplicationRecord
     attribute :company do
       { name: company&.name, slug: company&.slug }
     end
+    attribute :permissions do
+      # select a bunch of permission with can_view true and then map to return the user ID that has the permission
+      permissions.select { |p| p.can_view? }.map do |p|
+        { user_id: p.user.id }
+      end
+    end
     tags do
       tags.map(&:name)
     end
