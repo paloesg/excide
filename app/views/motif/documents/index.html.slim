@@ -254,17 +254,20 @@ javascript:
     // This method checks if the user searched for the documents. If searching, then hide the existing HTML element (#nonSearchResult) and display the search result, vice versa.
     search.helper.on('result', function(res) {
       const nonSearchResult = document.querySelector('#nonSearchResult');
-      const pagination = document.querySelector('#pagination');
+      const algolia_pagination = document.querySelector('#pagination');
+      const pagination = document.querySelector('#pagination-non-search');
       if (res && res.hits && res.query == "") {
         // Show the existing table when query is blank
         nonSearchResult.classList.remove("d-none");
         // Hide pagination when query is blank
-        pagination.classList.add("d-none");
+        algolia_pagination.classList.add("d-none");
+        pagination.classList.remove("d-none");
       } else {
         // Hide existing table when user is searching
         nonSearchResult.classList.add("d-none");
         // Display pagination only when search results are displayed
-        pagination.classList.remove("d-none");
+        algolia_pagination.classList.remove("d-none");
+        pagination.classList.add("d-none");
       }
     });
   })
