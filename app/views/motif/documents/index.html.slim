@@ -128,42 +128,42 @@
                 - if folder.company == @company
                   .dropdown-item = link_to "Delete", motif_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
         = render 'motif/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
-  /     - @documents.each_with_index do |d, index|
-  /       tr.draggable.d-none id="#{d.id}" data-drawer="#{d.id}"
-  /         td
-  /           input.mt-2 type="checkbox" name=""/
-  /         td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
-  /           span.mr-5
-  /             / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
-  /             = image_pack_tag "media/src/images/motif/doc.svg"
-  /           span.ml-5
-  /             = d.raw_file.filename
-  /             - unless d.company == @company
-  /               .badge.badge-secondary.ml-5 Shared
-  /         td id="drawer_toggle_#{d.id}_0"
-  /           div id="tags_count_#{d.id}"
-  /             = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
-  /             span class=(d.all_tags_list.length > 1 ? "" : "d-none")
-  /               = (d.all_tags_list.length-1).to_s + "+..."
-  /         td id="drawer_toggle_#{d.id}_1"
-  /           = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
-  /         td id="drawer_toggle_#{d.id}_2"
-  /           span.mr-4
-  /             i.material-icons-outlined.align-middle group
-  /           span
-  /             = get_view_permission_count(d)
-  /         td
-  /           .dropdown
-  /             a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-  /               i.fa.fa-ellipsis-h.text-secondary.mb-4
-  /             .dropdown-menu.dropdown-menu-right
-  /               .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
-  /               / Restrict deleting if the document is not yours
-  /               - if d.company == @company
-  /                 .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
-  /         = render 'motif/shared/show_document', d: d
-  /       = render 'motif/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
-  / = paginate @documents, views_prefix: 'dashboard'
+      - @documents.each_with_index do |d, index|
+        tr.draggable id="#{d.id}" data-drawer="#{d.id}"
+          td
+            input.mt-2 type="checkbox" name=""/
+          td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
+            span.mr-5
+              / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
+              = image_pack_tag "media/src/images/motif/doc.svg"
+            span.ml-5
+              = d.raw_file.filename
+              - unless d.company == @company
+                .badge.badge-secondary.ml-5 Shared
+          td id="drawer_toggle_#{d.id}_0"
+            div id="tags_count_#{d.id}"
+              = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
+              span class=(d.all_tags_list.length > 1 ? "" : "d-none")
+                = (d.all_tags_list.length-1).to_s + "+..."
+          td id="drawer_toggle_#{d.id}_1"
+            = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
+          td id="drawer_toggle_#{d.id}_2"
+            span.mr-4
+              i.material-icons-outlined.align-middle group
+            span
+              = get_view_permission_count(d)
+          td
+            .dropdown
+              a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                i.fa.fa-ellipsis-h.text-secondary.mb-4
+              .dropdown-menu.dropdown-menu-right
+                .dropdown-item = link_to "Download", d.raw_file.attached? ? rails_blob_path(d.raw_file, disposition: "attachment") : d.file_url
+                / Restrict deleting if the document is not yours
+                - if d.company == @company
+                  .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
+          = render 'motif/shared/show_document', d: d
+        = render 'motif/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
+  = paginate @documents, views_prefix: 'dashboard'
 
 javascript:
   function loadExtJS(src, callback) {
@@ -174,6 +174,11 @@ javascript:
   }
   loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
     var hitTemplate = '<table class="table">' +
+        '<thead><tr><th><input id="" name="" type="checkbox"></th>' +
+        '<th class="text-muted">NAME</th>' +
+        '<th class="text-muted">TAGS</th>' +
+        '<th class="text-muted">DATE MODIFIED</th>' +
+        '<th class="text-muted">ACCESS</th><th></th></tr></thead>' +
         '<tbody>{{#hits}}' +
         '<tr class="drawer-row draggable" data-drawer={{{objectID}}} id={{{objectID}}} tabindex="0">' +
         '<td><input class="mt-2" name="" type="checkbox"></td>' +
@@ -182,7 +187,7 @@ javascript:
         '<span class="ml-5">{{{_highlightResult.filename.value}}}</span></td>' +
         '<td id="drawer_toggle_{{objectID}}_0">' +
         '<div id="tags_count_{{objectID}}"><span class="badge badge-motif d-none"></span><span class="d-none">-1+...</span></div></td>' +
-        '<td id="drawer_toggle_{{objectID}}_1">17 Apr 2021 at 10:20PM</td>' +
+        '<td id="drawer_toggle_{{objectID}}_1">{{{formatted_date}}}</td>' +
         '<td id="drawer_toggle_{{objectID}}_2"><span class="mr-4"><i class="material-icons-outlined align-middle">group</i></span><span>5</span></td>' +
         '<td><div class="dropdown"><a aria-expanded="false" aria-haspopup="true" class="btn btn-icon btn-link" data-toggle="dropdown" href="#"></td>' +
         '{{/hits}}</tbody>';
