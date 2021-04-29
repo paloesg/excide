@@ -55,6 +55,9 @@ class Document < ApplicationRecord
           permissions.select { |p| p.can_view? }.length
       }
     end
+    attribute :image_src do
+      "#{ raw_file.present? ? "/rails/active_storage/blobs/redirect/#{raw_file.signed_id}/#{raw_file.filename}?disposition=attachment" : "packs/media/src/images/motif/avatar-no-photo-692431e773d7106db54841efda3efd80.svg" }"
+    end
     tags do
       tags.map(&:name)
     end

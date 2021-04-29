@@ -171,7 +171,7 @@ javascript:
     s.onload = callback
   }
   loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
-    var hitTemplate = '<table class="table">' +
+    var hitTemplate = '<table class="table ml-4">' +
         '<thead><tr><th><input id="" name="" type="checkbox"></th>' +
         '<th class="text-muted">NAME</th>' +
         '<th class="text-muted">TAGS</th>' +
@@ -187,7 +187,10 @@ javascript:
         '<div id="tags_count_{{objectID}}"><span class="badge badge-motif d-none"></span><span class="d-none">-1+...</span></div></td>' +
         '<td id="drawer_toggle_{{objectID}}_1">{{{formatted_date}}}</td>' +
         '<td id="drawer_toggle_{{objectID}}_2"><span class="mr-4"><i class="material-icons-outlined align-middle">group</i></span><span>{{permissions.count}}</span></td>' +
-        '<td><div class="dropdown"><a aria-expanded="false" aria-haspopup="true" class="btn btn-icon btn-link" data-toggle="dropdown" href="#"></td>' +
+        '<td><div class="dropdown"><a aria-expanded="false" aria-haspopup="true" class="btn btn-icon btn-link" data-toggle="dropdown" href="#">' +
+        '<i class="fa fa-ellipsis-h text-secondary mb-4"></i></a>' +
+        '<div class="dropdown-menu dropdown-menu-right"><div class="dropdown-item">' +
+        '<a href="{{image_src}}">Download</a>' +
         '{{/hits}}</tbody>';
 
     var search = instantsearch({
