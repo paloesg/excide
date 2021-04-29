@@ -23,7 +23,10 @@ class Motif::DocumentsController < ApplicationController
         @documents = @documents.select {|document| document.all_tags_list.first == params[:tags]}
       end
     end
-    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'company.slug:' + current_user.company.slug})
+    # Filter company is current user's company and have permission can_view, as set in document model's permissions attribute
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters:
+      "company.slug:#{current_user.company.slug} OR permissions.user_id:#{current_user.id}"
+    })
   end
 
   def new
