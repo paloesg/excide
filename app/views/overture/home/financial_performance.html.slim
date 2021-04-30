@@ -11,7 +11,8 @@
 - else
   = render 'overture/home/banners/investors/cap_table', type: "PERFORMANCE REPORT"
 - if @company.report_url.present?
-  iframe.pb-3.pr-3.pl-7 width="100%" height="100%" src=@company.report_url frameborder="0" style="border:0" allowfullscreen=""
+  .responsive-inline-frame-inner
+    iframe.pb-3.pr-3.pl-7 src=@company.report_url frameborder="0" style="border:0" allowfullscreen=""
 - else
   - if @company.startup?
     = render 'overture/home/empty_states/startups/cap_table', type: "performance report"
