@@ -17,6 +17,8 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
     @users = get_users(@company)
     @folder = Folder.new
     @permission = Permission.new
+
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "company.slug:#{current_user.company.slug}"})
   end
 
   def create
