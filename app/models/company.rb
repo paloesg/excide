@@ -34,7 +34,7 @@ class Company < ApplicationRecord
   # For overture association
   has_one :profile, dependent: :destroy
   has_many :contacts, dependent: :destroy
-  has_many :contact_statuses, foreign_key: :startup_id
+  has_many :contact_statuses, -> { order(position: :asc) }, foreign_key: :startup_id
   has_many :investor_investments, foreign_key: :startup_id, class_name: "Investment"
   has_many :investors, through: :investor_investments
   has_many :startup_investments, foreign_key: :investor_id, class_name: "Investment"
