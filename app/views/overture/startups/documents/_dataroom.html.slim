@@ -154,17 +154,17 @@ javascript:
       '<th class="col-1"></th></tr></thead>' +
       '<tbody class="draggable-zone" tabindex="0">{{#hits}}' +
       '<tr class="drawer-row draggable d-flex" data-drawer="{{objectID}}" data-permissible-type="document" id="{{objectID}}" tabindex="0">' +
-      '<td><input type="checkbox" name="documents[]" id="documents_" value="{{objectID}" class="checkSingle checkboxSize mt-2"></td>' +
+      '<td><input type="checkbox" name="documents[]" id="documents_" value="{{objectID}}" class="checkSingle checkboxSize mt-2"></td>' +
       '<td class="cursor-pointer col-4 pl-3 pt-4" data-target="#documentModal{{objectID}}" data-toggle="modal">' +
       '<span class="mr-3"><img src="/packs/media/src/images/overture/doc-b92bff082f4028f2fbe1272eac887ec1.svg"></span>' +
-      '<span>{{{_highlightResult.filename.value}}}</span></td>' +
+      '<span>{{{_highlightResult.filename.value}}}</span></div></td>' +
       '<td class="col-2"><div class="mt-2">29 Apr 2021</div></td>' +
       '<td class="col-1"><div class="dropdown"><a aria-expanded="false" aria-haspopup="true" class="btn btn-icon btn-link" data-toggle="dropdown" href="#"><i class="material-icons-outlined font-size-h1 text-muted">more_horiz</i></a>' +
       '<div class="dropdown-menu dropdown-menu-right"><div class="dropdown-item">' +
       '<a data-toggle="modal" data-target="#versionControlModal_{{objectID}}" href="#">Version Control</a>' +
       '</div><div class="dropdown-item"><a id="drawer_toggle_{{objectID}}_0" href="#">Activity History</a></div>' +
       '<div class="dropdown-item"><a href="/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdDhuIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--04f15c142c82a83db2eaf3d4e4d7ff65c5d84421/Invoice-Appln%20Fee-Chris-05Feb20.xlsx?disposition=attachment">Download</a></div>' +
-      'div class="dropdown-item"><a data-confirm="Are you sure you want to delete this document?" rel="nofollow" data-method="delete" href="/overture/startups/documents/{{objectID}}">Delete</a></div></div></div></td>' +
+      '<div class="dropdown-item"><a data-confirm="Are you sure you want to delete this document?" rel="nofollow" data-method="delete" href="/overture/startups/documents/{{objectID}}">Delete</a></div></div></div></td>' +
       '{{/hits}}</tbody>';
 
     var search = instantsearch({
