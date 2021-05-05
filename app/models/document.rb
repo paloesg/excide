@@ -42,6 +42,15 @@ class Document < ApplicationRecord
     attribute :company do
       { name: company&.name, slug: company&.slug }
     end
+    attribute :permissions do
+      # select a bunch of permission with can_view true and then map to return the user ID that has the permission
+      permissions.select { |p| p.can_view? and p.role.present? }.map do |p|
+        { role_id: p.role.id, name: p.role.name }
+      end
+    end
+    attribute :download_link do
+      "/rails/active_storage/blobs/redirect/#{raw_file.signed_id}/#{raw_file.filename}?disposition=attachment"
+    end
     tags do
       tags.map(&:name)
     end
