@@ -8,9 +8,8 @@
       thead
         tr
           th
-          th.w-25 Package 1
-          th.w-25 Package 2
-          th.w-25 Enterprise Package
+          th Angel
+          th Growth
       tbody
         tr.background-gradient
           td.description-col-font Price / month
@@ -22,73 +21,49 @@
               = link_to "Downgrade", overture_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: "btn btn-primary my-5"
             p.text-muted Recommended for trial
           td
-            h1.font-weight-boldest $49.00
+            h1.font-weight-boldest $39.00
             - if @company.pro?
               button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Current Plan
             - else
               = link_to 'Upgrade', overture_checkout_create_path(company_id: @company.id), remote: true, method: :post, class: "btn btn-primary my-5"
             p Popular among early stage startups
-          td
-            h1.font-weight-boldest Custom
-            = link_to 'Contact Us', '#', class: "btn btn-primary my-5"
-            p Popular among Series A startups
         tr
-          td.description-col-font Team
-          td Just you
-          td Up to 5 users
+          td.description-col-font CRM
+          td 5 Contacts
           td Unlimited
         tr
           td.description-col-font Admin User
-          td Just you
-          td Up to 2 users
+          td Share with 1 investor
           td Unlimited
         tr
           td.description-col-font Q&A
-          td.tick
-          td.tick
+          td Communicate with 1 investor
+          td Unlimited
+        tr
+          td.description-col-font Search Investor
+          td.cross
           td.tick
         tr
           td.description-col-font Resource Portal
+          td.cross
           td.tick
-          td.tick
-          td.tick
-        tr
-          td.description-col-font Search Investors
-          td Limited info
-          td.tick
-          td.tick
-        tr
-          td.description-col-font Fundraising Board
-          td 5 cards
-          td Unlimited
-          td Unlimited
-        tr
-          td.description-col-font Dataroom Storage
-          td 500MB
-          td 10GB
-          td Unlimited
-        tr
-          td.description-col-font Investor List
-          td 1 profile
-          td 5 profiles
-          td Unlimited
         tr
           td.description-col-font Announcement
-          td.tick
-          td.tick
+          td.cross
           td.tick
         tr
           td.description-col-font Capitalisation Table
-          td Basic
-          td Basic
-          td Overture support
+          td.cross
+          td.tick
         tr
           td.description-col-font Performance Report
-          td Basic
-          td Basic
-          td Overture support
+          td.cross
+          td.tick
         tr
-          td.description-col-font Shared File Storage
-          td 500MB
-          td 10GB
-          td Unlimited
+          td.description-col-font Shared File Storagenouncement
+          td.cross
+          td.tick
+        tr
+          td.description-col-font Tech Support
+          td.cross
+          td.tick

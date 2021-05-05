@@ -14,6 +14,11 @@
   font-size: 14px;
 }
 
+.cross:after {
+  content: "x";
+  font-size: 14px;
+}
+
 .background-gradient {
   background: linear-gradient(to right, white, rgba(245, 249, 255, 0.7), white);
   background-attachment: fixed;
