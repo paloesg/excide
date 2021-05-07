@@ -18,7 +18,14 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
     @folder = Folder.new
     @permission = Permission.new
 
-    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "company.slug:#{current_user.company.slug}"})
+    # Initialize filter string
+    filters_string = ""
+    current_user.roles.each do |role|
+      # Append the string with OR condition to check for those who has role permissions
+      filters_string += "permissions.role_id:#{role.id} OR "
+    end
+    # Slice off the last OR in the string
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "company.slug:#{current_user.company.slug} AND (" + filters_string.slice(0..-5) + ")" })
   end
 
   def create
