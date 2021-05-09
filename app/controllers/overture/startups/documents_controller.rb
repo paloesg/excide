@@ -18,8 +18,8 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
     @folder = Folder.new
     @permission = Permission.new
 
-    # Slice off the last OR in the string
-    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "company.slug:#{current_user.company.slug} AND (" + get_algolia_filter_string.slice(0..-5) + ")" })
+    # Filter search by current_user's company
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "company.slug:#{current_user.company.slug}"})
   end
 
   def create

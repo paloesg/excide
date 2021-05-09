@@ -58,11 +58,11 @@
           li.breadcrumb-item
             = link_to folder.name, overture_folder_path(folder)
 hr.m-0
+#hits
+#pagination.d-none
 - if @folders.empty? && @documents.empty?
   = render 'overture/home/empty_states/startups/dataroom'
 - else
-  #hits
-  #pagination.d-none
   .table-responsive.h-75#nonSearchResult
     table.table.table-aligned
       thead
