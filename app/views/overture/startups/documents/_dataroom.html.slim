@@ -21,6 +21,7 @@
     button.close.open-banner.text-dark.mr-3 type="submit"
       i.material-icons-outlined.float-right help_outline
 = render 'overture/home/banners/startups/dataroom'
+= render 'unlimited_sharing'
 .row.p-3.mx-0.align-items-center#select-options style="background: #EEF1FF;"
   .col-md-9
     span.mr-5#selectedNumber
@@ -81,6 +82,7 @@ hr.m-0
                 = link_to folder.name, overture_folder_path(folder.id), class: "text-secondary"
             td.col-1
               .mt-2 = folder.updated_at.strftime("%d %b %Y")
+              a.text-muted data-target="#unlimitedSharing" data-toggle="modal" type="button" = "Modal"
             td.col-1
               .dropdown
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
