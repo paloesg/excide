@@ -7,15 +7,23 @@
       i.material-icons-outlined.float-right help_outline
 = render 'overture/home/banners/startups/search_investors'
 = render "overture/investments/add_new_overture_user_modal"
-.row.mb-3.mt-5.ml-3
-  .col-sm-11.text-muted
-    div.form-row.align-items-center
+.row.mb-3.mt-5.ml-3.position-relative
+  .col-sm-11
+    div.form-row.align-items-center.text-muted
       span.mr-3
         i.material-icons-outlined.align-middle search
       input.form-control.border-0.col#search type="search" placeholder="Search investors..."
       div.col-8
-#hits
-#pagination
+    #hits
+    #pagination
+  - if @company.basic?
+    .premium-search-investors
+      .row.justify-content-center.mt-36
+        .col-sm-3.text-center
+          = image_pack_tag 'media/src/images/overture/search-investors.png', width: "124"
+          h3.my-5 Search Investor
+          p Find and get in contact with Investor profiles with Growth Package!
+          = link_to "Upgrade", overture_subscription_plan_path, role: 'button', class: 'btn btn-primary font-weight-bolder'
 - if @contacts.empty?
   = render 'overture/home/empty_states/startups/search_investors'
 
