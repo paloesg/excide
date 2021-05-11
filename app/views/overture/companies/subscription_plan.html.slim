@@ -14,14 +14,18 @@
         tr.background-gradient
           td.description-col-font Price / month
           td
-            h1.font-weight-boldest Free
+            h1.font-weight-boldest.strike-price
+              span.ml-5 $9
+            h1.font-weight-boldest.ml-2 Free
             - if @company.free_trial? or @company.basic?
               button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Current Plan
             - else
               = link_to "Downgrade", overture_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: "btn btn-primary my-5"
             p.text-muted Recommended for trial
           td
-            h1.font-weight-boldest $39.00
+            h1.font-weight-boldest.strike-price
+              span.ml-5 $49
+            h1.font-weight-boldest.ml-5 $39
             - if @company.pro?
               button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Current Plan
             - else
