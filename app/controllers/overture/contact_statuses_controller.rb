@@ -7,7 +7,7 @@ class Overture::ContactStatusesController < ContactStatusesController
 
   def index
     authorize ContactStatus
-    @contact_statuses = @company.contact_statuses.order('position ASC')
+    @contact_statuses = @company.contact_statuses
     @contact = Contact.new
     @existing_contacts = Contact.includes(:company).where(companies: {company_type: "investor"}, searchable: true)
   end

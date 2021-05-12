@@ -11,6 +11,20 @@ class Contact < ApplicationRecord
 
   has_many :notes, as: :notable, dependent: :destroy
 
+  include AlgoliaSearch
+  algoliasearch do
+    attribute :company_name, :email, :phone, :searchable
+    attribute :company do
+      { name: company&.name, slug: company&.slug }
+    end
+    attribute :filename do
+      "#{ investor_company_logo.present? ? investor_company_logo&.filename : '' }"
+    end
+    attribute :image_src do
+      "#{ investor_company_logo.present? ? "rails/active_storage/blobs/#{investor_company_logo.signed_id}/#{investor_company_logo.filename}" : "packs/media/src/images/motif/avatar-no-photo-692431e773d7106db54841efda3efd80.svg" }"
+    end
+  end
+
   def clone_contact
     self.deep_clone include: [:rich_text_investor_information] do |original, kopy|
       if kopy.is_a?(Contact) && original.investor_company_logo.attached?

@@ -10,6 +10,8 @@ class Overture::ProfilesController < ApplicationController
     authorize Profile
     @profiles = policy_scope(Profile)
     @profiles = Kaminari.paginate_array(@profiles).page(params[:page]).per(5)
+    # Filter contacts that are searchable true
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: ''})
   end
 
   def show
