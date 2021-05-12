@@ -25,17 +25,18 @@
 }
 
 .strike-price{
+  font-size: 16px;
   text-decoration: none;
   position: relative;
   &:before {
     content: " ";
     display: block;
-    width: 30%;
-    border-top: 2px solid rgba(black, 0.8);
+    width: 30px;
+    border-top: 2px solid rgba(grey, 0.5);
     height: 15px;
     position: absolute;
-    bottom: 0;
+    bottom: 10px;
     left: 0;
-    transform: rotate(-15deg);
+    transform: rotate(-30deg);
   }
-  }
+}

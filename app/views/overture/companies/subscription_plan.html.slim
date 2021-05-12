@@ -14,18 +14,20 @@
         tr.background-gradient
           td.description-col-font Price / month
           td
-            h1.font-weight-boldest.strike-price
-              span.ml-5 $9
-            h1.font-weight-boldest.ml-2 Free
+            .d-flex
+              h1.font-weight-boldest.text-danger.mr-5 Free
+              .font-weight-boldest.strike-price.text-muted.mt-1
+                span.ml-1 $9
             - if @company.free_trial? or @company.basic?
               button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Current Plan
             - else
               = link_to "Downgrade", overture_checkout_cancel_path, data: {confirm: 'Are you sure you want to cancel your subscription?'}, class: "btn btn-primary my-5"
             p.text-muted Recommended for trial
           td
-            h1.font-weight-boldest.strike-price
-              span.ml-5 $49
-            h1.font-weight-boldest.ml-5 $39
+            .d-flex
+              h1.font-weight-boldest.text-danger.mr-5 $49
+              .font-weight-boldest.strike-price.text-muted.mt-1
+                span.ml-1 $39
             - if @company.pro?
               button.btn.btn-secondary.my-5 disabled="" aria-disabled="true" style="pointer-events: none;" Current Plan
             - else
@@ -36,7 +38,7 @@
           td 5 Contacts
           td Unlimited
         tr
-          td.description-col-font Admin User
+          td.description-col-font Dataroom
           td Share with 1 investor
           td Unlimited
         tr
@@ -64,7 +66,7 @@
           td.cross
           td.tick
         tr
-          td.description-col-font Shared File Storagenouncement
+          td.description-col-font File Sharing
           td.cross
           td.tick
         tr
