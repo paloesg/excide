@@ -10,6 +10,9 @@
 
 .investor-profile-pic {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16);
+  height: 60px !important;
+  width: 60px !important;
+  object-fit: contain;
 }
 // Height of kanban board
 .kanban-height {
