@@ -14,16 +14,18 @@
         i.material-icons-outlined.align-middle search
       input.form-control.border-0.col#search type="search" placeholder="Search investors..."
       div.col-8
-    #hits
-    #pagination
-  - if @company.basic?
-    .premium-search-investors
-      .row.justify-content-center.mt-36
-        .col-sm-3.text-center
-          = image_pack_tag 'media/src/images/overture/search-investors.png', width: "124"
-          h3.my-5 Search Investor
-          p Find and get in contact with Investor profiles with Growth Package!
-          = link_to "Upgrade", overture_subscription_plan_path, role: 'button', class: 'btn btn-primary font-weight-bolder'
+    .contacts-overlap
+      div
+        #hits
+        #pagination
+      - if @company.basic?
+        .premium-search-investors
+          .row.justify-content-center.mt-36
+            .col-sm-3.text-center
+              = image_pack_tag 'media/src/images/overture/search-investors.png', width: "124"
+              h3.my-5 Search Investor
+              p Find and get in contact with Investor profiles with Growth Package!
+              = link_to "Upgrade", overture_subscription_plan_path, role: 'button', class: 'btn btn-primary font-weight-bolder'
 - if @contacts.empty?
   = render 'overture/home/empty_states/startups/search_investors'
 
