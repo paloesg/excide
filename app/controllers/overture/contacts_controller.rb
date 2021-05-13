@@ -33,6 +33,8 @@ class Overture::ContactsController < ApplicationController
       # Add new investor's contact
       @contact = Contact.new(contact_params)
       @contact.created_by = current_user
+      # Add cloned by to current company so that company policy to check contact length is authorized
+      @contact.cloned_by = current_user.company
     end
     @contact.searchable = false
     # Redirect based on validation of contact
