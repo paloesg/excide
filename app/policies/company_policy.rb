@@ -30,4 +30,12 @@ class CompanyPolicy < ApplicationPolicy
   def integration?
     show?
   end
+
+  def check_contact_length?
+    if user.company.basic?
+      Contact.where(cloned_by: user.company).length < 6
+    else
+      true
+    end
+  end
 end
