@@ -31,9 +31,9 @@
             li.draggable-handle
               .card
                 .card-body.border.contact-card-shawdow.p-5
-                  = image_tag url_for(contact.investor_company_logo), class: 'rounded-circle investor-profile-pic p-1' if contact.investor_company_logo.attached?
+                  = image_tag url_for(contact.investor_company_logo), class: 'rounded-circle investor-profile-pic p-1 mb-5' if contact.investor_company_logo.attached?
                   h6
-                    = link_to (contact.company.present? ? truncate(contact.company.name, length: 25) : truncate(contact.company_name, length: 25)), overture_contact_path(contact.id), class: "card-title text-truncate text-dark font-weight-boldest mt-5 clickable-contact"
+                    = link_to (contact.company.present? ? truncate(contact.company.name, length: 25) : truncate(contact.company_name, length: 25)), overture_contact_path(contact.id), class: "card-title text-truncate text-dark font-weight-boldest clickable-contact"
       .dropdown
         a.text-muted.h5 href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" = "+ Investor"
         .dropdown-menu.dropdown-menu-right
