@@ -54,7 +54,7 @@ module ApplicationHelper
   end
 
   def current_class(test_path)
-    return 'hover-blue-active' if request.path == test_path
+    return 'blue-active' if request.path == test_path
   end
 
   # def link_to_add_choices(name, f, association, locals={})

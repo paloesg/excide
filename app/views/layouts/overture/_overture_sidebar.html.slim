@@ -2,71 +2,91 @@
   ul.nav.flex-column.dashboard-tour-1
     div.d-flex.justify-content-between.align-items-center
       h2.ml-8.mt-4 Hello, #{current_user.first_name}!
-    li.nav-item.py-1.m-4.cursor-pointer
-      = link_to overture_root_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(overture_root_path)}" do
+  ul.nav.flex-column
+    li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(overture_root_path)}"
+      = link_to overture_root_path, class: "col-sm-12 d-flex align-items-center" do
         i.material-icons-outlined.mr-5 dashboard
         .ml-5.sidebar-font Dashboard
-    - if current_user.company.startup?
-      - if current_user.company.settings[0]["search_feature"] == "true"
-        li.nav-item.py-1.m-4.cursor-pointer.fundraising-tour-1
-          = link_to overture_contacts_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(overture_contacts_path)}" do
-            i.material-icons-outlined.mr-5 search
-            .ml-5.sidebar-font Search Investor
-      - if current_user.company.settings[0]["kanban_board"] == "true"
-        li.nav-item.py-1.m-4.cursor-pointer
-          = link_to overture_contact_statuses_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(overture_contact_statuses_path)}" do
-            i.material-icons-outlined.mr-5 view_agenda
-            .ml-5.sidebar-font Buyer's Progress
-    - else
-      - if current_user.company.settings[0]["search_feature"] == "true"
-        li.nav-item.py-1.m-4.cursor-pointer
-          = link_to overture_profiles_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(overture_profiles_path)}" do
-            i.material-icons-outlined.mr-5 search
-            .ml-5.sidebar-font Search Company
-    - if current_user.company.settings[0]["dataroom"] == "true"
-      li.nav-item.py-1.m-4.cursor-pointer
-        = link_to (current_user.company.startup? ? overture_startups_documents_path : overture_companies_path), class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(current_user.company.startup? ? overture_startups_documents_path : overture_companies_path)}" do
-          = image_pack_tag 'media/src/images/overture/dataroom-lock-icon.png', alt: "dataroom-lock-icon", class: 'mr-6'
-          .ml-5.sidebar-font Dataroom
-  hr.m-1.text-dark
   ul.nav.flex-column
-    - if current_user.company.startup?
-      - if current_user.company.settings[0]["our_investor_or_startup"] == "true"
-        li.nav-item.py-1.m-4.cursor-pointer
-          = link_to overture_investments_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(overture_investments_path)}" do
-            i.material-icons-outlined.mr-5 supervised_user_circle
-            .ml-5.sidebar-font Investors List
-      - if current_user.company.settings[0]["announcement"] == "true"
-        li.nav-item.py-1.m-4.cursor-pointer
-          = link_to overture_startups_posts_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(overture_startups_posts_path)}" do
-            i.material-icons-outlined.mr-5 volume_up
-            .ml-5.sidebar-font Announcements
-      - if current_user.company.settings[0]["cap_table"] == "true"
-        li.nav-item.py-1.m-4.cursor-pointer
-          = link_to overture_capitalization_table_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(overture_capitalization_table_path)}" do
-            i.material-icons-outlined.mr-5 table_chart
-            .ml-5.sidebar-font Capitalization Table
-      - if current_user.company.settings[0]["performance_report"] == "true"
-        li.nav-item.py-1.m-4.cursor-pointer
-          = link_to overture_financial_performance_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(overture_financial_performance_path)}" do
-            i.material-icons-outlined.mr-5 timeline
-            .ml-5.sidebar-font Performance Report
-      - if current_user.company.settings[0]["shared_file"] == "true"
-        li.nav-item.py-1.m-4.cursor-pointer
-          = link_to Folder.find_by(company: current_user.company, name: "Shared Files").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Shared Files").id) : overture_startups_documents_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(Folder.find_by(company: current_user.company, name: "Shared Files").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Shared Files").id) : overture_startups_documents_path)}" do
-            i.material-icons-outlined.mr-5 folder
-            .ml-5.sidebar-font Shared Files
-    - else
-      - if current_user.company.settings[0]["our_investor_or_startup"] == "true"
-        li.nav-item.py-1.m-4.cursor-pointer
-          = link_to overture_investments_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(overture_investments_path)}" do
-            i.material-icons-outlined.mr-5 domain
-            .ml-5.sidebar-font Startups List
-  hr.m-1.text-dark
+    li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{edit_overture_company_path(current_user.company)}"
+      = link_to edit_overture_company_path(current_user.company), class: "col-sm-12 d-flex align-items-center" do
+        i.material-icons-outlined.mr-5 business
+        .ml-5.sidebar-font Startup Profile
   ul.nav.flex-column
     - if current_user.company.startup?
       - if current_user.company.settings[0]["resource_portal"] == "true"
-        li.nav-item.py-1.m-4.cursor-pointer
-          = link_to Folder.find_by(company: current_user.company, name: "Resource Portal").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Resource Portal").id) : overture_startups_documents_path, class: "col-sm-12 d-flex align-items-center hover-blue #{current_class(Folder.find_by(company: current_user.company, name: "Resource Portal").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Resource Portal").id) : overture_startups_documents_path)}" do
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(Folder.find_by(company: current_user.company, name: "Resource Portal").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Resource Portal").id) : overture_startups_documents_path)}"
+          = link_to Folder.find_by(company: current_user.company, name: "Resource Portal").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Resource Portal").id) : overture_startups_documents_path, class: "col-sm-12 d-flex align-items-center" do
             i.material-icons-outlined.mr-5 book
             .ml-5.sidebar-font Resource Portal
+  hr.m-1.text-dark
+  - if current_user.company.startup?
+    ul.nav.flex-column
+      .pt-2.px-2.m-4.sidebar-font.text-muted Fundraising
+  - if current_user.company.startup?
+    ul.nav.flex-column
+      - if current_user.company.settings[0]["search_feature"] == "true"
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.fundraising-tour-1.hover-blue class="#{current_class(overture_contacts_path)}"
+          = link_to overture_contacts_path, class: "col-sm-12 d-flex align-items-center" do
+            i.material-icons-outlined.mr-5 search
+            .ml-5.sidebar-font Search Investor 
+    ul.nav.flex-column
+      - if current_user.company.settings[0]["kanban_board"] == "true"
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(overture_contact_statuses_path)}"
+          = link_to overture_contact_statuses_path, class: "col-sm-12 d-flex align-items-center" do
+            i.material-icons-outlined.mr-5 view_agenda
+            .ml-5.sidebar-font Buyer's Progress
+  - else
+    ul.nav.flex-column
+      - if current_user.company.settings[0]["search_feature"] == "true"
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(overture_profiles_path)}"
+          = link_to overture_profiles_path, class: "col-sm-12 d-flex align-items-center" do
+            i.material-icons-outlined.mr-5 search
+            .ml-5.sidebar-font Search Company
+  ul.nav.flex-column
+    - if current_user.company.settings[0]["dataroom"] == "true"
+      li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(current_user.company.startup? ? overture_startups_documents_path : overture_companies_path)}"
+        = link_to (current_user.company.startup? ? overture_startups_documents_path : overture_companies_path), class: "col-sm-12 d-flex align-items-center" do
+          = image_pack_tag 'media/src/images/overture/dataroom-lock-icon.png', alt: "dataroom-lock-icon", class: 'mr-6'
+          .ml-5.sidebar-font Dataroom
+  hr.m-1.text-dark
+  - if current_user.company.startup?
+    ul.nav.flex-column
+      .pt-2.px-2.m-4.sidebar-font.text-muted Investors Relation
+    ul.nav.flex-column
+      - if current_user.company.settings[0]["our_investor_or_startup"] == "true"
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(overture_investments_path)}"
+          = link_to overture_investments_path, class: "col-sm-12 d-flex align-items-center" do
+            i.material-icons-outlined.mr-5 supervised_user_circle
+            .ml-5.sidebar-font Investors List
+    ul.nav.flex-column
+      - if current_user.company.settings[0]["announcement"] == "true"
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(overture_startups_posts_path)}"
+          = link_to overture_startups_posts_path, class: "col-sm-12 d-flex align-items-center" do
+            i.material-icons-outlined.mr-5 volume_up
+            .ml-5.sidebar-font Announcements
+    ul.nav.flex-column
+      - if current_user.company.settings[0]["cap_table"] == "true"
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(overture_capitalization_table_path)}"
+          = link_to overture_capitalization_table_path, class: "col-sm-12 d-flex align-items-center" do
+            i.material-icons-outlined.mr-5 table_chart
+            .ml-5.sidebar-font Capitalization Table
+    ul.nav.flex-column
+      - if current_user.company.settings[0]["performance_report"] == "true"
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(overture_financial_performance_path)}"
+          = link_to overture_financial_performance_path, class: "col-sm-12 d-flex align-items-center" do
+            i.material-icons-outlined.mr-5 timeline
+            .ml-5.sidebar-font Performance Report
+    ul.nav.flex-column
+      - if current_user.company.settings[0]["shared_file"] == "true"
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(Folder.find_by(company: current_user.company, name: "Shared Files").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Shared Files").id) : overture_startups_documents_path)}"
+          = link_to Folder.find_by(company: current_user.company, name: "Shared Files").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Shared Files").id) : overture_startups_documents_path, class: "col-sm-12 d-flex align-items-center" do
+            i.material-icons-outlined.mr-5 folder
+            .ml-5.sidebar-font Shared Files
+  - else
+    ul.nav.flex-column
+      - if current_user.company.settings[0]["our_investor_or_startup"] == "true"
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(overture_investments_path)}"
+          = link_to overture_investments_path, class: "col-sm-12 d-flex align-items-center" do
+            i.material-icons-outlined.mr-5 domain
+            .ml-5.sidebar-font Startups List
