@@ -4,7 +4,7 @@ class Overture::ContactsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_contact, only: [:edit, :show, :update]
+  before_action :set_contact, only: [:edit, :show, :update, :destroy]
   before_action :get_contact_statuses, only: [:edit, :show, :index]
   after_action :verify_authorized
 
@@ -69,6 +69,16 @@ class Overture::ContactsController < ApplicationController
   def show
     authorize @contact
     @topic = Topic.new
+  end
+
+  def destroy
+    if @contact.destroy
+      respond_to do |format|
+        format.html { redirect_to overture_contact_statuses_path }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
+      flash[:notice] = 'Contact was successfully removed.'
+    end
   end
 
   private
