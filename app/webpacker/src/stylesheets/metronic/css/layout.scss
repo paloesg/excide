@@ -72,8 +72,14 @@ h1.header-bold {
 .sidebar-sticky-settings {
   top: 0;
 }
+
 // Sidebar-items hover effect
 .hover-blue:hover {
+  background-color: #F5F7FF;
+  border-radius: 10px;
+}
+
+.blue-active {
   background-color: #eef1ff;
   border-radius: 10px;
 }
