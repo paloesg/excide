@@ -67,7 +67,7 @@ hr.m-0
           th.col style="min-width: 6%"
           - if current_user.has_role?(:admin, current_user.company)
             - @roles.each do |role|
-              th.col-1.dataroom-tour-3
+              th.col-1.dataroom-tour-3.text-break
                 a title="#{role.users.map(&:full_name).join("<br/>")}" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" = role.name
       tbody.draggable-zone
         - @folders.each_with_index do |folder, index|
