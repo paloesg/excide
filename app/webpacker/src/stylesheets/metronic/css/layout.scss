@@ -153,10 +153,6 @@ a.custom-card:hover {
   height: 600px;
 }
 
-// .terms ol { counter-reset: item }
-// .terms li{ display: block }
-// .terms li:before { content: counters(item, ".") " "; counter-increment: item }
-
 .terms-space ol {
   counter-reset: item;
   font-size: 1.5rem;
