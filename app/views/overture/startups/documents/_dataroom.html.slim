@@ -15,18 +15,12 @@
       = render "overture/documents/modals/new_folder_modal", folder: @new_folder, parent_folder: @folder
     - else
       = render "overture/documents/modals/new_folder_modal", folder: @folder, parent_folder: nil
-    - if policy(@company).check_multiple_groups_for_free_plan?
-      = link_to overture_roles_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5 dataroom-tour-4' do
-        i.material-icons-outlined.text-primary group
-        span.ml-2.text-primary.font-weight-bolder Groups
-    - else
-      a.btn.btn-outline-secondary.float-right.mr-5.dataroom-tour-4 data-target="#unlimitedSharing" data-toggle="modal" type="button"
-        i.material-icons-outlined.text-primary group
-        span.ml-2.text-primary.font-weight-bolder Groups
+    = link_to overture_roles_path, role: 'button', class: 'btn btn-outline-secondary float-right mr-5 dataroom-tour-4' do
+      i.material-icons-outlined.text-primary group
+      span.ml-2.text-primary.font-weight-bolder Groups
     button.close.open-banner.text-dark.mr-3 type="submit"
       i.material-icons-outlined.float-right help_outline
 = render 'overture/home/banners/startups/dataroom'
-= render 'unlimited_sharing'
 .row.p-3.mx-0.align-items-center#select-options style="background: #EEF1FF;"
   .col-md-9
     span.mr-5#selectedNumber
