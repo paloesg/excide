@@ -31,9 +31,23 @@ class CompanyPolicy < ApplicationPolicy
     show?
   end
 
+  ###########################
+  #                         #
+  #    Overture Policies    #
+  #                         #
+  ###########################
+
   def check_contact_length?
     if user.company.basic?
       Contact.where(cloned_by: user.company).length < 6
+    else
+      true
+    end
+  end
+
+  def check_multiple_groups_for_free_plan?
+    if user.company.basic?
+      user.company.roles.where.not(name: ["admin", "member"]).length < 2
     else
       true
     end
