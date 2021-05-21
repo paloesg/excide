@@ -7,7 +7,7 @@
     .mr-5
       h3 Groups
   .col-sm-6
-    - if policy(@company).check_multiple_groups_for_free_plan?
+    - if policy([:overture, Role]).create?
       button.btn.btn-primary.float-right.my-2 data-target="#newGroupModal" data-toggle="modal" type="button"
         i.material-icons.text-white.mr-2 group_add
         | Add Group

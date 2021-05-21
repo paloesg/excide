@@ -5,7 +5,7 @@ class ContactPolicy < ApplicationPolicy
 
   def create?
     # Check if company has pro plan. If not, restrict it from adding to fundraising board.
-    user.company.pro?
+    check_contact_length?
   end
 
   def update?
@@ -27,5 +27,13 @@ class ContactPolicy < ApplicationPolicy
   def company_startup?
     # Check if company is a startup before accessing the investor profile or the search page
     user.company.startup?
+  end
+
+  def check_contact_length?
+    if user.company.basic?
+      Contact.where(cloned_by: user.company).length < 6
+    else
+      true
+    end
   end
 end
