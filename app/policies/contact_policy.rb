@@ -4,7 +4,8 @@ class ContactPolicy < ApplicationPolicy
   end
 
   def create?
-    user.company = record.company
+    # Check if company has pro plan. If not, restrict it from adding to fundraising board.
+    user.company.pro?
   end
 
   def update?

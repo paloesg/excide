@@ -25,6 +25,7 @@ class Overture::ContactsController < ApplicationController
       contact_to_be_duplicated = Contact.find(params[:contact_id])
       # Deep clone active storage attachment and action text rich text through model method
       @contact = contact_to_be_duplicated.clone_contact
+      authorize @contact
       # Find the 1st contact status of the board (Shortlisted)
       @contact.contact_status = @company.contact_statuses.first
       # Duplicate contact shouldn't be searchable
