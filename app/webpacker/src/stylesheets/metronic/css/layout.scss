@@ -146,3 +146,41 @@ a.custom-card:hover {
 .label-bold {
   font-weight: 700 !important;
 }
+
+// Sign up page wrapper
+.sign-up-wrapper {
+  background-image: linear-gradient(#F5F7FF, white);
+  height: 600px;
+}
+
+// .terms ol { counter-reset: item }
+// .terms li{ display: block }
+// .terms li:before { content: counters(item, ".") " "; counter-increment: item }
+
+.terms-space ol {
+  counter-reset: item;
+  font-size: 1.5rem;
+}
+.terms-space ol > li {
+  counter-increment: item;
+  font-weight: 600;
+  margin-top:18px;
+}
+.terms-space ol ol > li, .terms-space ol div {
+  font-weight: 400;
+}
+.terms-space ol ol > li {
+  display: block;
+}
+.terms-space ol ol > li:before {
+  content: counters(item, ".") " ";
+  font-weight:600;
+}
+.terms-space ol ol ol > li:before {
+  content: counter(item, lower-alpha) " ";
+  counter-increment: list;
+}
+.terms-space ol ol ol ol > li:before {
+  content: counter(item, lower-roman) " ";
+  counter-increment: list;
+}
