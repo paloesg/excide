@@ -31,7 +31,7 @@ class ContactPolicy < ApplicationPolicy
 
   def check_contact_length?
     if user.company.basic?
-      Contact.where(cloned_by: user.company).length < 6
+      Contact.where(cloned_by: user.company).length < 5
     else
       true
     end
