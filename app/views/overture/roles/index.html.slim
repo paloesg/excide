@@ -1,3 +1,4 @@
+= render 'overture/startups/documents/unlimited_sharing'
 .row
   .col-sm-6.d-flex.align-items-center
     .mr-5
@@ -6,9 +7,14 @@
     .mr-5
       h3 Groups
   .col-sm-6
-    button.btn.btn-primary.float-right.my-2 data-target="#newGroupModal" data-toggle="modal" type="button"
-      i.material-icons.text-white.mr-2 group_add
-      | Add Group
+    - if policy(@company).check_multiple_groups_for_free_plan?
+      button.btn.btn-primary.float-right.my-2 data-target="#newGroupModal" data-toggle="modal" type="button"
+        i.material-icons.text-white.mr-2 group_add
+        | Add Group
+    - else
+      a.btn.btn-primary.float-right.my-2 data-target="#unlimitedSharing" data-toggle="modal" type="button"
+        i.material-icons.text-white.mr-2 group_add
+        | Add Group
 .row
   .col-sm-12
     p.text-muted
