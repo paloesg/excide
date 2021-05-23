@@ -213,9 +213,9 @@ class User < ApplicationRecord
     self.roles.find_by(resource_id: company.id, resource_type: "Company", name: ["franchisor", "franchisee_owner", "master_franchisee"])
   end
 
-   ###########################
+  ###########################
   #                         #
-  #    Overture methods        #
+  #    Overture methods     #
   #                         #
   ###########################
   def overture_roles(company)
