@@ -1,3 +1,4 @@
+# Policy for roles pages in overture
 class Overture::RolePolicy < RolePolicy
   def index?
 
