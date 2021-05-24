@@ -25,7 +25,7 @@ class Overture::Topics::NotesController < Overture::NotesController
           NotificationMailer.need_approval_notification(user, @topic, @note).deliver_later
         end
       end
-      redirect_to overture_topic_notes_path(topic_id: @topic.id), notice: "Answer has been posted. Please wait for answer to be approved."
+      redirect_to overture_topic_notes_path(topic_id: @topic.id), notice: "Answer has been posted."
     else
       render :new
     end
