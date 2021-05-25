@@ -20,3 +20,9 @@ window.contactStatusCreate = function(formElement) {
     }
   });
 };
+
+$(document).on("turbolinks:load", function () {
+  $(".slide-right").click(function () {
+    $('.slide-container').scrollLeft(2000);
+  });
+});

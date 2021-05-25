@@ -6,13 +6,13 @@
     button.close.open-banner.text-dark.mr-3 type="submit"
       i.material-icons-outlined.float-right help_outline
 = render 'overture/home/banners/startups/fundraising_board'
-.row.mt-5.flex-row.flex-sm-nowrap.overflow-auto
+.row.mt-5.flex-row.flex-sm-nowrap.overflow-auto.slide-container
   - @contact_statuses.each do |cs|
     .col-3.m-2.kanban-height
       .d-flex
         .col-sm-10
           .dropdown
-            a.btn.btn-icon.btn-link.d-flex.py-2.ml-5 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+            a.btn.btn-icon.btn-link.d-flex.py-2.ml-5.slide-right href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
               .badge.badge-pill.font-weight-boldest.p-3.mr-3.badge-name.fundraising-tour-3 style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
               = cs.contacts.length
             .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="newContactStatus"
