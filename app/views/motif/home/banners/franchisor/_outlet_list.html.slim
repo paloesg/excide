@@ -1,0 +1,25 @@
+.card.outlet-list-banner
+  .row
+    .col-sm-7
+      .card-body.p-7
+        small.text-muted.text-uppercase.font-weight-bolder.m-0 Outlet List
+        h1.text-dark.font-weight-boldest.my-3 One-stop outlet directory
+        p.mb-1 Store and manage information about the operating outlets under your supervision
+        ul.pl-5
+          li
+            b = "Direct-owned "
+            | outlets are those operated by your company
+
+          li
+            b = "Franchised "
+            | outlets are those operated by your direct franchisees
+          li
+            | Click an outlet card to
+            b = " view or edit "
+            | information
+          li
+            | Want to add outlet? Click “New Outlet” and we will get back to you
+    .image-container.col-sm-5
+      = image_pack_tag 'media/src/images/motif/outlet-list.png', alt: 'outlet-list', class: 'img-fluid float-right image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close
