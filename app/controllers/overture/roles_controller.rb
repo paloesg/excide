@@ -5,6 +5,8 @@ class Overture::RolesController < ApplicationController
   before_action :set_company_users, only: :index
   before_action :set_role, except: [:index, :create]
 
+  after_action :verify_authorized
+
   def index
     # Find all company's groups (except for admin and member)
     @roles = @company.roles.where.not(name: ["admin", "member"]).order(created_at: :desc)
@@ -13,6 +15,7 @@ class Overture::RolesController < ApplicationController
 
   def create
     @role = Role.new(role_params)
+    authorize @role
     if @role.save
       update_users_role
       redirect_to overture_roles_path, notice: 'Group successfully created!'
