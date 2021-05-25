@@ -1,10 +1,10 @@
 .sidebar-sticky.sidebar-sticky-settings
   ul.nav.flex-column
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to edit_overture_company_path(current_user.company), class: 'col-sm-12 d-flex align-items-center' do
+    li.nav-item.hover-blue.py-1.m-4 class="#{current_class(edit_overture_company_path(current_user.company))}"
+      = link_to edit_overture_company_path(current_user.company), class: "col-sm-12 d-flex align-items-center" do
         .ml-2.sidebar-font = current_user.company.startup? ? "Startup Profile" : "Investor Company Profile"
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to overture_users_path, class: 'col-sm-12 d-flex align-items-center' do
+    li.nav-item.hover-blue.py-1.m-4 class="#{current_class(overture_users_path)}"
+      = link_to overture_users_path, class: "col-sm-12 d-flex align-items-center" do
         .ml-2.sidebar-font Teammates
     / li.nav-item.hover-blue.py-1.m-4
     /   = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
@@ -12,13 +12,13 @@
     / li.nav-item.hover-blue.py-1.m-4
     /   = link_to overture_root_path, class: 'col-sm-12 d-flex align-items-center' do
     /     .ml-2.sidebar-font Appearances
-    li.nav-item.hover-blue.py-1.m-4
-      = link_to edit_overture_user_path(current_user), class: 'col-sm-12 d-flex align-items-center' do
+    li.nav-item.hover-blue.py-1.m-4 class="#{current_class(edit_overture_user_path(current_user))}"
+      = link_to edit_overture_user_path(current_user), class: "col-sm-12 d-flex align-items-center" do
         .ml-2.sidebar-font Account and Password
     - if current_user.has_role?(:admin, current_user.company)
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to overture_subscription_plan_path, class: 'col-sm-12 d-flex align-items-center' do
+      li.nav-item.hover-blue.py-1.m-4 class="#{current_class(overture_subscription_plan_path)}"
+        = link_to overture_subscription_plan_path, class: "col-sm-12 d-flex align-items-center" do
           .ml-2.sidebar-font Subscription Plan
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to overture_billing_and_invoice_path, class: 'col-sm-12 d-flex align-items-center' do
+      li.nav-item.hover-blue.py-1.m-4 class="#{current_class(overture_billing_and_invoice_path)}"
+        = link_to overture_billing_and_invoice_path, class: "col-sm-12 d-flex align-items-center" do
           .ml-2.sidebar-font Billing & Invoice
