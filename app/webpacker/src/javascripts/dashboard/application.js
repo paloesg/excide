@@ -50,6 +50,7 @@ require("./overture/drawer");
 require("./overture/open_another_modal");
 require("./overture/update_contact_status");
 require("./overture/add_roles");
+require("./overture/version_control");
 
 // Import Uppy drag-and-drop
 require("./components/uppy");
