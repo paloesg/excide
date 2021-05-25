@@ -12,6 +12,19 @@ class Overture::ContactStatusesController < ContactStatusesController
     @existing_contacts = Contact.includes(:company).where(companies: {company_type: "investor"}, searchable: true)
   end
 
+  def create
+    @contact_status = ContactStatus.create(contact_status_params)
+    @contact_status.startup = @company
+    respond_to do |format|
+      if @contact_status.save
+        format.json { render json: @contact_status, status: :ok }
+      else
+        format.html { render :edit }
+        format.json { render json: @contact_status.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def update
     respond_to do |format|
       if @contact_status.update(contact_status_params)

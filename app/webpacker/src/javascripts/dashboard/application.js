@@ -46,6 +46,7 @@ require("./motif/note");
 require("./overture/access_control");
 require("./overture/bulk_assignment");
 require("./overture/contact_status_update");
+require("./overture/contact_status_create");
 require("./overture/close_and_open_banner");
 require("./overture/drawer");
 require("./overture/open_another_modal");
