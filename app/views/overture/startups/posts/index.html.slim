@@ -13,13 +13,13 @@
   = render 'overture/home/banners/startups/announcement'
 - else
   = render 'overture/home/banners/investors/announcement'
-.row.mb-3.mt-5.ml-3
+.row.mb-3.mt-5
   .col-sm-12
     - if @posts.empty?
       = render @company.startup? ? 'overture/home/empty_states/startups/announcement' : 'overture/home/empty_states/investors/announcement'
     - else
       - @posts.each do |post|
-        .col-sm-12.mr-8.mb-6.qna-wrapper.px-5.py-5.float-left.announcement-tour-2
+        .col-sm-12.mb-6.qna-wrapper.px-5.py-5.float-left.announcement-tour-2
           .mt-5.d-flex
             = image_pack_tag 'media/src/images/overture/overture-icon.png', class: "p-3 announcement-icon-size mr-6"
             / , class: 'announcement-icon-size border p-1 mr-6'
