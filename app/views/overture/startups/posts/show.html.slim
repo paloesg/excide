@@ -64,4 +64,4 @@ hr.p-0
         = image_pack_tag 'media/src/images/overture/user-avatar-placeholder.jpg', class: 'icon-size'
         small.mx-3 = @post.author.full_name
         small = @post.created_at.strftime("%d %b %Y")
-      .comment-font-size.text-dark.mt-4 = @post.content
+      .comment-font-size.text-dark.mt-4 = @post.content.body.to_rendered_html_with_layout()
