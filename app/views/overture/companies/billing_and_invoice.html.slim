@@ -20,7 +20,7 @@ hr
         = Time.at(invoice['period_end']).strftime("%d-%b-%Y")
       .col-sm-2 Paid
       .col-sm-4
-        = number_with_precision(invoice['amount_paid']/100, precision: 2)
+        = "$#{number_with_precision(invoice['amount_paid']/100, precision: 2)}"
       .col-sm-3
         = link_to "Download", invoice['invoice_pdf'], class: 'text-primary'
     hr.m-0
