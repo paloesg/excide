@@ -21,6 +21,8 @@ class CompaniesController < ApplicationController
     authorize @company
     # Save the new company's product(s)
     @company.products = params[:products]
+    # New company in overture should have basic (seedling) plan
+    @company.account_type = "basic" if params[:products].include? "overture"
     if @company.save
       set_company_roles
       if @company.products.include? "motif"
