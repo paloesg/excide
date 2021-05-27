@@ -2,13 +2,10 @@
   .row.p-5
     .col-sm-12
       .form-group
-        = f.label :name, "New Status", class: "edit-status-word-style"
-        = f.text_field :name, class: 'form-control', id: "status-name", onchange: "contactStatusCreate(this);"
+        = f.label :name, "New Status"
+        = f.text_field :name, class: 'form-control'
       .form-group
-        = f.label :colour, "Colours", class: "edit-status-word-style"
-        = f.color_field :colour, class: 'w-75', id: "color", onchange: "contactStatusCreate(this);"
-  hr.m-0
-  .row.p-5
-    = link_to overture_contact_status_path(cs), method: :delete, data: { confirm: 'Are you sure you want to delete this column?' }, class: "col-sm-12 d-flex align-items-center" do
-      i.material-icons-outlined delete_outline
-      .ml-2.delete-status-word-style Delete Status
+        = f.label :colour, "Colours"
+        = f.color_field :colour, class: 'w-75'
+      .form-group
+        = f.submit "Save", class: 'btn btn-primary'
