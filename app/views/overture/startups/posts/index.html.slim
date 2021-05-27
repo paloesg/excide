@@ -22,10 +22,8 @@
         .col-sm-12.mb-6.qna-wrapper.px-5.py-5.float-left.announcement-tour-2
           .mt-5.d-flex
             = image_pack_tag 'media/src/images/overture/overture-icon.png', class: "p-3 announcement-icon-size mr-6"
-            / , class: 'announcement-icon-size border p-1 mr-6'
             .flex-grow-1
               h4 = post.company.name
-              / h5 = post.title
               .d-flex.align-items-center.mt-4
                 = image_pack_tag 'media/src/images/overture/user-avatar-placeholder.jpg', class: 'icon-size'
                 small.mx-3 = post.author.full_name
