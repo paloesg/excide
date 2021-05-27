@@ -31,6 +31,7 @@ class CompaniesController < ApplicationController
       elsif @company.products.include? "overture"
         set_default_profile_or_contact
         set_default_contact_statuses
+        set_default_overture_folders
       end
       current_user.update(company: @company)
       # Redirect based on the products that was added to the company
@@ -100,6 +101,17 @@ class CompaniesController < ApplicationController
     # Current user should have access permission to default folders
     motif_default_folders.each do |folder|
       # Create full access permission for franchisor
+      Permission.create(user_id: current_user.id, permissible: folder, can_write: true, can_view: true, can_download: true)
+    end
+  end
+
+  def set_default_overture_folders
+    # Create default folders with permissions when adding a new company
+    overture_default_folder_names = ["Resource Portal", "Shared Files"]
+    # Get all the new folder instances
+    overture_default_folders = overture_default_folder_names.map{|name| Folder.create(name: name, company: @company)}
+    overture_default_folders.each do |folder|
+      # Create full access permission for company created
       Permission.create(user_id: current_user.id, permissible: folder, can_write: true, can_view: true, can_download: true)
     end
   end
