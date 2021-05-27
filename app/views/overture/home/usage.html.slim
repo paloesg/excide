@@ -10,10 +10,10 @@
           i.material-icons-outlined.align-middle.mb-1.mr-3 folder_open
           | Uploaded File Storage
         p.card-text Your current usage of Uploaded File Storage is
-        .progress
-          .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar"
-        p.text-primary.mt-5.font-weight-boldest Users
-        p ="*Your maximum file storage capacity allowed in your Overture plan is 15GB"
+        .progress style="height: 4px;"
+          .progress-bar class="bg-warning" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style="width: 70%;"
+        p.text-primary.mt-3.font-weight-boldest Users
+        em.font-size-sm.text-dark-50 ="*Your maximum file storage capacity allowed in your Overture plan is 15GB"
   .col-sm-3
     .card
       .card-body
@@ -21,10 +21,10 @@
           i.material-icons-outlined.align-middle.mb-1.mr-3 emoji_people
           | Pitch to Investor
         p.card-text Your current usage of Pitch to Investor limit this month is
-        .progress
-          .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar"
+        .progress style="height: 4px;"
+          .progress-bar class="bg-primary" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style="width: 10%;"
         p.text-primary.mt-3.font-weight-boldest Users
-        p ="*Your maximum number of pitches allowed to make in your Overture plan is 10."
+        em.font-size-sm.text-dark-50 ="*Your maximum number of pitches allowed to make in your Overture plan is 10."
   .col-sm-3
     .card
       .card-body
@@ -32,10 +32,10 @@
           i.material-icons-outlined.align-middle.mb-1.mr-3 groups
           | Team
         p.card-text Your current usage of Team Capacity is
-        .progress
-          .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar"
+        .progress style="height: 4px;"
+          .progress-bar class="bg-danger" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style="width: 100%;"
         p.text-primary.mt-3.font-weight-boldest Users
-        p ="*Your maximum number of team members allowed in your Overture plan is 5."
+        em.font-size-sm.text-dark-50 ="*Your maximum number of team members allowed in your Overture plan is 5."
         h6.mt-5 Team Members
         p Franchised
   .col-sm-3
@@ -45,14 +45,16 @@
           i.material-icons-outlined.align-middle.mb-1.mr-3 supervised_user_circle
           | Investors
         p.card-text Your current usage of Investors Capacity is
-        .progress
-          .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar"
+        .progress style="height: 4px;"
+          .progress-bar class="bg-primary" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style="width: 25%;"
         p.text-primary.mt-3.font-weight-boldest Users
-        p ="*Your maximum number of investors in Investor List allowed in your Overture plan is 5."
+        em.font-size-sm.text-dark-50 ="*Your maximum number of investors in Investor List allowed in your Overture plan is 5."
         h6.mt-5 Investor List
         p Franchised
-.row.my-10.p-5.bg-light
-  .font-weight-bolder.mr-1.my-auto Need an upgrade or customisation?
-  p.my-auto Check our plans, or simply contact us
-  = link_to 'Subscription Plans', root_path, class: 'btn btn-sm btn-outline-secondary bg-white font-weight-bolder text-primary mr-2'
-  = link_to 'Contact Us', root_path, class: 'btn btn-sm btn-primary font-weight-bolder'
+.row.my-10.p-5.justify-content-between.mx-0.usage-banner
+  .d-flex
+    .font-weight-bolder.mr-1.my-auto Need an upgrade or customisation?
+    p.my-auto Check our plans, or simply contact us
+  .div
+    = link_to 'Subscription Plans', root_path, class: 'btn btn-sm btn-outline-secondary bg-white font-weight-bolder text-primary mr-2'
+    = link_to 'Contact Us', root_path, class: 'btn btn-sm btn-primary font-weight-bolder'
