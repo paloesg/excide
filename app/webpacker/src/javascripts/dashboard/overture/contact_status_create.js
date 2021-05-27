@@ -22,7 +22,8 @@ window.contactStatusCreate = function(formElement) {
 };
 
 $(document).on("turbolinks:load", function () {
+  let new_status_element = $("#new-status");
   $(".slide-right").click(function () {
-    $('.slide-container').scrollLeft(2000);
+    $('.slide-container').animate( { scrollLeft: $(new_status_element).offset().left }, 1000);
   });
 });
