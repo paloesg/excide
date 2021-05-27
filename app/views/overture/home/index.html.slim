@@ -47,7 +47,7 @@
         = render 'overture/home/empty_states/startups/dashboard'
 - else
   = render 'overture/home/banners/investors/dashboard'
-  .row.mb-3.mt-5.ml-3
+  .row.mb-3.mt-5
     .col-sm-12
       - if @posts.empty?
         = render "overture/home/empty_states/startups/dashboard"
@@ -62,7 +62,7 @@
                   = image_pack_tag 'media/src/images/overture/user-avatar-placeholder.jpg', class: 'icon-size'
                   small.mx-3 = post.author.full_name
                   small = post.created_at.strftime("%d %b %Y")
-                .comment-font-size.text-dark.mt-4 = post.content
+                .comment-font-size.text-dark.mt-4 = post.content.to_plain_text.truncate(500)
               .icon-bar
                 = link_to overture_startups_post_path(post.id) do
                   i.material-icons-outlined.mt-4 open_in_new
