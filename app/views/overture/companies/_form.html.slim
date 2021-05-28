@@ -1,17 +1,20 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    .btn-toolbar.float-right.ml-5
-      = f.submit 'Save & Publish', class: 'btn btn-primary mr-3 px-5'
+    - if current_user.has_role?(:member, current_user.company)
+      .alert.alert-secondary Only users with an Admin role will be able to edit the fields below!
+    - if current_user.has_role?(:admin, current_user.company)
+      .btn-toolbar.float-right.ml-5
+        = f.submit 'Save & Publish', class: 'btn btn-primary mr-3 px-5'
     h3 Brand Information
     p Information in this page is displayed to Startup Users when they are searching for investors on Overture. Any changes will be reflected as well. Check again before publishing.
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .form-group
       = f.label :name, 'Company Name', class: "label-bold"
-      = f.text_field :name, class: 'form-control'
+      = f.text_field :name, class: "form-control  #{check_if_member_role}"
     .form-group
       = f.label :report_url, 'Company Financial Report (Google DataStudio)', class: "label-bold"
-      = f.text_field :report_url, class: 'form-control'
+      = f.text_field :report_url, class: "form-control #{check_if_member_role}"
     - if @company.startup?
       = render "overture/profiles/form", f: f
     - else

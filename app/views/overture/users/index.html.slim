@@ -1,22 +1,23 @@
 .row.mb-3.mt-5.ml-3
   .col
     h1 Teammates
-    button.btn.btn-white.border.border-secondary.text-primary.float-right.ml-5 data-target="#newOvertureTeammates" data-toggle="modal" type="button"
-      | Add people
-    #newOvertureTeammates.modal.fade aria-hidden="true" aria-labelledby="addNewOvertureTeammates" role="dialog" tabindex="-1"
-      .modal-dialog role="document"
-        .modal-content
-          .modal-header
-            h5#addNewOvertureTeammates.modal-title Add teammates
-          .modal-body
-            = form_for(@user, url: overture_users_path, html: { method: :post }) do |f|
-              .row.mt-3
-                .col-md-12
-                  .form-group
-                    = f.text_field :email, placeholder: 'Email', class: 'form-control'
-              .row
-                .col-md-12
-                  = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+    - if current_user.has_role?(:admin, current_user.company)
+      button.btn.btn-white.border.border-secondary.text-primary.float-right.ml-5 data-target="#newOvertureTeammates" data-toggle="modal" type="button"
+        | Add people
+      #newOvertureTeammates.modal.fade aria-hidden="true" aria-labelledby="addNewOvertureTeammates" role="dialog" tabindex="-1"
+        .modal-dialog role="document"
+          .modal-content
+            .modal-header
+              h5#addNewOvertureTeammates.modal-title Add teammates
+            .modal-body
+              = form_for(@user, url: overture_users_path, html: { method: :post }) do |f|
+                .row.mt-3
+                  .col-md-12
+                    .form-group
+                      = f.text_field :email, placeholder: 'Email', class: 'form-control'
+                .row
+                  .col-md-12
+                    = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
 .row
   .col-12
     .table-responsive
@@ -26,16 +27,22 @@
             th Name
             th Email
             th User type
-            th
+            - if current_user.has_role?(:admin, current_user.company)
+              th
         tbody
           - @users.each do |u|
             tr.border-bottom
               td.border-top-0 = u.full_name
               td = u.email
-              td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.overture_roles(@company).id if u.overture_roles(@company).present?)), include_blank: true, required: true, class: 'select2 overture-select-user-types', id: "#{u.id}", style: 'width: 100%'
-              td
-                .dropdown
-                  a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-                    i.fa.fa-ellipsis-h.text-secondary.mb-4
-                  .dropdown-menu.dropdown-menu-right
-                    .dropdown-item = link_to "Delete", overture_user_path(u), method: :delete, data: { confirm: "Are you sure you want to delete this user?"}
+              / check if user has role admin
+              - if current_user.has_role?(:admin, current_user.company)
+                td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.overture_roles(@company).id if u.overture_roles(@company).present?)), include_blank: true, required: true, class: 'select2 overture-select-user-types', id: u.id, style: 'width: 100%'
+              - else
+                td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.overture_roles(@company).id if u.overture_roles(@company).present?)), include_blank: true, required: true, class: 'select2 overture-select-user-types', id: u.id, style: 'width: 100%', disabled: true
+              - if current_user.has_role?(:admin, current_user.company)
+                td
+                  .dropdown
+                    a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+                      i.fa.fa-ellipsis-h.text-secondary.mb-4
+                    .dropdown-menu.dropdown-menu-right
+                      .dropdown-item = link_to "Delete", overture_user_path(u), method: :delete, data: { confirm: "Are you sure you want to delete this user?"}
