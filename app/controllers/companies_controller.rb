@@ -21,6 +21,8 @@ class CompaniesController < ApplicationController
     authorize @company
     # Save the new company's product(s)
     @company.products = params[:products]
+    # New company in overture should have basic (seedling) plan
+    @company.account_type = "basic" if params[:products].include? "overture"
     if @company.save
       set_company_roles
       if @company.products.include? "motif"
@@ -29,6 +31,7 @@ class CompaniesController < ApplicationController
       elsif @company.products.include? "overture"
         set_default_profile_or_contact
         set_default_contact_statuses
+        set_default_overture_folders
       end
       current_user.update(company: @company)
       # Redirect based on the products that was added to the company
@@ -102,6 +105,21 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def set_default_overture_folders
+    # Create default folders with permissions when adding a new company
+    overture_default_folder_names = ["Resource Portal", "Shared Files"]
+    # Get all the new folder instances
+    overture_default_folders = overture_default_folder_names.map{|name| Folder.create(name: name, company: @company)}
+    # Give permission of default folders to admin and member of the company
+    roles = Role.where(resource_id: @company.id, resource_type: "Company").where(name: ["admin", "member"])
+    overture_default_folders.each do |folder|
+      roles.each do |r|
+        # Create full access permission for company created
+        Permission.create(role_id: r.id, permissible: folder, can_write: true, can_view: true, can_download: true)
+      end
+    end
+  end
+
   def set_default_templates
     motif_general_templates = Template.where(company_id: nil).where.not(template_type: nil)
     # Check if company products include Motif and that the motif general templates are present
@@ -129,9 +147,9 @@ class CompaniesController < ApplicationController
 
   def set_default_contact_statuses
     if @company.startup?
-      default_statuses = ["Shortlisted", "Contacted", "Pitched", "Due Dilligence", "Partners Meeting", "Investment Committee", "Committed", "Invested", "Said no"]
+      default_statuses = [["No Status", "#FFFFFF"], ["Contacted", "#c1ebf7"], ["In Discussion", "#ffd3b3"], ["Due Dilligence", "#f7f2b2"], ["Said Yes", "#edfab1"], ["Said No", "#fab1b1"]]
       default_statuses.each_with_index do |status, index|
-        ContactStatus.create(name: status, startup_id: @company.id, position: index + 1)
+        ContactStatus.create(name: status[0], startup: @company, position: index + 1, colour: status[1])
       end
     end
   end

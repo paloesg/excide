@@ -1,0 +1,14 @@
+.premium-search-investors {
+  background-image: linear-gradient(rgba(256, 256, 256, 0.7), white);
+  z-index: 1;
+}
+
+.contacts-overlap {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.contacts-overlap div {
+  grid-row-start: 1;
+  grid-column-start: 1;
+}
