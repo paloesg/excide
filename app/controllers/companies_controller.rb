@@ -110,9 +110,13 @@ class CompaniesController < ApplicationController
     overture_default_folder_names = ["Resource Portal", "Shared Files"]
     # Get all the new folder instances
     overture_default_folders = overture_default_folder_names.map{|name| Folder.create(name: name, company: @company)}
+    # Give permission of default folders to admin and member of the company
+    roles = Role.where(resource_id: @company.id, resource_type: "Company").where(name: ["admin", "member"])
     overture_default_folders.each do |folder|
-      # Create full access permission for company created
-      Permission.create(user_id: current_user.id, permissible: folder, can_write: true, can_view: true, can_download: true)
+      roles.each do |r|
+        # Create full access permission for company created
+        Permission.create(role_id: r.id, permissible: folder, can_write: true, can_view: true, can_download: true)
+      end
     end
   end
 
