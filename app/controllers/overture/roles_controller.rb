@@ -15,7 +15,7 @@ class Overture::RolesController < ApplicationController
 
   def create
     @role = Role.new(role_params)
-    authorize @role
+    authorize [:overture, @role]
     if @role.save
       update_users_role
       redirect_to overture_roles_path, notice: 'Group successfully created!'
