@@ -3,7 +3,7 @@
     i.material-icons.mr-3 cloud_queue
     h3 Usage & Storage
 .row.mb-3.mt-10
-  .col-sm-3
+  .col
     .card
       .card-body.p-6
         h6.card-title.mb-4
@@ -11,10 +11,11 @@
           | Uploaded File Storage
         p.card-text Your current usage of Uploaded File Storage is
         .progress style="height: 4px;"
-          .progress-bar class="bg-warning" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style="width: 70%;"
-        p.text-primary.mt-3.font-weight-boldest Users
-        em.font-size-sm.text-dark-50 ="*Your maximum file storage capacity allowed in your Overture plan is 15GB"
-  .col-sm-3
+          .progress-bar class="bg-#{@company.progress_colour}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style="width: #{@company.storage_progress}%;"
+        p.mt-3.font-weight-boldest class="text-#{@company.progress_colour}"
+          | #{number_to_human_size(@company.storage_used)} of #{number_to_human_size(@company.storage_limit)}
+        em.font-size-sm.text-dark-50 ="*Your maximum file storage capacity allowed in your Overture plan is #{number_to_human_size(@company.storage_limit)}."
+  .col
     .card
       .card-body.p-6
         h6.card-title.mb-4
@@ -25,7 +26,7 @@
           .progress-bar class="bg-primary" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style="width: 10%;"
         p.text-primary.mt-3.font-weight-boldest Users
         em.font-size-sm.text-dark-50 ="*Your maximum number of pitches allowed to make in your Overture plan is 10."
-  .col-sm-3
+  .col
     .card
       .card-body.p-6
         h6.card-title.mb-4
@@ -34,11 +35,11 @@
         p.card-text Your current usage of Team Capacity is
         .progress style="height: 4px;"
           .progress-bar class="bg-danger" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style="width: 100%;"
-        p.text-primary.mt-3.font-weight-boldest Users
+        p.text-danger.mt-3.font-weight-boldest Users
         em.font-size-sm.text-dark-50 ="*Your maximum number of team members allowed in your Overture plan is 5."
         .font-weight-bolder.mt-10 Team Members
         p User name
-  .col-sm-3
+  .col
     .card
       .card-body.p-6
         h6.card-title.mb-4
