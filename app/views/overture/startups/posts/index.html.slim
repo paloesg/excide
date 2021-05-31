@@ -31,7 +31,8 @@
               .comment-font-size.text-dark.mt-4 = post.content.to_plain_text.truncate(500)
               = link_to "read more", overture_startups_post_path(post), class: "comment-font-size"
             .icon-bar
-              i.material-icons-outlined data-target="#annoucement_#{post.id}" data-toggle="modal" type="button" create
+              - if post.author == current_user
+                i.material-icons-outlined data-target="#annoucement_#{post.id}" data-toggle="modal" type="button" create
               = link_to overture_startups_post_path(post.id) do
                 i.material-icons-outlined.mt-4 open_in_new
               = link_to overture_startups_post_path(post.id), method: :delete, data: { confirm: "Are you sure you want to delete this announcement?" } do
