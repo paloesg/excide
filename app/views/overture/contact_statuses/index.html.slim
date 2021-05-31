@@ -40,8 +40,11 @@
           = render "unlimited_contacts_modal"
           a.text-muted data-target="#unlimitedContacts" data-toggle="modal" type="button" = "+ New"
         .dropdown-menu.dropdown-menu-right
-          a.dropdown-item data-target="#addExistingInvestorToBoard" data-toggle="modal" type="button" Existing Investor
-          a.dropdown-item data-target="#addNewInvestorToBoard" data-toggle="modal" type="button" Add manually
+          - if @company.pro?
+            a.dropdown-item data-target="#addExistingInvestorToBoard" data-toggle="modal" type="button" = "Existing Investor"
+            a.dropdown-item data-target="#addNewInvestorToBoard" data-toggle="modal" type="button" Add manually
+          - else
+            a.dropdown-item data-target="#addNewInvestorToBoard" data-toggle="modal" type="button" Add manually
     #addExistingInvestorToBoard.modal.fade aria-hidden="true" aria-labelledby="addExistingInvestor" role="dialog" tabindex="-1"
       .modal-dialog role="document"
         .modal-content
