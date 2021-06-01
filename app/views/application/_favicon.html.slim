@@ -1,0 +1,25 @@
+- case request.path.split('/')[1]
+- when "symphony"
+    = favicon_pack_tag 'media/src/images/favicon/sym-apple-touch-icon.png', rel: 'apple-touch-icon', sizes: '180x180' 
+    = favicon_pack_tag 'media/src/images/favicon/sym-favicon-32x32.png', rel: 'icon', type: "image/png" 
+    = favicon_pack_tag 'media/src/images/favicon/sym-favicon-16x16.png', rel: 'icon', type: "image/png" 
+    = favicon_pack_tag 'media/src/images/favicon/sym-favicon.svg', rel: 'mask-icon', color: '#5bbad5' 
+    = favicon_pack_tag 'media/src/images/favicon/sym-favicon.ico', rel: 'shortcut icon'  
+- when "overture"
+    = favicon_pack_tag 'media/src/images/favicon/overture-apple-touch-icon.png', rel: 'apple-touch-icon', sizes: '180x180' 
+    = favicon_pack_tag 'media/src/images/favicon/overture-favicon-32x32.png', rel: 'icon', type: "image/png" 
+    = favicon_pack_tag 'media/src/images/favicon/overture-favicon-16x16.png', rel: 'icon', type: "image/png" 
+    = favicon_pack_tag 'media/src/images/favicon/overture-favicon.svg', rel: 'mask-icon', color: '#5bbad5' 
+    = favicon_pack_tag 'media/src/images/favicon/overture-favicon.ico', rel: 'shortcut icon'
+- else 
+    = favicon_pack_tag 'media/src/images/favicon/paloe-apple-touch-icon.png', rel: 'apple-touch-icon', sizes: '180x180' 
+    = favicon_pack_tag 'media/src/images/favicon/paloe-favicon-32x32.png', rel: 'icon', type: "image/png" 
+    = favicon_pack_tag 'media/src/images/favicon/paloe-favicon-16x16.png', rel: 'icon', type: "image/png" 
+    = favicon_pack_tag 'media/src/images/favicon/paloe-favicon.svg', rel: 'mask-icon', color: '#5bbad5' 
+    = favicon_pack_tag 'media/src/images/favicon/paloe-favicon.ico', rel: 'shortcut icon' 
+
+/ = favicon_pack_tag 'media/src/images/favicon/apple-touch-icon.png', rel: 'apple-touch-icon', sizes: '180x180' 
+/ = favicon_pack_tag 'media/src/images/favicon/favicon-32x32.png', rel: 'icon', type: "image/png" 
+/ = favicon_pack_tag 'media/src/images/favicon/favicon-16x16.png', rel: 'icon', type: "image/png" 
+/ = favicon_pack_tag 'media/src/images/favicon/safari-pinned-tab.svg', rel: 'mask-icon', color: '#5bbad5' 
+/ = favicon_pack_tag 'media/src/images/favicon/favicon.ico', rel: 'shortcut icon' 
