@@ -128,6 +128,21 @@ class Company < ApplicationRecord
     end
   end
 
+  def investor_progress
+    (self.investor_investments.length.to_f / 5) * 100
+  end
+
+  def investor_progress_colour
+    case self.investor_progress
+    when 0..60
+      "primary"
+    when 60..80
+      "warning"
+    else
+      "danger"
+    end
+  end
+
   # Update storage size when a new document or version is created
   def update_storage_size(byte_size)
     self.storage_used += byte_size

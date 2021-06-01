@@ -47,10 +47,14 @@
           | Investors
         p.card-text Your current usage of Investors Capacity is
         .progress style="height: 4px;"
-          .progress-bar class="bg-unlimited w-100" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar"
-        p.text-primary.mt-3.font-weight-boldest Unlimited
-        em.font-size-sm.text-dark-50 ="*Your maximum number of investors in Investor List allowed in your Overture plan is #{@company.basic? ? '5' : 'Unlimited'}."
-        .font-weight-bolder.mt-10 Investor List
+          .progress-bar class=(@company.pro? ? "bg-unlimited w-100" : "bg-#{@company.investor_progress_colour}") aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style="width: #{@company.investor_progress}%;"
+        - if @company.pro?
+          p.text-primary.mt-3.font-weight-boldest Unlimited
+        - else
+          p.mt-3.font-weight-boldest class="text-#{@company.investor_progress_colour}"
+            | #{@company.investor_investments.length} of 5
+        em.font-size-sm.text-dark-50 ="*Your maximum number of investors in Investor List allowed in your Overture plan is #{@company.pro? ? 'Unlimited' : '5'}."
+        .font-weight-bolder.mt-10.mb-4 Investor List
         - @company.investor_investments.each do |i|
           p = i.investor.name
 .row.my-10.p-5.justify-content-between.mx-0.usage-banner
