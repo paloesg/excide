@@ -1,0 +1,18 @@
+#storageFull.modal.fade aria-hidden="true" aria-labelledby="unlockstorageFull" role="dialog" tabindex="-1"
+  .modal-dialog.modal-sm role="document"
+    .modal-content
+      .modal-body
+        .row
+          .col-md-12
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true" &times;
+        .row.justify-content-center
+          .col-md-12.text-center
+            = image_pack_tag 'media/src/images/overture/storage-full.png', width: "105"
+            h3.my-5 Your storage is full
+            p Would you like to have more storage?
+            = link_to "Yes, please", overture_subscription_plan_path, class: 'btn btn-pink-gradient font-weight-bolder'
+            br
+            = button_tag data: { dismiss: "modal" }, type: "button", class: "close" do
+              p.font-size-lg
+                u Not now
