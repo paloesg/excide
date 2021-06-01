@@ -1,7 +1,5 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    / - if current_user.has_role?(:member, current_user.company)
-    /   .alert.alert-secondary Only users with an Admin role will be able to edit the fields below!
     - if current_user.has_role?(:admin, current_user.company)
       .btn-toolbar.float-right.ml-5
         = f.submit 'Save & Publish', class: 'btn btn-primary mr-3 px-5'
