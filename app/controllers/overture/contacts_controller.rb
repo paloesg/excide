@@ -21,7 +21,7 @@ class Overture::ContactsController < ApplicationController
   # This is for creating a private contact through fundraising board or adding to board
   def create
     if params[:contact_id].present?
-      # It will clone the contact and set to the 1st contact status of the board
+      # It will clone the contact
       contact_to_be_duplicated = Contact.find(params[:contact_id])
       # Deep clone active storage attachment and action text rich text through model method
       @contact = contact_to_be_duplicated.clone_contact
