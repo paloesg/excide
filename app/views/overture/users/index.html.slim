@@ -34,11 +34,9 @@
             tr.border-bottom
               td.border-top-0 = u.full_name
               td = u.email
-              / check if user has role admin
-              - if current_user.has_role?(:admin, current_user.company)
-                td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.overture_roles(@company).id if u.overture_roles(@company).present?)), include_blank: true, required: true, class: 'select2 overture-select-user-types', id: u.id, style: 'width: 100%'
-              - else
-                td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.overture_roles(@company).id if u.overture_roles(@company).present?)), include_blank: true, required: true, class: 'select2 overture-select-user-types', id: u.id, style: 'width: 100%', disabled: true
+              / below will disable dropdown option if not an admin
+              td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.overture_roles(@company).id if u.overture_roles(@company).present?)), include_blank: true, required: true, class: 'select2 overture-select-user-types', id: u.id, style: 'width: 100%',  disabled: false if (current_user.has_role?(:admin, current_user.company))
+              / below will not show option if not an admin
               - if current_user.has_role?(:admin, current_user.company)
                 td
                   .dropdown
