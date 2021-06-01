@@ -7,7 +7,7 @@ $(document).on("turbolinks:load", function () {
       url: "/overture/add-roles",
       data: {
         role_id: $(this).val(),
-        user_id: $(this).attr('id'),
+        user_id: parseInt($(this).attr('id').split("_")[1]),
       },
       dataType: "JSON"
     })
