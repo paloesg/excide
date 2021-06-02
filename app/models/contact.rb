@@ -11,9 +11,6 @@ class Contact < ApplicationRecord
 
   has_many :notes, as: :notable, dependent: :destroy
 
-  # validates :cloned_by_id, uniqueness: true
-  validates :company_id, uniqueness: { scope: :cloned_by_id}
-
   include AlgoliaSearch
   algoliasearch do
     attribute :company_name, :email, :phone, :searchable
