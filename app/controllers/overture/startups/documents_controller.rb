@@ -20,6 +20,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
   end
 
   def create
+    authorize([:overture, :startups, Document])
     # multiple file upload from uppy
     if params[:successful_files].present?
       parsed_files = JSON.parse(params[:successful_files])
@@ -40,7 +41,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
   end
 
   def update
-    authorize @document
+    authorize([:overture, :startups, @document])
     if params[:folder_id].present?
       @folder = @company.folders.find(params[:folder_id])
     # this is for version history update of overture documents
