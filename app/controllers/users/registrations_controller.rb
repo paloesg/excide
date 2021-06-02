@@ -18,17 +18,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     # Set company to resource.company if sign up is from overture, else create a temporary company
     @company = resource.company ? resource.company : Company.new(name: resource.email + "'s company")
-    # Set company to basic plan for now
-    @company.account_type = 0
+    # New company in overture should have basic (seedling) plan
+    @company.account_type = params[:product] == "overture" ?  "basic" : "free_trial"
     if params[:product].present?
       @company.products = [params[:product]]
       @company.save
       if params[:product] == "overture"
+        # Set user to admin of company
+        resource.add_role(:admin, @company)
         @company.company_type = "startup"
         # For overture, add member and admin role
         Role.create(name: "member", resource: @company)
         set_default_profile_or_contact
         set_default_contact_statuses
+        set_default_overture_folders
       else
         resource.company = @company
       end
@@ -174,9 +177,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def set_default_contact_statuses
     if @company.startup?
-      default_statuses = ["Shortlisted", "Contacted", "Pitched", "Due Dilligence", "Partners Meeting", "Investment Committee", "Committed", "Invested", "Said no"]
+      default_statuses = [["No Status", "#FFFFFF"], ["Contacted", "#c1ebf7"], ["In Discussion", "#ffd3b3"], ["Due Dilligence", "#f7f2b2"], ["Said Yes", "#edfab1"], ["Said No", "#fab1b1"]]
       default_statuses.each_with_index do |status, index|
-        ContactStatus.create(name: status, startup_id: @company.id, position: index + 1)
+        ContactStatus.create(name: status[0], startup: @company, position: index + 1, colour: status[1])
+      end
+    end
+  end
+
+  def set_default_overture_folders
+    # Create default folders with permissions when adding a new company
+    overture_default_folder_names = ["Resource Portal", "Shared Files"]
+    # Get all the new folder instances
+    overture_default_folders = overture_default_folder_names.map{|name| Folder.create(name: name, company: @company)}
+    # Give permission of default folders to admin and member of the company
+    roles = Role.where(resource_id: @company.id, resource_type: "Company").where(name: ["admin", "member"])
+    overture_default_folders.each do |folder|
+      roles.each do |r|
+        # Create full access permission for company created
+        Permission.create(role_id: r.id, permissible: folder, can_write: true, can_view: true, can_download: true)
       end
     end
   end
