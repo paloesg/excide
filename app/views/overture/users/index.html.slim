@@ -32,7 +32,8 @@
             tr.border-bottom
               td.border-top-0 = u.full_name
               td = u.email
-              td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.overture_roles(@company).id if u.overture_roles(@company).present?)), include_blank: true, required: true, class: 'select2 overture-select-user-types', id: "#{u.id}", style: 'width: 100%'
+              td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.overture_roles(@company).id if u.overture_roles(@company).present?)), include_blank: true, required: true, class: 'select2 overture-select-user-types', id: "select_#{u.id}", style: 'width: 100%'
+              / note that id should be unique in the form of select_x, where x is the number to split in add_roles.js
               td
                 .dropdown
                   a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"

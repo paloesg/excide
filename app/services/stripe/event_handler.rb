@@ -31,7 +31,6 @@ module Stripe
         end
       end
       @current_user.company.upgrade
-      @current_user.company.storage_limit = 32212254720
       @current_user.company.save
     end
 

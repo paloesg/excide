@@ -30,7 +30,7 @@
 - if @folders.empty? && @documents.empty?
   = render 'overture/home/empty_states/startups/resource_portal'
 - else
-  .table-responsive.h-75
+  .table-responsive.height-responsive
     table.table.ml-4.table-aligned
       thead
         tr
@@ -78,6 +78,6 @@
                 a.text-muted data-target="#unlimitedDownload" data-toggle="modal" type="button"
                   i.material-icons-outlined.font-size-h1.text-dark.mr-2 download
               - else
-                = link_to (d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true)) : d.file_url) do
+                = link_to (d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true), disposition: "attachment") : d.file_url) do
                   i.material-icons-outlined.font-size-h1.text-dark.mr-2 download
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
