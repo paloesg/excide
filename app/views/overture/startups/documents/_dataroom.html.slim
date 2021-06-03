@@ -69,6 +69,7 @@ hr.m-0
             - @roles.each do |role|
               th.col.dataroom-tour-3.text-break style="min-width: 12%"
                 a title="#{role.users.map(&:full_name).join("<br/>")}" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" = role.name
+          th
       tbody.draggable-zone
         - @folders.each_with_index do |folder, index|
           tr.draggable.folders.drawer-row.d-flex id="#{folder.id}" data-drawer=folder.id data-permissible-type="folder"
@@ -96,6 +97,7 @@ hr.m-0
               - @roles.each do |role|
                 td.col.dataroom-tour-2 style="min-width: 12%"
                   = render "overture/documents/permissions_icons", role: role, permissible: folder, permissible_type: "folder"
+            td
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
           tr.drawer-row.draggable.d-flex id="#{d.id}" data-drawer="#{d.id}" data-permissible-type="document"
@@ -126,6 +128,7 @@ hr.m-0
                 td.col style="min-width: 12%"
                   = render "overture/documents/permissions_icons", role: role, permissible: d, permissible_type: "document"
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
-            = render 'overture/documents/modals/version_control_modal', d: d
+            td
+              = render 'overture/documents/modals/version_control_modal', d: d
           = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_startups_documents_path(id: d.id, format: 'json'), path: "overture/startups/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
   = paginate @documents, views_prefix: 'dashboard'

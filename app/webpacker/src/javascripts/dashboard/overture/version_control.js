@@ -1,10 +1,8 @@
-$(document).on("turbolinks:load", function () {
-  $("#version_control_valid_file").change(function() {
-    if ($("#version_control_valid_file").val() != "") {
-      $("#vc_submit_button").attr("disabled", false);
-    }
-    else {
-      $("#vc_submit_button").attr("disabled", true);
+$(document).on("turbolinks:load", function () {  
+  $(".custom-file-input").change(function() {
+    submit_form_group = $(this).closest("#row1").siblings(".form-group").children();
+    if ($(this).val() != "") {
+      $(submit_form_group).attr("disabled", false);
     }
   });
 });
