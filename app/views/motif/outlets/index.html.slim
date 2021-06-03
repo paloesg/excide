@@ -1,74 +1,72 @@
-.row.mb-3.mt-5.ml-3
-  .col-sm-12
-    - if current_user.has_role? :superadmin
-      button.btn.btn-primary.text-white.float-right.ml-5 data-target="#newMotifOutlet" data-toggle="modal" type="button"
-        i.material-icons-outlined.text-white add
-        | Register New Outlet
-      #newMotifOutlet.modal.fade aria-hidden="true" aria-labelledby="openMotifOutlet" role="dialog" tabindex="-1"
-        .modal-dialog role="document"
-          .modal-content
-            .modal-header
-              h5#openMotifOutlet.modal-title Register New Outlet
-            .modal-body
-              = form_for(@outlet, url: motif_outlets_path, html: { method: :post }) do |f|
-                .row.mt-3
-                  .col-md-12
-                    .form-group
-                      = f.text_field :name, placeholder: 'Create Outlet Name', class: 'form-control'
-                    hr
-                    h6 Add New Member
-                    .form-group
-                      = email_field_tag :user_email, nil, placeholder: "Add user's email...", class: 'form-control'
-                    .form-group
-                      = text_field_tag :first_name, nil, placeholder: "Add user's first name...", class: 'form-control'
-                    .form-group
-                      = text_field_tag :last_name, nil, placeholder: "Add user's last name...", class: 'form-control'
-                    h6 Choose Existing Member
-                    .form-group
-                      = select_tag('user_id', options_from_collection_for_select(@existing_users, "id", "email"), include_blank: true, class: "form-control", style: 'width: 100%')
-                .row.mt-3
-                  .col-md-12
-                    = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
-                    button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close
-    - else
-      button.btn.btn-primary.text-white.float-right.ml-5 data-target="#newOutletDetails" data-toggle="modal" type="button"
-        i.material-icons-outlined.text-white add
-        | Request New Outlet
-      #newOutletDetails.modal.fade aria-hidden="true" aria-labelledby="openNewOutletForm" role="dialog" tabindex="-1"
-        .modal-dialog role="document"
-          .modal-content
-            .modal-header
-              h5#openNewOutletForm.modal-title Request for new outlet
-            .modal-body
-              = form_tag motif_email_new_outlet_path do |f|
-                .row.mt-3
-                  .col-md-12
-                    .form-group
-                      = text_field_tag :unit_name, nil, { required: true, placeholder: "Outlet Name", class: 'form-control' }
-                    .form-group
-                      = text_field_tag :full_name, nil, { required: true, placeholder: "Enter person in charge's full name ", class: 'form-control' }
-                    .form-group
-                      = text_field_tag :email, nil, { required: true, placeholder: "Enter person in charge's email ", class: 'form-control' }
-                    .form-check
-                      = check_box_tag :request_approved, nil, false, class: 'form-check-input'
-                      = label_tag :request_approved, "Request approved by franchisor", class: "ml-2 mt-1"
-                .row.mt-3
-                  .col-md-12
-                    = submit_tag "Save", class: 'btn btn-sm btn-primary float-right ml-3'
-                    button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close
-      / = link_to "Register New Outlet", motif_email_new_outlet_path, class: "btn btn-primary float-right"
-    .float-right.my-2
-      i.px-5.material-icons-outlined more_vert
-    h3 Outlet List
-    p.mt-5.text-muted
-      | Store and manage information about your franchisees and locations in
-      br
-      | Franchisees.
-    / span.mr-3
-    /   i.material-icons-outlined filter_list
-    / | Filters
-    = link_to 'Franchised', motif_outlets_path(type: "franchised"), type: 'button', class: 'motif-filter-outlet text-dark mr-2'
-    = link_to 'Direct owned', motif_outlets_path(type: "direct-owned"), type: 'button', class: ' motif-filter-outlet text-dark mr-2'
-    = link_to 'All', motif_outlets_path, type: 'button', class: ' motif-filter-outlet text-dark'
-hr.mb-0
-= render 'card_view'
+.m-5
+  .row.my-5
+    .col-sm-4.d-flex.align-items-center
+      i.material-icons-outlined.mr-5.text-dark store_mall_directory
+      .header-font.text-dark Outlet List
+    .col-sm-8
+      button.close.open-banner.text-dark.mr-3 type="submit"
+        i.material-icons-outlined.float-right help_outline
+  = render 'motif/home/banners/outlet_list'
+  .row.mt-5
+    .col-sm-12
+      - if current_user.has_role? :superadmin
+        button.btn.btn-primary.text-white.float-right.ml-5 data-target="#newMotifOutlet" data-toggle="modal" type="button"
+          i.material-icons-outlined.text-white add
+          | Register New Outlet
+        #newMotifOutlet.modal.fade aria-hidden="true" aria-labelledby="openMotifOutlet" role="dialog" tabindex="-1"
+          .modal-dialog role="document"
+            .modal-content
+              .modal-header
+                h5#openMotifOutlet.modal-title Register New Outlet
+              .modal-body
+                = form_for(@outlet, url: motif_outlets_path, html: { method: :post }) do |f|
+                  .row.mt-3
+                    .col-md-12
+                      .form-group
+                        = f.text_field :name, placeholder: 'Create Outlet Name', class: 'form-control'
+                      hr
+                      h6 Add New Member
+                      .form-group
+                        = email_field_tag :user_email, nil, placeholder: "Add user's email...", class: 'form-control'
+                      .form-group
+                        = text_field_tag :first_name, nil, placeholder: "Add user's first name...", class: 'form-control'
+                      .form-group
+                        = text_field_tag :last_name, nil, placeholder: "Add user's last name...", class: 'form-control'
+                      h6 Choose Existing Member
+                      .form-group
+                        = select_tag('user_id', options_from_collection_for_select(@existing_users, "id", "email"), include_blank: true, class: "form-control", style: 'width: 100%')
+                  .row.mt-3
+                    .col-md-12
+                      = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
+                      button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close
+      - else
+        button.btn.btn-primary.text-white.float-right.ml-5 data-target="#newOutletDetails" data-toggle="modal" type="button"
+          i.material-icons-outlined.text-white add
+          | Request New Outlet
+        #newOutletDetails.modal.fade aria-hidden="true" aria-labelledby="openNewOutletForm" role="dialog" tabindex="-1"
+          .modal-dialog role="document"
+            .modal-content
+              .modal-header
+                h5#openNewOutletForm.modal-title Request for new outlet
+              .modal-body
+                = form_tag motif_email_new_outlet_path do |f|
+                  .row.mt-3
+                    .col-md-12
+                      .form-group
+                        = text_field_tag :unit_name, nil, { required: true, placeholder: "Outlet Name", class: 'form-control' }
+                      .form-group
+                        = text_field_tag :full_name, nil, { required: true, placeholder: "Enter person in charge's full name ", class: 'form-control' }
+                      .form-group
+                        = text_field_tag :email, nil, { required: true, placeholder: "Enter person in charge's email ", class: 'form-control' }
+                      .form-check
+                        = check_box_tag :request_approved, nil, false, class: 'form-check-input'
+                        = label_tag :request_approved, "Request approved by franchisor", class: "ml-2 mt-1"
+                  .row.mt-3
+                    .col-md-12
+                      = submit_tag "Save", class: 'btn btn-sm btn-primary float-right ml-3'
+                      button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close
+      = link_to 'Franchised', motif_outlets_path(type: "franchised"), type: 'button', class: 'motif-filter-outlet text-dark mr-2'
+      = link_to 'Direct owned', motif_outlets_path(type: "direct-owned"), type: 'button', class: ' motif-filter-outlet text-dark mr-2'
+      = link_to 'All', motif_outlets_path, type: 'button', class: ' motif-filter-outlet text-dark'
+  hr.mb-0
+  = render 'card_view'

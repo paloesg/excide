@@ -1,9 +1,17 @@
-.row.mb-3.mt-5.ml-3
+.m-5
+  .row.my-5
+    .col-sm-4.d-flex.align-items-center
+      i.material-icons-outlined.mr-5.text-dark assessment
+      .header-font.text-dark Financial Performance
+    .col-sm-8
+      button.close.open-banner.text-dark.mr-3 type="submit"
+        i.material-icons-outlined.float-right help_outline
+  = render 'motif/home/banners/outlet/financial_performance'
+  .row.mt-5
     .col-sm-12
       - if current_user.has_role? :superadmin
         .float-right
           = link_to 'Setting', motif_edit_report_path, target: :_blank, class: 'text-primary font-weight-bolder mr-3 px-5'
-      h3.mb-5 Financial Performance
       - if current_user.active_outlet.nil?
         = label_tag "financial_dashboard", "View as...", class: 'h8'
         = form_tag(motif_financial_performance_path, method: :get, enforce_utf8: false) do

@@ -1,0 +1,16 @@
+.card.home-banner
+  .row
+    .col-sm-7
+      .card-body.p-7
+        small.text-muted.text-uppercase.font-weight-bolder.m-0 Home
+        h1.text-dark.font-weight-boldest.my-3 Welcome to ADA
+        p.mb-1 Manage your franchise brand with ease. Stay updated with your franchisees and outlets’ activities.
+        p 
+          b = "Click "
+          | any of the item shown in Home to bring you to the 
+          b = " detail page"
+          | .
+    .image-container.col-sm-5
+      = image_pack_tag 'media/src/images/motif/home.png', alt: "home", class: 'img-fluid float-right smaller-image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close

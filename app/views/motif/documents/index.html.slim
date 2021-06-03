@@ -1,49 +1,53 @@
-.row.mb-3.mt-5.ml-3
-  .col-sm-12
-    / Don't allow create folder button to be shown if within a folder
-    - unless controller_name == 'folders'
-      button.btn.btn-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Create Folder
-      #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newMotifFolderUpload" role="dialog" tabindex="-1"
+.m-5
+  .row.my-5
+    .col-sm-4.d-flex.align-items-center
+      i.material-icons-outlined.mr-5.text-dark folder_open
+      .header-font.text-dark Communication Hub
+    .col-sm-8
+      button.close.open-banner.text-dark.mr-3 type="submit"
+        i.material-icons-outlined.float-right help_outline
+  = render 'motif/home/banners/comm_hub'
+  .row.mb-3.mt-5.ml-3
+    .col-sm-12
+      / Don't allow create folder button to be shown if within a folder
+      - unless controller_name == 'folders'
+        button.btn.btn-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Create Folder
+        #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newMotifFolderUpload" role="dialog" tabindex="-1"
+          .modal-dialog role="document"
+            .modal-content
+              .modal-header
+                h5#newMotifFolderUpload.modal-title Create new folder
+                button.close aria-label="Close" data-dismiss="modal" type="button"
+                  span aria-hidden="true"  &times;
+              .modal-body
+                = form_for(@folder, url: motif_folders_path, html: { method: :post }) do |f|
+                  .row.mt-3
+                    .col-md-12
+                      .form-group
+                        = f.text_field :name, placeholder: 'New folder', class: 'form-control'
+                  .row
+                    .col-md-12
+                      = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+      button.btn.btn-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
+        i.material-icons-outlined.text-white add
+        | Upload Documents
+      #newMotifDocUploads.modal.fade aria-hidden="true" aria-labelledby="newMotifDocumentUploads" role="dialog" tabindex="-1"
         .modal-dialog role="document"
           .modal-content
             .modal-header
-              h5#newMotifFolderUpload.modal-title Create new folder
+              h5#newMotifDocumentUploads.modal-title Upload Documents
               button.close aria-label="Close" data-dismiss="modal" type="button"
                 span aria-hidden="true"  &times;
             .modal-body
-              = form_for(@folder, url: motif_folders_path, html: { method: :post }) do |f|
-                .row.mt-3
-                  .col-md-12
-                    .form-group
-                      = f.text_field :name, placeholder: 'New folder', class: 'form-control'
-                .row
-                  .col-md-12
-                    = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
-    button.btn.btn-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
-      i.material-icons-outlined.text-white add
-      | Upload Documents
-    #newMotifDocUploads.modal.fade aria-hidden="true" aria-labelledby="newMotifDocumentUploads" role="dialog" tabindex="-1"
-      .modal-dialog role="document"
-        .modal-content
-          .modal-header
-            h5#newMotifDocumentUploads.modal-title Upload Documents
-            button.close aria-label="Close" data-dismiss="modal" type="button"
-              span aria-hidden="true"  &times;
-          .modal-body
-            .row.mt-3
-              .col-md-12
-                / params[:id] is folder's ID. It is to account for uploading files inside a folder (folder SHOW page)
-                .dashboard-body.motifMultipleDocumentsUpload#Dashboard data-folder="#{params[:id]}"
-    / .float-right.mx-5.mt-2
-    /   i.material-icons-outlined more_horiz
-    .float-right.mx-5.mt-2
-      a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
-        i.material-icons-outlined info
-    h3 Communication Hub
-    p.mt-5.text-muted
-      | Store, share and manage your important documents and access control
-      br
-      | for different franchises. Drag and drop your files to upload.
+              .row.mt-3
+                .col-md-12
+                  / params[:id] is folder's ID. It is to account for uploading files inside a folder (folder SHOW page)
+                  .dashboard-body.motifMultipleDocumentsUpload#Dashboard data-folder="#{params[:id]}"
+      / .float-right.mx-5.mt-2
+      /   i.material-icons-outlined more_horiz
+      .float-right.mx-5.mt-2
+        a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
+          i.material-icons-outlined info
 - if @folders.empty? && @documents.empty?
   .row.justify-content-center.ml-3
     .col-md-3.text-center.p-4

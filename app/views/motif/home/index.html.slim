@@ -1,8 +1,13 @@
 - if current_user.has_role?(:franchisor, current_user.company) or current_user.has_role?(:admin, current_user.company)
   .m-5
-    h1.mb-5 Hello, #{current_user.first_name}!
-    p What are you planning to do today?
-    br
+    .row.my-5
+      .col-sm-4.d-flex.align-items-center
+        i.material-icons-outlined.mr-5.text-dark dashboard
+        .header-font.text-dark Home
+      .col-sm-8
+        button.close.open-banner.text-dark.mr-3 type="submit"
+          i.material-icons-outlined.float-right help_outline
+    = render 'motif/home/banners/franchisor/home'
     - if @outlets.length == 0
       .row.justify-content-center.ml-3
         .col-md-3.text-center.p-4
@@ -94,10 +99,15 @@
                     h1.card-text.number-display = @waiting_approval_royalty_collection_outlets&.length || "0"
                     p.card-text.ml-4 Outlet waiting approval
 - else
-  .m-5.h-100
-    h1.mb-5 Hello, #{current_user.first_name}!
-    p What are you planning to do today?
-    br
+  .m-5
+  .row.my-5
+    .col-sm-4.d-flex.align-items-center
+      i.material-icons-outlined.mr-5.text-dark home
+      .header-font.text-dark Home
+    .col-sm-8
+      button.close.open-banner.text-dark.mr-3 type="submit"
+        i.material-icons-outlined.float-right help_outline
+  = render 'motif/home/banners/franchisee/home'
     / Check if franchisee has any workflows
     - if @workflows.present?
       .row.mt-5
