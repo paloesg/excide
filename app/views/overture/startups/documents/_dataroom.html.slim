@@ -8,8 +8,9 @@
         i.material-icons-outlined.font-size-h2.p-0.dataroom-tour-1 add
       .dropdown-menu.dropdown-menu-right
         a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
-        a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
+        a.dropdown-item.float-right.ml-5 data-target=(@company.storage_progress < 100 ? "#newOvertureDocUploads" : "#storageFull") data-toggle="modal" type="button" Upload new file
     = render "overture/documents/modals/upload_documents_modal"
+    = render "overture/documents/modals/storage_full"
     / If in folder SHOW page, it should add a new folder instead
     - if controller_name == "folders"
       = render "overture/documents/modals/new_folder_modal", folder: @new_folder, parent_folder: @folder
@@ -55,7 +56,7 @@ hr.m-0
 - if @folders.empty? && @documents.empty?
   = render 'overture/home/empty_states/startups/dataroom'
 - else
-  .table-responsive
+  .table-responsive.height-responsive
     table.table.ml-4.table-aligned
       thead
         tr.d-flex

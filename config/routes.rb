@@ -210,6 +210,7 @@ Rails.application.routes.draw do
     post 'bulk_assign_permissions', to: 'permissions#bulk_assign_permissions', as: :bulk_assign_permissions
     get '/subscription_plan', to: 'companies#subscription_plan', as: :subscription_plan
     get '/billing_and_invoice', to: 'companies#billing_and_invoice', as: :billing_and_invoice
+    get '/usage', to: 'home#usage', as: :usage
   end
 
   namespace :conductor do

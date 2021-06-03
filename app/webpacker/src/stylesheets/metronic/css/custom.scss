@@ -223,6 +223,11 @@ td.day.has-events.fc-day-top.fc-past {
   vertical-align: middle !important;
 }
 
+// to allow height of dataroom, resource portal and shared files tables for both investor and start up to show all documents
+.height-responsive {
+  height: 50vh;
+}
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 $theme-colors: (

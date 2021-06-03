@@ -33,6 +33,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     before_deadline_reminder_days: Field::Number,
     settings: Field::JSONB,
     products: Field::JSONB,
+    storage_used: Field::Number,
+    storage_limit: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }
@@ -78,6 +80,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     :expires_at,
     :account_type,
     :before_deadline_reminder_days,
+    :storage_used,
+    :storage_limit,
     :settings,
     :products
   ]

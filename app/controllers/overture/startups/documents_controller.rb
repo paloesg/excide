@@ -20,6 +20,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
   end
 
   def create
+    authorize([:overture, :startups, Document])
     # multiple file upload from uppy
     if params[:successful_files].present?
       parsed_files = JSON.parse(params[:successful_files])
@@ -40,7 +41,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
   end
 
   def update
-    authorize @document
+    authorize([:overture, :startups, @document])
     if params[:folder_id].present?
       @folder = @company.folders.find(params[:folder_id])
     # this is for version history update of overture documents
@@ -51,6 +52,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
       old_attachment = @document.versions.attachments.find_by(current_version: true)
       old_attachment.current_version = false
       new_attachment = @document.versions.attachments.order('created_at DESC').first
+      @company.update_storage_size(new_attachment.byte_size)
       new_attachment.current_version = true
       old_attachment.save
       new_attachment.save
@@ -69,7 +71,9 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
 
   def destroy
     authorize @document
+    @versions_size = @document.versions.attachments.sum(&:byte_size)
     if @document.destroy
+      @company.update_storage_size(-@versions_size)
       respond_to do |format|
         format.html { redirect_back fallback_location: overture_startups_documents_path }
         format.js   { render js: 'Turbolinks.visit(location.toString());' }
@@ -81,6 +85,7 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
   def delete_version_attachment
     @blob = ActiveStorage::Blob.find_signed(params[:signed_id])
     @attachment = ActiveStorage::Attachment.find_by(blob_id: @blob.id)
+    @company.update_storage_size(-@attachment.byte_size)
     @attachment.purge
     redirect_back fallback_location: overture_startups_documents_path, notice: "Version successfully deleted."
   end
