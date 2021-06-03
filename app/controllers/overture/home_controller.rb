@@ -23,6 +23,9 @@ class Overture::HomeController < ApplicationController
     authorize :home, :capitalization_table?
   end
 
+  def usage
+  end
+
   private
 
   def set_company

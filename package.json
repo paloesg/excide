@@ -15,7 +15,7 @@
     "blueimp-file-upload": "^10.31.0",
     "bootstrap": "^4.6.0",
     "bootstrap-datetimepicker": "^0.0.7",
-    "cocoon": "github:nathanvda/cocoon#ec950b3",
+    "cocoon": "github:nathanvda/cocoon#59b6a18",
     "flatpickr": "^4.6.9",
     "intro.js": "^3.3.1",
     "jquery": "^3.6.0",
