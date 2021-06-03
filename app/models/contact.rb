@@ -10,8 +10,8 @@ class Contact < ApplicationRecord
   has_one_attached :investor_company_logo
 
   has_many :notes, as: :notable, dependent: :destroy
-  
-  validates :company_id, uniqueness: { scope: :cloned_by_id}
+
+  validates :company_name, uniqueness: { scope: :cloned_by_id}
 
   include AlgoliaSearch
   algoliasearch do
