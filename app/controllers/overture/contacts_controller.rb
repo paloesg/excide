@@ -42,7 +42,7 @@ class Overture::ContactsController < ApplicationController
     if @contact.save
       redirect_to overture_contact_statuses_path, notice: "Investor contact added to fundraising board."
     else
-      redirect_to overture_root_path, alert: "Error occurred when adding investor. Add a support ticket or try again in awhile."
+      redirect_to overture_root_path, alert: "Investor contact not added successfully. Have you already added this investor to the fundraising board? If not, please contact our support."
     end
   end
 
