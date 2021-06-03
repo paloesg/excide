@@ -50,7 +50,7 @@ $(document).on("turbolinks:load", function () {
   function showNumberOfCheckedBox(){
     count = $(".checkSingle:checked").length
     $("#selectedNumber")[0].innerHTML = count + " item(s) selected";
-    $("#deleteCount")[0].innerHTML = "You are going to delete " + count + " item(s). It can’t be undone. Confirm to delete?";
+    $("#deleteCount")[0].innerHTML = "Are you sure you would like to delete the selected " + count + " item(s)? This action cannot be undone.";
   }
 
   // Append hidden field on bulk delete and bulk assignment
