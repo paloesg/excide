@@ -11,11 +11,12 @@
 });
 */
 
-
-
 $(document).on("turbolinks:load", function(){
 	let len = $('.break-inside-avoid').length;
-	let factor = len/10;
+	let remainder = len%10;
+
+	let factor = (len - remainder)/10;
+	alert (factor);
 
 	let noOfCols = "col" + factor;
 
