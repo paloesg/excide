@@ -1,11 +1,11 @@
 .sidebar-sticky
   ul.nav.flex-column
-    li.nav-item.hover-blue.py-1.m-4
+    li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(edit_motif_outlet_path(@outlet))}"
       = link_to edit_motif_outlet_path(@outlet), class: 'col-sm-12 d-flex align-items-center' do
         .ml-2.sidebar-font Information
-    li.nav-item.hover-blue.py-1.m-4
+    li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(motif_outlet_members_path(@outlet))}"
       = link_to motif_outlet_members_path(@outlet), class: 'col-sm-12 d-flex align-items-center' do
         .ml-2.sidebar-font Members
-    li.nav-item.hover-blue.py-1.m-4
+    li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(motif_outlet_assigned_tasks_path(@outlet))}"
       = link_to motif_outlet_assigned_tasks_path(@outlet), class: 'col-sm-12 d-flex align-items-center' do
         .ml-2.sidebar-font Assigned tasks
