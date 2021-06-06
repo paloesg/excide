@@ -26,7 +26,7 @@ gem 'rack-timeout'
 # Better Rails logging
 gem 'lograge'
 # The default JavaScript compiler for Rails 6
-gem 'webpacker', '~> 5.2.1'
+gem 'webpacker', '~> 5.4.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 # Lock sprockets version because new version of sprockets require manifest file
@@ -141,7 +141,7 @@ gem 'slack-ruby-client'
 # Algolia search
 gem 'algoliasearch-rails'
 # Amazon S3 SDK
-gem 'aws-sdk-s3', '~> 1.93.0'
+gem 'aws-sdk-s3', '~> 1.96.0'
 gem 'aws-sdk-textract', '~> 1.24.0'
 # SMS integration with Twilio
 gem 'twilio-ruby'
@@ -158,7 +158,7 @@ gem 'snitcher'
 #             Backend Admin                     #
 #                                               #
 #################################################
-gem 'administrate', '0.15.0'
+gem 'administrate', '0.16.0'
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many'
 gem 'administrate-field-jsonb'
