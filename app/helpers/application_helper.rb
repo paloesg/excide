@@ -58,9 +58,14 @@ module ApplicationHelper
     return 'blue-active' if request.path == test_path
   end
 
-  # for disabled text colour in overture settings
-  def check_if_member_role
-    'disabled text-dark-25' if current_user.has_role?(:member, current_user.company)
+  # for disabled text and background colour in overture settings
+  def disable_if_member_role
+    'disabled text-dark-25 bg-light' if current_user.has_role?(:member, current_user.company)
+  end
+
+  # for disabled status for richt text fields in overture settings
+  def all_disabled_if_member_role
+    'disabled' if current_user.has_role?(:member, current_user.company)
   end
 
   # def link_to_add_choices(name, f, association, locals={})

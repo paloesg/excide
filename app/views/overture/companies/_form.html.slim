@@ -10,11 +10,11 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
     .form-group
-      = f.label :name, 'Company Name', class: "label-bold"
-      = f.text_field :name, class: "form-control  #{check_if_member_role}"
-    .form-group
-      = f.label :report_url, 'Company Financial Report (Google DataStudio)', class: "label-bold"
-      = f.text_field :report_url, class: "form-control #{check_if_member_role}"
+      = f.label :name, 'Company Name', class: "label-bold disabled"
+      = f.text_field :name, class: "form-control #{disable_if_member_role}"
+    .form-group.text_grey_if_member_role
+      = f.label :report_url, 'Company Financial Report (Google DataStudio)', class: "label-bold disabled"
+      = f.text_field :report_url, class: "form-control #{disable_if_member_role}"
     - if @company.startup?
       = render "overture/profiles/form", f: f
     - else
