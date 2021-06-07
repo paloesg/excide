@@ -8,8 +8,9 @@
         i.material-icons-outlined.font-size-h2.p-0.dataroom-tour-1 add
       .dropdown-menu.dropdown-menu-right
         a.dropdown-item.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Add new folder
-        a.dropdown-item.float-right.ml-5 data-target="#newOvertureDocUploads" data-toggle="modal" type="button" Upload new file
+        a.dropdown-item.float-right.ml-5 data-target=(@company.storage_progress < 100 ? "#newOvertureDocUploads" : "#storageFull") data-toggle="modal" type="button" Upload new file
     = render "overture/documents/modals/upload_documents_modal"
+    = render "overture/documents/modals/storage_full"
     / If in folder SHOW page, it should add a new folder instead
     - if controller_name == "folders"
       = render "overture/documents/modals/new_folder_modal", folder: @new_folder, parent_folder: @folder
@@ -63,33 +64,34 @@ hr.m-0
 - if @folders.empty? && @documents.empty?
   = render 'overture/home/empty_states/startups/dataroom'
 - else
-  .table-responsive#nonSearchResult
-    table.table.table-aligned
+  .table-responsive.height-responsive
+    table.table.ml-4.table-aligned
       thead
         tr.d-flex
-          th
+          th style="min-width: 6%"
             input.checkboxSize#checkedAll type="checkbox" name=""/
-          th.text-muted.col-4 Name
-          th.text-muted.col-2 Last Modified
+          th.text-muted.col-6 Name
+          th.text-muted.col-1 Last Modified
           / hide modifying documents and permissions if user has role member
-          th.col-1
+          th.col style="min-width: 6%"
           - if current_user.has_role?(:admin, current_user.company)
             - @roles.each do |role|
-              th.col-2.dataroom-tour-3
+              th.col.dataroom-tour-3.text-break style="min-width: 12%"
                 a title="#{role.users.map(&:full_name).join("<br/>")}" data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" = role.name
+          th
       tbody.draggable-zone
         - @folders.each_with_index do |folder, index|
           tr.draggable.folders.drawer-row.d-flex id="#{folder.id}" data-drawer=folder.id data-permissible-type="folder"
-            td
+            td style="min-width: 6%"
               = check_box_tag "folders[]", folder.id, false, class: "checkSingle checkboxSize mt-2"
-            td.col-4.pl-3.pt-4
-              span.mr-3
+            td.col-6
+              span.mr-5
                 i.material-icons-outlined.align-middle.mt-1 folder_open
               span
                 = link_to folder.name, overture_folder_path(folder.id), class: "text-secondary"
             td.col-2
               .mt-2 = folder.updated_at.strftime("%d %b %Y")
-            td.col-1
+            td.col style="min-width: 6%"
               .dropdown
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                   i.material-icons-outlined.font-size-h1.text-muted more_horiz
@@ -100,24 +102,25 @@ hr.m-0
                     .dropdown-item = link_to "Delete", overture_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
                   - else
                     .dropdown-item = link_to "Activity History", "#", id: "drawer_toggle_#{folder.id}_0"
-              - if current_user.has_role?(:admin, current_user.company)
-                - @roles.each do |role|
-                  td.col-2.dataroom-tour-2
-                    = render "overture/documents/permissions_icons", role: role, permissible: folder, permissible_type: "folder"
+            - if current_user.has_role?(:admin, current_user.company)
+              - @roles.each do |role|
+                td.col.dataroom-tour-2 style="min-width: 12%"
+                  = render "overture/documents/permissions_icons", role: role, permissible: folder, permissible_type: "folder"
+            td
           = render 'overture/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: overture_folders_path(id: folder.id, format: 'json'), file: folder, path: "overture/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
         - @documents.each_with_index do |d, index|
           tr.drawer-row.draggable.d-flex id="#{d.id}" data-drawer="#{d.id}" data-permissible-type="document"
-            td
+            td style="min-width: 6%"
               = check_box_tag "documents[]", d.id, false, class: "checkSingle checkboxSize mt-2"
-            td.cursor-pointer.col-4.pl-3.pt-4 data-toggle="modal" data-target="#documentModal#{d.id}"
-              span.mr-3
+            td.cursor-pointer.col-6 data-toggle="modal" data-target="#documentModal#{d.id}"
+              span.mr-5
                 / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
-                = image_pack_tag "media/src/images/overture/doc.svg"
-              span
+                = image_pack_tag "media/src/images/overture/doc.svg", class: "mt-1"
+              span.ml-5.text-break
                 = d.versions.attachments.find_by(current_version: true)&.filename
             td.col-2
               .mt-2 = d.updated_at.strftime("%d %b %Y")
-            td.col-1
+            td.col style="min-width: 6%"
               .dropdown
                 a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                   i.material-icons-outlined.font-size-h1.text-muted more_horiz
@@ -129,12 +132,13 @@ hr.m-0
                     .dropdown-item = link_to "Delete", overture_startups_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
                   - else
                     .dropdown-item = link_to "Download", d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true), disposition: "attachment") : d.file_url
-              - if current_user.has_role?(:admin, current_user.company)
-                - @roles.each do |role|
-                  td.col-2
-                    = render "overture/documents/permissions_icons", role: role, permissible: d, permissible_type: "document"
-          = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
-          = render 'overture/documents/modals/version_control_modal', d: d
+            - if current_user.has_role?(:admin, current_user.company)
+              - @roles.each do |role|
+                td.col style="min-width: 12%"
+                  = render "overture/documents/permissions_icons", role: role, permissible: d, permissible_type: "document"
+            = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
+            td
+              = render 'overture/documents/modals/version_control_modal', d: d
           = render 'overture/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: overture_startups_documents_path(id: d.id, format: 'json'), path: "overture/startups/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
     = paginate @documents, views_prefix: 'dashboard'
 

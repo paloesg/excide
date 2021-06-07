@@ -53,6 +53,16 @@ module ApplicationHelper
     link_to(name, '#', class: "add_task_fields btn btn-success pull-right", data: {section_id: f.object.id, id: id, fields: fields.gsub("\n", "")})
   end
 
+  # for sidebar active statuses
+  def current_class(test_path)
+    return 'blue-active' if request.path == test_path
+  end
+
+  # for disabled text colour in overture settings
+  def check_if_member_role
+    'disabled text-dark-25' if current_user.has_role?(:member, current_user.company)
+  end
+
   # def link_to_add_choices(name, f, association, locals={})
   #   new_object = f.object.send(association).klass.new
   #   id = new_object.object_id

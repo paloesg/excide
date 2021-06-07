@@ -24,7 +24,7 @@ class CustomDeviseMailer < Devise::Mailer
       from: {
         email: "Paloe <admin@excide.co>"
       },
-      template_id: ENV['SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']
+      template_id: check_product_overture ? ENV['SENDGRID_INVITED_AS_TEAMMATE'] : ENV['SENDGRID_CONFIRMATION_EMAIL_TEMPLATE']
     }
 
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])

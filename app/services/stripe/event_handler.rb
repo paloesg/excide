@@ -16,27 +16,36 @@ module Stripe
     def handle_checkout_session_completed(event)
       # Find the current_user using the data returned by stripe webhook
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      # If stripe data is empty, initialize it
-      if @current_user.company.stripe_subscription_plan_data.empty?
-        @current_user.company.stripe_subscription_plan_data = {
-          subscription: Stripe::Subscription.retrieve(event.data.object.subscription),
-          invoices: [ Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"]) ],
-          cancel: false,
-        }
-      # Else, append the invoice data to the invoices key if the user decides to checkout again upon cancellation. This else method will be moved to invoice payment succeeded event handler.
+      if @current_user.present?
+        # If stripe data is empty, initialize it
+        if @current_user.company.stripe_subscription_plan_data.empty?
+          @current_user.company.stripe_subscription_plan_data = {
+            subscription: Stripe::Subscription.retrieve(event.data.object.subscription),
+            invoices: [ Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"]) ],
+            cancel: false,
+          }
+        # Else, append the invoice data to the invoices key if the user decides to checkout again upon cancellation. This else method will be moved to invoice payment succeeded event handler.
+        else
+          @current_user.company.stripe_subscription_plan_data['subscription'] = Stripe::Subscription.retrieve(event.data.object.subscription)
+          @current_user.company.stripe_subscription_plan_data['invoices'] << Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.subscription)["latest_invoice"])
+        end
       end
       @current_user.company.upgrade
+      @current_user.company.storage_limit = 32212254720
       @current_user.company.save
     end
 
     def handle_customer_subscription_created(event)
       @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
-      if @current_user.company.stripe_subscription_plan_data.empty?
-        @current_user.company.stripe_subscription_plan_data = {
-          subscription: Stripe::Subscription.retrieve(event.data.object.id),
-          invoices: [ Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.id)["latest_invoice"]) ],
-          cancel: false,
-        }
+      # Check if can find current_user
+      if @current_user.present?
+        if @current_user.company.stripe_subscription_plan_data.empty?
+          @current_user.company.stripe_subscription_plan_data = {
+            subscription: Stripe::Subscription.retrieve(event.data.object.id),
+            invoices: [ Stripe::Invoice.retrieve(Stripe::Subscription.retrieve(event.data.object.id)["latest_invoice"]) ],
+            cancel: false,
+          }
+        end
       end
       @current_user.company.save
     end
@@ -62,7 +71,7 @@ module Stripe
       if event.data.object.plan.id == ENV['OVERTURE_STRIPE_PRICE']
         @current_user = User.find_by(stripe_customer_id: event.data.object.customer)
         # Downgrade service runs when stripe deleted subscription
-        DowngradeSubscriptionService.new(@current_user.company).run
+        DowngradeSubscriptionService.new(@current_user.company).run if @current_user.present?
       end
     end
 

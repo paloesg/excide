@@ -4,7 +4,7 @@ class Overture::ContactsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_contact, only: [:edit, :show, :update]
+  before_action :set_contact, only: [:edit, :show, :update, :destroy]
   before_action :get_contact_statuses, only: [:edit, :show, :index]
   after_action :verify_authorized
 
@@ -21,25 +21,28 @@ class Overture::ContactsController < ApplicationController
   # This is for creating a private contact through fundraising board or adding to board
   def create
     if params[:contact_id].present?
-      # It will clone the contact and set to the 1st contact status of the board
+      # It will clone the contact
       contact_to_be_duplicated = Contact.find(params[:contact_id])
       # Deep clone active storage attachment and action text rich text through model method
       @contact = contact_to_be_duplicated.clone_contact
-      # Find the 1st contact status of the board (Shortlisted)
-      @contact.contact_status = @company.contact_statuses.first
       # Duplicate contact shouldn't be searchable
       @contact.cloned_by = @company
+      @contact.contact_status = params[:contact_status_id].present? ? ContactStatus.find(params[:contact_status_id]) : @company.contact_statuses.first
     else
       # Add new investor's contact
       @contact = Contact.new(contact_params)
       @contact.created_by = current_user
+      # Add cloned by to current company so that company policy to check contact length is authorized
+      @contact.cloned_by = current_user.company
+      @contact.contact_status = params[:contact][:contact_status_id].present? ? ContactStatus.find(params[:contact][:contact_status_id]) : @company.contact_statuses.first
     end
+    authorize @contact
     @contact.searchable = false
     # Redirect based on validation of contact
     if @contact.save
       redirect_to overture_contact_statuses_path, notice: "Investor contact added to fundraising board."
     else
-      redirect_to overture_root_path, alert: "Error occurred when adding investor. Add a support ticket or try again in awhile."
+      redirect_to overture_root_path, alert: "Investor contact not added successfully. Have you already added this investor to the fundraising board? If not, please contact our support."
     end
   end
 
@@ -69,6 +72,16 @@ class Overture::ContactsController < ApplicationController
   def show
     authorize @contact
     @topic = Topic.new
+  end
+
+  def destroy
+    if @contact.destroy
+      respond_to do |format|
+        format.html { redirect_to overture_contact_statuses_path }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
+      flash[:notice] = 'Contact was successfully removed.'
+    end
   end
 
   private

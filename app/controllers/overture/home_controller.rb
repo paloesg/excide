@@ -7,10 +7,10 @@ class Overture::HomeController < ApplicationController
   after_action :verify_authorized, except: :index
 
   def index
-    @need_answer = Topic.where(company: @company, status: "need_answer")
-    @need_approval = Topic.where(company: @company, status: "need_approval")
-    @answered = Topic.where(company: @company, status: "answered")
-    @closed = Topic.where(company: @company, status: "closed")
+    @need_answer = Topic.where(startup: @company, status: "need_answer")
+    @need_approval = Topic.where(startup: @company, status: "need_approval")
+    @answered = Topic.where(startup: @company, status: "answered")
+    @closed = Topic.where(startup: @company, status: "closed")
     @activities = PublicActivity::Activity.includes(:owner, :recipient).order("created_at desc").where(trackable_type: "Note").where(recipient_type: "Company", recipient_id: @company.id)
     @posts = policy_scope(Post)
   end
@@ -21,6 +21,9 @@ class Overture::HomeController < ApplicationController
 
   def capitalization_table
     authorize :home, :capitalization_table?
+  end
+
+  def usage
   end
 
   private

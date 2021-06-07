@@ -45,11 +45,14 @@ require("./motif/note");
 
 require("./overture/access_control");
 require("./overture/bulk_assignment");
+require("./overture/contact_status_update");
+require("./overture/contact_status_create");
 require("./overture/close_and_open_banner");
 require("./overture/drawer");
 require("./overture/open_another_modal");
 require("./overture/update_contact_status");
 require("./overture/add_roles");
+require("./overture/version_control");
 
 // Import Uppy drag-and-drop
 require("./components/uppy");

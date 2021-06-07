@@ -6,27 +6,47 @@
     button.close.open-banner.text-dark.mr-3 type="submit"
       i.material-icons-outlined.float-right help_outline
 = render 'overture/home/banners/startups/fundraising_board'
-.row.mt-5.flex-row.flex-sm-nowrap.overflow-auto
+.row.mt-5.flex-row.flex-sm-nowrap.overflow-auto.slide-container
   - @contact_statuses.each do |cs|
-    .col-3.m-3
-      .row
-        .col-sm-6
-          .badge.badge-pill.badge-secondary.text-dark.py-2.px-3.fundraising-tour-3 = cs.name.titleize
+    .col-3.m-2.kanban-height
+      .d-flex
+        .col-sm-10
+          .badge.badge-pill.font-weight-boldest.p-3.mr-3.badge-name.slide-right.fundraising-tour-3.cursor-pointer style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
+          = cs.contacts.length
+        .col-sm-2#edit-status-dropdown
+          .dropdown
+            a.btn.btn-icon.btn-link href="#" id="editContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+              i.material-icons-outlined.align-middle.mr-2 more_horiz
+            .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="editContactStatus"
+              = form_for cs, url: overture_contact_status_path(cs) do |f|
+                = render 'edit_form', f: f, cs: cs
       .row.my-5.draggable-columns.p-5 id="#{cs.id}"
         - cs.contacts.each do |contact|
-          ul.draggable.p-0 id="#{contact.id}" style="list-style-type:none;"
+          ul.draggable.p-0.w-100 id="#{contact.id}" style="list-style-type:none;"
             li.draggable-handle
               .card
-                .card-body.border.border-light.p-3
-                  .d-flex
-                    = contact.investor_company_logo.attached? ? (image_tag url_for(contact.investor_company_logo), class: 'rounded-circle w-25 investor-profile-pic p-1') : (image_pack_tag 'media/src/images/overture/dataroom-empty.png', class: 'rounded-circle w-25 investor-profile-pic p-1')
-                    = link_to (contact.company.present? ? truncate(contact.company.name, length: 15) : truncate(contact.company_name, length: 15)), overture_contact_path(contact.id), class: "card-title text-uppercase text-truncate mt-10 ml-10 h5 text-dark font-weight-boldest clickable-contact"
+                .card-body.border.contact-card-shawdow.p-5
+                  = image_tag url_for(contact.investor_company_logo), class: 'rounded-circle investor-profile-pic p-1 mb-5' if contact.investor_company_logo.attached?
+                  h6
+                    = link_to (contact.company.present? ? truncate(contact.company.name, length: 25) : truncate(contact.company_name, length: 25)), overture_contact_path(contact.id), class: "card-title text-truncate text-dark font-weight-boldest clickable-contact"
+                  = "Last edited: #{contact.updated_at.strftime('%d %b %Y')}"
+                  = link_to overture_contact_path(contact.id), data: { confirm: 'Are you sure?' }, method: :delete, class: "clickable-contact" do
+                    i.material-icons-outlined.text-muted.float-right delete
       .dropdown.fundraising-tour-2
-        a.text-muted href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" = "+ Investor"
+        / Check contact length if its basic plan through contact policy
+        - if policy(Contact).create?
+          a.text-muted href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" = "+ New"
+        - else
+          = render "unlimited_contacts_modal"
+          a.text-muted data-target="#unlimitedContacts" data-toggle="modal" type="button" = "+ New"
         .dropdown-menu.dropdown-menu-right
-          a.dropdown-item data-target="#addExistingInvestorToBoard" data-toggle="modal" type="button" Existing Investor
-          a.dropdown-item data-target="#addNewInvestorToBoard" data-toggle="modal" type="button" Add manually
-    #addExistingInvestorToBoard.modal.fade aria-hidden="true" aria-labelledby="addExistingInvestor" role="dialog" tabindex="-1"
+          - if @company.pro?
+            a.dropdown-item data-target="#addExistingInvestorToBoard_#{cs.id}" data-toggle="modal" type="button" = "Existing Investor"
+            a.dropdown-item data-target="#addNewInvestorToBoard_#{cs.id}" data-toggle="modal" type="button" Add manually
+          - else
+            a.dropdown-item data-target="#addNewInvestorToBoard_#{cs.id}" data-toggle="modal" type="button" Add manually
+    / model for adding existing investor, modal id is unique based on cs.id
+    .modal.fade id="addExistingInvestorToBoard_#{cs.id}" aria-hidden="true" aria-labelledby="addExistingInvestor" role="dialog" tabindex="-1"
       .modal-dialog role="document"
         .modal-content
           .modal-header
@@ -35,10 +55,13 @@
             = form_tag overture_contacts_path do |c|
               .form-group
                 = label_tag 'Add Existing Investor', 'Add Existing Investor'
-                = select_tag :contact_id, options_for_select(@existing_contacts.map {|k,v| [k.company.name, k.id]}, include_blank: true), prompt: 'Select investor contacts...', required: true, id: "#{cs.id}", class: 'form-control'
+                = select_tag :contact_id, options_for_select(@existing_contacts.map {|k,v| [k.company.name, k.id]}, include_blank: true), prompt: 'Select investor contacts...', required: true, class: 'form-control'
+              .form-group
+                = hidden_field_tag :contact_status_id, cs.id
               .form-group
                 = submit_tag "Add", class: 'btn btn-primary float-right'
-    #addNewInvestorToBoard.modal.fade aria-hidden="true" aria-labelledby="addNewInvestor" role="dialog" tabindex="-1"
+    / modal for adding a new investor, id is unique based on cs.id
+    .modal.fade id="addNewInvestorToBoard_#{cs.id}" aria-hidden="true" aria-labelledby="addNewInvestor" role="dialog" tabindex="-1"
       .modal-dialog role="document"
         .modal-content
           .modal-header
@@ -53,6 +76,15 @@
                 = c.text_field :company_name, class: "form-control"
               .form-group
                 = c.hidden_field :contact_status_id, value: cs.id
+                / hidden field here for ensuring contact status (column) id
               .form-group
                 = c.submit "Add", class: 'btn btn-primary float-right'
-      / = link_to '+ Investor', '#', remote: :true, class: "text-muted add-investor", id: "add-investor-button-#{cs.id}", data: {contact_status: cs.id}
+  .col-3.m-2.kanban-height#new-status
+    .d-flex
+      .col-sm-10
+        .dropdown
+          a.btn.btn-icon.d-flex.py-2.ml-5 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+            .badge.badge-pill.font-weight-boldest.p-3.mr-3.new-status-font-size.text-muted + Status
+          .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="newContactStatus"
+            = form_for @contact_status, url: overture_contact_statuses_path, method: :post do |f|
+              = render 'new_form', f: f, cs: @contact_status, contact_statuses: @contact_statuses

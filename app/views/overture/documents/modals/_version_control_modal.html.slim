@@ -5,7 +5,7 @@
         h5.mb-5#versionControl.modal-title Version Control
         p To upload a new version, simply drag and drop the file here, or browse from your device.
         = form_for d, url: overture_startups_document_path(d), method: :put do |f|
-          .row
+          .row id="row1"
             .col-sm-12
               .form-group
                 .input-group.mb-3
@@ -35,5 +35,4 @@
                       = link_to overture_startups_delete_version_attachment_path(signed_id: attachment.blob.signed_id), method: :delete, data: { confirm: 'Current version is about to be permanently deleted. Delete forever?' } do
                         i.material-icons-outlined.align-middle.text-primary highlight_off
           .form-group
-            = f.submit "Save", class: "btn btn-primary float-right"
-
+            = f.submit "Save", class: "btn btn-primary float-right", disabled: true

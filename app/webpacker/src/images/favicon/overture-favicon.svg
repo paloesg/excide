@@ -1,0 +1,18 @@
+<svg id="Overture_Favicon" data-name="Overture Favicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="24" height="24" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_6" data-name="Group 6" transform="translate(-28 -74)">
+    <rect id="Rectangle_6" data-name="Rectangle 6" width="32" height="32" rx="4" transform="translate(28 74)" fill="#000d62"/>
+  </g>
+  <g id="Overture_Icon_Logo_White_" data-name="Overture Icon Logo (White)" transform="translate(4 4)">
+    <g id="Group_4" data-name="Group 4">
+      <g id="Repeat_Grid_2" data-name="Repeat Grid 2" clip-path="url(#clip-path)">
+        <rect id="Rectangle_4" data-name="Rectangle 4" width="24" height="24" fill="none"/>
+      </g>
+      <path id="Union_2" data-name="Union 2" d="M22,0,16.28,22l-3.059-3.059a7.162,7.162,0,0,0,.916-1.124,7.091,7.091,0,0,0,1.042-2.577,7.228,7.228,0,0,0-2-6.461,7.35,7.35,0,0,0-1.131-.925A7.2,7.2,0,0,0,5.39,7.17,7.087,7.087,0,0,0,3.019,8.739L0,5.72,22,0ZM10.946,16.666a4,4,0,1,1-.023-5.63A3.981,3.981,0,0,1,10.946,16.666Z" transform="translate(0.998 1.557)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

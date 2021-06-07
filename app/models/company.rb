@@ -112,6 +112,43 @@ class Company < ApplicationRecord
     self[:products] = value.is_a?(String) ? JSON.parse(value) : value
   end
 
+  # To track file storage usage
+  def storage_progress
+    (self.storage_used.to_f / self.storage_limit) * 100
+  end
+  # Set color of progress bar, blue when 0%-70%, yellow when 70%-90% used, red 90-100%
+  def progress_colour
+    case self.storage_progress
+    when 0..70
+      "primary"
+    when 70..90
+      "warning"
+    else
+      "danger"
+    end
+  end
+
+  def investor_progress
+    (self.investor_investments.length.to_f / 5) * 100
+  end
+
+  def investor_progress_colour
+    case self.investor_progress
+    when 0..60
+      "primary"
+    when 60..80
+      "warning"
+    else
+      "danger"
+    end
+  end
+
+  # Update storage size when a new document or version is created
+  def update_storage_size(byte_size)
+    self.storage_used += byte_size
+    self.save
+  end
+
   private
 
   def generate_mailbox_token
