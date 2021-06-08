@@ -4010,7 +4010,7 @@ input[type="button"].btn-block {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-left: 0;
+  padding-left: 10px;
   margin-bottom: 0;
   list-style: none; }
   .navbar-nav .nav-link {
@@ -4019,6 +4019,7 @@ input[type="button"].btn-block {
   .navbar-nav .dropdown-menu {
     position: static;
     float: none; }
+
 
 .navbar-text {
   display: inline-block;
