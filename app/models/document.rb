@@ -30,7 +30,7 @@ class Document < ApplicationRecord
   include AlgoliaSearch
   algoliasearch do
     attribute :formatted_date do
-      "#{ self.created_at.strftime("%d %b %Y at %I:%M%p") }"
+      "#{ self.updated_at.strftime("%d %b %Y") }"
     end
     attribute :filename do
       "#{ raw_file.present? ? raw_file&.filename : filename }"
