@@ -7,14 +7,19 @@
         i.material-icons-outlined keyboard_arrow_right
       .mr-5
         h3 = @interested_startup_company.name
-.row.mb-3.ml-3
+.row.ml-3
   .col-sm-12
     p.mt-5
       | These companies have shared with you confidential files for your due diligence before
       br
       | investing in them.
+.row.ml-3.align-items-center
+  .col-sm-11.text-muted
+    div.form-row.align-items-center
+      span.mr-3
+        i.material-icons-outlined.align-middle search
+      input.form-control.border-0.col#q type="search" placeholder="Search..."
     - if controller_name == "folders"
-      hr.mb-2
       .row
         .col
           ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
@@ -22,14 +27,15 @@
               = link_to "Dataroom", :back, class: "text-dark"
             li.breadcrumb-item
               = @folder.name
-    hr.m-0
+#hits
+#pagination.d-none
 - if @startups.nil? && @folders.empty? && @documents.empty?
   .row.justify-content-center.ml-3
     .col.text-center.p-10
       = image_pack_tag 'media/src/images/overture/dataroom-empty.png', size: "100"
       p.mt-4 No shared documents.
 - else
-  .table-responsive.height-responsive
+  .table-responsive.height-responsive#nonSearchResult
     table.table.ml-4.table-aligned
       thead
         tr
@@ -76,3 +82,111 @@
               td
           = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d
   = paginate @documents, views_prefix: 'dashboard'
+
+javascript:
+  function loadExtJS(src, callback) {
+    var s = document.createElement('script');
+    s.src = src;
+    document.body.appendChild(s);
+    s.onload = callback
+  }
+  loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
+    var hitTemplate =
+      '<table class="table table-aligned ml-4">' +
+      '<thead><tr><th class="text-muted" style="width: 40%">Item Name</th>' +
+      '<th class="text-muted" style="width: 20%">Shared By</th>' +
+      '<th class="text-muted" style="width: 20%">Last Modified</th>' +
+      '<th style="width: 5%"></th><th style="width: 5%"></th><th style="width: 5%"></th></tr></thead>' +
+      '<tbody>{{#hits}}<tr><td><span class="mr-5"><img src="/packs/media/src/images/overture/doc-b92bff082f4028f2fbe1272eac887ec1.svg"></span>' +
+      '<span class="ml-5">{{{_highlightResult.filename.value}}}</span></td>' +
+      '<td>{{{company.name}}}</td>' +
+      '<td>{{{formatted_date}}}</td>' +
+      '<td><a class="text-dark" data-target="#overtureStateInterest" data-toggle="modal" type="button"><i class="material-icons-outlined text-dark">question_answer</i></a>' +
+      '<div aria-hidden="true" aria-labelledby="stateInterest" class="modal fade" id="overtureStateInterest" role="dialog" tabindex="-1"><div class="modal-dialog" role="document">' +
+      '<div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="stateInterest">Send Q&amp;A Ticket</h5></div>' +
+      '<div class="modal-body"><p>Start a communication with the startup you are interested in or would like to ask questions.</p>' +
+      '</div></div></div></div></td>' +
+      '<td class="cursor-pointer" data-target="#documentModal{{objectID}}" data-toggle="modal"><i class="material-icons-outlined font-size-h1 text-dark mr-2">visibility</i></td>' +
+      '<td><a href="{{download_link}}"><i class="material-icons-outlined font-size-h1 text-dark mr-2">download</i></a></td>' +
+      '</tr>{{/hits}}</tbody></table>'
+      ;
+
+    var search = instantsearch({
+      appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
+      apiKey: '#{@public_key}',
+      indexName: '#{Document.index_name}',
+      urlSync: true,
+      // Only display the search results when there's query in the searchbox
+      searchFunction(helper) {
+        const container = document.querySelector('#hits');
+        container.style.display = helper.state.query === '' ? 'none' : '';
+        helper.search();
+      }
+    });
+    search.addWidget(
+      instantsearch.widgets.searchBox({
+        container: '#q',
+        placeholder: 'Search...',
+        autofocus: false
+      })
+    );
+    search.addWidget(
+      instantsearch.widgets.hits({
+        container: '#hits',
+        transformData: {
+          allItems: function(data) {
+            $(data['hits']).each(function(index) {
+              data['hits'][index].created_at = moment(this.created_at).format("DD/MM/YYYY HH:mm")
+            })
+            return data;
+          }
+        },
+        templates: {
+          empty: '<table class="table"><tr><td>No matching documents found.</td></tr></table>',
+          allItems: hitTemplate
+        },
+        hitsPerPage: 10
+      })
+    );
+    search.addWidget(
+      instantsearch.widgets.pagination({
+        container: '#pagination',
+        cssClasses: {
+          active: 'active',
+        },
+        labels: {
+          first: '<i class="fa fa-angle-left"></i> First',
+          previous: '<i class="fa fa-angle-left"></i> Previous',
+          next: 'Next <i class="fa fa-angle-right"></i>',
+          last: 'Last <i class="fa fa-angle-double-right"></i>',
+        },
+        autoHideContainer: false,
+      })
+    );
+    search.start();
+    // This method checks if the user searched for the documents. If searching, then hide the existing HTML element (#nonSearchResult) and display the search result, vice versa.
+    search.helper.on('result', function(res) {
+      const nonSearchResult = document.querySelector('#nonSearchResult');
+      const algolia_pagination = document.querySelector('#pagination');
+      const pagination = document.querySelector('#pagination-non-search');
+      console.log("non search, algolia pagin and pagin: ", nonSearchResult, algolia_pagination, pagination);
+      if (res && res.hits && res.query == "") {
+        // Show the existing table when query is blank
+        nonSearchResult.classList.remove("d-none");
+        // Hide pagination when query is blank
+        algolia_pagination.classList.add("d-none");
+        // Check if there is pagination
+        if (pagination !== null){
+          pagination.classList.remove("d-none");
+        }
+      } else {
+        // Hide existing table when user is searching
+        nonSearchResult.classList.add("d-none");
+        // Display pagination only when search results are displayed
+        algolia_pagination.classList.remove("d-none");
+        if (pagination !== null){
+          pagination.classList.add("d-none");
+        }
+      }
+    });
+  })

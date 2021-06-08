@@ -29,7 +29,9 @@ class Document < ApplicationRecord
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :file_url, :created_at, :updated_at
+    attribute :formatted_date do
+      "#{ self.updated_at.strftime("%d %b %Y") }"
+    end
     attribute :filename do
       "#{ raw_file.present? ? raw_file&.filename : filename }"
     end
@@ -41,6 +43,15 @@ class Document < ApplicationRecord
     end
     attribute :company do
       { name: company&.name, slug: company&.slug }
+    end
+    attribute :permissions do
+      # select a bunch of permission with can_view true and then map to return the user ID that has the permission
+      permissions.select { |p| p.can_view? and p.role.present? }.map do |p|
+        { role_id: p.role.id, name: p.role.name }
+      end
+    end
+    attribute :download_link do
+      "/rails/active_storage/blobs/redirect/#{raw_file.signed_id}/#{raw_file.filename}?disposition=attachment"
     end
     tags do
       tags.map(&:name)
