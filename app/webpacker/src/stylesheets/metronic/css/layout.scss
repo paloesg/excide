@@ -180,6 +180,10 @@ a.custom-card:hover {
   content: counter(item, lower-roman) " ";
   counter-increment: list;
 }
+.blue-active {
+  background-color: #eef1ff;
+  border-radius: 10px;
+}
 .sup {
   vertical-align: super;
   font-size: 8px;
