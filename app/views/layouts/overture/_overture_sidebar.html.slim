@@ -8,10 +8,10 @@
         i.material-icons-outlined.mr-5 dashboard
         .ml-5.sidebar-font Dashboard
   ul.nav.flex-column
-    li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{edit_overture_company_path(current_user.company)}"
-      = link_to edit_overture_company_path(current_user.company), class: "col-sm-12 d-flex align-items-center" do
-        i.material-icons-outlined.mr-5 business
-        .ml-5.sidebar-font Startup Profile
+      li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{edit_overture_company_path(current_user.company)}"
+        = link_to edit_overture_company_path(current_user.company), class: "col-sm-12 d-flex align-items-center" do
+          i.material-icons-outlined.mr-5 business
+          .ml-5.sidebar-font = current_user.company.startup? ? "Startup Profile" : "Investor Profile"
   ul.nav.flex-column
     - if current_user.company.startup?
       - if current_user.company.settings[0]["resource_portal"] == "true"
@@ -19,7 +19,7 @@
           = link_to Folder.find_by(company: current_user.company, name: "Resource Portal").present? ? overture_folder_path(id: Folder.find_by(company: current_user.company, name: "Resource Portal").id) : overture_startups_documents_path, class: "col-sm-12 d-flex align-items-center" do
             i.material-icons-outlined.mr-5 book
             .ml-5.sidebar-font Resource Portal
-  hr.m-1.text-dark
+  hr.m-1.text-dark 
   - if current_user.company.startup?
     ul.nav.flex-column
       .pt-2.px-2.m-4.sidebar-font.text-muted Fundraising
@@ -38,6 +38,7 @@
             .ml-5.sidebar-font Fundraising Board
   - else
     ul.nav.flex-column
+      .pt-2.px-2.m-4.sidebar-font.text-muted Investing
       - if current_user.company.settings[0]["search_feature"] == "true"
         li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(overture_profiles_path)}"
           = link_to overture_profiles_path, class: "col-sm-12 d-flex align-items-center" do
@@ -107,6 +108,7 @@
               .ml-5.sidebar-font Shared Files
   - else
     ul.nav.flex-column
+      .pt-2.px-2.m-4.sidebar-font.text-muted Startup Relations
       - if current_user.company.settings[0]["our_investor_or_startup"] == "true"
         li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{current_class(overture_investments_path)}"
           = link_to overture_investments_path, class: "col-sm-12 d-flex align-items-center" do
