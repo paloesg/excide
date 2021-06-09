@@ -52,11 +52,11 @@
           p.text-primary.mt-3.font-weight-boldest Unlimited
         - else
           p.mt-3.font-weight-boldest class="text-#{@company.investor_progress_colour}"
-            | #{@company.investor_investments.length} of 5
-        em.font-size-sm.text-dark-50 ="*Your maximum number of investors in Investor List allowed in your Overture plan is #{@company.pro? ? 'Unlimited' : '5'}."
+            | #{@company.cloned_contacts.length} of 5
+        em.font-size-sm.text-dark-50 ="*Your maximum number of investors in Fundraising Board allowed in your Overture plan is #{@company.pro? ? 'Unlimited' : '5'}."
         .font-weight-bolder.mt-10.mb-4 Investor List
-        - @company.investor_investments.each do |i|
-          p = i.investor.name
+        - @company.cloned_contacts.each do |c|
+          p = c.company_name
 .row.my-10.p-5.justify-content-between.mx-0.usage-banner
   .d-flex
     .font-weight-bolder.mr-1.my-auto Need an upgrade or customisation?

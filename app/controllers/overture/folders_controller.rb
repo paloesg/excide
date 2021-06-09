@@ -1,5 +1,6 @@
 class Overture::FoldersController < FoldersController
   layout 'overture/application'
+  include Overture::PermissionsHelper
 
   before_action :set_company
 
@@ -33,6 +34,8 @@ class Overture::FoldersController < FoldersController
     @permission = Permission.new
     @new_folder = Folder.new
 
+    # Filter search based on if startup or investor
+    @public_key = @company.startup? ? Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "company.slug:#{current_user.company.slug}"}) : Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "#{get_algolia_filter_string.slice(0..-5)}"})
     @company.startup? ? (render "overture/startups/documents/index") : (render "overture/investors/documents/index")
   end
 

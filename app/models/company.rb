@@ -34,6 +34,7 @@ class Company < ApplicationRecord
   # For overture association
   has_one :profile, dependent: :destroy
   has_many :contacts, dependent: :destroy
+  has_many :cloned_contacts, foreign_key: :cloned_by_id, class_name: "Contact"
   has_many :contact_statuses, -> { order(position: :asc) }, foreign_key: :startup_id
   has_many :investor_investments, foreign_key: :startup_id, class_name: "Investment"
   has_many :investors, through: :investor_investments
@@ -129,7 +130,7 @@ class Company < ApplicationRecord
   end
 
   def investor_progress
-    (self.investor_investments.length.to_f / 5) * 100
+    (self.cloned_contacts.length.to_f / 5) * 100
   end
 
   def investor_progress_colour
