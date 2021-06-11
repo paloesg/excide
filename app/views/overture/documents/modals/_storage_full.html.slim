@@ -11,7 +11,10 @@
             = image_pack_tag 'media/src/images/overture/storage-full.png', width: "105"
             h3.my-5 Your storage is full
             p Would you like to have more storage?
-            = link_to "Yes, please", overture_subscription_plan_path, class: 'btn btn-pink-gradient font-weight-bolder'
+            - if @company.pro?
+              = link_to "Contact us", "https://www.paloe.com.sg/contact-us/", target: :_blank, class: 'btn btn-pink-gradient font-weight-bolder'
+            - else
+              = link_to "Yes, please", overture_subscription_plan_path, class: 'btn btn-pink-gradient font-weight-bolder'
             br
             
               p.font-size-10.my-5 = button_tag data: { dismiss: "modal" }, type: "button", class: "close storage-full-align d-flex align-items-center"

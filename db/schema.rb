@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_31_024015) do
+ActiveRecord::Schema.define(version: 2021_06_08_125818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -216,7 +216,7 @@ ActiveRecord::Schema.define(version: 2021_05_31_024015) do
     t.string "cap_table_url"
     t.json "settings", default: [{"search_feature"=>"true", "kanban_board"=>"true", "dataroom"=>"true", "our_investor_or_startup"=>"true", "cap_table"=>"true", "performance_report"=>"true", "shared_file"=>"true", "resource_portal"=>"true", "announcement"=>"true"}]
     t.bigint "storage_used", default: 0
-    t.bigint "storage_limit", default: 16106127360
+    t.bigint "storage_limit", default: 5368709120
     t.index ["associate_id"], name: "index_companies_on_associate_id"
     t.index ["consultant_id"], name: "index_companies_on_consultant_id"
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"

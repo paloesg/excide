@@ -35,4 +35,7 @@
                       = link_to overture_startups_delete_version_attachment_path(signed_id: attachment.blob.signed_id), method: :delete, data: { confirm: 'Current version is about to be permanently deleted. Delete forever?' } do
                         i.material-icons-outlined.align-middle.text-primary highlight_off
           .form-group
-            = f.submit "Save", class: "btn btn-primary float-right", disabled: true
+            - if @company.storage_progress < 100
+              = f.submit "Save", class: "btn btn-primary float-right", disabled: true
+            - else
+              button.btn.btn-primary.float-right aria-label="Close" data-dismiss="modal" data-target="#storageFull" data-toggle="modal" type="button" Save
