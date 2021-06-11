@@ -98,7 +98,7 @@
         th
           input# type="checkbox" name=""/
         th.text-muted NAME
-        th.text-muted TAGS
+        th.text-muted COMPANY
         th.text-muted DATE MODIFIED
         th.text-muted ACCESS
         th
@@ -117,9 +117,10 @@
                 .badge.badge-secondary.ml-5 Shared
           td id="drawer_toggle_#{folder.id}_0"
             div id="tags_count_#{folder.id}"
-              = content_tag :span, folder.all_tags_list.first, class: ["badge badge-motif", folder.all_tags_list.length > 0 ? "" : "d-none"]
-              span class=(folder.all_tags_list.length > 1 ? "" : "d-none")
-                = (folder.all_tags_list.length-1).to_s + "+..."
+              = content_tag :span, folder.company.name, class: ["badge badge-motif"]
+              / = content_tag :span, folder.all_tags_list.first, class: ["badge badge-motif", folder.all_tags_list.length > 0 ? "" : "d-none"]
+              / span class=(folder.all_tags_list.length > 1 ? "" : "d-none")
+              /   = (folder.all_tags_list.length-1).to_s + "+..."
           td id="drawer_toggle_#{folder.id}_1"
             = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{folder.id}_2"
@@ -152,9 +153,10 @@
                 .badge.badge-secondary.ml-5 Shared
           td id="drawer_toggle_#{d.id}_0"
             div id="tags_count_#{d.id}"
-              = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
-              span class=(d.all_tags_list.length > 1 ? "" : "d-none")
-                = (d.all_tags_list.length-1).to_s + "+..."
+              = content_tag :span, d.company.name, class: ["badge badge-motif"]
+              / = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
+              / span class=(d.all_tags_list.length > 1 ? "" : "d-none")
+              /   = (d.all_tags_list.length-1).to_s + "+..."
           td id="drawer_toggle_#{d.id}_1"
             = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{d.id}_2"

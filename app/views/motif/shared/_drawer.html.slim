@@ -32,14 +32,15 @@
           .col
             span.text-muted Shared with
             p = pluralize(get_view_permission_count(permissible), 'other')
-        span.text-muted Tags
-        input.motif-tags.my-3 id="tag_#{permissible.id}" placeholder=" + Add tag" value=permissible.all_tags_list data-tag=permissible.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
-        / Form for remarks document
+        // commented bottom two lines off as we changed from Tags to Company to show current company name
+        / span.text-muted Tags
+        / input.motif-tags.my-3 id="tag_#{permissible.id}" placeholder=" + Add tag" value=permissible.all_tags_list data-tag=permissible.id data-whitelist=@company.owned_tags.pluck(:name).join(", ") data-path=path
+        // Form for remarks document
         = form_for(permissible, url: url, method: :patch, remote: true) do |f|
           .col-md-12.p-0
             = f.label :remarks, "Remarks", class: 'text-muted'
             = f.text_field :remarks, { class: 'form-control remark-border p-0', data: { document_id: permissible.id, path: path }, onchange: "remarks(this);"}
-      / Only admin of company have access tab
+      // Only admin of company have access tab
       - if (current_user.has_role?(:admin, @company) or current_user.has_role?(:franchisor, @company))
         .tab-pane.fade.pt-3.pr-3.mr-n5.scroll.ps.px-5 id="access_#{permissible.id}" role="tabpanel"
           / .form-row.align-items-center.border-bottom
@@ -59,7 +60,7 @@
               .col-md-5.pl-0
                 - permission = user.permissions.find_by(permissible_id: permissible.id)
                 - if permission.present?
-                  / Permissible type passed in from rendering the partial, which will determine if permissible is folder or document
+                  // Permissible type passed in from rendering the partial, which will determine if permissible is folder or document
                   = select_tag 'permissions', options_for_select(["Can download", "Can write"], selected: (permission.can_write? ? "Can write" : "Can download")), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control permission-document-access col-md-12'
                 - else
                   .float-right.mt-3.add-access id="add-access-link-#{user.id}-#{permissible.id}"
