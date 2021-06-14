@@ -10,7 +10,7 @@ class SlackService
   def initialize(user=nil)
     if user.nil?
       @uri = URI(ENV['SLACK_WEBHOOK_URL'])
-      @channel = ENV['SLACK_EXCIDE_CHANNEL']
+      @channel = ENV['SLACK_WEBHOOK_CHANNEL']
     else
       @uri = URI(user.company.slack_access_response['incoming_webhook']['url'])
       @channel = user.company.slack_access_response['incoming_webhook']['channel']
@@ -54,6 +54,20 @@ class SlackService
               short: true
             },
           ]
+        }
+      ]
+    }
+    @params = generate_payload(params)
+    self
+  end
+
+  def company_signup(user, company)
+    params = {
+      attachments: [
+        {
+          title: "#{company.name} company has signed up for Overture!",
+          fallback: 'A new company has signed up!',
+          color: GOOD
         }
       ]
     }

@@ -36,6 +36,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         resource.company = @company
       end
       resource.save
+      # Send Slack Notification when user is created
+      SlackService.new.company_signup(resource, resource.company).deliver
     end
     # end
     # Add default roles to company
