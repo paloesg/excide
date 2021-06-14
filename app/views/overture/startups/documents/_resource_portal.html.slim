@@ -70,6 +70,7 @@
                 = image_pack_tag "media/src/images/overture/doc.svg"
               span.ml-5
                 = d.versions.attachments.find_by(current_version: true).filename
+                / if d.versions.attachments.present?
             td
               = d.updated_at.strftime("%d %b %Y")
             td
