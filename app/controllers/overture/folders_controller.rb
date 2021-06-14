@@ -27,7 +27,10 @@ class Overture::FoldersController < FoldersController
     # Query for breadcrumb folder arrangement
     @breadcrumb_folder_arrangement = @folder.path.order(:created_at)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
+    @documents = Document.where(folder: @folder, company: nil).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
+
     @documents = Document.where(company: nil).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)}) if @folder.name == "Resource Portal"
+  
     @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
     @topic = Topic.new
