@@ -1,7 +1,7 @@
 .home-banner {
   background: linear-gradient(to right, white, rgb(255, 239, 245));
   background-attachment: fixed;
-  height: 250px;
+  max-height: 50%;
 }
 
 .qna-banner {
@@ -13,43 +13,43 @@
 .resource-portal-banner {
   background: linear-gradient(to right, white, rgb(255, 255, 230));
   background-attachment: fixed;
-  height: 180px;
+  min-height: 50%;
 }
 
 .search-investors-banner {
   background: linear-gradient(to right, white, rgb(240, 245, 255));
   background-attachment: fixed;
-  height: 250px;
+  max-height: 50%;
 }
 
 .fundraising-banner {
   background: linear-gradient(to right, white, rgb(237, 255, 241));
   background-attachment: fixed;
-  height: 250px;
+  max-height: 50%;
 }
 
 .dataroom-banner {
   background: linear-gradient(to right, white, rgb(252, 250, 232));
   background-attachment: fixed;
-  height: 250px;
+  max-height: 50%;
 }
 
 .our-investors-banner {
   background: linear-gradient(to right, white, rgb(244, 255, 237));
   background-attachment: fixed;
-  height: 180px;
+  max-height: 50%;
 }
 
 .announcement-banner {
   background: linear-gradient(to right, white, rgb(224, 243, 248));
   background-attachment: fixed;
-  height: 180px;
+  max-height: 50%;
 }
 
 .cap-table-banner {
   background: linear-gradient(to right, white, rgb(255, 250, 237));
   background-attachment: fixed;
-  height: 250px;
+  max-height: 50%;
 }
 
 .cap-table-investors-banner {
@@ -61,7 +61,7 @@
 .shared-files-banner {
   background: linear-gradient(to right, white, rgb(237, 237, 255));
   background-attachment: fixed;
-  height: 180px;
+  max-height: 50%;
 }
 
 .startups-list-banner {
@@ -77,9 +77,9 @@
 }
 
 .image-height {
-  height: 250px !important;
+  height: 275px !important;
 }
 
 .smaller-image-height {
-  height: 180px !important;
+  height: 195px !important;
 }
