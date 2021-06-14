@@ -63,7 +63,7 @@ module ApplicationHelper
     'disabled text-dark-25 bg-light' if current_user.has_role?(:member, current_user.company)
   end
 
-  # for disabled status for richt text fields in overture settings
+  # to disable entire form-group as the trix tool bar cannot be disabled individually for rich text fields in overture settings
   def all_disabled_if_member_role
     'disabled' if current_user.has_role?(:member, current_user.company)
   end
