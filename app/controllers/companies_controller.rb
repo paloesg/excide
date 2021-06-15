@@ -34,6 +34,8 @@ class CompaniesController < ApplicationController
         set_default_overture_folders
       end
       current_user.update(company: @company)
+      # Send Slack Notification when new company is created
+      SlackService.new.company_signup(current_user, current_user.company).deliver
       # Redirect based on the products that was added to the company
       if @company.products.length > 1
         redirect_to root_path
