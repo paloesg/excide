@@ -61,7 +61,7 @@ class SlackService
     self
   end
 
-  def company_signup(user, company)
+  def company_signup(company)
     params = {
       attachments: [
         {
