@@ -1,4 +1,5 @@
 class SlackService
+  include ApplicationHelper
   NAME_AND_ICON = {
     username: 'Excide Platform'
   }
@@ -66,6 +67,8 @@ class SlackService
       attachments: [
         {
           title: "#{company.name} company has signed up for Overture!",
+          # Find environment of the notification it is being sent from
+          pretext: "#{find_environment}",
           fallback: 'A new company has signed up!',
           color: GOOD
         }

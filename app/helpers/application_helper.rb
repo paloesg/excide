@@ -117,4 +117,18 @@ module ApplicationHelper
   def titleize_keep_uppercase(string)
     string.gsub(/\b('?[a-z])/) { $1.capitalize }
   end
+
+  # This method is for Slack service notifications, to determine which environment is the notification sending from
+  def find_environment
+    # Check for staging notification then give a label, to distinct from live site since both are production
+    if ENV["SLACK_WEBHOOK_CHANNEL"] == "#staging"
+      "[STAGING SITE]"
+    # Check for development site as dev & live webhook channel both goes to #tech
+    elsif Rails.env == "development"
+      "[TEST SITE]"
+    else
+      "[LIVE SITE]"
+    end
+  end
+
 end
