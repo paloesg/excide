@@ -90,12 +90,12 @@
   table.table.ml-4#nonSearchResult
     thead
       tr
-        th
+        th width="3%"
           input# type="checkbox" name=""/
-        th.text-muted NAME
-        th.text-muted COMPANY
-        th.text-muted DATE MODIFIED
-        th.text-muted ACCESS
+        th.text-muted width="38%" NAME
+        th.text-muted width="24%" COMPANY
+        th.text-muted width="17%" DATE MODIFIED
+        th.text-muted width="7%" ACCESS
         th
     tbody.draggable-zone
       - @folders.each_with_index do |folder, index|
@@ -178,11 +178,11 @@ javascript:
   }
   loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
     var hitTemplate = '<table class="table ml-4">' +
-        '<thead><tr><th><input id="" name="" type="checkbox"></th>' +
-        '<th class="text-muted">NAME</th>' +
-        '<th class="text-muted">TAGS</th>' +
-        '<th class="text-muted">DATE MODIFIED</th>' +
-        '<th class="text-muted">ACCESS</th><th></th></tr></thead>' +
+        '<thead><tr><th width="3%"><input id="" name="" type="checkbox"></th>' +
+        '<th class="text-muted" width="38%">NAME</th>' +
+        '<th class="text-muted" width="24%">COMPANY</th>' +
+        '<th class="text-muted" width="17%">DATE MODIFIED</th>' +
+        '<th class="text-muted" width="7%">ACCESS</th><th></th></tr></thead>' +
         '<tbody>{{#hits}}' +
         '<tr class="drawer-row draggable" data-drawer={{{objectID}}} id={{{objectID}}} tabindex="0">' +
         '<td><input class="mt-2" name="" type="checkbox"></td>' +
@@ -190,7 +190,7 @@ javascript:
         '<span class="mr-5"><img src="/packs/media/src/images/motif/doc-aac8cde048a99885201745f1d21fcef4.svg"></span>' +
         '<span class="ml-5">{{{_highlightResult.filename.value}}}</span></td>' +
         '<td id="drawer_toggle_{{objectID}}_0">' +
-        '<div id="tags_count_{{objectID}}"><span class="badge badge-motif d-none"></span><span class="d-none">-1+...</span></div></td>' +
+        '<div id="tags_count_{{objectID}}"><span class="badge badge-motif">{{company.name}}</span></div></td>' +
         '<td id="drawer_toggle_{{objectID}}_1">{{{formatted_date}}}</td>' +
         '<td id="drawer_toggle_{{objectID}}_2"><span class="mr-4"><i class="material-icons-outlined align-middle">group</i></span><span>{{permissions.count}}</span></td>' +
         '<td><div class="dropdown"><a aria-expanded="false" aria-haspopup="true" class="btn btn-icon btn-link" data-toggle="dropdown" href="#">' +
