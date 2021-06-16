@@ -23,11 +23,11 @@ class Overture::FoldersController < FoldersController
   def show
     authorize @folder
     @users = @company.users.includes(:permissions)
-    @folders = Folder.children_of(@folder)
+    @folders = Folder.children_of(@folder).where(company: @company).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)}) if @folder.name == "Resource Portal"
     # Query for breadcrumb folder arrangement
     @breadcrumb_folder_arrangement = @folder.path.order(:created_at)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
-    @folder.name == "Resource Portal" ? @documents = Document.where(company: nil).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)}) : @documents = Document.where(folder: @folder, company: nil).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
+    @documents = @folder.name == "Resource Portal" ? Document.where(company: nil).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)}) : Document.where(folder: @folder, company: nil).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
     @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
     @topic = Topic.new

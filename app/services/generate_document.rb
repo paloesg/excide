@@ -37,16 +37,15 @@ class GenerateDocument
   end
 
   private
-
   def create_document
     # Create document with the common parameters
     @document = Document.new
-    @document.company = @company
+    @document.company = @company   
     if @folder_id.present?
       @folder = Folder.find_by(id: @folder_id)
-      @document.company = nil if @folder.name == "Resource Portal" or @folder.ancestors.include? Folder.find_by(name: "Resource Portal", company: @folder.company)   
+      @document.company = nil if @folder.name == "Resource Portal" or @folder.ancestors.include? Folder.find_by(name: "Resource Portal", company: @folder.company)      
     end
-
+    
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if @document_type_param == 'invoice'
   end
