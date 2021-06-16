@@ -25,7 +25,7 @@ class Motif::DocumentsController < ApplicationController
     end
     # Filter company is current user's company and have permission can_view, as set in document model's permissions attribute
     @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters:
-      "company.slug:#{current_user.company.slug} AND permissions.users.user_id:#{current_user.id}"
+      "permissions.users.user_id:#{current_user.id}"
     })
   end
 
