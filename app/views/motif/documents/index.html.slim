@@ -63,7 +63,6 @@
         span.mr-3
           i.material-icons-outlined.align-middle search
         input.form-control.border-0.col#q type="search" placeholder="Search..."
-        div.col-8
   / .row.ml-4.my-5.align-items-center#filter-options
   /   .col.md-12
   /     span.mr-3
@@ -216,7 +215,10 @@ javascript:
       instantsearch.widgets.searchBox({
         container: '#q',
         placeholder: 'Search...',
-        autofocus: false
+        autofocus: false,
+        cssClasses: {
+          root: 'flex-fill'
+        }
       })
     );
 
