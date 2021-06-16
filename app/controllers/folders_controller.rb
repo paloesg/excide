@@ -36,9 +36,9 @@ class FoldersController < ApplicationController
       @permission = Permission.create(permissible: @folder, role: role, can_write: true, can_download: true, can_view: true)
     end
 
-    @folder.company = current_user.company
+    @folder.company = @folder.name == "Resource Portal" or @folder.ancestors.include? Folder.find_by(name: "Resource Portal", company: @folder.company) ? nil : current_user.company
     @folder.user = current_user
-    @folder.company = nil if @folder.name == "Resource Portal" or @folder.ancestors.include? Folder.find_by(name: "Resource Portal", company: @folder.company)   
+    
     respond_to do |format|
       if @folder.save
         format.html { redirect_back fallback_location: root_path, notice: 'Folder was successfully created.' }
