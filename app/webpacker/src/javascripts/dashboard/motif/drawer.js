@@ -1,8 +1,9 @@
 import Tagify from '@yaireo/tagify';
 $(document).on("turbolinks:load", function () {
   const Offcanvas = require("../metronic/components/offcanvas.js");
-  $(".drawer-row").each(function () {
-    let dataAttribute = $(this).data("drawer");
+
+  let offcanvasClick = function(dataAttribute){
+    event.stopPropagation();
     const offcanvasObject = new Offcanvas(
       "drawer_" + dataAttribute,
       {
@@ -16,7 +17,14 @@ $(document).on("turbolinks:load", function () {
         },
       }
     );
-  });
+  }
+
+  $(".drawer-row").each(function(element){
+    let dataAttribute = $(this).data("drawer");
+    // Only initialise the drawer on click event
+    $(this).on("click", offcanvasClick(dataAttribute));
+  })
+
   let tagifyInstances = []; //for the each loop below
   $(".motif-tags").each(function () {
     let input = $(this).attr("id")
@@ -104,9 +112,9 @@ $(document).on("turbolinks:load", function () {
       }).done(function(result){
         savedMessage.removeClass("d-none")
       });
-    }    
+    }
   });
-  // When clicked on add-access, it will show the dropdown box 
+  // When clicked on add-access, it will show the dropdown box
   $(".add-access").click(function (){
     // Make ID unique with role id and permissible id
     $("#add-access-link-" + $(this).next().data("user-id") + "-" + $(this).next().data("permissible-id")).addClass('d-none');

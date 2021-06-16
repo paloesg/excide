@@ -57,30 +57,25 @@
       button.btn.btn-primary.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
         | + Upload Documents
 - else
-  .row.ml-4.align-items-center#filter-search
-    .col
-      div#filter style="cursor: pointer;"
+  .row.ml-4.align-items-center
+    .col-sm-11.text-muted
+      div.form-row.align-items-center
         span.mr-3
-          i.material-icons-outlined.align-middle filter_list
-        | Filters
-    / .col-sm-11.text-muted
-    /   div.form-row.align-items-center
-    /     span.mr-3
-    /       i.material-icons-outlined.align-middle search
-    /     input.form-control.border-0.col type="search" placeholder="Search..."
-    /     div.col-8
-  .row.ml-4.my-5.align-items-center#filter-options
-    .col.md-12
-      span.mr-3
-        = select_tag('tags', options_for_select(["All tags"].concat(@company.owned_tags.pluck(:name)), selected: params[:tags], include_blank: true), class: 'select2 select2-document-tags form-control')
-      span.mr-3
-        = select_tag('access', options_for_select(["All access"].concat(@company.users.pluck(:first_name)), selected: params[:access], include_blank: true), class: 'select2 select2-document-access form-control')
-      span.mr-3
-        = select_tag('qna', options_for_select(["All Q&A Status", "Read", "Unread"], selected: params[:qna], include_blank: true), class: 'select2 select2-document-qna form-control')
-      span.mr-3
-        = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
-      span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
-        | Clear
+          i.material-icons-outlined.align-middle search
+        input.form-control.border-0.col#q type="search" placeholder="Search..."
+        div.col-8
+  / .row.ml-4.my-5.align-items-center#filter-options
+  /   .col.md-12
+  /     span.mr-3
+  /       = select_tag('tags', options_for_select(["All tags"].concat(@company.owned_tags.pluck(:name)), selected: params[:tags], include_blank: true), class: 'select2 select2-document-tags form-control')
+  /     span.mr-3
+  /       = select_tag('access', options_for_select(["All access"].concat(@company.users.pluck(:first_name)), selected: params[:access], include_blank: true), class: 'select2 select2-document-access form-control')
+  /     span.mr-3
+  /       = select_tag('qna', options_for_select(["All Q&A Status", "Read", "Unread"], selected: params[:qna], include_blank: true), class: 'select2 select2-document-qna form-control')
+  /     span.mr-3
+  /       = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
+  /     span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
+  /       | Clear
   - if controller_name == "folders"
     hr.mb-2
     .row.ml-4
@@ -90,11 +85,11 @@
             = link_to "Repository", motif_documents_path, class: "text-dark"
           li.breadcrumb-item
             = @folder.name
-  hr.mt-2
-  table.table.ml-4
+  #hits
+  #pagination.d-none
+  table.table.ml-4#nonSearchResult
     thead
       tr
-        th
         th
           input# type="checkbox" name=""/
         th.text-muted NAME
@@ -105,7 +100,6 @@
     tbody.draggable-zone
       - @folders.each_with_index do |folder, index|
         tr.draggable.folders.drawer-row id="#{folder.id}" data-drawer=folder.id
-          td
           td
             input.mt-2 type="checkbox" name=""/
           td
@@ -138,9 +132,7 @@
                   .dropdown-item = link_to "Delete", motif_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
         = render 'motif/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
       - @documents.each_with_index do |d, index|
-        tr.drawer-row.draggable id="#{d.id}" data-drawer="#{d.id}"
-          td.draggable-handle
-            i.material-icons-outlined drag_indicator
+        tr.draggable.drawer-row id="#{d.id}" data-drawer="#{d.id}"
           td
             input.mt-2 type="checkbox" name=""/
           td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
@@ -176,3 +168,112 @@
           = render 'motif/shared/show_document', d: d
         = render 'motif/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
   = paginate @documents, views_prefix: 'dashboard'
+
+javascript:
+  function loadExtJS(src, callback) {
+    var s = document.createElement('script');
+    s.src = src;
+    document.body.appendChild(s);
+    s.onload = callback
+  }
+  loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
+    var hitTemplate = '<table class="table ml-4">' +
+        '<thead><tr><th><input id="" name="" type="checkbox"></th>' +
+        '<th class="text-muted">NAME</th>' +
+        '<th class="text-muted">TAGS</th>' +
+        '<th class="text-muted">DATE MODIFIED</th>' +
+        '<th class="text-muted">ACCESS</th><th></th></tr></thead>' +
+        '<tbody>{{#hits}}' +
+        '<tr class="drawer-row draggable" data-drawer={{{objectID}}} id={{{objectID}}} tabindex="0">' +
+        '<td><input class="mt-2" name="" type="checkbox"></td>' +
+        '<td data-target="#documentModal{{objectID}}" data-toggle="modal" style="cursor: pointer;">' +
+        '<span class="mr-5"><img src="/packs/media/src/images/motif/doc-aac8cde048a99885201745f1d21fcef4.svg"></span>' +
+        '<span class="ml-5">{{{_highlightResult.filename.value}}}</span></td>' +
+        '<td id="drawer_toggle_{{objectID}}_0">' +
+        '<div id="tags_count_{{objectID}}"><span class="badge badge-motif d-none"></span><span class="d-none">-1+...</span></div></td>' +
+        '<td id="drawer_toggle_{{objectID}}_1">{{{formatted_date}}}</td>' +
+        '<td id="drawer_toggle_{{objectID}}_2"><span class="mr-4"><i class="material-icons-outlined align-middle">group</i></span><span>{{permissions.count}}</span></td>' +
+        '<td><div class="dropdown"><a aria-expanded="false" aria-haspopup="true" class="btn btn-icon btn-link" data-toggle="dropdown" href="#">' +
+        '<i class="fa fa-ellipsis-h text-secondary mb-4"></i></a>' +
+        '<div class="dropdown-menu dropdown-menu-right"><div class="dropdown-item">' +
+        '<a href="{{image_src}}">Download</a>' +
+        '{{/hits}}</tbody>';
+
+    var search = instantsearch({
+      appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
+      apiKey: '#{@public_key}',
+      indexName: '#{Document.index_name}',
+      urlSync: true,
+      // Only display the search results when there's query in the searchbox
+      searchFunction(helper) {
+        const container = document.querySelector('#hits');
+        container.style.display = helper.state.query === '' ? 'none' : '';
+        helper.search();
+      }
+    });
+
+    search.addWidget(
+      instantsearch.widgets.searchBox({
+        container: '#q',
+        placeholder: 'Search...',
+        autofocus: false
+      })
+    );
+
+    search.addWidget(
+      instantsearch.widgets.hits({
+        container: '#hits',
+        transformData: {
+          allItems: function(data) {
+            $(data['hits']).each(function(index) {
+              data['hits'][index].created_at = moment(this.created_at).format("DD/MM/YYYY HH:mm")
+            })
+            return data;
+          }
+        },
+        templates: {
+          empty: '<table class="table"><tr><td>No matching documents found.</td></tr></table>',
+          allItems: hitTemplate
+        },
+        hitsPerPage: 10
+      })
+    );
+
+    search.addWidget(
+      instantsearch.widgets.pagination({
+        container: '#pagination',
+        cssClasses: {
+          active: 'active',
+        },
+        labels: {
+          first: '<i class="fa fa-angle-left"></i> First',
+          previous: '<i class="fa fa-angle-left"></i> Previous',
+          next: 'Next <i class="fa fa-angle-right"></i>',
+          last: 'Last <i class="fa fa-angle-double-right"></i>',
+        },
+        autoHideContainer: false,
+      })
+    );
+
+    search.start();
+
+    // This method checks if the user searched for the documents. If searching, then hide the existing HTML element (#nonSearchResult) and display the search result, vice versa.
+    search.helper.on('result', function(res) {
+      const nonSearchResult = document.querySelector('#nonSearchResult');
+      const algolia_pagination = document.querySelector('#pagination');
+      const pagination = document.querySelector('#pagination-non-search');
+      if (res && res.hits && res.query == "") {
+        // Show the existing table when query is blank
+        nonSearchResult.classList.remove("d-none");
+        // Hide pagination when query is blank
+        algolia_pagination.classList.add("d-none");
+        pagination.classList.remove("d-none");
+      } else {
+        // Hide existing table when user is searching
+        nonSearchResult.classList.add("d-none");
+        // Display pagination only when search results are displayed
+        algolia_pagination.classList.remove("d-none");
+        pagination.classList.add("d-none");
+      }
+    });
+  })

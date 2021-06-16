@@ -850,9 +850,6 @@ var KTUtil = (function () {
         },
 
         has: function (name) {
-          console.log("UTILJS NAME: ", name);
-          console.log("UTILJS elemtn: ", el);
-          console.log("UTILJS element: ", el.customDataTag);
           if (!el) {
             return false;
           }

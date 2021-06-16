@@ -29,7 +29,9 @@ class Document < ApplicationRecord
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :file_url, :created_at, :updated_at
+    attribute :formatted_date do
+      "#{ self.created_at.strftime("%d %b %Y at %I:%M%p") }"
+    end
     attribute :filename do
       "#{ raw_file.present? ? raw_file&.filename : filename }"
     end
@@ -41,6 +43,20 @@ class Document < ApplicationRecord
     end
     attribute :company do
       { name: company&.name, slug: company&.slug }
+    end
+    attribute :permissions do
+      {
+        users:
+          # select a bunch of permission with can_view true and then map to return the user ID that has the permission
+          permissions.select { |p| p.can_view? }.map do |p|
+            { user_id: p.user.id }
+          end,
+        count:
+          permissions.select { |p| p.can_view? }.length
+      }
+    end
+    attribute :image_src do
+      "#{ raw_file.present? ? "/rails/active_storage/blobs/redirect/#{raw_file.signed_id}/#{raw_file.filename}?disposition=attachment" : "packs/media/src/images/motif/avatar-no-photo-692431e773d7106db54841efda3efd80.svg" }"
     end
     tags do
       tags.map(&:name)

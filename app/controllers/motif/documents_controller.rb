@@ -13,7 +13,7 @@ class Motif::DocumentsController < ApplicationController
     @folder = Folder.new
     @folders = get_folders(@user)
     @documents = Document.where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
-    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
+    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(5)
     @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     unless params[:tags].blank?
@@ -23,6 +23,10 @@ class Motif::DocumentsController < ApplicationController
         @documents = @documents.select {|document| document.all_tags_list.first == params[:tags]}
       end
     end
+    # Filter company is current user's company and have permission can_view, as set in document model's permissions attribute
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters:
+      "company.slug:#{current_user.company.slug} AND permissions.users.user_id:#{current_user.id}"
+    })
   end
 
   def new
