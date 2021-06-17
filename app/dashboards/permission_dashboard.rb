@@ -8,9 +8,9 @@ class PermissionDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    id: Field::String.with_options(searchable:false),
     permissible: Field::Polymorphic.with_options(classes: [Folder, Document]),
-    role: Field::BelongsTo,
-    id: Field::String.with_options(searchable: false),
+    role: Field::BelongsTo.with_options(searchable: true, searchable_field: :name),
     can_write: Field::Boolean,
     can_view: Field::Boolean,
     can_download: Field::Boolean,
