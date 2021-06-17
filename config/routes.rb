@@ -236,7 +236,7 @@ Rails.application.routes.draw do
     end
     resources :allocations do
       collection do
-        get :export, to: 'allocations#export'
+        post :export, to: 'allocations#export'
         get '/users/:user_id', to: 'allocations#user_allocations', as: :user
       end
       member do

@@ -21,7 +21,7 @@
                     = file_field_tag :file, class: "custom-file-input"
                   = submit_tag "Import", class: "btn btn-primary form-control mt-5"
     - if @user.has_role?(:admin, @company) or @user.has_role?(:staffer, @company)
-      = link_to export_conductor_allocations_path(events: @events_all), target: "_blank", class: 'btn btn-warning float-right mr-2' do
+      = button_to export_conductor_allocations_path, params: { events: @events_all }, method: :post, class: 'btn btn-warning float-right mr-2' do
         i.material-icons-outlined get_app
         span.ml-2 Download
       = link_to "Edit Categories", edit_tags_conductor_events_path, class: 'btn btn-secondary float-right mr-2'

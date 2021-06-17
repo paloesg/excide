@@ -1,16 +1,17 @@
 = f.fields_for :contacts, @contact do |c|
   .form-group
-    = c.label :phone, "Telephone", class: "label-bold"
-    = c.text_field :phone, class: "form-control #{check_if_member_role}"
+    = c.label :phone, "Telephone", class: "label-bold disabled"
+    = c.text_field :phone, class: "form-control #{disable_if_member_role}"
+  .form-group class="#{all_disabled_if_member_role}"
+    = c.label :investor_information, "Company information", class: "label-bold disabled"
+    = c.rich_text_area :investor_information, class: "form-control col-sm-12 #{disable_if_member_role}", required: true, placeholder: "Instructions for users..."
   .form-group
-    = c.label :investor_information, "Company information", class: "label-bold"
-    = c.rich_text_area :investor_information, {class: "form-control col-sm-12 #{check_if_member_role}", required: true, placeholder: "Instructions for users..."}
-  .form-group
-    = c.label :email, "Email", class: "label-bold"
-    = c.text_field :email, class: "form-control #{check_if_member_role}"
+    = c.label :email, "Email", class: "label-bold disabled"
+    = c.text_field :email, class: "form-control #{disable_if_member_role}"
   .form-group
     .form-inline
-      = c.label :investor_company_logo, "Company Logo: ", class: "label-bold mr-5"
+      = c.label :investor_company_logo, "Company Logo: ", class: "label-bold mr-5 disabled"
       - if current_user.has_role?(:admin, current_user.company)
         = c.file_field :investor_company_logo
       = image_tag(@contact.investor_company_logo, class: 'outlet-header-preview') if @contact&.investor_company_logo&.attached?
+      
