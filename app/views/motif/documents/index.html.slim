@@ -246,12 +246,16 @@ javascript:
         container: '#pagination',
         cssClasses: {
           active: 'active',
+          list: 'pagination',
+          item: 'page-item',
+          disabled: 'd-none',
+          link: 'page-link'
         },
         labels: {
-          first: '<i class="fa fa-angle-left"></i> First',
-          previous: '<i class="fa fa-angle-left"></i> Previous',
-          next: 'Next <i class="fa fa-angle-right"></i>',
-          last: 'Last <i class="fa fa-angle-double-right"></i>',
+          first: '<i class="fa fa-angle-double-left fa-w-8"></i>',
+          previous: '<i class="fa fa-angle-left fa-w-8"></i>',
+          next: '<i class="fa fa-angle-right fa-w-8"></i>',
+          last: '<i class="fa fa-angle-double-right fa-w-8"></i>'
         },
         autoHideContainer: false,
       })
