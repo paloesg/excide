@@ -23,10 +23,7 @@ class Overture::FoldersController < FoldersController
   def show
     authorize @folder
     @users = @company.users.includes(:permissions)
-
     @folders = Folder.children_of(@folder)
-    @folders = Folder.where(company: nil) if @folder.name == "Resource Portal"
-    #.where(company: nil).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)}) if @folder.name == "Resource Portal"
     # Query for breadcrumb folder arrangement
     @breadcrumb_folder_arrangement = @folder.path.order(:created_at)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
