@@ -1,13 +1,13 @@
 = f.fields_for :profile do |p|
   .form-group
-    = p.label :url, "Website URL", class: "label-bold"
-    = p.text_field :url, class: "form-control #{check_if_member_role}"
-  .form-group
-    = p.label :company_information, "Company information", class: "label-bold"
-    = p.rich_text_area :company_information, {class: "form-control col-sm-12  #{check_if_member_role}", required: true, placeholder: "Instructions for users..."}
+    = p.label :url, "Website URL", class: "label-bold disabled"
+    = p.text_field :url, class: "form-control #{disable_if_member_role}"
+  .form-group class="#{all_disabled_if_member_role}"
+    = p.label :company_information, "Company information", class: "label-bold disabled"
+    = p.rich_text_area :company_information, class: "form-control col-sm-12 #{disable_if_member_role}", required: true, placeholder: "Instructions for users..."
   .form-group
     .form-inline
-      = p.label :profile_logo, "Profile Logo: ", class: "label-bold mr-5"
+      = p.label :profile_logo, "Profile Logo: ", class: "label-bold mr-5 disabled"
       - if current_user.has_role?(:admin, current_user.company)
         = p.file_field :profile_logo
       = image_tag(@company.profile.profile_logo, class: 'outlet-header-preview') if @company.profile.profile_logo.attached?

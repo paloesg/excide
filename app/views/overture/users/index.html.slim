@@ -34,9 +34,9 @@
             tr.border-bottom
               td.border-top-0 = u.full_name
               td = u.email
-              td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.overture_roles(@company).id if u.overture_roles(@company).present?)), include_blank: true, required: true, class: 'select2 overture-select-user-types', id: "select_#{u.id}", style: 'width: 100%'
+              td = select_tag "role", options_for_select(@roles.collect{ |r| [r.name.humanize, r.id] }, selected: (u.overture_roles(@company).id if u.overture_roles(@company).present?)), include_blank: true, required: true, class: "select2 overture-select-user-types", id: "select_#{u.id}", style: 'width: 100%', disabled: (true if current_user.has_role?(:member, current_user.company))
               / note that id should be unique in the form of select_x, where x is the number to split in add_roles.js
-              / below will not show option if not an admin
+              / below will not show option if an admin only
               - if current_user.has_role?(:admin, current_user.company)
                 td
                   .dropdown
