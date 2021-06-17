@@ -59,7 +59,7 @@
   - @documents.where(workflow_action_id: wfa.id).each do |d|
     .row.my-5
       / File Name
-      .col-md-10
+      .col-md-10.text-break
         = d.raw_file.filename
       .col-md-2
         .dropdown
