@@ -92,8 +92,9 @@
         th width="3%"
           input# type="checkbox" name=""/
         th.text-muted width="38%" NAME
-        th.text-muted width="24%" COMPANY
-        th.text-muted width="17%" DATE MODIFIED
+        th.text-muted width="5%"
+        th.text-muted width="21%" COMPANY
+        th.text-muted width="15%" DATE MODIFIED
         th.text-muted width="7%" ACCESS
         th
     tbody.draggable-zone
@@ -106,8 +107,9 @@
               i.material-icons-outlined.align-middle folder_open
             span.ml-5
               = link_to folder.name, motif_folder_path(folder.id)
-              - unless folder.company == @company
-                .badge.badge-secondary.ml-5 Shared
+          td
+            - unless folder.company == @company
+              .badge.badge-motif.badge-secondary.ml-5 Shared
           td id="drawer_toggle_#{folder.id}_0"
             div id="tags_count_#{folder.id}"
               = content_tag :span, folder.company.name, class: ["badge badge-motif"]
@@ -140,8 +142,9 @@
               = image_pack_tag "media/src/images/motif/doc.svg"
             span.ml-5
               = d.raw_file.filename
-              - unless d.company == @company
-                .badge.badge-secondary.ml-5 Shared
+          td
+            - unless d.company == @company
+              .badge.badge-motif.badge-secondary.ml-5 Shared
           td id="drawer_toggle_#{d.id}_0"
             div id="tags_count_#{d.id}"
               = content_tag :span, d.company.name, class: ["badge badge-motif"]
@@ -179,8 +182,9 @@ javascript:
     var hitTemplate = '<table class="table ml-4">' +
         '<thead><tr><th width="3%"><input id="" name="" type="checkbox"></th>' +
         '<th class="text-muted" width="38%">NAME</th>' +
-        '<th class="text-muted" width="24%">COMPANY</th>' +
-        '<th class="text-muted" width="17%">DATE MODIFIED</th>' +
+        '<th class="text-muted" width="5%"></th>' +
+        '<th class="text-muted" width="21%">COMPANY</th>' +
+        '<th class="text-muted" width="15%">DATE MODIFIED</th>' +
         '<th class="text-muted" width="7%">ACCESS</th><th></th></tr></thead>' +
         '<tbody>{{#hits}}' +
         '<tr class="drawer-row draggable" data-drawer={{{objectID}}} id={{{objectID}}} tabindex="0">' +
@@ -188,6 +192,7 @@ javascript:
         '<td data-target="#documentModal{{objectID}}" data-toggle="modal" style="cursor: pointer;">' +
         '<span class="mr-5"><img src="/packs/media/src/images/motif/doc-aac8cde048a99885201745f1d21fcef4.svg"></span>' +
         '<span class="ml-5">{{{_highlightResult.filename.value}}}</span></td>' +
+        ((true) ? '<td><span class="badge badge-motif badge-secondary ml-5">Shared</td></span>' : "") +
         '<td id="drawer_toggle_{{objectID}}_0">' +
         '<div id="tags_count_{{objectID}}"><span class="badge badge-motif">{{company.name}}</span></div></td>' +
         '<td id="drawer_toggle_{{objectID}}_1">{{{formatted_date}}}</td>' +
