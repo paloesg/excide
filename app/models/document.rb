@@ -68,7 +68,7 @@ class Document < ApplicationRecord
       attachment = ActiveStorage::Attachment.create(name: 'raw_file', record_type: 'Document', record_id: self.id, blob_id: ActiveStorage::Blob.last.id)
     end
     # Update company's storage usage
-    self.company.update_storage_size(attachment.byte_size)
+    self.company.update_storage_size(attachment.byte_size) if self.company.present?
     # Perform convert job asynchronously to run conversion service
     ConvertPdfToImagesJob.perform_later(self)
   end

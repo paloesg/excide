@@ -27,13 +27,12 @@ class Overture::FoldersController < FoldersController
     # Query for breadcrumb folder arrangement
     @breadcrumb_folder_arrangement = @folder.path.order(:created_at)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
-    @documents = Document.where(folder: @folder).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
+    @documents = @folder.name == "Resource Portal" ? Document.where(company: nil).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)}) : Document.where(folder: @folder, company: nil).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
     @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
     @topic = Topic.new
     @permission = Permission.new
     @new_folder = Folder.new
-
     # Filter search based on if startup or investor
     @public_key = @company.startup? ? Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "company.slug:#{current_user.company.slug}"}) : Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "#{get_algolia_filter_string.slice(0..-5)}"})
     @company.startup? ? (render "overture/startups/documents/index") : (render "overture/investors/documents/index")

@@ -1,6 +1,7 @@
 class GenerateDocument
   def initialize(user, company, template_slug_param, workflow_param, action_param, document_type_param, batch_id, folder_id)
     @user = user
+    #check if company is a startup and from the resource portal *
     @company = company
     @template_slug_param = template_slug_param
     # Generate document through workflow (with action param) and batches
@@ -36,11 +37,15 @@ class GenerateDocument
   end
 
   private
-
   def create_document
     # Create document with the common parameters
     @document = Document.new
-    @document.company = @company
+    @document.company = @company   
+    if @folder_id.present?
+      @folder = Folder.find_by(id: @folder_id)
+      @document.company = nil if @folder.name == "Resource Portal" or @folder.ancestors.include? Folder.find_by(name: "Resource Portal", company: @folder.company)      
+    end
+    
     @document.user = @user
     @document.document_template = DocumentTemplate.find_by(title: 'Invoice') if @document_type_param == 'invoice'
   end
