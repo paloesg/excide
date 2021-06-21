@@ -7,7 +7,7 @@ class Motif::ContactsController < ApplicationController
   # after_action :verify_authorized
 
   def create
-    @contact_status = policy_scope(ContactStatus).find(params[:contact][:contact_statuses_id])
+    @contact_status = policy_scope(ContactStatus).find(params[:contact][:contact_status_id])
 
     @contact = Contact.new(contact_params)
     @contact.created_by = current_user
