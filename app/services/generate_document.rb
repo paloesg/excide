@@ -47,7 +47,7 @@ class GenerateDocument
 
   def set_document_associations
     if @folder_id.present?
-      @document.folder = Folder.find_by(id: @folder_id)
+      @document.folder = Folder.find(@folder_id)
     else
       generate_workflow
       @document.workflow = @workflow
@@ -81,5 +81,11 @@ class GenerateDocument
   def add_permissions
     # create permission for the user that uploaded it
     Permission.create(user: @user, can_write: true, can_download: true, can_view: true, permissible: @document)
+    # clone and create permission for documents inside the folder
+    if @folder_id.present?
+      @document.folder.permissions.each do |permission|
+        CreatePermissionsJob.perform_later(permission.role, @document, permission.can_view, permission.can_download, permission.can_write)
+      end
+    end
   end
 end
