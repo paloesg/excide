@@ -132,16 +132,18 @@
                 - if folder.company == @company
                   .dropdown-item = link_to "Delete", motif_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
         = render 'motif/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
+      #showDocument
       - @documents.each_with_index do |d, index|
         tr.draggable.drawer-row id="#{d.id}" data-drawer="#{d.id}"
           td
             input.mt-2 type="checkbox" name=""/
-          td data-toggle="modal" data-target="#documentModal#{d.id}" style="cursor: pointer;"
+          td
             span.mr-5
               / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
               = image_pack_tag "media/src/images/motif/doc.svg"
             span.ml-5
               = d.raw_file.filename
+              = link_to 'View', motif_show_document_path(id: d.id), remote: true
           td
             - unless d.company == @company
               .badge.badge-motif.badge-secondary.ml-5 Shared
@@ -167,7 +169,6 @@
                 / Restrict deleting if the document is not yours
                 - if d.company == @company
                   .dropdown-item = link_to "Delete", motif_document_path(d), method: :delete, data: {confirm: "Are you sure you want to delete this document?"}
-          = render 'motif/shared/show_document', d: d
         = render 'motif/shared/drawer', permissible: d, permissible_type: 'document', name: d.raw_file.filename, url: motif_documents_path(id: d.id, format: 'json'), path: "motif/documents/", byte_size: number_to_human_size(d.raw_file.byte_size) if d.raw_file.attached?
   = paginate @documents, views_prefix: 'dashboard'
 
@@ -189,9 +190,10 @@ javascript:
         '<tbody>{{#hits}}' +
         '<tr class="drawer-row draggable" data-drawer={{{objectID}}} id={{{objectID}}} tabindex="0">' +
         '<td><input class="mt-2" name="" type="checkbox"></td>' +
-        '<td data-target="#documentModal{{objectID}}" data-toggle="modal" style="cursor: pointer;">' +
+        '<td>' +
         '<span class="mr-5"><img src="/packs/media/src/images/motif/doc-aac8cde048a99885201745f1d21fcef4.svg"></span>' +
-        '<span class="ml-5">{{{_highlightResult.filename.value}}}</span></td>' +
+        '<span class="ml-5">{{{_highlightResult.filename.value}}}</span>' +
+        '<a href="motif/show_document?id={{objectID}}" data-remote="true">View</a></td>' +
         ((true) ? '<td><span class="badge badge-motif badge-secondary ml-5">Shared</td></span>' : "") +
         '<td id="drawer_toggle_{{objectID}}_0">' +
         '<div id="tags_count_{{objectID}}"><span class="badge badge-motif">{{company.name}}</span></div></td>' +

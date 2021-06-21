@@ -113,6 +113,10 @@ class Motif::DocumentsController < ApplicationController
     end
   end
 
+  def show_document
+    @document = Document.find(params[:id])
+  end
+
   private
   def set_company
     @user = current_user

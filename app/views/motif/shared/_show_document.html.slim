@@ -1,8 +1,8 @@
-.modal.fade aria-hidden="true" id="documentModal#{d.id}" aria-labelledby="documentModal#{d.id}Label" role="dialog" tabindex="-1"
+.modal.fade aria-hidden="true" id="documentModal" aria-labelledby="documentModalLabel" role="dialog" tabindex="-1"
   .modal-dialog.modal-dialog-centered.modal-lg role="document" 
     .modal-content
       .modal-header
-        h5.modal-title id="documentModal#{d.id}Label"
+        h5.modal-title id="documentModalLabel"
           = d.raw_file.attached? ? d.raw_file.filename : d.filename
         button.close aria-label="Close" data-dismiss="modal" type="button" 
           span aria-hidden="true" &times;
