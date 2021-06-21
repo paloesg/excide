@@ -3,7 +3,7 @@ class Motif::ContactsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_contact, only: [:update]
+  before_action :set_contact, only: [:update, :destroy]
   # after_action :verify_authorized
 
   def create
@@ -31,6 +31,16 @@ class Motif::ContactsController < ApplicationController
         format.html { redirect_to motif_root_path }
         format.json { render json: @contact.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    if @contact.destroy
+      respond_to do |format|
+        format.html { redirect_to motif_contact_statuses_path }
+        format.js   { render js: 'Turbolinks.visit(location.toString());' }
+      end
+      flash[:notice] = 'Contact was successfully removed.'
     end
   end
 

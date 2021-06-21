@@ -33,6 +33,8 @@ hr
                     h3 = contact.name
                     p = contact.email
                     p = contact&.phone
+                    = link_to motif_contact_path(contact.id), data: { confirm: 'Are you sure you want to delete this contact?' }, method: :delete do
+                      i.material-icons-outlined.text-muted.float-right delete
       a.text-muted.h5 href="#" aria-expanded="false" data-target="#addNewContactToBoard" type="button" aria-haspopup="true" data-toggle="modal" = "+ Contact"
     #addNewContactToBoard.modal.fade aria-hidden="true" aria-labelledby="addNewContact" role="dialog" tabindex="-1"
       .modal-dialog role="document"
