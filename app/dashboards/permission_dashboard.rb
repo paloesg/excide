@@ -9,7 +9,7 @@ class PermissionDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     permissible: Field::Polymorphic.with_options(classes: [Folder, Document]),
-    role: Field::BelongsTo,
+    role: Field::BelongsTo.with_options(searchable: true, searchable_field: :name),
     id: Field::String.with_options(searchable: false),
     can_write: Field::Boolean,
     can_view: Field::Boolean,

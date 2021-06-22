@@ -11,7 +11,7 @@ class TaskDashboard < Administrate::BaseDashboard
     section: Field::BelongsTo,
     workflow_actions: Field::HasMany,
     id: Field::Number,
-    role: Field::BelongsTo,
+    role: Field::BelongsTo.with_options(searchable: true, searchable_fields: [:id, :name]),
     user: Field::BelongsTo,
     folder: Field::BelongsTo,
     child_workflow_template: Field::BelongsTo.with_options(class_name: "Template"),
