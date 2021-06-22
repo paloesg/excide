@@ -35,6 +35,12 @@ class FoldersController < ApplicationController
       # Create permission for all users (admins or members) in the company
       @permission = Permission.create(permissible: @folder, role: role, can_write: true, can_download: true, can_view: true)
     end
+    if @folder.parent.present?
+      # Clone permission for child folder
+      @folder.parent.permissions.each do |permission|
+        CreatePermissionsJob.perform_later(permission.role, @folder, permission.can_view, permission.can_download, permission.can_write)
+      end
+    end
     @folder.company = current_user.company
     @folder.user = current_user
     respond_to do |format|
