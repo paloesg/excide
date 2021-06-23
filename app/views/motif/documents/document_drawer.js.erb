@@ -1,2 +1,5 @@
-$('#documentDrawer').append('<%= j render partial: "motif/shared/drawer", locals: { permissible: @document, permissible_type: "document", name: @document.raw_file.filename, url: motif_documents_path(id: @document.id, format: "json"), path: "motif/documents/", byte_size: number_to_human_size(@document.raw_file.byte_size)} %>');
-offcanvasClick("<%= @document.id %>");
+// Check whether offcanvas has been rendered before
+if ($("#drawer_" + "<%= @document.id %>").length == 0) {
+  $('#documentDrawer').append('<%= j render partial: "motif/shared/drawer", locals: { permissible: @document, permissible_type: "document", name: @document.raw_file.filename, url: motif_documents_path(id: @document.id, format: "json"), path: "motif/documents/", byte_size: number_to_human_size(@document.raw_file.byte_size)} %>');
+  offcanvasClick("<%= @document.id %>");
+}
