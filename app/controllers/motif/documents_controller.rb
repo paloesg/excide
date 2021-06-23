@@ -117,6 +117,12 @@ class Motif::DocumentsController < ApplicationController
     @document = Document.find(params[:id])
   end
 
+  def document_drawer
+    @users = get_users(@company)
+    @document = Document.find(params[:id])
+    @activities = @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
+  end
+
   private
   def set_company
     @user = current_user

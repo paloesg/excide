@@ -13,17 +13,26 @@ $(document).on("turbolinks:load", function () {
         toggleBy: {
           0: "drawer_toggle_" + dataAttribute + "_0",
           1: "drawer_toggle_" + dataAttribute + "_1",
-          2: "drawer_toggle_" + dataAttribute + "_2"
+          2: "drawer_toggle_" + dataAttribute + "_2",
+          3: "drawer_toggle_" + dataAttribute + "_3",
+          4: "drawer_toggle_" + dataAttribute + "_4",
+          5: "drawer_toggle_" + dataAttribute + "_5"
         },
       }
     );
+    offcanvasObject.show();
   }
+  window.offcanvasClick = offcanvasClick;
 
-  $(".drawer-row").each(function(element){
-    let dataAttribute = $(this).data("drawer");
-    // Only initialise the drawer on click event
-    $(this).on("click", offcanvasClick(dataAttribute));
-  })
+  // $(".drawer-row").each(function(element){
+  //   let dataAttribute = $(this).data("drawer");
+  //   // Only initialise the drawer on click event
+  //   console.log("this is", this);
+  //   // $(this).on("click", offcanvasClick(dataAttribute));
+  //   $(this).on("click", function() {
+  //     offcanvasClick(dataAttribute);
+  //   });
+  // })
 
   let tagifyInstances = []; //for the each loop below
   $(".motif-tags").each(function () {
