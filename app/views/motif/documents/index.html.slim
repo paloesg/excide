@@ -139,29 +139,32 @@
           td
             input.mt-2 type="checkbox" name=""/
           td
-            span.mr-5
-              / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
-              = image_pack_tag "media/src/images/motif/doc.svg"
-            span.ml-5
-              = d.raw_file.filename
-              = link_to 'View', motif_show_document_path(id: d.id), remote: true
+            = link_to motif_show_document_path(id: d.id), remote: true do
+              span.mr-5
+                / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
+                = image_pack_tag "media/src/images/motif/doc.svg"
+              span.ml-5.text-dark
+                = d.raw_file.filename
           td
             - unless d.company == @company
               .badge.badge-motif.badge-secondary.ml-5 Shared
           td id="drawer_toggle_#{d.id}_0"
-            div id="tags_count_#{d.id}"
-              = content_tag :span, d.company.name, class: ["badge badge-motif"]
-              = link_to 'View', motif_document_drawer_path(id: d.id), remote: true
-              / = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
-              / span class=(d.all_tags_list.length > 1 ? "" : "d-none")
-              /   = (d.all_tags_list.length-1).to_s + "+..."
+            = link_to motif_document_drawer_path(id: d.id), remote: true do
+              div id="tags_count_#{d.id}"
+                = content_tag :span, d.company.name, class: ["badge badge-motif"]
+                / = content_tag :span, d.all_tags_list.first, class: ["badge badge-motif", d.all_tags_list.length > 0 ? "" : "d-none"]
+                / span class=(d.all_tags_list.length > 1 ? "" : "d-none")
+                /   = (d.all_tags_list.length-1).to_s + "+..."
           td id="drawer_toggle_#{d.id}_1"
-            = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
+            = link_to motif_document_drawer_path(id: d.id), remote: true do
+              .text-dark
+                = d.raw_file.attached? ? d.raw_file.created_at.strftime("%d %b %Y at %I:%M%p") : d.created_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{d.id}_2"
-            span.mr-4
-              i.material-icons-outlined.align-middle group
-            span
-              = get_view_permission_count(d)
+            = link_to motif_document_drawer_path(id: d.id), remote: true do
+              span.mr-4
+                i.material-icons-outlined.align-middle group
+              span.text-dark
+                = get_view_permission_count(d)
           td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
@@ -192,14 +195,13 @@ javascript:
         '<tr class="drawer-row draggable" data-drawer={{{objectID}}} id={{{objectID}}} tabindex="0">' +
         '<td><input class="mt-2" name="" type="checkbox"></td>' +
         '<td>' +
-        '<span class="mr-5"><img src="/packs/media/src/images/motif/doc-aac8cde048a99885201745f1d21fcef4.svg"></span>' +
-        '<span class="ml-5">{{{_highlightResult.filename.value}}}</span>' +
-        '<a href="motif/show_document?id={{objectID}}" data-remote="true">View</a></td>' +
-        ((true) ? '<td><span class="badge badge-motif badge-secondary ml-5">Shared</td></span>' : "") +
+        '<a href="motif/show_document?id={{objectID}}" data-remote="true"><span class="mr-5"><img src="/packs/media/src/images/motif/doc-aac8cde048a99885201745f1d21fcef4.svg"></span>' +
+        '<span class="ml-5 text-dark">{{{_highlightResult.filename.value}}}</span></a></td>' +
+        '<td><span class="badge badge-motif badge-white text-white ml-5">Shared</span></td>'+
         '<td id="drawer_toggle_{{objectID}}_3">' +
-        '<div id="tags_count_{{objectID}}"><span class="badge badge-motif">{{company.name}}</span><a href="motif/document_drawer?id={{objectID}}" data-remote="true">View</a></div></td>' +
-        '<td id="drawer_toggle_{{objectID}}_4">{{{formatted_date}}}</td>' +
-        '<td id="drawer_toggle_{{objectID}}_5"><span class="mr-4"><i class="material-icons-outlined align-middle">group</i></span><span>{{permissions.count}}</span></td>' +
+        '<a href="motif/document_drawer?id={{objectID}}" data-remote="true"><div id="tags_count_{{objectID}}"><span class="badge badge-motif">{{company.name}}</span></div></a></td>' +
+        '<td id="drawer_toggle_{{objectID}}_4"><a href="motif/document_drawer?id={{objectID}}" data-remote="true"><div id="tags_count_{{objectID}}" class="text-dark">{{{formatted_date}}}</div></a></td>' +
+        '<td id="drawer_toggle_{{objectID}}_5"><a href="motif/document_drawer?id={{objectID}}" data-remote="true"><div id="tags_count_{{objectID}}"><span class="mr-4"><i class="material-icons-outlined align-middle">group</i></span><span class="text-dark">{{permissions.count}}</span></a></td>' +
         '<td><div class="dropdown"><a aria-expanded="false" aria-haspopup="true" class="btn btn-icon btn-link" data-toggle="dropdown" href="#">' +
         '<i class="fa fa-ellipsis-h text-secondary mb-4"></i></a>' +
         '<div class="dropdown-menu dropdown-menu-right"><div class="dropdown-item">' +
