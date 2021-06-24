@@ -132,7 +132,6 @@
                 .dropdown-item = link_to "Folder setting", edit_motif_folder_path(folder)
                 - if folder.company == @company
                   .dropdown-item = link_to "Delete", motif_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
-        / = render 'motif/shared/drawer', permissible: folder, permissible_type: 'folder', name: folder.name, url: motif_folders_path(id: folder.id, format: 'json'), file: folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+)
       #folderDrawer
       #showDocument
       #documentDrawer
