@@ -1,0 +1,5 @@
+// Check whether offcanvas has been rendered before
+if ($("#drawer_" + "<%= @folder.id %>").length == 0) {
+  $('#folderDrawer').append('<%= j render partial: "motif/shared/drawer", locals: { permissible: @folder, permissible_type: "folder", name: @folder.name, url: motif_folders_path(id: @folder.id, format: "json"), file: @folder, path: "motif/folders/", byte_size: Folder.last.descendants.select{|desc| desc.is_a?(Document)}.map{|doc| number_to_human_size(doc.raw_file.byte_size)}.reduce(0, :+) } %>');
+  offcanvasClick("<%= @folder.id %>");
+}

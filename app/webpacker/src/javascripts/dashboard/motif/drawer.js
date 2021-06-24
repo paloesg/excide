@@ -23,17 +23,7 @@ $(document).on("turbolinks:load", function () {
     offcanvasObject.show();
   }
   window.offcanvasClick = offcanvasClick;
-
-  // $(".drawer-row").each(function(element){
-  //   let dataAttribute = $(this).data("drawer");
-  //   // Only initialise the drawer on click event
-  //   console.log("this is", this);
-  //   // $(this).on("click", offcanvasClick(dataAttribute));
-  //   $(this).on("click", function() {
-  //     offcanvasClick(dataAttribute);
-  //   });
-  // })
-
+  
   let tagifyInstances = []; //for the each loop below
   $(".motif-tags").each(function () {
     let input = $(this).attr("id")

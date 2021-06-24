@@ -126,6 +126,7 @@ Rails.application.routes.draw do
     end
     get 'show_document', to:'documents#show_document'
     get 'document_drawer', to:'documents#document_drawer'
+    get 'folder_drawer', to:'documents#folder_drawer'
     resources :folders do
       patch '/update_tags', to:'folders#update_tags'
     end

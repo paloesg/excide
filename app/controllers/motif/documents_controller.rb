@@ -123,6 +123,12 @@ class Motif::DocumentsController < ApplicationController
     @activities = @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 
+  def folder_drawer
+    @users = get_users(@company)
+    @folder = Folder.find(params[:id])
+    @activities = @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
+  end
+
   private
   def set_company
     @user = current_user
