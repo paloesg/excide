@@ -6,6 +6,7 @@ class Motif::DocumentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_document, only: [:update_tags, :update, :destroy]
+  before_action :set_variables, only: [:document_drawer, :folder_drawer]
 
   after_action :verify_authorized, except: :index
 
@@ -14,8 +15,6 @@ class Motif::DocumentsController < ApplicationController
     @folders = get_folders(@user)
     @documents = Document.where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
     @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(5)
-    @users = get_users(@company)
-    @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     unless params[:tags].blank?
       if params[:tags] == 'All tags'
         @documents = policy_scope(Document)
@@ -118,15 +117,11 @@ class Motif::DocumentsController < ApplicationController
   end
 
   def document_drawer
-    @users = get_users(@company)
     @document = Document.find(params[:id])
-    @activities = @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 
   def folder_drawer
-    @users = get_users(@company)
     @folder = Folder.find(params[:id])
-    @activities = @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 
   private
@@ -137,5 +132,10 @@ class Motif::DocumentsController < ApplicationController
 
   def set_document
     @document = @company.documents.find(params[:id])
+  end
+
+  def set_variables
+    @users = get_users(@company)
+    @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 end
