@@ -63,18 +63,6 @@
         span.mr-3
           i.material-icons-outlined.align-middle search
         input.form-control.border-0.col#q type="search" placeholder="Search..."
-  / .row.ml-4.my-5.align-items-center#filter-options
-  /   .col.md-12
-  /     span.mr-3
-  /       = select_tag('tags', options_for_select(["All tags"].concat(@company.owned_tags.pluck(:name)), selected: params[:tags], include_blank: true), class: 'select2 select2-document-tags form-control')
-  /     span.mr-3
-  /       = select_tag('access', options_for_select(["All access"].concat(@company.users.pluck(:first_name)), selected: params[:access], include_blank: true), class: 'select2 select2-document-access form-control')
-  /     span.mr-3
-  /       = select_tag('qna', options_for_select(["All Q&A Status", "Read", "Unread"], selected: params[:qna], include_blank: true), class: 'select2 select2-document-qna form-control')
-  /     span.mr-3
-  /       = button_tag 'Apply filters', type: 'button', class: 'btn btn-primary documents-filter-button'
-  /     span.align-items-center.ml-5.text-primary#clear-filter style="cursor: pointer;"
-  /       | Clear
   - if controller_name == "folders"
     hr.mb-2
     .row.ml-4
@@ -111,6 +99,7 @@
             - unless folder.company == @company
               .badge.badge-motif.badge-secondary.ml-5 Shared
           td id="drawer_toggle_#{folder.id}_0"
+            // Link to toggle folder drawer
             = link_to motif_folder_drawer_path(id: folder.id), remote: true do
               div id="tags_count_#{folder.id}"
                 = content_tag :span, folder.company.name, class: ["badge badge-motif"]
@@ -132,6 +121,7 @@
                 .dropdown-item = link_to "Folder setting", edit_motif_folder_path(folder)
                 - if folder.company == @company
                   .dropdown-item = link_to "Delete", motif_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
+      // For the rendering of all the folder drawer, document preview modal and document drawer partials respectively
       #folderDrawer
       #showDocument
       #documentDrawer
@@ -140,6 +130,7 @@
           td
             input.mt-2 type="checkbox" name=""/
           td
+            // Link to toggle preview modal
             = link_to motif_show_document_path(id: d.id), remote: true do
               span.mr-5
                 / Find extension (eg .docx, .pdf, .png), split to remove the . , and retrieve the 1st 3 letters to get doc, pdf, png to match the image
@@ -150,6 +141,7 @@
             - unless d.company == @company
               .badge.badge-motif.badge-secondary.ml-5 Shared
           td id="drawer_toggle_#{d.id}_0"
+            // Link to toggle document drawer
             = link_to motif_document_drawer_path(id: d.id), remote: true do
               div id="tags_count_#{d.id}"
                 = content_tag :span, d.company.name, class: ["badge badge-motif"]

@@ -2,4 +2,5 @@
 if ($("#documentModal_" + "<%= @document.id %>").length == 0) {
   $('#showDocument').append('<%= j render partial: "motif/shared/show_document", locals: { d: @document } %>');
 }
+// Opens the model on click
 $('#documentModal_' + '<%= @document.id %>').modal('show');

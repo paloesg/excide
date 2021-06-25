@@ -6,7 +6,8 @@ class Motif::DocumentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_document, only: [:update_tags, :update, :destroy]
-  before_action :set_variables, only: [:document_drawer, :folder_drawer]
+  before_action :set_users_and_activities, only: [:document_drawer, :folder_drawer]
+  before_action :set_shared_document, only: [:show_document, :document_drawer]
 
   after_action :verify_authorized, except: :index
 
@@ -112,14 +113,15 @@ class Motif::DocumentsController < ApplicationController
     end
   end
 
+  # motif/documents/show_document.js.erb to render document preview modal
   def show_document
-    @document = Document.find(params[:id])
   end
 
+  # motif/documents/document_drawer.js.erb to render document drawer
   def document_drawer
-    @document = Document.find(params[:id])
   end
 
+  # motif/documents/folder_drawer.js.erb to render folder drawer
   def folder_drawer
     @folder = Folder.find(params[:id])
   end
@@ -134,7 +136,11 @@ class Motif::DocumentsController < ApplicationController
     @document = @company.documents.find(params[:id])
   end
 
-  def set_variables
+  def set_shared_document
+    @document = Document.find(params[:id])
+  end
+
+  def set_users_and_activities
     @users = get_users(@company)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
