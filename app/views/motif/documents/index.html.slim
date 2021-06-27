@@ -107,12 +107,15 @@
               / span class=(folder.all_tags_list.length > 1 ? "" : "d-none")
               /   = (folder.all_tags_list.length-1).to_s + "+..."
           td id="drawer_toggle_#{folder.id}_1"
-            = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
+            = link_to motif_folder_drawer_path(id: folder.id), remote: true do
+              .text-dark
+                = folder.updated_at.strftime("%d %b %Y at %I:%M%p")
           td id="drawer_toggle_#{folder.id}_2"
-            span.mr-4
-              i.material-icons-outlined.align-middle group
-            span
-              = get_view_permission_count(folder)
+            = link_to motif_folder_drawer_path(id: folder.id), remote: true do
+              span.mr-4
+                i.material-icons-outlined.align-middle group
+              span.text-dark
+                = get_view_permission_count(folder)
           td
             .dropdown
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
