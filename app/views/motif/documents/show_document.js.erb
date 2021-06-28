@@ -1,0 +1,6 @@
+// Check whether modal has been rendered before
+if ($("#documentModal" + "<%= @document.id %>").length == 0) {
+  $('#showDocument').append('<%= j render partial: "motif/shared/show_document", locals: { d: @document } %>');
+}
+// Opens the model on click
+$('#documentModal' + '<%= @document.id %>').modal('show');

@@ -6,6 +6,8 @@ class Motif::DocumentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :set_document, only: [:update_tags, :update, :destroy]
+  before_action :set_users_and_activities, only: [:document_drawer, :folder_drawer]
+  before_action :set_shared_document, only: [:show_document, :document_drawer]
 
   after_action :verify_authorized, except: :index
 
@@ -13,9 +15,7 @@ class Motif::DocumentsController < ApplicationController
     @folder = Folder.new
     @folders = get_folders(@user)
     @documents = Document.where(folder_id: nil).order(created_at: :desc).includes(:permissions).where(permissions: { can_view: true, user_id: @user.id })
-    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
-    @users = get_users(@company)
-    @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
+    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(5)
     unless params[:tags].blank?
       if params[:tags] == 'All tags'
         @documents = policy_scope(Document)
@@ -23,6 +23,10 @@ class Motif::DocumentsController < ApplicationController
         @documents = @documents.select {|document| document.all_tags_list.first == params[:tags]}
       end
     end
+    # Filter company is current user's company and have permission can_view, as set in document model's permissions attribute
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters:
+      "permissions.users.user_id:#{current_user.id}"
+    })
   end
 
   def new
@@ -109,6 +113,19 @@ class Motif::DocumentsController < ApplicationController
     end
   end
 
+  # motif/documents/show_document.js.erb to render document preview modal
+  def show_document
+  end
+
+  # motif/documents/document_drawer.js.erb to render document drawer
+  def document_drawer
+  end
+
+  # motif/documents/folder_drawer.js.erb to render folder drawer
+  def folder_drawer
+    @folder = Folder.find(params[:id])
+  end
+
   private
   def set_company
     @user = current_user
@@ -117,5 +134,14 @@ class Motif::DocumentsController < ApplicationController
 
   def set_document
     @document = @company.documents.find(params[:id])
+  end
+
+  def set_shared_document
+    @document = Document.find(params[:id])
+  end
+
+  def set_users_and_activities
+    @users = get_users(@company)
+    @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
   end
 end

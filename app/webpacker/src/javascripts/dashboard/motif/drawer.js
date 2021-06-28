@@ -1,8 +1,9 @@
 import Tagify from '@yaireo/tagify';
 $(document).on("turbolinks:load", function () {
   const Offcanvas = require("../metronic/components/offcanvas.js");
-  $(".drawer-row").each(function () {
-    let dataAttribute = $(this).data("drawer");
+
+  let offcanvasClick = function(dataAttribute){
+    event.stopPropagation();
     const offcanvasObject = new Offcanvas(
       "drawer_" + dataAttribute,
       {
@@ -12,11 +13,17 @@ $(document).on("turbolinks:load", function () {
         toggleBy: {
           0: "drawer_toggle_" + dataAttribute + "_0",
           1: "drawer_toggle_" + dataAttribute + "_1",
-          2: "drawer_toggle_" + dataAttribute + "_2"
+          2: "drawer_toggle_" + dataAttribute + "_2",
+          3: "drawer_toggle_" + dataAttribute + "_3",
+          4: "drawer_toggle_" + dataAttribute + "_4",
+          5: "drawer_toggle_" + dataAttribute + "_5"
         },
       }
     );
-  });
+    offcanvasObject.show();
+  }
+  window.offcanvasClick = offcanvasClick;
+  
   let tagifyInstances = []; //for the each loop below
   $(".motif-tags").each(function () {
     let input = $(this).attr("id")
@@ -104,9 +111,9 @@ $(document).on("turbolinks:load", function () {
       }).done(function(result){
         savedMessage.removeClass("d-none")
       });
-    }    
+    }
   });
-  // When clicked on add-access, it will show the dropdown box 
+  // When clicked on add-access, it will show the dropdown box
   $(".add-access").click(function (){
     // Make ID unique with role id and permissible id
     $("#add-access-link-" + $(this).next().data("user-id") + "-" + $(this).next().data("permissible-id")).addClass('d-none');

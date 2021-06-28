@@ -9,4 +9,9 @@ class Folder < ApplicationRecord
   has_many :documents, dependent: :destroy
   has_many :permissions, as: :permissible, dependent: :destroy
   acts_as_taggable_on :tags
+
+  include AlgoliaSearch
+  algoliasearch do
+    attribute :name
+  end
 end
