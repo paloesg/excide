@@ -283,7 +283,7 @@ javascript:
       } else {
         // Hide existing table when user is searching
         nonSearchResult.classList.add("d-none");
-        // Display pagination only when search results are displayed
+        // Display pagination only when more than 1 page of search results are displayed
         if (res.nbPages > 1) algolia_pagination.classList.remove("d-none");
         pagination.classList.add("d-none");
       }
