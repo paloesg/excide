@@ -14,7 +14,6 @@ class Overture::InvestmentsController < ApplicationController
   end
 
   def create
-    authorize([:overture, Investment])
     @investment = Investment.new(startup_id: @company.id, investor_id: params[:investor_id])
     respond_to do |format|
       if @investment.save
