@@ -73,11 +73,6 @@
             td
               = d.updated_at.strftime("%d %b %Y")
             td
-              - if @company.basic?
-                = render 'overture/startups/documents/unlimited_download'
-                a.text-muted data-target="#unlimitedDownload" data-toggle="modal" type="button"
-                  i.material-icons-outlined.font-size-h1.text-dark.mr-2 download
-              - else
-                = link_to (d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true), disposition: "attachment") : d.file_url) do
-                  i.material-icons-outlined.font-size-h1.text-dark.mr-2 download
+              = link_to (d.versions.attached? ? rails_blob_path(d.versions.attachments.find_by(current_version: true), disposition: "attachment") : d.file_url) do
+                i.material-icons-outlined.font-size-h1.text-dark.mr-2 download
             = render 'overture/shared/show_document', current_version_document: d.versions.attachments.find_by(current_version: true), d: d

@@ -132,8 +132,8 @@ function setupUppy(element){
     // In case of typos
     logger: Uppy.debugLogger,
     restrictions: {
-      // 20MB max size
-      maxFileSize: 20 * 1024 * 1024,
+      // 100MB max size
+      maxFileSize: 100 * 1024 * 1024,
       maxNumberOfFiles: 100,
       minNumberOfFiles: null,
       // Only allow images or PDF
@@ -163,7 +163,8 @@ function setupUppy(element){
     thumbnailWidth: 280,
     metaFields: [
       { id: 'name', name: 'Name', placeholder: 'file name' }
-    ]
+    ],
+    fileManagerSelectionType: 'both'
   });
 
   if($('.batchUploads').length){

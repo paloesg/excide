@@ -11,12 +11,15 @@ class Overture::Startups::DocumentsController < Overture::DocumentsController
     authorize([:overture, :startups, Document])
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     @documents = Document.where(folder_id: nil, company: @company).order(created_at: :desc).includes(:permissions).where(permissions: {can_view: true, role_id: @user.roles.map(&:id)})
-    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
+    @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(5)
     @folders = Folder.roots.includes(:permissions).where(company: @company, permissions: { can_view: true, role_id: @user.roles.map(&:id)}).where.not(name: ["Resource Portal", "Shared Files"])
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
     @users = get_users(@company)
     @folder = Folder.new
     @permission = Permission.new
+
+    # Filter search by current_user's company
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "company.slug:#{current_user.company.slug}"})
   end
 
   def create

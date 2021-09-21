@@ -17,6 +17,9 @@ class Overture::Investors::DocumentsController < Overture::DocumentsController
     @roles = Role.where(resource_id: @company.id, resource_type: "Company").where.not(name: ["admin", "member"])
     @users = get_users(@company)
     @topic = Topic.new
+
+    # Filter search by current_user's roles and filter results by permissions (method in permission helper)
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "#{get_algolia_filter_string.slice(0..-5)}"})
   end
 
   def shared_files

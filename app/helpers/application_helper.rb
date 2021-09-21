@@ -58,9 +58,14 @@ module ApplicationHelper
     return 'blue-active' if request.path == test_path
   end
 
-  # for disabled text colour in overture settings
-  def check_if_member_role
-    'disabled text-dark-25' if current_user.has_role?(:member, current_user.company)
+  # for disabled text and background colour in overture settings
+  def disable_if_member_role
+    'disabled text-dark-25 bg-light' if current_user.has_role?(:member, current_user.company)
+  end
+
+  # to disable entire form-group as the trix tool bar cannot be disabled individually for rich text fields in overture settings
+  def all_disabled_if_member_role
+    'disabled' if current_user.has_role?(:member, current_user.company)
   end
 
   # def link_to_add_choices(name, f, association, locals={})
@@ -117,4 +122,18 @@ module ApplicationHelper
   def titleize_keep_uppercase(string)
     string.gsub(/\b('?[a-z])/) { $1.capitalize }
   end
+
+  # This method is for Slack service notifications, to determine which environment is the notification sending from
+  def find_environment
+    # Check for staging notification then give a label, to distinct from live site since both are production
+    if ENV["SLACK_WEBHOOK_CHANNEL"] == "#staging"
+      "[STAGING SITE]"
+    # Check for development site as dev & live webhook channel both goes to #tech
+    elsif Rails.env == "development"
+      "[TEST SITE]"
+    else
+      "[LIVE SITE]"
+    end
+  end
+
 end
