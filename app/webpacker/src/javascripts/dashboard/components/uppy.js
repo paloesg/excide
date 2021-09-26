@@ -163,7 +163,8 @@ function setupUppy(element){
     thumbnailWidth: 280,
     metaFields: [
       { id: 'name', name: 'Name', placeholder: 'file name' }
-    ]
+    ],
+    fileManagerSelectionType: 'both'
   });
 
   if($('.batchUploads').length){
