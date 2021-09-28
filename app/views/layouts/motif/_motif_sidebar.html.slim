@@ -4,16 +4,18 @@
       = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
         i.material-icons-outlined dashboard
         .ml-2.sidebar-font Home
+  ul.nav.flex-column
     - if current_user.company.settings[0]["announcement"] == "true"
-      li.nav-item.hover-blue.py-1.m-4
+      li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue
         = link_to motif_posts_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined campaign
           .ml-2.sidebar-font Announcement
-    - if current_user.company.settings[0]["leads_management"] == "true"
-      li.nav-item.hover-blue.py-1.m-4
-        = link_to motif_contact_statuses_path, class: 'col-sm-12 d-flex align-items-center' do
-          i.material-icons-outlined view_agenda
-          .ml-2.sidebar-font Leads Management
+    - unless current_user.has_role?(:franchisee_owner, current_user.company)
+      - if current_user.company.settings[0]["leads_management"] == "true"
+        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue
+          = link_to motif_contact_statuses_path, class: 'col-sm-12 d-flex align-items-center' do
+            i.material-icons-outlined view_agenda
+            .ml-2.sidebar-font Leads Management
     // Only master franchisee, franchisor and superadmin can see the Franchisee List. Name is different for master franchisee
     - if (get_franchisee ? get_franchisee.master_franchisee? : (current_user.has_role?(:franchisor, current_user.company) or current_user.has_role? :superadmin)) and current_user.company.settings[0]["franchisee_list"] == "true"
       ul.nav.flex-column
@@ -29,12 +31,12 @@
             = link_to motif_outlets_path, class: 'col-sm-12 d-flex align-items-center' do
               i.material-icons-outlined store_mall_directory
               .ml-2.sidebar-font Outlet List
-      ul.nav.flex-column
-      - if current_user.company.settings[0]["onboarding_management"] == "true"
-        li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{params[:template_type]=="onboarding" ? "blue-active" : ""}"
-          = link_to motif_workflows_path(template_type: "onboarding"), class: 'col-sm-12 d-flex align-items-center' do
-            i.material-icons-outlined luggage
-            .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Onboarding" : "Onboarding Management"
+  ul.nav.flex-column
+    - if current_user.company.settings[0]["onboarding_management"] == "true"
+      li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{params[:template_type]=="onboarding" ? "blue-active" : ""}"
+        = link_to motif_workflows_path(template_type: "onboarding"), class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined luggage
+          .ml-2.sidebar-font = current_user.has_role?(:franchisee_owner, current_user.company) ? "Onboarding" : "Onboarding Management"
   ul.nav.flex-column
     - if current_user.company.settings[0]["site_audit_management"] == "true"
       li.nav-item.p-2.my-4.mr-4.cursor-pointer.hover-blue class="#{params[:template_type]=="site_audit" ? "blue-active" : ""}"
