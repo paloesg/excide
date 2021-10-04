@@ -109,88 +109,95 @@
         i.material-icons-outlined.float-right help_outline
   = render 'motif/home/banners/franchisee/home'
     / Check if franchisee has any workflows
-    - if @workflows.present?
-      .row.mt-5
-        .col-sm-4
-          .card
+  - if @workflows.present?
+    .row.mt-5
+      .col-sm-4
+        .card
+          .card-body
+            h5.card-title.mb-5 Onboarding
+            / Assumption is that there is only 1 onboarding workflow
+            - if @onboarding_workflows.present?
+              .progress style=("height: 5px;")
+                .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@onboarding_workflows.last.progress}%")
+              h5.mt-3.mb-5 #{@onboarding_workflows.last.progress.to_s}%
+              .d-flex.px-4.py-3.align-items-center.rounded.success-card-motif
+                = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                p.card-text.ml-4 = @onboarding_workflows.last.progress == 100 ? "Good job, your onboarding is complete!" : "#{@onboarding_workflows.last.progress.to_s}%"
+            - else
+              p No onboarding checklist yet!
+              .d-flex.px-4.py-3.mt-10.align-items-center.rounded.warning-card-motif
+                = image_pack_tag 'media/src/images/motif/motif-warning.svg'
+                p.card-text.ml-4 No onboarding checklist yet
+            br
+            .d-flex.align-self-center
+              = link_to "See Onboarding", motif_workflows_path(template_type: "onboarding"), class: 'text-primary font-weight-bolder mt-1'
+              i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto  arrow_forward
+      .col-sm-4
+        .card
+          .card-body
+            h5.card-title.mb-5 Site Audit
+            - if @site_audit_workflows.present?
+              .progress style=("height: 5px;")
+                .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@site_audit_workflows.last.progress}%")
+              h5.mt-3.mb-5 #{@site_audit_workflows.last.progress.to_s}%
+              .d-flex.px-4.py-3.align-items-center.rounded.success-card-motif
+                = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                p.card-text.ml-4 = @site_audit_workflows.last.progress == 100 ? "Good job, your site audit is complete!" : "#{@site_audit_workflows.last.progress.to_s}%"
+            - else
+              p No site audit checklist yet!
+              .d-flex.px-4.py-3.mt-10.align-items-center.rounded.warning-card-motif
+                = image_pack_tag 'media/src/images/motif/motif-warning.svg'
+                p.card-text.ml-4 No site audit checklist yet
+            br
+            .d-flex.align-self-center
+              = link_to "See details", motif_workflows_path(template_type: "site_audit"), class: 'text-primary font-weight-bolder mt-1'
+              i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto  arrow_forward
+      .col-sm-4
+        .card
+          .card-body
+            h5.card-title.mb-5 Royalty Collection
+            - if @royalty_collection_workflows.present?
+              .progress style=("height: 5px;")
+                .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@royalty_collection_workflows.last.progress}%")
+              h5.mt-3.mb-5 #{@royalty_collection_workflows.last.progress.to_s}%
+              .d-flex.px-4.py-3.align-items-center.rounded.success-card-motif
+                = image_pack_tag 'media/src/images/motif/motif-done.svg'
+                p.card-text.ml-4 = @royalty_collection_workflows.last.progress == 100 ? "Good job, your site audit is complete!" : "#{@royalty_collection_workflows.last.progress.to_s}%"
+            - else
+              p No royalty collection yet!
+              .d-flex.px-4.py-3.mt-10.align-items-center.rounded.warning-card-motif
+                = image_pack_tag 'media/src/images/motif/motif-warning.svg'
+                p.card-text.ml-4 No royalty collection yet
+            br
+            .d-flex.align-self-center
+              = link_to "See details", motif_workflows_path(template_type: "royalty_collection"), class: 'text-primary font-weight-bolder mt-1'
+              i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto  arrow_forward
+    .row.mt-5
+      .col-sm-4
+        .card
+          = link_to motif_outlet_notes_path(current_user.active_outlet) do
             .card-body
-              h5.card-title.mb-5 Onboarding
-              / Assumption is that there is only 1 onboarding workflow
-              -if @onboarding_workflows.present?
-                .progress style=("height: 5px;")
-                  .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@onboarding_workflows.last.progress}%")
-                h5.mt-3.mb-5 #{@onboarding_workflows.last.progress.to_s}%
-                .d-flex.px-4.py-3.align-items-center.rounded.success-card-motif
-                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                  p.card-text.ml-4 = @onboarding_workflows.last.progress == 100 ? "Good job, your onboarding is complete!" : "#{@onboarding_workflows.last.progress.to_s}%"
-              -else
-                p No onboarding checklist yet!
-                .d-flex.px-4.py-3.mt-10.align-items-center.rounded.warning-card-motif
-                  = image_pack_tag 'media/src/images/motif/motif-warning.svg'
-                  p.card-text.ml-4 No onboarding checklist yet
-              br
-              .d-flex.align-self-center
-                = link_to "See Onboarding", motif_workflows_path(template_type: "onboarding"), class: 'text-primary font-weight-bolder mt-1'
-                i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto  arrow_forward
-        .col-sm-4
-          .card
-            .card-body
-              h5.card-title.mb-5 Site Audit
-              - if @site_audit_workflows.present?
-                .progress style=("height: 5px;")
-                  .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@site_audit_workflows.last.progress}%")
-                h5.mt-3.mb-5 #{@site_audit_workflows.last.progress.to_s}%
-                .d-flex.px-4.py-3.align-items-center.rounded.success-card-motif
-                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                  p.card-text.ml-4 = @site_audit_workflows.last.progress == 100 ? "Good job, your site audit is complete!" : "#{@site_audit_workflows.last.progress.to_s}%"
-              - else
-                p No site audit checklist yet!
-                .d-flex.px-4.py-3.mt-10.align-items-center.rounded.warning-card-motif
-                  = image_pack_tag 'media/src/images/motif/motif-warning.svg'
-                  p.card-text.ml-4 No site audit checklist yet
-              br
-              .d-flex.align-self-center
-                = link_to "See details", motif_workflows_path(template_type: "site_audit"), class: 'text-primary font-weight-bolder mt-1'
-                i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto  arrow_forward
-        .col-sm-4
-          .card
-            .card-body
-              h5.card-title.mb-5 Royalty Collection
-              - if @royalty_collection_workflows.present?
-                .progress style=("height: 5px;")
-                  .progress-bar.progress-bar-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: #{@royalty_collection_workflows.last.progress}%")
-                h5.mt-3.mb-5 #{@royalty_collection_workflows.last.progress.to_s}%
-                .d-flex.px-4.py-3.align-items-center.rounded.success-card-motif
-                  = image_pack_tag 'media/src/images/motif/motif-done.svg'
-                  p.card-text.ml-4 = @royalty_collection_workflows.last.progress == 100 ? "Good job, your site audit is complete!" : "#{@royalty_collection_workflows.last.progress.to_s}%"
-              - else
-                p No royalty collection yet!
-                .d-flex.px-4.py-3.mt-10.align-items-center.rounded.warning-card-motif
-                  = image_pack_tag 'media/src/images/motif/motif-warning.svg'
-                  p.card-text.ml-4 No royalty collection yet
-              br
-              .d-flex.align-self-center
-                = link_to "See details", motif_workflows_path(template_type: "royalty_collection"), class: 'text-primary font-weight-bolder mt-1'
-                i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto  arrow_forward
-      .row.mt-5
-        .col-sm-5
-          .card
-            .card-body
-              h5.card-title.mb-5 Messages
-              .bg-light.d-flex.p-5.align-items-center.rounded
+              h5.card-title.text-dark Messages
+              .d-flex.p-5.align-items-center.rounded.primary-card-motif
                 = image_pack_tag 'media/src/images/motif/motif-message.svg'
-                p.card-text.ml-4 You have #{@franchisee_unread_notes.present? ? @franchisee_unread_notes.length : "0"} unread messages
-              br
-              .d-flex.align-self-center
-                = link_to "Go to Communication Hub", motif_outlet_notes_path(current_user.active_outlet), target: "_blank", class: 'text-primary font-weight-bolder mt-1'
-                i.material-icons-outlined.text-primary.ml-1.font-size-h5.my-auto arrow_forward
-    - else
-      / Empty state
-      .row.justify-content-center.ml-3
-        .col-md-3.text-center.p-4
-          = image_pack_tag 'media/src/images/motif/motif-empty.svg'
-          h2.mt-5 Looks like you don't have anything to do.
-          p.mt-4 Maybe, you may want to ask your Franchisor about your tasks.
-          button.btn.btn-primary.ml-5 type="button"
-            | Talk to Franchisor
+                p.card-text.ml-4 = "You have #{@unread_notes.present? ? @unread_notes.length : "0"} unread messages"
+      .col-sm-4
+        .card
+          = link_to motif_posts_path do
+            .card-body
+              h5.card-title.text-dark Latest Announcements
+              .d-flex.p-5.align-items-center.rounded.primary-card-motif
+                = image_pack_tag 'media/src/images/motif/annoucement.png'
+                - if @posts.empty?
+                  p.card-text.ml-4 You have no announcement.
+                - else
+                  p.card-text.ml-4 = "You have #{pluralize(@posts.length, "announcement")}"
+  - else
+    / Empty state
+    .row.justify-content-center.ml-3
+      .col-md-3.text-center.p-4
+        = image_pack_tag 'media/src/images/motif/motif-empty.svg'
+        h2.mt-5 Looks like you don't have anything to do.
+        p.mt-4 Maybe, you may want to ask your Franchisor about your tasks.
+        = link_to "Talk to Franchisor", motif_outlet_notes_path(current_user.active_outlet), class: "btn btn-primary ml-5"
 
