@@ -14,7 +14,7 @@ class Motif::PostsController < ApplicationController
     @posts = get_posts(@company)
     # policy_scope(Post)
     @post = Post.new
-    @authorized = current_user.has_role?(:franchisor, current_user.company) or current_user.has_role?(:admin, current_user.company)
+    @authorized = (current_user.has_role?(:franchisor, current_user.company) or current_user.has_role?(:admin, current_user.company))
   end
 
   def create
