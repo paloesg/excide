@@ -1,9 +1,10 @@
 .row.mb-3.mt-5.ml-3
   .col-sm-12
-    button.btn.btn-primary.float-right.mr-5 data-target="#annoucement_new" data-toggle="modal" type="button"
-      i.material-icons-outlined.text-white add
-      | New Announcement
-    = render "new", post: @post
+    - if @authorized
+      button.btn.btn-primary.float-right.mr-5 data-target="#annoucement_new" data-toggle="modal" type="button"
+        i.material-icons-outlined.text-white add
+        | New Announcement
+      = render "new", post: @post
     h3 Announcement
     p.my-5
       | Share important news and announcements to your franchisees.
@@ -25,7 +26,7 @@
                 small = post.created_at.strftime("%d %b %Y")
               .comment-font-size.text-dark.mt-4 = post.content
             / Hide editing and deleting if announcement is made by the parent company
-            - if post.company == @company
+            - if post.company == @company && @authorized
               .icon-bar
                 i.material-icons-outlined data-target="#annoucement_#{post.id}" data-toggle="modal" type="button" create
                 = link_to motif_post_path(post.id), method: :delete, data: { confirm: "Are you sure you want to delete this announcement?" } do
