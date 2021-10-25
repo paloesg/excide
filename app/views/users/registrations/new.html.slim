@@ -13,7 +13,7 @@
               = f.password_field :password_confirmation, required: true, input_html: { autocomplete: "new-password" }, placeholder: "Confirm password", class: 'form-control'
             span
               | By signing up, you agree to the 
-              = link_to "terms and conditions", terms_path, class: "font-weight-normal"
+              = link_to "terms and conditions", terms_path, target: "_blank", class: "font-weight-normal"
             .form-group.mt-3
               = f.submit "Create Account", class: "btn btn-primary text-nunito col-sm-12"
             .text-center
