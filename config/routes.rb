@@ -237,7 +237,7 @@ Rails.application.routes.draw do
   patch 'company', to: 'companies#update'
 
   # Static pages
-  get 'terms', to: 'symphony/home#terms'
+  get 'terms', to: 'motif/home#terms'
   get 'privacy', to: 'symphony/home#privacy'
 
   # Stripe event path for webhook
