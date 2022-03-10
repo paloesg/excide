@@ -12,7 +12,7 @@ jobs: # a collection of steps
           PGUSER: excide
           RAILS_ENV: test
           NODE_ENV: test
-      - image: cimg/postgres:13.1 # database image
+      - image: cimg/postgres:13.5 # database image
         environment: # environment variables for database
           POSTGRES_USER: excide
           POSTGRES_DB: excide_test
