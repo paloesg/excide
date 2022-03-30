@@ -77,8 +77,8 @@ class WorkflowPolicy < ApplicationPolicy
       if user.has_role?(:admin, user.company) or user.has_role? :superadmin
         scope.where(company: user.company)
       else
-      # Scope workflow by user has a role in
-        scope.where(company: user.company, id: user.relevant_workflow_ids)
+        # Scope workflow by user has a role in
+        scope.where(company: user.company, id: user.return_workflows_of_assignment)
       end
     end
   end
