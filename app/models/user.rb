@@ -100,7 +100,12 @@ class User < ApplicationRecord
   end
 
   def relevant_workflow_ids
-    self.company.workflows.includes(:template => [:sections => :tasks]).where(:tasks => {:role_id => self.get_role_ids})
+    self.company.workflows.includes(:template => [:sections => :tasks]).where(tasks: {role_id: self.get_role_ids})
+  end
+
+  # This method is similar to above method, to check the assigned user to a task in addition to the roles in a task. Used only in workflow_policy file.
+  def return_workflows_of_assignment
+    self.company.workflows.includes(:template => [:sections => :tasks]).where(tasks: {role_id: self.get_role_ids}).or(self.company.workflows.includes(:template => [:sections => :tasks]).where(tasks: {user_id: self.id}))
   end
 
   def get_role_ids

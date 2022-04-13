@@ -3,7 +3,7 @@ jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     parallelism: 1
     docker: # run the steps with Docker
-      - image: cimg/ruby:3.0.0-node # ...with this image as the primary container; this is where all `steps` will run
+      - image: cimg/ruby:3.0.3-node # ...with this image as the primary container; this is where all `steps` will run
         environment: # environment variables for primary container
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
@@ -12,7 +12,7 @@ jobs: # a collection of steps
           PGUSER: excide
           RAILS_ENV: test
           NODE_ENV: test
-      - image: circleci/postgres:13.1 # database image
+      - image: cimg/postgres:13.5 # database image
         environment: # environment variables for database
           POSTGRES_USER: excide
           POSTGRES_DB: excide_test
@@ -24,6 +24,20 @@ jobs: # a collection of steps
       - run:
           name: Which bundler?
           command: bundle -v
+
+      - run:
+          name: Swap node versions
+          command: |
+            set +e
+            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+            nvm install v14
+            nvm alias default 14.18.3
+
+            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
 
       # Restore bundle cache
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/

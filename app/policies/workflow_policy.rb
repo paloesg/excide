@@ -5,7 +5,9 @@ class WorkflowPolicy < ApplicationPolicy
 
   def show?
     #allow any user with role or assigned task using intersection from user role and workflow task role. Admin gets to see all the workflows!
-    (user.get_role_ids & record.get_task_role_ids).any? or user_admin?
+    # Add permission for assigned user to access the workflow
+    # Last condition is to check for user admin rights
+    (user.get_role_ids & record.get_task_role_ids).any? or record.workflow_actions.map(&:assigned_user).compact.present? or user_admin?
   end
 
   def create?
@@ -77,8 +79,8 @@ class WorkflowPolicy < ApplicationPolicy
       if user.has_role?(:admin, user.company) or user.has_role? :superadmin
         scope.where(company: user.company)
       else
-      # Scope workflow by user has a role in
-        scope.where(company: user.company, id: user.relevant_workflow_ids)
+        # Scope workflow by user has a role in
+        scope.where(company: user.company, id: user.return_workflows_of_assignment)
       end
     end
   end
