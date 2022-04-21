@@ -3990,10 +3990,10 @@ interpret@^1.4.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-intro.js@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/intro.js/-/intro.js-4.1.0.tgz#7e4ae5877df0c452b23d1fd96f2666eb87796b22"
-  integrity sha512-+Y+UsP+yvqqlEOjFExMBXKopn3nzwc91PaUl0SrvqiVs6ztko1DzfkoXR2AnfirZVZZhr5Aej6wlXRlvIkuMcA==
+intro.js@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/intro.js/-/intro.js-5.1.0.tgz#ffa804cd03f464198aa9be505afdd7fb814def3a"
+  integrity sha512-zwWl/duTh00eeNcZRU4o4/xxloNYPFKs4n4lMRDNx59jZr+qRI0jSOnzqYMOuVftD4beGrmxBHz4k8qp9/dCMA==
 
 ip-regex@^2.1.0:
   version "2.1.0"
