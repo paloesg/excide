@@ -39,6 +39,8 @@ require("./conductor/event_update");
 require("./components/calendar_style");
 
 require("./motif/drawer")
+require("./motif/add_access")
+require("./motif/set_permission")
 require("./motif/home")
 require("./motif/remarks")
 require("./motif/settings")
