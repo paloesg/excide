@@ -61,11 +61,11 @@
                 - permission = user.permissions.find_by(permissible_id: permissible.id)
                 - if permission.present?
                   // Permissible type passed in from rendering the partial, which will determine if permissible is folder or document
-                  = select_tag 'permissions', options_for_select(["Can download", "Can write"], selected: (permission.can_write? ? "Can write" : "Can download")), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control permission-document-access col-md-12'
+                  = select_tag 'permissions', options_for_select(["Can download", "Can write"], selected: (permission.can_write? ? "Can write" : "Can download")), include_blank: true, required: true, onfocusin: "setPrevValue(this)", onchange: "setPermission(this)", data: { user_id: user.id, permissible_id: permissible.id, permission_id: permission.id, permissible_type: permissible_type == "folder" ? "folder" : "document" },  class: 'form-control permission-document-access col-md-12'
                 - else
                   .float-right.mt-3.add-access id="add-access-link-#{user.id}-#{permissible.id}"
-                    = link_to '+ Add access', '#', class: 'text-primary', remote: true
-                  = select_tag 'permissions', options_for_select(["Can download", "Can write"]), include_blank: true, required: true, data: { user_id: user.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control permission-document-access d-none col-md-12', id: "add-access-#{user.id}-#{permissible.id}"
+                    = link_to '+ Add access', '#', class: 'text-primary', onclick: "addAccess(this)", remote: true
+                  = select_tag 'permissions', options_for_select(["Can download", "Can write"]), include_blank: true, required: true, onfocusin: "setPrevValue(this)", onchange: "setPermission(this)", data: { user_id: user.id, permissible_id: permissible.id, permissible_type: permissible_type == "folder" ? "folder" : "document" }, class: 'form-control permission-document-access d-none col-md-12', id: "add-access-#{user.id}-#{permissible.id}"
               .col-md-1.p-0.mt-2.d-none.saved-message
                 span.text-muted Saved!
       .tab-pane.fade.pt-3.pr-5.mr-n5.scroll.ps.px-5 id="history_#{permissible.id}" role="tabpanel"
