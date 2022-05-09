@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '3.0.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.3.0'
+gem 'rails', '~> 7.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 1.2.3', '< 2.0'
 # Use Uglifier as compressor for JavaScript assets
