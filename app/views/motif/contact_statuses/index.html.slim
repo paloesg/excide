@@ -8,9 +8,9 @@ hr
   - @contact_statuses.each do |cs|
     .col-3.m-2.kanban-height
       .d-flex
-        .col-sm-10
+        .col-sm-10.p-0
           .dropdown
-            a.btn.btn-icon.btn-link.d-flex.py-2.ml-5 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+            a.btn.btn-link.d-flex.p-2 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
               .badge.badge-pill.font-weight-boldest.mr-3.badge-name.text-dark.px-4.py-2 style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
               .text-dark = cs.contacts.length
             .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="newContactStatus"
