@@ -42,7 +42,7 @@
             th Due Date
             th
             th
-            th
+            th Completed?
         tbody
           - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
             tr.task-row data-action="#{wfa.id}"

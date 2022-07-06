@@ -8,9 +8,9 @@ hr
   - @contact_statuses.each do |cs|
     .col-3.m-2.kanban-height
       .d-flex
-        .col-sm-10
+        .col-sm-10.p-0
           .dropdown
-            a.btn.btn-icon.btn-link.d-flex.py-2.ml-5 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+            a.btn.btn-link.d-flex.p-2 href="#" id="newContactStatus" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
               .badge.badge-pill.font-weight-boldest.mr-3.badge-name.text-dark.px-4.py-2 style="background-color: #{cs.colour.present? ? cs.colour : '#F5F5F5'}" = cs.name.titleize
               .text-dark = cs.contacts.length
             .dropdown-menu.dropdown-menu-right.p-0 aria-labelledby="newContactStatus"
@@ -33,6 +33,7 @@ hr
                     h3 = contact.name
                     p = contact.email
                     p = contact&.phone
+                    p = contact&.company_name
                     = link_to motif_contact_path(contact.id), data: { confirm: 'Are you sure you want to delete this contact?' }, method: :delete do
                       i.material-icons-outlined.text-muted.float-right delete
       a.text-muted.h5 href="#" aria-expanded="false" data-target="#addNewContactToBoard_#{cs.id}" type="button" aria-haspopup="true" data-toggle="modal" = "+ Contact"
@@ -51,6 +52,9 @@ hr
               .form-group
                 = c.label :phone, "Phone number", class: "label-bold"
                 = c.text_field :phone, class: "form-control"
+              .form-group
+                = c.label :company_name, "Company", class: "label-bold"
+                = c.text_field :company_name, class: "form-control"
               .form-group
                 = c.hidden_field :contact_status_id, value: cs.id
               .form-group

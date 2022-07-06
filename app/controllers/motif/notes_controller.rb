@@ -27,7 +27,7 @@ class Motif::NotesController < ApplicationController
 
   private
   def get_outlet
-    @outlet = current_user.company.outlets.find(params[:outlet_id])
+    @outlet = Outlet.find(params[:outlet_id])
   end
 
   def update_last_click_into_comm_hub

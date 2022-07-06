@@ -3,14 +3,13 @@
     .col-sm-4.d-flex.align-items-center
       - if @template_type == "onboarding"
         i.material-icons-outlined.mr-5.text-dark luggage
-        .header-font.text-dark Onboarding
+        .header-font.text-dark.mr-3 Onboarding
       - elsif @template_type == "site_audit"
         i.material-icons-outlined.mr-5.text-dark maps_home_work
-        .header-font.text-dark Site Audit
+        .header-font.text-dark.mr-3 Site Audit
       - else
         i.material-icons-outlined.mr-5.text-dark payments
-        .header-font.text-dark Royalty
-    .col-sm-8
+        .header-font.text-dark.mr-3 Royalty
       button.close.open-banner.text-dark.mr-3 type="submit"
         i.material-icons-outlined.float-right help_outline
   = render "motif/home/banners/#{@template_type}"
