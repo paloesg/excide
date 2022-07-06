@@ -3,10 +3,9 @@
     .row.my-5
       .col-sm-4.d-flex.align-items-center
         i.material-icons-outlined.mr-5.text-dark dashboard
-        .header-font.text-dark Home
-      .col-sm-8
-        button.close.open-banner.text-dark.mr-3 type="submit"
-          i.material-icons-outlined.float-right help_outline
+        .header-font.text-dark.mr-3 Home
+        button.close.open-banner.text-dark.mr-3.mt-1 type="submit"
+          i.material-icons-outlined help_outline
     = render 'motif/home/banners/franchisor/home'
     - if @outlets.length == 0
       .row.justify-content-center.ml-3
@@ -103,10 +102,9 @@
   .row.my-5
     .col-sm-4.d-flex.align-items-center
       i.material-icons-outlined.mr-5.text-dark home
-      .header-font.text-dark Home
-    .col-sm-8
-      button.close.open-banner.text-dark.mr-3 type="submit"
-        i.material-icons-outlined.float-right help_outline
+      .header-font.text-dark.mr-3 Home
+      button.close.open-banner.text-dark.mr-3.mt-1 type="submit"
+        i.material-icons-outlined help_outline
   = render 'motif/home/banners/franchisee/home'
     / Check if franchisee has any workflows
   - if @workflows.present?
