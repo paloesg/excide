@@ -2,6 +2,8 @@
   - unless @outlets.present?
     = render 'outlet_empty_state'
   - else
+    #hits
+    #pagination.d-none
     - @outlets.each do |outlet|
       .col-sm-4.mt-5
         .d-flex.py-1
