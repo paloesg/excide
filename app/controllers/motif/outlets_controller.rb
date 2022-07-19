@@ -17,6 +17,8 @@ class Motif::OutletsController < ApplicationController
     @existing_users = @company.users
     # Query all franchisees where franchise_licensee is not blank (blank franchisees are created from direct owned outlet)
     @existing_franchisees = @company.franchisees.where.not(franchise_licensee: "")
+    # Filter company is current user's company and have permission can_view, as set in document model's permissions attribute
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: ''})
   end
 
   def new

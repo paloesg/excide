@@ -17,7 +17,7 @@ class Outlet < ApplicationRecord
   include AlgoliaSearch
   include Rails.application.routes.url_helpers
   algoliasearch do
-    attributes :name
+    attribute :name
     attribute :header_image_src do
       "#{ header_image.present? ? "/rails/active_storage/blobs/redirect/#{header_image.signed_id}/#{header_image.filename}?disposition=attachment" : "/packs/media/src/images/motif/franchisee-outlets-empty-state-2ccd2171b204978b7274a7fb9084461d.png" }"
     end
