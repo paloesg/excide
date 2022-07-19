@@ -2,17 +2,20 @@
   - unless @outlets.present?
     = render 'outlet_empty_state'
   - else
-    - @outlets.each do |outlet|
-      .col-sm-4.mt-5
-        .d-flex.py-1
-          = outlet.header_image.attached? ? (image_tag(outlet.header_image, class: 'outlet-image mr-5')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-image mr-5")
-          .my-lg-0.my-2.pr-3
-            = link_to outlet.name, edit_motif_outlet_path(id: outlet.id), class: "h4 font-weight-boldest text-dark"
-            / If direct owned outlet, then display it's own company name
-            .h6.mt-2 = outlet&.franchisee&.franchise_licensee.present? ? outlet&.franchisee&.franchise_licensee : outlet.company.name
-            = outlet.country || "No country"
-            br
-            - if outlet.company == @company
-              .badge.label-motif-roles Direct Owned
-            - else
-              .badge.badge-success.text-dark.font-weight-boldest Franchised
+    #hits
+    #pagination.d-none
+    .row#nonSearchResult
+      - @outlets.each do |outlet|
+        .col-sm-4.mt-5
+          .d-flex.py-1
+            = outlet.header_image.attached? ? (image_tag(outlet.header_image, class: 'outlet-image mr-5')) : (image_pack_tag 'media/src/images/motif/franchisee-outlets-empty-state.png', class: "outlet-image mr-5")
+            .my-lg-0.my-2.pr-3
+              = link_to outlet.name, edit_motif_outlet_path(id: outlet.id), class: "h4 font-weight-boldest text-dark"
+              / If direct owned outlet, then display it's own company name
+              .h6.mt-2 = outlet&.franchisee&.franchise_licensee.present? ? outlet&.franchisee&.franchise_licensee : outlet.company.name
+              = outlet.country || "No country"
+              br
+              - if outlet.company == @company
+                .badge.label-motif-roles Direct Owned
+              - else
+                .badge.badge-success.text-dark.font-weight-boldest Franchised

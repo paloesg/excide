@@ -14,6 +14,28 @@ class Outlet < ApplicationRecord
   accepts_nested_attributes_for :address, :reject_if => :all_blank, :allow_destroy => true
   accepts_nested_attributes_for :franchisee, :reject_if => :all_blank, :allow_destroy => true
 
+  include AlgoliaSearch
+  include Rails.application.routes.url_helpers
+  algoliasearch do
+    attribute :name
+    attribute :header_image_src do
+      "#{ header_image.present? ? "/rails/active_storage/blobs/redirect/#{header_image.signed_id}/#{header_image.filename}?disposition=attachment" : "/packs/media/src/images/motif/franchisee-outlets-empty-state-2ccd2171b204978b7274a7fb9084461d.png" }"
+    end
+    attribute :url do
+      edit_motif_outlet_path(self.id)
+    end
+    attribute :franchisee_licensee do
+      "#{ franchisee&.franchise_licensee.present? ? franchisee&.franchise_licensee : company.name }"
+    end
+    attribute :country do
+      "#{ country.present? ? country : "No country"}"
+    end
+    attribute :label do
+      # Check if outlet is direct-owned or franchised
+      "#{ franchisee_id.present? ? "Franchised" : "Direct Owned"}"
+    end
+  end
+
   def clone_templates_for_outlet
     # Get the company level's template (in case there are any updates to these templates)
     motif_onboarding_template = Template.find_by(title: "[SAMPLE] Onboarding Template - #{self.company.name}")

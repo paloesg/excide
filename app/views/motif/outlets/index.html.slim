@@ -67,5 +67,107 @@
       = link_to 'Franchised', motif_outlets_path(type: "franchised"), type: 'button', class: 'motif-filter-outlet text-dark mr-2'
       = link_to 'Direct owned', motif_outlets_path(type: "direct-owned"), type: 'button', class: ' motif-filter-outlet text-dark mr-2'
       = link_to 'All', motif_outlets_path, type: 'button', class: ' motif-filter-outlet text-dark'
+      #search-element.float-right
+        div.form-row.align-items-center
+          span.mr-3
+            i.material-icons-outlined.align-middle search
+          input.form-control.border-0.col#q type="search" placeholder="Search Outlets..."
   hr.mb-0
   = render 'card_view'
+
+javascript:
+  function loadExtJS(src, callback) {
+    var s = document.createElement('script');
+    s.src = src;
+    document.body.appendChild(s);
+    s.onload = callback
+  }
+  loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
+    var hitTemplate = '<div class="row">{{#hits}}<div class="col-sm-4 mt-5"><div class="d-flex py-1"><img class="outlet-image mr-5" src="{{header_image_src}}"><div class="my-lg-0 my-2 pr-3"><a class="h4 font-weight-boldest text-dark" href="{{url}}">{{{_highlightResult.name.value}}}</a><div class="h6 mt-2">{{{_highlightResult.franchisee_licensee.value}}}</div>{{{_highlightResult.country.value}}}<br><div class="badge label-motif-roles">{{{_highlightResult.label.value}}}</div></div></div></div>{{/hits}}</div>';
+
+    var search = instantsearch({
+      appId: '#{ENV['ALGOLIASEARCH_APPLICATION_ID']}',
+      apiKey: '#{@public_key}',
+      indexName: '#{Outlet.index_name}',
+      urlSync: true,
+      // Only display the search results when there's query in the searchbox
+      searchFunction(helper) {
+        const container = document.querySelector('#hits');
+        container.style.display = helper.state.query === '' ? 'none' : '';
+        helper.search();
+      }
+    });
+
+    search.addWidget(
+      instantsearch.widgets.searchBox({
+        container: '#q',
+        placeholder: 'Search...',
+        autofocus: false,
+        cssClasses: {
+          root: 'flex-fill'
+        }
+      })
+    );
+
+    search.addWidget(
+      instantsearch.widgets.hits({
+        container: '#hits',
+        transformData: {
+          allItems: function(data) {
+            $(data['hits']).each(function(index) {
+              data['hits'][index].created_at = moment(this.created_at).format("DD/MM/YYYY HH:mm")
+            })
+            return data;
+          }
+        },
+        templates: {
+          empty: '<p>No matching documents found.</p>',
+          allItems: hitTemplate
+        },
+        hitsPerPage: 10
+      })
+    );
+
+    search.addWidget(
+      instantsearch.widgets.pagination({
+        container: '#pagination',
+        cssClasses: {
+          active: 'active',
+          list: 'pagination',
+          item: 'page-item',
+          disabled: 'd-none',
+          link: 'page-link'
+        },
+        labels: {
+          first: '<i class="fa fa-angle-double-left fa-w-8"></i>',
+          previous: '<i class="fa fa-angle-left fa-w-8"></i>',
+          next: '<i class="fa fa-angle-right fa-w-8"></i>',
+          last: '<i class="fa fa-angle-double-right fa-w-8"></i>'
+        },
+        autoHideContainer: false,
+      })
+    );
+
+    search.start();
+
+    // This method checks if the user searched for the documents. If searching, then hide the existing HTML element (#nonSearchResult) and display the search result, vice versa.
+    search.helper.on('result', function(res) {
+      const nonSearchResult = document.querySelector('#nonSearchResult');
+      // const algolia_pagination = document.querySelector('#pagination');
+      // const pagination = document.querySelector('#pagination-non-search');
+      if (res && res.hits && res.query == "") {
+        // Show the existing table when query is blank
+        nonSearchResult.classList.remove("d-none");
+        // Hide pagination when query is blank
+        // algolia_pagination.classList.add("d-none");
+        // pagination.classList.remove("d-none");
+      } else {
+        // Hide existing table when user is searching
+        nonSearchResult.classList.add("d-none");
+        // Display pagination only when more than 1 page of search results are displayed
+        // if (res.nbPages > 1) algolia_pagination.classList.remove("d-none");
+        // pagination.classList.add("d-none");
+      }
+    });
+  })
+
