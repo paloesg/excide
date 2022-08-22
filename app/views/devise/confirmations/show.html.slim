@@ -14,5 +14,9 @@
             = hidden_field_tag :confirmation_token,@confirmation_token
             .form-group
               = f.submit "Activate", class: "btn btn-primary col-sm-12"
+            .form-group
+              label
+                p.text-primary By setting up your password and using ADA, you hereby agree with our terms & conditions
+                = link_to " here.", terms_path, target: :_blank
     .col-sm-6
       = image_pack_tag 'media/src/images/symphony/login.png', alt: "login-page", class: 'img-fluid float-right'
