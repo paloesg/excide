@@ -31,9 +31,9 @@
                         = text_field_tag :first_name, nil, placeholder: "Add user's first name...", class: 'form-control'
                       .form-group
                         = text_field_tag :last_name, nil, placeholder: "Add user's last name...", class: 'form-control'
-                      h6 Choose Existing Member
-                      .form-group
-                        = select_tag('user_id', options_from_collection_for_select(@existing_users, "id", "email"), include_blank: true, class: "form-control", style: 'width: 100%')
+                      / h6 Choose Existing Member
+                      / .form-group
+                      /   = select_tag('user_id', options_from_collection_for_select(@existing_users, "id", "email"), include_blank: true, class: "form-control", style: 'width: 100%')
                   .row.mt-3
                     .col-md-12
                       = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
