@@ -12,7 +12,7 @@ class Motif::WorkflowsController < ApplicationController
     # For INDEX workflow page
     @template_type = params[:template_type]
     # Select templates in that company and with the right template_type. params[:template_type] is passed through url params in the sidebar
-    @templates = Template.includes(:company, :workflows).where(company_id: @company.id, template_type: @template_type).where(workflows: {id: nil})
+    @templates = Template.includes(:company, :workflows).where(company_id: @company.id, template_type: @template_type).where(workflows: {id: nil}).where.not(title: "[SAMPLE] #{@template_type.titleize} Template - #{@company.name}")
     # Get workflows based on condition in workflow helper method
     @workflows = get_workflows(current_user, @template_type)
     @outlets = get_outlets_that_has_no_workflows(@template_type, @company)
