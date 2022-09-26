@@ -216,6 +216,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
+    digest (3.1.0)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -346,6 +347,20 @@ GEM
     nenv (0.3.0)
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
+    net-imap (0.2.3)
+      digest
+      net-protocol
+      strscan
+    net-pop (0.1.1)
+      digest
+      net-protocol
+      timeout
+    net-protocol (0.1.3)
+      timeout
+    net-smtp (0.3.1)
+      digest
+      net-protocol
+      timeout
     nio4r (2.5.8)
     nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
@@ -595,12 +610,14 @@ GEM
     stripe_event (2.6.0)
       activesupport (>= 3.1)
       stripe (>= 2.8, < 8)
+    strscan (3.0.4)
     sucker_punch (2.1.2)
       concurrent-ruby (~> 1.0)
     swagger-blocks (3.0.0)
     temple (0.8.2)
     thor (1.2.1)
     tilt (2.0.11)
+    timeout (0.3.0)
     trix (0.10.1)
       rails
     turbolinks (5.2.1)
@@ -687,6 +704,9 @@ DEPENDENCIES
   mini_mime
   mixpanel-ruby
   money-rails (~> 1.13.0)
+  net-imap
+  net-pop
+  net-smtp
   oj
   omniauth
   omniauth-oauth2
