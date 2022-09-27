@@ -120,7 +120,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(_resource)
-    additional_information_path(subscription_type: params[:user][:subscription_type].present? ? params[:user][:subscription_type] : nil)
+    "/motif"
   end
 
   def sign_up_params
