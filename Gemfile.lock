@@ -326,6 +326,7 @@ GEM
     mini_histogram (0.3.1)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.0)
     minitest (5.16.3)
     mixpanel-ruby (2.3.0)
     momentjs-rails (2.29.4.1)
@@ -361,7 +362,12 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
+    nokogiri (1.13.8)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     nokogiri (1.13.8-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
     notiffany (0.1.3)
       nenv (~> 0.1)
@@ -652,6 +658,8 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  ruby
+  x86_64-linux
 
 DEPENDENCIES
   aasm
