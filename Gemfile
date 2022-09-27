@@ -27,8 +27,6 @@ gem 'rack-timeout'
 gem 'lograge'
 # The default JavaScript compiler for Rails 6
 gem 'webpacker', '~> 5.2.1'
-# Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', require: false
 # Lock sprockets version because new version of sprockets require manifest file
 gem 'sprockets', '~>3.7.0'
 
@@ -175,6 +173,12 @@ gem 'deep_cloneable', '~> 3.0.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
+
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', require: false
+
+# Pin psych gem to prevent rails server error
+gem 'psych', '< 4'
 
 group :development do
   gem 'rails_real_favicon'
