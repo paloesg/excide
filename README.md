@@ -1,22 +1,13 @@
-# Excide
+# Asiawide Digital Advantage
 
-[![CircleCI](https://circleci.com/gh/hschin/excide.svg?style=svg&circle-token=f0bf150e8df63ae18c3f38683f3202a2e59fe5bb)](https://circleci.com/gh/hschin/excide)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/78b3a488b7c14a949e56b45e1505b241)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=hschin/excide&utm_campaign=Badge_Grade)
-
-The Excide web platform hosts the main products for Paloe: Symphony, Motif, Overture and Conductor.
-
-## System Dependencies
-
-The following are needed by this project:
-
--   [PostgreSQL](http://www.postgresql.org/)
+ADA is a franchise managemenet platform developed by Paloe and Asiawide.
 
 ## Getting Started
 
 Clone this repository and bundle.
 
     git clone https://github.com/hschin/excide.git
-    cd excide
+    cd ada
     bundle install
 
 Create a `database.yml` file from the sample and modify if necessary.
@@ -122,13 +113,13 @@ code and take the next appropriate actions.
 
 The application is deployed to [Heroku](https://www.heroku.com/) at:
 
--   [https://excide.herokuapp.com/](https://excide.herokuapp.com/)
--   [https://excide-staging.herokuapp.com/](https://excide-staging.herokuapp.com/)
+-   [https://asiawide.herokuapp.com/](https://excide.herokuapp.com/)
+-   [https://asiawide-staging.herokuapp.com/](https://excide-staging.herokuapp.com/)
 
 Ensure the Git remotes are set up:
 
-    heroku git:remote --a excide --remote production
-    heroku git:remote --a excide-staging --remote staging
+    heroku git:remote --a asiawide --remote production
+    heroku git:remote --a asiawide-staging --remote staging
 
 To deploy, just run:
 
@@ -137,8 +128,8 @@ To deploy, just run:
 
 Do remember to specify the app name when running Heroku commands like so:
 
-    heroku run --a excide rake db:migrate
-    heroku run --a excide-staging rake db:migrate
+    heroku run --a asiawide rake db:migrate
+    heroku run --a asiawide-staging rake db:migrate
 
 Heroku buildpack:
 
