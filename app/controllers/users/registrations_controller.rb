@@ -5,8 +5,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    if (params[:product] == "symphony" || params[:product] == "motif")
-      super
+    if (params[:product] == "symphony" || params[:product] == "ada" || params[:product] == "overture")
+      @user = User.new
+      @user.build_company
     else
       raise ActionController::RoutingError.new('Invalid Product Name in URL')
     end
@@ -18,22 +19,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if params[:company].present?
       resource.company = Company.friendly.find(params[:company])
     else
-      company = Company.new(name: resource.email + "'s company")
       # Set company to basic plan for now
-      company.account_type = 0
-      company.save
-      resource.company = company
-      if params[:product].present?
-        resource.company.products = [params[:product]]
-        resource.company.save
-        resource.save
+      resource.company.account_type = 1
+      resource.company.products = ["motif"]
+      # By default, set company storage limit to 2Gb upon creation
+      resource.company.storage_limit = 2147483648
+      if resource.save
+        if resource.company.save
+          set_company_roles(resource)
+          set_default_folders(resource)
+          set_default_contact_statuses(resource)
+        end
       end
-    end
-    role = params[:role].present? ? params[:role] : "admin"
-    if resource.company.present?
-      resource.add_role role.to_sym, resource.company
-    else
-      resource.add_role role.to_sym
     end
     yield resource if block_given?
     if resource.persisted?
@@ -126,6 +123,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     additional_information_path(subscription_type: params[:user][:subscription_type].present? ? params[:user][:subscription_type] : nil)
   end
 
+  def sign_up_params
+    params.require(:user).permit(:first_name, :last_name, :contact_number, :company_id, :email, :password, :password_confirmation, :current_password, :stripe_card_token, :stripe_customer_id, company_attributes:[:id, :name, :website_url])
+  end
+
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)
     # super(resource)
@@ -150,6 +151,34 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @country = @user.company.address.country + " (+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
     else
       @country = nil;
+    end
+  end
+
+  def set_company_roles(resource)
+    # Set company admin role only if old roles is not defined i.e. creating new company
+    resource.add_role(:admin, resource.company)
+    @motif_default_roles = ['franchisor', 'franchisee_owner']
+    @motif_default_roles.each do |role_name|
+      Role.create(name: role_name, resource: resource.company)
+    end
+  end
+
+  def set_default_folders(resource)
+    # Create default folders with permissions when creating a franchise
+    motif_default_folder_names = ["Financial", "Legal & Policy", "Social Media/App", "Media Repository (Training Videos & Materials)", "Operational", "Dialogue & Discussions", "Manuals & SOPs", "Site Audit", "Royalty Collection"]
+    # Get all the new folder instances
+    motif_default_folders = motif_default_folder_names.map{|name| Folder.create(name: name, company: resource.company)}
+    # Current user should have access permission to default folders
+    motif_default_folders.each do |folder|
+      # Create full access permission for franchisor
+      Permission.create(user_id: resource.id, permissible: folder, can_write: true, can_view: true, can_download: true)
+    end
+  end
+
+  def set_default_contact_statuses(resource)
+    default_statuses = [["No Status", "#FFFFFF"], ["Contacted", "#c1ebf7"], ["In Discussion", "#ffd3b3"], ["Due Dilligence", "#f7f2b2"], ["Said Yes", "#edfab1"], ["Said No", "#fab1b1"]]
+    default_statuses.each_with_index do |status, index|
+      ContactStatus.create(name: status[0], company: resource.company, position: index + 1, colour: status[1])
     end
   end
 end

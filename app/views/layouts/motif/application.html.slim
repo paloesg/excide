@@ -33,7 +33,7 @@ html lang="en"
 
   body
     = render 'layouts/motif/motif_header'
-    / If it's not franchisee index page AND is any of the pages
+    // If it's not franchisee index page AND is any of the pages
     - if (current_page?(edit_motif_company_path(current_user.company)) || current_page?(motif_edit_report_path)) || current_page?(new_motif_document_path) || current_page?(motif_usage_path) || (controller_name == "outlets" && action_name == "edit_franchisee_setting") || controller_name == 'users' || controller_name == 'templates' || (controller_name == 'outlets' && action_name == 'edit') || (controller_name == 'workflows' && action_name == 'show') || controller_name == 'notes' || (controller_name == 'outlets' && action_name == 'members') || (controller_name == 'outlets' && action_name == 'assigned_tasks')  || (controller_name == 'franchisees' && action_name == 'show') || (controller_name == 'franchisees' && action_name == 'edit') || (controller_name == 'franchisees' && action_name == 'outlets') || (controller_name == 'franchisees' && action_name == 'users') || (controller_name == 'franchisees' && action_name == 'agreements') || (controller_name == 'workflows' && action_name == 'activities')
       .new-tab-wrapper.overflow-auto.pb-0
         .new-tab-contents

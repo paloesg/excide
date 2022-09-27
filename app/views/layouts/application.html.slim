@@ -31,6 +31,8 @@ html lang="en"
     = tag :meta, name: "direct-upload-url", content: rails_direct_uploads_path
 
   body
+    // Only show ADA header on sign out pages
+    = render 'layouts/motif/motif_sign_out_header' unless user_signed_in?
     .container
       = yield
       = render 'layouts/messages'
