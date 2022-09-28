@@ -10,7 +10,7 @@ class Motif::ContactsController < ApplicationController
     @contacts = Contact.all
     @contact = Contact.new
      # Filter contacts that are searchable true
-    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: ''})
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'searchable: true'})
   end
 
   def create
@@ -23,6 +23,7 @@ class Motif::ContactsController < ApplicationController
       @contact.contact_status = @contact_status
       notice_message = "Contact added to lead management board."
     else
+      @contact.searchable = true
       notice_message = "Added brand to directory!"
     end
 
@@ -60,7 +61,7 @@ class Motif::ContactsController < ApplicationController
   private
 
   def contact_params
-    params.require(:contact).permit(:name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :renewal_fees, :franchisor_tenure, :description, :brand_logo, :created_by_id, :company_id, :contact_status_id)
+    params.require(:contact).permit(:name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :renewal_fees, :franchisor_tenure, :searchable, :description, :brand_logo, :created_by_id, :company_id, :contact_status_id)
   end
 
   def set_contact

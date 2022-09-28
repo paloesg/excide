@@ -12,6 +12,6 @@ class Contact < ApplicationRecord
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :franchisor_tenure, :description, :brand_logo
+    attribute :name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :franchisor_tenure, :searchable
   end
 end
