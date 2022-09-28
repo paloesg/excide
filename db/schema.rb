@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_12_081413) do
+ActiveRecord::Schema.define(version: 2022_09_28_072007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "action_mailbox_inbound_emails", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "action_mailbox_inbound_emails", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
     t.string "message_checksum", null: false
@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["question_id", "choice_id"], name: "index_choices_questions_on_question_id_and_choice_id"
   end
 
-  create_table "clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "clients", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "identifier"
     t.integer "user_id"
@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["user_id"], name: "index_clients_on_user_id"
   end
 
-  create_table "companies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "companies", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "industry"
     t.integer "company_type"
@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["shared_service_id"], name: "index_companies_on_shared_service_id"
   end
 
-  create_table "contact_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "contact_statuses", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "company_id"
     t.string "name"
     t.integer "position"
@@ -224,16 +224,22 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["company_id"], name: "index_contact_statuses_on_company_id"
   end
 
-  create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "contacts", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.string "phone"
-    t.string "email"
-    t.string "company_name"
     t.bigint "created_by_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "company_id"
     t.uuid "contact_status_id"
+    t.integer "industry"
+    t.integer "year_founded"
+    t.string "country_of_origin"
+    t.string "markets_available"
+    t.string "franchise_fees"
+    t.string "average_investment"
+    t.string "royalty"
+    t.string "marketing_fees"
+    t.string "franchisor_tenure"
     t.index ["contact_status_id"], name: "index_contacts_on_contact_status_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end
@@ -250,7 +256,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["user_id"], name: "index_document_templates_on_user_id"
   end
 
-  create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "documents", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "filename"
     t.text "remarks"
     t.date "date_signed"
@@ -284,7 +290,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "events", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "event_type_id"
     t.datetime "start_time"
     t.datetime "end_time"
@@ -299,7 +305,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["staffer_id"], name: "index_events_on_staffer_id"
   end
 
-  create_table "folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "folders", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -311,7 +317,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["user_id"], name: "index_folders_on_user_id"
   end
 
-  create_table "franchisees", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "franchisees", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "franchise_licensee"
     t.string "registered_address"
     t.date "commencement_date"
@@ -342,7 +348,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
-  create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "invoices", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "invoice_identifier"
     t.date "invoice_date"
     t.date "due_date"
@@ -365,7 +371,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["user_id"], name: "index_invoices_on_user_id"
   end
 
-  create_table "notes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "notes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "notable_type"
     t.uuid "notable_id"
     t.text "content"
@@ -399,7 +405,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["target_type", "target_id"], name: "index_notifications_on_target_type_and_target_id"
   end
 
-  create_table "outlets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "outlets", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "city"
     t.string "country"
     t.datetime "created_at", precision: 6, null: false
@@ -414,7 +420,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["franchisee_id"], name: "index_outlets_on_franchisee_id"
   end
 
-  create_table "outlets_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "outlets_users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "website_url"
     t.date "established_date"
@@ -433,7 +439,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["user_id"], name: "index_outlets_users_on_user_id"
   end
 
-  create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "permissions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "role_id"
     t.boolean "can_write"
     t.boolean "can_view"
@@ -448,7 +454,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["user_id"], name: "index_permissions_on_user_id"
   end
 
-  create_table "posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "posts", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.text "content"
     t.uuid "company_id"
@@ -459,7 +465,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["company_id"], name: "index_posts_on_company_id"
   end
 
-  create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "profiles", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "url"
   end
@@ -509,7 +515,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["workflow_action_id"], name: "index_reminders_on_workflow_action_id"
   end
 
-  create_table "responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "responses", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "content"
     t.integer "question_id"
     t.integer "choice_id"
@@ -610,7 +616,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.integer "tagger_id"
     t.string "context", limit: 128
     t.datetime "created_at"
-    t.uuid "taggable_id", default: -> { "gen_random_uuid()" }, null: false
+    t.uuid "taggable_id", default: -> { "public.gen_random_uuid()" }, null: false
     t.index ["context"], name: "index_taggings_on_context"
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
     t.index ["taggable_type"], name: "index_taggings_on_taggable_type"
@@ -746,7 +752,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["task_id"], name: "index_workflow_actions_on_task_id"
   end
 
-  create_table "workflows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "workflows", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.integer "user_id"
     t.integer "template_id"
     t.boolean "completed", default: false
@@ -778,7 +784,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.index ["workflowable_type", "workflowable_id"], name: "index_workflows_on_workflowable_type_and_workflowable_id"
   end
 
-  create_table "xero_contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "xero_contacts", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "contact_id"
     t.datetime "created_at", null: false
@@ -798,7 +804,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_081413) do
     t.uuid "company_id"
   end
 
-  create_table "xero_tracking_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "xero_tracking_categories", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "status"
     t.string "tracking_category_id"

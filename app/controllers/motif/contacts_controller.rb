@@ -53,7 +53,7 @@ class Motif::ContactsController < ApplicationController
   private
 
   def contact_params
-    params.require(:contact).permit(:name, :phone, :email, :company_name, :created_by_id, :company_id, :contact_status_id)
+    params.require(:contact).permit(:name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :franchisor_tenure, :description, :brand_logo, :created_by_id, :company_id, :contact_status_id)
   end
 
   def set_contact
