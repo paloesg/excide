@@ -27,8 +27,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       if resource.save
         if resource.company.save
           set_company_roles(resource)
-          set_default_folders(resource)
-          set_default_contact_statuses(resource)
         end
       end
     end
@@ -155,30 +153,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def set_company_roles(resource)
-    # Set company admin role only if old roles is not defined i.e. creating new company
-    resource.add_role(:admin, resource.company)
-    @motif_default_roles = ['franchisor', 'franchisee_owner']
-    @motif_default_roles.each do |role_name|
-      Role.create(name: role_name, resource: resource.company)
-    end
-  end
-
-  def set_default_folders(resource)
-    # Create default folders with permissions when creating a franchise
-    motif_default_folder_names = ["Financial", "Legal & Policy", "Social Media/App", "Media Repository (Training Videos & Materials)", "Operational", "Dialogue & Discussions", "Manuals & SOPs", "Site Audit", "Royalty Collection"]
-    # Get all the new folder instances
-    motif_default_folders = motif_default_folder_names.map{|name| Folder.create(name: name, company: resource.company)}
-    # Current user should have access permission to default folders
-    motif_default_folders.each do |folder|
-      # Create full access permission for franchisor
-      Permission.create(user_id: resource.id, permissible: folder, can_write: true, can_view: true, can_download: true)
-    end
-  end
-
-  def set_default_contact_statuses(resource)
-    default_statuses = [["No Status", "#FFFFFF"], ["Contacted", "#c1ebf7"], ["In Discussion", "#ffd3b3"], ["Due Dilligence", "#f7f2b2"], ["Said Yes", "#edfab1"], ["Said No", "#fab1b1"]]
-    default_statuses.each_with_index do |status, index|
-      ContactStatus.create(name: status[0], company: resource.company, position: index + 1, colour: status[1])
-    end
+    # Set franchisee or franchisor roles for listing
+    resource.add_role(:franchisee, resource.company)
+    # @motif_default_roles = ['franchisor', 'franchisee_owner']
+    # @motif_default_roles.each do |role_name|
+    #   Role.create(name: role_name, resource: resource.company)
+    # end
   end
 end
