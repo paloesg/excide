@@ -141,7 +141,7 @@ gem 'net-pop', require: false
 # Integrate Slack API
 gem 'slack-ruby-client'
 # Algolia search
-gem 'algoliasearch-rails'
+gem 'algoliasearch-rails', '1.25.0'
 # Amazon S3 SDK
 gem 'aws-sdk-s3', '~> 1.88.0'
 gem 'aws-sdk-textract', '~> 1.23.0'

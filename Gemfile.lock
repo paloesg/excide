@@ -127,13 +127,11 @@ GEM
     administrate-field-nested_has_many (1.3.0)
       administrate (> 0.8, < 1)
       cocoon (~> 1.2, >= 1.2.11)
-    algolia (2.3.0)
-      faraday (>= 0.15, < 3)
-      faraday-net_http_persistent (>= 0.15, < 3)
-      multi_json (~> 1.0)
-      net-http-persistent
-    algoliasearch-rails (2.2.1)
-      algolia (< 3.0.0)
+    algoliasearch (1.27.5)
+      httpclient (~> 2.8, >= 2.8.3)
+      json (>= 1.5.1)
+    algoliasearch-rails (1.25.0)
+      algoliasearch (>= 1.26.0, < 2.0.0)
       json (>= 1.5.1)
     ancestry (4.2.0)
       activerecord (>= 5.2.6)
@@ -183,7 +181,6 @@ GEM
     cocoon (1.2.15)
     coderay (1.1.3)
     concurrent-ruby (1.1.10)
-    connection_pool (2.3.0)
     countries (5.1.2)
       sixarm_ruby_unaccent (~> 1.1)
     crack (0.4.5)
@@ -237,9 +234,6 @@ GEM
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
     faraday-net_http (3.0.0)
-    faraday-net_http_persistent (2.1.0)
-      faraday (~> 2.5)
-      net-http-persistent (~> 4.0)
     ffi (1.15.5)
     font_awesome5_rails (1.5.0)
       nokogiri (>= 1.11.3)
@@ -273,6 +267,7 @@ GEM
     heapy (0.2.0)
       thor
     htmlentities (4.3.4)
+    httpclient (2.8.3)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
@@ -341,12 +336,9 @@ GEM
       money (~> 6.13.2)
       railties (>= 3.0)
     msgpack (1.5.6)
-    multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.2.3)
     nenv (0.3.0)
-    net-http-persistent (4.0.1)
-      connection_pool (~> 2.2)
     net-imap (0.2.3)
       digest
       net-protocol
@@ -673,7 +665,7 @@ DEPENDENCIES
   administrate-field-image
   administrate-field-jsonb
   administrate-field-nested_has_many
-  algoliasearch-rails
+  algoliasearch-rails (= 1.25.0)
   ancestry
   aws-sdk-s3 (~> 1.88.0)
   aws-sdk-textract (~> 1.23.0)
