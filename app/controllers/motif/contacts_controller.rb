@@ -6,6 +6,10 @@ class Motif::ContactsController < ApplicationController
   before_action :set_contact, only: [:update, :destroy]
   # after_action :verify_authorized
 
+  def index
+    @contacts = Contact.all
+  end
+
   def create
     @contact_status = policy_scope(ContactStatus).find(params[:contact][:contact_status_id])
 

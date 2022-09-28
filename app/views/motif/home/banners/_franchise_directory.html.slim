@@ -1,0 +1,21 @@
+.card.franchisee-list-banner
+  .row
+    .col-sm-7
+      .card-body.p-7
+        small.text-muted.text-uppercase.font-weight-bolder.m-0 Franchise Directory
+        h1.text-dark.font-weight-boldest.my-3 One-stop franchise directory
+        p.mb-1 Store and manage information about your franchise brand.
+        ul.pl-5
+          li
+            | Click a franchise profile to
+            b = " view or edit "
+            | information
+
+          li
+            | Want to add your franchise brand? Click “
+            b = "New Register"
+            | ” and we will get back to you
+    .image-container.col-sm-5
+      = image_pack_tag 'media/src/images/motif/franchisee-list.png', alt: "franchise-directory", class: 'img-fluid float-right smaller-image-height'
+      button.close.button-top-right type="submit"
+        i.material-icons close
