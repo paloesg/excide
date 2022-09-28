@@ -8,6 +8,7 @@ class AddDetailsToContacts < ActiveRecord::Migration[6.1]
     add_column :contacts, :average_investment, :string
     add_column :contacts, :royalty, :string
     add_column :contacts, :marketing_fees, :string
+    add_column :contacts, :renewal_fees, :string
     add_column :contacts, :franchisor_tenure, :string
   end
 end

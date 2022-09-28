@@ -239,6 +239,7 @@ ActiveRecord::Schema.define(version: 2022_09_28_072007) do
     t.string "average_investment"
     t.string "royalty"
     t.string "marketing_fees"
+    t.string "renewal_fees"
     t.string "franchisor_tenure"
     t.index ["contact_status_id"], name: "index_contacts_on_contact_status_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"

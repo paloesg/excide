@@ -8,20 +8,27 @@ class Motif::ContactsController < ApplicationController
 
   def index
     @contacts = Contact.all
+    @contact = Contact.new
      # Filter contacts that are searchable true
     @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: ''})
   end
 
   def create
-    @contact_status = policy_scope(ContactStatus).find(params[:contact][:contact_status_id])
-
     @contact = Contact.new(contact_params)
     @contact.created_by = current_user
     @contact.company = @company
-    @contact.contact_status = @contact_status
+
+    if params[:contact][:contact_status_id].present?
+      @contact_status = policy_scope(ContactStatus).find(params[:contact][:contact_status_id])
+      @contact.contact_status = @contact_status
+      notice_message = "Contact added to lead management board."
+    else
+      notice_message = "Added brand to directory!"
+    end
+
     # Redirect based on validation of contact
     if @contact.save
-      redirect_to motif_contact_statuses_path, notice: "Contact added to lead management board."
+      redirect_to params[:contact][:contact_status_id].present? ? motif_contact_statuses_path : motif_contacts_path, notice: notice_message
     else
       redirect_to motif_root_path, alert: "Error occurred. Add a support ticket or try again in awhile."
     end
@@ -53,7 +60,7 @@ class Motif::ContactsController < ApplicationController
   private
 
   def contact_params
-    params.require(:contact).permit(:name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :franchisor_tenure, :description, :brand_logo, :created_by_id, :company_id, :contact_status_id)
+    params.require(:contact).permit(:name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :renewal_fees, :franchisor_tenure, :description, :brand_logo, :created_by_id, :company_id, :contact_status_id)
   end
 
   def set_contact
