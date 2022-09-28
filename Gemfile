@@ -144,7 +144,7 @@ gem 'net-pop', require: false
 # Integrate Slack API
 gem 'slack-ruby-client'
 # Algolia search
-gem 'algoliasearch-rails'
+gem 'algoliasearch-rails', '1.25.0'
 # Amazon S3 SDK
 gem 'aws-sdk-s3', '~> 1.88.0'
 gem 'aws-sdk-textract', '~> 1.23.0'
@@ -176,6 +176,12 @@ gem 'deep_cloneable', '~> 3.0.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
+
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', require: false
+
+# Pin psych gem to prevent rails server error
+gem 'psych', '< 4'
 
 group :development do
   gem 'rails_real_favicon'
