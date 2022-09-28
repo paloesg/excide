@@ -31,6 +31,11 @@
                     = f.label :description, "About your branch *", class: "label-bold"
                     = f.rich_text_area :description, {class: "rich-text-height form-control col-sm-12", required: true, placeholder: "Instructions for users..."}
                   .form-group
+                    = f.label :company_logo, "Brand Logo", class: "label-bold"
+                    .custom-file
+                      = f.file_field :company_logo, class: "custom-file-input", id: "customFile"
+                      label.custom-file-label for="customFile"  Choose file
+                  .form-group
                     = f.label :year_founded, "Year Founded", class: "label-bold"
                     = f.text_field :year_founded, placeholder: '2020', class: 'form-control'
                   .form-group
@@ -57,11 +62,6 @@
                   .form-group
                     = f.label :franchisor_tenure, "Franchisor Tenure", class: "label-bold"
                     = f.text_field :franchisor_tenure, placeholder: '5 Years', class: 'form-control'
-                  / .form-group
-
-                  /   = text_field_tag :first_name, nil, placeholder: "Add user's first name...", class: 'form-control'
-                  / .form-group
-                  /   = text_field_tag :last_name, nil, placeholder: "Add user's last name...", class: 'form-control'
               .row.mt-3
                 .col-md-12
                   = f.submit "Save", class: 'btn btn-sm btn-primary float-right ml-3'
@@ -75,12 +75,6 @@
       div
         #hits
         #pagination
-      / - if @company.basic?
-      /   .premium-search-investors
-      /     .row.justify-content-center.mt-36
-      /       .col-sm-3.text-center
-      /         h3.my-5 Search Investor
-      /         p Find and get in contact with Investor profiles with Growth Package!
 javascript:
   function loadExtJS(src, callback) {
     var s = document.createElement('script');
@@ -94,12 +88,11 @@ javascript:
         '<div class="row no-gutters"><div class="col bg-light"><div class="profile-index-image-wrapper">' +
         '<img class="w-100" src="{{image_src}}"></div></div>' +
         '<div class="col-md-10"><div class="card-body">' +
-        '<div class="row"><div class="col"><h6 class="mb-4 text-muted text-uppercase">Investor</h6>' +
-        '<h2>{{{_highlightResult.company_name.value}}}</h2>' +
+        '<div class="row"><div class="col"><h6 class="mb-4 text-muted text-uppercase">{{_highlightResult.industry.value}}</h6>' +
+        '<h2>{{{_highlightResult.name.value}}}</h2>' +
         '<p class="card-text"></p><div id="truncate-company-information"></div>' +
         '<p></p><div class="mt-5">' +
         '<a target="_blank" class="btn btn-white border border-secondary text-primary mr-3" href="/overture/contacts/{{objectID}}">Read more</a>' +
-        '<a class="btn btn-primary mr-3" rel="nofollow" data-method="post" href="/overture/contacts?contact_id={{objectID}}">Add to fundraising board</a>' +
         '</div></div></div></div></div></div></div></div></div>{{/hits}}';
 
       var search = instantsearch({
