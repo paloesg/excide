@@ -4,4 +4,8 @@ class Contact < ApplicationRecord
   belongs_to :contact_status
 
   has_many :notes, as: :notable
+  include AlgoliaSearch
+  algoliasearch do
+    attribute :name
+  end
 end

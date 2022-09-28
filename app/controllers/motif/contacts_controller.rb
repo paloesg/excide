@@ -8,6 +8,8 @@ class Motif::ContactsController < ApplicationController
 
   def index
     @contacts = Contact.all
+     # Filter contacts that are searchable true
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: ''})
   end
 
   def create
