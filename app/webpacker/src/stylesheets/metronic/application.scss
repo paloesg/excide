@@ -4,7 +4,7 @@
 @import 'actiontext';
 
 // Import fonts
-@import '../src/stylesheets/metronic/css/font.scss';
+@import 'src/stylesheets/metronic/css/font.scss';
 
 //Bootstrap
 @import '~bootstrap/scss/bootstrap';
@@ -18,42 +18,42 @@
 @import "selectize/dist/css/selectize";
 @import "selectize/dist/css/selectize.default";
 
-@import "../src/stylesheets/metronic/css/custom";
-@import "../src/stylesheets/metronic/css/documents";
-@import "../src/stylesheets/metronic/css/invoices";
-@import "../src/stylesheets/metronic/css/notification";
-@import "../src/stylesheets/metronic/css/zoom";
-@import "../src/stylesheets/metronic/css/batches";
-@import "../src/stylesheets/metronic/css/companies";
-@import "../src/stylesheets/metronic/css/templates";
-@import "../src/stylesheets/metronic/css/pagination";
-@import "../src/stylesheets/metronic/css/workflows";
+@import "src/stylesheets/metronic/css/custom";
+@import "src/stylesheets/metronic/css/documents";
+@import "src/stylesheets/metronic/css/invoices";
+@import "src/stylesheets/metronic/css/notification";
+@import "src/stylesheets/metronic/css/zoom";
+@import "src/stylesheets/metronic/css/batches";
+@import "src/stylesheets/metronic/css/companies";
+@import "src/stylesheets/metronic/css/templates";
+@import "src/stylesheets/metronic/css/pagination";
+@import "src/stylesheets/metronic/css/workflows";
 @import "~@yaireo/tagify/src/tagify";
-@import "../src/stylesheets/metronic/motif/badges";
-@import "../src/stylesheets/metronic/motif/companies";
-@import "../src/stylesheets/metronic/motif/contact_statuses";
-@import "../src/stylesheets/metronic/motif/documents";
-@import "../src/stylesheets/metronic/motif/layout";
-@import "../src/stylesheets/metronic/motif/motif";
-@import "../src/stylesheets/metronic/motif/notes";
-@import "../src/stylesheets/metronic/motif/posts";
-@import "../src/stylesheets/metronic/motif/outlets";
-@import "../src/stylesheets/metronic/motif/templates";
-@import "../src/stylesheets/metronic/motif/workflows";
-@import "../src/stylesheets/metronic/overture/profiles";
-@import "../src/stylesheets/dashboard/admin";
-@import "../src/stylesheets/metronic/actiontext";
-@import "../src/stylesheets/metronic/banner";
+@import "src/stylesheets/metronic/motif/badges";
+@import "src/stylesheets/metronic/motif/companies";
+@import "src/stylesheets/metronic/motif/contact_statuses";
+@import "src/stylesheets/metronic/motif/documents";
+@import "src/stylesheets/metronic/motif/layout";
+@import "src/stylesheets/metronic/motif/motif";
+@import "src/stylesheets/metronic/motif/notes";
+@import "src/stylesheets/metronic/motif/posts";
+@import "src/stylesheets/metronic/motif/outlets";
+@import "src/stylesheets/metronic/motif/templates";
+@import "src/stylesheets/metronic/motif/workflows";
+@import "src/stylesheets/metronic/overture/profiles";
+@import "src/stylesheets/dashboard/admin";
+@import "src/stylesheets/metronic/actiontext";
+@import "src/stylesheets/metronic/banner";
 // Layout styling (Application html)
-@import "../src/stylesheets/metronic/css/layout";
+@import "src/stylesheets/metronic/css/layout";
 
 
 // Active storage direct upload
-@import "../src/stylesheets/dashboard/direct_upload";
+@import "src/stylesheets/dashboard/direct_upload";
 
 //icon
-@import "../src/stylesheets/metronic/css/flaticon";
-@import "../src/stylesheets/metronic/css/socicon";
+@import "src/stylesheets/metronic/css/flaticon";
+@import "src/stylesheets/metronic/css/socicon";
 //
 // Main Stylesheet
 //
@@ -65,9 +65,9 @@
 // Color scheme
 
 // // 1: Include global config
-@import "../src/stylesheets/metronic/init";
-@import "../src/stylesheets/metronic/style";
-@import "../src/stylesheets/metronic/style.bundle";
+@import "src/stylesheets/metronic/init";
+@import "src/stylesheets/metronic/style";
+@import "src/stylesheets/metronic/style.bundle";
 
 // Importing style of fullcalendar
-@import "../src/stylesheets/metronic/fullcalendar.bundle";
+@import "src/stylesheets/metronic/fullcalendar.bundle";
