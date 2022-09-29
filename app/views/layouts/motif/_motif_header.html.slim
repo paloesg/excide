@@ -55,7 +55,7 @@
         .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles"
           = "Designated user for " + current_user&.active_outlet&.company.name
     ul.navbar-nav.ml-auto
-      / Franchisee cannot access communication hub path. Only their individual outlet
+      / Franchisee cannot access sharing hub path. Only their individual outlet
       - if current_user.has_role?(:franchisee_owner, current_user.company)
         li.nav-link.mx-3
           = link_to motif_outlet_notes_path(current_user.active_outlet) do
