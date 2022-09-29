@@ -31,9 +31,9 @@
                     = f.label :description, "About your branch *", class: "label-bold"
                     = f.rich_text_area :description, {class: "rich-text-height form-control col-sm-12", required: true, placeholder: "Instructions for users..."}
                   .form-group
-                    = f.label :company_logo, "Brand Logo", class: "label-bold"
+                    = f.label :brand_logo, "Brand Logo", class: "label-bold"
                     .custom-file
-                      = f.file_field :company_logo, class: "custom-file-input", id: "customFile"
+                      = f.file_field :brand_logo, class: "custom-file-input", id: "customFile"
                       label.custom-file-label for="customFile"  Choose file
                   .form-group
                     = f.label :year_founded, "Year Founded", class: "label-bold"

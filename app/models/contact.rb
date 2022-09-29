@@ -12,6 +12,12 @@ class Contact < ApplicationRecord
 
   include AlgoliaSearch
   algoliasearch do
-    attribute :name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :franchisor_tenure, :searchable
+    attribute :name, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :franchisor_tenure, :searchable
+    attribute :industry do
+      industry.to_s.humanize
+    end
+    attribute :image_src do
+      "#{ brand_logo.present? ? "rails/active_storage/blobs/#{brand_logo.signed_id}/#{brand_logo.filename}" : "packs/media/src/images/motif/avatar-no-photo-692431e773d7106db54841efda3efd80.svg" }"
+    end
   end
 end
