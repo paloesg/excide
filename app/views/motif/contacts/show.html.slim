@@ -1,0 +1,45 @@
+.row
+  .col-sm-4.text-center
+    = image_tag(@contact.brand_logo, size: "150x150", class: "my-10 rounded") if @contact.brand_logo.attached?
+  .col-sm-8.d-flex.align-items-center.justify-content-end
+    = link_to "REGISTER INTEREST", "#", class: "btn btn-primary float-right"
+.row
+  .col-sm-3.bg-white.sidebar-border-radius.ml-20
+    .contact-detail-wrapper.p-5.rounded
+      .contact-detail.mb-5
+        h5 Year Founded
+        p = @contact.year_founded || "Not Applicable"
+      .contact-detail.mb-5
+        h5 Industry
+        p = @contact&.industry.humanize || "Not Applicable"
+      .contact-detail.mb-5
+        h5 Country of Origin
+        p = @contact.country_of_origin || "Not Applicable"
+      .contact-detail.mb-5
+        h5 Markets/Areas Available
+        p = @contact.markets_available || "Not Applicable"
+      .contact-detail.mb-5
+        h5 Franchise Fees
+        p = @contact.franchise_fees || "Not Applicable"
+      .contact-detail.mb-5
+        h5 Average Investment/unit/store
+        p = @contact.average_investment || "Not Applicable"
+      .contact-detail.mb-5
+        h5 Royalty (% of Turnover)
+        p = @contact.royalty || "Not Applicable"
+      .contact-detail.mb-5
+        h5 Marketing Fees
+        p = @contact.marketing_fees || "Not Applicable"
+      .contact-detail.mb-5
+        h5 Renewal Fees
+        p = @contact.renewal_fees || "Not Applicable"
+      .contact-detail.mb-5
+        h5 Franchisor Tenure
+        p = @contact.franchisor_tenure || "Not Applicable"
+  .col-sm-8
+    h1.mb-20 About this brand
+    = @contact.description.present? ? @contact.description.body.to_rendered_html_with_layout() : "No information displayed!"
+  / - else
+  /   .col-sm
+  /     .mx-20.mt-10
+  /       = @contact.investor_information.present? ? @contact.investor_information.body.to_rendered_html_with_layout() : "No information displayed!"

@@ -3,7 +3,7 @@ class Motif::ContactsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_contact, only: [:update, :destroy]
+  before_action :set_contact, only: [:show, :update, :destroy]
   # after_action :verify_authorized
 
   def index
@@ -33,6 +33,10 @@ class Motif::ContactsController < ApplicationController
     else
       redirect_to motif_root_path, alert: "Error occurred. Add a support ticket or try again in awhile."
     end
+  end
+
+  def show
+
   end
 
   def update
