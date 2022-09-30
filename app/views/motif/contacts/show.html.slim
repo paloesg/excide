@@ -2,7 +2,18 @@
   .col-sm-4.text-center
     = image_tag(@contact.brand_logo, size: "150x150", class: "my-10 rounded") if @contact.brand_logo.attached?
   .col-sm-8.d-flex.align-items-center.justify-content-end
-    = link_to "REGISTER INTEREST", "#", class: "btn btn-primary float-right"
+    button.btn.btn-primary.text-white data-target="#addRegisterInterest" data-toggle="modal" type="button"
+      i.material-icons-outlined.text-white add
+      | REGISTER INTEREST
+    #addRegisterInterest.modal.fade aria-hidden="true" aria-labelledby="registerInterest" role="dialog" tabindex="-1"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-header
+            h5#registerInterest.modal-title Register Interest
+          .modal-body
+            = form_tag motif_contact_register_interest_path(contact_id: @contact.id) do
+              = render "register_interest_form"
+    / = link_to "REGISTER INTEREST", "#", class: "btn btn-primary float-right"
 .row
   .col-sm-3.bg-white.sidebar-border-radius.ml-20
     .contact-detail-wrapper.p-5.rounded
