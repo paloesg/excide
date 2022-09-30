@@ -155,7 +155,9 @@ Rails.application.routes.draw do
       get "/assigned_tasks", to: 'outlets#assigned_tasks', as: :assigned_tasks
       get "/edit_franchisee_settings", to: 'outlets#edit_franchisee_setting', as: :edit_franchisee_setting
     end
-    resources :contacts
+    resources :contacts do
+      post "/register_interest", to: "contacts#register_interest", as: :register_interest
+    end
     resources :contact_statuses
     resources :users
     resources :posts

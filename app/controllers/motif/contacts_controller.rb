@@ -39,6 +39,38 @@ class Motif::ContactsController < ApplicationController
 
   end
 
+  def register_interest
+    puts "What is params"
+    @contact = Contact.find(params[:contact_id])
+    @contact.register_interest_data = {
+      title: params[:title],
+      first_name: params[:first_name],
+      last_name: params[:last_name],
+      mobile_country_code: params[:mobile_country_code],
+      mobile_number: params[:mobile_number],
+      email_address: params[:email_address],
+      personal_email_address: params[:personal_email_address],
+      company_name: params[:company_name],
+      company_website: params[:company_website],
+      my_designation: params[:my_designation],
+      interests: params[:interests],
+      others_reason: params[:others_reason] || "No other reasons of interest",
+      areas_of_interest: params[:areas_of_interest],
+      city: params[:city],
+      previous_franchise: params[:previous_franchise],
+      contact_name: @contact.name
+    }
+    respond_to do |format|
+      if @contact.save
+        format.html { redirect_to motif_contact_path(@contact), notice: "Interest registered. Please wait for us to contact you within the next few days." }
+        format.json { render json: { link_to: motif_contact_statuses_path, status: "ok" } }
+      else
+        format.html { redirect_to motif_root_path, alert: "Error registering interest. Please try again." }
+        format.json { render json: @contact.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def update
     @contact_status = ContactStatus.find_by(id: params[:contact_status_id])
     respond_to do |format|
@@ -65,7 +97,7 @@ class Motif::ContactsController < ApplicationController
   private
 
   def contact_params
-    params.require(:contact).permit(:name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :renewal_fees, :franchisor_tenure, :searchable, :description, :brand_logo, :created_by_id, :company_id, :contact_status_id)
+    params.require(:contact).permit(:name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :renewal_fees, :franchisor_tenure, :searchable, :description, :brand_logo, :register_interest_data, :created_by_id, :company_id, :contact_status_id)
   end
 
   def set_contact
