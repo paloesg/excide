@@ -242,7 +242,7 @@ ActiveRecord::Schema.define(version: 2022_09_30_173333) do
     t.string "renewal_fees"
     t.string "franchisor_tenure"
     t.boolean "searchable", default: false
-    t.jsonb "register_interest_data"
+    t.jsonb "register_interest_data", default: []
     t.index ["contact_status_id"], name: "index_contacts_on_contact_status_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end

@@ -40,9 +40,8 @@ class Motif::ContactsController < ApplicationController
   end
 
   def register_interest
-    puts "What is params"
     @contact = Contact.find(params[:contact_id])
-    @contact.register_interest_data = {
+    @contact.register_interest_data << {
       title: params[:title],
       first_name: params[:first_name],
       last_name: params[:last_name],
