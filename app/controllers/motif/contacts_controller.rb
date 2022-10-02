@@ -45,6 +45,7 @@ class Motif::ContactsController < ApplicationController
       title: params[:title],
       first_name: params[:first_name],
       last_name: params[:last_name],
+      capital_available: params[:capital_available],
       mobile_country_code: params[:mobile_country_code],
       mobile_number: params[:mobile_number],
       email_address: params[:email_address],
@@ -61,6 +62,8 @@ class Motif::ContactsController < ApplicationController
     }
     respond_to do |format|
       if @contact.save
+        # Send the email of the last registered interest (most recent one)
+        NotificationMailer.registered_interest(@contact, @contact.register_interest_data.last).deliver_later
         format.html { redirect_to motif_contact_path(@contact), notice: "Interest registered. Please wait for us to contact you within the next few days." }
         format.json { render json: { link_to: motif_contact_statuses_path, status: "ok" } }
       else
