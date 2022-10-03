@@ -155,9 +155,5 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def set_company_roles(resource)
     # Set franchisee or franchisor roles for listing
     resource.add_role(:franchisee, resource.company)
-    # @motif_default_roles = ['franchisor', 'franchisee_owner']
-    # @motif_default_roles.each do |role_name|
-    #   Role.create(name: role_name, resource: resource.company)
-    # end
   end
 end
