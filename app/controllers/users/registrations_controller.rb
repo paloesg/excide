@@ -18,6 +18,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     if params[:company].present?
       resource.company = Company.friendly.find(params[:company])
+      # Set to pro for normal franchise management usage
+      resource.company.account_type = 2
     else
       # Set company to basic plan for now
       resource.company.account_type = 1
@@ -155,9 +157,5 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def set_company_roles(resource)
     # Set franchisee or franchisor roles for listing
     resource.add_role(:franchisee, resource.company)
-    # @motif_default_roles = ['franchisor', 'franchisee_owner']
-    # @motif_default_roles.each do |role_name|
-    #   Role.create(name: role_name, resource: resource.company)
-    # end
   end
 end
