@@ -18,6 +18,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     if params[:company].present?
       resource.company = Company.friendly.find(params[:company])
+      # Set to pro for normal franchise management usage
+      resource.company.account_type = 2
     else
       # Set company to basic plan for now
       resource.company.account_type = 1
