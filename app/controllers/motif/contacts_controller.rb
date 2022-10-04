@@ -3,21 +3,72 @@ class Motif::ContactsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_contact, only: [:update, :destroy]
+  before_action :set_contact, only: [:show, :update, :destroy]
   # after_action :verify_authorized
 
-  def create
-    @contact_status = policy_scope(ContactStatus).find(params[:contact][:contact_status_id])
+  def index
+    @contact = Contact.new
+     # Filter contacts that are searchable true
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: 'searchable: true'})
+  end
 
+  def create
     @contact = Contact.new(contact_params)
     @contact.created_by = current_user
     @contact.company = @company
-    @contact.contact_status = @contact_status
+
+    if params[:contact][:contact_status_id].present?
+      @contact_status = policy_scope(ContactStatus).find(params[:contact][:contact_status_id])
+      @contact.contact_status = @contact_status
+      notice_message = "Contact added to lead management board."
+    else
+      @contact.searchable = true
+      notice_message = "Added brand to directory!"
+    end
+
     # Redirect based on validation of contact
     if @contact.save
-      redirect_to motif_contact_statuses_path, notice: "Contact added to lead management board."
+      redirect_to params[:contact][:contact_status_id].present? ? motif_contact_statuses_path : motif_contacts_path, notice: notice_message
     else
       redirect_to motif_root_path, alert: "Error occurred. Add a support ticket or try again in awhile."
+    end
+  end
+
+  def show
+
+  end
+
+  def register_interest
+    @contact = Contact.find(params[:contact_id])
+    @contact.register_interest_data << {
+      title: params[:title],
+      first_name: params[:first_name],
+      last_name: params[:last_name],
+      capital_available: params[:capital_available],
+      mobile_country_code: params[:mobile_country_code],
+      mobile_number: params[:mobile_number],
+      email_address: params[:email_address],
+      personal_email_address: params[:personal_email_address],
+      company_name: params[:company_name],
+      company_website: params[:company_website],
+      my_designation: params[:my_designation],
+      interests: params[:interests],
+      others_reason: params[:others_reason] || "No other reasons of interest",
+      areas_of_interest: params[:areas_of_interest],
+      city: params[:city],
+      previous_franchise: params[:previous_franchise],
+      contact_name: @contact.name
+    }
+    respond_to do |format|
+      if @contact.save
+        # Send the email of the last registered interest (most recent one)
+        NotificationMailer.registered_interest(@contact, @contact.register_interest_data.last).deliver_later
+        format.html { redirect_to motif_contact_path(@contact), notice: "Interest registered. Please wait for us to contact you within the next few days." }
+        format.json { render json: { link_to: motif_contact_statuses_path, status: "ok" } }
+      else
+        format.html { redirect_to motif_root_path, alert: "Error registering interest. Please try again." }
+        format.json { render json: @contact.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -47,7 +98,7 @@ class Motif::ContactsController < ApplicationController
   private
 
   def contact_params
-    params.require(:contact).permit(:name, :phone, :email, :company_name, :created_by_id, :company_id, :contact_status_id)
+    params.require(:contact).permit(:name, :industry, :year_founded, :country_of_origin, :markets_available, :franchise_fees, :average_investment, :royalty, :marketing_fees, :renewal_fees, :franchisor_tenure, :searchable, :description, :brand_logo, :register_interest_data, :created_by_id, :company_id, :contact_status_id)
   end
 
   def set_contact

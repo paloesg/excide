@@ -1,0 +1,115 @@
+.row
+  .col-sm-12
+    .form-group
+      = label_tag "interested", "I'm interested in this franchise", class: "label-bold"
+      = text_field_tag "interested", @contact.name, { disabled: true, required: true, placeholder: "Contact Name", class: 'form-control' }
+.row
+  .col-sm-12
+    = label_tag "something_else", "If you are looking for something else", class: "label-bold"
+.row.ml-2.my-2
+  .col-sm-12.form-check
+    = check_box_tag 'interests[]', 'f&b', false, class: 'form-check-input'
+    = label_tag 'f&b', 'Food & Beverages', class: 'form-check-label'
+.row.ml-2.my-2
+  .col-sm-12.form-check
+    = check_box_tag 'interests[]', 'education', false, class: 'form-check-input'
+    = label_tag 'education', 'Education', class: 'form-check-label'
+.row.ml-2.my-2
+  .col-sm-12.form-check
+    = check_box_tag 'interests[]', 'retail', false, class: 'form-check-input'
+    = label_tag 'retail', 'Retail', class: 'form-check-label'
+.row.ml-2.my-2
+  .col-sm-12.form-check
+    = check_box_tag 'interests[]', 'health_and_beauty', false, class: 'form-check-input'
+    = label_tag 'health_and_beauty', 'Health / Beauty', class: 'form-check-label'
+.row.ml-2.my-2
+  .col-sm-12.form-check
+    = check_box_tag 'interests[]', 'services_and_lifestyles', false, class: 'form-check-input'
+    = label_tag 'services_and_lifestyles', 'Services & Lifestyles', class: 'form-check-label'
+.row.ml-2.my-2
+  .col-sm-12.form-check
+    = check_box_tag 'interests[]', 'no_preferences', false, class: 'form-check-input'
+    = label_tag 'no_preferences', 'No preference', class: 'form-check-label'
+.row.ml-2.my-2
+  .col-sm-12.form-check
+    = check_box_tag 'interests[]', 'others', false, class: 'form-check-input'
+    = label_tag 'no_preferences', 'Others', class: 'form-check-label'
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "others_reason", "If others, please state here", class: "label-bold"
+      = text_field_tag "others_reason", nil, placeholder: "State your reason here", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "areas_of_interest", "Geographical Areas of Interest", class: "label-bold"
+      = text_field_tag "areas_of_interest", nil, placeholder: "Areas of interest", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "city", "City", class: "label-bold"
+      = text_field_tag "city", nil, placeholder: "City", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "title", "Title*", class: "label-bold"
+      = select_tag "title", options_for_select(["Dr", "Mdm", "Mr", "Ms", "Mrs"]), include_blank: true, prompt: 'Select title...', required: true, class: 'select2 form-control', style: 'width: 100%'
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "first_name", "First Name*", class: "label-bold"
+      = text_field_tag "first_name", nil, required: true, placeholder: "John", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "last_name", "Last Name*", class: "label-bold"
+      = text_field_tag "last_name", nil, required: true, placeholder: "Doe", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "capital_available", "Capital available for investment (USD)*", class: "label-bold"
+      = text_field_tag "capital_available", nil, required: true, placeholder: "Capital available", class: "form-control"
+.row.mt-2
+  .col-sm-12
+    = label_tag "mobile_number", "Mobile Number*", class: "label-bold"
+.row.mb-2
+  .col-sm-5
+    .form-group
+      = text_field_tag "mobile_country_code", nil, required: true, placeholder: "Mobile Country Code", class: "form-control"
+  .col-sm-7
+    .form-group
+      = text_field_tag "mobile_number", nil, required: true, placeholder: "Mobile No", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "email_address", "Email Address*", class: "label-bold"
+      = text_field_tag "email_address", nil, required: true, placeholder: "Email Address", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "personal_email_address", "Personal Email Address", class: "label-bold"
+      = text_field_tag "personal_email_address", nil, placeholder: "Personal Email Address", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "company_name", "My Company Name", class: "label-bold"
+      = text_field_tag "company_name", nil, placeholder: "Company Name", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "company_website", "My Company Website", class: "label-bold"
+      = text_field_tag "company_website", nil, placeholder: "Company Website", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "my_designation", "My Designation", class: "label-bold"
+      = text_field_tag "my_designation", nil, placeholder: "Designation", class: "form-control"
+.row.my-2
+  .col-sm-12
+    .form-group
+      = label_tag "previous_franchise", "Please state your pervious franchise or relevant business experience", class: "label-bold"
+      = text_area_tag "previous_franchise", nil, rows: 5, placeholder: "Designation", class: "form-control"
+.row.my-2
+  .col-md-12
+    = submit_tag "Save", class: 'btn btn-sm btn-primary float-right ml-3'
+    button.btn.btn-sm.btn-secondary.float-right data-dismiss="modal" type="button"  Close

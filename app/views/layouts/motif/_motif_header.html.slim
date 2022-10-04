@@ -42,18 +42,26 @@
             - current_user.outlets.order('name ASC').reject{ |o| o == current_user.active_outlet }.each do |outlet|
               - if outlet.name.present?
                 = link_to outlet.name, motif_change_outlet_path(current_user, user: {outlet_id: outlet.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
+        / Franchisee with no outlet, only for browsing franchise listing
+        - elsif current_user.has_role?(:franchisee, current_user.company)
+          = link_to(motif_contacts_path, class: "btn btn-secondary btn-default") do
+            ' #{current_user.company.name}
         / Franchisee but 1 outlet
         - else
           = link_to(motif_root_path, class: "btn btn-secondary btn-default") do
             ' #{current_user.active_outlet.name}
-      - if get_franchisee.present?
-        .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-#{get_franchisee.license_type}"
-          = get_franchisee.license_type.titleize + " of " + get_franchisee.parent_company.name
-      - elsif current_user.has_role?(:franchisor, current_user.company) or current_user.has_role?(:superadmin)
-        .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles" Franchisor
+      / Check if company is free plan or paid. If free, then label franchised user
+      - if current_user.company.basic?
+        .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-5 Entrepreneur
       - else
-        .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles"
-          = "Designated user for " + current_user&.active_outlet&.company.name
+        - if get_franchisee.present?
+          .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-#{get_franchisee.license_type}"
+            = get_franchisee.license_type.titleize + " of " + get_franchisee.parent_company.name
+        - elsif current_user.has_role?(:franchisor, current_user.company) or current_user.has_role?(:superadmin)
+          .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles" Franchisor
+        - else
+          .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles"
+            = "Designated user for " + current_user&.active_outlet&.company.name
     ul.navbar-nav.ml-auto
       / Franchisee cannot access sharing hub path. Only their individual outlet
       - if current_user.has_role?(:franchisee_owner, current_user.company)

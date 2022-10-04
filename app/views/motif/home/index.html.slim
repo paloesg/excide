@@ -197,5 +197,6 @@
         = image_pack_tag 'media/src/images/motif/motif-empty.svg'
         h2.mt-5 Looks like you don't have anything to do.
         p.mt-4 Maybe, you may want to ask your Franchisor about your tasks.
-        = link_to "Talk to Franchisor", motif_outlet_notes_path(current_user.active_outlet), class: "btn btn-primary ml-5"
+        - if current_user.active_outlet.present?
+          = link_to "Talk to Franchisor", motif_outlet_notes_path(current_user.active_outlet), class: "btn btn-primary ml-5"
 

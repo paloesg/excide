@@ -1,24 +1,41 @@
-.d-flex.align-items-center.container.h-100
-  .row.w-100
-    .col-md-6.mt-5
-      .row.d-flex.justify-content-center
-        .col-sm-8
-          h1.header-bold.mb-5.text-center Create Account
-          = form_for(resource, as: resource_name, url: registration_path(resource_name, product: params[:product])) do |f|
-            .form-group
-              = f.email_field :email, required: true, autofocus: true, placeholder: "Email", class: 'form-control'
-            .form-group
-              = f.password_field :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), input_html: { autocomplete: "new-password" }, placeholder: "Password", class: 'form-control'
-            .form-group
-              = f.password_field :password_confirmation, required: true, input_html: { autocomplete: "new-password" }, placeholder: "Confirm password", class: 'form-control'
-            span
-              | By signing up, you agree to the 
-              = link_to "terms and conditions", terms_path, target: "_blank", class: "font-weight-normal"
-            .form-group.mt-3
-              = f.submit "Create Account", class: "btn btn-primary text-nunito col-sm-12"
-            .text-center
-              = link_to 'Already have an account?', new_user_session_path, class: 'text-primary font-weight-bold'
-    .col-sm-6
-      = image_pack_tag 'media/src/images/symphony/login.png', alt: "login-page", class: 'img-fluid float-right'
-= devise_error_messages!
-
+.row
+  .col-sm-12
+    h1.text-center.font-weight-boldest style="font-size: 60px;" ADA Signup
+    h3.text-center style="font-size: 24px;" Don't worry about payment details for now
+.d-flex.align-items-center
+  .sign-up-wrapper.p-10.mx-auto.mt-10
+    .row.w-100.ml-40.mt-5
+      .col-md-5.mt-5
+        = image_pack_tag 'media/src/images/motif/franchisee-list.png', alt: "ada-logo", class: 'img-fluid'
+      .col-md-5.mt-5
+        .row.d-flex.justify-content-center
+          .col-sm-8
+            = form_for(@user, url: user_registration_path) do |f|
+              .form-group
+                = f.label :first_name, "First Name", class: "font-weight-bolder"
+                = f.text_field :first_name, required: true, autofocus: true, placeholder: "Elon", class: 'form-control'
+              .form-group
+                = f.label :last_name, "Last Name", class: "font-weight-bolder"
+                = f.text_field :last_name, required: true, autofocus: true, placeholder: "Musk", class: 'form-control'
+              = f.fields_for :company do |c|
+                .form-group
+                  = c.label :name, "Company Name (Optional)", class: "font-weight-bolder"
+                  = c.text_field :name, required: true, autofocus: true, placeholder: "SpaceY Co.", class: 'form-control'
+              .form-group
+                = f.label :email, "Email", class: "font-weight-bolder"
+                = f.email_field :email, required: true, placeholder: "Email", class: 'form-control'
+              .form-group
+                = f.label :password, "Password", class: "font-weight-bolder"
+                = f.password_field :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), input_html: { autocomplete: "new-password" }, placeholder: "Password", class: 'form-control'
+              .form-group
+                = f.label :password_confirmation, "Password Confirmation", class: "font-weight-bolder"
+                = f.password_field :password_confirmation, required: true, input_html: { autocomplete: "new-password" }, placeholder: "Confirm password", class: 'form-control'
+              span
+                | By signing up, you agree to the
+                = link_to " terms and conditions", terms_path, class: "font-weight-normal"
+                | .
+              .form-group.mt-3
+                = f.submit "Create Account", class: "btn btn-primary text-nunito col-sm-12"
+              .text-center
+                = link_to 'Already have an account?', new_user_session_path, class: 'text-primary font-weight-bold'
+/ = devise_error_messages!
