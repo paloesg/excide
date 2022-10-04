@@ -162,7 +162,7 @@ gem 'snitcher'
 #             Backend Admin                     #
 #                                               #
 #################################################
-gem 'administrate', '0.14.0'
+gem 'administrate'
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many'
 gem 'administrate-field-jsonb'
