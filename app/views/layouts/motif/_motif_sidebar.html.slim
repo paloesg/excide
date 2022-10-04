@@ -3,6 +3,11 @@
     = render "layouts/motif/motif_paid_sidebar"
   - else
     ul.nav.flex-column
+      li.nav-item.hover-blue.py-1.m-4.mt-11.cursor-pointer class="#{current_class(motif_root_path)}"
+        = link_to motif_root_path, class: 'col-sm-12 d-flex align-items-center' do
+          i.material-icons-outlined dashboard
+          .ml-2.sidebar-font Home
+    ul.nav.flex-column
       li.nav-item.hover-blue.py-1.m-4.mt-11.cursor-pointer class="#{current_class(motif_contacts_path)}"
         = link_to motif_contacts_path, class: 'col-sm-12 d-flex align-items-center' do
           i.material-icons-outlined search
