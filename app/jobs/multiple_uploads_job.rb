@@ -14,7 +14,7 @@ class MultipleUploadsJob < ApplicationJob
           # Create custom activity when upload document in motif
           document.create_activity key: 'workflow.motif_document_uploads', owner: user, recipient: wfa.workflow, params: { instructions: wfa.task.instructions  }
         end
-      # Comes from communication hub multiple uploads
+      # Comes from sharing hub multiple uploads
       else
         @generate_document = GenerateDocument.new(user, user.company, nil, nil, nil, document_type, nil, folder_id).run_without_associations
         document = @generate_document.document if @generate_document.success?

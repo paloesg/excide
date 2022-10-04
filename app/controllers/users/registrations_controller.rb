@@ -146,7 +146,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @contact.valid?
       @country_code = @contact.country_code
       @contact = @user.contact_number.remove(@country_code)
-      @country = Country.find_country_by_country_code(@country_code).name + " (+" + @country_code + ")"
+      @country = Country.find_country_by_country_code(@country_code).iso_short_name + " (+" + @country_code + ")"
     elsif @user&.company&.address&.country.present?
       @country = @user.company.address.country + " (+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
     else

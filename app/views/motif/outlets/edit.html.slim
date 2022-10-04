@@ -34,7 +34,7 @@
         = f.label :contact, "Telephone", class: "label-bold"
         .row
           .col-md-2
-            = select_tag "country_code", options_for_select(Country.all.map{ |c| c.name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'select2 form-control'
+            = select_tag "country_code", options_for_select(Country.all.map{ |c| c.iso_short_name + " (+" + c.country_code + ")" }.sort, @country), include_blank: true, class: 'select2 form-control'
           .col-md-3
             = text_field_tag "contact", @contact, placeholder: "Contact Number", class: 'form-control'
       = f.label :header_image, class: "label-bold"
