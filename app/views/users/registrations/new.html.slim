@@ -19,11 +19,11 @@
                 = f.text_field :last_name, required: true, autofocus: true, placeholder: "Musk", class: 'form-control'
               = f.fields_for :company do |c|
                 .form-group
-                  = c.label :name, "Franchisee Name", class: "font-weight-bolder"
+                  = c.label :name, "Company Name (Optional)", class: "font-weight-bolder"
                   = c.text_field :name, required: true, autofocus: true, placeholder: "SpaceY Co.", class: 'form-control'
               .form-group
-                = f.label :email, "Work Email", class: "font-weight-bolder"
-                = f.email_field :email, required: true, placeholder: "Work Email", class: 'form-control'
+                = f.label :email, "Email", class: "font-weight-bolder"
+                = f.email_field :email, required: true, placeholder: "Email", class: 'form-control'
               .form-group
                 = f.label :password, "Password", class: "font-weight-bolder"
                 = f.password_field :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), input_html: { autocomplete: "new-password" }, placeholder: "Password", class: 'form-control'

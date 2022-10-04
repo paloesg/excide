@@ -52,7 +52,7 @@
             ' #{current_user.active_outlet.name}
       / Check if company is free plan or paid. If free, then label franchised user
       - if current_user.company.basic?
-        .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-5 Franchisee
+        .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-5 Entrepreneur
       - else
         - if get_franchisee.present?
           .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-#{get_franchisee.license_type}"
