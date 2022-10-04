@@ -12,6 +12,6 @@ nav.navigation role="navigation"
   = link_to 'Overture', overture_root_path, class: "navigation__link"
   hr
   - Administrate::Namespace.new(namespace).resources.each do |resource|
-    = link_to(display_resource_name(resource), [namespace, resource.path], class: "navigation__link navigation__link--#{nav_link_state(resource)}")
+    = link_to(display_resource_name(resource), [namespace, resource.path.to_sym], class: "navigation__link navigation__link--#{nav_link_state(resource)}")
   hr
   = link_to 'Log Out', destroy_user_session_path, method: :delete, class: "navigation__link"
