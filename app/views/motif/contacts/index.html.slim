@@ -30,7 +30,7 @@
                       = f.select :industry, Contact.industries.map { |k, v| [k.titleize, k] }, {prompt: 'Select industry type...'}, {class: 'select2', style: 'width: 100%',  required: true}
                     .form-group
                       = f.label :description, "About your branch *", class: "label-bold"
-                      = f.rich_text_area :description, {class: "rich-text-height form-control col-sm-12", required: true, placeholder: "Instructions for users..."}
+                      = f.rich_text_area :description, {class: "customized-min-height form-control col-sm-12", required: true, placeholder: "Instructions for users..."}
                     .form-group
                       = f.label :brand_logo, "Brand Logo", class: "label-bold"
                       .custom-file
