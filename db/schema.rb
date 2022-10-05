@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_30_173333) do
+ActiveRecord::Schema.define(version: 2022_10_05_062224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -243,6 +243,9 @@ ActiveRecord::Schema.define(version: 2022_09_30_173333) do
     t.string "franchisor_tenure"
     t.boolean "searchable", default: false
     t.jsonb "register_interest_data", default: []
+    t.string "phone"
+    t.string "email"
+    t.string "company_name"
     t.index ["contact_status_id"], name: "index_contacts_on_contact_status_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
   end
