@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if current_user.has_role?(:franchisee, current_user.company)
+    if current_user.has_role?(:entrepreneur, current_user.company) or current_user.has_role?(:interested_franchisor, current_user.company)
       '/' + current_user.company.products.first + '/contacts'
     elsif current_user.company.products.count == 1
       # Path after sign in is the product's root path
