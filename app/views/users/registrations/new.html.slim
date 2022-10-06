@@ -10,7 +10,7 @@
       .col-md-5.mt-5
         .row.d-flex.justify-content-center
           .col-sm-8
-            = form_for(@user, url: user_registration_path) do |f|
+            = form_for(@user, url: user_registration_path(sign_up: params[:sign_up])) do |f|
               .form-group
                 = f.label :first_name, "First Name", class: "font-weight-bolder"
                 = f.text_field :first_name, required: true, autofocus: true, placeholder: "Elon", class: 'form-control'
@@ -20,7 +20,7 @@
               = f.fields_for :company do |c|
                 .form-group
                   = c.label :name, "Company Name (Optional)", class: "font-weight-bolder"
-                  = c.text_field :name, required: true, autofocus: true, placeholder: "SpaceY Co.", class: 'form-control'
+                  = c.text_field :name, autofocus: true, placeholder: "SpaceY Co.", class: 'form-control'
               .form-group
                 = f.label :email, "Email", class: "font-weight-bolder"
                 = f.email_field :email, required: true, placeholder: "Email", class: 'form-control'

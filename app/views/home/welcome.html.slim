@@ -1,0 +1,10 @@
+.row.mt-10
+  .col-sm-12
+    = image_pack_tag 'media/src/images/motif/home.png', alt: "ada-logo", class: 'mx-auto d-block'
+.d-flex.align-items-center
+  .p-10.mx-auto.mt-20
+    .row.mt-5
+      .col-md-6
+        = link_to "Sign up as franchisor", "/users/sign_up/ada?sign_up=interested_franchisor", class: "btn btn-primary"
+      .col-sm-6
+        = link_to "Sign up to register interest", "/users/sign_up/ada?sign_up=entrepreneur", class: "btn btn-primary", style: "width: 120%;"

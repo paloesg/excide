@@ -241,6 +241,7 @@ Rails.application.routes.draw do
   # Static pages
   get 'terms', to: 'home#terms'
   get 'privacy', to: 'symphony/home#privacy'
+  get 'welcome', to: 'home#welcome'
 
   # Stripe event path for webhook
   mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path

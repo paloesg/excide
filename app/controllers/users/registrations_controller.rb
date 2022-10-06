@@ -21,6 +21,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
       # Set to pro for normal franchise management usage
       resource.company.account_type = 2
     else
+      # Company is optional when signing up to ADA. In case of this, we create a default company with their name in it
+      if resource.company.nil?
+        resource.company = Company.create(name: resource.full_name)
+      end
       # Set company to basic plan for now
       resource.company.account_type = 1
       resource.company.products = ["motif"]
@@ -28,7 +32,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       resource.company.storage_limit = 2147483648
       if resource.save
         if resource.company.save
-          set_company_roles(resource)
+          set_company_roles(resource, params[:sign_up])
         end
       end
     end
@@ -120,7 +124,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(_resource)
-    "/motif"
+    "/motif/contacts"
   end
 
   def sign_up_params
@@ -154,8 +158,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def set_company_roles(resource)
+  def set_company_roles(resource, role=nil)
     # Set franchisee or franchisor roles for listing
-    resource.add_role(:franchisee, resource.company)
+    resource.add_role(role.to_sym, resource.company)
   end
 end
