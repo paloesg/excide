@@ -22,12 +22,12 @@ class Motif::ContactsController < ApplicationController
       @contact.contact_status = @contact_status
       notice_message = "Contact added to lead management board."
     else
-      @contact.searchable = true
-      notice_message = "Added brand to directory!"
+      notice_message = "Your brand will be added to the directory after 1-2 days! Thank you for your time!"
     end
 
     # Redirect based on validation of contact
     if @contact.save
+      NotificationMailer.check_potential_franchise(@contact).deliver_later unless params[:contact][:contact_status_id].present?
       redirect_to params[:contact][:contact_status_id].present? ? motif_contact_statuses_path : motif_contacts_path, notice: notice_message
     else
       redirect_to motif_root_path, alert: "Error occurred. Add a support ticket or try again in awhile."

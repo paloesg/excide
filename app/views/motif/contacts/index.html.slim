@@ -6,7 +6,6 @@
     button.close.open-banner.text-dark.mr-3 type="submit"
       i.material-icons-outlined.float-right help_outline
 = render 'motif/home/banners/franchise_directory'
-/ = render "overture/investments/add_new_overture_user_modal"
 .row.mb-3.mt-5.ml-3.position-relative
   .col-sm-12
     - if current_user.has_role?(:entrepreneur, @company) || current_user.has_role?(:superadmin)
