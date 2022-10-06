@@ -21,6 +21,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       # Set to pro for normal franchise management usage
       resource.company.account_type = 2
     else
+      # Company is optional when signing up to ADA. In case of this, we create a default company with their name in it
       if resource.company.nil?
         resource.company = Company.create(name: resource.full_name)
       end
