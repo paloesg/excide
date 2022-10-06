@@ -20,7 +20,7 @@
               = f.fields_for :company do |c|
                 .form-group
                   = c.label :name, "Company Name (Optional)", class: "font-weight-bolder"
-                  = c.text_field :name, required: true, autofocus: true, placeholder: "SpaceY Co.", class: 'form-control'
+                  = c.text_field :name, autofocus: true, placeholder: "SpaceY Co.", class: 'form-control'
               .form-group
                 = f.label :email, "Email", class: "font-weight-bolder"
                 = f.email_field :email, required: true, placeholder: "Email", class: 'form-control'
