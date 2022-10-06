@@ -9,7 +9,7 @@
 / = render "overture/investments/add_new_overture_user_modal"
 .row.mb-3.mt-5.ml-3.position-relative
   .col-sm-12
-    - if current_user.has_role?(:franchisee, @company)
+    - if current_user.has_role?(:entrepreneur, @company) || current_user.has_role?(:superadmin)
       button.btn.btn-primary.text-white.float-right.ml-5 data-target="#addDirectory" data-toggle="modal" type="button"
         i.material-icons-outlined.text-white add
         | List Franchise
