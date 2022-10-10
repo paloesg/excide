@@ -7,19 +7,13 @@ html lang="en"
     meta name="turbolinks-cache-control" content="no-cache"
     link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet"
     link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"
-    script async=true src="https://www.googletagmanager.com/gtag/js?id=UA-93342323-1"
+    /! Google tag (gtag.js)
+    script async="" src="https://www.googletagmanager.com/gtag/js?id=G-VNRZ35220F"
     javascript:
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'UA-93342323-1');
-      document.addEventListener('turbolinks:load', event => {
-        if (typeof gtag === 'function') {
-          gtag('config', 'UA-93342323-1', {
-            'page_location': event.data.url
-          });
-        }
-      });
+      gtag('config', 'G-VNRZ35220F');
     script src="https://js.stripe.com/v3/"
     = render 'application/favicon'
     title = title
