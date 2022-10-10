@@ -12,6 +12,7 @@ class Company < ApplicationRecord
   has_many :batches, dependent: :destroy
   has_many :clients, dependent: :destroy
   has_many :contacts, dependent: :destroy
+  has_many :contact_statuses, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :folders, dependent: :destroy

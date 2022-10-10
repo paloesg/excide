@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '3.0.3'
+ruby '3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1.0'
@@ -27,8 +27,6 @@ gem 'rack-timeout'
 gem 'lograge'
 # The default JavaScript compiler for Rails 6
 gem 'webpacker', '~> 5.2.1'
-# Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', require: false
 # Lock sprockets version because new version of sprockets require manifest file
 gem 'sprockets', '~>3.7.0'
 
@@ -130,6 +128,10 @@ gem 'inky-rb', require: 'inky'
 # Stylesheet inlining for email
 gem 'premailer-rails'
 
+gem 'net-smtp', require: false
+gem 'net-imap', require: false
+gem 'net-pop', require: false
+
 #################################################
 #                                               #
 #             External Integrations             #
@@ -139,7 +141,7 @@ gem 'premailer-rails'
 # Integrate Slack API
 gem 'slack-ruby-client'
 # Algolia search
-gem 'algoliasearch-rails'
+gem 'algoliasearch-rails', '1.25.0'
 # Amazon S3 SDK
 gem 'aws-sdk-s3', '~> 1.88.0'
 gem 'aws-sdk-textract', '~> 1.23.0'
@@ -160,7 +162,7 @@ gem 'snitcher'
 #             Backend Admin                     #
 #                                               #
 #################################################
-gem 'administrate', '0.14.0'
+gem 'administrate'
 gem 'administrate-field-image'
 gem 'administrate-field-nested_has_many'
 gem 'administrate-field-jsonb'
@@ -171,6 +173,12 @@ gem 'deep_cloneable', '~> 3.0.0'
 
 # Heroku requirement for static asset serving and logging
 gem 'rails_12factor', group: :production
+
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', require: false
+
+# Pin psych gem to prevent rails server error
+gem 'psych', '< 4'
 
 group :development do
   gem 'rails_real_favicon'

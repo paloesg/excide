@@ -17,6 +17,7 @@ class DashboardManifest
     :clients,
     :companies,
     :contact_statuses,
+    :contacts,
     :documents,
     :document_templates,
     :events,

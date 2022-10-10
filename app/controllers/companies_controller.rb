@@ -22,6 +22,8 @@ class CompaniesController < ApplicationController
     authorize @company
     # Save the new company's product(s)
     @company.products = params[:products]
+    # Add pro plan to company
+    @company.account_type = "pro"
     # By default, set company storage limit to 2Gb upon creation
     @company.storage_limit = 2147483648
     if @company.save

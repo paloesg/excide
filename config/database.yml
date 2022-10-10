@@ -72,6 +72,6 @@ test:
 #
 production:
   <<: *default
-  database: excide_production
+  database: asiawide_production
   username: <%= ENV['EXCIDE_DATABASE_USERNAME'] %>
   password: <%= ENV['EXCIDE_DATABASE_PASSWORD'] %>

@@ -16,7 +16,7 @@
   .col-md-6
     .form-group
       = f.label :country, 'Country'
-      = f.select :country, Country.all.map{ |c| c.name }.sort, {}, { class: 'select2 form-control', required: true }
+      = f.select :country, Country.all.map{ |c| c.iso_short_name }.sort, {}, { class: 'select2 form-control', required: true }
 .row
   .col-md-6
     .form-group

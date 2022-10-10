@@ -83,6 +83,39 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
+  def registered_interest(contact, latest_register_interest)
+    person_name = "#{latest_register_interest["title"]} #{latest_register_interest["first_name"]} #{latest_register_interest["last_name"]}"
+    mobile_number = "#{latest_register_interest["mobile_country_code"]} #{latest_register_interest["mobile_number"]}"
+    #to email will be changed with afc's support email
+    mail(to: ['jonathan.lau@paloe.com.sg', 'kristian.hadinata@paloe.com.sg'], from: 'Asiawide Digital Support <tester@paloe.com.sg>', subject: 'New Registered Interest', body: 'New Registered Interest', template_id: ENV['ADA_REGISTERED_INTEREST'], dynamic_template_data: {
+        franchise_name: contact.name,
+        registered_interest_user: person_name,
+        capital_available: latest_register_interest["capital_available"],
+        mobile_number: mobile_number,
+        email: latest_register_interest["email_address"]
+      }
+    )
+  end
+
+  def check_potential_franchise(contact)
+    #to email will be changed with afc's support email
+    mail(to: ['jonathan.lau@paloe.com.sg', 'kristian.hadinata@paloe.com.sg'], from: 'Asiawide Digital Support <tester@paloe.com.sg>', subject: 'New interest to list franchise', body: 'New Registered Interest', template_id: ENV['ADA_LIST_FRANCHISE'], dynamic_template_data: {
+        brand_name: contact.name,
+        user_email: contact.created_by.email,
+        industry: contact.industry,
+        year_founded: contact.year_founded,
+        country_of_origin: contact.country_of_origin,
+        markets_available: contact.markets_available,
+        franchise_fees: contact.franchise_fees,
+        average_investment: contact.average_investment,
+        royalty: contact.royalty,
+        marketing_fees: contact.marketing_fees,
+        renewal_fees: contact.renewal_fees,
+        franchisor_tenure: contact.franchisor_tenure
+      }
+    )
+  end
+
   # Conductor's email notification methods!
   # Most of the removed mailer methods below were called in event.rb. associate_notification was called in scehduler.rake as a daily reminder to associate.
   # Removed conductor's create_event, edit_event, destroy_event, user_removed_from_event, event_notification and associate_notification methods from the following PR:

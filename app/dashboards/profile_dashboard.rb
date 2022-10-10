@@ -11,7 +11,7 @@ class ProfileDashboard < Administrate::BaseDashboard
     id: Field::String.with_options(searchable: false),
     name: Field::String,
     url: Field::String,
-    company_information: Field::RichTextAreaField,
+    # company_information: Field::RichTextAreaField,
     profile_logo: Field::ActiveStorage,
     categories: Field::ActsAsTaggable,
   }.freeze
@@ -34,7 +34,6 @@ class ProfileDashboard < Administrate::BaseDashboard
   id
   name
   url
-  company_information
   profile_logo
   categories
   ].freeze
@@ -45,7 +44,6 @@ class ProfileDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
   name
   url
-  company_information
   profile_logo
   categories
   ].freeze

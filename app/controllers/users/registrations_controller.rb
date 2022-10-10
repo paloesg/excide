@@ -5,8 +5,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    if (params[:product] == "symphony" || params[:product] == "motif")
-      super
+    if (params[:product] == "symphony" || params[:product] == "ada" || params[:product] == "overture")
+      @user = User.new
+      @user.build_company
     else
       raise ActionController::RoutingError.new('Invalid Product Name in URL')
     end
@@ -17,23 +18,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     if params[:company].present?
       resource.company = Company.friendly.find(params[:company])
+      # Set to pro for normal franchise management usage
+      resource.company.account_type = 2
     else
-      company = Company.new(name: resource.email + "'s company")
-      # Set company to basic plan for now
-      company.account_type = 0
-      company.save
-      resource.company = company
-      if params[:product].present?
-        resource.company.products = [params[:product]]
-        resource.company.save
-        resource.save
+      # Company is optional when signing up to ADA. In case of this, we create a default company with their name in it
+      if resource.company.nil?
+        resource.company = Company.create(name: resource.full_name)
       end
-    end
-    role = params[:role].present? ? params[:role] : "admin"
-    if resource.company.present?
-      resource.add_role role.to_sym, resource.company
-    else
-      resource.add_role role.to_sym
+      # Set company to basic plan for now
+      resource.company.account_type = 1
+      resource.company.products = ["motif"]
+      # By default, set company storage limit to 2Gb upon creation
+      resource.company.storage_limit = 2147483648
+      if resource.save
+        if resource.company.save
+          set_company_roles(resource, params[:sign_up])
+        end
+      end
     end
     yield resource if block_given?
     if resource.persisted?
@@ -123,7 +124,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(_resource)
-    additional_information_path(subscription_type: params[:user][:subscription_type].present? ? params[:user][:subscription_type] : nil)
+    "/motif/contacts"
+  end
+
+  def sign_up_params
+    params.require(:user).permit(:first_name, :last_name, :contact_number, :company_id, :email, :password, :password_confirmation, :current_password, :stripe_card_token, :stripe_customer_id, company_attributes:[:id, :name, :website_url])
   end
 
   # The path used after sign up for inactive accounts.
@@ -145,11 +150,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @contact.valid?
       @country_code = @contact.country_code
       @contact = @user.contact_number.remove(@country_code)
-      @country = Country.find_country_by_country_code(@country_code).name + " (+" + @country_code + ")"
+      @country = Country.find_country_by_country_code(@country_code).iso_short_name + " (+" + @country_code + ")"
     elsif @user&.company&.address&.country.present?
       @country = @user.company.address.country + " (+" + Country.find_country_by_name(@user.company.address.country).country_code + ")"
     else
       @country = nil;
     end
+  end
+
+  def set_company_roles(resource, role=nil)
+    # Set franchisee or franchisor roles for listing
+    resource.add_role(role.to_sym, resource.company)
   end
 end
