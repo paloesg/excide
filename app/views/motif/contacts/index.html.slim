@@ -8,7 +8,7 @@
 = render 'motif/home/banners/franchise_directory'
 .row.mb-3.mt-5.ml-3.position-relative
   .col-sm-12
-    - if current_user.has_role?(:entrepreneur, @company) || current_user.has_role?(:superadmin)
+    - if current_user.has_role?(:franchisor_free, @company) || current_user.has_role?(:superadmin)
       button.btn.btn-primary.text-white.float-right.ml-5 data-target="#addDirectory" data-toggle="modal" type="button"
         i.material-icons-outlined.text-white add
         | List Franchise
@@ -16,7 +16,7 @@
         .modal-dialog role="document"
           .modal-content
             .modal-header
-              h5#registerDirectory.modal-title Add Franchise
+              h5#registerDirectory.modal-title List Franchise
             .modal-body
               = form_for(@contact, url: motif_contacts_path, html: { method: :post }) do |f|
                 .row.mt-3
