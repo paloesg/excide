@@ -2,10 +2,27 @@
   = link_to motif_contacts_path, class: "navbar-brand p-2" do
     = image_pack_tag("media/src/images/motif/ADA-logo.png", class: "motif-company-logo mr-5")
   ul.navbar-nav
-    / Change company dropdown
-    li.nav-item.dropdown.rounded.ml-5.ml-md-0.mb-3.mb-md-0
-      = link_to(motif_contacts_path, class: "btn btn-secondary btn-default") do
-        ' #{current_user.company.name}
+    / Change company dropdown, if superadmin, show all companies
+    - if current_user.has_role?(:superadmin)
+      - if Company.assigned_companies(current_user).present?
+        button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+          | #{current_user.company.name}
+          i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
+        #company-dropdown.dropdown-menu aria-labelledby="dropdownMenuButton"
+          - if current_user.has_role? :superadmin
+            - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
+              - if company.name.present?
+                = link_to company.name, change_company_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
+            .dropdown-divider
+            = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
+          - else
+            - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
+              - if company.name.present?
+                = link_to company.name, change_company_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
+    - else
+      li.nav-item.dropdown.rounded.ml-5.ml-md-0.mb-3.mb-md-0
+        = link_to(motif_contacts_path, class: "btn btn-secondary btn-default") do
+          ' #{current_user.company.name}
     / Check if company is free plan or paid. If free, then label franchised user
     - if current_user.company.basic?
       - if current_user.has_role?(:franchisor_free, current_user.company)
