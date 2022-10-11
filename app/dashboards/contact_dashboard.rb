@@ -26,7 +26,6 @@ class ContactDashboard < Administrate::BaseDashboard
     name: Field::String,
     notes: Field::HasMany,
     phone: Field::String,
-    register_interest_data: Field::String.with_options(searchable: false),
     renewal_fees: Field::String,
     royalty: Field::String,
     searchable: Field::Boolean,
@@ -67,7 +66,6 @@ class ContactDashboard < Administrate::BaseDashboard
     name
     notes
     phone
-    register_interest_data
     renewal_fees
     description
     royalty
@@ -97,7 +95,6 @@ class ContactDashboard < Administrate::BaseDashboard
     name
     notes
     phone
-    register_interest_data
     renewal_fees
     description
     royalty
