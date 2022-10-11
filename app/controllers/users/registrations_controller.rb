@@ -159,7 +159,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def set_company_roles(resource, role=nil)
-    # Set franchisee or franchisor roles for listing
-    resource.add_role(role.to_sym, resource.company)
+    if role == "franchisor"
+      resource.add_role(:franchisor_free, resource.company)
+    else
+      # Set franchisee or franchisor roles for listing
+      resource.add_role(role.to_sym, resource.company)
+    end
   end
 end

@@ -1,0 +1,24 @@
+- if current_user.has_role?(:entrepreneur, current_user.company) || current_user.has_role?(:franchisor_free, current_user.company) || current_user.company.basic?
+  = link_to motif_contacts_path, class: "navbar-brand p-2" do
+    = image_pack_tag("media/src/images/motif/ADA-logo.png", class: "motif-company-logo mr-5")
+  ul.navbar-nav
+    / Change company dropdown
+    li.nav-item.dropdown.rounded.ml-5.ml-md-0.mb-3.mb-md-0
+      = link_to(motif_contacts_path, class: "btn btn-secondary btn-default") do
+        ' #{current_user.company.name}
+    / Check if company is free plan or paid. If free, then label franchised user
+    - if current_user.company.basic?
+      - if current_user.has_role?(:franchisor_free, current_user.company)
+        .label.label-pill.label-inline.text-dark.p-3.my-auto.ml-5 Franchisor (Free)
+      - else
+        .label.label-pill.label-inline.text-dark.p-3.my-auto.ml-5 = current_user.roles.first.name.humanize
+  ul.navbar-nav.ml-auto.p-2
+    li.nav-link.m-3
+      = link_to "Browse Business Opportunities", motif_contacts_path, class: "text-dark", style: "font-size: 14px;"
+    .dropdown.ml-3.my-3
+      a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+        = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
+      .dropdown-menu.dropdown-menu-right aria-labelledby="userDropdownMenu"
+        li
+          = link_to destroy_user_session_path, {method: :delete, class: 'dropdown-item'} do
+            | Log Out
