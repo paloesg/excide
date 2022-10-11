@@ -41,22 +41,22 @@ class Motif::ContactsController < ApplicationController
   def register_interest
     @contact = Contact.find(params[:contact_id])
     @contact.register_interest_data << {
-      title: params[:title],
-      first_name: params[:first_name],
-      last_name: params[:last_name],
-      capital_available: params[:capital_available],
-      mobile_country_code: params[:mobile_country_code],
-      mobile_number: params[:mobile_number],
-      email_address: params[:email_address],
-      personal_email_address: params[:personal_email_address],
-      company_name: params[:company_name],
-      company_website: params[:company_website],
-      my_designation: params[:my_designation],
-      interests: params[:interests],
+      title: params[:title] || nil,
+      first_name: params[:first_name] || nil,
+      last_name: params[:last_name] || nil,
+      capital_available: params[:capital_available] || nil,
+      mobile_country_code: params[:mobile_country_code] || nil,
+      mobile_number: params[:mobile_number] || nil,
+      email_address: params[:email_address] || nil,
+      personal_email_address: params[:personal_email_address] || nil,
+      company_name: params[:company_name] || nil,
+      company_website: params[:company_website] || nil,
+      my_designation: params[:my_designation] || nil,
+      interests: params[:interests] || nil,
       others_reason: params[:others_reason] || "No other reasons of interest",
-      areas_of_interest: params[:areas_of_interest],
-      city: params[:city],
-      previous_franchise: params[:previous_franchise],
+      areas_of_interest: params[:areas_of_interest] || nil,
+      city: params[:city] || nil,
+      previous_franchise: params[:previous_franchise] || nil,
       contact_name: @contact.name
     }
     respond_to do |format|

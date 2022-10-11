@@ -87,7 +87,7 @@ class NotificationMailer < ApplicationMailer
     person_name = "#{latest_register_interest["title"]} #{latest_register_interest["first_name"]} #{latest_register_interest["last_name"]}"
     mobile_number = "#{latest_register_interest["mobile_country_code"]} #{latest_register_interest["mobile_number"]}"
     #to email will be changed with afc's support email
-    mail(to: ['jonathan.lau@paloe.com.sg', 'kristian.hadinata@paloe.com.sg'], from: 'Asiawide Digital Support <tester@paloe.com.sg>', subject: 'New Registered Interest', body: 'New Registered Interest', template_id: ENV['ADA_REGISTERED_INTEREST'], dynamic_template_data: {
+    mail(to: "ada@paloe.com.sg", from: 'Asiawide Digital Support <support@paloe.com.sg>', subject: 'New Registered Interest', body: 'New Registered Interest', template_id: ENV['ADA_REGISTERED_INTEREST'], dynamic_template_data: {
         franchise_name: contact.name,
         registered_interest_user: person_name,
         capital_available: latest_register_interest["capital_available"],
@@ -99,7 +99,7 @@ class NotificationMailer < ApplicationMailer
 
   def check_potential_franchise(contact)
     #to email will be changed with afc's support email
-    mail(to: ['jonathan.lau@paloe.com.sg', 'kristian.hadinata@paloe.com.sg'], from: 'Asiawide Digital Support <tester@paloe.com.sg>', subject: 'New interest to list franchise', body: 'New Registered Interest', template_id: ENV['ADA_LIST_FRANCHISE'], dynamic_template_data: {
+    mail(to: "ada@paloe.com.sg", from: 'Asiawide Digital Support <support@paloe.com.sg>', subject: 'New interest to list franchise', body: 'New Registered Interest', template_id: ENV['ADA_LIST_FRANCHISE'], dynamic_template_data: {
         brand_name: contact.name,
         user_email: contact.created_by.email,
         industry: contact.industry,

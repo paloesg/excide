@@ -2,8 +2,8 @@
   .col-sm-4.text-center
     = image_tag(@contact.brand_logo, size: "150x150", class: "my-10 rounded") if @contact.brand_logo.attached?
   .col-sm-8.d-flex.align-items-center.justify-content-end
-    - if current_user.has_role?(:interested_franchisor, @company) || current_user.has_role?(:superadmin)
-      button.btn.btn-primary.text-white data-target="#addRegisterInterest" data-toggle="modal" type="button"
+    - if current_user.has_role?(:entrepreneur, @company) || current_user.has_role?(:superadmin)
+      button.btn.btn-primary.text-white.mb-5 data-target="#addRegisterInterest" data-toggle="modal" type="button"
         i.material-icons-outlined.text-white add
         | REGISTER INTEREST
     #addRegisterInterest.modal.fade aria-hidden="true" aria-labelledby="registerInterest" role="dialog" tabindex="-1"
@@ -15,7 +15,7 @@
             = form_tag motif_contact_register_interest_path(contact_id: @contact.id) do
               = render "register_interest_form"
 .row
-  .col-sm-3.bg-white.sidebar-border-radius.ml-20
+  .col-sm-3.bg-white.sidebar-border-radius.ml-sm-3.ml-lg-20
     .contact-detail-wrapper.p-5.rounded
       .contact-detail.mb-5
         h5 Year Founded
@@ -47,7 +47,7 @@
       .contact-detail.mb-5
         h5 Franchisor Tenure
         p = @contact.franchisor_tenure || "Not Applicable"
-  .col-sm-8
+  .col-sm-8.mt-10.ml-5.mt-lg-0.ml-lg-0
     h1.mb-20 About this brand
     = @contact.description.present? ? @contact.description.body.to_rendered_html_with_layout() : "No information displayed!"
   / - else
