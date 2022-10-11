@@ -47,7 +47,7 @@
       .contact-detail.mb-5
         h5 Franchisor Tenure
         p = @contact.franchisor_tenure || "Not Applicable"
-  .col-sm-8
+  .col-sm-8.mt-10.ml-5.mt-lg-0.ml-lg-0
     h1.mb-20 About this brand
     = @contact.description.present? ? @contact.description.body.to_rendered_html_with_layout() : "No information displayed!"
   / - else

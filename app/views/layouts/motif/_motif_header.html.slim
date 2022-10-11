@@ -2,89 +2,9 @@
 .navbar.navbar-expand-lg.navbar-light.fixed-top.bg-white.w-100.border.border-bottom style="height: 60px; box-shadow: 0px 3px 6px #00000029;"
   button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button"
     .navbar-toggler-icon
-  #navbarSupportedContent.collapse.navbar-collapse
-    = link_to motif_root_path, class: "navbar-brand" do
-      = image_pack_tag("media/src/images/motif/ADA-logo.png", class: "motif-company-logo mr-5")
-      / Only show brand logo
-      - if current_user.company.root.company_logo.attached?
-        = image_tag(current_user.company.root.company_logo.variant(resize: "200"), height: "45")
-      - else
-        i.material-icons-outlined.align-middle.mt-3 home
-    ul.navbar-nav
-      / Change company dropdown
-      li.nav-item.dropdown.border.border-secondary.rounded
-        / If user is franchisor, superadmin or admin, show company dropdown
-        - if current_user.has_role? :superadmin or current_user.has_role?(:admin, current_user.company) or current_user.has_role?(:franchisor, current_user.company) or current_user.has_role?(:franchise_manager, current_user.company)
-          - if Company.assigned_companies(current_user).present?
-            button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
-              | #{current_user.company.name}
-              i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
-            #company-dropdown.dropdown-menu aria-labelledby="dropdownMenuButton"
-              - if current_user.has_role? :superadmin
-                - Company.all.order(created_at: :asc).reject{ |c| c == current_user.company }.each do |company|
-                  - if company.name.present?
-                    = link_to company.name, change_company_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
-                .dropdown-divider
-                = link_to 'Add New Company', new_company_path, class: 'dropdown-item'
-              - else
-                - Company.assigned_companies(current_user).sort_by{|c| c.created_at}.each do |company|
-                  - if company.name.present?
-                    = link_to company.name, change_company_path(current_user, user: {company_id: company.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
-          - else
-            = link_to(motif_root_path, class: "btn btn-secondary btn-default") do
-              ' #{current_user.company.name}
-        / If current_user is franchisee and have multiple outlets
-        - elsif current_user.outlets.length > 1
-          button#dropdownMenuButton.btn.btn-white.change-company-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
-            | #{current_user.active_outlet.name}
-            i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
-          #company-dropdown.dropdown-menu aria-labelledby="dropdownMenuButton"
-            - current_user.outlets.order('name ASC').reject{ |o| o == current_user.active_outlet }.each do |outlet|
-              - if outlet.name.present?
-                = link_to outlet.name, motif_change_outlet_path(current_user, user: {outlet_id: outlet.id }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
-        / Franchisee with no outlet, only for browsing franchise listing
-        - elsif current_user.has_role?(:entrepreneur, current_user.company) or current_user.has_role?(:franchisor_free, current_user.company)
-          = link_to(motif_contacts_path, class: "btn btn-secondary btn-default") do
-            ' #{current_user.company.name}
-        / Franchisee but 1 outlet
-        - else
-          = link_to(motif_root_path, class: "btn btn-secondary btn-default") do
-            ' #{current_user.active_outlet.name}
-      / Check if company is free plan or paid. If free, then label franchised user
-      - if current_user.company.basic?
-        - if current_user.has_role?(:franchisor_free, current_user.company)
-          .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-5 Franchisor (Free)
-        - else
-          .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-5 = current_user.roles.first.name.humanize
-      - else
-        - if get_franchisee.present?
-          .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-#{get_franchisee.license_type}"
-            = get_franchisee.license_type.titleize + " of " + get_franchisee.parent_company.name
-        - elsif current_user.has_role?(:franchisor, current_user.company) or current_user.has_role?(:superadmin)
-          .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles" Franchisor
-        - else
-          .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles"
-            = "Designated user for " + current_user&.active_outlet&.company.name
-    ul.navbar-nav.ml-auto
-      / Franchisee cannot access sharing hub path. Only their individual outlet
-      - if current_user.has_role?(:franchisee_owner, current_user.company)
-        li.nav-link.mx-3
-          = link_to motif_outlet_notes_path(current_user.active_outlet) do
-            i.material-icons-outlined comment
-        li.nav-link.mx-3
-          = link_to motif_outlet_edit_franchisee_setting_path(current_user.active_outlet) do
-            i.material-icons-outlined settings
-      - else
-        li.nav-link.mx-3
-          = link_to motif_messages_path do
-            i.material-icons-outlined comment
-        li.nav-link.mx-3
-          = link_to edit_motif_user_path(current_user) do
-            i.material-icons-outlined settings
-      .dropdown.ml-3
-        a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
-          = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
-        .dropdown-menu.dropdown-menu-right aria-labelledby="userDropdownMenu"
-          li
-            = link_to destroy_user_session_path, {method: :delete, class: 'dropdown-item'} do
-              | Log Out
+  #navbarSupportedContent.collapse.navbar-collapse.bg-white
+    / For entrepreneur and potential franchisor or for superadmin if their company is basic plan
+    - if current_user.has_role?(:entrepreneur, current_user.company) || current_user.has_role?(:franchisor_free, current_user.company) || current_user.company.basic?
+      = render "layouts/motif/motif_directory_header"
+    - else
+      = render "motif_manage_header"
