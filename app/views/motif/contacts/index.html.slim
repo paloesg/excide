@@ -2,12 +2,11 @@
   .col-sm-4.d-flex.align-items-center
     i.material-icons-outlined.mr-5.text-dark search
     .header-font.text-dark Browse Franchise Opportunities
-  .col-sm-8
-    button.close.open-banner.text-dark.mr-3 type="submit"
+    button.close.open-banner.text-dark.ml-5 type="submit"
       i.material-icons-outlined.float-right help_outline
 = render 'motif/home/banners/franchise_directory'
 .row.mb-3.mt-5.ml-3.position-relative
-  .col-sm-12
+  .col-sm-12.pl-0
     - if current_user.has_role?(:franchisor_free, @company) || current_user.has_role?(:superadmin)
       button.btn.btn-primary.text-white.float-right.ml-5 data-target="#addDirectory" data-toggle="modal" type="button"
         i.material-icons-outlined.text-white add
@@ -84,7 +83,7 @@ javascript:
   }
 
   loadExtJS('//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js', function(){
-      var hitTemplate = '{{#hits}}<div class="row mb-3 mt-5 ml-3"><div class="col-md-12"><div class="card w-100">' +
+      var hitTemplate = '{{#hits}}<div class="row mb-3 mt-5 ml-3"><div class="col-md-12 pl-0"><div class="card w-100">' +
         '<div class="row no-gutters"><div class="col bg-light"><div class="profile-index-image-wrapper">' +
         '<img class="w-100" src="{{image_src}}"></div></div>' +
         '<div class="col-md-10"><div class="card-body float-lg-none float-left ml-lg-0 ml-40">' +

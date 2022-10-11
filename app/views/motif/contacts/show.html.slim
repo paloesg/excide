@@ -1,9 +1,9 @@
 .row
   .col-sm-4.text-center
     = image_tag(@contact.brand_logo, size: "150x150", class: "my-10 rounded") if @contact.brand_logo.attached?
-  .col-sm-8.d-flex.align-items-center.justify-content-end
+  .col-sm-8.d-flex.align-items-center.justify-content-lg-end.justify-content-center.mb-lg-0.mb-3
     - if current_user.has_role?(:entrepreneur, @company) || current_user.has_role?(:superadmin)
-      button.btn.btn-primary.text-white.mb-5 data-target="#addRegisterInterest" data-toggle="modal" type="button"
+      button.btn.btn-primary.text-white.mb-5r data-target="#addRegisterInterest" data-toggle="modal" type="button"
         i.material-icons-outlined.text-white add
         | REGISTER INTEREST
     #addRegisterInterest.modal.fade aria-hidden="true" aria-labelledby="registerInterest" role="dialog" tabindex="-1"
