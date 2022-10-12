@@ -19,5 +19,8 @@ class Contact < ApplicationRecord
     attribute :image_src do
       "#{ brand_logo.present? ? "rails/active_storage/blobs/#{brand_logo.signed_id}/#{brand_logo.filename}" : "packs/media/src/images/motif/avatar-no-photo-692431e773d7106db54841efda3efd80.svg" }"
     end
+    attribute :description do
+      "#{description.body.present? ? description.body.to_plain_text.truncate(150) : 'No description'}"
+    end
   end
 end

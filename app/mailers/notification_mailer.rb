@@ -92,7 +92,15 @@ class NotificationMailer < ApplicationMailer
         registered_interest_user: person_name,
         capital_available: latest_register_interest["capital_available"],
         mobile_number: mobile_number,
-        email: latest_register_interest["email_address"]
+        email: latest_register_interest["email_address"],
+        personal_email_address: latest_register_interest["personal_email_address"],
+        company_website: latest_register_interest["company_website"],
+        my_designation: latest_register_interest["my_designation"],
+        interests: latest_register_interest["interests"]&.map(&:titleize)&.join(", ") || "No interests listed",
+        others_reason: latest_register_interest["others_reason"],
+        areas_of_interest: latest_register_interest["areas_of_interest"],
+        city: latest_register_interest["city"],
+        previous_franchise: latest_register_interest["previous_franchise"],
       }
     )
   end

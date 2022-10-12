@@ -8,7 +8,7 @@ module DeviseHelper
                       :resource => @user.class.model_name.human.downcase)
 
     html = <<-HTML
-    <div class="row d-flex justify-content-center">
+    <div class="row d-flex justify-content-start">
       <div class="col-6">
         <div id='error_explanation' class='alert alert-danger' role='alert'>
           <div class="alert-close">
