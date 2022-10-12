@@ -7,4 +7,4 @@
     - if current_user.has_role?(:entrepreneur, current_user.company) || current_user.has_role?(:franchisor_free, current_user.company) || current_user.company.basic?
       = render "layouts/motif/motif_directory_header"
     - else
-      = render "motif_manage_header"
+      = render "layouts/motif/motif_manage_header"
