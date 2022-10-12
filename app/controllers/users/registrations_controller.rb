@@ -23,7 +23,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       # Company is optional when signing up to ADA. In case of this, we create a default company with their name in it
       if resource.company.nil?
-        resource.company = Company.create(name: resource.full_name)
+        resource.company = Company.create(name: resource.email + "'s company")
       end
       # Set company to basic plan for now
       resource.company.account_type = 1
