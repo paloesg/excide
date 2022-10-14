@@ -19,6 +19,6 @@
           td.comment-font-size = link_to outlet.name, motif_outlet_notes_path(outlet_id: outlet.id), class: 'text-dark'
           / Find the latest note content and created_at
           td.comment-font-size 
-            = image_pack_tag 'media/src/images/motif/avatar-no-photo.svg', class: 'comm-hub-user-icon mb-1 mr-2'
+            = image_pack_tag 'media/src/images/motif/user-avatar-placeholder.jpg', class: 'comm-hub-user-icon mb-1 mr-2'
             = outlet.notes.order('created_at DESC').first&.content || 'No Conversation'
           td.comment-font-size = outlet.notes.order('created_at DESC').first&.created_at&.strftime("%d %b %Y")
