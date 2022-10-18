@@ -184,6 +184,10 @@ td.day.has-events.fc-day-top.fc-past {
   cursor: pointer;
 }
 
+@media screen and (min-width: 600px)  {
+  .mobile-break { display: none; }
+}
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 $theme-colors: (
