@@ -15,27 +15,30 @@
         .col-sm-8
           = form_for(@user, url: user_registration_path(sign_up: params[:sign_up])) do |f|
             .form-group
-              = f.label :first_name, "First Name", class: "font-weight-bolder"
+              = f.label :first_name, "First Name*", class: "font-weight-bolder"
               = f.text_field :first_name, required: true, autofocus: true, class: 'form-control'
             .form-group
-              = f.label :last_name, "Last Name", class: "font-weight-bolder"
+              = f.label :last_name, "Last Name*", class: "font-weight-bolder"
               = f.text_field :last_name, required: true, autofocus: true, class: 'form-control'
+            .form-group
+              = f.label :email, "Email*", class: "font-weight-bolder"
+              = f.email_field :email, required: true, class: 'form-control'
+            .form-group
+              = f.label :contact_number, "Mobile Number*", class: "font-weight-bolder"
+              = f.text_field :contact_number, required: true, class: 'form-control'
             = f.fields_for :company do |c|
               .form-group
                 - if params[:sign_up] == "franchisor"
-                  = c.label :name, "Company Name", class: "font-weight-bolder"
+                  = c.label :name, "Company Name*", class: "font-weight-bolder"
                   = c.text_field :name, required: true, autofocus: true, class: 'form-control'
                 - else
                   = c.label :name, "Company Name (Optional)", class: "font-weight-bolder"
                   = c.text_field :name, autofocus: true, class: 'form-control'
             .form-group
-              = f.label :email, "Email", class: "font-weight-bolder"
-              = f.email_field :email, required: true, class: 'form-control'
-            .form-group
-              = f.label :password, "Password", class: "font-weight-bolder"
+              = f.label :password, "Password*", class: "font-weight-bolder"
               = f.password_field :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), input_html: { autocomplete: "new-password" }, class: 'form-control'
             .form-group
-              = f.label :password_confirmation, "Password Confirmation", class: "font-weight-bolder"
+              = f.label :password_confirmation, "Password Confirmation*", class: "font-weight-bolder"
               = f.password_field :password_confirmation, required: true, input_html: { autocomplete: "new-password" }, class: 'form-control'
             span
               | By signing up, you agree to the
