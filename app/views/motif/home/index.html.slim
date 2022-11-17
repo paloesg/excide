@@ -178,7 +178,7 @@
               h5.card-title.text-dark Messages
               .d-flex.p-5.align-items-center.rounded.primary-card-motif
                 = image_pack_tag 'media/src/images/motif/motif-message.svg'
-                p.card-text.ml-4 = "You have #{@unread_notes.present? ? @unread_notes.length : "0"} unread messages"
+                p.card-text.ml-4 = "You have #{@franchisee_unread_notes.present? ? @franchisee_unread_notes.length : "0"} unread messages"
       .col-sm-4
         .card
           = link_to motif_posts_path do
