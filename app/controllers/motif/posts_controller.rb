@@ -11,7 +11,7 @@ class Motif::PostsController < ApplicationController
 
   def index
     # authorize Post
-    @posts = get_posts(@company)
+    @posts = get_posts(@company).order('created_at DESC')
     # policy_scope(Post)
     @post = Post.new
     @authorized = (current_user.has_role?(:franchisor, current_user.company) or current_user.has_role?(:admin, current_user.company))
