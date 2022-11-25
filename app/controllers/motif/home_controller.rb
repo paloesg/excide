@@ -28,9 +28,9 @@ class Motif::HomeController < ApplicationController
     @waiting_approval_site_audit_outlets = @site_audit_workflows.map{|wf| wf.workflow_actions.map{|wfa| wf.outlet if wfa.notify_status? }}.flatten.compact
     @waiting_approval_royalty_collection_outlets = @royalty_collection_workflows.map{|wf| wf.workflow_actions.map{|wfa| wf.outlet if wfa.notify_status? }}.flatten.compact
     # The system stores the user's last_click into sharing hub in database, compare the note's created_at date with the last_click. It should be larger than user's last_click to mimic an unread message. Reject if note's user is current_user
-    @unread_notes = @company.outlets.map{ |o| o.notes.includes(:notable).where(notable_id: o.id).where('created_at > ?', current_user.last_click_comm_hub).reject{ |note| note.user == current_user }}.flatten
+    @unread_notes = Note.where(notable_id: @company.outlets.map(&:id)).where('created_at > ?', current_user.last_click_comm_hub).where.not(user: current_user)
     # Check if active outlet present since franchisor wont have active outlet
-    @franchisee_unread_notes = current_user.active_outlet.notes.where('created_at > ?', current_user.last_click_comm_hub).reject{ |note| note.user == current_user } if current_user.active_outlet.present?
+    @franchisee_unread_notes = current_user.active_outlet.notes.where('created_at > ?', current_user.last_click_comm_hub).where.not(user: current_user) if current_user.active_outlet.present?
   end
 
   # Change user's outlet for franchisee with multiple outlets

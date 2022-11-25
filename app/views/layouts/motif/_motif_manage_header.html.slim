@@ -63,16 +63,22 @@ ul.navbar-nav
 ul.navbar-nav.ml-auto
   / Franchisee cannot access sharing hub path. Only their individual outlet
   - if current_user.has_role?(:franchisee_owner, current_user.company)
-    li.nav-link.mx-3
+    - unread_msg_count = Note.where(notable_id: current_user.active_outlet).where('created_at > ?', current_user.last_click_comm_hub).where.not(user: current_user).count
+    li.nav-link.mx-3.d-flex.position-relative
       = link_to motif_outlet_notes_path(current_user.active_outlet) do
         i.material-icons-outlined comment
+        - if unread_msg_count > 0
+          .notif-header-count.badge = unread_msg_count
     li.nav-link.mx-3
       = link_to motif_outlet_edit_franchisee_setting_path(current_user.active_outlet) do
         i.material-icons-outlined settings
   - else
-    li.nav-link.mx-3
+    - unread_msg_count = Note.where(notable_id: current_user.company.outlets.map(&:id)).where('created_at > ?', current_user.last_click_comm_hub).where.not(user: current_user).count
+    li.nav-link.mx-3.d-flex.position-relative
       = link_to motif_messages_path do
         i.material-icons-outlined comment
+        - if unread_msg_count > 0
+          .notif-header-count.badge = unread_msg_count
     li.nav-link.mx-3
       = link_to edit_motif_user_path(current_user) do
         i.material-icons-outlined settings

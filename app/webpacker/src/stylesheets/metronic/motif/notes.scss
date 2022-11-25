@@ -1,3 +1,16 @@
+.notif-header-count {
+  position: absolute;
+  bottom: 60%;
+  left: 50%;
+  padding: 0.3em 0.55em !important;
+  font-size: 75% !important;
+  color: #f3f6f9; // text
+
+  background-color: #f64e60;
+  border-radius: 50% !important;
+  border: 1px solid #ebedf3;
+}
+
 .comment-user-icon {
   vertical-align: middle;
   width: 50px;
