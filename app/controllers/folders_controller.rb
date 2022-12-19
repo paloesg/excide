@@ -37,12 +37,6 @@ class FoldersController < ApplicationController
     @franchisors.each do |franchisor|
       Permission.create(permissible: @folder, user: franchisor, can_write: true, can_download: true, can_view: true) unless current_user == franchisor
     end
-    if @folder.parent.present?
-      # Clone permission for child folder
-      @folder.parent.permissions.each do |permission|
-        CreatePermissionsJob.perform_later(permission.user, @folder, permission.can_view, permission.can_download, permission.can_write)
-      end
-    end
     @folder.company = current_user.company
     @folder.user = current_user
     respond_to do |format|
