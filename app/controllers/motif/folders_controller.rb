@@ -28,6 +28,8 @@ class Motif::FoldersController < FoldersController
     @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
     @new_folder = Folder.new
 
+    @public_key = Algolia.generate_secured_api_key(ENV['ALGOLIASEARCH_API_KEY_SEARCH'], {filters: "company.slug:#{current_user.company.slug}"})
+
     render "motif/documents/index"
   end
 

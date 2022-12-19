@@ -35,6 +35,12 @@
       .float-right.mx-5.mt-2
         a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
           i.material-icons-outlined info
+.row.ml-4.align-items-center
+  .col-sm-11.text-muted
+    div.form-row.align-items-center
+      span.mr-3
+        i.material-icons-outlined.align-middle search
+      input.form-control.border-0.col#q type="search" placeholder="Search..."
 - if controller_name == "folders"
   hr.mb-2
   .row.ml-4
@@ -46,8 +52,6 @@
           li.breadcrumb-item
             = link_to folder.name, motif_folder_path(folder)
 hr.m-0
-#hits
-#pagination.d-none
 - if @folders.empty? && @documents.empty?
   .row.justify-content-center.ml-3.mt-5
     .col-md-3.text-center.p-4
@@ -57,12 +61,8 @@ hr.m-0
       button.btn.btn-primary.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
         | + Upload Documents
 - else
-  .row.ml-4.align-items-center
-    .col-sm-11.text-muted
-      div.form-row.align-items-center
-        span.mr-3
-          i.material-icons-outlined.align-middle search
-        input.form-control.border-0.col#q type="search" placeholder="Search..."
+  #hits
+  #pagination.d-none
   table.table.ml-4#nonSearchResult
     thead
       tr
