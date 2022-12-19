@@ -25,6 +25,7 @@ class Motif::FoldersController < FoldersController
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     @documents = Document.where(folder: @folder)
     @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
+    @new_folder = Folder.new
 
     render "motif/documents/index"
   end
