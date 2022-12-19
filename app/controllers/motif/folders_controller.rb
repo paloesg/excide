@@ -22,6 +22,7 @@ class Motif::FoldersController < FoldersController
     @company = current_user.company
     @users = @company.users.includes(:permissions)
     @folders = policy_scope(Folder).children_of(@folder)
+    @breadcrumb_folder_arrangement = @folder.path.order(:created_at)
     @activities = PublicActivity::Activity.order("created_at desc").where(trackable_type: "Document").first(10)
     @documents = Document.where(folder: @folder)
     @documents = Kaminari.paginate_array(@documents).page(params[:page]).per(10)
