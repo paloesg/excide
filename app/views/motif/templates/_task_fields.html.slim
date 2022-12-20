@@ -1,6 +1,6 @@
 tr.task-drawer-row id="#{f.object.id}" data-drawer=f.object.id
   td style="width: 5%"
-    i.material-icons-outlined drag_indicator
+    / i.material-icons-outlined drag_indicator
   td.drawer-toggle id="drawer_toggle_#{f.object.id}_0" style="width: 55%" = f.object.instructions.present? ? f.object.instructions : "Click to add task details"
   td.drawer-toggle id="drawer_toggle_#{f.object.id}_1" style="width: 15%" = f.object.deadline_day.present? ? f.object.deadline_day : "Click to add deadline"
   td.drawer-toggle id="drawer_toggle_#{f.object.id}_2" style="width: 15%" = f.object.folder.present? ? f.object.folder.name : "Click to link to a folder"

@@ -13,6 +13,8 @@
       .form-group.col-md-12
         = f.label :title, "This template is for activity"
         = f.select :template_type, ::Template.template_types.map{|k, v| [k.humanize, k]}, {include_blank: true }, { class: "select2 form-control"}
+    .col-md-3
+      = f.submit 'Save Changes', class: "btn btn-primary float-right"
   .row
     .col-md-12
       = f.fields_for :sections do |section|
