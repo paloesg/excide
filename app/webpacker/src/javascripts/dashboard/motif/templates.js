@@ -71,26 +71,29 @@ $(document).on("turbolinks:load", function () {
   });
 
   $("form").on("click", ".remove_motif_tasks", function (event) {
-    // Find draw row ID and match it to the offcanvas
-    let drawerRowId = $(this).closest("tr.task-drawer-row").attr("id")
-    // Find offcanvas that matches the drawer row ID
-    let drawerToDelete = $("#tasksOffcanvas").find("#" + drawerRowId)
-    // Remove nested form
-    $(this).closest("tr").remove();
-    // For NEW template form
-    if(drawerToDelete.length){
-      // Remove drawer that links to the nested form
-      drawerToDelete.remove()
-    } // For EDIT template form 
-    else {
-      // Delete nested attributes by setting value to 1 for both drawer and nested form
-      $(this).closest("tr").find(".destroy").val("1");
-      $("#" + drawerRowId).find(".destroy").val("1")
-      // Hide both the drawer and the nested form
-      $("#" + drawerRowId).hide();
-      $(this).closest("tr").hide();
+    if (confirm('Are you sure you want to remove this task?')) {
+      // Find draw row ID and match it to the offcanvas
+      let drawerRowId = $(this).closest("tr.task-drawer-row").attr("id")
+      // Find offcanvas that matches the drawer row ID
+      let drawerToDelete = $("#tasksOffcanvas").find("#" + drawerRowId)
+      // Remove nested form
+      $(this).closest("tr").remove();
+      // For NEW template form
+      if(drawerToDelete.length){
+        // Remove drawer that links to the nested form
+        drawerToDelete.remove()
+      } // For EDIT template form
+      else {
+        // Delete nested attributes by setting value to 1 for both drawer and nested form
+        $(this).closest("tr").find(".destroy").val("1");
+        $("#" + drawerRowId).find(".destroy").val("1")
+        // Hide both the drawer and the nested form
+        $("#" + drawerRowId).hide();
+        $(this).closest("tr").hide();
+      }
+
+      $("form#motif_edit_template").submit();
+      return event.preventDefault();
     }
-    
-    return event.preventDefault();
   });
 });
