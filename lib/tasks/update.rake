@@ -139,4 +139,12 @@ namespace :update do
       c.save
     end
   end
+
+  desc "Update company's storage limit to 10GB"
+  task upgrade_companies_storage_limit_to_10gb: :environment do
+    Company.all.each do |c|
+      c.storage_limit = 10737418240
+      c.save
+    end
+  end
 end
