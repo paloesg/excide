@@ -73,13 +73,17 @@ class Motif::ContactsController < ApplicationController
   end
 
   def update
-    @contact_status = ContactStatus.find_by(id: params[:contact_status_id])
+    # Update contacts when dragged on the kanban. This is to change contact status of the contact. drag_contacts.js
+    if params[:contact_status_id].present?
+      @contact_status = ContactStatus.find_by(id: params[:contact_status_id])
+    end
     respond_to do |format|
-      # If cloned contact
-      if @contact.update(contact_status: @contact_status)
+      # If contact status exists, then update the status. Else, update normal contact fieldsc
+      if @contact_status.present? ? @contact.update(contact_status: @contact_status) : @contact.update(contact_params)
         format.json { render json: { link_to: motif_contact_statuses_path, status: "ok" } }
+        format.html { redirect_to motif_contact_statuses_path, notice: "Lead's profile has been updated successfully." }
       else
-        format.html { redirect_to motif_root_path }
+        format.html { redirect_to motif_root_path, alert: "Error updating contacts." }
         format.json { render json: @contact.errors, status: :unprocessable_entity }
       end
     end

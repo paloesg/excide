@@ -30,7 +30,7 @@ hr
               .card
                 .card-body.border.contact-card-shadow.p-2
                   .mt-3.ml-3
-                    h3 = contact.name
+                    h3 = link_to contact.name, motif_contact_path(contact.id), class: "card-title text-truncate text-dark font-weight-boldest clickable-contact"
                     p = contact.email
                     p = contact&.phone
                     p = contact&.company_name
