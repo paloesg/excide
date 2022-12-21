@@ -19,28 +19,3 @@ input.remark-border:focus {
   font-size: 15px !important;
   border-radius: 0 !important;
 }
-
-// CSS for breadcrumb in folders
-.breadcrumb-arrow {
-  .breadcrumb-item {
-    &:before {
-      display: none;
-    }
-
-    &:after {
-      display: block;
-      content: ">";
-      margin-left: $breadcrumb-item-padding;
-    }
-
-    &:last-child {
-      &:before {
-        display: none;
-      }
-      &:after {
-        display: none;
-      }
-      font-weight: 700;
-    }
-  }
-}

@@ -9,24 +9,12 @@
   .row.mb-3.mt-5.ml-3
     .col-sm-12
       / Don't allow create folder button to be shown if within a folder
-      - unless controller_name == 'folders'
-        button.btn.btn-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Create Folder
-        #newFolderUpload.modal.fade aria-hidden="true" aria-labelledby="newMotifFolderUpload" role="dialog" tabindex="-1"
-          .modal-dialog role="document"
-            .modal-content
-              .modal-header
-                h5#newMotifFolderUpload.modal-title Create new folder
-                button.close aria-label="Close" data-dismiss="modal" type="button"
-                  span aria-hidden="true"  &times;
-              .modal-body
-                = form_for(@folder, url: motif_folders_path, html: { method: :post }) do |f|
-                  .row.mt-3
-                    .col-md-12
-                      .form-group
-                        = f.text_field :name, placeholder: 'New folder', class: 'form-control'
-                  .row
-                    .col-md-12
-                      = f.submit "Save", class: 'btn btn-sm btn-primary float-right'
+      button.btn.btn-primary.float-right.ml-5 data-target="#newFolderUpload" data-toggle="modal" type="button" Create Folder
+      / If in folder SHOW page, it should add a new folder instead
+      - if controller_name == "folders"
+        = render "motif/documents/modals/new_folder_modal", folder: @new_folder, parent_folder: @folder
+      - else
+        = render "motif/documents/modals/new_folder_modal", folder: @folder, parent_folder: nil
       button.btn.btn-primary.float-right.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
         i.material-icons-outlined.text-white add
         | Upload Documents
@@ -47,8 +35,25 @@
       .float-right.mx-5.mt-2
         a.pop.ml-2 data-container="body" title="" data-original-title='"Read only" access can only for PDF file' data-html="true" data-placement="bottom" data-toggle="tooltip" data-trigger="hover"
           i.material-icons-outlined info
+.row.ml-4.align-items-center
+  .col-sm-11.text-muted
+    div.form-row.align-items-center
+      span.mr-3
+        i.material-icons-outlined.align-middle search
+      input.form-control.border-0.col#q type="search" placeholder="Search..."
+- if controller_name == "folders"
+  hr.mb-2
+  .row.ml-4
+    .col
+      ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
+        li.breadcrumb-item
+          = link_to "Repository", motif_documents_path, class: "text-dark"
+        - @breadcrumb_folder_arrangement.each do |folder|
+          li.breadcrumb-item
+            = link_to folder.name, motif_folder_path(folder)
+hr.m-0
 - if @folders.empty? && @documents.empty?
-  .row.justify-content-center.ml-3
+  .row.justify-content-center.ml-3.mt-5
     .col-md-3.text-center.p-4
       = image_pack_tag 'media/src/images/symphony/add-documents@2x.png'
       h2.mt-5 Clean and fresh
@@ -56,28 +61,13 @@
       button.btn.btn-primary.ml-5 data-target="#newMotifDocUploads" data-toggle="modal" type="button"
         | + Upload Documents
 - else
-  .row.ml-4.align-items-center
-    .col-sm-11.text-muted
-      div.form-row.align-items-center
-        span.mr-3
-          i.material-icons-outlined.align-middle search
-        input.form-control.border-0.col#q type="search" placeholder="Search..."
-  - if controller_name == "folders"
-    hr.mb-2
-    .row.ml-4
-      .col
-        ul.breadcrumb.breadcrumb-transparent.breadcrumb-arrow.font-weight-bold.p-0.my-2.font-size-sm
-          li.breadcrumb-item
-            = link_to "Repository", motif_documents_path, class: "text-dark"
-          li.breadcrumb-item
-            = @folder.name
   #hits
   #pagination.d-none
   table.table.ml-4#nonSearchResult
     thead
       tr
         th width="3%"
-          input# type="checkbox" name=""/
+          input# type="checkbox" name=""
         th.text-muted width="38%" NAME
         th.text-muted width="5%"
         th.text-muted width="21%" COMPANY
@@ -88,7 +78,7 @@
       - @folders.each_with_index do |folder, index|
         tr.draggable.folders id="#{folder.id}" data-drawer=folder.id
           td
-            input.mt-2 type="checkbox" name=""/
+            input.mt-2 type="checkbox" name=""
           td
             span.mr-5
               i.material-icons-outlined.align-middle folder_open
