@@ -24,8 +24,8 @@ class CompaniesController < ApplicationController
     @company.products = params[:products]
     # Add pro plan to company
     @company.account_type = "pro"
-    # By default, set company storage limit to 2Gb upon creation
-    @company.storage_limit = 2147483648
+    # By default, set company storage limit to 10Gb upon creation
+    @company.storage_limit = 10737418240
     if @company.save
       set_company_roles
       set_default_folders
