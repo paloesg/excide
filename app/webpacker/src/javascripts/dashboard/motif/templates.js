@@ -94,6 +94,8 @@ $(document).on("turbolinks:load", function () {
 
       $("form#motif_edit_template").submit();
       return event.preventDefault();
+    } else{
+      return event.preventDefault();
     }
   });
 });
