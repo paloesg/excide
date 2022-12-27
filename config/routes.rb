@@ -245,4 +245,6 @@ Rails.application.routes.draw do
 
   # Stripe event path for webhook
   mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
+  # Dedoco endpoints
+  post "/dedoco/webhook", to: "dedoco#create"
 end
