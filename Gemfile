@@ -156,6 +156,8 @@ gem 'scout_apm'
 gem 'rollbar'
 gem 'oj'
 gem 'snitcher'
+# Simple HTTP request for APIs
+gem "httparty"
 
 #################################################
 #                                               #
