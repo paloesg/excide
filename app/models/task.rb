@@ -12,6 +12,8 @@ class Task < ApplicationRecord
 
   belongs_to :folder
 
+  # For E-signature task type
+  has_one :document, dependent: :destroy
   has_many :reminders, dependent: :destroy
   has_many :workflow_actions, dependent: :destroy
   has_many :documents
@@ -21,6 +23,8 @@ class Task < ApplicationRecord
   enum deadline_type: { xth_day_of_the_month: 0, days_to_complete: 1 }
 
   acts_as_list scope: :section
+
+  accepts_nested_attributes_for :document, allow_destroy: true
 
   validates :instructions, :task_type, presence: true
   validate :check_user_and_role_fields
