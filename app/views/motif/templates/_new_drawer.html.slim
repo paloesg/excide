@@ -1,33 +1,39 @@
 .offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto 
   = f.fields_for :tasks, Task.new do |f|
-    .row.my-5
+    .row.my-2
       .col-md-11
         .form-group
           = f.text_field :instructions, { placeholder: "Task Here", class: "form-control" }
       .col-md-1
         a.d-inline href="#" 
           i.material-icons-outlined close
-    .row.mb-5
+    .row.mb-2
       h6.ml-4 Task Type
       .col-md-12
         .form-group
           = f.select :task_type, options_for_select([["Instructions", "instructions"], ["E-sign", "esign"]]), {}, { class: "form-control col-md-8"}
-    .row.mb-5
+    .row.mb-2
+      h6.ml-4 Upload file for signing
+      .col-md-12
+        .form-group
+          = f.fields_for :document, Document.new do |d|
+            = d.file_field :raw_file
+    .row.mb-2
       h6.ml-4 Description
       .col-md-12
         .form-group
           = f.text_area :description, rows: '5', placeholder: 'Write description', class: 'form-control'
-    .row.mb-5
+    .row.mb-2
       h6.ml-4 Days to complete
       .col-md-12
         .form-group
           = f.number_field :deadline_day, class: "form-control col-md-8"
-    .row.mb-5
+    .row.mb-2
       h6.ml-4 All uploaded files are stored in:
       .col-md-12
         .form-group
           = f.collection_select :folder_id, @folders, :id, :name, { include_blank: true }, { class: "form-control col-md-8"}
-    .row.mb-5
+    .row.mb-2
       .col-md-12
         = f.hidden_field :deadline_type, value: "days_to_complete"
         = f.hidden_field :role_id, value: @role.id if @role.present?
