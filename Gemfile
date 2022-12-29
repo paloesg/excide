@@ -113,6 +113,10 @@ gem 'countries', require: 'countries/global'
 gem 'phonelib'
 # In-app notification feature
 gem 'activity_notification'
+# Simple HTTP request for APIs
+gem "httparty"
+# Cryptographic hashing algorithm for e-sign documents
+gem "sha3", "~> 1.0"
 
 #################################################
 #                                               #

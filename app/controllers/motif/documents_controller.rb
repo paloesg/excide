@@ -126,6 +126,15 @@ class Motif::DocumentsController < ApplicationController
     @folder = Folder.find(params[:id])
   end
 
+  # Returns file.json to retrieve Dedoco complete signing link
+  def structure_dedoco_json
+    @document = Document.find(params[:document_id])
+    data = {
+      file: Base64.strict_encode64(File.binread("./dummy.pdf"))
+    }
+    render json: data.to_json
+  end
+
   private
   def set_company
     @user = current_user
