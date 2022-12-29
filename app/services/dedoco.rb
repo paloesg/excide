@@ -27,9 +27,9 @@ class Dedoco
       date_created: DateTime.current.to_i,
       documents: [
         {
-          name: @document.raw_file.filename.to_s,
+          name: "dummy.pdf",
           file_type: "pdf",
-          document_hash: SHA3::Digest::SHA256.hexdigest(@document.raw_file.url)
+          document_hash: SHA3::Digest::SHA256.hexdigest(File.binread("./dummy.pdf"))
         }
       ],
       # linked_folders: [],
@@ -86,9 +86,16 @@ class Dedoco
         }
       ]
     }
-    puts "what is bearer: #{"Bearer #{@document.dedoco_token}"}"
     res = HTTParty.post(url, headers: {"Content-Type": "application/json", Authorization: "Bearer #{@document.dedoco_token}"}, body: body.to_json)
-      # , headers: {Authorization: "Bearer #{@document.dedoco_token}"})
-    puts "Response message: #{res}"
+    puts "Response message: #{res["links"]}"
+    @document.dedoco_links = res["links"]
+    @document.save
+    # [{"documentId"=>"63acf6e4396122001ec1141b", "documentName"=>"updated_heritance_6.3.pdf", "businessProcessId"=>"63acf6e4396122001ec1141c", "signerId"=>"3c91504f-0d07-4989-99aa-b748e1425b07", "signerName"=>"san", "signerEmail"=>"san@gmail.com", "link"=>"https://sign.stage.dedoco.com/public/sign/63acf6e4396122001ec1141c/3c91504f-0d07-4989-99aa-b748e1425b07"}]
+  end
+
+  def append_signing_link
+    @encrypt_hash = Base64.strict_encode64("https://0784-122-11-205-174.ngrok.io/motif/documents/34f07dd1-2d4d-4efd-882c-a111ad9b9928/file")
+    @link = "#{@document.dedoco_links[0]["link"]}/#{@encrypt_hash}"
+    puts "What is link: #{@link}"
   end
 end
