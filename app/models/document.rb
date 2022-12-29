@@ -1,6 +1,6 @@
 class Document < ApplicationRecord
   include PublicActivity::Model
-  include HTTParty
+
   tracked owner: ->(controller, _model) { controller&.current_user },
           recipient: ->(_controller, model) { model&.workflow },
           params: {
@@ -28,7 +28,7 @@ class Document < ApplicationRecord
   before_destroy :delete_file_on_s3
 
   # Only run callbacks if task is related to document (E-sign)
-  after_create :get_jwt_token, if: :task_id
+  after_create :store_jwt_token, if: :task_id
 
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
@@ -120,19 +120,7 @@ class Document < ApplicationRecord
   end
 
   # Dedoco (E-sign) related methods
-  def get_jwt_token
-    puts "Dedoco!"
-    req = "https://api.stage.dedoco.com/api/v1/public/auth/token"
-    client_auth = {
-      username: "f37b138e-a3cf-4d72-b8c8-f683800be842",
-      password: "D909C1622777E624CADD6FFC"
-    }
-    body = {
-      fileCallback: "https://webhook.site/dcc2558e-b9ed-4ae7-a6c5-a7ffe582b3e0",
-      statusCallback: "https://webhook.site/dcc2558e-b9ed-4ae7-a6c5-a7ffe582b3e0"
-    }
-    token = HTTParty.post(req, body: body, basic_auth: client_auth)
-    self.dedoco_token = token
-    self.save
+  def store_jwt_token
+    Dedoco.new(self).get_jwt_token
   end
 end
