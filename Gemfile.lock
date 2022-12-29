@@ -542,6 +542,7 @@ GEM
       sendgrid-ruby (~> 6.4)
     sendgrid-ruby (6.6.2)
       ruby_http_client (~> 3.4)
+    sha3 (1.0.5)
     shellany (0.0.1)
     shortuuid (0.6.0)
     shoulda (4.0.0)
@@ -717,6 +718,7 @@ DEPENDENCIES
   selectize-rails
   sendgrid-actionmailer
   sendgrid-ruby
+  sha3 (~> 1.0)
   shortuuid
   shoulda
   simple_calendar (~> 2.4.0)
