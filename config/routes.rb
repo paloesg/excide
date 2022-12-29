@@ -118,12 +118,13 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/file', to: "home#file", defaults: {format: 'json'}
+
   namespace :motif do
     root to: 'home#index'
     patch '/change_outlet', to: 'home#change_outlet', as: :change_outlet
     resources :documents do
       patch '/update_tags', to:'documents#update_tags'
-      get '/file', to: "documents#structure_dedoco_json", defaults: {format: 'json'}
     end
     get 'show_document', to:'documents#show_document'
     get 'document_drawer', to:'documents#document_drawer'
