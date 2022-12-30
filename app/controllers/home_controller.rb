@@ -34,10 +34,7 @@ class HomeController < ApplicationController
   end
 
   def file
-    data = {
-      file: Base64.strict_encode64(File.binread("./dummy.pdf"))
-    }
-    render json: JSON.pretty_generate(data)
+    render json: { file: Base64.strict_encode64(File.binread("./dummy.pdf")) }
   end
 
   private
