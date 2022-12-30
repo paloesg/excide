@@ -414,6 +414,8 @@ GEM
     rack (2.2.4)
     rack-attack (6.6.1)
       rack (>= 1.0, < 3)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-mini-profiler (3.0.0)
       rack (>= 1.2.0)
     rack-protection (3.0.2)
@@ -702,6 +704,7 @@ DEPENDENCIES
   puma
   pundit
   rack-attack
+  rack-cors
   rack-mini-profiler
   rack-timeout
   rails (~> 6.1.0)

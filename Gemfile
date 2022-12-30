@@ -29,6 +29,8 @@ gem 'lograge'
 gem 'webpacker', '~> 5.2.1'
 # Lock sprockets version because new version of sprockets require manifest file
 gem 'sprockets', '~>3.7.0'
+# Allow CORS access
+gem 'rack-cors'
 
 #################################################
 #                                               #
