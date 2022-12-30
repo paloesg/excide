@@ -28,7 +28,7 @@ class Document < ApplicationRecord
   before_destroy :delete_file_on_s3
 
   # Only run callbacks if task is related to document (E-sign)
-  after_create :store_jwt_token, if: :task_id
+  after_create :generate_dedoco_esign, if: :task_id
 
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
@@ -120,7 +120,7 @@ class Document < ApplicationRecord
   end
 
   # Dedoco (E-sign) related methods
-  def store_jwt_token
-    Dedoco.new(self).get_jwt_token
+  def generate_dedoco_esign
+    Dedoco.new(self).run
   end
 end
