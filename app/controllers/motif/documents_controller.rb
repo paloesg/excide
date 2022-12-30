@@ -129,10 +129,10 @@ class Motif::DocumentsController < ApplicationController
   # Returns file.json to retrieve Dedoco complete signing link
   def file
     @document = Document.find(params[:document_id])
-    data = {
-      file: Base64.strict_encode64(d.raw_file.url)
-    }
-    render json: data
+    # data = {
+    #   file: Base64.strict_encode64(d.raw_file.url)
+    # }
+    render json: { file: Base64.strict_encode64(@document.raw_file.url) }
   end
 
   private
