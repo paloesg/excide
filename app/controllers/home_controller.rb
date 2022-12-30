@@ -33,6 +33,7 @@ class HomeController < ApplicationController
 
   end
 
+  # Returns file.json to retrieve Dedoco complete signing link
   def file
     render json: { file: Base64.strict_encode64(File.binread("./dummy.pdf")) }
   end

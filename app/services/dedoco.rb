@@ -40,9 +40,9 @@ class Dedoco
       date_created: DateTime.current.to_i,
       documents: [
         {
-          name: "dummy.pdf",
+          name: @document.raw_file.filename.to_s,
           file_type: "pdf",
-          document_hash: SHA3::Digest::SHA256.hexdigest(File.binread("./dummy.pdf"))
+          document_hash: SHA3::Digest::SHA256.hexdigest(@document.raw_file.url)
         }
       ],
       # linked_folders: [],
@@ -53,8 +53,8 @@ class Dedoco
           document_id: 0,
           signers: [
             {
-              signer_name: "san",
-              signer_email: "san@gmail.com",
+              signer_name: "Jonathan",
+              signer_email: "jonathan.lau@paloe.com.sg",
               signer_phone: "",
               signer_nric: "",
               esignatures: [

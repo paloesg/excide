@@ -130,7 +130,7 @@ class Motif::DocumentsController < ApplicationController
   def file
     @document = Document.find(params[:document_id])
     data = {
-      file: Base64.strict_encode64(File.binread("./dummy.pdf"))
+      file: Base64.strict_encode64(d.raw_file.url)
     }
     render json: data
   end
