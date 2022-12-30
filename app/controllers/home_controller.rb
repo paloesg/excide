@@ -33,6 +33,10 @@ class HomeController < ApplicationController
 
   end
 
+  def file
+    render json: { file: Base64.strict_encode64(File.binread("./dummy.pdf")) }
+  end
+
   private
 
   def user_params
