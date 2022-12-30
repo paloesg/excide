@@ -37,7 +37,7 @@ class HomeController < ApplicationController
     data = {
       file: Base64.strict_encode64(File.binread("./dummy.pdf"))
     }
-    render json: JSON.parse(data.to_json)
+    render json: JSON.pretty_generate(data)
   end
 
   private
