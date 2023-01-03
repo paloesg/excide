@@ -7,9 +7,14 @@ class Dedoco
   def run
     begin
       get_jwt_token
+      sleep 10
+      encode_base64_file_date
       create_document
       append_signing_link
-      @document.save!
+      @document.save
+      # if @document.save!
+      #   NotificationMailer.send_esign_document(@document).deliver_later
+      # end
       OpenStruct.new(success?: true, document: @document)
     rescue => e
       OpenStruct.new(success?: false, document: @document, message: e.message)
@@ -32,9 +37,20 @@ class Dedoco
     @document.dedoco_token = res["token"]
   end
 
+  def encode_base64_file_date
+    # puts "Is document attached? #{@document.raw_file.attached?}"
+    # Problem: File not yet uploaded to S3 but presigned-url is created alr
+    url = @document.raw_file.url
+    file_data = URI.open(url)
+    base64_fd = Base64.strict_encode64(file_data.read)
+    @document.base_64_file_data = base64_fd
+  end
+
   def create_document
     # Generate folder
-    url = "https://api.stage.dedoco.com/api/v1/public/folders"
+    api_url = "https://api.stage.dedoco.com/api/v1/public/folders"
+    url = @document.raw_file.url
+    file_data = URI.open(url)
     body = {
       folder_name: "Test Folder",
       date_created: DateTime.current.to_i,
@@ -42,7 +58,7 @@ class Dedoco
         {
           name: @document.raw_file.filename.to_s,
           file_type: "pdf",
-          document_hash: SHA3::Digest::SHA256.hexdigest(@document.raw_file.url)
+          document_hash: SHA3::Digest::SHA256.hexdigest(file_data.read)
         }
       ],
       # linked_folders: [],
@@ -99,12 +115,12 @@ class Dedoco
         }
       ]
     }
-    res = HTTParty.post(url, headers: {"Content-Type": "application/json", Authorization: "Bearer #{@document.dedoco_token}"}, body: body.to_json)
+    res = HTTParty.post(api_url, headers: {"Content-Type": "application/json", Authorization: "Bearer #{@document.dedoco_token}"}, body: body.to_json)
     @document.dedoco_links = res["links"]
   end
 
   def append_signing_link
-    @encrypt_hash = Base64.strict_encode64("#{ENV["ASSET_HOST"]}/motif/documents/#{@document.id}/file")
+    @encrypt_hash = Base64.strict_encode64("#{ENV["ASSET_HOST"]}/file.json")
     @document.dedoco_complete_signing_link = "#{@document.dedoco_links[0]["link"]}/#{@encrypt_hash}"
   end
 end
