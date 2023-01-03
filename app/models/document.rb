@@ -121,6 +121,6 @@ class Document < ApplicationRecord
 
   # Dedoco (E-sign) related methods
   def generate_dedoco_esign
-    Dedoco.new(self).run
+    DedocoJob.perform_later(self)
   end
 end

@@ -124,6 +124,14 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
+  def send_esign_document(document)
+    #to email will be changed with afc's support email
+    mail(to: "ada@paloe.com.sg", from: 'Asiawide Digital Support <support@paloe.com.sg>', subject: 'New document uploaded to sign', body: 'New Esign Document', template_id: ENV['ADA_ESIGN'], dynamic_template_data: {
+        esign_link: document.dedoco_complete_signing_link
+      }
+    )
+  end
+
   # Conductor's email notification methods!
   # Most of the removed mailer methods below were called in event.rb. associate_notification was called in scehduler.rake as a daily reminder to associate.
   # Removed conductor's create_event, edit_event, destroy_event, user_removed_from_event, event_notification and associate_notification methods from the following PR:
