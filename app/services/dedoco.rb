@@ -42,11 +42,9 @@ class Dedoco
   def return_dedoco_link
     api_url = "https://developers.stage.dedoco.com/vb/create-project"
     url = "#{ENV["ASSET_HOST"]}/motif/dedoco/webhook"
-    file_data = URI.open(url)
-    base64_fd = Base64.strict_encode64(file_data.read)
+    base64_fd = Base64.strict_encode64(url)
     @document.dedoco_complete_signing_link = "#{api_url}/#{base64_fd}"
     @document.save
-    # res = HTTParty.post("#{api_url}/#{base64_fd}", headers: {"Content-Type": "application/json", Authorization: "Bearer #{@document.dedoco_token}"}, body: body.to_json)
   end
 
   def encode_base64_file_date
