@@ -3,6 +3,6 @@ class Motif::DedocoController < ApplicationController
 
   # Webhook from Dedoco
   def create
-
+    puts "Returned from Dedoco"
   end
 end

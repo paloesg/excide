@@ -7,11 +7,12 @@ class Dedoco
   def run
     begin
       get_jwt_token
-      sleep 10
-      encode_base64_file_date
-      create_document
-      append_signing_link
-      @document.save
+      return_dedoco_link
+      # sleep 10
+      # encode_base64_file_date
+      # create_document
+      # append_signing_link
+      # @document.save
       # if @document.save!
       #   NotificationMailer.send_esign_document(@document).deliver_later
       # end
@@ -30,11 +31,22 @@ class Dedoco
       password: "D909C1622777E624CADD6FFC"
     }
     body = {
-      fileCallback: "https://webhook.site/d76b4930-ae2d-4893-ae71-4c1d5da3c48c",
-      statusCallback: "https://webhook.site/d76b4930-ae2d-4893-ae71-4c1d5da3c48c"
+      fileCallback: "#{ENV["ASSET_HOST"]}/dedoco/webhook",
+      statusCallback: "#{ENV["ASSET_HOST"]}/dedoco/webhook"
     }
     res = HTTParty.post(url, body: body, basic_auth: client_auth)
     @document.dedoco_token = res["token"]
+    @document.save
+  end
+
+  def return_dedoco_link
+    api_url = "https://developers.stage.dedoco.com/vb/create-project"
+    url = "#{ENV["ASSET_HOST"]}/dedoco/webhook"
+    file_data = URI.open(url)
+    base64_fd = Base64.strict_encode64(file_data.read)
+    @document.dedoco_complete_signing_link = "#{api_url}/#{base64_fd}"
+    @document.save
+    # res = HTTParty.post("#{api_url}/#{base64_fd}", headers: {"Content-Type": "application/json", Authorization: "Bearer #{@document.dedoco_token}"}, body: body.to_json)
   end
 
   def encode_base64_file_date
