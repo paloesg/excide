@@ -2,13 +2,12 @@ class Dedoco
   include HTTParty
   def initialize(document)
     @document = document
-    @url = document.raw_file.url
-    @file_data = URI.open(@url)
   end
 
   def run
     begin
       get_jwt_token
+      sleep 10
       encode_base64_file_date
       create_document
       append_signing_link
@@ -36,13 +35,19 @@ class Dedoco
   end
 
   def encode_base64_file_date
-    base64_fd = Base64.strict_encode64(@file_data.read)
+    # puts "Is document attached? #{@document.raw_file.attached?}"
+    # Problem: File not yet uploaded to S3 but presigned-url is created alr
+    url = @document.raw_file.url
+    file_data = URI.open(url)
+    base64_fd = Base64.strict_encode64(file_data.read)
     @document.base_64_file_data = base64_fd
   end
 
   def create_document
     # Generate folder
     api_url = "https://api.stage.dedoco.com/api/v1/public/folders"
+    url = @document.raw_file.url
+    file_data = URI.open(url)
     body = {
       folder_name: "Test Folder",
       date_created: DateTime.current.to_i,
@@ -50,7 +55,7 @@ class Dedoco
         {
           name: @document.raw_file.filename.to_s,
           file_type: "pdf",
-          document_hash: SHA3::Digest::SHA256.hexdigest(@file_data.read)
+          document_hash: SHA3::Digest::SHA256.hexdigest(file_data.read)
         }
       ],
       # linked_folders: [],
