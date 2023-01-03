@@ -122,6 +122,8 @@ Rails.application.routes.draw do
 
   namespace :motif do
     root to: 'home#index'
+    # Dedoco endpoints
+    post "/dedoco/webhook", to: "dedoco#create"
     patch '/change_outlet', to: 'home#change_outlet', as: :change_outlet
     resources :documents do
       patch '/update_tags', to:'documents#update_tags'
@@ -248,6 +250,4 @@ Rails.application.routes.draw do
 
   # Stripe event path for webhook
   mount StripeEvent::Engine, at: '/stripe/webhook' # provide a custom path
-  # Dedoco endpoints
-  post "/dedoco/webhook", to: "dedoco#create"
 end
