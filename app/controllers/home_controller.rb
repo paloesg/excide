@@ -34,10 +34,10 @@ class HomeController < ApplicationController
   end
 
   # Returns file.json to retrieve Dedoco complete signing link
-  def file
-    @document = Document.find("24a405b3-2f31-447c-aeae-6e2a1f0d2188")
-    render json: { file: @document.base_64_file_data }
-  end
+  # def file
+  #   @document = Document.find("24a405b3-2f31-447c-aeae-6e2a1f0d2188")
+  #   render json: { file: @document.base_64_file_data }
+  # end
 
   private
 
