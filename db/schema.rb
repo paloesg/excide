@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_02_134306) do
+ActiveRecord::Schema.define(version: 2023_01_04_091449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -664,6 +664,7 @@ ActiveRecord::Schema.define(version: 2023_01_02_134306) do
     t.integer "deadline_type"
     t.text "description"
     t.uuid "folder_id"
+    t.string "dedoco_visual_builder_link"
     t.index ["child_workflow_template_id"], name: "index_tasks_on_child_workflow_template_id"
     t.index ["folder_id"], name: "index_tasks_on_folder_id"
     t.index ["role_id"], name: "index_tasks_on_role_id"
@@ -730,6 +731,7 @@ ActiveRecord::Schema.define(version: 2023_01_02_134306) do
     t.uuid "company_id"
     t.uuid "active_outlet_id"
     t.datetime "last_click_comm_hub"
+    t.string "language"
     t.index ["active_outlet_id"], name: "index_users_on_active_outlet_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

@@ -60,7 +60,14 @@ ul.navbar-nav
     - else
       .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles"
         = "Designated user for " + current_user&.active_outlet&.company.name
-ul.navbar-nav.ml-auto
+ul.navbar-nav.ml-auto.mr-2
+  li.nav-link.mx-3.d-flex.position-relative
+    button#dropdownMenuButton.btn.btn-white.change-language-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+      | #{current_user.language || "No Lang"}
+      i.material-icons-outlined.float-right.ml-3.mt-1 keyboard_arrow_down
+    #language-dropdown.dropdown-menu.dropdown-menu-right aria-labelledby="dropdownMenuButton"
+      - ["en", "ko"].each do |lang|
+        = link_to lang, motif_change_language_path(current_user, user: {language: lang }), method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
   / Franchisee cannot access sharing hub path. Only their individual outlet
   - if current_user.has_role?(:franchisee_owner, current_user.company)
     - unread_msg_count = Note.where(notable_id: current_user.active_outlet).where('created_at > ?', current_user.last_click_comm_hub).where.not(user: current_user).count
@@ -74,15 +81,15 @@ ul.navbar-nav.ml-auto
         i.material-icons-outlined settings
   - else
     - unread_msg_count = Note.where(notable_id: current_user.company.outlets.map(&:id)).where('created_at > ?', current_user.last_click_comm_hub).where.not(user: current_user).count
-    li.nav-link.mx-3.d-flex.position-relative
+    li.nav-link.mx-3.d-flex.position-relative.mt-2
       = link_to motif_messages_path do
         i.material-icons-outlined comment
         - if unread_msg_count > 0
           .notif-header-count.badge = unread_msg_count
-    li.nav-link.mx-3
+    li.nav-link.mx-3.mt-2
       = link_to edit_motif_user_path(current_user) do
         i.material-icons-outlined settings
-  .dropdown.ml-3
+  .dropdown.ml-3.mt-2
     a#userDropdownMenu.bg-white.border-0 aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
       = image_pack_tag 'media/src/images/symphony/user-avatar-placeholder.jpg', class: 'icon-size dropdown-pointer mt-2'
     .dropdown-menu.dropdown-menu-right aria-labelledby="userDropdownMenu"
