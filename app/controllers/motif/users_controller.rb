@@ -43,6 +43,8 @@ class Motif::UsersController < ApplicationController
         @user.roles << @role
       end
     end
+    # By default, user's language is english
+    @user.language = "en"
     respond_to do |format|
       if @user.save
         # Set permission for company's folders and documents if user is a franchisor of company
