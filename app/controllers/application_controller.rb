@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   rescue_from Xeroizer::OAuth::RateLimitExceeded, with: :xero_rate_limit_exceeded
 
   before_action :authenticate_product
+  before_action :set_locale
 
   after_action :store_location
   after_action :check_storage_limit_not_exceeded
@@ -47,6 +48,20 @@ class ApplicationController < ActionController::Base
         current_user.company.save
       end
     end
+  end
+
+  def set_locale
+    # if user_signed_in?
+    #   I18n.locale = current_user.language
+    # else
+      # Translation either using query param, or http accept header
+      I18n.locale = params[:lang] || locale_from_header || I18n.default_locale
+    # end
+  end
+
+  def locale_from_header
+    # Use regex to draw out language code from http accept header
+    request.env.fetch('HTTP_ACCEPT_LANGUAGE', '').scan(/[a-z]{2}/).first
   end
 
   private
