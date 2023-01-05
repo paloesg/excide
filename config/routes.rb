@@ -125,6 +125,7 @@ Rails.application.routes.draw do
     # Dedoco endpoints
     post "/dedoco/webhook", to: "dedoco#create"
     patch '/change_outlet', to: 'home#change_outlet', as: :change_outlet
+    patch '/change_language', to: 'users#change_language', as: :change_language
     resources :documents do
       patch '/update_tags', to:'documents#update_tags'
       get '/file', to: "documents#file", defaults: {format: 'json'}

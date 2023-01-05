@@ -61,6 +61,13 @@ ul.navbar-nav
       .label.label-pill.label-inline.text-dark.p-3.mt-auto.mb-auto.ml-3 class="label-motif-roles"
         = "Designated user for " + current_user&.active_outlet&.company.name
 ul.navbar-nav.ml-auto
+  li.nav-link.mx-3
+    button#dropdownMenuButton.btn.btn-white.change-language-dropdown.text-left aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+      | #{current_user.language || "No Lang"}
+      i.material-icons-outlined.float-right.mt-1 keyboard_arrow_down
+    #language-dropdown.dropdown-menu.dropdown-menu-right aria-labelledby="dropdownMenuButton"
+      - ["en", "ko"].each do |lang|
+        = link_to lang, motif_change_language_path, method: 'patch', class: 'dropdown-item break-inside-avoid', tabindex: -1
   / Franchisee cannot access sharing hub path. Only their individual outlet
   - if current_user.has_role?(:franchisee_owner, current_user.company)
     - unread_msg_count = Note.where(notable_id: current_user.active_outlet).where('created_at > ?', current_user.last_click_comm_hub).where.not(user: current_user).count

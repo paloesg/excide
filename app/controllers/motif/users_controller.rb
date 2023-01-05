@@ -96,6 +96,10 @@ class Motif::UsersController < ApplicationController
     redirect_back fallback_location: motif_users_path, notice: 'User was successfully deleted.'
   end
 
+  def change_language
+    puts "here to change language"
+  end
+
   private
 
   def set_company
