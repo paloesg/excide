@@ -1,2 +1,25 @@
 ko:
   site_name: '아시아와이드 디지털 어드밴티지'
+  motif:
+    home:
+      index:
+        homepage: 'Home'
+        cards:
+          title:
+            franchisees: '나의프랜차이즈'
+            messages: '메시지'
+            announcements: '공고'
+            onboarding: '가게 온보딩'
+            site_audit: '감사 보고서 작성'
+            royalty_collection: 'Royalty Collection'
+          body:
+            total_outlet: '가게'
+            exp_outlet: '곧 만료'
+            unread_message: '%{count} 읽지 않은 메시지'
+            announcements: '%{count} 새로운 공고'
+            task_pending: 'Tasks Pending Completion'
+            waiting_approval: 'Outlet Waiting Approval'
+      banners:
+        franchisor:
+          home:
+            welcome: 'ADA 오신 것을 환영합니다'
