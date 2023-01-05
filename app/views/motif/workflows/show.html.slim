@@ -48,8 +48,8 @@
             tr.task-row data-action="#{wfa.id}"
               td.pointer width="60%" id="task_toggle_#{wfa.id}_0" class="#{'text-muted' if wfa.completed?}"
                 = wfa.task.instructions
-                - if wfa.task.document.dedoco_complete_signing_link.present?
-                  = link_to wfa.task.document.dedoco_complete_signing_link, target: :_blank
+                / - if wfa.task.document.dedoco_complete_signing_link.present?
+                /   = link_to wfa.task.document.dedoco_complete_signing_link, target: :_blank
               td.d-flex.pointer id="task_toggle_#{wfa.id}_1"
                 - if !wfa.completed? && wfa.deadline.present?
                   - if wfa.deadline.to_date < Date.today
