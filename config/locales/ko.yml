@@ -23,3 +23,16 @@ ko:
         franchisor:
           home:
             welcome: 'ADA 오신 것을 환영합니다'
+  layouts:
+    motif:
+      motif_paid_sidebar:
+        home: '메인 페이지'
+        announcement: '공고'
+        leads: '리드관리'
+        franchisee: '프랜차이즈'
+        outlet: '가게 위치'
+        onboarding: '온보딩 관리'
+        site_audit: '감사 관리'
+        royalty_collection: 'Royalty Collection %{franchisor}'
+        financial: '재무 성과'
+        sharing_hub: '공유 시스템'

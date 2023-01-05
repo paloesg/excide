@@ -44,6 +44,19 @@ en:
         franchisor:
           home:
             welcome: 'Welcome to ADA®'
+  layouts:
+    motif:
+      motif_paid_sidebar:
+        home: 'Home'
+        announcement: 'Announcement'
+        leads: 'Leads Management'
+        franchisee: 'Franchisee List'
+        outlet: 'Outlet List'
+        onboarding: 'Onboarding %{franchisor}'
+        site_audit: 'Site Audit %{franchisor}'
+        royalty_collection: 'Royalty Collection %{franchisor}'
+        financial: 'Financial Performance'
+        sharing_hub: 'Sharing Hub'
   symphony:
     home:
       index:
