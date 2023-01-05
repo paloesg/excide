@@ -27,9 +27,6 @@ class Document < ApplicationRecord
   before_destroy :reduce_storage_size
   before_destroy :delete_file_on_s3
 
-  # Only run callbacks if task is related to document (E-sign)
-  after_create :generate_dedoco_esign, if: :task_id
-
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
 
@@ -117,10 +114,5 @@ class Document < ApplicationRecord
   def reduce_storage_size
     self.company.storage_used -= self.raw_file.byte_size
     self.company.save
-  end
-
-  # Dedoco (E-sign) related methods
-  def generate_dedoco_esign
-    DedocoJob.perform_later(self)
   end
 end

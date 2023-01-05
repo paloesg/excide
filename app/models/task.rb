@@ -1,6 +1,7 @@
 class Task < ApplicationRecord
   validates :deadline_day, numericality: { less_than_or_equal_to: 31 }, if: :deadline_type_is_xth_month?
   after_create :add_workflow_action
+  after_save :get_dedoco_builder_link, if: :task_is_esign?
 
   belongs_to :section
   belongs_to :role
@@ -50,6 +51,17 @@ class Task < ApplicationRecord
   def deadline_type_is_xth_month?
     # Check that deadline type is xth day of the month. If it is, validates that number is less than 31
     self.xth_day_of_the_month?
+  end
+
+  # Run Dedoco service and save link to esign
+  def get_dedoco_builder_link
+    # Dedoco.new(self.document, self, nil).run_position_esign
+    DedocoJob.perform_later(self.document, self, "get_builder_link")
+  end
+
+  # Check for task type esign
+  def task_is_esign?
+    self.esign?
   end
 
   private
