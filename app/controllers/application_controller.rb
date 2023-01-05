@@ -51,12 +51,12 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    # if user_signed_in?
-    #   I18n.locale = current_user.language
-    # else
+    if user_signed_in?
+      I18n.locale = current_user.language
+    else
       # Translation either using query param, or http accept header
       I18n.locale = params[:lang] || locale_from_header || I18n.default_locale
-    # end
+    end
   end
 
   def locale_from_header

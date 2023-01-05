@@ -96,8 +96,13 @@ class Motif::UsersController < ApplicationController
     redirect_back fallback_location: motif_users_path, notice: 'User was successfully deleted.'
   end
 
+  # Change user's outlet for franchisee with multiple outlets
   def change_language
-    puts "here to change language"
+    if current_user.update(user_params)
+      redirect_to motif_root_path, notice: "Successfully changed language."
+    else
+      redirect_to motif_root_path, error: 'Sorry, there was an error when trying to change language. Please try again later.'
+    end
   end
 
   private
@@ -115,6 +120,6 @@ class Motif::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :stripe_card_token, :stripe_customer_id, :password, :password_confirmation, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :reminder_whatsapp, :task_sms, :task_email, :task_slack, :task_whatsapp, :batch_sms, :batch_email, :batch_slack, :batch_whatsapp], :role_ids => [], company_attributes:[:id, :name, :connect_xero, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state]])
+    params.require(:user).permit(:first_name, :last_name, :email, :contact_number, :company_id, :stripe_card_token, :stripe_customer_id, :language, :password, :password_confirmation, settings_attributes: [:reminder_sms, :reminder_email, :reminder_slack, :reminder_whatsapp, :task_sms, :task_email, :task_slack, :task_whatsapp, :batch_sms, :batch_email, :batch_slack, :batch_whatsapp], :role_ids => [], company_attributes:[:id, :name, :connect_xero, address_attributes: [:id, :line_1, :line_2, :postal_code, :city, :country, :state]])
   end
 end
