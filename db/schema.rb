@@ -733,6 +733,7 @@ ActiveRecord::Schema.define(version: 2023_01_05_094024) do
     t.uuid "company_id"
     t.uuid "active_outlet_id"
     t.datetime "last_click_comm_hub"
+    t.string "language"
     t.index ["active_outlet_id"], name: "index_users_on_active_outlet_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

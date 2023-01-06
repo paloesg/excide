@@ -147,4 +147,12 @@ namespace :update do
       c.save
     end
   end
+
+  desc "Update existing users in db language to english by default"
+  task set_language_default_to_existing_users: :environment do
+    User.all.each do |u|
+      u.language = "en"
+      u.save
+    end
+  end
 end

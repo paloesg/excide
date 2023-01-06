@@ -21,6 +21,42 @@
 
 en:
   site_name: 'Asiawide Digital Advantage - ADA®'
+  motif:
+    home:
+      index:
+        homepage: 'Home'
+        cards:
+          title:
+            franchisees: 'My Franchisees'
+            messages: 'Messages'
+            announcements: 'Latest Announcements'
+            onboarding: 'Onboarding'
+            site_audit: 'Site Audit'
+            royalty_collection: 'Royalty Collection'
+          body:
+            total_outlet: 'Total Outlets'
+            exp_outlet: 'Outlet expiring soon after the'
+            unread_message: 'You have %{count} unread messages'
+            announcements: 'You have made %{count}'
+            task_pending: 'Tasks Pending Completion'
+            waiting_approval: 'Outlet Waiting Approval'
+      banners:
+        franchisor:
+          home:
+            welcome: 'Welcome to ADA®'
+  layouts:
+    motif:
+      motif_paid_sidebar:
+        home: 'Home'
+        announcement: 'Announcement'
+        leads: 'Leads Management'
+        franchisee: 'Franchisee List'
+        outlet: 'Outlet List'
+        onboarding: 'Onboarding %{franchisor}'
+        site_audit: 'Site Audit %{franchisor}'
+        royalty_collection: 'Royalty Collection %{franchisor}'
+        financial: 'Financial Performance'
+        sharing_hub: 'Sharing Hub'
   symphony:
     home:
       index:

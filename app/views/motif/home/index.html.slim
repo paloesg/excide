@@ -3,7 +3,7 @@
     .row.my-5
       .col-sm-4.d-flex.align-items-center
         i.material-icons-outlined.mr-5.text-dark dashboard
-        .header-font.text-dark.mr-3 Home
+        .header-font.text-dark.mr-3 = t(".homepage")
         button.close.open-banner.text-dark.mr-3.mt-1 type="submit"
           i.material-icons-outlined help_outline
     = render 'motif/home/banners/franchisor/home'
@@ -20,39 +20,39 @@
           .card
             = link_to motif_outlets_path do
               .card-body
-                h5.card-title.text-dark My Franchisees
+                h5.card-title.text-dark = t(".cards.title.franchisees")
                 .d-flex.px-4.py-2.align-items-center.rounded.mb-5.primary-card-motif
                   h1.card-text.number-display
                     = @outlets.length
-                  p.card-text.ml-4 Total Outlets
+                  p.card-text.ml-4 = t(".cards.body.total_outlet")
                 .d-flex.px-4.py-2.align-items-center.rounded.warning-card-motif
                   h1.card-text.number-display
                     = @outlets_expiring.length
-                  p.card-text.ml-4 Outlet expiring soon
+                  p.card-text.ml-4 = t(".cards.body.exp_outlet")
         .col-sm-4
           .card
             = link_to motif_messages_path do
               .card-body
-                h5.card-title.text-dark Messages
+                h5.card-title.text-dark = t(".cards.title.messages")
                 .d-flex.p-5.align-items-center.rounded.primary-card-motif
                   = image_pack_tag 'media/src/images/motif/motif-message.svg'
-                  p.card-text.ml-4 = "You have #{@unread_notes.present? ? @unread_notes.length : "0"} unread messages"
+                  p.card-text.ml-4 = t(".cards.body.unread_message", count: @unread_notes.present? ? @unread_notes.length : "0")
         .col-sm-4
           .card
             .card-body
-              h5.card-title Latest Announcements
+              h5.card-title = t(".cards.title.announcements")
               .d-flex.p-5.align-items-center.rounded.primary-card-motif
                 = image_pack_tag 'media/src/images/motif/annoucement.png'
                 - if @posts.empty?
                   p.card-text.ml-4 You have no announcement.
                 - else
-                  p.card-text.ml-4 = "You have made #{pluralize(@posts.length, "announcement")}"
+                  p.card-text.ml-4 = t(".cards.body.announcements", count: pluralize(@posts.length, "announcement"))
       .row.mt-5
         .col-sm-4
           .card
             = link_to motif_workflows_path(template_type: "onboarding") do
               .card-body
-                h5.card-title.text-dark Onboarding
+                h5.card-title.text-dark = t(".cards.title.onboarding")
                 / If workflow is empty, it means all workflows has been completed
                 -if @onboarding_workflows.empty?
                   .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
@@ -61,15 +61,15 @@
                 -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
                     h1.card-text.number-display = @outstanding_onboarding_actions_outlets&.length || "0"
-                    p.card-text.ml-4 Tasks Pending Completion
+                    p.card-text.ml-4 = t(".cards.body.task_pending")
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
                     h1.card-text.number-display = @waiting_approval_onboarding_outlets&.length || "0"
-                    p.card-text.ml-4 Outlet waiting approval
+                    p.card-text.ml-4 = t(".cards.body.waiting_approval")
         .col-sm-4
           .card
             = link_to motif_workflows_path(template_type: "site_audit") do
               .card-body
-                h5.card-title.text-dark Site Audit
+                h5.card-title.text-dark = t(".cards.title.site_audit")
                 -if @site_audit_workflows.empty?
                   .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
                     = image_pack_tag 'media/src/images/motif/motif-done.svg'
@@ -77,15 +77,15 @@
                 -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
                     h1.card-text.number-display = @outstanding_site_audit_actions_outlets&.length || "0"
-                    p.card-text.ml-4 Task pending completion
+                    p.card-text.ml-4 = t(".cards.body.task_pending")
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.warning-card-motif
                     h1.card-text.number-display = @waiting_approval_site_audit_outlets&.length || "0"
-                    p.card-text.ml-4 Outlet waiting approval
+                    p.card-text.ml-4 = t(".cards.body.waiting_approval")
         .col-sm-4
           .card
             = link_to motif_workflows_path(template_type: "royalty_collection") do
               .card-body
-                h5.card-title.text-dark Royalty Collection
+                h5.card-title.text-dark = t(".cards.title.royalty_collection")
                 -if @royalty_collection_workflows.empty?
                   .d-flex.px-4.py-2.align-items-center.rounded.success-card-motif
                     = image_pack_tag 'media/src/images/motif/motif-done.svg'
@@ -93,10 +93,10 @@
                 -else
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.danger-card-motif
                     h1.card-text.number-display = @outstanding_royalty_collection_actions_outlets&.length || "0"
-                    p.card-text.ml-4 Tasks Pending Completion
+                    p.card-text.ml-4 = t(".cards.body.task_pending")
                   .d-flex.px-4.py-2.align-items-center.rounded.mb-5.success-card-motif
                     h1.card-text.number-display = @waiting_approval_royalty_collection_outlets&.length || "0"
-                    p.card-text.ml-4 Outlet waiting approval
+                    p.card-text.ml-4 = t(".cards.body.waiting_approval")
 - else
   .m-5
   .row.my-5

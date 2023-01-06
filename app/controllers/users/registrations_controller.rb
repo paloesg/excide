@@ -119,7 +119,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def account_update_params
-    params.require(:user).permit(:first_name, :last_name, :contact_number, :company_id, :email, :password, :password_confirmation, :current_password, :stripe_card_token, :stripe_customer_id)
+    params.require(:user).permit(:first_name, :last_name, :contact_number, :company_id, :email, :language, :password, :password_confirmation, :current_password, :stripe_card_token, :stripe_customer_id)
   end
 
   # The path used after sign up.
@@ -128,7 +128,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def sign_up_params
-    params.require(:user).permit(:first_name, :last_name, :contact_number, :company_id, :email, :password, :password_confirmation, :current_password, :stripe_card_token, :stripe_customer_id, company_attributes:[:id, :name, :website_url])
+    params.require(:user).permit(:first_name, :last_name, :contact_number, :company_id, :email, :language, :password, :password_confirmation, :current_password, :stripe_card_token, :stripe_customer_id, company_attributes:[:id, :name, :website_url])
   end
 
   # The path used after sign up for inactive accounts.
