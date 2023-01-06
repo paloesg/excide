@@ -30,6 +30,8 @@ class Document < ApplicationRecord
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
 
+  after_create :get_dedoco_builder_link, if: :task_is_esign?
+
   include AlgoliaSearch
   algoliasearch do
     attribute :formatted_date do
@@ -114,5 +116,15 @@ class Document < ApplicationRecord
   def reduce_storage_size
     self.company.storage_used -= self.raw_file.byte_size
     self.company.save
+  end
+
+  # Run Dedoco service and save link to esign
+  def get_dedoco_builder_link
+    DedocoJob.perform_later(self, self.task, "get_builder_link", nil)
+  end
+
+  # Check for task type esign
+  def task_is_esign?
+    self.task.esign?
   end
 end
