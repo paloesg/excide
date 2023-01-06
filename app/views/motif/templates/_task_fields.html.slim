@@ -3,13 +3,20 @@ tr.task-drawer-row id="#{f.object.id}" data-drawer=f.object.id
     / i.material-icons-outlined drag_indicator
   td.drawer-toggle id="drawer_toggle_#{f.object.id}_0" style="width: 40%" = f.object.instructions.present? ? f.object.instructions : "Click to add task details"
   td.drawer-toggle id="drawer_toggle_#{f.object.id}_1" style="width: 10%" = f.object.task_type.present? ? f.object.task_type.humanize : "Click to add task type"
-  td.drawer-toggle id="drawer_toggle_#{f.object.id}_2" style="width: 15%" = f.object.deadline_day.present? ? f.object.deadline_day : "Click to add deadline"
+  td.drawer-toggle id="drawer_toggle_#{f.object.id}_2" style="width: 10%" = f.object.deadline_day.present? ? f.object.deadline_day : "Click to add deadline"
   td.drawer-toggle id="drawer_toggle_#{f.object.id}_3" style="width: 10%" = f.object.folder.present? ? f.object.folder.name : "Click to link to a folder"
   td.drawer-toggle id="drawer_toggle_#{f.object.id}_4" style="width: 5%"
     i.material-icons-outlined.align-middle.mr-2 create
   td style="width: 5%"
     = link_to '#', class: 'remove_motif_tasks mr-4' do
       i.material-icons-outlined.align-middle.mr-2 delete_outline
-  td style="width: 10%"
-    - if f.object.id.present? && f.object.dedoco_visual_builder_link.present?
-      = link_to "Position Signature Box", f.object&.dedoco_visual_builder_link, target: :_blank, class: "btn btn-sm btn-success"
+  td style="width: 15%"
+    - if f.object.id.present? && f.object.esign? && f.object.document.present?
+      - if f.object.document.complete_visual_builder?
+        = link_to "Position Signature Box", f.object&.dedoco_visual_builder_link, target: :_blank, class: "btn btn-sm btn-success"
+      - elsif f.object.document.complete_signing_link?
+        .d-flex
+          i.material-icons-outlined.align-middle.mr-2.mt-1.text-success check_circle
+          p.ml-1 File uploaded successfully!
+      - else
+        i.material-icons-outlined.align-middle.mr-2.text-warning data-container="body" data-placement="bottom" data-toggle="tooltip" title="Generating link to position the signature box. Please refresh and try again!" info
