@@ -14,10 +14,9 @@ class Dedoco
       create_document
       append_signing_link
       @document.generate_complete_signing_link
-      @document.save
-      # if @document.save!
-      #   NotificationMailer.send_esign_document(@document).deliver_later
-      # end
+      if @document.save
+        send_email_to_signers
+      end
       OpenStruct.new(success?: true, document: @document)
     rescue => e
       OpenStruct.new(success?: false, document: @document, message: e.message)
@@ -95,5 +94,13 @@ class Dedoco
   def append_signing_link
     @encrypt_hash = Base64.strict_encode64("#{ENV["ASSET_HOST"]}/file.json")
     @document.dedoco_complete_signing_link = "#{@document.dedoco_links[0]["link"]}/#{@encrypt_hash}"
+  end
+
+  def send_email_to_signers
+    @params["business_processes"].each do |bp|
+      bp["signers"].each do |signer|
+        NotificationMailer.send_esign_document(@document, signer["signer_name"], signer["signer_email"]).deliver_later
+      end
+    end
   end
 end

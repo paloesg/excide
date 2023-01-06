@@ -124,10 +124,10 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def send_esign_document(document)
-    #to email will be changed with afc's support email
-    mail(to: "ada@paloe.com.sg", from: 'Asiawide Digital Support <support@paloe.com.sg>', subject: 'New document uploaded to sign', body: 'New Esign Document', template_id: ENV['ADA_ESIGN'], dynamic_template_data: {
-        esign_link: document.dedoco_complete_signing_link
+  def send_esign_document(document, signer_name, signer_email)
+    mail(to: signer_email, from: 'Asiawide Digital Support <support@paloe.com.sg>', subject: 'New document uploaded to sign', body: 'New Esign Document', template_id: ENV['ADA_ESIGN'], dynamic_template_data: {
+        esign_link: document.dedoco_complete_signing_link,
+        signer_name: signer_name
       }
     )
   end
