@@ -27,11 +27,10 @@ class Document < ApplicationRecord
   before_destroy :reduce_storage_size
   before_destroy :delete_file_on_s3
 
-  # Only run callbacks if task is related to document (E-sign)
-  after_create :generate_dedoco_esign, if: :task_id
-
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
+
+  after_create :get_dedoco_builder_link, if: :task_is_esign?
 
   include AlgoliaSearch
   algoliasearch do
@@ -119,8 +118,13 @@ class Document < ApplicationRecord
     self.company.save
   end
 
-  # Dedoco (E-sign) related methods
-  def generate_dedoco_esign
-    DedocoJob.perform_later(self)
+  # Run Dedoco service and save link to esign
+  def get_dedoco_builder_link
+    DedocoJob.perform_later(self, self.task, "get_builder_link", nil)
+  end
+
+  # Check for task type esign
+  def task_is_esign?
+    self.task.esign?
   end
 end

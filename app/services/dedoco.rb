@@ -1,18 +1,19 @@
 class Dedoco
   include HTTParty
-  def initialize(document)
+  def initialize(document=nil, task=nil, webhook_params=nil)
     @document = document
+    @task = task
+    @params = webhook_params
   end
 
   def run
     begin
       get_jwt_token
-      return_dedoco_link
-      # sleep 10
-      # encode_base64_file_date
-      # create_document
-      # append_signing_link
-      # @document.save
+      sleep 10
+      encode_base64_file_date
+      create_document
+      append_signing_link
+      @document.save
       # if @document.save!
       #   NotificationMailer.send_esign_document(@document).deliver_later
       # end
@@ -22,7 +23,35 @@ class Dedoco
     end
   end
 
+  def run_position_esign
+    begin
+      generate_visual_builder_link
+      sleep 10
+      generate_sha3_document_hash
+      @document.save
+      @task.save
+      OpenStruct.new(success?: true, document: @document)
+    rescue => e
+      OpenStruct.new(success?: false, document: @document, message: e.message)
+    end
+  end
+
   private
+
+  # Returns link to dedoco visual builder for modifying the position of the signature
+  def generate_visual_builder_link
+    api_url = "https://developers.stage.dedoco.com/vb/create-project"
+    url = "#{ENV["ASSET_HOST"]}/motif/dedoco/webhook"
+    base64_fd = Base64.strict_encode64(url)
+    @task.dedoco_visual_builder_link = "#{api_url}/#{base64_fd}"
+  end
+
+  def generate_sha3_document_hash
+    url = @document.raw_file.url
+    file_data = URI.open(url)
+    doc_hash = SHA3::Digest::SHA256.hexdigest(file_data.read)
+    @document.doc_hash = doc_hash
+  end
 
   def get_jwt_token
     url = "https://api.stage.dedoco.com/api/v1/public/auth/token"
@@ -39,16 +68,7 @@ class Dedoco
     @document.save
   end
 
-  def return_dedoco_link
-    api_url = "https://developers.stage.dedoco.com/vb/create-project"
-    url = "#{ENV["ASSET_HOST"]}/motif/dedoco/webhook"
-    base64_fd = Base64.strict_encode64(url)
-    @document.dedoco_complete_signing_link = "#{api_url}/#{base64_fd}"
-    @document.save
-  end
-
   def encode_base64_file_date
-    # puts "Is document attached? #{@document.raw_file.attached?}"
     # Problem: File not yet uploaded to S3 but presigned-url is created alr
     url = @document.raw_file.url
     file_data = URI.open(url)
@@ -59,71 +79,12 @@ class Dedoco
   def create_document
     # Generate folder
     api_url = "https://api.stage.dedoco.com/api/v1/public/folders"
-    url = @document.raw_file.url
-    file_data = URI.open(url)
     body = {
-      folder_name: "Test Folder",
-      date_created: DateTime.current.to_i,
-      documents: [
-        {
-          name: @document.raw_file.filename.to_s,
-          file_type: "pdf",
-          document_hash: SHA3::Digest::SHA256.hexdigest(file_data.read)
-        }
-      ],
-      # linked_folders: [],
-      business_processes: [
-        {
-          type: "signature",
-          expiration_time: 0,
-          document_id: 0,
-          signers: [
-            {
-              signer_name: "Jonathan",
-              signer_email: "jonathan.lau@paloe.com.sg",
-              signer_phone: "",
-              signer_nric: "",
-              esignatures: [
-                {
-                  is_mandatory: true,
-                  placement: {
-                    page: 1,
-                    x: "0.684993531694696",
-                    y: "0.3461280278793419"
-                  },
-                  dimensions: {
-                    width: "0.258732212160414",
-                    height: "0.0712979890310786"
-                  }
-                }
-              ],
-              custom_texts: [
-                {
-                  is_mandatory: true,
-                  placement: {
-                    page: 1,
-                    x: "0.682406209573092",
-                    y: "0.2821426531078611"
-                  },
-                  dimensions: {
-                    width: "0.258732212160414",
-                    height: "0.04570383912248629"
-                  },
-                  descriptor: "Actual Date",
-                  type: "actual-date"
-                }
-              ],
-              digi_signatures: [],
-              sequence_number: 1
-            }
-          ],
-          is_sequential: false,
-          observers: [],
-          completion_requirement: {
-            min_number: 1
-          }
-        }
-      ]
+      folder_name: @params["folder_name"],
+      date_created: @params["date_created"],
+      documents: @params["documents"],
+      linked_folders: [],
+      business_processes: @params["business_processes"]
     }
     res = HTTParty.post(api_url, headers: {"Content-Type": "application/json", Authorization: "Bearer #{@document.dedoco_token}"}, body: body.to_json)
     @document.dedoco_links = res["links"]
