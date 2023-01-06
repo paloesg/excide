@@ -30,7 +30,7 @@ class Document < ApplicationRecord
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
 
-  after_create :get_dedoco_builder_link, if: :task_is_esign?
+  after_create_commit :get_dedoco_builder_link, if: :task_is_esign?
 
   include AlgoliaSearch
   algoliasearch do
