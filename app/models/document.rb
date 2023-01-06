@@ -1,5 +1,6 @@
 class Document < ApplicationRecord
   include PublicActivity::Model
+  include AASM
 
   tracked owner: ->(controller, _model) { controller&.current_user },
           recipient: ->(_controller, model) { model&.workflow },
@@ -31,6 +32,28 @@ class Document < ApplicationRecord
   acts_as_taggable_on :tags
 
   after_create_commit :get_dedoco_builder_link, if: :task_is_esign?
+
+  enum status: { processing_visual_builder: 0, complete_visual_builder: 1, webhook_success: 2, webhook_fail: 3, complete_signing_link: 4 }
+  aasm column: :status, enum: true do
+    state :processing_visual_builder, initial: true
+    state :complete_visual_builder, :webhook_success, :webhook_fail, :complete_signing_link
+
+    event :store_visual_builder_link do
+      transitions from: :processing_visual_builder, to: :complete_visual_builder
+    end
+
+    event :positioned_esign do
+      transitions from: :complete_visual_builder, to: :webhook_success
+    end
+
+    event :document_unmatched do
+      transitions from: :complete_visual_builder, to: :webhook_fail
+    end
+
+    event :generate_complete_signing_link do
+      transitions from: :webhook_success, to: :complete_signing_link
+    end
+  end
 
   include AlgoliaSearch
   algoliasearch do

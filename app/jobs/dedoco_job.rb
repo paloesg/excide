@@ -8,7 +8,6 @@ class DedocoJob < ApplicationJob
       Dedoco.new(document, task, nil).run_position_esign
     else
       Dedoco.new(document, task, params).run
-      puts "By Default, pass #{params}"
     end
   end
 end

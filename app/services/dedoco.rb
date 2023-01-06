@@ -13,6 +13,7 @@ class Dedoco
       encode_base64_file_date
       create_document
       append_signing_link
+      @document.generate_complete_signing_link
       @document.save
       # if @document.save!
       #   NotificationMailer.send_esign_document(@document).deliver_later
@@ -28,6 +29,7 @@ class Dedoco
       generate_visual_builder_link
       sleep 10
       generate_sha3_document_hash
+      @document.store_visual_builder_link
       @document.save
       @task.save
       OpenStruct.new(success?: true, document: @document)

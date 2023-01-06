@@ -7,9 +7,12 @@ class Motif::DedocoController < ApplicationController
     # Find document based on document hash saved in database
     @document = Document.find_by(doc_hash: params["documents"][0]["document_hash"])
     if @document.present?
+      @document.positioned_esign
+      @document.save
       DedocoJob.perform_later(@document, @document.task, "webhook", params.to_unsafe_h)
     else
-      puts "No document returned from webhook"
+      @document.document_unmatched
+      @document.save
     end
     puts "Returned from Dedoco #{params}"
   end
