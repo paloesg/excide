@@ -92,7 +92,7 @@ class Dedoco
   end
 
   def append_signing_link
-    @encrypt_hash = Base64.strict_encode64("#{ENV["ASSET_HOST"]}/file.json")
+    @encrypt_hash = Base64.strict_encode64("#{ENV["ASSET_HOST"]}/motif/documents/#{@document.id}/file.json")
     @document.dedoco_complete_signing_link = "#{@document.dedoco_links[0]["link"]}/#{@encrypt_hash}"
   end
 
