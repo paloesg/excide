@@ -5,6 +5,7 @@ class Motif::DedocoController < ApplicationController
   # Webhook from Dedoco
   def create
     # Find document based on document hash saved in database
+    puts "Returned from Dedoco #{params}"
     @document = Document.find_by(doc_hash: params["documents"][0]["document_hash"])
     if @document.present?
       @document.positioned_esign
