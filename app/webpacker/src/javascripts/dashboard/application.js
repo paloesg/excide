@@ -50,6 +50,7 @@ require("./motif/note")
 require("./motif/contact_status_update")
 require("./motif/banner")
 require("./motif/scroll_templates")
+require("./motif/toggle_task_type")
 
 // Import Uppy drag-and-drop
 require("./components/uppy");

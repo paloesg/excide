@@ -89,6 +89,7 @@ class Dedoco
     }
     res = HTTParty.post(api_url, headers: {"Content-Type": "application/json", Authorization: "Bearer #{@document.dedoco_token}"}, body: body.to_json)
     @document.dedoco_links = res["links"]
+    @document.dedoco_business_processes_id = res["businessProcesses"][0]["id"]
   end
 
   def append_signing_link

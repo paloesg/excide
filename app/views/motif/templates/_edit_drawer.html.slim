@@ -12,13 +12,14 @@
         h6.ml-4 Task Type
         .col-md-12
           .form-group
-            = f.select :task_type, options_for_select([["Instructions", "instructions"], ["E-sign", "esign"]], f.object.task_type), {}, { class: "form-control col-md-8"}
+            = f.select :task_type, options_for_select([["Instructions", "instructions"], ["E-sign", "esign"]], f.object.task_type), {}, { id: "toggle-edit", class: "form-control col-md-8", onchange: "toggleTaskType(this)"}
+      .row.mb-2#esign
         h6.ml-4 Upload file for E-sign task
         .col-md-12
           .form-group
             = f.fields_for :document do |d|
-              = d.file_field :raw_file
-              = d.hidden_field :company_id, value: @company.id
+              = d.file_field :raw_file, disabled: true, id: "esign-upload"
+              = d.hidden_field :company_id, value: @company.id, id: "esign-hidden"
               p.font-weight-bold.font-size-lg.mt-2 = d.object.raw_file.filename if d.object.present?
       .row.mb-2
         h6.ml-4 Description
