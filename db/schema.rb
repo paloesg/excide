@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_06_070231) do
+ActiveRecord::Schema.define(version: 2023_01_09_062432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -287,6 +287,7 @@ ActiveRecord::Schema.define(version: 2023_01_06_070231) do
     t.string "base_64_file_data"
     t.string "doc_hash"
     t.integer "status"
+    t.string "dedoco_business_processes_id"
     t.index ["folder_id"], name: "index_documents_on_folder_id"
     t.index ["franchisee_id"], name: "index_documents_on_franchisee_id"
     t.index ["outlet_id"], name: "index_documents_on_outlet_id"
