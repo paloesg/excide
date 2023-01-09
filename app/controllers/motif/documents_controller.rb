@@ -3,13 +3,13 @@ class Motif::DocumentsController < ApplicationController
   include Motif::UsersHelper
   include Motif::FoldersHelper
 
-  before_action :authenticate_user!
-  before_action :set_company
+  before_action :authenticate_user!, except: :file
+  before_action :set_company, except: :file
   before_action :set_document, only: [:update_tags, :update, :destroy]
   before_action :set_users_and_activities, only: [:document_drawer, :folder_drawer]
   before_action :set_shared_document, only: [:show_document, :document_drawer]
 
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized, except: [:index, :file]
 
   def index
     @folder = Folder.new
