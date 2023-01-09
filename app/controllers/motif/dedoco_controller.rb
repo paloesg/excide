@@ -25,9 +25,6 @@ class Motif::DedocoController < ApplicationController
         @document.positioned_esign
         @document.save
         DedocoJob.perform_later(@document, @document.task, "webhook", params.to_unsafe_h)
-      else
-        @document.document_unmatched
-        @document.save
       end
     end
   end
