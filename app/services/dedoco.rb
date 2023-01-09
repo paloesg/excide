@@ -61,8 +61,8 @@ class Dedoco
       password: "D909C1622777E624CADD6FFC"
     }
     body = {
-      fileCallback: "#{ENV["ASSET_HOST"]}/dedoco/webhook",
-      statusCallback: "#{ENV["ASSET_HOST"]}/dedoco/webhook"
+      fileCallback: "#{ENV["ASSET_HOST"]}/motif/dedoco/webhook",
+      statusCallback: "#{ENV["ASSET_HOST"]}/motif/dedoco/webhook"
     }
     res = HTTParty.post(url, body: body, basic_auth: client_auth)
     @document.dedoco_token = res["token"]
@@ -99,7 +99,7 @@ class Dedoco
   def send_email_to_signers
     @params["business_processes"].each do |bp|
       bp["signers"].each do |signer|
-        NotificationMailer.send_esign_document(@document, signer["signer_name"], signer["signer_email"]).deliver_later
+        NotificationMailer.send_esign_document(@document, signer["signer_name"], signer["signer_email"]).deliver
       end
     end
   end
