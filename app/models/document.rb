@@ -23,6 +23,7 @@ class Document < ApplicationRecord
 
   has_one_attached :raw_file
   has_many_attached :converted_images
+  has_many_attached :signed_versions
 
   before_validation :set_filename
   before_destroy :reduce_storage_size
