@@ -8,7 +8,7 @@ class Motif::DedocoController < ApplicationController
     puts "Returned from Dedoco #{params}"
     # After user has signed the document
     if params["file"].present?
-      @document = Document.find_by(doc_hash: params["businessProcessId"])
+      @document = Document.find_by(dedoco_business_processes_id: params["businessProcessId"])
       # # Decode the base64 encoded PDF
       decoded_pdf = Base64.decode64(params["file"])
       # # Create a new blob object from the decoded PDF
