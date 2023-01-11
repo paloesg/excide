@@ -10,7 +10,7 @@ class Motif::DedocoController < ApplicationController
     if params["file"].present?
       @document = Document.find_by(doc_hash: params["businessProcessId"])
       # # Decode the base64 encoded PDF
-      decoded_pdf = Base64.decode64(encoded_pdf)
+      decoded_pdf = Base64.decode64(params["file"])
       # # Create a new blob object from the decoded PDF
       blob = ActiveStorage::Blob.create_after_upload!(
         io: StringIO.new(decoded_pdf),
