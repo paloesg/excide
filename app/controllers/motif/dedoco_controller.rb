@@ -6,7 +6,7 @@ class Motif::DedocoController < ApplicationController
   def create
     # Find document based on document hash saved in database
     puts "Returned from Dedoco #{params}"
-    # After user has signed the document
+    # After user has signed the document (fileCallback)
     if params["file"].present?
       @document = Document.find_by(dedoco_business_processes_id: params["businessProcessId"])
       # # Decode the base64 encoded PDF
@@ -19,6 +19,9 @@ class Motif::DedocoController < ApplicationController
       )
       # Attach the signed blob to the documents
       @document.signed_versions.attach(blob)
+    # Handle statusCallback
+    elsif params["signers"].present?
+      puts "Status callback!"
     else
       @document = Document.find_by(doc_hash: params["documents"][0]["document_hash"])
       if @document.present?
