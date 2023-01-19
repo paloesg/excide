@@ -12,12 +12,9 @@ tr.task-drawer-row id="#{f.object.id}" data-drawer=f.object.id
       i.material-icons-outlined.align-middle.mr-2 delete_outline
   td style="width: 15%"
     - if f.object.id.present? && f.object.esign?
-      = link_to "Position Signature Box", motif_position_esign_path(task_id: f.object.id, document_id: f.object&.document&.id), target: :_blank, class: "btn btn-sm btn-success"
-      / - if f.object.document.complete_visual_builder?
-      /   = link_to "Position Signature Box", f.object&.dedoco_visual_builder_link, target: :_blank, class: "btn btn-sm btn-success"
-      / - elsif f.object.document.complete_signing_link?
-      /   .d-flex
-      /     i.material-icons-outlined.align-middle.mr-2.mt-1.text-success check_circle
-      /     p.ml-1 File uploaded successfully!
-      / - else
-      /   i.material-icons-outlined.align-middle.mr-2.text-warning data-container="body" data-placement="bottom" data-toggle="tooltip" title="Processing the Esign...Please refresh and try again!" info
+      - if f.object.document.created?
+        = link_to "Position Signature Box", motif_position_esign_path(task_id: f.object.id, document_id: f.object&.document&.id), target: :_blank, class: "btn btn-sm btn-success"
+      - else
+        .d-flex
+          i.material-icons-outlined.align-middle.mr-2.mt-1.text-success check_circle
+          p.ml-1 File uploaded successfully!

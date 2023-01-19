@@ -32,27 +32,13 @@ class Document < ApplicationRecord
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
 
-  after_create_commit :get_dedoco_builder_link, if: :task_is_esign?
-
-  enum status: { processing_visual_builder: 0, complete_visual_builder: 1, webhook_success: 2, webhook_fail: 3, complete_signing_link: 4 }
+  enum status: { created: 0, completed: 1 }
   aasm column: :status, enum: true do
-    state :processing_visual_builder, initial: true
-    state :complete_visual_builder, :webhook_success, :webhook_fail, :complete_signing_link
-
-    event :store_visual_builder_link do
-      transitions from: :processing_visual_builder, to: :complete_visual_builder
-    end
-
-    event :positioned_esign do
-      transitions from: :complete_visual_builder, to: :webhook_success
-    end
-
-    event :document_unmatched do
-      transitions from: :complete_visual_builder, to: :webhook_fail
-    end
+    state :created, initial: true
+    state :completed
 
     event :generate_complete_signing_link do
-      transitions from: :webhook_success, to: :complete_signing_link
+      transitions from: :created, to: :completed
     end
   end
 
@@ -140,11 +126,6 @@ class Document < ApplicationRecord
   def reduce_storage_size
     self.company.storage_used -= self.raw_file.byte_size
     self.company.save
-  end
-
-  # Run Dedoco service and save link to esign
-  def get_dedoco_builder_link
-    DedocoJob.perform_later(self, self.task, "get_builder_link", nil)
   end
 
   # Check for task type esign

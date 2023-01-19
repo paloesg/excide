@@ -1,15 +1,16 @@
 class Dedoco
   include HTTParty
-  def initialize(document=nil, task=nil, webhook_params=nil)
+  def initialize(document=nil, task=nil)
     @document = document
     @task = task
-    @params = webhook_params
+    @params = Session.last.data
   end
 
   def run
     begin
       get_jwt_token
-      sleep 10
+      generate_sha3_document_hash
+      sleep 5
       encode_base64_file_date
       create_document
       append_signing_link
@@ -23,36 +24,7 @@ class Dedoco
     end
   end
 
-  def run_position_esign
-    begin
-      generate_visual_builder_link
-      sleep 10
-      generate_sha3_document_hash
-      @document.store_visual_builder_link
-      @document.save
-      @task.save
-      OpenStruct.new(success?: true, document: @document)
-    rescue => e
-      OpenStruct.new(success?: false, document: @document, message: e.message)
-    end
-  end
-
   private
-
-  # Returns link to dedoco visual builder for modifying the position of the signature
-  def generate_visual_builder_link
-    api_url = "https://developers.stage.dedoco.com/vb/create-project"
-    url = "#{ENV["ASSET_HOST"]}/motif/dedoco/webhook"
-    base64_fd = Base64.strict_encode64(url)
-    @task.dedoco_visual_builder_link = "#{api_url}/#{base64_fd}"
-  end
-
-  def generate_sha3_document_hash
-    url = @document.raw_file.url
-    file_data = URI.open(url)
-    doc_hash = SHA3::Digest::SHA256.hexdigest(file_data.read)
-    @document.doc_hash = doc_hash
-  end
 
   def get_jwt_token
     url = "https://api.stage.dedoco.com/api/v1/public/auth/token"
@@ -67,6 +39,13 @@ class Dedoco
     res = HTTParty.post(url, body: body, basic_auth: client_auth)
     @document.dedoco_token = res["token"]
     @document.save
+  end
+
+  def generate_sha3_document_hash
+    url = @document.raw_file.url
+    file_data = URI.open(url)
+    doc_hash = SHA3::Digest::SHA256.hexdigest(file_data.read)
+    @document.doc_hash = doc_hash
   end
 
   def encode_base64_file_date
