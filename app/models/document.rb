@@ -32,13 +32,17 @@ class Document < ApplicationRecord
   # Tagging documents to indicate where document is created from
   acts_as_taggable_on :tags
 
-  enum status: { created: 0, completed: 1 }
+  enum status: { created: 0, completed: 1, signed: 2 }
   aasm column: :status, enum: true do
     state :created, initial: true
-    state :completed
+    state :completed, :signed
 
     event :generate_complete_signing_link do
       transitions from: :created, to: :completed
+    end
+
+    event :sign_document do
+      transitions from: :completed, to: :signed
     end
   end
 

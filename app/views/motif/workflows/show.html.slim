@@ -80,7 +80,11 @@
                 / Conditions for disabling checklist is in workflow helper method
                 = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id, company_id: @workflow.company.id), method: "POST"}, onclick: "this.checked=true;", disabled: disable_checklist(@workflow, @user), class: "mt-1 action_checkbox"
               td.text-center width="10%"
-                - if wfa.task&.document&.dedoco_complete_signing_link.present?
+                - if wfa.task.document.signed?
+                  .d-flex
+                    i.material-icons-outlined.align-middle.mr-2.mt-1.text-success check_circle
+                    p.ml-1 Document signed
+                - elsif wfa.task&.document&.dedoco_complete_signing_link.present?
                   = link_to "Sign Here!", wfa.task.document.dedoco_complete_signing_link, target: :_blank, class: "btn btn-sm btn-primary"
             = render "task", template: @template, wf: @workflow, wfa: wfa, index: index, color: color, task: wfa.task
 
