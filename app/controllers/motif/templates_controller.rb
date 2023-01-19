@@ -1,5 +1,6 @@
 class Motif::TemplatesController < ApplicationController
   layout 'motif/application'
+  include Motif::TemplatesHelper
   
   before_action :authenticate_user!
   before_action :set_company
