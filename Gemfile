@@ -31,6 +31,8 @@ gem 'webpacker', '~> 5.2.1'
 gem 'sprockets', '~>3.7.0'
 # Allow CORS access
 gem 'rack-cors'
+# Store sessions into database
+gem 'activerecord-session_store'
 
 #################################################
 #                                               #
