@@ -76,6 +76,12 @@ GEM
     activerecord (6.1.7)
       activemodel (= 6.1.7)
       activesupport (= 6.1.7)
+    activerecord-session_store (2.0.0)
+      actionpack (>= 5.2.4.1)
+      activerecord (>= 5.2.4.1)
+      multi_json (~> 1.11, >= 1.11.2)
+      rack (>= 2.0.8, < 3)
+      railties (>= 5.2.4.1)
     activestorage (6.1.7)
       actionpack (= 6.1.7)
       activejob (= 6.1.7)
@@ -331,6 +337,7 @@ GEM
       money (~> 6.13.2)
       railties (>= 3.0)
     msgpack (1.6.0)
+    multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.2.3)
     nenv (0.3.0)
@@ -642,6 +649,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
+  activerecord-session_store
   activestorage-office-previewer
   activity_notification
   acts-as-taggable-on (~> 7.0.0)

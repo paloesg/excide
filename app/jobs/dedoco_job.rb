@@ -2,12 +2,8 @@ class DedocoJob < ApplicationJob
   include SuckerPunch::Job
   queue_as :default
 
-  def perform(document, task, status, params)
+  def perform(document, task)
     # Do something later
-    if status == "get_builder_link"
-      Dedoco.new(document, task, nil).run_position_esign
-    else
-      Dedoco.new(document, task, params).run
-    end
+    Dedoco.new(document, task).run
   end
 end

@@ -43,7 +43,7 @@
             th
             th
             th Completed?
-            / td
+            th
         tbody
           - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
             tr.task-row data-action="#{wfa.id}"
@@ -79,8 +79,8 @@
               td.text-center width="5%"
                 / Conditions for disabling checklist is in workflow helper method
                 = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id, company_id: @workflow.company.id), method: "POST"}, onclick: "this.checked=true;", disabled: disable_checklist(@workflow, @user), class: "mt-1 action_checkbox"
-              / td.text-center width="10%"
-              /   - if wfa.task&.document&.dedoco_complete_signing_link.present?
-              /     = link_to "Sign Here!", wfa.task.document.dedoco_complete_signing_link, target: :_blank, class: "btn btn-sm btn-primary"
+              td.text-center width="10%"
+                - if wfa.task&.document&.dedoco_complete_signing_link.present?
+                  = link_to "Sign Here!", wfa.task.document.dedoco_complete_signing_link, target: :_blank, class: "btn btn-sm btn-primary"
             = render "task", template: @template, wf: @workflow, wfa: wfa, index: index, color: color, task: wfa.task
 
