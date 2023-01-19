@@ -6,7 +6,7 @@ class Motif::DedocoController < ApplicationController
   def create
     # Store webhook return in a session variable
     puts "Webhook dedoco! "
-    if params["documents"][0]["document_hash"].present?
+    if params["documents"].present?
       puts "sessions dedoco! #{params}"
 
       Session.create(document_hash: params["documents"][0]["document_hash"], data: params.to_unsafe_hash)
