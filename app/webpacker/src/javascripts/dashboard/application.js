@@ -50,7 +50,6 @@ require("./motif/note")
 require("./motif/contact_status_update")
 require("./motif/banner")
 require("./motif/scroll_templates")
-require("./motif/toggle_task_type")
 require("./motif/dedoco")
 require("./motif/display_file_field")
 
