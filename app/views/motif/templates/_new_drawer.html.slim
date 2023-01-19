@@ -12,13 +12,17 @@
       .col-md-12
         .form-group
           = f.select :task_type, options_for_select([["Instructions", "instructions"], ["E-sign", "esign"]]), {}, { id: "toggle-new", class: "form-control col-md-8", onchange: "toggleTaskType(this)" }
-    .row.mb-2.d-none#esign
-      h6.ml-4 Upload file for signing
-      .col-md-12
-        .form-group
-          = f.fields_for :document, Document.new do |d|
-            = d.file_field :raw_file, disabled: true, id: "esign-upload"
-            = d.hidden_field :company_id, value: @company.id, id: "esign-hidden"
+    / .row.mb-2.d-none#esign
+    /   h6.ml-4 Upload file for signing
+    /   .col-md-12
+    /     .form-group
+    /       = f.fields_for :document, Document.new do |d|
+    /         label.wrapper.mb-5
+    /           = d.file_field :raw_file, accept: 'application/pdf', style: "display: none;", onchange: "displayFileField(this)", id: "esign-file"
+    /           btn.btn.btn-sm.btn-primary.mr-2 Upload File
+    /           = d.hidden_field :company_id, value: @company.id, id: "esign-hidden"
+    /         .upload-file.items-center.button.flex
+    /           .file-upload-filename.hidden.mb-5
     .row.mb-2
       h6.ml-4 Description
       .col-md-12

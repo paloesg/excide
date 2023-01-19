@@ -1,0 +1,14 @@
+.container.p-10
+  h2.mb-10 Steps to upload documents for E-sign:
+  h5.mt-10.mb-5 = "Step 1: Click to upload the document to E-sign for the task '#{@task.instructions}', and click the 'Send File' button."
+  = form_for @task, url: motif_add_task_path(task_id: @task.id) do |t|
+    label.wrapper.mb-5
+      = t.fields_for :document, Document.new do |d|
+        = d.file_field :raw_file, accept: 'application/pdf', style: "display: none;", onchange: "displayFileField(this)", id: "esign-file"
+      btn.btn.btn-sm.btn-primary.mr-2 Upload File
+    btn.btn.btn-sm.btn-success onclick="handleDedocoClick()" Send File
+    .upload-file.items-center.button.flex
+      .file-upload-filename.hidden.mb-10
+    h5.mb-5 Step 2: Position the signature box using Dedoco Visual Builder below. Please remember to click the blue button below after you've positioned the signature.
+    iframe id="esign-iframe" title="iframe" src="https://developers.stage.dedoco.com/vb/create-project/aHR0cDovL2xvY2FsaG9zdDozMDAwL21vdGlmL2RlZG9jby93ZWJob29r" style="width: 100%; height: 87vh; margin: auto; border: 0.5px; padding: 30px; margin-bottom: 30px; overflow: auto"
+    = t.submit "Save Changes", class: "btn btn-primary"

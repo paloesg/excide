@@ -3,7 +3,7 @@ class Motif::TemplatesController < ApplicationController
   
   before_action :authenticate_user!
   before_action :set_company
-  before_action :set_template, except: [:index, :new, :create]
+  before_action :set_template, except: [:index, :new, :create, :position_esign]
 
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
@@ -63,6 +63,10 @@ class Motif::TemplatesController < ApplicationController
       end
       flash[:notice] = 'Routine was successfully deleted.'
     end
+  end
+
+  def position_esign
+    @task = Task.find(params[:task_id])
   end
 
   private

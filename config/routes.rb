@@ -139,6 +139,9 @@ Rails.application.routes.draw do
     resources :permissions
     resources :companies
     resources :templates, param: :template_slug
+    # resources :tasks, only: :update
+    patch ':task_id/add_task', to: "dedoco#add_task", as: :add_task
+    get '/task/:task_id/position_esign', to: "templates#position_esign", as: :position_esign
     resources :workflows do
       post '/task/:task_id', to: 'workflows#toggle', as: :task_toggle
       post '/upload_documents', to: 'workflows#upload_documents', as: :upload_documents
