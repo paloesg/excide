@@ -12,15 +12,18 @@ class Motif::DedocoController < ApplicationController
       if @document.present?
         # Change status of document to signed
         @document.sign_document unless @document.signed?
-        decoded_pdf = Base64.decode64(params["file"])
-        # Create a new blob object from the decoded PDF
-        blob = ActiveStorage::Blob.create_after_upload!(
-          io: StringIO.new(decoded_pdf),
-          filename: "signed_#{@document.raw_file.filename}",
-          content_type: "application/pdf"
-        )
-        # Attach the signed blob to the documents
-        @document.signed_versions.attach(blob)
+        puts "What is params file #{params["file"]}"
+        if params["file"].present?
+          decoded_pdf = Base64.decode64(params["file"])
+          # Create a new blob object from the decoded PDF
+          blob = ActiveStorage::Blob.create_after_upload!(
+            io: StringIO.new(decoded_pdf),
+            filename: "signed_#{@document.raw_file.filename}",
+            content_type: "application/pdf"
+          )
+          # Attach the signed blob to the documents
+          @document.signed_versions.attach(blob)
+        end
         @document.save
       end
     end
