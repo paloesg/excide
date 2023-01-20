@@ -47,7 +47,7 @@
         tbody
           - @workflow.workflow_actions.sort_by{|action| [action.task.section.position, action.task.position]}.each_with_index do |wfa, index|
             tr.task-row data-action="#{wfa.id}"
-              td.pointer width="60%" id="task_toggle_#{wfa.id}_0" class="#{'text-muted' if wfa.completed?}"
+              td.pointer width="50%" id="task_toggle_#{wfa.id}_0" class="#{'text-muted' if wfa.completed?}"
                 = wfa.task.instructions
               td.d-flex.pointer id="task_toggle_#{wfa.id}_1"
                 - if !wfa.completed? && wfa.deadline.present?
@@ -78,13 +78,15 @@
                     i.material-icons-outlined.mr-1.orange-bell-notification notifications_active
               td.text-center width="5%"
                 / Conditions for disabling checklist is in workflow helper method
-                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id, company_id: @workflow.company.id), method: "POST"}, onclick: "this.checked=true;", disabled: disable_checklist(@workflow, @user), class: "mt-1 action_checkbox"
-              td.text-center width="10%"
-                - if wfa.task.document.signed?
-                  .d-flex
-                    i.material-icons-outlined.align-middle.mr-2.mt-1.text-success check_circle
-                    p.ml-1 Document signed
-                - elsif wfa.task&.document&.dedoco_complete_signing_link.present?
-                  = link_to "Sign Here!", wfa.task.document.dedoco_complete_signing_link, target: :_blank, class: "btn btn-sm btn-primary"
+                = check_box_tag 'completed', wfa.id, wfa.completed, data: {remote: true, url: url_for(action: :toggle, controller: :workflows, workflow_id: @workflow.id, task_id: wfa.task.id, company_id: @workflow.company.id), method: "POST"}, onclick: "this.checked=true;", disabled: disable_checklist(@workflow, @user), class: "mt-3 action_checkbox"
+              td.text-center width="#{wfa.task.document.present? ? '20%' : '0'}"
+                - if wfa.task.document.present?
+                  - if wfa.task.document.signed?
+                    .d-flex
+                      i.material-icons-outlined.align-middle.mr-5.mt-1.text-success check_circle
+                      / Download latest signed document
+                      = link_to "Download Signed Document", rails_blob_path(wfa.task.document.signed_versions&.last, disposition: "attachment"), class: "btn btn-sm btn-primary"
+                  - elsif wfa.task&.document&.dedoco_complete_signing_link.present?
+                    = link_to "Sign Here!", wfa.task.document.dedoco_complete_signing_link, target: :_blank, class: "btn btn-sm btn-primary"
             = render "task", template: @template, wf: @workflow, wfa: wfa, index: index, color: color, task: wfa.task
 

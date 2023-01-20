@@ -11,9 +11,9 @@ class Motif::DedocoController < ApplicationController
       @document = Document.find_by(dedoco_business_processes_id: params["businessProcessId"])
       if @document.present?
         # Change status of document to signed
-        @document.sign_document
+        @document.sign_document unless @document.signed?
         decoded_pdf = Base64.decode64(params["file"])
-        # # Create a new blob object from the decoded PDF
+        # Create a new blob object from the decoded PDF
         blob = ActiveStorage::Blob.create_after_upload!(
           io: StringIO.new(decoded_pdf),
           filename: "signed_#{@document.raw_file.filename}",
