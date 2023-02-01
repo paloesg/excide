@@ -4,4 +4,6 @@ window.displayFileField = (input) => {
   const infoArea = label.querySelector(".file-upload-filename");
   infoArea.innerHTML = input.files[0].name;
   infoArea.classList.remove("hidden");
+  // Enable "Save Changes"
+  $("#save-position").removeClass("disabled");
 }
