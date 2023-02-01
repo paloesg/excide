@@ -17,10 +17,10 @@
         h6.ml-4 Upload file for E-sign task
         .col-md-12
           .form-group
-            = f.fields_for :document do |d|
-              = d.file_field :raw_file, disabled: true, id: "esign-upload"
-              = d.hidden_field :company_id, value: @company.id, id: "esign-hidden"
-              p.font-weight-bold.font-size-lg.mt-2 = d.object.raw_file.filename if d.object.present?
+            - if f.object.document.present? && f.object.document.raw_file.attached?
+              = link_to "Position Signature Box", motif_position_esign_path(task_id: f.object.id, document_id: f.object&.document&.id), target: :_blank, class: "btn btn-sm btn-success mb-5"
+              p.text-danger = "* Please note that re-position signature box would overwrite the previous document that was uploaded!"
+              p.font-weight-bold.font-size-lg = f.object.document.raw_file.filename
       .row.mb-2
         h6.ml-4 Description
         .col-md-12

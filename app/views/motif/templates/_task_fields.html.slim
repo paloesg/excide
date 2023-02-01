@@ -14,7 +14,9 @@ tr.task-drawer-row id="#{f.object.id}" data-drawer=f.object.id
     - if f.object.id.present? && f.object.esign?
       - if f.object.document.nil?
         = link_to "Position Signature Box", motif_position_esign_path(task_id: f.object.id, document_id: f.object&.document&.id), target: :_blank, class: "btn btn-sm btn-success"
-      - else
+      - elsif f.object.document.raw_file.attached?
         .d-flex
           i.material-icons-outlined.align-middle.mr-2.mt-1.text-success check_circle
           p.ml-1 File uploaded successfully!
+      - else
+        = link_to "Position Signature Box", motif_position_esign_path(task_id: f.object.id, document_id: f.object&.document&.id), target: :_blank, class: "btn btn-sm btn-success"
