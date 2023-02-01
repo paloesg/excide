@@ -88,5 +88,7 @@
                       = link_to "Download Signed Document", rails_blob_path(wfa.task.document.signed_versions&.last, disposition: "attachment"), class: "btn btn-sm btn-primary"
                   - elsif wfa.task&.document&.dedoco_complete_signing_link.present?
                     = link_to "Sign Here!", wfa.task.document.dedoco_complete_signing_link, target: :_blank, class: "btn btn-sm btn-primary"
+                  - else
+                    p.text-danger = "* Document was not prepared for e-signing. Please contact the relevant personnel!"
             = render "task", template: @template, wf: @workflow, wfa: wfa, index: index, color: color, task: wfa.task
 
