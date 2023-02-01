@@ -3,25 +3,38 @@ class Dedoco
   def initialize(document=nil, task=nil)
     @document = document
     @task = task
-    @params = Session.last.data
+    # Match document hash with uploaded document
+    @session = Session.find_by(document_hash: document.doc_hash)
+    @params = @session&.data
   end
 
   def run
-    begin
-      get_jwt_token
-      generate_sha3_document_hash
-      sleep 5
-      encode_base64_file_date
-      create_document
-      append_signing_link
-      @document.generate_complete_signing_link
-      if @document.save
-        send_email_to_signers
+    if @session.present?
+      begin
+        get_jwt_token
+        sleep 5
+        encode_base64_file_date
+        create_document
+        append_signing_link
+        @document.generate_complete_signing_link
+        if @document.save
+          send_email_to_signers
+        end
+        OpenStruct.new(success?: true, document: @document)
+      rescue => e
+        OpenStruct.new(success?: false, document: @document, message: e.message)
       end
-      OpenStruct.new(success?: true, document: @document)
-    rescue => e
-      OpenStruct.new(success?: false, document: @document, message: e.message)
+    else
+      OpenStruct.new(success?: false, document: @document, message: "Could not find session data.")
     end
+  end
+
+  def generate_sha3_document_hash
+    url = @document.raw_file.url
+    file_data = URI.open(url)
+    doc_hash = SHA3::Digest::SHA256.hexdigest(file_data.read)
+    @document.doc_hash = doc_hash
+    @document.save
   end
 
   private
