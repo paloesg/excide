@@ -41,13 +41,6 @@ class Dedoco
     @document.save
   end
 
-  def generate_sha3_document_hash
-    url = @document.raw_file.url
-    file_data = URI.open(url)
-    doc_hash = SHA3::Digest::SHA256.hexdigest(file_data.read)
-    @document.doc_hash = doc_hash
-  end
-
   def encode_base64_file_date
     # Problem: File not yet uploaded to S3 but presigned-url is created alr
     url = @document.raw_file.url
