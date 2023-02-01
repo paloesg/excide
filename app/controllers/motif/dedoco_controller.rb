@@ -12,7 +12,6 @@ class Motif::DedocoController < ApplicationController
       if @document.present?
         # Change status of document to signed
         @document.sign_document unless @document.signed?
-        puts "What is params file #{params["file"]}"
         if params["file"].present?
           decoded_pdf = Base64.decode64(params["file"])
           # Create a new blob object from the decoded PDF
@@ -24,7 +23,15 @@ class Motif::DedocoController < ApplicationController
           # Attach the signed blob to the documents
           @document.signed_versions.attach(blob)
         end
-        @document.save
+        if @document.save
+          puts "Convert WFA to true"
+          # Get workflow action and set it to completed after document is signed
+          @wfa = @document.task.get_workflow_action(@document.company.id, nil)
+          puts "WFA: #{@wfa}"
+          @wfa.completed = true
+          @wfa.save
+          puts "wfa conversion done!"
+        end
       end
     end
   end

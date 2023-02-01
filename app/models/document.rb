@@ -128,8 +128,10 @@ class Document < ApplicationRecord
   end
 
   def reduce_storage_size
-    self.company.storage_used -= self.raw_file.byte_size
-    self.company.save
+    if self.raw_file.attached?
+      self.company.storage_used -= self.raw_file.byte_size
+      self.company.save
+    end
   end
 
   # Check for task type esign

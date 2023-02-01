@@ -6,6 +6,7 @@ class Motif::TasksController < ApplicationController
     respond_to do |format|
       # Upload document and run dedoco code
       if @task.update(task_params)
+        Dedoco.new(@task.document, nil).generate_sha3_document_hash
         DedocoJob.perform_later(@task.document, @task)
         format.html { redirect_to edit_motif_template_path(template_slug: @task.section.template.slug), notice: "Esign has been positioned successfully. Please reload the page while the system process the document." }
         format.json { render :show, status: :ok, location: @task }
