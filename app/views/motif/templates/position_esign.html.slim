@@ -2,27 +2,34 @@
   h2.mb-10 Steps to upload documents for E-sign:
   = form_for @task, url: motif_task_path(@task), html: {id: "position_esign_update"} do |t|
     .row.mb-10
-      .col-sm-3.border.mx-auto.rounded
-        h3.mt-10.mb-5 Step 1:
-        p.mb-3 Click "Upload File" button to upload document for positioning the signature box.
-        p.mb-5 Click "Send File" button to transfer document to the box <b>("Create New Document")</b> below.
-        label.wrapper.mb-5
-          = t.fields_for :document, Document.new do |d|
-            = d.file_field :raw_file, accept: 'application/pdf', style: "display: none;", onchange: "displayFileField(this)", id: "esign-file"
-            = d.hidden_field :company_id, value: @company.id
-          btn.btn.btn-sm.btn-primary.mr-2 Upload File
-        btn.btn.btn-sm.btn-success onclick="handleDedocoClick()" Send File
-        .upload-file.items-center.button.flex
-          .file-upload-filename.hidden.mb-5
+      .col-sm-3.mx-auto.d-flex.align-items-stretch
+        .card
+          .card-body
+            h5.card-title.text-dark Step 1:
+            p.mb-3 Click "Upload File" button to upload document for positioning the signature box.
+            p.mb-5 Click "Send File" button to transfer document to the box <b>("Create New Document")</b> below.
+            label.wrapper.mb-5
+              = t.fields_for :document, Document.new do |d|
+                = d.file_field :raw_file, accept: 'application/pdf', style: "display: none;", onchange: "displayFileField(this)", id: "esign-file"
+                = d.hidden_field :company_id, value: @company.id
+              btn.btn.btn-sm.btn-primary.mr-2 Upload File
+            btn.btn.btn-sm.btn-success onclick="handleDedocoClick()" Send File
+            .upload-file.items-center.button.flex
+              .file-upload-filename.hidden.mb-5
       .col-sm-1
         i.material-icons-outlined.mt-22 style="font-size: 6em;" arrow_forward
-      .col-sm-3.border.mx-auto.rounded
-        h3.mt-10.mb-5 Step 2:
-        p.mb-5 Follow the instructions in the area below to position signature box in the document.
+      .col-sm-3.mx-auto.d-flex.align-items-stretch
+        .card
+          .card-body
+            h5.card-title.text-dark Step 2:
+            p.mb-5 Follow the instructions in the area below to position signature box in the document.
       .col-sm-1
         i.material-icons-outlined.mt-22 style="font-size: 6em;" arrow_forward
-      .col-sm-3.border.mx-auto.rounded
-        h3.mt-10.mb-5 Step 3:
-        p.mb-20 Click on "Save Changes" below only AFTER you've completed Step 2.
-        = t.submit "Save Changes", class: "btn btn-sm btn-primary disabled", id: "save-position"
+      .col-sm-3.mx-auto.d-flex.align-items-stretch
+        .card
+          .card-body
+            h5.card-title.text-dark Step 3:
+            p.mb-5 Click on "Save Changes" below only <b>after</b> you have completed Step 2.
+            p.text-warning.mb-10 * Complete this step so that your franchisees can sign the document you uploaded.
+            = t.submit "Save Changes", class: "btn btn-sm btn-primary disabled", id: "save-position"
     iframe.border id="esign-iframe" title="iframe" src="#{generate_visual_builder_link}" style="width: 100%; height: 87vh; margin: auto; border: 0.5px; margin-bottom: 30px; overflow: auto"
