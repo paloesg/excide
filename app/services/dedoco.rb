@@ -42,8 +42,8 @@ class Dedoco
   def get_jwt_token
     url = "https://api.stage.dedoco.com/api/v1/public/auth/token"
     client_auth = {
-      username: "f37b138e-a3cf-4d72-b8c8-f683800be842",
-      password: "D909C1622777E624CADD6FFC"
+      username: ENV["DEDOCO_USERNAME"],
+      password: ENV["DEDOCO_PASSWORD"]
     }
     body = {
       fileCallback: "#{ENV["ASSET_HOST"]}/motif/dedoco/webhook",

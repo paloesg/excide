@@ -118,8 +118,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/file', to: "home#file", defaults: {format: 'json'}
-
   namespace :motif do
     root to: 'home#index'
     # Dedoco endpoints

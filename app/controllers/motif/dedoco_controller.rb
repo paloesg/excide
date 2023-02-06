@@ -24,13 +24,10 @@ class Motif::DedocoController < ApplicationController
           @document.signed_versions.attach(blob)
         end
         if @document.save
-          puts "Convert WFA to true"
           # Get workflow action and set it to completed after document is signed
           @wfa = @document.task.get_workflow_action(@document.company.id, nil)
-          puts "WFA: #{@wfa}"
           @wfa.completed = true
           @wfa.save
-          puts "wfa conversion done!"
         end
       end
     end

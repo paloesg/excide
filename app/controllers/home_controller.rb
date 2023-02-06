@@ -33,12 +33,6 @@ class HomeController < ApplicationController
 
   end
 
-  # Returns file.json to retrieve Dedoco complete signing link
-  def file
-    @document = Document.order(:created_at).last
-    render json: { file: @document.base_64_file_data }
-  end
-
   private
 
   def user_params
