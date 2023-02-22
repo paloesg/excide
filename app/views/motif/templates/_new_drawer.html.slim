@@ -1,9 +1,10 @@
 .offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto 
   = f.fields_for :tasks, Task.new do |f|
     .row.my-2
+      h6.ml-4 Task Name
       .col-md-11
         .form-group
-          = f.text_field :instructions, { placeholder: "Task Here", class: "form-control" }
+          = f.text_field :instructions, { required: true, placeholder: "Task Here", class: "form-control" }
       .col-md-1
         a.d-inline href="#" 
           i.material-icons-outlined close

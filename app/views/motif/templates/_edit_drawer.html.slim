@@ -2,6 +2,7 @@
   .offcanvas-wrapper id="#{f.object.id}"
     .offcanvas.offcanvas-right.offcanvas-top.p-5.overflow-auto id="drawer_task_#{f.object.id}"
       .row.my-2
+        h6.ml-4 Task Name
         .col-md-11
           .form-group
             = f.text_field :instructions, { placeholder: "Task Here", class: "form-control" }
