@@ -110,7 +110,7 @@ hr.m-0
               a.btn.btn-icon.btn-link href="#" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
                 i.fa.fa-ellipsis-h.text-secondary.mb-4
               .dropdown-menu.dropdown-menu-right
-                .dropdown-item = link_to "Folder setting", edit_motif_folder_path(folder)
+                .dropdown-item = link_to "Rename Folder", edit_motif_folder_path(folder)
                 - if folder.company == @company
                   .dropdown-item = link_to "Delete", motif_folder_path(folder), method: :delete, data: {confirm: "Are you sure you want to delete folder?"}
       // For the rendering of all the folder drawer, document preview modal and document drawer partials respectively
