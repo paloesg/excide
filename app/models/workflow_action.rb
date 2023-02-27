@@ -154,7 +154,7 @@ class WorkflowAction < ApplicationRecord
       # Don't need to set up next task if no next section present
       if next_section.present?
         next_task = next_section.tasks.find_by(position: 1)
-        set_deadline_and_notify(next_task)
+        set_deadline_and_notify(next_task) if next_task.present?
       end
     elsif self.completed
       # Find next action in line and set deadline if not the last task in section
