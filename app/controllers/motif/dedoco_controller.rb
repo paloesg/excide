@@ -22,6 +22,7 @@ class Motif::DedocoController < ApplicationController
           )
           # Attach the signed blob to the documents
           @document.signed_versions.attach(blob)
+          @document.folder_id = @document.task.folder_id
         end
         if @document.save
           # Get workflow action and set it to completed after document is signed
