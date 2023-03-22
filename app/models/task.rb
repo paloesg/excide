@@ -26,8 +26,10 @@ class Task < ApplicationRecord
 
   accepts_nested_attributes_for :document, allow_destroy: true
 
-  validates :instructions, :task_type, presence: true
-  validate :check_user_and_role_fields
+  # disable below code for prevent empty instructions ( during add new template task )
+  # validates :instructions, :task_type, presence: true
+  validates :task_type, presence: true
+  validate :check_user_and_role_fields  
 
   def get_workflow_action(company_id, workflow_id = nil)
     workflow_id = workflow_id.present? ? Workflow.find(workflow_id).id : Workflow.find_by(company_id: company_id, template_id: self.section.template.id).id
