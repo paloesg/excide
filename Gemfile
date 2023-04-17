@@ -87,7 +87,7 @@ gem 'themify-icons-rails', git: 'https://github.com/scratch-soft/themify-icons-r
 # Font Awesome Rails
 gem 'font_awesome5_rails'
 # Default processer: MiniMagick. Enable variant for image using ActiveStorage
-gem 'image_processing', '~> 1.12.0'
+gem 'image_processing', '~> 1.12.2'
 # Office previewer
 gem "activestorage-office-previewer"
 
