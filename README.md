@@ -149,3 +149,6 @@ Heroku buildpack:
     heroku buildpacks:add https://github.com/DuckyTeam/heroku-buildpack-imagemagick --app HEROKU_APP_NAME
 
 2. Others... (To be added!)
+
+Heroku Info:
+The Heroku-18 stack is deprecated From April 30th, 2023 and change to heroku-22
