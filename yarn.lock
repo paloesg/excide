@@ -1233,9 +1233,9 @@
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
 "@yaireo/tagify@^4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.1.1.tgz#1bd8c7354a661ebee6da5f1a811fe0c8b4487745"
-  integrity sha512-sHR+/ZPg6sLPAkLiwcO65uGgNV9RfKkt4rR9hp69bsNbFfQjRArMr/fYLonNH0GdxYXrlhIh62GzRRrXEMNh/A==
+  version "4.27.0"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.27.0.tgz#675fcb826d9c9fbfa352e39276d003677f52e138"
+  integrity sha512-rMWqu5xMxVcDSElW7acwcR7eEQsaTvWzURJuUniM2Eopg/ecitCZzGC344SitnjmYI456cf3NxihbiODhH+zWQ==
 
 abbrev@1:
   version "1.1.1"
