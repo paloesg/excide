@@ -6,7 +6,7 @@
   "dependencies": {
     "@excid3/uppy-activestorage-upload": "https://github.com/excid3/uppy-activestorage-upload.git",
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@rails/actioncable": "^6.1.3",
+    "@rails/actioncable": "^7.2.100",
     "@rails/actiontext": "^6.1.3",
     "@rails/ujs": "^6.1.3",
     "@rails/webpacker": "^5.2.1",
