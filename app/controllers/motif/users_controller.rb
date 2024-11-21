@@ -17,7 +17,7 @@ class Motif::UsersController < ApplicationController
   end
 
   def create
-    # Adding members in individual outlet
+    # Adding members in individual outlet.
     if params[:outlet_id].present?
       @outlet = @company.outlets.find(params[:outlet_id])
       # Choosing existing user
