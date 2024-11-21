@@ -27,13 +27,18 @@ h1.header-bold {
   column-count: 3;
 }
 
+
 .break-inside-avoid {
-  break-inside: avoid;
+  break-inside: avoid; 
 }
 
 #company-dropdown {
-  min-width: 300px;
+  //column-count: 2;
+  max-height: 300px;
+  overflow-y: scroll !important;
+  
 }
+
 
 // Footer
 .footer-size {
