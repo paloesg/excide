@@ -2155,10 +2155,10 @@ coa@^2.0.2:
     chalk "^2.4.1"
     q "^1.1.2"
 
-"cocoon@github:nathanvda/cocoon#59b6a18":
+"cocoon@github:nathanvda/cocoon#b3f4e6d":
   version "0.0.0"
-  uid "59b6a181a5164ace476a2d0ab8d3d72f5fa8970e"
-  resolved "https://codeload.github.com/nathanvda/cocoon/tar.gz/59b6a181a5164ace476a2d0ab8d3d72f5fa8970e"
+  uid b3f4e6d1920937063cba2a4472dc4508bbac00f3
+  resolved "https://codeload.github.com/nathanvda/cocoon/tar.gz/b3f4e6d1920937063cba2a4472dc4508bbac00f3"
 
 code-point-at@^1.0.0:
   version "1.1.0"
