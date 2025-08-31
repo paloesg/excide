@@ -16,7 +16,7 @@
     "@yaireo/tagify": "^4.1.1",
     "algoliasearch": "^3.35.1",
     "blueimp-file-upload": "^10.31.0",
-    "bootstrap": "^4.6.0",
+    "bootstrap": "^5.0.0",
     "bootstrap-datetimepicker": "^0.0.7",
     "cocoon": "github:nathanvda/cocoon#59b6a18",
     "flatpickr": "^4.6.9",
