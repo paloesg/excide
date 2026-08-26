@@ -141,7 +141,7 @@ gem 'slack-ruby-client'
 # Algolia search
 gem 'algoliasearch-rails'
 # Amazon S3 SDK
-gem 'aws-sdk-s3', '~> 1.93.0'
+gem 'aws-sdk-s3', '~> 1.208.0'
 gem 'aws-sdk-textract', '~> 1.24.0'
 # SMS integration with Twilio
 gem 'twilio-ruby'
